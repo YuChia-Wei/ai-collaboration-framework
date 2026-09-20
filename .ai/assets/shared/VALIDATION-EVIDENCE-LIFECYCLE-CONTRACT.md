@@ -136,12 +136,17 @@ while repository identity plus base/head tree identities form the canonical
 `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or
 `not-applicable`.
 
-Admission recomputes the current review subject. Equal content yields
+Admission recomputes the current review subject and verifies unchanged review
+criteria and authority against the owning task's current accepted input. Equal
+content, criteria and authority yield
 `reviewed-current-content` or `reused-with-proof`; unequal or unknown content
-requires a new independent review. Historical exact-head v1 receipts retain
-their original meaning only when validating already-retained historical records
-under their original exact-head rule. They are not eligible for current or new
-live admission; live admission accepts v2 only.
+or review authority requires a new independent review. The source repository's
+GitHub terminal admission uses its configured v3 provider receipt to carry the
+criteria and authority digests in addition to the content subject. Historical
+v1 exact-head and v2 content-only provider receipts retain their original meaning
+for already-retained records; neither admits a new source GitHub merge. This
+provider receipt is distinct from the v2 content-addressed validation audit
+above. Downstream provider admission remains target-owned.
 
 Every provider-required context still appears on each admitted head and reaches
 a truthful terminal outcome because the provider attaches check runs to a

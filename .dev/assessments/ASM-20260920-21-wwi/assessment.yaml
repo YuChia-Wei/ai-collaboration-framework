@@ -1,0 +1,43 @@
+schema_version: '1.0'
+assessment_id: ASM-20260920-21-wwi
+commit_search_id: ASM-20260920-21-wwi
+assessment_type: ai-context-verification
+title: Execution Artifacts And Terminal Review Initial Verification
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-20-proportionate-terminal-artifact-tooling
+base_branch: main
+created_at: '2026-09-20T21:50:46+08:00'
+updated_at: '2026-09-20T21:50:46+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: codex/2026-09-20-proportionate-terminal-artifact-tooling
+  commit: e421c80e266af31ec26b263bad69c1136d9cb4af
+scope:
+  included:
+  - 'Issues #312 and #313 implementation and immediate framework dependencies at e421c80e'
+  - Focused retained evidence and independent review-input/packet/lease
+  excluded:
+  - Product source/tests
+  - Live provider admission, release, publication and adoption
+  - Full package, compatibility and history matrices
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs:
+  - 2026-09-20-proportionate-terminal-artifact-tooling
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Independent immutable review completed with AIC-001 and AIC-002;
+    original report mechanically persisted without changing conclusions.
+  next_action: Governance remediates and requests focused independent verification.
+  blockers:
+  - AIC-001 blocks ISS313-AC3
+  - AIC-002 blocks ISS312-AC3

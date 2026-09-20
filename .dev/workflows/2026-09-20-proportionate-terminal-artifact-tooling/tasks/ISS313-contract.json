@@ -1,0 +1,87 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISS313-contract",
+  "workflow_id": "2026-09-20-proportionate-terminal-artifact-tooling",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-20T19:00:23+08:00",
+  "updated_at": "2026-09-20T22:08:14+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260920-21-wwi#AIC-001"
+  ],
+  "scope": {
+    "target": "Risk-based review routing and preparation/behavior/provider separation",
+    "files": [
+      ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
+      ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+      ".ai/scripts/tests/test_agent_execution_guardrails.py",
+      ".ai/scripts/tests/test_terminal_issue_closure.py",
+      ".ai/scripts/validate-agent-execution-guardrails.py",
+      ".ai/scripts/validate-terminal-issue-closure.py",
+      ".codex/agents/fixed-head-independent-auditor.toml",
+      ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md"
+    ],
+    "constraints": [
+      "Preserve historical outcomes and actual-execution boundaries",
+      "One tracked writer per worktree"
+    ],
+    "non_goals": [
+      "Issue 309 credentials",
+      "Issues 307 and 308",
+      "Push, PR, merge, Issue closure, tag, publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Implement accepted bounded contract",
+      "Run focused independent behavior checks",
+      "Record separate issue acceptance and commit"
+    ],
+    "validation": [],
+    "last_completed_step": "Local implementation, scoped functional verification and independent finding reconciliation completed; separate Issue acceptance retained.",
+    "next_action": ""
+  },
+  "results": {
+    "summary": "Locally accepted with separate per-Issue evidence; original failed assessment retained and the selected finding independently resolved.",
+    "files_changed": [
+      ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
+      ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+      ".ai/scripts/tests/test_agent_execution_guardrails.py",
+      ".ai/scripts/tests/test_terminal_issue_closure.py",
+      ".ai/scripts/validate-agent-execution-guardrails.py",
+      ".ai/scripts/validate-terminal-issue-closure.py",
+      ".codex/agents/fixed-head-independent-auditor.toml",
+      ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md"
+    ],
+    "tests_run": [
+      "Guardrails: 47 tests passed (host); initial sandbox run had 13 fixture ACL errors and remains blocked-by-environment.",
+      "Terminal closure: 61 tests passed (host); initial sandbox run had 1 fixture environment error and remains blocked-by-environment.",
+      "Language: 10 tests passed (host); initial sandbox run had 9 fixture ACL errors and remains blocked-by-environment.",
+      "Guardrail static, terminal static (38 records), AI-context validation and git diff --check passed.",
+      "Synthetic receipt/prose exercise: manual edits 1 to 0; validator API calls 2 to 1; format-only rejections 1 to 0. No time/token savings claim.",
+      "Workflow metadata initially rejected two active tasks; corrected to completed ISS313 implementation and active ISS312, with independent verification still owned by workflow post-audit phase.",
+      "Owner-requested scenario cleanup: guardrails 46 and terminal 60 passed after duplicate removal and assertion fixes; four further CLI-boundary assertions passed on focused rerun. See remediation report for retained coverage.",
+      "Repair verification: terminal, external, provider policy, and three artifact boundary cases passed; exact commands, logs, durations and hashes in ignored repair-checks/.",
+      "Focused independent verification: ASM-20260920-22-7r2; subject 831310d2b6e4a67056ed41ac48effff0aeaf33cd"
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "Synthetic/unit evidence and owner-reported lifecycle output retain their stated limits. No live provider admission, release or publication is claimed.",
+    "follow_up_needed": false
+  }
+}

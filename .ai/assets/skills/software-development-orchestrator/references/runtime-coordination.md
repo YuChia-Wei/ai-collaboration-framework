@@ -73,14 +73,22 @@ commit, and bounds the exact command and working directory.
 Create a separate external runtime task with the least expensive capable
 execution profile. Its prompt contains exactly one
   `BEGIN_EXTERNAL_TASK_DELEGATION` / `END_EXTERNAL_TASK_DELEGATION` YAML envelope
-that conforms to `../templates/external-task-delegation.schema.yaml`. Start from
-the dispatch template, bind either an explicit or runtime-injected source-task
-identity, and name the source task as final integration owner.
+that conforms to `../templates/external-task-delegation.schema.yaml`. Use
+`.ai/scripts/execution-artifacts.py prepare` with one request to bind packet and
+dispatch, source-task identity, command and final integration owner. Generated
+`dispatch-message.txt` contains its validated envelope for the runtime call.
+The
+templates are incomplete skeletons; they never supply execution facts. The
+shared scripts README documents command modes and explicit migration boundaries.
 
-Before dispatch, the owning skill creates and validates the exact
+Before dispatch, prepare creates and validates the exact
 `agent-execution-packet` defined by
 `../../../shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. Bind its reference,
-digest, exact subject SHA, and passing validator argv in `execution_packet`.
+digest, exact subject SHA, and observed passing validator argv in `execution_packet`.
+For a review, provide the selected review-input artifact; packet 1.1 binds its
+exact bytes. External 1.3 binds the complete fixed current validation dependency
+manifest, including the actual canonical role and owning skill. Changing only
+the free-form task kind cannot bypass a review role's criteria binding.
 The external worker is read-only, may write only declared ignored validation
 artifacts, and must not start when the packet or worktree snapshot lease is
 missing, stale, or conflicts with another tracked writer.
@@ -100,12 +108,14 @@ envelope and exactly one
 the delivery only through the validator's `--terminal-message` path with the
 bound dispatch record.
 
-Before sending it, the delegated task writes the dispatch and terminal-result
-candidate to the ignored paths bound in `pre_send_validation`. The candidate
-does not declare that validation passed. It runs the canonical delegation
-validator with `--candidate`, `--dispatch`, and `--write-receipt`; that
-independent validator produces the custody receipt only after validating the
-exact candidate and dispatch bytes. The callback or read-back carries the
+Before sending it, the delegated task supplies actual execution observations to
+`execution-artifacts.py finalize`. The tool writes the candidate at the bound
+ignored path, reuses the canonical delegation receipt builder/writer, and
+assembles the validated exact-byte terminal message. It does not execute the
+delegated command or fill in missing observations. The candidate does not
+declare that validation passed. The existing validator's `--candidate`,
+`--dispatch`, and `--write-receipt` API remains the low-level receipt entrypoint;
+only current 1.3 records can receive a new receipt. The callback or read-back carries the
 candidate and matching receipt. Delivery is released only when the receipt's
 SHA-256 bindings match the exact persisted bytes; no post-validation candidate
 edit is permitted. This custody release applies equally to `passed`, `failed`,
@@ -113,6 +123,14 @@ edit is permitted. This custody release applies equally to `passed`, `failed`,
 validates delivery integrity and never converts a non-passing execution result
 into `passed`. A missing receipt, failed receipt production, mismatched byte
 binding, or changed delivered candidate is non-passing.
+
+Current completion timestamps must be ordered after UTC normalization. Equal
+timestamps are valid when their precision is coarser than the execution. Elapsed
+duration remains the caller's finite nonnegative observation, potentially from
+a monotonic clock; do not force it to equal the wall timestamp difference. A
+clock adjustment producing reversed timestamps cannot be represented by this
+contract: preserve the observations and report the timing inconsistency without
+issuing a receipt or rewriting timestamps. Historical 1.2 reading is unchanged.
 
 At integration, validate the acceptance-evidence ledger against its human
 report projection. Actual-execution requirements cannot be satisfied by a
@@ -233,10 +251,13 @@ Do not make runtime workflows the source of truth for repository process rules. 
 ## Role Execution at Runtime
 
 Runtime child-agent features are optional execution mechanisms, not proof that
-a canonical role was delegated. For every applicable role, the owning skill
-produces the provider-neutral `role_execution` record from
-`../../../shared/ROLE-EXECUTION-CONTRACT.md`; the orchestrator aggregates it
-by stage and remains the integration coordinator only.
+a canonical role was delegated. The owning skill selects the shared risk tier
+first. Ordinary same-runtime work retains the bounded envelope and actual
+invocation/result in the conversation or task. Only the selected full tier or
+an explicit acceptance requirement produces the full provider-neutral
+`role_execution` record from `../../../shared/ROLE-EXECUTION-CONTRACT.md`.
+The orchestrator aggregates applicable evidence by stage and remains the
+integration coordinator only.
 
 Default to `direct`: the parent reads the same role manifest and mandatory
 references, applies the same bounded input/output/permission/stop contract
@@ -252,8 +273,9 @@ first execution attempt is `1`; attempt `2` follows correctable failure and
 material state change; attempt `3` or later requires new owner/workflow
 authorization.
 
-Conversation-only direct use reports this same record inline without a
-repository artifact. Workflow mode stores a complete record in the owning task
-or references it from that task. Neither mode requires a new adapter or
+Conversation-only direct use records the selected tier's evidence inline.
+Workflow mode retains bounded evidence in the task and stores or references a
+complete record only when the full tier or explicit acceptance selects it.
+Neither mode requires a new adapter or
 package. An existing `loaded_rule_ids` packet remains an input source reference
 whose resolver and effective-state semantics are unchanged.

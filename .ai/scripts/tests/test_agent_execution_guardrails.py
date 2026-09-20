@@ -7,7 +7,9 @@ import copy
 import atexit
 import hashlib
 import importlib.util
+import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -157,6 +159,117 @@ def graph(state: str = "fresh", coverage: str = "complete") -> dict[str, object]
     return seal(value, "freshness_sha256")
 
 
+def ordinary_classification() -> dict[str, object]:
+    return {"schema_version": "1.0", "record_type": "agent-execution-classification", "operation": "review", "execution_boundary": "same-runtime", "duration_class": "short", "change_domains": ["ordinary"], "snapshot": "isolated-immutable", "tracked_write": False, "provider_mutation": False, "credential_access": False, "terminal_gate": True}
+
+
+def review_input() -> dict[str, object]:
+    content = {"schema_version": "independent-review-subject/v1", "repository_id": "test-repository", "base_tree": "b" * 40, "head_tree": "c" * 40}
+    subject_digest = hashlib.sha256(json.dumps(content, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    authority = [{"path": name, "sha256": hashlib.sha256((ROOT / name).read_bytes()).hexdigest()} for name in ("AGENTS.md", "AGENTS.zh-TW.md")]
+    return {"schema_version": "1.0", "record_type": "independent-review-input", "classification": ordinary_classification(), "subject": {"repository": "test-repository", "base_sha": "0" * 40, "head_sha": SHA, "base_tree": "b" * 40, "head_tree": "c" * 40, "subject_digest": subject_digest}, "criteria": ["Independent expected behavior remains correct."], "authority": authority}
+
+
+class ProportionateReviewTests(unittest.TestCase):
+    def preflight(self, value: dict[str, object], *, status: str = "", head: str = SHA) -> dict[str, object]:
+        def git_observation(argv: list[str], **kwargs: object) -> subprocess.CompletedProcess:
+            if argv[1:3] == ["rev-parse", "HEAD"]:
+                return subprocess.CompletedProcess(argv, 0, head + "\n", "")
+            if argv[1] == "status":
+                return subprocess.CompletedProcess(argv, 0, status, "")
+            raise AssertionError(f"unexpected Git operation: {argv}")
+        with mock.patch.object(VALIDATOR, "git_tree_identity", side_effect=lambda commit: {"0" * 40: "b" * 40, SHA: "c" * 40}.get(commit)), mock.patch.object(VALIDATOR.subprocess, "run", side_effect=git_observation), mock.patch.object(VALIDATOR, "tracked_path", side_effect=lambda name, label: ROOT / name):
+            return VALIDATOR.validate_review_input(value, SCHEMA)
+
+    def test_terminal_label_alone_keeps_ordinary_independent_review_bounded(self) -> None:
+        value = ordinary_classification()
+        for terminal in (True, False):
+            value["terminal_gate"] = terminal
+            self.assertEqual({"tier": "bounded", "reasons": []}, VALIDATOR.classify_execution(value, SCHEMA))
+
+    def test_risk_and_execution_boundaries_require_full_tier(self) -> None:
+        cases = [("change_domains", [domain]) for domain in ("authority", "evidence-custody", "security", "release", "adoption", "unknown")]
+        cases += [("execution_boundary", "external"), ("execution_boundary", "unknown"), ("duration_class", "long-running"), ("duration_class", "unknown"), ("snapshot", "shared-mutable"), ("snapshot", "shared-frozen"), ("snapshot", "unknown"), ("tracked_write", True), ("provider_mutation", True), ("credential_access", True)]
+        for field, changed in cases:
+            with self.subTest(field=field, changed=changed):
+                value = ordinary_classification()
+                value[field] = changed
+                self.assertEqual("full", VALIDATOR.classify_execution(value, SCHEMA)["tier"])
+
+    def test_incomplete_or_malformed_classification_cannot_select_bounded(self) -> None:
+        for field, changed in (("duration_class", "assumed-short"), ("change_domains", []), ("terminal_gate", 1)):
+            value = ordinary_classification()
+            value[field] = changed
+            with self.assertRaises(VALIDATOR.GuardrailError):
+                VALIDATOR.classify_execution(value, SCHEMA)
+        value = ordinary_classification()
+        del value["change_domains"]
+        with self.assertRaises(VALIDATOR.GuardrailError):
+            VALIDATOR.classify_execution(value, SCHEMA)
+
+    def test_routine_local_edit_retains_single_writer_bounded_route(self) -> None:
+        value = ordinary_classification()
+        value.update(operation="local-work", snapshot="shared-mutable", tracked_write=True)
+        self.assertEqual("bounded", VALIDATOR.classify_execution(value, SCHEMA)["tier"])
+
+    def test_ready_review_preflight_is_not_a_behavioral_outcome(self) -> None:
+        result = self.preflight(review_input())
+        self.assertEqual("ready", result["preparation"])
+        self.assertEqual("bounded", result["tier"])
+        self.assertNotIn("outcome", result)
+        self.assertNotIn("executed", result)
+
+    def test_custody_contract_review_remains_full_after_input_preflight(self) -> None:
+        value = review_input()
+        value["classification"]["change_domains"] = ["evidence-custody"]
+        self.assertEqual("full", self.preflight(value)["tier"])
+
+    def test_dispatch_prose_cannot_replace_missing_machine_criteria(self) -> None:
+        value = review_input()
+        del value["criteria"]
+        value["dispatch_prose"] = "Review the exact subject; criteria are in this sentence."
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "review input keys"):
+            self.preflight(value)
+
+    def test_wrong_tree_or_digest_and_dirty_or_moved_checkout_fail_preparation(self) -> None:
+        for field, changed in (("base_tree", "d" * 40), ("subject_digest", "0" * 64), ("head_sha", "2" * 40)):
+            with self.subTest(field=field):
+                value = review_input()
+                value["subject"][field] = changed
+                with self.assertRaises(VALIDATOR.GuardrailError):
+                    self.preflight(value)
+        for state in ({"status": " M AGENTS.md\n"}, {"head": "2" * 40}):
+            with self.assertRaisesRegex(VALIDATOR.GuardrailError, "exact clean"):
+                self.preflight(review_input(), **state)
+
+    def test_blank_criteria_missing_authority_and_changed_authority_bytes_fail(self) -> None:
+        for field, changed in (("criteria", []), ("criteria", [" "]), ("authority", [])):
+            value = review_input()
+            value[field] = changed
+            with self.assertRaises(VALIDATOR.GuardrailError):
+                self.preflight(value)
+        value = review_input()
+        value["authority"][0]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "byte digest"):
+            self.preflight(value)
+
+    def test_authority_order_does_not_change_review_authority_identity(self) -> None:
+        value = review_input()
+        before = self.preflight(value)
+        value["authority"].reverse()
+        after = self.preflight(value)
+        self.assertEqual(before["authority_sha256"], after["authority_sha256"])
+        value["criteria"] = ["A materially different acceptance criterion."]
+        self.assertNotEqual(before["criteria_sha256"], self.preflight(value)["criteria_sha256"])
+
+    def test_review_input_does_not_authorize_writes_or_privileged_access(self) -> None:
+        for field in ("tracked_write", "provider_mutation", "credential_access"):
+            value = review_input()
+            value["classification"][field] = True
+            with self.assertRaisesRegex(VALIDATOR.GuardrailError, "read-only"):
+                self.preflight(value)
+
+
 class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
     def test_private_role_packet_accepts_only_its_owning_skill(self) -> None:
         value = packet(owning_skill="code-reviewer")
@@ -301,7 +414,7 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         with self.assertRaisesRegex(VALIDATOR.GuardrailError, "material state change"):
             VALIDATOR.validate_retry(value, SCHEMA)
 
-    def test_gwt_010_given_attempt_three_with_fresh_authorization_when_retry_is_validated_then_it_passes(self) -> None:
+    def test_gwt_010_given_legacy_attempt_three_with_fresh_authorization_then_it_passes(self) -> None:
         VALIDATOR.validate_retry(retry(3), SCHEMA)
 
     def test_gwt_010aa_given_new_retry_subject_with_persisted_authorization_and_packet_when_validated_then_it_passes(self) -> None:
@@ -340,9 +453,6 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         seal(value, "retry_sha256")
         with self.assertRaisesRegex(VALIDATOR.GuardrailError, "material state change"):
             VALIDATOR.validate_retry(value, SCHEMA)
-
-    def test_gwt_010ae_given_legacy_retry_without_retry_subject_when_validated_then_it_passes(self) -> None:
-        VALIDATOR.validate_retry(retry(3), SCHEMA)
 
     def test_gwt_010b_given_attempt_three_authorization_for_another_packet_when_retry_is_validated_then_it_fails(self) -> None:
         value = retry(3)

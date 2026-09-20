@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 from typing import Any
 
@@ -381,7 +382,7 @@ class ValidationSubjectClassificationGwtTests(unittest.TestCase):
     def test_gwt_006_given_current_registry_when_classified_then_every_gate_occurs_once_and_only_one_is_enabled(self) -> None:
         classifications, _authority = SUBJECT.load_classification_authority(ROOT)
 
-        self.assertEqual(76, len(classifications))
+        self.assertEqual(set(SUBJECT.registry_snapshot(ROOT)), set(classifications))
         self.assertEqual(
             ["multi-hop-upgrade-transaction"],
             sorted(gate for gate, item in classifications.items() if item["reuse_eligibility"] == "pilot-approved"),
@@ -446,6 +447,65 @@ class ValidationSubjectClassificationGwtTests(unittest.TestCase):
                     )
                     self.assertTrue(requirement["required"])
                     self.assertFalse(requirement["replaceable_by_reuse"])
+
+
+class RegistryFailureDiagnosticsTests(unittest.TestCase):
+    def test_launch_timeout_and_exit_failures_remain_distinct_without_raw_output(self) -> None:
+        private = "private-host-path-or-secret"
+        cases = (
+            (OSError(13, private), None, "errno=13"),
+            (subprocess.TimeoutExpired(private, 30, output=private, stderr=private), None, "timed out"),
+            (None, subprocess.CompletedProcess(private, 7, private, private), "exit_code=7"),
+        )
+        for failure, result, expected in cases:
+            with (
+                self.subTest(expected=expected),
+                mock.patch.object(SUBJECT, "_resolve_bash", return_value="fixture-bash"),
+                mock.patch.object(SUBJECT.subprocess, "run", side_effect=failure, return_value=result),
+                self.assertRaises(SUBJECT.SubjectError) as caught,
+            ):
+                SUBJECT.registry_snapshot(ROOT)
+            self.assertIn(expected, str(caught.exception))
+            self.assertNotIn(private, str(caught.exception))
+
+
+class ClassificationMembershipTests(unittest.TestCase):
+    """Classification membership is semantic; authoring order is not."""
+
+    def setUp(self) -> None:
+        self.authority = yaml.safe_load((ROOT / SUBJECT.CLASSIFICATION_REF).read_text(encoding="utf-8"))
+        self.authority["groups"] = [{
+            "group_id": "fixture-gates", "sensitivities": ["input", "environment"],
+            "reuse_eligibility": "candidate-disabled", "reusable_profiles": [],
+            "environment_contract": "baseline-runtime-platform/v1",
+            "gate_ids": ["beta", "alpha"], "reason": "Independent membership fixture.",
+        }]
+        self.registry = {"alpha": {}, "beta": {}}
+
+    def classify(self, authority: dict) -> dict:
+        with mock.patch.object(SUBJECT, "_load_yaml", return_value=authority), mock.patch.object(
+            SUBJECT, "registry_snapshot", return_value=self.registry
+        ):
+            return SUBJECT.load_classification_authority(ROOT)[0]
+
+    def test_authoring_order_preserves_membership_and_each_gate_digest(self) -> None:
+        before = self.classify(self.authority)
+        self.authority["groups"][0]["gate_ids"].reverse()
+        self.assertEqual({"alpha", "beta"}, set(before))
+        self.assertEqual(before, self.classify(self.authority))
+
+    def test_invalid_duplicate_missing_or_unknown_membership_remains_rejected(self) -> None:
+        for ids in ([], "alpha", [True], ["alpha", "alpha", "beta"], ["alpha"], ["alpha", "beta", "unknown"]):
+            with self.subTest(ids=ids):
+                changed = copy.deepcopy(self.authority)
+                changed["groups"][0]["gate_ids"] = ids
+                with self.assertRaises(SUBJECT.SubjectError):
+                    self.classify(changed)
+        duplicate_group = copy.deepcopy(self.authority["groups"][0])
+        duplicate_group["group_id"] = "another-group"
+        self.authority["groups"].append(duplicate_group)
+        with self.assertRaises(SUBJECT.SubjectError):
+            self.classify(self.authority)
 
 
 if __name__ == "__main__":

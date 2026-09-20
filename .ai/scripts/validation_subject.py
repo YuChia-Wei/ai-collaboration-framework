@@ -242,18 +242,23 @@ for id in "${CHECK_IDS[@]}"; do
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$id" "${CHECK_PROFILES[$id]}" "${CHECK_INPUT_PATHS[$id]}" "${CHECK_DEPENDS[$id]}" "${CHECK_ENVIRONMENT[$id]}" "${CHECK_CACHE_POLICY[$id]}" "${CHECK_DISPOSITION[$id]}" "${CHECK_COMMAND[$id]}"
 done
 '''
-    result = subprocess.run(
-        [_resolve_bash(), "-c", script, "validation-subject", str(registry)],
-        cwd=repo,
-        check=False,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        timeout=30,
-    )
+    try:
+        result = subprocess.run(
+            [_resolve_bash(), "-c", script, "validation-subject", str(registry)],
+            cwd=repo,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=30,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise SubjectError("canonical validation registry timed out") from exc
+    except OSError as exc:
+        raise SubjectError(f"canonical validation registry could not be launched (errno={exc.errno})") from exc
     if result.returncode != 0:
-        raise SubjectError("canonical validation registry is unavailable")
+        raise SubjectError(f"canonical validation registry exited unsuccessfully (exit_code={result.returncode})")
     checks: dict[str, dict[str, object]] = {}
     for line in result.stdout.splitlines():
         fields = line.split("\t")
@@ -343,8 +348,8 @@ def load_classification_authority(repo: Path) -> tuple[dict[str, dict[str, Any]]
             if not isinstance(environment_contract, str) or not CONTRACT_RE.fullmatch(environment_contract):
                 raise SubjectError("gate environment contract is invalid")
         gate_ids = group["gate_ids"]
-        if not isinstance(gate_ids, list) or not gate_ids or gate_ids != sorted(set(gate_ids)):
-            raise SubjectError("gate classification ids must be sorted and unique")
+        if not isinstance(gate_ids, list) or not gate_ids:
+            raise SubjectError("gate classification ids must be a non-empty list")
         if not isinstance(group["reason"], str) or not group["reason"]:
             raise SubjectError("gate classification reason is missing")
         for gate_id_value in gate_ids:

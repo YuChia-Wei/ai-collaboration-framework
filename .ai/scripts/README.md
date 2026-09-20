@@ -13,6 +13,68 @@ explicitly select its own Roslyn analyzers, `.editorconfig`, `dotnet format`,
 architecture tests, integration tests, or tools; those choices are not
 framework release prerequisites.
 
+## Execution Artifacts
+
+`execution-artifacts.py` is the shared entrypoint for bounded execution records.
+The packet and external-task schemas own their versioned `record_models`;
+`execution_artifact_contract.py` checks structure and the existing canonical
+validators retain behavioral rules. Unknown model keywords, unknown fields,
+coerced booleans/numbers, and unsupported versions fail closed with batch errors.
+
+Replace the angle-bracket placeholders before running these commands. Supply
+the request, observations and migration-source files; prepare creates the new
+output directory and dispatch.
+
+```text
+python .ai/scripts/execution-artifacts.py prepare --request ".dev/ai-context/local/<request>.yaml" --output ".dev/ai-context/local/<new-run>"
+python .ai/scripts/execution-artifacts.py finalize --observations ".dev/ai-context/local/<observations>.yaml" --dispatch ".dev/ai-context/local/<new-run>/dispatch.yaml"
+python .ai/scripts/execution-artifacts.py check ".dev/ai-context/local/<new-run>/receipt.yaml" --dispatch ".dev/ai-context/local/<new-run>/dispatch.yaml"
+python .ai/scripts/execution-artifacts.py migrate --source ".dev/ai-context/local/<old>.yaml" --to-version 1.3 --dry-run
+python .ai/scripts/execution-artifacts.py templates --check
+```
+
+Prepare reads the current clean Git identity and compares it to the request.
+Supply the goal, scope, role, command, delivery, retry facts and expected commit
+once. A selected review also supplies an explicit validated review-input file;
+the tool never infers criteria from prose. Outputs use a new contained, ignored,
+untracked directory. Existing paths are never overwritten. On failure the tool
+removes only its own unchanged output bytes, preserving and reporting changed
+outputs as cleanup failures. A bundle is ready only after prepare succeeds.
+The orchestrator's generated `execution-prepare-request.template.yaml` and
+`execution-observations.template.yaml` list the required caller inputs; copy
+them into ignored local files and replace every placeholder explicitly.
+Prepare also emits `dispatch-message.txt` with the exact validated dispatch
+envelope, ready for the selected runtime's authorized dispatch operation.
+
+Finalize requires caller-supplied actual observations for every execution field.
+It does not run the delegated command or invent timing, exit codes, clean state,
+counts, or success. It reuses the canonical receipt builder/writer and assembles
+`terminal-message.txt` from the exact candidate and receipt bytes. A successful
+validator releases delivery custody; it does not turn a failed execution into a
+pass. Do not edit generated custody files or terminal envelopes.
+
+Packet 1.0 and external 1.2 remain readable. `check --historical` checks structure
+only and grants no admission. Current preparation/writing uses packet 1.1 and
+external 1.3 with the exact mandatory validator/helper/schema/prerequisite and
+selected role/skill authority manifest. A historical 1.2 receipt needs its
+original immutable validation authority; it cannot be freshly issued or admitted
+through the current weaker script-only binding.
+
+Migration supports only external dispatch/completion 1.2 to 1.3. Select
+`--dry-run` or a new `--output` explicitly. Completion migration also needs the
+selected 1.3 `--dispatch`; dispatch migration outputs must remain beneath its
+packet's declared ignored root. The migration report preserves the source byte
+digest and lists changes. Execution observations and outcomes remain unchanged;
+the manifest describes current validation, never historical execution authority.
+Receipts are never migrated or issued by migration. Missing semantic inputs
+require explicit new preparation, not guessed values. Lease/retry/ledger records
+are outside this tool's migration scope.
+
+`templates` deterministically projects incomplete skeletons from the same model;
+`templates --check` detects drift. Template placeholders are not runnable evidence.
+Compatibility remains tested with hand-authored inputs and independent expected
+outcomes, including failed results, authority drift and illegal custody paths.
+
 ## Source Tooling Prerequisites
 
 Repository-side Python tooling requires Python 3.11 or newer and the
@@ -382,10 +444,12 @@ compatibility lifecycle. `validate-shell-assets.py` uses
 unreliable under Windows Git Bash and `core.filemode=false`.
 
 Required child-script calls in `check-all.sh` use the literal multiline form
-`run_check "<script>"`, description, then `"required"` on the third line. The
-shell asset validator compares those literal calls with
-`check_all_required_scripts`; changing that call shape requires updating the
-validator and its negative parity fixture in the same change.
+`run_check "<script>"`, description, then `"required"` on the third line.
+Required command calls use the same layout with
+`run_command_check "<command>"`. The shell asset validator compares these calls
+with `check_all_required_scripts` and `check_all_required_commands`, respectively;
+changing either call shape requires updating the parser and its negative parity
+fixture in the same change.
 
 ### Active Orchestration And Context Validation
 
@@ -404,6 +468,35 @@ neither claims C# semantic compliance. `check-coding-standards.sh` checks
 required files, headings, catalog routes, executable modes, and shell syntax,
 and explicitly excludes architecture completeness, example correctness, and
 target technology adoption.
+
+Registering a check touches distinct contracts:
+
+- `validation-profile-registry.sh` owns the ID, callable, profile membership,
+  dependencies and applicability. Its execution branch in `check-all.sh` must
+  contain the matching literal call.
+- `shell-assets.yaml` records required literal script/command calls for packaging
+  and runner parity. It does not choose profile membership.
+- `../assets/shared/validation-gate-classification.yaml` owns sensitivity and
+  reuse eligibility. Its gate IDs must cover the registry exactly, without
+  duplicates; their authoring order and total count are not fixed contracts.
+- `python-entrypoints.json` records a supported Python CLI and its prerequisites
+  when applicable; an imported helper does not become a CLI automatically.
+
+Checks executed by `run_source_repository_governance_checks` use
+`source-governance` applicability. Its available-context branch and those
+registry entries must cover the same IDs. When source context is absent, the
+runner derives non-execution coverage from the registry; only selected checks
+receive `not-applicable` evidence. The `source` disposition alone does not select
+this branch, and there is no second list of absent-context descriptions.
+
+Regression scenarios should prove an observable contract with an independently
+chosen input. Keep distinct CLI, parser and admission boundaries, but remove
+identical cases and assertions that only inspect their own fixture. Isolate
+independent invalid fields so one failure cannot mask another. Unless wording
+itself is a public contract, assert the rejected field or binding and outcome
+instead of complete diagnostic prose. Structural rejection need not also emit
+later semantic errors. Expected negative-case diagnostics are not failed tests;
+use the test-runner exit status and result summary.
 
 Use `--profile fast`, `pr`, `release`, `closeout`, or `nightly-full`. The
 legacy `--quick`, `--critical`, and `--full` flags remain explicit compatibility

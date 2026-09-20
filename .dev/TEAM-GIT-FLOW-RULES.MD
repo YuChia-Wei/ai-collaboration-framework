@@ -125,7 +125,11 @@ fresh provider read-back and run
 and `--capture-admission-evidence`. The validator emits the verified snapshot
 to stdout and writes no repository path; trusted orchestration may retain it
 under ignored validation artifacts. A replay instead uses the untracked
-`--admission-evidence` snapshot plus `--verify-provider-live`. The provider
+`--admission-evidence` snapshot plus `--verify-provider-live`. Both paths require
+`--review-input <path>` with the owning task's current accepted criteria and
+tracked authority selection. Canonical preflight validates that input against
+the clean current checkout; admission compares its criteria/authority digests
+and content subject with the v3 receipt. The provider
 configuration owns the required-check
 set, and the live GitHub response must exactly match the snapshot's PR number,
 repository, base, head, body, review/check-run identities, and timestamps. Those live PR

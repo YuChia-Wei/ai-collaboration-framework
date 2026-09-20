@@ -84,7 +84,13 @@ Before merge, the integrator must use `--capture-admission-evidence` with a
 fresh event snapshot to generate, validate, and emit the provider read-back
 without writing a repository path. Trusted orchestration may retain that
 stdout under ignored validation artifacts. Replaying such a snapshot requires the current event snapshot,
-`--admission-evidence <path>`, and `--verify-provider-live`. The admission snapshot uses contract
+`--admission-evidence <path>`, and `--verify-provider-live`. Both capture and replay
+also require `--review-input <path>`: the owning task's current accepted criteria
+and selected tracked authority, validated through the canonical independent
+review-input preflight against the clean live base/head checkout. The integrator
+supplies this expectation independently of the provider receipt; the receipt
+must never supply its own expected criteria or authority. No automatic global
+criteria/authority selection is implied. The admission snapshot uses contract
 `github-terminal-issue-closure-admission` and supplies the exact PR number,
 repository, base, head, body, source review evidence, required-check context set, and successful
 hosted checks.
@@ -122,29 +128,47 @@ source repair commit or tracked evidence-sync commit.
 
 This repository is governed as a single-maintainer source repository. GitHub
 does not allow an author to approve their own pull request, so source admission
-uses a strict `github-terminal-issue-closure-audit/v2` review receipt submitted
+uses a strict `github-terminal-issue-closure-audit/v3` review receipt submitted
 by the configured maintainer after an independent audit of one immutable
 checkout. An ordinary `COMMENTED` review is never sufficient. The receipt
 records repository and pull-request identity, original base/head commit SHAs as
 provenance, base/head tree identities, the canonical
-`independent-review-subject/v1` digest, a passing outcome, zero blocking
+`independent-review-subject/v1` digest, canonical `criteria_sha256` and
+`authority_sha256` from the audited review-input preflight, a passing outcome, zero blocking
 findings, and the `content-addressed-independent` audit scope.
 
-Admission recomputes the current base/head tree subject. Equal content is bound
+Admission recomputes the current base/head tree subject and compares both review
+digests against the current accepted input. Authority selection order alone does
+not change its digest. The whole input digest is not a reuse key because it also
+contains commit provenance. Equal content, criteria and authority are bound
 as `reviewed-current-content` or `reused-with-proof`; commit-SHA inequality by
 itself does not require re-review. Tree, criteria, authority, malformed receipt,
-or unknown-subject drift fails closed. Historical v1 receipts are interpreted
+or unknown-subject drift fails closed. Historical v1 and v2 receipts are interpreted
 only while validating already-retained historical records under their original
-exact-head rule. They are never eligible for current or new live admission;
-live admission accepts v2 only. Any effective `CHANGES_REQUESTED` review remains
+exact-head and content-only rules, respectively. They are never eligible for current or new live admission;
+live admission accepts v3 only. Any effective `CHANGES_REQUESTED` review remains
 blocking. This review
 mode is source-only; downstream repositories select their own target-owned
 review policy from their actual maintainer and provider requirements.
-The review body is exactly one receipt with no surrounding prose:
+Review overhead follows the operation classification in
+`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`, not the terminal label.
+Both bounded and full independent reviews first validate the machine-readable
+subject, criteria and authority with `validate-agent-execution-guardrails.py
+--review-input`. Authority, evidence-custody, security, release/adoption and
+unknown-risk changes still require full review. Preparation failures do not
+produce behavioral conclusions; preserve prior attempts and recheck only the
+affected inputs. Provider reconciliation failures require fresh provider
+read-back, not an unchanged content review. Declaration, merge admission and
+reconciliation retain their distinct factual times and authorization boundaries.
+
+The review body contains exactly one valid marked receipt and may include
+surrounding explanation. Duplicate, malformed, unsupported or conflicting
+receipt blocks and duplicate JSON keys fail closed. Prose does not override
+receipt fields or supply missing evidence:
 
 ```text
-<!-- github-terminal-issue-closure-audit/v2
-{"repository":"OWNER/REPOSITORY","pull_request":123,"base_sha":"<reviewed base commit SHA>","head_sha":"<reviewed head commit SHA>","base_tree":"<reviewed base tree SHA>","head_tree":"<reviewed head tree SHA>","subject_digest":"<SHA-256 of canonical independent-review-subject/v1>","outcome":"passed","blocking_findings":0,"audit_scope":"content-addressed-independent"}
+<!-- github-terminal-issue-closure-audit/v3
+{"repository":"OWNER/REPOSITORY","pull_request":123,"base_sha":"<reviewed base commit SHA>","head_sha":"<reviewed head commit SHA>","base_tree":"<reviewed base tree SHA>","head_tree":"<reviewed head tree SHA>","subject_digest":"<SHA-256 of canonical independent-review-subject/v1>","criteria_sha256":"<canonical reviewed criteria digest>","authority_sha256":"<canonical reviewed authority digest>","outcome":"passed","blocking_findings":0,"audit_scope":"content-addressed-independent"}
 -->
 ```
 Without an event the validator is only a static contract check. The aggregate

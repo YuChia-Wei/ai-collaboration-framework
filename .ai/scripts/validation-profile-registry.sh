@@ -374,13 +374,28 @@ register_check validation-dependency-observation-contract \
 register_check agent-execution-guardrails-contract \
     "Agent Execution Guardrails Contract" required \
     "governance,agents,evidence" "fast pr release nightly-full" \
-    ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md .ai/assets/shared/agent-execution-guardrails.schema.yaml .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md .ai/scripts/validate-agent-execution-guardrails.py .ai/assets/skills/software-development-orchestrator" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
+    ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md .ai/assets/shared/agent-execution-guardrails.schema.yaml .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md .ai/scripts/validate-agent-execution-guardrails.py .ai/scripts/execution_artifact_contract.py .ai/assets/skills/software-development-orchestrator" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/validate-agent-execution-guardrails.py" source-governance
 register_check agent-execution-guardrails-tests \
     "Agent Execution Guardrails Fail-Closed Tests" required \
     "governance,agents,evidence,tests" "fast pr release nightly-full" \
     ".ai/scripts/tests/test_agent_execution_guardrails.py .ai/assets/shared/agent-execution-guardrails.schema.yaml" agent-execution-guardrails-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_agent_execution_guardrails.py -v" source-governance
+register_check execution-artifacts-tests \
+    "Execution Artifact Preparation And Custody Tests" required \
+    "governance,tests" "fast pr release nightly-full" \
+    ".ai/scripts/execution-artifacts.py .ai/scripts/execution_artifact_contract.py .ai/scripts/tests/test_execution_artifacts.py .ai/assets/shared/agent-execution-guardrails.schema.yaml .ai/assets/skills/software-development-orchestrator" agent-execution-guardrails-contract "python>=3.11 git" 120 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_execution_artifacts.py -v" source-governance
+register_check external-task-delegation-tests \
+    "External Task Candidate And Receipt Contract Tests" required \
+    "governance,tests" "fast pr release nightly-full" \
+    ".ai/assets/skills/software-development-orchestrator .ai/scripts/execution-artifacts.py .ai/scripts/python_prerequisites.py .ai/scripts/python-entrypoints.json requirements.txt" agent-execution-guardrails-contract "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py -v" source-governance
+register_check execution-artifact-templates \
+    "Execution Artifact Generated Templates" required \
+    "governance,generation" "fast pr release nightly-full" \
+    ".ai/scripts/execution-artifacts.py .ai/scripts/execution_artifact_contract.py .ai/assets/skills/software-development-orchestrator/templates" agent-execution-guardrails-contract "python>=3.11" 30 cpu reuse-by-input source \
+    "python .ai/scripts/execution-artifacts.py templates --check" source-governance
 register_check terminal-issue-closure \
     "Terminal Issue Closure Contract" required \
     "governance,source,closeout" "fast pr release nightly-full" \

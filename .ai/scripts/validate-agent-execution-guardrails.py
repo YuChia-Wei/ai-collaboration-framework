@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from python_prerequisites import guard_direct_entrypoint
 
 guard_direct_entrypoint(".ai/scripts/validate-agent-execution-guardrails.py")
+from execution_artifact_contract import structure_errors, models_errors, load_mapping as strict_load_mapping
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = ROOT / ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
@@ -136,10 +137,6 @@ def canonical_role_path(value: str) -> bool:
     forbidden = "\\\\<>*?[]{}"
     if value != candidate.as_posix() or any(part in {".", ".."} for part in parts):
         return False
-    if value != candidate.as_posix() or any(part in {".", ".."} for part in parts):
-        return False
-    if value != candidate.as_posix() or any(part in {".", ".."} for part in parts):
-        return False
     if any(any(character in part for character in forbidden) for part in parts):
         return False
     return (
@@ -204,24 +201,19 @@ def reject_private(value: Any, schema: dict[str, Any], path: str = "record") -> 
 
 
 def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
-    exact_keys(record, {"schema_version", "record_type", "packet_id", "execution_kind", "owning_skill", "role", "subject", "invocation", "permissions", "ignored_artifact_roots", "terminal", "integration_owner", "stop_conditions", "retry", "packet_sha256"}, "packet")
-    if record["schema_version"] != schema["schema_version"] or record["record_type"] != schema["record_types"]["packet"]:
+    errors = structure_errors(record, schema, "packet")
+    if errors:
+        raise GuardrailError("\n".join(errors))
+    if record["schema_version"] not in {"1.0", "1.1"} or record["record_type"] != schema["record_types"]["packet"]:
         raise GuardrailError("packet schema identity is invalid")
     string(record["packet_id"], "packet_id")
     owning_skill = string(record["owning_skill"], "owning_skill")
     if record["execution_kind"] not in schema["execution_kinds"]:
         raise GuardrailError("execution_kind is invalid")
     role = mapping(record["role"], "role")
-    exact_keys(role, {"path", "applicability", "reason"}, "role")
     role_reference = string(role["path"], "role.path")
     if not canonical_role_path(role_reference):
         raise GuardrailError("role.path must be canonical")
-    role_parts = PurePosixPath(role_reference).parts
-    if role_parts[:3] == (".ai", "assets", "skills") and role_parts[3] != owning_skill:
-        raise GuardrailError("private role.path must belong to owning_skill")
-    role_parts = PurePosixPath(role_reference).parts
-    if role_parts[:3] == (".ai", "assets", "skills") and role_parts[3] != owning_skill:
-        raise GuardrailError("private role.path must belong to owning_skill")
     role_parts = PurePosixPath(role_reference).parts
     if role_parts[:3] == (".ai", "assets", "skills") and role_parts[3] != owning_skill:
         raise GuardrailError("private role.path must belong to owning_skill")
@@ -238,23 +230,19 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
         raise GuardrailError("role.applicability is invalid")
     string(role["reason"], "role.reason")
     subject = mapping(record["subject"], "subject")
-    exact_keys(subject, {"repository", "exact_sha"}, "subject")
     string(subject["repository"], "subject.repository")
     if not isinstance(subject["exact_sha"], str) or not SHA40.fullmatch(subject["exact_sha"]):
         raise GuardrailError("subject.exact_sha must be a lowercase 40-character SHA")
     invocation = mapping(record["invocation"], "invocation")
-    exact_keys(invocation, {"argv", "cwd"}, "invocation")
     strings(invocation["argv"], "invocation.argv")
     string(invocation["cwd"], "invocation.cwd")
     permissions = mapping(record["permissions"], "permissions")
-    exact_keys(permissions, {"network", "tracked_write", "provider_mutation"}, "permissions")
     if any(value not in schema["permission_modes"] for value in permissions.values()):
         raise GuardrailError("permissions must use allow or deny")
     ignored = strings(record["ignored_artifact_roots"], "ignored_artifact_roots", empty=True)
     if any(Path(item).is_absolute() or ".." in Path(item).parts for item in ignored):
         raise GuardrailError("ignored artifact roots must be contained repository-relative paths")
     terminal = mapping(record["terminal"], "terminal")
-    exact_keys(terminal, {"schema_ref", "mode", "destination", "max_terminal_messages"}, "terminal")
     terminal_schema_path = tracked_path(
         string(terminal["schema_ref"], "terminal.schema_ref"),
         "terminal.schema_ref",
@@ -282,7 +270,6 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
     string(record["integration_owner"], "integration_owner")
     strings(record["stop_conditions"], "stop_conditions")
     retry = mapping(record["retry"], "retry")
-    exact_keys(retry, {"attempt", "budget", "authorization_refs"}, "retry")
     if not isinstance(retry["attempt"], int) or retry["attempt"] < 1 or not isinstance(retry["budget"], int) or retry["budget"] < retry["attempt"]:
         raise GuardrailError("retry attempt and budget are invalid")
     authorizations = strings(retry["authorization_refs"], "retry.authorization_refs", empty=True)
@@ -295,6 +282,21 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
                 raise GuardrailError("retry authorization is not bound to this packet and attempt")
     if record["execution_kind"] in {"external", "fixed-head-audit"} and (permissions["tracked_write"] != "deny" or permissions["provider_mutation"] != "deny"):
         raise GuardrailError("external and fixed-head execution must be read-only")
+    if record["schema_version"] == "1.1":
+        binding = record["review_input"]
+        review_selected = record["execution_kind"] == "fixed-head-audit" or role_reference.endswith("/fixed-head-independent-auditor/sub-agent.yaml")
+        if review_selected and binding is None:
+            raise GuardrailError("current review packet requires explicit bound review_input")
+        if binding is not None:
+            path = repo_relative_path(binding["ref"], "review_input.ref")
+            if binding["ref"] != path.relative_to(ROOT).as_posix():
+                raise GuardrailError("review_input.ref must be canonical")
+            if hashlib.sha256(path.read_bytes()).hexdigest() != binding["sha256"]:
+                raise GuardrailError("review_input byte digest does not match")
+            review = strict_load_mapping(path)
+            validate_review_input(review, schema)
+            if review["subject"]["head_sha"] != subject["exact_sha"]:
+                raise GuardrailError("review_input subject must match packet subject")
     reject_private(record, schema)
     sealed(record, "packet_sha256")
 
@@ -519,6 +521,85 @@ def git_tree_identity(commit_sha: str) -> str | None:
     return tree_sha
 
 
+def classify_execution(record: dict[str, Any], schema: dict[str, Any]) -> dict[str, Any]:
+    """Select overhead from declared operation facts, never from the terminal label."""
+    contract = schema["classification"]
+    exact_keys(record, set(contract["fields"]), "classification")
+    if record["schema_version"] != contract["schema_version"] or record["record_type"] != contract["record_type"]:
+        raise GuardrailError("classification schema identity is invalid")
+    for field, choices in (("operation", "operations"), ("execution_boundary", "execution_boundaries"), ("duration_class", "duration_classes"), ("snapshot", "snapshots")):
+        if record[field] not in contract[choices]:
+            raise GuardrailError(f"classification.{field} is invalid")
+    domains = strings(record["change_domains"], "classification.change_domains")
+    if len(domains) != len(set(domains)) or any(domain not in contract["change_domains"] for domain in domains):
+        raise GuardrailError("classification.change_domains is invalid")
+    for field in ("tracked_write", "provider_mutation", "credential_access", "terminal_gate"):
+        if type(record[field]) is not bool:
+            raise GuardrailError(f"classification.{field} must be boolean")
+    reasons = []
+    if record["execution_boundary"] != "same-runtime":
+        reasons.append("execution-boundary")
+    if record["duration_class"] != "short":
+        reasons.append("duration")
+    if any(domain != "ordinary" for domain in domains):
+        reasons.append("change-risk")
+    if record["snapshot"] in {"shared-frozen", "unknown"}:
+        reasons.append("snapshot")
+    if record["operation"] == "review" and (record["snapshot"] != "isolated-immutable" or record["tracked_write"]):
+        reasons.append("review-isolation")
+    if record["provider_mutation"] or record["credential_access"]:
+        reasons.append("privileged-operation")
+    return {"tier": "full" if reasons else "bounded", "reasons": reasons}
+
+
+def validate_review_input(record: dict[str, Any], schema: dict[str, Any]) -> dict[str, Any]:
+    """Preparation only: verify material review inputs before any behavioral audit."""
+    contract = schema["review_input"]
+    exact_keys(record, set(contract["fields"]), "review input")
+    if record["schema_version"] != contract["schema_version"] or record["record_type"] != contract["record_type"]:
+        raise GuardrailError("review input schema identity is invalid")
+    classification = mapping(record["classification"], "classification")
+    result = classify_execution(classification, schema)
+    if classification["operation"] != "review" or classification["tracked_write"] or classification["provider_mutation"] or classification["credential_access"]:
+        raise GuardrailError("independent review must be read-only without provider or credential access")
+    subject = mapping(record["subject"], "review subject")
+    exact_keys(subject, set(contract["subject_fields"]), "review subject")
+    string(subject["repository"], "subject.repository")
+    for field in ("base_sha", "head_sha", "base_tree", "head_tree"):
+        if not isinstance(subject[field], str) or not SHA40.fullmatch(subject[field]):
+            raise GuardrailError(f"subject.{field} must be a full Git identity")
+    for prefix in ("base", "head"):
+        if git_tree_identity(subject[f"{prefix}_sha"]) != subject[f"{prefix}_tree"]:
+            raise GuardrailError(f"subject.{prefix}_tree does not match its Git commit")
+    content = {"schema_version": "independent-review-subject/v1", "repository_id": subject["repository"], "base_tree": subject["base_tree"], "head_tree": subject["head_tree"]}
+    if subject["subject_digest"] != digest(content):
+        raise GuardrailError("subject.subject_digest does not match its content")
+    observed_head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False, timeout=30)
+    observed_status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, capture_output=True, text=True, check=False, timeout=30)
+    if observed_head.returncode or observed_status.returncode or observed_head.stdout.strip() != subject["head_sha"] or observed_status.stdout.strip():
+        raise GuardrailError("review requires the exact clean execution checkout")
+    criteria = strings(record["criteria"], "review criteria")
+    if any(not item.strip() for item in criteria):
+        raise GuardrailError("review criteria must not be blank")
+    authority = record["authority"]
+    if not isinstance(authority, list) or not authority:
+        raise GuardrailError("review authority must be a non-empty list")
+    seen = set()
+    for index, item in enumerate(authority):
+        binding = mapping(item, f"authority[{index}]")
+        exact_keys(binding, set(contract["authority_fields"]), f"authority[{index}]")
+        path = tracked_path(binding["path"], f"authority[{index}].path")
+        if binding["path"] != path.relative_to(ROOT).as_posix():
+            raise GuardrailError("review authority path must use its canonical repository-relative form")
+        if path in seen:
+            raise GuardrailError("review authority paths must be unique")
+        seen.add(path)
+        if hashlib.sha256(path.read_bytes()).hexdigest() != binding["sha256"]:
+            raise GuardrailError("review authority byte digest does not match")
+    reject_private(record, schema)
+    return {**result, "preparation": "ready", "subject_digest": subject["subject_digest"], "criteria_sha256": digest(criteria), "authority_sha256": digest(sorted(authority, key=lambda item: item["path"])), "input_sha256": digest(record)}
+
+
 def validate_graph(record: dict[str, Any], schema: dict[str, Any]) -> None:
     exact_keys(record, {"schema_version", "record_type", "project", "head_sha", "indexed_sha", "index_state", "coverage", "reindex_attempted", "fallback", "fallback_paths", "absence_claim", "freshness_sha256"}, "graph freshness")
     if record["schema_version"] != schema["schema_version"] or record["record_type"] != schema["record_types"]["graph"]:
@@ -567,7 +648,7 @@ def validate_powershell_source(source: str, schema: dict[str, Any]) -> None:
 
 
 def load(path: Path) -> dict[str, Any]:
-    value = yaml.safe_load(path.read_text(encoding="utf-8"))
+    value = strict_load_mapping(path)
     return mapping(value, str(path))
 
 
@@ -580,6 +661,8 @@ def parse_args() -> argparse.Namespace:
     group.add_argument("--retry", type=Path)
     group.add_argument("--graph-freshness", type=Path)
     group.add_argument("--powershell-source", type=Path)
+    group.add_argument("--classify", type=Path, help="classify operation facts; does not grant dispatch or acceptance")
+    group.add_argument("--review-input", type=Path, help="preflight review subject, criteria and authority before behavioral dispatch")
     parser.add_argument("--acquire-lock", action="store_true", help="atomically create the active lease lock before live validation")
     return parser.parse_args()
 
@@ -604,12 +687,21 @@ def main() -> int:
             validate_graph(load(args.graph_freshness), schema)
         elif args.powershell_source:
             validate_powershell_source(args.powershell_source.read_text(encoding="utf-8"), schema)
+        elif args.classify:
+            print(json.dumps(classify_execution(load(args.classify), schema), sort_keys=True))
+            return 0
+        elif args.review_input:
+            print(json.dumps(validate_review_input(load(args.review_input), schema), sort_keys=True))
+            return 0
         else:
-            required = {"schema_version", "contract_id", "record_types", "execution_kinds", "role_applicability", "permission_modes", "lease_states", "lease_access", "artifact_states", "evidence_kinds", "execution_receipt_producers", "actual_execution_binding", "outcomes", "retry_decisions", "graph_states", "graph_coverage", "graph_fallbacks", "terminal_modes", "reserved_powershell_variables", "privacy_forbidden_keys"}
+            required = {"schema_version", "contract_id", "record_types", "execution_kinds", "role_applicability", "permission_modes", "lease_states", "lease_access", "artifact_states", "evidence_kinds", "execution_receipt_producers", "actual_execution_binding", "outcomes", "retry_decisions", "graph_states", "graph_coverage", "graph_fallbacks", "terminal_modes", "classification", "review_input", "record_models", "reserved_powershell_variables", "privacy_forbidden_keys"}
             exact_keys(schema, required, "schema")
+            errors = models_errors(schema)
+            if errors:
+                raise GuardrailError("\n".join(errors))
         print("Agent execution guardrails passed.")
         return 0
-    except (GuardrailError, OSError, yaml.YAMLError) as exc:
+    except (ValueError, OSError, yaml.YAMLError, subprocess.TimeoutExpired) as exc:
         print(f"Agent execution guardrails failed: {exc}", file=sys.stderr)
         return 1
 
