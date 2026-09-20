@@ -92,6 +92,30 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
         self.assertEqual([], DELEGATION.validate_schema_definition(SCHEMA))
         self.assertEqual("external-task-validation-receipt", SCHEMA["record_types"]["validation_receipt"])
         self.assertEqual("exact-candidate-bytes-with-independent-receipt", SCHEMA["transport_semantics"]["callback_payload"])
+        self.assertEqual("recoverable-by-one-terminal-readback", SCHEMA["transport_semantics"]["callback_failure_with_retrievable_terminal_report"])
+        self.assertEqual("terminal-only", SCHEMA["transport_semantics"]["source_task_progress_delivery"])
+        self.assertEqual("runtime-policy-owned-and-not-source-delivery", SCHEMA["transport_semantics"]["runtime_local_progress"])
+
+    def test_gwt_001a_given_required_transport_semantic_drift_then_schema_is_rejected(self) -> None:
+        expected = {
+            "callback_failure_with_retrievable_terminal_report": "recoverable-by-one-terminal-readback",
+            "terminal_task_without_valid_completion_report": "non-passing",
+            "source_task_progress_delivery": "terminal-only",
+            "runtime_local_progress": "runtime-policy-owned-and-not-source-delivery",
+            "custody_release": "a receipt matching the exact candidate and dispatch bytes is required before one terminal delivery for every terminal outcome",
+        }
+        for key, value in expected.items():
+            for defect in ("drift", "missing"):
+                with self.subTest(key=key, defect=defect):
+                    schema = copy.deepcopy(SCHEMA)
+                    if defect == "drift":
+                        schema["transport_semantics"][key] = f"not-{value}"
+                    else:
+                        del schema["transport_semantics"][key]
+                    self.assertIn(
+                        f"schema transport semantic {key} is invalid",
+                        DELEGATION.validate_schema_definition(schema),
+                    )
 
     def test_gwt_002_given_bootstrap_candidate_when_validated_then_it_never_self_asserts_validator_pass(self) -> None:
         candidate = valid_candidate()
@@ -226,6 +250,42 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
                 errors = DELEGATION.validate_receipt_write_request(*paths, valid_dispatch())
                 self.assertTrue(any(f"{option} path must exactly match" in error for error in errors))
 
+    def test_gwt_002j1_given_receipt_verification_paths_or_transport_drift_then_it_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        safe_paths = [Path(CANDIDATE_REF), Path(DISPATCH_REF), Path(RECEIPT_REF)]
+        self.assertEqual([], DELEGATION.validate_receipt_verification_request(*safe_paths, dispatch))
+        for index, option in enumerate(("--candidate", "--dispatch", "--receipt")):
+            for replacement in (
+                Path(f"{ARTIFACT_ROOT}/byte-identical-copy-{index}.yaml"),
+                Path(f"{safe_paths[index]}:stream"),
+            ):
+                with self.subTest(verification_option=option, replacement=replacement):
+                    paths = safe_paths.copy()
+                    paths[index] = replacement
+                    errors = DELEGATION.validate_receipt_verification_request(*paths, dispatch)
+                    self.assertTrue(any(f"receipt verification {option} path must exactly match" in error for error in errors))
+
+        self.assertEqual(
+            [],
+            DELEGATION.validate_input_modes(
+                cli_args(candidate=Path(CANDIDATE_REF), dispatch=Path(DISPATCH_REF), receipt=Path(RECEIPT_REF))
+            ),
+        )
+        for option, argument_name in (
+            ("--prompt", "prompt"),
+            ("--completion-message", "completion_message"),
+            ("--terminal-message", "terminal_message"),
+        ):
+            with self.subTest(mixed_receipt_option=option):
+                conflicting = cli_args(
+                    candidate=Path(CANDIDATE_REF), dispatch=Path(DISPATCH_REF), receipt=Path(RECEIPT_REF),
+                    **{argument_name: Path("mixed-transport.txt")},
+                )
+                errors = DELEGATION.validate_input_modes(conflicting)
+                self.assertTrue(any("--receipt requires exactly" in error for error in errors))
+                with mock.patch.object(DELEGATION, "parse_args", return_value=conflicting), contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(1, DELEGATION.main())
+
     def test_gwt_002l_given_conflicting_cli_modes_then_main_rejects_before_reading_records(self) -> None:
         conflicting = cli_args(
             candidate=Path(CANDIDATE_REF),
@@ -290,6 +350,88 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
             receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
         )
         self.assertTrue(any("dispatch.task_kind must be a non-empty string" in error for error in errors))
+
+    def test_gwt_002o_given_mapping_bounded_output_then_completion_and_receipt_are_rejected(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        candidate["evidence"]["bounded_output"] = {"legacy": "mapping"}
+        errors = DELEGATION.validate_completion(candidate, SCHEMA, dispatch)
+        self.assertTrue(any("completion.evidence.bounded_output must be a string" in error for error in errors))
+
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+            DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+        )
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("completion.evidence.bounded_output must be a string" in error for error in errors))
+
+    def test_gwt_002p_given_receipt_raw_bytes_do_not_match_records_then_custody_is_rejected(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, b"evidence: [", DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+        )
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, b"evidence: [", dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("receipt candidate bytes must deserialize" in error for error in errors))
+
+        different_dispatch = copy.deepcopy(dispatch)
+        different_dispatch["task_kind"] = "different-but-valid"
+        different_dispatch_bytes = yaml.safe_dump(different_dispatch, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+            DISPATCH_REF, different_dispatch_bytes, RECEIPT_REF,
+        )
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, candidate_bytes, dispatch, different_dispatch_bytes
+        )
+        self.assertTrue(any("receipt dispatch bytes must deserialize" in error for error in errors))
+
+    def test_gwt_002q_given_duplicate_raw_contract_keys_then_receipt_custody_is_rejected(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        duplicate_candidate_bytes = candidate_bytes + b"result:\n  outcome: passed\n  exit_code: 0\n  counts: {selected: 1, failed: 0}\n"
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, duplicate_candidate_bytes,
+            DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+        )
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, duplicate_candidate_bytes, dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("receipt candidate bytes must deserialize" in error for error in errors))
+
+        duplicate_dispatch_bytes = dispatch_bytes + b"task_kind: duplicate-task-kind\n"
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+            DISPATCH_REF, duplicate_dispatch_bytes, RECEIPT_REF,
+        )
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, candidate_bytes, dispatch, duplicate_dispatch_bytes
+        )
+        self.assertTrue(any("receipt dispatch bytes must deserialize" in error for error in errors))
+
+        completion_message = (
+            f"{DELEGATION.COMPLETION_BEGIN_MARKER}\n{duplicate_candidate_bytes.decode()}"
+            f"{DELEGATION.COMPLETION_END_MARKER}\n"
+        )
+        with self.assertRaisesRegex(yaml.YAMLError, "duplicate mapping key"):
+            DELEGATION.extract_completion_from_message(completion_message)
+        prompt = (
+            f"{DELEGATION.BEGIN_MARKER}\n{duplicate_dispatch_bytes.decode()}"
+            f"{DELEGATION.END_MARKER}\n"
+        )
+        with self.assertRaisesRegex(yaml.YAMLError, "duplicate mapping key"):
+            DELEGATION.extract_dispatch_from_prompt(prompt)
+        with mock.patch.object(Path, "read_text", return_value=duplicate_dispatch_bytes.decode()):
+            with self.assertRaisesRegex(yaml.YAMLError, "duplicate mapping key"):
+                DELEGATION.load_mapping(Path(DISPATCH_REF))
 
     def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
         dispatch, candidate = valid_dispatch(), valid_candidate()

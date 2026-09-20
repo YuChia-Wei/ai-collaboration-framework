@@ -61,11 +61,48 @@ RECEIPT_FIELDS = {
 }
 
 
+class StrictSafeLoader(yaml.SafeLoader):
+    pass
+
+
+def construct_unique_mapping(loader: StrictSafeLoader, node: Any, deep: bool = False) -> dict[Any, Any]:
+    loader.flatten_mapping(node)
+    mapping: dict[Any, Any] = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        try:
+            if key in mapping:
+                raise yaml.YAMLError(f"duplicate mapping key: {key!r}")
+            mapping[key] = loader.construct_object(value_node, deep=deep)
+        except TypeError as exc:
+            raise yaml.YAMLError("mapping keys must be hashable") from exc
+    return mapping
+
+
+StrictSafeLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_unique_mapping
+)
+
+
+def strict_yaml_load(text: str) -> Any:
+    return yaml.load(text, Loader=StrictSafeLoader)
+
+
 def load_mapping(path: Path) -> dict[str, Any]:
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    data = strict_yaml_load(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError(f"{path}: root must be a mapping")
     return data
+
+
+def validate_exact_mapping_bytes(record: dict[str, Any], raw_bytes: bytes, label: str) -> list[str]:
+    try:
+        parsed = strict_yaml_load(raw_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, yaml.YAMLError):
+        return [f"receipt {label} bytes must deserialize to a YAML mapping equal to the supplied {label}"]
+    if not isinstance(parsed, dict) or parsed != record:
+        return [f"receipt {label} bytes must deserialize to a YAML mapping equal to the supplied {label}"]
+    return []
 
 
 def missing_fields(value: object, required: list[str], label: str) -> list[str]:
@@ -260,7 +297,18 @@ def validate_schema_definition(schema: dict[str, Any]) -> list[str]:
     if delivery.get("primary_modes") != ["source-task-callback", "parent-event-wait"] or delivery.get("fallback_modes") != ["parent-event-wait", "single-terminal-readback", "none"]:
         errors.append("schema dispatch delivery modes are invalid")
     semantics = schema.get("transport_semantics", {})
-    expected = {"parent_wait_timeout": "pending-awaiting-completion", "repeated_status_polling": "prohibited", "pre_send_completion_validation": "required", "post_validation_record_mutation": "prohibited", "callback_payload": "exact-candidate-bytes-with-independent-receipt"}
+    expected = {
+        "parent_wait_timeout": "pending-awaiting-completion",
+        "callback_failure_with_retrievable_terminal_report": "recoverable-by-one-terminal-readback",
+        "terminal_task_without_valid_completion_report": "non-passing",
+        "repeated_status_polling": "prohibited",
+        "source_task_progress_delivery": "terminal-only",
+        "runtime_local_progress": "runtime-policy-owned-and-not-source-delivery",
+        "pre_send_completion_validation": "required",
+        "post_validation_record_mutation": "prohibited",
+        "callback_payload": "exact-candidate-bytes-with-independent-receipt",
+        "custody_release": "a receipt matching the exact candidate and dispatch bytes is required before one terminal delivery for every terminal outcome",
+    }
     for key, value in expected.items():
         if semantics.get(key) != value:
             errors.append(f"schema transport semantic {key} is invalid")
@@ -358,6 +406,7 @@ def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch
     evidence = record.get("evidence")
     errors.extend(missing_fields(evidence, schema["completion"]["evidence"]["required"], "completion.evidence"))
     errors.extend(unexpected_fields(evidence, COMPLETION_FIELDS["evidence"], "completion.evidence"))
+    if isinstance(evidence, dict) and not isinstance(evidence.get("bounded_output"), str): errors.append("completion.evidence.bounded_output must be a string")
     if isinstance(evidence, dict) and (not string_list(evidence.get("refs")) or (not evidence.get("refs") and not non_empty_string(evidence.get("bounded_output")))): errors.append("completion.evidence requires a ref or bounded_output")
     errors.extend(missing_fields(final_state, schema["completion"]["final_state"]["required"], "completion.final_state"))
     errors.extend(unexpected_fields(final_state, COMPLETION_FIELDS["final_state"], "completion.final_state"))
@@ -393,6 +442,8 @@ def build_validation_receipt(candidate: dict[str, Any], dispatch: dict[str, Any]
 def validate_receipt(receipt: dict[str, Any], schema: dict[str, Any], candidate: dict[str, Any], candidate_bytes: bytes, dispatch: dict[str, Any], dispatch_bytes: bytes) -> list[str]:
     errors = missing_fields(receipt, schema["validation_receipt"]["required"], "receipt")
     errors.extend(unexpected_fields(receipt, RECEIPT_FIELDS["receipt"], "receipt"))
+    errors.extend(validate_exact_mapping_bytes(candidate, candidate_bytes, "candidate"))
+    errors.extend(validate_exact_mapping_bytes(dispatch, dispatch_bytes, "dispatch"))
     if receipt.get("schema_version") != "1.2" or receipt.get("record_type") != "external-task-validation-receipt": errors.append("receipt schema_version or record_type is invalid")
     if receipt.get("delegation_id") != candidate.get("delegation_id") or receipt.get("delegation_id") != dispatch.get("delegation_id"): errors.append("receipt.delegation_id must match candidate and dispatch")
     for key, bytes_value in (("candidate", candidate_bytes), ("dispatch", dispatch_bytes)):
@@ -429,7 +480,7 @@ def extract_record_from_envelope(text: str, begin_marker: str, end_marker: str, 
     _, remainder = text.split(begin_marker, 1)
     payload, after = remainder.split(end_marker, 1)
     if begin_marker in after: raise ValueError(f"{label} envelope markers are out of order")
-    data = yaml.safe_load(payload.strip())
+    data = strict_yaml_load(payload.strip())
     if not isinstance(data, dict): raise ValueError(f"{label} envelope must contain one YAML mapping")
     return data
 
@@ -452,7 +503,7 @@ def validate_terminal_delivery_message(text: str, schema: dict[str, Any], dispat
     errors: list[str] = []
     try:
         candidate_bytes = extract_exact_envelope_bytes(text, COMPLETION_BEGIN_MARKER, COMPLETION_END_MARKER, "terminal delivery")
-        candidate = yaml.safe_load(candidate_bytes.decode("utf-8"))
+        candidate = strict_yaml_load(candidate_bytes.decode("utf-8"))
         receipt = extract_receipt_from_message(text)
         if not isinstance(candidate, dict):
             errors.append("terminal delivery candidate must be a YAML mapping")
@@ -463,18 +514,39 @@ def validate_terminal_delivery_message(text: str, schema: dict[str, Any], dispat
     return errors
 
 
-def validate_receipt_write_request(candidate_path: Path, dispatch_path: Path, receipt_path: Path, dispatch: dict[str, Any]) -> list[str]:
-    """Bind CLI file arguments to the already-validated dispatch custody refs."""
+def validate_receipt_custody_paths(candidate_path: Path, dispatch_path: Path, receipt_path: Path, dispatch: dict[str, Any], *, action: str, receipt_option: str) -> list[str]:
+    """Bind every CLI custody artifact path to the dispatch's declared refs."""
     errors: list[str] = []
     pre_send = dispatch.get("completion_delivery", {}).get("pre_send_validation", {})
     for option, path, declared_ref in (
         ("--candidate", candidate_path, pre_send.get("candidate_ref")),
         ("--dispatch", dispatch_path, pre_send.get("dispatch_ref")),
-        ("--write-receipt", receipt_path, pre_send.get("receipt_ref")),
+        (receipt_option, receipt_path, pre_send.get("receipt_ref")),
     ):
         actual_ref = canonical_repository_ref(str(path), accept_platform_separators=True)
-        if actual_ref != declared_ref:
-            errors.append(f"receipt writing {option} path must exactly match its declared safe pre-send ref")
+        if (
+            not isinstance(declared_ref, str)
+            or canonical_repository_ref(declared_ref) != declared_ref
+            or actual_ref != declared_ref
+        ):
+            errors.append(f"receipt {action} {option} path must exactly match its declared safe pre-send ref")
+    return errors
+
+
+def validate_receipt_verification_request(candidate_path: Path, dispatch_path: Path, receipt_path: Path, dispatch: dict[str, Any]) -> list[str]:
+    """Require receipt verification to read the dispatch-bound custody files."""
+    return validate_receipt_custody_paths(
+        candidate_path, dispatch_path, receipt_path, dispatch,
+        action="verification", receipt_option="--receipt",
+    )
+
+
+def validate_receipt_write_request(candidate_path: Path, dispatch_path: Path, receipt_path: Path, dispatch: dict[str, Any]) -> list[str]:
+    """Bind receipt-writing file arguments to the already-validated custody refs."""
+    errors = validate_receipt_custody_paths(
+        candidate_path, dispatch_path, receipt_path, dispatch,
+        action="writing", receipt_option="--write-receipt",
+    )
     if not errors and receipt_path.exists():
         errors.append("receipt writing refuses to overwrite a pre-existing output")
     return errors
@@ -542,6 +614,12 @@ def validate_input_modes(args: argparse.Namespace) -> list[str]:
         )) or args.schema_only
         if not input_supplied(args.candidate) or not input_supplied(args.dispatch) or conflicts:
             errors.append("--write-receipt requires exactly --candidate and --dispatch, with no record, prompt, message, receipt, or schema-only mode")
+    if args.receipt is not None:
+        conflicts = any(input_supplied(value) for value in (
+            args.record, args.prompt, args.completion_message, args.terminal_message, args.write_receipt,
+        )) or args.schema_only
+        if not input_supplied(args.candidate) or not input_supplied(args.dispatch) or conflicts:
+            errors.append("--receipt requires exactly --candidate and --dispatch, with no record, prompt, message, write-receipt, or schema-only mode")
     return errors
 
 
@@ -559,7 +637,7 @@ def main() -> int:
         if args.terminal_message:
             terminal_text = args.terminal_message.read_text(encoding="utf-8")
             candidate_bytes = extract_exact_envelope_bytes(terminal_text, COMPLETION_BEGIN_MARKER, COMPLETION_END_MARKER, "terminal delivery")
-            candidate = yaml.safe_load(candidate_bytes.decode("utf-8"))
+            candidate = strict_yaml_load(candidate_bytes.decode("utf-8"))
         elif args.completion_message: candidate = extract_completion_from_message(args.completion_message.read_text(encoding="utf-8")); candidate_bytes = args.completion_message.read_bytes()
         elif candidate_path: candidate = load_mapping(candidate_path); candidate_bytes = candidate_path.read_bytes()
         elif args.record:
@@ -580,10 +658,13 @@ def main() -> int:
             except (OSError, ValueError, yaml.YAMLError) as exc:
                 errors.append(str(exc))
     if args.receipt is not None:
-        if candidate is None or dispatch is None or candidate_bytes is None or dispatch_bytes is None: errors.append("receipt verification requires --candidate and --dispatch")
+        if candidate is None or dispatch is None or candidate_bytes is None or dispatch_bytes is None or candidate_path is None or dispatch_path is None: errors.append("receipt verification requires --candidate and --dispatch")
         else:
-            try: errors.extend(validate_receipt(load_mapping(args.receipt), schema, candidate, candidate_bytes, dispatch, dispatch_bytes))
-            except (OSError, ValueError, yaml.YAMLError) as exc: errors.append(str(exc))
+            path_errors = validate_receipt_verification_request(candidate_path, dispatch_path, args.receipt, dispatch)
+            errors.extend(path_errors)
+            if not path_errors:
+                try: errors.extend(validate_receipt(load_mapping(args.receipt), schema, candidate, candidate_bytes, dispatch, dispatch_bytes))
+                except (OSError, ValueError, yaml.YAMLError) as exc: errors.append(str(exc))
     if args.write_receipt is not None:
         if candidate is None or dispatch is None or candidate_bytes is None or dispatch_bytes is None or candidate_path is None or dispatch_path is None: errors.append("receipt writing requires --candidate and --dispatch files")
         else:
