@@ -7,7 +7,7 @@
 - `owner_skill`: `software-development-orchestrator`
 - `branch`: `codex/2026-09-20-hosted-provider-and-custody-repair`
 - `base_branch`: `main`
-- `status`: `active`
+- `status`: `completed`
 - `created_at`: `2026-09-20T13:11:34+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
@@ -35,7 +35,7 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 | Issue | PR disposition | Reason / next terminal gate |
 | --- | --- | --- |
 | #309 | `Refs #309` | The code improves diagnosis, but a new hosted Project read requires an owner-reviewed credential boundary and a future authorized release execution. |
-| #310 | `Refs #310` | Source repair and focused tests are proposed; terminal closure remains subject to the PR review and hosted required checks. |
+| #310 | `Closes #310` | Source repair, independent-audit remediation, and focused tests are complete; terminal closure remains subject to current-head review, hosted required checks, admission, integration, and post-merge read-back. |
 
 ## Distribution Boundary
 
@@ -45,7 +45,7 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 ## Current Checkpoint
 
 - Current task: none; both implementation tasks are completed.
-- Last completed action: #310 candidate/receipt contract passed its focused 16-test regression module and schema-only validation.
-- Exact next action: push this branch and open the authorized PR; do not close either Issue until the required PR and hosted gates are read back.
+- Last completed action: #310 audit remediation passed its focused 21-test regression module and schema-only validation, including negative custody cases.
+- Exact next action: push the corrective commit to PR #311, update its declared per-Issue disposition, and do not merge or close either Issue until current-head review, hosted checks, live admission, integration, and required provider read-back are complete.
 - Preserved facts: v0.18.0 public assets were verified historically; run `35487203277` remains failed. The historical downstream outer receipt was blocked and its custody was released under an explicit exception.
 - No cross-session handoff is required.

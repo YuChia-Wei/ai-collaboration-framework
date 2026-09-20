@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import importlib.util
 import re
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -27,6 +28,18 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 AGENT_VALIDATOR_PATH = ROOT / ".ai/scripts/validate-agent-execution-guardrails.py"
 AGENT_SCHEMA_PATH = ROOT / ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+CANONICAL_VALIDATOR_REF = ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+COMPLETION_FIELDS = {
+    "completion": {"schema_version", "record_type", "delegation_id", "source_task_id", "delegated_task_id", "subject", "preflight", "execution", "timing", "result", "evidence", "final_state", "delivery"},
+    "subject": {"expected_commit_sha", "observed_commit_sha"},
+    "preflight": {"commit_matches", "clean_worktree"},
+    "execution": {"working_directory", "argv"},
+    "timing": {"started_at", "completed_at", "duration_seconds"},
+    "result": {"outcome", "exit_code", "counts"},
+    "evidence": {"refs", "bounded_output"},
+    "final_state": {"clean_worktree", "tracked_changes"},
+    "delivery": {"mode", "destination", "terminal_report_number"},
+}
 
 
 def load_mapping(path: Path) -> dict[str, Any]:
@@ -72,6 +85,108 @@ def contained_path(value: object) -> Path | None:
         return None
     resolved = (ROOT / candidate).resolve()
     return resolved if resolved == ROOT or ROOT in resolved.parents else None
+
+
+def canonical_repository_ref(value: object, *, accept_platform_separators: bool = False) -> str | None:
+    """Return a canonical, contained repository-relative reference or None."""
+    path = contained_path(value)
+    if path is None or path == ROOT or not isinstance(value, str):
+        return None
+    reference = path.relative_to(ROOT).as_posix()
+    supplied = value.replace("\\", "/") if accept_platform_separators else value
+    return reference if supplied == reference else None
+
+
+def git_ignores_reference(reference: str) -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(ROOT), "check-ignore", "--quiet", "--no-index", "--", reference],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+    except OSError:
+        return False
+    return result.returncode == 0
+
+
+def git_tracks_reference(reference: str) -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(ROOT), "ls-files", "--error-unmatch", "--", reference],
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+    except OSError:
+        return True
+    return result.returncode == 0
+
+
+def is_beneath(path: Path, root: Path) -> bool:
+    return path != root and root in path.parents
+
+
+def canonical_receipt_writer_argv(candidate_ref: str, dispatch_ref: str, receipt_ref: str) -> list[str]:
+    return [
+        "python", CANONICAL_VALIDATOR_REF,
+        "--candidate", candidate_ref,
+        "--dispatch", dispatch_ref,
+        "--write-receipt", receipt_ref,
+    ]
+
+
+def validate_pre_send_artifacts(pre_send: dict[str, Any], packet_contract: dict[str, Any]) -> list[str]:
+    """Require custody artifacts to be declared, isolated ignored files."""
+    errors: list[str] = []
+    packet_path = contained_path(packet_contract.get("packet_ref"))
+    if packet_path is None or not packet_path.is_file():
+        return ["dispatch pre-send artifact validation requires a readable bound execution packet"]
+    try:
+        packet = load_mapping(packet_path)
+    except (OSError, ValueError, yaml.YAMLError) as exc:
+        return [f"dispatch pre-send artifact validation cannot load the bound execution packet: {exc}"]
+    raw_roots = packet.get("ignored_artifact_roots")
+    if not string_list(raw_roots, allow_empty=False):
+        return ["bound execution packet must declare ignored artifact roots for pre-send custody artifacts"]
+    roots: list[Path] = []
+    for raw_root in raw_roots:
+        root_ref = canonical_repository_ref(raw_root)
+        root_path = contained_path(raw_root)
+        if root_ref is None or root_path is None:
+            errors.append("bound execution packet ignored artifact roots must be canonical contained repository-relative paths")
+        elif not git_ignores_reference(root_ref) or git_tracks_reference(root_ref):
+            errors.append("bound execution packet ignored artifact roots must be actually ignored and untracked")
+        else:
+            roots.append(root_path)
+    references: dict[str, str] = {}
+    for field in ("dispatch_ref", "candidate_ref", "receipt_ref"):
+        reference = canonical_repository_ref(pre_send.get(field))
+        path = contained_path(pre_send.get(field))
+        if reference is None or path is None:
+            errors.append(f"dispatch.completion_delivery.pre_send_validation.{field} must be a canonical contained repository-relative path")
+            continue
+        references[field] = reference
+        if not git_ignores_reference(reference) or git_tracks_reference(reference):
+            errors.append(f"dispatch.completion_delivery.pre_send_validation.{field} must be actually ignored and untracked")
+        if not roots or not any(is_beneath(path, root) for root in roots):
+            errors.append(f"dispatch.completion_delivery.pre_send_validation.{field} must be beneath a declared ignored artifact root")
+    if len(references) == 3 and len(set(references.values())) != 3:
+        errors.append("dispatch.completion_delivery.pre_send_validation custody artifact refs must be distinct")
+    if len(references) == 3 and pre_send.get("receipt_writer_argv") != canonical_receipt_writer_argv(
+        references["candidate_ref"], references["dispatch_ref"], references["receipt_ref"],
+    ):
+        errors.append("dispatch.completion_delivery.pre_send_validation.receipt_writer_argv must exactly bind the declared candidate_ref, dispatch_ref, and receipt_ref")
+    return errors
+
+
+def unexpected_fields(value: object, allowed: set[str], label: str) -> list[str]:
+    if not isinstance(value, dict):
+        return []
+    extras = sorted(set(value) - allowed)
+    return [f"{label} contains unsupported fields: {', '.join(extras)}"] if extras else []
 
 
 def validate_bound_packet(packet_contract: dict[str, Any], dispatch: dict[str, Any]) -> list[str]:
@@ -168,39 +283,53 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
         errors.extend(missing_fields(pre_send, contract["pre_send_validation"]["required"], "dispatch.completion_delivery.pre_send_validation"))
         if isinstance(pre_send, dict):
             argv = pre_send.get("receipt_writer_argv")
-            if pre_send.get("required") is not True or not string_list(argv, allow_empty=False) or "--candidate" not in argv or "--dispatch" not in argv or "--write-receipt" not in argv: errors.append("dispatch.completion_delivery.pre_send_validation receipt writer is invalid")
+            if pre_send.get("required") is not True or not string_list(argv, allow_empty=False): errors.append("dispatch.completion_delivery.pre_send_validation receipt writer is invalid")
             for field in ("dispatch_ref", "candidate_ref", "receipt_ref"):
                 if not non_empty_string(pre_send.get(field)): errors.append(f"dispatch.completion_delivery.pre_send_validation.{field} must be non-empty")
             if pre_send.get("failure_action") != "do-not-deliver-terminal-report" or pre_send.get("payload_binding") != "exact-candidate-bytes-with-independent-receipt": errors.append("dispatch.completion_delivery.pre_send_validation custody binding is invalid")
+            if isinstance(packet, dict):
+                errors.extend(validate_pre_send_artifacts(pre_send, packet))
     if not string_list(record.get("stop_conditions"), allow_empty=False): errors.append("dispatch.stop_conditions must be a non-empty string list")
     return errors
 
 
 def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch: dict[str, Any] | None = None) -> list[str]:
     errors = missing_fields(record, schema["completion"]["required"], "completion")
+    errors.extend(unexpected_fields(record, COMPLETION_FIELDS["completion"], "completion"))
     if record.get("schema_version") != "1.2": errors.append("completion.schema_version must be 1.2")
     if record.get("record_type") != "external-task-completion": errors.append("completion.record_type must be external-task-completion")
     for field in ("delegation_id", "source_task_id", "delegated_task_id"):
         if not non_empty_string(record.get(field)): errors.append(f"completion.{field} must be non-empty")
     subject, preflight, execution, result, final_state = (record.get(key) for key in ("subject", "preflight", "execution", "result", "final_state"))
     errors.extend(missing_fields(subject, schema["completion"]["subject"]["required"], "completion.subject"))
+    errors.extend(unexpected_fields(subject, COMPLETION_FIELDS["subject"], "completion.subject"))
     if isinstance(subject, dict) and (not SHA_RE.fullmatch(str(subject.get("expected_commit_sha", ""))) or not SHA_RE.fullmatch(str(subject.get("observed_commit_sha", "")))): errors.append("completion subject SHAs must be full Git SHAs")
     errors.extend(missing_fields(preflight, schema["completion"]["preflight"]["required"], "completion.preflight"))
+    errors.extend(unexpected_fields(preflight, COMPLETION_FIELDS["preflight"], "completion.preflight"))
+    if isinstance(preflight, dict) and (not isinstance(preflight.get("commit_matches"), bool) or not isinstance(preflight.get("clean_worktree"), bool)): errors.append("completion.preflight is invalid")
     errors.extend(missing_fields(execution, schema["completion"]["execution"]["required"], "completion.execution"))
+    errors.extend(unexpected_fields(execution, COMPLETION_FIELDS["execution"], "completion.execution"))
     if isinstance(execution, dict) and (not non_empty_string(execution.get("working_directory")) or not string_list(execution.get("argv"), allow_empty=False)): errors.append("completion.execution is invalid")
     timing = record.get("timing")
     errors.extend(missing_fields(timing, schema["completion"]["timing"]["required"], "completion.timing"))
+    errors.extend(unexpected_fields(timing, COMPLETION_FIELDS["timing"], "completion.timing"))
     if isinstance(timing, dict) and (not iso_with_offset(timing.get("started_at")) or not iso_with_offset(timing.get("completed_at")) or not isinstance(timing.get("duration_seconds"), (int, float)) or isinstance(timing.get("duration_seconds"), bool) or timing.get("duration_seconds", -1) < 0): errors.append("completion.timing is invalid")
     errors.extend(missing_fields(result, schema["completion"]["result"]["required"], "completion.result"))
+    errors.extend(unexpected_fields(result, COMPLETION_FIELDS["result"], "completion.result"))
     outcome = result.get("outcome") if isinstance(result, dict) else None
     if isinstance(result, dict) and (outcome not in schema["completion"]["result"]["outcomes"] or (result.get("exit_code") is not None and (not isinstance(result.get("exit_code"), int) or isinstance(result.get("exit_code"), bool)))): errors.append("completion.result is invalid")
+    counts = result.get("counts") if isinstance(result, dict) else None
+    if counts is not None and (not isinstance(counts, dict) or any(not non_empty_string(key) or not isinstance(value, int) or isinstance(value, bool) or value < 0 for key, value in counts.items())): errors.append("completion.result.counts must be null or a mapping of non-negative integers")
     evidence = record.get("evidence")
     errors.extend(missing_fields(evidence, schema["completion"]["evidence"]["required"], "completion.evidence"))
+    errors.extend(unexpected_fields(evidence, COMPLETION_FIELDS["evidence"], "completion.evidence"))
     if isinstance(evidence, dict) and (not string_list(evidence.get("refs")) or (not evidence.get("refs") and not non_empty_string(evidence.get("bounded_output")))): errors.append("completion.evidence requires a ref or bounded_output")
     errors.extend(missing_fields(final_state, schema["completion"]["final_state"]["required"], "completion.final_state"))
-    if isinstance(final_state, dict) and not string_list(final_state.get("tracked_changes")): errors.append("completion.final_state.tracked_changes must be a string list")
+    errors.extend(unexpected_fields(final_state, COMPLETION_FIELDS["final_state"], "completion.final_state"))
+    if isinstance(final_state, dict) and (not isinstance(final_state.get("clean_worktree"), bool) or not string_list(final_state.get("tracked_changes"))): errors.append("completion.final_state is invalid")
     delivery = record.get("delivery")
     errors.extend(missing_fields(delivery, schema["completion"]["delivery"]["required"], "completion.delivery"))
+    errors.extend(unexpected_fields(delivery, COMPLETION_FIELDS["delivery"], "completion.delivery"))
     if isinstance(delivery, dict) and (delivery.get("mode") not in schema["completion"]["delivery"]["modes"] or delivery.get("destination") != "source-task" or delivery.get("terminal_report_number") != 1): errors.append("completion.delivery is invalid")
     if outcome == "passed":
         if not isinstance(subject, dict) or subject.get("expected_commit_sha") != subject.get("observed_commit_sha"): errors.append("passed completion requires matching expected and observed commit SHAs")
@@ -216,7 +345,7 @@ def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch
 
 
 def build_validation_receipt(candidate: dict[str, Any], dispatch: dict[str, Any], candidate_ref: str, candidate_bytes: bytes, dispatch_ref: str, dispatch_bytes: bytes, receipt_ref: str) -> dict[str, Any]:
-    return {"schema_version": "1.2", "record_type": "external-task-validation-receipt", "delegation_id": candidate["delegation_id"], "receipt_ref": receipt_ref, "candidate": {"ref": candidate_ref, "sha256": sha256_bytes(candidate_bytes)}, "dispatch": {"ref": dispatch_ref, "sha256": sha256_bytes(dispatch_bytes)}, "validator": {"script_sha256": sha256_bytes(Path(__file__).read_bytes()), "argv": ["python", ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py", "--candidate", candidate_ref, "--dispatch", dispatch_ref, "--write-receipt", receipt_ref], "exit_code": 0}, "custody": {"state": "released", "release_scope": "one matching terminal candidate delivery"}}
+    return {"schema_version": "1.2", "record_type": "external-task-validation-receipt", "delegation_id": candidate["delegation_id"], "receipt_ref": receipt_ref, "candidate": {"ref": candidate_ref, "sha256": sha256_bytes(candidate_bytes)}, "dispatch": {"ref": dispatch_ref, "sha256": sha256_bytes(dispatch_bytes)}, "validator": {"script_sha256": sha256_bytes(Path(__file__).read_bytes()), "argv": canonical_receipt_writer_argv(candidate_ref, dispatch_ref, receipt_ref), "exit_code": 0}, "custody": {"state": "released", "release_scope": "one matching terminal candidate delivery"}}
 
 
 def validate_receipt(receipt: dict[str, Any], schema: dict[str, Any], candidate: dict[str, Any], candidate_bytes: bytes, dispatch: dict[str, Any], dispatch_bytes: bytes) -> list[str]:
@@ -288,6 +417,34 @@ def validate_terminal_delivery_message(text: str, schema: dict[str, Any], dispat
     return errors
 
 
+def validate_receipt_write_request(candidate_path: Path, dispatch_path: Path, receipt_path: Path, dispatch: dict[str, Any]) -> list[str]:
+    """Bind CLI file arguments to the already-validated dispatch custody refs."""
+    errors: list[str] = []
+    pre_send = dispatch.get("completion_delivery", {}).get("pre_send_validation", {})
+    for option, path, declared_ref in (
+        ("--candidate", candidate_path, pre_send.get("candidate_ref")),
+        ("--dispatch", dispatch_path, pre_send.get("dispatch_ref")),
+        ("--write-receipt", receipt_path, pre_send.get("receipt_ref")),
+    ):
+        actual_ref = canonical_repository_ref(str(path), accept_platform_separators=True)
+        if actual_ref != declared_ref:
+            errors.append(f"receipt writing {option} path must exactly match its declared safe pre-send ref")
+    if not errors and receipt_path.exists():
+        errors.append("receipt writing refuses to overwrite a pre-existing output")
+    return errors
+
+
+def write_receipt_exclusively(receipt_path: Path, receipt: dict[str, Any]) -> list[str]:
+    try:
+        with receipt_path.open("x", encoding="utf-8", newline="\n") as stream:
+            yaml.safe_dump(receipt, stream, sort_keys=False)
+    except FileExistsError:
+        return ["receipt writing refuses to overwrite a pre-existing output"]
+    except OSError as exc:
+        return [f"receipt writing could not create the declared output: {exc.strerror or type(exc).__name__}"]
+    return []
+
+
 def extract_dispatch_from_prompt(text: str) -> dict[str, Any]: return extract_record_from_envelope(text, BEGIN_MARKER, END_MARKER, "prompt")
 def extract_completion_from_message(text: str) -> dict[str, Any]: return extract_record_from_envelope(text, COMPLETION_BEGIN_MARKER, COMPLETION_END_MARKER, "completion message")
 def extract_receipt_from_message(text: str) -> dict[str, Any]: return extract_record_from_envelope(text, RECEIPT_BEGIN_MARKER, RECEIPT_END_MARKER, "receipt message")
@@ -344,9 +501,17 @@ def main() -> int:
             except (OSError, ValueError, yaml.YAMLError) as exc: errors.append(str(exc))
     if args.write_receipt is not None:
         if candidate is None or dispatch is None or candidate_bytes is None or dispatch_bytes is None or candidate_path is None or dispatch_path is None: errors.append("receipt writing requires --candidate and --dispatch files")
-        elif not errors:
-            receipt = build_validation_receipt(candidate, dispatch, str(candidate_path), candidate_bytes, str(dispatch_path), dispatch_bytes, str(args.write_receipt))
-            args.write_receipt.write_text(yaml.safe_dump(receipt, sort_keys=False), encoding="utf-8")
+        else:
+            errors.extend(validate_receipt_write_request(candidate_path, dispatch_path, args.write_receipt, dispatch))
+            if not errors:
+                pre_send = dispatch["completion_delivery"]["pre_send_validation"]
+                receipt = build_validation_receipt(
+                    candidate, dispatch,
+                    pre_send["candidate_ref"], candidate_bytes,
+                    pre_send["dispatch_ref"], dispatch_bytes,
+                    pre_send["receipt_ref"],
+                )
+                errors.extend(write_receipt_exclusively(args.write_receipt, receipt))
     if not args.schema_only and dispatch is None and candidate is None and not errors: errors.append("provide a record, --candidate, --prompt, --completion-message, or --schema-only")
     if errors:
         print("External-task delegation validation failed:"); [print(f"- {error}") for error in errors]; return 1

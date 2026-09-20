@@ -17,7 +17,7 @@ permissions:
   network: deny
   tracked_write: deny
   provider_mutation: deny
-ignored_artifact_roots: [.external-task/pr-195-hosted-gate-01]
+ignored_artifact_roots: [.dev/ai-context/local/external-task/pr-195-hosted-gate-01]
 terminal:
   schema_ref: .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml
   mode: callback
@@ -29,4 +29,4 @@ retry:
   attempt: 1
   budget: 2
   authorization_refs: []
-packet_sha256: 92c24fa9af5ecefbc573dd794e6373f8fdf0d38bbd2d2c55d6f0706d9c9eb7c2
+packet_sha256: c8a398edf13dccc351235ab83e7812ceb7581d8a87ff15c89d605b3989521811
