@@ -1,4 +1,4 @@
-schema_version: "1.1"
+schema_version: "1.2"
 record_type: "external-task-dispatch"
 delegation_id: "<stable-delegation-id>"
 task_kind: "long-running-validation"
@@ -8,9 +8,7 @@ source:
   final_integration_owner: "source-task"
 objective:
   goal: "<one bounded outcome>"
-  non_goals:
-    - "repair failures"
-    - "mutate Issues, Projects, branches, merges, releases, or publication"
+  non_goals: ["repair failures", "mutate Issues, Projects, branches, merges, releases, or publication"]
 subject:
   repository_root: "<exact repository root>"
   commit_sha: "<full immutable Git SHA>"
@@ -24,11 +22,7 @@ execution_packet:
   packet_ref: "<ignored-agent-execution-packet-path>"
   packet_sha256: "<lowercase-canonical-packet-sha256>"
   subject_sha: "<full immutable Git SHA>"
-  validator_argv:
-    - "python"
-    - ".ai/scripts/validate-agent-execution-guardrails.py"
-    - "--packet"
-    - "<ignored-agent-execution-packet-path>"
+  validator_argv: ["python", ".ai/scripts/validate-agent-execution-guardrails.py", "--packet", "<ignored-agent-execution-packet-path>"]
   validation_outcome: "passed"
 permissions:
   read_scope: ["repository"]
@@ -45,17 +39,10 @@ completion_delivery:
   report_schema: "same-contract#completion"
   pre_send_validation:
     required: true
-    validator_argv:
-      - "python"
-      - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
-      - "<ignored-completion-record-path>"
-      - "--dispatch"
-      - "<ignored-dispatch-record-path>"
+    receipt_writer_argv: ["python", ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py", "--candidate", "<ignored-completion-candidate-path>", "--dispatch", "<ignored-dispatch-record-path>", "--write-receipt", "<ignored-validation-receipt-path>"]
     dispatch_ref: "<ignored-dispatch-record-path>"
-    completion_ref: "<ignored-completion-record-path>"
+    candidate_ref: "<ignored-completion-candidate-path>"
+    receipt_ref: "<ignored-validation-receipt-path>"
     failure_action: "do-not-deliver-terminal-report"
-    payload_binding: "exact-validated-completion-record"
-stop_conditions:
-  - "preflight does not match the pinned subject"
-  - "command reaches a terminal outcome"
-  - "execution timeout or interruption occurs"
+    payload_binding: "exact-candidate-bytes-with-independent-receipt"
+stop_conditions: ["preflight does not match the pinned subject", "command reaches a terminal outcome", "execution timeout or interruption occurs"]

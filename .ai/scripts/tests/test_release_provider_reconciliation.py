@@ -6,8 +6,10 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 import yaml
@@ -235,6 +237,21 @@ class ReleaseProviderReconciliationTests(unittest.TestCase):
             "Project field 'Priority' must be 'P1 High'",
         ):
             self.execute("preflight")
+
+    def test_gwt_003_given_project_cli_owner_type_failure_when_preflight_runs_then_it_reports_secret_free_access_guidance(self) -> None:
+        completed = subprocess.CompletedProcess(
+            args=["gh", "project", "view", "3"],
+            returncode=1,
+            stdout="",
+            stderr="unknown owner type: super-secret",
+        )
+        with mock.patch.object(RECONCILIATION.subprocess, "run", return_value=completed):
+            with self.assertRaisesRegex(
+                RECONCILIATION.ProviderReconciliationError,
+                "GitHub Projects v2 read access",
+            ) as captured:
+                RECONCILIATION.subprocess_runner(["gh", "project", "view", "3"])
+        self.assertNotIn("super-secret", str(captured.exception))
 
     def test_gwt_003_given_stable_release_when_apply_runs_then_items_and_coordination_converge(self) -> None:
         result = self.execute("apply")

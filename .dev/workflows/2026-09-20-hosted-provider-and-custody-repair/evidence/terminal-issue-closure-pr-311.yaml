@@ -1,0 +1,88 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 311
+  head_sha: null
+  body: |
+    ## Summary
+
+    - Make GitHub CLI's opaque hosted `unknown owner type` Project failure actionable without exposing or changing provider credentials.
+    - Replace the external-task completion self-validation cycle with an exact-byte candidate, independent receipt, and custody-bound terminal delivery.
+    - Harden receipt custody after independent audit and targeted sweep: candidates reject self-asserted validation; strict duplicate-free raw bytes must match their validated mappings with recursive exact-type comparison; verification and writing use canonical custody paths; contract integers reject YAML booleans and equality-equivalent floats; dispatch task kind, receipt-writer CLI modes, dispatch-selected delivery transport, and dispatch/receipt representations are fail-closed; output creation is exclusive; execution-packet validator invocation is canonical; and Windows alternate-data-stream paths are rejected.
+
+    ## Validation
+
+    - #309: `py -3 .ai/scripts/tests/test_release_provider_reconciliation.py` — 12 focused tests passed in the permitted local disposable-fixture environment. The original hosted failure remains preserved.
+    - #310: `py -3 .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py` — 35 focused contract tests passed.
+    - #310: `py -3 .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py --schema-only` — passed.
+
+    ## Issue disposition
+
+    - Refs #309
+      - Delivery disposition: `deferred`.
+      - Closure deferred reason: the configured hosted Project preflight and bounded provider reconciliation have not passed under an owner-reviewed credential boundary.
+      - Next terminal gate or owner: owner-authorized non-mutating credential-bound hosted preflight and successful live provider read-back.
+
+    - Closes #310
+      - Delivery disposition: `terminal-close`; final source repair is subject to current-head review, hosted checks, admission, integration, and post-merge read-back.
+
+    ## Preserved release facts
+
+    - v0.18.0 tag and public assets are unchanged.
+    - Historical Actions run 35487203277 remains failed and is not relabelled.
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 309
+    mode: deferred
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: false
+    workflow:
+      scope_complete: false
+      tasks_complete: false
+      applicable_verification_complete: false
+    closing_keyword: null
+    closure_deferred_reason: >-
+      The source diagnostic repair is complete, but Issue #309 acceptance still
+      requires an owner-reviewed release-provider credential boundary and a
+      successful configured-hosted Project preflight and bounded reconciliation.
+    next_terminal_gate_or_owner: >-
+      Owner review and explicit authorization for a non-mutating credential-bound
+      hosted preflight, followed by successful live provider read-back.
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
+  - number: 310
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null

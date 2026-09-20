@@ -1,0 +1,80 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-09-20-hosted-provider-and-custody-repair",
+  "task_id": "ISS310-completion-custody",
+  "owner_skill": "software-development-orchestrator",
+  "related_plan_id": "development-plan-2026-09-20-hosted-provider-and-custody-repair",
+  "status": "completed",
+  "created_at": "2026-09-20T13:11:34+08:00",
+  "updated_at": "2026-09-20T18:13:45+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "medium",
+  "workflow_locator": ".dev/workflows/2026-09-20-hosted-provider-and-custody-repair/workflow.yaml",
+  "scope": {
+    "goal": "Separate prospective completion payloads, actual validation receipts, and custody release without fabricating a pass.",
+    "target": "external-task delegation contract",
+    "files": [".ai/assets/skills/software-development-orchestrator/"],
+    "constraints": ["Bind candidate and receipt by exact bytes.", "Preserve failed, blocked, and interrupted delivery facts.", "Do not treat the historical exception as a normal flow."],
+    "non_goals": ["Downstream mutation", "package version allocation", "actual external task dispatch"]
+  },
+  "inputs": {"requirements": ["GitHub Issue #310"], "specifications": [], "architecture_decisions": [], "user_constraints": ["Keep package impact truthful and run no unrelated matrices."]},
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {"status": "approved", "required_before": "implementation", "authorization_source": ["2026-09-20 user request", "GitHub Issue #310"], "pending_decision": ""},
+    "implementation_contract": {
+      "intent": "behavior-correction",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["2026-09-20 user request", "GitHub Issue #310"],
+      "normative_truth": ["GitHub Issue #310", "external-task delegation schema"],
+      "finding_evidence": [
+        "The completion record asserted a validator result before that validator could read it.",
+        "Independent immutable-head audit reproduced an unvalidated candidate schema assertion and unsafe or unbound receipt artifact references.",
+        "A fixed-head independent audit found that a Windows alternate-data-stream receipt target could pass custody validation before the pre-send ignore check.",
+        "A subsequent fixed-head independent audit found that execution_packet.validator_argv could falsely claim validation by naming a noncanonical executable.",
+        "A third fixed-head independent audit found that a completion delivery mode could contradict the dispatch primary or non-none fallback, receipt-writing CLI sources could conflict and unbind candidate bytes from claimed refs, and dispatch or receipt mappings could retain undeclared fields.",
+        "A fourth fixed-head independent audit found that a mapping-valued dispatch task_kind could pass validation and release receipt custody.",
+        "A fifth fixed-head independent audit found that a mapping-valued completion evidence.bounded_output could pass validation and release receipt custody.",
+        "A targeted custody sweep found detached raw bytes, duplicate YAML keys, arbitrary receipt-verification paths, mixed verification transports, and unvalidated transport/custody schema semantics.",
+        "A sixth fixed-head independent audit found that YAML boolean terminal_report_number could satisfy an integer comparison and release receipt custody.",
+        "A seventh fixed-head independent audit found that ordinary raw-YAML mapping equality treated boolean or floating values as equal to an integer in separately supplied candidate or dispatch mappings."
+      ],
+      "subject_revision": "bf95b6e177f625931361733b6bf720cd81d8c99d",
+      "acceptance_criteria": ["ISS310-AC1", "ISS310-AC2", "ISS310-AC3", "ISS310-AC4"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Replace circular assertion with a receipt bound to candidate bytes.", "Validate delivery and custody release without reclassifying outcomes.", "Harden candidate-field closure and receipt artifact custody against the independent audit reproductions.", "Reject Windows alternate-data-stream custody paths found by fixed-head audit B1.", "Require the exact canonical execution-packet validator argv found by fixed-head audit B2.", "Bind completion transport to the dispatch and make receipt-writing CLI sources and dispatch/receipt mappings fail closed after fixed-head audit B3.", "Reject malformed dispatch task_kind values before receipt custody can release after fixed-head audit B4.", "Reject malformed completion evidence.bounded_output values before receipt custody can release after fixed-head audit B5.", "Bind strict raw candidate and dispatch bytes to their validated mappings, reject duplicate-key YAML bytes, bind receipt verification to canonical custody paths, reject mixed verification transports, and validate all declared transport/custody semantics.", "Reject YAML booleans and equality-equivalent floats for every contract integer constraint after fixed-head audit B10.", "Use recursive exact-type comparison for raw candidate and dispatch mappings after fixed-head audit F-009-01.", "Run focused contract tests and fresh independent audit."],
+    "validation": ["Focused external-task contract tests", "Schema-only validator check"],
+    "commit_checkpoint": "Commit the #310 fixed-head audit F-009-01 remediation after focused validation.",
+    "deferred_items": ["Normal future package planning and any downstream adoption."]
+  },
+  "results": {
+    "summary": "Replaced the prospective self-pass assertion with a completion candidate, independently written receipt, exact-byte custody binding, and terminal delivery verification; then hardened it to reject candidate self-assertions, unsafe or unbound artifact references, receipt-writer and execution-packet validator argv drift, receipt overwrite, Windows alternate-data-stream paths, delivery modes outside the dispatch, conflicting receipt-writing CLI sources, undeclared dispatch or receipt fields, malformed dispatch task_kind values, malformed completion evidence.bounded_output values, detached or duplicate-key raw YAML bytes, noncanonical receipt-verification paths, mixed verification transports, transport/custody schema drift, YAML boolean or equality-equivalent float integer values, and raw-YAML mappings whose nested value types differ from separately supplied candidate or dispatch mappings. Fixed-head source-conformance audit 012 passed at `4607dd8d090ee8f915a615cb787955bac0019736`; provider admission remains a separate terminal gate.",
+    "files_changed": [
+      ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml",
+      ".ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml",
+      ".ai/assets/skills/software-development-orchestrator/templates/external-task-completion.template.yaml",
+      ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+      ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py",
+      ".ai/assets/skills/software-development-orchestrator/scripts/tests/fixtures/external-task-packet.yaml",
+      ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md"
+    ],
+    "approval_evidence": ["User request and live Issue #310"],
+    "test_execution": [
+      {"command": "py -3 .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py", "outcome": "passed", "summary": "35 focused tests passed in 24.952s, including self-assertion rejection, actual ignored-root custody, unsafe and unbound refs, exact receipt-writer and execution-packet validator argv binding, receipt overwrite refusal, Windows alternate-data-stream rejection, dispatch-selected delivery transport, exclusive receipt-writing input modes, field-closed dispatch and receipt representations, malformed task_kind and bounded_output rejection, strict type-exact raw-byte mapping equality, duplicate-key YAML rejection, canonical receipt-verification paths, transport semantic drift rejection, bool-safe exact integer validation, raw candidate and dispatch boolean-or-float versus integer mapping rejection, post-validation mutation, and non-passing custody release."},
+      {"command": "py -3 .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py --schema-only", "outcome": "passed", "summary": "Schema v1.2 validation passed; custody remains held until a matching receipt is verified."}
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": ["No actual external task was dispatched; focused tests are supporting contract evidence only and do not relabel the historical blocked outer receipt.", "The initial independent audit reproductions now fail closed in focused negative tests.", "Fixed-head audit B1 is locally addressed by negative coverage.", "Fixed-head audit B2 is locally addressed by exact-argv negative coverage.", "Fixed-head audit B3 is locally addressed by transport, CLI-mode, and field-closure negative coverage.", "Fixed-head audit B4 is locally addressed by task_kind type negative coverage.", "Fixed-head audit B5 and the targeted custody sweep are locally addressed by bounded_output type, strict byte-to-mapping, duplicate-key, canonical verification-path, mixed-transport, and schema-semantic negative coverage.", "Fixed-head audit B10 is locally addressed by bool-safe exact-integer negative coverage.", "Fixed-head audit F-009-01 is locally addressed by recursive exact-type comparison and candidate/dispatch raw-YAML differential regressions.", "Fixed-head source-conformance audit 012 passed at the exact current source repair head; provider admission remains a separate terminal gate."],
+    "commits": ["containing-commit"],
+    "finding_status": "addressed",
+    "follow_up_needed": true
+  }
+}
