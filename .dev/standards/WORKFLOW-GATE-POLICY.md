@@ -285,6 +285,16 @@ owner and follow-up condition; it is not implicit success.
 
 ## Long-Running Validation Delegation Gate
 
+Use the operation classifier in
+`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` before selecting
+dispatch overhead. A terminal label alone does not require full packet/lease
+handling for an ordinary isolated short same-runtime read-only review. Both
+review tiers require machine-readable subject/criteria/authority preflight;
+preparation, behavior, environment and provider reconciliation failures remain
+separate, with retained attempts and only affected checks repeated. This does
+not relax the full contract for the long-running commands below or for changes
+to authority, evidence custody, security, release or adoption.
+
 This gate applies in direct and workflow mode. It changes the execution surface,
 not the selected validation, severity, or pass/fail contract.
 

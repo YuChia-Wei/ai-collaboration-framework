@@ -80,7 +80,8 @@
 ### Agent Execution Guardrails
 
 - 一般同 runtime 工作使用 `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 的 bounded envelope；不得只為例行分析或局部修改建立正式 audit records。
-- Terminal/high-risk、external 或 long-running validation 前，使用完整 validated packet、immutable subject 與 machine-readable snapshot lease。兩個層級都必須維持每個 worktree 只有一個 tracked writer；完整 lease 必須明確 terminal release。
+- 依 guardrails contract 按實際風險分類；一般分析與局部修改可直接判定，review preflight 則使用 validator。Terminal 標籤本身不要求完整層級；同一 runtime 內，對隔離且不可變的一般變更進行短程、獨立、唯讀審查，可使用 bounded envelope。Authority、evidence-custody、security、release/adoption 變更、external 或 long-running validation、共用可變 checkout 的審查、共用 frozen work，以及未知風險，都需要完整 validated packet、immutable subject 與 machine-readable snapshot lease。兩個層級都必須維持每個 worktree 只有一個 tracked writer；完整 lease 必須明確 terminal release。
+- 兩個層級都必須在 behavioral dispatch 前，預檢 machine-readable review subject、criteria 與 authority。分開記錄準備失敗、行為缺陷、環境失敗與 provider reconciliation；保留先前 attempts，依既有 evidence-reuse 與 retry 規則只重跑受影響的檢查。
 - Acceptance contract 要求時才維護正式 acceptance-to-evidence ledger。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
 - 只有具備 privacy-safe failure fingerprint 與 material state change 才可 retry。Attempt 三次以上需要新的 owner 或 workflow authorization。
 - Discovery conclusion 前驗證 code-graph index SHA 與 coverage。Stale 或 missing graph 必須 reindex 或使用明確 tracked-file fallback；search absence 本身不是 proof。

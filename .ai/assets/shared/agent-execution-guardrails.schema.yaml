@@ -21,6 +21,21 @@ graph_states: [fresh, stale, missing]
 graph_coverage: [complete, partial, unknown]
 graph_fallbacks: [none, tracked-search]
 terminal_modes: [callback, event-wait]
+classification:
+  schema_version: "1.0"
+  record_type: agent-execution-classification
+  fields: [schema_version, record_type, operation, execution_boundary, duration_class, change_domains, snapshot, tracked_write, provider_mutation, credential_access, terminal_gate]
+  operations: [review, local-work, validation]
+  execution_boundaries: [same-runtime, external, unknown]
+  duration_classes: [short, long-running, unknown]
+  change_domains: [ordinary, authority, evidence-custody, security, release, adoption, unknown]
+  snapshots: [isolated-immutable, shared-mutable, shared-frozen, unknown]
+review_input:
+  schema_version: "1.0"
+  record_type: independent-review-input
+  fields: [schema_version, record_type, classification, subject, criteria, authority]
+  subject_fields: [repository, base_sha, head_sha, base_tree, head_tree, subject_digest]
+  authority_fields: [path, sha256]
 reserved_powershell_variables:
   - args
   - error

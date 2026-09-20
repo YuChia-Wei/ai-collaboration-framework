@@ -140,7 +140,21 @@ live admission accepts v2 only. Any effective `CHANGES_REQUESTED` review remains
 blocking. This review
 mode is source-only; downstream repositories select their own target-owned
 review policy from their actual maintainer and provider requirements.
-The review body is exactly one receipt with no surrounding prose:
+Review overhead follows the operation classification in
+`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`, not the terminal label.
+Both bounded and full independent reviews first validate the machine-readable
+subject, criteria and authority with `validate-agent-execution-guardrails.py
+--review-input`. Authority, evidence-custody, security, release/adoption and
+unknown-risk changes still require full review. Preparation failures do not
+produce behavioral conclusions; preserve prior attempts and recheck only the
+affected inputs. Provider reconciliation failures require fresh provider
+read-back, not an unchanged content review. Declaration, merge admission and
+reconciliation retain their distinct factual times and authorization boundaries.
+
+The review body contains exactly one valid marked receipt and may include
+surrounding explanation. Duplicate, malformed, unsupported or conflicting
+receipt blocks and duplicate JSON keys fail closed. Prose does not override
+receipt fields or supply missing evidence:
 
 ```text
 <!-- github-terminal-issue-closure-audit/v2

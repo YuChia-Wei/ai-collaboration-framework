@@ -45,7 +45,11 @@ Separate per-Issue acceptance IDs and evidence will be retained in the remediati
 ## Resume Checkpoint
 
 - Completed: live owner authorization and base read-back; dedicated clean branch.
-- Current: ISS313-contract implementation.
+- Current: ISS313 contract implemented; ISS312 tooling begins after local checkpoint.
 - Next: simplify canonical risk routing and receipt presentation checks, then implement #312 using integrated #310 receipt writer.
-- Validation: bootstrap workflow validation pending.
+- Validation: workflow bootstrap passed; ISS313 focused host tests passed (47 guardrail, 61 terminal, 10 language), static and AI-context checks passed. Initial sandbox fixture ACL failures remain recorded in task results.
 - No external handoff, integration or release action performed.
+
+## Contract Checkpoint
+
+Ordinary analysis/local edits retain inline risk classification; no classifier artifact is required solely for routine work. Review preflight uses the machine classifier. The immutable receipt-format exercise remains under ignored validation artifacts; its scoped result is recorded in ISS313. Independent verification follows #312 implementation.

@@ -10,10 +10,19 @@ transport contract.
 
 ## Proportionate execution
 
-Classify the actual operation before constructing evidence. Ordinary same-runtime
-work may use the bounded envelope below when it is neither a terminal/high-risk
-verification nor an external or long-running validation command. It must not
-mutate providers, credentials, publication state or target adoption state.
+Classify the actual operation before constructing evidence. Review preflight
+uses `validate-agent-execution-guardrails.py --classify <input.yaml>` or the
+same classifier through `--review-input`. Its versioned
+`agent-execution-classification` input is defined in
+`agent-execution-guardrails.schema.yaml`. The owner supplies observed execution
+boundary, duration, change domains, snapshot isolation and permissions; unknown
+facts select the full tier. A terminal label alone does not select the full tier.
+Ordinary same-runtime analysis and local edits may classify inline using these
+same criteria; do not create a classification artifact solely for routine work.
+Ordinary same-runtime work may use the bounded envelope below. This includes
+short independent read-only review of an isolated immutable ordinary change.
+It must not mutate providers, access credentials, change publication or target
+adoption state, or change authority, evidence custody or security contracts.
 
 - Name the owning skill, goal, allowed reads/writes, non-goals, input sources,
   expected output, stop conditions, retry budget and parent integration owner.
@@ -26,18 +35,47 @@ mutate providers, credentials, publication state or target adoption state.
 - Record the actual invocation and returned result in the conversation or owning
   task. Do not create a sealed packet, lease, full role record or acceptance
   ledger solely for ordinary analysis or a local edit.
-- Recheck the relevant input and diff on return. A routine result is supporting
-  evidence, never a terminal audit, release admission or actual-execution receipt.
+- Recheck the relevant input and diff on return. An implementation result is
+  supporting evidence, never independent review. A bounded independent review
+  may satisfy an ordinary review gate when its subject, criteria, authority and
+  independence match; neither tier grants release admission or invents an
+  actual-execution receipt.
 
-Use the full contract below for terminal/high-risk review, external or long-running
-validation, publication/adoption operations, or work requiring a frozen snapshot
-across execution boundaries. Unknown classification selects the full contract.
+Use the full contract below for authority, evidence-custody, security, release
+or adoption changes; external or long-running validation; privileged operations;
+or a shared mutable review checkout or shared frozen snapshot. Unknown risk,
+boundary, duration or snapshot selects the full contract. Reviewing changes to
+this custody contract itself remains a full independent review.
 These are agent-dispatch requirements. Direct owner execution still follows its
 adoption or publication evidence contract; it does not fabricate a delegated
 role or invocation solely to perform an authorized local operation.
 The distinction changes evidence overhead, not authorization, semantics, runtime
 permissions, truthful reporting or required validation. Retry after a failure
 still requires a material state change; attempt three needs new authorization.
+
+## Review input preflight
+
+Before either tier dispatches behavioral review, validate one
+`independent-review-input/v1.0` with `--review-input <input.yaml>`. It contains the
+classification, repository and base/head commit and tree identities, canonical
+`independent-review-subject/v1` digest, nonempty review criteria, and tracked
+authority paths with exact byte digests. The validator checks the clean fixed
+execution checkout, Git content identities and authority bytes and returns
+input, criteria and authority digests. The owning task binds and supplies that
+exact input; dispatch prose is not a replacement for missing machine input.
+Full packet v1.0 remains compatible but does not by itself encode these review
+inputs. Validate and bind the review input separately under the dispatch
+contract. Bounded review needs neither a full packet nor a snapshot lease.
+
+Preflight reports preparation readiness only. Missing or malformed inputs are a
+`preparation-failure`, not a behavioral finding or an executed review. Preserve
+existing failed attempts and their counts. Record a new behavioral attempt only
+when behavior was actually reviewed; this does not reset an existing retry
+budget or bypass its authorization. Keep `behavior-defect`, `environment-failure`
+and `provider-reconciliation` distinct. Repair and rerun only affected checks;
+unchanged content, criteria and authority may reuse eligible review through the
+existing content-addressed proof. Provider gates remain fresh. Failed, blocked,
+interrupted and unexecuted outcomes never become passed through formatting.
 
 ## Pre-dispatch packet
 

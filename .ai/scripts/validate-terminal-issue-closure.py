@@ -37,9 +37,10 @@ ISSUE_REFERENCE = re.compile(
 STAGES = {"declaration", "merge-admission", "reconciliation"}
 INTEGRATION_TOPOLOGIES = {"fast-forward", "rebase", "squash", "merge-commit"}
 AUDIT_RECEIPT = re.compile(
-    r"^<!-- (?P<contract>github-terminal-issue-closure-audit/v[12])\n(?P<payload>\{.*\})\n-->$",
+    r"<!-- (?P<contract>github-terminal-issue-closure-audit/v[12])\r?\n(?P<payload>.*?)\r?\n-->",
     re.DOTALL,
 )
+AUDIT_RECEIPT_MARKER = re.compile(r"<!--\s*github-terminal-issue-closure-audit\b")
 REVIEW_SUBJECT_SCHEMA = "independent-review-subject/v1"
 CURRENT_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v2"
 HISTORICAL_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v1"
@@ -109,12 +110,23 @@ def current_review_subject(repository: str, base_sha: str, head_sha: str) -> dic
 def audit_receipt(body: object) -> dict[str, Any] | None:
     if not isinstance(body, str):
         return None
-    match = AUDIT_RECEIPT.fullmatch(body.strip())
+    # Count even malformed/unsupported markers so prose cannot hide a second
+    # conflicting receipt behind the one that happens to parse successfully.
+    if len(AUDIT_RECEIPT_MARKER.findall(body)) != 1:
+        return None
+    match = AUDIT_RECEIPT.search(body)
     if match is None:
         return None
+    def unique_fields(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        value: dict[str, Any] = {}
+        for key, item in pairs:
+            if key in value:
+                raise ValueError("duplicate receipt field")
+            value[key] = item
+        return value
     try:
-        value = json.loads(match.group("payload"))
-    except json.JSONDecodeError:
+        value = json.loads(match.group("payload"), object_pairs_hook=unique_fields)
+    except (json.JSONDecodeError, ValueError):
         return None
     contract = match.group("contract")
     expected_fields = {

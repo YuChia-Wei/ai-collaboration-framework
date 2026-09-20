@@ -77,6 +77,25 @@ def historical_audit_review_body() -> str:
 
 
 class TerminalIssueClosureGwtTests(unittest.TestCase):
+    def test_review_explanation_preserves_exact_receipt_fields(self) -> None:
+        receipt = audit_review_body()
+        self.assertEqual(VALIDATOR.audit_receipt(receipt), VALIDATOR.audit_receipt("Review completed with retained evidence.\n\n" + receipt + "\nNo additional mutation was performed."))
+
+    def test_duplicate_conflicting_and_malformed_marked_receipts_fail_closed(self) -> None:
+        receipt = audit_review_body()
+        candidates = [
+            receipt + "\n" + receipt,
+            receipt + "\n" + audit_review_body(outcome="failed", blocking_findings=1),
+            receipt + "\n<!-- github-terminal-issue-closure-audit/v2\n{broken",
+            receipt + "\n<!-- github-terminal-issue-closure-audit/v9\n{}\n-->",
+            "<!-- github-terminal-issue-closure-audit/v2\n{broken}\n-->",
+            receipt.replace('"outcome":"passed"', '"outcome":"failed","outcome":"passed"'),
+            audit_review_body(subject_digest="0" * 64),
+        ]
+        for candidate in candidates:
+            with self.subTest(body=candidate):
+                self.assertIsNone(VALIDATOR.audit_receipt(candidate))
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.config = yaml.safe_load(
@@ -629,7 +648,7 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         reviews = [{
             "id": 7001,
             "state": "COMMENTED",
-            "body": audit_review_body(),
+            "body": "Independent review results follow.\n" + audit_review_body() + "\nEvidence retained.",
             "commit_id": "a" * 40,
             "submitted_at": "2026-08-20T01:00:00Z",
             "user": {"login": "YuChia-Wei"},

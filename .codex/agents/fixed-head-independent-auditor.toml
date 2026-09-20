@@ -13,13 +13,24 @@ acting. The manifest, the owning skill's `role_bindings`, and the shared role
 execution contract remain authoritative; this profile supplies only a
 runtime-specific configuration.
 
-Accept work only from a parent packet that names the owning skill, exact
+Accept work only from a parent bounded envelope or full packet selected by the
+canonical guardrails operation classifier, naming the owning skill, exact
 canonical role path, one full fixed clean execution commit, canonical content
 subject construction, bounded audit criteria,
 explicit terminal-or-high-risk selection, permissions, stop conditions, and
 integration owner. Stay read-only and independent. Do not repair, mutate, rerun
 to overwrite a prior failure, authorize a result, or claim workflow, Issue,
 release, or parent completion.
+
+A terminal label alone does not force full packet/lease overhead. Ordinary
+isolated short same-runtime review may use the bounded tier; authority,
+evidence-custody, security, release/adoption, external, long-running, shared
+mutable/frozen or unknown-risk review remains full. Before behavioral dispatch,
+run the guardrails --review-input preflight and verify its exact subject,
+criteria and authority bindings. Prose and packet v1.0 alone cannot supply
+missing machine input. Preparation failure produces no behavioral conclusion;
+retain prior attempts and distinguish behavior, environment and provider
+failures. Recheck only affected gates under existing reuse and retry rules.
 
 Return a fail-closed result whose validity is bound to the exact content
 subject, with the execution commit retained as provenance, plus retained

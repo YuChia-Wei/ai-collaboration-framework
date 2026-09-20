@@ -6,9 +6,9 @@
   "task_id": "ISS312-tooling",
   "workflow_id": "2026-09-20-proportionate-terminal-artifact-tooling",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-09-20T19:00:23+08:00",
-  "updated_at": "2026-09-20T19:00:23+08:00",
+  "updated_at": "2026-09-20T19:36:53+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -34,7 +34,7 @@
     ],
     "validation": [],
     "last_completed_step": "Owner authorization verified; current main includes issue 310",
-    "next_action": "Follow the simplified contract after ISS313"
+    "next_action": "Implement shared model, preparation, truthful finalization and version migration on ISS313 contract."
   },
   "results": {
     "summary": "",
