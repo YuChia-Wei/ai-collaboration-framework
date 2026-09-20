@@ -1,0 +1,79 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-09-20-hosted-provider-and-custody-repair",
+  "task_id": "ISS309-provider-access",
+  "owner_skill": "software-development-orchestrator",
+  "related_plan_id": "development-plan-2026-09-20-hosted-provider-and-custody-repair",
+  "status": "completed",
+  "created_at": "2026-09-20T13:11:34+08:00",
+  "updated_at": "2026-09-20T13:22:00+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "medium",
+  "workflow_locator": ".dev/workflows/2026-09-20-hosted-provider-and-custody-repair/workflow.yaml",
+  "scope": {
+    "goal": "Make hosted GitHub Project preflight failures actionable without changing provider credentials or v0.18.0 release identity.",
+    "target": ".ai/scripts/reconcile-ai-context-release-provider.py",
+    "files": [
+      ".ai/scripts/reconcile-ai-context-release-provider.py",
+      ".ai/scripts/tests/test_release_provider_reconciliation.py"
+    ],
+    "constraints": [
+      "Preserve failed run 35487203277.",
+      "Do not expose, create, rotate, or broaden credentials.",
+      "Do not move tags or rebuild published assets."
+    ],
+    "non_goals": ["Hosted re-execution", "release publication", "Project mutation"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #309"],
+    "specifications": [],
+    "architecture_decisions": [],
+    "user_constraints": ["Use minimal narrow verification and retain failed evidence."]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["2026-09-20 user request", "GitHub Issue #309"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "bug-fix",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["2026-09-20 user request", "GitHub Issue #309"],
+      "normative_truth": ["GitHub Issue #309", "preserved run 35487203277"],
+      "finding_evidence": ["Hosted log: gh project view returned unknown owner type."],
+      "subject_revision": "284bf9f2b0ab76f28df1bbf355e3909de956d1bd",
+      "acceptance_criteria": ["ISS309-AC1", "ISS309-AC2"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Capture the hosted failure and local Project lookup contrast.", "Improve the specific diagnostics.", "Run focused regression coverage."],
+    "validation": ["Focused Python unit test"],
+    "commit_checkpoint": "Commit with #309/#310 after both focused repair tasks are validated.",
+    "deferred_items": ["Credential-boundary correction and next authorized hosted run."]
+  },
+  "results": {
+    "summary": "Changed the opaque hosted gh project owner-type failure into secret-free GitHub Projects v2 access guidance, without changing a credential or historical release state.",
+    "files_changed": [".ai/scripts/reconcile-ai-context-release-provider.py", ".ai/scripts/tests/test_release_provider_reconciliation.py"],
+    "approval_evidence": ["User request and live Issue #309"],
+    "test_execution": [
+      {"command": "python -m unittest .ai/scripts/tests/test_release_provider_reconciliation.py", "outcome": "failed", "summary": "Command-line module syntax was invalid; no test executed."},
+      {"command": "python .ai/scripts/tests/test_release_provider_reconciliation.py", "outcome": "blocked-by-environment", "summary": "Sandbox denied disposable Windows TEMP fixture creation before assertions."},
+      {"command": "python .ai/scripts/tests/test_release_provider_reconciliation.py", "outcome": "passed", "summary": "12 focused tests passed in 0.115s in the permitted local fixture environment."}
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": ["Run 35487203277 preserved unknown owner type evidence; current authenticated gh project view resolved owner.type=User."],
+    "commits": ["containing-commit"],
+    "finding_status": "addressed-with-owner-follow-up",
+    "follow_up_needed": true
+  }
+}

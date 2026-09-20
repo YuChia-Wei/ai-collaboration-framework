@@ -238,6 +238,14 @@ def subprocess_runner(command: list[str]) -> str:
         diagnostics = "\n".join(
             part.strip() for part in (completed.stdout, completed.stderr) if part.strip()
         )
+        if "unknown owner type" in diagnostics.lower():
+            diagnostics = (
+                "GitHub CLI could not resolve the configured Project owner. "
+                "The GH_TOKEN used for this release is missing, invalid, or does not have "
+                "GitHub Projects v2 read access for that owner; review the release-provider "
+                "credential boundary (for example, read:project or its equivalent) without "
+                "printing credential values."
+            )
         suffix = f": {diagnostics}" if diagnostics else ""
         raise ProviderReconciliationError(
             f"provider command failed ({' '.join(command[:3])}) with exit {completed.returncode}{suffix}"
