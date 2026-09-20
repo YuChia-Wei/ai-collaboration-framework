@@ -41,6 +41,24 @@ COMPLETION_FIELDS = {
     "final_state": {"clean_worktree", "tracked_changes"},
     "delivery": {"mode", "destination", "terminal_report_number"},
 }
+DISPATCH_FIELDS = {
+    "dispatch": {"schema_version", "record_type", "delegation_id", "task_kind", "source", "objective", "subject", "execution", "execution_packet", "permissions", "completion_delivery", "stop_conditions"},
+    "source": {"task_id_source", "task_id", "final_integration_owner"},
+    "objective": {"goal", "non_goals"},
+    "subject": {"repository_root", "commit_sha", "clean_worktree_required"},
+    "execution": {"working_directory", "argv", "timeout_seconds"},
+    "execution_packet": {"schema_ref", "packet_ref", "packet_sha256", "subject_sha", "validator_argv", "validation_outcome"},
+    "permissions": {"read_scope", "write_scope", "repair_allowed", "external_mutations", "secret_values"},
+    "completion_delivery": {"primary", "fallback", "destination", "progress_updates", "max_terminal_reports", "report_schema", "pre_send_validation"},
+    "pre_send_validation": {"required", "receipt_writer_argv", "dispatch_ref", "candidate_ref", "receipt_ref", "failure_action", "payload_binding"},
+}
+RECEIPT_FIELDS = {
+    "receipt": {"schema_version", "record_type", "delegation_id", "receipt_ref", "candidate", "dispatch", "validator", "custody"},
+    "candidate": {"ref", "sha256"},
+    "dispatch": {"ref", "sha256"},
+    "validator": {"script_sha256", "argv", "exit_code"},
+    "custody": {"state", "release_scope"},
+}
 
 
 def load_mapping(path: Path) -> dict[str, Any]:
@@ -251,26 +269,32 @@ def validate_schema_definition(schema: dict[str, Any]) -> list[str]:
 
 def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[str]:
     errors = missing_fields(record, schema["dispatch"]["required"], "dispatch")
+    errors.extend(unexpected_fields(record, DISPATCH_FIELDS["dispatch"], "dispatch"))
     if record.get("schema_version") != "1.2": errors.append("dispatch.schema_version must be 1.2")
     if record.get("record_type") != "external-task-dispatch": errors.append("dispatch.record_type must be external-task-dispatch")
     if not non_empty_string(record.get("delegation_id")) or not ID_RE.fullmatch(str(record.get("delegation_id", ""))): errors.append("dispatch.delegation_id must be a stable bounded identifier")
     source = record.get("source")
     errors.extend(missing_fields(source, schema["dispatch"]["source"]["required"], "dispatch.source"))
+    errors.extend(unexpected_fields(source, DISPATCH_FIELDS["source"], "dispatch.source"))
     if isinstance(source, dict):
         if source.get("task_id_source") not in schema["dispatch"]["source"]["task_id_sources"]: errors.append("dispatch.source.task_id_source is invalid")
         if source.get("task_id_source") == "explicit" and not non_empty_string(source.get("task_id")): errors.append("dispatch.source.task_id is required when task_id_source is explicit")
         if not non_empty_string(source.get("final_integration_owner")): errors.append("dispatch.source.final_integration_owner must be non-empty")
     objective = record.get("objective")
     errors.extend(missing_fields(objective, schema["dispatch"]["objective"]["required"], "dispatch.objective"))
+    errors.extend(unexpected_fields(objective, DISPATCH_FIELDS["objective"], "dispatch.objective"))
     if isinstance(objective, dict) and (not non_empty_string(objective.get("goal")) or not string_list(objective.get("non_goals"))): errors.append("dispatch.objective must contain a goal and string non_goals")
     subject = record.get("subject")
     errors.extend(missing_fields(subject, schema["dispatch"]["subject"]["required"], "dispatch.subject"))
+    errors.extend(unexpected_fields(subject, DISPATCH_FIELDS["subject"], "dispatch.subject"))
     if isinstance(subject, dict) and (not non_empty_string(subject.get("repository_root")) or not SHA_RE.fullmatch(str(subject.get("commit_sha", ""))) or subject.get("clean_worktree_required") is not True): errors.append("dispatch.subject is invalid")
     execution = record.get("execution")
     errors.extend(missing_fields(execution, schema["dispatch"]["execution"]["required"], "dispatch.execution"))
+    errors.extend(unexpected_fields(execution, DISPATCH_FIELDS["execution"], "dispatch.execution"))
     if isinstance(execution, dict) and (not non_empty_string(execution.get("working_directory")) or not string_list(execution.get("argv"), allow_empty=False) or not isinstance(execution.get("timeout_seconds"), int) or isinstance(execution.get("timeout_seconds"), bool) or execution.get("timeout_seconds", 0) <= 0): errors.append("dispatch.execution is invalid")
     packet = record.get("execution_packet")
     errors.extend(missing_fields(packet, schema["dispatch"]["execution_packet"]["required"], "dispatch.execution_packet"))
+    errors.extend(unexpected_fields(packet, DISPATCH_FIELDS["execution_packet"], "dispatch.execution_packet"))
     if isinstance(packet, dict):
         if packet.get("schema_ref") != ".ai/assets/shared/agent-execution-guardrails.schema.yaml" or not SHA256_RE.fullmatch(str(packet.get("packet_sha256", ""))) or packet.get("validation_outcome") != "passed": errors.append("dispatch.execution_packet is invalid")
         if packet.get("subject_sha") != (subject or {}).get("commit_sha"): errors.append("dispatch.execution_packet.subject_sha must match dispatch subject")
@@ -280,14 +304,17 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
         errors.extend(validate_bound_packet(packet, record))
     permissions = record.get("permissions")
     errors.extend(missing_fields(permissions, schema["dispatch"]["permissions"]["required"], "dispatch.permissions"))
+    errors.extend(unexpected_fields(permissions, DISPATCH_FIELDS["permissions"], "dispatch.permissions"))
     if isinstance(permissions, dict) and (not string_list(permissions.get("read_scope"), allow_empty=False) or not string_list(permissions.get("write_scope")) or not set(permissions.get("write_scope", [])) <= {"ignored-validation-artifacts"} or permissions.get("repair_allowed") is not False or permissions.get("external_mutations") != [] or permissions.get("secret_values") != "prohibited"): errors.append("dispatch.permissions is invalid")
     delivery = record.get("completion_delivery")
     errors.extend(missing_fields(delivery, schema["dispatch"]["completion_delivery"]["required"], "dispatch.completion_delivery"))
+    errors.extend(unexpected_fields(delivery, DISPATCH_FIELDS["completion_delivery"], "dispatch.completion_delivery"))
     if isinstance(delivery, dict):
         contract = schema["dispatch"]["completion_delivery"]
         if delivery.get("primary") not in contract["primary_modes"] or delivery.get("fallback") not in contract["fallback_modes"] or delivery.get("destination") != "source-task" or delivery.get("progress_updates") != "terminal-only" or delivery.get("max_terminal_reports") != 1 or delivery.get("report_schema") != "same-contract#completion": errors.append("dispatch.completion_delivery is invalid")
         pre_send = delivery.get("pre_send_validation")
         errors.extend(missing_fields(pre_send, contract["pre_send_validation"]["required"], "dispatch.completion_delivery.pre_send_validation"))
+        errors.extend(unexpected_fields(pre_send, DISPATCH_FIELDS["pre_send_validation"], "dispatch.completion_delivery.pre_send_validation"))
         if isinstance(pre_send, dict):
             argv = pre_send.get("receipt_writer_argv")
             if pre_send.get("required") is not True or not string_list(argv, allow_empty=False): errors.append("dispatch.completion_delivery.pre_send_validation receipt writer is invalid")
@@ -348,6 +375,13 @@ def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch
         if isinstance(subject, dict) and subject.get("expected_commit_sha") != dispatch.get("subject", {}).get("commit_sha"): errors.append("completion expected commit must match dispatch")
         if isinstance(execution, dict) and (execution.get("working_directory") != dispatch.get("execution", {}).get("working_directory") or execution.get("argv") != dispatch.get("execution", {}).get("argv")): errors.append("completion.execution must match dispatch")
         if dispatch.get("source", {}).get("task_id_source") == "explicit" and record.get("source_task_id") != dispatch.get("source", {}).get("task_id"): errors.append("completion.source_task_id must match explicit dispatch source")
+        dispatch_delivery = dispatch.get("completion_delivery")
+        if isinstance(delivery, dict) and isinstance(dispatch_delivery, dict):
+            allowed_modes = {dispatch_delivery.get("primary")}
+            if dispatch_delivery.get("fallback") != "none":
+                allowed_modes.add(dispatch_delivery.get("fallback"))
+            if delivery.get("mode") not in allowed_modes:
+                errors.append("completion.delivery.mode must match dispatch primary or non-none fallback")
     return errors
 
 
@@ -357,11 +391,13 @@ def build_validation_receipt(candidate: dict[str, Any], dispatch: dict[str, Any]
 
 def validate_receipt(receipt: dict[str, Any], schema: dict[str, Any], candidate: dict[str, Any], candidate_bytes: bytes, dispatch: dict[str, Any], dispatch_bytes: bytes) -> list[str]:
     errors = missing_fields(receipt, schema["validation_receipt"]["required"], "receipt")
+    errors.extend(unexpected_fields(receipt, RECEIPT_FIELDS["receipt"], "receipt"))
     if receipt.get("schema_version") != "1.2" or receipt.get("record_type") != "external-task-validation-receipt": errors.append("receipt schema_version or record_type is invalid")
     if receipt.get("delegation_id") != candidate.get("delegation_id") or receipt.get("delegation_id") != dispatch.get("delegation_id"): errors.append("receipt.delegation_id must match candidate and dispatch")
     for key, bytes_value in (("candidate", candidate_bytes), ("dispatch", dispatch_bytes)):
         binding = receipt.get(key)
         errors.extend(missing_fields(binding, schema["validation_receipt"][key]["required"], f"receipt.{key}"))
+        errors.extend(unexpected_fields(binding, RECEIPT_FIELDS[key], f"receipt.{key}"))
         if isinstance(binding, dict) and binding.get("sha256") != sha256_bytes(bytes_value): errors.append(f"receipt.{key}.sha256 does not match exact {key} bytes")
     pre_send = dispatch.get("completion_delivery", {}).get("pre_send_validation", {})
     candidate_binding = receipt.get("candidate", {})
@@ -374,11 +410,13 @@ def validate_receipt(receipt: dict[str, Any], schema: dict[str, Any], candidate:
         errors.append("receipt.receipt_ref must match dispatch pre-send receipt_ref")
     validator = receipt.get("validator")
     errors.extend(missing_fields(validator, schema["validation_receipt"]["validator"]["required"], "receipt.validator"))
+    errors.extend(unexpected_fields(validator, RECEIPT_FIELDS["validator"], "receipt.validator"))
     if isinstance(validator, dict) and (validator.get("script_sha256") != sha256_bytes(Path(__file__).read_bytes()) or not string_list(validator.get("argv"), allow_empty=False) or validator.get("exit_code") != 0): errors.append("receipt.validator is invalid")
     if isinstance(validator, dict) and validator.get("argv") != pre_send.get("receipt_writer_argv"):
         errors.append("receipt.validator.argv must match dispatch pre-send receipt_writer_argv")
     custody = receipt.get("custody")
     errors.extend(missing_fields(custody, schema["validation_receipt"]["custody"]["required"], "receipt.custody"))
+    errors.extend(unexpected_fields(custody, RECEIPT_FIELDS["custody"], "receipt.custody"))
     if isinstance(custody, dict) and (custody.get("state") != "released" or custody.get("release_scope") != "one matching terminal candidate delivery"): errors.append("receipt.custody is invalid")
     errors.extend(validate_dispatch(dispatch, schema))
     errors.extend(validate_completion(candidate, schema, dispatch))
@@ -471,8 +509,47 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def input_supplied(value: object) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, (str, bytes, list, tuple, set, dict)):
+        return bool(value)
+    return True
+
+
+def validate_input_modes(args: argparse.Namespace) -> list[str]:
+    errors: list[str] = []
+    candidate_modes = [
+        name for name, value in (
+            ("record", args.record),
+            ("--candidate", args.candidate),
+            ("--completion-message", args.completion_message),
+            ("--terminal-message", args.terminal_message),
+        ) if input_supplied(value)
+    ]
+    if len(candidate_modes) > 1:
+        errors.append("candidate input modes are mutually exclusive: " + ", ".join(candidate_modes))
+    dispatch_modes = [
+        name for name, value in (("--dispatch", args.dispatch), ("--prompt", args.prompt))
+        if input_supplied(value)
+    ]
+    if len(dispatch_modes) > 1:
+        errors.append("dispatch input modes are mutually exclusive: " + ", ".join(dispatch_modes))
+    if args.write_receipt is not None:
+        conflicts = any(input_supplied(value) for value in (
+            args.record, args.prompt, args.completion_message, args.terminal_message, args.receipt,
+        )) or args.schema_only
+        if not input_supplied(args.candidate) or not input_supplied(args.dispatch) or conflicts:
+            errors.append("--write-receipt requires exactly --candidate and --dispatch, with no record, prompt, message, receipt, or schema-only mode")
+    return errors
+
+
 def main() -> int:
     args = parse_args(); schema = load_mapping(SCHEMA_PATH); errors = validate_schema_definition(schema)
+    input_mode_errors = validate_input_modes(args)
+    if input_mode_errors:
+        errors.extend(input_mode_errors)
+        print("External-task delegation validation failed:"); [print(f"- {error}") for error in errors]; return 1
     candidate_path = args.candidate; candidate: dict[str, Any] | None = None; candidate_bytes: bytes | None = None
     dispatch_path = args.dispatch; dispatch: dict[str, Any] | None = None; dispatch_bytes: bytes | None = None
     try:

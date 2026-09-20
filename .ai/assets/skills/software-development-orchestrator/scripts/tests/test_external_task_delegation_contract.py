@@ -3,9 +3,12 @@
 
 from __future__ import annotations
 
+import argparse
 import copy
+import contextlib
 import hashlib
 import importlib.util
+import io
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -68,6 +71,22 @@ def valid_candidate(outcome: str = "passed") -> dict:
     }
 
 
+def cli_args(**overrides: object) -> argparse.Namespace:
+    values: dict[str, object] = {
+        "record": None,
+        "candidate": None,
+        "dispatch": None,
+        "receipt": None,
+        "write_receipt": None,
+        "prompt": None,
+        "completion_message": None,
+        "terminal_message": None,
+        "schema_only": False,
+    }
+    values.update(overrides)
+    return argparse.Namespace(**values)
+
+
 class ExternalTaskDelegationContractTests(unittest.TestCase):
     def test_gwt_001_given_schema_1_2_when_loaded_then_candidate_and_receipt_are_separate(self) -> None:
         self.assertEqual([], DELEGATION.validate_schema_definition(SCHEMA))
@@ -116,6 +135,24 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
             primary="parent-event-wait", fallback="single-terminal-readback"
         )
         self.assertEqual([], DELEGATION.validate_dispatch(dispatch, SCHEMA))
+
+    def test_gwt_002k_given_dispatch_transport_when_candidate_is_validated_then_mode_is_bound(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["completion_delivery"].update(
+            primary="parent-event-wait", fallback="single-terminal-readback"
+        )
+        candidate = valid_candidate()
+        candidate["delivery"]["mode"] = "single-terminal-readback"
+        self.assertEqual([], DELEGATION.validate_completion(candidate, SCHEMA, dispatch))
+
+        candidate["delivery"]["mode"] = "source-task-callback"
+        errors = DELEGATION.validate_completion(candidate, SCHEMA, dispatch)
+        self.assertTrue(any("must match dispatch primary or non-none fallback" in error for error in errors))
+
+        dispatch["completion_delivery"]["fallback"] = "none"
+        candidate["delivery"]["mode"] = "single-terminal-readback"
+        errors = DELEGATION.validate_completion(candidate, SCHEMA, dispatch)
+        self.assertTrue(any("must match dispatch primary or non-none fallback" in error for error in errors))
 
     def test_gwt_002f_given_unsafe_or_unbound_pre_send_refs_then_dispatch_is_rejected(self) -> None:
         dispatch = valid_dispatch()
@@ -188,6 +225,53 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
                 paths[index] = Path(f"{paths[index]}:stream")
                 errors = DELEGATION.validate_receipt_write_request(*paths, valid_dispatch())
                 self.assertTrue(any(f"{option} path must exactly match" in error for error in errors))
+
+    def test_gwt_002l_given_conflicting_cli_modes_then_main_rejects_before_reading_records(self) -> None:
+        conflicting = cli_args(
+            candidate=Path(CANDIDATE_REF),
+            dispatch=Path(DISPATCH_REF),
+            terminal_message=Path("terminal-message.txt"),
+            write_receipt=Path(RECEIPT_REF),
+        )
+        errors = DELEGATION.validate_input_modes(conflicting)
+        self.assertTrue(any("candidate input modes are mutually exclusive" in error for error in errors))
+        self.assertTrue(any("--write-receipt requires exactly" in error for error in errors))
+        with mock.patch.object(DELEGATION, "parse_args", return_value=conflicting), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(1, DELEGATION.main())
+
+        self.assertEqual(
+            [],
+            DELEGATION.validate_input_modes(
+                cli_args(
+                    candidate=Path(CANDIDATE_REF),
+                    dispatch=Path(DISPATCH_REF),
+                    write_receipt=Path(RECEIPT_REF),
+                )
+            ),
+        )
+
+    def test_gwt_002m_given_unsupported_dispatch_or_receipt_fields_then_they_are_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["execution_packet"]["legacy_validator"] = "accepted before field closure"
+        dispatch["completion_delivery"]["pre_send_validation"]["validator_argv"] = ["legacy"]
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("dispatch.execution_packet contains unsupported fields: legacy_validator" in error for error in errors))
+        self.assertTrue(any("pre_send_validation contains unsupported fields: validator_argv" in error for error in errors))
+
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+            DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+        )
+        receipt["validation_outcome"] = "passed"
+        receipt["validator"]["actual_argv"] = ["legacy"]
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("receipt contains unsupported fields: validation_outcome" in error for error in errors))
+        self.assertTrue(any("receipt.validator contains unsupported fields: actual_argv" in error for error in errors))
 
     def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
         dispatch, candidate = valid_dispatch(), valid_candidate()
