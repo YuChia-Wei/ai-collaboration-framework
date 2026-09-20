@@ -414,7 +414,7 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         with self.assertRaisesRegex(VALIDATOR.GuardrailError, "material state change"):
             VALIDATOR.validate_retry(value, SCHEMA)
 
-    def test_gwt_010_given_attempt_three_with_fresh_authorization_when_retry_is_validated_then_it_passes(self) -> None:
+    def test_gwt_010_given_legacy_attempt_three_with_fresh_authorization_then_it_passes(self) -> None:
         VALIDATOR.validate_retry(retry(3), SCHEMA)
 
     def test_gwt_010aa_given_new_retry_subject_with_persisted_authorization_and_packet_when_validated_then_it_passes(self) -> None:
@@ -453,9 +453,6 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         seal(value, "retry_sha256")
         with self.assertRaisesRegex(VALIDATOR.GuardrailError, "material state change"):
             VALIDATOR.validate_retry(value, SCHEMA)
-
-    def test_gwt_010ae_given_legacy_retry_without_retry_subject_when_validated_then_it_passes(self) -> None:
-        VALIDATOR.validate_retry(retry(3), SCHEMA)
 
     def test_gwt_010b_given_attempt_three_authorization_for_another_packet_when_retry_is_validated_then_it_fails(self) -> None:
         value = retry(3)

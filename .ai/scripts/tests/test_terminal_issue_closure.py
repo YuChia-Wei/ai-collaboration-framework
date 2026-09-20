@@ -77,10 +77,6 @@ def historical_audit_review_body() -> str:
 
 
 class TerminalIssueClosureGwtTests(unittest.TestCase):
-    def test_review_explanation_preserves_exact_receipt_fields(self) -> None:
-        receipt = audit_review_body()
-        self.assertEqual(VALIDATOR.audit_receipt(receipt), VALIDATOR.audit_receipt("Review completed with retained evidence.\n\n" + receipt + "\nNo additional mutation was performed."))
-
     def test_duplicate_conflicting_and_malformed_marked_receipts_fail_closed(self) -> None:
         receipt = audit_review_body()
         candidates = [
@@ -261,7 +257,12 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             )
 
     def test_gwt_025_given_current_pr_event_when_no_bound_record_exists_then_cli_fails(self) -> None:
-        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+        stderr = io.StringIO()
+        with (
+            mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
+            mock.patch.object(VALIDATOR, "validate_record") as validate_record,
+            contextlib.redirect_stderr(stderr),
+        ):
             self.assertEqual(
                 1,
                 VALIDATOR.main(
@@ -274,8 +275,12 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 ),
             )
 
+        self.assertIn("bound disposition", stderr.getvalue())
+        validate_record.assert_not_called()
+
     def test_gwt_026_given_current_pr_event_when_checkout_head_drifts_then_cli_fails(self) -> None:
-        with mock.patch.object(VALIDATOR, "checkout_head", return_value="b" * 40):
+        stderr = io.StringIO()
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="b" * 40), contextlib.redirect_stderr(stderr):
             self.assertEqual(
                 1,
                 VALIDATOR.main(
@@ -288,8 +293,15 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 ),
             )
 
+        self.assertIn("checkout HEAD", stderr.getvalue())
+
     def test_gwt_027_given_declaration_check_when_record_claims_later_stage_then_cli_fails(self) -> None:
-        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+        stderr = io.StringIO()
+        with (
+            mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
+            mock.patch.object(VALIDATOR, "validate_record", return_value=[]),
+            contextlib.redirect_stderr(stderr),
+        ):
             self.assertEqual(
                 1,
                 VALIDATOR.main(
@@ -301,6 +313,11 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                     ]
                 ),
             )
+
+        self.assertTrue(any(
+            "declaration" in line and "--admission-evidence" in line
+            for line in stderr.getvalue().splitlines()
+        ), stderr.getvalue())
 
     def test_gwt_028_given_untracked_admission_snapshot_when_current_content_binding_passes_then_cli_passes(self) -> None:
         evidence = fixture("admission-positive.yaml")
@@ -351,7 +368,12 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         self.assertTrue(any("provider-owned required_check_contexts" in error for error in errors), errors)
 
     def test_gwt_032_given_snapshot_without_live_provider_verification_when_admitted_then_it_fails(self) -> None:
-        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+        stderr = io.StringIO()
+        with (
+            mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
+            mock.patch.object(VALIDATOR, "validate_live_provider_evidence") as verify_live,
+            contextlib.redirect_stderr(stderr),
+        ):
             self.assertEqual(
                 1,
                 VALIDATOR.main(
@@ -365,6 +387,9 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                     ]
                 ),
             )
+
+        self.assertIn("--verify-provider-live", stderr.getvalue())
+        verify_live.assert_not_called()
 
     def test_gwt_033_given_snapshot_differs_from_fresh_provider_readback_when_admitted_then_it_fails(self) -> None:
         evidence = fixture("admission-positive.yaml")
@@ -471,7 +496,7 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "pagination is incomplete"):
                 VALIDATOR.github_api_paginated("https://api.github.com/example", "test-token")
 
-    def test_gwt_038_given_live_capture_when_admitted_then_no_output_path_is_accepted_or_written(self) -> None:
+    def test_gwt_038_given_live_capture_when_admitted_then_stdout_contains_the_snapshot(self) -> None:
         evidence = fixture("admission-positive.yaml")
         stdout = io.StringIO()
         stderr = io.StringIO()
@@ -495,7 +520,6 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 ),
             )
         self.assertEqual(evidence, yaml.safe_load(stdout.getvalue()))
-        self.assertIn("validation passed", stderr.getvalue())
 
     def test_gwt_039_given_malformed_provider_link_header_when_read_then_it_fails(self) -> None:
         with mock.patch.object(VALIDATOR, "github_api_json", return_value=([{"id": 1}], "malformed-link-header")):
@@ -746,25 +770,27 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             },
         }
         candidates = [
-            {"id": 1, "state": "COMMENTED", "body": "audit passed", "commit_id": "a" * 40, "user": {"login": "YuChia-Wei"}},
-            {"id": 2, "state": "COMMENTED", "body": audit_review_body(), "commit_id": "a" * 40, "user": {"login": "attacker"}},
-            {"id": 3, "state": "COMMENTED", "body": audit_review_body(head_sha="c" * 40), "commit_id": "a" * 40, "user": {"login": "YuChia-Wei"}},
-            {"id": 4, "state": "COMMENTED", "body": audit_review_body(blocking_findings=False), "commit_id": "a" * 40, "user": {"login": "YuChia-Wei"}},
+            ("missing-receipt", "audit passed", "YuChia-Wei"),
+            ("wrong-reviewer", audit_review_body(), "attacker"),
+            ("wrong-head", audit_review_body(head_sha="c" * 40), "YuChia-Wei"),
+            ("boolean-count", audit_review_body(blocking_findings=False), "YuChia-Wei"),
         ]
         gate = self.config["work_item_binding"]["merge_gate"]
-        with (
-            mock.patch.object(VALIDATOR, "github_api_json", return_value=(metadata, None)),
-            mock.patch.object(VALIDATOR, "github_api_paginated", side_effect=[candidates, []]),
-        ):
-            facts = VALIDATOR.read_live_provider_facts(
-                "YuChia-Wei/ai-collaboration-framework",
-                300,
-                "a" * 40,
-                gate["required_check_contexts"],
-                gate["review_gate"],
-                "test-token",
-            )
-        self.assertEqual({"status": "pending"}, facts["review"])
+        for case, body, reviewer in candidates:
+            candidate = {"id": 1, "state": "COMMENTED", "body": body, "commit_id": "a" * 40, "user": {"login": reviewer}}
+            with (
+                self.subTest(case=case),
+                mock.patch.object(VALIDATOR, "github_api_json", return_value=(metadata, None)),
+                mock.patch.object(VALIDATOR, "github_api_paginated", side_effect=[[candidate], []]),
+                mock.patch.object(VALIDATOR, "current_review_subject", return_value=VALIDATOR.review_subject(
+                    "YuChia-Wei/ai-collaboration-framework", "d" * 40, "e" * 40,
+                )),
+            ):
+                facts = VALIDATOR.read_live_provider_facts(
+                    "YuChia-Wei/ai-collaboration-framework", 300, "a" * 40,
+                    gate["required_check_contexts"], gate["review_gate"], "test-token",
+                )
+                self.assertEqual({"status": "pending"}, facts["review"])
 
     def test_gwt_052_given_review_gate_identity_drifts_when_validated_then_it_fails_closed(self) -> None:
         config = yaml.safe_load(yaml.safe_dump(self.config))

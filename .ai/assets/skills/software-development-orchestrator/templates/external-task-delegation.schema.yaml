@@ -1,113 +1,122 @@
-schema_version: "1.2"
-contract_id: "external-task-delegation"
-purpose: "Provider-neutral dispatch, terminal-result candidate, and independently produced custody receipt for bounded work executed in a separate runtime task."
+schema_version: '1.3'
+contract_id: external-task-delegation
+purpose: Provider-neutral dispatch, terminal-result candidate, and independently produced
+  custody receipt for bounded work executed in a separate runtime task.
 prompt_transport:
-  begin_marker: "BEGIN_EXTERNAL_TASK_DELEGATION"
-  end_marker: "END_EXTERNAL_TASK_DELEGATION"
+  begin_marker: BEGIN_EXTERNAL_TASK_DELEGATION
+  end_marker: END_EXTERNAL_TASK_DELEGATION
   dispatch_records_per_prompt: 1
   context_outside_envelope: allowed
 completion_transport:
-  begin_marker: "BEGIN_EXTERNAL_TASK_COMPLETION"
-  end_marker: "END_EXTERNAL_TASK_COMPLETION"
+  begin_marker: BEGIN_EXTERNAL_TASK_COMPLETION
+  end_marker: END_EXTERNAL_TASK_COMPLETION
   completion_records_per_message: 1
   context_outside_envelope: allowed
 receipt_transport:
-  begin_marker: "BEGIN_EXTERNAL_TASK_VALIDATION_RECEIPT"
-  end_marker: "END_EXTERNAL_TASK_VALIDATION_RECEIPT"
+  begin_marker: BEGIN_EXTERNAL_TASK_VALIDATION_RECEIPT
+  end_marker: END_EXTERNAL_TASK_VALIDATION_RECEIPT
   receipt_records_per_message: 1
 record_types:
-  dispatch: "external-task-dispatch"
-  completion: "external-task-completion"
-  validation_receipt: "external-task-validation-receipt"
+  dispatch: external-task-dispatch
+  completion: external-task-completion
+  validation_receipt: external-task-validation-receipt
 dispatch:
-  required: [schema_version, record_type, delegation_id, task_kind, source, objective, subject, execution, execution_packet, permissions, completion_delivery, stop_conditions]
   source:
-    required: [task_id_source, final_integration_owner]
-    task_id_sources: [explicit, runtime-injected]
-    explicit_requires: [task_id]
-  objective:
-    required: [goal, non_goals]
+    task_id_sources:
+    - explicit
+    - runtime-injected
+    explicit_requires:
+    - task_id
+  objective: {}
   subject:
-    required: [repository_root, commit_sha, clean_worktree_required]
-    commit_sha: "full 40- or 64-character hexadecimal Git object ID"
+    commit_sha: full 40- or 64-character hexadecimal Git object ID
     clean_worktree_required: true
   execution:
-    required: [working_directory, argv, timeout_seconds]
-    argv: "non-empty argument vector; do not rely on an implicit shell wrapper"
-    timeout_seconds: "positive integer covering command execution, not parent wait transport"
+    argv: non-empty argument vector; do not rely on an implicit shell wrapper
+    timeout_seconds: positive integer covering command execution, not parent wait
+      transport
   execution_packet:
-    required: [schema_ref, packet_ref, packet_sha256, subject_sha, validator_argv, validation_outcome]
-    schema_ref: ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
-    validator: ".ai/scripts/validate-agent-execution-guardrails.py --packet <packet-ref>"
-    packet_sha256: "SHA-256 of the exact packet file bytes; the packet's internal packet_sha256 independently seals canonical content"
-    binding: "load the contained packet, run the canonical packet validator, and match subject, argv, cwd, and integration owner"
+    schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+    validator: .ai/scripts/validate-agent-execution-guardrails.py --packet <packet-ref>
+    packet_sha256: SHA-256 of the exact packet file bytes; the packet's internal packet_sha256
+      independently seals canonical content
+    binding: load the contained packet, run the canonical packet validator, and match
+      subject, argv, cwd, and integration owner
     validation_outcome: passed
   permissions:
-    required: [read_scope, write_scope, repair_allowed, external_mutations, secret_values]
-    allowed_write_scope: [ignored-validation-artifacts]
+    allowed_write_scope:
+    - ignored-validation-artifacts
     repair_allowed: false
     external_mutations: []
     secret_values: prohibited
   completion_delivery:
-    required: [primary, fallback, destination, progress_updates, max_terminal_reports, report_schema, pre_send_validation]
-    primary_modes: [source-task-callback, parent-event-wait]
-    fallback_modes: [parent-event-wait, single-terminal-readback, none]
+    primary_modes:
+    - source-task-callback
+    - parent-event-wait
+    fallback_modes:
+    - parent-event-wait
+    - single-terminal-readback
+    - none
     destination: source-task
     progress_updates: terminal-only
     max_terminal_reports: 1
-    report_schema: "same-contract#completion"
+    report_schema: same-contract#completion
     pre_send_validation:
-      required: [required, receipt_writer_argv, dispatch_ref, candidate_ref, receipt_ref, failure_action, payload_binding]
       required_value: true
-      receipt_writer_argv: "canonical delegation validator with --candidate candidate_ref --dispatch dispatch_ref --write-receipt receipt_ref"
+      receipt_writer_argv: canonical delegation validator with --candidate candidate_ref
+        --dispatch dispatch_ref --write-receipt receipt_ref
       failure_action: do-not-deliver-terminal-report
-      payload_binding: "exact-candidate-bytes-with-independent-receipt"
+      payload_binding: exact-candidate-bytes-with-independent-receipt
 completion:
-  candidate_semantics: "This is a terminal-result candidate. It contains no self-asserted validator outcome and remains in custody until a matching receipt is produced."
-  required: [schema_version, record_type, delegation_id, source_task_id, delegated_task_id, subject, preflight, execution, timing, result, evidence, final_state, delivery]
-  subject:
-    required: [expected_commit_sha, observed_commit_sha]
-  preflight:
-    required: [commit_matches, clean_worktree]
-  execution:
-    required: [working_directory, argv]
+  candidate_semantics: This is a terminal-result candidate. It contains no self-asserted
+    validator outcome and remains in custody until a matching receipt is produced.
+  subject: {}
+  preflight: {}
+  execution: {}
   timing:
-    required: [started_at, completed_at, duration_seconds]
-    timestamps: "ISO 8601 with an explicit UTC offset"
+    timestamps: ISO 8601 with an explicit UTC offset
   result:
-    required: [outcome, exit_code, counts]
-    outcomes: [passed, failed, blocked-by-environment, timed-out, interrupted]
-    counts: "null when the runner exposes no counts; otherwise a mapping of non-negative integers"
+    outcomes:
+    - passed
+    - failed
+    - blocked-by-environment
+    - timed-out
+    - interrupted
+    counts: null when the runner exposes no counts; otherwise a mapping of non-negative
+      integers
   evidence:
-    required: [refs, bounded_output]
-    minimum: "at least one non-empty ref or bounded_output"
-  final_state:
-    required: [clean_worktree, tracked_changes]
+    minimum: at least one non-empty ref or bounded_output
+  final_state: {}
   delivery:
-    required: [mode, destination, terminal_report_number]
-    modes: [source-task-callback, parent-event-wait, single-terminal-readback]
+    modes:
+    - source-task-callback
+    - parent-event-wait
+    - single-terminal-readback
     destination: source-task
     terminal_report_number: 1
 validation_receipt:
-  required: [schema_version, record_type, delegation_id, receipt_ref, candidate, dispatch, validator, custody]
-  receipt_ref: "must match dispatch pre_send_validation.receipt_ref"
+  receipt_ref: must match dispatch pre_send_validation.receipt_ref
   candidate:
-    required: [ref, sha256]
-    sha256: "lowercase SHA-256 of the exact candidate file bytes"
+    sha256: lowercase SHA-256 of the exact candidate file bytes
   dispatch:
-    required: [ref, sha256]
-    sha256: "lowercase SHA-256 of the exact dispatch file bytes"
+    sha256: lowercase SHA-256 of the exact dispatch file bytes
   validator:
-    required: [script_sha256, argv, exit_code]
-    script_sha256: "lowercase SHA-256 of the exact canonical validator script bytes"
+    script_sha256: lowercase SHA-256 of the exact canonical validator script bytes
     exit_code: 0
   custody:
-    required: [state, release_scope]
     state: released
-    release_scope: "one matching terminal candidate delivery"
+    release_scope: one matching terminal candidate delivery
 cross_record:
-  required_equal: [delegation_id, subject.commit_sha=subject.expected_commit_sha, execution.working_directory, execution.argv]
-  passed_requires: [expected and observed commit SHA match, preflight commit_matches and clean_worktree are true, exit_code is zero, final worktree is clean with no tracked changes]
+  required_equal:
+  - delegation_id
+  - subject.commit_sha=subject.expected_commit_sha
+  - execution.working_directory
+  - execution.argv
+  passed_requires:
+  - expected and observed commit SHA match
+  - preflight commit_matches and clean_worktree are true
+  - exit_code is zero
+  - final worktree is clean with no tracked changes
 transport_semantics:
   parent_wait_timeout: pending-awaiting-completion
   callback_failure_with_retrievable_terminal_report: recoverable-by-one-terminal-readback
@@ -118,9 +127,909 @@ transport_semantics:
   pre_send_completion_validation: required
   post_validation_record_mutation: prohibited
   callback_payload: exact-candidate-bytes-with-independent-receipt
-  custody_release: "a receipt matching the exact candidate and dispatch bytes is required before one terminal delivery for every terminal outcome"
+  custody_release: a receipt matching the exact candidate and dispatch bytes is required
+    before one terminal delivery for every terminal outcome
 security:
   secret_values_in_envelope: prohibited
   issue_project_merge_release_or_publication_mutation: separately-authorized-only
   delegated_repair: prohibited-by-default
   validated_execution_packet: required-before-dispatch
+record_models:
+  dispatch:
+    '1.2':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.2'
+        record_type:
+          type: string
+          const: external-task-dispatch
+        delegation_id:
+          type: string
+        task_kind:
+          type: string
+        source: &id016
+          type: object
+          properties:
+            task_id_source: &id001
+              type: string
+            task_id: &id019
+              type:
+              - string
+              - 'null'
+            final_integration_owner: *id001
+          required:
+          - task_id_source
+          - final_integration_owner
+          additionalProperties: false
+        objective: &id017
+          type: object
+          properties:
+            goal: *id001
+            non_goals: &id002
+              type: array
+              items: *id001
+          required:
+          - goal
+          - non_goals
+          additionalProperties: false
+        subject:
+          type: object
+          properties:
+            repository_root: *id001
+            commit_sha: *id001
+            clean_worktree_required: &id003
+              type: boolean
+          required:
+          - repository_root
+          - commit_sha
+          - clean_worktree_required
+          additionalProperties: false
+        execution: &id018
+          type: object
+          properties:
+            working_directory: *id001
+            argv: *id002
+            timeout_seconds: &id004
+              type: integer
+          required:
+          - working_directory
+          - argv
+          - timeout_seconds
+          additionalProperties: false
+        execution_packet:
+          type: object
+          properties:
+            schema_ref:
+              type: string
+            packet_ref:
+              type: string
+            packet_sha256:
+              type: string
+            subject_sha:
+              type: string
+            validator_argv: *id002
+            validation_outcome: *id001
+          required:
+          - schema_ref
+          - packet_ref
+          - packet_sha256
+          - subject_sha
+          - validator_argv
+          - validation_outcome
+          additionalProperties: false
+        permissions:
+          type: object
+          properties:
+            read_scope: *id002
+            write_scope: *id002
+            repair_allowed: *id003
+            external_mutations: *id002
+            secret_values: *id001
+          required:
+          - read_scope
+          - write_scope
+          - repair_allowed
+          - external_mutations
+          - secret_values
+          additionalProperties: false
+        completion_delivery:
+          type: object
+          properties:
+            primary:
+              type: string
+            fallback:
+              type: string
+            destination:
+              type: string
+            progress_updates:
+              type: string
+            max_terminal_reports: *id004
+            report_schema: *id001
+            pre_send_validation:
+              type: object
+              properties:
+                required: *id003
+                receipt_writer_argv: *id002
+                dispatch_ref:
+                  type: string
+                candidate_ref:
+                  type: string
+                receipt_ref:
+                  type: string
+                failure_action:
+                  type: string
+                payload_binding:
+                  type: string
+              required:
+              - required
+              - receipt_writer_argv
+              - dispatch_ref
+              - candidate_ref
+              - receipt_ref
+              - failure_action
+              - payload_binding
+              additionalProperties: false
+          required:
+          - primary
+          - fallback
+          - destination
+          - progress_updates
+          - max_terminal_reports
+          - report_schema
+          - pre_send_validation
+          additionalProperties: false
+        stop_conditions: *id002
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - task_kind
+      - source
+      - objective
+      - subject
+      - execution
+      - execution_packet
+      - permissions
+      - completion_delivery
+      - stop_conditions
+      additionalProperties: false
+    '1.3':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.3'
+        record_type:
+          type: string
+          const: external-task-dispatch
+        delegation_id:
+          type: string
+        task_kind:
+          type: string
+        source:
+          type: object
+          properties:
+            task_id_source: &id005
+              type: string
+            task_id:
+              type:
+              - string
+              - 'null'
+            final_integration_owner: *id005
+          required:
+          - task_id_source
+          - final_integration_owner
+          additionalProperties: false
+        objective:
+          type: object
+          properties:
+            goal: *id005
+            non_goals: &id006
+              type: array
+              items: *id005
+          required:
+          - goal
+          - non_goals
+          additionalProperties: false
+        subject:
+          type: object
+          properties:
+            repository_root: *id005
+            commit_sha: *id005
+            clean_worktree_required: &id007
+              type: boolean
+          required:
+          - repository_root
+          - commit_sha
+          - clean_worktree_required
+          additionalProperties: false
+        execution:
+          type: object
+          properties:
+            working_directory: *id005
+            argv: *id006
+            timeout_seconds: &id008
+              type: integer
+          required:
+          - working_directory
+          - argv
+          - timeout_seconds
+          additionalProperties: false
+        execution_packet:
+          type: object
+          properties:
+            schema_ref:
+              type: string
+            packet_ref:
+              type: string
+            packet_sha256:
+              type: string
+            subject_sha:
+              type: string
+            validator_argv: *id006
+            validation_outcome: *id005
+          required:
+          - schema_ref
+          - packet_ref
+          - packet_sha256
+          - subject_sha
+          - validator_argv
+          - validation_outcome
+          additionalProperties: false
+        permissions:
+          type: object
+          properties:
+            read_scope: *id006
+            write_scope: *id006
+            repair_allowed: *id007
+            external_mutations: *id006
+            secret_values: *id005
+          required:
+          - read_scope
+          - write_scope
+          - repair_allowed
+          - external_mutations
+          - secret_values
+          additionalProperties: false
+        completion_delivery:
+          type: object
+          properties:
+            primary:
+              type: string
+            fallback:
+              type: string
+            destination:
+              type: string
+            progress_updates:
+              type: string
+            max_terminal_reports: *id008
+            report_schema: *id005
+            pre_send_validation:
+              type: object
+              properties:
+                required: *id007
+                receipt_writer_argv: *id006
+                dispatch_ref:
+                  type: string
+                candidate_ref:
+                  type: string
+                receipt_ref:
+                  type: string
+                failure_action:
+                  type: string
+                payload_binding:
+                  type: string
+              required:
+              - required
+              - receipt_writer_argv
+              - dispatch_ref
+              - candidate_ref
+              - receipt_ref
+              - failure_action
+              - payload_binding
+              additionalProperties: false
+          required:
+          - primary
+          - fallback
+          - destination
+          - progress_updates
+          - max_terminal_reports
+          - report_schema
+          - pre_send_validation
+          additionalProperties: false
+        stop_conditions: *id006
+        authority_manifest: &id015
+          type: array
+          items:
+            type: object
+            properties:
+              path: *id001
+              sha256: *id001
+            required:
+            - path
+            - sha256
+            additionalProperties: false
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - task_kind
+      - source
+      - objective
+      - subject
+      - execution
+      - execution_packet
+      - permissions
+      - completion_delivery
+      - stop_conditions
+      - authority_manifest
+      additionalProperties: false
+  completion:
+    '1.2':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.2'
+        record_type:
+          type: string
+          const: external-task-completion
+        delegation_id:
+          type: string
+        source_task_id:
+          type: string
+        delegated_task_id:
+          type: string
+        subject:
+          type: object
+          properties:
+            expected_commit_sha:
+              type: string
+            observed_commit_sha:
+              type: string
+          required:
+          - expected_commit_sha
+          - observed_commit_sha
+          additionalProperties: false
+        preflight:
+          type: object
+          properties:
+            commit_matches: *id003
+            clean_worktree: *id003
+          required:
+          - commit_matches
+          - clean_worktree
+          additionalProperties: false
+        execution:
+          type: object
+          properties:
+            working_directory: *id001
+            argv: *id002
+          required:
+          - working_directory
+          - argv
+          additionalProperties: false
+        timing:
+          type: object
+          properties:
+            started_at:
+              type: string
+            completed_at:
+              type: string
+            duration_seconds:
+              type: number
+          required:
+          - started_at
+          - completed_at
+          - duration_seconds
+          additionalProperties: false
+        result:
+          type: object
+          properties:
+            outcome: *id001
+            exit_code:
+              type:
+              - integer
+              - 'null'
+            counts:
+              type:
+              - object
+              - 'null'
+              properties: {}
+              required: []
+              additionalProperties:
+                type: integer
+                minimum: 0
+          required:
+          - outcome
+          - exit_code
+          - counts
+          additionalProperties: false
+        evidence:
+          type: object
+          properties:
+            refs: *id002
+            bounded_output: *id001
+          required:
+          - refs
+          - bounded_output
+          additionalProperties: false
+        final_state:
+          type: object
+          properties:
+            clean_worktree: *id003
+            tracked_changes: *id002
+          required:
+          - clean_worktree
+          - tracked_changes
+          additionalProperties: false
+        delivery:
+          type: object
+          properties:
+            mode: *id001
+            destination: *id001
+            terminal_report_number: *id004
+          required:
+          - mode
+          - destination
+          - terminal_report_number
+          additionalProperties: false
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - source_task_id
+      - delegated_task_id
+      - subject
+      - preflight
+      - execution
+      - timing
+      - result
+      - evidence
+      - final_state
+      - delivery
+      additionalProperties: false
+    '1.3':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.3'
+        record_type:
+          type: string
+          const: external-task-completion
+        delegation_id:
+          type: string
+        source_task_id:
+          type: string
+        delegated_task_id:
+          type: string
+        subject:
+          type: object
+          properties:
+            expected_commit_sha:
+              type: string
+            observed_commit_sha:
+              type: string
+          required:
+          - expected_commit_sha
+          - observed_commit_sha
+          additionalProperties: false
+        preflight:
+          type: object
+          properties:
+            commit_matches: &id009
+              type: boolean
+            clean_worktree: *id009
+          required:
+          - commit_matches
+          - clean_worktree
+          additionalProperties: false
+        execution:
+          type: object
+          properties:
+            working_directory: &id010
+              type: string
+            argv: &id011
+              type: array
+              items: *id010
+          required:
+          - working_directory
+          - argv
+          additionalProperties: false
+        timing:
+          type: object
+          properties:
+            started_at:
+              type: string
+            completed_at:
+              type: string
+            duration_seconds:
+              type: number
+          required:
+          - started_at
+          - completed_at
+          - duration_seconds
+          additionalProperties: false
+        result:
+          type: object
+          properties:
+            outcome: *id010
+            exit_code:
+              type:
+              - integer
+              - 'null'
+            counts:
+              type:
+              - object
+              - 'null'
+              properties: {}
+              required: []
+              additionalProperties:
+                type: integer
+                minimum: 0
+          required:
+          - outcome
+          - exit_code
+          - counts
+          additionalProperties: false
+        evidence:
+          type: object
+          properties:
+            refs: *id011
+            bounded_output: *id010
+          required:
+          - refs
+          - bounded_output
+          additionalProperties: false
+        final_state:
+          type: object
+          properties:
+            clean_worktree: *id009
+            tracked_changes: *id011
+          required:
+          - clean_worktree
+          - tracked_changes
+          additionalProperties: false
+        delivery:
+          type: object
+          properties:
+            mode: *id010
+            destination: *id010
+            terminal_report_number:
+              type: integer
+          required:
+          - mode
+          - destination
+          - terminal_report_number
+          additionalProperties: false
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - source_task_id
+      - delegated_task_id
+      - subject
+      - preflight
+      - execution
+      - timing
+      - result
+      - evidence
+      - final_state
+      - delivery
+      additionalProperties: false
+  receipt:
+    '1.2':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.2'
+        record_type:
+          type: string
+          const: external-task-validation-receipt
+        delegation_id:
+          type: string
+        receipt_ref:
+          type: string
+        candidate: &id012
+          type: object
+          properties:
+            ref: *id001
+            sha256: *id001
+          required:
+          - ref
+          - sha256
+          additionalProperties: false
+        dispatch: *id012
+        validator:
+          type: object
+          properties:
+            script_sha256: *id001
+            argv: *id002
+            exit_code: *id004
+          required:
+          - script_sha256
+          - argv
+          - exit_code
+          additionalProperties: false
+        custody:
+          type: object
+          properties:
+            state:
+              type: string
+            release_scope:
+              type: string
+          required:
+          - state
+          - release_scope
+          additionalProperties: false
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - receipt_ref
+      - candidate
+      - dispatch
+      - validator
+      - custody
+      additionalProperties: false
+    '1.3':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.3'
+        record_type:
+          type: string
+          const: external-task-validation-receipt
+        delegation_id:
+          type: string
+        receipt_ref:
+          type: string
+        candidate: &id014
+          type: object
+          properties:
+            ref: &id013
+              type: string
+            sha256: *id013
+          required:
+          - ref
+          - sha256
+          additionalProperties: false
+        dispatch: *id014
+        validator:
+          type: object
+          properties:
+            script_sha256: *id013
+            argv:
+              type: array
+              items: *id013
+            exit_code:
+              type: integer
+          required:
+          - script_sha256
+          - argv
+          - exit_code
+          additionalProperties: false
+        custody:
+          type: object
+          properties:
+            state:
+              type: string
+            release_scope:
+              type: string
+          required:
+          - state
+          - release_scope
+          additionalProperties: false
+        authority_manifest: *id015
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - receipt_ref
+      - candidate
+      - dispatch
+      - validator
+      - custody
+      - authority_manifest
+      additionalProperties: false
+  prepare_request:
+    '1.0':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.0'
+        record_type:
+          type: string
+          const: execution-prepare-request
+        delegation_id:
+          type: string
+        task_kind:
+          type: string
+        expected_commit_sha:
+          type: string
+        owning_skill:
+          type: string
+        role:
+          type: object
+          properties:
+            path:
+              type: string
+            applicability:
+              type: string
+            reason:
+              type: string
+          required:
+          - path
+          - applicability
+          - reason
+          additionalProperties: false
+        source: *id016
+        objective: *id017
+        execution: *id018
+        network: *id001
+        delivery:
+          type: object
+          properties:
+            primary:
+              type: string
+            fallback:
+              type: string
+          required:
+          - primary
+          - fallback
+          additionalProperties: false
+        stop_conditions: *id002
+        retry:
+          type: object
+          properties:
+            attempt: *id004
+            budget: *id004
+            authorization_refs: *id002
+          required:
+          - attempt
+          - budget
+          - authorization_refs
+          additionalProperties: false
+        review_input: *id019
+      required:
+      - schema_version
+      - record_type
+      - delegation_id
+      - task_kind
+      - expected_commit_sha
+      - owning_skill
+      - role
+      - source
+      - objective
+      - execution
+      - network
+      - delivery
+      - stop_conditions
+      - retry
+      additionalProperties: false
+  observations:
+    '1.0':
+      type: object
+      properties:
+        schema_version:
+          type: string
+          const: '1.0'
+        record_type:
+          type: string
+          const: execution-observations
+        source_task_id: *id001
+        delegated_task_id: *id001
+        observed_commit_sha: *id001
+        preflight:
+          type: object
+          properties:
+            commit_matches: &id020
+              type: boolean
+            clean_worktree: *id020
+          required:
+          - commit_matches
+          - clean_worktree
+          additionalProperties: false
+        execution:
+          type: object
+          properties:
+            working_directory: &id021
+              type: string
+            argv:
+              type: array
+              items: *id021
+          required:
+          - working_directory
+          - argv
+          additionalProperties: false
+        timing:
+          type: object
+          properties:
+            started_at:
+              type: string
+            completed_at:
+              type: string
+            duration_seconds:
+              type: number
+          required:
+          - started_at
+          - completed_at
+          - duration_seconds
+          additionalProperties: false
+        result:
+          type: object
+          properties:
+            outcome:
+              type: string
+            exit_code:
+              type:
+              - integer
+              - 'null'
+            counts:
+              type:
+              - object
+              - 'null'
+              properties: {}
+              required: []
+              additionalProperties:
+                type: integer
+                minimum: 0
+          required:
+          - outcome
+          - exit_code
+          - counts
+          additionalProperties: false
+        evidence:
+          type: object
+          properties:
+            refs:
+              type: array
+              items: &id022
+                type: string
+            bounded_output: *id022
+          required:
+          - refs
+          - bounded_output
+          additionalProperties: false
+        final_state:
+          type: object
+          properties:
+            clean_worktree:
+              type: boolean
+            tracked_changes:
+              type: array
+              items:
+                type: string
+          required:
+          - clean_worktree
+          - tracked_changes
+          additionalProperties: false
+        delivery_mode: *id001
+      required:
+      - schema_version
+      - record_type
+      - source_task_id
+      - delegated_task_id
+      - observed_commit_sha
+      - preflight
+      - execution
+      - timing
+      - result
+      - evidence
+      - final_state
+      - delivery_mode
+      additionalProperties: false
+migration:
+  supported:
+  - dispatch:1.2->1.3
+  - completion:1.2->1.3
+  receipt: not-supported; historical receipts require their original immutable validation
+    authority
+  execution_facts: preserve exactly; never infer
+  output: new artifact only; source bytes remain unchanged

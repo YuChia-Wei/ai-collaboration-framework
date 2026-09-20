@@ -2247,30 +2247,20 @@ source_governance_context_available() {
 }
 
 run_source_repository_governance_checks() {
-    local description
+    local id description reason
     if ! source_governance_context_available; then
-        for description in \
-            "Source Governance Manifest Registry" \
-            "Validation Freeze And Evidence Reuse Contract" \
-            "Validation Lifecycle Fail-Closed Tests" \
-            "Bounded Validation Dependency Observation" \
-            "Agent Execution Guardrails Contract" \
-            "Agent Execution Guardrails Fail-Closed Tests" \
-            "Terminal Issue Closure Contract" \
-            "Terminal Issue Closure Fail-Closed Tests" \
-            "Repository Identity Drift Fail-Closed Tests"; do
+        for id in "${CHECK_IDS[@]}"; do
+            [ "${CHECK_APPLICABILITY[$id]}" = "source-governance" ] || continue
+            description=${CHECK_DESCRIPTION[$id]}
+            reason="source governance registry not packaged"
+            case "$id" in
+                governance-workflow-contract|github-workflow-contract)
+                    reason="source CI workflow not packaged" ;;
+            esac
             record_selected_without_execution \
                 "$description" \
                 "not-applicable" \
-                "source governance registry not packaged"
-        done
-        for description in \
-            "Governance Pull-Request Workflow Contract" \
-            "GitHub Workflow Lifecycle Contract"; do
-            record_selected_without_execution \
-                "$description" \
-                "not-applicable" \
-                "source CI workflow not packaged"
+                "$reason"
         done
         return
     fi
@@ -2297,6 +2287,18 @@ run_source_repository_governance_checks() {
 
     run_command_check "python .ai/scripts/tests/test_agent_execution_guardrails.py -v" \
         "Agent Execution Guardrails Fail-Closed Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_execution_artifacts.py -v" \
+        "Execution Artifact Preparation And Custody Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py -v" \
+        "External Task Candidate And Receipt Contract Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/execution-artifacts.py templates --check" \
+        "Execution Artifact Generated Templates" \
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/validate-terminal-issue-closure.py" \

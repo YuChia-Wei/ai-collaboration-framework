@@ -869,7 +869,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
-    def test_gwt_006_given_no_spec_inputs_when_quick_runs_then_spec_is_not_applicable(self) -> None:
+    def test_gwt_006_given_no_spec_or_source_context_when_quick_runs_then_selected_checks_are_not_applicable(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
             fixture.restrict_profile_to(
@@ -877,10 +877,16 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 "spec-implementation",
                 "source-governance-manifest",
                 "governance-workflow-contract",
+                "execution-artifacts-tests",
+                "external-task-delegation-tests",
+                "execution-artifact-templates",
             )
             # Given both conditional spec inputs and source release context are absent.
-            # When quick mode reaches spec compliance.
-            result = fixture.execute("--quick")
+            # When quick mode reaches the selected conditional checks.
+            result = fixture.execute(
+                "--quick",
+                environment={"AI_CONTEXT_VALIDATION_LOG_DIR": str(fixture.validation_logs)},
+            )
 
             # Then target-inapplicable checks and optional inputs record N/A without failing.
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
@@ -889,6 +895,14 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertIn("Spec Implementation Compliance", result.stdout)
             self.assertRegex(result.stdout, r"not-applicable=\d+")
             self.assertRegex(result.stdout, r"Required Failed: .*0")
+            invocation, = fixture.invocation_directories()
+            for check_id in (
+                "source-governance-manifest", "governance-workflow-contract",
+                "execution-artifacts-tests", "external-task-delegation-tests",
+                "execution-artifact-templates",
+            ):
+                with self.subTest(check_id=check_id):
+                    self.assertIn("outcome=not-applicable", (invocation / f"{check_id}.log").read_text())
             self.assertFalse(
                 any(
                     "test_ai_context_version_governance.py" in line
@@ -896,6 +910,9 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                     or "validate-source-governance.py" in line
                     or "test_repository_identity.py" in line
                     or "test_governance_workflow_contract.py" in line
+                    or "test_execution_artifacts.py" in line
+                    or "test_external_task_delegation_contract.py" in line
+                    or "execution-artifacts.py" in line
                     for line in fixture.sentinel()
                 )
             )

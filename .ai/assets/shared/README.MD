@@ -13,6 +13,9 @@ Reusable, technology-specific agent-facing context belongs under `.ai/assets/tec
 - [CLI Execution Routing Contract](CLI-EXECUTION-ROUTING-CONTRACT.md)
 - [Bounded Validation Dependency Observation Contract](VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md)
 - `cli-execution-routing.schema.yaml` for ignored, per-clone CLI route bindings
+- `agent-execution-guardrails.schema.yaml` owns versioned packet structure;
+  `.ai/scripts/execution-artifacts.py` prepares and checks artifacts together
+  with the external-task schema, without duplicating behavioral validators
 - prompt packages
 - reusable templates
 - examples

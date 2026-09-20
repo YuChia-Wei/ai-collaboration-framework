@@ -63,9 +63,12 @@ authority paths with exact byte digests. The validator checks the clean fixed
 execution checkout, Git content identities and authority bytes and returns
 input, criteria and authority digests. The owning task binds and supplies that
 exact input; dispatch prose is not a replacement for missing machine input.
-Full packet v1.0 remains compatible but does not by itself encode these review
-inputs. Validate and bind the review input separately under the dispatch
-contract. Bounded review needs neither a full packet nor a snapshot lease.
+Fresh full-review dispatch uses packet v1.1 and binds the exact review-input
+reference and input, criteria, authority and content-subject digests. A legacy
+v1.0 packet remains readable, but cannot authorize a fresh behavioral review
+without that binding. Bounded review needs neither a full packet nor a snapshot
+lease. Use `execution-artifacts.py prepare` to assemble the current packet and
+dispatch from one request; its preparation result is not an executed review.
 
 Preflight reports preparation readiness only. Missing or malformed inputs are a
 `preparation-failure`, not a behavioral finding or an executed review. Preserve

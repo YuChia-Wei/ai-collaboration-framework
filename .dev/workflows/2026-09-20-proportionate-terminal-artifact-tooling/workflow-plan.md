@@ -7,9 +7,9 @@
 - `branch`: `codex/2026-09-20-proportionate-terminal-artifact-tooling`
 - `base_branch`: `main`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `validation`
 - `created_at`: `2026-09-20T19:00:23+08:00`
-- `updated_at`: `2026-09-20T19:00:23+08:00`
+- `updated_at`: `2026-09-20T21:17:10+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -42,13 +42,19 @@ Separate per-Issue acceptance IDs and evidence will be retained in the remediati
 - Unknown version/authority or missing actual observations fail closed.
 - First slice excludes broad lease/retry/ledger rewrites.
 
+## Owner-Requested Scenario Cleanup
+
+The owner requested review of the affected functional scenarios, removal of narrow/useless/duplicate tests and diagnosis of repeated failures. This authorizes the bounded #312/#313 scenario and immediate validation-chain corrections recorded in the remediation report. It does not waive evidence, alter retry authority or authorize the previously denied lifecycle command. Three redundant methods were removed; remaining assertions now target behavioral boundaries. Source-governance applicability is derived from the registry, and registration/current-review documentation is synchronized.
+
 ## Resume Checkpoint
 
-- Completed: live owner authorization and base read-back; dedicated clean branch.
-- Current: ISS313 contract implemented; ISS312 tooling begins after local checkpoint.
-- Next: simplify canonical risk routing and receipt presentation checks, then implement #312 using integrated #310 receipt writer.
-- Validation: workflow bootstrap passed; ISS313 focused host tests passed (47 guardrail, 61 terminal, 10 language), static and AI-context checks passed. Initial sandbox fixture ACL failures remain recorded in task results.
-- No external handoff, integration or release action performed.
+- Completed: live authorization/base read-back, dedicated branch, committed #313 contract and focused tests; #312 implementation and narrow tests; real CLI synthetic-fixture smoke.
+- Current: #312 is ready for its implementation commit; the owner directly ran lifecycle validation and reported its passing output. Full independent verification remains pending. See `reports/remediation-report.md` for separate acceptance and all preserved failures.
+- Resolved checkpoint: prior automated lifecycle retry was denied, but the owner subsequently executed the exact command and supplied passing stdout. Record it as user-reported evidence without inventing process metadata. Prior failures/denial remain retained and no agent rerun is needed.
+- Next: validate the tooling commit message and commit; prepare the full review input/packet/lease on that immutable subject, obtain independent review, then reconcile the final ledger/report/workflow.
+- Tooling test logs/hashes: `.dev/ai-context/local/issue312-validation/`; parent checks and smoke: `.dev/ai-context/local/issue-312-313/`.
+- Tracked writer: parent only; implementation workers have returned ownership. No active frozen lease exists.
+- No push, PR, merge, Issue/Project mutation or release action performed.
 
 ## Contract Checkpoint
 
