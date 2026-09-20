@@ -21,11 +21,15 @@ The packet and external-task schemas own their versioned `record_models`;
 validators retain behavioral rules. Unknown model keywords, unknown fields,
 coerced booleans/numbers, and unsupported versions fail closed with batch errors.
 
+Replace the angle-bracket placeholders before running these commands. Supply
+the request, observations and migration-source files; prepare creates the new
+output directory and dispatch.
+
 ```text
-python .ai/scripts/execution-artifacts.py prepare --request .dev/ai-context/local/request.yaml --output .dev/ai-context/local/new-run
-python .ai/scripts/execution-artifacts.py finalize --observations .dev/ai-context/local/observations.yaml --dispatch .dev/ai-context/local/new-run/dispatch.yaml
-python .ai/scripts/execution-artifacts.py check .dev/ai-context/local/new-run/receipt.yaml --dispatch .dev/ai-context/local/new-run/dispatch.yaml
-python .ai/scripts/execution-artifacts.py migrate --source .dev/ai-context/local/old.yaml --to-version 1.3 --dry-run
+python .ai/scripts/execution-artifacts.py prepare --request ".dev/ai-context/local/<request>.yaml" --output ".dev/ai-context/local/<new-run>"
+python .ai/scripts/execution-artifacts.py finalize --observations ".dev/ai-context/local/<observations>.yaml" --dispatch ".dev/ai-context/local/<new-run>/dispatch.yaml"
+python .ai/scripts/execution-artifacts.py check ".dev/ai-context/local/<new-run>/receipt.yaml" --dispatch ".dev/ai-context/local/<new-run>/dispatch.yaml"
+python .ai/scripts/execution-artifacts.py migrate --source ".dev/ai-context/local/<old>.yaml" --to-version 1.3 --dry-run
 python .ai/scripts/execution-artifacts.py templates --check
 ```
 
