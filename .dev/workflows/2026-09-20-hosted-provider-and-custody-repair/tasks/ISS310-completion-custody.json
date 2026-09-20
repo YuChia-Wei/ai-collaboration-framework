@@ -7,9 +7,9 @@
   "task_id": "ISS310-completion-custody",
   "owner_skill": "software-development-orchestrator",
   "related_plan_id": "development-plan-2026-09-20-hosted-provider-and-custody-repair",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-20T13:11:34+08:00",
-  "updated_at": "2026-09-20T17:42:45+08:00",
+  "updated_at": "2026-09-20T18:13:45+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "medium",
@@ -55,7 +55,7 @@
     "deferred_items": ["Normal future package planning and any downstream adoption."]
   },
   "results": {
-    "summary": "Replaced the prospective self-pass assertion with a completion candidate, independently written receipt, exact-byte custody binding, and terminal delivery verification; then hardened it to reject candidate self-assertions, unsafe or unbound artifact references, receipt-writer and execution-packet validator argv drift, receipt overwrite, Windows alternate-data-stream paths, delivery modes outside the dispatch, conflicting receipt-writing CLI sources, undeclared dispatch or receipt fields, malformed dispatch task_kind values, malformed completion evidence.bounded_output values, detached or duplicate-key raw YAML bytes, noncanonical receipt-verification paths, mixed verification transports, transport/custody schema drift, YAML boolean or equality-equivalent float integer values, and raw-YAML mappings whose nested value types differ from separately supplied candidate or dispatch mappings. The F-009-01 source repair has focused evidence; fresh independent audit remains required.",
+    "summary": "Replaced the prospective self-pass assertion with a completion candidate, independently written receipt, exact-byte custody binding, and terminal delivery verification; then hardened it to reject candidate self-assertions, unsafe or unbound artifact references, receipt-writer and execution-packet validator argv drift, receipt overwrite, Windows alternate-data-stream paths, delivery modes outside the dispatch, conflicting receipt-writing CLI sources, undeclared dispatch or receipt fields, malformed dispatch task_kind values, malformed completion evidence.bounded_output values, detached or duplicate-key raw YAML bytes, noncanonical receipt-verification paths, mixed verification transports, transport/custody schema drift, YAML boolean or equality-equivalent float integer values, and raw-YAML mappings whose nested value types differ from separately supplied candidate or dispatch mappings. Fixed-head source-conformance audit 012 passed at `4607dd8d090ee8f915a615cb787955bac0019736`; provider admission remains a separate terminal gate.",
     "files_changed": [
       ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml",
       ".ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml",
@@ -72,7 +72,7 @@
     ],
     "role_execution_aggregation": [],
     "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
-    "validation_evidence": ["No actual external task was dispatched; focused tests are supporting contract evidence only and do not relabel the historical blocked outer receipt.", "The initial independent audit reproductions now fail closed in focused negative tests.", "Fixed-head audit B1 is locally addressed by negative coverage.", "Fixed-head audit B2 is locally addressed by exact-argv negative coverage.", "Fixed-head audit B3 is locally addressed by transport, CLI-mode, and field-closure negative coverage.", "Fixed-head audit B4 is locally addressed by task_kind type negative coverage.", "Fixed-head audit B5 and the targeted custody sweep are locally addressed by bounded_output type, strict byte-to-mapping, duplicate-key, canonical verification-path, mixed-transport, and schema-semantic negative coverage.", "Fixed-head audit B10 is locally addressed by bool-safe exact-integer negative coverage.", "Fixed-head audit F-009-01 is locally addressed by recursive exact-type comparison and candidate/dispatch raw-YAML differential regressions; a fresh independent audit is still required before admission."],
+    "validation_evidence": ["No actual external task was dispatched; focused tests are supporting contract evidence only and do not relabel the historical blocked outer receipt.", "The initial independent audit reproductions now fail closed in focused negative tests.", "Fixed-head audit B1 is locally addressed by negative coverage.", "Fixed-head audit B2 is locally addressed by exact-argv negative coverage.", "Fixed-head audit B3 is locally addressed by transport, CLI-mode, and field-closure negative coverage.", "Fixed-head audit B4 is locally addressed by task_kind type negative coverage.", "Fixed-head audit B5 and the targeted custody sweep are locally addressed by bounded_output type, strict byte-to-mapping, duplicate-key, canonical verification-path, mixed-transport, and schema-semantic negative coverage.", "Fixed-head audit B10 is locally addressed by bool-safe exact-integer negative coverage.", "Fixed-head audit F-009-01 is locally addressed by recursive exact-type comparison and candidate/dispatch raw-YAML differential regressions.", "Fixed-head source-conformance audit 012 passed at the exact current source repair head; provider admission remains a separate terminal gate."],
     "commits": ["containing-commit"],
     "finding_status": "addressed",
     "follow_up_needed": true

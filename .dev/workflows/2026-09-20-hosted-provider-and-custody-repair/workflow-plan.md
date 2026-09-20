@@ -7,8 +7,8 @@
 - `owner_skill`: `software-development-orchestrator`
 - `branch`: `codex/2026-09-20-hosted-provider-and-custody-repair`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `updated_at`: `2026-09-20T17:42:45+08:00`
+- `status`: `completed`
+- `updated_at`: `2026-09-20T18:13:45+08:00`
 - `created_at`: `2026-09-20T13:11:34+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
@@ -36,7 +36,7 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 | Issue | PR disposition | Reason / next terminal gate |
 | --- | --- | --- |
 | #309 | `Refs #309` | The code improves diagnosis, but a new hosted Project read requires an owner-reviewed credential boundary and a future authorized release execution. |
-| #310 | `Closes #310` | The F-009-01 raw-bytes type-exactness repair and focused validation are complete; terminal closure remains subject to a fresh current-head independent audit, hosted required checks, admission, integration, and post-merge read-back. |
+| #310 | `Closes #310` | The F-009-01 raw-bytes type-exactness repair, focused validation, and fresh source-conformance audit are complete; terminal closure remains subject to current hosted checks, admission, integration, and post-merge read-back. |
 
 ## Distribution Boundary
 
@@ -45,8 +45,8 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 
 ## Current Checkpoint
 
-- Current task: `ISS310-completion-custody`; the workflow resumed after a fixed-head audit found F-009-01.
-- Last completed action: replace ordinary raw-YAML mapping equality with recursive exact-type comparison and add focused candidate/dispatch regressions for YAML `true` and `1.0` versus an integer contract value; 35 focused tests passed.
-- Exact next action: commit and push the F-009-01 corrective change to PR #311, synchronize its declared per-Issue disposition, then complete a fresh independent audit, current hosted checks, live admission, integration, and required provider read-back; do not merge or close either Issue before those gates complete.
+- Current task: none; source implementation tasks are completed.
+- Last completed action: fixed-head source-conformance audit 012 passed at `4607dd8d090ee8f915a615cb787955bac0019736` after verifying B1-B10 and F-009-01 against the canonical subject digest.
+- Exact next action: complete the provider-owned terminal sequence for PR #311: strict review receipt, current live admission, integration, and required post-merge read-back; do not merge or close either Issue before those gates complete.
 - Preserved facts: v0.18.0 public assets were verified historically; run `35487203277` remains failed. The historical downstream outer receipt was blocked and its custody was released under an explicit exception.
 - No cross-session handoff is required.
