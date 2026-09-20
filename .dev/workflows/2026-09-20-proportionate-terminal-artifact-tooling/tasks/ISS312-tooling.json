@@ -1,0 +1,47 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISS312-tooling",
+  "workflow_id": "2026-09-20-proportionate-terminal-artifact-tooling",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-09-20T19:00:23+08:00",
+  "updated_at": "2026-09-20T19:00:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Versioned shared structure, deterministic prepare/finalize/migration and diagnostics",
+    "files": [],
+    "constraints": [
+      "Preserve historical outcomes and actual-execution boundaries",
+      "One tracked writer per worktree"
+    ],
+    "non_goals": [
+      "Issue 309 credentials",
+      "Issues 307 and 308",
+      "Push, PR, merge, Issue closure, tag, publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Implement accepted bounded contract",
+      "Run focused independent behavior checks",
+      "Record separate issue acceptance and commit"
+    ],
+    "validation": [],
+    "last_completed_step": "Owner authorization verified; current main includes issue 310",
+    "next_action": "Follow the simplified contract after ISS313"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}
