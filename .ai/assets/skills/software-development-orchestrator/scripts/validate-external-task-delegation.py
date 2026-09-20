@@ -80,8 +80,9 @@ def iso_with_offset(value: object) -> bool:
 def contained_path(value: object) -> Path | None:
     if not non_empty_string(value):
         return None
-    candidate = Path(str(value))
-    if candidate.is_absolute() or ".." in candidate.parts:
+    raw_path = str(value)
+    candidate = Path(raw_path)
+    if candidate.is_absolute() or ".." in candidate.parts or any(":" in component for component in raw_path.replace("\\", "/").split("/")):
         return None
     resolved = (ROOT / candidate).resolve()
     return resolved if resolved == ROOT or ROOT in resolved.parents else None

@@ -45,7 +45,7 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 ## Current Checkpoint
 
 - Current task: none; both implementation tasks are completed.
-- Last completed action: #310 audit remediation passed its focused 21-test regression module and schema-only validation, including negative custody cases.
+- Last completed action: #310 fixed-head audit B1 remediation passed its focused 22-test regression module and schema-only validation, including Windows alternate-data-stream custody rejection.
 - Exact next action: push the corrective commit to PR #311, update its declared per-Issue disposition, and do not merge or close either Issue until current-head review, hosted checks, live admission, integration, and required provider read-back are complete.
 - Preserved facts: v0.18.0 public assets were verified historically; run `35487203277` remains failed. The historical downstream outer receipt was blocked and its custody was released under an explicit exception.
 - No cross-session handoff is required.

@@ -169,6 +169,26 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
             )
         self.assertEqual(["receipt writing refuses to overwrite a pre-existing output"], errors)
 
+    def test_gwt_002j_given_ads_custody_refs_then_dispatch_and_write_request_reject_them(self) -> None:
+        for field in ("candidate_ref", "dispatch_ref", "receipt_ref"):
+            with self.subTest(pre_send_field=field):
+                dispatch = valid_dispatch()
+                pre_send = dispatch["completion_delivery"]["pre_send_validation"]
+                pre_send[field] = f"{pre_send[field]}:stream"
+                pre_send["receipt_writer_argv"] = DELEGATION.canonical_receipt_writer_argv(
+                    pre_send["candidate_ref"], pre_send["dispatch_ref"], pre_send["receipt_ref"]
+                )
+                errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+                self.assertTrue(any(f"{field} must be a canonical contained" in error for error in errors))
+
+        safe_paths = [Path(CANDIDATE_REF), Path(DISPATCH_REF), Path(RECEIPT_REF)]
+        for index, option in enumerate(("--candidate", "--dispatch", "--write-receipt")):
+            with self.subTest(write_option=option):
+                paths = safe_paths.copy()
+                paths[index] = Path(f"{paths[index]}:stream")
+                errors = DELEGATION.validate_receipt_write_request(*paths, valid_dispatch())
+                self.assertTrue(any(f"{option} path must exactly match" in error for error in errors))
+
     def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
         dispatch, candidate = valid_dispatch(), valid_candidate()
         dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
