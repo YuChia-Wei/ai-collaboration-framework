@@ -10,12 +10,12 @@ pull_request:
 
     - Make GitHub CLI's opaque hosted `unknown owner type` Project failure actionable without exposing or changing provider credentials.
     - Replace the external-task completion self-validation cycle with an exact-byte candidate, independent receipt, and custody-bound terminal delivery.
-    - Harden receipt custody after independent audit: candidates reject self-asserted validation; receipt-writer CLI modes, dispatch-selected delivery transport, and dispatch/receipt representations are fail-closed; output creation is exclusive; execution-packet validator invocation is canonical; and Windows alternate-data-stream paths are rejected.
+    - Harden receipt custody after independent audit: candidates reject self-asserted validation; dispatch task kind, receipt-writer CLI modes, dispatch-selected delivery transport, and dispatch/receipt representations are fail-closed; output creation is exclusive; execution-packet validator invocation is canonical; and Windows alternate-data-stream paths are rejected.
 
     ## Validation
 
     - #309: `py -3 .ai/scripts/tests/test_release_provider_reconciliation.py` — 12 focused tests passed in the permitted local disposable-fixture environment. The original hosted failure remains preserved.
-    - #310: `py -3 .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py` — 25 focused contract tests passed.
+    - #310: `py -3 .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py` — 26 focused contract tests passed.
     - #310: `py -3 .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py --schema-only` — passed.
 
     ## Issue disposition

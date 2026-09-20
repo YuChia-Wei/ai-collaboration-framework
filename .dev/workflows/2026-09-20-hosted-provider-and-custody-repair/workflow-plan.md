@@ -45,7 +45,7 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 ## Current Checkpoint
 
 - Current task: none; both implementation tasks are completed.
-- Last completed action: #310 fixed-head audit B3 remediation passed its focused 25-test regression module and schema-only validation, binding completion delivery to the dispatched transport, making receipt-writing inputs exclusive, and closing dispatch and receipt representations against undeclared fields.
-- Exact next action: commit and push the B3 corrective change to PR #311, synchronize its declared per-Issue disposition, then complete a fresh independent audit, current hosted checks, live admission, integration, and required provider read-back; do not merge or close either Issue before those gates complete.
+- Last completed action: #310 fixed-head audit B4 remediation passed its focused 26-test regression module and schema-only validation, rejecting malformed dispatch `task_kind` values before they can release receipt custody.
+- Exact next action: commit and push the B4 corrective change to PR #311, synchronize its declared per-Issue disposition, then complete a fresh independent audit, current hosted checks, live admission, integration, and required provider read-back; do not merge or close either Issue before those gates complete.
 - Preserved facts: v0.18.0 public assets were verified historically; run `35487203277` remains failed. The historical downstream outer receipt was blocked and its custody was released under an explicit exception.
 - No cross-session handoff is required.

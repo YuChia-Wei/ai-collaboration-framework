@@ -273,6 +273,24 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
         self.assertTrue(any("receipt contains unsupported fields: validation_outcome" in error for error in errors))
         self.assertTrue(any("receipt.validator contains unsupported fields: actual_argv" in error for error in errors))
 
+    def test_gwt_002n_given_mapping_task_kind_then_dispatch_and_receipt_are_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["task_kind"] = {"legacy": "mapping"}
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("dispatch.task_kind must be a non-empty string" in error for error in errors))
+
+        candidate = valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+            DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+        )
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("dispatch.task_kind must be a non-empty string" in error for error in errors))
+
     def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
         dispatch, candidate = valid_dispatch(), valid_candidate()
         dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()

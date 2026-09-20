@@ -273,6 +273,7 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
     if record.get("schema_version") != "1.2": errors.append("dispatch.schema_version must be 1.2")
     if record.get("record_type") != "external-task-dispatch": errors.append("dispatch.record_type must be external-task-dispatch")
     if not non_empty_string(record.get("delegation_id")) or not ID_RE.fullmatch(str(record.get("delegation_id", ""))): errors.append("dispatch.delegation_id must be a stable bounded identifier")
+    if not non_empty_string(record.get("task_kind")): errors.append("dispatch.task_kind must be a non-empty string")
     source = record.get("source")
     errors.extend(missing_fields(source, schema["dispatch"]["source"]["required"], "dispatch.source"))
     errors.extend(unexpected_fields(source, DISPATCH_FIELDS["source"], "dispatch.source"))

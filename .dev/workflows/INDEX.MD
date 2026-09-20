@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-20-hosted-provider-and-custody-repair`](2026-09-20-hosted-provider-and-custody-repair/workflow.yaml) | Repair hosted Project diagnostics and external-task delivery custody | `software-development-orchestrator` | `completed` | `2026-09-20T15:53:57+08:00` | [plan](2026-09-20-hosted-provider-and-custody-repair/workflow-plan.md) |
+| [`2026-09-20-hosted-provider-and-custody-repair`](2026-09-20-hosted-provider-and-custody-repair/workflow.yaml) | Repair hosted Project diagnostics and external-task delivery custody | `software-development-orchestrator` | `completed` | `2026-09-20T16:17:02+08:00` | [plan](2026-09-20-hosted-provider-and-custody-repair/workflow-plan.md) |
 | [`2026-09-17-v018-cost-and-messaging`](2026-09-17-v018-cost-and-messaging/workflow.yaml) | v0.18.0 skill usability and transactional messaging | `ai-context-governance` | `completed` | `2026-09-20T07:37:16+08:00` | [plan](2026-09-17-v018-cost-and-messaging/workflow-plan.md) |
 | [`2026-09-12-v017-release`](2026-09-12-v017-release/workflow.yaml) | Prepare REL-v0.17.0 | `ai-context-governance` | `in_progress` | `2026-09-12T13:59:25+08:00` | [plan](2026-09-12-v017-release/workflow-plan.md) |
 | [`2026-09-12-init-agents-guidance`](2026-09-12-init-agents-guidance/workflow.yaml) | Task-led initialization AGENTS guidance | `ai-context-governance` | `completed` | `2026-09-12T13:42:33+08:00` | [plan](2026-09-12-init-agents-guidance/workflow-plan.md) |
