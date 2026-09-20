@@ -42,7 +42,7 @@ dependency, and `IDbContextFactory` is not universally prohibited.
 The direct-upgrade contract covers v0.6.0, v0.9.0 and v0.17.0 with each origin's
 exact package inventory and explicit target reconciliation.
 
-## Usage And Evidence Limits
+## Known Limitations
 
 Directory placement and document length alone do not establish token or credit
 savings. Evaluate loading, tool use and answer quality on the selected model and
