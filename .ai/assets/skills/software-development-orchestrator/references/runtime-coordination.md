@@ -124,6 +124,14 @@ validates delivery integrity and never converts a non-passing execution result
 into `passed`. A missing receipt, failed receipt production, mismatched byte
 binding, or changed delivered candidate is non-passing.
 
+Current completion timestamps must be ordered after UTC normalization. Equal
+timestamps are valid when their precision is coarser than the execution. Elapsed
+duration remains the caller's finite nonnegative observation, potentially from
+a monotonic clock; do not force it to equal the wall timestamp difference. A
+clock adjustment producing reversed timestamps cannot be represented by this
+contract: preserve the observations and report the timing inconsistency without
+issuing a receipt or rewriting timestamps. Historical 1.2 reading is unchanged.
+
 At integration, validate the acceptance-evidence ledger against its human
 report projection. Actual-execution requirements cannot be satisfied by a
 fixture, mock, synthetic test, or unit result, even when that supporting test

@@ -26,6 +26,7 @@ from python_prerequisites import guard_direct_entrypoint
 guard_direct_entrypoint(".ai/scripts/validate-terminal-issue-closure.py")
 
 import yaml
+import execution_artifact_contract as artifact_contract
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
@@ -37,18 +38,20 @@ ISSUE_REFERENCE = re.compile(
 STAGES = {"declaration", "merge-admission", "reconciliation"}
 INTEGRATION_TOPOLOGIES = {"fast-forward", "rebase", "squash", "merge-commit"}
 AUDIT_RECEIPT = re.compile(
-    r"<!-- (?P<contract>github-terminal-issue-closure-audit/v[12])\r?\n(?P<payload>.*?)\r?\n-->",
+    r"<!-- (?P<contract>github-terminal-issue-closure-audit/v[123])\r?\n(?P<payload>.*?)\r?\n-->",
     re.DOTALL,
 )
 AUDIT_RECEIPT_MARKER = re.compile(r"<!--\s*github-terminal-issue-closure-audit\b")
 REVIEW_SUBJECT_SCHEMA = "independent-review-subject/v1"
-CURRENT_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v2"
+CURRENT_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v3"
+CONTENT_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v2"
 HISTORICAL_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v1"
+SHA256 = re.compile(r"^[0-9a-f]{64}$")
 SOURCE_REVIEW_GATE = {
     "mode": "single-maintainer-audit-receipt",
     "maintainer_login": "YuChia-Wei",
     "receipt_contract": CURRENT_AUDIT_RECEIPT,
-    "historical_receipt_contracts": [HISTORICAL_AUDIT_RECEIPT],
+    "historical_receipt_contracts": [HISTORICAL_AUDIT_RECEIPT, CONTENT_AUDIT_RECEIPT],
     "binding_mode": "content-addressed-current-head",
     "downstream_policy": "target-owned",
 }
@@ -107,6 +110,28 @@ def current_review_subject(repository: str, base_sha: str, head_sha: str) -> dic
     )
 
 
+def current_review_expectation(
+    path: Path | None, repository: str, base_sha: str, head_sha: str
+) -> dict[str, str]:
+    """Use the owner's current input, never the receipt, to select review validity."""
+    if path is None:
+        raise ValueError("live merge admission requires --review-input with the owner's current review criteria and authority")
+    guard = artifact_contract.load_module(ROOT / artifact_contract.GUARD_VALIDATOR, "terminal_review_guard")
+    guard.ROOT = ROOT
+    try:
+        record = artifact_contract.load_mapping(path)
+        schema = artifact_contract.load_mapping(ROOT / artifact_contract.GUARD_SCHEMA)
+        result = guard.validate_review_input(record, schema)
+    except (OSError, UnicodeError, yaml.YAMLError, ValueError) as exc:
+        raise ValueError(f"current review input preparation failed: {exc}") from exc
+    subject = record["subject"]
+    if any(subject.get(key) != value for key, value in {
+        "repository": repository, "base_sha": base_sha, "head_sha": head_sha
+    }.items()):
+        raise ValueError("current review input must bind the live repository, base and head")
+    return {**subject, "criteria_sha256": result["criteria_sha256"], "authority_sha256": result["authority_sha256"]}
+
+
 def audit_receipt(body: object) -> dict[str, Any] | None:
     if not isinstance(body, str):
         return None
@@ -138,8 +163,10 @@ def audit_receipt(body: object) -> dict[str, Any] | None:
         "blocking_findings",
         "audit_scope",
     }
-    if contract == CURRENT_AUDIT_RECEIPT:
+    if contract in {CONTENT_AUDIT_RECEIPT, CURRENT_AUDIT_RECEIPT}:
         expected_fields |= {"base_tree", "head_tree", "subject_digest"}
+    if contract == CURRENT_AUDIT_RECEIPT:
+        expected_fields |= {"criteria_sha256", "authority_sha256"}
     if not isinstance(value, dict) or set(value) != expected_fields:
         return None
     if (
@@ -155,7 +182,7 @@ def audit_receipt(body: object) -> dict[str, Any] | None:
         or isinstance(value.get("blocking_findings"), bool)
     ):
         return None
-    if contract == CURRENT_AUDIT_RECEIPT:
+    if contract in {CONTENT_AUDIT_RECEIPT, CURRENT_AUDIT_RECEIPT}:
         if (
             not isinstance(value.get("base_tree"), str)
             or not SHA.fullmatch(value["base_tree"])
@@ -165,6 +192,11 @@ def audit_receipt(body: object) -> dict[str, Any] | None:
             != review_subject(value["repository"], value["base_tree"], value["head_tree"])["subject_digest"]
         ):
             return None
+    if contract == CURRENT_AUDIT_RECEIPT and any(
+        not isinstance(value.get(key), str) or not SHA256.fullmatch(value[key])
+        for key in ("criteria_sha256", "authority_sha256")
+    ):
+        return None
     return {"receipt_contract": contract, "payload": value}
 
 
@@ -369,7 +401,10 @@ def read_live_provider_facts(
     required_contexts: list[str],
     review_gate: dict[str, Any],
     token: str,
+    review_input: Path | None = None,
 ) -> dict[str, Any]:
+    if review_input is None:
+        raise ValueError("live merge admission requires --review-input")
     api_root = f"https://api.github.com/repos/{repository}"
     metadata, metadata_link = github_api_json(f"{api_root}/pulls/{pr_number}", token)
     if metadata_link is not None:
@@ -395,10 +430,11 @@ def read_live_provider_facts(
     live_body = metadata.get("body") or ""
     if not isinstance(live_body, str):
         raise ValueError("GitHub provider returned an invalid pull request body")
-    reviews = github_api_paginated(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
-    runs = github_api_paginated(f"{api_root}/commits/{live_head_sha}/check-runs?per_page=100", token, "check_runs")
     if review_gate != SOURCE_REVIEW_GATE:
         raise ValueError("provider merge gate must own the approved source single-maintainer review_gate")
+    expectation = current_review_expectation(review_input, repository, live_base_sha, live_head_sha)
+    reviews = github_api_paginated(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
+    runs = github_api_paginated(f"{api_root}/commits/{live_head_sha}/check-runs?per_page=100", token, "check_runs")
     maintainer_login = review_gate["maintainer_login"]
     latest_by_reviewer: dict[str, dict[str, Any]] = {}
     for item in reviews:
@@ -431,12 +467,12 @@ def read_live_provider_facts(
                 or any(receipt.get(key) != value for key, value in expected_common.items())
             ):
                 continue
-            current_subject = current_review_subject(repository, live_base_sha, live_head_sha)
+            current_subject = expectation
             if (
                 receipt.get("audit_scope") != "content-addressed-independent"
                 or any(
                     receipt.get(key) != current_subject[key]
-                    for key in ("base_tree", "head_tree", "subject_digest")
+                    for key in ("base_tree", "head_tree", "subject_digest", "criteria_sha256", "authority_sha256")
                 )
             ):
                 continue
@@ -447,6 +483,8 @@ def read_live_provider_facts(
                 "base_tree": current_subject["base_tree"],
                 "head_tree": current_subject["head_tree"],
                 "subject_digest": current_subject["subject_digest"],
+                "criteria_sha256": current_subject["criteria_sha256"],
+                "authority_sha256": current_subject["authority_sha256"],
                 "binding_disposition": (
                     "reviewed-current-content"
                     if receipt["base_sha"] == live_base_sha and receipt["head_sha"] == live_head_sha
@@ -535,14 +573,15 @@ def validate_live_runtime(live: dict[str, Any], runtime: dict[str, Any]) -> list
 
 
 def build_live_admission_evidence(
-    record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any], token: str
+    record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any], token: str,
+    review_input: Path | None = None,
 ) -> dict[str, Any]:
     required = config.get("work_item_binding", {}).get("merge_gate", {}).get("required_check_contexts")
     review_gate = config.get("work_item_binding", {}).get("merge_gate", {}).get("review_gate")
     if not isinstance(required, list) or not required:
         raise ValueError("provider merge gate must own a non-empty required_check_contexts list")
     pull_request = read_live_provider_facts(
-        record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, review_gate, token
+        record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, review_gate, token, review_input
     )
     runtime_errors = validate_live_runtime(pull_request, runtime)
     if runtime_errors:
@@ -557,7 +596,8 @@ def build_live_admission_evidence(
 
 
 def validate_live_provider_evidence(
-    evidence: dict[str, Any], record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any]
+    evidence: dict[str, Any], record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any],
+    review_input: Path | None = None,
 ) -> list[str]:
     token = os.environ.get("GITHUB_TOKEN")
     if not token:
@@ -568,7 +608,7 @@ def validate_live_provider_evidence(
         return ["provider merge gate must own a non-empty required_check_contexts list"]
     try:
         live = read_live_provider_facts(
-            record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, review_gate, token
+            record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, review_gate, token, review_input
         )
     except ValueError as exc:
         return [str(exc)]
@@ -618,6 +658,11 @@ def validate_provider_evidence(
             if review.get("head_sha") != head_sha:
                 errors.append("historical single-maintainer audit receipt must remain exact-head bound")
         else:
+            if receipt_contract == CURRENT_AUDIT_RECEIPT and any(
+                not isinstance(review.get(key), str) or not SHA256.fullmatch(review[key])
+                for key in ("criteria_sha256", "authority_sha256")
+            ):
+                errors.append("current audit review requires criteria and authority SHA-256 identities")
             reviewed_base_sha = review.get("reviewed_base_sha")
             reviewed_head_sha = review.get("reviewed_head_sha")
             base_tree = review.get("base_tree")
@@ -836,6 +881,7 @@ def main(argv: list[str] | None = None) -> int:
     admission.add_argument("--admission-evidence", type=Path)
     admission.add_argument("--capture-admission-evidence", action="store_true")
     parser.add_argument("--verify-provider-live", action="store_true")
+    parser.add_argument("--review-input", type=Path, help="Owner-selected current independent-review-input for live admission")
     args = parser.parse_args(argv)
     config = load_mapping(CONFIG)
     paths = args.record or sorted(ROOT.glob(".dev/workflows/*/evidence/terminal-issue-closure*.yaml"))
@@ -862,6 +908,9 @@ def main(argv: list[str] | None = None) -> int:
         if not args.verify_provider_live:
             print("Terminal Issue closure validation failed:\n- admission evidence requires --verify-provider-live", file=sys.stderr)
             return 1
+    if (args.capture_admission_evidence or args.admission_evidence is not None) and args.review_input is None:
+        print("Terminal Issue closure validation failed:\n- live merge admission requires --review-input", file=sys.stderr)
+        return 1
     records: list[tuple[Path, dict[str, Any]]] = []
     errors: list[str] = []
     for path in paths:
@@ -898,13 +947,13 @@ def main(argv: list[str] | None = None) -> int:
                 binding_errors.append("live provider capture requires GITHUB_TOKEN")
             else:
                 try:
-                    admission_evidence = build_live_admission_evidence(record, runtime, config, token)
+                    admission_evidence = build_live_admission_evidence(record, runtime, config, token, args.review_input)
                 except ValueError as exc:
                     binding_errors.append(str(exc))
         if admission_evidence is not None:
             effective, binding_errors = bind_admission_evidence(record, admission_evidence, config)
             if runtime is not None and args.admission_evidence is not None:
-                binding_errors.extend(validate_live_provider_evidence(admission_evidence, record, runtime, config))
+                binding_errors.extend(validate_live_provider_evidence(admission_evidence, record, runtime, config, args.review_input))
         elif runtime is not None and record.get("validation_stage") != "declaration":
             binding_errors.append("current PR required check validates declaration only; merge admission requires --admission-evidence")
         errors.extend(f"{candidate.relative_to(ROOT)}: {error}" for error in binding_errors)

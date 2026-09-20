@@ -197,3 +197,25 @@ Logs and input snapshots: `.dev/ai-context/local/issue-312-313/scenario-review/`
   audit or complete workflow acceptance is claimed. The later owner-reported
   lifecycle pass is separate from these focused runs. Method removal is not a measured
   timing or token improvement. Existing failure logs remain intact.
+
+## Initial Independent Verification And Bounded Repairs
+
+Independent assessment: [report](../../../assessments/ASM-20260920-21-wwi/report.md), immutable implementation `e421c80e266af31ec26b263bad69c1136d9cb4af`. The original failed findings and all prior validation attempts remain unchanged.
+
+| Finding | Acceptance | Repair | Verification disposition |
+| --- | --- | --- | --- |
+| ASM-20260920-21-wwi#AIC-001 | ISS313-AC3 | Current v3 receipt carries criteria and authority digests. Capture/replay requires the owner's current review-input through canonical preflight and compares all three review identities. v1/v2 remain historical only. Provider configuration, active consumer and operation guide synchronized. | Focused tests passed; independent recheck pending |
+| ASM-20260920-21-wwi#AIC-002 | ISS312-AC3 | Current completion 1.3 rejects reversed UTC instants before candidate/receipt/message output. Equal coarse timestamps and independent monotonic durations remain valid; historical 1.2 reading remains unchanged. | Focused tests passed; independent recheck pending |
+
+The auditor clarified that AIC-002 requires chronological ordering, not an arbitrary wall/elapsed duration equality or tolerance. No automatic criteria resolver, new provider action, release contract, #307/#308 change, or historical receipt rewriting was introduced.
+
+Focused fixture/unit verification (current working-tree bytes, not a live admission):
+
+- artifact-boundaries: 3 tests passed; observed process duration 18.856s.
+- external: 35 tests passed; observed process duration 30.231s.
+- provider: 21 tests passed; observed process duration 1.952s.
+- terminal: 62 tests passed; observed process duration 2.881s.
+
+Evidence and input hashes: `.dev/ai-context/local/issue-312-313/repair-checks/`. Passing tests support the repairs and do not override the initial independent findings. The user-reported lifecycle pass remains separate; no lifecycle-main retry was performed.
+
+Repair checkpoint metadata validation initially rejected two active tasks. The existing sequential task rule is retained: ISS312-tooling coordinates joint verification, while ISS313-contract is pending that result and keeps its implementation evidence. This is a workflow-state correction, not a failed functional test.

@@ -75,6 +75,10 @@ completion:
   execution: {}
   timing:
     timestamps: ISO 8601 with an explicit UTC offset
+    current_ordering: Current 1.3 records require completed_at not earlier than started_at
+      after UTC normalization; retain inconsistent observations without issuing a receipt.
+    duration: Caller-observed finite nonnegative elapsed seconds; it may use a monotonic
+      clock and need not equal the wall timestamp difference. Historical 1.2 reading is unchanged.
   result:
     outcomes:
     - passed

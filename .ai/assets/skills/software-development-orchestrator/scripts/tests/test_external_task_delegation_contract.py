@@ -91,6 +91,30 @@ def cli_args(**overrides: object) -> argparse.Namespace:
 
 
 class ExternalTaskDelegationContractTests(unittest.TestCase):
+    def test_current_timing_orders_instants_without_equating_wall_and_elapsed_clocks(self) -> None:
+        cases = [
+            ("2026-09-20T12:00:00Z", "2026-09-20T11:00:00Z", 0, "must not precede"),
+            ("2026-09-20T12:00:00+08:00", "2026-09-20T05:00:00Z", 3600, None),
+            ("2026-09-20T12:00:00Z", "2026-09-20T12:00:00Z", 0.04, None),
+            ("2026-09-20T12:00:00Z", "2026-09-20T12:00:00.043559Z", 0.043549099995289, None),
+            ("2026-09-20T12:00:00Z", "2026-09-20T12:00:00Z", 0, None),
+            ("0001-01-01T00:00:00+01:00", "2026-09-20T12:00:00Z", 1, "cannot be represented"),
+            ("2026-09-20T12:00:00", "2026-09-20T12:00:00Z", 1, "explicit UTC offsets"),
+        ]
+        for start, end, duration, diagnostic in cases:
+            with self.subTest(start=start, end=end, duration=duration):
+                candidate = valid_candidate()
+                candidate["timing"] = {"started_at": start, "completed_at": end, "duration_seconds": duration}
+                errors = DELEGATION.validate_completion(candidate, SCHEMA)
+                if diagnostic is None:
+                    self.assertEqual([], errors)
+                else:
+                    self.assertTrue(any(diagnostic in error for error in errors), errors)
+        historical = valid_candidate()
+        historical["schema_version"] = "1.2"
+        historical["timing"]["completed_at"] = "2026-09-20T00:00:00+08:00"
+        self.assertEqual([], DELEGATION.validate_completion(historical, SCHEMA))
+
     def test_gwt_001_given_current_schema_when_loaded_then_candidate_and_receipt_are_separate(self) -> None:
         self.assertEqual([], DELEGATION.validate_schema_definition(SCHEMA))
         self.assertEqual("external-task-validation-receipt", SCHEMA["record_types"]["validation_receipt"])

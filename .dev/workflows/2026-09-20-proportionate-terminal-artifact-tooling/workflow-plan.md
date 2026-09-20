@@ -9,7 +9,7 @@
 - `status`: `in_progress`
 - `current_phase`: `validation`
 - `created_at`: `2026-09-20T19:00:23+08:00`
-- `updated_at`: `2026-09-20T21:17:10+08:00`
+- `updated_at`: `2026-09-20T21:51:53+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,9 +49,9 @@ The owner requested review of the affected functional scenarios, removal of narr
 ## Resume Checkpoint
 
 - Completed: live authorization/base read-back, dedicated branch, committed #313 contract and focused tests; #312 implementation and narrow tests; real CLI synthetic-fixture smoke.
-- Current: #312 is ready for its implementation commit; the owner directly ran lifecycle validation and reported its passing output. Full independent verification remains pending. See `reports/remediation-report.md` for separate acceptance and all preserved failures.
+- Current: implementation committed as e421c80e. Independent assessment `ASM-20260920-21-wwi` found AIC-001 and AIC-002; bounded repairs and their focused tests passed. Independent verification of the repair commit remains pending.
 - Resolved checkpoint: prior automated lifecycle retry was denied, but the owner subsequently executed the exact command and supplied passing stdout. Record it as user-reported evidence without inventing process metadata. Prior failures/denial remain retained and no agent rerun is needed.
-- Next: validate the tooling commit message and commit; prepare the full review input/packet/lease on that immutable subject, obtain independent review, then reconcile the final ledger/report/workflow.
+- Next: commit the repaired admission/timing boundaries, freeze the clean subject, independently verify the affected gates, then reconcile the final per-Issue ledger and workflow.
 - Tooling test logs/hashes: `.dev/ai-context/local/issue312-validation/`; parent checks and smoke: `.dev/ai-context/local/issue-312-313/`.
 - Tracked writer: parent only; implementation workers have returned ownership. No active frozen lease exists.
 - No push, PR, merge, Issue/Project mutation or release action performed.

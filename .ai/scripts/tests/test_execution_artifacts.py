@@ -196,10 +196,37 @@ class ArtifactBehaviorTests(unittest.TestCase):
             self.cli.rollback(owned, directory)
         self.assertEqual(b"changed-by-another-writer", path.read_bytes())
 
-    def test_review_input_bytes_are_bound_and_mutation_rejected(self) -> None:
+    def review_input(self) -> dict:
         classification = {"schema_version": "1.0", "record_type": "agent-execution-classification", "operation": "review", "execution_boundary": "external", "duration_class": "short", "change_domains": ["ordinary"], "snapshot": "isolated-immutable", "tracked_write": False, "provider_mutation": False, "credential_access": False, "terminal_gate": True}
         content = {"schema_version": "independent-review-subject/v1", "repository_id": "fixture", "base_tree": self.tree, "head_tree": self.tree}
-        review = {"schema_version": "1.0", "record_type": "independent-review-input", "classification": classification, "subject": {"repository": "fixture", "base_sha": self.head, "head_sha": self.head, "base_tree": self.tree, "head_tree": self.tree, "subject_digest": CONTRACT.digest(content)}, "criteria": ["Reject unsupported outcome promotion."], "authority": [{"path": CONTRACT.GUARD_SCHEMA, "sha256": CONTRACT.sha256((self.root / CONTRACT.GUARD_SCHEMA).read_bytes())}]}
+        return {"schema_version": "1.0", "record_type": "independent-review-input", "classification": classification, "subject": {"repository": "fixture", "base_sha": self.head, "head_sha": self.head, "base_tree": self.tree, "head_tree": self.tree, "subject_digest": CONTRACT.digest(content)}, "criteria": ["Reject unsupported outcome promotion."], "authority": [{"path": ref, "sha256": CONTRACT.sha256((self.root / ref).read_bytes())} for ref in (CONTRACT.GUARD_SCHEMA, CONTRACT.GUARD_VALIDATOR)]}
+
+    def test_terminal_expectation_uses_canonical_current_review_input(self) -> None:
+        terminal = CONTRACT.load_module(ROOT / ".ai/scripts/validate-terminal-issue-closure.py", "artifact_terminal_test")
+        terminal.ROOT = self.root
+        review = self.review_input()
+        input_ref = ".dev/ai-context/local/terminal-review-input.yaml"
+        self.save(input_ref, review)
+        path = self.root / input_ref
+        expected = terminal.current_review_expectation(path, "fixture", self.head, self.head)
+        self.assertEqual(CONTRACT.digest(review["criteria"]), expected["criteria_sha256"])
+        self.assertEqual(CONTRACT.digest(sorted(review["authority"], key=lambda item: item["path"])), expected["authority_sha256"])
+        review["authority"].reverse()
+        self.save(input_ref, review)
+        self.assertEqual(expected, terminal.current_review_expectation(path, "fixture", self.head, self.head))
+        for repository, base, head in (("other", self.head, self.head), ("fixture", "0" * 40, self.head), ("fixture", self.head, "0" * 40)):
+            with self.subTest(repository=repository, base=base, head=head):
+                with self.assertRaisesRegex(ValueError, "bind the live repository, base and head"):
+                    terminal.current_review_expectation(path, repository, base, head)
+        review["authority"][0]["sha256"] = "0" * 64
+        self.save(input_ref, review)
+        with self.assertRaisesRegex(ValueError, "authority byte digest"):
+            terminal.current_review_expectation(path, "fixture", self.head, self.head)
+        with self.assertRaisesRegex(ValueError, "requires --review-input"):
+            terminal.current_review_expectation(None, "fixture", self.head, self.head)
+
+    def test_review_input_bytes_are_bound_and_mutation_rejected(self) -> None:
+        review = self.review_input()
         input_ref = ".dev/ai-context/local/review-input.yaml"; self.save(input_ref, review)
         request = self.request(); request["role"]["path"] = REVIEW_ROLE; request["review_input"] = input_ref
         result = self.cli.prepare(request, self.ref)
@@ -234,6 +261,10 @@ class ArtifactBehaviorTests(unittest.TestCase):
         self.assertIn("duration_seconds is required", str(failure.exception)); self.assertIn("exit_code is required", str(failure.exception))
         observation = self.observations("passed"); observation["result"]["exit_code"] = 2
         with self.assertRaisesRegex(ValueError, "exit_code zero"):
+            self.cli.finalize(observation, result["dispatch_ref"])
+        observation = self.observations("passed")
+        observation["timing"]["completed_at"] = "2026-09-19T23:59:59+00:00"
+        with self.assertRaisesRegex(ValueError, "completed_at must not precede"):
             self.cli.finalize(observation, result["dispatch_ref"])
         self.assertFalse((self.root / self.ref / "candidate.yaml").exists())
         self.assertFalse((self.root / self.ref / "receipt.yaml").exists())

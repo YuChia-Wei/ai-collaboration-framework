@@ -322,15 +322,15 @@ class HistoricalGitHubBacklogProviderTests(unittest.TestCase):
             config["issue_closure"]["distribution"],
         )
 
-    def test_gwt_019_given_active_source_policy_then_v2_content_review_gate_is_required(self) -> None:
+    def test_gwt_019_given_active_source_policy_then_v3_content_criteria_authority_review_gate_is_required(self) -> None:
         config = PROVIDER.load_yaml_mapping(ACTIVE_CONFIG)
 
         self.assertEqual(
             {
                 "mode": "single-maintainer-audit-receipt",
                 "maintainer_login": "YuChia-Wei",
-                "receipt_contract": "github-terminal-issue-closure-audit/v2",
-                "historical_receipt_contracts": ["github-terminal-issue-closure-audit/v1"],
+                "receipt_contract": "github-terminal-issue-closure-audit/v3",
+                "historical_receipt_contracts": ["github-terminal-issue-closure-audit/v1", "github-terminal-issue-closure-audit/v2"],
                 "binding_mode": "content-addressed-current-head",
                 "downstream_policy": "target-owned",
             },

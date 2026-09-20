@@ -9,7 +9,7 @@ import importlib.util
 import re
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -405,7 +405,19 @@ def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch
     if isinstance(execution, dict) and (not non_empty_string(execution.get("working_directory")) or not string_list(execution.get("argv"), allow_empty=False)): errors.append("completion.execution is invalid")
     timing = record.get("timing")
 
-    if isinstance(timing, dict) and (not iso_with_offset(timing.get("started_at")) or not iso_with_offset(timing.get("completed_at")) or not isinstance(timing.get("duration_seconds"), (int, float)) or isinstance(timing.get("duration_seconds"), bool) or timing.get("duration_seconds", -1) < 0): errors.append("completion.timing is invalid")
+    if isinstance(timing, dict):
+        if not iso_with_offset(timing.get("started_at")) or not iso_with_offset(timing.get("completed_at")):
+            errors.append("completion.timing requires timestamps with explicit UTC offsets")
+        elif record.get("schema_version") == "1.3":
+            try:
+                started = datetime.fromisoformat(timing["started_at"].replace("Z", "+00:00")).astimezone(timezone.utc)
+                completed = datetime.fromisoformat(timing["completed_at"].replace("Z", "+00:00")).astimezone(timezone.utc)
+                if completed < started:
+                    errors.append("completion.timing.completed_at must not precede started_at")
+            except (ValueError, OverflowError):
+                errors.append("completion.timing cannot be represented in UTC")
+        # Structure validation owns finite, nonnegative numeric duration. Elapsed
+        # observations may use a monotonic clock; do not equate them to wall time.
 
     outcome = result.get("outcome") if isinstance(result, dict) else None
     if isinstance(result, dict) and (outcome not in schema["completion"]["result"]["outcomes"] or (result.get("exit_code") is not None and not is_integer(result.get("exit_code")))): errors.append("completion.result is invalid")
