@@ -354,6 +354,69 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             ):
                 STATE.validate(root, "candidate", VERSION, runner=fake_runner())
 
+    def test_gwt_004a_given_complete_html_comment_in_authored_notes_when_checked_then_it_passes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_fixture(
+                root,
+                authored_notes=(
+                    "# REL-v0.5.0 - Candidate\n\n"
+                    "<!-- Explain the `<release-owner>` documentation literal. -->\n"
+                ),
+            )
+            STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004b_given_valid_inline_code_path_with_angle_segments_when_checked_then_it_passes(self):
+        for delimiter in ("`", "``"):
+            with self.subTest(delimiter=delimiter), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                write_fixture(
+                    root,
+                    authored_notes=(
+                        "# REL-v0.5.0 - Candidate\n\n"
+                        f"Use {delimiter}.ai/assets/skills/<owner>/roles/<role-id>{delimiter} for role documentation.\n"
+                    ),
+                )
+                STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004c_given_plain_or_incomplete_authored_angle_placeholder_when_checked_then_it_fails_closed(self):
+        cases = {
+            "plain-prose": "Set the <release-owner> before publication.",
+            "incomplete-comment": "<!-- Set the <release-owner> before publication.",
+            "unmatched-inline-code": "Use `.ai/assets/skills/<owner>/roles/<role-id> before publication.",
+            "mismatched-delimiters": "Use ``.ai/assets/skills/<owner>/roles/<role-id>` before publication.",
+        }
+        for name, line in cases.items():
+            with self.subTest(case=name), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                write_fixture(root, authored_notes=f"# REL-v0.5.0 - Candidate\n\n{line}\n")
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "unfilled placeholder"):
+                    STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004d_given_nonangle_placeholder_in_authored_literals_or_raw_yaml_when_checked_then_it_fails_closed(self):
+        for placeholder in ("{{release-owner}}", "TODO", "TBD", "PLACEHOLDER"):
+            for location, line in {
+                "complete-comment": f"<!-- {placeholder} -->",
+                "inline-code": f"`{placeholder}`",
+            }.items():
+                with self.subTest(placeholder=placeholder, location=location), tempfile.TemporaryDirectory() as temp:
+                    root = Path(temp)
+                    write_fixture(root, authored_notes=f"# REL-v0.5.0 - Candidate\n\n{line}\n")
+                    with self.assertRaisesRegex(STATE.ReleaseStateError, "unfilled placeholder"):
+                        STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            release = write_fixture(root)
+            data = yaml.safe_load((release / "release.yaml").read_text(encoding="utf-8"))
+            data["release_id"] = "REL-<release-owner>"
+            (release / "release.yaml").write_text(
+                yaml.safe_dump(data, sort_keys=False),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "unfilled placeholder"):
+                STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
     def test_gwt_005_given_copied_release_heading_when_checked_then_it_fails_closed(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -116,6 +116,12 @@ V011_PUBLICATION_FAILURE = (
     "noncanonical publication ownership values"
 )
 PLACEHOLDER_RE = re.compile(r"\{\{.+?\}\}|<[^\n>]+>|\b(?:TODO|TBD|PLACEHOLDER)\b", re.I)
+AUTHORED_NON_ANGLE_PLACEHOLDER_RE = re.compile(
+    r"\{\{.+?\}\}|\b(?:TODO|TBD|PLACEHOLDER)\b", re.I
+)
+AUTHORED_ANGLE_PLACEHOLDER_RE = re.compile(r"<[^\n>]+>")
+COMPLETE_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+SINGLE_LINE_INLINE_CODE_RE = re.compile(r"(?<!`)(`+)(?!`)[^\r\n]*?(?<!`)\1(?!`)")
 FORBIDDEN_AUTHORED_RE = re.compile(
     r"ai-context-release-automation:|^## Release provenance\s*$", re.I | re.M
 )
@@ -125,6 +131,26 @@ PUBLISH_WORKFLOW_PATH = ".github/workflows/publish-release.yml"
 
 class ReleaseStateError(ValueError):
     """Raised for invalid release-state inputs."""
+
+
+def mask_authored_markdown_literals(text: str) -> str:
+    """Hide complete comments and valid single-line code before angle checks."""
+
+    def spaces(match: re.Match[str]) -> str:
+        return "".join(char if char in "\r\n" else " " for char in match.group(0))
+
+    without_comments = COMPLETE_HTML_COMMENT_RE.sub(spaces, text)
+    return SINGLE_LINE_INLINE_CODE_RE.sub(spaces, without_comments)
+
+
+def authored_source_has_placeholder(text: str) -> bool:
+    """Reject real authored placeholders without treating documentation literals as fields."""
+
+    if AUTHORED_NON_ANGLE_PLACEHOLDER_RE.search(text):
+        return True
+    return AUTHORED_ANGLE_PLACEHOLDER_RE.search(
+        mask_authored_markdown_literals(text)
+    ) is not None
 
 
 def version_key(version: str) -> tuple[int, int, int]:
@@ -266,7 +292,7 @@ def assert_authored_sources(version: str, notes: Path, migration: Path) -> None:
             raise ReleaseStateError(f"{path}: authored source must not be empty")
         if FORBIDDEN_AUTHORED_RE.search(text):
             raise ReleaseStateError(f"{path}: rendered release provenance belongs only in generated output")
-        if PLACEHOLDER_RE.search(text):
+        if authored_source_has_placeholder(text):
             raise ReleaseStateError(f"{path}: unfilled placeholder is forbidden")
         first_line = next((line.strip() for line in text.splitlines() if line.strip()), "")
         if not first_line.startswith(expected_heading):
