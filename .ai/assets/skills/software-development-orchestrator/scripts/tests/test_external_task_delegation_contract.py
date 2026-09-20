@@ -505,6 +505,27 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
                 )
                 self.assertTrue(any("receipt.validator is invalid" in error for error in errors))
 
+    def test_gwt_002s_given_type_equivalent_raw_yaml_scalars_then_custody_mapping_binding_is_rejected(self) -> None:
+        candidate = valid_candidate()
+        dispatch = valid_dispatch()
+        cases = (
+            ("candidate", candidate, yaml.safe_dump(candidate, sort_keys=False).encode(), b"selected: 1\n"),
+            ("dispatch", dispatch, yaml.safe_dump(dispatch, sort_keys=False).encode(), b"max_terminal_reports: 1\n"),
+        )
+        for label, record, raw_bytes, original_line in cases:
+            for equivalent_scalar in (b"true", b"1.0"):
+                with self.subTest(label=label, equivalent_scalar=equivalent_scalar):
+                    self.assertIn(original_line, raw_bytes)
+                    altered_bytes = raw_bytes.replace(
+                        original_line,
+                        original_line.split(b": ", maxsplit=1)[0] + b": " + equivalent_scalar + b"\n",
+                        1,
+                    )
+                    self.assertEqual(
+                        [f"receipt {label} bytes must deserialize to a YAML mapping equal to the supplied {label}"],
+                        DELEGATION.validate_exact_mapping_bytes(record, altered_bytes, label),
+                    )
+
     def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
         dispatch, candidate = valid_dispatch(), valid_candidate()
         dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()

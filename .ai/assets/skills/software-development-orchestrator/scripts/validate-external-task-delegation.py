@@ -95,12 +95,39 @@ def load_mapping(path: Path) -> dict[str, Any]:
     return data
 
 
+def exact_yaml_value_equal(left: Any, right: Any) -> bool:
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        if len(left) != len(right):
+            return False
+        unmatched = list(right.items())
+        for left_key, left_value in left.items():
+            for index, (right_key, right_value) in enumerate(unmatched):
+                if exact_yaml_value_equal(left_key, right_key) and exact_yaml_value_equal(left_value, right_value):
+                    del unmatched[index]
+                    break
+            else:
+                return False
+        return not unmatched
+    if isinstance(left, list):
+        return len(left) == len(right) and all(
+            exact_yaml_value_equal(left_item, right_item)
+            for left_item, right_item in zip(left, right)
+        )
+    return left == right
+
+
 def validate_exact_mapping_bytes(record: dict[str, Any], raw_bytes: bytes, label: str) -> list[str]:
     try:
         parsed = strict_yaml_load(raw_bytes.decode("utf-8"))
     except (UnicodeDecodeError, yaml.YAMLError):
         return [f"receipt {label} bytes must deserialize to a YAML mapping equal to the supplied {label}"]
-    if not isinstance(parsed, dict) or parsed != record:
+    try:
+        matches_record = exact_yaml_value_equal(parsed, record)
+    except RecursionError:
+        matches_record = False
+    if not isinstance(parsed, dict) or not matches_record:
         return [f"receipt {label} bytes must deserialize to a YAML mapping equal to the supplied {label}"]
     return []
 
