@@ -115,6 +115,14 @@ def non_empty_string(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def is_integer(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def is_exact_integer(value: object, expected: int) -> bool:
+    return is_integer(value) and value == expected
+
+
 def string_list(value: object, *, allow_empty: bool = True) -> bool:
     return isinstance(value, list) and (allow_empty or bool(value)) and all(non_empty_string(item) for item in value)
 
@@ -291,7 +299,7 @@ def validate_schema_definition(schema: dict[str, Any]) -> list[str]:
     for key, begin, end, count in (("prompt_transport", BEGIN_MARKER, END_MARKER, "dispatch_records_per_prompt"), ("completion_transport", COMPLETION_BEGIN_MARKER, COMPLETION_END_MARKER, "completion_records_per_message"), ("receipt_transport", RECEIPT_BEGIN_MARKER, RECEIPT_END_MARKER, "receipt_records_per_message")):
         transport = schema.get(key)
         errors.extend(missing_fields(transport, ["begin_marker", "end_marker", count], f"schema.{key}"))
-        if isinstance(transport, dict) and (transport.get("begin_marker") != begin or transport.get("end_marker") != end or transport.get(count) != 1):
+        if isinstance(transport, dict) and (transport.get("begin_marker") != begin or transport.get("end_marker") != end or not is_exact_integer(transport.get(count), 1)):
             errors.append(f"schema.{key} markers or record count are invalid")
     delivery = schema.get("dispatch", {}).get("completion_delivery", {})
     if delivery.get("primary_modes") != ["source-task-callback", "parent-event-wait"] or delivery.get("fallback_modes") != ["parent-event-wait", "single-terminal-readback", "none"]:
@@ -340,7 +348,7 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
     execution = record.get("execution")
     errors.extend(missing_fields(execution, schema["dispatch"]["execution"]["required"], "dispatch.execution"))
     errors.extend(unexpected_fields(execution, DISPATCH_FIELDS["execution"], "dispatch.execution"))
-    if isinstance(execution, dict) and (not non_empty_string(execution.get("working_directory")) or not string_list(execution.get("argv"), allow_empty=False) or not isinstance(execution.get("timeout_seconds"), int) or isinstance(execution.get("timeout_seconds"), bool) or execution.get("timeout_seconds", 0) <= 0): errors.append("dispatch.execution is invalid")
+    if isinstance(execution, dict) and (not non_empty_string(execution.get("working_directory")) or not string_list(execution.get("argv"), allow_empty=False) or not is_integer(execution.get("timeout_seconds")) or execution.get("timeout_seconds", 0) <= 0): errors.append("dispatch.execution is invalid")
     packet = record.get("execution_packet")
     errors.extend(missing_fields(packet, schema["dispatch"]["execution_packet"]["required"], "dispatch.execution_packet"))
     errors.extend(unexpected_fields(packet, DISPATCH_FIELDS["execution_packet"], "dispatch.execution_packet"))
@@ -360,7 +368,7 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
     errors.extend(unexpected_fields(delivery, DISPATCH_FIELDS["completion_delivery"], "dispatch.completion_delivery"))
     if isinstance(delivery, dict):
         contract = schema["dispatch"]["completion_delivery"]
-        if delivery.get("primary") not in contract["primary_modes"] or delivery.get("fallback") not in contract["fallback_modes"] or delivery.get("destination") != "source-task" or delivery.get("progress_updates") != "terminal-only" or delivery.get("max_terminal_reports") != 1 or delivery.get("report_schema") != "same-contract#completion": errors.append("dispatch.completion_delivery is invalid")
+        if delivery.get("primary") not in contract["primary_modes"] or delivery.get("fallback") not in contract["fallback_modes"] or delivery.get("destination") != "source-task" or delivery.get("progress_updates") != "terminal-only" or not is_exact_integer(delivery.get("max_terminal_reports"), 1) or delivery.get("report_schema") != "same-contract#completion": errors.append("dispatch.completion_delivery is invalid")
         pre_send = delivery.get("pre_send_validation")
         errors.extend(missing_fields(pre_send, contract["pre_send_validation"]["required"], "dispatch.completion_delivery.pre_send_validation"))
         errors.extend(unexpected_fields(pre_send, DISPATCH_FIELDS["pre_send_validation"], "dispatch.completion_delivery.pre_send_validation"))
@@ -400,9 +408,9 @@ def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch
     errors.extend(missing_fields(result, schema["completion"]["result"]["required"], "completion.result"))
     errors.extend(unexpected_fields(result, COMPLETION_FIELDS["result"], "completion.result"))
     outcome = result.get("outcome") if isinstance(result, dict) else None
-    if isinstance(result, dict) and (outcome not in schema["completion"]["result"]["outcomes"] or (result.get("exit_code") is not None and (not isinstance(result.get("exit_code"), int) or isinstance(result.get("exit_code"), bool)))): errors.append("completion.result is invalid")
+    if isinstance(result, dict) and (outcome not in schema["completion"]["result"]["outcomes"] or (result.get("exit_code") is not None and not is_integer(result.get("exit_code")))): errors.append("completion.result is invalid")
     counts = result.get("counts") if isinstance(result, dict) else None
-    if counts is not None and (not isinstance(counts, dict) or any(not non_empty_string(key) or not isinstance(value, int) or isinstance(value, bool) or value < 0 for key, value in counts.items())): errors.append("completion.result.counts must be null or a mapping of non-negative integers")
+    if counts is not None and (not isinstance(counts, dict) or any(not non_empty_string(key) or not is_integer(value) or value < 0 for key, value in counts.items())): errors.append("completion.result.counts must be null or a mapping of non-negative integers")
     evidence = record.get("evidence")
     errors.extend(missing_fields(evidence, schema["completion"]["evidence"]["required"], "completion.evidence"))
     errors.extend(unexpected_fields(evidence, COMPLETION_FIELDS["evidence"], "completion.evidence"))
@@ -414,11 +422,11 @@ def validate_completion(record: dict[str, Any], schema: dict[str, Any], dispatch
     delivery = record.get("delivery")
     errors.extend(missing_fields(delivery, schema["completion"]["delivery"]["required"], "completion.delivery"))
     errors.extend(unexpected_fields(delivery, COMPLETION_FIELDS["delivery"], "completion.delivery"))
-    if isinstance(delivery, dict) and (delivery.get("mode") not in schema["completion"]["delivery"]["modes"] or delivery.get("destination") != "source-task" or delivery.get("terminal_report_number") != 1): errors.append("completion.delivery is invalid")
+    if isinstance(delivery, dict) and (delivery.get("mode") not in schema["completion"]["delivery"]["modes"] or delivery.get("destination") != "source-task" or not is_exact_integer(delivery.get("terminal_report_number"), 1)): errors.append("completion.delivery is invalid")
     if outcome == "passed":
         if not isinstance(subject, dict) or subject.get("expected_commit_sha") != subject.get("observed_commit_sha"): errors.append("passed completion requires matching expected and observed commit SHAs")
         if not isinstance(preflight, dict) or preflight.get("commit_matches") is not True or preflight.get("clean_worktree") is not True: errors.append("passed completion requires a matching clean preflight")
-        if not isinstance(result, dict) or result.get("exit_code") != 0: errors.append("passed completion requires exit_code zero")
+        if not isinstance(result, dict) or not is_exact_integer(result.get("exit_code"), 0): errors.append("passed completion requires exit_code zero")
         if not isinstance(final_state, dict) or final_state.get("clean_worktree") is not True or final_state.get("tracked_changes") != []: errors.append("passed completion requires a clean final worktree with no tracked changes")
     if dispatch is not None:
         if record.get("delegation_id") != dispatch.get("delegation_id"): errors.append("completion.delegation_id must match dispatch")
@@ -463,7 +471,7 @@ def validate_receipt(receipt: dict[str, Any], schema: dict[str, Any], candidate:
     validator = receipt.get("validator")
     errors.extend(missing_fields(validator, schema["validation_receipt"]["validator"]["required"], "receipt.validator"))
     errors.extend(unexpected_fields(validator, RECEIPT_FIELDS["validator"], "receipt.validator"))
-    if isinstance(validator, dict) and (validator.get("script_sha256") != sha256_bytes(Path(__file__).read_bytes()) or not string_list(validator.get("argv"), allow_empty=False) or validator.get("exit_code") != 0): errors.append("receipt.validator is invalid")
+    if isinstance(validator, dict) and (validator.get("script_sha256") != sha256_bytes(Path(__file__).read_bytes()) or not string_list(validator.get("argv"), allow_empty=False) or not is_exact_integer(validator.get("exit_code"), 0)): errors.append("receipt.validator is invalid")
     if isinstance(validator, dict) and validator.get("argv") != pre_send.get("receipt_writer_argv"):
         errors.append("receipt.validator.argv must match dispatch pre-send receipt_writer_argv")
     custody = receipt.get("custody")

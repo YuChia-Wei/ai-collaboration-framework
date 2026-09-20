@@ -117,6 +117,19 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
                         DELEGATION.validate_schema_definition(schema),
                     )
 
+    def test_gwt_001b_given_boolean_transport_record_count_then_schema_is_rejected(self) -> None:
+        for transport_name, count_field in (
+            ("prompt_transport", "dispatch_records_per_prompt"),
+            ("completion_transport", "completion_records_per_message"),
+            ("receipt_transport", "receipt_records_per_message"),
+        ):
+            for invalid_count in (True, 1.0):
+                with self.subTest(transport=transport_name, invalid_count=invalid_count):
+                    schema = copy.deepcopy(SCHEMA)
+                    schema[transport_name][count_field] = invalid_count
+                    errors = DELEGATION.validate_schema_definition(schema)
+                    self.assertIn(f"schema.{transport_name} markers or record count are invalid", errors)
+
     def test_gwt_002_given_bootstrap_candidate_when_validated_then_it_never_self_asserts_validator_pass(self) -> None:
         candidate = valid_candidate()
         self.assertNotIn("schema_validation", candidate["delivery"])
@@ -152,6 +165,19 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
         dispatch["completion_delivery"]["max_terminal_reports"] = 2
         errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
         self.assertTrue(any("completion_delivery is invalid" in error for error in errors))
+
+    def test_gwt_002c1_given_boolean_dispatch_integer_values_then_dispatch_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["execution"]["timeout_seconds"] = True
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("dispatch.execution is invalid" in error for error in errors))
+
+        for invalid_maximum in (True, 1.0):
+            with self.subTest(invalid_maximum=invalid_maximum):
+                dispatch = valid_dispatch()
+                dispatch["completion_delivery"]["max_terminal_reports"] = invalid_maximum
+                errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+                self.assertTrue(any("dispatch.completion_delivery is invalid" in error for error in errors))
 
     def test_gwt_002d_given_event_wait_delivery_then_dispatch_remains_valid(self) -> None:
         dispatch = valid_dispatch()
@@ -432,6 +458,52 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
         with mock.patch.object(Path, "read_text", return_value=duplicate_dispatch_bytes.decode()):
             with self.assertRaisesRegex(yaml.YAMLError, "duplicate mapping key"):
                 DELEGATION.load_mapping(Path(DISPATCH_REF))
+
+    def test_gwt_002r_given_boolean_completion_or_receipt_integer_values_then_custody_is_rejected(self) -> None:
+        for mutation, expected_error in (
+            (lambda candidate: candidate["timing"].update(duration_seconds=True), "completion.timing is invalid"),
+            (lambda candidate: candidate["result"]["counts"].update(selected=True), "completion.result.counts must be null or a mapping of non-negative integers"),
+        ):
+            with self.subTest(completion_mutation=expected_error):
+                candidate = valid_candidate()
+                mutation(candidate)
+                self.assertIn(expected_error, DELEGATION.validate_completion(candidate, SCHEMA, valid_dispatch()))
+
+        candidate = valid_candidate()
+        candidate["result"]["exit_code"] = False
+        errors = DELEGATION.validate_completion(candidate, SCHEMA, valid_dispatch())
+        self.assertIn("completion.result is invalid", errors)
+        self.assertIn("passed completion requires exit_code zero", errors)
+
+        for invalid_terminal_number in (True, 1.0):
+            with self.subTest(invalid_terminal_number=invalid_terminal_number):
+                dispatch, candidate = valid_dispatch(), valid_candidate()
+                candidate["delivery"]["terminal_report_number"] = invalid_terminal_number
+                dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+                candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+                receipt = DELEGATION.build_validation_receipt(
+                    candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+                    DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+                )
+                errors = DELEGATION.validate_receipt(
+                    receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
+                )
+                self.assertTrue(any("completion.delivery is invalid" in error for error in errors))
+
+        for invalid_exit_code in (False, 0.0):
+            with self.subTest(invalid_receipt_exit_code=invalid_exit_code):
+                dispatch, candidate = valid_dispatch(), valid_candidate()
+                dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+                candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+                receipt = DELEGATION.build_validation_receipt(
+                    candidate, dispatch, CANDIDATE_REF, candidate_bytes,
+                    DISPATCH_REF, dispatch_bytes, RECEIPT_REF,
+                )
+                receipt["validator"]["exit_code"] = invalid_exit_code
+                errors = DELEGATION.validate_receipt(
+                    receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
+                )
+                self.assertTrue(any("receipt.validator is invalid" in error for error in errors))
 
     def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
         dispatch, candidate = valid_dispatch(), valid_candidate()

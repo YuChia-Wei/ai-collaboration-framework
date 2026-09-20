@@ -45,7 +45,7 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 ## Current Checkpoint
 
 - Current task: none; both implementation tasks are completed.
-- Last completed action: #310 fixed-head audit B5 remediation and targeted custody sweep passed their focused 31-test regression module and schema-only validation, binding strict duplicate-free raw bytes to receipt validation, canonical verification paths, and all declared transport/custody semantics.
-- Exact next action: commit and push the B5–B9 corrective change to PR #311, synchronize its declared per-Issue disposition, then complete a fresh independent audit, current hosted checks, live admission, integration, and required provider read-back; do not merge or close either Issue before those gates complete.
+- Last completed action: #310 fixed-head audit B10 remediation passed its focused 34-test regression module and schema-only validation, rejecting YAML boolean and equality-equivalent float values for every contract integer constraint.
+- Exact next action: commit and push the B10 corrective change to PR #311, synchronize its declared per-Issue disposition, then complete a fresh independent audit, current hosted checks, live admission, integration, and required provider read-back; do not merge or close either Issue before those gates complete.
 - Preserved facts: v0.18.0 public assets were verified historically; run `35487203277` remains failed. The historical downstream outer receipt was blocked and its custody was released under an explicit exception.
 - No cross-session handoff is required.
