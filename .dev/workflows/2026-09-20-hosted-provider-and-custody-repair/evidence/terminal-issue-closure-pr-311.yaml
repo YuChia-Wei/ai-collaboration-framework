@@ -10,7 +10,7 @@ pull_request:
 
     - Make GitHub CLI's opaque hosted `unknown owner type` Project failure actionable without exposing or changing provider credentials.
     - Replace the external-task completion self-validation cycle with an exact-byte candidate, independent receipt, and custody-bound terminal delivery.
-    - Harden receipt custody after independent audit: candidates reject self-asserted validation, all writer inputs bind to real ignored artifacts, output creation is exclusive, and Windows alternate-data-stream paths are rejected.
+    - Harden receipt custody after independent audit: candidates reject self-asserted validation, receipt writer inputs bind to real ignored artifacts, output creation is exclusive, execution-packet validator invocation is canonical, and Windows alternate-data-stream paths are rejected.
 
     ## Validation
 

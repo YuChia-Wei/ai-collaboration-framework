@@ -308,6 +308,15 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
         drifted = valid_dispatch()
         drifted["execution_packet"]["packet_sha256"] = "f" * 64
         self.assertTrue(any("does not match packet file bytes" in error for error in DELEGATION.validate_dispatch(drifted, SCHEMA)))
+        for argv in (
+            ["not-the-validator", "--packet", PACKET_REF],
+            ["python", ".ai/scripts/validate-agent-execution-guardrails.py", "--packet", PACKET_REF, "--extra"],
+        ):
+            with self.subTest(validator_argv=argv):
+                drifted = valid_dispatch()
+                drifted["execution_packet"]["validator_argv"] = argv
+                errors = DELEGATION.validate_dispatch(drifted, SCHEMA)
+                self.assertTrue(any("validator_argv must exactly bind" in error for error in errors))
 
     def test_gwt_009_given_profile_without_delegation_binding_then_capability_validation_rejects_it(self) -> None:
         profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))

@@ -28,6 +28,7 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 AGENT_VALIDATOR_PATH = ROOT / ".ai/scripts/validate-agent-execution-guardrails.py"
 AGENT_SCHEMA_PATH = ROOT / ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+CANONICAL_AGENT_VALIDATOR_REF = ".ai/scripts/validate-agent-execution-guardrails.py"
 CANONICAL_VALIDATOR_REF = ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
 COMPLETION_FIELDS = {
     "completion": {"schema_version", "record_type", "delegation_id", "source_task_id", "delegated_task_id", "subject", "preflight", "execution", "timing", "result", "evidence", "final_state", "delivery"},
@@ -137,6 +138,10 @@ def canonical_receipt_writer_argv(candidate_ref: str, dispatch_ref: str, receipt
         "--dispatch", dispatch_ref,
         "--write-receipt", receipt_ref,
     ]
+
+
+def canonical_agent_validator_argv(packet_ref: str) -> list[str]:
+    return ["python", CANONICAL_AGENT_VALIDATOR_REF, "--packet", packet_ref]
 
 
 def validate_pre_send_artifacts(pre_send: dict[str, Any], packet_contract: dict[str, Any]) -> list[str]:
@@ -270,7 +275,8 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
         if packet.get("schema_ref") != ".ai/assets/shared/agent-execution-guardrails.schema.yaml" or not SHA256_RE.fullmatch(str(packet.get("packet_sha256", ""))) or packet.get("validation_outcome") != "passed": errors.append("dispatch.execution_packet is invalid")
         if packet.get("subject_sha") != (subject or {}).get("commit_sha"): errors.append("dispatch.execution_packet.subject_sha must match dispatch subject")
         argv = packet.get("validator_argv")
-        if not string_list(argv, allow_empty=False) or "--packet" not in argv or packet.get("packet_ref") not in argv: errors.append("dispatch.execution_packet.validator_argv must validate the bound packet ref")
+        packet_ref = packet.get("packet_ref")
+        if not non_empty_string(packet_ref) or argv != canonical_agent_validator_argv(packet_ref): errors.append("dispatch.execution_packet.validator_argv must exactly bind the canonical agent validator and packet_ref")
         errors.extend(validate_bound_packet(packet, record))
     permissions = record.get("permissions")
     errors.extend(missing_fields(permissions, schema["dispatch"]["permissions"]["required"], "dispatch.permissions"))
