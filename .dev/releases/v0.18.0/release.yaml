@@ -1,7 +1,7 @@
 schema_version: '1.0'
 release_id: REL-v0.18.0
 version: v0.18.0
-status: planned
+status: validated
 record_origin: governed
 distribution_kind: governed-package
 installable: true
@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-18T00:15:40+08:00'
-updated_at: '2026-09-20T07:37:16+08:00'
+updated_at: '2026-09-20T08:22:09+08:00'
 planning:
   github_issue_refs:
   - '#300'
@@ -109,17 +109,18 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Candidate11 identity and its retained Candidate10 Matrix05 two-delta evidence
-    remain unchanged. TEST018-001 source-only repairs passed pre-execution review
-    and four native focused commands (9 cases); complete process cleanup and source/dependency
-    fingerprints are retained. Release05 and SourceFocused08 remain failed historical
-    evidence. Fresh Release06, lifecycle-sensitive checks, independent source audit
-    and hosted/provider admission remain mandatory pending gates.
+  evidence: Candidate11 archive 51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070
+    retains its admitted identity. Candidate10 Matrix05 actual nine-case evidence
+    remains bound to f566a6014f0942a15b28a39f0b2f5df3303e6014. The exact two-delta
+    rebind preserves original execution identity. The supplied H1 release profile
+    passed and released at 9fbbebebd041cabcd8528f9eefe6f71ff7fc9fa9; this H2 lifecycle-only
+    transition still requires fresh affected validation and an independent source
+    audit before integration admission.
   workflow_id: 2026-09-17-v018-cost-and-messaging
   related_workflows: []
   related_assessments:
   - ASM-20260917-23-c18
-  package_status: planned
+  package_status: validated
   post_merge_status: pending
   failed_publication_run: null
   published_run: null
