@@ -1,0 +1,48 @@
+test_gwt_001_given_valid_three_runtime_adapters_when_validated_then_passes (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_001_given_valid_three_runtime_adapters_when_validated_then_passes) ... ok
+test_gwt_002_given_dynamic_empty_targets_and_metadata_when_validated_then_passes (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_002_given_dynamic_empty_targets_and_metadata_when_validated_then_passes) ... ok
+test_gwt_003_given_missing_target_metadata_when_validated_then_parity_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_003_given_missing_target_metadata_when_validated_then_parity_fails) ... ok
+test_gwt_004_given_extra_target_metadata_when_validated_then_parity_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_004_given_extra_target_metadata_when_validated_then_parity_fails) ... ok
+test_gwt_005_given_duplicate_runtime_adapter_path_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_005_given_duplicate_runtime_adapter_path_when_validated_then_fails) ... ok
+test_gwt_006_given_placeholder_or_glob_adapter_path_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_006_given_placeholder_or_glob_adapter_path_when_validated_then_fails) ... ok
+test_gwt_007_given_escaping_adapter_path_when_validated_then_boundary_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_007_given_escaping_adapter_path_when_validated_then_boundary_fails) ... ok
+test_gwt_008_given_nonexistent_adapter_path_when_validated_then_existence_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_008_given_nonexistent_adapter_path_when_validated_then_existence_fails) ... ok
+test_gwt_009_given_wrong_runtime_root_and_format_when_validated_then_both_fail (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_009_given_wrong_runtime_root_and_format_when_validated_then_both_fail) ... ok
+test_gwt_010_given_adapter_without_canonical_role_reference_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_010_given_adapter_without_canonical_role_reference_when_validated_then_fails) ... ok
+test_gwt_011_given_profile_omits_adapter_when_validated_then_package_inclusion_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_011_given_profile_omits_adapter_when_validated_then_package_inclusion_fails) ... ok
+test_gwt_012_given_retired_copilot_infer_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_012_given_retired_copilot_infer_when_validated_then_fails) ... ok
+test_gwt_013_given_adapter_path_case_mismatch_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_013_given_adapter_path_case_mismatch_when_validated_then_fails) ... ok
+test_gwt_014_given_duplicate_wrapper_target_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_014_given_duplicate_wrapper_target_when_validated_then_fails) ... ok
+test_gwt_015_given_non_mapping_adapter_metadata_when_validated_then_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_015_given_non_mapping_adapter_metadata_when_validated_then_fails) ... ok
+test_gwt_016_given_profile_remaps_adapter_when_validated_then_package_inclusion_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_016_given_profile_remaps_adapter_when_validated_then_package_inclusion_fails) ... ok
+test_gwt_017_given_profile_excludes_adapter_when_validated_then_package_inclusion_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_017_given_profile_excludes_adapter_when_validated_then_package_inclusion_fails) ... ok
+test_gwt_018_given_repository_role_manifests_when_inspected_then_only_translator_is_native (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_018_given_repository_role_manifests_when_inspected_then_only_translator_is_native) ... ok
+test_gwt_019_given_exact_active_role_binding_when_validated_then_static_reachability_passes (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_019_given_exact_active_role_binding_when_validated_then_static_reachability_passes) ... ok
+test_gwt_020_given_declared_empty_role_bindings_when_validated_then_mandatory_binding_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_020_given_declared_empty_role_bindings_when_validated_then_mandatory_binding_fails) ... ok
+test_gwt_021_given_noncanonical_or_dangling_role_path_when_validated_then_exact_linkage_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_021_given_noncanonical_or_dangling_role_path_when_validated_then_exact_linkage_fails) ... FAIL
+test_gwt_022_given_mismatched_target_role_identity_when_validated_then_identity_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_022_given_mismatched_target_role_identity_when_validated_then_identity_fails) ... ok
+test_gwt_023_given_inactive_target_role_when_validated_then_active_status_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_023_given_inactive_target_role_when_validated_then_active_status_fails) ... ok
+test_gwt_024_given_invalid_binding_fields_when_validated_then_static_contract_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_024_given_invalid_binding_fields_when_validated_then_static_contract_fails) ... ok
+test_gwt_025_given_duplicate_role_binding_when_validated_then_duplicate_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_025_given_duplicate_role_binding_when_validated_then_duplicate_fails) ... ok
+test_gwt_026_given_unowned_active_role_when_coverage_is_checked_then_central_only_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_026_given_unowned_active_role_when_coverage_is_checked_then_central_only_fails) ... ok
+test_gwt_027_given_multiple_explicit_active_owners_when_coverage_is_checked_then_passes (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_027_given_multiple_explicit_active_owners_when_coverage_is_checked_then_passes) ... ok
+test_gwt_028_given_live_role_bindings_when_inspected_then_all_active_roles_have_exact_owners (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_028_given_live_role_bindings_when_inspected_then_all_active_roles_have_exact_owners) ... ok
+test_gwt_029_given_matching_multi_owner_derived_projection_when_validated_then_parity_passes (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_029_given_matching_multi_owner_derived_projection_when_validated_then_parity_passes) ... ok
+test_gwt_030_given_stale_bdd_owner_projection_when_validated_then_conflicting_parity_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_030_given_stale_bdd_owner_projection_when_validated_then_conflicting_parity_fails) ... ok
+test_gwt_031_given_central_only_or_missing_projection_rows_when_validated_then_parity_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_031_given_central_only_or_missing_projection_rows_when_validated_then_parity_fails) ... ok
+
+======================================================================
+FAIL: test_gwt_021_given_noncanonical_or_dangling_role_path_when_validated_then_exact_linkage_fails (__main__.SubAgentAdapterMetadataValidationTests.test_gwt_021_given_noncanonical_or_dangling_role_path_when_validated_then_exact_linkage_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\tests\test_ai_context_sub_agent_adapters.py", line 451, in test_gwt_021_given_noncanonical_or_dangling_role_path_when_validated_then_exact_linkage_fails
+    self.assert_error(errors, "must be the exact canonical role path")
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\tests\test_ai_context_sub_agent_adapters.py", line 210, in assert_error
+    self.assertTrue(any(fragment in error for error in errors), errors)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : [".ai\\assets\\skills\\example-owner\\skill.yaml: role_bindings[0].role_path must be an exact canonical shared or owning-skill role path ['.ai/assets/sub-agent-role-prompts/example-role/sub-agent.yaml', '.ai/assets/skills/example-owner/roles/example-role/sub-agent.yaml']", ".ai\\assets\\skills\\example-owner\\skill.yaml: role_bindings[0].role_path is dangling: '.ai/assets/sub-agent-role-prompts/missing-role/sub-agent.yaml'"]
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.470s
+
+FAILED (failures=1)

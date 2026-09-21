@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "record_type": "exact-command-observation",
+  "delegation_id": "P3-318-VALIDATION-01",
+  "execution_boundary": "require_escalated",
+  "expected_commit_sha": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "observed_commit_sha_before": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "observed_commit_sha_after": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "observed_tree_before": "59be49052a8b20387269a83c65850b669716a063",
+  "observed_tree_after": "59be49052a8b20387269a83c65850b669716a063",
+  "tracked_status_before": [],
+  "tracked_status_after": [],
+  "working_directory": ".",
+  "argv": [
+    "python",
+    "-B",
+    ".ai/scripts/tests/test_ai_context_package_smoke.py",
+    "-v"
+  ],
+  "timeout_seconds": 300,
+  "started_at": "2026-09-22T07:36:52.145383+08:00",
+  "completed_at": "2026-09-22T07:36:53.936133+08:00",
+  "duration_seconds": 1.7906910000601783,
+  "outcome": "passed",
+  "exit_code": 0,
+  "counts": {
+    "tests_run": 1,
+    "successful_test_cases": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runner_duration_seconds": 1.49,
+  "execution_log": ".dev/ai-context/local/p3-validation-01/execution.log",
+  "execution_log_sha256": "71b2fc317456299317db3efb6499d33910dad19296b5fef4de9e5e1f5ee3e15c",
+  "timed_out": false,
+  "launch_error": null
+}

@@ -1,0 +1,60 @@
+schema_version: '1.0'
+record_type: independent-review-input
+classification:
+  schema_version: '1.0'
+  record_type: agent-execution-classification
+  operation: review
+  execution_boundary: external
+  duration_class: long-running
+  change_domains:
+  - authority
+  - evidence-custody
+  snapshot: shared-frozen
+  tracked_write: false
+  provider_mutation: false
+  credential_access: false
+  terminal_gate: true
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  base_sha: 228bf4576610a4a07b8ca5d13d2b429edd0bf1af
+  head_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+  base_tree: 0b54883a51aecf830b11db2870b8e24e4075aefb
+  head_tree: 59be49052a8b20387269a83c65850b669716a063
+  subject_digest: 43d4aadbeee5f2179cb26d53fa22b5dde32b64c4da87909ad84c3dd68ece6ee0
+criteria:
+- 'Issue318 AC1: bounded dynamic role updates preserve protected identity/disposition,
+  nested extensions and unrelated bytes; projected candidate is validated, not physical
+  old bytes.'
+- 'AC2: migration is only explicit 1.0 to 1.1 dynamic edge, independently evidenced
+  by retained historical blobs; source bytes are retained and historical reader input
+  is not current admission.'
+- 'AC3-4: versions, malformed/ambiguous identities, authority, boolean steps, owner/reference
+  relations, stale previews, interruption recovery and hostile journal paths fail
+  closed within scope.'
+- 'AC5: shared canonical checks preserve existing policy except two documented corrections;
+  registry/runtime/portable dependency closure remains. Execute the exact package-smoke
+  command once with elevated Windows fixture permissions and retain outcome.'
+- 'AC6: inspect original focused logs and input hashes, distinguish 35 full tests
+  from final 12-case overlapping subset, 42 adapter/registry tests, and canonical
+  validator; preserve initial environment/setup and later assertion failures. Do not
+  claim tests reran on the fixed SHA when only their unchanged bytes are verified.'
+- Chinese report and workflow accurately bound this P3 first family, deferred creation/promoted
+  adapters/other families/P4, and local-only integration authority. No evidence, provider
+  or runtime execution truth is fabricated.
+authority:
+- path: AGENTS.md
+  sha256: 05d34dfe80ad8e42b40c133e4522851971e991266ddf042aba049e31dd1dea1b
+- path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+  sha256: 161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5
+- path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+  sha256: 9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080
+- path: .ai/assets/CANONICAL-SCHEMA.MD
+  sha256: 1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24

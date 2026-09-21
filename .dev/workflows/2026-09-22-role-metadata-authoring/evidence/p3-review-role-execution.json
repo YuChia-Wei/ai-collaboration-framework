@@ -1,0 +1,158 @@
+{
+  "role_execution_id": "ROLE-002-fixed-head-independent-auditor-01",
+  "role_asset_id": "fixed-head-independent-auditor",
+  "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+  "owning_skill": "ai-context-auditor",
+  "stage_id": "ROLE-002-verification",
+  "applicability": {
+    "result": "applies",
+    "reason": "Governance selected P3 terminal verification of a shared frozen authority-sensitive implementation."
+  },
+  "selection": {
+    "disposition": "delegated",
+    "reason": "Independent source and evidence review combined with one exact package-smoke command; root owns intake and integration.",
+    "delegation_evaluation": {
+      "safety_gates": {
+        "applicable_role": true,
+        "current_session_runtime_support_verified": true,
+        "bounded_input_output_permissions_stop": true,
+        "approval_security_credential_boundaries_satisfied": true,
+        "disjoint_mutation_scope": true,
+        "named_parent_and_final_integration_owner": true
+      },
+      "material_value_triggers": [
+        "meaningful_isolation",
+        "specialist_context_benefit"
+      ],
+      "cost_failure_retry_risk": {
+        "result": "supports-delegation",
+        "reason": "Independent verification on one fixed clean subject, without duplicate behavioral review or repairs."
+      }
+    }
+  },
+  "input_envelope": {
+    "goal": "Verify Issue318 role authoring, explicit migration and canonical validation against observed evidence.",
+    "scope": [
+      "P3 implementation diff at fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+      "Exact package smoke command",
+      "Focused historical evidence with explicit limits"
+    ],
+    "non_goals": [
+      "Repair",
+      "Other P3 families and P4",
+      "Provider/credential operations",
+      "Release admission"
+    ],
+    "source_refs": [
+      ".dev/assessments/ASM-20260922-07-0n1/report.md",
+      ".dev/assessments/ASM-20260922-07-0n1/evidence/audit-evidence-catalog.json"
+    ],
+    "mandatory_references": [
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
+    ],
+    "constraints": [
+      "Fixed clean subject",
+      "One native callback per attempt",
+      "Root suspends tracked writes"
+    ],
+    "stop_conditions": [
+      "Subject/authority drift",
+      "Timeout or environment blocker",
+      "Return findings without repair"
+    ]
+  },
+  "permissions": {
+    "read_scope": [
+      "Bounded P3 diff, selected focused evidence and governing authority"
+    ],
+    "write_scope": [
+      ".dev/ai-context/local/p3-validation-01/"
+    ],
+    "external_actions": [],
+    "secret_handling": "no-secret-values"
+  },
+  "executor": {
+    "kind": "runtime-worker",
+    "identity": "/root/p2_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+    "runtime_support_verified": true
+  },
+  "invocation_evidence": {
+    "invocation_id": "/root/p2_independent_audit/P3-validation-01",
+    "started_at": null,
+    "completed_at": null,
+    "outcome": "completed",
+    "evidence_refs": [
+      ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/role-observation.json",
+      ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/terminal-message.txt"
+    ]
+  },
+  "output": {
+    "expected": [
+      "Independent fixed-subject review and measured package smoke"
+    ],
+    "returned": [
+      "One P3 invocation completed; package smoke passed and reviewer-owned conclusions retained.",
+      "Native invocation-event timestamps are unavailable; direct worker/command observations are retained separately without inference."
+    ],
+    "evidence_refs": [
+      ".dev/assessments/ASM-20260922-07-0n1/report.md",
+      ".dev/assessments/ASM-20260922-07-0n1/evidence/audit-evidence-catalog.json"
+    ],
+    "bounded": true
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "disposition": "delegated",
+      "executor": {
+        "kind": "runtime-worker",
+        "identity": "/root/p2_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+        "runtime_support_verified": true
+      },
+      "invocation_evidence": {
+        "invocation_id": "/root/p2_independent_audit/P3-validation-01",
+        "started_at": null,
+        "completed_at": null,
+        "outcome": "completed",
+        "evidence_refs": [
+          ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/role-observation.json",
+          ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/terminal-message.txt"
+        ]
+      },
+      "outcome": "completed",
+      "correctable_failure": false,
+      "material_state_change": "",
+      "authorization_source": [
+        ".dev/workflows/2026-09-22-role-metadata-authoring/workflow-plan.md"
+      ],
+      "evidence_refs": [
+        ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/review-result.md",
+        ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/candidate.yaml",
+        ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/lease.yaml"
+      ]
+    }
+  ],
+  "fallback": {
+    "considered": false,
+    "reason": "Native worker retained ownership; no inline role fallback.",
+    "resulting_disposition": null,
+    "inline_contract_evidence": {
+      "same_role_path_and_mandatory_references": false,
+      "bounded_input_output_permissions_stop": false,
+      "approval_security_credential_boundaries_satisfied": false,
+      "disjoint_mutation_scope": false,
+      "named_parent_and_final_integration_owner": false,
+      "current_inline_support_verified": false,
+      "evidence_refs": []
+    }
+  },
+  "final_integration_owner": {
+    "owner": "root",
+    "decision": "accepted",
+    "evidence_refs": [
+      ".dev/assessments/ASM-20260922-07-0n1/report.md"
+    ]
+  }
+}

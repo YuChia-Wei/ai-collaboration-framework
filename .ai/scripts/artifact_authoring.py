@@ -1,4 +1,4 @@
-"""Restricted workflow/assessment authoring over existing family validators.
+"""Restricted document authoring over existing family validators.
 
 Preview is read-only. Apply re-derives a preview, then writes a recoverable bundle
 under an exclusive cooperative lock. Individual replacements are atomic; the
@@ -32,7 +32,15 @@ LOCAL = ".dev/ai-context/local/artifact-authoring"
 OPERATIONS = {
     "workflow.create", "workflow.add-task", "workflow.transition", "workflow.update",
     "assessment.create", "assessment.update", "assessment.finalize",
+    "role.update", "role.migrate",
 }
+ROLE_AUTHORITY = (
+    ".ai/assets/CANONICAL-SCHEMA.MD",
+    ".ai/assets/templates/sub-agent-role-prompt-template.yaml",
+    ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+)
+ROLE_RUNTIME = ("validate-ai-context.py", "ai_context_cli_routing.py")
+ROLE_EDITABLE = {"title", "purpose", "triggers", "inputs", "outputs", "constraints", "references", "examples"}
 
 
 class AuthoringError(ValueError):
@@ -589,6 +597,76 @@ def _module(name: str):
     return module
 
 
+def role(view: View, request: dict) -> None:
+    """Update dynamic roles or convert the explicitly supported historical edge.
+
+    Paths are discovered from canonical layouts. Neither a request nor a journal
+    can select an arbitrary output, owner binding or runtime disposition.
+    """
+    action = request["operation"].split(".")[1]
+    fields(request, {"version", "operation", "timestamp", "id"} | ({"changes"} if action == "update" else {"from_version", "to_version"}),
+           set(), "role request")
+    identity = string(request["id"], "id")
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", identity):
+        raise AuthoringError("role id must be canonical kebab-case")
+    for ref in ROLE_AUTHORITY:
+        if view.read(ref) is None: raise AuthoringError(f"missing role authority: {ref}")
+    validator = _module("validate-ai-context")
+    if validator.ASSET_SCHEMA_VERSIONS["sub-agent.yaml"] != "1.1":
+        raise AuthoringError("canonical role version changed; update the family adapter")
+
+    def manifests(directory: str, filename: str):
+        base = view.path(directory)
+        if base.is_dir():
+            for child in base.iterdir():
+                if child.is_dir() and (child / filename).is_file():
+                    yield (child / filename).relative_to(view.root).as_posix()
+
+    skill_paths = list(manifests(".ai/assets/skills", "skill.yaml"))
+    role_paths = list(manifests(".ai/assets/sub-agent-role-prompts", "sub-agent.yaml"))
+    # Private role discovery does not depend on the owning skill being valid.
+    skill_root = view.path(".ai/assets/skills")
+    if skill_root.is_dir():
+        for child in skill_root.iterdir():
+            if child.is_dir():
+                role_paths.extend(manifests(child.relative_to(view.root).as_posix() + "/roles", "sub-agent.yaml"))
+    records = {ref: load(view, ref) for ref in skill_paths + role_paths}
+    matches = [ref for ref in role_paths if records[ref].get("asset_id") == identity]
+    if len(matches) != 1: raise AuthoringError("role identity must resolve to exactly one canonical manifest")
+    target = matches[0]
+    data = load(view, target, writable=True)
+    if data.get("wrapper_targets") != [] or data.get("adapter_metadata", {}) != {}:
+        raise AuthoringError("runtime adapter reconciliation required; this writer only supports dynamic roles")
+    if action == "update":
+        if data.get("schema_version") != "1.1":
+            raise AuthoringError("role.update requires current 1.1; use the declared migration edge for legacy input")
+        changes = request["changes"]
+        fields(changes, set(), ROLE_EDITABLE, "role changes")
+        if not changes: raise AuthoringError("role changes must not be empty")
+        for key, value in changes.items():
+            data[key] = string(value, key) if key in {"title", "purpose"} else strings(value, key)
+    else:
+        if request["from_version"] != "1.0" or request.get("to_version") != "1.1" or data.get("schema_version") != "1.0":
+            raise AuthoringError("only explicit role migration 1.0 -> 1.1 is supported; preserve original and reconcile other versions")
+        data["schema_version"] = "1.1"
+        data["adapter_metadata"] = {}
+    view.put(target, dump(data))
+    records[target] = data
+    errors: list[str] = []
+    seen: set[str] = set()
+    # Reuse canonical shape/identity/reference checks and owner relationships.
+    # Runtime wrappers of unmodified contextual manifests are outside this gate.
+    for ref, record in records.items():
+        validator.validate_canonical_manifest(Path(ref), record, errors, root=view.path(), seen=seen)
+    validator.validate_sub_agent_adapter_metadata(Path(target), data, errors, root=view.path())
+    validator.validate_role_relationships(
+        [(Path(ref), records[ref]) for ref in skill_paths],
+        {ref: records[ref] for ref in role_paths},
+        view.path(".ai/SUB-AGENT-SYSTEM.MD"), errors,
+    )
+    if errors: raise AuthoringError("projected role validation failed before writes:\n- " + "\n- ".join(errors))
+
+
 def git(root: Path, *args: str, allowed: tuple[int, ...] = (0,)) -> str:
     result = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, check=False)
     if result.returncode not in allowed:
@@ -617,9 +695,9 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     instant(request.get("timestamp"))
     view = View(root, _baseline)
     family = request["operation"].split(".")[0]
-    (workflow if family == "workflow" else assessment)(view, request)
     # Validate the complete projected repository using the unchanged domain rules.
     try:
+        {"workflow": workflow, "assessment": assessment, "role": role}[family](view, request)
         errors = _module("validate-workflow-artifacts").validate_workflows(view.path())[0]
         errors += _module("validate-assessment-artifacts").validate_assessments(view.path())[0]
     except (KeyError, TypeError, AttributeError, OSError, ValueError) as exc:
@@ -630,6 +708,9 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
                 ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-assessment-artifacts.py",
                 ".ai/scripts/artifact_authoring.py", ".ai/scripts/artifact_core.py", ".gitignore"):
         view.read(rel)
+    if family == "role":
+        for name in ROLE_RUNTIME:
+            view.read(".ai/scripts/" + name)
     changes = {}
     for rel, after in view.overlay.items():
         target = safe_path(root, rel)
@@ -641,7 +722,7 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     if context["ignored"].startswith("0:"): raise AuthoringError("artifact output is ignored; correct the repository policy first")
     binding = {"request": request, "inputs": view.observed, "git": context,
                "runtime": {name: digest(Path(__file__).with_name(name).read_bytes()) for name in
-                           ("artifact_authoring.py", "artifact_core.py", "validate-workflow-artifacts.py", "validate-assessment-artifacts.py", "python_prerequisites.py")},
+                           (("artifact_authoring.py", "artifact_core.py", "validate-workflow-artifacts.py", "validate-assessment-artifacts.py", "python_prerequisites.py") + (ROLE_RUNTIME if family == "role" else ()))},
                "changes": {p: [None if before is None else digest(before), digest(after)] for p, (before, after) in changes.items()}}
     return Plan(request, changes, digest(canonical(binding)))
 
@@ -650,8 +731,15 @@ def catalog(root: Path) -> dict:
     view = View(root)
     return {"request_version": "1.0", "operations": sorted(OPERATIONS), "families": {
         "workflow": {"profile": "ai-context-maintenance", "readable": "current templates only", "writable": template(view, WORKFLOW_TEMPLATE)["template_version"], "template_source": WORKFLOW_TEMPLATE},
-        "assessment": {"profile": ["ai-context-audit", "ai-context-verification"], "readable": "current templates only", "writable": template(view, ASSESSMENT_TEMPLATE)["template_version"], "template_source": ASSESSMENT_TEMPLATE}},
-        "migration": "unsupported: preserve originals and use the owning reader; P1 does not convert evidence",
+        "assessment": {"profile": ["ai-context-audit", "ai-context-verification"], "readable": "current templates only", "writable": template(view, ASSESSMENT_TEMPLATE)["template_version"], "template_source": ASSESSMENT_TEMPLATE},
+        "role": {"profile": "existing dynamic sub-agent-role-prompt", "readable": ["1.1"],
+                 "migration_input": ["1.0 dynamic roles only; not current admission"], "writable": "1.1", "admissible": "1.1 plus canonical owner/reference validation",
+                 "editable_fields": sorted(ROLE_EDITABLE), "template_source": ROLE_AUTHORITY[1],
+                 "migration": {"disposition": "convert", "from": "1.0", "to": "1.1",
+                               "preconditions": "empty wrapper_targets; absent or empty adapter_metadata; valid current relationships",
+                               "preserve_original": "exact bytes in ignored recovery journal; retain it for historical custody"},
+                 "unsupported": "creation, promoted adapters, owner/status/identity changes and all other version edges; preserve originals for owner reconciliation"}},
+        "migration": "role.migrate supports only the catalogued dynamic edge; other families preserve originals and use their owning route",
         "final_assessments": "readable, immutable; create successor or reviewed addendum",
         "yaml_comments": "YAML comments are refused before rewriting; scalar hash content, Markdown prose and JSON/YAML extension fields are retained",
         "recovery": "explicit rollback of unchanged candidate bytes; no multi-file atomicity"}

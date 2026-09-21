@@ -2290,7 +2290,7 @@ run_source_repository_governance_checks() {
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/tests/test_artifact_authoring.py -v" \
-        "Workflow And Assessment Authoring Tests" \
+        "Workflow Assessment And Role Authoring Tests" \
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/tests/test_execution_artifacts.py -v" \

@@ -185,14 +185,58 @@ that lock and run recovery. If inputs needed for recovery have changed, preserve
 the journal and reconcile manually. This is bounded local document recovery,
 not hostile-process exclusion or a power-loss durability guarantee.
 
-`catalog` distinguishes the two writable profiles from final immutable records
-and unsupported migration. Historical versions remain the responsibility of
-their owning readers; P1 neither converts them nor regenerates execution evidence.
+`catalog` distinguishes writable profiles, immutable records and explicit
+migration dispositions. Historical execution evidence is never regenerated.
 The focused suite uses independent inputs and failure injection:
 
 ```text
 python .ai/scripts/tests/test_artifact_authoring.py -v
 ```
+
+### Dynamic Role Metadata (P3 First Family)
+
+`role.update` edits an existing dynamic `sub-agent-role-prompt` manifest at
+schema `1.1`. Identity is resolved from the canonical shared or skill-private
+layout; requests cannot select an output path. The editable fields are `title`,
+`purpose`, `triggers`, `inputs`, `outputs`, `constraints`, `references` and
+`examples`. Unchanged mappings and nested owner extensions retain their values.
+Role identity, status, workflow, runtime disposition and owning-skill bindings
+are protected. Authoring permission still comes from the owning task; the tool
+does not grant authority to change a role's responsibilities.
+
+```json
+{
+  "version": "1.0",
+  "operation": "role.update",
+  "id": "example-role",
+  "timestamp": "2026-09-22T09:00:00+08:00",
+  "changes": {"title": "Revised role title"}
+}
+```
+
+`role.migrate` accepts only explicit `from_version: "1.0"` and
+`to_version: "1.1"`, with the same request identity/timestamp fields and no
+`changes`. It requires an already empty `wrapper_targets` list and absent or
+empty `adapter_metadata`; it changes only the version and adds the empty
+mapping. This edge follows the historical dynamic-role conversion, not an
+inferred runtime choice. Version `1.0` is migration input, not current canonical
+admission. Other versions and promoted runtime adapters require owner
+reconciliation; both update and migration currently refuse promoted roles.
+
+Preview validates supplied candidate mappings through the existing canonical
+field and relationship checks, observing canonical manifests, references,
+the derived owner projection and governing inputs. It does not temporarily
+write candidate files. Invalid contextual records can block authoring: this is
+not a repository-wide historical migration or an automatic relocation tool.
+Unmodified runtime wrappers are outside this operation's gate; the full
+canonical validator remains the repository admission gate.
+
+Apply and explicit recovery use the same journal contract as other families.
+The ignored journal retains exact original bytes and their preview-bound digest;
+retain it when historical custody matters. YAML formatting can normalize;
+actual comments, aliases or unsupported scalar types are refused before a
+rewrite. Creation, adapter promotion and owner-binding changes are deferred.
+No existing validator, test or hosted gate is removed.
 
 ## Source Tooling Prerequisites
 

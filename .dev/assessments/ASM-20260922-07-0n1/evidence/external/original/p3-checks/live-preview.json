@@ -1,0 +1,16 @@
+{
+  "kind": "parent-observed-read-only-preview",
+  "subject": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "request": {
+    "version": "1.0",
+    "operation": "role.update",
+    "id": "semantic-governance-analyst",
+    "timestamp": "2026-09-22T07:41:00+08:00",
+    "changes": {"title": "Semantic Governance Analyst Preview"}
+  },
+  "exit_code": 0,
+  "changed_paths_in_preview": [".ai/assets/sub-agent-role-prompts/semantic-governance-analyst/sub-agent.yaml"],
+  "preview_digest": "a531c4e0cab2815ab19237c7cc5132feac89062a79c21af1bfd7395d016abc8a",
+  "applied": false,
+  "observation_source": "Native exec result chunk 2b6696; actual repository context, read-only plan API."
+}

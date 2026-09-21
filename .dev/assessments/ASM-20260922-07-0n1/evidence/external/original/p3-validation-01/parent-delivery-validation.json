@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python",
+    "-B",
+    ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+    "--dispatch",
+    ".dev/ai-context/local/p3-validation-01/dispatch.yaml",
+    "--terminal-message",
+    ".dev/ai-context/local/p3-validation-01/terminal-message.txt"
+  ],
+  "exit_code": 0,
+  "output": "External-task candidate validation passed; custody remains held unless a matching receipt was verified.\n",
+  "stderr": ""
+}

@@ -1,0 +1,32 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P3-318-VALIDATION-LEASE-01
+worktree: .
+subject_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+observed_snapshot:
+  head_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+  tracked_status: []
+snapshot_sha256: 8f1df841baa18ff378f6b34c6f26a8bd6a295b11e286f30d609fea283f20ab88
+state: active
+holder:
+  packet_id: P3-318-VALIDATION-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/p3-validation-01/lease.lock
+  lock_sha256: b0a2d6d7d358c8072ed5ee5e74df40dd293a70ec29809bc3ebc54c1baf9745bc
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p3-validation-01/execution.log
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/p3-validation-01/review-result.md
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/p3-validation-01/candidate.yaml
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Root suspends tracked writes until validated terminal callback and explicit
+    release.
+lease_sha256: 162445cbb75b4a0bc6df1a8e725f178b72440761f52484a2d79d69d880a3ddd7

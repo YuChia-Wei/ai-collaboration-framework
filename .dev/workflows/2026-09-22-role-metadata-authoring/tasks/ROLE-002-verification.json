@@ -1,0 +1,67 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ROLE-002-verification",
+  "workflow_id": "2026-09-22-role-metadata-authoring",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-22T07:17:43+08:00",
+  "updated_at": "2026-09-22T07:44:44+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-002",
+    "ASM-20260921-18-gav#AIC-003",
+    "ASM-20260921-18-gav#AIC-004"
+  ],
+  "scope": {
+    "target": "Independent P3 verification, explanation and local integration",
+    "files": [
+      ".ai/scripts/"
+    ],
+    "constraints": [
+      "One tracked writer",
+      "No invented runtime disposition",
+      "No test or validator removal"
+    ],
+    "non_goals": [
+      "Other P3 families",
+      "Role creation",
+      "P4 gate removal",
+      "Remote transport or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Review immutable implementation and actual evidence",
+      "Retain verification assessment and explanation",
+      "Validate delivery and integrate locally"
+    ],
+    "validation": [
+      "Independent historical migration oracle",
+      "Negative and recovery regression",
+      "Canonical reader and dependency closure"
+    ],
+    "last_completed_step": "",
+    "next_action": "Complete final delivery admission and local merge; select another bounded P3 family in the next phase."
+  },
+  "results": {
+    "summary": "Independent verification ASM-20260922-07-0n1, exact evidence archive, acceptance map and Chinese report completed.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260922-07-0n1/",
+      ".dev/workflows/2026-09-22-role-metadata-authoring/",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "Independent fixed-head package smoke passed; prior focused results retained with provenance and overlaps.",
+      "Assessment writer create/finalize and workflow projections passed."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Other P3 families and P4 deferred. Workflow completion is separate from final local integration admission and provider lifecycle.",
+    "follow_up_needed": true
+  }
+}

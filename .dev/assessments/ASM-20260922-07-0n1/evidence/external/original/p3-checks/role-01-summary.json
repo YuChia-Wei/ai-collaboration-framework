@@ -1,0 +1,19 @@
+{
+  "kind": "parent-observed-initial-attempt-summary",
+  "raw_log_available": false,
+  "command": [
+    "python",
+    "-B",
+    ".ai/scripts/tests/test_artifact_authoring.py",
+    "RoleAuthoringTests",
+    "-v"
+  ],
+  "outcome": "failed",
+  "tests_run": 11,
+  "passed": 10,
+  "errors": 1,
+  "duration_seconds": 18.789,
+  "diagnostic": "Historical oracle FileNotFoundError after fixture directory creation was denied by Windows filesystem permissions.",
+  "repair": "Authorized elevated fixture extraction from the two exact Git blobs; no behavior weakening.",
+  "observation_source": "Native exec outputs chunks 55b79b and 773620; original full stream was not archived."
+}

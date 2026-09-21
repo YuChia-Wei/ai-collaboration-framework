@@ -1,0 +1,70 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ROLE-001-implementation",
+  "workflow_id": "2026-09-22-role-metadata-authoring",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-22T07:16:55+08:00",
+  "updated_at": "2026-09-22T07:28:50+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-002",
+    "ASM-20260921-18-gav#AIC-003",
+    "ASM-20260921-18-gav#AIC-004"
+  ],
+  "scope": {
+    "target": "P3 dynamic role metadata updates and explicit migration",
+    "files": [
+      ".ai/scripts/"
+    ],
+    "constraints": [
+      "One tracked writer",
+      "No invented runtime disposition",
+      "No test or validator removal"
+    ],
+    "non_goals": [
+      "Other P3 families",
+      "Role creation",
+      "P4 gate removal",
+      "Remote transport or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Implement guarded role operations",
+      "Preserve canonical validation and extensions",
+      "Run focused regression and portable checks"
+    ],
+    "validation": [
+      "Independent historical migration oracle",
+      "Negative and recovery regression",
+      "Canonical reader and dependency closure"
+    ],
+    "last_completed_step": "",
+    "next_action": "Freeze implementation and dispatch independent ai-context-auditor verification."
+  },
+  "results": {
+    "summary": "Dynamic role authoring and explicit migration implemented; advisory findings repaired under existing canonical authority.",
+    "files_changed": [
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/README.md"
+    ],
+    "tests_run": [
+      "Authoring 35 passed; final affected role subset 12 passed (overlapping).",
+      "Adapters plus registry 42 passed after retained failures.",
+      "Current canonical validator passed (39 manifests)."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Fixed-subject independent review and package smoke remain; promoted roles and other P3 families are deferred.",
+    "follow_up_needed": true
+  }
+}

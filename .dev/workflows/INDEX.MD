@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-22-role-metadata-authoring`](2026-09-22-role-metadata-authoring/workflow.yaml) | Author and migrate dynamic role metadata | `ai-context-governance` | `completed` | `2026-09-22T07:44:44+08:00` | [plan](2026-09-22-role-metadata-authoring/workflow-plan.md) |
 | [`2026-09-21-artifact-shared-core`](2026-09-21-artifact-shared-core/workflow.yaml) | Share artifact primitives and integrate existing producers | `ai-context-governance` | `completed` | `2026-09-21T23:15:03+08:00` | [plan](2026-09-21-artifact-shared-core/workflow-plan.md) |
 | [`2026-09-21-schema-artifact-lifecycle`](2026-09-21-schema-artifact-lifecycle/workflow.yaml) | Analyze schema artifact authoring, migration and validation consolidation | `ai-context-governance` | `completed` | `2026-09-21T22:17:55+08:00` | [plan](2026-09-21-schema-artifact-lifecycle/workflow-plan.md) |
 | [`2026-09-21-issue-309-hosted-preflight`](2026-09-21-issue-309-hosted-preflight/workflow.yaml) | Prepare a read-only hosted release provider check for Issue 309 | `ai-context-governance` | `in_progress` | `2026-09-21T14:03:28+08:00` | [plan](2026-09-21-issue-309-hosted-preflight/workflow-plan.md) |

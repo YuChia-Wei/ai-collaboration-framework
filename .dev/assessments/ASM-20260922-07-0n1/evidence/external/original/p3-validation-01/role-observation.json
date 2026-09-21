@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "record_type": "role-execution-observation",
+  "delegation_id": "P3-318-VALIDATION-01",
+  "role_asset_id": "fixed-head-independent-auditor",
+  "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+  "owning_skill": "ai-context-auditor",
+  "worker_clock_first_observed_at": "2026-09-22T07:31:23.6775264+08:00",
+  "native_invocation_started_at": null,
+  "native_invocation_completed_at": null,
+  "role_evidence_completed_at": "2026-09-22T07:39:17.2892059+08:00",
+  "exact_worker_spawn_time_available": false,
+  "invocation_time_limit": "The runtime exposed no exact native worker invocation event clocks. Direct first-worker and evidence-completion observations are retained without relabeling them as native invocation timestamps.",
+  "execution_started_at": "2026-09-22T07:36:52.145383+08:00",
+  "execution_completed_at": "2026-09-22T07:36:53.936133+08:00",
+  "execution_duration_seconds": 1.7906910000601783,
+  "execution_boundary": "require_escalated",
+  "subject_sha": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "subject_digest": "43d4aadbeee5f2179cb26d53fa22b5dde32b64c4da87909ad84c3dd68ece6ee0",
+  "outcome": "passed",
+  "parent_action": "accept",
+  "review_result_sha256": "74cc95a82d8071044ec6c7b2024b35d1ff41b8c5ca09474876abb8d8cd28f1bd"
+}

@@ -1,0 +1,42 @@
+schema_version: '1.0'
+record_type: execution-observations
+source_task_id: P3-318-ROLE-002
+delegated_task_id: P3-318-VALIDATION-01
+observed_commit_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+preflight:
+  commit_matches: true
+  clean_worktree: true
+execution:
+  working_directory: .
+  argv:
+  - python
+  - -B
+  - .ai/scripts/tests/test_ai_context_package_smoke.py
+  - -v
+timing:
+  started_at: '2026-09-22T07:36:52.145383+08:00'
+  completed_at: '2026-09-22T07:36:53.936133+08:00'
+  duration_seconds: 1.7906910000601783
+result:
+  outcome: passed
+  exit_code: 0
+  counts:
+    tests_run: 1
+    successful_test_cases: 1
+    failures: 0
+    errors: 0
+    skipped: 0
+evidence:
+  refs:
+  - ignored:.dev/ai-context/local/p3-validation-01/execution.log
+  - ignored:.dev/ai-context/local/p3-validation-01/command-observation.json
+  - ignored:.dev/ai-context/local/p3-validation-01/review-result.md
+  - ignored:.dev/ai-context/local/p3-validation-01/role-observation.json
+  - ignored:.dev/ai-context/local/p3-checks/role-03.log
+  - ignored:.dev/ai-context/local/p3-checks/adapters-registry-02.log
+  - ignored:.dev/ai-context/local/p3-checks/canonical-02.log
+  bounded_output: Independent two-pass P3 review found no material defect; exact fixed-head package smoke passed 1/1. Prior focused evidence is retained with explicit input-identity and runner-timing limits. No repair or provider action occurred.
+final_state:
+  clean_worktree: true
+  tracked_changes: []
+delivery_mode: source-task-callback
