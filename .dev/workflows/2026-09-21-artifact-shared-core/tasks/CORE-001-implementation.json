@@ -1,0 +1,62 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CORE-001-implementation",
+  "workflow_id": "2026-09-21-artifact-shared-core",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-21T22:38:23+08:00",
+  "updated_at": "2026-09-21T22:49:47+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-001",
+    "ASM-20260921-18-gav#AIC-004"
+  ],
+  "scope": {
+    "target": "P2 shared artifact primitives, existing producer integration and syntax-aware comment protection",
+    "files": [
+      ".ai/scripts/",
+      ".ai/assets/shared/validation-gate-classification.yaml"
+    ],
+    "constraints": [
+      "Preserve CLI and family semantics",
+      "One tracked writer",
+      "No validator/test removal"
+    ],
+    "non_goals": [
+      "P3 migrations and new metadata families",
+      "P4 gate removal",
+      "Hosted transport or release"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Bind approved P2 and retained P1 evidence",
+      "Extract shared primitives with explicit family compatibility",
+      "Validate affected source/package execution and document results"
+    ],
+    "validation": [
+      "Independent parser/serialization fixtures",
+      "Authoring regression and legacy execution-producer tests",
+      "Portable import and authority dependency closure"
+    ],
+    "last_completed_step": "Shared primitives, syntax-aware comment protection, authority/import closure and focused checks completed.",
+    "next_action": "Commit a clean immutable subject and dispatch full producer plus package-smoke validation under the long-running gate."
+  },
+  "results": {
+    "summary": "Focused implementation checks passed; external full producer/package smoke and independent verification remain pending.",
+    "files_changed": [],
+    "tests_run": [
+      "Authoring 24 passed; core compatibility 5 passed; structure/package imports 5 passed.",
+      "Guardrails 46, external task 35, entrypoints 7 and registry 11 passed.",
+      "Generated templates, AI context, guardrail contract and shell assets passed."
+    ],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

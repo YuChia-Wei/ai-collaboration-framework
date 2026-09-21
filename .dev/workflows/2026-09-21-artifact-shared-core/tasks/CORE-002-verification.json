@@ -1,0 +1,58 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CORE-002-verification",
+  "workflow_id": "2026-09-21-artifact-shared-core",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-09-21T22:39:11+08:00",
+  "updated_at": "2026-09-21T22:39:11+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-001",
+    "ASM-20260921-18-gav#AIC-004"
+  ],
+  "scope": {
+    "target": "Independent P2 verification, explanation and local delivery",
+    "files": [
+      ".dev/assessments/",
+      ".dev/workflows/2026-09-21-artifact-shared-core/"
+    ],
+    "constraints": [
+      "Preserve CLI and family semantics",
+      "One tracked writer",
+      "No validator/test removal"
+    ],
+    "non_goals": [
+      "P3 migrations and new metadata families",
+      "P4 gate removal",
+      "Hosted transport or release"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Preflight one clean fixed subject",
+      "Retain reviewer-owned verification and original evidence",
+      "Reconcile and integrate locally after focused delivery checks"
+    ],
+    "validation": [
+      "Fixed-subject independent review",
+      "Workflow and assessment validation",
+      "Local merge tree and ancestry read-back"
+    ],
+    "last_completed_step": "",
+    "next_action": "Await CORE-001 implementation and validation."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

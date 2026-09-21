@@ -47,7 +47,8 @@ class AuthoringTests(unittest.TestCase):
         for ref in (GOV + 'workflow-locator-template.yaml', GOV + 'ai-context-maintenance-workflow-plan-template.md',
                     GOV + 'ai-context-remediation-task-template.json', AUDIT, LOCATOR,
                     '.ai/scripts/validate-workflow-artifacts.py', '.ai/scripts/validate-assessment-artifacts.py',
-                    '.ai/scripts/python_prerequisites.py', '.ai/scripts/python-entrypoints.json', 'requirements.txt'):
+                    '.ai/scripts/python_prerequisites.py', '.ai/scripts/python-entrypoints.json',
+                    '.ai/scripts/artifact_core.py', 'requirements.txt'):
             self.put(ref, (ROOT / ref).read_bytes())
         self.put('.gitignore', b'.dev/ai-context/local/\n__pycache__/\n')
         self.put('.dev/workflows/README.MD', b'# Workflows\n')
@@ -188,6 +189,42 @@ class AuthoringTests(unittest.TestCase):
             with self.subTest(field=field, value=value), self.assertRaises(ValueError):
                 AUTHOR.plan(self.root, request)
             self.assertEqual(before, self.snapshot())
+
+    def test_generated_quoted_hash_values_remain_editable_in_both_families(self):
+        workflow = self.workflow(); workflow['title'] = 'Discuss #316'
+        assessment = self.assessment(); assessment['included'] = ['Discuss #316']
+        self.execute(workflow); self.execute(assessment)
+        self.execute({'version': '1.0', 'operation': 'workflow.update', 'timestamp': LATER,
+                      'id': WF, 'title': 'Follow up #316'})
+        self.execute({'version': '1.0', 'operation': 'assessment.finalize', 'timestamp': LATER,
+                      'id': ASM, 'last_completed_action': 'Fixture observations recorded',
+                      'body': '## Executive Summary\nFixture only.\n## Scope\nDiscuss #316.\n## Validation\nNo execution claimed.'})
+        self.assertEqual('Follow up #316', self.load(f'.dev/workflows/{WF}/workflow.yaml')['title'])
+        record = self.load(f'.dev/assessments/{ASM}/assessment.yaml')
+        self.assertEqual(['Discuss #316'], record['scope']['included'])
+        self.assertEqual('final', record['status'])
+
+    def test_real_yaml_comments_refuse_updates_before_any_write(self):
+        self.execute(self.workflow())
+        ref = f'.dev/workflows/{WF}/workflow.yaml'
+        original = (self.root / ref).read_bytes()
+        for extension in ('note: value # comment\n', 'note: | # header comment\n  # literal\n',
+                          'note: "# literal"# comment\n', '# last comment\n'):
+            self.put(ref, original + extension.replace('\n', '\r\n').encode())
+            before = self.snapshot()
+            with self.subTest(extension=extension), self.assertRaisesRegex(ValueError, 'YAML comments'):
+                self.execute({'version': '1.0', 'operation': 'workflow.update', 'timestamp': LATER,
+                              'id': WF, 'title': 'Changed'})
+            self.assertEqual(before, self.snapshot())
+
+    def test_shared_core_drift_invalidates_preview(self):
+        request = self.workflow(); preview = AUTHOR.plan(self.root, request)
+        path = self.root / '.ai/scripts/artifact_core.py'
+        path.write_bytes(path.read_bytes() + b'\n# changed dependency\n')
+        before = self.snapshot()
+        with self.assertRaisesRegex(ValueError, 'stale'):
+            AUTHOR.apply(self.root, request, preview.digest)
+        self.assertEqual(before, self.snapshot())
 
     def test_backward_update_time_is_rejected(self):
         self.execute(self.assessment())
@@ -381,7 +418,7 @@ author.apply(Path(sys.argv[2]), json.loads(sys.argv[3]), sys.argv[4])
         payload = envelope / 'payload'
         refs = [GOV + 'workflow-locator-template.yaml', GOV + 'ai-context-maintenance-workflow-plan-template.md',
                 GOV + 'ai-context-remediation-task-template.json', AUDIT, LOCATOR]
-        refs += ['.ai/scripts/' + name for name in ('artifact-authoring.py', 'artifact_authoring.py',
+        refs += ['.ai/scripts/' + name for name in ('artifact-authoring.py', 'artifact_authoring.py', 'artifact_core.py',
                  'validate-workflow-artifacts.py', 'validate-assessment-artifacts.py',
                  'python_prerequisites.py', 'python-entrypoints.json')]
         for ref in refs:

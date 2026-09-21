@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-21-artifact-shared-core`](2026-09-21-artifact-shared-core/workflow.yaml) | Share artifact primitives and integrate existing producers | `ai-context-governance` | `in_progress` | `2026-09-21T22:49:47+08:00` | [plan](2026-09-21-artifact-shared-core/workflow-plan.md) |
 | [`2026-09-21-schema-artifact-lifecycle`](2026-09-21-schema-artifact-lifecycle/workflow.yaml) | Analyze schema artifact authoring, migration and validation consolidation | `ai-context-governance` | `completed` | `2026-09-21T22:17:55+08:00` | [plan](2026-09-21-schema-artifact-lifecycle/workflow-plan.md) |
 | [`2026-09-21-issue-309-hosted-preflight`](2026-09-21-issue-309-hosted-preflight/workflow.yaml) | Prepare a read-only hosted release provider check for Issue 309 | `ai-context-governance` | `in_progress` | `2026-09-21T14:03:28+08:00` | [plan](2026-09-21-issue-309-hosted-preflight/workflow-plan.md) |
 | [`2026-09-20-proportionate-terminal-artifact-tooling`](2026-09-20-proportionate-terminal-artifact-tooling/workflow.yaml) | Proportionate terminal review and deterministic execution artifacts | `ai-context-governance` | `completed` | `2026-09-20T22:08:14+08:00` | [plan](2026-09-20-proportionate-terminal-artifact-tooling/workflow-plan.md) |

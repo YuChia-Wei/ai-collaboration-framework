@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import datetime
+import hashlib
 import importlib.util
 import json
 import shutil
@@ -17,10 +19,87 @@ import yaml
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / ".ai/scripts"))
 import execution_artifact_contract as CONTRACT
+import artifact_authoring as AUTHOR
+import artifact_core as CORE
 
 ROLE = ".ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/sub-agent.yaml"
 REVIEW_ROLE = ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml"
 SKILL = ".ai/assets/skills/ai-context-upgrader/skill.yaml"
+
+
+class CoreCompatibilityTests(unittest.TestCase):
+    def test_canonical_bytes_and_public_digest_facades_match_independent_oracle(self):
+        value = {'z': [True, None, -1, 1.25], 'a': '臺灣'}
+        expected = '{"a":"臺灣","z":[true,null,-1,1.25]}'.encode('utf-8')
+        self.assertEqual(expected, CORE.canonical_json(value))
+        self.assertEqual(expected, AUTHOR.canonical(value))
+        self.assertEqual(hashlib.sha256(expected).hexdigest(), CONTRACT.digest(value))
+        self.assertEqual(hashlib.sha256(expected).hexdigest(), AUTHOR.digest(expected))
+        for invalid in (float('nan'), float('inf'), datetime.date(2026, 9, 21)):
+            with self.subTest(invalid=invalid), self.assertRaises((ValueError, TypeError)):
+                CORE.canonical_json({'value': invalid})
+
+    def test_family_dialects_remain_distinct(self):
+        self.assertEqual(1e-5, AUTHOR.parse('{"value":1e-5}')['value'])
+        self.assertEqual('1e-5', yaml.load('{"value":1e-5}', Loader=CONTRACT.StrictLoader)['value'])
+        cases = [('value: 2026-09-21', datetime.date(2026, 9, 21)),
+                 ('value: !!str 42', '42'), ('value: &name text\ncopy: *name', 'text')]
+        for text, expected in cases:
+            with self.subTest(text=text):
+                self.assertEqual(expected, yaml.load(text, Loader=CONTRACT.StrictLoader)['value'])
+                with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.parse(text)
+        merged = 'base: &base {name: kept}\nvalue: {<<: *base, count: 2}'
+        self.assertEqual({'name': 'kept', 'count': 2}, yaml.load(merged, Loader=CONTRACT.StrictLoader)['value'])
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.parse(merged)
+        self.assertTrue(str(yaml.load('value: .nan', Loader=CONTRACT.StrictLoader)['value']) == 'nan')
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.parse('value: .nan')
+        self.assertEqual({'x': 2}, yaml.safe_load('x: 1\nx: 2'))  # Global loader unchanged.
+
+    def test_mapping_failures_preserve_adapter_diagnostics(self):
+        for text in ('x: 1\nx: 2', 'nested: {x: 1, x: 2}'):
+            with self.subTest(text=text):
+                with self.assertRaisesRegex(yaml.YAMLError, 'duplicate mapping key'):
+                    yaml.load(text, Loader=CONTRACT.StrictLoader)
+                with self.assertRaisesRegex(AUTHOR.AuthoringError, 'duplicate/invalid key'):
+                    AUTHOR.parse(text)
+        with self.assertRaisesRegex(yaml.YAMLError, 'mapping keys must be strings'):
+            yaml.load('1: value', Loader=CONTRACT.StrictLoader)
+        with self.assertRaisesRegex(AUTHOR.AuthoringError, 'unique strings'):
+            AUTHOR.parse('1: value')
+        with self.assertRaisesRegex(AUTHOR.AuthoringError, 'duplicate key'):
+            AUTHOR.parse('{"x":1,"x":2}')
+        for text in ('value: [unfinished', 'value: "unfinished', '- list'):
+            with self.subTest(text=text), self.assertRaises(AUTHOR.AuthoringError): AUTHOR.parse(text)
+
+    def test_scalar_hashes_are_data_in_lf_and_crlf_yaml(self):
+        cases = [('value: "Discuss #42"', 'Discuss #42'), ("value: 'it''s #42'", "it's #42"),
+                 ('value: "quoted \\"#42\\""', 'quoted "#42"'),
+                 ('value: https://example.invalid/a#fragment', 'https://example.invalid/a#fragment'),
+                 ('value: C#', 'C#'), ('value: |\n  # 臺灣😀\n', '# 臺灣😀\n'),
+                 ('value: >-\n  # first\n  second\n', '# first second'),
+                 ('value: |2-\n  # literal\n', '# literal')]
+        for text, expected in cases:
+            for ending in ('\n', '\r\n'):
+                with self.subTest(text=text, ending=ending):
+                    self.assertEqual(expected, AUTHOR.parse(text.replace('\n', ending), refuse_yaml_comments=True)['value'])
+        for text in ('value: ["# literal", C#]', '"# key": {value: "# literal"}',
+                     'value: "line one\n  # line two"', 'value: first\n  abc#fragment'):
+            with self.subTest(text=text):
+                self.assertEqual(yaml.safe_load(text), AUTHOR.parse(text, refuse_yaml_comments=True))
+
+    def test_actual_comments_and_malformed_yaml_are_refused(self):
+        cases = ['# leading\nvalue: kept', 'value: kept\n# trailing', 'value: kept # inline',
+                 'value: "# data"# comment', 'value: [one, # comment\n two]',
+                 'value: | # header\n  # data\n', 'value: >- # header',
+                 'value: |\n  # data\n# outside\n', '%YAML 1.1 # directive\n---\nvalue: kept',
+                 'value: kept\n... # end']
+        for text in cases:
+            for ending in ('\n', '\r\n'):
+                with self.subTest(text=text, ending=ending), self.assertRaisesRegex(AUTHOR.AuthoringError, 'YAML comments'):
+                    AUTHOR.parse(text.replace('\n', ending), refuse_yaml_comments=True)
+        for text in ('value: ["# literal"', 'value: "# literal', 'value: |\n # data\ninvalid: ['):
+            with self.subTest(text=text), self.assertRaises(AUTHOR.AuthoringError):
+                AUTHOR.parse(text, refuse_yaml_comments=True)
 
 
 class StructureTests(unittest.TestCase):
@@ -72,6 +151,25 @@ class StructureTests(unittest.TestCase):
         self.assertEqual("<required string>", skeleton["result"]["outcome"])
         self.assertEqual("<required integer or null>", skeleton["result"]["exit_code"])
         self.assertEqual("<required boolean>", skeleton["preflight"]["clean_worktree"])
+
+    def test_execution_cli_isolated_package_imports_and_template_bytes(self):
+        with tempfile.TemporaryDirectory(prefix='execution-package-') as temporary:
+            envelope = Path(temporary).resolve(); payload = envelope / 'payload'
+            templates = ['.ai/assets/skills/software-development-orchestrator/templates/' + name
+                         for name in ('external-task-dispatch.template.yaml', 'external-task-completion.template.yaml',
+                                      'execution-prepare-request.template.yaml', 'execution-observations.template.yaml')]
+            for ref in (*CONTRACT.AUTHORITY_REFS, *templates):
+                target = payload / ref; target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / ref, target)
+            (payload / 'requirements.txt').replace(envelope / 'requirements.txt')
+            command = [sys.executable, '-I', '-B', str(payload / '.ai/scripts/execution-artifacts.py'), 'templates', '--check']
+            result = subprocess.run(command, cwd=envelope, capture_output=True, text=True)
+            self.assertEqual(0, result.returncode, result.stderr)
+            self.assertEqual({'operation': 'templates', 'state': 'current'}, json.loads(result.stdout))
+            (payload / '.ai/scripts/artifact_core.py').unlink()
+            missing = subprocess.run(command, cwd=envelope, capture_output=True, text=True)
+            self.assertNotEqual(0, missing.returncode)
+            self.assertIn('artifact_core', missing.stderr)
 
 
 class ArtifactBehaviorTests(unittest.TestCase):
@@ -277,13 +375,14 @@ class ArtifactBehaviorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "dependency set"):
             self.cli.check(result["dispatch_ref"], None)
         path.write_bytes(original)
-        helper = self.root / ".ai/scripts/execution_artifact_contract.py"; old = helper.read_bytes()
-        try:
-            helper.write_bytes(old + b"\n# authority drift\n")
-            with self.assertRaisesRegex(ValueError, "changed dependency"):
-                self.cli.check(result["dispatch_ref"], None)
-        finally:
-            helper.write_bytes(old)
+        for name in ('execution_artifact_contract.py', 'artifact_core.py'):
+            helper = self.root / '.ai/scripts' / name; old = helper.read_bytes()
+            try:
+                helper.write_bytes(old + b"\n# authority drift\n")
+                with self.subTest(helper=name), self.assertRaisesRegex(ValueError, "changed dependency"):
+                    self.cli.check(result["dispatch_ref"], None)
+            finally:
+                helper.write_bytes(old)
 
     def test_migration_is_explicit_preserves_failed_history_and_never_issues_receipt(self) -> None:
         prepared = self.cli.prepare(self.request(), self.ref)

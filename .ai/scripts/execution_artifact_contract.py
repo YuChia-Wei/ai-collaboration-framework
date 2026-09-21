@@ -6,14 +6,13 @@ Semantic validation remains with the canonical guardrail/delegation validators.
 from __future__ import annotations
 
 import copy
-import hashlib
 import importlib.util
-import json
 import math
 from pathlib import Path
 from typing import Any
 
 import yaml
+import artifact_core as CORE
 
 GUARD_SCHEMA = ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
 EXTERNAL_SCHEMA = ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
@@ -24,6 +23,7 @@ EXTERNAL_VALIDATOR = ".ai/assets/skills/software-development-orchestrator/script
 AUTHORITY_REFS = (
     GUARD_SCHEMA, EXTERNAL_SCHEMA, GUARD_VALIDATOR, EXTERNAL_VALIDATOR,
     ".ai/scripts/execution_artifact_contract.py", ".ai/scripts/execution-artifacts.py",
+    ".ai/scripts/artifact_core.py",
     ".ai/scripts/python_prerequisites.py", ".ai/scripts/python-entrypoints.json",
     "requirements.txt",
     ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
@@ -42,16 +42,8 @@ class StrictLoader(yaml.SafeLoader):
 
 
 def unique_mapping(loader: StrictLoader, node: Any, deep: bool = False) -> dict:
-    loader.flatten_mapping(node)
-    result = {}
-    for key_node, value_node in node.value:
-        key = loader.construct_object(key_node, deep=deep)
-        if not isinstance(key, str):
-            raise yaml.YAMLError("mapping keys must be strings")
-        if key in result:
-            raise yaml.YAMLError(f"duplicate mapping key: {key!r}")
-        result[key] = loader.construct_object(value_node, deep=deep)
-    return result
+    return CORE.construct_unique_mapping(loader, node, flatten=True, deep=deep,
+        key_error=lambda key, duplicate: yaml.YAMLError(f"duplicate mapping key: {key!r}" if duplicate else "mapping keys must be strings"))
 
 
 StrictLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, unique_mapping)
@@ -69,11 +61,11 @@ def encoded(value: Any) -> bytes:
 
 
 def sha256(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
+    return CORE.sha256(value)
 
 
 def digest(value: Any) -> str:
-    return sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode())
+    return sha256(CORE.canonical_json(value))
 
 
 def load_module(path: Path, name: str) -> Any:

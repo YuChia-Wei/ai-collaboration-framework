@@ -121,6 +121,9 @@ class SyntheticPackageRepo:
             "python-entrypoints.json",
             "python_prerequisites.py",
             "runtime_skill_entries.py",
+            "execution_artifact_contract.py",
+            "artifact_authoring.py",
+            "artifact_core.py",
         ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
         registry = json.loads((SCRIPTS / "python-entrypoints.json").read_text(encoding="utf-8"))

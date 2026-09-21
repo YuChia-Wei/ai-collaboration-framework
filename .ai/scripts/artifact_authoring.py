@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import base64
 import difflib
-import hashlib
 import importlib.util
 import json
 import os
@@ -22,6 +21,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+import artifact_core as CORE
 
 WORKFLOW_TEMPLATE = ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml"
 PLAN_TEMPLATE = ".ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md"
@@ -40,11 +40,11 @@ class AuthoringError(ValueError):
 
 
 def digest(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
+    return CORE.sha256(value)
 
 
 def canonical(value: Any) -> bytes:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return CORE.canonical_json(value)
 
 
 class _StrictLoader(yaml.SafeLoader):
@@ -52,19 +52,14 @@ class _StrictLoader(yaml.SafeLoader):
 
 
 def _mapping(loader: _StrictLoader, node: yaml.MappingNode) -> dict:
-    result = {}
-    for key_node, value_node in node.value:
-        key = loader.construct_object(key_node)
-        if not isinstance(key, str) or key in result:
-            raise AuthoringError(f"mapping keys must be unique strings; duplicate/invalid key {key!r}")
-        result[key] = loader.construct_object(value_node)
-    return result
+    return CORE.construct_unique_mapping(loader, node, flatten=False,
+        key_error=lambda key, duplicate: AuthoringError(f"mapping keys must be unique strings; duplicate/invalid key {key!r}"))
 
 
 _StrictLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _mapping)
 
 
-def parse(text: str, label: str = "input") -> dict:
+def parse(text: str, label: str = "input", *, refuse_yaml_comments: bool = False) -> dict:
     """JSON-compatible YAML only: exact types, no duplicates, aliases or tags."""
     def pairs(items):
         result = {}
@@ -78,7 +73,7 @@ def parse(text: str, label: str = "input") -> dict:
         try:
             value = json.loads(text, object_pairs_hook=pairs)
         except json.JSONDecodeError:
-            for token in yaml.scan(text):
+            for token in CORE.yaml_tokens(text, refuse_comments=refuse_yaml_comments):
                 if isinstance(token, (yaml.tokens.AliasToken, yaml.tokens.AnchorToken, yaml.tokens.TagToken)):
                     raise AuthoringError("aliases, anchors and explicit tags are unsupported")
             value = yaml.load(text, Loader=_StrictLoader)
@@ -256,9 +251,7 @@ def load(view: View, path: str, *, writable: bool = False) -> dict:
     raw = view.read(path)
     if raw is None: raise AuthoringError(f"missing {path}")
     text = raw.decode("utf-8")
-    if writable and not path.endswith(".json") and re.search(r"(^|\s)#", text):
-        raise AuthoringError(f"{path}: comment-like YAML cannot be rewritten losslessly; move comments to prose or use a reviewed manual edit")
-    return parse(text, path)
+    return parse(text, path, refuse_yaml_comments=writable and not path.endswith(".json"))
 
 
 def dump(value: dict, *, json_format: bool = False) -> bytes:
@@ -635,7 +628,7 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     for rel in (WORKFLOW_TEMPLATE, PLAN_TEMPLATE, TASK_TEMPLATE, ASSESSMENT_TEMPLATE, REPORT_TEMPLATE,
                 ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md", ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
                 ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-assessment-artifacts.py",
-                ".ai/scripts/artifact_authoring.py", ".gitignore"):
+                ".ai/scripts/artifact_authoring.py", ".ai/scripts/artifact_core.py", ".gitignore"):
         view.read(rel)
     changes = {}
     for rel, after in view.overlay.items():
@@ -648,7 +641,7 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     if context["ignored"].startswith("0:"): raise AuthoringError("artifact output is ignored; correct the repository policy first")
     binding = {"request": request, "inputs": view.observed, "git": context,
                "runtime": {name: digest(Path(__file__).with_name(name).read_bytes()) for name in
-                           ("artifact_authoring.py", "validate-workflow-artifacts.py", "validate-assessment-artifacts.py", "python_prerequisites.py")},
+                           ("artifact_authoring.py", "artifact_core.py", "validate-workflow-artifacts.py", "validate-assessment-artifacts.py", "python_prerequisites.py")},
                "changes": {p: [None if before is None else digest(before), digest(after)] for p, (before, after) in changes.items()}}
     return Plan(request, changes, digest(canonical(binding)))
 
@@ -660,7 +653,7 @@ def catalog(root: Path) -> dict:
         "assessment": {"profile": ["ai-context-audit", "ai-context-verification"], "readable": "current templates only", "writable": template(view, ASSESSMENT_TEMPLATE)["template_version"], "template_source": ASSESSMENT_TEMPLATE}},
         "migration": "unsupported: preserve originals and use the owning reader; P1 does not convert evidence",
         "final_assessments": "readable, immutable; create successor or reviewed addendum",
-        "yaml_comments": "comment-like YAML is refused before rewriting; Markdown prose and JSON/YAML extension fields are retained",
+        "yaml_comments": "YAML comments are refused before rewriting; scalar hash content, Markdown prose and JSON/YAML extension fields are retained",
         "recovery": "explicit rollback of unchanged candidate bytes; no multi-file atomicity"}
 
 

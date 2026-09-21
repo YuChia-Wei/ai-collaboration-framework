@@ -165,9 +165,11 @@ explicit draft-body replacement, and JSON/YAML extension values. They change
 only the selected index row (moving assessments to the correct lifecycle section).
 Markdown metadata is patched in place; the prose heading remains author-owned.
 Structured mappings are reserialized, so whitespace and key presentation can
-change in the displayed diff. YAML containing comment-like text is refused before
-rewriting because the current parser cannot promise comment preservation. Use a
-reviewed manual edit for that case. Final assessment conclusions remain immutable.
+change in the displayed diff. Actual YAML comments are refused before rewriting
+because the serializer cannot preserve them; use a reviewed manual edit for that
+case. Hashes inside quoted, plain or block scalar values are data and remain
+editable. Block scalar header comments are still refused. Final assessment
+conclusions remain immutable.
 
 Apply uses one cooperative lock and an ignored recovery journal under
 `.dev/ai-context/local/artifact-authoring/`. That directory must already be
@@ -193,6 +195,31 @@ python .ai/scripts/tests/test_artifact_authoring.py -v
 ```
 
 ## Source Tooling Prerequisites
+
+### Shared Artifact Mechanics
+
+`artifact_core.py` owns strict string-key mapping construction, canonical JSON
+bytes, SHA-256 and syntax-aware YAML token/comment scanning. Both
+`artifact_authoring.py` and `execution_artifact_contract.py` use these primitives
+through their existing public interfaces. Their CLI commands and semantic
+validators remain unchanged; the limited execution schema walker stays with
+its existing owner because it was not duplicated in authoring.
+
+Parsing profiles deliberately differ. Authoring tries JSON first and accepts
+only JSON-compatible values, rejecting aliases, anchors and explicit tags.
+Execution uses its existing YAML loader, including schema anchors/merge
+handling and YAML scalar resolution; exact record-type checks still follow.
+The shared module changes neither global PyYAML behavior nor these profiles.
+YAML rendering widths remain adapter-owned to preserve existing template bytes.
+
+The core is a mandatory execution-authority dependency and part of authoring
+preview observations/runtime binding. A changed core invalidates stale
+manifests/previews; old validation receipts are not silently refreshed. Package
+profiles already include script helpers; no new executable entrypoint or gate
+identity is needed. Existing focused tests cover both adapters and isolated
+package imports.
+
+### Runtime Prerequisites
 
 Repository-side Python tooling requires Python 3.11 or newer and the
 checksum-stable dependency declared in the root `requirements.txt`:

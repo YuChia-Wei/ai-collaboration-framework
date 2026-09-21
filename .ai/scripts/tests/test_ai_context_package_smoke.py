@@ -21,6 +21,8 @@ class AiContextPackageSmokeGwtTests(unittest.TestCase):
             self.assertEqual(zip_members, tar_members)
             self.assertIn(f"{result['package_id']}/metadata/package.yaml", zip_members)
             self.assertIn(f"{result['package_id']}/metadata/migration.yaml", zip_members)
+            for helper in ('execution_artifact_contract.py', 'artifact_authoring.py', 'artifact_core.py'):
+                self.assertIn(f"{result['package_id']}/payload/.ai/scripts/{helper}", zip_members)
         finally:
             fixture.close()
 
