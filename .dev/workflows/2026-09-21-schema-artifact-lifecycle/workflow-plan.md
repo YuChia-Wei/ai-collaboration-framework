@@ -8,11 +8,11 @@
 - `branch`: `codex/2026-09-21-schema-artifact-lifecycle`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `audit`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-21-schema-artifact-lifecycle`
 - `created_at`: `2026-09-21T18:46:34+08:00`
-- `updated_at`: `2026-09-21T18:46:34+08:00`
+- `updated_at`: `2026-09-21T19:03:58+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -37,13 +37,13 @@ Completion criteria: reproducible explicit/implicit inventory; evidence-backed c
 
 | Task | Work | Status |
 | --- | --- | --- |
-| SCHEMA-001-inventory | Explicit and implicit contract inventory | in_progress |
-| SCHEMA-002-design | Lifecycle design, rule/test dispositions and implementation decision | pending |
-| SCHEMA-003-report | Evidence-backed report, validation and owner checkpoint | pending |
+| SCHEMA-001-inventory | Explicit and implicit contract inventory | completed |
+| SCHEMA-002-design | Lifecycle design, rule/test dispositions and implementation decision | completed |
+| SCHEMA-003-report | Evidence-backed report, validation and owner checkpoint | completed |
 
 ## Finding Triage
 
-Findings are pending evidence collection. Proposed changes remain recommendations until the implementation decision is recorded.
+AIC-001 through AIC-005 are assessed improvement opportunities. Their implementation is deferred to the maintainer's selected P1 scope after report review. The conditional direct-implementation option was evaluated and not selected: cross-family model ownership and migration boundaries make broad immediate changes likely to require rework. No normative rule was relaxed.
 
 ## Delegation And Evidence Boundary
 
@@ -51,18 +51,18 @@ Three bounded read-only worker invocations collect explicit schemas, implicit au
 
 ## Resume Checkpoint
 
-- Last completed action: user authorization, policy routing, clean/live baseline and dedicated branch established.
-- Current task: SCHEMA-001-inventory.
-- Exact next action: integrate worker inventories against fixed source, then assess model ownership and migration/validation strategies.
-- Validation already completed: source identity and branch verified; artifact validation pending.
-- Git state: local analysis branch; uncommitted bootstrap artifacts.
-- Blockers or unresolved decisions: no blocking analysis dependency; conditional implementation decision pending findings.
+- Last completed action: deep analysis report, capability matrix, source hashes, actual validation observations and owner decision checkpoint completed.
+- Current task: none; SCHEMA-001 through SCHEMA-003 are completed for analysis scope only.
+- Exact next action: maintainer reads assessment ASM-20260921-18-gav and selects P1. Before material implementation, create/bind its real online Issue, refresh source drift, and establish the bounded implementation workflow. The existing report is the input; do not repeat the same inventory without drift.
+- Validation completed: fixed-source inventory parity, local links/structured data, workflow, assessment, AI context, source work-management and planned commit message checks passed. Focused final lifecycle checks run before commit.
+- Git state: bootstrap commit `f979ee97`; final artifact commit is discoverable with `git log --grep=ASM-20260921-18-gav`. Local dedicated branch, not pushed.
+- Owner decisions: choose the P1 implementation scope after report review. Direct broad implementation was evaluated and not selected because ownership, migration and test-equivalence boundaries make immediate changes prone to rework; no measured cost saving is claimed.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-09-21-schema-artifact-lifecycle` | `main` at `8830cdfc252b8845efcbe6cce539041c17cf8e7a` | local analysis | pending | not pushed | 2026-09-21T18:46:34+08:00 | Owner-requested durable analysis | Same branch; finish report |
+| 1 | `codex/2026-09-21-schema-artifact-lifecycle` | `main` at `8830cdfc252b8845efcbe6cce539041c17cf8e7a` | local analysis | `f979ee97` | not pushed | 2026-09-21T18:46:34+08:00 | Owner-requested durable analysis | Same branch; finish report |
 
 Integration gate is PR if later authorized. Linear integration is provisionally appropriate for an analysis-only delivery; no integration action is selected now.
 
@@ -71,3 +71,14 @@ Integration gate is PR if later authorized. Linear integration is provisionally 
 - Bootstrap attempt 1: assessment validation failed because `relations.workflow_refs` used a locator path where the validator expects a workflow ID. Corrected the relationship representation; this is an authoring preparation defect, not a missing workflow.
 - Bootstrap attempt 1: workflow validation failed because the index title was a shortened label instead of an exact locator-title projection. Corrected the index title. Both failures are retained as observed authoring evidence; neither was passed.
 - Bootstrap attempt 2 after those material corrections: assessment validation passed for 65 assessments; workflow validation passed for 123 post-adoption workflows and 143 indexed directories. `git diff --check` passed.
+
+## Analysis Delivery
+
+The assessment is final and this analysis workflow is completed. This does not
+complete the proposed framework capability or remediate AIC-001 through AIC-005.
+All five recommendations remain deferred to the maintainer's chosen work item.
+No production schema, validator, tool, policy or test was modified or removed.
+No provider mutation, push, pull request, merge, release or target adoption was
+performed. The audit report owns findings; this plan owns progress only.
+
+Validation observations: `.dev/assessments/ASM-20260921-18-gav/evidence/validation-results.json`.

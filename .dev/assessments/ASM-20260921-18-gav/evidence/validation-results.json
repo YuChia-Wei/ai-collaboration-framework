@@ -1,0 +1,96 @@
+{
+  "record_purpose": "Ordinary analysis artifact validation observations; not an independent audit, execution-custody receipt or merge-admission grant.",
+  "observed_at": "2026-09-21 11:03:11 UTC",
+  "assessed_source_commit": "8830cdfc252b8845efcbe6cce539041c17cf8e7a",
+  "artifact_stage": "report content drafted; lifecycle finalization followed these checks",
+  "checks": [
+    {
+      "id": "inventory",
+      "command": "python -B .dev/assessments/ASM-20260921-18-gav/evidence/collect-inventory.py --check .dev/assessments/ASM-20260921-18-gav/evidence/source-inventory.json",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output": "Fixed-source schema, template-path and test-method inventory matches.\r\n"
+    },
+    {
+      "id": "workflow",
+      "command": "python -B .ai/scripts/validate-workflow-artifacts.py",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output": "Workflow artifact validation passed for 123 post-adoption workflow(s), 143 indexed workflow directories, and 0 backlog item(s).\r\n"
+    },
+    {
+      "id": "assessment",
+      "command": "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output": "Assessment artifact validation passed for 65 assessment(s).\r\n"
+    },
+    {
+      "id": "ai-context",
+      "command": "python -B .ai/scripts/validate-ai-context.py",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output": "AI context validation passed: 27 active indexes, 16 canonical skills, 2 current runtime roots, 477 language-policy files, 14 owned rules, 15 qualified governance terms, 39 canonical manifests, 11 capability mappings, 5 SAG-003 role bindings, 1 UPG-004 delegation contracts, 4 local CLI routes, and 2 governed lessons.\nRoot bilingual entry ownership, links, and structural parity passed (semantic parity is not asserted)."
+    },
+    {
+      "id": "source-work-management",
+      "command": "python -B .ai/scripts/validate-source-work-management.py",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output": "Source work-management validation passed: live GitHub authority, 77 frozen backlog files, v0.5.0-v0.9.0 legacy refs, and v0.10.0+ online Issue scope.\r\n"
+    },
+    {
+      "id": "report-evidence",
+      "command": "python -B .dev/ai-context/local/schema-analysis-check.py",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output": "Passed: 33/33 matrix parity, 2 explicit JSON Schema declarations, 15 local links, JSON/YAML parse, unchanged assessed source/policy scope.\r\n"
+    }
+  ],
+  "final_lifecycle_checks": [
+    {
+      "command": "python -B .ai/scripts/validate-workflow-artifacts.py",
+      "outcome": "passed",
+      "exit_code": 0,
+      "output": "Workflow artifact validation passed for 123 post-adoption workflows, 143 indexed workflow directories, and 0 backlog items."
+    },
+    {
+      "command": "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "outcome": "passed",
+      "exit_code": 0,
+      "output": "Assessment artifact validation passed for 65 assessments."
+    },
+    {
+      "command": "python -B .dev/ai-context/local/schema-analysis-check.py",
+      "outcome": "passed",
+      "exit_code": 0,
+      "output": "33/33 matrix parity, 2 explicit JSON Schema declarations, 16 local links, JSON/YAML parse, unchanged assessed source/policy scope."
+    },
+    {
+      "command": "git diff --check",
+      "outcome": "passed",
+      "exit_code": 0
+    }
+  ],
+  "prior_failures": [
+    {
+      "stage": "bootstrap",
+      "command": "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "outcome": "failed",
+      "diagnostic": "workflow_refs used a locator path where an ID was expected",
+      "correction": "Changed the relationship to the exact workflow ID; rerun passed."
+    },
+    {
+      "stage": "bootstrap",
+      "command": "python -B .ai/scripts/validate-workflow-artifacts.py",
+      "outcome": "failed",
+      "diagnostic": "index title differed from locator title",
+      "correction": "Restored exact locator-title projection; rerun passed."
+    }
+  ],
+  "limits": [
+    "No product or broad framework test suite executed.",
+    "Counts are inventory, not performance savings.",
+    "Canonical role-routing preparation problems are retained in workflow; no independent-review result is claimed."
+  ]
+}
