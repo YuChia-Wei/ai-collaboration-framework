@@ -1,0 +1,18 @@
+schema_version: '1.0'
+record_type: agent-retry-decision
+attempt: 2
+failure:
+  failure_class: behavioral-policy
+  command_sha256: 71e24917a31ec74a0d755b63fb7755fa2db333cb82e1341b24e756613c8cc48f
+  subject_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+  environment_class: Windows-PowerShell
+  diagnostic_codes:
+  - P1V-001
+  - equal-material-update-time
+prior_failure_sha256: 4d971ab02accc189ec75ab9f71a021cdfce179a78f84da07d5c22a2307bf4262
+material_state_change_sha256: 783c695292574d52e0530916be83a48399f60044b63cc0d32c457c66d2d9edc7
+retry_subject_sha: 29ffb4c50d4767a39b5620fc96d5d854d839732c
+prior_authorization_sha256: null
+new_authorizations: []
+decision: retry
+retry_sha256: 722b42958b44b933e9637cd85a9c3f02747dd18cc7628cf50cb998d0b39c3f9c

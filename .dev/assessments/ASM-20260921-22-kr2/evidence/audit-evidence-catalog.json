@@ -1,0 +1,62 @@
+{
+  "origin": "Native collaboration runtime /root/p1_independent_audit",
+  "recorded_at": "2026-09-21T22:14:57+08:00",
+  "purpose": "Unchanged audit originals preserve exact report bytes and original packet/input/lease identities; original local paths are historical invocation locations, not current file locators.",
+  "files": [
+    {
+      "source": ".dev/ai-context/local/p1-audit-01/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-01/review-input.yaml",
+      "sha256": "33a1b1bb5aa80166362bed233a774e42e951c7e6337b307063c5bea3c869ce29"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-01/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-01/packet.yaml",
+      "sha256": "3b2032a0a4e12622e53718d0378096cf675d438d967155ff99cda3fe0b2fe6b5"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-01/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-01/lease-active.yaml",
+      "sha256": "4d77b105398db0621b4789c7a1ee86afc6a49463a0686d139f3c56a8a5eb8ed8"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-01/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-01/lease.yaml",
+      "sha256": "3699184e004e275f71351e05f2b54ac13214c22d2ec3eca32e6add5dee6b71f6"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-01/review-result.md",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-01/review-result.md",
+      "sha256": "7bdd64b47e7a75a68847f779cbbcc8209f1b037df9180ba59faccd0c1a838745"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-02/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-02/review-input.yaml",
+      "sha256": "7f48a35695646f8916b3516b5714c76412249f52c43cf1cbee8a6e7460ade470"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-02/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-02/packet.yaml",
+      "sha256": "27d14b084a94e7bd9d6ebe0b9f39884eb3de81a2acca859ab369cfdcbc8b5d61"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-02/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-02/lease-active.yaml",
+      "sha256": "d3f16b738b8998cabd3a1e810942f8fb56b579e2ddaed0d7c149ebb9787deb15"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-02/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-02/lease.yaml",
+      "sha256": "224617261e60722a9860aff7f8715a4eabbdd5f4714ab18947acda20b9948a52"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-02/review-result.md",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-02/review-result.md",
+      "sha256": "c9d18501dbb42af5ce60ff3d9fe47872fb94c69f93dd0bbdc23dfae64dc1ed77"
+    },
+    {
+      "source": ".dev/ai-context/local/p1-audit-02/retry.yaml",
+      "retained": ".dev/assessments/ASM-20260921-22-kr2/evidence/external/original/p1-audit-02/retry.yaml",
+      "sha256": "9e71404d4a1e23fa9db906ab3a8dec4a42ba2407a34621105a097dc477884645"
+    }
+  ]
+}

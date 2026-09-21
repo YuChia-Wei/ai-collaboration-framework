@@ -8,11 +8,11 @@
 - `branch`: `codex/2026-09-21-schema-artifact-lifecycle`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `post-audit`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-21-schema-artifact-lifecycle`
 - `created_at`: `2026-09-21T18:46:34+08:00`
-- `updated_at`: `2026-09-21T22:07:30+08:00`
+- `updated_at`: `2026-09-21T22:17:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -104,7 +104,7 @@ downstream action is authorized.
 | Task | Outcome | Status |
 | --- | --- | --- |
 | SCHEMA-004-authoring | P1 tooling, tests and usage guidance against Issue #316 criteria | completed |
-| SCHEMA-005-verification | Independent verification assessment and finding reconciliation | in_progress |
+| SCHEMA-005-verification | Independent verification assessment and finding reconciliation | completed |
 
 Two substantive tasks retain the owner-requested workflow because implementation
 and independent verification have separate ownership and resumable evidence.
@@ -115,13 +115,14 @@ discovery uses explicit Git-tracked files. Final baseline report conclusions
 remain frozen. AIC-001/AIC-002 are selected for partial P1 remediation; broader
 coverage/migration/check consolidation in AIC-003 through AIC-005 remains deferred.
 
-Current resume: Issue #316 implementation and focused checks completed. The new
-writer successfully performed the live five-file task handoff from SCHEMA-004 to
-SCHEMA-005; its applied journal remains ignored. The next action is independent
-verification of the fixed implementation commit. Acceptance
-is the eleven P1 criteria in the baseline report, with the concrete family scope
-above. Preserve actual failed attempts, run focused checks, then bind an immutable
-subject for independent verification and publish a Chinese explanation report.
+Current resume: Local P1 implementation and verification are complete. The new
+writer performed the live five-file task handoff from SCHEMA-004 to SCHEMA-005
+and created the verification assessment. The final report and original audit
+evidence are retained under `ASM-20260921-22-kr2`. The owner may review the Chinese
+explanation and select subsequent P2-P4 work or a separate integration action.
+The eleven baseline P1 criteria were narrowed into Issue #316's ten concrete
+acceptance items for the selected profiles; this does not complete all-schema
+coverage or authorize provider mutation.
 
 P1 explanation and validation history: [remediation report](reports/remediation-report.md).
 Twenty focused authoring cases passed, including interrupted-process recovery,
@@ -137,5 +138,28 @@ and found no blocking issue. Medium finding P1V-001 identified that a material
 update could retain the same `updated_at`. Its original report is retained;
 the completed review lease was explicitly released before repair. The writer
 now requires a strictly later instant and regression coverage includes both
-families and equivalent UTC offsets. Attempt 2 will independently check only
-the affected delta and bind the unchanged evidence to the repaired subject.
+families and equivalent UTC offsets. Attempt 2 independently checked the
+affected delta and bound unchanged evidence to repaired subject `29ffb4c5`.
+
+## P1 Local Delivery
+
+Verification assessment: [ASM-20260921-22-kr2](../../assessments/ASM-20260921-22-kr2/report.md).
+Attempt 2 observed P1V-001 resolved and no remaining findings. Root accepted the
+audit result; both full-tier snapshot leases were sealed and released before
+tracked intake. Original reports and bindings remain byte-preserved in the
+assessment evidence, and [role execution](evidence/p1-review-role-execution.json)
+records actual delegation and unavailable exact invocation timing without
+inventing duration.
+
+The parent ran all 21 authoring cases with no skips after repair; the reviewer
+reran five affected cases, isolated portable CLI and workflow metadata checks.
+The assessment authoring create operation succeeded. Its finalization preview
+refused the quoted `Issue #316` scope string under the documented conservative
+comment-like guard. Reviewed manual metadata/index finalization preserved the
+reviewer body; assessment validation passed for 66 records. The explanation
+report retains this practical limitation and the preparation failure history.
+
+SCHEMA-004 and SCHEMA-005 complete only bounded P1. AIC-001/AIC-002 remain
+partially resolved; AIC-003/AIC-004/AIC-005 remain deferred. No existing validator,
+test or normative requirement was removed. Issue #316 remains open; no push,
+PR, merge, release or downstream action is part of this local delivery.

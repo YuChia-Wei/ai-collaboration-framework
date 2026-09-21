@@ -1,0 +1,26 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P1-316-LEASE-02
+worktree: .
+subject_sha: 29ffb4c50d4767a39b5620fc96d5d854d839732c
+observed_snapshot:
+  head_sha: 29ffb4c50d4767a39b5620fc96d5d854d839732c
+  tracked_status: []
+snapshot_sha256: efeada3053c6af0f5baa2c045a2a68c6f1aa00e4cc01439414142ea5c818da1a
+state: released
+holder:
+  packet_id: P1-316-AUDIT-02
+  access: read-only
+  lock_ref: .dev/ai-context/local/p1-audit-02/lease.lock
+  lock_sha256: 0864c21a05122b41a5b377855ab8849ff8974e2a7440650a9bd66b2772a5c165
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p1-audit-02/review-result.md
+  state: sealed
+  sha256: c9d18501dbb42af5ce60ff3d9fe47872fb94c69f93dd0bbdc23dfae64dc1ed77
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Reviewer callback received; original report bytes sealed and tracked subject
+    remains clean. Parent may intake evidence and close the local P1 workflow.
+lease_sha256: 47b06c15935ba774fc08c7076ce298dd4aa412d3fa29ffbfa811429bd82c067c

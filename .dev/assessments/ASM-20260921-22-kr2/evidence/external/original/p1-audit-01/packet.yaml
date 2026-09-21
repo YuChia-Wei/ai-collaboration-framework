@@ -1,0 +1,42 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: P1-316-AUDIT-01
+execution_kind: fixed-head-audit
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Explicitly selected terminal P1 verification after implementation; independent
+    read-only audit on one fixed commit.
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  exact_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+invocation:
+  argv:
+  - collaboration.spawn_agent
+  - p1_independent_audit
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/p1-audit-01
+terminal:
+  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  mode: callback
+  destination: root
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Return findings without repair
+- Stop on subject or authority drift
+- No provider or credential operations
+retry:
+  attempt: 1
+  budget: 2
+  authorization_refs: []
+review_input:
+  ref: .dev/ai-context/local/p1-audit-01/review-input.yaml
+  sha256: 33a1b1bb5aa80166362bed233a774e42e951c7e6337b307063c5bea3c869ce29
+packet_sha256: 50c09d148768af628db3f815145899c133b92bf78e8104fd1fdf878451bbc2e0

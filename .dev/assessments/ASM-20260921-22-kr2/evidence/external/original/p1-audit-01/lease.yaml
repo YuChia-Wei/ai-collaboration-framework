@@ -1,0 +1,26 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P1-316-LEASE-01
+worktree: .
+subject_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+observed_snapshot:
+  head_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+  tracked_status: []
+snapshot_sha256: e4c4f4b644ac3e77d759974dc4f459ed75af096f8ad9fafab91b1f80fa62c652
+state: released
+holder:
+  packet_id: P1-316-AUDIT-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/p1-audit-01/lease.lock
+  lock_sha256: 731c7ca0fd6ae40e2eb747034802d76da4292c643bcb84b1612a2f37068ff834
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p1-audit-01/review-result.md
+  state: sealed
+  sha256: 7bdd64b47e7a75a68847f779cbbcc8209f1b037df9180ba59faccd0c1a838745
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Reviewer callback received; exact report bytes sealed, tracked subject remains
+    clean. Medium P1V-001 retained for repair.
+lease_sha256: 3912d7b23f4692d8a1a267779d6ca68f236cc96b953675e78da651dcdaa29fc5

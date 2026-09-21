@@ -1,0 +1,49 @@
+schema_version: '1.0'
+record_type: independent-review-input
+classification:
+  schema_version: '1.0'
+  record_type: agent-execution-classification
+  operation: review
+  execution_boundary: same-runtime
+  duration_class: unknown
+  change_domains:
+  - ordinary
+  snapshot: shared-frozen
+  tracked_write: false
+  provider_mutation: false
+  credential_access: false
+  terminal_gate: true
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  base_sha: 9c73c218b9f1af928dd1585e3c5c9923f8adafc1
+  head_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+  base_tree: b190ef897374c165acf1047247cd82f69556fa0d
+  head_tree: e6835b8bc79644fb2e64061dd66c57cb7794e69c
+  subject_digest: da09fbcc5df550bd8607635cecb375f5629706ec1833a6bc01c29875212a6197
+criteria:
+- 'Issue #316 P1 creates valid workflow and auditor assessment bundles using existing
+  semantic validators without weakening prior gates.'
+- Restricted updates preserve IDs, creation time, assessed subject, final conclusions,
+  extensions and unrelated prose/index rows; finite task transitions cannot invent
+  success.
+- Preview is deterministic and read-only; apply rejects stale inputs, collisions,
+  unsupported versions and unsafe linked paths.
+- Multi-file failure and process interruption retain recoverable evidence; recovery
+  refuses external changes and cannot accept arbitrary caller output paths.
+- Focused independent tests, portable import closure and registry wiring support claimed
+  behavior; documented limitations and deferrals remain truthful.
+authority:
+- path: AGENTS.md
+  sha256: 05d34dfe80ad8e42b40c133e4522851971e991266ddf042aba049e31dd1dea1b
+- path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+  sha256: 161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5
+- path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+  sha256: 9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24

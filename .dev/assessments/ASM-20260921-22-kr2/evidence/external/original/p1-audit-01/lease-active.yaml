@@ -1,0 +1,25 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P1-316-LEASE-01
+worktree: .
+subject_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+observed_snapshot:
+  head_sha: 775c3a21e322b62b02f09e2116f9d980277b8f2c
+  tracked_status: []
+snapshot_sha256: e4c4f4b644ac3e77d759974dc4f459ed75af096f8ad9fafab91b1f80fa62c652
+state: active
+holder:
+  packet_id: P1-316-AUDIT-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/p1-audit-01/lease.lock
+  lock_sha256: 731c7ca0fd6ae40e2eb747034802d76da4292c643bcb84b1612a2f37068ff834
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p1-audit-01/review-result.md
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Parent and all workers suspend tracked mutation during this review.
+lease_sha256: 8c939a029c1b821c3508d12810f17dea8b14f3f9949b526851ede64492cebbfb

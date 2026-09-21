@@ -1,0 +1,39 @@
+schema_version: '1.0'
+assessment_id: ASM-20260921-22-kr2
+commit_search_id: ASM-20260921-22-kr2
+assessment_type: ai-context-verification
+title: P1 workflow and assessment authoring independent verification
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-21-schema-artifact-lifecycle
+base_branch: main
+created_at: '2026-09-21T22:14:03+08:00'
+updated_at: '2026-09-21T22:16:24+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  branch: codex/2026-09-21-schema-artifact-lifecycle
+  commit: 29ffb4c50d4767a39b5620fc96d5d854d839732c
+  repository: YuChia-Wei/ai-collaboration-framework
+scope:
+  included:
+  - 'Issue #316 P1 authoring implementation and focused verification'
+  excluded:
+  - P2-P4 migrations and test consolidation
+  - Provider admission, release and downstream adoption
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+  - ASM-20260921-18-gav
+  workflow_refs:
+  - 2026-09-21-schema-artifact-lifecycle
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Independent P1 audit accepted. Tool creation passed; finalize preview refused a quoted Issue hash string under its documented conservative comment-like policy. Parent manually finalized metadata and index after inspecting unchanged reviewer body and original evidence.
+  next_action: ''
+  blockers: []
