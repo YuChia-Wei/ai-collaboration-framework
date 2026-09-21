@@ -8,11 +8,11 @@
 - `branch`: `codex/2026-09-21-schema-artifact-lifecycle`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `completed`
-- `current_phase`: `completed`
+- `status`: `in_progress`
+- `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-09-21-schema-artifact-lifecycle`
 - `created_at`: `2026-09-21T18:46:34+08:00`
-- `updated_at`: `2026-09-21T19:03:58+08:00`
+- `updated_at`: `2026-09-21T21:48:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -82,3 +82,52 @@ No provider mutation, push, pull request, merge, release or target adoption was
 performed. The audit report owns findings; this plan owns progress only.
 
 Validation observations: `.dev/assessments/ASM-20260921-18-gav/evidence/validation-results.json`.
+
+## P1 Authorization And Implementation Continuation
+
+On 2026-09-21 the owner reviewed the final report and authorized the proposed
+next step. [Issue #316](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/316)
+records the bounded implementation scope and acceptance. Live main still equals
+`8830cdfc252b8845efcbe6cce539041c17cf8e7a`. Continue on the same dedicated branch;
+the analysis commits and completed tasks remain intact. The preceding sections
+describe the completed analysis stage, not the newly authorized write boundary.
+
+P1 owns workflow/assessment bundle creation, finite task and draft-assessment
+updates, exact index projection, preview, stale-input and path protection,
+recoverable multi-file writes, focused tests, registrations and usage guidance.
+The initial adapters cover AI-context maintenance workflows and auditor
+assessments. Existing semantic validators remain authoritative. No production
+policy is relaxed, no validator/test is removed, and no broader schema migration
+is included. P2-P4 remain deferred. No push, PR, merge, Issue closure, release or
+downstream action is authorized.
+
+| Task | Outcome | Status |
+| --- | --- | --- |
+| SCHEMA-004-authoring | P1 tooling, tests and usage guidance against Issue #316 criteria | completed |
+| SCHEMA-005-verification | Independent verification assessment and finding reconciliation | in_progress |
+
+Two substantive tasks retain the owner-requested workflow because implementation
+and independent verification have separate ownership and resumable evidence.
+Root is the sole tracked writer until an explicit exclusive writer handoff.
+Bounded read-only discovery may run concurrently; it is advisory and does not
+claim independent acceptance. Graph provenance is stale or unavailable, so
+discovery uses explicit Git-tracked files. Final baseline report conclusions
+remain frozen. AIC-001/AIC-002 are selected for partial P1 remediation; broader
+coverage/migration/check consolidation in AIC-003 through AIC-005 remains deferred.
+
+Current resume: Issue #316 implementation and focused checks completed. The new
+writer successfully performed the live five-file task handoff from SCHEMA-004 to
+SCHEMA-005; its applied journal remains ignored. The next action is independent
+verification of the fixed implementation commit. Acceptance
+is the eleven P1 criteria in the baseline report, with the concrete family scope
+above. Preserve actual failed attempts, run focused checks, then bind an immutable
+subject for independent verification and publish a Chinese explanation report.
+
+P1 explanation and validation history: [remediation report](reports/remediation-report.md).
+Twenty focused authoring cases passed, including interrupted-process recovery,
+Windows junction refusal and isolated package imports. Existing entrypoint,
+profile, workflow/assessment and context checks passed. Initial CRLF preparation
+and sandbox fixture/Bash environment failures are preserved in the report.
+No full package/release/history matrix is selected for this bounded authoring
+change. P1 verification explicitly selects the auditor's fixed-head role;
+the shared frozen review checkout uses the full packet and lease tier.

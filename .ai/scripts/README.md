@@ -75,6 +75,121 @@ are outside this tool's migration scope.
 Compatibility remains tested with hand-authored inputs and independent expected
 outcomes, including failed results, authority drift and illegal custody paths.
 
+## Workflow And Assessment Authoring
+
+`artifact-authoring.py` provides bounded authoring for AI-context maintenance
+workflows and auditor assessments. It derives locator/task metadata, template
+versions, Markdown metadata and the exact discovery index row. The author still
+supplies scope, prose, selected subject and actual observations. Creating or
+finalizing a document neither executes its checks nor authorizes its actions.
+
+```text
+python .ai/scripts/artifact-authoring.py catalog
+python .ai/scripts/artifact-authoring.py preview --request <request.json>
+python .ai/scripts/artifact-authoring.py apply --request <request.json> --expect <preview-digest>
+python .ai/scripts/artifact-authoring.py recover --journal <pending-journal-path>
+```
+
+Use `--root <repository-root>` before the subcommand for an explicit repository.
+Initialize its artifact indexes and use the policy-required dedicated branch
+first. The tool does not create Git branches, work items or action authority.
+Requests accept strict JSON or JSON-compatible YAML; duplicate keys, aliases,
+explicit tags, unsupported fields and unsupported versions are rejected. Quote
+YAML timestamps. Fixed inputs produce the same preview and digest. Preview does
+not write files; apply re-derives the restricted operation and rejects stale
+inputs, instead of accepting arbitrary output paths or caller-written envelopes.
+
+A workflow request supplies one initial active task:
+
+```json
+{
+  "version": "1.0",
+  "operation": "workflow.create",
+  "timestamp": "2026-09-21T21:00:00+08:00",
+  "id": "2026-09-21-example-maintenance",
+  "title": "Example maintenance",
+  "branch": "codex/2026-09-21-example-maintenance",
+  "body": "## Objective And Scope\nDescribe the authorized outcome and exclusions here.\n",
+  "task": {
+    "id": "TASK-001",
+    "target": "Describe the bounded task",
+    "model": "<observed-model>",
+    "reasoning_effort": "<observed-effort>"
+  }
+}
+```
+
+Replace example intent and execution identity with actual inputs. All requests
+require `version`, `operation`, `id` and an explicit-offset `timestamp`. Creation
+requires exactly one nonempty `body` or repository-relative `body_file`. Markdown
+body content must exclude the tool-owned `Workflow Metadata` or `Metadata`
+section. Draft body content is author-owned; templates remain the guide for its
+domain sections. Titles cannot contain table separators, newlines or backticks.
+
+| Operation | Additional semantic inputs |
+| --- | --- |
+| `workflow.create` | `title`, `branch`, `task`, body; optional `base_branch` (default `main`). |
+| `workflow.add-task` | `task`; the added task is pending. |
+| `workflow.update` | Optional `title`, `current_phase`; no arbitrary locator patch. |
+| `workflow.transition` | `task_id`, `status`; caller `observations` for every transition except starting/resuming; optional `next_action`, `next_task_id`, `workflow_status`, `current_phase`. |
+| `assessment.create` | `title`, `type` (`audit` or `verification`), `artifact_branch`, `subject` (`repository`, `branch`, full `commit`), nonempty `included`, `next_action`, body; optional `base_branch`, `excluded`, `workflow_refs` (IDs), `related_assessments` (IDs). |
+| `assessment.update` | Draft only: optional `title`, `next_action`, `blockers`, replacement body. |
+| `assessment.finalize` | Draft only: replacement body and `last_completed_action`; requires authored Executive Summary, Scope and Validation sections and rejects template placeholders. |
+
+`task` requires `id`, `target`, `model` and `reasoning_effort`; optional lists are
+`steps`, `validation`, `files`, `constraints`, `non_goals` and `finding_ids`, plus
+`next_action`. New results remain unaddressed. Transition `observations` requires
+`summary`, `finding_status`, `tests_run`, `files_changed`, `residual_risk` and boolean
+`follow_up_needed`. These are caller observations, not generated execution proof.
+Empty lists can truthfully record that no tests or files are involved.
+
+Task transitions are pending to active/blocked/deferred/cancelled, active to
+completed/blocked/deferred/cancelled, and blocked to active/deferred/cancelled.
+Hand off to a pending/blocked `next_task_id` in the same operation to preserve
+exactly one active task. A transition may explicitly select workflow status
+`in_progress`, `blocked` or `completed`; completion also needs a completed/closed
+phase and all tasks terminal. Terminal tasks/workflows cannot be reopened by
+this P1 adapter. The existing validators decide applicable lifecycle semantics.
+
+The tool runs both existing family validators against a read-only projected
+repository before writing. This includes other locators, related records and
+indexes; unrelated invalid records can therefore block authoring. The projection
+records file and directory observations and Git context for the preview binding.
+Workflow validation keeps its existing CLI and now exposes a reusable function.
+No validation gate, test or semantic requirement is removed.
+
+Updates preserve IDs, creation time, assessment subject, report prose outside
+explicit draft-body replacement, and JSON/YAML extension values. They change
+only the selected index row (moving assessments to the correct lifecycle section).
+Markdown metadata is patched in place; the prose heading remains author-owned.
+Structured mappings are reserialized, so whitespace and key presentation can
+change in the displayed diff. YAML containing comment-like text is refused before
+rewriting because the current parser cannot promise comment preservation. Use a
+reviewed manual edit for that case. Final assessment conclusions remain immutable.
+
+Apply uses one cooperative lock and an ignored recovery journal under
+`.dev/ai-context/local/artifact-authoring/`. That directory must already be
+covered by the repository's ignore policy and contain no tracked files; the tool
+does not change ignore rules. Existing files are replaced individually; a bundle
+is **not atomic across files**. Interrupted or failed writes retain a pending
+journal and block further apply. Explicit recovery re-derives the restricted
+operation, restores only files still equal to the original/candidate bytes and
+refuses external edits, unexpected files, unsafe paths, links or hard links.
+The journal remains as applied/recovered evidence. An abrupt process termination
+can leave `writer.lock`; first verify the writer has stopped, then remove only
+that lock and run recovery. If inputs needed for recovery have changed, preserve
+the journal and reconcile manually. This is bounded local document recovery,
+not hostile-process exclusion or a power-loss durability guarantee.
+
+`catalog` distinguishes the two writable profiles from final immutable records
+and unsupported migration. Historical versions remain the responsibility of
+their owning readers; P1 neither converts them nor regenerates execution evidence.
+The focused suite uses independent inputs and failure injection:
+
+```text
+python .ai/scripts/tests/test_artifact_authoring.py -v
+```
+
 ## Source Tooling Prerequisites
 
 Repository-side Python tooling requires Python 3.11 or newer and the

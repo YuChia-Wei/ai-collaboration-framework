@@ -1,0 +1,53 @@
+{
+  "template_version": "1.1.0",
+  "task_id": "SCHEMA-005-verification",
+  "workflow_id": "2026-09-21-schema-artifact-lifecycle",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-21T21:26:39+08:00",
+  "updated_at": "2026-09-21T21:48:35+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-001",
+    "ASM-20260921-18-gav#AIC-002"
+  ],
+  "scope": {
+    "target": "Independent P1 verification and owner-readable reconciliation",
+    "files": [
+      ".dev/assessments/",
+      ".dev/workflows/2026-09-21-schema-artifact-lifecycle/"
+    ],
+    "constraints": [
+      "Read-only independent review against immutable subject",
+      "Baseline final report is immutable"
+    ],
+    "non_goals": [
+      "Merge admission",
+      "Issue closure",
+      "Full release validation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Preflight independent review",
+      "Retain verification assessment",
+      "Reconcile findings and publish explanation"
+    ],
+    "validation": [
+      "Review subject and applicable guardrail preflight",
+      "Workflow and assessment validators"
+    ],
+    "last_completed_step": "",
+    "next_action": "Await P1 implementation and focused validation"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}
