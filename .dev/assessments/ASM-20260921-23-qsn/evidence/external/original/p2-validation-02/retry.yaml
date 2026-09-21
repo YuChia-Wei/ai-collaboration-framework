@@ -1,0 +1,17 @@
+schema_version: '1.0'
+record_type: agent-retry-decision
+attempt: 2
+failure:
+  failure_class: environment-failure
+  command_sha256: 29bcb5499407598a899ada2099207837b8f85d4b1db58ca9a630bebb9ac72795
+  subject_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+  environment_class: Windows-sandbox-default-temp-denied
+  diagnostic_codes:
+  - ENV-P2-001
+  - WinError-5
+prior_failure_sha256: a506cdc37e4c7397b776f6a3f136dd7c4b5b88c8005184cd534dba5981c73c37
+material_state_change_sha256: 4a2e69b3096565c46eee0c3c641cf556608bf9a6868b480daed58ade7c618105
+prior_authorization_sha256: null
+new_authorizations: []
+decision: retry
+retry_sha256: 673d90c791abdc44ad3ad6c6a7ffb3bd5484119402d6ee9590dd235b5ec236d0

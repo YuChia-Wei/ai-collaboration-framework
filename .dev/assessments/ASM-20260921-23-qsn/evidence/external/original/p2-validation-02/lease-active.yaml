@@ -1,0 +1,31 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P2-317-VALIDATION-LEASE-02
+worktree: .
+subject_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+observed_snapshot:
+  head_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+  tracked_status: []
+snapshot_sha256: 4c3aa69b3b2081e9d7c4c4292d93fddaa9d680115d5f195115948ab333c0da4b
+state: active
+holder:
+  packet_id: P2-317-VALIDATION-02
+  access: read-only
+  lock_ref: .dev/ai-context/local/p2-validation-02/lease.lock
+  lock_sha256: 75a9140e4d411fe55a57039850917c5233697991827fc1f7f535794295ac1f2a
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p2-validation-02/execution.log
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/p2-validation-02/review-result.md
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/p2-validation-02/candidate.yaml
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Root suspends tracked writes until one validated completion callback.
+lease_sha256: 3d73b9d93c4540bb1ec902f5744f50758dfd9acd091cf5c8f91cb6fc6420673d

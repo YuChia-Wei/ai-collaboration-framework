@@ -1,0 +1,39 @@
+schema_version: '1.0'
+assessment_id: ASM-20260921-23-qsn
+commit_search_id: ASM-20260921-23-qsn
+assessment_type: ai-context-verification
+title: P2 shared artifact core independent verification
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-21-artifact-shared-core
+base_branch: main
+created_at: '2026-09-21T23:13:07+08:00'
+updated_at: '2026-09-21T23:14:03+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  branch: codex/2026-09-21-artifact-shared-core
+  commit: b808533b71cb257fdfdd741b0dafe5c3b703178e
+  repository: YuChia-Wei/ai-collaboration-framework
+scope:
+  included:
+  - 'Issue #317 P2 shared core and existing producer integration'
+  excluded:
+  - P3-P4 other families, migrations and test consolidation
+  - Provider admission, release and downstream adoption
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+  - ASM-20260921-18-gav
+  workflow_refs:
+  - 2026-09-21-artifact-shared-core
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Independent P2 command and review completed; original evidence preserved.
+  next_action: ''
+  blockers: []

@@ -1,0 +1,7 @@
+{
+  "classification": "preparation-failure",
+  "behavior_dispatched": false,
+  "diagnostic_code": "role-not-bound-by-owning-skill",
+  "original_owner": "ai-context-governance",
+  "resolution": "Route the planned independent verification to ai-context-auditor and its canonically bound fixed-head role; no role or policy mutation."
+}

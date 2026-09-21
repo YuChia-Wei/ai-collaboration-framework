@@ -1,0 +1,19 @@
+schema_version: '1.0'
+record_type: terminal-command-execution
+producer: external-task-completion
+subject_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+command: '["python","-B","-c","import sys,unittest; sys.path.insert(0,''.ai/scripts/tests'');
+  suite=unittest.defaultTestLoader.loadTestsFromNames([''test_execution_artifacts'',''test_ai_context_package_smoke'']);
+  result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())"]'
+profile: P2-focused-producer-package-smoke
+started_at: '2026-09-21T23:08:28.660651+08:00'
+completed_at: '2026-09-21T23:10:05.159992+08:00'
+duration_seconds: 96.49931260000449
+executed: true
+synthetic: false
+outcome: passed
+exit_code: 0
+evidence_refs:
+- ignored:.dev/ai-context/local/p2-validation-02/execution.log
+evidence_sha256: 7b7b20b7e553aee3e8e323f130e3561cec94710b55f5900c4aefd28e4f022058
+receipt_sha256: 54db6c2f02b3a922e07ef643ed4862eb4e2ac36f0c6a62cd11818c66bea1d0cf

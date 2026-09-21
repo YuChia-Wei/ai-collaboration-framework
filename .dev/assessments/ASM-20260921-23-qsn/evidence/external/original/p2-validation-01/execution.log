@@ -1,0 +1,236 @@
+argv=["python", "-B", "-c", "import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())"]
+started_at=2026-09-21T23:01:24.237683+08:00
+setUpClass (test_execution_artifacts.ArtifactBehaviorTests) ... ERROR
+test_actual_comments_and_malformed_yaml_are_refused (test_execution_artifacts.CoreCompatibilityTests.test_actual_comments_and_malformed_yaml_are_refused) ... ok
+test_canonical_bytes_and_public_digest_facades_match_independent_oracle (test_execution_artifacts.CoreCompatibilityTests.test_canonical_bytes_and_public_digest_facades_match_independent_oracle) ... ok
+test_family_dialects_remain_distinct (test_execution_artifacts.CoreCompatibilityTests.test_family_dialects_remain_distinct) ... ok
+test_mapping_failures_preserve_adapter_diagnostics (test_execution_artifacts.CoreCompatibilityTests.test_mapping_failures_preserve_adapter_diagnostics) ... ok
+test_scalar_hashes_are_data_in_lf_and_crlf_yaml (test_execution_artifacts.CoreCompatibilityTests.test_scalar_hashes_are_data_in_lf_and_crlf_yaml) ... ok
+test_authority_follows_source_or_fixed_package_envelope_requirements (test_execution_artifacts.StructureTests.test_authority_follows_source_or_fixed_package_envelope_requirements) ... ERROR
+test_compatible_optional_field_and_incompatible_required_change (test_execution_artifacts.StructureTests.test_compatible_optional_field_and_incompatible_required_change) ... ok
+test_exact_types_batch_unknown_fields_and_unknown_schema_keywords (test_execution_artifacts.StructureTests.test_exact_types_batch_unknown_fields_and_unknown_schema_keywords) ... ok
+test_execution_cli_isolated_package_imports_and_template_bytes (test_execution_artifacts.StructureTests.test_execution_cli_isolated_package_imports_and_template_bytes) ... ERROR
+test_numeric_extremes_and_inapplicable_constraints (test_execution_artifacts.StructureTests.test_numeric_extremes_and_inapplicable_constraints) ... ok
+test_gwt_001_given_one_candidate_when_smoke_runs_then_archives_and_metadata_are_valid (test_ai_context_package_smoke.AiContextPackageSmokeGwtTests.test_gwt_001_given_one_candidate_when_smoke_runs_then_archives_and_metadata_are_valid) ... ok
+
+======================================================================
+ERROR: setUpClass (test_execution_artifacts.ArtifactBehaviorTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系統找不到指定的路徑。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-artifacts-3ouu45j9\\.ai\\assets\\shared'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系統找不到指定的路徑。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-artifacts-3ouu45j9\\.ai\\assets'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai/scripts/tests\test_execution_artifacts.py", line 182, in setUpClass
+    target.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 726, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 726, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-artifacts-3ouu45j9\\.ai'
+
+======================================================================
+ERROR: test_authority_follows_source_or_fixed_package_envelope_requirements (test_execution_artifacts.StructureTests.test_authority_follows_source_or_fixed_package_envelope_requirements)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai/scripts/tests\test_execution_artifacts.py", line 125, in test_authority_follows_source_or_fixed_package_envelope_requirements
+    envelope = Path(temporary).resolve(); payload = envelope / "payload"; payload.mkdir()
+                                                                          ~~~~~~~~~~~~~^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\artifact-package-authority-xh1evj3d\\payload'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 369, in walk
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\artifact-package-authority-xh1evj3d'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai/scripts/tests\test_execution_artifacts.py", line 124, in test_authority_follows_source_or_fixed_package_envelope_requirements
+    with tempfile.TemporaryDirectory(prefix="artifact-package-authority-") as temporary:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 951, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 955, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 935, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 790, in rmtree
+    return _rmtree_unsafe(path, onexc)
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 613, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 372, in walk
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 611, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 907, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\artifact-package-authority-xh1evj3d'
+
+======================================================================
+ERROR: test_execution_cli_isolated_package_imports_and_template_bytes (test_execution_artifacts.StructureTests.test_execution_cli_isolated_package_imports_and_template_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系統找不到指定的路徑。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-package-8lkjs5kt\\payload\\.ai\\assets\\shared'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系統找不到指定的路徑。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-package-8lkjs5kt\\payload\\.ai\\assets'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileNotFoundError: [WinError 3] 系統找不到指定的路徑。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-package-8lkjs5kt\\payload\\.ai'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai/scripts/tests\test_execution_artifacts.py", line 162, in test_execution_cli_isolated_package_imports_and_template_bytes
+    target = payload / ref; target.parent.mkdir(parents=True, exist_ok=True)
+                            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 726, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 726, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 726, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 722, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-package-8lkjs5kt\\payload'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen os>", line 369, in walk
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-package-8lkjs5kt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai/scripts/tests\test_execution_artifacts.py", line 156, in test_execution_cli_isolated_package_imports_and_template_bytes
+    with tempfile.TemporaryDirectory(prefix='execution-package-') as temporary:
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 951, in __exit__
+    self.cleanup()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 955, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 935, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 790, in rmtree
+    return _rmtree_unsafe(path, onexc)
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 613, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 372, in walk
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 611, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 907, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-package-8lkjs5kt'
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.521s
+
+FAILED (errors=3)
+Traceback (most recent call last):
+  File "<frozen os>", line 369, in walk
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-artifacts-3ouu45j9'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\weakref.py", line 666, in _exitfunc
+    f()
+    ~^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\weakref.py", line 590, in __call__
+    return info.func(*info.args, **(info.kwargs or {}))
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 940, in _cleanup
+    cls._rmtree(name, ignore_errors=ignore_errors)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 935, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 790, in rmtree
+    return _rmtree_unsafe(path, onexc)
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 613, in _rmtree_unsafe
+    for dirpath, dirnames, filenames in results:
+                                        ^^^^^^^
+  File "<frozen os>", line 372, in walk
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\shutil.py", line 611, in onerror
+    onexc(os.scandir, err.filename, err)
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 907, in onexc
+    _resetperms(path)
+    ~~~~~~~~~~~^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 283, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\tempfile.py", line 272, in _dont_follow_symlinks
+    func(path, *args, follow_symlinks=False)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] 存取被拒。: 'C:\\Users\\h4227\\AppData\\Local\\Temp\\execution-artifacts-3ouu45j9'
+
+completed_at=2026-09-21T23:01:27.088552+08:00
+duration_seconds=2.850843800
+exit_code=1
+timed_out=false
+launch_error=None
