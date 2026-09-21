@@ -68,6 +68,11 @@ jobs:
             exit 1
           fi
           gh --version
+          if ! gh api rate_limit --silent; then
+            echo "GitHub REST probe failed before Project lookup; review the HTTP status, credential validity and provider connectivity." >&2
+            exit 1
+          fi
+          echo "GitHub REST probe succeeded; Projects access is still unverified."
           python .ai/scripts/reconcile-ai-context-release-provider.py \
             --phase "${PHASE}" --version "${VERSION}" \
             --output "${RUNNER_TEMP}/provider-check/read-back.json"

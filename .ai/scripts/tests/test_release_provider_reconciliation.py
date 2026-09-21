@@ -6,6 +6,8 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -372,6 +374,50 @@ class ReleaseProviderReconciliationTests(unittest.TestCase):
 
 
 class HostedProviderCheckTests(unittest.TestCase):
+    def test_hosted_probe_distinguishes_rest_access_from_project_access_without_live_credentials(self) -> None:
+        if os.name == "nt":
+            bash = Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Git/bin/bash.exe"
+            if not bash.is_file():
+                self.skipTest("Git Bash is required for the hosted shell regression")
+        else:
+            bash = shutil.which("bash")
+            if not bash:
+                self.skipTest("Bash is required for the hosted shell regression")
+        workflow = yaml.safe_load(
+            (ROOT / ".github/workflows/release-provider-preflight.yml").read_text(encoding="utf-8")
+        )
+        step = next(step for step in workflow["jobs"]["provider-check"]["steps"] if step.get("id") == "provider")
+        interceptors = '''gh() {
+          echo "intercepted-gh:$*"
+          if [[ "$1" == "api" ]]; then return "$MOCK_REST_EXIT"; fi
+        }
+        python() { echo "intercepted-provider"; return "$MOCK_PROVIDER_EXIT"; }
+        '''
+        cases = [
+            ("missing-token", "", "0", "0", False, False, False),
+            ("rest-failure", "synthetic-provider-token", "1", "0", False, True, False),
+            ("project-failure", "synthetic-provider-token", "0", "1", False, True, True),
+            ("verified", "synthetic-provider-token", "0", "0", True, True, True),
+        ]
+        for label, token, rest_exit, provider_exit, success, rest_called, provider_called in cases:
+            with self.subTest(label=label):
+                env = dict(os.environ, GH_TOKEN=token, MOCK_REST_EXIT=rest_exit,
+                           MOCK_PROVIDER_EXIT=provider_exit, VERSION=VERSION,
+                           PHASE="verify", RUNNER_TEMP="/unused-intercepted-output")
+                result = subprocess.run(
+                    [str(bash), "--noprofile", "--norc", "-e"],
+                    input=interceptors + step["run"], env=env,
+                    capture_output=True, text=True, timeout=10,
+                )
+                self.assertEqual(success, result.returncode == 0, result.stderr)
+                self.assertEqual(rest_called, "intercepted-gh:api rate_limit --silent" in result.stdout)
+                self.assertEqual(provider_called, "intercepted-provider" in result.stdout)
+                self.assertNotIn("synthetic-provider-token", result.stdout + result.stderr)
+                if label == "rest-failure":
+                    self.assertIn("REST probe failed before Project lookup", result.stderr)
+                if provider_called:
+                    self.assertIn("Projects access is still unverified", result.stdout)
+
     def test_dispatch_keeps_existing_credential_on_main_and_read_only_phases(self) -> None:
         workflow = yaml.safe_load(
             (ROOT / ".github/workflows/release-provider-preflight.yml").read_text(encoding="utf-8")

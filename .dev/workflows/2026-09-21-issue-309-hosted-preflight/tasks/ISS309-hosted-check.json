@@ -4,7 +4,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-21T13:47:43+08:00",
-  "updated_at": "2026-09-21T13:51:04+08:00",
+  "updated_at": "2026-09-21T13:59:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "template_version": "1.1.0",
   "model": "gpt-6-astra",
@@ -42,11 +42,11 @@
       "python .ai/scripts/validate-workflow-artifacts.py",
       "git diff --check"
     ],
-    "last_completed_step": "Local workflow preparation and focused validation passed",
+    "last_completed_step": "Necessity confirmed from repeated hosted failures; REST/Project diagnostic separation implemented and locally validated",
     "next_action": "Obtain separate transport/integration authorization; retain Refs #309 until actual hosted acceptance"
   },
   "results": {
-    "summary": "Local read-only workflow and regression coverage validated. Hosted credential root cause and Issue acceptance remain unproven; no push, merge or dispatch performed.",
+    "summary": "Issue remains necessary for future automated publication. Added a low-permission REST probe before Project lookup; actual hosted root cause remains unconfirmed.",
     "files_changed": [
       ".github/workflows/release-provider-preflight.yml",
       ".ai/scripts/tests/test_release_provider_reconciliation.py"
@@ -101,6 +101,11 @@
         "command": "Hosted execution and independent integration review",
         "outcome": "not-executed",
         "detail": "Outside the current local-only approval"
+      },
+      {
+        "command": "python .ai/scripts/tests/test_release_provider_reconciliation.py -v",
+        "outcome": "passed",
+        "detail": "16 tests in 0.464 seconds; four shell interceptor cases distinguish missing token, REST failure, Project failure and success; no actual hosted credential used"
       }
     ],
     "finding_status": "partially-resolved",

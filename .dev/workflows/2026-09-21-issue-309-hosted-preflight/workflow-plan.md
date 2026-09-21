@@ -8,7 +8,7 @@
 - Branch: `codex/2026-09-21-issue-309-hosted-preflight`
 - Base: `main` at `f3cbef14595e6fc3c41930794c0a0835758a41e3`
 - Created: `2026-09-21T13:47:43+08:00`
-- Updated: `2026-09-21T13:51:04+08:00`
+- Updated: `2026-09-21T13:59:27+08:00`
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - Template version: `1.2.0`
 
@@ -89,3 +89,70 @@ bounded JSON evidence records the provider step's actual outcome and run identit
 - If hosted access fails, use that run's secret-free evidence to propose the
   smallest credential correction for owner review. Do not copy a local CLI
   token into Actions or infer that local CLI success proves hosted access.
+
+## Necessity Reassessment And Bounded Diagnosis
+
+The owner requested reassessment before continuation and authorized work if
+still necessary. Decision: retain #309 to restore future automated publication.
+The scope is hosted provider access, not another v0.18.0 publication or a broad
+framework rewrite. Existing local-only approval still governs transport,
+merge, dispatch and credential decisions.
+
+Current live read-back confirms the publication workflow is active. The latest
+three runs are:
+
+| Version | Hosted run | Project preflight | Reconciliation |
+| --- | --- | --- | --- |
+| v0.16.0 | [33972121533](https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33972121533) | success | success |
+| v0.17.0 | [34688930133](https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/34688930133) | failed, unknown owner type | skipped |
+| v0.18.0 | [35487203277](https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/35487203277) | failed, unknown owner type | skipped |
+
+All three releases are published. That provider state and the manual recovery
+do not establish that the next hosted preflight can succeed. No newer publication
+run exists in the current run listing. This is a bounded current observation,
+not a claim that no credential or GitHub service change could have happened.
+
+| Hypothesis | Falsifying observation | Method and scope | Observation / disposition |
+| --- | --- | --- | --- |
+| The workflow path is retired or replaced | Active current tag workflow still requires Project preflight | Live workflow state and current YAML | Falsified: the gate still precedes publication |
+| Source changes broke the first owner lookup between v0.16 and v0.17 | Identical command implementation and owner/number across both tags | Deterministic Git blob comparison, both selected tags plus v0.18 | Falsified within the first-lookup source/configuration scope |
+| Existing credential is invalid, expired or lacks Projects access | The same hosted credential succeeds in a fresh probe and Project lookup | Hosted experiment not executed | Unconfirmed; metadata is insufficient |
+| Runner, CLI or provider behavior changed | Controlled execution with relevant versions and the same credential rules out the change | Historical logs only; no controlled intervention | Unconfirmed; runner image changed from 20260831.293.1 to 20260907.300.1 |
+
+The reconciliation script blob is `905d67af17e0114422ccb948bf4a0f7c484374ce`
+for all three release tags. Current remote main
+`f3cbef14595e6fc3c41930794c0a0835758a41e3` uses blob
+`57a2d03c50e45e7dd88df5a9df2ab2ace3887a9b`, whose relevant difference is the
+secret-free diagnostic for the existing failure. `project_owner=YuChia-Wei`
+and `project_number=3` are unchanged. v0.18 contract field differences are
+checked after the failing first lookup and cannot explain that lookup by
+source inspection alone.
+
+Bounded same-runtime delegation `provider_history_evidence` used the canonical
+mechanical-evidence-worker role, read only the selected Git blobs, and returned
+supporting facts. The parent owns all decisions and writes. An extra comparison
+to stale local `main` was excluded; remote `origin/main` is the current provider
+branch. This was evidence extraction, not independent behavioral review.
+
+Minimal reproduction in the actual hosted credential environment: not executed.
+Controlled causal isolation: not executed. Root cause: **unconfirmed**. Neither
+secret age nor an unchanged source script proves expiry or a permissions defect.
+
+The local check now runs `gh api rate_limit --silent` before the Project lookup,
+using the already selected step token. It reports a failed general REST probe
+separately; a successful probe explicitly leaves Projects access unverified.
+The [GitHub rate-limit endpoint](https://docs.github.com/en/rest/rate-limit/rate-limit?apiVersion=2022-11-28)
+supports PAT and GitHub App tokens without additional fine-grained permissions.
+It also permits unauthenticated access, so success must not be promoted to
+Projects permission or a confirmed credential diagnosis. The workflow's prior
+nonempty-token guard remains in force.
+
+Focused regression result: 16 tests passed in 0.464 seconds, including four
+executed Bash cases with intercepted `gh` and `python` functions: missing token,
+REST failure, Project failure and success. No real credential or provider call
+was used by those tests; they are supporting synthetic evidence only.
+
+Next owner decision remains the concrete transport/integration and one hosted
+verify dispatch described above. Do not rotate a secret, add Projects scopes,
+remove the publication gate, or close #309 without the respective authority and
+actual evidence.
