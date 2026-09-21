@@ -1,0 +1,103 @@
+schema_version: '1.3'
+record_type: external-task-dispatch
+delegation_id: P2-317-VALIDATION-01
+task_kind: fixed-head-audit
+source:
+  task_id_source: explicit
+  task_id: P2-317-CORE-001
+  final_integration_owner: root
+objective:
+  goal: Verify the bounded P2 diff independently, execute both named suites exactly
+    once and preserve measured output and truthful outcome.
+  non_goals:
+  - Repair
+  - Other test matrices
+  - Provider or credential operations
+subject:
+  repository_root: C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend
+  commit_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+  clean_worktree_required: true
+execution:
+  working_directory: .
+  argv:
+  - python
+  - -B
+  - -c
+  - import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']);
+    result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())
+  timeout_seconds: 300
+execution_packet:
+  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  packet_ref: .dev/ai-context/local/p2-validation-01/packet.yaml
+  packet_sha256: 68747c7136e0514d05276af15b37e262a18ea35961e3f96709d10bed27d21b87
+  subject_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+  validator_argv:
+  - python
+  - .ai/scripts/validate-agent-execution-guardrails.py
+  - --packet
+  - .dev/ai-context/local/p2-validation-01/packet.yaml
+  validation_outcome: passed
+permissions:
+  read_scope:
+  - repository
+  write_scope:
+  - ignored-validation-artifacts
+  repair_allowed: false
+  external_mutations: []
+  secret_values: prohibited
+completion_delivery:
+  primary: source-task-callback
+  fallback: none
+  destination: source-task
+  progress_updates: terminal-only
+  max_terminal_reports: 1
+  report_schema: same-contract#completion
+  pre_send_validation:
+    required: true
+    receipt_writer_argv:
+    - python
+    - .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py
+    - --candidate
+    - .dev/ai-context/local/p2-validation-01/candidate.yaml
+    - --dispatch
+    - .dev/ai-context/local/p2-validation-01/dispatch.yaml
+    - --write-receipt
+    - .dev/ai-context/local/p2-validation-01/receipt.yaml
+    dispatch_ref: .dev/ai-context/local/p2-validation-01/dispatch.yaml
+    candidate_ref: .dev/ai-context/local/p2-validation-01/candidate.yaml
+    receipt_ref: .dev/ai-context/local/p2-validation-01/receipt.yaml
+    failure_action: do-not-deliver-terminal-report
+    payload_binding: exact-candidate-bytes-with-independent-receipt
+stop_conditions:
+- Exact command terminates
+- Subject or authority drift
+- Timeout or environment blocker
+authority_manifest:
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  sha256: 0ffc68fb5d48acb4a15465d9083a7e9965aee761dc6c84eae5e00ccf4dc6471d
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py
+  sha256: 922268c293e5880d1986ae849869884d15821d17b5f6e2b87daa2a6b1da4ca18
+- path: .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml
+  sha256: dd48542d958db1aab02482a161fd1ae41d4b5eded475f6d54297892d4a241a35
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24
+- path: .ai/scripts/artifact_core.py
+  sha256: 574e143ba9da459ed36630ef54c00a3988cfc3de0b02138e3aae439fba81aab7
+- path: .ai/scripts/execution-artifacts.py
+  sha256: 8a9391624476ba1167c5232219ab665e4e4634c03611a970a2e07cabf25a2c52
+- path: .ai/scripts/execution_artifact_contract.py
+  sha256: 765eb474dc84e326109bdf66af3965dcc178394ff9d45cc8b9126d6bb9154f53
+- path: .ai/scripts/python-entrypoints.json
+  sha256: bb0cf97d600cafdebb65295bc529dcce56b1b82c0590ba615f2995ffd4ec649a
+- path: .ai/scripts/python_prerequisites.py
+  sha256: 2a7d270d84f46ea8d4b3343f1e79e48d85fc76deb0572b893c529ad1e24f3499
+- path: .ai/scripts/validate-agent-execution-guardrails.py
+  sha256: dfce8490cf846fea78c8becc6b2bf674b8096d9fd263bbf622518b5037d3399c
+- path: requirements.txt
+  sha256: 0969da99a0bc2a1b71ed50584560f4588a37567ac63af3ddbaf3c4617ca5621a

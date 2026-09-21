@@ -6,9 +6,9 @@
   "task_id": "CORE-002-verification",
   "workflow_id": "2026-09-21-artifact-shared-core",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-09-21T22:39:11+08:00",
-  "updated_at": "2026-09-21T22:39:11+08:00",
+  "updated_at": "2026-09-21T23:15:03+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -45,14 +45,22 @@
       "Local merge tree and ancestry read-back"
     ],
     "last_completed_step": "",
-    "next_action": "Await CORE-001 implementation and validation."
+    "next_action": "Proceed to the separately bounded P3 scope after this P2 local delivery."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "Independent P2 assessment ASM-20260921-23-qsn retained with exact original command/review evidence and released lease; Chinese explanation and seven acceptance rows completed.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260921-23-qsn/",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-09-21-artifact-shared-core/",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "Independent immutable-subject command and two-pass review completed without reported defect.",
+      "Assessment writer create/finalize preserved reviewer body; projected workflow/assessment validators passed."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Final local integration admission and read-back are separate from workflow completion; P3/P4 and remote operations remain separate.",
     "follow_up_needed": true
   }
 }

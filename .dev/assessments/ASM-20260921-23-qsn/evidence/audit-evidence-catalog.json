@@ -1,0 +1,172 @@
+{
+  "origin": "Native collaboration runtime /root/p2_independent_audit",
+  "recorded_at": "2026-09-21T23:14:32+08:00",
+  "purpose": "Unchanged original attempts preserve blocked environment evidence and retry success separately. Original local references are invocation locations; candidate, receipt and delivery remain separately hash-bound. Current durable locators are in this catalog.",
+  "files": [
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/review-input.yaml",
+      "sha256": "8a2e339ac9ce59c6944c4c916a0735f01ee9a317d1a431a788bf33a9f156ff13"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/packet.yaml",
+      "sha256": "68747c7136e0514d05276af15b37e262a18ea35961e3f96709d10bed27d21b87"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/lease-active.yaml",
+      "sha256": "fd230435e21d327d0000b3f1dcd44ffd65f265c8d4206669ed8f04f2636cf77a"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/lease.yaml",
+      "sha256": "54ee7dd0cf62ff89fe72a1c497e8d52f2cae8f205ba8a6ea4b007becd077537d"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/review-result.md",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/review-result.md",
+      "sha256": "724823ab6d6ebd4efc434bb67b98524b2b2b569e26bae6d484eb0dab5886cc92"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/dispatch.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/dispatch.yaml",
+      "sha256": "78056de2fe17b7a20cd9e3c9fd6b6aa2619a79affb51d4a14e0ca96d93208583"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/dispatch-message.txt",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/dispatch-message.txt",
+      "sha256": "145830166bd4a957bc15872b18a50295af14740ec0ce86e6da2c23407afdbbd0"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/candidate.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/candidate.yaml",
+      "sha256": "a4c7edeb644372d7d1bf681d8cb88cc0303e445b617d4eb5698d7e37c434dbb6"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/receipt.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/receipt.yaml",
+      "sha256": "2c171985c47fbac7b4fe6a6228b2691178884952c07191e42b8096a47ca15ede"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/terminal-message.txt",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/terminal-message.txt",
+      "sha256": "a103f936eb6dd327bc9c4a8f1895d2b4a0b209e77b8d3d8b4d21a9d274fb8996"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/execution.log",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/execution.log",
+      "sha256": "30156c618e325fbb918229e97d6729b3785be65c60ee18369a4f1c11996e5c08"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/command-observation.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/command-observation.json",
+      "sha256": "4cf8c30052ab509512f3db4f3972310b454149bee212d18280c9838a27f8e314"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/role-observation.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/role-observation.json",
+      "sha256": "2ff56a4a0de8e7918af0fb6598a56ad6a66cef3f819a7e8b69ba578ccb19d62a"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/parent-delivery-validation.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/parent-delivery-validation.json",
+      "sha256": "e0026ce31871ad7765673879536650add861e94f65f7dceb911a3d67e106f1bf"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-01/execution-observations.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/execution-observations.yaml",
+      "sha256": "94e79ce0e6d997bcac6c29b50e316d335e136b5163bb43832ff7abdf77f3ed7c"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-preparation-failure.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-01/p2-preparation-failure.json",
+      "sha256": "a50a4543653bb925cd767a08fba4156f32a536ced8b59154b90dad1bb78ad767"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-input.yaml",
+      "sha256": "8a2e339ac9ce59c6944c4c916a0735f01ee9a317d1a431a788bf33a9f156ff13"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/packet.yaml",
+      "sha256": "406dadea9efedc1a4d269533c52f29d381dedf531781c74c104c70db75bd7ffd"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/lease-active.yaml",
+      "sha256": "4a5afef67902d8aea332338293322651748227186e90875a82f5b9d6941a4d8c"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/lease.yaml",
+      "sha256": "236c5afb5cfcb01a5e0485e55ee1552bdcfada1014e0e1b5e24779f0139678a3"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/review-result.md",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md",
+      "sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/dispatch.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/dispatch.yaml",
+      "sha256": "6d53f9037d0068e2ed4b9d01ec46b5bab3f43c64cd38db363df405c75a85c430"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/dispatch-message.txt",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/dispatch-message.txt",
+      "sha256": "5e462bdd1e671db6591846d54edc39f8cb50c9916c81e28ea4f8b5336d1ae23f"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/candidate.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/candidate.yaml",
+      "sha256": "690723e9d488005be3149b8c72bbbf54a377c38d73562de71543fbf5a8d25a08"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/receipt.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/receipt.yaml",
+      "sha256": "18b6da2d17e557202a6889407d2727183a05e09ceffcf338f9740c6f34a875b4"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/terminal-message.txt",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/terminal-message.txt",
+      "sha256": "5befcf802b3abd847f9a785afb2e7ec564ca57676b4d0865d2f09794010b2127"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/execution.log",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/execution.log",
+      "sha256": "7b7b20b7e553aee3e8e323f130e3561cec94710b55f5900c4aefd28e4f022058"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/command-observation.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/command-observation.json",
+      "sha256": "d4bc15360f6d606803c73217edfbe24164cd712c4b0d5b43a272e9e72e0a2e89"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/role-observation.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/role-observation.json",
+      "sha256": "ec9a882185559e1fd9d413875847580215b49fa8487c18e4759c0069a097c4d4"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/parent-delivery-validation.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/parent-delivery-validation.json",
+      "sha256": "3c72dd999f18534c9527e757c52812929b9b4f41fb798409bbc4050b5a833b17"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/execution-observations.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/execution-observations.yaml",
+      "sha256": "01a78e8b052c52e9cb76438398c27a96525bb29059546b12a34e373e7c4da131"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/retry.yaml",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/retry.yaml",
+      "sha256": "e01c8e78850d3aa8c2ff71e5022d2f10e337dc902e33a5adc2f02d3ab0bbc57b"
+    },
+    {
+      "source": ".dev/ai-context/local/p2-validation-02/elevated-environment-proof.json",
+      "retained": ".dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/elevated-environment-proof.json",
+      "sha256": "4a2e69b3096565c46eee0c3c641cf556608bf9a6868b480daed58ade7c618105"
+    }
+  ]
+}

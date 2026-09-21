@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260921-23-qsn`](ASM-20260921-23-qsn/assessment.yaml) | P2 shared artifact core independent verification | `ai-context-verification` | `ai-context-auditor` | `final` | `b808533b71cb257fdfdd741b0dafe5c3b703178e` | `2026-09-21T23:14:03+08:00` | [report](ASM-20260921-23-qsn/report.md) |
 | [`ASM-20260921-22-kr2`](ASM-20260921-22-kr2/assessment.yaml) | P1 workflow and assessment authoring independent verification | `ai-context-verification` | `ai-context-auditor` | `final` | `29ffb4c50d4767a39b5620fc96d5d854d839732c` | `2026-09-21T22:16:24+08:00` | [report](ASM-20260921-22-kr2/report.md) |
 | [`ASM-20260921-18-gav`](ASM-20260921-18-gav/assessment.yaml) | Schema artifact lifecycle feasibility and validation consolidation | `ai-context-audit` | `ai-context-auditor` | `final` | `8830cdfc252b8845efcbe6cce539041c17cf8e7a` | `2026-09-21T19:03:58+08:00` | [report](ASM-20260921-18-gav/report.md) |
 | [`ASM-20260920-22-7r2`](ASM-20260920-22-7r2/assessment.yaml) | Terminal Review Identity And Completion Timing Repair Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `d9cd5539adb3b670866cf2b87b8fa5e2247a67a5` | `2026-09-20T22:08:14+08:00` | [report](ASM-20260920-22-7r2/report.md) |

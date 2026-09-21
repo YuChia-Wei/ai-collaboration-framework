@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-21-artifact-shared-core`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `current_phase`: `validation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-21-artifact-shared-core`
 - `created_at`: `2026-09-21T22:38:23+08:00`
-- `updated_at`: `2026-09-21T22:49:47+08:00`
+- `updated_at`: `2026-09-21T23:15:03+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -50,8 +50,14 @@ P3 covers other editable families and migration edges; P4 covers removal only wi
 
 ## Resume
 
-Issue 317 is open. P1 is merged locally. P2 implementation is active; no new implementation or validation result is claimed by this bootstrap.
+Issue 317 remains open. P1 is merged locally. P2 implementation and selected verification are complete; see ASM-20260921-23-qsn and reports/remediation-report.md. Next product scope is P3 family-by-family migration/authoring, followed by P4 only after replacement coverage. No provider mutation or release is authorized by this local completion.
 
 ## Implementation Checkpoint
 
 Shared mechanics and both producer adapters are implemented. Focused checks are recorded in [the report](reports/remediation-report.md). The packaging fixture helper omissions and direct changed-path dependency gaps are repaired. No validator or test was removed. Full execution-artifact and package-smoke suites are classified long-running from their 120-second registry budgets and will run as one bounded external command against a clean commit. Root remains integration owner and will suspend tracked edits under a read-only lease.
+
+## Verification And Local Delivery
+
+Implementation subject: `b808533b71cb257fdfdd741b0dafe5c3b703178e`. Independent native auditor `/root/p2_independent_audit` retained blocked environment attempt 1, then executed the unchanged two-suite command once in authorized elevated attempt 2 and returned validated terminal delivery; counts {"errors": 0, "failures": 0, "skipped": 0, "successful_test_cases": 27, "tests_run": 27}, exit 0, duration 96.499 seconds. Original bytes and lease release are retained in assessment `ASM-20260921-23-qsn`; acceptance projection and role record are under `evidence/`. Root accepted the selected P2 evidence. Preparation-only role-binding refusal and prompt hash transcription correction are retained and do not become behavioral retries.
+
+A non-fast-forward local merge retains the implementation freeze and separate review/evidence-intake commits as a meaningful review and rollback unit. Before integration, validate the final delivery metadata on a clean commit and bind its current content; do not relabel prior tests as execution on that later commit. Hosted/provider checks are outside the owner-authorized local integration path.

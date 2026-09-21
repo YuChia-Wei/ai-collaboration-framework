@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "record_type": "exact-command-observation",
+  "expected_commit_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+  "observed_commit_sha_before": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+  "observed_commit_sha_after": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+  "tracked_status_before": [],
+  "tracked_status_after": [],
+  "working_directory": ".",
+  "argv": [
+    "python",
+    "-B",
+    "-c",
+    "import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())"
+  ],
+  "timeout_seconds": 300,
+  "started_at": "2026-09-21T23:01:24.237683+08:00",
+  "completed_at": "2026-09-21T23:01:27.088552+08:00",
+  "duration_seconds": 2.8508437999989837,
+  "outcome": "blocked-by-environment",
+  "exit_code": 1,
+  "counts": {
+    "tests_run": 11,
+    "successful_test_cases": 9,
+    "assertion_failures": 0,
+    "test_case_errors": 2,
+    "class_setup_errors": 1,
+    "error_events": 3,
+    "skipped": 0,
+    "behavior_test_methods_not_executed": 16
+  },
+  "execution_log": ".dev/ai-context/local/p2-validation-01/execution.log",
+  "execution_log_sha256": "30156c618e325fbb918229e97d6729b3785be65c60ee18369a4f1c11996e5c08",
+  "timed_out": false,
+  "launch_error": null,
+  "classification_reason": "The process launched and returned 1, but every reported error is a Windows access-denied failure while creating or cleaning default temporary fixture directories; no assertion failed.",
+  "counts_source": "Post-execution parse of the retained unittest summary and named test lines; the wrapper's first CRLF-sensitive parser returned zero and was corrected without rerunning the command."
+}

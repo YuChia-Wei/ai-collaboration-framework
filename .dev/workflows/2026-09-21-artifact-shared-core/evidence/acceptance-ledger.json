@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "record_type": "acceptance-evidence-ledger",
+  "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+  "entries": [
+    {
+      "acceptance_id": "317-AC1",
+      "issue": 317,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Independent fixed-head P2 review against validated criteria",
+      "profile": "P2-fixed-head-review",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "tracked:.dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md"
+      ],
+      "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "317-AC2",
+      "issue": 317,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Independent fixed-head P2 review against validated criteria",
+      "profile": "P2-fixed-head-review",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "tracked:.dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md"
+      ],
+      "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "317-AC3",
+      "issue": 317,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Independent fixed-head P2 review against validated criteria",
+      "profile": "P2-fixed-head-review",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "tracked:.dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md"
+      ],
+      "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "317-AC4",
+      "issue": 317,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Independent fixed-head P2 review against validated criteria",
+      "profile": "P2-fixed-head-review",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "tracked:.dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md"
+      ],
+      "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "317-AC5",
+      "issue": 317,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Independent fixed-head P2 review against validated criteria",
+      "profile": "P2-fixed-head-review",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "tracked:.dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md"
+      ],
+      "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "317-AC6",
+      "issue": 317,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"python\",\"-B\",\"-c\",\"import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())\"]",
+      "profile": "P2-focused-producer-package-smoke",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/p2-validation-02/execution.log"
+      ],
+      "evidence_sha256": "7b7b20b7e553aee3e8e323f130e3561cec94710b55f5900c4aefd28e4f022058",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/p2-validation-02/command-execution-receipt.yaml",
+      "execution_receipt_file_sha256": "4554275087b776d73af786cc34e295655bed7735713e787eb1f91947be30e482",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "external-task-completion",
+        "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+        "command": "[\"python\",\"-B\",\"-c\",\"import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())\"]",
+        "profile": "P2-focused-producer-package-smoke",
+        "started_at": "2026-09-21T23:08:28.660651+08:00",
+        "completed_at": "2026-09-21T23:10:05.159992+08:00",
+        "duration_seconds": 96.49931260000449,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/p2-validation-02/execution.log"
+        ],
+        "evidence_sha256": "7b7b20b7e553aee3e8e323f130e3561cec94710b55f5900c4aefd28e4f022058",
+        "receipt_sha256": "54db6c2f02b3a922e07ef643ed4862eb4e2ac36f0c6a62cd11818c66bea1d0cf"
+      }
+    },
+    {
+      "acceptance_id": "317-AC7",
+      "issue": 317,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Independent fixed-head P2 review against validated criteria",
+      "profile": "P2-fixed-head-review",
+      "subject_sha": "b808533b71cb257fdfdd741b0dafe5c3b703178e",
+      "outcome": "passed",
+      "evidence_refs": [
+        "tracked:.dev/assessments/ASM-20260921-23-qsn/evidence/external/original/p2-validation-02/review-result.md"
+      ],
+      "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    }
+  ],
+  "human_report": {
+    "entries": [
+      {
+        "acceptance_id": "317-AC1",
+        "outcome": "passed",
+        "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+      },
+      {
+        "acceptance_id": "317-AC2",
+        "outcome": "passed",
+        "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+      },
+      {
+        "acceptance_id": "317-AC3",
+        "outcome": "passed",
+        "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+      },
+      {
+        "acceptance_id": "317-AC4",
+        "outcome": "passed",
+        "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+      },
+      {
+        "acceptance_id": "317-AC5",
+        "outcome": "passed",
+        "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+      },
+      {
+        "acceptance_id": "317-AC6",
+        "outcome": "passed",
+        "evidence_sha256": "7b7b20b7e553aee3e8e323f130e3561cec94710b55f5900c4aefd28e4f022058"
+      },
+      {
+        "acceptance_id": "317-AC7",
+        "outcome": "passed",
+        "evidence_sha256": "420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5"
+      }
+    ],
+    "report_sha256": "eeb7c333b5a05ae01cfbed6b4ec93251507f728b3ef6b136d965851ded3d1d4c"
+  },
+  "ledger_sha256": "06144fd2599f64768fd303730e4f8e405896dc6e67ce0015d0bc512cd95306ba"
+}

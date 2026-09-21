@@ -1,0 +1,45 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: P2-317-VALIDATION-01
+execution_kind: external
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Governance selects final independent P2 verification on a frozen subject,
+    including two bounded test suites and read-only review.
+subject:
+  repository: ai-collaboration-prompts-dotnet-backend
+  exact_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+invocation:
+  argv:
+  - python
+  - -B
+  - -c
+  - import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']);
+    result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/p2-validation-01
+terminal:
+  schema_ref: .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml
+  mode: callback
+  destination: source-task
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Exact command terminates
+- Subject or authority drift
+- Timeout or environment blocker
+retry:
+  attempt: 1
+  budget: 2
+  authorization_refs: []
+review_input:
+  ref: .dev/ai-context/local/p2-validation-01/review-input.yaml
+  sha256: 8a2e339ac9ce59c6944c4c916a0735f01ee9a317d1a431a788bf33a9f156ff13
+packet_sha256: c011fb34459940996b7ce530f62b4600bd16b02dbe5f937816391f774d3b7df9

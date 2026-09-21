@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "record_type": "role-execution-observation",
+  "delegation_id": "P2-317-VALIDATION-01",
+  "role_asset_id": "fixed-head-independent-auditor",
+  "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+  "owning_skill": "ai-context-auditor",
+  "dispatch_prepared_at": "2026-09-21T22:54:25.452020+08:00",
+  "worker_clock_first_observed_at": "2026-09-21T23:00:33.6219051+08:00",
+  "execution_started_at": "2026-09-21T23:01:24.237683+08:00",
+  "execution_completed_at": "2026-09-21T23:01:27.088552+08:00",
+  "role_evidence_completed_at": "2026-09-21T23:02:25.5241594+08:00",
+  "exact_worker_spawn_time_available": false,
+  "start_time_limit": "The runtime exposed no child-spawn clock. The persisted parent dispatch time and first worker clock observation bound the actual start; neither is relabeled as an exact worker-spawn timestamp.",
+  "outcome": "blocked-by-environment",
+  "parent_action": "reroute"
+}

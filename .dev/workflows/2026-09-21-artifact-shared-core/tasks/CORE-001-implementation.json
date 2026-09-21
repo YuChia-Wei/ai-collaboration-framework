@@ -6,9 +6,9 @@
   "task_id": "CORE-001-implementation",
   "workflow_id": "2026-09-21-artifact-shared-core",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-21T22:38:23+08:00",
-  "updated_at": "2026-09-21T22:49:47+08:00",
+  "updated_at": "2026-09-21T23:14:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -45,18 +45,25 @@
       "Portable import and authority dependency closure"
     ],
     "last_completed_step": "Shared primitives, syntax-aware comment protection, authority/import closure and focused checks completed.",
-    "next_action": "Commit a clean immutable subject and dispatch full producer plus package-smoke validation under the long-running gate."
+    "next_action": "Complete independent evidence intake and explanation."
   },
   "results": {
-    "summary": "Focused implementation checks passed; external full producer/package smoke and independent verification remain pending.",
-    "files_changed": [],
-    "tests_run": [
-      "Authoring 24 passed; core compatibility 5 passed; structure/package imports 5 passed.",
-      "Guardrails 46, external task 35, entrypoints 7 and registry 11 passed.",
-      "Generated templates, AI context, guardrail contract and shell assets passed."
+    "summary": "Shared mechanics and bounded hash-string correction implemented and accepted after fixed-subject verification.",
+    "files_changed": [
+      ".ai/scripts/artifact_core.py",
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/execution_artifact_contract.py",
+      ".ai/scripts/tests/",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/README.md"
     ],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "tests_run": [
+      "Authoring 24 passed; core 5 and structure 5 are subsets, not additive full counts.",
+      "Guardrails 46; external-task 35; entrypoint 7; registry 11 passed.",
+      "Complete execution-artifact and package smoke: {\"errors\": 0, \"failures\": 0, \"skipped\": 0, \"successful_test_cases\": 27, \"tests_run\": 27}; exit 0; 96.499s on b808533b."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "P3 families/migration and P4 consolidation remain deferred; no full release or hosted CI execution.",
     "follow_up_needed": true
   }
 }

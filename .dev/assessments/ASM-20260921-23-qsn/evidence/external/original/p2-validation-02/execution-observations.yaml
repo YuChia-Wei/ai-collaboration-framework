@@ -1,0 +1,41 @@
+schema_version: '1.0'
+record_type: execution-observations
+source_task_id: P2-317-CORE-001
+delegated_task_id: P2-317-VALIDATION-02
+observed_commit_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+preflight:
+  commit_matches: true
+  clean_worktree: true
+execution:
+  working_directory: .
+  argv:
+  - python
+  - -B
+  - -c
+  - import sys,unittest; sys.path.insert(0,'.ai/scripts/tests'); suite=unittest.defaultTestLoader.loadTestsFromNames(['test_execution_artifacts','test_ai_context_package_smoke']); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())
+timing:
+  started_at: '2026-09-21T23:08:28.660651+08:00'
+  completed_at: '2026-09-21T23:10:05.159992+08:00'
+  duration_seconds: 96.49931260000449
+result:
+  outcome: passed
+  exit_code: 0
+  counts:
+    tests_run: 27
+    successful_test_cases: 27
+    failures: 0
+    errors: 0
+    skipped: 0
+evidence:
+  refs:
+  - .dev/ai-context/local/p2-validation-02/execution.log
+  - .dev/ai-context/local/p2-validation-02/command-observation.json
+  - .dev/ai-context/local/p2-validation-02/review-result.md
+  - .dev/ai-context/local/p2-validation-02/role-observation.json
+  - .dev/ai-context/local/p2-validation-01/terminal-message.txt
+  - .dev/ai-context/local/p2-validation-02/elevated-environment-proof.json
+  bounded_output: Static independent review found no code defect. Authorized attempt 2 passed all 27 selected tests after the validated elevated-boundary environment change; attempt 1 ENV-P2-001 remains preserved.
+final_state:
+  clean_worktree: true
+  tracked_changes: []
+delivery_mode: source-task-callback

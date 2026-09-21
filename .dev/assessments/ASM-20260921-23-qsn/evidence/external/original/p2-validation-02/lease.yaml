@@ -1,0 +1,33 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P2-317-VALIDATION-LEASE-02
+worktree: .
+subject_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+observed_snapshot:
+  head_sha: b808533b71cb257fdfdd741b0dafe5c3b703178e
+  tracked_status: []
+snapshot_sha256: 4c3aa69b3b2081e9d7c4c4292d93fddaa9d680115d5f195115948ab333c0da4b
+state: released
+holder:
+  packet_id: P2-317-VALIDATION-02
+  access: read-only
+  lock_ref: .dev/ai-context/local/p2-validation-02/lease.lock
+  lock_sha256: 75a9140e4d411fe55a57039850917c5233697991827fc1f7f535794295ac1f2a
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p2-validation-02/execution.log
+  state: sealed
+  sha256: 7b7b20b7e553aee3e8e323f130e3561cec94710b55f5900c4aefd28e4f022058
+- path: .dev/ai-context/local/p2-validation-02/review-result.md
+  state: sealed
+  sha256: 420453371bddd4c215ed955bc5aaf38994d060e7f3093426d310fa614564ccc5
+- path: .dev/ai-context/local/p2-validation-02/candidate.yaml
+  state: sealed
+  sha256: 690723e9d488005be3149b8c72bbbf54a377c38d73562de71543fbf5a8d25a08
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: One native reviewer callback received; independent delivery validation passed;
+    original output sealed and fixed subject stayed clean. Root resumes evidence intake
+    only.
+lease_sha256: fd85d7bcb2279970e280decd7f99e51c1e6a2278df3bd1c0829036597abf2de5
