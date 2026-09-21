@@ -1,0 +1,10 @@
+{
+  "prepared_at": "2026-09-22T07:30:57.316925+08:00",
+  "subject": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "command": [
+    "python",
+    "-B",
+    ".ai/scripts/tests/test_ai_context_package_smoke.py",
+    "-v"
+  ]
+}

@@ -1,0 +1,6 @@
+test_gwt_001_given_one_candidate_when_smoke_runs_then_archives_and_metadata_are_valid (__main__.AiContextPackageSmokeGwtTests.test_gwt_001_given_one_candidate_when_smoke_runs_then_archives_and_metadata_are_valid) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.490s
+
+OK

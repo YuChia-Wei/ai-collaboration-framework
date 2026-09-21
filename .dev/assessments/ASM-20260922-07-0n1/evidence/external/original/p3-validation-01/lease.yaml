@@ -1,0 +1,32 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: P3-318-VALIDATION-LEASE-01
+worktree: .
+subject_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+observed_snapshot:
+  head_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+  tracked_status: []
+snapshot_sha256: 8f1df841baa18ff378f6b34c6f26a8bd6a295b11e286f30d609fea283f20ab88
+state: released
+holder:
+  packet_id: P3-318-VALIDATION-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/p3-validation-01/lease.lock
+  lock_sha256: b0a2d6d7d358c8072ed5ee5e74df40dd293a70ec29809bc3ebc54c1baf9745bc
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p3-validation-01/execution.log
+  state: sealed
+  sha256: 71b2fc317456299317db3efb6499d33910dad19296b5fef4de9e5e1f5ee3e15c
+- path: .dev/ai-context/local/p3-validation-01/review-result.md
+  state: sealed
+  sha256: 74cc95a82d8071044ec6c7b2024b35d1ff41b8c5ca09474876abb8d8cd28f1bd
+- path: .dev/ai-context/local/p3-validation-01/candidate.yaml
+  state: sealed
+  sha256: 56b7f3c3aecfd525022ee5bd9dc61f13589b12c32ddd30dcb07a3f3a3fc95bc4
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Root received one callback and validated exact terminal delivery; original
+    outputs sealed and fixed subject clean. Evidence intake may resume.
+lease_sha256: 68cdaabed16d7f8a1ff73410c4c17d0c8eeaf0cd65c79607d516fcd6a8ebbb10

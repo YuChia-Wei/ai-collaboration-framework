@@ -1,0 +1,171 @@
+{
+  "origin": "Native collaboration /root/p2_independent_audit for P3",
+  "note": "Exact original bytes; prior focused checks retain historical command/dirty-worktree provenance. Early runner hashes were sampled at completion; no pinned-runner identity is claimed for those runs.",
+  "files": [
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/candidate.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/candidate.yaml",
+      "sha256": "56b7f3c3aecfd525022ee5bd9dc61f13589b12c32ddd30dcb07a3f3a3fc95bc4"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/command-observation.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/command-observation.json",
+      "sha256": "c1e8c6ae9f94f1e980ea1e4be8ba0a484cade2e07aadd2296ce63ae4b302cdf5"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/dispatch-message.txt",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/dispatch-message.txt",
+      "sha256": "0c9dc5a1e86b47759a228cb508af664e9deeb296b5b632910e177eeb4f19f040"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/dispatch.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/dispatch.yaml",
+      "sha256": "fb68e65b7da863cad2cf59d413cc97cc3cfb8b109c48c10fd42827068c436979"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/execution-observations.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/execution-observations.yaml",
+      "sha256": "a7c96300476e8507571e91038688ac0a96470210d4ac617ad419861f8255e09b"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/execution.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/execution.log",
+      "sha256": "71b2fc317456299317db3efb6499d33910dad19296b5fef4de9e5e1f5ee3e15c"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/lease-active.yaml",
+      "sha256": "e468af9170904bd596f1a7efad28f476ef5d95c81e0324dcb91194cd1f9488e6"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/lease.yaml",
+      "sha256": "053f48e198f7769817d8984444f5d00cb7a5ecf4228c116346565c196b339b38"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/packet.yaml",
+      "sha256": "83d3bb69ab5d7ce49bd8ad7e789be451afbcc7597860e4157b3a5671195adf90"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/parent-delivery-validation.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/parent-delivery-validation.json",
+      "sha256": "7675c835a99ad1035644fd6db3cae04c8da22822d06d72a8e3b90d0ff8f8b446"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/parent-dispatch-observation.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/parent-dispatch-observation.json",
+      "sha256": "a8533c05cccd52207d4550523533e6f0db08dee97c604e04932263ba4c052d6d"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/prepare-result.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/prepare-result.json",
+      "sha256": "77f7d1a0a95124fd41d1a6ad2a0cffc42b101f57aeeba7f554e7e4414476c418"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/receipt.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/receipt.yaml",
+      "sha256": "0a04cbd4a5c284567d5c8cb79fccddafe3e7b37a1c8f932ec96b6a22c7bcebb0"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/review-input.yaml",
+      "sha256": "af418fba9a215c71eed6f1b4ae7876e9e226c1e3460f3b13520ab50614ad3815"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/review-result.md",
+      "sha256": "74cc95a82d8071044ec6c7b2024b35d1ff41b8c5ca09474876abb8d8cd28f1bd"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/role-observation.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/role-observation.json",
+      "sha256": "6522eaa6bcd907e94ceefbc768adb1b39169b3da39b5e2d1cb48caa2c10c9daf"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-validation-01/terminal-message.txt",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-validation-01/terminal-message.txt",
+      "sha256": "07a4a2e90cc2b03f104cd40a3ae36a4c467c4e1ec5c24baf7d56959a50b5bf13"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/adapters-01.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/adapters-01.json",
+      "sha256": "2f2d5e283dc812452aee3774a8f1b3483e52fc04c828b6bb98162b7ef7834cc2"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/adapters-01.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/adapters-01.log",
+      "sha256": "3987de66086ad867d4f4f5903bfafa58f07167e8ca140a81c999b12475bf3667"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/adapters-registry-02.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/adapters-registry-02.json",
+      "sha256": "6cf461bb367dfb0e1a93562e6b1701cf7f75b2a2e71bb57ed6a307c2e0b9dd35"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/adapters-registry-02.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/adapters-registry-02.log",
+      "sha256": "d46746b1e4650d7daee3af2e18e83fc9d10cafa271ae1294aeec2f862a293385"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/authoring-02.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/authoring-02.json",
+      "sha256": "ec8589ab5c9f6dc515e41dc083e95eecc9c22b305f330b8f56eb01b1e4092c05"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/authoring-02.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/authoring-02.log",
+      "sha256": "e8aab4e87553ad95c6c227d4835cff596d5ce442734c7e816c7541ff0bdbdb13"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/canonical-01.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/canonical-01.json",
+      "sha256": "3a4659a86de659a9588af2bc5cc5091f5e56476837438ae24a07b531b4abf544"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/canonical-01.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/canonical-01.log",
+      "sha256": "064fbbf30fbcd1ab71420810a294d744309d544202a03c0b28d3e586d0a51eb0"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/canonical-02.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/canonical-02.json",
+      "sha256": "d62b877ce28505518708874605b15bdc06170591c168f3c0899bc57648977c97"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/canonical-02.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/canonical-02.log",
+      "sha256": "064fbbf30fbcd1ab71420810a294d744309d544202a03c0b28d3e586d0a51eb0"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/live-preview.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/live-preview.json",
+      "sha256": "fd5145e737bf04e76f78ff1f05dd1b3a3aefeb6a73a12ab232f37d142f545569"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/registry-01.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/registry-01.json",
+      "sha256": "3f1cb2f789331556decf2d9223c4f3bc4341e4bc530377b6498d82da7728a6c9"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/registry-01.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/registry-01.log",
+      "sha256": "171b203627ec390d953500a266b6b50285bd69dc752042d630aa42745da9206e"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/role-01-summary.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/role-01-summary.json",
+      "sha256": "ddf0009a0a79ad082ca4aedbe5e80a63bd2582de0e805a37a394d232b4544998"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/role-03.json",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/role-03.json",
+      "sha256": "e716d101ca550025342925aa87238f1cee7d30bf50c886f9b4533377197520b0"
+    },
+    {
+      "source": ".dev/ai-context/local/p3-checks/role-03.log",
+      "retained": ".dev/assessments/ASM-20260922-07-0n1/evidence/external/original/p3-checks/role-03.log",
+      "sha256": "8a48a518482944237226fd832f70c1f90f08125a139d836f89c1e9053eedf562"
+    }
+  ]
+}

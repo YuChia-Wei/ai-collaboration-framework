@@ -1,0 +1,44 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: P3-318-VALIDATION-01
+execution_kind: external
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Explicit independent P3 terminal implementation gate, authority-sensitive
+    and shared frozen; no repair.
+subject:
+  repository: ai-collaboration-prompts-dotnet-backend
+  exact_sha: fb1c310b6629eece95d9d0bb51da8ef23a1f1e20
+invocation:
+  argv:
+  - python
+  - -B
+  - .ai/scripts/tests/test_ai_context_package_smoke.py
+  - -v
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/p3-validation-01
+terminal:
+  schema_ref: .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml
+  mode: callback
+  destination: source-task
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Command terminates
+- Subject or authority drift
+- Timeout or missing evidence
+retry:
+  attempt: 1
+  budget: 2
+  authorization_refs: []
+review_input:
+  ref: .dev/ai-context/local/p3-validation-01/review-input.yaml
+  sha256: af418fba9a215c71eed6f1b4ae7876e9e226c1e3460f3b13520ab50614ad3815
+packet_sha256: 87f341695df4fdea5431ca0633dfbeaaf50f9fb2bef80e8a4f46c84b22a50b1e

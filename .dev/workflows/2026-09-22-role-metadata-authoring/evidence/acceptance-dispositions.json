@@ -1,0 +1,39 @@
+{
+  "subject": "fb1c310b6629eece95d9d0bb51da8ef23a1f1e20",
+  "criteria": [
+    {
+      "id": "AC1",
+      "disposition": "passed",
+      "evidence_summary": "Final role subset: read-only deterministic preview, shared/private identity, extension and unrelated-byte preservation."
+    },
+    {
+      "id": "AC2",
+      "disposition": "passed",
+      "evidence_summary": "Independent before/after Git blobs, current reader rejects 1.0, exact before bytes retained in journal."
+    },
+    {
+      "id": "AC3",
+      "disposition": "passed",
+      "evidence_summary": "Final role subset rejects protected fields, bad versions/adapters, missing relationships, noncanonical authority, boolean steps and stale inputs."
+    },
+    {
+      "id": "AC4",
+      "disposition": "passed",
+      "evidence_summary": "Interrupted completion preserves pending journal; rollback restores exact bytes and refuses external edits. Existing restricted recovery remains shared."
+    },
+    {
+      "id": "AC5",
+      "disposition": "passed",
+      "evidence_summary": "Adapter/registry 42 and current canonical validator passed; portable CLI role preview and fixed-head package smoke verify helper closure."
+    },
+    {
+      "id": "AC6",
+      "disposition": "passed-with-deferrals",
+      "evidence_summary": "Independent implementation review, exact evidence archive, Chinese explanation and workflow records; final local delivery review/integration are separate admission steps."
+    }
+  ],
+  "verification_assessment": "ASM-20260922-07-0n1",
+  "report_sha256": "442ed861f74c32f8ee1f47295a7b15a34f6a9914045a070b919f9ad6b13cbcdf",
+  "no_test_removal": true,
+  "remaining": "Other P3 families and P4 require separate bounded work."
+}
