@@ -29,7 +29,7 @@ AUDIT = '.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-
 LOCATOR = '.dev/assessments/templates/assessment-locator-template.yaml'
 
 
-class AuthoringTests(unittest.TestCase):
+class AuthoringFixture(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.seed = tempfile.TemporaryDirectory(prefix='document-authoring-seed-')
@@ -100,6 +100,8 @@ class AuthoringTests(unittest.TestCase):
     def load(self, ref):
         return yaml.safe_load((self.root / ref).read_text(encoding='utf-8'))
 
+
+class AuthoringTests(AuthoringFixture):
     def test_preview_is_deterministic_read_only_and_create_derives_index(self):
         before = self.snapshot()
         first = AUTHOR.plan(self.root, self.workflow())
@@ -440,6 +442,179 @@ author.apply(Path(sys.argv[2]), json.loads(sys.argv[3]), sys.argv[4])
         self.assertEqual(0, result.returncode, result.stderr)
         self.assertIn('Preview digest:', result.stdout)
         self.assertFalse((self.root / f'.dev/workflows/{WF}').exists())
+
+
+class RoleAuthoringTests(AuthoringFixture):
+    role_path = '.ai/assets/sub-agent-role-prompts/example-role/sub-agent.yaml'
+    owner_path = '.ai/assets/skills/example-owner/skill.yaml'
+
+    def setUp(self):
+        super().setUp()
+        for ref in (*AUTHOR.ROLE_AUTHORITY, *('.ai/scripts/' + name for name in AUTHOR.ROLE_RUNTIME)):
+            self.put(ref, (ROOT / ref).read_bytes())
+        data = {'asset_id': 'example-role', 'schema_version': '1.1', 'asset_type': 'sub-agent-role-prompt',
+                'title': 'Example role', 'purpose': 'Read supplied evidence', 'portability': 'repo-portable',
+                'audience': 'agent-facing', 'wrapper_targets': [], 'adapter_metadata': {}, 'source_of_truth': 'canonical',
+                'role_kind': 'fixture', 'triggers': ['Inspect'], 'inputs': [], 'outputs': [], 'constraints': [],
+                'workflow': [{'step': 1, 'description': 'Inspect', 'owner_extension': {'keep': [2, False]}}],
+                'references': [], 'examples': [], 'status': 'active', 'owner_extension': {'nested': ['keep', 42]}}
+        self.save(data)
+        owner = {**data, 'asset_id': 'example-owner', 'asset_type': 'skill-spec', 'schema_version': '1.0', 'wrapper_metadata': {},
+                 'role_bindings': [{'role_path': self.role_path, 'role_asset_id': 'example-role', 'expected_role_status': 'active',
+                                    'binding_kind': 'primary', 'applicability': 'Inspect selected evidence.', 'load_obligation': 'mandatory-when-applicable'}]}
+        self.put(self.owner_path, AUTHOR.dump(owner))
+        self.put('.ai/SUB-AGENT-SYSTEM.MD', b'## SAG-001 Derived Role-Binding Projection\n\n| Role Asset ID | Derived Owning Skill | Binding Kind | Canonical Applicability (Projection) |\n| --- | --- | --- | --- |\n| `example-role` | `example-owner` | `primary` | Inspect selected evidence. |\n')
+
+    def save(self, data):
+        self.put(self.role_path, AUTHOR.dump(data))
+
+    def request(self, **changes):
+        return {'version': '1.0', 'operation': 'role.update', 'id': 'example-role', 'timestamp': NOW,
+                'changes': changes or {'title': 'Updated role'}}
+
+    def migration(self):
+        return {'version': '1.0', 'operation': 'role.migrate', 'id': 'example-role', 'timestamp': NOW,
+                'from_version': '1.0', 'to_version': '1.1'}
+
+    def legacy(self):
+        data = self.load(self.role_path); data['schema_version'] = '1.0'; data.pop('adapter_metadata')
+        self.save(data)
+        return data
+
+    def test_preview_and_update_preserve_owned_extensions_and_other_bytes(self):
+        before = self.snapshot(); data = self.load(self.role_path)
+        first = AUTHOR.plan(self.root, self.request())
+        self.assertEqual(first.digest, AUTHOR.plan(self.root, self.request()).digest)
+        self.assertEqual(before, self.snapshot())
+        self.assertEqual({self.role_path}, set(first.changes))
+        self.execute(self.request())
+        data['title'] = 'Updated role'
+        self.assertEqual(data, self.load(self.role_path))
+        self.assertEqual(before[self.owner_path.replace('/', os.sep)], (self.root / self.owner_path).read_bytes())
+
+    def test_migration_changes_only_two_fields_and_retains_exact_original(self):
+        import base64
+        data = self.legacy(); original = (self.root / self.role_path).read_bytes()
+        errors = []
+        AUTHOR._module('validate-ai-context').validate_canonical_manifest(Path(self.role_path), data, errors, root=AUTHOR.View(self.root).path())
+        self.assertTrue(any('schema_version must be 1.1' in error for error in errors))
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, self.request())
+        journal = self.execute(self.migration())
+        expected = {**data, 'schema_version': '1.1', 'adapter_metadata': {}}
+        self.assertEqual(expected, self.load(self.role_path))
+        self.assertEqual(original, base64.b64decode(json.loads(journal.read_text())['before'][self.role_path]))
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, self.migration())
+
+    def test_historical_git_pair_is_independent_mapping_oracle(self):
+        # Exact blobs from a87bddf9 -> 6aed5786; fixtures do not require Git history at test time.
+        fixtures = ROOT / '.ai/scripts/tests/fixtures/role-migration'
+        old = yaml.safe_load((fixtures / 'dynamic-1.0.yaml').read_text())
+        expected = yaml.safe_load((fixtures / 'dynamic-1.1.yaml').read_text())
+        old.update(asset_id='example-role', references=[], examples=[])
+        expected.update(asset_id='example-role', references=[], examples=[])
+        old['owner_extension'] = expected['owner_extension'] = {'nested': [1, {'opaque': True}]}
+        self.save(old)
+        self.execute(self.migration())
+        self.assertEqual(expected, self.load(self.role_path))
+
+    def test_legacy_targets_versions_and_conflicting_metadata_are_not_guessed(self):
+        original = self.legacy()
+        for change in ({'wrapper_targets': ['codex']}, {'adapter_metadata': {'codex': {}}},
+                       {'schema_version': '0.9'}, {'schema_version': '2.0'}, {'wrapper_targets': None}):
+            with self.subTest(change=change):
+                self.save({**original, **change}); before = self.snapshot()
+                with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, self.migration())
+                self.assertEqual(before, self.snapshot())
+
+    def test_protected_changes_and_invalid_shape_are_refused(self):
+        for change in ({'asset_id': 'other'}, {'workflow': []}, {'status': 'active'}, {'wrapper_targets': []},
+                       {'schema_version': '1.1'}, {'owner_extension': {}}, {'triggers': []}, {'title': ''},
+                       {'inputs': [False]}, {'references': ['.ai/missing.md']}):
+            with self.subTest(change=change), self.assertRaises(AUTHOR.AuthoringError):
+                AUTHOR.plan(self.root, self.request(**change))
+        self.assertEqual('Example role', self.load(self.role_path)['title'])
+
+    def test_noncanonical_authority_and_boolean_steps_block_both_operations(self):
+        original = self.load(self.role_path)
+        for version, request in [('1.1', self.request()), ('1.0', self.migration())]:
+            for change in ({'source_of_truth': 'generated'}, {'source_of_truth': 'wrapper'},
+                           {'workflow': [{'step': True, 'description': 'Invalid boolean step'}]}):
+                with self.subTest(version=version, change=change):
+                    self.save({**original, 'schema_version': version, **change})
+                    before = (self.root / self.role_path).read_bytes()
+                    with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, request)
+                    self.assertEqual(before, (self.root / self.role_path).read_bytes())
+
+    def test_owner_projection_and_duplicate_identity_block_writes(self):
+        original = (self.root / self.owner_path).read_bytes()
+        owner = self.load(self.owner_path); owner['role_bindings'] = []
+        self.put(self.owner_path, AUTHOR.dump(owner))
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, self.request())
+        self.put(self.owner_path, original)
+        self.put('.ai/SUB-AGENT-SYSTEM.MD', b'# Missing projection\n')
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, self.request())
+        self.put('.ai/assets/skills/example-owner/roles/example-role/sub-agent.yaml', (self.root / self.role_path).read_bytes())
+        with self.assertRaisesRegex(AUTHOR.AuthoringError, 'exactly one'): AUTHOR.plan(self.root, self.request())
+
+    def test_private_role_path_is_discovered_without_relocation(self):
+        old = self.role_path; new = '.ai/assets/skills/example-owner/roles/example-role/sub-agent.yaml'
+        self.put(new, (self.root / old).read_bytes()); (self.root / old).unlink()
+        owner = self.load(self.owner_path); owner['role_bindings'][0]['role_path'] = new
+        self.put(self.owner_path, AUTHOR.dump(owner))
+        plan = AUTHOR.plan(self.root, self.request())
+        self.assertEqual({new}, set(plan.changes))
+
+    def test_authority_context_and_reference_drift_invalidate_preview(self):
+        self.put('.ai/reference.md', b'# Reference\n')
+        request = self.request(references=['.ai/reference.md'])
+        for ref in (AUTHOR.ROLE_AUTHORITY[0], '.ai/scripts/ai_context_cli_routing.py', self.owner_path):
+            with self.subTest(ref=ref):
+                original = (self.root / ref).read_bytes(); plan = AUTHOR.plan(self.root, request)
+                self.put(ref, original + b'\n')
+                with self.assertRaisesRegex(AUTHOR.AuthoringError, 'stale preview'):
+                    AUTHOR.apply(self.root, request, plan.digest)
+                self.put(ref, original)
+        plan = AUTHOR.plan(self.root, request); (self.root / '.ai/reference.md').unlink()
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.apply(self.root, request, plan.digest)
+
+    def test_duplicate_keys_and_comments_refuse_without_loss(self):
+        original = (self.root / self.role_path).read_bytes()
+        for raw in (original + b'title: duplicate\n', b'# owned explanation\n' + original):
+            self.put(self.role_path, raw)
+            with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, self.request())
+            self.assertEqual(raw, (self.root / self.role_path).read_bytes())
+
+    def test_migration_recovery_restores_original_and_refuses_external_edits(self):
+        self.legacy(); original = (self.root / self.role_path).read_bytes()
+        request = self.migration(); plan = AUTHOR.plan(self.root, request)
+        with mock.patch.object(Path, 'rename', side_effect=OSError('simulated journal completion failure')):
+            with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.apply(self.root, request, plan.digest)
+        journal = next((self.root / AUTHOR.LOCAL).glob('*.pending.json'))
+        candidate = (self.root / self.role_path).read_bytes()
+        self.put(self.role_path, candidate + b'\n')
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.recover(self.root, journal)
+        self.put(self.role_path, candidate); AUTHOR.recover(self.root, journal)
+        self.assertEqual(original, (self.root / self.role_path).read_bytes())
+
+    def test_portable_role_preview_and_catalog_import_closure(self):
+        envelope = self.root / 'package'; payload = envelope / 'payload'
+        refs = [GOV + 'workflow-locator-template.yaml', GOV + 'ai-context-maintenance-workflow-plan-template.md',
+                GOV + 'ai-context-remediation-task-template.json', AUDIT, LOCATOR, *AUTHOR.ROLE_AUTHORITY]
+        refs += ['.ai/scripts/' + name for name in ('artifact-authoring.py', 'artifact_authoring.py', 'artifact_core.py',
+                 'validate-workflow-artifacts.py', 'validate-assessment-artifacts.py', 'python_prerequisites.py',
+                 'python-entrypoints.json', *AUTHOR.ROLE_RUNTIME)]
+        for ref in refs:
+            path = payload / ref; path.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(ROOT / ref, path)
+        shutil.copyfile(ROOT / 'requirements.txt', envelope / 'requirements.txt')
+        cli = payload / '.ai/scripts/artifact-authoring.py'
+        result = subprocess.run([sys.executable, '-B', str(cli), 'catalog'], cwd=envelope, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual('convert', json.loads(result.stdout)['families']['role']['migration']['disposition'])
+        request = envelope / 'request.json'; request.write_text(json.dumps(self.request()))
+        result = subprocess.run([sys.executable, '-B', str(cli), '--root', str(self.root), 'preview', '--request', str(request)],
+                                cwd=envelope, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn('Updated role', result.stdout)
 
 
 if __name__ == '__main__':

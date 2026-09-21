@@ -448,7 +448,7 @@ class SubAgentAdapterMetadataValidationTests(unittest.TestCase):
 
         errors, role_ids = RoleBindingFixture.validate(data)
 
-        self.assert_error(errors, "must be the exact canonical role path")
+        self.assert_error(errors, "exact canonical shared or owning-skill role path")
         self.assert_error(errors, "role_path is dangling")
         self.assertEqual([], role_ids)
 

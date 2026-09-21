@@ -2645,13 +2645,13 @@ def validate_derived_role_binding_projection(
             )
 
 
-def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
-    """Validate versioned skill and sub-agent manifests against the canonical contract."""
-    manifests = (
-        sorted(Path(".ai/assets/skills").glob("*/skill.yaml"))
-        + sorted(Path(".ai/assets/sub-agent-role-prompts").glob("*/sub-agent.yaml"))
-        + sorted(Path(".ai/assets/skills").glob("*/roles/*/sub-agent.yaml"))
-    )
+def validate_canonical_manifest(
+    path: Path, data: dict, errors: list[str], *, root: Path = ROOT,
+    seen: set[str] | None = None,
+) -> bool:
+    """Validate a supplied manifest without reloading it; retain owner extensions."""
+    if seen is None:
+        seen = set()
     required = {
         "schema_version", "asset_id", "asset_type", "title", "purpose",
         "portability", "audience", "wrapper_targets", "source_of_truth",
@@ -2661,101 +2661,95 @@ def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
         "skill.yaml": "skill-spec",
         "sub-agent.yaml": "sub-agent-role-prompt",
     }
-    seen: set[str] = set()
-    skill_assets: dict[str, dict] = {}
-    skill_manifests: list[tuple[Path, dict]] = []
-    role_assets_by_path: dict[str, dict] = {}
-    for path in manifests:
-        data = load_yaml_mapping(path, errors)
-        if data is None:
-            continue
-        missing = sorted(required - data.keys())
-        if missing:
-            errors.append(f"{path}: missing canonical fields: {missing}")
-        asset_id = data.get("asset_id")
-        if not isinstance(asset_id, str) or not asset_id:
-            errors.append(f"{path}: asset_id must be a non-empty string")
-            continue
-        if asset_id in seen:
-            errors.append(f"{path}: duplicate asset_id {asset_id}")
-        seen.add(asset_id)
-        if not KEBAB_ID.fullmatch(asset_id):
-            errors.append(f"{path}: asset_id must use kebab-case")
-        if asset_id != path.parent.name:
-            errors.append(f"{path}: asset_id must match parent folder {path.parent.name}")
-        expected_schema_version = ASSET_SCHEMA_VERSIONS[path.name]
-        if data.get("schema_version") != expected_schema_version:
-            errors.append(
-                f"{path}: schema_version must be {expected_schema_version}"
-            )
-        if data.get("asset_type") != expected_types[path.name]:
-            errors.append(f"{path}: unexpected asset_type {data.get('asset_type')!r}")
-        for key in ("title", "purpose"):
-            if not isinstance(data.get(key), str) or not data.get(key):
-                errors.append(f"{path}: {key} must be a non-empty string")
-        if data.get("portability") not in ASSET_PORTABILITY:
-            errors.append(f"{path}: invalid portability {data.get('portability')!r}")
-        if data.get("audience") not in ASSET_AUDIENCES:
-            errors.append(f"{path}: invalid audience {data.get('audience')!r}")
-        if data.get("source_of_truth") not in ASSET_SOURCES:
-            errors.append(f"{path}: invalid source_of_truth {data.get('source_of_truth')!r}")
-        if data.get("status") not in ASSET_STATUSES:
-            errors.append(f"{path}: invalid status {data.get('status')!r}")
-        for key in ("wrapper_targets", "inputs", "outputs", "constraints", "references", "examples"):
-            values = data.get(key)
-            if not isinstance(values, list) or not all(
-                isinstance(item, str) and item for item in values
-            ):
-                errors.append(f"{path}: {key} must be a list of non-empty strings")
-        targets = data.get("wrapper_targets", [])
-        if isinstance(targets, list) and not set(targets) <= WRAPPER_TARGETS:
-            errors.append(f"{path}: unsupported wrapper_targets {sorted(set(targets) - WRAPPER_TARGETS)}")
-        for key in ("references", "examples"):
-            values = data.get(key, [])
-            if isinstance(values, list):
-                for value in values:
-                    if isinstance(value, str) and value and "<" not in value and not (ROOT / value).exists():
-                        errors.append(f"{path}: missing {key} path {value}")
-        if path.name == "skill.yaml":
-            skill_assets[asset_id] = data
-            skill_manifests.append((path, data))
-            validate_wrapper_metadata(path, data, errors)
-            validate_skill_wrapper_semantics(path, data, errors)
-        else:
-            role_assets_by_path[path.as_posix()] = data
-            validate_sub_agent_adapter_metadata(path, data, errors)
-        for key in ("triggers", "workflow"):
-            if key not in data:
-                errors.append(f"{path}: missing type-specific field {key}")
-        triggers = data.get("triggers")
-        if not isinstance(triggers, list) or not triggers or not all(
-            isinstance(item, str) and item for item in triggers
+    missing = sorted(required - data.keys())
+    if missing:
+        errors.append(f"{path}: missing canonical fields: {missing}")
+    asset_id = data.get("asset_id")
+    if not isinstance(asset_id, str) or not asset_id:
+        errors.append(f"{path}: asset_id must be a non-empty string")
+        return False
+    if asset_id in seen:
+        errors.append(f"{path}: duplicate asset_id {asset_id}")
+    seen.add(asset_id)
+    if not KEBAB_ID.fullmatch(asset_id):
+        errors.append(f"{path}: asset_id must use kebab-case")
+    if asset_id != path.parent.name:
+        errors.append(f"{path}: asset_id must match parent folder {path.parent.name}")
+    expected_schema_version = ASSET_SCHEMA_VERSIONS[path.name]
+    if data.get("schema_version") != expected_schema_version:
+        errors.append(
+            f"{path}: schema_version must be {expected_schema_version}"
+        )
+    if data.get("asset_type") != expected_types[path.name]:
+        errors.append(f"{path}: unexpected asset_type {data.get('asset_type')!r}")
+    for key in ("title", "purpose"):
+        if not isinstance(data.get(key), str) or not data.get(key):
+            errors.append(f"{path}: {key} must be a non-empty string")
+    if data.get("portability") not in ASSET_PORTABILITY:
+        errors.append(f"{path}: invalid portability {data.get('portability')!r}")
+    if data.get("audience") not in ASSET_AUDIENCES:
+        errors.append(f"{path}: invalid audience {data.get('audience')!r}")
+    if data.get("source_of_truth") not in ASSET_SOURCES:
+        errors.append(f"{path}: invalid source_of_truth {data.get('source_of_truth')!r}")
+    elif data.get("source_of_truth") != "canonical":
+        errors.append(f"{path}: manifests under .ai/assets must use canonical source_of_truth")
+    if data.get("status") not in ASSET_STATUSES:
+        errors.append(f"{path}: invalid status {data.get('status')!r}")
+    for key in ("wrapper_targets", "inputs", "outputs", "constraints", "references", "examples"):
+        values = data.get(key)
+        if not isinstance(values, list) or not all(
+            isinstance(item, str) and item for item in values
         ):
-            errors.append(f"{path}: triggers must be a non-empty list of strings")
-        if path.name == "sub-agent.yaml" and not (
-            isinstance(data.get("role_kind"), str) and data.get("role_kind")
-        ):
-            errors.append(f"{path}: role_kind must be a non-empty string")
-        workflow = data.get("workflow")
-        if not isinstance(workflow, list) or not workflow:
-            errors.append(f"{path}: workflow must be a non-empty list")
-        else:
-            step_ids: list[int] = []
-            for step in workflow:
-                if not isinstance(step, dict):
-                    errors.append(f"{path}: each workflow step must be a mapping")
-                    continue
-                step_id = step.get("step")
-                description = step.get("description")
-                if not isinstance(step_id, int) or step_id < 1:
-                    errors.append(f"{path}: workflow step must be a positive integer")
-                else:
-                    step_ids.append(step_id)
-                if not isinstance(description, str) or not description:
-                    errors.append(f"{path}: workflow step description must be non-empty")
-            if step_ids != list(range(1, len(step_ids) + 1)):
-                errors.append(f"{path}: workflow steps must be unique and sequential from 1")
+            errors.append(f"{path}: {key} must be a list of non-empty strings")
+    targets = data.get("wrapper_targets", [])
+    if isinstance(targets, list) and not set(targets) <= WRAPPER_TARGETS:
+        errors.append(f"{path}: unsupported wrapper_targets {sorted(set(targets) - WRAPPER_TARGETS)}")
+    for key in ("references", "examples"):
+        values = data.get(key, [])
+        if isinstance(values, list):
+            for value in values:
+                if isinstance(value, str) and value and "<" not in value and not (root / value).exists():
+                    errors.append(f"{path}: missing {key} path {value}")
+    for key in ("triggers", "workflow"):
+        if key not in data:
+            errors.append(f"{path}: missing type-specific field {key}")
+    triggers = data.get("triggers")
+    if not isinstance(triggers, list) or not triggers or not all(
+        isinstance(item, str) and item for item in triggers
+    ):
+        errors.append(f"{path}: triggers must be a non-empty list of strings")
+    if path.name == "sub-agent.yaml" and not (
+        isinstance(data.get("role_kind"), str) and data.get("role_kind")
+    ):
+        errors.append(f"{path}: role_kind must be a non-empty string")
+    workflow = data.get("workflow")
+    if not isinstance(workflow, list) or not workflow:
+        errors.append(f"{path}: workflow must be a non-empty list")
+    else:
+        step_ids: list[int] = []
+        for step in workflow:
+            if not isinstance(step, dict):
+                errors.append(f"{path}: each workflow step must be a mapping")
+                continue
+            step_id = step.get("step")
+            description = step.get("description")
+            if type(step_id) is not int or step_id < 1:
+                errors.append(f"{path}: workflow step must be a positive integer")
+            else:
+                step_ids.append(step_id)
+            if not isinstance(description, str) or not description:
+                errors.append(f"{path}: workflow step description must be non-empty")
+        if step_ids != list(range(1, len(step_ids) + 1)):
+            errors.append(f"{path}: workflow steps must be unique and sequential from 1")
 
+    return True
+
+
+def validate_role_relationships(
+    skill_manifests: list[tuple[Path, dict]], role_assets_by_path: dict[str, dict],
+    projection_path: Path, errors: list[str],
+) -> None:
+    """Validate canonical owner bindings and their derived projection."""
     active_owners_by_role: dict[str, list[Path]] = {}
     canonical_projection_rows: set[tuple[str, str, str, str]] = set()
     for path, data in skill_manifests:
@@ -2788,7 +2782,38 @@ def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
         role_assets_by_path, active_owners_by_role, errors
     )
     validate_derived_role_binding_projection(
-        ROOT / SUB_AGENT_SYSTEM, canonical_projection_rows, errors
+        projection_path, canonical_projection_rows, errors
+    )
+
+
+def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
+    """Validate versioned skill and sub-agent manifests against the canonical contract."""
+    manifests = (
+        sorted(Path(".ai/assets/skills").glob("*/skill.yaml"))
+        + sorted(Path(".ai/assets/sub-agent-role-prompts").glob("*/sub-agent.yaml"))
+        + sorted(Path(".ai/assets/skills").glob("*/roles/*/sub-agent.yaml"))
+    )
+    seen: set[str] = set()
+    skill_assets: dict[str, dict] = {}
+    skill_manifests: list[tuple[Path, dict]] = []
+    role_assets_by_path: dict[str, dict] = {}
+    for path in manifests:
+        data = load_yaml_mapping(path, errors)
+        if data is None:
+            continue
+        if not validate_canonical_manifest(path, data, errors, seen=seen):
+            continue
+        asset_id = data["asset_id"]
+        if path.name == "skill.yaml":
+            skill_assets[asset_id] = data
+            skill_manifests.append((path, data))
+            validate_wrapper_metadata(path, data, errors)
+            validate_skill_wrapper_semantics(path, data, errors)
+        else:
+            role_assets_by_path[path.as_posix()] = data
+            validate_sub_agent_adapter_metadata(path, data, errors)
+    validate_role_relationships(
+        skill_manifests, role_assets_by_path, ROOT / SUB_AGENT_SYSTEM, errors
     )
 
     templates = ROOT / ".ai/assets/templates"
