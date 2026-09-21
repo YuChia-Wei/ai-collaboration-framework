@@ -1,0 +1,115 @@
+{
+  "task_id": "ISS309-hosted-check",
+  "workflow_id": "2026-09-21-issue-309-hosted-preflight",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-21T13:47:43+08:00",
+  "updated_at": "2026-09-21T14:03:28+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ISS309"
+  ],
+  "scope": {
+    "target": "Read-only hosted release provider evidence entry point",
+    "files": [
+      ".github/workflows/release-provider-preflight.yml",
+      ".ai/scripts/tests/test_release_provider_reconciliation.py"
+    ],
+    "constraints": [
+      "Local workflow and tests explicitly authorized by owner",
+      "Owner authorized push, PR #315, merge after review/CI, and one read-only hosted verify; credential changes and provider mutations remain separately gated",
+      "Preserve failed run 35487203277 and v0.18.0 tag/assets"
+    ],
+    "non_goals": [
+      "Publication",
+      "Provider mutation",
+      "Credential extraction or replacement",
+      "Issue closure"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read current provider and repository evidence",
+      "Prepare manual read-only workflow",
+      "Run focused local checks",
+      "Retain hosted acceptance as pending"
+    ],
+    "validation": [
+      "python .ai/scripts/tests/test_release_provider_reconciliation.py -v",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Necessity confirmed from repeated hosted failures; REST/Project diagnostic separation implemented and locally validated",
+    "next_action": "Freeze reviewed source and satisfy PR #315 admission; merge, then dispatch one read-only hosted verify"
+  },
+  "results": {
+    "summary": "Issue remains necessary for future automated publication. Added a low-permission REST probe before Project lookup; actual hosted root cause remains unconfirmed.",
+    "files_changed": [
+      ".github/workflows/release-provider-preflight.yml",
+      ".ai/scripts/tests/test_release_provider_reconciliation.py"
+    ],
+    "tests_run": [
+      {
+        "command": "python .ai/scripts/tests/test_release_provider_reconciliation.py -v (baseline sandbox)",
+        "outcome": "blocked-by-environment",
+        "detail": "12 setup errors caused by Windows TEMP access denial before assertions"
+      },
+      {
+        "command": "python .ai/scripts/tests/test_release_provider_reconciliation.py -v (baseline permitted host)",
+        "outcome": "passed",
+        "detail": "12 tests, 0.137 seconds"
+      },
+      {
+        "command": "python .ai/scripts/tests/test_release_provider_reconciliation.py -v (changed permitted host)",
+        "outcome": "passed",
+        "detail": "15 tests, 0.152 seconds; mock provider only"
+      },
+      {
+        "command": "python .ai/scripts/reconcile-ai-context-release-provider.py --phase contract --version v0.18.0",
+        "outcome": "passed",
+        "detail": "Offline contract only"
+      },
+      {
+        "command": "python .ai/scripts/validate-workflow-artifacts.py",
+        "outcome": "passed",
+        "detail": "122 post-adoption workflows, 142 indexed workflow directories"
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context.py",
+        "outcome": "passed",
+        "detail": "Canonical context, indexes, links and structural parity"
+      },
+      {
+        "command": "Extract workflow run steps and execute bash -n (sandbox)",
+        "outcome": "blocked-by-environment",
+        "detail": "Bash signal pipe creation denied; no hosted execution"
+      },
+      {
+        "command": "Extract workflow run steps and execute bash -n; run request guard with no-op python function (permitted host)",
+        "outcome": "passed",
+        "detail": "Four shell syntax checks; verify/preflight accepted, apply/invalid version rejected; embedded Python compiled"
+      },
+      {
+        "command": "git diff --check",
+        "outcome": "passed",
+        "detail": "Whitespace check"
+      },
+      {
+        "command": "Hosted execution and independent integration review",
+        "outcome": "not-executed",
+        "detail": "Outside the current local-only approval"
+      },
+      {
+        "command": "python .ai/scripts/tests/test_release_provider_reconciliation.py -v",
+        "outcome": "passed",
+        "detail": "16 tests in 0.464 seconds; four shell interceptor cases distinguish missing token, REST failure, Project failure and success; no actual hosted credential used"
+      }
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "A new read-only workflow does not repair or prove the hosted credential. A verify pass does not prove write access.",
+    "follow_up_needed": true
+  }
+}

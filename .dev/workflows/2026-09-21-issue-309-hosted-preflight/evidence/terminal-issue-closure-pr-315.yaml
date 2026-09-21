@@ -1,0 +1,90 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 315
+  head_sha: null
+  body: '## Summary
+
+
+    Add a manual, main-only check of release-provider access without publishing or
+    changing Issue/Project state. It uses the existing release environment and secret,
+    distinguishes a general REST failure from a Project lookup failure, and retains
+    the actual outcome with commit/run identity.
+
+
+    ## Validation
+
+
+    - 16 focused tests passed, including four executed shell interceptor cases; no
+    hosted credential was used by the tests.
+
+    - Workflow artifact, Bash syntax, commit-message and whitespace checks passed.
+
+    - Independent review and required hosted checks are pending.
+
+
+    ## Related Issues
+
+
+    Refs #309
+
+
+    - Delivery disposition: `deferred`.
+
+    - Closure deferred reason: the new entry point does not itself prove configured-hosted
+    Project access or bounded reconciliation.
+
+    - Next terminal gate or owner: the authorized single hosted `verify` run for v0.18.0
+    after merge, followed by owner review of any demonstrated credential correction
+    and the remaining actual preflight/reconciliation acceptance.
+
+    - Owner authorization: explicit approval to push, open this PR, merge after review/CI
+    pass, and run one read-only hosted verify; no credential replacement or release
+    publication is authorized.
+
+
+    ## Delivery And Integration
+
+
+    - Single work item, workflow `2026-09-21-issue-309-hosted-preflight`.
+
+    - Merge commit preserves the checkpoint boundary and pending hosted follow-up.
+
+    - Preserve the v0.18.0 tag, assets and failed historical run.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 309
+  mode: deferred
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: false
+  workflow:
+    scope_complete: false
+    tasks_complete: false
+    applicable_verification_complete: false
+  closing_keyword: null
+  closure_deferred_reason: Hosted Project access and actual preflight/reconciliation
+    acceptance remain unproven.
+  next_terminal_gate_or_owner: Authorized single hosted verify after merge; owner
+    review of any credential correction and remaining actual preflight/reconciliation
+    evidence.
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null

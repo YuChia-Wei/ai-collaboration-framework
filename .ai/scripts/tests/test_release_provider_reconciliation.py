@@ -6,6 +6,8 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -332,6 +334,31 @@ class ReleaseProviderReconciliationTests(unittest.TestCase):
         ):
             self.execute("contract")
 
+    def test_given_reconciled_release_when_verify_runs_then_it_never_mutates_provider_state(self) -> None:
+        self.gh.items[10]["published in"] = VERSION
+        self.gh.items[11]["published in"] = VERSION
+        self.gh.issues[169]["state"] = "CLOSED"
+        self.gh.issues[169]["stateReason"] = "COMPLETED"
+        self.gh.items[169]["status"] = "Done"
+
+        result = self.execute("verify")
+
+        self.assertEqual("passed", result["status"])
+        self.assertEqual("verify", result["phase"])
+        self.assertIsNotNone(result["release_url"])
+        self.assertEqual([], self.gh.mutations)
+
+    def test_given_unreconciled_release_when_verify_runs_then_it_fails_without_repair(self) -> None:
+        before_issues = copy.deepcopy(self.gh.issues)
+        before_items = copy.deepcopy(self.gh.items)
+
+        with self.assertRaises(RECONCILIATION.ProviderReconciliationError):
+            self.execute("verify")
+
+        self.assertEqual([], self.gh.mutations)
+        self.assertEqual(before_issues, self.gh.issues)
+        self.assertEqual(before_items, self.gh.items)
+
     def test_gwt_010_given_v11_contract_when_an_unknown_project_field_is_present_then_it_fails_closed(self) -> None:
         data = scoped_release_record()
         data["provider_reconciliation"]["included_work"]["prepublication"]["project"][
@@ -344,6 +371,82 @@ class ReleaseProviderReconciliationTests(unittest.TestCase):
             "project has unknown fields:.*Release train",
         ):
             self.execute("contract")
+
+
+class HostedProviderCheckTests(unittest.TestCase):
+    def test_hosted_probe_distinguishes_rest_access_from_project_access_without_live_credentials(self) -> None:
+        if os.name == "nt":
+            bash = Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Git/bin/bash.exe"
+            if not bash.is_file():
+                self.skipTest("Git Bash is required for the hosted shell regression")
+        else:
+            bash = shutil.which("bash")
+            if not bash:
+                self.skipTest("Bash is required for the hosted shell regression")
+        workflow = yaml.safe_load(
+            (ROOT / ".github/workflows/release-provider-preflight.yml").read_text(encoding="utf-8")
+        )
+        step = next(step for step in workflow["jobs"]["provider-check"]["steps"] if step.get("id") == "provider")
+        interceptors = '''gh() {
+          echo "intercepted-gh:$*"
+          if [[ "$1" == "api" ]]; then return "$MOCK_REST_EXIT"; fi
+        }
+        python() { echo "intercepted-provider"; return "$MOCK_PROVIDER_EXIT"; }
+        '''
+        cases = [
+            ("missing-token", "", "0", "0", False, False, False),
+            ("rest-failure", "synthetic-provider-token", "1", "0", False, True, False),
+            ("project-failure", "synthetic-provider-token", "0", "1", False, True, True),
+            ("verified", "synthetic-provider-token", "0", "0", True, True, True),
+        ]
+        for label, token, rest_exit, provider_exit, success, rest_called, provider_called in cases:
+            with self.subTest(label=label):
+                env = dict(os.environ, GH_TOKEN=token, MOCK_REST_EXIT=rest_exit,
+                           MOCK_PROVIDER_EXIT=provider_exit, VERSION=VERSION,
+                           PHASE="verify", RUNNER_TEMP="/unused-intercepted-output")
+                result = subprocess.run(
+                    [str(bash), "--noprofile", "--norc", "-e"],
+                    input=interceptors + step["run"], env=env,
+                    capture_output=True, text=True, timeout=10,
+                )
+                self.assertEqual(success, result.returncode == 0, result.stderr)
+                self.assertEqual(rest_called, "intercepted-gh:api rate_limit --silent" in result.stdout)
+                self.assertEqual(provider_called, "intercepted-provider" in result.stdout)
+                self.assertNotIn("synthetic-provider-token", result.stdout + result.stderr)
+                if label == "rest-failure":
+                    self.assertIn("REST probe failed before Project lookup", result.stderr)
+                if provider_called:
+                    self.assertIn("Projects access is still unverified", result.stdout)
+
+    def test_dispatch_keeps_existing_credential_on_main_and_read_only_phases(self) -> None:
+        workflow = yaml.safe_load(
+            (ROOT / ".github/workflows/release-provider-preflight.yml").read_text(encoding="utf-8")
+        )
+        # PyYAML's YAML 1.1 loader treats the Actions key "on" as True.
+        triggers = workflow.get("on", workflow.get(True))
+        self.assertEqual({"workflow_dispatch"}, set(triggers))
+        phase = triggers["workflow_dispatch"]["inputs"]["phase"]
+        self.assertEqual({"preflight", "verify"}, set(phase["options"]))
+        self.assertEqual("verify", phase["default"])
+        self.assertEqual({}, workflow["permissions"])
+        job = workflow["jobs"]["provider-check"]
+        self.assertEqual("github.ref == 'refs/heads/main'", job["if"])
+        self.assertEqual("ai-context-release", job["environment"])
+        self.assertEqual({"contents": "read"}, job["permissions"])
+        self.assertEqual("${{ github.sha }}", job["steps"][0]["with"]["ref"])
+        self.assertIs(False, job["steps"][0]["with"]["persist-credentials"])
+        secret_steps = [step for step in job["steps"] if "GH_TOKEN" in step.get("env", {})]
+        self.assertEqual(1, len(secret_steps))
+        self.assertEqual("provider", secret_steps[0]["id"])
+        self.assertEqual("${{ secrets.RELEASE_PROVIDER_TOKEN }}", secret_steps[0]["env"]["GH_TOKEN"])
+        request = next(step for step in job["steps"] if step["name"] == "Validate read-only request")
+        self.assertIn("preflight|verify) ;;", request["run"])
+        self.assertIn('*) echo "Only read-only preflight or verify is allowed." >&2; exit 1', request["run"])
+        self.assertFalse(secret_steps[0].get("continue-on-error", False))
+        self.assertNotIn("--phase apply", secret_steps[0]["run"])
+        retention = job["steps"][-1]
+        self.assertEqual("always()", retention["if"])
+        self.assertEqual("${{ runner.temp }}/provider-check/*.json", retention["with"]["path"])
 
 
 if __name__ == "__main__":
