@@ -24,6 +24,7 @@
     {"path": ".ai/scripts/validate-file-disposition-manifest.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-git-commits.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/execution-artifacts.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/artifact-authoring.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-agent-execution-guardrails.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-validation-lifecycle.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-shell-assets.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},

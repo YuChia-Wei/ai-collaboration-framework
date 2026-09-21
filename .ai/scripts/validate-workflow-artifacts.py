@@ -1244,11 +1244,8 @@ def validate_terminal_anchor_contract(
                 )
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args(argv)
-
-    repo = Path(__file__).resolve().parents[2]
+def validate_workflows(repo: Path) -> tuple[list[str], int, int, int]:
+    """Validate a repository view without printing or selecting a global root."""
     discovery_root = repo / ".dev" / "workflows"
     errors: list[str] = []
     checked = 0
@@ -1397,6 +1394,14 @@ def main(argv: list[str] | None = None) -> int:
         else 0
     )
 
+    return errors, checked, indexed_workflows, backlog_items
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args(argv)
+    repo = Path(__file__).resolve().parents[2]
+    errors, checked, indexed_workflows, backlog_items = validate_workflows(repo)
     if errors:
         print("Workflow artifact validation failed:")
         for error in errors:

@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-09-21T22:16:24+08:00",
+  "subject": "29ffb4c50d4767a39b5620fc96d5d854d839732c",
+  "operation": "assessment.finalize preview",
+  "outcome": "refused-before-apply",
+  "diagnostic": "comment-like YAML cannot be rewritten losslessly",
+  "cause": "Quoted included-scope scalar contains Issue #316. Conservative text detection treats whitespace plus hash as comment-like even inside a quoted scalar.",
+  "disposition": "Documented limitation; inspected locator and manually synchronized final metadata/index using existing policy. No authoring implementation or reviewer conclusions changed.",
+  "review_boundary": "This practical intake observation occurred after independent review; it is parent-owned evidence, not a new independent finding or pass.",
+  "preparation_history": [
+    "Writer finalize preview refused before apply.",
+    "The first manual intake row-selection assertion failed before writes because the Markdown ID is backtick-wrapped; exact selector corrected before successful intake."
+  ]
+}

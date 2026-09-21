@@ -2289,6 +2289,10 @@ run_source_repository_governance_checks() {
         "Agent Execution Guardrails Fail-Closed Tests" \
         "required" "true" "true"
 
+    run_command_check "python .ai/scripts/tests/test_artifact_authoring.py -v" \
+        "Workflow And Assessment Authoring Tests" \
+        "required" "true" "true"
+
     run_command_check "python .ai/scripts/tests/test_execution_artifacts.py -v" \
         "Execution Artifact Preparation And Custody Tests" \
         "required" "true" "true"

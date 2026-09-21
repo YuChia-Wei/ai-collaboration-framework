@@ -1,0 +1,42 @@
+schema_version: '1.0'
+assessment_id: ASM-20260921-18-gav
+commit_search_id: ASM-20260921-18-gav
+assessment_type: ai-context-audit
+title: Schema artifact lifecycle feasibility and validation consolidation
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-21-schema-artifact-lifecycle
+base_branch: main
+created_at: '2026-09-21T18:46:34+08:00'
+updated_at: '2026-09-21T19:03:58+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: main
+  commit: 8830cdfc252b8845efcbe6cce539041c17cf8e7a
+scope:
+  included:
+  - .ai schema definitions, templates, framework scripts and directly related tests
+  - '.dev active standards and selected recent #310/#312/#313 evidence'
+  excluded:
+  - Product src/tests/test trees
+  - Unrelated historical workflows and assessments
+  - Credentials and personal local routing values
+  - Implementation and normative mutation
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs:
+  - 2026-09-21-schema-artifact-lifecycle
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Final evidence-backed feasibility report delivered after
+    inventory, links and repository artifact checks passed.
+  next_action: ''
+  blockers: []

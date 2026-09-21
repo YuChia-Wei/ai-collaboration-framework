@@ -1,0 +1,1780 @@
+{
+  "artifact_kind": "assessment-source-inventory",
+  "generator": ".dev/assessments/ASM-20260921-18-gav/evidence/collect-inventory.py",
+  "generated_at": "2026-09-21T18:50:22+08:00",
+  "source_commit": "8830cdfc252b8845efcbe6cce539041c17cf8e7a",
+  "scope": [
+    "Git-tracked .ai/.dev named schemas",
+    "Declared template roots",
+    "Four explicitly selected framework test files"
+  ],
+  "exclusions": [
+    "Product source and tests",
+    "Untracked/local artifacts",
+    "Other history instances",
+    "Unregistered implicit/code-defined models not proved by name matching"
+  ],
+  "completeness": "Complete for the exact path selectors; not a count of all artifact kinds or proof of executable schema coverage.",
+  "named_yaml_schema_count": 33,
+  "historical_json_schema_count": 1,
+  "schemas": [
+    {
+      "path": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "fc00c431a3ad2a420bb09a52f76a04e25adafadd",
+      "sha256": "0ffc68fb5d48acb4a15465d9083a7e9965aee761dc6c84eae5e00ccf4dc6471d",
+      "bytes": 8250,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "contract_id",
+        "record_types",
+        "execution_kinds",
+        "role_applicability",
+        "permission_modes",
+        "lease_states",
+        "lease_access",
+        "artifact_states",
+        "evidence_kinds",
+        "execution_receipt_producers",
+        "actual_execution_binding",
+        "outcomes",
+        "retry_decisions",
+        "graph_states",
+        "graph_coverage",
+        "graph_fallbacks",
+        "terminal_modes",
+        "classification",
+        "review_input",
+        "reserved_powershell_variables",
+        "privacy_forbidden_keys",
+        "record_models"
+      ],
+      "record_models": {
+        "packet": [
+          "1.0",
+          "1.1"
+        ]
+      },
+      "record_types": {
+        "packet": "agent-execution-packet",
+        "lease": "worktree-snapshot-lease",
+        "evidence": "acceptance-evidence-ledger",
+        "retry": "agent-retry-decision",
+        "graph": "code-graph-freshness"
+      },
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "classification.schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "review_input.schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "record_models.packet.1.0.properties.schema_version.const",
+          "value": "1.0"
+        },
+        {
+          "location": "record_models.packet.1.1.properties.schema_version.const",
+          "value": "1.1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/shared/cli-execution-routing.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "15dbc840cd2f2305912fdc06328441d0cefdb446",
+      "sha256": "e7cd8c2c5a07904f9558fe0b17b8fcf9b279ad1f8a2a280ef6ff9be2148ef926",
+      "bytes": 3516,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "contract_id",
+        "record_type",
+        "purpose",
+        "storage",
+        "top_level",
+        "routes",
+        "candidates",
+        "requirements",
+        "fallback",
+        "persistence",
+        "forbidden_fields",
+        "execution_evidence",
+        "fail_closed"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "top_level.schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "0dd31db1b4ccd74aeca409408a55517904ab0d2b",
+      "sha256": "ac57c3a7fc1a528e7fb3c7338b95d29e78e75e875a4a77e08c9b820773c4ef8e",
+      "bytes": 1344,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "prohibited_fields",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/shared/provider-projection-registry.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "7f8a67c52bb2068489f4bd419c99fe3f353495ee",
+      "sha256": "fb11843e29b6379032a56cfc3ca010e8a208fba9dee1edc3324a87f404952626",
+      "bytes": 5697,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "invariants",
+        "prohibited_static_claim_fields",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.0"
+        },
+        {
+          "location": "properties.provider_projections.codex.delegation_advisory.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/shared/validation-dependency-observation.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "f6f6e6a6bc28368f0fbcb4b159bee3fd55fb9970",
+      "sha256": "d87c3e8cabd8890dbbb419fadb9868fe6f380b72aae9ee2427ff7f746dbe61e2",
+      "bytes": 1654,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "contract_id",
+        "request",
+        "report",
+        "outcomes",
+        "drift",
+        "fresh_gates",
+        "privacy"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "request.schema_version",
+          "value": "validation-dependency-observation-request/v1"
+        },
+        {
+          "location": "report.schema_version",
+          "value": "validation-dependency-observation-report/v1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "8258d986328f40b4003e3c6e877e5e76cc6ca49e",
+      "sha256": "7a1e496b045252c84fe4b0d7b9f487190f29ef89f18c513867d571de50d5aa05",
+      "bytes": 3237,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "contract_id",
+        "evidence_classes",
+        "commit_identity",
+        "gate_classification",
+        "subject_manifest",
+        "subject_rebind",
+        "independent_review",
+        "audit_dispositions",
+        "reuse_receipt",
+        "freeze",
+        "required_contexts",
+        "privacy"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "gate_classification.schema_version",
+          "value": "validation-gate-classification/v1"
+        },
+        {
+          "location": "subject_manifest.schema_version",
+          "value": "subject-manifest/v1"
+        },
+        {
+          "location": "subject_rebind.schema_version",
+          "value": "subject-evidence-rebind/v1"
+        },
+        {
+          "location": "independent_review.schema_version",
+          "value": "2.0"
+        },
+        {
+          "location": "reuse_receipt.schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "freeze.schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "819a708ba63976b94f7f2ec7d5c833aa9fc4040d",
+      "sha256": "28924dc81a01493a33c581905c143c61a71c4a579eb4122b9ea1bd0515697d5a",
+      "bytes": 2193,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "ordering",
+        "customization",
+        "finalization",
+        "legacy_conversion"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "b31f5d4af5e521a95e772bb3132f756de0fe7910",
+      "sha256": "485042f1884c21cc76a2140edf53ab5e4e85432f8a4b6f81ffea8e6a2488aa6c",
+      "bytes": 8795,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "purpose",
+        "source_repository_rule",
+        "storage",
+        "required",
+        "ordering",
+        "digest",
+        "packet_id",
+        "resolver",
+        "request",
+        "baseline",
+        "target_state",
+        "catalogs",
+        "loaded_rule_ids",
+        "rules",
+        "freshness",
+        "packet_digest",
+        "filesystem_safety",
+        "fail_closed"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "3efe53afee265e4a4f7db49ae180af9a88c6da04",
+      "sha256": "52a66bf8ab5759534fd534611c8c5b6b099e807071e5fb717f5e4713721a5ef6",
+      "bytes": 10788,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "purpose",
+        "source_repository_rule",
+        "packet_storage",
+        "required",
+        "ordering",
+        "digest",
+        "framework",
+        "catalogs",
+        "target_authorities",
+        "rule_dispositions",
+        "routing",
+        "filesystem_safety",
+        "fail_closed"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "ef3d2f0232e05641a90b2f8e4c9585dcdff7eb79",
+      "sha256": "096a2b7bee31cc9f975e484f8badff2cb4635389be2d45aa2fc6f6f8723296b1",
+      "bytes": 738,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "record_type",
+        "collection_path",
+        "slot_pattern",
+        "required_fields",
+        "allowed_statuses",
+        "allowed_sources",
+        "resolution_order",
+        "default_slots"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "ff0a806f97cc7d22732e31c6ae0e7973ff83b9cc",
+      "sha256": "bd3ca0d831e31f991ea4a7a1b4305928b9242a3d89785cdab18a204028145bbb",
+      "bytes": 465,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "record_type",
+        "object_path",
+        "required_fields",
+        "fixed_purposes",
+        "allowed_modes",
+        "allowed_merge_gates",
+        "selection_source",
+        "template_unresolved_value"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "73d7cf4ecd38beb0de707777bbb8f9443802250a",
+      "sha256": "762c19b07e927b8f0f2b04caaf5679ab478fd39d0cf02bf88d743b75d7b50697",
+      "bytes": 3802,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "source_of_truth",
+        "required",
+        "properties",
+        "invariants",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "b0225e41ba31f4b31c96a676b13d9243a3c2e50b",
+      "sha256": "24cad8212923f57a2d422bb778bc83a6a78d53b069021d25b54f233744c7c39f",
+      "bytes": 1268,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "ed2bb8ede65ff25d79fbeeefa36c4480b36824bf",
+      "sha256": "2fa87ccfaabaea0e42990b9fc5182ab41e51f07ea6629d8e715f5dc8059ae591",
+      "bytes": 24709,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "purpose",
+        "encoding",
+        "storage_layout",
+        "resolver_result",
+        "route_intent",
+        "outer_journal",
+        "checkpoint",
+        "resume_and_rollback"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "storage_layout.prepared_hop.pre_child_proposal.schema_version",
+          "value": "2.2.0"
+        },
+        {
+          "location": "storage_layout.prepared_hop.evidence.properties.schema_version.const",
+          "value": "multi-hop-prepared-hop/v1"
+        },
+        {
+          "location": "storage_layout.prepared_hop.failed_preparation.failure_record.properties.schema_version.const",
+          "value": "multi-hop-preparation-failure/v1"
+        },
+        {
+          "location": "resolver_result.properties.schema_version.const",
+          "value": "ai-context-multi-hop-upgrade-resolver-result/v1"
+        },
+        {
+          "location": "route_intent.properties.schema_version.const",
+          "value": "ai-context-multi-hop-upgrade-intent/v1"
+        },
+        {
+          "location": "outer_journal.properties.schema_version.const",
+          "value": "ai-context-multi-hop-upgrade-journal/v1"
+        },
+        {
+          "location": "checkpoint.properties.schema_version.const",
+          "value": "ai-context-multi-hop-upgrade-checkpoint/v1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "bf4d39c439a96d1c034ab8107ff71e2dbadfb68b",
+      "sha256": "cf43a4e142d4798d4d2d398085d2eb74f0678e43473f90e13299f7ea752d24da",
+      "bytes": 1982,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "record_schema",
+        "document",
+        "encoding",
+        "required",
+        "bindings",
+        "decision",
+        "approved",
+        "rejected"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "b089927802053687ce9fba62c0904537fac8f955",
+      "sha256": "32a28c326aafabe7f62377bc33453c15bfe5c1e965a4b9a1e41eb49b4eddf383",
+      "bytes": 4113,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "record_schema",
+        "document",
+        "encoding",
+        "required",
+        "identity",
+        "target",
+        "package",
+        "migration",
+        "automatic_proposal",
+        "owner_decision",
+        "target_validation_profile",
+        "provenance",
+        "semantic_customizations",
+        "resume_rollback",
+        "derived_report",
+        "target_validation_receipt"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "2321ee71b80cdfc54680d65b150a8a3cabb7eb66",
+      "sha256": "6febea2213250a2340d2bb25738dc659ff5eb3e139a25551f06a520257ff458c",
+      "bytes": 10342,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.1",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "purpose",
+        "encoding",
+        "required",
+        "properties",
+        "asset_identity",
+        "package_identity",
+        "resolution_contract",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.1"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.1"
+        },
+        {
+          "location": "properties.routes.properties.edges.properties.validation.properties.report.schema_version",
+          "value": "upgrade-edge-validation/v2"
+        },
+        {
+          "location": "properties.deprecations.properties.evidence.properties.deprecation_notice.schema_version",
+          "value": "upgrade-deprecation-notice/v1"
+        },
+        {
+          "location": "properties.deprecations.properties.evidence.properties.owner_decision.schema_version",
+          "value": "upgrade-deprecation-owner-decision/v1"
+        },
+        {
+          "location": "properties.deprecations.properties.evidence.properties.validator.schema_version",
+          "value": "upgrade-deprecation-validation/v1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "b01d93ec4867201ba1c50de228a003c28b3e156e",
+      "sha256": "dd48542d958db1aab02482a161fd1ae41d4b5eded475f6d54297892d4a241a35",
+      "bytes": 28216,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.3",
+      "top_level_keys": [
+        "schema_version",
+        "contract_id",
+        "purpose",
+        "prompt_transport",
+        "completion_transport",
+        "receipt_transport",
+        "record_types",
+        "dispatch",
+        "completion",
+        "validation_receipt",
+        "cross_record",
+        "transport_semantics",
+        "security",
+        "record_models",
+        "migration"
+      ],
+      "record_models": {
+        "dispatch": [
+          "1.2",
+          "1.3"
+        ],
+        "completion": [
+          "1.2",
+          "1.3"
+        ],
+        "receipt": [
+          "1.2",
+          "1.3"
+        ],
+        "prepare_request": [
+          "1.0"
+        ],
+        "observations": [
+          "1.0"
+        ]
+      },
+      "record_types": {
+        "dispatch": "external-task-dispatch",
+        "completion": "external-task-completion",
+        "validation_receipt": "external-task-validation-receipt"
+      },
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.3"
+        },
+        {
+          "location": "record_models.dispatch.1.2.properties.schema_version.const",
+          "value": "1.2"
+        },
+        {
+          "location": "record_models.dispatch.1.3.properties.schema_version.const",
+          "value": "1.3"
+        },
+        {
+          "location": "record_models.completion.1.2.properties.schema_version.const",
+          "value": "1.2"
+        },
+        {
+          "location": "record_models.completion.1.3.properties.schema_version.const",
+          "value": "1.3"
+        },
+        {
+          "location": "record_models.receipt.1.2.properties.schema_version.const",
+          "value": "1.2"
+        },
+        {
+          "location": "record_models.receipt.1.3.properties.schema_version.const",
+          "value": "1.3"
+        },
+        {
+          "location": "record_models.prepare_request.1.0.properties.schema_version.const",
+          "value": "1.0"
+        },
+        {
+          "location": "record_models.observations.1.0.properties.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "5f3bb22977fba18a12a83f0676e0b986ff1636c0",
+      "sha256": "c72aff7fc3cdf641ffa81172eff8b36a437b443196cabfc9b02dbc185c32ec44",
+      "bytes": 677,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "record_type",
+        "allowed_tiers",
+        "default_allowed_tiers",
+        "required_entry_fields",
+        "tier_requirements"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "0a2fc48e3d52797e50a4db54f76252029ffa578c",
+      "sha256": "277aefae6565ff6bbac1aa56aa880dab4ec786db5acee91ef5c52a080c5b11fe",
+      "bytes": 10807,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "schema_id",
+        "applies_to",
+        "baseline_authority",
+        "contract",
+        "capability",
+        "recommendation",
+        "canonical_provider_package_identity",
+        "framework_delivery",
+        "fallback",
+        "state_semantics",
+        "evidence_receipt_contracts",
+        "prohibitions",
+        "provider_selection_template",
+        "template_prohibitions"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "contract.required_literals.schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "provider_selection_template.required_literals.schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/files.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "e599cd78839034ef12058f0f73d42e9e41680e4a",
+      "sha256": "3ac447f58c4b6646c294a8e231a94179d74d693098bce1aad125c8667a917672",
+      "bytes": 992,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "2.0.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "file_entry",
+        "ordering",
+        "path_safety",
+        "inventory_semantics",
+        "additional_properties",
+        "read_compatibility"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "2.0.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/identity-registry.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "304ca8da4ae29e22220834267891c063119e1c73",
+      "sha256": "ee703f7e6394dfa88a34f8b02395ff7903f609c6176ff6985259e20e920416a0",
+      "bytes": 2623,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.1",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.1"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/migration.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "f6337dcafedc2d94e06c3887a062efe537b57000",
+      "sha256": "ad0dbe5f038295e7205ebaf95021e6d04eb7362fcc5e38afa9d2f5350d822fa1",
+      "bytes": 3623,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "3.0.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "planner_projection",
+        "additional_properties",
+        "manifest_sha256_definition",
+        "read_compatibility"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "3.0.0"
+        },
+        {
+          "location": "properties.schema_version",
+          "value": "semver"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/package.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "c185a56288e54635a7668825c82db518039e960c",
+      "sha256": "6aefc5731ad41f0f72383b4c1760b01030ea5223858f396d0c7273bc02f6220b",
+      "bytes": 3846,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "2.4.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "additional_properties",
+        "read_compatibility"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "2.4.0"
+        },
+        {
+          "location": "properties.schema_version",
+          "value": "semver"
+        },
+        {
+          "location": "properties.user_view.properties.schema_version.const",
+          "value": "1.0.0"
+        },
+        {
+          "location": "properties.identity.properties.schema_version.const",
+          "value": "1.1.0"
+        },
+        {
+          "location": "properties.validation.properties.schema_version.const",
+          "value": "package-validation/v1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/selected-inputs.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "0d9f083208c5b7dc4841f89bde0cc6268d55842e",
+      "sha256": "917bc25fb4225ff01692d3c2ea68cedf9440e094cdceb07ca7425cabb805e122",
+      "bytes": 1478,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "contract",
+        "serialization",
+        "versions",
+        "release_projection",
+        "source_admission"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "release_projection.schema_version",
+          "value": "release-package-input/v1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/source-dispositions.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "f7cf1d68d830119e0072cf4e0cc245a4304a92d8",
+      "sha256": "c0895d0c6fa1fb80abb8df52c3740b00790da71dbaad7885ca9861c15b4b48a1",
+      "bytes": 1739,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "required",
+        "properties",
+        "additional_properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/distribution/schemas/v015-package-validation-terminal.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "d1fb045fef64aedd33b9794f0d6e324a0b6acbf1",
+      "sha256": "03106d7ae894732d3835803b9380e8927fb8bafb28f16959f451e5a955f4b57c",
+      "bytes": 2666,
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "definition_schema_version": null,
+      "top_level_keys": [
+        "$schema",
+        "$id",
+        "title",
+        "type",
+        "required",
+        "properties",
+        "allOf",
+        "additionalProperties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "properties.schema_version.const",
+          "value": "v015-package-validation-terminal/v1"
+        }
+      ]
+    },
+    {
+      "path": ".ai/evaluation/schemas/corpus-manifest.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "027df65edcdacc65fff6052bff1493d39b0bd5f6",
+      "sha256": "6c5ed5359314c4cfae410a6751ddac55966e61b5197d32ed855108b2b5cd7aff",
+      "bytes": 562,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "schema_id",
+        "type",
+        "required",
+        "case_required",
+        "invariants"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/evaluation/schemas/evaluation-result.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "2e71c46ef0b83c76243af7ffa7e69cb3f265591e",
+      "sha256": "638c8852252c24c5379f3cc3bc2bbd92950c501a145f19a4f9ca8c9e4da1ec82",
+      "bytes": 480,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "schema_id",
+        "type",
+        "required",
+        "normalization",
+        "result_required",
+        "invariants"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/evaluation/schemas/incident-fault-injection-result.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "21925a8d44881bec4a2d3f047783f75ca1b915b5",
+      "sha256": "c0008708f5c373a49c4b3eb09acde95596bb2aaeb621f5f607608c2bdec504a9",
+      "bytes": 1149,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "schema_id",
+        "type",
+        "report_schema",
+        "required",
+        "result_required",
+        "mutant_outcomes",
+        "decision_outcomes",
+        "invariants"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".ai/evaluation/schemas/incident-mutant-manifest.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "67bed55b9adde04b63c93ebcea6d4a90e7cf1bd0",
+      "sha256": "1710152a8a0d6712537ae935bdd78ec75db3486dcbb46afb2e123f52facf0532",
+      "bytes": 1023,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "schema_id",
+        "type",
+        "required",
+        "candidate_input_required",
+        "mutant_required",
+        "criticalities",
+        "invariants"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".dev/backlog/provider-mappings/github-issues.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "d235bb5e85d3c0338f8743da3ca32759df4007c5",
+      "sha256": "5b727c1f315be25a204e38956e9d7143cb92480d4a59e4b59c2fe43cee1d22bf",
+      "bytes": 2683,
+      "dialect": "https://json-schema.org/draft/2020-12/schema",
+      "definition_schema_version": null,
+      "top_level_keys": [
+        "$schema",
+        "$id",
+        "title",
+        "type",
+        "additionalProperties",
+        "required",
+        "properties"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "properties.schema_version.const",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml",
+      "scope_class": "named-yaml-schema",
+      "git_blob": "96623d63cf1d356b7354e83785e87510549d59b3",
+      "sha256": "d9cdf20b2b356ce6ed8937ba383381dabb8969f66e00f987a8258e6367445cdf",
+      "bytes": 4408,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": "1.0",
+      "top_level_keys": [
+        "schema_version",
+        "document",
+        "classification",
+        "purpose",
+        "required",
+        "fixed",
+        "source_repository",
+        "execution_files",
+        "request",
+        "selection_evidence",
+        "catalogs",
+        "loaded_rule_ids",
+        "rules",
+        "freshness",
+        "packet_digest",
+        "persistence",
+        "fail_closed"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": [
+        {
+          "location": "schema_version",
+          "value": "1.0"
+        },
+        {
+          "location": "fixed.schema_version",
+          "value": "1.0"
+        }
+      ]
+    },
+    {
+      "path": ".dev/workflows/2026-08-14-environment-execution-routing/tasks/ENVROUTE-001-contract-schema.json",
+      "scope_class": "historical-workflow-schema",
+      "git_blob": "215de9f2c150cd17b58b7b0216ff0b4bc2178104",
+      "sha256": "a70eaddc656baebd6b064b383e14c18874aadee9fd75762ef81de1c2e5867671",
+      "bytes": 2387,
+      "dialect": "repository-contract-dsl",
+      "definition_schema_version": null,
+      "top_level_keys": [
+        "template_id",
+        "template_version",
+        "template_created_at",
+        "template_updated_at",
+        "task_id",
+        "workflow_id",
+        "owner_skill",
+        "status",
+        "created_at",
+        "updated_at",
+        "template_source",
+        "model",
+        "reasoning_effort",
+        "finding_ids",
+        "scope",
+        "execution",
+        "results"
+      ],
+      "record_models": {},
+      "record_types": null,
+      "nested_declared_versions": []
+    }
+  ],
+  "template_path_count": 47,
+  "template_paths": [
+    ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md",
+    ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-task-template.json",
+    ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-workflow-plan-template.md",
+    ".ai/assets/skills/ai-context-auditor/templates/workflow-locator-template.yaml",
+    ".ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md",
+    ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md",
+    ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+    ".ai/assets/skills/ai-context-governance/templates/effective-rule-state.template.yaml",
+    ".ai/assets/skills/ai-context-governance/templates/release-publication/migration-guide.md",
+    ".ai/assets/skills/ai-context-governance/templates/release-publication/release-notes.md",
+    ".ai/assets/skills/ai-context-governance/templates/release-publication/release-phase-checks.yaml",
+    ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+    ".ai/assets/skills/ai-context-governance/templates/release-publication/release-workflow-locator.yaml",
+    ".ai/assets/skills/ai-context-governance/templates/release-publication/release.yaml",
+    ".ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml",
+    ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml",
+    ".ai/assets/skills/ai-context-init/templates/project-config.template.yaml",
+    ".ai/assets/skills/ai-context-init/templates/public-root/.editorconfig",
+    ".ai/assets/skills/ai-context-init/templates/public-root/.gitattributes",
+    ".ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md",
+    ".ai/assets/skills/ai-context-init/templates/public-root/CLAUDE.md",
+    ".ai/assets/skills/ai-context-init/templates/public-template-manifest.yaml",
+    ".ai/assets/skills/ai-context-upgrader/templates/ai-context-source-template.yaml",
+    ".ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml",
+    ".ai/assets/skills/ai-context-upgrader/templates/delegation-run-record.template.yaml",
+    ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.template.yaml",
+    ".ai/assets/skills/ai-context-upgrader/templates/provenance-template.yaml",
+    ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
+    ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md",
+    ".ai/assets/skills/software-development-orchestrator/templates/development-review-report-template.md",
+    ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md",
+    ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+    ".ai/assets/skills/software-development-orchestrator/templates/execution-observations.template.yaml",
+    ".ai/assets/skills/software-development-orchestrator/templates/execution-prepare-request.template.yaml",
+    ".ai/assets/skills/software-development-orchestrator/templates/external-task-completion.template.yaml",
+    ".ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml",
+    ".ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml",
+    ".ai/assets/templates/command-template.yaml",
+    ".ai/assets/templates/prompt-package-template.yaml",
+    ".ai/assets/templates/skill-template.yaml",
+    ".ai/assets/templates/sub-agent-role-prompt-template.yaml",
+    ".dev/assessments/templates/assessment-locator-template.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/acceptance.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/controlled-domain/aggregate.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/frame.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/machine/machine.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/machine/use-case.yaml"
+  ],
+  "test_inventory": [
+    {
+      "path": ".ai/scripts/tests/test_execution_artifacts.py",
+      "sha256": "dcc885fcf33e63050e9e756f3fab8290e266c6191f389993540e5973b59afa0b",
+      "method_count": 20,
+      "methods": [
+        {
+          "name": "test_exact_types_batch_unknown_fields_and_unknown_schema_keywords",
+          "line": 27
+        },
+        {
+          "name": "test_numeric_extremes_and_inapplicable_constraints",
+          "line": 36
+        },
+        {
+          "name": "test_authority_follows_source_or_fixed_package_envelope_requirements",
+          "line": 44
+        },
+        {
+          "name": "test_compatible_optional_field_and_incompatible_required_change",
+          "line": 61
+        },
+        {
+          "name": "test_prepare_observes_git_and_binds_shared_request_once",
+          "line": 129
+        },
+        {
+          "name": "test_wrong_head_and_unknown_fields_batch_before_output",
+          "line": 147
+        },
+        {
+          "name": "test_late_packet_failure_rolls_back_exclusive_bundle",
+          "line": 158
+        },
+        {
+          "name": "test_output_escape_tracked_and_collision_refused",
+          "line": 164
+        },
+        {
+          "name": "test_review_role_cannot_bypass_explicit_criteria_with_task_kind",
+          "line": 169
+        },
+        {
+          "name": "test_low_level_dispatch_cannot_downgrade_review_role_to_legacy_packet",
+          "line": 175
+        },
+        {
+          "name": "test_cleanup_preserves_changed_bytes_and_reports_failure",
+          "line": 190
+        },
+        {
+          "name": "test_terminal_expectation_uses_canonical_current_review_input",
+          "line": 204
+        },
+        {
+          "name": "test_review_input_bytes_are_bound_and_mutation_rejected",
+          "line": 228
+        },
+        {
+          "name": "test_failed_and_blocked_observations_remain_nonpassing_after_receipt",
+          "line": 240
+        },
+        {
+          "name": "test_missing_observation_and_falsely_passed_result_do_not_create_receipt",
+          "line": 256
+        },
+        {
+          "name": "test_manifest_rejects_removed_dependency_and_helper_drift",
+          "line": 272
+        },
+        {
+          "name": "test_migration_is_explicit_preserves_failed_history_and_never_issues_receipt",
+          "line": 288
+        },
+        {
+          "name": "test_legacy_reader_is_not_a_fresh_writer_or_admission_downgrade",
+          "line": 304
+        },
+        {
+          "name": "test_cli_reports_batch_diagnostics_as_one_failed_preflight",
+          "line": 316
+        },
+        {
+          "name": "test_generation_is_idempotent_and_contract_changes_affect_template_and_checker",
+          "line": 328
+        }
+      ]
+    },
+    {
+      "path": ".ai/scripts/tests/test_agent_execution_guardrails.py",
+      "sha256": "dcb98e0ca8b2e0cbcf74589a5d8a5ba0edf7439f2aa8c9a44363b3f8289f208e",
+      "method_count": 46,
+      "methods": [
+        {
+          "name": "test_terminal_label_alone_keeps_ordinary_independent_review_bounded",
+          "line": 184
+        },
+        {
+          "name": "test_risk_and_execution_boundaries_require_full_tier",
+          "line": 190
+        },
+        {
+          "name": "test_incomplete_or_malformed_classification_cannot_select_bounded",
+          "line": 199
+        },
+        {
+          "name": "test_routine_local_edit_retains_single_writer_bounded_route",
+          "line": 210
+        },
+        {
+          "name": "test_ready_review_preflight_is_not_a_behavioral_outcome",
+          "line": 215
+        },
+        {
+          "name": "test_custody_contract_review_remains_full_after_input_preflight",
+          "line": 222
+        },
+        {
+          "name": "test_dispatch_prose_cannot_replace_missing_machine_criteria",
+          "line": 227
+        },
+        {
+          "name": "test_wrong_tree_or_digest_and_dirty_or_moved_checkout_fail_preparation",
+          "line": 234
+        },
+        {
+          "name": "test_blank_criteria_missing_authority_and_changed_authority_bytes_fail",
+          "line": 245
+        },
+        {
+          "name": "test_authority_order_does_not_change_review_authority_identity",
+          "line": 256
+        },
+        {
+          "name": "test_review_input_does_not_authorize_writes_or_privileged_access",
+          "line": 265
+        },
+        {
+          "name": "test_private_role_packet_accepts_only_its_owning_skill",
+          "line": 274
+        },
+        {
+          "name": "test_private_role_packet_rejects_noncanonical_path_aliases",
+          "line": 284
+        },
+        {
+          "name": "test_gwt_001_given_complete_fixed_head_packet_when_validated_then_it_passes",
+          "line": 297
+        },
+        {
+          "name": "test_gwt_001b_given_auditor_owned_fixed_head_packet_when_validated_then_it_passes",
+          "line": 300
+        },
+        {
+          "name": "test_gwt_001bb_given_missing_terminal_schema_when_validated_then_it_fails",
+          "line": 305
+        },
+        {
+          "name": "test_gwt_001c_given_governance_claims_unbound_auditor_role_when_validated_then_it_fails",
+          "line": 312
+        },
+        {
+          "name": "test_gwt_001d_given_invalid_role_applicability_when_validated_then_it_fails",
+          "line": 319
+        },
+        {
+          "name": "test_gwt_002_given_external_packet_with_tracked_write_when_validated_then_it_fails",
+          "line": 326
+        },
+        {
+          "name": "test_gwt_003_given_attempt_three_without_fresh_authorization_when_packet_is_validated_then_it_fails",
+          "line": 333
+        },
+        {
+          "name": "test_gwt_003b_given_attempt_three_with_nonexistent_authorization_ref_when_packet_is_validated_then_it_fails",
+          "line": 340
+        },
+        {
+          "name": "test_gwt_004_given_active_writer_lease_when_another_writer_appears_then_it_fails",
+          "line": 347
+        },
+        {
+          "name": "test_gwt_005_given_released_lease_when_ignored_output_is_sealed_then_it_passes",
+          "line": 354
+        },
+        {
+          "name": "test_gwt_005b_given_invalidated_historical_lease_after_head_moves_when_validated_then_live_head_is_not_rebound",
+          "line": 357
+        },
+        {
+          "name": "test_gwt_005c_given_active_lease_when_lock_is_acquired_twice_then_second_holder_is_rejected",
+          "line": 363
+        },
+        {
+          "name": "test_gwt_006_given_actual_acceptance_and_human_projection_when_bound_then_they_pass",
+          "line": 374
+        },
+        {
+          "name": "test_gwt_007_given_synthetic_evidence_for_actual_acceptance_when_validated_then_it_fails",
+          "line": 377
+        },
+        {
+          "name": "test_gwt_007b_given_fixture_only_receipt_claims_actual_execution_when_validated_then_it_fails",
+          "line": 384
+        },
+        {
+          "name": "test_gwt_007c_given_nonexistent_actual_output_reference_when_validated_then_it_fails",
+          "line": 393
+        },
+        {
+          "name": "test_gwt_008_given_human_report_digest_drifts_when_compared_then_it_fails",
+          "line": 402
+        },
+        {
+          "name": "test_gwt_009_given_unchanged_failure_when_retry_is_requested_then_it_fails",
+          "line": 410
+        },
+        {
+          "name": "test_gwt_010_given_legacy_attempt_three_with_fresh_authorization_then_it_passes",
+          "line": 417
+        },
+        {
+          "name": "test_gwt_010aa_given_new_retry_subject_with_persisted_authorization_and_packet_when_validated_then_it_passes",
+          "line": 420
+        },
+        {
+          "name": "test_gwt_010ab_given_historical_subject_authorization_for_new_retry_subject_when_validated_then_it_fails",
+          "line": 431
+        },
+        {
+          "name": "test_gwt_010ac_given_invalid_retry_subject_when_validated_then_it_fails",
+          "line": 444
+        },
+        {
+          "name": "test_gwt_010ad_given_new_retry_subject_without_material_state_change_when_validated_then_it_fails",
+          "line": 450
+        },
+        {
+          "name": "test_gwt_010b_given_attempt_three_authorization_for_another_packet_when_retry_is_validated_then_it_fails",
+          "line": 457
+        },
+        {
+          "name": "test_gwt_011_given_stale_graph_without_tracked_fallback_when_absence_is_claimed_then_it_fails",
+          "line": 470
+        },
+        {
+          "name": "test_gwt_011a_given_different_commit_with_same_tree_when_absence_is_claimed_then_graph_is_reused",
+          "line": 475
+        },
+        {
+          "name": "test_gwt_011b_given_different_commit_and_tree_when_graph_is_called_fresh_then_it_fails",
+          "line": 482
+        },
+        {
+          "name": "test_gwt_012_given_stale_graph_with_tracked_fallback_when_absence_is_claimed_then_it_passes",
+          "line": 494
+        },
+        {
+          "name": "test_gwt_012b_given_absolute_fallback_path_when_validated_then_it_fails",
+          "line": 501
+        },
+        {
+          "name": "test_gwt_013_given_powershell_host_assignment_when_scanned_then_it_fails_case_insensitively",
+          "line": 509
+        },
+        {
+          "name": "test_gwt_014_given_purpose_specific_powershell_variable_when_scanned_then_it_passes",
+          "line": 513
+        },
+        {
+          "name": "test_gwt_015_given_inline_reserved_assignment_when_scanned_then_it_fails",
+          "line": 516
+        },
+        {
+          "name": "test_gwt_016_given_nonexistent_role_marked_not_applicable_when_validated_then_it_fails",
+          "line": 520
+        }
+      ]
+    },
+    {
+      "path": ".ai/scripts/tests/test_assessment_artifacts.py",
+      "sha256": "6cae5d532b398d0c5cdc3edd9a81a57cdb7b630cb6284d11bad1a7cb5096be74",
+      "method_count": 15,
+      "methods": [
+        {
+          "name": "test_gwt_001_given_empty_catalog_when_validated_then_passes",
+          "line": 113
+        },
+        {
+          "name": "test_gwt_002_given_valid_final_assessment_when_validated_then_passes",
+          "line": 124
+        },
+        {
+          "name": "test_gwt_003_given_id_or_search_id_mismatch_when_validated_then_fails",
+          "line": 136
+        },
+        {
+          "name": "test_gwt_004_given_missing_report_or_index_row_when_validated_then_fails",
+          "line": 153
+        },
+        {
+          "name": "test_gwt_005_given_invalid_subject_or_timestamp_when_validated_then_fails",
+          "line": 168
+        },
+        {
+          "name": "test_gwt_006_given_dangling_assessment_relation_when_validated_then_fails",
+          "line": 185
+        },
+        {
+          "name": "test_gwt_007_given_draft_without_resume_action_when_validated_then_fails",
+          "line": 199
+        },
+        {
+          "name": "test_gwt_008_given_row_in_wrong_lifecycle_section_when_validated_then_fails",
+          "line": 214
+        },
+        {
+          "name": "test_gwt_009_given_duplicate_index_rows_when_validated_then_fails",
+          "line": 227
+        },
+        {
+          "name": "test_gwt_010_given_same_hour_and_subject_when_suffixes_differ_then_both_and_legacy_pass",
+          "line": 248
+        },
+        {
+          "name": "test_gwt_011_given_duplicate_short_id_rows_when_validated_then_fails",
+          "line": 264
+        },
+        {
+          "name": "test_gwt_012_given_invalid_hour_or_suffix_when_validated_then_fails",
+          "line": 275
+        },
+        {
+          "name": "test_gwt_013_given_different_creation_hour_when_validated_then_fails",
+          "line": 291
+        },
+        {
+          "name": "test_gwt_014_given_local_offset_crosses_utc_day_when_validated_then_local_hour_passes",
+          "line": 301
+        },
+        {
+          "name": "test_gwt_015_given_short_successor_of_legacy_when_validated_then_relations_pass",
+          "line": 314
+        }
+      ]
+    },
+    {
+      "path": ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py",
+      "sha256": "e4e91147104151a57cd252a75f8ece3118f1c071af3539b44a13195f11a39470",
+      "method_count": 35,
+      "methods": [
+        {
+          "name": "test_current_timing_orders_instants_without_equating_wall_and_elapsed_clocks",
+          "line": 94
+        },
+        {
+          "name": "test_gwt_001_given_current_schema_when_loaded_then_candidate_and_receipt_are_separate",
+          "line": 118
+        },
+        {
+          "name": "test_gwt_001a_given_required_transport_semantic_drift_then_schema_is_rejected",
+          "line": 126
+        },
+        {
+          "name": "test_gwt_001b_given_boolean_transport_record_count_then_schema_is_rejected",
+          "line": 147
+        },
+        {
+          "name": "test_gwt_002e_given_candidate_with_self_asserted_validation_then_it_is_rejected",
+          "line": 160
+        },
+        {
+          "name": "test_gwt_002a_given_one_marked_prompt_when_parsed_then_dispatch_is_valid",
+          "line": 166
+        },
+        {
+          "name": "test_gwt_002b_given_duplicate_dispatch_envelope_then_it_fails_closed",
+          "line": 176
+        },
+        {
+          "name": "test_gwt_002c_given_delivery_destination_or_limit_drift_then_dispatch_is_rejected",
+          "line": 184
+        },
+        {
+          "name": "test_gwt_002c1_given_boolean_dispatch_integer_values_then_dispatch_is_rejected",
+          "line": 192
+        },
+        {
+          "name": "test_gwt_002d_given_event_wait_delivery_then_dispatch_remains_valid",
+          "line": 205
+        },
+        {
+          "name": "test_gwt_002k_given_dispatch_transport_when_candidate_is_validated_then_mode_is_bound",
+          "line": 212
+        },
+        {
+          "name": "test_gwt_002f_given_unsafe_or_unbound_pre_send_refs_then_dispatch_is_rejected",
+          "line": 230
+        },
+        {
+          "name": "test_gwt_002g_given_writer_argv_does_not_bind_declared_refs_then_dispatch_is_rejected",
+          "line": 250
+        },
+        {
+          "name": "test_gwt_002h_given_receipt_write_args_drift_from_safe_refs_then_writing_is_rejected",
+          "line": 256
+        },
+        {
+          "name": "test_gwt_002i_given_receipt_output_exists_then_it_is_not_overwritten",
+          "line": 274
+        },
+        {
+          "name": "test_gwt_002j_given_ads_custody_refs_then_dispatch_and_write_request_reject_them",
+          "line": 282
+        },
+        {
+          "name": "test_gwt_002j1_given_receipt_verification_paths_or_transport_drift_then_it_is_rejected",
+          "line": 302
+        },
+        {
+          "name": "test_gwt_002l_given_conflicting_cli_modes_then_main_rejects_before_reading_records",
+          "line": 338
+        },
+        {
+          "name": "test_gwt_002m_given_unsupported_dispatch_or_receipt_fields_then_they_are_rejected",
+          "line": 371
+        },
+        {
+          "name": "test_gwt_002n_given_mapping_task_kind_then_dispatch_and_receipt_are_rejected",
+          "line": 394
+        },
+        {
+          "name": "test_gwt_002o_given_mapping_bounded_output_then_completion_and_receipt_are_rejected",
+          "line": 412
+        },
+        {
+          "name": "test_gwt_002p_given_receipt_raw_bytes_do_not_match_records_then_custody_is_rejected",
+          "line": 429
+        },
+        {
+          "name": "test_gwt_002q_given_duplicate_raw_contract_keys_then_receipt_custody_is_rejected",
+          "line": 454
+        },
+        {
+          "name": "test_gwt_002r_given_boolean_completion_or_receipt_integer_values_then_custody_is_rejected",
+          "line": 494
+        },
+        {
+          "name": "test_gwt_002s_given_type_equivalent_raw_yaml_scalars_then_custody_mapping_binding_is_rejected",
+          "line": 537
+        },
+        {
+          "name": "test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases",
+          "line": 556
+        },
+        {
+          "name": "test_gwt_004_given_post_validation_candidate_mutation_when_receipt_checked_then_it_is_rejected",
+          "line": 564
+        },
+        {
+          "name": "test_gwt_004a_given_receipt_ref_or_writer_argv_drift_then_it_is_rejected",
+          "line": 574
+        },
+        {
+          "name": "test_gwt_004b_given_combined_terminal_delivery_then_receipt_is_required",
+          "line": 594
+        },
+        {
+          "name": "test_gwt_004c_given_terminal_receipt_for_other_candidate_then_delivery_is_rejected",
+          "line": 621
+        },
+        {
+          "name": "test_gwt_005_given_blocked_terminal_candidate_when_receipt_is_issued_then_delivery_is_released_without_passing_execution",
+          "line": 642
+        },
+        {
+          "name": "test_gwt_006_given_failed_or_interrupted_terminal_candidate_when_receipt_is_issued_then_delivery_is_released",
+          "line": 651
+        },
+        {
+          "name": "test_gwt_007_given_passed_candidate_subject_or_worktree_drift_then_it_is_rejected",
+          "line": 660
+        },
+        {
+          "name": "test_gwt_008_given_execution_packet_drift_or_missing_then_dispatch_is_rejected",
+          "line": 668
+        },
+        {
+          "name": "test_gwt_009_given_profile_without_delegation_binding_then_capability_validation_rejects_it",
+          "line": 685
+        }
+      ]
+    }
+  ]
+}

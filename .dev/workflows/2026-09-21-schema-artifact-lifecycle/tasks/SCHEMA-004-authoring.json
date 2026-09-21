@@ -1,0 +1,67 @@
+{
+  "template_version": "1.1.0",
+  "task_id": "SCHEMA-004-authoring",
+  "workflow_id": "2026-09-21-schema-artifact-lifecycle",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-21T21:26:39+08:00",
+  "updated_at": "2026-09-21T21:48:35+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-001",
+    "ASM-20260921-18-gav#AIC-002"
+  ],
+  "scope": {
+    "target": "Issue #316: deterministic workflow and assessment authoring with guarded multi-file updates",
+    "files": [
+      ".ai/scripts/",
+      ".ai/assets/skills/ai-context-governance/references/",
+      ".dev/workflows/2026-09-21-schema-artifact-lifecycle/"
+    ],
+    "constraints": [
+      "Existing validators remain semantic authority",
+      "One tracked writer",
+      "No invented observations or changes to final conclusions"
+    ],
+    "non_goals": [
+      "P2-P4",
+      "Validator or test removal",
+      "Provider integration or release"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Implement bounded family adapters and recoverable preview/apply",
+      "Add independent focused regression cases and registrations",
+      "Run applicable checks and document behavior"
+    ],
+    "validation": [
+      "Focused authoring tests",
+      "Existing workflow and assessment validators",
+      "Registration and package closure checks",
+      "git diff --check"
+    ],
+    "last_completed_step": "Issue #316 created and read back; source main unchanged",
+    "next_action": "Independent fixed-subject verification under SCHEMA-005"
+  },
+  "results": {
+    "summary": "Implemented Issue #316 P1 authoring with guarded bundle updates and focused regression coverage.",
+    "files_changed": [
+      ".ai/scripts/artifact-authoring.py",
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/tests/test_artifact_authoring.py",
+      ".ai/scripts/README.md"
+    ],
+    "tests_run": [
+      "20 authoring tests passed, including abrupt-exit recovery and isolated package CLI imports.",
+      "7 Python entrypoint tests and 11 profile registry tests passed.",
+      "Existing workflow lifecycle and assessment suites passed.",
+      "Shell assets, validation lifecycle, AI context and deterministic AI-behavior evaluation passed."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Independent verification pending; multi-file writes are recoverable, not atomic; broader families and migrations deferred.",
+    "follow_up_needed": true
+  }
+}

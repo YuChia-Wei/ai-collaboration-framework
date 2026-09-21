@@ -43,6 +43,7 @@ EXPECTED_PORTABLE_PATHS = {
     ".ai/scripts/validate-git-commits.py",
     ".ai/scripts/validate-agent-execution-guardrails.py",
     ".ai/scripts/execution-artifacts.py",
+    ".ai/scripts/artifact-authoring.py",
     ".ai/scripts/validate-validation-lifecycle.py",
     ".ai/scripts/validate-shell-assets.py",
     ".ai/scripts/validate-software-development-orchestrator-acceptance.py",

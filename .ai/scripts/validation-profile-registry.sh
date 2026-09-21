@@ -381,6 +381,11 @@ register_check agent-execution-guardrails-tests \
     "governance,agents,evidence,tests" "fast pr release nightly-full" \
     ".ai/scripts/tests/test_agent_execution_guardrails.py .ai/assets/shared/agent-execution-guardrails.schema.yaml" agent-execution-guardrails-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_agent_execution_guardrails.py -v" source-governance
+register_check artifact-authoring-tests \
+    "Workflow And Assessment Authoring Tests" required \
+    "governance,tests" "fast pr release nightly-full" \
+    ".ai/scripts/artifact-authoring.py .ai/scripts/artifact_authoring.py .ai/scripts/tests/test_artifact_authoring.py .ai/scripts/validate-workflow-artifacts.py .ai/scripts/validate-assessment-artifacts.py .ai/scripts/python_prerequisites.py .ai/scripts/python-entrypoints.json .ai/assets/skills/ai-context-governance/templates .ai/assets/skills/ai-context-auditor/templates .dev/assessments/templates .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md requirements.txt" workflow-artifacts "python>=3.11 git" 90 io reuse-by-input source \
+    "python .ai/scripts/tests/test_artifact_authoring.py -v" source-governance
 register_check execution-artifacts-tests \
     "Execution Artifact Preparation And Custody Tests" required \
     "governance,tests" "fast pr release nightly-full" \
