@@ -8,7 +8,7 @@
 - Branch: `codex/2026-09-21-issue-309-hosted-preflight`
 - Base: `main` at `f3cbef14595e6fc3c41930794c0a0835758a41e3`
 - Created: `2026-09-21T13:47:43+08:00`
-- Updated: `2026-09-21T13:59:27+08:00`
+- Updated: `2026-09-21T14:03:28+08:00`
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - Template version: `1.2.0`
 
@@ -156,3 +156,20 @@ Next owner decision remains the concrete transport/integration and one hosted
 verify dispatch described above. Do not rotate a secret, add Projects scopes,
 remove the publication gate, or close #309 without the respective authority and
 actual evidence.
+
+## Authorized Integration Checkpoint
+
+The owner explicitly authorized pushing this branch, opening PR #315, merging
+after independent review and all required CI pass, and dispatching exactly one
+read-only hosted verify. This supersedes the pending transport/integration/run
+decisions above; earlier local-only approval remains historical evidence.
+Credential replacement, permission expansion, release publication and Issue
+closure remain outside this authorization.
+
+PR: https://github.com/YuChia-Wei/ai-collaboration-framework/pull/315
+Disposition: `deferred`, `Refs #309`. Merge topology: merge commit. After
+admission and merge, dispatch `release-provider-preflight.yml` on `main` once
+with `version=v0.18.0`, `phase=verify`. Accept the actual run outcome and retain
+it in ignored provider evidence; do not retry or change a credential on failure.
+The workflow remains active while hosted follow-up is pending. No tracked
+post-merge evidence-sync commit is required.
