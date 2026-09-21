@@ -7,7 +7,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-09-21T21:46:40+08:00`
-- `updated_at`: `2026-09-21T21:46:40+08:00`
+- `updated_at`: `2026-09-21T22:06:17+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.1`
 - `baseline_assessment`: `ASM-20260921-18-gav`
@@ -54,7 +54,7 @@ JSON／YAML extension 值會保留；Markdown metadata 以局部方式更新，�
 | Portable CLI | 隔離 package/payload 僅含必要 portable module／模板，catalog 與完整 preview 通過；不是完整發佈矩陣。 |
 | 既有 regression | Workflow lifecycle 與 assessment suites 通過；7 個 entrypoint contract tests、11 個 profile registry tests 通過。 |
 | Repository checks | Shell assets、validation lifecycle、AI context、6 個 deterministic AI-behavior evaluation cases 通過。 |
-| 獨立驗證 | pending；完成後記錄另立 assessment 與固定 subject。 |
+| 獨立驗證 | 首輪對 `775c3a21e322b62b02f09e2116f9d980277b8f2c` 無阻擋級 finding；P1V-001 指出更新可沿用同一 `updated_at`。已改成必須嚴格遞增，補上兩種文件與等值時區案例，待固定修正 commit 複驗。 |
 
 保留的失敗紀錄：初次 live preview 因 CRLF 模板版本讀取失敗，修正後同輸入兩次 preview 摘要一致；sandbox 的 Windows Temp 權限使 fixture setup／cleanup 未能完成，Git Bash signal-pipe 權限使 registry checks 無法執行，經工具權限流程在相同主機正常執行後通過。另一次 evaluation 呼叫缺少 `validate` 子命令，正確命令已通過。早期環境失敗與準備失敗都不是 behavioral pass。
 
@@ -68,7 +68,7 @@ JSON／YAML extension 值會保留；Markdown metadata 以局部方式更新，�
 
 | Assessment Finding | Status | 本次對應與剩餘範圍 |
 | --- | --- | --- |
-| ASM-20260921-18-gav#AIC-001 | partially-resolved | CLI catalog 明列兩個 profile 的 template owner、可寫範圍與 unsupported migration；全庫 coverage registry 留待後續。 |
+| ASM-20260921-18-gav#AIC-001 | partially-resolved | CLI catalog 明列兩個 profile 的模板來源、可寫範圍與 unsupported migration；全庫 coverage registry 留待後續。 |
 | ASM-20260921-18-gav#AIC-002 | partially-resolved | 多檔、關聯、索引與機械 metadata 由工具維護；領域正文仍由作者提供。 |
 | ASM-20260921-18-gav#AIC-003 | deferred | 更廣的 migration disposition 與版本轉換未納入 P1。 |
 | ASM-20260921-18-gav#AIC-004 | deferred | P1 已保留兩個 profile 的 extension 值；其他 family 的 unknown-field／serialization 規則尚未納入。 |

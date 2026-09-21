@@ -125,6 +125,8 @@ requires exactly one nonempty `body` or repository-relative `body_file`. Markdow
 body content must exclude the tool-owned `Workflow Metadata` or `Metadata`
 section. Draft body content is author-owned; templates remain the guide for its
 domain sections. Titles cannot contain table separators, newlines or backticks.
+Updates must supply an instant strictly later than the current `updated_at`;
+an equal instant with a different UTC offset is also rejected before writing.
 
 | Operation | Additional semantic inputs |
 | --- | --- |

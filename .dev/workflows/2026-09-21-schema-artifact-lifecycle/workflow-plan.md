@@ -12,7 +12,7 @@
 - `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-09-21-schema-artifact-lifecycle`
 - `created_at`: `2026-09-21T18:46:34+08:00`
-- `updated_at`: `2026-09-21T21:48:35+08:00`
+- `updated_at`: `2026-09-21T22:07:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -131,3 +131,11 @@ and sandbox fixture/Bash environment failures are preserved in the report.
 No full package/release/history matrix is selected for this bounded authoring
 change. P1 verification explicitly selects the auditor's fixed-head role;
 the shared frozen review checkout uses the full packet and lease tier.
+
+Independent audit attempt 1 reviewed commit `775c3a21e322b62b02f09e2116f9d980277b8f2c`
+and found no blocking issue. Medium finding P1V-001 identified that a material
+update could retain the same `updated_at`. Its original report is retained;
+the completed review lease was explicitly released before repair. The writer
+now requires a strictly later instant and regression coverage includes both
+families and equivalent UTC offsets. Attempt 2 will independently check only
+the affected delta and bind the unchanged evidence to the repaired subject.

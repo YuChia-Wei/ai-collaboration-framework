@@ -381,8 +381,8 @@ def _body(view: View, request: dict) -> str:
 
 
 def _advance(locator: dict, timestamp: str) -> None:
-    if instant(timestamp) < instant(locator["updated_at"]):
-        raise AuthoringError("timestamp precedes current updated_at; supply a current observation time")
+    if instant(timestamp) <= instant(locator["updated_at"]):
+        raise AuthoringError("timestamp must advance beyond current updated_at; supply a later observation time")
     locator["updated_at"] = timestamp
 
 

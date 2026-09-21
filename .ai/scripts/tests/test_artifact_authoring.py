@@ -197,13 +197,26 @@ class AuthoringTests(unittest.TestCase):
                                    'timestamp': '2026-09-20T21:00:00+08:00', 'id': ASM, 'title': 'Earlier'})
         self.assertEqual(before, self.snapshot())
 
+    def test_material_update_requires_later_timestamp_for_both_families(self):
+        self.execute(self.workflow())
+        self.execute(self.assessment())
+        before = self.snapshot()
+        for kind, identifier in [('workflow', WF), ('assessment', ASM)]:
+            # The same instant written with a different offset must also fail.
+            for timestamp in (NOW, '2026-09-21T13:00:00+00:00'):
+                request = {'version': '1.0', 'operation': kind + '.update',
+                           'timestamp': timestamp, 'id': identifier, 'title': 'Changed title'}
+                with self.subTest(kind=kind, timestamp=timestamp), self.assertRaisesRegex(ValueError, 'advance'):
+                    self.execute(request)
+                self.assertEqual(before, self.snapshot())
+
     def observations(self):
         return {'summary': 'Fixture inspection completed; no command execution claimed.',
                 'finding_status': 'deferred', 'tests_run': ['not run: this is a synthetic observation'],
                 'files_changed': [], 'residual_risk': 'Fixture evidence only', 'follow_up_needed': True}
 
     def transition(self, **extra):
-        return {'version': '1.0', 'operation': 'workflow.transition', 'timestamp': LATER,
+        return {'version': '1.0', 'operation': 'workflow.transition', 'timestamp': '2026-09-21T21:10:00+08:00',
                 'id': WF, 'task_id': 'TASK-001', 'status': 'completed', **extra}
 
     def test_task_handoff_is_coherent_and_cannot_infer_completion(self):
