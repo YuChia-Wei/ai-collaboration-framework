@@ -1,0 +1,50 @@
+{
+  "template_version": "1.1.0",
+  "task_id": "SCHEMA-003-report",
+  "workflow_id": "2026-09-21-schema-artifact-lifecycle",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-09-21T18:46:34+08:00",
+  "updated_at": "2026-09-21T18:46:34+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Publish the evidence-backed owner report and a durable implementation decision checkpoint",
+    "files": [
+      ".dev/assessments/ASM-20260921-18-gav",
+      ".dev/workflows/2026-09-21-schema-artifact-lifecycle"
+    ],
+    "constraints": [
+      "Read assessed implementation at fixed source SHA; parent is sole tracked writer.",
+      "Observed facts, proposals, authorization and implementation remain distinct."
+    ],
+    "non_goals": [
+      "No production tooling, schema or policy changes in the analysis stage.",
+      "No provider mutation, push, PR, merge, release or downstream adoption."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Collect bounded evidence.",
+      "Synthesize explicit findings and uncertainties.",
+      "Validate changed artifacts."
+    ],
+    "validation": [
+      "python -B .ai/scripts/validate-workflow-artifacts.py",
+      "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Wait for predecessor analysis task."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

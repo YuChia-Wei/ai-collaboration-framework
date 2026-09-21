@@ -7,6 +7,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260921-18-gav`](ASM-20260921-18-gav/assessment.yaml) | Schema artifact lifecycle feasibility and validation consolidation | `ai-context-audit` | `ai-context-auditor` | `draft` | `8830cdfc252b8845efcbe6cce539041c17cf8e7a` | `2026-09-21T18:46:34+08:00` | [report](ASM-20260921-18-gav/report.md) |
 
 ## Final Assessments
 
