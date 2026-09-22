@@ -124,7 +124,7 @@
       },
       "outcome": "completed",
       "correctable_failure": true,
-      "material_state_change": "",
+      "material_state_change": "F-001 missing gate classification repaired without expanding reuse.",
       "authorization_source": [
         ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow-plan.md"
       ],
@@ -154,7 +154,7 @@
       },
       "outcome": "completed",
       "correctable_failure": true,
-      "material_state_change": "F-001 missing gate classification repaired without expanding reuse.",
+      "material_state_change": "F-002 current workflow continuation repaired.",
       "authorization_source": [
         ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow-plan.md"
       ],
@@ -184,7 +184,7 @@
       },
       "outcome": "completed",
       "correctable_failure": true,
-      "material_state_change": "F-002 current workflow continuation repaired.",
+      "material_state_change": "F-003 report state and task continuation synchronized.",
       "authorization_source": [
         ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/workflow-retry-authorization.yaml"
       ],
@@ -214,7 +214,7 @@
       },
       "outcome": "completed",
       "correctable_failure": false,
-      "material_state_change": "F-003 report state and task continuation synchronized.",
+      "material_state_change": "",
       "authorization_source": [
         ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/workflow-retry-authorization.yaml"
       ],

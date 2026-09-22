@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-22-artifact-lifecycle-completion`](2026-09-22-artifact-lifecycle-completion/workflow.yaml) | Complete artifact lifecycle authoring and validation assessment | `ai-context-governance` | `completed` | `2026-09-22T10:33:40+08:00` | [plan](2026-09-22-artifact-lifecycle-completion/workflow-plan.md) |
+| [`2026-09-22-artifact-lifecycle-completion`](2026-09-22-artifact-lifecycle-completion/workflow.yaml) | Complete artifact lifecycle authoring and validation assessment | `ai-context-governance` | `completed` | `2026-09-22T10:47:44+08:00` | [plan](2026-09-22-artifact-lifecycle-completion/workflow-plan.md) |
 | [`2026-09-22-role-metadata-authoring`](2026-09-22-role-metadata-authoring/workflow.yaml) | Author and migrate dynamic role metadata | `ai-context-governance` | `completed` | `2026-09-22T07:44:44+08:00` | [plan](2026-09-22-role-metadata-authoring/workflow-plan.md) |
 | [`2026-09-21-artifact-shared-core`](2026-09-21-artifact-shared-core/workflow.yaml) | Share artifact primitives and integrate existing producers | `ai-context-governance` | `completed` | `2026-09-21T23:15:03+08:00` | [plan](2026-09-21-artifact-shared-core/workflow-plan.md) |
 | [`2026-09-21-schema-artifact-lifecycle`](2026-09-21-schema-artifact-lifecycle/workflow.yaml) | Analyze schema artifact authoring, migration and validation consolidation | `ai-context-governance` | `completed` | `2026-09-21T22:17:55+08:00` | [plan](2026-09-21-schema-artifact-lifecycle/workflow-plan.md) |

@@ -11,7 +11,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-lifecycle-completion`
 - `created_at`: `2026-09-22T09:00:30.694010+08:00`
-- `updated_at`: `2026-09-22T10:33:40+08:00`
+- `updated_at`: `2026-09-22T10:47:44+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -47,7 +47,7 @@ Code graph refreshed at base HEAD, but its coverage excludes .ai/scripts and .ai
 
 ## Resume
 
-Implementation and focused validation are complete. Follow the latest Verification And Delivery Checkpoint below; original evidence is archived; final delivery admission remains pending before authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
+Implementation and focused validation are complete. Follow the latest Final Admission Projection Corrigendum below; original evidence is archived, and final admission remains pending before authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
 
 ## Implementation And P4 Checkpoint
 
@@ -78,3 +78,9 @@ Verified subject cca7dcb12355dcabfc710f34d711080073661494; final verification as
 ### Delivery Preparation Corrigendum (2026-09-22T10:33:40+08:00)
 
 Before the first delivery commit, root corrected LIFE-003 last_completed_step to record the passed fourth review and clarified that archived evidence is complete while final admission remains pending. The bounded P1 workflow.update tool rejected terminal-workflow updates; this explicit governance-owned metadata corrigendum follows WORKFLOW-ARTIFACT-POLICY rather than changing that guard. It preserves completed status, acceptance criteria, final report/assessment conclusions, and all original authoring journals. No behavioral or integration result is added.
+
+### Final Admission Projection Corrigendum (2026-09-22T10:47:44+08:00)
+
+The first final-delivery gate at cae85b82fa68669dba3c71009b1880076fae659a failed F-004: retry-enabling material_state_change values in the role history were attributed to the following attempts. All other delivery criteria passed or were reused with proof. Root has corrected only that projection: attempts 1, 2 and 3 now record the F-001, F-002 and F-003 repairs that enabled their successors; attempt 4 has no subsequent repair. Original invocation evidence, outcomes, native timing nulls, authorizations, reviewer bodies and all 72 archived originals remain unchanged.
+
+This is an explicit governance-owned metadata corrigendum to the delivery record, with completed workflow status and final assessment/report conclusions preserved. The failed final-audit-01 report and proof remain in their declared ignored terminal artifacts. Exact next root action: commit this bounded correction, perform final-admission attempt 2 (budget 2) on its immutable subject without behavior/package reruns, then release custody and locally integrate only after acceptance. No new owner decision, provider mutation or broader implementation is involved.
