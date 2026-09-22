@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-framework-p2-integration`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-framework-p3-dispatch`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -22,8 +22,10 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #324 | P0 transition control | scoped override, root/source pointers, one exact source-only distribution exclusion, own workflow | integrated PR #328; Issue/Project complete; P7 verification deferred |
 | #325 | P1-A portable contracts | `.dev/design/framework-next/portable-contracts/`, own workflow | integrated PR #329; Issue/Project complete |
 | #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | integrated PR #329; Issue/Project complete |
-| #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | local implementation complete; online integration pending |
-| #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | local implementation complete; online integration pending |
+| #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
+| #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
+| #334 | P3-A knowledge lifecycle | knowledge-lifecycle design, own workflow; source scope follows contract reconciliation | ready for independent contract checkpoint |
+| #335 | P3-B work management | work-management design, own workflow; source scope follows contract reconciliation | ready for independent contract checkpoint |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -41,8 +43,8 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #330 and #331 local deliveries are integrated on the dedicated P2 branch; see [source inspection and limits](reports/p2-integration.md). Exact eight-member metadata/manifest comparison matched. Arrange online PR integration, then open bounded P3 knowledge and work-management capabilities with a single owner for any shared contract decisions. All product execution remains deferred to P7; root runtime and installed state have not changed.
+Current action: P2 merged through PR #333 at `ba36554b418977a2c8a12d51152c7b625bf48124`; #330/#331 are CLOSED/COMPLETED and Project Done. Dispatch #334/#335 for early local contract checkpoints. They must settle lifecycle/authority, selected config namespace coexistence, owned schema/version and package member changes before concurrent product edits. The coordinator reviews both, chooses any common contract changes and resumes each same task with exclusive source ownership. These checkpoints do not close the Issues and do not require another user approval for already delegated routine design decisions. All product/tool/build/install trials stay deferred to P7.
 
 ## Remaining work and verification
 
-P2-P6 implementation and P7 redesigned validation/pipeline review remain open. Final independent review, tool trials and I/O tests have not run. Pipeline restoration is not scheduled automatically. [Remediation report](reports/remediation-report.md) maps current evidence without claiming final closure.
+P3-P6 implementation and P7 redesigned validation/pipeline review remain open. Final independent review, tool trials and I/O tests have not run. Pipeline restoration is not scheduled automatically. [Remediation report](reports/remediation-report.md) maps current evidence without claiming final closure.

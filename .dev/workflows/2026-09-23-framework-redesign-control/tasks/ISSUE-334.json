@@ -1,0 +1,70 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-334",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-09-23T02:14:01+08:00",
+  "updated_at": "2026-09-23T02:14:01+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/334",
+  "phase": "P3-A",
+  "scope": {
+    "target": "ADR/Lesson lifecycle and project standards promotion",
+    "files": [
+      ".dev/design/framework-next/knowledge-lifecycle/",
+      ".dev/workflows/2026-09-23-knowledge-lifecycle/"
+    ],
+    "constraints": [
+      "U001",
+      "early local contract checkpoint before product implementation",
+      "same independent Astra Ultra task continues after coordinator reconciliation",
+      "no sub-agents or child-created tasks",
+      "coordinator owns common contracts and first push"
+    ],
+    "non_goals": [
+      "product execution or testing",
+      "shared metadata/config/manifest mutation before reconciliation",
+      "historical migration or root runtime cutover",
+      "provider actions/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read P2 baseline and own Issue/U001",
+      "Create issue workflow in_progress",
+      "Design bounded public/schema/config/authority interfaces",
+      "Commit local contract checkpoint and return to coordinator",
+      "Resume source implementation in same task after joint reconciliation"
+    ],
+    "validation": [
+      "readability/JSON/YAML/source/reference/Git and planned commit-message format only"
+    ],
+    "last_completed_step": "P2 merged through PR #333; P3 Issue/Project created",
+    "next_action": "Create assigned worktree and independent task for contract checkpoint"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Contract decisions, implementation and P7 verification pending",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": null,
+    "worktree": "F:/framework-next/334",
+    "branch": "codex/2026-09-23-knowledge-lifecycle",
+    "workflow_id": "2026-09-23-knowledge-lifecycle",
+    "starting_commit_source": "containing commit of handoff; exact value supplied at dispatch",
+    "model_verified": false
+  }
+}

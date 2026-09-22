@@ -1,0 +1,22 @@
+{
+  "observed_at": "2026-09-23T02:14:01+08:00",
+  "source": "live gh project item-list read-back for #334 and exact ProjectV2Item GraphQL read-back for #335",
+  "owner_review_semantics": "execution authorization, not final acceptance",
+  "items": [
+    {
+      "issue": 334,
+      "item_id": "PVTI_lAHOAwvEG84Bez7wzg8Lwjg",
+      "status": "In progress",
+      "target_release": "Unassigned",
+      "owner_review": "Approved"
+    },
+    {
+      "issue": 335,
+      "item_id": "PVTI_lAHOAwvEG84Bez7wzg8Lwo8",
+      "status": "In progress",
+      "target_release": "Unassigned",
+      "owner_review": "Approved"
+    }
+  ],
+  "readback_notes": "An initial #335 GraphQL request had PowerShell native-argument interpolation error; corrected scalar node ID returned the current fields. The failed request is not success evidence."
+}

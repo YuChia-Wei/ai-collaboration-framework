@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T01:41:18+08:00",
-  "updated_at": "2026-09-23T02:07:46+08:00",
+  "updated_at": "2026-09-23T02:14:01+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -54,7 +54,7 @@
       "direct readability/syntax/reference/Git checks and complete message-file format only"
     ],
     "last_completed_step": "Received clean coherent local delivery, inspected source and compared exact eight-member Lesson metadata/manifest",
-    "next_action": "Online PR integration; P3 capability work follows, P7 retains all product execution/behavior verification"
+    "next_action": "P3 capability work and P6/P7 deferred install/verification remain with program"
   },
   "results": {
     "summary": "Bounded P2 code/document implementation complete and locally integrated; no tool/build/install execution or validation acceptance.",
@@ -83,9 +83,13 @@
   "delivery": {
     "head": "4b0c985cacc10b2eca174e09892c7a31c5051d3c",
     "worktree_clean_observed": true,
-    "provider_integration": "pending",
+    "provider_integration": "merged",
     "verification_state": "deferred-by-owner",
     "handoff": ".dev/workflows/2026-09-23-candidate-assembly/handoff.yaml",
-    "coordinator_review": "Source inspection and exact metadata/manifest comparison only; not independent audit"
+    "coordinator_review": "Source inspection and exact metadata/manifest comparison only; not independent audit",
+    "pull_request": 333,
+    "merge_commit": "ba36554b418977a2c8a12d51152c7b625bf48124",
+    "issue_state": "CLOSED/COMPLETED",
+    "project_status": "Done"
   }
 }

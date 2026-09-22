@@ -32,3 +32,7 @@ P1 merged through PR #329 (`b4d54966a0ed704d6b300b9f965976e27cd8512d`). Issues #
 ## P2 code-delivery checkpoint
 
 #330/#331 local implementations have been received and combined. [P2 integration review](p2-integration.md) records exact subjects, member comparison, source-inspection limits and deferred first-use/platform/assembly concerns. This advances implementation only; F-01/F-02/F-05/F-07/F-08 remain partially resolved until later capability, installation and verification work. Program #322 is not complete.
+
+## P3 preparation
+
+P2 online integration completed in PR #333; #330/#331 and Project items are closed/Done. #334/#335 are open and in progress for knowledge lifecycle and work-management capabilities. Each first delivers a local contract checkpoint, then continues implementation in the same independent task after coordinator reconciliation. Source/shared edits are withheld until their lifecycle/config/schema interfaces agree; this is planned sequencing, not new owner approval. P7 verification remains deferred.
