@@ -1,0 +1,71 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-335",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T02:14:01+08:00",
+  "updated_at": "2026-09-23T02:20:03+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335",
+  "phase": "P3-B",
+  "scope": {
+    "target": "PR/local backlog and one GitHub provider boundary",
+    "files": [
+      ".dev/design/framework-next/work-management/",
+      ".dev/workflows/2026-09-23-work-management/"
+    ],
+    "constraints": [
+      "U001",
+      "early local contract checkpoint before product implementation",
+      "same independent Astra Ultra task continues after coordinator reconciliation",
+      "no sub-agents or child-created tasks",
+      "coordinator owns common contracts and first push"
+    ],
+    "non_goals": [
+      "product execution or testing",
+      "shared metadata/config/manifest mutation before reconciliation",
+      "historical migration or root runtime cutover",
+      "provider actions/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read P2 baseline and own Issue/U001",
+      "Create issue workflow in_progress",
+      "Design bounded public/schema/config/authority interfaces",
+      "Commit local contract checkpoint and return to coordinator",
+      "Resume source implementation in same task after joint reconciliation"
+    ],
+    "validation": [
+      "readability/JSON/YAML/source/reference/Git and planned commit-message format only"
+    ],
+    "last_completed_step": "Independent Astra Ultra task created; assigned F: Git identity and runtime model read back",
+    "next_action": "Receive local design contract checkpoint; reconcile shared interfaces before source continuation in same task"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Contract decisions, implementation and P7 verification pending",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0ca57-dcfc-7283-beba-5ee537610dd8",
+    "worktree": "F:/framework-next/335",
+    "branch": "codex/2026-09-23-work-management",
+    "workflow_id": "2026-09-23-work-management",
+    "model_verified": "read-only runtime thread metadata: gpt-6-astra / ultra",
+    "starting_commit": "a34ecd3c9423b17b6bb745f598ef22fd7437dd24",
+    "worktree_verified": "first command execution cwd and Git root/branch/HEAD/common-dir match assignment"
+  }
+}
