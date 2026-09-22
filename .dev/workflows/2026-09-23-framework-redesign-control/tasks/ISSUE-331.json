@@ -1,0 +1,76 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-331",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T01:41:18+08:00",
+  "updated_at": "2026-09-23T01:43:50+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/331",
+  "phase": "P2-B",
+  "scope": {
+    "target": "Implement exact source selection and candidate assembly",
+    "files": [
+      "src/distribution/",
+      "src/profiles/",
+      "src/adapters/codex/",
+      "tools/build-development.py",
+      ".dev/design/framework-next/distribution-implementation/",
+      ".dev/workflows/2026-09-23-candidate-assembly/"
+    ],
+    "constraints": [
+      "U001",
+      "no sub-agents or child-created tasks",
+      "one writer per assigned RAM-disk worktree",
+      "coordinator owns root/shared files and first push",
+      "P2 code delivery only; no behavioral tool execution or build/install trials"
+    ],
+    "non_goals": [
+      "tests and CI",
+      "release/publication",
+      "root runtime/core/config mutation",
+      "bulk relocation or historical record conversion",
+      "other issue paths"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read exact P1 input and U001",
+      "Verify own worktree and create bounded issue workflow",
+      "Implement only owned files",
+      "Inspect source/syntax without product execution",
+      "Commit coherent local delivery and hand off"
+    ],
+    "validation": [
+      "direct readability/syntax/reference/Git checks and complete message-file format only"
+    ],
+    "last_completed_step": "Independent task started and verified the assigned RAM-disk worktree, branch, exact HEAD and durable Git common directory",
+    "next_action": "Await local coherent delivery and reconcile package membership before first push"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Implementation and P7 behavior verification pending",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0ca36-8242-7640-b332-ba17cc1e4caa",
+    "worktree": "F:/framework-next/331",
+    "branch": "codex/2026-09-23-candidate-assembly",
+    "workflow_id": "2026-09-23-candidate-assembly",
+    "model_verified": "local runtime thread metadata read-back: gpt-6-astra / ultra",
+    "starting_commit": "a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc",
+    "worktree_verified": "command execution cwd and Git read-back in assigned F: worktree"
+  }
+}

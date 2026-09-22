@@ -1,0 +1,21 @@
+{
+  "observed_at": "2026-09-23T01:41:18+08:00",
+  "source": "gh project item-list live read-back saved by coordinator",
+  "semantics": "Owner review Approved is execution authorization, not deliverable acceptance",
+  "items": [
+    {
+      "issue": 330,
+      "item_id": "PVTI_lAHOAwvEG84Bez7wzg8LcYI",
+      "status": "In progress",
+      "target_release": "Unassigned",
+      "owner_review": "Approved"
+    },
+    {
+      "issue": 331,
+      "item_id": "PVTI_lAHOAwvEG84Bez7wzg8Lccw",
+      "status": "In progress",
+      "target_release": "Unassigned",
+      "owner_review": "Approved"
+    }
+  ]
+}

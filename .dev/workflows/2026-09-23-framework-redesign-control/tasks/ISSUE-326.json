@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T01:03:26+08:00",
-  "updated_at": "2026-09-23T01:36:25+08:00",
+  "updated_at": "2026-09-23T01:41:18+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -48,7 +48,7 @@
       "document/Git read-back only; framework verification deferred by owner"
     ],
     "last_completed_step": "Coordinator inspected corrected delivery f2255fe3328bd91f8f9a54c7cea8a1e9e6ffecac and reconciled exact six-member inventory and JSON config with #325",
-    "next_action": "Integrate P1 through online PR; then dispatch bounded P2 implementation with tools/trials deferred to P7"
+    "next_action": "P2 owns implementation; P7 owns deferred behavior verification"
   },
   "results": {
     "summary": "P1-B design complete and CR326-001 corrected. Target tracked stable layout adopted; no product installation or stable release exists.",
@@ -75,7 +75,11 @@
     "worktree_clean_observed": true,
     "handoff": ".dev/workflows/2026-09-23-source-layout/handoff.yaml",
     "verification_state": "deferred-by-owner",
-    "provider_integration": "pending",
-    "cross_review": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p1-integration-and-p2-scope.md"
+    "provider_integration": "merged",
+    "cross_review": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p1-integration-and-p2-scope.md",
+    "pull_request": 329,
+    "merge_commit": "b4d54966a0ed704d6b300b9f965976e27cd8512d",
+    "issue_state": "CLOSED/COMPLETED",
+    "project_status": "Done"
   }
 }
