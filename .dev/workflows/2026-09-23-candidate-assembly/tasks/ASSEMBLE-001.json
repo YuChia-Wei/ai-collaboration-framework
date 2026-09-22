@@ -1,0 +1,39 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ASSEMBLE-001",
+  "workflow_id": "2026-09-23-candidate-assembly",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T01:44:29+08:00",
+  "updated_at": "2026-09-23T01:59:15+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": ["ASM-20260923-00-6oq"],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/331",
+  "scope": {
+    "target": "Implement exact Git selection and development candidate assembly",
+    "files": ["src/distribution/", "src/profiles/", "src/adapters/codex/", "tools/build-development.py", ".dev/design/framework-next/distribution-implementation/", ".dev/workflows/2026-09-23-candidate-assembly/"],
+    "constraints": ["U001", "No sub-agents", "Exact allowlist only", "No product execution", "Local commits before first push"],
+    "non_goals": ["Installed-state mutation", "Apply/delete/migration/recovery engine", "Tests or CI", "Root/shared edits", "Publication"]
+  },
+  "execution": {
+    "steps": ["Read P1/U001/live Issue and verify assigned checkout", "Implement selection/projection/assembly", "Inspect syntax/readability/scope", "Commit and hand off"],
+    "validation": ["U001 permits static readability/syntax/Git and commit-message format only"],
+    "last_completed_step": "Implemented exact source selection, Codex projection, candidate assembly and integration documentation; inspected source and syntax",
+    "next_action": "Coordinator reads final #330 metadata/member bytes, integrates local commits, then P7 selects actual trials"
+  },
+  "results": {
+    "summary": "Completed the bounded P2-B code/document delivery. Eight-member Lesson allowlist matches the coordinator-adopted interface. No product tool, build, installation, test or CI has run.",
+    "files_changed": ["src/distribution/", "src/profiles/lesson-minimal.yaml", "src/adapters/codex/skill-entry.md.template", "tools/build-development.py", ".dev/design/framework-next/distribution-implementation/README.md", ".dev/workflows/2026-09-23-candidate-assembly/"],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "P2-A exact source integration and all behavioral verification remain pending; broader assessment is not closed",
+    "follow_up_needed": true,
+    "actual_checks": ["UTF-8 read-back", "ast.parse without importing/executing product modules", "JSON/YAML parsing", "changed Markdown link resolution", "source/member/interface inspection", "Git scope/diff and complete commit-message format exception"],
+    "verification_disposition": {"status": "deferred-by-owner", "authority": "U001", "owner": "program-322-coordinator/P7", "next_action": "Select and execute redesigned checks after implementation"}
+  }
+}
