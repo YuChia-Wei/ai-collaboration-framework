@@ -5,13 +5,13 @@
 - `report_id`: `remediation-report-2026-09-22-artifact-gap-reduction`
 - `workflow_id`: `2026-09-22-artifact-gap-reduction`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-09-22T14:12:58+08:00`
-- `updated_at`: `2026-09-22T15:53:53.643677+08:00`
+- `updated_at`: `2026-09-22T20:09:14.698924+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.1`
 - `baseline_assessment`: `ASM-20260921-18-gav`
-- `verification_assessment`: `pending`
+- `verification_assessment`: `ASM-20260922-20-qk2`
 
 ## Remediation Summary
 
@@ -101,6 +101,16 @@ Request 省略 timestamp 時，工具在 preview 自動取得實際時間；JSON
 
 另有 lifecycle registry 3/3（5.988 s）、validation profile registry 11/11（6.980 s）、精簡套件 CLI/import 相容案例 1/1（3.304 s）通過。實際 CLI 使用發現生成區塊更新在檔尾多留空白行，修正後新增格式回歸案例，並連同投影同步與跨檔恢復共 3/3 passed（18.767 s）。新增自動化案例共九個；這三項包含兩項受影響案例的重驗，沒有宣稱重新執行未受影響的完整矩陣。Canonical AI context 檢查亦已通過。
 
+## 最終獨立驗證與交付範圍
+
+[獨立驗證報告](../../../assessments/ASM-20260922-20-qk2/report.md) 針對 `9423211893fc75ce6f4eac799d79df8a48b8cd33` 完成審查並回報 passed；原始結果與前三次 failed 紀錄依 bytes／digest 保留。最新 owner 指示要求先合併與關閉 Issue，framework 維護模式與發展方向另待後續評估。第四次審查涵蓋修正文稿及新增報告工具；沒有以本報告替代獨立判斷。
+
+該提交的五項必要 hosted contexts 均已成功。Governance run `35702235195` 的 authoring suite 為 45/45、execution artifact suite 為 37/37、catalog suite 為 30/30、routing contract 為 9/9。這些是固定提交的執行證據；最終文件提交仍需自己的 hosted admission。
+
+本次接受的範圍是原 16 項缺口的明確處置、可用的限定 producers，以及自動時間／狀態維護。保留的 9 個 manual-gap 與 20 個 semantic-owner 路由已交代能力界線；它們不是尚待完成的已承諾通用 writer。後續 framework 方向不納入本次 Issue 結案。
+
+Workflow-owned 實作與本機適用驗證由下方自動狀態投影記錄；最後文件 intake、provider admission、合併、Issue／Project 回讀另存 ignored／provider evidence，不以事後 tracked evidence-sync commit 改變已審查內容。
+
 ## Closure Evidence
 
 交付分支對應 [PR #321](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/321) 與 [Issue #320](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/320)。上方 CI 證據僅適用其明確列出的 commit。GitHub admission、integration 與 Issue 結案由各自實際回讀證據決定；下方自動區塊只描述本地 workflow/task 記錄。
@@ -108,13 +118,13 @@ Request 省略 timestamp 時，工具在 preview 自動取得實際時間；JSON
 ## Current Workflow State
 
 <!-- artifact-authoring: workflow-state/v1; generated from workflow.yaml and tasks -->
-- Workflow status: `blocked`
-- Current phase: verification
+- Workflow status: `completed`
+- Current phase: completed
 
 | Task | Status | Last completed step | Next action |
 | --- | --- | --- | --- |
 | GAP-001 | completed | Implemented four input preparers. Attempt 1 was blocked before tests by sandbox fixture permissions; attempt 2 ran 7 tests, 6 passed and dependency-request failed because the shared loader did not register dataclass modules. | Runtime input implementation and selected checks complete; continue GAP-002 integration and fixed-subject verification. |
-| GAP-002 | blocked | Third independent review retained F-003 historical wording; corrected in 8d31fc7d. Prior failed evidence remains preserved. | Await explicit authorization for further independent review, including the owner-requested report automation changes; do not dispatch a new retry implicitly. |
+| GAP-002 | completed | Independent attempt4 passed on94232118; native assessment ASM-20260922-20-qk2 preserves previous failures and verifies report automation. |  |
 | GAP-003 | completed | Implemented automatic preview timestamps, report/progress operations and generated current-state checks; 8 automation cases and 6 focused compatibility cases passed. |  |
 
 Recorded workflow state is not independent verification, current-head CI admission, or provider closure.

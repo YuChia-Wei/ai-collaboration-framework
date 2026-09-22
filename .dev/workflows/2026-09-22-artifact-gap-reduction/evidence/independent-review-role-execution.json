@@ -1,0 +1,234 @@
+{
+  "role_execution_id": "GAP-320-fixed-head-independent-auditor",
+  "role_asset_id": "fixed-head-independent-auditor",
+  "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+  "owning_skill": "ai-context-auditor",
+  "stage_id": "GAP-320-verification",
+  "applicability": {
+    "result": "applies",
+    "reason": "Explicit high-risk post-remediation evidence-custody verification on fixed clean subjects."
+  },
+  "selection": {
+    "disposition": "delegated",
+    "reason": "Independent implementation audit followed by bounded repair reviews; root owns publication and admission.",
+    "delegation_evaluation": {
+      "safety_gates": {
+        "applicable_role": true,
+        "current_session_runtime_support_verified": true,
+        "bounded_input_output_permissions_stop": true,
+        "approval_security_credential_boundaries_satisfied": true,
+        "disjoint_mutation_scope": true,
+        "named_parent_and_final_integration_owner": true
+      },
+      "material_value_triggers": [
+        "meaningful_isolation",
+        "specialist_context_benefit"
+      ],
+      "cost_failure_retry_risk": {
+        "result": "supports-delegation",
+        "reason": "Independent review covers changed implementation boundaries and current hosted evidence while preserving prior failures."
+      }
+    }
+  },
+  "input_envelope": {
+    "goal": "Verify Issue320 bounded preparation and original manual-gap dispositions.",
+    "scope": [
+      "Base237a01f4 through implementation, repairs and report automation94232118",
+      "Explicit review-input criteria, authority and retained validation evidence"
+    ],
+    "non_goals": [
+      "Repair",
+      "Full local matrix",
+      "Provider or credential mutation",
+      "Release or downstream adoption"
+    ],
+    "source_refs": [
+      ".dev/assessments/ASM-20260922-20-qk2/report.md"
+    ],
+    "mandatory_references": [
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
+    ],
+    "constraints": [
+      "Fixed clean subject",
+      "Read-only lease",
+      "One terminal callback per attempt"
+    ],
+    "stop_conditions": [
+      "Content or authority drift",
+      "Missing evidence",
+      "Timeout or environment blocker"
+    ]
+  },
+  "permissions": {
+    "read_scope": [
+      "Issue320 changed context and bounded evidence"
+    ],
+    "write_scope": [
+      ".dev/ai-context/local/gap-audit-01/",
+      ".dev/ai-context/local/gap-audit-02/",
+      ".dev/ai-context/local/gap-audit-03/",
+      ".dev/ai-context/local/gap-audit-04/"
+    ],
+    "external_actions": [],
+    "secret_handling": "no-secret-values"
+  },
+  "executor": {
+    "kind": "runtime-worker",
+    "identity": "/root/lifecycle_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+    "runtime_support_verified": true
+  },
+  "invocation_evidence": {
+    "invocation_id": "/root/lifecycle_independent_audit/GAP-320-AUDIT-04",
+    "started_at": null,
+    "completed_at": null,
+    "outcome": "completed",
+    "evidence_refs": [
+      ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/review-result.md"
+    ]
+  },
+  "output": {
+    "expected": [
+      "Independent fixed-subject verification and repair reconciliation"
+    ],
+    "returned": [
+      "Attempt1 failed F-001/F-002/F-003; attempt2 resolved F-001/F-002 and retained timestamp defect F-003; attempt3 confirmed the timestamp repair but retained ambiguous historical table wording; authorized attempt4 passed. Original failures and exact non-sensitive evidence retained; native invocation timestamps unavailable."
+    ],
+    "evidence_refs": [
+      ".dev/assessments/ASM-20260922-20-qk2/report.md"
+    ],
+    "bounded": true
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "disposition": "delegated",
+      "executor": {
+        "kind": "runtime-worker",
+        "identity": "/root/lifecycle_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+        "runtime_support_verified": true
+      },
+      "invocation_evidence": {
+        "invocation_id": "/root/lifecycle_independent_audit/GAP-320-AUDIT-01",
+        "started_at": null,
+        "completed_at": null,
+        "outcome": "completed",
+        "evidence_refs": [
+          ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/review-result.md"
+        ]
+      },
+      "outcome": "completed",
+      "correctable_failure": true,
+      "material_state_change": "F-001 fixture module isolation, F-002 portable examples and F-003 current-state pointers repaired in 63b95af1 before attempt 2.",
+      "authorization_source": [
+        ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow-plan.md"
+      ],
+      "evidence_refs": [
+        ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/review-result.md"
+      ]
+    },
+    {
+      "number": 2,
+      "disposition": "delegated",
+      "executor": {
+        "kind": "runtime-worker",
+        "identity": "/root/lifecycle_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+        "runtime_support_verified": true
+      },
+      "invocation_evidence": {
+        "invocation_id": "/root/lifecycle_independent_audit/GAP-320-AUDIT-02",
+        "started_at": null,
+        "completed_at": null,
+        "outcome": "completed",
+        "evidence_refs": [
+          ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/review-result.md"
+        ]
+      },
+      "outcome": "completed",
+      "correctable_failure": true,
+      "material_state_change": "Residual F-003 report timestamp corrected in dfdf9699, with fresh third-review workflow authorization.",
+      "authorization_source": [
+        ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow-plan.md"
+      ],
+      "evidence_refs": [
+        ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/review-result.md"
+      ]
+    },
+    {
+      "number": 3,
+      "disposition": "delegated",
+      "executor": {
+        "kind": "runtime-worker",
+        "identity": "/root/lifecycle_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+        "runtime_support_verified": true
+      },
+      "invocation_evidence": {
+        "invocation_id": "/root/lifecycle_independent_audit/GAP-320-AUDIT-03",
+        "started_at": null,
+        "completed_at": null,
+        "outcome": "completed",
+        "evidence_refs": [
+          ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/review-result.md"
+        ]
+      },
+      "outcome": "completed",
+      "correctable_failure": true,
+      "material_state_change": "F-003 chronology corrected; report automation implemented in94232118; latest owner merge/closure request authorized the remaining review.",
+      "authorization_source": [
+        ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/workflow-retry-authorization.yaml"
+      ],
+      "evidence_refs": [
+        ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/review-result.md"
+      ]
+    },
+    {
+      "number": 4,
+      "disposition": "delegated",
+      "executor": {
+        "kind": "runtime-worker",
+        "identity": "/root/lifecycle_independent_audit (fixed-head-independent-auditor; gpt-5.6-sol, max)",
+        "runtime_support_verified": true
+      },
+      "invocation_evidence": {
+        "invocation_id": "/root/lifecycle_independent_audit/GAP-320-AUDIT-04",
+        "started_at": null,
+        "completed_at": null,
+        "outcome": "completed",
+        "evidence_refs": [
+          ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/review-result.md"
+        ]
+      },
+      "outcome": "completed",
+      "correctable_failure": false,
+      "material_state_change": "",
+      "authorization_source": [
+        ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/workflow-retry-authorization.yaml"
+      ],
+      "evidence_refs": [
+        ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/review-result.md"
+      ]
+    }
+  ],
+  "fallback": {
+    "considered": false,
+    "reason": "Native independent reviewer retained ownership.",
+    "resulting_disposition": null,
+    "inline_contract_evidence": {
+      "same_role_path_and_mandatory_references": false,
+      "bounded_input_output_permissions_stop": false,
+      "approval_security_credential_boundaries_satisfied": false,
+      "disjoint_mutation_scope": false,
+      "named_parent_and_final_integration_owner": false,
+      "current_inline_support_verified": false,
+      "evidence_refs": []
+    }
+  },
+  "final_integration_owner": {
+    "owner": "root",
+    "decision": "accepted",
+    "evidence_refs": [
+      ".dev/assessments/ASM-20260922-20-qk2/report.md"
+    ]
+  }
+}

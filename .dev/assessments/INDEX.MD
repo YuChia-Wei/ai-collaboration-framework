@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260922-20-qk2`](ASM-20260922-20-qk2/assessment.yaml) | Independent verification of bounded artifact writers and automated report maintenance | `ai-context-verification` | `ai-context-auditor` | `final` | `9423211893fc75ce6f4eac799d79df8a48b8cd33` | `2026-09-22T20:05:06.437578+08:00` | [report](ASM-20260922-20-qk2/report.md) |
 | [`ASM-20260922-10-8ay`](ASM-20260922-10-8ay/assessment.yaml) | Artifact lifecycle P3/P4 independent verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cca7dcb12355dcabfc710f34d711080073661494` | `2026-09-22T10:29:29+08:00` | [report](ASM-20260922-10-8ay/report.md) |
 | [`ASM-20260922-07-0n1`](ASM-20260922-07-0n1/assessment.yaml) | P3 dynamic role metadata independent verification | `ai-context-verification` | `ai-context-auditor` | `final` | `fb1c310b6629eece95d9d0bb51da8ef23a1f1e20` | `2026-09-22T07:43:57+08:00` | [report](ASM-20260922-07-0n1/report.md) |
 | [`ASM-20260921-23-qsn`](ASM-20260921-23-qsn/assessment.yaml) | P2 shared artifact core independent verification | `ai-context-verification` | `ai-context-auditor` | `final` | `b808533b71cb257fdfdd741b0dafe5c3b703178e` | `2026-09-21T23:14:03+08:00` | [report](ASM-20260921-23-qsn/report.md) |

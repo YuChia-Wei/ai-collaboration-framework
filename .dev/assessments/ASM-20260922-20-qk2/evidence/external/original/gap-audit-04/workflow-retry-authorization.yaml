@@ -1,0 +1,25 @@
+schema_version: '1.0'
+record_type: workflow-retry-authorization
+workflow_id: 2026-09-22-artifact-gap-reduction
+task_id: GAP-002
+attempt: 4
+authorized_at: '2026-09-22T16:29:54.121642+08:00'
+subject_sha: 9423211893fc75ce6f4eac799d79df8a48b8cd33
+prior_failure_sha256: c017c8930029a8895a0970541bf60ad7293db7bd33bd3e2e42d4aa4737ccfc79
+decision: authorize-retry
+consumed_by_packet_id: GAP-320-AUDIT-04
+scope:
+- 'Owner latest instruction: first merge and close Issue320; later separately reassess
+  framework maintenance and direction. This authorizes the remaining necessary independent
+  review for the requested delivery.'
+- One review of the corrected report chronology and newly implemented report automation
+  on the current clean commit; preserve previous failed findings and use matching
+  hosted evidence.
+non_goals:
+- Full matrix rerun
+- Provider mutation by auditor
+- Tracked repair by auditor
+- Framework direction redesign
+terminal_condition: One bounded callback; return custody to root for truthful publication
+  and final admission; no autonomous additional retry.
+authorization_sha256: 1606f384fbcc8b60af07d274fb27b9862fe492fe72fc9fb72fac3ab244e3ecbc

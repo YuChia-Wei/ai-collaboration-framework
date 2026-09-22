@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-22-artifact-gap-reduction`
 - `base_branch`: `main`
-- `status`: `blocked`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-gap-reduction`
 - `created_at`: `2026-09-22T13:53:22+08:00`
-- `updated_at`: `2026-09-22T15:53:53.643677+08:00`
+- `updated_at`: `2026-09-22T20:09:14.698924+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -64,16 +64,23 @@ Historical authorization: consumed by GAP-320-AUDIT-03. It does not authorize a 
 
 The workflow owner authorizes exactly one third independent attempt after the corrected report metadata is committed. Scope: F-003 timestamp correction, current repair chronology, exact unchanged implementation/authority proof and retained failed evidence. Reuse the already verified behavior with explicit Git identity proof; do not repeat behavioral suites or mutate a provider. Bind a fresh sealed workflow-retry-authorization to the new commit, the second failed report hash, attempt 3 and its sole consuming packet. One callback returns custody to root; no autonomous further retry is authorized.
 
+
+## Authorized Terminal Delivery
+
+The latest owner instruction requests merging this work and closing Issue #320 before a separate framework maintenance/direction reassessment. It authorizes the remaining required review and provider operations. Attempt4 independently passed after the report repair and automation; exact prior failures remain retained. Root accepts the local implementation/verification result and owns native publication, final-content intake, current-head hosted admission, merge and Issue/Project reconciliation.
+
+The fourth authorization was consumed by GAP-320-AUDIT-04. Final publication intake is a separate gate over the resulting delivery metadata; it must not rewrite independent conclusions or rerun unchanged behavior. Future framework redesign, publication, releases, credentials and target adoption remain outside this delivery.
+
 ## Current Workflow State
 
 <!-- artifact-authoring: workflow-state/v1; generated from workflow.yaml and tasks -->
-- Workflow status: `blocked`
-- Current phase: verification
+- Workflow status: `completed`
+- Current phase: completed
 
 | Task | Status | Last completed step | Next action |
 | --- | --- | --- | --- |
 | GAP-001 | completed | Implemented four input preparers. Attempt 1 was blocked before tests by sandbox fixture permissions; attempt 2 ran 7 tests, 6 passed and dependency-request failed because the shared loader did not register dataclass modules. | Runtime input implementation and selected checks complete; continue GAP-002 integration and fixed-subject verification. |
-| GAP-002 | blocked | Third independent review retained F-003 historical wording; corrected in 8d31fc7d. Prior failed evidence remains preserved. | Await explicit authorization for further independent review, including the owner-requested report automation changes; do not dispatch a new retry implicitly. |
+| GAP-002 | completed | Independent attempt4 passed on94232118; native assessment ASM-20260922-20-qk2 preserves previous failures and verifies report automation. |  |
 | GAP-003 | completed | Implemented automatic preview timestamps, report/progress operations and generated current-state checks; 8 automation cases and 6 focused compatibility cases passed. |  |
 
 Recorded workflow state is not independent verification, current-head CI admission, or provider closure.

@@ -1,0 +1,40 @@
+schema_version: '1.0'
+assessment_id: ASM-20260922-20-qk2
+commit_search_id: ASM-20260922-20-qk2
+assessment_type: ai-context-verification
+title: Independent verification of bounded artifact writers and automated report maintenance
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-22-artifact-gap-reduction
+base_branch: main
+created_at: '2026-09-22T20:03:16.482257+08:00'
+updated_at: '2026-09-22T20:05:06.437578+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  branch: codex/2026-09-22-artifact-gap-reduction
+  commit: 9423211893fc75ce6f4eac799d79df8a48b8cd33
+  repository: YuChia-Wei/ai-collaboration-framework
+scope:
+  included:
+  - Issue320 bounded execution input builders, restricted catalogs, report automation, registry dispositions and supporting evidence
+  excluded:
+  - Product source and tests
+  - Unchanged full matrices
+  - Provider admission, integration, Issue closure and future framework redesign
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+  - ASM-20260921-18-gav
+  workflow_refs:
+  - 2026-09-22-artifact-gap-reduction
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Retained the independent fixed-subject review result and its exact original non-sensitive evidence.
+  next_action: ''
+  blockers: []

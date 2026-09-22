@@ -1,0 +1,249 @@
+{
+  "schema_version": "independent-review-verification/v1",
+  "record_type": "independent-review-verification",
+  "attempt": 3,
+  "budget": 3,
+  "outcome": "failed",
+  "parent_action": "reroute",
+  "blocking_findings": [
+    "F-003"
+  ],
+  "execution_commit": "dfdf96991003766ec3fe71b2c941dd420dea7c8e",
+  "base_commit": "237a01f437f3005ea57885714f6ebfc3037d196d",
+  "repair_parent_commit": "63b95af148b574a6dc5f2bc8149010975a8c4a93",
+  "subject": {
+    "base_tree": "4463fd12170ca03d9c7a98f71da45ed46450bd55",
+    "head_tree": "1822639420c59c4b09153428c6ae9dd330bcba4e",
+    "subject_digest": "305d799d780133d8e419658e8c4486d9612541e7d19437d83d604a4e3f45aa8b"
+  },
+  "bindings": {
+    "criteria_sha256": "5b514adaf82c6c9935721fc17a454f24c389f89516178363b9de682f7b0ee74d",
+    "authority_sha256": "db820e5bcfa8b87b7f393e4ed7883e4dd185b371a098b0517411654a1c99dbe1",
+    "canonical_review_input_sha256": "ac93171e21c6d03a85250db3def553668fcdb01199ce2ba1a78edf3f703cf81f",
+    "review_input_file_sha256": "559f07f7ad4349aebf874cfb29c7812e6d09f88b0119ac3ca54dffee6c19c9a3",
+    "packet_declared_sha256": "8fbb8741b0fec8ef14a7b9a4ec69fee87b0e82be549911535e4cdd3a762ca694",
+    "packet_file_sha256": "561c485d13163c8aeec6e01112f88c55c6f20c1de3eb5eaeb828455dac22346d",
+    "lease_declared_sha256": "511b35d239a36da08fed1c2b62ceebf5c7b4adc4c4504bf5ba7e806d23679960",
+    "lease_file_sha256": "c68949719e072a214b8fe54cd0883742e06f254e0c8eb98511f19b23cc122a8f"
+  },
+  "retry_authorization": {
+    "ref": ".dev/ai-context/local/gap-audit-03/workflow-retry-authorization.yaml",
+    "declared_sha256": "63815d5bbbe1f4f327407d464df7629cf9bf6feb0a430b6a2758b621de09c69e",
+    "file_sha256": "62599026b00444b547e66c4bc826d17268728cbf1b4531f1dd0edacd8b7b441f",
+    "prior_failure_sha256": "a4e89a9dccd062df8ddc7dee0e616265d5082ff038d8842f380bf5ee8dae4280",
+    "consumed_by_packet_id": "GAP-320-AUDIT-03",
+    "scope_respected": true
+  },
+  "preflight": {
+    "before_inspection": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed",
+      "clean_tracked_checkout": true
+    },
+    "after_inspection": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed",
+      "clean_tracked_checkout": true,
+      "binding_digests_unchanged": true
+    }
+  },
+  "attempt_3_delta": {
+    "changed_path_count": 5,
+    "changed_paths": [
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/reports/remediation-report.md",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/tasks/GAP-002.json",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow-plan.md",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow.yaml",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "timestamp_correction": "2026-09-22T14:56:01+08:00",
+    "diff_check": "passed",
+    "implementation_and_authority_unchanged": true
+  },
+  "unchanged_blob_proof": [
+    {
+      "path": ".ai/scripts/execution-artifacts.py",
+      "blob": "461a575962b058cbaa8917a37c0d084641134180"
+    },
+    {
+      "path": ".ai/scripts/execution_artifact_contract.py",
+      "blob": "b3cbdf9c83ddb763e64893fa1e84f8bdb11cb37f"
+    },
+    {
+      "path": ".ai/scripts/tests/test_execution_artifacts.py",
+      "blob": "a6d19484ee6211e09eaee3fa1f3c4a37fa35890d"
+    },
+    {
+      "path": ".ai/scripts/README.md",
+      "blob": "1be8d41d59825b6655b7d7f821e675ceaa6a6430"
+    },
+    {
+      "path": ".ai/scripts/artifact_authoring.py",
+      "blob": "925b8597de2e0c3bec0d29acf1245a554947dd52"
+    },
+    {
+      "path": ".ai/scripts/validation_subject.py",
+      "blob": "fc876df3494c8487cc71ac5e9e89a100aec62f90"
+    },
+    {
+      "path": ".ai/assets/shared/artifact-lifecycle-registry.json",
+      "blob": "9066870dc1241a09b13078e9a308a639d6b26314"
+    },
+    {
+      "path": ".ai/scripts/validation-profile-registry.sh",
+      "blob": "96a63d40f4b115aba0782542db35083da9c71fa0"
+    },
+    {
+      "path": "AGENTS.md",
+      "blob": "5f723d572ab56c2ca0bc92dad313e5c4e5b4c324"
+    },
+    {
+      "path": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      "blob": "5d0757539ba2bf3dd9a64194dd4da20ee811ec0b"
+    }
+  ],
+  "finding_reconciliation": [
+    {
+      "id": "F-001",
+      "attempt_1": "open",
+      "attempt_2": "resolved",
+      "attempt_3": "resolved",
+      "severity": "HIGH",
+      "proof": "Implementation and test blobs are unchanged from attempt two; the retained exact-head hosted execution-artifacts suite passed all thirty-seven tests with equal clean pre/post snapshot identity."
+    },
+    {
+      "id": "F-002",
+      "attempt_1": "open",
+      "attempt_2": "resolved",
+      "attempt_3": "resolved",
+      "severity": "MEDIUM",
+      "proof": "README and routing blobs are unchanged from attempt two; the retained exact-head hosted routing contract passed all nine tests."
+    },
+    {
+      "id": "F-003",
+      "attempt_1": "open",
+      "attempt_2": "partially-resolved-timestamp-blocking",
+      "attempt_3": "partially-resolved-current-chronology-blocking",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "proof": "The timestamp and immediate pointers are corrected, but remediation-report.md lines 52 and 56 make incompatible current claims about whether required fixed-commit hosted results are still pending."
+    }
+  ],
+  "gates": [
+    {
+      "criterion": 1,
+      "name": "four input builders",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Production and test bytes are unchanged; the retained repaired-head hosted suite passed all thirty-seven tests."
+    },
+    {
+      "criterion": 2,
+      "name": "three restricted catalog operations",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Catalog, helper, registry, profile, and authority bytes are unchanged from attempt two."
+    },
+    {
+      "criterion": 3,
+      "name": "sixteen manual-gap dispositions and lifecycle routes",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Registry and disposition bytes are unchanged; the metadata delta introduces no execution, migration, or admission claim."
+    },
+    {
+      "criterion": 4,
+      "name": "report workflow and evidence truth",
+      "disposition": "re-executed",
+      "outcome": "failed",
+      "finding_ids": [
+        "F-003"
+      ],
+      "notes": "Timestamp and pointers are repaired, but the current report contradicts itself about whether required hosted results remain pending."
+    },
+    {
+      "criterion": 5,
+      "name": "independent inspection and focused validation",
+      "disposition": "re-executed",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "The five-file delta and retained evidence were inspected without repeating unaffected behavior or hosted checks."
+    },
+    {
+      "criterion": 6,
+      "name": "exact subject packet lease authority and cleanliness",
+      "disposition": "re-executed",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "All three preflights passed before and after inspection, and the tracked checkout remained clean at the fixed commit."
+    }
+  ],
+  "reused_behavior_evidence": [
+    {
+      "ref": ".dev/ai-context/local/gap-ci-repair-artifacts/ai-context-validation-governance-35696222621/20260922T064448Z-2584/execution-artifacts-tests.result.json",
+      "sha256": "812b6d939ebcd0666e3d0cc6e6bb1e2a2f4271a692bc14e856ad5ec2db16eb4e",
+      "outcome": "passed",
+      "executed_tests": 37,
+      "test_duration_seconds": 21.732,
+      "snapshot_identity_digest": "af383e04f01959bdb36c249bff5bb8e42a8db943012e8c8391e10f6fcb66abce"
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-repair-artifacts/ai-context-validation-governance-35696222621/20260922T064448Z-2584/code-review-routing-contract.result.json",
+      "sha256": "0ad859567589655642bace743764489bd61c62cd9353b5de87491b451af26af3",
+      "outcome": "passed",
+      "executed_tests": 9,
+      "test_duration_seconds": 5.197,
+      "snapshot_identity_digest": "af383e04f01959bdb36c249bff5bb8e42a8db943012e8c8391e10f6fcb66abce"
+    }
+  ],
+  "prior_attempt_custody": [
+    {
+      "attempt": 1,
+      "subject_digest": "1247460e8592c41b57c6a97a9222392e631149141296eea3bbc25deef3a14494",
+      "outcome": "failed",
+      "review_result_sha256": "910a450f7e94ab1c380d65e82d6a9ff19662e5ae56a7dd7843723b8239cd045e",
+      "verification_record_sha256": "85da0e36a972eeb40284b14131fb6c66be46f07b2ca41e4a83efd8bbcf77c478",
+      "assessment_body_sha256": "41ba36d49267c11ef40775957be57e495f56c84bc7aa45700e3fdeda53996412",
+      "preserved": true
+    },
+    {
+      "attempt": 2,
+      "subject_digest": "975c3cb56961506f319d9e82a566d838a2c22d2e1a2b10d297af42bb07295bca",
+      "outcome": "failed",
+      "review_result_sha256": "a4e89a9dccd062df8ddc7dee0e616265d5082ff038d8842f380bf5ee8dae4280",
+      "verification_record_sha256": "522eb51a6d06150c7ca90404e9167bcd428d565167cc3f475b6fc2881015cee1",
+      "assessment_body_sha256": "127c401c4d367ee93aaf2e1e1ae7a2d46a65e23509c69cc60aa1b6d2e8c4b2d1",
+      "preserved": true
+    }
+  ],
+  "artifacts": {
+    "review_result": {
+      "ref": ".dev/ai-context/local/gap-audit-03/review-result.md",
+      "sha256": "c017c8930029a8895a0970541bf60ad7293db7bd33bd3e2e42d4aa4737ccfc79",
+      "encoding": "utf-8-lf-no-bom"
+    },
+    "assessment_body": {
+      "ref": ".dev/ai-context/local/gap-audit-03/assessment-body.md",
+      "sha256": "e26ab6919f68bee55c28404b3877524620d2e3ac2f2d1a7561672dbca376f2c3",
+      "encoding": "utf-8-lf-no-bom"
+    }
+  },
+  "limits": [
+    "Attempt-one and attempt-two failures remain retained and are not overwritten by later evidence.",
+    "Unchanged implementation and authority conclusions were rebound through exact Git blob identity rather than broad rereview.",
+    "No behavior suite or hosted check was rerun during attempt three.",
+    "No provider operation, credential access, tracked repair, assessment publication, integration, merge, or Issue and Project mutation was performed.",
+    "The supplied third-attempt budget is exhausted; another review requires a fresh material change and owner or workflow authorization.",
+    "This result is not final integration acceptance."
+  ],
+  "lease": {
+    "lease_id": "GAP-320-LEASE-03",
+    "observed_state": "active",
+    "release_owner": "root"
+  }
+}

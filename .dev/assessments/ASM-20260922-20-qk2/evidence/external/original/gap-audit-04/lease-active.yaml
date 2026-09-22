@@ -1,0 +1,31 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: GAP-320-LEASE-04
+worktree: .
+subject_sha: 9423211893fc75ce6f4eac799d79df8a48b8cd33
+observed_snapshot:
+  head_sha: 9423211893fc75ce6f4eac799d79df8a48b8cd33
+  tracked_status: []
+snapshot_sha256: c84bffbc98a880c7ca95b44cfe01a216fcac80beed3a358816dca241c9e1e9da
+state: active
+holder:
+  packet_id: GAP-320-AUDIT-04
+  access: read-only
+  lock_ref: .dev/ai-context/local/gap-audit-04/lease.lock
+  lock_sha256: 1d1fe0e56eeb913e025db94623c182710f72ac2c5b13b1ef96a6274c2beb53ce
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/gap-audit-04/review-result.md
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/gap-audit-04/verification-record.json
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/gap-audit-04/assessment-body.md
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Read-only review in progress; root suspends all tracked writes.
+lease_sha256: f0ecc5691cfb99c38797ebf928f2ae9e1f746da237acbb4798217b1c2e86dea0
