@@ -49,6 +49,7 @@ Engineering Guardrails 的 accepted baseline、Git/provider 政策改由 semanti
 | Lifecycle registry | 3 passed | 13.729 s | 確認登錄結構與 producer 路由。 |
 | Validation profile registry | 11 passed | 19.394 s | 包含新增相依路徑；沒有移除 gate。 |
 | Canonical AI context、workflow artifacts、diff whitespace | passed | 未保存獨立時間 | 結構／路由檢查；不等同所有行為或 hosted CI。 |
+| CI 修復後相鄰 fixture class | 2 passed | 16.178 s | 同一程序依序執行舊、新 class，驗證快取隔離；完整 required suite 仍待固定提交的 hosted 結果。 |
 
 Input 與 catalog 各有一次 sandbox 暫存 fixture 存取失敗，均在行為 assertion 前發生；以 blocked-before-behavior 保存，不列 passed。改用正常可寫暫存 fixture 的執行邊界後才取得上述結果。完整輸出留在 ignored local artifacts，公開紀錄僅保留不含機敏路徑的摘要。
 
@@ -60,7 +61,11 @@ Input 與 catalog 各有一次 sandbox 暫存 fixture 存取失敗，均在行�
 
 ## Verification Assessment Reconciliation
 
-獨立固定版本審查尚未執行；本報告不能作為自身實作的獨立通過證明。
+第一次獨立審查已針對 `8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8` 執行，結果為 failed，保留 F-001／F-002／F-003：合併測試程序的 fixture module 快取污染、精簡套件不可用的文件命令、以及續作狀態過時。審查同時確認 16 項分流、限定 catalog 欄位與不製造執行結果的邊界；這些局部結論不抵銷失敗。
+
+對應修正：每個 fixture class 擁有自己的 module/import path 與 cleanup；輸入範例使用明示 placeholder，source-only 測試以來源倉庫說明呈現；workflow、task 與本報告改為指向修復後固定版本審查。原始 failed review 與 CI 輸出保留，新的驗證不能覆寫它們。第二次固定版本審查仍待完成，本報告不作為自身實作的獨立通過證明。
+
+初次 hosted runs `35694811987`／`35694812154` 失敗；其中 execution-artifacts suite 執行 26 個既有案例後在新 class setup 出錯，並非 37 個全部通過。精簡套件引用案例亦失敗。PR 首次取得編號後缺少綁定宣告，是另一項尚待補齊的 admission 條件。套件建置與兩個平台前置契約通過，不構成整體 CI 通過。
 
 ## Deferred Work
 
@@ -68,4 +73,4 @@ Input 與 catalog 各有一次 sandbox 暫存 fixture 存取失敗，均在行�
 
 ## Closure Evidence
 
-目前仍在工作分支，尚未 commit、PR、hosted admission、integration 或關閉 Issue #320。完成必要驗證與獨立審查後，將依授權執行線上流程；任何失敗仍按實際狀態保留。
+實作 checkpoint `8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8` 已推送，並建立 [draft PR #321](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/321)。本次修正接續該 checkpoint；下一個 gate 是針對包含修正的固定提交重驗受影響行為與進度記錄。PR 宣告維持 deferred，Issue #320 開啟中；hosted admission、integration 與結案尚未完成。最終線上結果由 provider read-back 記錄，不能先寫成 passed。

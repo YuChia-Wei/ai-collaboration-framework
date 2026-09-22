@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-22T13:53:52+08:00",
-  "updated_at": "2026-09-22T14:20:17+08:00",
+  "updated_at": "2026-09-22T14:43:21+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -33,11 +33,11 @@
     "validation": [
       "Focused authoring, registry and applicable package/CLI checks."
     ],
-    "last_completed_step": "Restricted gate and consumer authoring, all 16 dispositions and focused checks complete.",
-    "next_action": "Commit implementation candidate, obtain independent immutable verification and complete normal online admission."
+    "last_completed_step": "Independent audit 1 and exact-head hosted runs failed; known fixture, package example and state-pointer repairs applied.",
+    "next_action": "Verify the containing repair commit for F-001/F-002/F-003 and obtain bounded independent repair review before final intake/admission."
   },
   "results": {
-    "summary": "Three restricted catalog selectors implemented, mixed registry route split, current owner/manual boundaries documented.",
+    "summary": "Three restricted catalog selectors implemented, mixed registry route split, current owner/manual boundaries documented. Independent audit1 failed F-001/F-002/F-003; CI repair checkpoint retains deferred Issue disposition.",
     "files_changed": [
       ".ai/scripts/artifact_authoring.py",
       ".ai/scripts/validation_subject.py",
@@ -50,7 +50,7 @@
       "8 catalog cases passed (22.841 s); lifecycle routes 3 passed (13.729 s); profile registry 11 passed (19.394 s); canonical context and workflow artifact validation passed."
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "Independent verification and provider admission pending; remaining manual/semantic boundaries retained explicitly.",
+    "residual_risk": "Original audit and hosted failures retained; repaired subject and final admission remain unverified.",
     "follow_up_needed": true
   }
 }

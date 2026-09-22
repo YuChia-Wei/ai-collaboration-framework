@@ -8,10 +8,10 @@
 - `branch`: `codex/2026-09-22-artifact-gap-reduction`
 - `base_branch`: `main`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-gap-reduction`
 - `created_at`: `2026-09-22T13:53:22+08:00`
-- `updated_at`: `2026-09-22T14:21:06+08:00`
+- `updated_at`: `2026-09-22T14:43:21+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -45,10 +45,10 @@ Use repository-required online Issue/Project, PR and integration gates. Any prov
 
 ## Resume Checkpoint
 
-- Last completed action: runtime input and restricted catalog implementation, all sixteen dispositions, and focused input/catalog/compatibility/registry/context/workflow checks completed; failure records retained.
+- Last completed action: implementation checkpoint 8d00452d pushed and draft PR #321 created; independent audit attempt 1 failed F-001/F-002/F-003. Two initial hosted profiles also failed. The current repair addresses fixture module isolation, portable command examples and current-state pointers; original failures remain retained.
 - Current task: GAP-002.
-- Exact next action: validate lifecycle/profile/workflow and final input boundaries, commit the reviewed candidate, then dispatch independent verification and complete required online admission.
+- Exact next action: verify the containing repair commit against F-001/F-002/F-003, obtain the complete required execution-artifacts and core-only projection results on that subject, and perform bounded independent repair review before final evidence intake and online admission.
 - Validation already completed: selected input, catalog and compatibility checks; actual counts, timings and prior failures are in reports/remediation-report.md.
 - Git baseline: main 237a01f437f3005ea57885714f6ebfc3037d196d, matching live remote read-back.
 - Graph: indexed project exists but its commit provenance is unavailable and current authoring nodes are missing. Scoped Git-tracked file reads are the explicit fallback; no absence claim is made.
-- Blockers: none for preparation tools. New provider baseline decisions and personal CLI routing selections remain owner-only inputs and are not needed for generic tooling implementation.
+- Blockers: independent review and required CI are nonpassing until the repaired subject is verified. The PR declaration remains deferred. New provider baseline decisions and personal CLI routing selections remain owner-only inputs outside this delivery.

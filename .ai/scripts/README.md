@@ -86,8 +86,8 @@ before and after publication. Cleanup removes only this operation's unchanged
 output. A collision, linked path, changed input or unsupported version fails.
 
 ```text
-python .ai/scripts/execution-artifacts.py input --kind review-input --request .dev/ai-context/local/review-request.yaml
-python .ai/scripts/execution-artifacts.py input --kind review-input --request .dev/ai-context/local/review-request.yaml --output .dev/ai-context/local/review-input.yaml --expect <preview-digest>
+python .ai/scripts/execution-artifacts.py input --kind review-input --request <request.yaml>
+python .ai/scripts/execution-artifacts.py input --kind review-input --request <request.yaml> --output <new-ignored-input.yaml> --expect <preview-digest>
 ```
 
 Every authoring request has `version: "1.0"` and an explicit full
@@ -318,11 +318,9 @@ not hostile-process exclusion or a power-loss durability guarantee.
 
 `catalog` distinguishes writable profiles, immutable records and explicit
 migration dispositions. Historical execution evidence is never regenerated.
-The focused suite uses independent inputs and failure injection:
-
-```text
-python .ai/scripts/tests/test_artifact_authoring.py -v
-```
+The source checkout's focused suite, `.ai/scripts/tests/test_artifact_authoring.py`,
+uses independent inputs and failure injection. Test sources are excluded from
+portable packages; run that suite only from a source checkout.
 
 ### Dynamic Role Metadata (P3 First Family)
 

@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import yaml
@@ -176,6 +177,11 @@ class ArtifactBehaviorTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.temp = tempfile.TemporaryDirectory(prefix="execution-artifacts-")
+        cls.addClassCleanup(cls.temp.cleanup)
+        # Each class owns its prerequisite module and import path. A prior
+        # fixture's cached module must not outlive its deleted registry.
+        cls.enterClassContext(patch.dict(sys.modules))
+        cls.enterClassContext(patch.object(sys, "path", sys.path.copy()))
         cls.root = Path(cls.temp.name).resolve()
         for ref in (*CONTRACT.AUTHORITY_REFS, ROLE, REVIEW_ROLE, SKILL):
             target = cls.root / ref
@@ -187,11 +193,8 @@ class ArtifactBehaviorTests(unittest.TestCase):
             subprocess.run(["git", "-C", str(cls.root), *argv], check=True, capture_output=True)
         cls.head = subprocess.check_output(["git", "-C", str(cls.root), "rev-parse", "HEAD"], text=True).strip()
         cls.tree = subprocess.check_output(["git", "-C", str(cls.root), "rev-parse", "HEAD^{tree}"], text=True).strip()
+        CONTRACT.load_module(cls.root / ".ai/scripts/python_prerequisites.py", "python_prerequisites")
         cls.cli = CONTRACT.load_module(cls.root / ".ai/scripts/execution-artifacts.py", "artifact_cli_test")
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.temp.cleanup()
 
     def setUp(self) -> None:
         self.ref = f".dev/ai-context/local/{self._testMethodName}"
@@ -457,7 +460,6 @@ class ArtifactBehaviorTests(unittest.TestCase):
 
 class InputAuthoringTests(unittest.TestCase):
     setUpClass = classmethod(ArtifactBehaviorTests.setUpClass.__func__)
-    tearDownClass = classmethod(ArtifactBehaviorTests.tearDownClass.__func__)
     setUp = ArtifactBehaviorTests.setUp
 
     def review_request(self):

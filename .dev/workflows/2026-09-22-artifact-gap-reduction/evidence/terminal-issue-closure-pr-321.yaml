@@ -1,0 +1,104 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 321
+  head_sha: null
+  body: '## Summary
+
+    Add bounded preparation for review, execution and dependency inputs plus evidence
+    ledgers. Add restricted catalog maintenance for gate reasons and rule consumer
+    references. Reconcile the original manual gaps with concrete producer limits and
+    retained owner responsibilities.
+
+
+    ## Validation
+
+    - New input cases: 11 passed; selected existing compatibility cases: 8 passed.
+
+    - New catalog cases: 8 passed; lifecycle registry: 3 passed; profile registry:
+    11 passed.
+
+    - Canonical context and workflow validation passed. Earlier environment failures
+    and the repaired loader failure remain recorded with their limits.
+
+    - Independent fixed-subject review is in progress; hosted admission is pending.
+    No validator or required gate was removed.
+
+
+    ## Related Issues
+
+    Refs #320
+
+
+    - Delivery disposition: `deferred` while final verification is pending.
+
+    - Closure deferred reason: independent review, final evidence intake and provider
+    admission are not yet complete.
+
+    - Next terminal gate: root integrates the independent result, then checks all
+    required hosted contexts and live admission.
+
+    - Owner authorization: implementation and repository-required online operations
+    were explicitly authorized on 2026-09-22. Public detail is limited to non-sensitive
+    technical information.
+
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item.
+
+    - Execution record: `.dev/workflows/2026-09-22-artifact-gap-reduction/`.
+
+    - Selected topology: merge commit, preserving the implementation and verification
+    checkpoints as one reviewed delivery.
+
+    - Report: `.dev/workflows/2026-09-22-artifact-gap-reduction/reports/remediation-report.md`.
+
+
+    ## Checklist
+
+    - [x] Focused repository-native checks recorded with actual outcomes and limits.
+
+    - [x] CLI documentation and lifecycle routes updated.
+
+    - [x] No secrets or private local execution logs included.
+
+    - [ ] Current PR declaration validated.
+
+    - [ ] Independent review and current-head hosted admission complete.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 320
+  mode: deferred
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: false
+  workflow:
+    scope_complete: false
+    tasks_complete: false
+    applicable_verification_complete: false
+  closing_keyword: null
+  closure_deferred_reason: Independent review, CI repairs and final evidence intake
+    remain pending.
+  next_terminal_gate_or_owner: Root verifies the corrected fixed subject and completes
+    required hosted/live admission.
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
