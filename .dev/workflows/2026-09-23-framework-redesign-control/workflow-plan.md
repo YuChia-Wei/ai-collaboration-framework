@@ -19,9 +19,9 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 
 | Issue | Phase | Owner paths | State |
 | --- | --- | --- | --- |
-| #324 | P0 transition control | scoped override, necessary root/source policy pointers, own workflow | pending dispatch |
-| #325 | P1-A portable contracts | `.dev/design/framework-next/portable-contracts/`, own workflow | pending dispatch |
-| #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | pending dispatch |
+| #324 | P0 transition control | scoped override, necessary root/source policy pointers, own workflow | active independent task |
+| #325 | P1-A portable contracts | `.dev/design/framework-next/portable-contracts/`, own workflow | active independent task |
+| #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | active independent task |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -39,7 +39,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: prepare the three RAM-disk worktrees and create independent Astra Ultra tasks from this durable checkpoint. Runtime task IDs will be recorded in tasks/ISSUE-*.json after dispatch. No hidden conversation state is required beyond the explicit tool-provided worktree and task IDs.
+Current action: all three RAM-disk worktrees and independent Astra Ultra tasks are running from 53c9c8e58615e87e36f7b74ea8851fe845312daa. Exact task IDs and verified model/effort are recorded in tasks/ISSUE-*.json. Await local delivery, integrate #324 first, then reconcile #325/#326. No hidden conversation state is required beyond the explicit tool-provided worktree and task IDs.
 
 ## Remaining work and verification
 

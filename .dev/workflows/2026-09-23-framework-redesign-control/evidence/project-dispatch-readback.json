@@ -1,0 +1,138 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "id": "PVTI_lAHOAwvEG84Bez7wzg8LFOg",
+        "content": {
+          "number": 322,
+          "state": "OPEN",
+          "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322"
+        },
+        "fieldValues": {
+          "nodes": [
+            {},
+            {},
+            {},
+            {
+              "name": "In progress",
+              "field": {
+                "name": "Status"
+              }
+            },
+            {
+              "name": "Unassigned",
+              "field": {
+                "name": "Target release"
+              }
+            },
+            {
+              "name": "Approved",
+              "field": {
+                "name": "Owner review"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "PVTI_lAHOAwvEG84Bez7wzg8LG4g",
+        "content": {
+          "number": 324,
+          "state": "OPEN",
+          "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/324"
+        },
+        "fieldValues": {
+          "nodes": [
+            {},
+            {},
+            {},
+            {
+              "name": "In progress",
+              "field": {
+                "name": "Status"
+              }
+            },
+            {
+              "name": "Unassigned",
+              "field": {
+                "name": "Target release"
+              }
+            },
+            {
+              "name": "Approved",
+              "field": {
+                "name": "Owner review"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "PVTI_lAHOAwvEG84Bez7wzg8LG9I",
+        "content": {
+          "number": 325,
+          "state": "OPEN",
+          "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/325"
+        },
+        "fieldValues": {
+          "nodes": [
+            {},
+            {},
+            {},
+            {
+              "name": "In progress",
+              "field": {
+                "name": "Status"
+              }
+            },
+            {
+              "name": "Unassigned",
+              "field": {
+                "name": "Target release"
+              }
+            },
+            {
+              "name": "Approved",
+              "field": {
+                "name": "Owner review"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "PVTI_lAHOAwvEG84Bez7wzg8LHBU",
+        "content": {
+          "number": 326,
+          "state": "OPEN",
+          "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/326"
+        },
+        "fieldValues": {
+          "nodes": [
+            {},
+            {},
+            {},
+            {
+              "name": "In progress",
+              "field": {
+                "name": "Status"
+              }
+            },
+            {
+              "name": "Unassigned",
+              "field": {
+                "name": "Target release"
+              }
+            },
+            {
+              "name": "Approved",
+              "field": {
+                "name": "Owner review"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
