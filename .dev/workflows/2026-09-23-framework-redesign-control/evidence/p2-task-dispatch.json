@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-09-23T01:43:50+08:00",
+  "starting_commit": "a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc",
+  "model_evidence": "read-only local runtime thread metadata",
+  "worktree_evidence": "read_thread command execution cwd and actual Git root/branch/HEAD/common-dir output",
+  "tasks": [
+    {
+      "issue": 330,
+      "thread_id": "01a0ca36-61df-7850-b934-ee981ed56b0a",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "worktree": "F:/framework-next/330",
+      "status_at_readback": "active"
+    },
+    {
+      "issue": 331,
+      "thread_id": "01a0ca36-8242-7640-b332-ba17cc1e4caa",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "worktree": "F:/framework-next/331",
+      "status_at_readback": "active"
+    }
+  ],
+  "bootstrap": "App project cwd is saved C: project; all executor repository commands explicitly select F: worktree. Verified first execution outputs match assignment.",
+  "limits": "Dispatch/runtime configuration and initial worktree evidence only; no implementation or verification acceptance."
+}

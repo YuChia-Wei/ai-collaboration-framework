@@ -22,8 +22,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #324 | P0 transition control | scoped override, root/source pointers, one exact source-only distribution exclusion, own workflow | integrated PR #328; Issue/Project complete; P7 verification deferred |
 | #325 | P1-A portable contracts | `.dev/design/framework-next/portable-contracts/`, own workflow | integrated PR #329; Issue/Project complete |
 | #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | integrated PR #329; Issue/Project complete |
-| #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | ready for independent dispatch |
-| #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | ready for independent dispatch |
+| #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | active independent Astra Ultra task |
+| #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | active independent Astra Ultra task |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -41,7 +41,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: P1 is integrated via PR #329 at `b4d54966a0ed704d6b300b9f965976e27cd8512d`. Issues #325/#326 are CLOSED/COMPLETED and Project Done. Dispatch #330/#331 from the coherent coordinator bootstrap checkpoint using their assigned F: worktrees. P2 ownership and integration rules are in [P1 integration and P2 scope](reports/p1-integration-and-p2-scope.md). First receive the final Lesson package membership from #330, reconcile #331 manifest, then arrange online integration. All new tool/build/install trials remain deferred to P7; no installed core or runtime cutover is claimed.
+Current action: #330 and #331 are running in separate Astra Ultra tasks and assigned RAM-disk worktrees from `a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc`. Task IDs and actual model/effort/worktree read-backs are in tasks/ISSUE-330.json and ISSUE-331.json. Await their local coherent deliveries, obtain #330 exact package members and reconcile #331 before first push. Completion callbacks return to this coordinator; if callback transport is rejected, inspect the task final/handoff directly. P1 is integrated via PR #329; product tool/build/install trials and full verification remain deferred to P7.
 
 ## Remaining work and verification
 

@@ -6,9 +6,9 @@
   "task_id": "ISSUE-330",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-09-23T01:41:18+08:00",
-  "updated_at": "2026-09-23T01:41:18+08:00",
+  "updated_at": "2026-09-23T01:43:50+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -49,8 +49,8 @@
     "validation": [
       "direct readability/syntax/reference/Git checks and complete message-file format only"
     ],
-    "last_completed_step": "P1 integrated via PR #329; online issue and project entry created",
-    "next_action": "Create assigned RAM-disk worktree and independent Astra Ultra task"
+    "last_completed_step": "Independent task started and verified the assigned RAM-disk worktree, branch, exact HEAD and durable Git common directory",
+    "next_action": "Await local coherent delivery and reconcile package membership before first push"
   },
   "results": {
     "summary": "",
@@ -61,11 +61,12 @@
     "follow_up_needed": true
   },
   "dispatch": {
-    "thread_id": null,
+    "thread_id": "01a0ca36-61df-7850-b934-ee981ed56b0a",
     "worktree": "F:/framework-next/330",
     "branch": "codex/2026-09-23-lesson-implementation",
     "workflow_id": "2026-09-23-lesson-implementation",
-    "starting_commit_source": "containing commit of coordinator handoff; exact value supplied by coordinator",
-    "model_verified": false
+    "model_verified": "local runtime thread metadata read-back: gpt-6-astra / ultra",
+    "starting_commit": "a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc",
+    "worktree_verified": "command execution cwd and Git read-back in assigned F: worktree"
   }
 }
