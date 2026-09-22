@@ -1,0 +1,198 @@
+metadata_version: 1
+id: lesson
+version: 0.1.0
+delivery_status: implemented
+entrypoint: SKILL.md
+dependencies:
+  required: []
+  optional: []
+runtime:
+- id: skill-instruction-reader
+  requirement: Read selected entrypoint and resources
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - validate
+  - revise
+  - render
+  on_missing: unavailable
+- id: python
+  version: '>=3.11,<4'
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - validate
+  - revise
+  - render
+  on_missing: unavailable
+- id: pyyaml
+  version: '>=6,<7'
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - validate
+  - revise
+  - render
+  purpose: Strict JSON-compatible package loading with duplicate/tag/alias rejection
+  on_missing: unavailable
+- id: jsonschema
+  version: '>=4.18,<5'
+  for_operations:
+  - create
+  - inspect
+  - query
+  - validate
+  - revise
+  - render
+  purpose: Draft 2020-12 structural checks with explicit format checks; semantics stay tool-owned
+  on_missing: unavailable
+- id: filesystem
+  requirement: Read selected files; writes require exclusive creation and atomic same-directory replacement
+  purpose: A selected local config in a Git project additionally requires read-only Git ignore verification
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - validate
+  - revise
+  - render
+  on_missing: unavailable
+configuration:
+  namespace: lesson
+  defaults:
+    store:
+      kind: filesystem
+      root: notes/lessons
+      tracking: tracked
+    template:
+      origin: package
+      path: templates/lesson.md
+artifact_roles:
+- role: lesson.record
+  owner: project
+  schema: lesson.record@1.0.0
+  store_binding: lesson.store
+  identity: lesson-<32 lowercase hex digits>
+  filename: <id>.lesson.json
+  read_operations:
+  - inspect
+  - query
+  - validate
+  - render
+  write_operations:
+  - create
+  - revise
+- role: lesson.view
+  owner: derived
+  source_role: lesson.record
+  output: result-only Markdown
+  persistence: Caller-selected export is a separate write
+  produce_operations:
+  - render
+resources:
+  references:
+  - references/configuration.md
+  - references/operations.md
+  - references/example.md
+  schemas:
+  - id: lesson.record
+    version: 1.0.0
+    path: schemas/lesson-record.schema.json
+    owner: lesson
+    migration: unsupported; preserve original
+  templates:
+  - id: lesson.default-view
+    path: templates/lesson.md
+    input_role: lesson.record
+    output_role: lesson.view
+    owner: lesson
+  tools:
+  - id: lesson.fs
+    owner: lesson
+    implementation_status: implemented
+    entrypoint: scripts/lesson.py
+    operation_contract: references/operations.md
+    operations:
+    - explain
+    - create
+    - inspect
+    - query
+    - validate
+    - revise
+    - render
+operations:
+- id: explain
+  inputs:
+  - project_root
+  - package_root
+  - optional configuration sources
+  - optional settings overrides
+  outputs:
+  - effective settings and source diagnostics
+  tool: lesson.fs
+  implementation_status: implemented
+- id: create
+  inputs:
+  - resolved binding
+  - authored Lesson content
+  - related query text and actual query_sha256
+  - explicit new-candidate decision and partial-query acknowledgment
+  outputs:
+  - lesson.record reference
+  - actual content digest
+  tool: lesson.fs
+  implementation_status: implemented
+- id: inspect
+  inputs:
+  - resolved binding
+  - lesson.record reference
+  outputs:
+  - record
+  - actual content digest
+  tool: lesson.fs
+  implementation_status: implemented
+- id: query
+  inputs:
+  - resolved binding
+  - optional case-insensitive literal text
+  outputs:
+  - matching record references
+  - partial-read diagnostics
+  - actual collection/query SHA-256 for a subsequent create decision
+  tool: lesson.fs
+  implementation_status: implemented
+- id: validate
+  inputs:
+  - resolved binding
+  - lesson.record reference
+  outputs:
+  - structural and semantic diagnostics
+  tool: lesson.fs
+  implementation_status: implemented
+- id: revise
+  inputs:
+  - resolved binding
+  - lesson.record reference
+  - expected_sha256
+  - replacement authored content
+  outputs:
+  - updated lesson.record reference
+  - actual content digest
+  tool: lesson.fs
+  implementation_status: implemented
+- id: render
+  inputs:
+  - resolved binding
+  - lesson.record reference
+  - resolved template
+  outputs:
+  - lesson.view
+  tool: lesson.fs
+  implementation_status: implemented
