@@ -1,0 +1,109 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "T001-portable-contracts",
+  "workflow_id": "2026-09-23-portable-contracts",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T01:09:27+08:00",
+  "updated_at": "2026-09-23T01:21:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #325 P1-A portable contracts and standalone Lesson example",
+    "files": [
+      ".dev/design/framework-next/portable-contracts/",
+      ".dev/workflows/2026-09-23-portable-contracts/"
+    ],
+    "constraints": [
+      "U001 owner exception",
+      "One writer in F:/framework-next/325",
+      "No sub-agents or new tasks",
+      "Coordinator owns shared workflow index and first push"
+    ],
+    "non_goals": [
+      "Product relocation or runtime implementation",
+      "General package manager or migration engine",
+      "Validation redesign or execution before P7",
+      "Release, tag, credentials or downstream adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read Issue, U001, handoff and applicable ownership policies",
+      "Define package, configuration, filesystem artifact and Lesson contracts",
+      "Review actual files, parse JSON/YAML, check whitespace and commit message",
+      "Commit locally and return coordinator handoff"
+    ],
+    "validation": [
+      "Direct JSON/YAML parsing",
+      "Manual scope and content review",
+      "git diff --check",
+      "Exact commit-message format check"
+    ],
+    "last_completed_step": "Authored and read back bounded design; direct parsing, diff and planned-message checks completed",
+    "next_action": "Coordinator reviews local commit and #326 interface, then sequences first push/PR"
+  },
+  "results": {
+    "summary": "Issue #325 design delivered: portable package/configuration/filesystem contracts and one standalone Lesson candidate specimen; executable implementation and validation remain deferred to later phases.",
+    "files_changed": [
+      ".dev/design/framework-next/portable-contracts/README.md",
+      ".dev/design/framework-next/portable-contracts/contract.md",
+      ".dev/design/framework-next/portable-contracts/examples/project/knowledge/lessons/lesson-11112222333344445555666677778888.lesson.json",
+      ".dev/design/framework-next/portable-contracts/examples/project/team/lesson.config.json",
+      ".dev/design/framework-next/portable-contracts/examples/project/team/templates/lesson.md",
+      ".dev/design/framework-next/portable-contracts/examples/walkthrough.md",
+      ".dev/design/framework-next/portable-contracts/lesson/SKILL.md",
+      ".dev/design/framework-next/portable-contracts/lesson/references/configuration.md",
+      ".dev/design/framework-next/portable-contracts/lesson/references/operations.md",
+      ".dev/design/framework-next/portable-contracts/lesson/schemas/lesson-record.schema.json",
+      ".dev/design/framework-next/portable-contracts/lesson/skill-package.yaml",
+      ".dev/design/framework-next/portable-contracts/lesson/templates/lesson.md",
+      ".dev/workflows/2026-09-23-portable-contracts/handoff.yaml",
+      ".dev/workflows/2026-09-23-portable-contracts/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-portable-contracts/tasks/T001-portable-contracts.json",
+      ".dev/workflows/2026-09-23-portable-contracts/workflow-plan.md",
+      ".dev/workflows/2026-09-23-portable-contracts/workflow.yaml"
+    ],
+    "tests_run": [],
+    "checks_run": [
+      {
+        "check": "Direct UTF-8 and JSON/YAML reads",
+        "outcome": "passed",
+        "scope": "Readability only"
+      },
+      {
+        "check": "Manual content/resource/scope inspection",
+        "outcome": "completed",
+        "scope": "Primary author, not independent audit"
+      },
+      {
+        "check": "git diff --cached --check",
+        "outcome": "passed"
+      },
+      {
+        "check": "Exact planned commit-message validator",
+        "outcome": "passed"
+      }
+    ],
+    "deferred_checks": {
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "next_owner": "P7",
+      "items": [
+        "Legacy validators and critical/check-all gates",
+        "Unit/integration/behavioral tests",
+        "Package/upgrade/migration trials",
+        "Independent validation-only audits and full audit packets",
+        "CI and hosted checks"
+      ]
+    },
+    "finding_status": "addressed",
+    "residual_risk": "Design-only: runtime/tool/filesystem behavior and version compatibility have not been validated.",
+    "follow_up_needed": true
+  }
+}
