@@ -1,0 +1,69 @@
+# Describes future selection/update/recovery. NOT a lock, receipt or execution log.
+example_kind: planned-installation-and-recovery
+implementation_status: planned
+executable: false
+owner_issue: 326
+scenario: one-Lesson-template-edit-in-a-development-commit
+caller_inputs:
+  project_root: explicit-absolute-path-at-invocation
+  project_config: .ai/custom/framework.yaml # Proposed physical binding, not P1-A schema.
+  local_config: null # Caller may explicitly provide an ignored config path.
+  artifact_roots: read-from-selected-project-config
+selection:
+  mode: development
+  profile: lesson-minimal
+  components: [lesson]
+  source_commit: null # Must be a real full commit when implemented.
+  package_digest: null # Never fabricated from this example.
+  adapter: codex
+  adapter_input_digest: null
+  prior_stable_selection: capture-installed-lock-before-mutation
+managed_members:
+  core: five-exact-members-from-distribution-manifest.example.yaml
+  runtime:
+    - .agents/skills/framework-lesson/SKILL.md
+  lock: .ai/framework.lock
+  project_root_entries: [] # Seed proposals are separately reviewed project changes.
+package_apply:
+  semantic_target: complete-selected-managed-set
+  default_io: digest-and-mode-delta
+  expected_changed_member: .ai/core/skills/lesson/templates/lesson.md
+  unchanged_members: read-for-drift-but-do-not-rewrite
+  generated_runtime: regenerate-only-if-effective-input-or-output-changes
+  deletions: previous-owned-unchanged-paths-absent-from-new-selection
+  occupied_or_modified_members: stop-for-reconciliation
+  full_reinstall: explicit-choice-with-same-ownership-protections
+project_data:
+  scenario_conversion: none-for-template-only-edit
+  existing_records: preserved-in-configured-roots
+  new_record_family: lesson.record
+  new_record_schema_version: 1.0.0
+  reader_compatibility: check-explicit-supported-versions-before-activation
+  unsupported_old_or_custom_records: preserve-and-report-not-implicit-conversion
+recovery_contract:
+  storage: explicitly-selected-durable-store-not-RAM-staging
+  capture_before_mutation:
+    - previous-core-content-and-inventory
+    - previous-framework.lock
+    - previous-exact-owned-runtime-files-and-digests
+    - selected-config-version-digest-and-backup-if-changed
+    - affected-record-and-index-before-versions-digests-and-backups-if-changed
+  unchanged_data_roots: record-unchanged-binding-no-whole-project-copy
+  expected_revision_checks: required-before-apply-and-before-restore
+  conversion_when_separately_needed:
+    owner: schema-family-owning-skill
+    supported_edge: explicit-edge-or-unsupported
+    extensions: preserve-recognized-data
+    loss_or_unknown_custom_structure: reconciliation-before-mutation
+    reverse_unavailable: restore-matching-before-version-backup
+  interrupted_activation: recovery-needed-with-last-good-lock-retained
+  execution_during_incomplete_activation: withheld
+  completion: core-lock-runtime-and-affected-project-data-match-one-selection
+  newer_external_or_project_writes: reconcile-never-blindly-overwrite
+  missing_matching_backup: recovery-failed-not-passed
+  cross_directory_atomicity: not-claimed
+results:
+  executed: false
+  installation: not-run
+  recovery: not-run
+  validation: deferred-by-owner-U001-P7
