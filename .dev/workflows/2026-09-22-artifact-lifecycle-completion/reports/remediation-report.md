@@ -7,7 +7,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-09-22T09:29:30+08:00`
-- `updated_at`: `2026-09-22T09:36:32+08:00`
+- `updated_at`: `2026-09-22T09:57:47+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.1`
 - `baseline_assessment`: `ASM-20260921-18-gav`
@@ -90,6 +90,10 @@
 
 待固定實作 commit 的獨立 read-only review、package smoke 與證據驗證。新的 verification assessment 保留 reviewer 原文及 exact-byte archive；不修改原 baseline 的 final 結論。
 
+首輪固定版本 `b29f3ae9c079b05ab144ba0eddd10294e452988a` 獨立審查結果為 failed：F-001 指出新增 `artifact-catalog-tests` 缺少 canonical gate classification，導致 required lifecycle contract 與 gate subject 建構失敗。當輪 package smoke 本身 passed 1/1、exit 0；不能用它覆蓋審查失敗。原始 candidate、receipt、report 與 command observations 都保留。
+
+修正把新 gate 加入與既有 authoring tests 相同的 input/environment candidate-disabled 組：沒有擴大 reuse eligibility，也沒有移除 exact coverage gate。接著執行受影響的 lifecycle／classification／profile 檢查，再固定新 commit 交由原 reviewer 核對；未修改既有 authoring 行為或原 reviewer 文字。
+
 ## Deferred Work
 
 `manual-gap` 並非忘記處理：CLI local binding 需要明示 opt-in；lease／review input／ledger 包含當次實際觀測與 custody；release、upgrade-route、rule ownership 涉及 owner reconciliation。現有工具不足時，必須保留人工建構加 validator，不能填入 fabricated approval 或 passed。
@@ -99,3 +103,7 @@ Python entrypoint、fixture classification 與 executable shell profile registry
 ## Closure Evidence
 
 尚未進行本機整合。owner 已允許本機 main merge，本次採 implementation freeze 與 evidence intake 分開的 checkpoint，審查完成後保留 merge boundary。不包含 remote push、PR、Issue／Project closure、tag、release 或 target upgrade。
+
+### F-001 修正驗證紀錄
+
+`lifecycle-repair-01` 在 sandbox 啟動 Git Bash 時以 exit 3221225794 失敗，屬 execution-environment failure，保留原始紀錄。改用既有授權的 elevated Windows 測試邊界後，`lifecycle-repair-02` passed（0.815 秒）；`classification-01` 的兩項既有分類／變更矩陣案例 passed。新 gate 保持 input/environment、candidate-disabled、無 reusable profiles，唯一 pilot 仍未改變。修正後的 clean commit 會再次取得直接觀察，再由獨立 reviewer 檢查有限 delta；其他 authoring／package 程式未改動。

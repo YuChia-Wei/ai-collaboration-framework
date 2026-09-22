@@ -41,6 +41,7 @@ groups:
       - "execution-artifact-templates"
       - "execution-artifacts-tests"
       - "artifact-authoring-tests"
+      - "artifact-catalog-tests"
       - "external-task-delegation-tests"
       - "file-disposition-manifest"
       - "git-commit-policy"
