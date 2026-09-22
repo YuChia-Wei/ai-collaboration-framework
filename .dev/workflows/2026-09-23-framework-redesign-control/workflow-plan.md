@@ -24,8 +24,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | integrated PR #329; Issue/Project complete |
 | #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
 | #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
-| #334 | P3-A knowledge lifecycle | knowledge-lifecycle design, own workflow; source scope follows contract reconciliation | ready for independent contract checkpoint |
-| #335 | P3-B work management | work-management design, own workflow; source scope follows contract reconciliation | ready for independent contract checkpoint |
+| #334 | P3-A knowledge lifecycle | knowledge-lifecycle design, own workflow; source scope follows contract reconciliation | independent Astra Ultra contract checkpoint active |
+| #335 | P3-B work management | work-management design, own workflow; source scope follows contract reconciliation | independent Astra Ultra contract checkpoint active |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -43,7 +43,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: P2 merged through PR #333 at `ba36554b418977a2c8a12d51152c7b625bf48124`; #330/#331 are CLOSED/COMPLETED and Project Done. Dispatch #334/#335 for early local contract checkpoints. They must settle lifecycle/authority, selected config namespace coexistence, owned schema/version and package member changes before concurrent product edits. The coordinator reviews both, chooses any common contract changes and resumes each same task with exclusive source ownership. These checkpoints do not close the Issues and do not require another user approval for already delegated routine design decisions. All product/tool/build/install trials stay deferred to P7.
+Current action: P2 merged through PR #333 at `ba36554b418977a2c8a12d51152c7b625bf48124`; #330/#331 are CLOSED/COMPLETED and Project Done. Independent #334/#335 tasks are active from checkpoint `a34ecd3c9423b17b6bb745f598ef22fd7437dd24`; model and assigned F: execution identity were read back in [dispatch evidence](evidence/p3-task-dispatch.json). Receive their early local contract checkpoints. They must settle lifecycle/authority, selected config namespace coexistence, owned schema/version and package member changes before concurrent product edits. The coordinator reviews both, chooses any common contract changes and resumes each same task with exclusive source ownership. These checkpoints do not close the Issues and do not require another user approval for already delegated routine design decisions. All product/tool/build/install trials stay deferred to P7.
 
 ## Remaining work and verification
 

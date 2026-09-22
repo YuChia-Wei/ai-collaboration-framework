@@ -36,3 +36,5 @@ P1 merged through PR #329 (`b4d54966a0ed704d6b300b9f965976e27cd8512d`). Issues #
 ## P3 preparation
 
 P2 online integration completed in PR #333; #330/#331 and Project items are closed/Done. #334/#335 are open and in progress for knowledge lifecycle and work-management capabilities. Each first delivers a local contract checkpoint, then continues implementation in the same independent task after coordinator reconciliation. Source/shared edits are withheld until their lifecycle/config/schema interfaces agree; this is planned sequencing, not new owner approval. P7 verification remains deferred.
+
+P3 dispatch is active in two independent `gpt-6-astra / ultra` tasks. Exact task IDs, assigned F: worktrees and initial runtime/Git read-back are retained in [dispatch evidence](../evidence/p3-task-dispatch.json). No contract or source completion is implied.
