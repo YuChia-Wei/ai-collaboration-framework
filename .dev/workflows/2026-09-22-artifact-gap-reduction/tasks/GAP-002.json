@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "blocked",
   "created_at": "2026-09-22T13:53:52+08:00",
-  "updated_at": "2026-09-22T15:10:37+08:00",
+  "updated_at": "2026-09-22T15:47:55.830223+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -33,8 +33,8 @@
     "validation": [
       "Focused authoring, registry and applicable package/CLI checks."
     ],
-    "last_completed_step": "Repair63b95af1 passed all five hosted checks; audit2 resolved behavioral/package failures and retained the report timestamp defect.",
-    "next_action": "Await explicit user authorization for a fourth bounded report review. Do not dispatch or create retry authorization before that approval."
+    "last_completed_step": "Third independent review retained F-003 historical wording; corrected in 8d31fc7d. Prior failed evidence remains preserved.",
+    "next_action": "Await explicit authorization for further independent review, including the owner-requested report automation changes; do not dispatch a new retry implicitly."
   },
   "results": {
     "summary": "Behavioral repair63b95af1 passed all five hosted contexts. Third review retained only contradictory historical wording; correction is ready, but automatic approval review refused new fourth-review authorization.",

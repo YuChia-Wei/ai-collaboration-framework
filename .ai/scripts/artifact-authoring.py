@@ -13,7 +13,7 @@ from python_prerequisites import guard_direct_entrypoint
 
 guard_direct_entrypoint(".ai/scripts/artifact-authoring.py")
 
-from artifact_authoring import AuthoringError, apply, catalog, parse, plan, recover
+from artifact_authoring import AuthoringError, apply, catalog, fields, parse, plan, recover
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -25,8 +25,14 @@ def main(argv: list[str] | None = None) -> int:
     routing.add_argument("--kind", help="select one lifecycle kind")
     for name in ("preview", "apply"):
         sub = commands.add_parser(name)
-        sub.add_argument("--request", type=Path, required=True)
-        if name == "apply": sub.add_argument("--expect", required=True, help="digest from the unchanged preview")
+        if name == "preview":
+            sub.add_argument("--request", type=Path, required=True)
+            sub.add_argument("--json", action="store_true", help="emit resolved request, captured timestamp, digest and diff to stdout")
+        else:
+            source = sub.add_mutually_exclusive_group(required=True)
+            source.add_argument("--request", type=Path, help="legacy request with explicit timestamp")
+            source.add_argument("--preview", type=Path, help="unchanged JSON output from preview --json")
+            sub.add_argument("--expect", required=True, help="digest from the unchanged preview")
     recovery = commands.add_parser("recover")
     recovery.add_argument("--journal", type=Path, required=True)
     args = parser.parse_args(argv)
@@ -40,12 +46,23 @@ def main(argv: list[str] | None = None) -> int:
             recover(args.root, args.journal)
             print("Pending bundle rolled back; prior observations remain in the ignored recovery journal.")
         else:
-            request = parse(args.request.read_text(encoding="utf-8"), "request")
+            if args.command == "apply" and args.preview:
+                preview = parse(args.preview.read_text(encoding="utf-8-sig"), "preview")
+                fields(preview, {"format", "request", "digest", "diff"}, set(), "preview")
+                if preview["format"] != "artifact-authoring-preview/v1" or preview["digest"] != args.expect:
+                    raise AuthoringError("preview format or expected digest mismatch")
+                request = preview["request"]
+            else:
+                request = parse(args.request.read_text(encoding="utf-8-sig"), "request")
             if args.command == "preview":
                 result = plan(args.root, request)
-                print(result.diff(), end="")
-                print(f"Preview digest: {result.digest}")
-                print("No files written. Apply requires the same request and --expect digest.")
+                if args.json:
+                    print(json.dumps({"format": "artifact-authoring-preview/v1", "request": result.request,
+                                      "digest": result.digest, "diff": result.diff()}, ensure_ascii=False, indent=2))
+                else:
+                    print(result.diff(), end="")
+                    print(f"Preview digest: {result.digest}")
+                    print("No files written. For automatic timestamps, retain preview --json output and apply --preview with --expect.")
             else:
                 journal = apply(args.root, request, args.expect)
                 print(f"Bundle applied and validated before writes. Journal: {journal.relative_to(args.root.resolve()).as_posix()}")

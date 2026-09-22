@@ -45,7 +45,7 @@ class AuthoringFixture(unittest.TestCase):
             self.head = self.seed_head
             return
         for ref in (GOV + 'workflow-locator-template.yaml', GOV + 'ai-context-maintenance-workflow-plan-template.md',
-                    GOV + 'ai-context-remediation-task-template.json', AUDIT, LOCATOR,
+                    GOV + 'ai-context-remediation-task-template.json', GOV + 'ai-context-remediation-report-template.md', AUDIT, LOCATOR,
                     '.ai/scripts/validate-workflow-artifacts.py', '.ai/scripts/validate-assessment-artifacts.py',
                     '.ai/scripts/python_prerequisites.py', '.ai/scripts/python-entrypoints.json',
                     '.ai/scripts/artifact_core.py', 'requirements.txt'):
@@ -89,7 +89,7 @@ class AuthoringFixture(unittest.TestCase):
 
     def execute(self, request):
         preview = AUTHOR.plan(self.root, request)
-        return AUTHOR.apply(self.root, request, preview.digest)
+        return AUTHOR.apply(self.root, preview.request, preview.digest)
 
     def snapshot(self):
         return {str(path.relative_to(self.root)): path.read_bytes()
@@ -615,6 +615,171 @@ class RoleAuthoringTests(AuthoringFixture):
                                 cwd=envelope, capture_output=True, text=True)
         self.assertEqual(0, result.returncode, result.stderr)
         self.assertIn('Updated role', result.stdout)
+
+
+class ReportAutomationTests(AuthoringFixture):
+    report_path = f'.dev/workflows/{WF}/reports/remediation-report.md'
+    history = '## Historical Evidence\nFailed review on an earlier commit; retain these exact words.\n'
+
+    def prepare(self):
+        self.execute(self.workflow())
+        self.execute(self.assessment())
+        self.execute({'version': '1.0', 'operation': 'assessment.finalize', 'timestamp': LATER,
+                      'id': ASM, 'last_completed_action': 'Fixture baseline retained',
+                      'body': '## Executive Summary\nFixture.\n## Scope\nFixture.\n## Validation\nNot executed.'})
+        self.execute({'version': '1.0', 'operation': 'workflow.report', 'id': WF,
+                      'baseline_assessment': ASM, 'body': self.history})
+
+    def progress(self):
+        return {'version': '1.0', 'operation': 'workflow.progress', 'id': WF, 'task_id': 'TASK-001',
+                'last_completed_step': 'Observed fixture output', 'next_action': 'Review remaining evidence'}
+
+    def test_automatic_preview_keeps_one_instant_and_refuses_unresolved_apply(self):
+        request = self.workflow(); request.pop('timestamp')
+        before = self.snapshot()
+        with mock.patch.object(AUTHOR, 'automatic_timestamp', return_value=NOW):
+            preview = AUTHOR.plan(self.root, request)
+        self.assertEqual(NOW, preview.request['timestamp'])
+        self.assertNotIn('timestamp', request)
+        self.assertEqual(before, self.snapshot())
+        with self.assertRaisesRegex(ValueError, 'resolved preview'):
+            AUTHOR.apply(self.root, request, preview.digest)
+        with mock.patch.object(AUTHOR, 'automatic_timestamp', side_effect=AssertionError('clock must not run again')):
+            AUTHOR.apply(self.root, preview.request, preview.digest)
+        self.assertEqual(NOW, self.load(f'.dev/workflows/{WF}/workflow.yaml')['updated_at'])
+
+    def test_progress_and_body_updates_sync_report_plan_task_and_index(self):
+        self.prepare()
+        created = AUTHOR._report_metadata((self.root / self.report_path).read_bytes())['created_at']
+        self.execute(self.progress())
+        locator = self.load(f'.dev/workflows/{WF}/workflow.yaml')
+        report = (self.root / self.report_path).read_text()
+        metadata = AUTHOR._report_metadata(report.encode())
+        self.assertEqual(created, metadata['created_at'])
+        self.assertGreater(AUTHOR.instant(metadata['updated_at']), AUTHOR.instant(created))
+        self.assertEqual(locator['updated_at'], metadata['updated_at'])
+        self.assertEqual(locator['updated_at'], self.load(f'.dev/workflows/{WF}/tasks/TASK-001.json')['updated_at'])
+        self.assertIn(locator['updated_at'], (self.root / '.dev/workflows/INDEX.MD').read_text())
+        for path in (self.report_path, f'.dev/workflows/{WF}/workflow-plan.md'):
+            self.assertIn('| TASK-001 | in_progress | Observed fixture output | Review remaining evidence |', (self.root / path).read_text())
+        self.assertIn(self.history, report)
+        self.execute({'version': '1.0', 'operation': 'workflow.report', 'id': WF, 'body': self.history + '\nAdditional actual observation.\n'})
+        updated = AUTHOR._report_metadata((self.root / self.report_path).read_bytes())
+        self.assertGreater(AUTHOR.instant(updated['updated_at']), AUTHOR.instant(metadata['updated_at']))
+        self.assertEqual('draft', updated['status'])
+        self.execute({'version': '1.0', 'operation': 'workflow.update', 'id': WF, 'body': '## Scope\nUpdated plan body.\n'})
+        plan = (self.root / f'.dev/workflows/{WF}/workflow-plan.md').read_text()
+        self.assertIn('Updated plan body.', plan)
+        self.assertNotIn('Owner-authorized fixture scope.', plan)
+        self.assertIn('Review remaining evidence', plan)
+
+    def test_existing_report_adoption_preserves_identity_and_timestamp_origin(self):
+        self.prepare()
+        locator_ref = f'.dev/workflows/{WF}/workflow.yaml'
+        locator = self.load(locator_ref); locator.pop('remediation_report')
+        self.put(locator_ref, AUTHOR.dump(locator))
+        before = AUTHOR._report_metadata((self.root / self.report_path).read_bytes())
+        self.execute({'version': '1.0', 'operation': 'workflow.report', 'id': WF})
+        after = AUTHOR._report_metadata((self.root / self.report_path).read_bytes())
+        for key in ('report_id', 'created_at', 'baseline_assessment', 'template_source', 'template_version'):
+            self.assertEqual(before[key], after[key])
+        self.assertGreater(AUTHOR.instant(after['updated_at']), AUTHOR.instant(before['updated_at']))
+        self.assertIn(self.history, (self.root / self.report_path).read_text())
+
+    def test_drift_and_controlled_section_injection_refuse_all_writes(self):
+        self.prepare()
+        request = self.progress(); preview = AUTHOR.plan(self.root, request)
+        report = self.root / self.report_path
+        report.write_bytes(report.read_bytes() + b'\nExternal authored edit.\n')
+        before = self.snapshot()
+        with self.assertRaisesRegex(ValueError, 'stale'):
+            AUTHOR.apply(self.root, preview.request, preview.digest)
+        for body in ('## Report Metadata\n- `status`: `final`\n', '## Current Workflow State\nEverything passed.\n'):
+            with self.subTest(body=body), self.assertRaises(ValueError):
+                AUTHOR.plan(self.root, {'version': '1.0', 'operation': 'workflow.report', 'id': WF, 'body': body})
+        with self.assertRaises(ValueError):
+            AUTHOR.plan(self.root, {'version': '1.0', 'operation': 'workflow.report', 'id': WF, 'status': 'final'})
+        self.assertEqual(before, self.snapshot())
+
+    def test_validator_detects_stale_state_duplicate_metadata_and_missing_reference(self):
+        self.prepare()
+        original = (self.root / self.report_path).read_bytes()
+        validator = AUTHOR._module('validate-workflow-artifacts')
+        mutations = [original.replace(b'| TASK-001 | in_progress |', b'| TASK-001 | completed |'),
+                     original.replace(b'- `status`: `draft`', b'- `status`: `draft`\n- `status`: `final`'),
+                     original.replace(ASM.encode(), b'ASM-20260921-21-zzz'),
+                     original + b'\n## Current Workflow State\nDuplicate\n']
+        for data in mutations:
+            self.put(self.report_path, data)
+            with self.subTest(data=data[-60:]):
+                self.assertTrue(validator.validate_workflows(self.root)[0])
+        self.put(self.report_path, original)
+        self.assertEqual([], validator.validate_workflows(self.root)[0])
+
+    def test_completion_needs_linked_verification_and_final_report_is_immutable(self):
+        self.prepare()
+        observations = {'summary': 'Fixture work done; no real acceptance claimed', 'finding_status': 'deferred',
+                        'tests_run': ['Synthetic fixture only'], 'files_changed': [], 'residual_risk': '', 'follow_up_needed': False}
+        complete = {'version': '1.0', 'operation': 'workflow.transition', 'id': WF, 'task_id': 'TASK-001',
+                    'status': 'completed', 'workflow_status': 'completed', 'current_phase': 'completed', 'observations': observations}
+        before = self.snapshot()
+        with self.assertRaisesRegex(ValueError, 'verification'): AUTHOR.plan(self.root, complete)
+        with self.assertRaisesRegex(ValueError, 'verification'):
+            AUTHOR.plan(self.root, {'version': '1.0', 'operation': 'workflow.report', 'id': WF, 'verification_assessment': ASM})
+        self.assertEqual(before, self.snapshot())
+        verification = self.assessment()
+        verification.update(id='ASM-20260921-21-ver', type='verification', workflow_refs=[WF], related_assessments=[ASM])
+        self.execute(verification)
+        self.execute({'version': '1.0', 'operation': 'assessment.finalize', 'id': verification['id'],
+                      'last_completed_action': 'Retained fixture result', 'body': '## Executive Summary\nFailed.\n## Scope\nFixture.\n## Validation\nSynthetic failed observation.'})
+        # A final assessment records conclusions; it is deliberately not a fabricated pass.
+        self.execute({'version': '1.0', 'operation': 'workflow.report', 'id': WF, 'verification_assessment': verification['id']})
+        self.execute(complete)
+        report = (self.root / self.report_path).read_text()
+        self.assertEqual('final', AUTHOR._report_metadata(report.encode())['status'])
+        self.assertNotIn('passed', report)
+        before = self.snapshot()
+        with self.assertRaisesRegex(ValueError, 'terminal workflow'):
+            AUTHOR.plan(self.root, {'version': '1.0', 'operation': 'workflow.report', 'id': WF, 'body': 'Rewrite'})
+        self.assertEqual(before, self.snapshot())
+
+    def test_report_bundle_recovery_restores_every_previous_byte(self):
+        self.prepare()
+        before = self.snapshot(); candidate = AUTHOR.plan(self.root, self.progress())
+        original = AUTHOR._write; calls = []
+        def interrupt(*args):
+            calls.append(args[1])
+            if len(calls) == len(candidate.changes): raise OSError('injected final-write interruption')
+            return original(*args)
+        with mock.patch.object(AUTHOR, '_write', side_effect=interrupt), self.assertRaises(ValueError):
+            AUTHOR.apply(self.root, candidate.request, candidate.digest)
+        pending = next((self.root / AUTHOR.LOCAL).glob('*.pending.json'))
+        AUTHOR.recover(self.root, pending)
+        self.assertEqual(before, self.snapshot())
+
+    def test_cli_json_preview_and_apply_never_require_manual_timestamp(self):
+        request = self.workflow(); request.pop('timestamp')
+        request_path = self.root / '.dev/ai-context/local/request.json'
+        self.put(request_path.relative_to(self.root).as_posix(), json.dumps(request).encode())
+        cli = ROOT / '.ai/scripts/artifact-authoring.py'
+        run = subprocess.run([sys.executable, '-B', str(cli), '--root', str(self.root), 'preview', '--request', str(request_path), '--json'], capture_output=True, text=True)
+        self.assertEqual(0, run.returncode, run.stderr)
+        preview = json.loads(run.stdout)
+        preview_path = request_path.with_name('preview.json'); preview_path.write_text(run.stdout, encoding='utf-8')
+        apply = subprocess.run([sys.executable, '-B', str(cli), '--root', str(self.root), 'apply', '--preview', str(preview_path), '--expect', preview['digest']], capture_output=True, text=True)
+        self.assertEqual(0, apply.returncode, apply.stderr)
+        self.assertEqual(preview['request']['timestamp'], self.load(f'.dev/workflows/{WF}/workflow.yaml')['created_at'])
+
+    def test_repeated_projection_preserves_following_prose_without_trailing_blank_lines(self):
+        projection = '## Current Workflow State\n\n<!-- artifact-authoring: workflow-state/v1; generated from workflow.yaml and tasks -->\nRecorded state.\n'
+        original = b'# Report\n\nHistorical evidence.\n'
+        first = AUTHOR._replace_state(original, projection)
+        self.assertEqual(first, AUTHOR._replace_state(first, projection))
+        self.assertFalse(first.endswith(b'\n\n'))
+        tail = b'\n## Additional Evidence\nPreserve this author-owned paragraph.\n'
+        updated = AUTHOR._replace_state(first + tail, projection.replace('Recorded state.', 'New state.'))
+        self.assertTrue(updated.endswith(tail))
+        self.assertIn(b'Historical evidence.', updated)
 
 
 if __name__ == '__main__':

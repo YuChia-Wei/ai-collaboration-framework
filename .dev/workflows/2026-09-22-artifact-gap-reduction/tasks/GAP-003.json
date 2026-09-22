@@ -1,0 +1,58 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GAP-003",
+  "workflow_id": "2026-09-22-artifact-gap-reduction",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-22T15:38:23.782529+08:00",
+  "updated_at": "2026-09-22T15:53:53.643677+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Automate report timestamps and workflow/task state projection using the governed authoring CLI.",
+    "files": [],
+    "constraints": [
+      "Preserve original report identity and historical failures.",
+      "Do not fabricate review, CI, provider or retry authorization."
+    ],
+    "non_goals": []
+  },
+  "execution": {
+    "steps": [
+      "Capture automatic timestamps in preview.",
+      "Add report and progress operations with generated state.",
+      "Exercise negative and recovery cases; apply the tools to this workflow."
+    ],
+    "validation": [
+      "Focused authoring automation and adjacent compatibility checks; no independent acceptance inferred."
+    ],
+    "last_completed_step": "Implemented automatic preview timestamps, report/progress operations and generated current-state checks; 8 automation cases and 6 focused compatibility cases passed.",
+    "next_action": ""
+  },
+  "results": {
+    "summary": "Delivered automatic preview timestamps, bounded report/progress writers and synchronized current-state validation; applied the actual CLI to this workflow.",
+    "files_changed": [
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/artifact-authoring.py",
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/tests/test_artifact_authoring.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/README.md",
+      ".ai/assets/shared/artifact-lifecycle-registry.json"
+    ],
+    "tests_run": [
+      "8 initial automation cases passed; after the projection formatting correction, 3 affected cases passed, including one new regression case.",
+      "6 focused adjacent checks, 3 lifecycle routes, 11 profile checks and 1 portable CLI/import case passed.",
+      "Canonical AI context passed. Each actual CLI application validated the projected workflow/assessment bundle before writing.",
+      "Prior sandbox setup failure and fixture ID/date mismatch retained; no independent or hosted pass inferred."
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "Independent verification and current-head provider admission remain tracked by blocked GAP-002.",
+    "follow_up_needed": false
+  }
+}

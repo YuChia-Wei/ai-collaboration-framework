@@ -11,7 +11,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-gap-reduction`
 - `created_at`: `2026-09-22T13:53:22+08:00`
-- `updated_at`: `2026-09-22T15:10:37+08:00`
+- `updated_at`: `2026-09-22T15:53:53.643677+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -41,20 +41,39 @@ Use repository-required online Issue/Project, PR and integration gates. Any prov
 
 - GAP-001: Prepare runtime review and execution inputs with derived identities and evidence references.
 - GAP-002: Add useful restricted catalog authoring and reconcile all remaining owner boundaries.
+- GAP-003: Automate report timestamps, task progress and synchronized current-state projection.
 - Lifecycle steps: focused checks, report, immutable independent review, required provider admission and closure.
 
-## Resume Checkpoint
+## Continuation Boundaries
 
-- Last completed action: repair63b95af1 obtained all five required hosted successes. Attempt3 verified the report timestamp but retained F-003 for historical test wording; that wording is now corrected. All three failed review bodies remain immutable and the third lease is released.
-- Current task: GAP-002.
-- Exact next action: obtain explicit owner authorization for a fourth bounded review of the corrected report chronology before dispatch. No fourth retry is currently authorized. After verification, retain independent assessment and final delivery metadata before provider admission.
-- Validation already completed: selected input, catalog and compatibility checks; actual counts, timings and prior failures are in reports/remediation-report.md.
-- Git baseline: main 237a01f437f3005ea57885714f6ebfc3037d196d, matching live remote read-back.
-- Graph: indexed project exists but its commit provenance is unavailable and current authoring nodes are missing. Scoped Git-tracked file reads are the explicit fallback; no absence claim is made.
-- Blockers: automatic approval review rejected creation of a fourth retry authorization after three failed reviews because explicit user authorization for that new owner-sensitive retry was missing. The wording correction is ready for review; independent acceptance and PR admission remain incomplete. Provider baselines and private CLI selections remain outside scope.
+Current task status, recorded last step and next action are generated from workflow.yaml and task records below. Do not duplicate these mutable facts in prose.
+
+The three previous failed review artifacts remain historical evidence. Their leases were released. The earlier approval rejection concerned a fourth review; it did not execute that review. This implementation does not issue retry authorization or replace independent verification.
+
+Code discovery used the existing graph first. Current authoring nodes and index commit provenance were unavailable, so scoped Git-tracked reads were used explicitly; missing graph results are not absence evidence.
+
+## Owner-requested Document Automation
+
+The owner explicitly requested script/CLI maintenance of update timestamps and subsequent status. GAP-003 implements that bounded correction under Issue #320. Root remained the sole tracked writer. A read-only explorer inventoried document fields and policy boundaries; it provided design support, not independent acceptance.
+
+Acceptance: automatic preview time survives unchanged through apply/recovery; report identity and historical evidence remain intact; workflow, plan, task, index and bound report derive consistent current state; malformed input, changed previews and unsupported completion fail before writes. Apply the delivered CLI to this workflow rather than hand-editing metadata.
 
 ## Third Review Authorization
 
 Historical authorization: consumed by GAP-320-AUDIT-03. It does not authorize a fourth attempt.
 
 The workflow owner authorizes exactly one third independent attempt after the corrected report metadata is committed. Scope: F-003 timestamp correction, current repair chronology, exact unchanged implementation/authority proof and retained failed evidence. Reuse the already verified behavior with explicit Git identity proof; do not repeat behavioral suites or mutate a provider. Bind a fresh sealed workflow-retry-authorization to the new commit, the second failed report hash, attempt 3 and its sole consuming packet. One callback returns custody to root; no autonomous further retry is authorized.
+
+## Current Workflow State
+
+<!-- artifact-authoring: workflow-state/v1; generated from workflow.yaml and tasks -->
+- Workflow status: `blocked`
+- Current phase: verification
+
+| Task | Status | Last completed step | Next action |
+| --- | --- | --- | --- |
+| GAP-001 | completed | Implemented four input preparers. Attempt 1 was blocked before tests by sandbox fixture permissions; attempt 2 ran 7 tests, 6 passed and dependency-request failed because the shared loader did not register dataclass modules. | Runtime input implementation and selected checks complete; continue GAP-002 integration and fixed-subject verification. |
+| GAP-002 | blocked | Third independent review retained F-003 historical wording; corrected in 8d31fc7d. Prior failed evidence remains preserved. | Await explicit authorization for further independent review, including the owner-requested report automation changes; do not dispatch a new retry implicitly. |
+| GAP-003 | completed | Implemented automatic preview timestamps, report/progress operations and generated current-state checks; 8 automation cases and 6 focused compatibility cases passed. |  |
+
+Recorded workflow state is not independent verification, current-head CI admission, or provider closure.

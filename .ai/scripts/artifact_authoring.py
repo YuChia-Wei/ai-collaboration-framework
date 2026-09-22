@@ -29,9 +29,10 @@ PLAN_TEMPLATE = ".ai/assets/skills/ai-context-governance/templates/ai-context-ma
 TASK_TEMPLATE = ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json"
 ASSESSMENT_TEMPLATE = ".dev/assessments/templates/assessment-locator-template.yaml"
 REPORT_TEMPLATE = ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+REMEDIATION_TEMPLATE = ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md"
 LOCAL = ".dev/ai-context/local/artifact-authoring"
 OPERATIONS = {
-    "workflow.create", "workflow.add-task", "workflow.transition", "workflow.update",
+    "workflow.create", "workflow.add-task", "workflow.transition", "workflow.update", "workflow.progress", "workflow.report",
     "assessment.create", "assessment.update", "assessment.finalize",
     "role.update", "role.migrate",
     "catalog.update", "target.technology", "target.work-binding",
@@ -445,6 +446,175 @@ def _advance(locator: dict, timestamp: str) -> None:
     locator["updated_at"] = timestamp
 
 
+def automatic_timestamp() -> str:
+    """Capture real local time once; preview/apply/recovery retain this instant."""
+    return datetime.now().astimezone().isoformat(timespec="microseconds")
+
+
+def markdown_section(raw: bytes, heading: str) -> tuple[str, int, int]:
+    text = raw.decode()
+    matches = list(re.finditer(rf"(?m)^## {re.escape(heading)}\r?$", text))
+    if len(matches) != 1:
+        raise AuthoringError(f"expected exactly one {heading} section")
+    match = matches[0]
+    following = re.search(r"(?m)^## ", text[match.end():])
+    stop = match.end() + following.start() if following else len(text)
+    return text, match.end(), stop
+
+
+def replace_body(raw: bytes, section: str, body: str) -> bytes:
+    if re.search(rf"(?m)^## {re.escape(section)}\s*$", body):
+        raise AuthoringError(f"body cannot replace machine-owned {section}")
+    text, start, stop = markdown_section(raw, section)
+    prefix = re.match(r"(?:\r?\n|[ \t]*\r?\n|- `[^`]+`:.*(?:\r?\n|$))*", text[start:stop])
+    return (text[:start + prefix.end()] + body.rstrip() + "\n").encode()
+
+
+def _report_metadata(raw: bytes) -> dict:
+    text, start, stop = markdown_section(raw, "Report Metadata")
+    rows = re.findall(r"(?m)^- `([^`]+)`: `([^`\r\n]*)`\r?$", text[start:stop])
+    if len(rows) != len({key for key, _ in rows}):
+        raise AuthoringError("duplicate report metadata")
+    result = dict(rows)
+    fields(result, {"report_id", "workflow_id", "owner_skill", "status", "created_at", "updated_at",
+                    "template_source", "template_version", "baseline_assessment", "verification_assessment"}, set(), "report metadata")
+    # Refuse unrecognized metadata prose instead of silently discarding it.
+    remainder = re.sub(r"(?m)^- `[^`]+`: `[^`\r\n]*`\r?$", "", text[start:stop])
+    if remainder.strip(): raise AuthoringError("unsupported report metadata content")
+    return result
+
+
+def _assessment_reference(view: View, identity: str, workflow_id: str, *, verification: bool, baseline: str = "") -> None:
+    _identity(identity, "assessment")
+    root = f".dev/assessments/{identity}"
+    record = load(view, root + "/assessment.yaml")
+    if (record.get("assessment_id") != identity or record.get("owner_skill") != "ai-context-auditor"
+            or record.get("assessment_type") not in {"ai-context-audit", "ai-context-verification"}
+            or record.get("status") != "final" or record.get("report") != "report.md"
+            or view.read(root + "/report.md") is None):
+        raise AuthoringError("report reference must identify an existing final independent assessment")
+    if verification and (record.get("assessment_type") != "ai-context-verification"
+                         or workflow_id not in record.get("relations", {}).get("workflow_refs", [])
+                         or baseline not in record.get("relations", {}).get("related_assessments", [])):
+        raise AuthoringError("verification assessment must be a verification linked to this workflow and baseline")
+
+
+def _state_projection(view: View, locator: dict) -> str:
+    """Project current recorded facts, never infer a test/review/provider outcome."""
+    def cell(value):
+        return str(value).replace("&", "&amp;").replace("<", "&lt;").replace("|", "&#124;").replace("`", "&#96;").replace("\r", "").replace("\n", "<br>")
+    rows = ["## Current Workflow State\n\n",
+            "<!-- artifact-authoring: workflow-state/v1; generated from workflow.yaml and tasks -->\n",
+            f"- Workflow status: `{locator['status']}`\n- Current phase: {cell(locator['current_phase'])}\n\n",
+            "| Task | Status | Last completed step | Next action |\n| --- | --- | --- | --- |\n"]
+    for path in sorted(view.path(locator["artifact_root"] + "/tasks").glob("*.json")):
+        task = load(view, path.relative_to(view.root).as_posix())
+        if task.get("workflow_id") != locator["workflow_id"]:
+            raise AuthoringError("current-state task belongs to another workflow")
+        execution = task["execution"]
+        for key in ("last_completed_step", "next_action"): string(execution[key], f"task.execution.{key}", empty=True)
+        rows.append("| " + " | ".join(cell(value) for value in (task["task_id"], task["status"],
+                    execution["last_completed_step"], execution["next_action"])) + " |\n")
+    rows.append("\nRecorded workflow state is not independent verification, current-head CI admission, or provider closure.\n")
+    return "".join(rows)
+
+
+def _replace_state(raw: bytes, projection: str) -> bytes:
+    text = raw.decode()
+    if re.search(r"(?m)^## Current Workflow State\r?$", text):
+        text, _, stop = markdown_section(raw, "Current Workflow State")
+        start = re.search(r"(?m)^## Current Workflow State\r?$", text).start()
+        block = text[start:stop]
+        if "<!-- artifact-authoring: workflow-state/v1; generated from workflow.yaml and tasks -->" not in block:
+            raise AuthoringError("unmanaged Current Workflow State section; move author prose before adopting projection")
+        return ((text[:start] + projection.rstrip() + "\n\n" + text[stop:]).rstrip() + "\n").encode()
+    return (text.rstrip() + "\n\n" + projection).encode()
+
+
+def remediation_report(view: View, locator: dict, request: dict) -> None:
+    """Create/adopt/update only the governance-owned remediation report."""
+    root = locator["artifact_root"]
+    path = root + "/reports/remediation-report.md"
+    raw = view.read(path)
+    timestamp = request["timestamp"]
+    if raw is None:
+        if "baseline_assessment" not in request: raise AuthoringError("new report requires baseline_assessment")
+        metadata = dict(report_id="remediation-report-" + locator["workflow_id"], workflow_id=locator["workflow_id"],
+                        owner_skill="ai-context-governance", status="draft", created_at=timestamp, updated_at=timestamp,
+                        template_source=REMEDIATION_TEMPLATE, template_version=md_version(view, REMEDIATION_TEMPLATE),
+                        baseline_assessment=request["baseline_assessment"], verification_assessment="pending")
+        body = _body(view, request)
+        if re.search(r"(?m)^## Current Workflow State\s*$", body):
+            raise AuthoringError("body cannot replace generated Current Workflow State")
+        title = string(request.get("title", locator["title"]), "title")
+        if any(c in title for c in "\r\n`"): raise AuthoringError("report title must be a single line without backticks")
+        raw = metadata_document(title, "Report Metadata", metadata, body)
+    else:
+        metadata = _report_metadata(raw)
+        expected = {"report_id": "remediation-report-" + locator["workflow_id"], "workflow_id": locator["workflow_id"],
+                    "owner_skill": "ai-context-governance", "template_source": REMEDIATION_TEMPLATE,
+                    "template_version": md_version(view, REMEDIATION_TEMPLATE)}
+        if any(metadata[key] != value for key, value in expected.items()) or metadata["status"] != "draft":
+            raise AuthoringError("unsupported report identity/version or immutable final report")
+        if instant(metadata["created_at"]) > instant(metadata["updated_at"]): raise AuthoringError("invalid report chronology")
+        _advance(metadata, timestamp)
+        if "baseline_assessment" in request and request["baseline_assessment"] != metadata["baseline_assessment"]:
+            raise AuthoringError("baseline assessment is immutable; create a successor for a new baseline")
+        if "title" in request: raise AuthoringError("existing report title is preserved")
+        if "body" in request or "body_file" in request:
+            body = _body(view, request)
+            if re.search(r"(?m)^## Current Workflow State\s*$", body):
+                raise AuthoringError("body cannot replace generated Current Workflow State")
+            raw = replace_body(raw, "Report Metadata", body)
+    if "verification_assessment" in request:
+        metadata["verification_assessment"] = string(request["verification_assessment"], "verification_assessment")
+    _assessment_reference(view, metadata["baseline_assessment"], locator["workflow_id"], verification=False)
+    if metadata["verification_assessment"] != "pending":
+        _assessment_reference(view, metadata["verification_assessment"], locator["workflow_id"], verification=True, baseline=metadata["baseline_assessment"])
+    if locator["status"] == "completed":
+        if metadata["verification_assessment"] == "pending":
+            raise AuthoringError("completed workflow report requires an existing final verification assessment")
+        metadata["status"] = "final"
+    raw = update_markdown(raw, "Report Metadata", metadata)
+    view.put(path, _replace_state(raw, _state_projection(view, locator)))
+
+
+def validate_workflow_report(root, locator: dict) -> list[str]:
+    """Read-only opt-in consistency check shared with the workflow validator."""
+    if "remediation_report" not in locator: return []
+    try:
+        if (locator.get("owner_skill") != "ai-context-governance" or locator.get("workflow_kind") != "ai-context-maintenance"
+                or locator.get("artifact_root") != ".dev/workflows/" + _identity(locator.get("workflow_id"), "workflow")):
+            raise AuthoringError("unsupported remediation workflow owner/layout")
+        if locator["remediation_report"] != {"contract": "1.0", "path": "reports/remediation-report.md"}:
+            raise AuthoringError("unsupported remediation report binding")
+        view = root.view if isinstance(root, ViewPath) else View(Path(root))
+        raw = view.read(locator["artifact_root"] + "/reports/remediation-report.md")
+        if raw is None: raise AuthoringError("missing bound remediation report")
+        metadata = _report_metadata(raw)
+        expected = {"report_id": "remediation-report-" + locator["workflow_id"], "workflow_id": locator["workflow_id"],
+                    "owner_skill": "ai-context-governance", "template_source": REMEDIATION_TEMPLATE,
+                    "template_version": md_version(view, REMEDIATION_TEMPLATE), "updated_at": locator["updated_at"],
+                    "status": "final" if locator["status"] == "completed" else "draft"}
+        if any(metadata[key] != value for key, value in expected.items()):
+            raise AuthoringError("report metadata differs from workflow projection")
+        if instant(metadata["created_at"]) > instant(metadata["updated_at"]): raise AuthoringError("invalid report chronology")
+        _assessment_reference(view, metadata["baseline_assessment"], locator["workflow_id"], verification=False)
+        verification = metadata["verification_assessment"]
+        if verification != "pending":
+            _assessment_reference(view, verification, locator["workflow_id"], verification=True, baseline=metadata["baseline_assessment"])
+        elif metadata["status"] == "final": raise AuthoringError("final report lacks verification reference")
+        projection = _state_projection(view, locator)
+        for path in (locator["artifact_root"] + "/reports/remediation-report.md", locator["artifact_root"] + "/workflow-plan.md"):
+            document = view.read(path)
+            text, start, stop = markdown_section(document, "Current Workflow State")
+            if text[start:stop].strip() != projection.split("\n", 1)[1].strip():
+                raise AuthoringError(f"stale generated current state in {path}")
+    except (ValueError, TypeError, KeyError, AttributeError, OSError) as exc:
+        return [f"{locator.get('workflow_id', 'workflow')}: {exc}"]
+    return []
+
+
 def _supported(view: View, record: dict, source: str) -> None:
     expected = template(view, source)
     for key in ("template_source", "template_version"):
@@ -490,7 +660,9 @@ def workflow(view: View, request: dict) -> None:
         "create": ({"title", "branch", "task"}, {"base_branch", "body", "body_file"}),
         "add-task": ({"task"}, set()),
         "transition": ({"task_id", "status"}, {"observations", "next_action", "next_task_id", "workflow_status", "current_phase"}),
-        "update": (set(), {"title", "current_phase"}),
+        "update": (set(), {"title", "current_phase", "body", "body_file"}),
+        "progress": ({"task_id", "last_completed_step", "next_action"}, {"observations", "current_phase"}),
+        "report": (set(), {"title", "body", "body_file", "baseline_assessment", "verification_assessment"}),
     }[action]
     fields(request, common | required, optional, request["operation"])
     identity = _identity(request["id"], "workflow")
@@ -558,6 +730,25 @@ def workflow(view: View, request: dict) -> None:
                     raise AuthoringError("workflow.transition supports in_progress, blocked or observed completed; other lifecycle changes need the owning policy")
                 locator["status"] = workflow_status
             if "current_phase" in request: locator["current_phase"] = string(request["current_phase"], "current_phase")
+        elif action == "progress":
+            task_id = string(request["task_id"], "task_id")
+            if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", task_id): raise AuthoringError("unsafe task_id")
+            task_path = f"{root}/tasks/{task_id}.json"
+            task = load(view, task_path)
+            _supported(view, task, TASK_TEMPLATE)
+            if (task.get("task_id") != task_id or task.get("workflow_id") != identity
+                    or task.get("status") not in {"in_progress", "blocked"}):
+                raise AuthoringError("progress requires an active or blocked task in this workflow")
+            _advance(task, timestamp)
+            for key in ("last_completed_step", "next_action"):
+                task["execution"][key] = string(request[key], key, empty=True)
+            if "observations" in request: task["results"].update(_observations(request["observations"]))
+            if "current_phase" in request: locator["current_phase"] = string(request["current_phase"], "current_phase")
+            view.put(task_path, dump(task, json_format=True))
+        elif action == "report":
+            if "remediation_report" in locator and locator["remediation_report"] != {"contract": "1.0", "path": "reports/remediation-report.md"}:
+                raise AuthoringError("unsupported remediation report binding")
+            locator["remediation_report"] = {"contract": "1.0", "path": "reports/remediation-report.md"}
         else:
             for key in ("title", "current_phase"):
                 if key in request: locator[key] = string(request[key], key)
@@ -565,7 +756,16 @@ def workflow(view: View, request: dict) -> None:
             raise AuthoringError("complete workflow through an observed task transition with workflow_status and current_phase")
         raw = view.read(plan_path)
         if raw is None: raise AuthoringError("missing workflow-plan.md")
+        if action == "update" and ("body" in request or "body_file" in request):
+            body = _body(view, request)
+            if re.search(r"(?m)^## Current Workflow State\s*$", body): raise AuthoringError("body cannot replace generated Current Workflow State")
+            raw = replace_body(raw, "Workflow Metadata", body)
         view.put(plan_path, update_markdown(raw, "Workflow Metadata", {k: locator[k] for k in ("status", "current_phase", "updated_at")}))
+    if "remediation_report" in locator:
+        if locator["remediation_report"] != {"contract": "1.0", "path": "reports/remediation-report.md"}:
+            raise AuthoringError("unsupported remediation report binding")
+        remediation_report(view, locator, request if action == "report" else {"timestamp": timestamp})
+        view.put(plan_path, _replace_state(view.read(plan_path), _state_projection(view, locator)))
     view.put(locator_path, dump(locator), create=action == "create")
     update_index(view, "workflow", locator, create=action == "create")
 
@@ -952,7 +1152,8 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     request = parse(canonical(request).decode(), "request")
     if request.get("version") != "1.0": raise AuthoringError("unsupported request version; catalog describes current writer, no migration is available")
     if string(request.get("operation"), "operation") not in OPERATIONS: raise AuthoringError("unsupported operation; use catalog")
-    instant(request.get("timestamp"))
+    if "timestamp" not in request: request["timestamp"] = automatic_timestamp()
+    instant(request["timestamp"])
     view = View(root, _baseline)
     family = request["operation"].split(".")[0]
     # Validate the complete projected repository using the unchanged domain rules.
@@ -968,7 +1169,7 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     except (KeyError, TypeError, AttributeError, OSError, ValueError, RuntimeError) as exc:
         raise AuthoringError(f"projected validation could not complete: {exc}; reconcile malformed records before authoring") from exc
     if errors: raise AuthoringError("projected validation failed before writes:\n- " + "\n- ".join(errors))
-    for rel in (WORKFLOW_TEMPLATE, PLAN_TEMPLATE, TASK_TEMPLATE, ASSESSMENT_TEMPLATE, REPORT_TEMPLATE,
+    for rel in (WORKFLOW_TEMPLATE, PLAN_TEMPLATE, TASK_TEMPLATE, ASSESSMENT_TEMPLATE, REPORT_TEMPLATE, REMEDIATION_TEMPLATE,
                 ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md", ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
                 ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-assessment-artifacts.py",
                 ".ai/scripts/artifact_authoring.py", ".ai/scripts/artifact_core.py", "requirements.txt", ".gitignore"):
@@ -1005,7 +1206,9 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
 def catalog(root: Path) -> dict:
     view = View(root)
     return {"request_version": "1.0", "operations": sorted(OPERATIONS), "families": {
-        "workflow": {"profile": "ai-context-maintenance", "readable": "current templates only", "writable": template(view, WORKFLOW_TEMPLATE)["template_version"], "template_source": WORKFLOW_TEMPLATE},
+        "workflow": {"profile": "ai-context-maintenance", "readable": "current templates only", "writable": template(view, WORKFLOW_TEMPLATE)["template_version"], "template_source": WORKFLOW_TEMPLATE,
+                     "remediation_report": {"operation": "workflow.report", "template_source": REMEDIATION_TEMPLATE,
+                                            "state": "opt-in projection from locator/tasks; no independent or provider outcome inferred"}},
         "assessment": {"profile": ["ai-context-audit", "ai-context-verification"], "readable": "current templates only", "writable": template(view, ASSESSMENT_TEMPLATE)["template_version"], "template_source": ASSESSMENT_TEMPLATE},
         "role": {"profile": "existing dynamic sub-agent-role-prompt", "readable": ["1.1"],
                  "migration_input": ["1.0 dynamic roles only; not current admission"], "writable": "1.1", "admissible": "1.1 plus canonical owner/reference validation",
@@ -1019,6 +1222,7 @@ def catalog(root: Path) -> dict:
         "target_selections": {"path": ".dev/project-config.yaml", "operations": ["target.technology", "target.work-binding"], "enclosing_version": 1, "model_version": "1.0", "migration": "unsupported", "available": view.path(".dev/project-config.yaml").is_file(), "authority": "caller supplies target facts and decisions; no implicit initialization or adoption"},
         "lifecycle_registry": {"operation": "lifecycle.update", "record_selector": "kind", "version": "1.0", "migration": "unsupported", "protected": ["kind", "baseline_refs", "coverage"], "admission": "source declarations only; semantics require owner review"},
         "migration": "role.migrate supports only the catalogued dynamic edge; other families preserve originals and use their owning route",
+        "timestamp": "optional; preview captures real local time once; apply the resolved preview request without changing its timestamp",
         "final_assessments": "readable, immutable; create successor or reviewed addendum",
         "yaml_comments": "YAML comments are refused before rewriting; scalar hash content, Markdown prose and JSON/YAML extension fields are retained",
         "recovery": "explicit rollback of unchanged candidate bytes; no multi-file atomicity"}
@@ -1064,6 +1268,8 @@ def _write(root: Path, rel: str, expected: bytes | None, data: bytes | None) -> 
 
 def apply(root: Path, request: dict, expected_digest: str) -> Path:
     """Re-preview under lock. On interruption retain the journal for rollback."""
+    if "timestamp" not in request:
+        raise AuthoringError("apply requires the resolved preview request; use preview --json and apply --preview, without hand-editing timestamps")
     if root.is_symlink() or (root.exists() and getattr(root.lstat(), "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT):
         raise AuthoringError("repository root must not be a link or junction")
     root = root.resolve()

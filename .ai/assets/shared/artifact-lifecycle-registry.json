@@ -1841,7 +1841,28 @@
         "route": "Use the owning semantic authoring route and preserve historical records."
       },
       "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
-      "limits": "Only ai-context-maintenance profile; other skill bodies keep their own semantic authoring.",
+      "limits": "Only ai-context-maintenance profile; workflow.progress and workflow.update maintain progress/body plus metadata. Opt-in remediation reports and current-state projections update in the same recoverable bundle; other skill bodies retain their own owner.",
+      "applicability": "portable"
+    },
+    {
+      "kind": "ai-context-remediation-report",
+      "baseline_refs": ["I03"],
+      "models": [
+        ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md",
+        ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md"
+      ],
+      "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "authoring": "executable",
+      "producers": [".ai/scripts/artifact_authoring.py::remediation_report"],
+      "validators": [".ai/scripts/artifact_authoring.py::validate_workflow_report"],
+      "readable": "Current governance report template with exact Report Metadata; final reports remain immutable.",
+      "writable": "workflow.report creates or explicitly adopts/updates a current draft; workflow operations derive timestamps and current workflow/task state.",
+      "migration": {
+        "disposition": "unsupported",
+        "route": "Explicitly adopt a current draft without changing its identity or creation time; other versions and final history require owner reconciliation."
+      },
+      "admissible": "Owning metadata and relationship validation; final editorial status additionally requires completed workflow and an existing final verification linked to workflow and baseline. No independent pass or provider admission is inferred.",
+      "limits": "Authored historical evidence and conclusions remain author-owned. Only opt-in canonical report paths are refreshed; no archive scan or silent reopening.",
       "applicability": "portable"
     },
     {
