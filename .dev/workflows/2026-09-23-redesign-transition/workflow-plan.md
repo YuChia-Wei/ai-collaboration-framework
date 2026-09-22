@@ -13,7 +13,7 @@
 - `implementation_state`: `implementation-complete/validation-deferred`; online integration remains pending coordinator action.
 - `artifact_root`: `.dev/workflows/2026-09-23-redesign-transition`
 - `created_at`: `2026-09-23T01:08:43+08:00`
-- `updated_at`: `2026-09-23T01:15:11+08:00`
+- `updated_at`: `2026-09-23T01:21:18+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -28,7 +28,8 @@ explicit dispatch pins `53c9c8e58615e87e36f7b74ea8851fe845312daa` for this work.
 
 Deliver a discoverable, temporary source-only execution override, aligned root
 English/Traditional Chinese pointers, two narrowly necessary source policy
-pointers, and a durable CI restoration inventory with P7 exit conditions.
+pointers, one exact distribution-profile source-only exclusion under CORR-001,
+and a durable CI restoration inventory with P7 exit conditions.
 Keep owning-skill, Issue, dedicated-branch, truthful evidence, security,
 credential, ownership and PR-only integration rules in force.
 
@@ -79,10 +80,10 @@ artifacts. No push, PR, merge or Issue closure belongs to this task.
 
 ## Resume Checkpoint
 
-- Last completed action: source override, aligned entry/policy pointers, restoration inventory and bounded handoff authored and inspected; allowed document/Git and exact planned message checks completed.
+- Last completed action: CORR-001 distribution exclusion added under explicit coordinator scope expansion, profile YAML parsed and source/exclusion configuration inspected; corrective message format check passed. Original bounded P0 documents and checks are retained.
 - Current task: `ISSUE-324`, `completed` for local P0 implementation; verification remains `deferred-by-owner` under U001.
 - Exact next action: coordinator reads the delivered branch HEAD and `handoffs/coordinator.yaml`, inspects the scoped diff, registers the suggested index row, and arranges commit organization and the authorized first push/PR/online merge.
-- Checks already performed: Issue read-back (open); Git root/branch/HEAD/status; 11 UTF-8 files, 3 YAML and 1 JSON syntax parses, 18 local Markdown links; actual content/bilingual/scope inspection; two source blob/hash identities and seven inventory rows; clean diff whitespace; both exact planned commit messages passed format checks. Initial sandbox GitHub read failed with a local proxy connection error; scoped network read then succeeded. No credentials changed.
+- Initial-delivery checks already performed: Issue read-back (open); Git root/branch/HEAD/status; 11 UTF-8 files, 3 YAML and 1 JSON syntax parses, 18 local Markdown links; actual content/bilingual/scope inspection; two source blob/hash identities and seven inventory rows; clean diff whitespace; both exact planned commit messages passed format checks. Initial sandbox GitHub read failed with a local proxy connection error; scoped network read then succeeded. No credentials changed.
 - A tooling-path probe named two absent optional hook/config paths and exited 2; it was a discovery probe, not a validation result. Effective Git hooks configuration was read separately.
 - Shared index action: use the proposed row in `handoffs/coordinator.yaml`; `.dev/workflows/INDEX.MD` remains unchanged by this task.
 - Delivery identity: this record and `handoffs/coordinator.yaml` travel in the local delivery commit. Resolve it with `git log -1 --format=%H -- .dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml`; final HEAD and clean-state read-back are returned in the coordinator callback, not fabricated in advance.
@@ -94,9 +95,31 @@ artifacts. No push, PR, merge or Issue closure belongs to this task.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-09-23-redesign-transition` | `main` | assigned local start | `53c9c8e58615e87e36f7b74ea8851fe845312daa` | no push | 2026-09-23T01:08:43+08:00 | coordinator-created isolated worktree | same branch; bootstrap then P0 delivery |
 | 1 | `codex/2026-09-23-redesign-transition` | `main` | local bootstrap | `cfe15c40c34f4cc23936421beed57fa8c4851ab9` | no push | 2026-09-23T01:08:43+08:00 | explicit execution boundary | same branch; bounded policy delivery |
-| 1 | `codex/2026-09-23-redesign-transition` | `main` | local delivery | containing commit of `handoffs/coordinator.yaml` | coordinator integration pending | 2026-09-23T01:15:11+08:00 | implementation complete; verification deferred to P7 | coordinator reads HEAD/diff and prepares first push/PR |
+| 1 | `codex/2026-09-23-redesign-transition` | `main` | initial local delivery | `66793a430fb78ce1eae13a2435ea46802e05ca91` | coordinator integration pending | 2026-09-23T01:15:11+08:00 | implementation complete; verification deferred to P7 | coordinator reads HEAD/diff and prepares first push/PR |
+| 1 | `codex/2026-09-23-redesign-transition` | `main` | CORR-001 local correction | containing commit of `handoffs/coordinator.yaml` | no push | 2026-09-23T01:21:18+08:00 | exact source-only exclusion authorized after coordinator review | coordinator reads corrected HEAD/diff before first push |
 
 The integration gate remains a GitHub PR with U001 scope/content/Git read-back.
 Topology is selected by the coordinator before integration; the local task does
 not infer it from workflow mode or commit count. No source merge, release or
 full-framework verification is claimed by a completed local task.
+
+
+## CORR-001: Explicit Scope Expansion
+
+The coordinator's fixed-commit content review of `66793a430fb78ce1eae13a2435ea46802e05ca91`
+identified that `entries[id=governance-standards].source` includes
+`.dev/standards/**`. The source-only wording alone did not exclude the new override.
+The coordinator explicitly authorized exactly one additional file,
+`.ai/distribution/profiles/dotnet-backend.yaml`, to add the precise override path
+to the existing `source-local-work-management-policy` source-only exclusion group.
+
+Only that profile's one exclusion line changes under `.ai`; portable policy
+copies and build tools remain unchanged. The earlier callback's statement that
+`.ai` had no changes describes the initial commit only and is superseded for the
+combined delivery. The bootstrap and original delivery commits are preserved.
+
+Actual correction checks: direct YAML parsing, static source/exclusion content
+inspection, one-line profile diff, clean diff whitespace and the exact planned
+corrective commit-message format check. Package selection/execution, legacy
+validators, tests and audits remain `deferred-by-owner` under U001 until P7.
+Static configuration inspection does not claim package behavior was executed.

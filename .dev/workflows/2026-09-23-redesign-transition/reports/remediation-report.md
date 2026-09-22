@@ -7,7 +7,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `final`
 - `created_at`: `2026-09-23T01:13:05+08:00`
-- `updated_at`: `2026-09-23T01:15:11+08:00`
+- `updated_at`: `2026-09-23T01:21:18+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.1`
 - `baseline_assessment`: `ASM-20260923-00-6oq`
@@ -22,9 +22,11 @@ implemented. The restoration inventory binds existing sanitized CI/cleanup
 evidence to Git source identities and preserves P7 review/exit obligations.
 CI settings and credentials were not changed by this task.
 
-The changes are source governance and project execution records. They do not
-change portable product contracts, runtime wrappers, packages or downstream
-adoption. Baseline assessment and coordinator records remain unchanged.
+The changes are source governance, project execution records and the exact
+source-only distribution exclusion authorized in CORR-001 below. Portable
+contract text, runtime wrappers and build code remain unchanged; no package
+was built and no downstream adoption occurred. Baseline assessment and
+coordinator records remain unchanged.
 
 Closure decision: `ready-with-deferrals` for local P0 implementation. Allowed
 document/Git checks and planned commit-message checks were observed; delivery
@@ -47,6 +49,7 @@ Other baseline findings are outside #324 and remain with their assigned owners.
 | `.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md` | U001 scope, execution rules, allowed checks, deferrals, coordinator integration and P7 exit criteria. |
 | `AGENTS.md`, `AGENTS.zh-TW.md` | Aligned early discovery of U001, explicit Astra Ultra, no sub-agents, RAM-disk worktree and first-push handoff. |
 | `.dev/standards/WORKFLOW-GATE-POLICY.md`, `.dev/TEAM-GIT-FLOW-RULES.MD` | One source-only pointer each; existing ordinary rules retained. |
+| `.ai/distribution/profiles/dotnet-backend.yaml` | CORR-001: add only the override path to the existing source-only exclusion group. |
 | `workflow.yaml`, `workflow-plan.md`, `tasks/ISSUE-324.json` | One bounded task, actual local state, authority and coordinator boundary using governance templates. |
 | `evidence/ci-restoration-inventory.yaml` | Seven workflow identities/states, Actions settings, cleanup disposition and source commit/blob/hash provenance. |
 | `reports/remediation-report.md`, `handoffs/coordinator.yaml` | Scoped acceptance, truthful verification limits and self-contained coordinator continuation. |
@@ -67,10 +70,10 @@ The after-response omits `allowed_actions`; no value is inferred.
 | AC1 | Root entry links resolve to a self-contained override naming U001, model/effort, no-agent rule and coordinator. Content inspected. |
 | AC2 | Override explicitly limits scope to assigned #322 source work; ownership/security/credential/publication boundaries retained. Content inspected. |
 | AC3 | Seven-row inventory and six P7 restoration steps preserve recorded evidence and explicit adoption/exit criteria. No CI or legacy validation executed. |
-| AC4 | Root English/Traditional Chinese additions have the same obligations; only two source policy pointers added; no wrappers/packages regenerated. |
+| AC4 | Root English/Traditional Chinese additions have the same obligations; two source policy pointers and one explicitly authorized distribution exclusion added; no wrappers/packages regenerated. |
 | AC5 | Bounded records, actual checks and exact planned message checks complete; local delivery identity is the containing commit of the handoff. Executor stops before first push. |
 
-## Actual Lightweight Checks
+## Initial Delivery Lightweight Checks
 
 All repository commands use `F:/framework-next/324` explicitly.
 
@@ -111,7 +114,39 @@ claimed. The local content review is by the implementing conversation.
 ## Closure Evidence
 
 - Bootstrap: `cfe15c40c34f4cc23936421beed57fa8c4851ab9` on `codex/2026-09-23-redesign-transition`.
-- Delivery identity: containing commit of `handoffs/coordinator.yaml`; resolve with `git log -1 --format=%H -- .dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml`. The callback reports exact HEAD after commit.
+- Initial delivery: `66793a430fb78ce1eae13a2435ea46802e05ca91`, retained without rewriting.
+- Corrected delivery identity: containing commit of `handoffs/coordinator.yaml`; resolve with `git log -1 --format=%H -- .dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml`. The callback reports exact HEAD after commit.
 - Task/workflow: `completed` for bounded P0 implementation only; full validation remains `deferred-by-owner`. No Issue closure or main integration is claimed.
 - Substantive unresolved choices in #324: none. P7 pipeline/gate selection and restoration adoption remain deliberately unselected.
 - Final next action: deliver the committed [coordinator handoff](../handoffs/coordinator.yaml) and actual HEAD; coordinator arranges first push/PR/online merge and index registration. Executor stops before first push.
+
+
+## CORR-001: Source-Only Package Selection Correction
+
+This explicit corrigendum records the coordinator's review of initial delivery
+`66793a430fb78ce1eae13a2435ea46802e05ca91` and its authorized scope expansion.
+The original source-only prose did not prevent the `governance-standards` entry's
+`.dev/standards/**` source pattern from selecting the new override. The initial
+content review therefore did not establish that distribution boundary.
+
+The coordinator authorized only `.ai/distribution/profiles/dotnet-backend.yaml`
+as an additional file. Its diff adds exactly
+`.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md` to the existing
+`exclusions[id=source-local-work-management-policy].patterns` group, whose
+classification remains `source-only`. No portable policy copy, other `.ai`
+file or build code changes. The total combined delivery now touches 12 files;
+the earlier callback's blanket `.ai`-unchanged description no longer applies.
+
+Actual checks for the correction:
+
+- `yaml.safe_load` parsed the distribution profile; direct content read-back
+  showed both the broad source selection and the exact source-only exclusion.
+- `git diff -- .ai/distribution/profiles/dotnet-backend.yaml` showed one added
+  path and no other profile change; `git diff --check` was clean.
+- `.ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-exclusion.txt --workflow-id 2026-09-23-redesign-transition`
+  passed before the corrective commit.
+
+Package selection/execution, legacy validators/tests, audit and hosted checks
+remain `deferred-by-owner` until P7 under U001. This is static configuration
+and syntax evidence only. Original bootstrap and delivery commit identities
+are preserved; no squash, push, PR, merge or Issue closure was performed.

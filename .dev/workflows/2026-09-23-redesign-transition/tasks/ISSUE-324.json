@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T01:08:43+08:00",
-  "updated_at": "2026-09-23T01:15:11+08:00",
+  "updated_at": "2026-09-23T01:21:18+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -23,14 +23,16 @@
       "AGENTS.zh-TW.md",
       ".dev/standards/WORKFLOW-GATE-POLICY.md",
       ".dev/TEAM-GIT-FLOW-RULES.MD",
-      ".dev/workflows/2026-09-23-redesign-transition/"
+      ".dev/workflows/2026-09-23-redesign-transition/",
+      ".ai/distribution/profiles/dotnet-backend.yaml"
     ],
     "constraints": [
       "U001 precedes conflicting legacy validation rules",
       "No sub-agents or additional tasks/conversations",
       "One writer in F:/framework-next/324",
       "Stop before first push, PR, merge or Issue closure",
-      "Shared index and coordinator workflow remain coordinator-owned"
+      "Shared index and coordinator workflow remain coordinator-owned",
+      "CORR-001 permits exactly one source-only exclusion line in the distribution profile; other .ai files remain unchanged"
     ],
     "non_goals": [
       "Legacy validators, check-all/critical gates, test suites or validation-only audits",
@@ -55,11 +57,11 @@
       "git diff --check; git status and exact Git identity",
       "validate-git-commits.py --message-file only"
     ],
-    "last_completed_step": "P0 override, aligned source references, CI restoration inventory and bounded handoff completed; allowed file/Git and planned message checks observed",
+    "last_completed_step": "CORR-001 source-only package selection exclusion added and statically inspected; profile YAML and exact corrective message format check passed",
     "next_action": "Coordinator receives local delivery HEAD, registers suggested index row and arranges authorized first push/PR/online merge; P7 owns deferred verification"
   },
   "results": {
-    "summary": "Issue #324 bounded P0 implementation complete under U001; source-only override and discovery pointers preserve ordinary authority boundaries. Full framework validation remains deferred-by-owner and F-06 remains partially resolved.",
+    "summary": "Issue #324 bounded P0 implementation complete under U001; source-only override and discovery pointers preserve ordinary authority boundaries. Full framework validation remains deferred-by-owner and F-06 remains partially resolved. Coordinator-authorized CORR-001 adds the exact override path to the existing source-only package exclusion group; total delivery scope is now 12 files.",
     "files_changed": [
       ".dev/TEAM-GIT-FLOW-RULES.MD",
       ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
@@ -71,20 +73,24 @@
       ".dev/workflows/2026-09-23-redesign-transition/reports/remediation-report.md",
       ".dev/workflows/2026-09-23-redesign-transition/tasks/ISSUE-324.json",
       ".dev/workflows/2026-09-23-redesign-transition/workflow-plan.md",
-      ".dev/workflows/2026-09-23-redesign-transition/workflow.yaml"
+      ".dev/workflows/2026-09-23-redesign-transition/workflow.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml"
     ],
     "tests_run": [
       "No test suites executed; deferred-by-owner under U001"
     ],
     "checks_run": [
-      "UTF-8 readability for 11 selected files; direct parsing of 3 YAML files and 1 JSON file",
+      "Initial delivery: UTF-8 readability for 11 selected files; direct parsing of 3 YAML files and 1 JSON file",
       "18 local Markdown file targets resolved; root English/Traditional Chinese obligations inspected",
       "Seven CI inventory rows compared with saved before/after evidence; two pinned Git blob IDs and SHA-256 digests matched",
       "git diff --check and changed/protected path inspection",
-      "validate-git-commits.py --message-file for bootstrap and delivery messages passed before committing"
+      "validate-git-commits.py --message-file for bootstrap and delivery messages passed before committing",
+      "CORR-001: direct PyYAML parse and static inspection of governance-standards source selection and source-local-work-management-policy exclusion",
+      "CORR-001: distribution-profile diff adds exactly one path; git diff --check clean",
+      "CORR-001: validate-git-commits.py --message-file issue-324-exclusion.txt passed before corrective commit"
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "F-06 validators/tests and pipeline redesign/acceptance remain for P7. No independent audit, CI pass, package/upgrade compatibility or performance result claimed. Online integration remains coordinator-owned.",
+    "residual_risk": "F-06 validators/tests and pipeline redesign/acceptance remain for P7. No independent audit, CI pass, package/upgrade compatibility or performance result claimed. Online integration remains coordinator-owned. The exclusion has only syntax/configuration evidence; package execution remains deferred-by-owner.",
     "follow_up_needed": true,
     "acceptance_disposition": {
       "AC1": {
@@ -123,5 +129,14 @@
     "authority": ".dev/assessments/ASM-20260923-00-6oq/execution-plan.md (U001)",
     "verification_status": "deferred-by-owner",
     "next_owner": "Program #322 coordinator / P7"
+  },
+  "scope_expansion": {
+    "id": "CORR-001",
+    "recorded_at": "2026-09-23T01:21:18+08:00",
+    "authority": "Explicit coordinator follow-up in task 01a0c9d9-3b00-7b70-ad85-daff590e7ecd after reviewing commit 66793a430fb78ce1eae13a2435ea46802e05ca91",
+    "additional_file": ".ai/distribution/profiles/dotnet-backend.yaml",
+    "allowed_change": "Add only .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md to exclusions[id=source-local-work-management-policy].patterns",
+    "reason": "The governance-standards source glob .dev/standards/** includes the new override; prose-only source classification did not exclude it from package selection",
+    "limits": "No portable policy copies, build code, package execution, legacy validators/tests, push or history rewrite; preserve bootstrap cfe15c40c34f4cc23936421beed57fa8c4851ab9"
   }
 }

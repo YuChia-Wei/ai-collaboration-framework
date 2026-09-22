@@ -18,6 +18,7 @@ repository:
     will be read back in coordinator callback
   receiving_requirement: Confirm expected branch, resolve containing commit and verify
     clean tracked/untracked status before transport; ignored message files may remain
+  previous_delivery_commit: 66793a430fb78ce1eae13a2435ea46802e05ca91
 workflow:
   workflow_id: 2026-09-23-redesign-transition
   task_id: ISSUE-324
@@ -29,8 +30,9 @@ workflow:
   implementation_state: implementation-complete/validation-deferred
 resume:
   hidden_context_required: false
-  last_completed_action: Bounded P0 implementation and allowed document/Git/message
-    checks complete; delivery identified by containing commit
+  last_completed_action: CORR-001 exact source-only distribution exclusion added;
+    profile YAML and static selection/exclusion inspected; corrective message format
+    check passed; containing commit identifies corrected delivery
   exact_next_action: Coordinator reads callback HEAD and containing commit, inspects
     scope/diff, registers suggested index row, then arranges authorized first push/PR/online
     merge
@@ -59,9 +61,14 @@ actual_checks:
 - Bootstrap direct JSON/YAML parse, staged diff whitespace and exact message format
   check
 - Implementation diff check and bilingual/source boundary inspection
-- 11 UTF-8 files read, 3 YAML and 1 JSON parsed; 18 local Markdown file targets resolved
+- 'Initial delivery: 11 UTF-8 files read, 3 YAML and 1 JSON parsed; 18 local Markdown
+  file targets resolved'
 - Two source Git blob IDs/SHA-256 digests and all seven CI rows matched pinned evidence
 - Delivery exact planned commit-message format check passed
+- CORR-001 profile direct YAML parse; governance-standards source and exact source-only
+  exclusion inspected
+- CORR-001 profile diff contains one added exclusion path; diff whitespace clean
+- CORR-001 exact corrective commit-message format check passed
 deferred_checks:
   status: deferred-by-owner
   authority: U001
@@ -78,6 +85,7 @@ scope:
 - .dev/standards/WORKFLOW-GATE-POLICY.md
 - .dev/TEAM-GIT-FLOW-RULES.MD
 - .dev/workflows/2026-09-23-redesign-transition/
+- .ai/distribution/profiles/dotnet-backend.yaml
 remaining_decisions:
   issue_324: none
   p7: Pipeline/gate dispositions, redesigned checks and explicit restoration adoption
@@ -97,12 +105,27 @@ protected_paths:
 - .github/
 - Other task worktrees
 - F:/ai-context-tests/
-updated_at: '2026-09-23T01:15:11+08:00'
+updated_at: '2026-09-23T01:21:18+08:00'
 receiving_checks:
 - Read actual callback HEAD and git status before transport
 - Resolve containing commit of this file and compare branch/diff
 - Keep full verification deferred-by-owner; no legacy gate rerun
 suggested_workflow_index_row: '| [`2026-09-23-redesign-transition`](2026-09-23-redesign-transition/workflow.yaml)
   | Establish temporary redesign governance and CI suspension records | `ai-context-governance`
-  | `completed` | `2026-09-23T01:15:11+08:00` | [plan](2026-09-23-redesign-transition/workflow-plan.md)
+  | `completed` | `2026-09-23T01:21:18+08:00` | [plan](2026-09-23-redesign-transition/workflow-plan.md)
   |'
+scope_expansion:
+  id: CORR-001
+  recorded_at: '2026-09-23T01:21:18+08:00'
+  authority: Explicit coordinator follow-up in task 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
+    after reviewing commit 66793a430fb78ce1eae13a2435ea46802e05ca91
+  additional_file: .ai/distribution/profiles/dotnet-backend.yaml
+  allowed_change: Add only .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md
+    to exclusions[id=source-local-work-management-policy].patterns
+  reason: The governance-standards source glob .dev/standards/** includes the new
+    override; prose-only source classification did not exclude it from package selection
+  limits: No portable policy copies, build code, package execution, legacy validators/tests,
+    push or history rewrite; preserve bootstrap cfe15c40c34f4cc23936421beed57fa8c4851ab9
+scope_note: Combined delivery touches 12 files. The original callback claim of no
+  .ai changes is superseded solely for the authorized one-line distribution profile
+  exclusion. Portable policy copies, build code and all other .ai files remain unchanged.
