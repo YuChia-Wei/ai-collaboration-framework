@@ -1,0 +1,79 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-324",
+  "workflow_id": "2026-09-23-redesign-transition",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T01:08:43+08:00",
+  "updated_at": "2026-09-23T01:08:43+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq#F-06"
+  ],
+  "scope": {
+    "target": "Source-only temporary execution override for program #322",
+    "files": [
+      ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/workflows/2026-09-23-redesign-transition/"
+    ],
+    "constraints": [
+      "U001 precedes conflicting legacy validation rules",
+      "No sub-agents or additional tasks/conversations",
+      "One writer in F:/framework-next/324",
+      "Stop before first push, PR, merge or Issue closure",
+      "Shared index and coordinator workflow remain coordinator-owned"
+    ],
+    "non_goals": [
+      "Legacy validators, check-all/critical gates, test suites or validation-only audits",
+      "Package, upgrade, migration or benchmark trials",
+      "CI/settings/credential changes",
+      "Release, tags, publication or downstream adoption",
+      "Other issue design paths and worktrees"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read Issue, U001, handoff, owning policies and sanitized coordinator evidence",
+      "Commit bounded workflow bootstrap",
+      "Author scoped override, aligned root references and minimal policy pointers",
+      "Retain restoration inventory and P7 exit criteria",
+      "Inspect content, run allowed document/Git/message checks and commit local delivery",
+      "Return exact HEAD and suggested index row to coordinator"
+    ],
+    "validation": [
+      "UTF-8 readability; direct JSON/YAML syntax parsing",
+      "Local link and scope inspection; bilingual content parity",
+      "git diff --check; git status and exact Git identity",
+      "validate-git-commits.py --message-file only"
+    ],
+    "last_completed_step": "Issue and U001 read; clean assigned branch/HEAD verified; sanitized CI/cleanup evidence inspected",
+    "next_action": "Commit bootstrap, then author bounded override and restoration record"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  },
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/324",
+  "execution_provenance": {
+    "model_source": "user-declared",
+    "evidence": "Issue #324 and coordinator dispatch explicitly select gpt-6-astra / ultra; no independent runtime attestation claimed"
+  },
+  "owner_override": {
+    "authority": ".dev/assessments/ASM-20260923-00-6oq/execution-plan.md (U001)",
+    "verification_status": "deferred-by-owner",
+    "next_owner": "Program #322 coordinator / P7"
+  }
+}
