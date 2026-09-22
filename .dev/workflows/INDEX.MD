@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-framework-redesign-control`](2026-09-23-framework-redesign-control/workflow.yaml) | Coordinate the portable-framework redesign | `ai-context-governance` | `in_progress` | `2026-09-23T01:03:26+08:00` | [plan](2026-09-23-framework-redesign-control/workflow-plan.md) |
 | [`2026-09-22-artifact-gap-reduction`](2026-09-22-artifact-gap-reduction/workflow.yaml) | Reduce artifact authoring gaps while preserving owner and evidence boundaries | `ai-context-governance` | `completed` | `2026-09-22T20:09:14.698924+08:00` | [plan](2026-09-22-artifact-gap-reduction/workflow-plan.md) |
 | [`2026-09-22-artifact-lifecycle-completion`](2026-09-22-artifact-lifecycle-completion/workflow.yaml) | Complete artifact lifecycle authoring and validation assessment | `ai-context-governance` | `completed` | `2026-09-22T10:47:44+08:00` | [plan](2026-09-22-artifact-lifecycle-completion/workflow-plan.md) |
 | [`2026-09-22-role-metadata-authoring`](2026-09-22-role-metadata-authoring/workflow.yaml) | Author and migrate dynamic role metadata | `ai-context-governance` | `completed` | `2026-09-22T07:44:44+08:00` | [plan](2026-09-22-role-metadata-authoring/workflow-plan.md) |

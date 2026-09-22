@@ -1,0 +1,217 @@
+{
+  "main_at_cleanup": "c2e7071335d02d9b8d40ab4dcaf437e690791741",
+  "local_deleted": [
+    {
+      "name": "codex/2026-09-02-validator-observation-and-fault-injection",
+      "sha": "5e18a8f20b866d13ebd27b947b8feadc4bba92e8"
+    },
+    {
+      "name": "codex/2026-09-03-subject-digest-evidence-reuse-implementation",
+      "sha": "2151dbdd5e0e3a2773909c659081139bf46156bd"
+    },
+    {
+      "name": "codex/2026-09-05-direct-v016-upgrades",
+      "sha": "053e21c402bb027753157aa0b33c5b66d4ffbc7e"
+    },
+    {
+      "name": "codex/2026-09-05-draft-publication-recovery",
+      "sha": "19fd505b7a551ae00eb1124e97edffc06d190d6f"
+    },
+    {
+      "name": "codex/2026-09-05-published-asset-identity",
+      "sha": "46ca8c7d5925858b880b5c2a48f1065479f74dbc"
+    },
+    {
+      "name": "codex/2026-09-10-authoring-implementation-boundaries",
+      "sha": "9ee83a97023254646b39d2502e1a72c5177a7f88"
+    },
+    {
+      "name": "codex/2026-09-10-bdd-test-implementation",
+      "sha": "ff0ec55ee7b660e73c695a1a7c9928c0dfd0228d"
+    },
+    {
+      "name": "codex/2026-09-10-review-skill-capabilities",
+      "sha": "781b4a24341138f27991bc46c2dc52aa9ac1a836"
+    },
+    {
+      "name": "codex/2026-09-12-init-agents-guidance",
+      "sha": "b9de4310c25816e79ca965c29c1ef5ee1dfeb4fc"
+    },
+    {
+      "name": "codex/2026-09-12-short-assessment-ids",
+      "sha": "d566ec1b811518d8352992e13f79cc5c3f258303"
+    },
+    {
+      "name": "codex/2026-09-12-v017-release",
+      "sha": "495d51a856131c5f7cfabe5ca4b8b1b684b69cd4"
+    },
+    {
+      "name": "codex/2026-09-12-v017-runner",
+      "sha": "77b668f5edb3c563508eb5a0e0d4bc1847ea2109"
+    },
+    {
+      "name": "codex/2026-09-17-v018-cost-and-messaging",
+      "sha": "e60ce278b7bef2674806fe631377396eb49b3447"
+    },
+    {
+      "name": "codex/2026-09-21-artifact-shared-core",
+      "sha": "3c2a2fcdf24b38f8b1f47971c1a9ecb4b682a1ee"
+    },
+    {
+      "name": "codex/2026-09-21-issue-309-hosted-preflight",
+      "sha": "9dbb520c1bd611c347a7297aee64d0b28508c77f"
+    },
+    {
+      "name": "codex/2026-09-21-schema-artifact-lifecycle",
+      "sha": "b032682d8efe8ff406b8a824a63541819a3c0c79"
+    },
+    {
+      "name": "codex/2026-09-22-artifact-gap-reduction",
+      "sha": "0ed577e362bba1bbd23dfb567f526970e8ca262d"
+    },
+    {
+      "name": "codex/2026-09-22-artifact-lifecycle-completion",
+      "sha": "87c8b77b4b05f080934e242f0d268a89d63cf1a9"
+    },
+    {
+      "name": "codex/2026-09-22-role-metadata-authoring",
+      "sha": "19f05925f5a51f44f8b85ca4b1bb9c7ee383a660"
+    },
+    {
+      "name": "codex/skills-luna-analysis-20260907",
+      "sha": "44c5c2982e5f89dae632ed28e2332365562afd85"
+    },
+    {
+      "name": "codex/2026-09-05-diagnostic-analyst",
+      "sha": "08de90a6e2b18a14f71152a7b74273961f707481",
+      "merged_pr": 284,
+      "merge_commit": "2957ab39f8c3bc8dd27cdd12d792091db42d7c0e"
+    },
+    {
+      "name": "codex/2026-09-05-skill-004-retirement",
+      "sha": "728eac1d3b20043757b85871855a94ca8d713209",
+      "merged_pr": 283,
+      "merge_commit": "a12eb16d2fc85c0085c33f2eea1fd01ace0a5a41"
+    },
+    {
+      "name": "codex/2026-09-05-v016-projection",
+      "sha": "4d1a5c7d039618f007784679d9968c357347272b"
+    },
+    {
+      "name": "codex/2026-09-20-hosted-provider-and-custody-repair",
+      "sha": "1fe286fe84839c449c130926f3e406b9cd29aeca"
+    },
+    {
+      "name": "codex/2026-09-20-proportionate-terminal-artifact-tooling",
+      "sha": "64f4f1e1bb7ee31a65795c0ef4f0fe553944bdd9"
+    }
+  ],
+  "remote_deleted": [
+    {
+      "name": "codex/2026-09-02-validator-observation-and-fault-injection",
+      "sha": "5e18a8f20b866d13ebd27b947b8feadc4bba92e8"
+    },
+    {
+      "name": "codex/2026-09-03-subject-digest-evidence-reuse-implementation",
+      "sha": "2151dbdd5e0e3a2773909c659081139bf46156bd"
+    },
+    {
+      "name": "codex/2026-09-05-direct-v016-upgrades",
+      "sha": "053e21c402bb027753157aa0b33c5b66d4ffbc7e"
+    },
+    {
+      "name": "codex/2026-09-05-draft-publication-recovery",
+      "sha": "19fd505b7a551ae00eb1124e97edffc06d190d6f"
+    },
+    {
+      "name": "codex/2026-09-05-published-asset-identity",
+      "sha": "46ca8c7d5925858b880b5c2a48f1065479f74dbc"
+    },
+    {
+      "name": "codex/2026-09-10-authoring-implementation-boundaries",
+      "sha": "9ee83a97023254646b39d2502e1a72c5177a7f88"
+    },
+    {
+      "name": "codex/2026-09-10-bdd-test-implementation",
+      "sha": "ff0ec55ee7b660e73c695a1a7c9928c0dfd0228d"
+    },
+    {
+      "name": "codex/2026-09-10-review-skill-capabilities",
+      "sha": "781b4a24341138f27991bc46c2dc52aa9ac1a836"
+    },
+    {
+      "name": "codex/2026-09-12-init-agents-guidance",
+      "sha": "b9de4310c25816e79ca965c29c1ef5ee1dfeb4fc"
+    },
+    {
+      "name": "codex/2026-09-12-short-assessment-ids",
+      "sha": "d566ec1b811518d8352992e13f79cc5c3f258303"
+    },
+    {
+      "name": "codex/2026-09-12-v017-release",
+      "sha": "495d51a856131c5f7cfabe5ca4b8b1b684b69cd4"
+    },
+    {
+      "name": "codex/2026-09-17-v018-cost-and-messaging",
+      "sha": "e60ce278b7bef2674806fe631377396eb49b3447"
+    },
+    {
+      "name": "codex/2026-09-20-hosted-provider-and-custody-repair",
+      "sha": "1fe286fe84839c449c130926f3e406b9cd29aeca"
+    },
+    {
+      "name": "codex/2026-09-20-proportionate-terminal-artifact-tooling",
+      "sha": "64f4f1e1bb7ee31a65795c0ef4f0fe553944bdd9"
+    },
+    {
+      "name": "codex/2026-09-21-issue-309-hosted-preflight",
+      "sha": "9dbb520c1bd611c347a7297aee64d0b28508c77f"
+    },
+    {
+      "name": "codex/2026-09-22-artifact-gap-reduction",
+      "sha": "0ed577e362bba1bbd23dfb567f526970e8ca262d"
+    },
+    {
+      "name": "codex/2026-09-05-diagnostic-analyst",
+      "sha": "08de90a6e2b18a14f71152a7b74273961f707481",
+      "merged_pr": 284,
+      "merge_commit": "2957ab39f8c3bc8dd27cdd12d792091db42d7c0e"
+    },
+    {
+      "name": "codex/2026-09-05-skill-004-retirement",
+      "sha": "728eac1d3b20043757b85871855a94ca8d713209",
+      "merged_pr": 283,
+      "merge_commit": "a12eb16d2fc85c0085c33f2eea1fd01ace0a5a41"
+    }
+  ],
+  "retained_unmerged": [
+    {
+      "ref": "refs/heads/codex/2026-08-31-subject-digest-evidence-reuse-design",
+      "sha": "3df455bd0ae6502b863990fd6aa104239d6f86ed",
+      "reason": "not ancestor of origin/main"
+    },
+    {
+      "ref": "refs/heads/codex/luna-requirements-trial-20260908",
+      "sha": "9a239373259e3efc32a0786abb6a1813f34db8ef",
+      "reason": "not ancestor of origin/main"
+    }
+  ],
+  "preserved_worktrees": [
+    {
+      "branch_removed": "codex/2026-09-05-v016-projection",
+      "commit": "4d1a5c7d039618f007784679d9968c357347272b",
+      "status": "clean tracked/untracked view; ignored files preserved; detached"
+    },
+    {
+      "branch_removed": "codex/2026-09-20-hosted-provider-and-custody-repair",
+      "commit": "1fe286fe84839c449c130926f3e406b9cd29aeca",
+      "status": "clean tracked/untracked view; ignored files preserved; detached"
+    },
+    {
+      "branch_removed": "codex/2026-09-20-proportionate-terminal-artifact-tooling",
+      "commit": "64f4f1e1bb7ee31a65795c0ef4f0fe553944bdd9",
+      "status": "clean tracked/untracked view; ignored files preserved; detached"
+    }
+  ],
+  "ramdisk_test_directory": "preserved without mutation"
+}
