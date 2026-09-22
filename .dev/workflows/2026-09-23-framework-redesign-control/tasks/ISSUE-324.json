@@ -1,0 +1,69 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-324",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T01:03:26+08:00",
+  "updated_at": "2026-09-23T01:06:58+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/324",
+  "phase": "P0",
+  "scope": {
+    "target": ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md; AGENTS.md; AGENTS.zh-TW.md; narrowly necessary source governance policy pointers",
+    "files": [
+      ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md; AGENTS.md; AGENTS.zh-TW.md; narrowly necessary source governance policy pointers",
+      ".dev/workflows/2026-09-23-redesign-transition/"
+    ],
+    "constraints": [
+      "U001",
+      "no sub-agents or child-created tasks",
+      "one writer per worktree",
+      "no push/PR/merge until coordinator handoff"
+    ],
+    "non_goals": [
+      "legacy validator/test execution",
+      "CI enablement",
+      "release/publication",
+      "other issue paths"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read pinned baseline and U001",
+      "Create issue-owned workflow",
+      "Complete bounded deliverable",
+      "Commit coherent checkpoint",
+      "Return exact handoff to coordinator"
+    ],
+    "validation": [
+      "document/Git read-back only; framework verification deferred by owner"
+    ],
+    "last_completed_step": "Independent task started and verified the assigned RAM-disk worktree",
+    "next_action": "Await local coherent delivery; coordinator handles first push and integration"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Implementation and final redesigned verification pending",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0ca14-2868-70e3-a7f1-7c91d9652954",
+    "worktree": "F:/framework-next/324",
+    "branch": "codex/2026-09-23-redesign-transition",
+    "workflow_id": "2026-09-23-redesign-transition",
+    "starting_commit": "53c9c8e58615e87e36f7b74ea8851fe845312daa",
+    "model_verified": "local runtime thread metadata read-back"
+  }
+}

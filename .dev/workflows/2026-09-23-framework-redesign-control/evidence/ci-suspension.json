@@ -1,0 +1,108 @@
+{
+  "before": {
+    "observed_at": "2026-09-23T00:56:53+08:00",
+    "permissions": {
+      "enabled": true,
+      "allowed_actions": "all",
+      "sha_pinning_required": false
+    },
+    "workflows": [
+      {
+        "id": 316930531,
+        "name": "AI Context Governance",
+        "path": ".github/workflows/governance.yml",
+        "state": "active"
+      },
+      {
+        "id": 334993163,
+        "name": "Nightly Full Validation Readiness",
+        "path": ".github/workflows/nightly-full-readiness.yml",
+        "state": "active"
+      },
+      {
+        "id": 313373704,
+        "name": "Package AI Context Candidate",
+        "path": ".github/workflows/package-candidate.yml",
+        "state": "active"
+      },
+      {
+        "id": 316885236,
+        "name": "Portable AI Context Gates",
+        "path": ".github/workflows/portable-gates.yml",
+        "state": "active"
+      },
+      {
+        "id": 313373707,
+        "name": "Publish AI Context Release",
+        "path": ".github/workflows/publish-release.yml",
+        "state": "active"
+      },
+      {
+        "id": 363100663,
+        "name": "Check Release Provider Access",
+        "path": ".github/workflows/release-provider-preflight.yml",
+        "state": "active"
+      },
+      {
+        "id": 341690089,
+        "name": "Portable Test Fixture Acceleration",
+        "path": ".github/workflows/test-fixture-acceleration.yml",
+        "state": "active"
+      }
+    ]
+  },
+  "after": {
+    "observed_at": "2026-09-23T00:57:00+08:00",
+    "permissions": {
+      "enabled": false,
+      "sha_pinning_required": false
+    },
+    "workflows": [
+      {
+        "id": 316930531,
+        "name": "AI Context Governance",
+        "path": ".github/workflows/governance.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 334993163,
+        "name": "Nightly Full Validation Readiness",
+        "path": ".github/workflows/nightly-full-readiness.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 313373704,
+        "name": "Package AI Context Candidate",
+        "path": ".github/workflows/package-candidate.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 316885236,
+        "name": "Portable AI Context Gates",
+        "path": ".github/workflows/portable-gates.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 313373707,
+        "name": "Publish AI Context Release",
+        "path": ".github/workflows/publish-release.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 363100663,
+        "name": "Check Release Provider Access",
+        "path": ".github/workflows/release-provider-preflight.yml",
+        "state": "disabled_manually"
+      },
+      {
+        "id": 341690089,
+        "name": "Portable Test Fixture Acceleration",
+        "path": ".github/workflows/test-fixture-acceleration.yml",
+        "state": "disabled_manually"
+      }
+    ]
+  },
+  "runs_cancelled": 0,
+  "authority": "U001; owner instruction 2026-09-23",
+  "restore": "P7 review; do not automatically enable legacy workflows"
+}
