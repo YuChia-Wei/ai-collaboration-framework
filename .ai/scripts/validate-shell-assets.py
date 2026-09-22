@@ -45,12 +45,12 @@ RUN_CHECK_START = re.compile(r'^\s*run_check\s+"([^"]+)"\s*\\\s*$')
 RUN_COMMAND_START = re.compile(r'^\s*run_command_check\s+"([^"]+)"\s*\\\s*$')
 
 
-def runner_required_scripts(errors: list[str], modes: dict[str, str]) -> set[str] | None:
+def runner_required_scripts(errors: list[str], modes: dict[str, str], *, root: Path = ROOT) -> set[str] | None:
     runner = ".ai/scripts/check-all.sh"
     if runner not in modes:
         return None
     try:
-        lines = (ROOT / runner).read_text(encoding="utf-8").splitlines()
+        lines = (root / runner).read_text(encoding="utf-8").splitlines()
     except (OSError, UnicodeDecodeError) as exc:
         errors.append(f"{runner}: cannot inspect required child declarations: {exc}")
         return set()
@@ -62,12 +62,12 @@ def runner_required_scripts(errors: list[str], modes: dict[str, str]) -> set[str
     return required
 
 
-def runner_required_commands(errors: list[str], modes: dict[str, str]) -> set[str] | None:
+def runner_required_commands(errors: list[str], modes: dict[str, str], *, root: Path = ROOT) -> set[str] | None:
     runner = ".ai/scripts/check-all.sh"
     if runner not in modes:
         return None
     try:
-        lines = (ROOT / runner).read_text(encoding="utf-8").splitlines()
+        lines = (root / runner).read_text(encoding="utf-8").splitlines()
     except (OSError, UnicodeDecodeError) as exc:
         errors.append(f"{runner}: cannot inspect required command declarations: {exc}")
         return set()
@@ -80,10 +80,10 @@ def runner_required_commands(errors: list[str], modes: dict[str, str]) -> set[st
     return required
 
 
-def git_shell_modes(errors: list[str]) -> dict[str, str]:
+def git_shell_modes(errors: list[str], *, root: Path = ROOT) -> dict[str, str]:
     result = subprocess.run(
         ["git", "ls-files", "--stage", "*.sh"],
-        cwd=ROOT,
+        cwd=root,
         check=False,
         capture_output=True,
         text=True,
@@ -95,7 +95,7 @@ def git_shell_modes(errors: list[str]) -> dict[str, str]:
     for line in result.stdout.splitlines():
         metadata, path = line.split("\t", 1)
         mode = metadata.split(" ", 1)[0]
-        if path.startswith(".ai/scripts/") and path.endswith(".sh") and (ROOT / path).is_file():
+        if path.startswith(".ai/scripts/") and path.endswith(".sh") and (root / path).is_file():
             modes[path] = mode
     return modes
 
@@ -192,21 +192,12 @@ def validate_manifest(manifest: object, modes: dict[str, str], errors: list[str]
     return assets
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args(argv)
-
-    errors: list[str] = []
-    try:
-        manifest = yaml.safe_load((ROOT / MANIFEST).read_text(encoding="utf-8"))
-    except (OSError, UnicodeDecodeError, yaml.YAMLError) as exc:
-        print(f"Shell asset validation failed:\n- {MANIFEST}: invalid YAML: {exc}")
-        return 1
-
-    modes = git_shell_modes(errors)
+def validate_repository_manifest(manifest: object, errors: list[str], *, root: Path = ROOT) -> dict[str, dict]:
+    """Validate candidate data against the observed index and runner contract."""
+    modes = git_shell_modes(errors, root=root)
     assets = validate_manifest(manifest, modes, errors)
     if isinstance(manifest, dict):
-        runner_required = runner_required_scripts(errors, modes)
+        runner_required = runner_required_scripts(errors, modes, root=root)
         if runner_required is not None:
             declared = set(manifest.get("check_all_required_scripts", []))
             if runner_required != declared:
@@ -214,7 +205,7 @@ def main(argv: list[str] | None = None) -> int:
                     f"{MANIFEST}: check_all required-script coverage mismatch; "
                     f"missing={sorted(runner_required - declared)}, extra={sorted(declared - runner_required)}"
                 )
-        runner_commands = runner_required_commands(errors, modes)
+        runner_commands = runner_required_commands(errors, modes, root=root)
         if runner_commands is not None:
             declared = set(manifest.get("check_all_required_commands", []))
             if runner_commands != declared:
@@ -223,6 +214,19 @@ def main(argv: list[str] | None = None) -> int:
                     f"missing={sorted(runner_commands - declared)}, extra={sorted(declared - runner_commands)}"
                 )
 
+    return assets
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args(argv)
+    errors: list[str] = []
+    try:
+        manifest = yaml.safe_load((ROOT / MANIFEST).read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, yaml.YAMLError) as exc:
+        print(f"Shell asset validation failed:\n- {MANIFEST}: invalid YAML: {exc}")
+        return 1
+    assets = validate_repository_manifest(manifest, errors)
     if errors:
         print("Shell asset validation failed:")
         for error in errors:

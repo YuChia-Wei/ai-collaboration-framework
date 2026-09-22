@@ -1,0 +1,56 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "LIFE-003-verification",
+  "workflow_id": "2026-09-22-artifact-lifecycle-completion",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-22T09:01:42.838249+08:00",
+  "updated_at": "2026-09-22T09:36:36+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-001",
+    "ASM-20260921-18-gav#AIC-002",
+    "ASM-20260921-18-gav#AIC-003",
+    "ASM-20260921-18-gav#AIC-004",
+    "ASM-20260921-18-gav#AIC-005"
+  ],
+  "scope": {
+    "target": "Independent verification and local delivery",
+    "files": [
+      ".ai/",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/"
+    ],
+    "constraints": [
+      "One tracked writer",
+      "No manufactured owner decisions or execution facts"
+    ],
+    "non_goals": [
+      "Remote publication or provider closure"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Review fixed subject",
+      "Retain evidence and explanation",
+      "Integrate locally"
+    ],
+    "validation": [
+      "Acceptance criteria in workflow plan"
+    ],
+    "last_completed_step": "",
+    "next_action": "Freeze implementation, validate review input and custody lease, then dispatch one independent read-only review."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

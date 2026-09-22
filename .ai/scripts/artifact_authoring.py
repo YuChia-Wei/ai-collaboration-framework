@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 import difflib
 import importlib.util
+import io
 import json
 import os
 import re
@@ -33,6 +34,9 @@ OPERATIONS = {
     "workflow.create", "workflow.add-task", "workflow.transition", "workflow.update",
     "assessment.create", "assessment.update", "assessment.finalize",
     "role.update", "role.migrate",
+    "catalog.update", "target.technology", "target.work-binding",
+    "lifecycle.update",
+    "skill.update",
 }
 ROLE_AUTHORITY = (
     ".ai/assets/CANONICAL-SCHEMA.MD",
@@ -41,6 +45,27 @@ ROLE_AUTHORITY = (
 )
 ROLE_RUNTIME = ("validate-ai-context.py", "ai_context_cli_routing.py")
 ROLE_EDITABLE = {"title", "purpose", "triggers", "inputs", "outputs", "constraints", "references", "examples"}
+CATALOGS = {
+    "provider-neutral-capabilities": (".ai/assets/shared/provider-neutral-capability-registry.yaml", "capabilities", "role_asset_id", {"capability_tags"}),
+    "provider-projections": (".ai/assets/shared/provider-projection-registry.yaml", "provider_projections", None, {"deferred_reason"}),
+    "upgrader-role-bindings": (".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml", "role_bindings", "role_asset_id", {"stop_and_escalation"}),
+    "evaluation-corpus": (".ai/evaluation/corpus-manifest.yaml", "cases", "case_id", {"input", "expected"}),
+    "evaluation-mutants": (".ai/evaluation/incident-mutants.yaml", "mutants", "mutant_id", {"follow_up"}),
+    "source-dispositions": (".ai/distribution/source-dispositions.yaml", "dispositions", "id", {"patterns", "reason"}),
+    "source-identities": (".ai/distribution/identity-registry.yaml", "identity_records", "id", {"display_name"}),
+    "identity-consumers": (".ai/distribution/identity-registry.yaml", "consumer_contracts", "id", {"path", "selector"}),
+    "governance-terms": (".dev/standards/AI-CONTEXT-OWNERSHIP.yaml", "governance_term_routing.terms", "term_id", {"qualified_term", "owner_anchor", "contextual_shorthand"}),
+    "shell-assets": (".ai/scripts/shell-assets.yaml", "assets", "path", {"lifecycle", "replacement"}),
+}
+CATALOG_VERSIONS = {key: "1.1" if key in {"source-identities", "identity-consumers"} else "1.0" for key in CATALOGS}
+CATALOG_VERSIONS["shell-assets"] = "2.0"
+CATALOG_RUNTIME = {
+    "source-dispositions": ("validate-source-dispositions.py", "ai_context_package.py", "runtime_skill_entries.py", "ai_context_package_identity.py", "ai_context_release_projection.py"),
+    "source-identities": ("validate-repository-identity.py", "ai_context_package_identity.py"),
+    "identity-consumers": ("validate-repository-identity.py", "ai_context_package_identity.py"),
+    "shell-assets": ("validate-shell-assets.py",),
+}
+TARGET_SCHEMAS = tuple(".ai/assets/skills/ai-context-init/templates/" + name + ".schema.yaml" for name in ("technology-selection", "work-item-binding"))
 
 
 class AuthoringError(ValueError):
@@ -197,12 +222,15 @@ class ViewPath:
     @property
     def name(self): return self.path.name
     @property
+    def suffix(self): return self.path.suffix
+    @property
     def parent(self): return ViewPath(self.view, self.path.parent)
     @property
     def parents(self): return tuple(ViewPath(self.view, p) for p in self.path.parents)
     def relative_to(self, other): return self.path.relative_to(os.fspath(other))
 
     def resolve(self):
+        self._rel()  # Inspect original components before resolve can hide links.
         result = self.path.resolve()
         if result != self.view.root:
             safe_path(self.view.root, result.relative_to(self.view.root).as_posix())
@@ -217,9 +245,16 @@ class ViewPath:
         return rel
 
     def read_text(self, encoding="utf-8"):
+        return self.read_bytes().decode(encoding).replace("\r\n", "\n").replace("\r", "\n")
+
+    def read_bytes(self):
         data = self.view.read(self._rel())
         if data is None: raise FileNotFoundError(str(self.path))
-        return data.decode(encoding)
+        return data
+
+    def open(self, mode="rb"):
+        if mode != "rb": raise AuthoringError("projected streams support only read-only binary access")
+        return io.BytesIO(self.read_bytes())
 
     def is_file(self):
         rel = self._rel()
@@ -231,7 +266,7 @@ class ViewPath:
         rel = self._rel()
         actual = self.path.is_dir() and rel not in self.view.hidden_directories
         self.view.observed["is_dir:" + rel] = actual
-        prefix = rel.rstrip("/") + "/"
+        prefix = "" if rel == "." else rel.rstrip("/") + "/"
         virtual = any(k.startswith(prefix) and v is not None for k, v in {**self.view.baseline, **self.view.overlay}.items())
         return actual or virtual
 
@@ -243,16 +278,32 @@ class ViewPath:
         children = {name for name in children if (rel + "/" + name) not in self.view.hidden_directories
                     and not ((rel + "/" + name) in self.view.baseline and self.view.baseline[rel + "/" + name] is None)}
         self.view.observed["children:" + rel] = sorted(children)
-        prefix = rel.rstrip("/") + "/"
+        prefix = "" if rel == "." else rel.rstrip("/") + "/"
         for key, data in {**self.view.baseline, **self.view.overlay}.items():
             if data is not None and key.startswith(prefix):
                 children.add(key[len(prefix):].split("/")[0])
         return iter(self / name for name in sorted(children))
 
     def glob(self, pattern):
-        if "/" in pattern or "**" in pattern:
-            raise AuthoringError("validator requested an unsupported recursive projection; update the view adapter")
-        return (p for p in self.iterdir() if p.path.match(pattern))
+        if not pattern or "\\" in pattern or "**" in pattern or any(p in {"", ".", ".."} for p in pattern.split("/")):
+            raise AuthoringError("unsupported projected glob pattern")
+        first, _, rest = pattern.partition("/")
+        if not any(token in first for token in "*?["):
+            child = self / first
+            children = (child,) if child.exists() else ()
+        else:
+            children = self.iterdir() if self.is_dir() else ()
+        for child in children:
+            if child.path.match(first):
+                if not rest: yield child
+                elif child.is_dir(): yield from child.glob(rest)
+
+    def rglob(self, pattern):
+        if "/" in pattern or "\\" in pattern or pattern in {"", ".", ".."} or "**" in pattern:
+            raise AuthoringError("unsupported projected recursive pattern")
+        for child in self.iterdir() if self.is_dir() else ():
+            if child.path.match(pattern): yield child
+            if child.is_dir(): yield from child.rglob(pattern)
 
 
 def load(view: View, path: str, *, writable: bool = False) -> dict:
@@ -667,6 +718,180 @@ def role(view: View, request: dict) -> None:
     if errors: raise AuthoringError("projected role validation failed before writes:\n- " + "\n- ".join(errors))
 
 
+def skill_update(view: View, request: dict) -> None:
+    fields(request, {"version", "operation", "timestamp", "id", "changes"}, set(), "skill request")
+    identity = string(request["id"], "id")
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", identity): raise AuthoringError("skill id must be canonical kebab-case")
+    ref = f".ai/assets/skills/{identity}/skill.yaml"
+    data = load(view, ref, writable=True)
+    if data.get("schema_version") != "1.0" or data.get("asset_id") != identity or data.get("asset_type") != "skill-spec":
+        raise AuthoringError("skill.update requires existing current canonical skill identity")
+    projection = _module("runtime_skill_entries")
+    generated = identity in projection.SELECTED_SKILLS
+    editable = {"inputs", "outputs", "constraints", "triggers", "handoff_rules", "runtime_notes"}
+    if generated: editable |= {"title", "purpose"}
+    fields(request["changes"], set(), editable, "skill changes")
+    if not request["changes"]: raise AuthoringError("skill changes must not be empty")
+    for name, value in request["changes"].items():
+        data[name] = string(value, name) if name in {"title", "purpose"} else strings(value, name)
+    for authority in (ROLE_AUTHORITY[0], ".ai/assets/templates/skill-template.yaml", ".ai/assets/skills/README.MD"):
+        if view.read(authority) is None: raise AuthoringError(f"missing skill authority {authority}")
+    validator = _module("validate-ai-context")
+    errors: list[str] = []
+    # Validate existing projections before regeneration so an update never hides
+    # an unrelated pre-existing wrapper defect.
+    original = load(view, ref)
+    validator.validate_wrapper_metadata(Path(ref), original, errors, root=view.path())
+    validator.validate_skill_wrapper_semantics(Path(ref), original, errors, root=view.path())
+    if generated:
+        original_raw = view.read(ref)
+        expected = projection.render_entry(original, original_raw)
+        for target in ("codex", "claude"):
+            wrapper = projection.wrapper_path(identity, target).as_posix()
+            if projection.normalize_git_text_bytes(view.read(wrapper)) != expected.encode(): errors.append(f"existing generated wrapper differs: {wrapper}")
+    if errors: raise AuthoringError("existing skill projection invalid:\n- " + "\n- ".join(errors))
+    view.put(ref, dump(data))
+    if generated:
+        selected, raw = projection.load_skill(view.path(), identity)
+        rendered = projection.render_entry(selected, raw).encode()
+        for target in ("codex", "claude"):
+            view.put(projection.wrapper_path(identity, target).as_posix(), rendered)
+    validator.validate_canonical_manifest(Path(ref), data, errors, root=view.path())
+    validator.validate_wrapper_metadata(Path(ref), data, errors, root=view.path())
+    validator.validate_skill_wrapper_semantics(Path(ref), data, errors, root=view.path())
+    if errors: raise AuthoringError("projected skill validation failed before writes:\n- " + "\n- ".join(errors))
+
+
+def catalog_update(view: View, request: dict) -> None:
+    """Update an existing semantic record, never an arbitrary caller path."""
+    fields(request, {"version", "operation", "timestamp", "id", "record", "changes"}, set(), "catalog request")
+    identity = string(request["id"], "id")
+    if identity not in CATALOGS: raise AuthoringError("unsupported catalog; use catalog to inspect bounded operations")
+    ref, collection, key, editable = CATALOGS[identity]
+    record_id = string(request["record"], "record")
+    changes = request["changes"]
+    fields(changes, set(), editable, "catalog changes")
+    if not changes: raise AuthoringError("catalog changes must not be empty")
+    data = load(view, ref, writable=True)
+    expected_version = CATALOG_VERSIONS[identity]
+    if data.get("schema_version") != expected_version: raise AuthoringError(f"catalog requires current {expected_version}; no historical conversion is supported")
+    records = data
+    for part in collection.split("."):
+        records = records.get(part) if type(records) is dict else None
+    if key is None:
+        if type(records) is not dict or record_id not in records: raise AuthoringError("catalog record does not exist")
+        selected = records[record_id]
+    else:
+        if type(records) is not list: raise AuthoringError("catalog collection must be a list")
+        matches = [row for row in records if type(row) is dict and row.get(key) == record_id]
+        if len(matches) != 1: raise AuthoringError("catalog record must resolve exactly once")
+        selected = matches[0]
+    if type(selected) is not dict: raise AuthoringError("catalog record must be a mapping")
+    if identity == "identity-consumers":
+        if selected.get("kind") not in {"yaml-value", "text-contains"} or ("selector" in changes and selected.get("kind") != "yaml-value"):
+            raise AuthoringError("only existing yaml-value/text-contains consumer references are writable")
+    for name, value in changes.items():
+        if identity == "governance-terms" and name == "owner_anchor":
+            selected["canonical_owner"]["anchor"] = string(value, name)
+        elif identity == "governance-terms" and name == "contextual_shorthand":
+            fields(value, {"aliases", "allowed_scope", "forbidden_authority_claims"}, set(), name)
+            for field in ("aliases", "forbidden_authority_claims"): strings(value[field], field)
+            string(value["allowed_scope"], "allowed_scope")
+            selected[name].update(value)
+        elif identity == "shell-assets" and name == "replacement" and value is None:
+            selected[name] = None
+        else:
+            selected[name] = strings(value, name) if name in {"capability_tags", "stop_and_escalation", "patterns"} else string(value, name)
+    view.put(ref, dump(data))
+    errors: list[str] = []
+    if identity == "governance-terms":
+        _module("validate-ai-context").validate_governance_term_routing_data(data, errors, root=view.path())
+    elif identity == "shell-assets":
+        # Git index modes are authority distinct from HEAD and working bytes.
+        view.observed["git:shell-index"] = git(view.root, "ls-files", "--stage", "*.sh")
+        _module("validate-shell-assets").validate_repository_manifest(data, errors, root=view.path())
+    elif identity in CATALOG_RUNTIME:
+        schema_ref = ref.removesuffix(".yaml").replace(".ai/distribution/", ".ai/distribution/schemas/") + ".schema.yaml"
+        if view.read(schema_ref) is None: raise AuthoringError(f"missing source catalog authority {schema_ref}")
+        if identity == "source-dispositions":
+            pinned = git(view.root, "rev-parse", "HEAD").removeprefix("0:")
+            report = _module("validate-source-dispositions").validate_repository(view.path(), source_ref=pinned)
+            if report["source_commit"] != pinned: raise AuthoringError("source disposition commit drift")
+            view.observed["git:disposition-source"] = {"commit": report["source_commit"], "tree": report["source_tree"]}
+        else:
+            _module("validate-repository-identity").load_identity_registry(view.path(), ref, validate_consumers=True)
+    elif identity.startswith("evaluation-"):
+        for name in ("manifest_schema", "result_schema"):
+            schema_ref = string(data.get(name), name)
+            if view.read(schema_ref) is None: raise AuthoringError(f"missing catalog authority {schema_ref}")
+        validator = _module("validate-ai-behavior-evaluation")
+        if identity == "evaluation-corpus":
+            validator.validate_manifest(data, root=view.path())
+            # Observing references grants no behavioral or expected-result acceptance.
+            refs = [string(data.get("baseline"), "baseline")]
+            refs += [string(row[name], name) for row in data["cases"] for name in ("input", "expected")]
+            for path in refs:
+                if view.read(path) is None: raise AuthoringError(f"missing evaluation input {path}")
+        else:
+            validator.validate_fault_manifest(data, root=view.path())
+    else:
+        for path, *_ in list(CATALOGS.values())[:3]:
+            schema_ref = path.removesuffix(".yaml") + ".schema.yaml"
+            if view.read(schema_ref) is None: raise AuthoringError(f"missing catalog authority {schema_ref}")
+            load(view, path)  # strict parse all contextual catalogs before owner reader
+        if view.read(".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md") is None:
+            raise AuthoringError("missing role execution authority")
+        _module("validate-ai-context").validate_sag003_provider_role_projection_contract(errors, root=view.path())
+    if errors: raise AuthoringError("projected catalog validation failed before writes:\n- " + "\n- ".join(errors))
+
+
+def lifecycle_update(view: View, request: dict) -> None:
+    fields(request, {"version", "operation", "timestamp", "id", "changes"}, set(), "lifecycle request")
+    validator = _module("artifact_lifecycle")
+    ref = validator.REGISTRY
+    data = load(view, ref, writable=True)
+    changes = request["changes"]
+    fields(changes, set(), {"models", "owner", "authoring", "producers", "validators", "readable", "writable", "migration", "admissible", "limits", "applicability"}, "lifecycle changes")
+    if not changes: raise AuthoringError("lifecycle changes must not be empty")
+    matches = [row for row in data["records"] if row["kind"] == request["id"]]
+    if len(matches) != 1: raise AuthoringError("lifecycle kind must resolve exactly once; kind and baseline identity are immutable")
+    matches[0].update(changes)
+    view.put(ref, dump(data, json_format=True))
+    errors = validator.validate_registry(view.path(), source_context=view.path(".ai/distribution").is_dir())
+    if errors: raise AuthoringError("projected lifecycle validation failed before writes:\n- " + "\n- ".join(errors))
+
+
+def target_selection(view: View, request: dict) -> None:
+    action = request["operation"].split(".")[1]
+    fields(request, {"version", "operation", "timestamp", "id"} | ({"selection"} if action == "technology" else {"mode", "merge_gate", "decision_ref"}), set(), "target request")
+    if request["id"] != "project-config": raise AuthoringError("only existing project-config is supported; target initialization is a separate operation")
+    ref = ".dev/project-config.yaml"
+    data = load(view, ref, writable=True)
+    for path in TARGET_SCHEMAS:
+        if view.read(path) is None: raise AuthoringError(f"missing target selection authority {path}")
+    validator = _module("validate-ai-context")
+    errors: list[str] = []
+    validator.validate_technology_selection_contract(errors, root=view.path())
+    validator.validate_work_item_binding_contract(errors, root=view.path())
+    validator.validate_target_selection_records(data, errors, root=view.path())
+    if errors: raise AuthoringError("existing target selection invalid:\n- " + "\n- ".join(errors))
+    if action == "technology":
+        selection = request["selection"]
+        if type(selection) is not dict: raise AuthoringError("selection must be a mapping")
+        slot = string(selection.get("slot"), "selection.slot")
+        matches = [item for item in data["technologySelections"] if item["slot"] == slot]
+        if matches: matches[0].update(selection)
+        else: data["technologySelections"].append(selection)
+    else:
+        decision = string(request["decision_ref"], "decision_ref")
+        if view.read(decision) is None: raise AuthoringError("decision_ref must name retained owner input; authoring does not verify approval")
+        for key in ("mode", "merge_gate"): string(request[key], key)
+        data["workManagement"]["workItemBinding"].update(mode=request["mode"], mergeGate=request["merge_gate"])
+    validator.validate_target_selection_records(data, errors, root=view.path())
+    if errors: raise AuthoringError("projected target selection invalid:\n- " + "\n- ".join(errors))
+    view.put(ref, dump(data, json_format=True))
+
+
 def git(root: Path, *args: str, allowed: tuple[int, ...] = (0,)) -> str:
     result = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, check=False)
     if result.returncode not in allowed:
@@ -697,20 +922,32 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     family = request["operation"].split(".")[0]
     # Validate the complete projected repository using the unchanged domain rules.
     try:
-        {"workflow": workflow, "assessment": assessment, "role": role}[family](view, request)
-        errors = _module("validate-workflow-artifacts").validate_workflows(view.path())[0]
-        errors += _module("validate-assessment-artifacts").validate_assessments(view.path())[0]
-    except (KeyError, TypeError, AttributeError, OSError, ValueError) as exc:
+        {"workflow": workflow, "assessment": assessment, "role": role, "catalog": catalog_update, "target": target_selection, "lifecycle": lifecycle_update, "skill": skill_update}[family](view, request)
+        # These families own linked locator/index bundles. Other adapters own
+        # fixed disjoint paths and run their contextual owner checks above.
+        # Their preview is not repository-wide workflow/assessment admission.
+        errors = []
+        if family in {"workflow", "assessment"}:
+            errors = _module("validate-workflow-artifacts").validate_workflows(view.path())[0]
+            errors += _module("validate-assessment-artifacts").validate_assessments(view.path())[0]
+    except (KeyError, TypeError, AttributeError, OSError, ValueError, RuntimeError) as exc:
         raise AuthoringError(f"projected validation could not complete: {exc}; reconcile malformed records before authoring") from exc
     if errors: raise AuthoringError("projected validation failed before writes:\n- " + "\n- ".join(errors))
     for rel in (WORKFLOW_TEMPLATE, PLAN_TEMPLATE, TASK_TEMPLATE, ASSESSMENT_TEMPLATE, REPORT_TEMPLATE,
                 ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md", ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
                 ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-assessment-artifacts.py",
-                ".ai/scripts/artifact_authoring.py", ".ai/scripts/artifact_core.py", ".gitignore"):
+                ".ai/scripts/artifact_authoring.py", ".ai/scripts/artifact_core.py", "requirements.txt", ".gitignore"):
         view.read(rel)
-    if family == "role":
-        for name in ROLE_RUNTIME:
+    selected_runtime = (("artifact_lifecycle.py",) if family == "lifecycle" else
+                        (*ROLE_RUNTIME, "runtime_skill_entries.py") if family == "skill" else
+                        CATALOG_RUNTIME[request["id"]] if family == "catalog" and request["id"] in CATALOG_RUNTIME else
+                        ROLE_RUNTIME if family in {"role", "target"} or (family == "catalog" and not request["id"].startswith("evaluation-")) else
+                        ("validate-ai-behavior-evaluation.py",) if family == "catalog" else ())
+    if selected_runtime:
+        for name in (*selected_runtime, "python-entrypoints.json", "python_prerequisites.py"):
             view.read(".ai/scripts/" + name)
+    extra_runtime = (".ai/distribution/validators/product_identity_registry.py",) if family == "catalog" and request["id"] in {"source-identities", "identity-consumers"} else ()
+    for ref in extra_runtime: view.read(ref)
     changes = {}
     for rel, after in view.overlay.items():
         target = safe_path(root, rel)
@@ -719,10 +956,13 @@ def plan(root: Path, request: dict, *, _baseline: dict[str, bytes | None] | None
     if not changes: raise AuthoringError("request has no changes; choose new content or timestamp")
     context = {"head": git(root, "rev-parse", "HEAD"), "branch": git(root, "symbolic-ref", "--quiet", "HEAD", allowed=(0, 1)),
                "ignored": git(root, "check-ignore", "--no-index", "--", *sorted(changes), allowed=(0, 1))}
+    source = view.observed.get("git:disposition-source")
+    if source and context["head"] != "0:" + source["commit"]:
+        raise AuthoringError("source disposition validation subject changed during preview")
     if context["ignored"].startswith("0:"): raise AuthoringError("artifact output is ignored; correct the repository policy first")
     binding = {"request": request, "inputs": view.observed, "git": context,
-               "runtime": {name: digest(Path(__file__).with_name(name).read_bytes()) for name in
-                           (("artifact_authoring.py", "artifact_core.py", "validate-workflow-artifacts.py", "validate-assessment-artifacts.py", "python_prerequisites.py") + (ROLE_RUNTIME if family == "role" else ()))},
+               "runtime": {ref: digest((Path(__file__).resolve().parents[2] / ref).read_bytes()) for ref in
+                           tuple(".ai/scripts/" + name for name in (("artifact_authoring.py", "artifact_core.py", "validate-workflow-artifacts.py", "validate-assessment-artifacts.py", "python_prerequisites.py", "python-entrypoints.json") + selected_runtime)) + extra_runtime},
                "changes": {p: [None if before is None else digest(before), digest(after)] for p, (before, after) in changes.items()}}
     return Plan(request, changes, digest(canonical(binding)))
 
@@ -739,6 +979,10 @@ def catalog(root: Path) -> dict:
                                "preconditions": "empty wrapper_targets; absent or empty adapter_metadata; valid current relationships",
                                "preserve_original": "exact bytes in ignored recovery journal; retain it for historical custody"},
                  "unsupported": "creation, promoted adapters, owner/status/identity changes and all other version edges; preserve originals for owner reconciliation"}},
+        "catalogs": {key: {"path": value[0], "record_selector": value[2] or "provider key", "editable_fields": sorted(value[3]), "readable": [CATALOG_VERSIONS[key]], "writable": CATALOG_VERSIONS[key], "migration": "unsupported; preserve original and reconcile with owner", "available": view.path(value[0]).is_file(), "admissible": "owning contextual validation; no runtime or evaluation execution asserted"} for key, value in CATALOGS.items()},
+        "skills": {"operation": "skill.update", "version": "1.0", "editable_fields": ["inputs", "outputs", "constraints", "triggers", "handoff_rules", "runtime_notes"], "generated_pilot_extra_fields": ["title", "purpose"], "generated_pilots": ["code-reviewer", "local-change-implementer"], "migration": "unsupported", "wrapper_policy": "preserve thin wrappers; regenerate both declared pilot wrappers from final canonical bytes"},
+        "target_selections": {"path": ".dev/project-config.yaml", "operations": ["target.technology", "target.work-binding"], "enclosing_version": 1, "model_version": "1.0", "migration": "unsupported", "available": view.path(".dev/project-config.yaml").is_file(), "authority": "caller supplies target facts and decisions; no implicit initialization or adoption"},
+        "lifecycle_registry": {"operation": "lifecycle.update", "record_selector": "kind", "version": "1.0", "migration": "unsupported", "protected": ["kind", "baseline_refs", "coverage"], "admission": "source declarations only; semantics require owner review"},
         "migration": "role.migrate supports only the catalogued dynamic edge; other families preserve originals and use their owning route",
         "final_assessments": "readable, immutable; create successor or reviewed addendum",
         "yaml_comments": "YAML comments are refused before rewriting; scalar hash content, Markdown prose and JSON/YAML extension fields are retained",

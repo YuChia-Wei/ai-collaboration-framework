@@ -18,7 +18,7 @@ required_critical_categories:
 candidate_inputs:
   - input_id: "ai-behavior-validator"
     path: ".ai/scripts/validate-ai-behavior-evaluation.py"
-    sha256: "d72d942c0c3488ba1da8d033ff5c5069204ee96420d596a6e076b26bcc3955dd"
+    sha256: "322f1cda24e2cfcd194b4a1f809f25e838722cb2ca9ad0ce90e0992c52a57523"
   - input_id: "ai-context-package-identity"
     path: ".ai/scripts/ai_context_package_identity.py"
     sha256: "6bcbe5f1c16045992a1fbe6cef282dfae936c0fe76f1ba1d8160e73aad6f22ce"

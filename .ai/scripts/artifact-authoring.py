@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Preview, apply or recover restricted workflow/assessment authoring requests."""
+"""Route, preview, apply or recover bounded artifact authoring requests."""
 from __future__ import annotations
 
 import argparse
@@ -21,6 +21,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("catalog")
+    routing = commands.add_parser("routes", help="inspect checked lifecycle owner routes, including explicit gaps")
+    routing.add_argument("--kind", help="select one lifecycle kind")
     for name in ("preview", "apply"):
         sub = commands.add_parser(name)
         sub.add_argument("--request", type=Path, required=True)
@@ -31,6 +33,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "catalog":
             print(json.dumps(catalog(args.root), indent=2))
+        elif args.command == "routes":
+            from artifact_lifecycle import routes
+            print(json.dumps(routes(args.root, args.kind), indent=2))
         elif args.command == "recover":
             recover(args.root, args.journal)
             print("Pending bundle rolled back; prior observations remain in the ignored recovery journal.")
@@ -45,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
                 journal = apply(args.root, request, args.expect)
                 print(f"Bundle applied and validated before writes. Journal: {journal.relative_to(args.root.resolve()).as_posix()}")
         return 0
-    except (AuthoringError, OSError, UnicodeError) as exc:
+    except (ValueError, OSError, UnicodeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 

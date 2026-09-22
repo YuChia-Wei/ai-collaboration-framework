@@ -78,14 +78,14 @@ def load_yaml_mapping(path: Path) -> dict[str, Any]:
     return data
 
 
-def safe_repo_path(value: object, label: str) -> Path:
+def safe_repo_path(value: object, label: str, *, root: Path = ROOT) -> Path:
     if not isinstance(value, str) or not value.strip():
         raise EvaluationError(f"{label}: expected a non-empty repository path")
     candidate = Path(value)
     if candidate.is_absolute() or ".." in candidate.parts:
         raise EvaluationError(f"{label}: unsafe repository-relative path {value!r}")
-    resolved = (ROOT / candidate).resolve()
-    if ROOT.resolve() not in (resolved, *resolved.parents):
+    resolved = (root / candidate).resolve()
+    if root.resolve() not in (resolved, *resolved.parents):
         raise EvaluationError(f"{label}: path escapes repository root")
     return resolved
 
@@ -345,7 +345,7 @@ EVALUATORS: dict[str, Callable[[str, str, dict[str, Any]], dict[str, Any]]] = {
 }
 
 
-def validate_manifest(manifest: dict[str, Any]) -> list[dict[str, Any]]:
+def validate_manifest(manifest: dict[str, Any], *, root: Path = ROOT) -> list[dict[str, Any]]:
     if manifest.get("schema_version") != "1.0":
         raise EvaluationError("manifest.schema_version must be 1.0")
     boundaries = manifest.get("boundaries")
@@ -370,8 +370,8 @@ def validate_manifest(manifest: dict[str, Any]) -> list[dict[str, Any]]:
             raise EvaluationError(f"manifest case {case_id} has invalid family")
         ids.add(case_id)
         case_families.add(family)
-        safe_repo_path(case.get("input"), f"{case_id}.input")
-        safe_repo_path(case.get("expected"), f"{case_id}.expected")
+        safe_repo_path(case.get("input"), f"{case_id}.input", root=root)
+        safe_repo_path(case.get("expected"), f"{case_id}.expected", root=root)
     if case_families != REQUIRED_FAMILIES:
         raise EvaluationError("manifest does not cover every family")
     return cases
@@ -555,6 +555,7 @@ ADAPTER_EXPECTED_DETECTORS = {
 
 def _validate_candidate_inputs(
     value: object,
+    *, root: Path = ROOT,
 ) -> dict[str, dict[str, Any]]:
     if not isinstance(value, list) or not value:
         raise EvaluationError("candidate_inputs must be a non-empty list")
@@ -570,8 +571,8 @@ def _validate_candidate_inputs(
         expected_digest = item["sha256"]
         if not isinstance(input_id, str) or not IDENTIFIER.fullmatch(input_id):
             raise EvaluationError(f"candidate input {index} has an invalid identifier")
-        path = safe_repo_path(path_text, f"candidate_inputs[{index}].path")
-        if not path.is_file() or path.relative_to(ROOT).as_posix() != path_text:
+        path = safe_repo_path(path_text, f"candidate_inputs[{index}].path", root=root)
+        if not path.is_file() or path.relative_to(root).as_posix() != path_text:
             raise EvaluationError(f"candidate input {input_id} is not one exact file")
         if not isinstance(expected_digest, str) or not SHA256.fullmatch(expected_digest):
             raise EvaluationError(f"candidate input {input_id} has an invalid SHA-256")
@@ -592,6 +593,7 @@ def _validate_candidate_inputs(
 
 def validate_fault_manifest(
     manifest: dict[str, Any],
+    *, root: Path = ROOT,
 ) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
     required_fields = {
         "schema_version",
@@ -614,7 +616,7 @@ def validate_fault_manifest(
         "result_schema": "incident-fault-injection-result",
     }
     for field, schema_id in schema_ids.items():
-        path = safe_repo_path(manifest.get(field), field)
+        path = safe_repo_path(manifest.get(field), field, root=root)
         if not path.is_file():
             raise EvaluationError(f"{field} does not resolve to one file")
         if load_yaml_mapping(path).get("schema_id") != schema_id:
@@ -639,7 +641,7 @@ def validate_fault_manifest(
     if required_categories != sorted(CRITICAL_MUTANT_CATEGORIES):
         raise EvaluationError("required critical mutant categories are incomplete")
 
-    inputs = _validate_candidate_inputs(manifest.get("candidate_inputs"))
+    inputs = _validate_candidate_inputs(manifest.get("candidate_inputs"), root=root)
     mutants = manifest.get("mutants")
     if not isinstance(mutants, list) or not mutants:
         raise EvaluationError("mutants must be a non-empty list")
