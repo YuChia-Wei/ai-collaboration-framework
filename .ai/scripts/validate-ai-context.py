@@ -808,6 +808,54 @@ def validate_work_item_binding_contract(
         errors.append(f"{schema_path}: template_unresolved_value must be null")
 
 
+def validate_target_selection_records(data: dict, errors: list[str], *, root: Path = ROOT) -> None:
+    """Check selected instances without treating template defaults as choices.
+
+    The schemas intentionally leave value/evidence/reason representations open.
+    Do not infer decision authority or impose new types on those owner fields.
+    Unknown target fields are retained by their owner.
+    """
+    if type(data) is not dict or type(data.get("schemaVersion")) is not int or data["schemaVersion"] != 1:
+        errors.append("project-config.schemaVersion must be integer 1")
+        return
+    technology = yaml.safe_load((root / TECHNOLOGY_SELECTION_SCHEMA).read_text(encoding="utf-8"))
+    binding_schema = yaml.safe_load((root / WORK_ITEM_BINDING_SCHEMA).read_text(encoding="utf-8"))
+    if technology.get("schema_version") != "1.0" or binding_schema.get("schema_version") != "1.0":
+        errors.append("unsupported target selection schema; update the instance reader")
+        return
+    selections = data.get("technologySelections")
+    if type(selections) is not list:
+        errors.append("technologySelections must be a list")
+    else:
+        seen: set[str] = set()
+        for index, record in enumerate(selections):
+            label = f"technologySelections[{index}]"
+            if type(record) is not dict or set(technology["required_fields"]) - record.keys():
+                errors.append(f"{label}: missing required selection fields")
+                continue
+            slot = record["slot"]
+            if type(slot) is not str or not re.fullmatch(technology["slot_pattern"], slot):
+                errors.append(f"{label}: invalid slot")
+            elif slot in seen:
+                errors.append(f"{label}: duplicate slot")
+            else:
+                seen.add(slot)
+            for field, allowed in (("status", "allowed_statuses"), ("source", "allowed_sources")):
+                if type(record[field]) is not str or record[field] not in technology[allowed]:
+                    errors.append(f"{label}: invalid {field}")
+    management = data.get("workManagement")
+    binding = management.get("workItemBinding") if type(management) is dict else None
+    if type(binding) is not dict or set(binding_schema["required_fields"]) - binding.keys():
+        errors.append("workManagement.workItemBinding: missing required fields")
+        return
+    if binding.get("purposes") != binding_schema["fixed_purposes"]:
+        errors.append("workItemBinding.purposes must retain traceability and work-authorization")
+    for field, allowed in (("mode", "allowed_modes"), ("mergeGate", "allowed_merge_gates")):
+        value = binding[field]
+        if value is not None and (type(value) is not str or value not in binding_schema[allowed]):
+            errors.append(f"workItemBinding.{field}: invalid selection")
+
+
 def validate_example_evidence_contract(
     errors: list[str],
     root: Path = ROOT,
@@ -4681,6 +4729,14 @@ def main(argv: list[str] | None = None) -> int:
     validate_active_script_references(files, errors)
     validate_technology_selection_contract(errors)
     validate_work_item_binding_contract(errors)
+    from artifact_lifecycle import validate_registry
+    errors.extend(validate_registry(ROOT, source_context=(ROOT / ".ai/distribution").is_dir()))
+    target_config = ROOT / ".dev/project-config.yaml"
+    if target_config.is_file():
+        try:
+            validate_target_selection_records(yaml.safe_load(target_config.read_text(encoding="utf-8")), errors)
+        except (OSError, ValueError, TypeError, KeyError, yaml.YAMLError) as exc:
+            errors.append(f"target selection instance validation could not complete: {exc}")
     validate_example_evidence_contract(errors)
     validate_example_placeholder_disposition(errors)
     validate_source_include_evidence(errors)

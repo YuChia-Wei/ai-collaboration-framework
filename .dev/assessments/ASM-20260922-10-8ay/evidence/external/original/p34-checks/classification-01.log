@@ -1,0 +1,7 @@
+test_gwt_006_given_current_registry_when_classified_then_every_gate_occurs_once_and_only_one_is_enabled (__main__.ValidationSubjectClassificationGwtTests.test_gwt_006_given_current_registry_when_classified_then_every_gate_occurs_once_and_only_one_is_enabled) ... ok
+test_gwt_007_given_change_fixture_matrix_when_decided_then_history_and_provider_only_changes_do_not_mask_subject_drift (__main__.ValidationSubjectClassificationGwtTests.test_gwt_007_given_change_fixture_matrix_when_decided_then_history_and_provider_only_changes_do_not_mask_subject_drift) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.230s
+
+OK

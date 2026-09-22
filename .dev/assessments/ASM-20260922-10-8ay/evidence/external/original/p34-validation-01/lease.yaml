@@ -1,0 +1,33 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: LIFE-319-VALIDATION-LEASE-01
+worktree: .
+subject_sha: b29f3ae9c079b05ab144ba0eddd10294e452988a
+observed_snapshot:
+  head_sha: b29f3ae9c079b05ab144ba0eddd10294e452988a
+  tracked_status: []
+snapshot_sha256: de6235be288cd203fd47453de7d14f9e44c01066b2823360f74bed1aebacd04b
+state: released
+holder:
+  packet_id: LIFE-319-VALIDATION-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/p34-validation-01/lease.lock
+  lock_sha256: d35661f79ff60383fcbe65676c065bcf574c997a803fa2b9cd491a8fc39bb888
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p34-validation-01/execution.log
+  state: sealed
+  sha256: 1d3874862e15d450919366040a8ccd7c7fbcf361bcb2ca485ffa8d6c8fe8a7b5
+- path: .dev/ai-context/local/p34-validation-01/review-result.md
+  state: sealed
+  sha256: 395f4d7e04932e32f965ec19e922cbcb30d1f6e5d3d94ecf0e59839ba1aad945
+- path: .dev/ai-context/local/p34-validation-01/candidate.yaml
+  state: sealed
+  sha256: f6a08ec306067757165da199afc22e3f66386e9343a76f8059ffd371373192f6
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Root validated the failed audit callback and retained F-001 plus the passing
+    smoke separately. Original outputs sealed; root resumes tracked repair without
+    acceptance of this subject.
+lease_sha256: 11cc31bebd7103eda7a7753b0a769f62a2bd2d0d3580c7199e6c44651b4c89c1

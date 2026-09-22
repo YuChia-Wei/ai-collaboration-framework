@@ -142,7 +142,7 @@ register_check payload-user-view \
 register_check package-smoke \
     "AI Context Package Smoke Tests" required \
     "package,smoke" "pr release nightly-full" \
-    ".ai/scripts/artifact_core.py .ai/scripts/artifact_authoring.py .ai/scripts/execution_artifact_contract.py .ai/scripts/tests/test_ai_context_packaging.py .ai/scripts/ai_context_package.py .ai/scripts/tests/test_ai_context_package_smoke.py .ai/distribution" package-apply "python>=3.11 git" 120 io reuse-by-fingerprint source \
+    ".ai/scripts/artifact_core.py .ai/scripts/artifact_authoring.py .ai/scripts/execution_artifact_contract.py .ai/scripts/tests/test_ai_context_packaging.py .ai/scripts/ai_context_package.py .ai/scripts/tests/test_ai_context_package_smoke.py .ai/distribution .ai/scripts/artifact_lifecycle.py .ai/assets/shared/artifact-lifecycle-registry.json" package-apply "python>=3.11 git" 120 io reuse-by-fingerprint source \
     "python .ai/scripts/tests/test_ai_context_package_smoke.py -v" source-release
 register_check upgrade-route-package-projection \
     "AI Context Upgrade Route Package Projection" required \
@@ -386,6 +386,11 @@ register_check artifact-authoring-tests \
     "governance,tests" "fast pr release nightly-full" \
     ".ai/scripts/artifact-authoring.py .ai/scripts/artifact_authoring.py .ai/scripts/artifact_core.py .ai/scripts/tests/test_artifact_authoring.py .ai/scripts/tests/fixtures/role-migration .ai/scripts/validate-ai-context.py .ai/scripts/ai_context_cli_routing.py .ai/assets/CANONICAL-SCHEMA.MD .ai/assets/templates/sub-agent-role-prompt-template.yaml .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md .ai/scripts/validate-workflow-artifacts.py .ai/scripts/validate-assessment-artifacts.py .ai/scripts/python_prerequisites.py .ai/scripts/python-entrypoints.json .ai/assets/skills/ai-context-governance/templates .ai/assets/skills/ai-context-auditor/templates .dev/assessments/templates .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md requirements.txt" workflow-artifacts "python>=3.11 git" 90 io reuse-by-input source \
     "python .ai/scripts/tests/test_artifact_authoring.py -v" source-governance
+register_check artifact-catalog-tests \
+    "Artifact Catalog And Lifecycle Routing Tests" required \
+    "governance,tests" "fast pr release nightly-full" \
+    ".ai/scripts/artifact-authoring.py .ai/scripts/artifact_authoring.py .ai/scripts/artifact_core.py .ai/scripts/artifact_lifecycle.py .ai/scripts/tests/test_artifact_catalogs.py .ai/scripts/tests/test_artifact_authoring.py .ai/scripts/tests/test_provider_role_projection_contract.py .ai/scripts/validate-ai-context.py .ai/scripts/ai_context_cli_routing.py .ai/scripts/validate-ai-behavior-evaluation.py .ai/scripts/validate-source-dispositions.py .ai/scripts/validate-repository-identity.py .ai/scripts/validate-shell-assets.py .ai/scripts/runtime_skill_entries.py .ai/scripts/ai_context_package.py .ai/scripts/ai_context_package_identity.py .ai/scripts/ai_context_release_projection.py .ai/scripts/tests/test_repository_identity.py .ai/scripts/tests/test_source_dispositions.py .ai/assets .ai/evaluation .ai/distribution .dev/standards .ai/scripts/python-entrypoints.json .ai/scripts/python_prerequisites.py requirements.txt" workflow-artifacts "python>=3.11 git" 180 io reuse-by-input source \
+    "python .ai/scripts/tests/test_artifact_catalogs.py -v" source-governance
 register_check execution-artifacts-tests \
     "Execution Artifact Preparation And Custody Tests" required \
     "governance,tests" "fast pr release nightly-full" \

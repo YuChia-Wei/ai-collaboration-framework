@@ -77,6 +77,79 @@ outcomes, including failed results, authority drift and illegal custody paths.
 
 ## Workflow And Assessment Authoring
 
+### Lifecycle Routes And Catalog Updates
+
+`artifact-authoring.py routes` checks and lists the lifecycle registry; use
+`routes --kind external-task-validation-receipt` for one kind. This inventory
+separates executable producers, semantic authoring skills, explicit manual gaps,
+creation templates and external formats. It covers the named schema definitions
+and registered implicit contracts, including nested execution records. It does
+not claim universal writer coverage, arbitrary version conversion or admission.
+`validate-ai-context.py` checks registry references and callable declarations;
+in source context it also detects unregistered named schemas. Portable targets
+skip absent source-only authorities and expose source availability in routes.
+
+`catalog` lists supported operations and available local targets. Existing
+catalog records can use the same guarded preview/apply/recover commands:
+
+```json
+{
+  "version": "1.0",
+  "operation": "catalog.update",
+  "timestamp": "2026-09-22T09:00:00+08:00",
+  "id": "provider-neutral-capabilities",
+  "record": "mechanical-evidence-worker",
+  "changes": {"capability_tags": ["deterministic-evidence", "bounded-inventory"]}
+}
+```
+
+Supported catalog IDs and fields are `provider-neutral-capabilities`
+(`capability_tags`), `provider-projections` (`deferred_reason`),
+`upgrader-role-bindings` (`stop_and_escalation`), `evaluation-corpus`
+(`input`, `expected` references on an existing case), and `evaluation-mutants`
+(`follow_up`). Evaluation adapters require source-only evaluation assets and
+never run evaluation or generate an expected result. Their referenced bytes
+are bound to the preview. Provider catalogs retain closed-field validation;
+unknown source fields are rejected, not silently discarded. Identity, versions,
+runtime availability, owner bindings and detector identities remain protected.
+These current-only catalogs have no automatic historical migration edge.
+
+Additional source catalog selectors are `source-identities` (`display_name`),
+`identity-consumers` (`path`, plus `selector` for existing YAML consumers),
+`source-dispositions` (`patterns`, `reason`), `governance-terms`
+(`qualified_term`, `owner_anchor`, `contextual_shorthand`) and `shell-assets`
+(`lifecycle`, `replacement`). Source identity uses 1.1; shell assets use 2.0;
+the remaining catalogs use 1.0. Disposition candidates are checked against the
+pinned committed source/profile partition, not uncommitted whole-worktree
+package truth. Shell checks bind Git index modes and exact runner declarations;
+required runnable gates cannot be retired through this operation.
+
+`skill.update` selects an existing canonical skill by `id` and accepts `changes`
+for inputs, outputs, constraints, triggers, handoff_rules and runtime_notes.
+Thin wrappers stay byte-identical. The existing generated pilots `code-reviewer`
+and `local-change-implementer` also allow title/purpose; every edit regenerates
+both wrappers from the final canonical bytes. Pre-existing projection defects
+fail before writing. Identity, routing, references and runtime authority remain
+protected. `lifecycle.update` selects an existing `kind` through `id`, preserving
+kind, baseline references and coverage. Its checked source declarations do not
+establish semantic correctness or actual execution.
+
+For an existing `.dev/project-config.yaml`, `target.technology` takes
+`id: project-config` and a `selection` mapping with the schema's `slot`, `value`,
+`status`, `source`, `evidence` and `reason`. It upserts by slot while retaining
+target extensions. The owner schema leaves value/evidence representations open;
+the tool does not infer their semantics or verify the truth of supplied facts.
+`target.work-binding` takes the same ID plus explicit `mode`, `merge_gate` and a
+repository-relative `decision_ref` whose bytes are observed. A retained decision
+reference does not itself prove approval. Neither operation creates target
+configuration, selects defaults or adopts authority. The enclosing integer
+`schemaVersion: 1` is distinct from the selection schema definition `1.0`.
+
+Catalog, target, role, skill and lifecycle previews run their owning checks. They do
+not revalidate unrelated historical workflow/assessment bundles. Workflow and
+assessment authoring still validate those linked families, and all full
+repository admission validators and published CLI/gate identities remain.
+
 `artifact-authoring.py` provides bounded authoring for AI-context maintenance
 workflows and auditor assessments. It derives locator/task metadata, template
 versions, Markdown metadata and the exact discovery index row. The author still

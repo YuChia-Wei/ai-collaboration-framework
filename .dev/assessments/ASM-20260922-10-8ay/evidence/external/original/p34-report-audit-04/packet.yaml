@@ -1,0 +1,43 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: LIFE-319-REPORT-AUDIT-04
+execution_kind: fixed-head-audit
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Fourth bounded review after the F-003 report-state repair, with fresh workflow
+    authorization; no behavior rerun.
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  exact_sha: cca7dcb12355dcabfc710f34d711080073661494
+invocation:
+  argv:
+  - collaboration.followup_task
+  - lifecycle_independent_audit
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/p34-report-audit-04
+terminal:
+  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  mode: callback
+  destination: root
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Return findings without repair
+- Stop on subject or authority drift
+- No provider or credential operations
+retry:
+  attempt: 4
+  budget: 4
+  authorization_refs:
+  - workflow:.dev/ai-context/local/p34-report-audit-04/workflow-retry-authorization.yaml
+review_input:
+  ref: .dev/ai-context/local/p34-report-audit-04/review-input.yaml
+  sha256: 7cb70fe6a5580d76020ba953384d58ab2341444f5a5227d70c9f76634aef035d
+packet_sha256: 77659ce1fa6e68ec43a09e93bc02a6ebab41b58b737ec6cda95138d790c6d56e

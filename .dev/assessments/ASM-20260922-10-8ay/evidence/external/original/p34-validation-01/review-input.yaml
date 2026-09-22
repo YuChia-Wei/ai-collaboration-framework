@@ -1,0 +1,75 @@
+schema_version: '1.0'
+record_type: independent-review-input
+classification:
+  schema_version: '1.0'
+  record_type: agent-execution-classification
+  operation: review
+  execution_boundary: external
+  duration_class: long-running
+  change_domains:
+  - authority
+  - evidence-custody
+  snapshot: shared-frozen
+  tracked_write: false
+  provider_mutation: false
+  credential_access: false
+  terminal_gate: true
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  base_sha: 4cc41d3b57b591895a528d6ae4dd5745b8877cf5
+  head_sha: b29f3ae9c079b05ab144ba0eddd10294e452988a
+  base_tree: 7a9ae326048f3caa17fc6f0f214a8b061bec3a84
+  head_tree: 15add83f4202ba5d2a74fff669e31bf6281b53ce
+  subject_digest: 3828e045a0cbb7b17318926569a01feefa54f08aaa00ed4b0ed48b70139e7751
+criteria:
+- 'Issue319 AC1: verify 91-kind lifecycle inventory against explicit E01-E33 and implicit
+  I01-I19 evidence; separate existing executable producers, semantic owners, external
+  formats and 16 manual gaps. Callable source presence alone is not semantic coverage.'
+- 'AC2: bounded catalog, skill, target and lifecycle operations retain fixed path/record
+  authority and family field policy; candidate validations observe every material
+  schema, runtime, owner, selected input, directory and Git partition. Inspect ViewPath
+  link and glob behavior, source commit binding, wrapper projection and rollback.'
+- 'AC3: migration disposition distinguishes historical input, current writer and admission.
+  Only prior role 1.0 to 1.1 and external dispatch/completion 1.2 to 1.3 are conversions;
+  no receipt, approval, provider, journal recovery or target facts are fabricated.'
+- 'AC4: inspect actual p34-checks logs and input hashes. Preserve the extended-01
+  9-pass/1-error attempt and the real material fix. Final catalog-03 21-case and routing-01
+  7-case subset overlap; do not claim one full 22-case run. Authoring-02 36, contracts-01
+  11, evaluation-01 18, shell-01 and canonical-02 retain their own identities. Execute
+  the exact package-smoke command once with elevated fixture permissions, retain actual
+  outcome and cleanup.'
+- 'AC5: P4 removes only unrelated workflow/assessment calls for disjoint writer families;
+  public validators, required gates and existing tests remain. Verify profile dependency
+  closure, shell runner declarations, optional .NET profile availability and isolated
+  portable evidence limits.'
+- 'AC6: Chinese report and workflow must explain reasons, improvements, the precise
+  scope relaxation, residual capability gaps and measured validation without inventing
+  performance or hosted results. Owner authorizes local main integration; no remote/provider
+  lifecycle actions.'
+authority:
+- path: AGENTS.md
+  sha256: 05d34dfe80ad8e42b40c133e4522851971e991266ddf042aba049e31dd1dea1b
+- path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+  sha256: 161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5
+- path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+  sha256: 9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080
+- path: .ai/assets/CANONICAL-SCHEMA.MD
+  sha256: 1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/shared/artifact-lifecycle-registry.json
+  sha256: a8fbd0e9ac499681c8d5532578571ef2301fef901b8530555f510bd38e247027
+- path: .ai/distribution/schemas/identity-registry.schema.yaml
+  sha256: ee703f7e6394dfa88a34f8b02395ff7903f609c6176ff6985259e20e920416a0
+- path: .ai/distribution/schemas/source-dispositions.schema.yaml
+  sha256: c0895d0c6fa1fb80abb8df52c3740b00790da71dbaad7885ca9861c15b4b48a1
+- path: .ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml
+  sha256: 096a2b7bee31cc9f975e484f8badff2cb4635389be2d45aa2fc6f6f8723296b1
+- path: .ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml
+  sha256: bd3ca0d831e31f991ea4a7a1b4305928b9242a3d89785cdab18a204028145bbb
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24

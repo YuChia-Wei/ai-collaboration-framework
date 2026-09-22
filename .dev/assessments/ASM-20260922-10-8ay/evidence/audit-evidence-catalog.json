@@ -1,0 +1,366 @@
+{
+  "origin": "Native collaboration /root/lifecycle_independent_audit for Issue319",
+  "note": "Exact original bytes; prior focused checks retain historical command/dirty-worktree provenance. Runner and input hashes were captured before each retained command; no historical run is relabeled as fixed-commit execution.",
+  "files": [
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/lease-active.yaml",
+      "sha256": "1ab19a82dcb4253dee1a4b2bb2d39d52debf6494d3c8f25652075599b1a40744"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/lease.yaml",
+      "sha256": "233f54e77f51b8bec376bc481e573483908b6d2a574154ab49b89727b21f9312"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/packet.yaml",
+      "sha256": "6065304c5e5ab4cdeb2cf55825748dd06532bb08092e72319c88b3bfdf2c6c79"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/prior-failure.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/prior-failure.yaml",
+      "sha256": "a23498322beb2bffb5c42ea0b6f08d2983cce69a1e8690827d5d21215b52422b"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/review-input.yaml",
+      "sha256": "7cb70fe6a5580d76020ba953384d58ab2341444f5a5227d70c9f76634aef035d"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/review-result.md",
+      "sha256": "525809af38a7f2b9a0354981bb83c7da216737fdf4b1f96d75390bdc6c02b114"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/verification-record.json",
+      "sha256": "ddec0357fa8857add08aee4d53a737d0f2afd02cad69c7a371c3d91efd560b3a"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-report-audit-04/workflow-retry-authorization.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-report-audit-04/workflow-retry-authorization.yaml",
+      "sha256": "6ea3ad7163f5917855849cd4c2a9ea87ff01b8c0939e53fb7f51c46022440de2"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/lease-active.yaml",
+      "sha256": "bfd89d52d5bcee7fe604a850d9783bbbb094e63d213f5e130b8d3183f5ab135a"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/lease.yaml",
+      "sha256": "feec7a7f844096d433d33444d76d74d9a7af3542912ca43f28a1777f317bbece"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/packet.yaml",
+      "sha256": "b4e9a977382ae622fe58702bac89dd15e2b3a96de417d81bf533c5a8428057c0"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/prior-failure.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/prior-failure.yaml",
+      "sha256": "d8d636ac5ebc549b531a3d818d19a4593cb006b8957ec264bc0eb91f78bf572c"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/review-input.yaml",
+      "sha256": "1c518756214ca077f2e10c5efe600c5ca572cc5a34df3f740d287818ac85449f"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/review-result.md",
+      "sha256": "3baf9536c32628626ff54ad67b62ad8ce2709451e7f2d2ca72e477d960fd8aa3"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/verification-record.json",
+      "sha256": "bc89b7f53b8614fc57b5637e95ca17e539f7a6b4706dea2cab3eba610b651585"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-entrypoint-audit-03/workflow-retry-authorization.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-entrypoint-audit-03/workflow-retry-authorization.yaml",
+      "sha256": "2f2e74f96d04fa7bde0ef9eea3eeb42612c7fdace203ad6a024d410478be63bd"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-repair-audit-02/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-repair-audit-02/lease-active.yaml",
+      "sha256": "644379da4d5055e538ef6299d00bfd69b92e81a3b71d86918bec608940dc606e"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-repair-audit-02/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-repair-audit-02/lease.yaml",
+      "sha256": "6776551e15f5baaf4182a4c7564f11d328218054f8488a87fbb869dcf410f98a"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-repair-audit-02/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-repair-audit-02/packet.yaml",
+      "sha256": "80eb87c9006c61febc6377d6810e9f4a80d43cf0deae83c9a2234af484202a6b"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-repair-audit-02/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-repair-audit-02/review-input.yaml",
+      "sha256": "3b81d965383199c219f70ff0b48cacca93d7ee28fe7056382c01647d871fefb2"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-repair-audit-02/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-repair-audit-02/review-result.md",
+      "sha256": "f5192889734cabf0374efdaa2a875851fb03c66b561a03a34d2c5e1a0a1b320b"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-repair-audit-02/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-repair-audit-02/verification-record.json",
+      "sha256": "b3a4cb39400206dc669155a1f7dd87ec212cd5c2573d50e3c6b724b6923a0c4b"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/candidate.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/candidate.yaml",
+      "sha256": "f6a08ec306067757165da199afc22e3f66386e9343a76f8059ffd371373192f6"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/command-observation.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/command-observation.json",
+      "sha256": "ce4fb6af231e8d717b0b3ccd28a3a8d86956373d4eeacb5174d4144e27c62be9"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/dispatch-message.txt",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/dispatch-message.txt",
+      "sha256": "e54dc41d9199419b1f4d3a39913ab59dcf474b40805fd843615607e1424fd1e3"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/dispatch.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/dispatch.yaml",
+      "sha256": "7dcf4577d481481350c9b6fb7c435ea96fc05cce256278a8a631d95a04a44f23"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/execution-observations.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/execution-observations.yaml",
+      "sha256": "0412015d15888c99129dfca4740a672d364f8262c441b675fcb595439c99192c"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/execution.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/execution.log",
+      "sha256": "1d3874862e15d450919366040a8ccd7c7fbcf361bcb2ca485ffa8d6c8fe8a7b5"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/lease-active.yaml",
+      "sha256": "cdf612e1ed4f3c601bfd1433d1e30a5373efffd1f233d51114c49e7259e4fc3b"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/lease.yaml",
+      "sha256": "53e1880dd6e4a7e3b16dd2fec0d088014d589571f2fa59a12c3cd46093e05212"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/packet.yaml",
+      "sha256": "624fd339382d6a41979706898e1b86349da652f9ea539cecd88bd69b4d26b153"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/parent-delivery-validation.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/parent-delivery-validation.json",
+      "sha256": "017bfdc8bad522e21f57e6cfabcca90cb0963de869b7bed94d67fb453683b47d"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/parent-dispatch-observation.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/parent-dispatch-observation.json",
+      "sha256": "71c025d1c46f1f9bee0baf2e561c27febf01cf623c863a2ec6e2d1d351d3b8d5"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/prepare-result.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/prepare-result.json",
+      "sha256": "ea3c90b05673bf130a128486a03fa38583eecda3b4dc03aaf97ea4e365991e8c"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/receipt.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/receipt.yaml",
+      "sha256": "e39dfad24dcc22a355c5cbf2d40c33bec83b4f2e0caf92182b489fc58714ea91"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/review-input.yaml",
+      "sha256": "5c95a64f971c3a703692a8655781556e56958e09b4226a4f399ef435621bf4f8"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/review-result.md",
+      "sha256": "395f4d7e04932e32f965ec19e922cbcb30d1f6e5d3d94ecf0e59839ba1aad945"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/role-observation.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/role-observation.json",
+      "sha256": "52f815b882dacd332e476d73bffcd44b998347e0999db49730b3c9f829025620"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-validation-01/terminal-message.txt",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-validation-01/terminal-message.txt",
+      "sha256": "4e98aa0bdd6656adfc13b105d799943718417b9c789c94e380bc4790ac53a38b"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/authoring-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/authoring-01.json",
+      "sha256": "1abfacd76aa0356be3a3d0185769cc0d0b01e425abbc5f9ba703ba40c6791429"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/authoring-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/authoring-01.log",
+      "sha256": "d148fbd8ad3b411518a3d0cd9fcc27bd64877be8e353c1350a21241b61e0acf0"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/authoring-02.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/authoring-02.json",
+      "sha256": "568601f94f0f770c32e4c2f7b7249d25669923319702f6371c978b375bf6e25e"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/authoring-02.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/authoring-02.log",
+      "sha256": "c7b7a16c3d41839d9d2191fa7ee99c0d942a2857b626bb81df4141e6f8495265"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/canonical-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/canonical-01.json",
+      "sha256": "46d97bef002f1adbc5f40d6a0ef0c5ada8d7fd6b8628d511a5991c2695a9f396"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/canonical-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/canonical-01.log",
+      "sha256": "94cd21726b9e69b1e862c0ce9b6b3bce59d01ad69c0f4a333300c9fbe8ecfceb"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/canonical-02.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/canonical-02.json",
+      "sha256": "931756d4c2de34a5d14493a1b70d3eac1e1ed89a7379383edab89ccbc4f1b2f6"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/canonical-02.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/canonical-02.log",
+      "sha256": "94cd21726b9e69b1e862c0ce9b6b3bce59d01ad69c0f4a333300c9fbe8ecfceb"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/catalog-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/catalog-01.json",
+      "sha256": "1b0fe0d2a691ad39e07131a47fd4f4eff3ed1719bc282ecbf6b1ba431954cada"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/catalog-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/catalog-01.log",
+      "sha256": "44fa9e06b3bcbde026c2be1e80a6a0007d7ac690fc2dcd812fee967a26ca05f1"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/catalog-02.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/catalog-02.json",
+      "sha256": "dc9febb7bd8721111d34714b35eea3eab39634acc631fd39397d9168eb526bf5"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/catalog-02.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/catalog-02.log",
+      "sha256": "99373f820b4119ff62731255db974016ac02f167d9e7561452b9fdae7c0403b8"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/catalog-03.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/catalog-03.json",
+      "sha256": "cf3f235c983b0be3211606e494b394260051868dc3b7f14ee81c6dbfdf35dd21"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/catalog-03.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/catalog-03.log",
+      "sha256": "8619b225089be2ca4901772756b886a06a5c212ea9a7a6a2ad88c8627536e0cb"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/classification-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/classification-01.json",
+      "sha256": "05d945ff1e015a94abb2275431692b7d92d7eac05e3f7745fc50afd0de60e73a"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/classification-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/classification-01.log",
+      "sha256": "72be6b8156450d413821b19aa704c435c91ced6d294b5456d499f2ccc340eeff"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/contracts-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/contracts-01.json",
+      "sha256": "5d2d5db060fbda4cca1d444632029630e2416b42a87da9f4aaaf9fd8c5976a91"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/contracts-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/contracts-01.log",
+      "sha256": "d0d237d60854b33171a51bbd83a89d96b60bff27ed7cabd9bf0956fe89e76e32"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/evaluation-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/evaluation-01.json",
+      "sha256": "19624a6ccdfeb570fbb1fc77cea828299a1fce2fe34945309430fd34fd5bade2"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/evaluation-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/evaluation-01.log",
+      "sha256": "66d03094c8f4b2664691d5595086e0f02f6720888d31916d7a717f94a9909970"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/extended-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/extended-01.json",
+      "sha256": "25066179f575394f217eb0bdefb5093326f549983f0c509217cc6df01c35885a"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/extended-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/extended-01.log",
+      "sha256": "235f7119d04f1c11f40b42378163a637540bec0c654bf01af3f4f94cba025006"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/lifecycle-fixed-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/lifecycle-fixed-01.json",
+      "sha256": "97be8f12b1459f43f17f347d96f4549ef41f60da0783f915c0c2380a293a14ba"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/lifecycle-fixed-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/lifecycle-fixed-01.log",
+      "sha256": "ed146c68abaa31fdd09fa08852b633d7486f72d049b21bc9f000dc39b77423b1"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/lifecycle-repair-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/lifecycle-repair-01.json",
+      "sha256": "8abfaa7e9d107a644237f137aab43af707dbd1a717cf70c0fdd30d0e814618d4"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/lifecycle-repair-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/lifecycle-repair-01.log",
+      "sha256": "60b953c48bfa27565c2bcff0229a14c4583f8c79dc7d7c4dfb9236816f5f3bb2"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/lifecycle-repair-02.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/lifecycle-repair-02.json",
+      "sha256": "9e42dedcd0638f57467c5d73a44c0557ed5649d3d26c7dfde0427525cea6a7e6"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/lifecycle-repair-02.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/lifecycle-repair-02.log",
+      "sha256": "ed146c68abaa31fdd09fa08852b633d7486f72d049b21bc9f000dc39b77423b1"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/routing-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/routing-01.json",
+      "sha256": "74f69e400b9a9a89ead70349e609dd49917e694e778358e2499bbc1beafd1ca9"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/routing-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/routing-01.log",
+      "sha256": "e7b71df30653f72fadbfdc4eff1ba2fd77241f99b979f95e620f2720391b3ca2"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/shell-01.json",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/shell-01.json",
+      "sha256": "0b528c956c43becfd0da4519244ae2a10e5bb1be13bedc7227b1fdd82cecbc11"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-checks/shell-01.log",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/shell-01.log",
+      "sha256": "610cb0422981c2856a7f130a3369cbeef2a14085cc2a70d828ead5bc1631bf94"
+    },
+    {
+      "source": ".dev/ai-context/local/p34-run.py",
+      "retained": ".dev/assessments/ASM-20260922-10-8ay/evidence/external/original/p34-checks/p34-run.py",
+      "sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54"
+    }
+  ]
+}

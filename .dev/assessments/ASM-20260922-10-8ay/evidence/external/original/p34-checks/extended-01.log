@@ -1,0 +1,37 @@
+test_dispositions_validate_pinned_committed_partition_and_refuse_head_drift (__main__.SourceCatalogAuthoringTests.test_dispositions_validate_pinned_committed_partition_and_refuse_head_drift) ... ok
+test_identity_metadata_and_consumer_moves_validate_actual_content (__main__.SourceCatalogAuthoringTests.test_identity_metadata_and_consumer_moves_validate_actual_content) ... ERROR
+test_identity_preview_binds_release_inventory_and_refuses_internal_links (__main__.SourceCatalogAuthoringTests.test_identity_preview_binds_release_inventory_and_refuses_internal_links) ... ok
+test_generated_bundle_uses_final_source_and_exact_recovery (__main__.SkillAuthoringTests.test_generated_bundle_uses_final_source_and_exact_recovery) ... ok
+test_renderer_dependency_drift_and_isolated_portable_preview (__main__.SkillAuthoringTests.test_renderer_dependency_drift_and_isolated_portable_preview) ... ok
+test_thin_skill_preserves_wrappers_extensions_and_rejects_protected_fields (__main__.SkillAuthoringTests.test_thin_skill_preserves_wrappers_extensions_and_rejects_protected_fields) ... ok
+test_governance_term_edit_binds_owner_text_and_preserves_machine_literals (__main__.GovernanceCatalogAuthoringTests.test_governance_term_edit_binds_owner_text_and_preserves_machine_literals) ... ok
+test_shell_lifecycle_retains_runner_requirements_and_binds_index_modes (__main__.GovernanceCatalogAuthoringTests.test_shell_lifecycle_retains_runner_requirements_and_binds_index_modes) ... ok
+test_invalid_selection_exact_version_and_stale_decision_fail_closed (__main__.TargetSelectionAuthoringTests.test_invalid_selection_exact_version_and_stale_decision_fail_closed) ... ok
+test_selection_upsert_and_binding_preserve_extensions_and_unrelated_choices (__main__.TargetSelectionAuthoringTests.test_selection_upsert_and_binding_preserve_extensions_and_unrelated_choices) ... ok
+
+======================================================================
+ERROR: test_identity_metadata_and_consumer_moves_validate_actual_content (__main__.SourceCatalogAuthoringTests.test_identity_metadata_and_consumer_moves_validate_actual_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\artifact_authoring.py", line 1039, in apply
+    if candidate.digest != expected_digest: raise AuthoringError("stale preview: repository, request or inputs changed; run preview again")
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+artifact_authoring.AuthoringError: stale preview: repository, request or inputs changed; run preview again
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\tests\test_artifact_catalogs.py", line 192, in test_identity_metadata_and_consumer_moves_validate_actual_content
+    self.execute(request)
+    ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\tests\test_artifact_authoring.py", line 92, in execute
+    return AUTHOR.apply(self.root, request, preview.digest)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\artifact_authoring.py", line 1053, in apply
+    raise AuthoringError(str(exc) + suffix) from exc
+artifact_authoring.AuthoringError: stale preview: repository, request or inputs changed; run preview again; no bundle was started
+
+----------------------------------------------------------------------
+Ran 10 tests in 28.117s
+
+FAILED (errors=1)

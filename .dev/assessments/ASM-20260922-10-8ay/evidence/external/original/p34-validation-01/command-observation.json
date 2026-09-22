@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "record_type": "exact-command-observation",
+  "delegation_id": "LIFE-319-VALIDATION-01",
+  "execution_boundary": "require_escalated",
+  "expected_commit_sha": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+  "observed_commit_sha_before": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+  "observed_commit_sha_after": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+  "observed_tree_before": "15add83f4202ba5d2a74fff669e31bf6281b53ce",
+  "observed_tree_after": "15add83f4202ba5d2a74fff669e31bf6281b53ce",
+  "tracked_status_before": [],
+  "tracked_status_after": [],
+  "working_directory": ".",
+  "argv": [
+    "python",
+    "-B",
+    ".ai/scripts/tests/test_ai_context_package_smoke.py",
+    "-v"
+  ],
+  "timeout_seconds": 300,
+  "started_at": "2026-09-22T09:42:36.2355372+08:00",
+  "completed_at": "2026-09-22T09:42:41.6229543+08:00",
+  "duration_seconds": 5.3874171,
+  "timing_basis": {
+    "native_process_event_timestamps_available": false,
+    "completed_at_source": ".tmp/p post-cleanup LastWriteTimeUtc",
+    "started_at_derivation": "completed_at minus tool-observed wall duration",
+    "limitation": "The wall timestamps are bounded cleanup proxies, not native process event timestamps; the monotonic tool duration is directly observed."
+  },
+  "outcome": "passed",
+  "exit_code": 0,
+  "counts": {
+    "tests_run": 1,
+    "successful_test_cases": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "runner_duration_seconds": 3.49,
+  "execution_log": ".dev/ai-context/local/p34-validation-01/execution.log",
+  "execution_log_sha256": "1d3874862e15d450919366040a8ccd7c7fbcf361bcb2ca485ffa8d6c8fe8a7b5",
+  "output_capture": {
+    "mode": "combined-tool-output",
+    "stdout_stderr_separated": false,
+    "limitation": "The execution tool exposed one combined stream; no stream-specific attribution is claimed."
+  },
+  "cleanup_observation": {
+    "fixture_root": ".tmp/p",
+    "root_exists_after": true,
+    "child_count_after": 0,
+    "outcome": "passed"
+  },
+  "timed_out": false,
+  "launch_error": null
+}

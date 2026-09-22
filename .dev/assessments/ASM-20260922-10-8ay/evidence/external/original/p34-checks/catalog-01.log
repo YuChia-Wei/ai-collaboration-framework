@@ -1,0 +1,14 @@
+test_context_authority_and_directory_membership_bind_preview (__main__.CatalogAuthoringTests.test_context_authority_and_directory_membership_bind_preview) ... ok
+test_disjoint_catalog_checks_do_not_claim_workflow_admission (__main__.CatalogAuthoringTests.test_disjoint_catalog_checks_do_not_claim_workflow_admission) ... ok
+test_protected_fields_and_unknown_source_keys_refuse_before_writes (__main__.CatalogAuthoringTests.test_protected_fields_and_unknown_source_keys_refuse_before_writes) ... ok
+test_recovery_restores_exact_catalog_bytes_and_refuses_external_edits (__main__.CatalogAuthoringTests.test_recovery_restores_exact_catalog_bytes_and_refuses_external_edits) ... ok
+test_three_catalogs_validate_projected_data_without_invocation_claims (__main__.CatalogAuthoringTests.test_three_catalogs_validate_projected_data_without_invocation_claims) ... ok
+test_corpus_reference_update_binds_independent_inputs_without_running_evaluation (__main__.EvaluationCatalogAuthoringTests.test_corpus_reference_update_binds_independent_inputs_without_running_evaluation) ... ok
+test_mutant_followup_preserves_detectors_and_rejects_digest_drift (__main__.EvaluationCatalogAuthoringTests.test_mutant_followup_preserves_detectors_and_rejects_digest_drift) ... ok
+test_invalid_selection_exact_version_and_stale_decision_fail_closed (__main__.TargetSelectionAuthoringTests.test_invalid_selection_exact_version_and_stale_decision_fail_closed) ... ok
+test_selection_upsert_and_binding_preserve_extensions_and_unrelated_choices (__main__.TargetSelectionAuthoringTests.test_selection_upsert_and_binding_preserve_extensions_and_unrelated_choices) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 47.708s
+
+OK

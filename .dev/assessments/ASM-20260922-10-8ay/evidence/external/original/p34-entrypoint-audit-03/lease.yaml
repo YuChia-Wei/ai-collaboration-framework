@@ -1,0 +1,27 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: LIFE-319-ENTRYPOINT-LEASE-03
+worktree: .
+subject_sha: 4a46e506ecec2dd1fe6cce57b7615989829cc616
+observed_snapshot:
+  head_sha: 4a46e506ecec2dd1fe6cce57b7615989829cc616
+  tracked_status: []
+snapshot_sha256: e28f30c4a4d4f136c1f56e868a5e7bfd2c7d19725e88306ccf74eb6cc0ef96a0
+state: released
+holder:
+  packet_id: LIFE-319-ENTRYPOINT-AUDIT-03
+  access: read-only
+  lock_ref: .dev/ai-context/local/p34-entrypoint-audit-03/lease.lock
+  lock_sha256: 03472741f5cd01bf5fdc316db9b8ffc654f900171295338cef52c952bc8d0c21
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p34-entrypoint-audit-03/review-result.md
+  state: sealed
+  sha256: 3baf9536c32628626ff54ad67b62ad8ce2709451e7f2d2ca72e477d960fd8aa3
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Root retained the failed attempt-3 callback and releases custody for F-003
+    report-state repair only. All three prior audits remain immutable; no acceptance
+    or integration is implied.
+lease_sha256: 1eb47b79ea4803e20a27b987834446bc9f447dbbe8be966a169de58ad9873034

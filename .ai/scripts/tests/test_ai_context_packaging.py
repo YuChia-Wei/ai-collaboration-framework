@@ -124,6 +124,7 @@ class SyntheticPackageRepo:
             "execution_artifact_contract.py",
             "artifact_authoring.py",
             "artifact_core.py",
+            "artifact_lifecycle.py",
         ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
         registry = json.loads((SCRIPTS / "python-entrypoints.json").read_text(encoding="utf-8"))

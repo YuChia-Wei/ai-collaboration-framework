@@ -167,6 +167,7 @@ check_all_required_commands:
   - python .ai/scripts/tests/test_agent_execution_guardrails.py -v
   - python .ai/scripts/tests/test_execution_artifacts.py -v
   - python .ai/scripts/tests/test_artifact_authoring.py -v
+  - python .ai/scripts/tests/test_artifact_catalogs.py -v
   - python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py -v
   - python .ai/scripts/execution-artifacts.py templates --check
   - python .ai/scripts/tests/test_repository_identity.py -v

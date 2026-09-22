@@ -1,0 +1,8 @@
+{
+  "operation": "prepare",
+  "state": "ready",
+  "dispatch_ref": ".dev/ai-context/local/p34-validation-01/dispatch.yaml",
+  "dispatch_message_ref": ".dev/ai-context/local/p34-validation-01/dispatch-message.txt",
+  "packet_ref": ".dev/ai-context/local/p34-validation-01/packet.yaml",
+  "execution_observed": false
+}

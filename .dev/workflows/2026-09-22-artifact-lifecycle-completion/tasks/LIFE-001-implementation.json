@@ -1,0 +1,59 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "LIFE-001-implementation",
+  "workflow_id": "2026-09-22-artifact-lifecycle-completion",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-22T09:00:30.694010+08:00",
+  "updated_at": "2026-09-22T10:30:21+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-001",
+    "ASM-20260921-18-gav#AIC-002",
+    "ASM-20260921-18-gav#AIC-003",
+    "ASM-20260921-18-gav#AIC-004",
+    "ASM-20260921-18-gav#AIC-005"
+  ],
+  "scope": {
+    "target": "Lifecycle registry and bounded family authoring",
+    "files": [
+      ".ai/",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/"
+    ],
+    "constraints": [
+      "One tracked writer",
+      "No manufactured owner decisions or execution facts"
+    ],
+    "non_goals": [
+      "Remote publication or provider closure"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Implement checked owner routing",
+      "Add family adapters and preservation guards"
+    ],
+    "validation": [
+      "Acceptance criteria in workflow plan"
+    ],
+    "last_completed_step": "Implemented guarded selected family adapters and checked lifecycle inventory.",
+    "next_action": "No further work in this completed task. Final payload admission and authorized local integration are recorded at the workflow Verification And Delivery Checkpoint."
+  },
+  "results": {
+    "summary": "91 lifecycle kinds registered with actual producers, explicit manual gaps and migration dispositions; 10 catalog selectors plus skill/target/lifecycle operations implemented.",
+    "files_changed": [
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/artifact_lifecycle.py",
+      ".ai/assets/shared/artifact-lifecycle-registry.json"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "16 explicit manual capability gaps remain future scope. Hosted CI not executed. Verification resolved F-001/F-002/F-003; original failures remain retained.",
+    "follow_up_needed": true
+  }
+}

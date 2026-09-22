@@ -1,0 +1,32 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: LIFE-319-VALIDATION-LEASE-01
+worktree: .
+subject_sha: b29f3ae9c079b05ab144ba0eddd10294e452988a
+observed_snapshot:
+  head_sha: b29f3ae9c079b05ab144ba0eddd10294e452988a
+  tracked_status: []
+snapshot_sha256: de6235be288cd203fd47453de7d14f9e44c01066b2823360f74bed1aebacd04b
+state: active
+holder:
+  packet_id: LIFE-319-VALIDATION-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/p34-validation-01/lease.lock
+  lock_sha256: d35661f79ff60383fcbe65676c065bcf574c997a803fa2b9cd491a8fc39bb888
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p34-validation-01/execution.log
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/p34-validation-01/review-result.md
+  state: open
+  sha256: null
+- path: .dev/ai-context/local/p34-validation-01/candidate.yaml
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Root suspends tracked writes until validated terminal callback and explicit
+    release.
+lease_sha256: 685d6cc2d0e5ce6b58450011f8cfdce05f2103eec52238221773dfd35a3c4da4

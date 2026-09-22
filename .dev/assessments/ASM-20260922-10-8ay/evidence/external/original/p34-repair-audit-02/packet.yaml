@@ -1,0 +1,42 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: LIFE-319-REPAIR-AUDIT-02
+execution_kind: fixed-head-audit
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Second behavioral attempt after the F-001 tracked authority repair; bounded
+    independent review on one clean subject.
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  exact_sha: aa91d68479346f1c931920e4735ce84996b6b9d5
+invocation:
+  argv:
+  - collaboration.followup_task
+  - lifecycle_independent_audit
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/p34-repair-audit-02
+terminal:
+  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  mode: callback
+  destination: root
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Return findings without repair
+- Stop on subject or authority drift
+- No provider or credential operations
+retry:
+  attempt: 2
+  budget: 2
+  authorization_refs: []
+review_input:
+  ref: .dev/ai-context/local/p34-repair-audit-02/review-input.yaml
+  sha256: 3b81d965383199c219f70ff0b48cacca93d7ee28fe7056382c01647d871fefb2
+packet_sha256: 7f7211c8384c7d4aa5872b4cc465fa677c28d626a7d01bee81758758d8fb1ce1

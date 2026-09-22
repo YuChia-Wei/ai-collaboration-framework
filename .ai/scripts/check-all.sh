@@ -2297,6 +2297,10 @@ run_source_repository_governance_checks() {
         "Execution Artifact Preparation And Custody Tests" \
         "required" "true" "true"
 
+    run_command_check "python .ai/scripts/tests/test_artifact_catalogs.py -v" \
+        "Artifact Catalog And Lifecycle Routing Tests" \
+        "required" "true" "true"
+
     run_command_check "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py -v" \
         "External Task Candidate And Receipt Contract Tests" \
         "required" "true" "true"

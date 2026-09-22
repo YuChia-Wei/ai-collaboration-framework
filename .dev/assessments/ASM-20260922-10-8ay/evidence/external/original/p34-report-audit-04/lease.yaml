@@ -1,0 +1,27 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: LIFE-319-REPORT-LEASE-04
+worktree: .
+subject_sha: cca7dcb12355dcabfc710f34d711080073661494
+observed_snapshot:
+  head_sha: cca7dcb12355dcabfc710f34d711080073661494
+  tracked_status: []
+snapshot_sha256: 542602554579f3b46b6b8b0ab64345e6d83dc569616035d2491159b8d9bce5f2
+state: released
+holder:
+  packet_id: LIFE-319-REPORT-AUDIT-04
+  access: read-only
+  lock_ref: .dev/ai-context/local/p34-report-audit-04/lease.lock
+  lock_sha256: f1e23476c9dcc04f2267c9394930b9b324fa4c951f280ee3d0237bbbadad2199
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p34-report-audit-04/review-result.md
+  state: sealed
+  sha256: 525809af38a7f2b9a0354981bb83c7da216737fdf4b1f96d75390bdc6c02b114
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Root accepted the passed attempt-4 callback after exact current-subject
+    preflight. All three prior failed reports remain immutable. Evidence intake may
+    resume; final delivery admission remains separate.
+lease_sha256: 05e2ece0d56c98ee258e7d3b64e1ab8a0e018b67744ba1e211feec88ceef2590

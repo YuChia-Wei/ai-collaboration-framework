@@ -1,0 +1,25 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: LIFE-319-REPORT-LEASE-04
+worktree: .
+subject_sha: cca7dcb12355dcabfc710f34d711080073661494
+observed_snapshot:
+  head_sha: cca7dcb12355dcabfc710f34d711080073661494
+  tracked_status: []
+snapshot_sha256: 542602554579f3b46b6b8b0ab64345e6d83dc569616035d2491159b8d9bce5f2
+state: active
+holder:
+  packet_id: LIFE-319-REPORT-AUDIT-04
+  access: read-only
+  lock_ref: .dev/ai-context/local/p34-report-audit-04/lease.lock
+  lock_sha256: f1e23476c9dcc04f2267c9394930b9b324fa4c951f280ee3d0237bbbadad2199
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p34-report-audit-04/review-result.md
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Parent and all workers suspend tracked mutation during this review.
+lease_sha256: 06af650cd58ee21e9549e754bf0f19338e547fd5f14a579e41605ce01ff29a70

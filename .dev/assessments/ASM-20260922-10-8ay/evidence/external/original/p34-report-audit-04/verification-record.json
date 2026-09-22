@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "record_type": "bounded-independent-report-verification",
+  "packet_id": "LIFE-319-REPORT-AUDIT-04",
+  "attempt": 4,
+  "attempt_budget": 4,
+  "review_completed_at": "2026-09-22T10:26:10.9034807+08:00",
+  "subject": {
+    "base_sha": "4cc41d3b57b591895a528d6ae4dd5745b8877cf5",
+    "prior_review_sha": "4a46e506ecec2dd1fe6cce57b7615989829cc616",
+    "head_sha": "cca7dcb12355dcabfc710f34d711080073661494",
+    "head_tree": "e40ff0d82ab051af8cadacaa669c88b6dbdbcfea",
+    "subject_digest": "a7a3a9c7e5541bf306a7425abfab1b3a585daae9344d887e2261566cc7f26369",
+    "tracked_clean_at_preflight": true
+  },
+  "review_binding": {
+    "review_input_ref": ".dev/ai-context/local/p34-report-audit-04/review-input.yaml",
+    "review_input_raw_sha256": "7cb70fe6a5580d76020ba953384d58ab2341444f5a5227d70c9f76634aef035d",
+    "canonical_input_sha256": "418e5a8b8e1f55df05a72a10322941fc3ce9c3b5701d7f19f55fc55c35987c44",
+    "criteria_sha256": "09f0f54fc25b0e9764888185ea536b550c21092dffc6616e57ce5ba2a0cce645",
+    "authority_sha256": "727cdfa2ecc900cb3663c5537c580ed3bdf51dd3c6194bf78e193f6898683c5e",
+    "packet_ref": ".dev/ai-context/local/p34-report-audit-04/packet.yaml",
+    "packet_raw_sha256": "6065304c5e5ab4cdeb2cf55825748dd06532bb08092e72319c88b3bfdf2c6c79",
+    "packet_sha256": "77659ce1fa6e68ec43a09e93bc02a6ebab41b58b737ec6cda95138d790c6d56e",
+    "lease_ref": ".dev/ai-context/local/p34-report-audit-04/lease.yaml",
+    "lease_raw_sha256": "1ab19a82dcb4253dee1a4b2bb2d39d52debf6494d3c8f25652075599b1a40744",
+    "lease_sha256": "06af650cd58ee21e9549e754bf0f19338e547fd5f14a579e41605ce01ff29a70",
+    "preflight": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed"
+    }
+  },
+  "retry_authorization": {
+    "ref": ".dev/ai-context/local/p34-report-audit-04/workflow-retry-authorization.yaml",
+    "raw_sha256": "6ea3ad7163f5917855849cd4c2a9ea87ff01b8c0939e53fb7f51c46022440de2",
+    "authorization_sha256": "6fe3ded7e97987f565a2913c229ea43cf327747d9b0d5e6ba257287ab6076bc3",
+    "attempt": 4,
+    "subject_sha": "cca7dcb12355dcabfc710f34d711080073661494",
+    "consumed_by_packet_id": "LIFE-319-REPORT-AUDIT-04",
+    "decision": "authorize-retry",
+    "prior_failure_ref": ".dev/ai-context/local/p34-report-audit-04/prior-failure.yaml",
+    "prior_failure_raw_sha256": "a23498322beb2bffb5c42ea0b6f08d2983cce69a1e8690827d5d21215b52422b",
+    "prior_failure_canonical_sha256": "baad444d5472c897ae604c78df778038ddfc1fa1f80cbe0ea0cd566aad470021",
+    "single_use_binding_verified": true
+  },
+  "review_execution": {
+    "boundary": "same-runtime",
+    "behavioral_commands_executed_by_reviewer": [],
+    "package_commands_executed_by_reviewer": [],
+    "profile_commands_executed_by_reviewer": [],
+    "provider_operations": [],
+    "tracked_mutations": [],
+    "ignored_writes": [
+      ".dev/ai-context/local/p34-report-audit-04/review-result.md",
+      ".dev/ai-context/local/p34-report-audit-04/verification-record.json"
+    ]
+  },
+  "repair_delta": {
+    "comparison_base": "4a46e506ecec2dd1fe6cce57b7615989829cc616",
+    "changed_paths": [
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/reports/remediation-report.md",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/tasks/LIFE-001-implementation.json",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/tasks/LIFE-002-validation.json",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/tasks/LIFE-003-verification.json",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow-plan.md",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow.yaml",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "implementation_or_authority_changed": false,
+    "authority_hashes_match_review_input": true,
+    "f003_status": "resolved-on-subject",
+    "report_updated_at": "2026-09-22T10:20:58+08:00",
+    "shared_pointer_timestamp": "2026-09-22T10:20:58+08:00",
+    "prior_reviews_recorded_as_completed": 3,
+    "prior_reviews_recorded_as_failed": 3,
+    "current_attempt_pending_at_authoring": 4,
+    "duplicate_behavior_or_package_instruction_active": false
+  },
+  "document_bindings": {
+    "remediation_report_sha256": "66ea4224b0f5b19425dc2940abd07e6b3fc368318cd4a3521dceebc2be4df115",
+    "workflow_plan_sha256": "9ed15efa0c07c64a861f4113990227e58b5b72db64ee843533960b050c28863c",
+    "workflow_locator_sha256": "f29ffd3fbc9971bc7728d8ede005174180f7f1d8b7304eff012d5996024487dd",
+    "life_001_sha256": "44c2a1e8edea79422ebb0e4f96e436b9787e22f70280129c34ef33abba464241",
+    "life_002_sha256": "b77aaa1b92420047097d530b14006c60e9c074ed7ef8edf3ea79f62d303a8dfd",
+    "life_003_sha256": "ad31e727d815480b59964c189c37e94329d387bd48b5e2b15ca9f19368c1449f",
+    "life_001_status": "completed",
+    "life_002_status": "completed",
+    "life_003_status": "in_progress",
+    "life_001_next_owner": "LIFE-003-verification",
+    "life_002_next_owner": "LIFE-003-verification"
+  },
+  "unchanged_conclusion_rebind": {
+    "f001_status": "resolved-on-subject",
+    "f002_status": "resolved-on-subject",
+    "classification_authority_sha256": "3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5",
+    "package_smoke_disposition": "reused-with-proof",
+    "package_smoke_execution_head": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+    "package_smoke_tests_run": 1,
+    "package_smoke_exit_code": 0,
+    "package_smoke_declared_dependency_closure_unchanged": true,
+    "package_smoke_reexecuted": false,
+    "native_process_event_timestamps_available": false,
+    "timing_disclosure_retained": true
+  },
+  "prior_reviews": [
+    {
+      "attempt": 1,
+      "subject_sha": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+      "outcome": "failed",
+      "resolved_in_later_review": "F-001",
+      "report_sha256": "395f4d7e04932e32f965ec19e922cbcb30d1f6e5d3d94ecf0e59839ba1aad945"
+    },
+    {
+      "attempt": 2,
+      "subject_sha": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+      "outcome": "failed",
+      "resolved_in_later_review": "F-002",
+      "report_sha256": "f5192889734cabf0374efdaa2a875851fb03c66b561a03a34d2c5e1a0a1b320b",
+      "verification_record_sha256": "b3a4cb39400206dc669155a1f7dd87ec212cd5c2573d50e3c6b724b6923a0c4b"
+    },
+    {
+      "attempt": 3,
+      "subject_sha": "4a46e506ecec2dd1fe6cce57b7615989829cc616",
+      "outcome": "failed",
+      "resolved_in_current_review": "F-003",
+      "report_sha256": "3baf9536c32628626ff54ad67b62ad8ce2709451e7f2d2ca72e477d960fd8aa3",
+      "verification_record_sha256": "bc89b7f53b8614fc57b5637e95ca17e539f7a6b4706dea2cab3eba610b651585"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "criterion-1",
+      "disposition": "passed-by-review",
+      "reason": "F-003 report metadata and chronology are current; three prior failed audits and the passed smoke are completed historical evidence; attempt 4 alone is pending at authoring; completed LIFE-001 and LIFE-002 route to LIFE-003."
+    },
+    {
+      "id": "criterion-2",
+      "disposition": "reused-with-proof",
+      "reason": "Only seven workflow documents changed after attempt 3. Implementation and governing authority remain unchanged since aa91, preserving F-001, F-002, and package-specific conclusions with their limits."
+    },
+    {
+      "id": "criterion-3",
+      "disposition": "passed-by-review",
+      "reason": "The fresh attempt-4 authorization matches the canonical prior-failure fingerprint, exact subject, and one consuming packet; current review input, packet, and active lease passed preflight."
+    }
+  ],
+  "findings": [],
+  "evidence_limits": [
+    "No behavioral, package, profile, or provider command was executed by the reviewer.",
+    "Root-owned prior executions are retained and are not relabeled as reviewer execution.",
+    "The package smoke remains a b29 execution rebound only to unchanged command-specific dependencies.",
+    "This result does not itself complete the assessment, report, workflow, evidence-intake admission, custody release, or integration."
+  ],
+  "outcome": "passed",
+  "parent_action": "accept",
+  "review_result": {
+    "ref": ".dev/ai-context/local/p34-report-audit-04/review-result.md",
+    "sha256": "525809af38a7f2b9a0354981bb83c7da216737fdf4b1f96d75390bdc6c02b114"
+  },
+  "final_state": {
+    "head_sha": "cca7dcb12355dcabfc710f34d711080073661494",
+    "head_tree": "e40ff0d82ab051af8cadacaa669c88b6dbdbcfea",
+    "tracked_clean": true,
+    "parent_lease_state": "active",
+    "tracked_changes": []
+  }
+}
