@@ -24,3 +24,7 @@ Bounded P0 implementation is complete; first push, PR merge and provider closure
 ## P1 integration review
 
 #324 is now merged via PR #328; its Issue is CLOSED/COMPLETED and Project status Done. This supersedes the earlier pre-push checkpoint above. P1-A and corrected P1-B are locally integrated and cross-reviewed; see [decisions, findings and P2 scope](p1-integration-and-p2-scope.md). CR326-001 reconciles both package references, six exact members and JSON configuration. These are design/inspection outcomes, not executed installation or final finding resolution. P1 online integration and P2 dispatch are the next actions.
+
+## P2 dispatch checkpoint
+
+P1 merged through PR #329 (`b4d54966a0ed704d6b300b9f965976e27cd8512d`). Issues #325/#326 and Project items were read back completed; #326 required explicit closure because the PR body auto-closed only #325. Both P2 Issues #330/#331 now exist with Project In progress, Target release Unassigned and Owner review Approved (execution authorization, not final acceptance). Independent execution dispatch is the next action. No product tests or new tool trials have run.

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T01:03:26+08:00",
-  "updated_at": "2026-09-23T01:32:00+08:00",
+  "updated_at": "2026-09-23T01:41:18+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -48,7 +48,7 @@
       "document/Git read-back only; framework verification deferred by owner"
     ],
     "last_completed_step": "Coordinator received local design HEAD c3891615f97625e7c59cd871abea3c2b27b5021f through task status and inspected contract/specimen; callback transport was rejected by automatic approval review",
-    "next_action": "Reconcile #326 six-member inventory and JSON config binding, then online PR integration with full verification deferred to P7"
+    "next_action": "P2 owns implementation; P7 owns deferred behavior verification"
   },
   "results": {
     "summary": "P1-A design complete; package metadata, configuration semantics, Lesson schema and planned operations inspected. No executable or portability acceptance yet.",
@@ -75,6 +75,10 @@
     "handoff": ".dev/workflows/2026-09-23-portable-contracts/handoff.yaml",
     "delivery_transport": "coordinator read-only task status and local artifact inspection after callback rejection",
     "verification_state": "deferred-by-owner",
-    "provider_integration": "pending"
+    "provider_integration": "merged",
+    "pull_request": 329,
+    "merge_commit": "b4d54966a0ed704d6b300b9f965976e27cd8512d",
+    "issue_state": "CLOSED/COMPLETED",
+    "project_status": "Done"
   }
 }

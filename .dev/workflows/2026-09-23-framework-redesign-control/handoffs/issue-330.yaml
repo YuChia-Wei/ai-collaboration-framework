@@ -1,0 +1,54 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-framework-redesign-control-issue-330
+created_at: '2026-09-23T01:41:18+08:00'
+contract_exception: 'U001: legacy validation/audit machinery deferred; no native handoff-validator
+  compliance claim'
+repository:
+  subject_commit: b4d54966a0ed704d6b300b9f965976e27cd8512d
+  checkpoint_commit_source: containing-commit
+  target_branch: codex/2026-09-23-lesson-implementation
+  target_worktree: F:/framework-next/330
+workflow:
+  coordinator: 2026-09-23-framework-redesign-control
+  issue: 330
+  child_workflow: 2026-09-23-lesson-implementation
+resume:
+  hidden_context_required: false
+  last_completed_action: P1 integrated and six-member/JSON interfaces reconciled;
+    Issue/Project created
+  exact_next_action: Read Issue, U001 and P1 integration/P2 scope, verify worktree
+    and implement own scope
+critical_gate:
+  status: deferred-by-owner
+  command: null
+  exit_code: null
+  authority: U001/P7
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  model_source: user-declared; runtime read-back pending
+allowed_write_roots:
+- src/skills/lesson/
+- .dev/workflows/2026-09-23-lesson-implementation/
+protected_paths:
+- .dev/workflows/2026-09-23-framework-redesign-control/
+- .dev/workflows/INDEX.MD
+- .dev/assessments/ASM-20260923-00-6oq/
+- .ai/
+- .agents/
+- .claude/
+- .github/
+- AGENTS.md
+- AGENTS.zh-TW.md
+- F:/ai-context-tests/
+interface:
+  skill_id: lesson
+  entrypoint: SKILL.md
+  tool_entrypoint: scripts/lesson.py
+  config_selection: .ai/custom/framework.json
+  member_changes: return exact extra helpers/resources to coordinator; manifest never
+    widens to a glob
+delivery: Local coherent commits; exact HEAD/branch/worktree/scope, actual/deferred
+  checks, member list and next actions. Stop before first push; completion callback
+  to coordinator when permitted.
