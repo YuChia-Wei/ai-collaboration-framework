@@ -75,6 +75,43 @@ are outside this tool's migration scope.
 Compatibility remains tested with hand-authored inputs and independent expected
 outcomes, including failed results, authority drift and illegal custody paths.
 
+### Preparing Inputs
+
+`input` reduces manual preparation of four current input kinds. A read-only
+preview returns the proposed record and a digest. Creating a new file requires
+the same request and digest; the file must be ignored, untracked, contained and
+under an existing parent. Existing files are never overwritten. Referenced
+bytes, runtime authority, Git identity and tracked status are checked again
+before and after publication. Cleanup removes only this operation's unchanged
+output. A collision, linked path, changed input or unsupported version fails.
+
+```text
+python .ai/scripts/execution-artifacts.py input --kind review-input --request <request.yaml>
+python .ai/scripts/execution-artifacts.py input --kind review-input --request <request.yaml> --output <new-ignored-input.yaml> --expect <preview-digest>
+```
+
+Every authoring request has `version: "1.0"` and an explicit full
+`expected_head` matching the clean tracked checkout. Other inputs are:
+
+| Kind | Caller supplies | Tool derives and checks |
+| --- | --- | --- |
+| `review-input` | `repository`, full `base_sha`, current `classification`, nonempty `criteria`, explicit `authority_paths` | Existing commit trees, canonical review-subject digest, exact authority byte hashes; canonical review preflight. |
+| `prepare-request` | Current execution-request semantic fields except `schema_version`, `record_type`, `expected_commit_sha` | Record constants and expected commit; request model, clean Git/cwd and any selected review-input checks. It does not produce packet/dispatch files. |
+| `dependency-request` | `validator_id`, supported `harness`, `entrypoint`, `callable`, `argv`, `declared_dependencies` with all five dimensions | Request schema identity and current subject; owner request checks and bound file bytes. It does not import or run the selected callable. |
+| `evidence-ledger` | Nonempty `entries` with explicit acceptance ID, Issue number, actual-execution requirement, evidence kind, command, profile, outcome and one typed local `evidence_ref`; an existing `execution_receipt_ref` when required | Evidence/receipt byte hashes, copied receipt, subject binding, human-report projection and ledger seal; canonical ledger validation. It never issues or repairs a receipt. |
+
+For ledger entries, the field names are `acceptance_id`, `issue`,
+`requires_actual_execution`, `evidence_kind`, `command`, `profile`, `outcome`,
+`evidence_ref` and optional `execution_receipt_ref`. Actual execution uses an
+existing `ignored:<repository-relative-path>` receipt and output. Failed and
+blocked observations retain their outcomes. Non-actual entries remain
+file-backed document/unit/fixture evidence, not execution substitutes.
+
+Input creation grants no approval, review outcome, live lease, freeze, reuse,
+dispatch execution or admission. The owner still supplies semantic facts and
+criteria, and subsequent operations perform their own current validation.
+These are current-version producers; they do not migrate historical evidence.
+
 ## Workflow And Assessment Authoring
 
 ### Lifecycle Routes And Catalog Updates
@@ -124,6 +161,27 @@ pinned committed source/profile partition, not uncommitted whole-worktree
 package truth. Shell checks bind Git index modes and exact runner declarations;
 required runnable gates cannot be retired through this operation.
 
+`validation-gate-groups` and `validation-external-gates` allow only an existing
+record's `reason`. Their version is `validation-gate-classification/v1`.
+Identity, membership, sensitivities, reuse eligibility, profiles and environment
+contracts remain protected. Metadata validation uses the executing source's
+fixed registry, observes the selected repository's bytes, and does not dispatch
+gate commands. Editing a reason still invalidates the raw authority binding.
+
+`rule-consumers` allows only an existing rule's `derived_consumers` in the source
+ownership catalog. Each selected path must be a unique canonical contained
+file citing the exact rule ID; canonical ownership and rule semantics remain
+protected. The supplied timestamp must advance `updated_at`. This checks
+references, not semantic parity between the rule and a consumer's prose.
+
+Lifecycle routes distinguish the executable shell-assets editor from the
+Python entrypoint, fixture-classification and executable Bash profile registries.
+The latter need coordinated code/semantic changes. Provider baseline and
+Git/provider policy editing remain semantic owner routes; lease, freeze,
+reuse, handoff, route matrix and opt-in local routing still expose their
+specific manual boundaries. None is reclassified as executable merely because
+a serializer or a validator exists.
+
 `skill.update` selects an existing canonical skill by `id` and accepts `changes`
 for inputs, outputs, constraints, triggers, handoff_rules and runtime_notes.
 Thin wrappers stay byte-identical. The existing generated pilots `code-reviewer`
@@ -158,8 +216,8 @@ finalizing a document neither executes its checks nor authorizes its actions.
 
 ```text
 python .ai/scripts/artifact-authoring.py catalog
-python .ai/scripts/artifact-authoring.py preview --request <request.json>
-python .ai/scripts/artifact-authoring.py apply --request <request.json> --expect <preview-digest>
+python .ai/scripts/artifact-authoring.py preview --request <request.json> --json
+python .ai/scripts/artifact-authoring.py apply --preview <saved-preview.json> --expect <preview-digest>
 python .ai/scripts/artifact-authoring.py recover --journal <pending-journal-path>
 ```
 
@@ -168,7 +226,12 @@ Initialize its artifact indexes and use the policy-required dedicated branch
 first. The tool does not create Git branches, work items or action authority.
 Requests accept strict JSON or JSON-compatible YAML; duplicate keys, aliases,
 explicit tags, unsupported fields and unsupported versions are rejected. Quote
-YAML timestamps. Fixed inputs produce the same preview and digest. Preview does
+legacy explicit YAML timestamps. Omit `timestamp` for automatic real local time.
+Preview captures that instant once; save its JSON stdout as a UTF-8 file, then
+pass that unchanged file to `apply --preview`. Neither the caller nor apply
+needs to edit or recalculate the timestamp. API callers pass `plan.request` to
+`apply`. Explicit timestamps and `apply --request` remain supported for existing
+integrations. Fixed resolved inputs produce the same preview and digest. Preview does
 not write files; apply re-derives the restricted operation and rejects stale
 inputs, instead of accepting arbitrary output paths or caller-written envelopes.
 
@@ -178,7 +241,6 @@ A workflow request supplies one initial active task:
 {
   "version": "1.0",
   "operation": "workflow.create",
-  "timestamp": "2026-09-21T21:00:00+08:00",
   "id": "2026-09-21-example-maintenance",
   "title": "Example maintenance",
   "branch": "codex/2026-09-21-example-maintenance",
@@ -193,19 +255,23 @@ A workflow request supplies one initial active task:
 ```
 
 Replace example intent and execution identity with actual inputs. All requests
-require `version`, `operation`, `id` and an explicit-offset `timestamp`. Creation
+require `version`, `operation` and `id`; `timestamp` is optional. Creation
 requires exactly one nonempty `body` or repository-relative `body_file`. Markdown
 body content must exclude the tool-owned `Workflow Metadata` or `Metadata`
 section. Draft body content is author-owned; templates remain the guide for its
 domain sections. Titles cannot contain table separators, newlines or backticks.
-Updates must supply an instant strictly later than the current `updated_at`;
-an equal instant with a different UTC offset is also rejected before writing.
+The captured or explicitly supplied instant must be later than `updated_at`;
+clock regression and an equal instant with another offset fail before writing.
+Assessment creation IDs must still match their creation date/hour; automatic
+time does not silently rename a caller-selected identity.
 
 | Operation | Additional semantic inputs |
 | --- | --- |
 | `workflow.create` | `title`, `branch`, `task`, body; optional `base_branch` (default `main`). |
 | `workflow.add-task` | `task`; the added task is pending. |
-| `workflow.update` | Optional `title`, `current_phase`; no arbitrary locator patch. |
+| `workflow.update` | Optional `title`, `current_phase`, replacement body; metadata is retained and updated automatically. |
+| `workflow.progress` | `task_id`, `last_completed_step`, `next_action`; optional actual `observations`, `current_phase`. Updates an active/blocked task without changing its status. |
+| `workflow.report` | Create with `baseline_assessment` and body, optional `title`. Adopt/update an existing current draft with optional replacement body or `verification_assessment`. |
 | `workflow.transition` | `task_id`, `status`; caller `observations` for every transition except starting/resuming; optional `next_action`, `next_task_id`, `workflow_status`, `current_phase`. |
 | `assessment.create` | `title`, `type` (`audit` or `verification`), `artifact_branch`, `subject` (`repository`, `branch`, full `commit`), nonempty `included`, `next_action`, body; optional `base_branch`, `excluded`, `workflow_refs` (IDs), `related_assessments` (IDs). |
 | `assessment.update` | Draft only: optional `title`, `next_action`, `blockers`, replacement body. |
@@ -225,6 +291,24 @@ exactly one active task. A transition may explicitly select workflow status
 `in_progress`, `blocked` or `completed`; completion also needs a completed/closed
 phase and all tasks terminal. Terminal tasks/workflows cannot be reopened by
 this P1 adapter. The existing validators decide applicable lifecycle semantics.
+
+`workflow.report` explicitly binds `reports/remediation-report.md` through the
+locator's `remediation_report` contract. It retains the existing report ID,
+creation time, baseline and template identity. Later workflow operations update
+the bound report in the same recoverable bundle as the locator, plan, task and
+index. They also regenerate `Current Workflow State` in the plan and report
+from task status, last completed step and next action. Use `workflow.progress`
+for those facts rather than duplicating present-tense prose in multiple files.
+Body replacement excludes `Report Metadata` and the generated state section.
+Unbound legacy reports remain untouched until explicit adoption.
+
+Report status stays `draft` until the workflow is completed. Its editorial
+`final` status additionally requires an existing final independent verification
+assessment with matching workflow and baseline links; final is not a passed
+review, current CI success or provider closure. Authored historical evidence and
+conclusions are preserved. Terminal reports cannot be silently reopened. The
+existing workflow validator checks bound metadata and projections, so stale
+generated task state or manually duplicated metadata fails without a new gate.
 
 The tool runs both existing family validators against a read-only projected
 repository before writing. This includes other locators, related records and
@@ -260,11 +344,9 @@ not hostile-process exclusion or a power-loss durability guarantee.
 
 `catalog` distinguishes writable profiles, immutable records and explicit
 migration dispositions. Historical execution evidence is never regenerated.
-The focused suite uses independent inputs and failure injection:
-
-```text
-python .ai/scripts/tests/test_artifact_authoring.py -v
-```
+The source checkout's focused suite, `.ai/scripts/tests/test_artifact_authoring.py`,
+uses independent inputs and failure injection. Test sources are excluded from
+portable packages; run that suite only from a source checkout.
 
 ### Dynamic Role Metadata (P3 First Family)
 

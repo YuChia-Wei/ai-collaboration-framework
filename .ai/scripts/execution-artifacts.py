@@ -18,7 +18,7 @@ guard_direct_entrypoint(".ai/scripts/execution-artifacts.py")
 import yaml
 from execution_artifact_contract import (
     ContractError, EXTERNAL_SCHEMA, EXTERNAL_VALIDATOR, GUARD_SCHEMA, GUARD_VALIDATOR,
-    authority_manifest, digest, encoded, load_mapping, load_module, models_errors,
+    AUTHORITY_REFS, StrictLoader, authority_manifest, digest, encoded, load_mapping, load_module, models_errors,
     record_model, sha256, structure_errors, template_value,
 )
 
@@ -88,13 +88,11 @@ def rollback(owned: list[tuple[Path, str]], directory: Path | None = None) -> No
     require(errors)
 
 
-def prepare(request: dict, output_ref: str) -> dict:
-    guard, external, guard_schema, schema = validators()
+def validate_prepare_request(request: dict, loaded: tuple | None = None) -> tuple[dict, dict | None]:
+    """Validate explicit input facts without creating a packet or dispatch."""
+    guard, external, guard_schema, schema = loaded or validators()
     require(structure_errors(request, schema, "prepare_request"))
     require(models_errors(guard_schema) + external.validate_schema_definition(schema))
-    output = safe_output(output_ref, external)
-    if output.exists() or not output.parent.is_dir():
-        raise ContractError("prepare requires a new output directory under an existing ignored parent")
     observed = observed_git()
     errors = []
     if observed["head"] != request["expected_commit_sha"]:
@@ -121,6 +119,207 @@ def prepare(request: dict, output_ref: str) -> dict:
         except (OSError, ValueError, yaml.YAMLError) as exc:
             errors.append(str(exc))
     require(errors)
+    return observed, review
+
+
+INPUT_KINDS = ("review-input", "prepare-request", "dependency-request", "evidence-ledger")
+
+
+def input_fields(value: Any, required: set[str], optional: set[str] | None = None) -> None:
+    if not isinstance(value, dict) or not required <= value.keys() or value.keys() - required - (optional or set()):
+        raise ContractError("input fields do not match the selected authoring operation")
+
+
+def input_file(ref: str, watched: dict[str, str], external: Any) -> bytes:
+    """Observe exact local bytes without accepting aliases or linked ancestors."""
+    if not isinstance(ref, str) or external.canonical_repository_ref(ref) != ref:
+        raise ContractError("input reference must be canonical and repository-relative")
+    path = ROOT / ref
+    chain = (path, *path.parents)
+    if path.resolve() != path or any(p.is_symlink() or (hasattr(p, "is_junction") and p.is_junction()) for p in chain):
+        raise ContractError("linked input paths are unsupported")
+    data = path.read_bytes()
+    watched[ref] = sha256(data)
+    return data
+
+
+def input_authority_bytes(ref: str, external: Any) -> bytes:
+    # A fixed package-envelope key is available only to the runtime, never to
+    # caller-selected input paths. Match the existing prerequisite boundary.
+    if ref == "package-envelope:requirements.txt":
+        path = ROOT.parent / "requirements.txt"
+        if (ROOT / "requirements.txt").exists() or path.resolve() != path or any(
+            part.is_symlink() or (hasattr(part, "is_junction") and part.is_junction()) for part in (path, *path.parents)
+        ):
+            raise ContractError("package-envelope requirements authority changed or is linked")
+        return path.read_bytes()
+    return input_file(ref, {}, external)
+
+
+def build_review_subject(repository: str, base_sha: str, head_sha: str, guard: Any) -> dict:
+    """Produce the canonical content subject; it grants no review or admission."""
+    import re
+    if not isinstance(repository, str) or not repository.strip():
+        raise ContractError("repository identity must be supplied explicitly")
+    if any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{40}", value) for value in (base_sha, head_sha)):
+        raise ContractError("review base and expected head must be full commit identities")
+    for value in (base_sha, head_sha):
+        result = subprocess.run(["git", "-C", str(ROOT), "cat-file", "-t", value], capture_output=True, text=True, check=False, timeout=30)
+        if result.returncode or result.stdout.strip() != "commit":
+            raise ContractError("review identities must name commits, not trees or other Git objects")
+    trees = [guard.git_tree_identity(value) for value in (base_sha, head_sha)]
+    if not all(trees):
+        raise ContractError("review commits must resolve to existing trees")
+    return {"schema_version": "independent-review-subject/v1", "repository_id": repository,
+            "base_tree": trees[0], "head_tree": trees[1]}
+
+
+def build_review_input(request: dict, watched: dict[str, str], loaded: tuple) -> dict:
+    guard, external, guard_schema, _ = loaded
+    input_fields(request, {"version", "expected_head", "repository", "base_sha", "classification", "criteria", "authority_paths"})
+    if not isinstance(request["authority_paths"], list) or not request["authority_paths"]:
+        raise ContractError("authority_paths must be a non-empty explicit list")
+    content = build_review_subject(request["repository"], request["base_sha"], request["expected_head"], guard)
+    record = {"schema_version": "1.0", "record_type": "independent-review-input",
+              "classification": copy.deepcopy(request["classification"]),
+              "subject": {"repository": request["repository"], "base_sha": request["base_sha"], "head_sha": request["expected_head"],
+                          "base_tree": content["base_tree"], "head_tree": content["head_tree"], "subject_digest": digest(content)},
+              "criteria": copy.deepcopy(request["criteria"]),
+              "authority": [{"path": ref, "sha256": sha256(input_file(ref, watched, external))} for ref in request["authority_paths"]]}
+    guard.validate_review_input(record, guard_schema)
+    return record
+
+
+def build_prepare_request(request: dict, watched: dict[str, str], loaded: tuple) -> dict:
+    _, external, _, schema = loaded
+    fields = set(record_model(schema, "prepare_request", "1.0")["required"]) - {"schema_version", "record_type"}
+    fields.remove("expected_commit_sha")
+    input_fields(request, fields | {"version", "expected_head"}, {"review_input"})
+    record = {key: copy.deepcopy(value) for key, value in request.items() if key not in {"version", "expected_head"}}
+    record.update(schema_version="1.0", record_type="execution-prepare-request", expected_commit_sha=request["expected_head"])
+    validate_prepare_request(record, loaded)
+    for ref in (record["role"].get("path"), f".ai/assets/skills/{record['owning_skill']}/skill.yaml", record.get("review_input")):
+        if ref:
+            input_file(ref, watched, external)
+    return record
+
+
+def build_dependency_request(request: dict, watched: dict[str, str], loaded: tuple) -> dict:
+    _, external, _, _ = loaded
+    input_fields(request, {"version", "expected_head", "validator_id", "harness", "entrypoint", "callable", "argv", "declared_dependencies"})
+    for ref in (".ai/scripts/observe-validation-dependencies.py", ".ai/assets/shared/validation-dependency-observation.schema.yaml"):
+        input_file(ref, watched, external)
+    observer = load_module(ROOT / ".ai/scripts/observe-validation-dependencies.py", "artifact_input_observer")
+    record = {key: copy.deepcopy(value) for key, value in request.items() if key not in {"version", "expected_head"}}
+    record.update(schema_version=observer.REQUEST_SCHEMA, subject=request["expected_head"])
+    record = observer.validate_request(record, ROOT)
+    if record["harness"] != observer.SUPPORTED_HARNESS:
+        raise ContractError("input authoring supports only the current observation harness")
+    for ref in (record["entrypoint"], *record["declared_dependencies"]["file"]):
+        input_file(ref, watched, external)
+    return record
+
+
+def build_evidence_ledger(request: dict, watched: dict[str, str], loaded: tuple) -> dict:
+    guard, external, guard_schema, _ = loaded
+    input_fields(request, {"version", "expected_head", "entries"})
+    if not isinstance(request["entries"], list) or not request["entries"]:
+        raise ContractError("ledger entries must be non-empty")
+    entries = []
+    for supplied in request["entries"]:
+        input_fields(supplied, {"acceptance_id", "issue", "requires_actual_execution", "evidence_kind", "command", "profile", "outcome", "evidence_ref"}, {"execution_receipt_ref"})
+        if type(supplied["issue"]) is not int or supplied["issue"] <= 0:
+            raise ContractError("ledger issue must be a positive integer, not a boolean")
+        ref = supplied["evidence_ref"]
+        if not isinstance(ref, str) or ":" not in ref:
+            raise ContractError("evidence must be an explicit typed local reference")
+        prefix, local_ref = ref.split(":", 1)
+        if prefix not in {"ignored", "run", "job", "tracked", "workflow", "fixture"}:
+            raise ContractError("ledger authoring requires file-backed evidence")
+        if prefix == "ignored" and (not external.git_ignores_reference(local_ref) or external.git_tracks_reference(local_ref)):
+            raise ContractError("ignored evidence must be ignored and untracked")
+        if prefix == "tracked" and not external.git_tracks_reference(local_ref):
+            raise ContractError("tracked evidence must be tracked")
+        entry = {key: copy.deepcopy(supplied[key]) for key in ("acceptance_id", "issue", "requires_actual_execution", "evidence_kind", "command", "profile", "outcome")}
+        entry.update(subject_sha=request["expected_head"], evidence_refs=[ref], evidence_sha256=sha256(input_file(local_ref, watched, external)),
+                     execution_receipt_ref=None, execution_receipt_file_sha256=None, execution_receipt=None)
+        receipt_ref = supplied.get("execution_receipt_ref")
+        if receipt_ref is not None:
+            if not isinstance(receipt_ref, str) or ":" not in receipt_ref:
+                raise ContractError("execution receipt requires a typed local reference")
+            receipt_path = receipt_ref.split(":", 1)[1]
+            if not receipt_ref.startswith("ignored:") or not external.git_ignores_reference(receipt_path) or external.git_tracks_reference(receipt_path):
+                raise ContractError("execution receipts must be ignored and untracked")
+            receipt_bytes = input_file(receipt_path, watched, external)
+            entry.update(execution_receipt_ref=receipt_ref, execution_receipt_file_sha256=sha256(receipt_bytes),
+                         execution_receipt=yaml.load(receipt_bytes, Loader=StrictLoader))
+        entries.append(entry)
+    projected = [{key: entry[key] for key in ("acceptance_id", "outcome", "evidence_sha256")} for entry in entries]
+    record = {"schema_version": "1.0", "record_type": "acceptance-evidence-ledger", "subject_sha": request["expected_head"],
+              "entries": entries, "human_report": {"entries": projected, "report_sha256": digest(projected)}}
+    record["ledger_sha256"] = digest(record)
+    guard.validate_evidence(record, guard_schema)
+    return record
+
+
+def author_input(kind: str, request: dict, output_ref: str | None = None, expected: str | None = None) -> dict:
+    """Preview or create one new input; never execute, admit, acquire or release."""
+    if kind not in INPUT_KINDS or not isinstance(request, dict) or request.get("version") != "1.0":
+        raise ContractError("unsupported input kind or request version")
+    loaded = validators()
+    _, external, _, _ = loaded
+    observed = observed_git()
+    if observed["head"] != request.get("expected_head") or observed["tracked_status"]:
+        raise ContractError("input authoring requires the expected clean tracked HEAD")
+    watched: dict[str, str] = {}
+    for ref in (*AUTHORITY_REFS, ".gitignore"):
+        if ref == "requirements.txt" and not (ROOT / ref).is_file():
+            ref = "package-envelope:requirements.txt"
+        watched[ref] = sha256(input_authority_bytes(ref, external))
+    builders = {"review-input": build_review_input, "prepare-request": build_prepare_request,
+                "dependency-request": build_dependency_request, "evidence-ledger": build_evidence_ledger}
+    record = builders[kind](request, watched, loaded)
+    # Canonicalization also refuses non-finite numbers and unsupported YAML values.
+    binding = digest({"kind": kind, "request": request, "record": record, "git": observed, "inputs": watched})
+    for ref, value in list(watched.items()):
+        if sha256(input_authority_bytes(ref, external)) != value:
+            raise ContractError("input bytes drifted during preparation")
+    if observed_git() != observed:
+        raise ContractError("Git state drifted during input preparation")
+    if output_ref is None:
+        if expected is not None:
+            raise ContractError("--expect requires --output")
+        return {"operation": "input", "kind": kind, "state": "preview", "preview_digest": binding,
+                "record": record, "execution_run_by_tool": False, "admission_granted": False}
+    if expected != binding:
+        raise ContractError("input preview changed; inspect a fresh preview before writing")
+    output = safe_output(output_ref, external)
+    if output.exists() or not output.parent.is_dir():
+        raise ContractError("input requires a new file under an existing ignored parent")
+    owned: list[tuple[Path, str]] = []
+    try:
+        exclusive_file(output, encoded(record), owned)
+        for ref, value in watched.items():
+            if sha256(input_authority_bytes(ref, external)) != value:
+                raise ContractError("input bytes drifted during publication")
+        if observed_git() != observed:
+            raise ContractError("Git state drifted during input publication")
+    except BaseException:
+        rollback(owned)
+        raise
+    return {"operation": "input", "kind": kind, "state": "authored", "output_ref": output_ref,
+            "preview_digest": binding, "execution_run_by_tool": False, "admission_granted": False}
+
+
+def prepare(request: dict, output_ref: str) -> dict:
+    loaded = validators()
+    guard, external, guard_schema, schema = loaded
+    require(structure_errors(request, schema, "prepare_request"))
+    require(models_errors(guard_schema) + external.validate_schema_definition(schema))
+    output = safe_output(output_ref, external)
+    if output.exists() or not output.parent.is_dir():
+        raise ContractError("prepare requires a new output directory under an existing ignored parent")
+    observed, review = validate_prepare_request(request, loaded)
     refs = {name: f"{output_ref}/{name}.yaml" for name in ("packet", "dispatch", "candidate", "receipt", "review-input")}
     packet = {
         "schema_version": "1.1", "record_type": "agent-execution-packet", "packet_id": request["delegation_id"],
@@ -338,6 +537,9 @@ def main() -> int:
     p = modes.add_parser("migrate"); p.add_argument("--source", required=True); p.add_argument("--to-version", required=True); p.add_argument("--output"); p.add_argument("--dispatch"); p.add_argument("--dry-run", action="store_true")
     p = modes.add_parser("check"); p.add_argument("record"); p.add_argument("--dispatch"); p.add_argument("--historical", action="store_true")
     p = modes.add_parser("templates"); p.add_argument("--check", action="store_true")
+    p = modes.add_parser("input", help="preview or author current input records; no execution or admission")
+    p.add_argument("--kind", choices=INPUT_KINDS, required=True); p.add_argument("--request", type=Path, required=True)
+    p.add_argument("--output"); p.add_argument("--expect", help="digest from the unchanged input preview")
     args = parser.parse_args()
     try:
         if args.mode == "prepare": result = prepare(load_mapping(args.request), args.output)
@@ -347,6 +549,7 @@ def main() -> int:
             if not args.dry_run and not args.output: raise ContractError("select --dry-run or a new --output explicitly")
             result = migrate(args.source, args.to_version, args.output, args.dispatch)
         elif args.mode == "check": result = check(args.record, args.dispatch, args.historical)
+        elif args.mode == "input": result = author_input(args.kind, load_mapping(args.request), args.output, args.expect)
         else: result = templates(args.check)
         print(json.dumps(result, indent=2, ensure_ascii=False)); return 0
     except (ValueError, OSError, yaml.YAMLError, subprocess.TimeoutExpired) as exc:

@@ -33,7 +33,7 @@ register_check assessment-artifacts-tests \
 register_check workflow-artifacts \
     "Workflow Artifact Metadata" required \
     "governance,metadata" "fast pr release nightly-full" \
-    ".dev/workflows .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .ai/scripts/validate-workflow-artifacts.py" '' "python>=3.11" 30 cpu reuse-by-input source \
+    ".dev/workflows .dev/assessments .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .ai/scripts/validate-workflow-artifacts.py .ai/scripts/artifact_authoring.py .ai/scripts/artifact_core.py .ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md" '' "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/validate-workflow-artifacts.py" always
 register_check workflow-implementation-contract \
     "Workflow Implementation Contract Fail-Closed Tests" required \
@@ -44,7 +44,7 @@ register_check workflow-implementation-contract \
 register_check workflow-lifecycle-contract \
     "Workflow Lifecycle Contract Fail-Closed Tests" required \
     "governance,tests" "fast pr release nightly-full" \
-    ".ai/scripts/tests/test_workflow_lifecycle_contract.py .ai/scripts/tests/fixtures/workflow-terminal-anchors .ai/scripts/validate-workflow-artifacts.py .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .dev/workflows" workflow-artifacts \
+    ".ai/scripts/tests/test_workflow_lifecycle_contract.py .ai/scripts/tests/fixtures/workflow-terminal-anchors .ai/scripts/validate-workflow-artifacts.py .ai/scripts/artifact_authoring.py .ai/scripts/artifact_core.py .ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .dev/workflows .dev/assessments" workflow-artifacts \
     "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v" always
 register_check git-commit-policy \
@@ -389,12 +389,12 @@ register_check artifact-authoring-tests \
 register_check artifact-catalog-tests \
     "Artifact Catalog And Lifecycle Routing Tests" required \
     "governance,tests" "fast pr release nightly-full" \
-    ".ai/scripts/artifact-authoring.py .ai/scripts/artifact_authoring.py .ai/scripts/artifact_core.py .ai/scripts/artifact_lifecycle.py .ai/scripts/tests/test_artifact_catalogs.py .ai/scripts/tests/test_artifact_authoring.py .ai/scripts/tests/test_provider_role_projection_contract.py .ai/scripts/validate-ai-context.py .ai/scripts/ai_context_cli_routing.py .ai/scripts/validate-ai-behavior-evaluation.py .ai/scripts/validate-source-dispositions.py .ai/scripts/validate-repository-identity.py .ai/scripts/validate-shell-assets.py .ai/scripts/runtime_skill_entries.py .ai/scripts/ai_context_package.py .ai/scripts/ai_context_package_identity.py .ai/scripts/ai_context_release_projection.py .ai/scripts/tests/test_repository_identity.py .ai/scripts/tests/test_source_dispositions.py .ai/assets .ai/evaluation .ai/distribution .dev/standards .ai/scripts/python-entrypoints.json .ai/scripts/python_prerequisites.py requirements.txt" workflow-artifacts "python>=3.11 git" 180 io reuse-by-input source \
+    ".ai/scripts/artifact-authoring.py .ai/scripts/artifact_authoring.py .ai/scripts/artifact_core.py .ai/scripts/artifact_lifecycle.py .ai/scripts/tests/test_artifact_catalogs.py .ai/scripts/validation_subject.py .ai/scripts/validation-profile-registry.sh .ai/scripts/tests/test_artifact_authoring.py .ai/scripts/tests/test_provider_role_projection_contract.py .ai/scripts/validate-ai-context.py .ai/scripts/ai_context_cli_routing.py .ai/scripts/validate-ai-behavior-evaluation.py .ai/scripts/validate-source-dispositions.py .ai/scripts/validate-repository-identity.py .ai/scripts/validate-shell-assets.py .ai/scripts/runtime_skill_entries.py .ai/scripts/ai_context_package.py .ai/scripts/ai_context_package_identity.py .ai/scripts/ai_context_release_projection.py .ai/scripts/tests/test_repository_identity.py .ai/scripts/tests/test_source_dispositions.py .ai/assets .ai/evaluation .ai/distribution .dev/standards .ai/scripts/python-entrypoints.json .ai/scripts/python_prerequisites.py requirements.txt" workflow-artifacts "python>=3.11 git bash" 180 io reuse-by-input source \
     "python .ai/scripts/tests/test_artifact_catalogs.py -v" source-governance
 register_check execution-artifacts-tests \
     "Execution Artifact Preparation And Custody Tests" required \
     "governance,tests" "fast pr release nightly-full" \
-    ".ai/scripts/artifact_authoring.py .ai/scripts/execution-artifacts.py .ai/scripts/execution_artifact_contract.py .ai/scripts/artifact_core.py .ai/scripts/tests/test_execution_artifacts.py .ai/assets/shared/agent-execution-guardrails.schema.yaml .ai/assets/skills/software-development-orchestrator" agent-execution-guardrails-contract "python>=3.11 git" 120 cpu reuse-by-input source \
+    ".ai/scripts/artifact_authoring.py .ai/scripts/execution-artifacts.py .ai/scripts/execution_artifact_contract.py .ai/scripts/artifact_core.py .ai/scripts/tests/test_execution_artifacts.py .ai/scripts/observe-validation-dependencies.py .ai/assets/shared/validation-dependency-observation.schema.yaml .ai/assets/shared/agent-execution-guardrails.schema.yaml .ai/assets/skills/software-development-orchestrator" agent-execution-guardrails-contract "python>=3.11 git" 120 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_execution_artifacts.py -v" source-governance
 register_check external-task-delegation-tests \
     "External Task Candidate And Receipt Contract Tests" required \

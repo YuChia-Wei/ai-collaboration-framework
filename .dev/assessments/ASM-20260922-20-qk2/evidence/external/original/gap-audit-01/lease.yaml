@@ -1,0 +1,32 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: GAP-320-LEASE-01
+worktree: .
+subject_sha: 8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8
+observed_snapshot:
+  head_sha: 8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8
+  tracked_status: []
+snapshot_sha256: ffa40531406171e3def1a5a32a93fc6bacf0c52527f6e1c3846a563351723915
+state: released
+holder:
+  packet_id: GAP-320-AUDIT-01
+  access: read-only
+  lock_ref: .dev/ai-context/local/gap-audit-01/lease.lock
+  lock_sha256: c80462605f3161e86be89183021319a59329060f552df6e86694840894c7bf07
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/gap-audit-01/review-result.md
+  state: sealed
+  sha256: 910a450f7e94ab1c380d65e82d6a9ff19662e5ae56a7dd7843723b8239cd045e
+- path: .dev/ai-context/local/gap-audit-01/verification-record.json
+  state: sealed
+  sha256: 85da0e36a972eeb40284b14131fb6c66be46f07b2ca41e4a83efd8bbcf77c478
+- path: .dev/ai-context/local/gap-audit-01/assessment-body.md
+  state: sealed
+  sha256: 41ba36d49267c11ef40775957be57e495f56c84bc7aa45700e3fdeda53996412
+tracked_mutations: []
+terminal_release:
+  released: true
+  reason: Root received the independent terminal callback and retains the exact reviewed
+    snapshot and output; custody released before any subsequent tracked integration.
+lease_sha256: c3ec3d0f07590d2413ed98d046b69480bff4515c77e02816a8979fe9af8e2273

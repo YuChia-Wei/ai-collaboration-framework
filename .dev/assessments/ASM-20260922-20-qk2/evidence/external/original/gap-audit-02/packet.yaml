@@ -1,0 +1,43 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: GAP-320-AUDIT-02
+execution_kind: fixed-head-audit
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Explicitly selected high-risk post-remediation evidence-custody review on
+    a fixed clean commit.
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  exact_sha: 63b95af148b574a6dc5f2bc8149010975a8c4a93
+invocation:
+  argv:
+  - collaboration.followup_task
+  - lifecycle_independent_audit
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/gap-audit-02
+terminal:
+  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  mode: callback
+  destination: root
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Return findings without repair
+- Stop on subject or authority drift
+- No provider or credential operations
+- No full matrix
+retry:
+  attempt: 2
+  budget: 2
+  authorization_refs: []
+review_input:
+  ref: .dev/ai-context/local/gap-audit-02/review-input.yaml
+  sha256: dae3c828da855cf9cb208ed2973f88cc4c3a3ea9c831b56c426e2a0095b56b21
+packet_sha256: b5e283f70773d65a7847aabedec5fe77951c585201dceda7abb1ec0d5f06e291

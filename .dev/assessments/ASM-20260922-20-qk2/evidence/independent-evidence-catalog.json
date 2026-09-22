@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0",
+  "subject_commit": "9423211893fc75ce6f4eac799d79df8a48b8cd33",
+  "origin": "Independent callbacks GAP-320-AUDIT-01 through GAP-320-AUDIT-04",
+  "projection": "Native metadata and three schema-required heading labels normalized; independent paragraph and conclusion bytes unchanged. Previous failed attempts and all original bodies retained unchanged. Raw local logs remain ignored.",
+  "heading_mapping": {
+    "## \u57f7\u884c\u6458\u8981": "## Executive Summary",
+    "## \u7bc4\u570d\u8207\u6392\u9664\u9805\u76ee": "## Scope",
+    "## Validation \u8207\u7565\u904e\u9805\u76ee": "## Validation"
+  },
+  "files": [
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/assessment-body.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/assessment-body.md",
+      "sha256": "41ba36d49267c11ef40775957be57e495f56c84bc7aa45700e3fdeda53996412"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/review-result.md",
+      "sha256": "910a450f7e94ab1c380d65e82d6a9ff19662e5ae56a7dd7843723b8239cd045e"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/verification-record.json",
+      "sha256": "85da0e36a972eeb40284b14131fb6c66be46f07b2ca41e4a83efd8bbcf77c478"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/review-input.yaml",
+      "sha256": "87153569c3cec47d6cc772e3549dc434b65eed1df88d585137f8dfa9d3370d79"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/packet.yaml",
+      "sha256": "0b75d7b9b231c089c195e5afc94711344f8abbf528ec66ad9d812e6e3d73dc17"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/lease-active.yaml",
+      "sha256": "edd0d34457904267eae9074b5a938d18bc192a84eb3b73de12bcae858a2abf77"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-01/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-01/lease.yaml",
+      "sha256": "96c053b803c8037287fe8c70ddd0adba4b9f0a03ec3fd22b3f9bd2f907cef8ed"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/assessment-body.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/assessment-body.md",
+      "sha256": "127c401c4d367ee93aaf2e1e1ae7a2d46a65e23509c69cc60aa1b6d2e8c4b2d1"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/review-result.md",
+      "sha256": "a4e89a9dccd062df8ddc7dee0e616265d5082ff038d8842f380bf5ee8dae4280"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/verification-record.json",
+      "sha256": "522eb51a6d06150c7ca90404e9167bcd428d565167cc3f475b6fc2881015cee1"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/review-input.yaml",
+      "sha256": "dae3c828da855cf9cb208ed2973f88cc4c3a3ea9c831b56c426e2a0095b56b21"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/packet.yaml",
+      "sha256": "3ed7503f91884828367e8dedd9c258304943a3f986ae0811ef51f64322d6f6bb"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/lease-active.yaml",
+      "sha256": "39129e3bced5651b5d895c17d97ea78a8b2d19d3d5b7569ad656ce2f441eadc4"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-02/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-02/lease.yaml",
+      "sha256": "79a276bcd6239392748fa48be356385d6a843b2fe16bff74605d8362a41eb36d"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/assessment-body.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/assessment-body.md",
+      "sha256": "e26ab6919f68bee55c28404b3877524620d2e3ac2f2d1a7561672dbca376f2c3"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/review-result.md",
+      "sha256": "c017c8930029a8895a0970541bf60ad7293db7bd33bd3e2e42d4aa4737ccfc79"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/verification-record.json",
+      "sha256": "324f2dfef4277bf6baad9f73ef33f44871bbee75d892d8502816b48a5e342e28"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/review-input.yaml",
+      "sha256": "559f07f7ad4349aebf874cfb29c7812e6d09f88b0119ac3ca54dffee6c19c9a3"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/packet.yaml",
+      "sha256": "561c485d13163c8aeec6e01112f88c55c6f20c1de3eb5eaeb828455dac22346d"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/lease-active.yaml",
+      "sha256": "c68949719e072a214b8fe54cd0883742e06f254e0c8eb98511f19b23cc122a8f"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/lease.yaml",
+      "sha256": "71b9af9d6b80b9086e2becf60fc9e3359fa09d387e5481523bc0e300efd36b8e"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-03/workflow-retry-authorization.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-03/workflow-retry-authorization.yaml",
+      "sha256": "62599026b00444b547e66c4bc826d17268728cbf1b4531f1dd0edacd8b7b441f"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/assessment-body.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/assessment-body.md",
+      "sha256": "a93efffa67d499f1464f90e2e473c3a67779aab17be5a981780a7ea0c58b7c02"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/review-result.md",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/review-result.md",
+      "sha256": "e37930a0a2c58bed3f07e2c931dc53632139826a349e17f936d217b69dbb4b31"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/verification-record.json",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/verification-record.json",
+      "sha256": "bfc5675fa0076cc8f182c1abbc42d3dd02d175c985841359c70a8b787133deb6"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/review-input.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/review-input.yaml",
+      "sha256": "a3a5b0124beb91afd3ef624c72be7497ff2b1a80afab2bbef542126f4fe69d40"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/packet.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/packet.yaml",
+      "sha256": "188cdee159f004d52fb6141a5e10aee3ce01b2dd430edebbb35ba9c16dd1e44e"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/lease-active.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/lease-active.yaml",
+      "sha256": "b5fec0654eec288f980ce4fca347a113320cb35156b100981d6a54c2e5af8854"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/lease.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/lease.yaml",
+      "sha256": "7bb0fa603340c525901ad1a15ef429cb19b021cc2c28baeaec57645f673b0d97"
+    },
+    {
+      "source": ".dev/ai-context/local/gap-audit-04/workflow-retry-authorization.yaml",
+      "retained": ".dev/assessments/ASM-20260922-20-qk2/evidence/external/original/gap-audit-04/workflow-retry-authorization.yaml",
+      "sha256": "d333ae23e3bf551e5e40533fcb49472b39f52897ac30a64efd8c5f797cd3eeb1"
+    }
+  ]
+}

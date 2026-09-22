@@ -1,0 +1,70 @@
+schema_version: '1.0'
+record_type: independent-review-input
+classification:
+  schema_version: '1.0'
+  record_type: agent-execution-classification
+  operation: review
+  execution_boundary: same-runtime
+  duration_class: unknown
+  change_domains:
+  - evidence-custody
+  snapshot: shared-frozen
+  tracked_write: false
+  provider_mutation: false
+  credential_access: false
+  terminal_gate: true
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  base_sha: 237a01f437f3005ea57885714f6ebfc3037d196d
+  head_sha: 8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8
+  base_tree: 4463fd12170ca03d9c7a98f71da45ed46450bd55
+  head_tree: efdf2b52618c3ed9b240959973d633bce856cb5e
+  subject_digest: 1247460e8592c41b57c6a97a9222392e631149141296eea3bbc25deef3a14494
+criteria:
+- Review the Issue320 implementation delta for correctness, fail-closed current input/subject/authority
+  binding, create-only path containment and rollback, truth-preserving evidence-ledger
+  construction, dependency request non-execution, and existing prepare compatibility.
+  Do not require an input builder to grant packet/dispatch admission.
+- Review three catalog operations for permitted reason-only and derived_consumer fields,
+  fixed executing source authority, exact citation/path validation and dependency
+  declarations. Confirm no gate membership, eligibility or owner baseline change.
+- Review all sixteen original manual-gap dispositions and final lifecycle routes against
+  real producer capabilities. Distinguish executable partial fields, semantic-owner
+  responsibility, and explicit retained manual gaps. Confirm no unsupported migration
+  claims or weaker validators/test removal.
+- Compare Chinese remediation report, workflow and focused evidence to actual tests
+  and implementation; preserve failed/environment attempts and synthetic evidence
+  limits. Existing test logs are supporting mutable-checkout evidence, not immutable
+  or hosted admission. Provider and final document intake remain subsequent gates.
+- Independently inspect the code and run only focused tests needed to resolve concrete
+  concerns; use retained tests with explicit limits otherwise. Do not run a full matrix,
+  modify tracked files, access credentials/provider, or declare Issue closure. Return
+  two audit passes with comparison, evidence-backed findings and explicit skipped
+  checks.
+- Validate exact clean content subject, packet, active lease, criteria and authority
+  before and after review. Return one bounded terminal callback and independently
+  authored report body/verification record; root owns integration and separate assessment
+  publication.
+authority:
+- path: AGENTS.md
+  sha256: 05d34dfe80ad8e42b40c133e4522851971e991266ddf042aba049e31dd1dea1b
+- path: .ai/assets/CANONICAL-SCHEMA.MD
+  sha256: 1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772
+- path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+  sha256: 161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5
+- path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+  sha256: 9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  sha256: 0ffc68fb5d48acb4a15465d9083a7e9965aee761dc6c84eae5e00ccf4dc6471d
+- path: .ai/assets/shared/validation-gate-classification.yaml
+  sha256: 3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24
+- path: .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md
+  sha256: 4d1eec2abc1d11bfecebcaf1efff53bf576a4f80271212ead87f51da97243df6

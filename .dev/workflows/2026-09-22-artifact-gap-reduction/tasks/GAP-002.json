@@ -1,0 +1,55 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GAP-002",
+  "workflow_id": "2026-09-22-artifact-gap-reduction",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-22T13:53:52+08:00",
+  "updated_at": "2026-09-22T20:09:14.698924+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-002"
+  ],
+  "scope": {
+    "target": "Add permitted catalog maintenance operations and reconcile all original gap dispositions with a Chinese explanation.",
+    "files": [],
+    "constraints": [
+      "Preserve semantic authority and provider baselines.",
+      "Do not reclassify a gap as executable without a real producer."
+    ],
+    "non_goals": []
+  },
+  "execution": {
+    "steps": [
+      "Implement useful restricted operations.",
+      "Split mixed tooling registry routes.",
+      "Document retained semantic decisions and verification evidence."
+    ],
+    "validation": [
+      "Focused authoring, registry and applicable package/CLI checks."
+    ],
+    "last_completed_step": "Independent attempt4 passed on94232118; native assessment ASM-20260922-20-qk2 preserves previous failures and verifies report automation.",
+    "next_action": ""
+  },
+  "results": {
+    "summary": "All16 original gaps disposed; bounded writers and report automation independently verified; prior failures retained in ASM-20260922-20-qk2.",
+    "files_changed": [
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/execution-artifacts.py",
+      ".ai/assets/shared/artifact-lifecycle-registry.json",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/reports/remediation-report.md"
+    ],
+    "tests_run": [
+      "Exact94232118 hosted contexts all successful; authoring45, execution37, catalog30 and routing9 cases passed.",
+      "Independent attempt4 passed; final metadata intake and fresh provider admission remain distinct gates."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Explicit manual/semantic owner routes are retained capability boundaries. Future framework direction is separately owner-scoped.",
+    "follow_up_needed": false
+  }
+}

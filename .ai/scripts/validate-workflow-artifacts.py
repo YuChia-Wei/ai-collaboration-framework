@@ -1386,6 +1386,9 @@ def validate_workflows(repo: Path) -> tuple[list[str], int, int, int]:
             errors,
             repo=repo,
         )
+        if "remediation_report" in locator:
+            from artifact_authoring import validate_workflow_report
+            errors.extend(validate_workflow_report(repo, locator))
 
     indexed_workflows = validate_workflow_index(repo, discovery_root, errors)
     backlog_items = (

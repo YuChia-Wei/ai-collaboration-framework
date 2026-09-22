@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from test_artifact_authoring import AUTHOR, AuthoringFixture, NOW, ROOT
 from test_provider_role_projection_contract import ProviderRoleProjectionFixture
 import artifact_lifecycle as LIFECYCLE
+import validation_subject as SUBJECT
 
 
 class CatalogAuthoringTests(AuthoringFixture):
@@ -362,6 +363,165 @@ class GovernanceCatalogAuthoringTests(AuthoringFixture):
         subprocess.run(['git','-C',str(self.root),'update-index','--chmod=+x',script],check=True,capture_output=True)
         data['required_entrypoints']=[script]; self.put(ref,AUTHOR.dump(data))
         with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root,request)
+
+
+class ValidationGateCatalogAuthoringTests(AuthoringFixture):
+    def setUp(self):
+        super().setUp()
+        for ref in (SUBJECT.CLASSIFICATION_REF, SUBJECT.SCHEMA_REF, SUBJECT.CONTRACT_REF,
+                    SUBJECT.REGISTRY_REF, SUBJECT.SUBJECT_IMPLEMENTATION_REF):
+            self.put(ref, (ROOT / ref).read_bytes())
+
+    def request(self, identity='validation-gate-groups', **changes):
+        data = self.load(SUBJECT.CLASSIFICATION_REF)
+        collection, selector = ('groups', 'group_id') if identity == 'validation-gate-groups' else ('external_fresh_gates', 'gate_id')
+        return {'version': '1.0', 'operation': 'catalog.update', 'timestamp': NOW,
+                'id': identity, 'record': data[collection][0][selector],
+                'changes': changes or {'reason': 'Clarify the existing bounded classification; execution and reuse permissions remain unchanged.'}}
+
+    def test_reason_only_changes_preserve_classification_digests_and_external_freshness(self):
+        checks = SUBJECT.registry_snapshot(ROOT)
+        for identity, collection in (('validation-gate-groups', 'groups'), ('validation-external-gates', 'external_fresh_gates')):
+            with self.subTest(identity=identity):
+                before = self.load(SUBJECT.CLASSIFICATION_REF)
+                classifications, _ = SUBJECT.validate_classification_authority(before, checks)
+                request = self.request(identity)
+                preview = AUTHOR.plan(self.root, request)
+                self.assertEqual({SUBJECT.CLASSIFICATION_REF}, set(preview.changes))
+                candidate = AUTHOR.parse(preview.changes[SUBJECT.CLASSIFICATION_REF][1].decode())
+                expected = copy.deepcopy(before)
+                expected[collection][0]['reason'] = request['changes']['reason']
+                self.assertEqual(expected, candidate)
+                self.assertEqual(classifications, SUBJECT.validate_classification_authority(candidate, checks)[0])
+                AUTHOR.apply(self.root, request, preview.digest)
+                self.assertEqual(expected, self.load(SUBJECT.CLASSIFICATION_REF))
+
+    def test_classification_identity_membership_and_permissions_are_not_writable(self):
+        before = self.snapshot()
+        for identity in ('validation-gate-groups', 'validation-external-gates'):
+            for changes in ({'gate_ids': ['invented']}, {'group_id': 'changed'}, {'gate_id': 'changed'},
+                            {'sensitivities': ['input']}, {'reuse_eligibility': 'pilot-approved'},
+                            {'reusable_profiles': ['pr']}, {'environment_contract': None},
+                            {'schema_version': 'next'}, {'reason': ' '}, {'reason': True}):
+                with self.subTest(identity=identity, changes=changes), self.assertRaises(AUTHOR.AuthoringError):
+                    AUTHOR.plan(self.root, self.request(identity, **changes))
+        request = self.request(); request['record'] = 'missing-group'
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, request)
+        self.assertEqual(before, self.snapshot())
+
+    def test_classification_preview_binds_schema_owner_helper_and_registry_bytes(self):
+        request = self.request()
+        for ref in (SUBJECT.SCHEMA_REF, SUBJECT.CONTRACT_REF, SUBJECT.REGISTRY_REF, SUBJECT.SUBJECT_IMPLEMENTATION_REF):
+            with self.subTest(ref=ref):
+                original = (self.root / ref).read_bytes()
+                preview = AUTHOR.plan(self.root, request)
+                self.put(ref, original + b'\n')
+                changed = self.snapshot()
+                with self.assertRaisesRegex(AUTHOR.AuthoringError, 'preview|drift|changed'):
+                    AUTHOR.apply(self.root, request, preview.digest)
+                self.assertEqual(changed, self.snapshot())
+                self.put(ref, original)
+
+    def test_registry_is_loaded_only_from_running_source_and_candidate_coverage_fails_closed(self):
+        # A caller-selected repository may contain shell code. Preview must not
+        # source it or dispatch its proposed gate commands.
+        self.put(SUBJECT.REGISTRY_REF, b'printf unsafe > target-registry-was-executed\n')
+        original_module = AUTHOR._module
+        validator = original_module('validation_subject')
+        def selected_module(name):
+            return validator if name == 'validation_subject' else original_module(name)
+        with mock.patch.object(AUTHOR, '_module', side_effect=selected_module), mock.patch.object(validator, 'registry_snapshot', wraps=validator.registry_snapshot) as snapshot:
+            AUTHOR.plan(self.root, self.request())
+            snapshot.assert_called_once_with(ROOT)
+        self.assertFalse((self.root / 'target-registry-was-executed').exists())
+        data = self.load(SUBJECT.CLASSIFICATION_REF)
+        data['groups'][0]['gate_ids'].append('unregistered-gate')
+        self.put(SUBJECT.CLASSIFICATION_REF, AUTHOR.dump(data))
+        with self.assertRaisesRegex(AUTHOR.AuthoringError, 'exactly cover'):
+            AUTHOR.plan(self.root, self.request())
+
+
+class RuleConsumerCatalogAuthoringTests(AuthoringFixture):
+    ref = '.dev/standards/AI-CONTEXT-OWNERSHIP.yaml'
+    owner = '.dev/standards/AI-CONTEXT-OWNERSHIP.md'
+
+    def setUp(self):
+        super().setUp()
+        data = AUTHOR.parse((ROOT / self.ref).read_text(encoding='utf-8'))
+        data['rules'] = data['rules'][:2]
+        data['retained_extension'] = {'source_owned': [True, 1, {'value': 'preserve'}]}
+        self.rule_id = data['rules'][0]['rule_id']
+        self.put(self.ref, AUTHOR.dump(data))
+        refs = {self.owner, *('.ai/scripts/' + name for name in AUTHOR.ROLE_RUNTIME)}
+        for rule in data['rules']:
+            refs.add(rule['canonical_path'])
+            refs.update(rule['derived_consumers'])
+            if 'catalog_projection' in rule: refs.add(rule['catalog_projection']['path'])
+        for ref in refs: self.put(ref, (ROOT / ref).read_bytes())
+        self.put('docs/consumer.md', f'Reference the existing `{self.rule_id}` owner.\n'.encode())
+
+    def request(self, **changes):
+        return {'version': '1.0', 'operation': 'catalog.update', 'timestamp': NOW,
+                'id': 'rule-consumers', 'record': self.rule_id,
+                'changes': changes or {'derived_consumers': ['docs/consumer.md']}}
+
+    def test_consumer_update_preserves_owner_fields_extensions_and_advances_timestamp(self):
+        before = self.load(self.ref)
+        request = self.request()
+        preview = AUTHOR.plan(self.root, request)
+        self.assertEqual({self.ref}, set(preview.changes))
+        expected = copy.deepcopy(before)
+        expected['updated_at'] = NOW
+        expected['rules'][0]['derived_consumers'] = ['docs/consumer.md']
+        self.assertEqual(expected, AUTHOR.parse(preview.changes[self.ref][1].decode()))
+        AUTHOR.apply(self.root, request, preview.digest)
+        self.assertEqual(expected, self.load(self.ref))
+        with self.assertRaisesRegex(AUTHOR.AuthoringError, 'timestamp must advance'):
+            AUTHOR.plan(self.root, request)
+
+    def test_protected_rule_fields_unknown_identity_and_unsafe_consumers_fail_before_writes(self):
+        self.put('docs/wrong.md', b'No rule citation.\n')
+        self.put('docs/prefix.md', (self.rule_id + '0\n').encode())
+        before = self.snapshot()
+        for changes in ({'rule_id': 'OTHER-001'}, {'canonical_path': 'docs/consumer.md'},
+                        {'strength': 'conditional'}, {'status': 'retired'}, {'override_policy': 'permitted'},
+                        {'catalog_selector': {'rule_id': self.rule_id}}, {'applicability': 'all'},
+                        {'canonical_anchor': 'elsewhere'}, {'derived_consumers': True},
+                        *({'derived_consumers': value} for value in (
+                            ['docs/consumer.md', 'docs/consumer.md'], ['missing.md'], ['docs'],
+                            ['../outside.md'], ['/absolute.md'], ['C:/outside.md'],
+                            ['docs\\consumer.md'], ['docs/./consumer.md'], ['docs//consumer.md'],
+                            ['docs/wrong.md'], ['docs/prefix.md']))):
+            with self.subTest(changes=changes), self.assertRaises(AUTHOR.AuthoringError):
+                AUTHOR.plan(self.root, self.request(**changes))
+        request = self.request(); request['record'] = 'UNKNOWN-001'
+        with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.plan(self.root, request)
+        self.assertEqual(before, self.snapshot())
+
+    def test_consumer_owner_and_validator_drift_invalidate_preview(self):
+        request = self.request()
+        canonical_owner = self.load(self.ref)['rules'][0]['canonical_path']
+        for ref in ('docs/consumer.md', self.owner, canonical_owner, '.ai/scripts/validate-ai-context.py'):
+            with self.subTest(ref=ref):
+                original = (self.root / ref).read_bytes()
+                preview = AUTHOR.plan(self.root, request)
+                self.put(ref, original + b'\n')
+                changed = self.snapshot()
+                with self.assertRaises(AUTHOR.AuthoringError): AUTHOR.apply(self.root, request, preview.digest)
+                self.assertEqual(changed, self.snapshot())
+                self.put(ref, original)
+
+    def test_consumer_link_components_are_refused_without_resolving_away_the_link(self):
+        # Exercise the same shared path boundary without requiring platform link
+        # creation privileges in the zero-configuration test baseline.
+        original = Path.is_symlink
+        linked = self.root / 'docs'
+        def is_link(path):
+            return path == linked or original(path)
+        before = self.snapshot()
+        with mock.patch.object(Path, 'is_symlink', is_link), self.assertRaisesRegex(AUTHOR.AuthoringError, 'symbolic link'):
+            AUTHOR.plan(self.root, self.request())
+        self.assertEqual(before, self.snapshot())
 
 
 class LifecycleRegistryTests(unittest.TestCase):

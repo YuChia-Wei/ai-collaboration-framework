@@ -1,0 +1,21 @@
+schema_version: '1.0'
+record_type: workflow-retry-authorization
+workflow_id: 2026-09-22-artifact-gap-reduction
+task_id: GAP-002
+attempt: 3
+authorized_at: '2026-09-22T14:57:17.390178+08:00'
+subject_sha: dfdf96991003766ec3fe71b2c941dd420dea7c8e
+prior_failure_sha256: a4e89a9dccd062df8ddc7dee0e616265d5082ff038d8842f380bf5ee8dae4280
+decision: authorize-retry
+consumed_by_packet_id: GAP-320-AUDIT-03
+scope:
+- F-003 report timestamp correction and current chronology
+- Unchanged implementation and authority proof under Third Review Authorization in
+  the current workflow plan
+non_goals:
+- Behavioral rerun
+- Provider mutation
+- Tracked repair
+- Integration
+terminal_condition: One bounded callback; return custody to root; no autonomous retry.
+authorization_sha256: 63815d5bbbe1f4f327407d464df7629cf9bf6feb0a430b6a2758b621de09c69e

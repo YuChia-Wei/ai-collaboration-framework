@@ -1,0 +1,85 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 321
+  head_sha: null
+  body: '## Summary
+
+    Add four bounded execution-input builders and three restricted catalog selectors.
+    Add automatic authoring timestamps, remediation-report and task-progress operations,
+    and synchronized current-state projections across workflow records. Reconcile
+    the original sixteen manual gaps with explicit remaining owner boundaries.
+
+
+    ## Validation
+
+    - Implementation94232118: all five required hosted contexts successful; authoring45,
+    execution37, catalog30 and routing9 cases passed.
+
+    - Independent implementation/report-automation verification passed. Original failed
+    attempts remain retained with scope and evidence limits.
+
+    - No validator, required gate or evidence requirement removed. Current final-content
+    review, hosted checks and live admission remain required before merge.
+
+
+    ## Related Issues
+
+    Closes #320
+
+
+    - Delivery disposition: `terminal-close` after configured admission and actual
+    post-merge reconciliation.
+
+    - Owner explicitly requests this merge and closure before separately reassessing
+    framework maintenance and direction. Public detail is limited to non-sensitive
+    technical facts.
+
+
+    ## Delivery And Integration
+
+    - One governed outcome; merge commit preserves implementation and verification
+    checkpoints as a delivery unit.
+
+    - Workflow: `2026-09-22-artifact-gap-reduction`.
+
+    - Report: `.dev/workflows/2026-09-22-artifact-gap-reduction/reports/remediation-report.md`.
+
+    - Independent assessment: `.dev/assessments/ASM-20260922-20-qk2/report.md`.
+
+    - Final provider facts remain separate from local workflow completion; no release,
+    publication, credential change or downstream adoption is included.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 320
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null

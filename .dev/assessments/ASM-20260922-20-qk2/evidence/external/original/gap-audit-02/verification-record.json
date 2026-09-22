@@ -1,0 +1,210 @@
+{
+  "schema_version": "independent-review-verification/v1",
+  "record_type": "independent-review-verification",
+  "attempt": 2,
+  "budget": 2,
+  "outcome": "failed",
+  "parent_action": "reroute",
+  "blocking_findings": [
+    "F-003"
+  ],
+  "execution_commit": "63b95af148b574a6dc5f2bc8149010975a8c4a93",
+  "base_commit": "237a01f437f3005ea57885714f6ebfc3037d196d",
+  "repair_parent_commit": "8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8",
+  "subject": {
+    "base_tree": "4463fd12170ca03d9c7a98f71da45ed46450bd55",
+    "head_tree": "7a3856b06a071ccb39b192fb9583a62633d9072b",
+    "subject_digest": "975c3cb56961506f319d9e82a566d838a2c22d2e1a2b10d297af42bb07295bca"
+  },
+  "bindings": {
+    "criteria_sha256": "5b514adaf82c6c9935721fc17a454f24c389f89516178363b9de682f7b0ee74d",
+    "authority_sha256": "db820e5bcfa8b87b7f393e4ed7883e4dd185b371a098b0517411654a1c99dbe1",
+    "canonical_review_input_sha256": "f2599505c989290a2afbd7aa53b320e99e8e817e5bde6d4494ad634de2275088",
+    "review_input_file_sha256": "dae3c828da855cf9cb208ed2973f88cc4c3a3ea9c831b56c426e2a0095b56b21",
+    "packet_sha256": "b5e283f70773d65a7847aabedec5fe77951c585201dceda7abb1ec0d5f06e291",
+    "lease_sha256": "77204afcf7197ebdf53fd2ebfc6c1293eecf015b6408c0828b2c84a6872d7b2c"
+  },
+  "preflight": {
+    "before_inspection": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed",
+      "clean_tracked_checkout": true
+    },
+    "after_inspection": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed",
+      "clean_tracked_checkout": true,
+      "binding_digests_unchanged": true
+    }
+  },
+  "repair_delta": {
+    "changed_path_count": 8,
+    "changed_paths": [
+      ".ai/scripts/README.md",
+      ".ai/scripts/tests/test_execution_artifacts.py",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/evidence/terminal-issue-closure-pr-321.yaml",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/reports/remediation-report.md",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/tasks/GAP-002.json",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow-plan.md",
+      ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow.yaml",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "unchanged_conclusion_surfaces": [
+      ".ai/scripts/execution-artifacts.py",
+      ".ai/scripts/execution_artifact_contract.py",
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/validation_subject.py",
+      ".ai/assets/shared/artifact-lifecycle-registry.json",
+      ".ai/scripts/validation-profile-registry.sh",
+      "all review-input authority paths"
+    ]
+  },
+  "finding_reconciliation": [
+    {
+      "id": "F-001",
+      "attempt_1": "open",
+      "attempt_2": "resolved",
+      "severity": "HIGH",
+      "proof": "Exact-head hosted execution-artifacts suite passed all 37 tests with equal clean pre/post snapshot identity."
+    },
+    {
+      "id": "F-002",
+      "attempt_1": "open",
+      "attempt_2": "resolved",
+      "severity": "MEDIUM",
+      "proof": "Exact-head hosted code-review routing suite passed all 9 tests, including the former core-only reference-integrity failure."
+    },
+    {
+      "id": "F-003",
+      "attempt_1": "open",
+      "attempt_2": "partially-resolved",
+      "severity": "MEDIUM",
+      "blocking": true,
+      "proof": "Workflow prose is current, but the materially changed remediation report retains its pre-repair updated_at value."
+    }
+  ],
+  "gates": [
+    {
+      "criterion": 1,
+      "name": "four input builders",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Production bytes are unchanged; repaired exact-head hosted suite passed all thirty-seven tests."
+    },
+    {
+      "criterion": 2,
+      "name": "three restricted catalog operations",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Catalog, helper, registry, profile, and authority bytes are unchanged from attempt one."
+    },
+    {
+      "criterion": 3,
+      "name": "sixteen manual-gap dispositions and lifecycle routes",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Registry and disposition bytes are unchanged; the new terminal declaration is explicitly deferred and non-accepting."
+    },
+    {
+      "criterion": 4,
+      "name": "report workflow and evidence truth",
+      "disposition": "re-executed",
+      "outcome": "failed",
+      "finding_ids": [
+        "F-003"
+      ],
+      "notes": "Prose and lifecycle pointers are repaired, but report time metadata does not reflect its material repair content."
+    },
+    {
+      "criterion": 5,
+      "name": "independent inspection and focused validation",
+      "disposition": "re-executed",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "Repair diff and focused evidence were inspected; exact-head hosted receipts were incorporated without repeating a full local suite."
+    },
+    {
+      "criterion": 6,
+      "name": "exact subject packet lease authority and cleanliness",
+      "disposition": "re-executed",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "All three preflights passed before and after inspection, and the tracked checkout remained clean at the fixed commit."
+    }
+  ],
+  "evidence": [
+    {
+      "ref": ".dev/ai-context/local/gap-ci-repair-focused.log",
+      "sha256": "19c9136e35708a401986ff18bf101bf6905434e30b239996021b8543f982d3aa",
+      "outcome": "passed",
+      "executed_tests": 2,
+      "test_duration_seconds": 16.178
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-repair-projection.log",
+      "sha256": "55d6581ee8a65b3441be50c29205b4fa6f21e698554eaa418a95547eee8f95fa",
+      "outcome": "passed",
+      "executed_tests": 1,
+      "test_duration_seconds": 5.682
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-repair-artifacts/ai-context-validation-governance-35696222621/20260922T064448Z-2584/execution-artifacts-tests.result.json",
+      "sha256": "812b6d939ebcd0666e3d0cc6e6bb1e2a2f4271a692bc14e856ad5ec2db16eb4e",
+      "outcome": "passed",
+      "executed_tests": 37,
+      "test_duration_seconds": 21.732,
+      "supervised_duration_seconds": 21.96,
+      "snapshot_identity_digest": "af383e04f01959bdb36c249bff5bb8e42a8db943012e8c8391e10f6fcb66abce"
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-repair-artifacts/ai-context-validation-governance-35696222621/20260922T064448Z-2584/code-review-routing-contract.result.json",
+      "sha256": "0ad859567589655642bace743764489bd61c62cd9353b5de87491b451af26af3",
+      "outcome": "passed",
+      "executed_tests": 9,
+      "test_duration_seconds": 5.197,
+      "supervised_duration_seconds": 5.389,
+      "snapshot_identity_digest": "af383e04f01959bdb36c249bff5bb8e42a8db943012e8c8391e10f6fcb66abce"
+    }
+  ],
+  "attempt_1_custody": {
+    "subject_digest": "1247460e8592c41b57c6a97a9222392e631149141296eea3bbc25deef3a14494",
+    "review_result": {
+      "ref": ".dev/ai-context/local/gap-audit-01/review-result.md",
+      "sha256": "910a450f7e94ab1c380d65e82d6a9ff19662e5ae56a7dd7843723b8239cd045e"
+    },
+    "verification_record": {
+      "ref": ".dev/ai-context/local/gap-audit-01/verification-record.json",
+      "sha256": "85da0e36a972eeb40284b14131fb6c66be46f07b2ca41e4a83efd8bbcf77c478"
+    },
+    "preserved": true,
+    "prior_lease_released_before_repair": true
+  },
+  "artifacts": {
+    "review_result": {
+      "ref": ".dev/ai-context/local/gap-audit-02/review-result.md",
+      "sha256": "a4e89a9dccd062df8ddc7dee0e616265d5082ff038d8842f380bf5ee8dae4280"
+    },
+    "assessment_body": {
+      "ref": ".dev/ai-context/local/gap-audit-02/assessment-body.md",
+      "sha256": "127c401c4d367ee93aaf2e1e1ae7a2d46a65e23509c69cc60aa1b6d2e8c4b2d1"
+    }
+  },
+  "limits": [
+    "Attempt-one failures remain retained and are not overwritten by repair passes.",
+    "Unchanged implementation and authority conclusions were rebound through exact Git byte identity rather than broad rereview.",
+    "No full local suite was repeated because exact-head hosted receipts covered the affected required gates.",
+    "Hosted workflow success does not itself establish final live admission, integration, or Issue and Project reconciliation.",
+    "The supplied retry budget is exhausted; another review requires fresh owner or workflow authorization.",
+    "This result is not final integration acceptance."
+  ],
+  "lease": {
+    "lease_id": "GAP-320-LEASE-02",
+    "observed_state": "active",
+    "release_owner": "root"
+  }
+}

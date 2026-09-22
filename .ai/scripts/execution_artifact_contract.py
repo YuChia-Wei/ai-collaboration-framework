@@ -8,6 +8,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import math
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -73,7 +74,16 @@ def load_module(path: Path, name: str) -> Any:
     if spec is None or spec.loader is None:
         raise ContractError("canonical validator cannot be loaded")
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    previous = sys.modules.get(name)
+    sys.modules[name] = module
+    try:
+        spec.loader.exec_module(module)
+    except BaseException:
+        if previous is None:
+            sys.modules.pop(name, None)
+        else:
+            sys.modules[name] = previous
+        raise
     return module
 
 

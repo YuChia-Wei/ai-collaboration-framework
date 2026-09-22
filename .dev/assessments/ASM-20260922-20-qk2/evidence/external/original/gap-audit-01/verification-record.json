@@ -1,0 +1,196 @@
+{
+  "schema_version": "independent-review-verification/v1",
+  "record_type": "independent-review-verification",
+  "outcome": "failed",
+  "parent_action": "reroute",
+  "execution_commit": "8d00452d14bd1b6aa3e4cc9f74ffdbee084f14c8",
+  "base_commit": "237a01f437f3005ea57885714f6ebfc3037d196d",
+  "subject": {
+    "base_tree": "4463fd12170ca03d9c7a98f71da45ed46450bd55",
+    "head_tree": "efdf2b52618c3ed9b240959973d633bce856cb5e",
+    "subject_digest": "1247460e8592c41b57c6a97a9222392e631149141296eea3bbc25deef3a14494"
+  },
+  "bindings": {
+    "criteria_sha256": "5b514adaf82c6c9935721fc17a454f24c389f89516178363b9de682f7b0ee74d",
+    "authority_sha256": "db820e5bcfa8b87b7f393e4ed7883e4dd185b371a098b0517411654a1c99dbe1",
+    "canonical_review_input_sha256": "ffcbe27bea3d9f01ca9d89c1d76d2d11c1ca30046ba9c5188f302411b835c5e8",
+    "review_input_file_sha256": "87153569c3cec47d6cc772e3549dc434b65eed1df88d585137f8dfa9d3370d79",
+    "packet_sha256": "0adeeff5ffc5a3452f59e98eb8d55d1d2405dfb06fb280380573dddee865d03d",
+    "lease_sha256": "031fdfd6faee8b29e655e9ad4927eb8e74fe2d46823e21bfc1c04897b63f05e4"
+  },
+  "preflight": {
+    "before_behavior": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed",
+      "clean_tracked_checkout": true
+    },
+    "after_behavior": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed",
+      "clean_tracked_checkout": true,
+      "binding_digests_unchanged": true
+    }
+  },
+  "passes": {
+    "independent_baseline": "completed",
+    "repository_aware": "completed",
+    "comparison": "completed",
+    "graph_use": "not_used_for_conclusions",
+    "discovery_fallback": "git-tracked-files"
+  },
+  "gates": [
+    {
+      "criterion": 1,
+      "name": "four input builders",
+      "disposition": "re-executed",
+      "outcome": "failed",
+      "finding_ids": [
+        "F-001"
+      ],
+      "notes": "Six selected cases passed in isolation; the required exact-head combined suite failed before all eleven new input-authoring cases executed."
+    },
+    {
+      "criterion": 2,
+      "name": "three restricted catalog operations",
+      "disposition": "reused-with-proof",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "The exact-head hosted catalog suite passed thirty tests with equal clean pre/post snapshot identity; current bytes were independently inspected."
+    },
+    {
+      "criterion": 3,
+      "name": "sixteen manual-gap dispositions and lifecycle routes",
+      "disposition": "re-executed",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "All sixteen original rows have explicit executable-partial, semantic-owner, or retained-manual dispositions; current route counts match the report."
+    },
+    {
+      "criterion": 4,
+      "name": "report workflow and evidence truth",
+      "disposition": "re-executed",
+      "outcome": "failed",
+      "finding_ids": [
+        "F-002",
+        "F-003"
+      ],
+      "notes": "Failure history and synthetic limits are retained, but package-action references fail and current workflow/report pointers predate the fixed commit and review."
+    },
+    {
+      "criterion": 5,
+      "name": "independent inspection and focused validation",
+      "disposition": "re-executed",
+      "outcome": "failed",
+      "finding_ids": [
+        "F-001",
+        "F-002"
+      ],
+      "notes": "Focused execution and retained exact-head receipts establish two required-gate failures without a full-matrix rerun."
+    },
+    {
+      "criterion": 6,
+      "name": "exact subject packet lease authority and cleanliness",
+      "disposition": "re-executed",
+      "outcome": "passed",
+      "finding_ids": [],
+      "notes": "All three preflights passed before and after behavior, and the tracked checkout remained clean at the fixed commit."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "HIGH",
+      "title": "Dynamic module state prevents the combined input-authoring suite from running",
+      "evidence_refs": [
+        ".ai/scripts/execution_artifact_contract.py:72",
+        ".ai/scripts/execution-artifacts.py:13",
+        ".ai/scripts/tests/test_execution_artifacts.py:177",
+        ".ai/scripts/tests/test_execution_artifacts.py:458",
+        ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/execution-artifacts-tests.result.json",
+        ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/execution-artifacts-tests.log"
+      ]
+    },
+    {
+      "id": "F-002",
+      "severity": "MEDIUM",
+      "title": "Actionable README commands are not closed in the core-only package projection",
+      "evidence_refs": [
+        ".ai/scripts/README.md:89",
+        ".ai/scripts/README.md:90",
+        ".ai/scripts/README.md:324",
+        ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/code-review-routing-contract.result.json",
+        ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/code-review-routing-contract.log"
+      ]
+    },
+    {
+      "id": "F-003",
+      "severity": "MEDIUM",
+      "title": "The active workflow and report point to already completed pre-review actions",
+      "evidence_refs": [
+        ".dev/workflows/2026-09-22-artifact-gap-reduction/workflow-plan.md:46",
+        ".dev/workflows/2026-09-22-artifact-gap-reduction/tasks/GAP-002.json:36",
+        ".dev/workflows/2026-09-22-artifact-gap-reduction/reports/remediation-report.md:69",
+        ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md:70"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "ref": ".dev/ai-context/local/gap-audit-01/focused-input-tests.log",
+      "sha256": "0949fa8cc45f21d74f70b19d6af374839ec88528ea7d9cc4449c0a2ce7849678",
+      "outcome": "blocked-before-behavior",
+      "executed_tests": 0
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-audit-01/focused-input-tests-elevated.log",
+      "sha256": "38e7ce1521e41de0988c42695f5359921212fbbc99f80ed2ad91b03badf993c4",
+      "outcome": "passed",
+      "executed_tests": 6,
+      "duration_seconds": 15.353
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/execution-artifacts-tests.result.json",
+      "sha256": "b6832e032dabbfbba9db6f8288c7d9bcfeb94b96fd737d80489ef51436d26a76",
+      "outcome": "failed",
+      "duration_seconds": 12.766,
+      "snapshot_identity_digest": "711947e1bb50b3f7c5ce027e483158c515b61ed65163fd417ce8a770b0c1befb"
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/code-review-routing-contract.result.json",
+      "sha256": "9912f8ef804aaa82150ed2afae29f929528e9072ee2d41e4936f5f2ce39e75aa",
+      "outcome": "failed",
+      "duration_seconds": 3.601,
+      "snapshot_identity_digest": "711947e1bb50b3f7c5ce027e483158c515b61ed65163fd417ce8a770b0c1befb"
+    },
+    {
+      "ref": ".dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/artifact-catalog-tests.result.json",
+      "sha256": "fd84fa70050a6b5f56f9a46eb81c80d1295fb3c56baebb438ce5c6d846e3dad8",
+      "outcome": "passed",
+      "duration_seconds": 14.303,
+      "snapshot_identity_digest": "711947e1bb50b3f7c5ce027e483158c515b61ed65163fd417ce8a770b0c1befb"
+    }
+  ],
+  "artifacts": {
+    "review_result": {
+      "ref": ".dev/ai-context/local/gap-audit-01/review-result.md",
+      "sha256": "910a450f7e94ab1c380d65e82d6a9ff19662e5ae56a7dd7843723b8239cd045e"
+    },
+    "assessment_body": {
+      "ref": ".dev/ai-context/local/gap-audit-01/assessment-body.md",
+      "sha256": "41ba36d49267c11ef40775957be57e495f56c84bc7aa45700e3fdeda53996412"
+    }
+  },
+  "limits": [
+    "Earlier mutable-checkout logs are supporting evidence only and do not establish immutable or hosted admission.",
+    "No full local matrix was run because exact-head hosted receipts resolved the concrete concerns.",
+    "Provider disposition, final assessment publication, integration, Issue state, release, credentials, and downstream adoption were not assessed or authorized.",
+    "This result is not final integration acceptance."
+  ],
+  "lease": {
+    "lease_id": "GAP-320-LEASE-01",
+    "observed_state": "active",
+    "release_owner": "root"
+  }
+}
