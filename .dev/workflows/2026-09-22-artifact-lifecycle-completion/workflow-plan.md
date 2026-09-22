@@ -11,7 +11,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-lifecycle-completion`
 - `created_at`: `2026-09-22T09:00:30.694010+08:00`
-- `updated_at`: `2026-09-22T10:09:38+08:00`
+- `updated_at`: `2026-09-22T10:20:58+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -47,13 +47,13 @@ Code graph refreshed at base HEAD, but its coverage excludes .ai/scripts and .ai
 
 ## Resume
 
-Implementation and focused validation are complete. Follow the latest Review Repair Checkpoint below, then retain the verification assessment and final delivery review before the authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
+Implementation and focused validation are complete. Follow the latest Report State Repair Checkpoint below, then retain the verification assessment and final delivery review before the authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
 
 ## Implementation And P4 Checkpoint
 
 Selected P3 adapters and the 91-kind lifecycle registry are implemented. The retained Chinese remediation report and P4 disposition matrix explain the 16 explicit manual gaps and why no blanket validator/test removal is justified. Focused authoring, catalog, routing, evaluation, profile and canonical checks passed with original attempts retained; the one initial stale-preview defect was repaired and retested. Historical next steps at the implementation freeze have been superseded by the Review Repair Checkpoint below; they are not current execution instructions.
 
-## Review Repair Checkpoint
+## Review Repair Checkpoint (Historical; Superseded Below)
 
 The original implementation was frozen at b29f3ae9c079b05ab144ba0eddd10294e452988a. Its first independent audit failed F-001 while the one package smoke passed 1/1; preserve both outcomes and the original sealed custody evidence. The classification repair is aa91d68479346f1c931920e4735ce84996b6b9d5. Root's clean-subject lifecycle-fixed-01 passed there. Independent attempt 2 resolved F-001 and proved the unchanged command-specific package dependencies, but failed F-002 because this entrypoint still directed obsolete work. Both reviewer bodies and the environment failure remain immutable.
 
@@ -62,3 +62,11 @@ Current blocker: independent verification of this F-002 entrypoint repair, follo
 Workflow authorization for attempt 3: under the owner's continuing implementation mandate, root authorizes exactly one bounded, read-only review of F-002 and the updated continuation state, plus unchanged-source verification. After committing this repair, prepare a fresh sealed workflow retry authorization bound to attempt 3, that exact commit, the attempt-2 failure digest and its single consuming packet. Preserve earlier attempts; do not reset their count. No additional behavioral command, provider action, credential use or scope expansion is authorized by this retry.
 
 Exact next action: freeze this documentation-only repair, dispatch that bounded independent review, then archive all original reviews and focused evidence into a new verification assessment. If accepted, complete the Chinese report and workflow, review the evidence-intake delta, and perform the already authorized local --no-ff merge with a current-main content rebind. No remote push, Issue/Project closure, release or target adoption is included. The 16 manual capability gaps remain explicit owner-selected future work, not newly fabricated executable coverage.
+
+## Report State Repair Checkpoint
+
+Independent attempt 3 at 4a46e506ecec2dd1fe6cce57b7615989829cc616 confirmed F-002 was repaired but failed F-003: stale report pending-review prose and updated_at. Root has now synchronized the report and all three task continuation fields. F-001 and F-002 remain independently resolved; all three overall failed outcomes remain retained. Only workflow documentation changed since aa91, so no behavioral command or package smoke is pending.
+
+Current blocker: one read-only F-003 document-consistency check on this next fixed commit. Root issues NEW workflow authorization for attempt 4 under the owner's continue-to-completion mandate. Seal that single-use authorization against attempt 4, the new exact subject, attempt-3 failure fingerprint and its single consuming packet. This extends the exhausted 3/3 budget only for this one bounded check; it does not reset or erase the previous attempts.
+
+Exact next root action after a passed callback: release custody, archive all original reviews/receipts/logs and runner bytes, finalize verification assessment and the Chinese report, then complete the workflow payload. A separate final evidence-intake review precedes approved local --no-ff integration and same-content main rebind. No provider mutation, remote push, Issue/Project closure, release or target adoption is authorized by this checkpoint. No owner decision is currently needed; the 16 manual capability gaps remain explicit deferred scope.
