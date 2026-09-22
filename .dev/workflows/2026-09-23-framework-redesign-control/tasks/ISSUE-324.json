@@ -6,9 +6,9 @@
   "task_id": "ISSUE-324",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T01:03:26+08:00",
-  "updated_at": "2026-09-23T01:06:58+08:00",
+  "updated_at": "2026-09-23T01:25:08+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -21,7 +21,8 @@
     "target": ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md; AGENTS.md; AGENTS.zh-TW.md; narrowly necessary source governance policy pointers",
     "files": [
       ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md; AGENTS.md; AGENTS.zh-TW.md; narrowly necessary source governance policy pointers",
-      ".dev/workflows/2026-09-23-redesign-transition/"
+      ".dev/workflows/2026-09-23-redesign-transition/",
+      ".ai/distribution/profiles/dotnet-backend.yaml (CORR-001 exact source-only exclusion only)"
     ],
     "constraints": [
       "U001",
@@ -47,15 +48,23 @@
     "validation": [
       "document/Git read-back only; framework verification deferred by owner"
     ],
-    "last_completed_step": "Independent task started and verified the assigned RAM-disk worktree",
-    "next_action": "Await local coherent delivery; coordinator handles first push and integration"
+    "last_completed_step": "Received corrected delivery ee8aadbbfc363ac9a206535134d0bdcd73e72203; coordinator inspected correction and integrated local content",
+    "next_action": "Push integration branch, create and merge online PR, then read back Issue/Project state; P7 retains full verification"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "P0 bounded implementation complete. Corrected source-only package exclusion inspected; online integration pending and full verification deferred-by-owner.",
+    "files_changed": [
+      ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".dev/workflows/2026-09-23-redesign-transition/"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Implementation and final redesigned verification pending",
+    "finding_status": "partially-resolved",
+    "residual_risk": "F-06 redesigned verification and CI restoration decisions remain for P7; package behavior has not been executed.",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -65,5 +74,16 @@
     "workflow_id": "2026-09-23-redesign-transition",
     "starting_commit": "53c9c8e58615e87e36f7b74ea8851fe845312daa",
     "model_verified": "local runtime thread metadata read-back"
+  },
+  "delivery": {
+    "head": "ee8aadbbfc363ac9a206535134d0bdcd73e72203",
+    "bootstrap_commit": "cfe15c40c34f4cc23936421beed57fa8c4851ab9",
+    "initial_delivery": "66793a430fb78ce1eae13a2435ea46802e05ca91",
+    "worktree_clean_observed": true,
+    "correction": "CORR-001",
+    "local_review": "coordinator content/configuration inspection; not independent verification",
+    "verification_state": "deferred-by-owner",
+    "provider_integration": "pending online PR",
+    "handoff": ".dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml"
   }
 }

@@ -4,6 +4,18 @@
 
 This file is the canonical English root collaboration guide. `AGENTS.zh-TW.md` is its Traditional Chinese (Taiwan) translation.
 
+## Temporary Source Redesign Override
+
+For source-repository work explicitly assigned to program #322, read
+[the temporary execution override](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
+before applying the rules below. U001 requires one independent
+`gpt-6-astra` / `ultra` conversation per implementation Issue, no sub-agents or
+executor-created conversations, the assigned RAM-disk worktree, and local commit
+handoff to the coordinator before first push. CI and legacy verification remain
+`deferred-by-owner` until the P7 restoration decision. This exception is
+source-only; unrelated security, ownership, credential and publication boundaries
+remain in force.
+
 ## Scope And Authority
 
 - This is the source repository for a reusable AI collaboration framework, not a product application.

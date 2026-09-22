@@ -4,6 +4,16 @@
 
 本文件是 canonical English root collaboration guide 的繁體中文翻譯；`AGENTS.md` 是 canonical English root collaboration guide。
 
+## 暫時的 Source 重構例外
+
+明確指派給計畫 #322 的 source-repository 工作，套用下方規則前，先讀取
+[暫時執行例外](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)。
+U001 要求每個實作 Issue 使用獨立的 `gpt-6-astra` / `ultra` 對話，禁止
+sub-agents 與執行對話自行建立更多對話，使用指定的 RAM-disk worktree，並在
+首次 push 前將本機 commits 交回統籌。CI 與舊驗證在 P7 恢復決策前維持
+`deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
+與 publication 邊界繼續有效。
+
 ## 適用範圍與 Authority
 
 - 這是可重用 AI collaboration framework 的 source repository，並非 product application。

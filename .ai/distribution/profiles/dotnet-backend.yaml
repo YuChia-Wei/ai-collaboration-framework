@@ -393,6 +393,7 @@ exclusions:
       - .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml
       - .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md
       - .dev/standards/WORKFLOW-GATE-POLICY.md
+      - .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md
       - .dev/standards/GIT-COMMIT-POLICY.md
       - .dev/TEAM-GIT-FLOW-RULES.MD
     reason: Source-repository tracker and integration choices are replaced by provider-neutral target projections.

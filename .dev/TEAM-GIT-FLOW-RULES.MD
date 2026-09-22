@@ -1,5 +1,11 @@
 # Repository Branch And Merge Policy
 
+For this source repository's explicitly assigned program #322 work, apply the
+[temporary U001 execution override](standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
+before conflicting validation, handoff or integration gates below. Keep the
+Issue, ownership, dedicated-branch and PR-only integration boundaries; suspended
+verification remains `deferred-by-owner` until the P7 restoration decision.
+
 This document is the canonical owner of repository branch naming, workflow
 branch lifecycle, checkpoint handoff, push continuation, and merge strategy.
 
