@@ -1,0 +1,28 @@
+{
+  "config_version": 1,
+  "skills": {
+    "lesson": {
+      "store": {
+        "kind": "filesystem",
+        "root": "knowledge/lessons",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "project",
+        "path": "team/templates/lesson.md"
+      }
+    }
+  },
+  "constraints": {
+    "lesson": {
+      "write_roots": [
+        "knowledge/lessons",
+        "knowledge/review-candidates"
+      ],
+      "locked_fields": [
+        "store.tracking",
+        "template"
+      ]
+    }
+  }
+}
