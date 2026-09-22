@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "record_type": "bounded-independent-repair-verification",
+  "packet_id": "LIFE-319-REPAIR-AUDIT-02",
+  "attempt": 2,
+  "review_completed_at": "2026-09-22T10:06:50.1353560+08:00",
+  "subject": {
+    "base_sha": "4cc41d3b57b591895a528d6ae4dd5745b8877cf5",
+    "head_sha": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+    "head_tree": "51dc70953264b00f2c037d83710c5411155cc7d6",
+    "subject_digest": "33719853550928b4314dc852dcb751b3df427db1cf0f4dbba3750e41c4132e03",
+    "tracked_clean": true
+  },
+  "review_binding": {
+    "review_input_ref": ".dev/ai-context/local/p34-repair-audit-02/review-input.yaml",
+    "review_input_raw_sha256": "3b81d965383199c219f70ff0b48cacca93d7ee28fe7056382c01647d871fefb2",
+    "canonical_input_sha256": "80dc6fd3b26ea927f43fe0e55f073b78e9a6dc6ea5ac949c61dcadf3c720080e",
+    "criteria_sha256": "6a1802e9668e5d10dc576a40da5de019739903ab1ae6dea14671b64a3b8f0828",
+    "authority_sha256": "727cdfa2ecc900cb3663c5537c580ed3bdf51dd3c6194bf78e193f6898683c5e",
+    "packet_ref": ".dev/ai-context/local/p34-repair-audit-02/packet.yaml",
+    "lease_ref": ".dev/ai-context/local/p34-repair-audit-02/lease.yaml",
+    "preflight": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed"
+    }
+  },
+  "review_execution": {
+    "boundary": "same-runtime",
+    "behavioral_commands_executed_by_reviewer": [],
+    "package_commands_executed_by_reviewer": [],
+    "provider_operations": [],
+    "tracked_mutations": [],
+    "ignored_writes": [
+      ".dev/ai-context/local/p34-repair-audit-02/review-result.md",
+      ".dev/ai-context/local/p34-repair-audit-02/verification-record.json"
+    ]
+  },
+  "repair_disposition": {
+    "finding_id": "F-001",
+    "status": "resolved-on-subject",
+    "authority_ref": ".ai/assets/shared/validation-gate-classification.yaml",
+    "authority_sha256": "3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5",
+    "classification": {
+      "group_id": "input-environment-candidates",
+      "sensitivities": [
+        "input",
+        "environment"
+      ],
+      "reuse_eligibility": "candidate-disabled",
+      "reusable_profiles": [],
+      "environment_contract": "baseline-runtime-platform/v1"
+    },
+    "artifact_catalog_membership_count": 1,
+    "registry_registration_count": 1,
+    "pilot_gate": "multi-hop-upgrade-transaction",
+    "pilot_membership_count": 1
+  },
+  "inspected_execution_evidence": [
+    {
+      "id": "lifecycle-repair-01",
+      "executor": "root",
+      "head_provenance": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+      "outcome": "blocked-by-environment",
+      "exit_code": 1,
+      "nested_registry_exit_code": 3221225794,
+      "input_count": 751,
+      "current_input_mismatches": 0,
+      "input_drift": [],
+      "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+      "runner_unchanged": true,
+      "record_sha256": "8abfaa7e9d107a644237f137aab43af707dbd1a717cf70c0fdd30d0e814618d4",
+      "log_sha256": "60b953c48bfa27565c2bcff0229a14c4583f8c79dc7d7c4dfb9236816f5f3bb2"
+    },
+    {
+      "id": "lifecycle-repair-02",
+      "executor": "root",
+      "head_provenance": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_seconds": 0.8145946000004187,
+      "input_count": 751,
+      "current_input_mismatches": 0,
+      "input_drift": [],
+      "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+      "runner_unchanged": true,
+      "record_sha256": "9e42dedcd0638f57467c5d73a44c0557ed5649d3d26c7dfde0427525cea6a7e6",
+      "log_sha256": "ed146c68abaa31fdd09fa08852b633d7486f72d049b21bc9f000dc39b77423b1"
+    },
+    {
+      "id": "classification-01",
+      "executor": "root",
+      "head_provenance": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+      "outcome": "passed",
+      "exit_code": 0,
+      "tests_run": 2,
+      "tests_passed": 2,
+      "duration_seconds": 0.5588472000090405,
+      "input_count": 751,
+      "current_input_mismatches": 0,
+      "input_drift": [],
+      "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+      "runner_unchanged": true,
+      "record_sha256": "05d945ff1e015a94abb2275431692b7d92d7eac05e3f7745fc50afd0de60e73a",
+      "log_sha256": "72be6b8156450d413821b19aa704c435c91ced6d294b5456d499f2ccc340eeff"
+    },
+    {
+      "id": "lifecycle-fixed-01",
+      "executor": "root",
+      "head_provenance": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_seconds": 0.3196565000107512,
+      "input_count": 751,
+      "current_input_mismatches": 0,
+      "input_drift": [],
+      "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+      "runner_unchanged": true,
+      "record_sha256": "97be8f12b1459f43f17f347d96f4549ef41f60da0783f915c0c2380a293a14ba",
+      "log_sha256": "ed146c68abaa31fdd09fa08852b633d7486f72d049b21bc9f000dc39b77423b1"
+    }
+  ],
+  "prior_audit": {
+    "subject_sha": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+    "audit_outcome": "failed",
+    "package_smoke_outcome": "passed",
+    "package_smoke_tests_run": 1,
+    "package_smoke_exit_code": 0,
+    "package_smoke_rebind": "reused-with-proof",
+    "package_smoke_declared_dependency_closure_unchanged": true,
+    "classification_file_consumed_by_specific_smoke_fixture": false,
+    "native_process_event_timestamps_available": false,
+    "timing_disclosure": "The original command retained cleanup-derived wall-clock proxies and a directly observed elapsed duration.",
+    "review_result_sha256": "395f4d7e04932e32f965ec19e922cbcb30d1f6e5d3d94ecf0e59839ba1aad945",
+    "candidate_sha256": "f6a08ec306067757165da199afc22e3f66386e9343a76f8059ffd371373192f6",
+    "receipt_sha256": "e39dfad24dcc22a355c5cbf2d40c33bec83b4f2e0caf92182b489fc58714ea91",
+    "terminal_message_sha256": "4e98aa0bdd6656adfc13b105d799943718417b9c789c94e380bc4790ac53a38b",
+    "lease_state": "released"
+  },
+  "clarification": {
+    "original_body_mutated": false,
+    "lifecycle_editable_fields": [
+      "models",
+      "owner",
+      "authoring",
+      "producers",
+      "validators",
+      "readable",
+      "writable",
+      "migration",
+      "admissible",
+      "limits",
+      "applicability"
+    ],
+    "protected_selectors": [
+      "kind",
+      "baseline_refs",
+      "coverage"
+    ],
+    "dependency_binding": "Referenced model and owner source bytes are bound for candidate validation; their routing fields are editable."
+  },
+  "findings": [
+    {
+      "id": "F-002",
+      "severity": "medium",
+      "title": "Canonical workflow entrypoint exposes stale next work",
+      "path": ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow-plan.md",
+      "line": 54,
+      "policy_path": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      "policy_line": 70,
+      "required_action": "Refresh the entrypoint checkpoint to the failed first audit, repaired subject, current repair-review state, and exact next root-owned action without directing another package-smoke run."
+    }
+  ],
+  "evidence_limits": [
+    "No behavioral command was executed by the reviewer.",
+    "The retained receipts record one common unchanged runner hash, but no runner file is present in the bounded p34 evidence roots for independent recomputation.",
+    "The earlier package smoke is rebound only to its unchanged command-specific dependency closure and is not relabeled as an aa91 execution.",
+    "This review does not authorize a third attempt, integration, or parent-lease release."
+  ],
+  "outcome": "failed",
+  "parent_action": "reroute",
+  "review_result": {
+    "ref": ".dev/ai-context/local/p34-repair-audit-02/review-result.md",
+    "sha256": "f5192889734cabf0374efdaa2a875851fb03c66b561a03a34d2c5e1a0a1b320b"
+  },
+  "final_state": {
+    "head_sha": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+    "head_tree": "51dc70953264b00f2c037d83710c5411155cc7d6",
+    "tracked_clean": true,
+    "parent_lease_state": "active",
+    "tracked_changes": []
+  }
+}

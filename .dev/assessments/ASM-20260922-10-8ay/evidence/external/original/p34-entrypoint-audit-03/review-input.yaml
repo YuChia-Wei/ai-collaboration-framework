@@ -1,0 +1,56 @@
+schema_version: '1.0'
+record_type: independent-review-input
+classification:
+  schema_version: '1.0'
+  record_type: agent-execution-classification
+  operation: review
+  execution_boundary: same-runtime
+  duration_class: unknown
+  change_domains:
+  - evidence-custody
+  snapshot: shared-frozen
+  tracked_write: false
+  provider_mutation: false
+  credential_access: false
+  terminal_gate: true
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  base_sha: 4cc41d3b57b591895a528d6ae4dd5745b8877cf5
+  head_sha: 4a46e506ecec2dd1fe6cce57b7615989829cc616
+  base_tree: 7a9ae326048f3caa17fc6f0f214a8b061bec3a84
+  head_tree: 32425db0097068557f1cbedf346cc10a59950345
+  subject_digest: 71e7f0ac28d74b18035d95e83391aa40d31b1549094f0d66e877798977a0b73f
+criteria:
+- Verify F-002 is repaired in the canonical workflow entrypoint and current task/report
+  state. Original freeze b29, failed first audit with passing smoke, aa91 classification
+  repair, failed second audit F-002, current pending bounded review, exact next root-owned
+  intake/admission actions, and all deferred boundaries must be truthful. No obsolete
+  instruction to rerun package smoke remains active.
+- Only workflow continuation documentation changed since aa91d68479346f1c931920e4735ce84996b6b9d5.
+  Rebind F-001 resolution and unaffected implementation/command-specific smoke conclusions
+  through exact unchanged source/authority proof, without executing behavior. Preserve
+  both prior failed reports and all limitations.
+- Validate the fresh single-use workflow authorization for attempt 3 and current input/packet/lease.
+  Verify retained runner bytes at .dev/ai-context/local/p34-run.py against prior receipt
+  hashes; clarify the earlier absence within narrower evidence roots without rewriting
+  that report. Return findings read-only; evidence intake and final integration remain
+  pending root actions.
+authority:
+- path: .ai/assets/shared/validation-gate-classification.yaml
+  sha256: 3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5
+- path: AGENTS.md
+  sha256: 05d34dfe80ad8e42b40c133e4522851971e991266ddf042aba049e31dd1dea1b
+- path: .ai/assets/CANONICAL-SCHEMA.MD
+  sha256: 1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772
+- path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+  sha256: 161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5
+- path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+  sha256: 9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24

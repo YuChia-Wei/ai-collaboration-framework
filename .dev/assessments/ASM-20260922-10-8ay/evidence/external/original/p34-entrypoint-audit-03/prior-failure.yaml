@@ -1,0 +1,6 @@
+failure_class: behavior-defect
+command_sha256: b125c25bc96372d822b0518ecbbd6a8521fe205833e1f0093359018a5715c394
+subject_sha: aa91d68479346f1c931920e4735ce84996b6b9d5
+environment_class: same-runtime-shared-frozen
+diagnostic_codes:
+- F-002-stale-workflow-entrypoint

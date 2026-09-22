@@ -1,0 +1,43 @@
+schema_version: '1.1'
+record_type: agent-execution-packet
+packet_id: LIFE-319-ENTRYPOINT-AUDIT-03
+execution_kind: fixed-head-audit
+owning_skill: ai-context-auditor
+role:
+  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  applicability: applies
+  reason: Third bounded review after the F-002 continuation repair, with fresh workflow
+    authorization; no behavior rerun.
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  exact_sha: 4a46e506ecec2dd1fe6cce57b7615989829cc616
+invocation:
+  argv:
+  - collaboration.followup_task
+  - lifecycle_independent_audit
+  cwd: .
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots:
+- .dev/ai-context/local/p34-entrypoint-audit-03
+terminal:
+  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  mode: callback
+  destination: root
+  max_terminal_messages: 1
+integration_owner: root
+stop_conditions:
+- Return findings without repair
+- Stop on subject or authority drift
+- No provider or credential operations
+retry:
+  attempt: 3
+  budget: 3
+  authorization_refs:
+  - workflow:.dev/ai-context/local/p34-entrypoint-audit-03/workflow-retry-authorization.yaml
+review_input:
+  ref: .dev/ai-context/local/p34-entrypoint-audit-03/review-input.yaml
+  sha256: 1c518756214ca077f2e10c5efe600c5ca572cc5a34df3f740d287818ac85449f
+packet_sha256: 60e2cdb7467ec672985366c1809caa9b8b40299e41ec7cc530f811f58a9b15c9

@@ -5,13 +5,13 @@
 - `report_id`: `remediation-report-2026-09-22-artifact-lifecycle-completion`
 - `workflow_id`: `2026-09-22-artifact-lifecycle-completion`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-09-22T09:29:30+08:00`
-- `updated_at`: `2026-09-22T10:20:58+08:00`
+- `updated_at`: `2026-09-22T10:30:21+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.1`
 - `baseline_assessment`: `ASM-20260921-18-gav`
-- `verification_assessment`: `pending independent verification`
+- `verification_assessment`: `ASM-20260922-10-8ay`
 
 ## Remediation Summary
 
@@ -68,11 +68,15 @@
 | shell assets CLI | 16 tracked assets | passed | 0.262 s | `shell-01` |
 | 完整 canonical context CLI | 39 manifests；91 lifecycle routes | passed | 39.527 s | `canonical-02` |
 
-新 test file 最終有 22 項測試；21-case 執行後只新增 optional profile applicability，最終 7-case subset 驗證受影響路由。21-case 與 7-case 的適用性／輸入差異需要獨立審查核對，不能改稱同一次 22-case 執行。
+新 test file 最終有 22 項測試；21-case 執行後只新增 optional profile applicability，最終 7-case subset 驗證受影響路由。獨立審查已核對 21-case 與 7-case 的適用性／輸入差異；不能改稱同一次 22-case 執行。
 
 保留的失敗：`extended-01` 執行 10 cases，9 passed、1 error（首次 apply 建立 ignored recovery 目錄，被過度廣泛的 glob directory observation 判成 stale preview）。修正 literal path traversal 後，`catalog-03` 通過原失敗案例；沒有刪除或改寫失敗記錄。較早 `catalog-01`／`catalog-02`／`authoring-01`／`canonical-01` 是中間版本證據，不作最終新執行宣稱。
 
-首輪固定版本 `b29f3ae9` 的 package smoke 已 passed 1/1、exit 0，該輪審查因 F-001 failed；兩者分開保留。第二輪在 `aa91d684` 確認 F-001 解決但因 F-002 failed，第三輪在 `4a46e506` 確認 F-002 解決但因 F-003 報告狀態矛盾 failed。目前只待第四輪文件一致性修正核對，不重跑 smoke。Portable CLI 在隔離 fixture 執行；路由 closure fixture 另覆蓋 mandatory portable sources 與 optional profile 存在／缺檔。Package smoke 只證明 archive bytes／metadata 與 helper inclusion，不代表真實 downstream adoption。未執行的 hosted CI 不列為通過；未量測 token 或整體工時效益。
+首輪 `b29f3ae9` 的 package smoke passed 1/1、exit 0，工具回報 wall duration 5.387 秒；native process start/end 不可取得，原 observations 明示 timestamp proxies，不能當成精確 process 事件。該輪 audit 因 F-001 failed。Root 在乾淨的 `aa91d684` 執行 lifecycle-fixed-01 passed（0.320 秒）；後續文件修正未重跑該命令或 smoke。
+
+`catalog-03`、`authoring-02`、`contracts-01` 早於五項檔案後續修改（registry、lifecycle helper、package smoke test、packaging test、catalog test），保留為當次輸入的支持證據，不是 final subject 的整包重新執行。最終 routing／evaluation／shell／canonical 記錄綁定原始 implementation bytes；classification 修正另有專屬檢查。Package smoke 僅依未變動的命令相依範圍沿用，分類檔案不在該 fixture 使用範圍內。後兩次修正只改 workflow 文件。執行者、輸入 hash、失敗與環境界線均由原始檔保留，不合併成無條件全量通過。
+
+Portable CLI 與路由 closure 在隔離 fixture 驗證 mandatory portable sources 和 optional profile 存在／缺檔。Package smoke 只證明 archive bytes／metadata 與 helper inclusion，不代表真實 downstream adoption。未執行的 hosted CI 不列為通過；未量測 token 或整體工時效益。
 
 ## Finding Resolution Matrix
 
@@ -84,15 +88,24 @@
 | ASM-20260921-18-gav#AIC-004 | resolved | 保留 owner 的不同欄位政策，工具只在符合各自政策時寫入；仍不建立通用寬鬆 schema。 |
 | ASM-20260921-18-gav#AIC-005 | resolved | 完成 P4 處置：只移除非相關 family 的重複檢查呼叫，保留 validators／existing tests；沒有足夠等價證據者明示不刪除。 |
 
-以上為 root 對 baseline findings 的處置；前三輪獨立審查已完成，分別保留 F-001／F-002／F-003 failed 結果。F-001 與 F-002 已由後續 reviewer 確認解決，F-003 的文件修正仍待固定版本核對。AIC-002 持續為 partially-resolved。
+以上是 root 對 baseline findings 的處置；AIC-002 保留 partially-resolved，沒有把所有 schema 都宣稱為可自動撰寫。獨立審查結論與原始局限保留在下列 verification assessment。
 
 ## Verification Assessment Reconciliation
 
-三輪既有 review 與唯一 package smoke 均已執行，不能再列為未開始。新的 verification assessment 將在 F-003 文件修正通過後保留全部 reviewer 原文及 exact-byte archive；原 baseline final 結論不改寫。
+獨立結果保留於 [ASM-20260922-10-8ay](../../../assessments/ASM-20260922-10-8ay/report.md)，包括四輪 reviewer 原文、完整第一輪 custody artifacts、後三輪 machine verification、單次 retry authorizations、focused attempts 與 runner bytes。逐檔原樣封存，SHA-256 列在 assessment evidence catalog；原 baseline final report 未改寫。
 
-首輪固定版本 `b29f3ae9c079b05ab144ba0eddd10294e452988a` 獨立審查結果為 failed：F-001 指出新增 `artifact-catalog-tests` 缺少 canonical gate classification，導致 required lifecycle contract 與 gate subject 建構失敗。當輪 package smoke 本身 passed 1/1、exit 0；不能用它覆蓋審查失敗。原始 candidate、receipt、report 與 command observations 都保留。
+| 審查 | 固定版本 | 結果與後續處置 |
+| --- | --- | --- |
+| 1 | `b29f3ae9` | failed F-001：新 required gate 缺少 classification；同輪 smoke 本身 passed，分開保留。 |
+| 2 | `aa91d684` | 確認 F-001 解決；failed F-002：workflow entrypoint 還有舊續作指引。 |
+| 3 | `4a46e506` | 確認 F-002 解決；failed F-003：報告保留矛盾待審文字與過期 updated_at。 |
+| 4 | `cca7dcb12355dcabfc710f34d711080073661494` | passed：F-003 文件一致性修正及未變動實作／authority 的有限核對。 |
 
-修正把新 gate 加入與既有 authoring tests 相同的 input/environment candidate-disabled 組：沒有擴大 reuse eligibility，也沒有移除 exact coverage gate。root 的 lifecycle／classification 檢查已通過，第二輪 reviewer 已確認 F-001 解決；未修改既有 authoring 行為或原 reviewer 文字。
+F-001 將 `artifact-catalog-tests` 加入既有 input/environment、candidate-disabled 組，沒有擴大 reuse eligibility、增加 reusable profiles 或改動唯一 approved pilot。`lifecycle-repair-01` 的 sandbox Git Bash 啟動失敗（nested exit 3221225794）保留為環境失敗；elevated `lifecycle-repair-02` 與兩項 `classification-01` 案例通過。`lifecycle-fixed-01` 是 root 在 aa91 的 clean-subject 執行，不是 reviewer 重新執行。
+
+F-002／F-003 更新續作入口、報告 metadata 與所有任務指引，避免重複執行或誤讀狀態；未改程式行為。Root 在每輪 failed callback 後釋放 lease 才修正，第四輪 passed 後才進行 evidence intake。失敗次數、原文和時間來源限制全部保留。較早 reviewer 對 lifecycle 保護欄位的文字亦由後續報告澄清：`models`／`owner` 路由可編修，受保護的是 `kind`、`baseline_refs`、`coverage`；所引用來源 bytes 綁定用於漂移檢查。
+
+驗收對照見 [acceptance report](../evidence/acceptance-report.md)。本次沒有新增 owner-sensitive 決策；reviewer 未參與實作或修復。
 
 ## Deferred Work
 
@@ -102,18 +115,6 @@ Python entrypoint、fixture classification 與 executable shell profile registry
 
 ## Closure Evidence
 
-尚未進行本機整合。owner 已允許本機 main merge，本次採 implementation freeze 與 evidence intake 分開的 checkpoint，審查完成後保留 merge boundary。不包含 remote push、PR、Issue／Project closure、tag、release 或 target upgrade。
+LIFE-001～003 的選定實作、focused validation、independent verification 和證據交付已完成。Owner 已授權本機 main merge；保留 implementation、repair 與 evidence-intake checkpoints，再以 --no-ff 整合。交付 commit 另接受獨立 evidence-intake delta 審查；最後 main 必須保持 reviewed tree 相同並重新綁定 content subject。最終 admission／merge 結果只寫入 ignored terminal artifacts，避免修改已審查 payload。
 
-### F-001 修正驗證紀錄
-
-`lifecycle-repair-01` 在 sandbox 啟動 Git Bash 時以 exit 3221225794 失敗，屬 execution-environment failure，保留原始紀錄。改用既有授權的 elevated Windows 測試邊界後，`lifecycle-repair-02` passed（0.815 秒）；`classification-01` 的兩項既有分類／變更矩陣案例 passed。新 gate 保持 input/environment、candidate-disabled、無 reusable profiles，唯一 pilot 仍未改變。root 已在 clean commit `aa91d68479346f1c931920e4735ce84996b6b9d5` 執行 lifecycle-fixed-01 passed（0.320 秒），後續 reviewer 核對此原始紀錄與未變動相依範圍；其他 authoring／package 程式未改動。
-
-### F-002 續作指引修正
-
-第二輪獨立審查已確認 F-001 解決，並證明原 package smoke 的相依範圍未變；整輪仍為 failed，因 workflow 首頁的舊下一步會誤導重跑已完成命令。Root 已更新 entrypoint、任務及目前阻擋狀態。此文件修正不改實作或 authority，第三輪已確認 F-002 entrypoint 修正，但因本報告的舊待辦文字與 updated_at 未同步而回報 F-003 failed；不重跑 package smoke，也不覆寫兩輪 reviewer 原文。第三次審查以新的 workflow authorization 綁定該次 subject、前次失敗和唯一 packet，原 attempt count 不重設。
-
-### F-003 報告一致性修正與目前狀態
-
-Root 已把「首輪審查／package smoke 尚待執行」等過期文字改為實際結果，更新報告的 updated_at，並同步已完成 LIFE-001／LIFE-002 的續作指引。目前唯一修正審查待辦是第四輪文件狀態核對；沒有新的程式或 authority 修改，也沒有需要重跑的行為命令。前三輪 failed 原始 body、各自 custody 和取得的局部確認全部保留，F-001、F-002 的已解決事實不會抹除各輪 failed 結果。
-
-第四輪通過後才建立 verification assessment、完成報告與 workflow 交付，接著執行獨立的 evidence-intake admission 及已授權的本機 merge。現在尚未宣稱第四輪通過、workflow 完成或本機整合完成。Hosted CI、遠端推送、Issue／Project closure、release 和 target adoption 仍不在本次執行範圍。
+此報告封存時 final delivery admission／merge 尚未發生，不能由 workflow completed 推定它們完成。Issue #319 維持 open；未 push、未建立 PR，未執行 hosted CI、Issue／Project closure、tag、release 或 target upgrade。

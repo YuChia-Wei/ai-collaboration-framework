@@ -1,0 +1,20 @@
+schema_version: '1.0'
+record_type: workflow-retry-authorization
+workflow_id: 2026-09-22-artifact-lifecycle-completion
+task_id: LIFE-003-verification
+attempt: 4
+authorized_at: '2026-09-22T10:22:24.624010+08:00'
+subject_sha: cca7dcb12355dcabfc710f34d711080073661494
+prior_failure_sha256: baad444d5472c897ae604c78df778038ddfc1fa1f80cbe0ea0cd566aad470021
+decision: authorize-retry
+consumed_by_packet_id: LIFE-319-REPORT-AUDIT-04
+scope:
+- F-003 documentation-only consistency repair and unchanged implementation proof,
+  under the NEW Report State Repair Checkpoint workflow authorization
+non_goals:
+- Behavioral rerun
+- Provider mutation
+- Tracked repair
+- Integration
+terminal_condition: One callback after bounded review; no autonomous retry.
+authorization_sha256: 6fe3ded7e97987f565a2913c229ea43cf327747d9b0d5e6ba257287ab6076bc3

@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-22-artifact-lifecycle-completion`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-lifecycle-completion`
 - `created_at`: `2026-09-22T09:00:30.694010+08:00`
-- `updated_at`: `2026-09-22T10:20:58+08:00`
+- `updated_at`: `2026-09-22T10:33:40+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -47,7 +47,7 @@ Code graph refreshed at base HEAD, but its coverage excludes .ai/scripts and .ai
 
 ## Resume
 
-Implementation and focused validation are complete. Follow the latest Report State Repair Checkpoint below, then retain the verification assessment and final delivery review before the authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
+Implementation and focused validation are complete. Follow the latest Verification And Delivery Checkpoint below; original evidence is archived; final delivery admission remains pending before authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
 
 ## Implementation And P4 Checkpoint
 
@@ -63,10 +63,18 @@ Workflow authorization for attempt 3: under the owner's continuing implementatio
 
 Exact next action: freeze this documentation-only repair, dispatch that bounded independent review, then archive all original reviews and focused evidence into a new verification assessment. If accepted, complete the Chinese report and workflow, review the evidence-intake delta, and perform the already authorized local --no-ff merge with a current-main content rebind. No remote push, Issue/Project closure, release or target adoption is included. The 16 manual capability gaps remain explicit owner-selected future work, not newly fabricated executable coverage.
 
-## Report State Repair Checkpoint
+## Report State Repair Checkpoint (Historical; Superseded Below)
 
 Independent attempt 3 at 4a46e506ecec2dd1fe6cce57b7615989829cc616 confirmed F-002 was repaired but failed F-003: stale report pending-review prose and updated_at. Root has now synchronized the report and all three task continuation fields. F-001 and F-002 remain independently resolved; all three overall failed outcomes remain retained. Only workflow documentation changed since aa91, so no behavioral command or package smoke is pending.
 
 Current blocker: one read-only F-003 document-consistency check on this next fixed commit. Root issues NEW workflow authorization for attempt 4 under the owner's continue-to-completion mandate. Seal that single-use authorization against attempt 4, the new exact subject, attempt-3 failure fingerprint and its single consuming packet. This extends the exhausted 3/3 budget only for this one bounded check; it does not reset or erase the previous attempts.
 
 Exact next root action after a passed callback: release custody, archive all original reviews/receipts/logs and runner bytes, finalize verification assessment and the Chinese report, then complete the workflow payload. A separate final evidence-intake review precedes approved local --no-ff integration and same-content main rebind. No provider mutation, remote push, Issue/Project closure, release or target adoption is authorized by this checkpoint. No owner decision is currently needed; the 16 manual capability gaps remain explicit deferred scope.
+
+## Verification And Delivery Checkpoint
+
+Verified subject cca7dcb12355dcabfc710f34d711080073661494; final verification assessment ASM-20260922-10-8ay. All four independent reports, three failed audit attempts, original command evidence and limits are archived exactly. F-001/F-002/F-003 are independently resolved. Selected P3/P4 work and evidence delivery are complete; 16 manual capability gaps remain explicit future scope. Exact next root action: freeze the delivery payload, run one independent evidence-intake delta review, then release custody and perform approved local --no-ff integration with a deterministic same-content current-main rebind. No behavior rerun, provider mutation, remote push, Issue/Project closure, release or target adoption is included. Those final admission/integration observations go only to ignored terminal artifacts; this completed workflow payload does not claim a prospective merge.
+
+### Delivery Preparation Corrigendum (2026-09-22T10:33:40+08:00)
+
+Before the first delivery commit, root corrected LIFE-003 last_completed_step to record the passed fourth review and clarified that archived evidence is complete while final admission remains pending. The bounded P1 workflow.update tool rejected terminal-workflow updates; this explicit governance-owned metadata corrigendum follows WORKFLOW-ARTIFACT-POLICY rather than changing that guard. It preserves completed status, acceptance criteria, final report/assessment conclusions, and all original authoring journals. No behavioral or integration result is added.

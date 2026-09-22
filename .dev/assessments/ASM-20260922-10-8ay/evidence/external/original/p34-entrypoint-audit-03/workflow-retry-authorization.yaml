@@ -1,0 +1,20 @@
+schema_version: '1.0'
+record_type: workflow-retry-authorization
+workflow_id: 2026-09-22-artifact-lifecycle-completion
+task_id: LIFE-003-verification
+attempt: 3
+authorized_at: '2026-09-22T10:11:07.120751+08:00'
+subject_sha: 4a46e506ecec2dd1fe6cce57b7615989829cc616
+prior_failure_sha256: c06d330772438703d3a2f1a5630b6b1a9375d351853c36adcff4632a6c694adc
+decision: authorize-retry
+consumed_by_packet_id: LIFE-319-ENTRYPOINT-AUDIT-03
+scope:
+- F-002 documentation-only repair and unchanged implementation proof, under the new
+  Review Repair Checkpoint workflow authorization
+non_goals:
+- Behavioral rerun
+- Provider mutation
+- Tracked repair
+- Integration
+terminal_condition: One callback after bounded review; no autonomous retry.
+authorization_sha256: a768d21268c37ea61c50e5312fd3ae6be710b5341816a74eee49e512176c05af

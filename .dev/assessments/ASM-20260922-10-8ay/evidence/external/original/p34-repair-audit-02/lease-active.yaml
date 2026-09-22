@@ -1,0 +1,25 @@
+schema_version: '1.0'
+record_type: worktree-snapshot-lease
+lease_id: LIFE-319-REPAIR-LEASE-02
+worktree: .
+subject_sha: aa91d68479346f1c931920e4735ce84996b6b9d5
+observed_snapshot:
+  head_sha: aa91d68479346f1c931920e4735ce84996b6b9d5
+  tracked_status: []
+snapshot_sha256: 48047a2e5e97f657688a79827d9b4628e84588aa3385cedad094db342c15e7ee
+state: active
+holder:
+  packet_id: LIFE-319-REPAIR-AUDIT-02
+  access: read-only
+  lock_ref: .dev/ai-context/local/p34-repair-audit-02/lease.lock
+  lock_sha256: 8c0ea9cc938cfb5accc9591c301b332c28a4efe3815d8c731021aa340bd0439f
+observed_other_tracked_writers: []
+ignored_artifacts:
+- path: .dev/ai-context/local/p34-repair-audit-02/review-result.md
+  state: open
+  sha256: null
+tracked_mutations: []
+terminal_release:
+  released: false
+  reason: Parent and all workers suspend tracked mutation during this review.
+lease_sha256: 14426f8fb87bb7dc97210e6a99f4162bde815900118ddaf565e9919ab44ea83e

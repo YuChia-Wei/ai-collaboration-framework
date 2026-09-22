@@ -1,0 +1,60 @@
+schema_version: '1.0'
+record_type: independent-review-input
+classification:
+  schema_version: '1.0'
+  record_type: agent-execution-classification
+  operation: review
+  execution_boundary: same-runtime
+  duration_class: unknown
+  change_domains:
+  - evidence-custody
+  snapshot: shared-frozen
+  tracked_write: false
+  provider_mutation: false
+  credential_access: false
+  terminal_gate: true
+subject:
+  repository: YuChia-Wei/ai-collaboration-framework
+  base_sha: 4cc41d3b57b591895a528d6ae4dd5745b8877cf5
+  head_sha: aa91d68479346f1c931920e4735ce84996b6b9d5
+  base_tree: 7a9ae326048f3caa17fc6f0f214a8b061bec3a84
+  head_tree: 51dc70953264b00f2c037d83710c5411155cc7d6
+  subject_digest: 33719853550928b4314dc852dcb751b3df427db1cf0f4dbba3750e41c4132e03
+criteria:
+- Verify only F-001 repair and the delta from failed audit b29f3ae9c079b05ab144ba0eddd10294e452988a
+  to this clean subject. New artifact-catalog-tests uses the existing input/environment
+  candidate-disabled group without enabling reuse or altering the sole approved pilot;
+  registry/classification sets must match.
+- Inspect clean-subject lifecycle-fixed-01 and the prior lifecycle-repair-02/classification-01
+  original logs, runner/input hashes and actual environment boundaries. Root executed
+  these commands; do not relabel them as reviewer executions. Preserve lifecycle-repair-01
+  sandbox Bash launch failure and the original failed review/independent passing smoke
+  separately.
+- Verify all other implementation, command-specific package smoke dependencies, schemas
+  and relevant authority are unchanged, and rebind unaffected prior conclusions only
+  with explicit content/dependency proof. No blanket historical whole-subject pass;
+  do not rerun tests or another package smoke.
+- 'Clarify the initial review prose: lifecycle.update permits models/owner routing
+  metadata edits; it protects kind, baseline_refs and coverage, not immutable model/owner
+  references. Preserve original reviewer body and record this clarification without
+  changing code. Assess report/workflow truth and current whole subject; final integration
+  remains root-owned.'
+authority:
+- path: .ai/assets/shared/validation-gate-classification.yaml
+  sha256: 3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5
+- path: AGENTS.md
+  sha256: 05d34dfe80ad8e42b40c133e4522851971e991266ddf042aba049e31dd1dea1b
+- path: .ai/assets/CANONICAL-SCHEMA.MD
+  sha256: 1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772
+- path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+  sha256: 161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5
+- path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+  sha256: 9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080
+- path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+  sha256: 5c387e57a9dbb5d4ea0c5ad61256b55b918a0a4fe27d283317d38a2f0fe7d09a
+- path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+  sha256: 49da1578bef79b356873ee569fea6b21bfd66d15f6dbb0271ea0544dfdeb784c
+- path: .ai/assets/skills/ai-context-auditor/skill.yaml
+  sha256: 5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba
+- path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  sha256: 98a879e7be2b6c4ebf6fb836814c4e78a9039b86e1e4b74cc4763f0e5d0b7d24

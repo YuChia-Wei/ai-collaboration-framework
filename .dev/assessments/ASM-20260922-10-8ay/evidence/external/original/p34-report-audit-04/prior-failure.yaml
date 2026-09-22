@@ -1,0 +1,6 @@
+failure_class: behavior-defect
+command_sha256: b125c25bc96372d822b0518ecbbd6a8521fe205833e1f0093359018a5715c394
+subject_sha: 4a46e506ecec2dd1fe6cce57b7615989829cc616
+environment_class: same-runtime-shared-frozen
+diagnostic_codes:
+- F-003-stale-report-state

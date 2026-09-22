@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "record_type": "bounded-independent-entrypoint-verification",
+  "packet_id": "LIFE-319-ENTRYPOINT-AUDIT-03",
+  "attempt": 3,
+  "attempt_budget": 3,
+  "review_completed_at": "2026-09-22T10:17:50.6802923+08:00",
+  "subject": {
+    "base_sha": "4cc41d3b57b591895a528d6ae4dd5745b8877cf5",
+    "prior_repair_sha": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+    "head_sha": "4a46e506ecec2dd1fe6cce57b7615989829cc616",
+    "head_tree": "32425db0097068557f1cbedf346cc10a59950345",
+    "subject_digest": "71e7f0ac28d74b18035d95e83391aa40d31b1549094f0d66e877798977a0b73f",
+    "tracked_clean_at_preflight": true
+  },
+  "review_binding": {
+    "review_input_ref": ".dev/ai-context/local/p34-entrypoint-audit-03/review-input.yaml",
+    "review_input_raw_sha256": "1c518756214ca077f2e10c5efe600c5ca572cc5a34df3f740d287818ac85449f",
+    "canonical_input_sha256": "15e7833b8d3a099f34b61dda6df1401d0594704e96d6f281718ce6c7d4145a12",
+    "criteria_sha256": "ef643a9edbc39c0246a07ab950bb8e6a19f858c9ba3ba5ccdc336030eeb1e395",
+    "authority_sha256": "727cdfa2ecc900cb3663c5537c580ed3bdf51dd3c6194bf78e193f6898683c5e",
+    "packet_ref": ".dev/ai-context/local/p34-entrypoint-audit-03/packet.yaml",
+    "packet_raw_sha256": "b4e9a977382ae622fe58702bac89dd15e2b3a96de417d81bf533c5a8428057c0",
+    "packet_sha256": "60e2cdb7467ec672985366c1809caa9b8b40299e41ec7cc530f811f58a9b15c9",
+    "lease_ref": ".dev/ai-context/local/p34-entrypoint-audit-03/lease.yaml",
+    "lease_raw_sha256": "bfd89d52d5bcee7fe604a850d9783bbbb094e63d213f5e130b8d3183f5ab135a",
+    "lease_sha256": "112dc3874f1322068e0836569b5ab781d40905371b83ffd57204fb0ac8a2be8c",
+    "preflight": {
+      "review_input": "passed",
+      "packet": "passed",
+      "lease": "passed"
+    }
+  },
+  "retry_authorization": {
+    "ref": ".dev/ai-context/local/p34-entrypoint-audit-03/workflow-retry-authorization.yaml",
+    "raw_sha256": "2f2e74f96d04fa7bde0ef9eea3eeb42612c7fdace203ad6a024d410478be63bd",
+    "authorization_sha256": "a768d21268c37ea61c50e5312fd3ae6be710b5341816a74eee49e512176c05af",
+    "attempt": 3,
+    "subject_sha": "4a46e506ecec2dd1fe6cce57b7615989829cc616",
+    "consumed_by_packet_id": "LIFE-319-ENTRYPOINT-AUDIT-03",
+    "decision": "authorize-retry",
+    "prior_failure_ref": ".dev/ai-context/local/p34-entrypoint-audit-03/prior-failure.yaml",
+    "prior_failure_raw_sha256": "d8d636ac5ebc549b531a3d818d19a4593cb006b8957ec264bc0eb91f78bf572c",
+    "prior_failure_canonical_sha256": "c06d330772438703d3a2f1a5630b6b1a9375d351853c36adcff4632a6c694adc",
+    "single_use_binding_verified": true
+  },
+  "review_execution": {
+    "boundary": "same-runtime",
+    "behavioral_commands_executed_by_reviewer": [],
+    "package_commands_executed_by_reviewer": [],
+    "profile_commands_executed_by_reviewer": [],
+    "provider_operations": [],
+    "tracked_mutations": [],
+    "ignored_writes": [
+      ".dev/ai-context/local/p34-entrypoint-audit-03/review-result.md",
+      ".dev/ai-context/local/p34-entrypoint-audit-03/verification-record.json"
+    ]
+  },
+  "repair_delta": {
+    "comparison_base": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+    "changed_paths": [
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/reports/remediation-report.md",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/tasks/LIFE-003-verification.json",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow-plan.md",
+      ".dev/workflows/2026-09-22-artifact-lifecycle-completion/workflow.yaml",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "implementation_or_authority_changed": false,
+    "authority_hashes_match_review_input": true,
+    "f002_entrypoint_status": "resolved-on-subject",
+    "current_task_status": "truthful-in-progress",
+    "current_report_status": "failed-contradictory-pending-state"
+  },
+  "unchanged_conclusion_rebind": {
+    "f001_status": "resolved-on-subject",
+    "classification_authority_sha256": "3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5",
+    "package_smoke_disposition": "reused-with-proof",
+    "package_smoke_execution_head": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+    "package_smoke_tests_run": 1,
+    "package_smoke_exit_code": 0,
+    "package_smoke_declared_dependency_closure_unchanged": true,
+    "package_smoke_reexecuted": false,
+    "native_process_event_timestamps_available": false,
+    "timing_disclosure_retained": true
+  },
+  "runner_verification": {
+    "path": ".dev/ai-context/local/p34-run.py",
+    "actual_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+    "receipt_hash_match": true,
+    "receipts": [
+      {
+        "id": "lifecycle-repair-01",
+        "outcome": "blocked-by-environment",
+        "exit_code": 1,
+        "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+        "runner_unchanged": true,
+        "input_count": 751,
+        "input_drift_count": 0,
+        "record_sha256": "8abfaa7e9d107a644237f137aab43af707dbd1a717cf70c0fdd30d0e814618d4",
+        "log_sha256": "60b953c48bfa27565c2bcff0229a14c4583f8c79dc7d7c4dfb9236816f5f3bb2"
+      },
+      {
+        "id": "lifecycle-repair-02",
+        "outcome": "passed",
+        "exit_code": 0,
+        "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+        "runner_unchanged": true,
+        "input_count": 751,
+        "input_drift_count": 0,
+        "record_sha256": "9e42dedcd0638f57467c5d73a44c0557ed5649d3d26c7dfde0427525cea6a7e6",
+        "log_sha256": "ed146c68abaa31fdd09fa08852b633d7486f72d049b21bc9f000dc39b77423b1"
+      },
+      {
+        "id": "classification-01",
+        "outcome": "passed",
+        "exit_code": 0,
+        "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+        "runner_unchanged": true,
+        "input_count": 751,
+        "input_drift_count": 0,
+        "record_sha256": "05d945ff1e015a94abb2275431692b7d92d7eac05e3f7745fc50afd0de60e73a",
+        "log_sha256": "72be6b8156450d413821b19aa704c435c91ced6d294b5456d499f2ccc340eeff"
+      },
+      {
+        "id": "lifecycle-fixed-01",
+        "outcome": "passed",
+        "exit_code": 0,
+        "runner_sha256": "58cea3ac6e27f46dd5a62602103423aebd26db592229b3e15a17c2116e89bb54",
+        "runner_unchanged": true,
+        "input_count": 751,
+        "input_drift_count": 0,
+        "record_sha256": "97be8f12b1459f43f17f347d96f4549ef41f60da0783f915c0c2380a293a14ba",
+        "log_sha256": "ed146c68abaa31fdd09fa08852b633d7486f72d049b21bc9f000dc39b77423b1"
+      }
+    ],
+    "attempt_2_absence_clarification": "Attempt 2 inspected p34-checks, p34-validation-01, and p34-repair-audit-02. The runner was absent from those bounded roots. Attempt 3 explicitly added p34-run.py to the authorized evidence scope."
+  },
+  "prior_reviews": [
+    {
+      "attempt": 1,
+      "subject_sha": "b29f3ae9c079b05ab144ba0eddd10294e452988a",
+      "outcome": "failed",
+      "report_sha256": "395f4d7e04932e32f965ec19e922cbcb30d1f6e5d3d94ecf0e59839ba1aad945"
+    },
+    {
+      "attempt": 2,
+      "subject_sha": "aa91d68479346f1c931920e4735ce84996b6b9d5",
+      "outcome": "failed",
+      "report_sha256": "f5192889734cabf0374efdaa2a875851fb03c66b561a03a34d2c5e1a0a1b320b",
+      "verification_record_sha256": "b3a4cb39400206dc669155a1f7dd87ec212cd5c2573d50e3c6b724b6923a0c4b"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "criterion-1",
+      "disposition": "failed",
+      "reason": "The entrypoint and task are current, but the remediation report retains contradictory pending-review statements and stale updated_at metadata."
+    },
+    {
+      "id": "criterion-2",
+      "disposition": "reused-with-proof",
+      "reason": "Only five workflow continuation files changed after aa91; implementation, authority, F-001 resolution, and the smoke command dependency closure are unchanged."
+    },
+    {
+      "id": "criterion-3",
+      "disposition": "passed-by-review",
+      "reason": "The fresh attempt-3 authorization, input, packet, and active lease are valid; retained runner bytes match the prior receipt hashes."
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-003",
+      "severity": "medium",
+      "title": "Current remediation report retains contradictory pending-review state",
+      "path": ".dev/workflows/2026-09-22-artifact-lifecycle-completion/reports/remediation-report.md",
+      "lines": [
+        10,
+        75,
+        87,
+        91,
+        95,
+        109,
+        113
+      ],
+      "policy_path": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      "policy_line": 80,
+      "required_action": "Make obsolete pending statements historical or current, advance report updated_at, and preserve all prior outcomes and no-rerun boundaries."
+    }
+  ],
+  "evidence_limits": [
+    "No behavioral, package, profile, or provider command was executed by the reviewer.",
+    "Root-owned prior executions were inspected and are not relabeled as reviewer execution.",
+    "The package smoke remains a b29 execution rebound only to its unchanged command-specific dependencies.",
+    "This result does not authorize another retry, evidence admission, integration, or parent-lease release."
+  ],
+  "outcome": "failed",
+  "parent_action": "reroute",
+  "review_result": {
+    "ref": ".dev/ai-context/local/p34-entrypoint-audit-03/review-result.md",
+    "sha256": "3baf9536c32628626ff54ad67b62ad8ce2709451e7f2d2ca72e477d960fd8aa3"
+  },
+  "final_state": {
+    "head_sha": "4a46e506ecec2dd1fe6cce57b7615989829cc616",
+    "head_tree": "32425db0097068557f1cbedf346cc10a59950345",
+    "tracked_clean": true,
+    "parent_lease_state": "active",
+    "tracked_changes": []
+  }
+}

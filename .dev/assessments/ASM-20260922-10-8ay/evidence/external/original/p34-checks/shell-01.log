@@ -1,0 +1,1 @@
+Shell asset validation passed for 16 tracked asset(s): lifecycle={'active': 5, 'compatibility': 4, 'deprecated': 7}; roles={'active-orchestrator': 2, 'compatibility-entrypoint': 2, 'context-validator': 2, 'manual-advisory': 2, 'runtime-launcher': 1, 'transitional-helper': 7}.
