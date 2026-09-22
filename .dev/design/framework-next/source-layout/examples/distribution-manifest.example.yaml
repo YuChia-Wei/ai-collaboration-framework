@@ -1,0 +1,102 @@
+# P1-B design only. Not an implemented build schema or an executable manifest.
+example_kind: source-distribution-mapping
+implementation_status: planned
+executable: false
+owner_issue: 326
+source_root: src
+source_identity:
+  selection: one-explicit-immutable-git-commit
+  commit: null # Filled from a real build; not the design baseline as fake product input.
+  release_version: null # No release is allocated by this example.
+input_policy:
+  membership: exact-file-allowlist
+  bytes: git-blob-bytes
+  symlinks_and_submodules: reject
+  missing_members: reject
+  path_escape_or_case_collision: reject
+  unknown_members: not-selected
+  project_data_and_source_history: forbidden
+  content_references: selected-portable-members-only
+build_inputs: # Inputs are source-owned; they are not copied into project config.
+  - src/distribution/manifest.yaml
+  - src/profiles/lesson-minimal.yaml
+  - src/adapters/codex/skill-entry.md.template
+selection:
+  profile: lesson-minimal
+  skills: [lesson]
+  runtime_adapter: codex
+  dependency_source: selected-skill-package.yaml # Public field syntax belongs to #325.
+  resolution: exact-required-closure-no-download
+  optional_selection: explicit-only
+  note: Lesson required and optional lists are empty in P1-A.
+components:
+  - id: lesson
+    source: src/skills/lesson
+    metadata: skill-package.yaml # Relative to component source, as required by P1-A.
+    version_source: skill-package.yaml # Read selected metadata; no version is invented here.
+    owner: framework
+    members: # Exact allowlist, relative to component source. No recursive copy.
+      - source: SKILL.md
+        destination: .ai/core/skills/lesson/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/lesson/skill-package.yaml
+      - source: schemas/lesson-record.schema.json
+        destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
+      - source: templates/lesson.md
+        destination: .ai/core/skills/lesson/templates/lesson.md
+      - source: references/configuration.md
+        destination: .ai/core/skills/lesson/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/lesson/references/operations.md
+    public_contract_reference:
+      issue: 325
+      source_commit: c3891615f97625e7c59cd871abea3c2b27b5021f
+      design_specimen: .dev/design/framework-next/portable-contracts/lesson/
+      role: reference-only-not-a-build-input
+      record_family: lesson.record
+      schema_version: 1.0.0
+      tool: lesson.fs
+      tool_implementation_status: planned
+      tool_entrypoint: null # No scripts/lesson.py placeholder and no execution claim.
+outputs:
+  payload:
+    envelope_root: payload
+    members: selected-component-destinations
+  generated_runtime:
+    - adapter_input: src/adapters/codex/skill-entry.md.template
+      installed_entrypoint: .ai/core/skills/lesson/SKILL.md
+      destination: .agents/skills/framework-lesson/SKILL.md
+      envelope_root: runtime
+      owner: framework-runtime-projection
+      managed_scope: this-exact-file-only
+  generated_metadata:
+    - metadata/selection.json
+    - metadata/files.json
+  installation_lock:
+    destination: .ai/framework.lock
+    source: actual-installation-not-source-dogfood-lock
+    envelope_member: false
+selection_modes:
+  p2_delivery: development-candidate-only-no-published-stable-claim
+  stable:
+    origin: explicitly-selected-released-artifact-and-digest
+    floating_resolution: forbidden
+  development:
+    origin: explicitly-selected-source-commit-and-generated-digest
+    dirty_source_build: unsupported-in-initial-route
+    relabel_as_release: forbidden
+preserved_project_surfaces: # Protection is not a substitute for allowlist-first input.
+  - .ai/custom/
+  - .ai/local/
+  - all-caller-configured-artifact-roots
+  - .dev/
+  - AGENTS.md
+  - AGENTS.zh-TW.md
+  - CLAUDE.md
+  - all-runtime-paths-not-in-previous-owned-inventory
+non_payload_source_surfaces:
+  - .github/
+  - tools/
+  - tests/
+  - source-release-and-governance-records
+  - root-installed-core-lock-and-runtime

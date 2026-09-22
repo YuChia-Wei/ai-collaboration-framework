@@ -1,0 +1,87 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "SL326-001",
+  "workflow_id": "2026-09-23-source-layout",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T01:08:23+08:00",
+  "updated_at": "2026-09-23T01:20:56+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #326 source-versus-consumer design only",
+    "files": [
+      ".dev/design/framework-next/source-layout/",
+      ".dev/workflows/2026-09-23-source-layout/"
+    ],
+    "constraints": [
+      "U001 has precedence over conflicting legacy gates.",
+      "Single writer; no sub-agents or new tasks.",
+      "Coordinator owns shared index and integration.",
+      "P1-A owns portable skill/config/artifact contracts."
+    ],
+    "non_goals": [
+      "Full relocation",
+      "Product implementation",
+      "Legacy validation or package/upgrade trials",
+      "Push, PR, merge, Issue closure, release or adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read authority and current tracked evidence.",
+      "Define source/output/ownership mapping and bounded transition.",
+      "Author concrete non-executable distribution and layout examples.",
+      "Inspect changed content, parse files and check commit message.",
+      "Commit locally and hand off to coordinator."
+    ],
+    "validation": [
+      "UTF-8 readability and direct JSON/YAML parsing.",
+      "Git diff/status and scope inspection.",
+      "Exact planned commit-message format check."
+    ],
+    "last_completed_step": "Design, inventory, examples and zh-TW explanation inspected; allowed parsing/diff/message checks succeeded.",
+    "next_action": "Coordinator cross-review and local commit organization before first push; P2/P5/P6 implement and P7 redesign validation."
+  },
+  "results": {
+    "summary": "Delivered Issue #326 design acceptance AC1-AC5 with explicit unexecuted product behavior and U001 deferrals. This resolves only the bounded design task, not baseline assessment findings, runtime behavior, integration or Issue closure.",
+    "files_changed": [
+      ".dev/design/framework-next/source-layout/README.md",
+      ".dev/design/framework-next/source-layout/design.md",
+      ".dev/design/framework-next/source-layout/examples/distribution-manifest.example.yaml",
+      ".dev/design/framework-next/source-layout/examples/installation-plan.example.yaml",
+      ".dev/design/framework-next/source-layout/examples/layout.txt",
+      ".dev/design/framework-next/source-layout/mapping-inventory.md",
+      ".dev/workflows/2026-09-23-source-layout/workflow.yaml",
+      ".dev/workflows/2026-09-23-source-layout/workflow-plan.md",
+      ".dev/workflows/2026-09-23-source-layout/tasks/SL326-001.json",
+      ".dev/workflows/2026-09-23-source-layout/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-source-layout/handoff.yaml"
+    ],
+    "tests_run": [
+      "No test suite executed: deferred-by-owner under U001 to P7.",
+      "Allowed checks only: UTF-8 read-back, direct JSON/YAML parse, local Markdown target reads, git diff --cached --check and exact planned commit-message format."
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "No build/install/migration/recovery was executed. Combined P1-A/P1-B review remains coordinator-owned; runtime design may require changes during implementation.",
+    "follow_up_needed": true,
+    "deferred_checks": {
+      "status": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "#322 coordinator / P7",
+      "checks": [
+        "legacy validators",
+        "critical/check-all",
+        "test suites",
+        "package/upgrade/migration trials",
+        "validation-only independent audit and handoff machinery",
+        "CI"
+      ]
+    }
+  }
+}

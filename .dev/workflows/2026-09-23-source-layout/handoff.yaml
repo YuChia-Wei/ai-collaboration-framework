@@ -1,0 +1,63 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-source-layout-local-delivery
+created_at: '2026-09-23T01:20:56+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml
+template_version: unversioned-source-template-at-53c9c8e
+contract_exception: 'U001: adapted design handoff; legacy critical/audit/native-handoff-validator
+  machinery deferred-by-owner; no native compliance claimed.'
+repository:
+  root: F:/framework-next/326
+  branch: codex/2026-09-23-source-layout
+  starting_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+  checkpoint_commit_source: containing-commit
+  resolve_delivery_commit: git log -1 --format=%H -- .dev/workflows/2026-09-23-source-layout/handoff.yaml
+  prior_delivery_commit: 42601292b9fa1d4fbd190c0d03f570c25e991624
+  p1a_reference_commit: c3891615f97625e7c59cd871abea3c2b27b5021f
+workflow:
+  workflow_id: 2026-09-23-source-layout
+  task_id: SL326-002
+  status: completed
+  completion_scope: design-and-CR326-001-complete; runtime-validation-deferred; no-provider-integration
+resume:
+  hidden_context_required: false
+  last_completed_action: Correct exact six-member Lesson inventory and JSON config
+    binding; record coordinator-adopted target dogfood/runtime choices.
+  exact_next_action: Coordinator inspect additive correction commit and organize online
+    integration; P2 development-only, P7 validation deferred.
+  coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
+critical_gate:
+  status: deferred-by-owner
+  command: null
+  exit_code: null
+  authority: U001
+  next_owner: P7
+validation_report: reports/remediation-report.md
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  model_source: user-declared
+  sub_agents_used: false
+allowed_write_roots:
+- .dev/design/framework-next/source-layout/
+- .dev/workflows/2026-09-23-source-layout/
+integration:
+  push_performed: false
+  pr_created: false
+  merge_performed: false
+  issue_close_performed: false
+  owner: coordinator
+  first_push_stop: true
+unresolved_design_choices: []
+suggested_workflow_index_row: '| [`2026-09-23-source-layout`](2026-09-23-source-layout/workflow.yaml)
+  | Design the src product boundary and installed dogfood layout | `ai-context-governance`
+  | `completed` | `2026-09-23T01:33:21+08:00` | [plan](2026-09-23-source-layout/workflow-plan.md)
+  |'
+index_write_owner: coordinator; this task did not edit .dev/workflows/INDEX.MD
+updated_at: '2026-09-23T01:33:21+08:00'
+adopted_design_choices:
+- Track stable core, framework.lock and exact runtime outputs as one matching target
+  selection.
+- First runtime is copied .agents/skills/framework-lesson/SKILL.md.
+- Select .ai/custom/framework.json; configuration semantics remain P1-A owned.
+- P2 delivers only a development candidate; no published stable state is implied.

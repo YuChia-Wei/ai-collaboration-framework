@@ -1,0 +1,30 @@
+template_metadata:
+  template_id: ai-context-governance-workflow-locator
+  template_version: 1.2.0
+  created_at: '2026-07-10T18:22:49+08:00'
+  updated_at: '2026-07-15T08:36:00+08:00'
+workflow_id: 2026-09-23-source-layout
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_kind: ai-context-maintenance
+title: Design the src product boundary and installed dogfood layout
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+branch: codex/2026-09-23-source-layout
+base_branch: main
+artifact_root: .dev/workflows/2026-09-23-source-layout
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T01:08:23+08:00'
+updated_at: '2026-09-23T01:33:21+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+issue: 326
+parent_issue: 322
+starting_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+contract_exception: 'U001: legacy validators, critical/check-all, tests, CI, package/upgrade/migration
+  trials and validation-only audits deferred-by-owner to P7; no compliance or execution
+  pass claimed.'
+completion_scope: P1-B design and CR326-001 correction complete; tool/behavior validation
+  deferred-by-owner; no provider integration
+prior_delivery_commit: 42601292b9fa1d4fbd190c0d03f570c25e991624
