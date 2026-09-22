@@ -6,9 +6,9 @@
   "task_id": "ISSUE-325",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T01:03:26+08:00",
-  "updated_at": "2026-09-23T01:06:58+08:00",
+  "updated_at": "2026-09-23T01:32:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -47,15 +47,18 @@
     "validation": [
       "document/Git read-back only; framework verification deferred by owner"
     ],
-    "last_completed_step": "Independent task started and verified the assigned RAM-disk worktree",
-    "next_action": "Await local coherent delivery; coordinator handles first push and integration"
+    "last_completed_step": "Coordinator received local design HEAD c3891615f97625e7c59cd871abea3c2b27b5021f through task status and inspected contract/specimen; callback transport was rejected by automatic approval review",
+    "next_action": "Reconcile #326 six-member inventory and JSON config binding, then online PR integration with full verification deferred to P7"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "P1-A design complete; package metadata, configuration semantics, Lesson schema and planned operations inspected. No executable or portability acceptance yet.",
+    "files_changed": [
+      ".dev/design/framework-next/portable-contracts/",
+      ".dev/workflows/2026-09-23-portable-contracts/"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Implementation and final redesigned verification pending",
+    "finding_status": "partially-resolved",
+    "residual_risk": "Implementation and behavioral validation remain P2/P7; installation mapping correction pending in #326.",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -65,5 +68,13 @@
     "workflow_id": "2026-09-23-portable-contracts",
     "starting_commit": "53c9c8e58615e87e36f7b74ea8851fe845312daa",
     "model_verified": "local runtime thread metadata read-back"
+  },
+  "delivery": {
+    "head": "c3891615f97625e7c59cd871abea3c2b27b5021f",
+    "worktree_clean_observed": true,
+    "handoff": ".dev/workflows/2026-09-23-portable-contracts/handoff.yaml",
+    "delivery_transport": "coordinator read-only task status and local artifact inspection after callback rejection",
+    "verification_state": "deferred-by-owner",
+    "provider_integration": "pending"
   }
 }

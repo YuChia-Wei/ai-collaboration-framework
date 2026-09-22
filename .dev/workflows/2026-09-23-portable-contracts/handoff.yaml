@@ -1,0 +1,78 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-portable-contracts-local-delivery
+created_at: '2026-09-23T01:21:23+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml
+template_version: source-template-with-U001-exception
+contract_exception: 'U001: critical/audit/legacy validation and validation-only handoff machinery deferred-by-owner
+  until P7; no native handoff-validator compliance claim'
+repository:
+  root: F:/framework-next/325
+  branch: codex/2026-09-23-portable-contracts
+  starting_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+  checkpoint_commit_source: containing-commit
+  validated_commit: null
+  commit_resolution: git log -1 --format=%H -- .dev/workflows/2026-09-23-portable-contracts/handoff.yaml
+workflow:
+  workflow_id: 2026-09-23-portable-contracts
+  task_id: T001-portable-contracts
+  status: completed
+  delivery_state: design-complete-validation-deferred
+  issue: 325
+  coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
+resume:
+  last_completed_action: Bounded contract and Lesson example authored and inspected; local design delivery
+  exact_next_action: 'Coordinator reviews commit organization and #326 mappings, then sequences first
+    push and PR'
+  hidden_context_required: false
+critical_gate:
+  outcome: deferred-by-owner
+  command: null
+  exit_code: null
+  authority: execution-plan.md U001; P7
+actual_checks:
+- UTF-8 file read-back and direct JSON/YAML parsing
+- Manual declared-resource, ownership and scope review
+- git diff --cached --check
+- Exact planned commit-message format check
+deferred_checks:
+- Legacy validators and critical/check-all gates
+- Unit/integration/behavioral tests
+- Package/upgrade/migration trials
+- Independent validation-only audits and full audit packets
+- CI and hosted checks
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  model_source: explicit task assignment
+allowed_write_roots:
+- .dev/design/framework-next/portable-contracts/
+- .dev/workflows/2026-09-23-portable-contracts/
+interface:
+  skill_id: lesson
+  metadata: skill-package.yaml
+  schema_id: lesson.record
+  schema_version: 1.0.0
+  schema_path: schemas/lesson-record.schema.json
+  template: templates/lesson.md
+  references:
+  - references/configuration.md
+  - references/operations.md
+  tool: lesson.fs
+  tool_status: planned
+  tool_entrypoint: null
+unresolved_design_choices: []
+next_stage_notes:
+- P2 implements the tool; current specimen cannot execute
+- P3-A defines later Lesson lifecycle/promotion
+- P6 selects any required conversion edge; no migration promised
+- P7 redesigns/runs validation; JSON parsing here is not behavioral acceptance
+index_row: '| [`2026-09-23-portable-contracts`](2026-09-23-portable-contracts/workflow.yaml) | Define
+  portable skill and project configuration contracts | `ai-context-governance` | `completed` | `2026-09-23T01:21:23+08:00`
+  | [plan](2026-09-23-portable-contracts/workflow-plan.md) |'
+stop_before:
+- first push
+- PR creation
+- merge
+- Issue closure
+- release/tag/publication/downstream adoption

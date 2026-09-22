@@ -8,6 +8,8 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-source-layout`](2026-09-23-source-layout/workflow.yaml) | Design the src product boundary and installed dogfood layout | `ai-context-governance` | `completed` | `2026-09-23T01:33:21+08:00` | [plan](2026-09-23-source-layout/workflow-plan.md) |
+| [`2026-09-23-portable-contracts`](2026-09-23-portable-contracts/workflow.yaml) | Define portable skill and project configuration contracts | `ai-context-governance` | `completed` | `2026-09-23T01:21:23+08:00` | [plan](2026-09-23-portable-contracts/workflow-plan.md) |
 | [`2026-09-23-redesign-transition`](2026-09-23-redesign-transition/workflow.yaml) | Establish temporary redesign governance and CI suspension records | `ai-context-governance` | `completed` | `2026-09-23T01:21:18+08:00` | [plan](2026-09-23-redesign-transition/workflow-plan.md) |
 | [`2026-09-23-framework-redesign-control`](2026-09-23-framework-redesign-control/workflow.yaml) | Coordinate the portable-framework redesign | `ai-context-governance` | `in_progress` | `2026-09-23T01:03:26+08:00` | [plan](2026-09-23-framework-redesign-control/workflow-plan.md) |
 | [`2026-09-22-artifact-gap-reduction`](2026-09-22-artifact-gap-reduction/workflow.yaml) | Reduce artifact authoring gaps while preserving owner and evidence boundaries | `ai-context-governance` | `completed` | `2026-09-22T20:09:14.698924+08:00` | [plan](2026-09-22-artifact-gap-reduction/workflow-plan.md) |
