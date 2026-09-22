@@ -455,5 +455,178 @@ class ArtifactBehaviorTests(unittest.TestCase):
             schema_path.write_bytes(original)
 
 
+class InputAuthoringTests(unittest.TestCase):
+    setUpClass = classmethod(ArtifactBehaviorTests.setUpClass.__func__)
+    tearDownClass = classmethod(ArtifactBehaviorTests.tearDownClass.__func__)
+    setUp = ArtifactBehaviorTests.setUp
+
+    def review_request(self):
+        return {"version": "1.0", "expected_head": self.head, "repository": "fixture-repository", "base_sha": self.head,
+                "classification": {"schema_version": "1.0", "record_type": "agent-execution-classification", "operation": "review",
+                    "execution_boundary": "same-runtime", "duration_class": "short", "change_domains": ["ordinary"],
+                    "snapshot": "isolated-immutable", "tracked_write": False, "provider_mutation": False,
+                    "credential_access": False, "terminal_gate": False},
+                "criteria": ["Preserve the accepted behavior."], "authority_paths": [CONTRACT.GUARD_SCHEMA]}
+
+    def test_review_input_derives_current_subject_and_authority_without_admission(self):
+        request = self.review_request()
+        preview = self.cli.author_input("review-input", request)
+        record = preview["record"]
+        content = {"schema_version": "independent-review-subject/v1", "repository_id": "fixture-repository", "base_tree": self.tree, "head_tree": self.tree}
+        expected = hashlib.sha256(json.dumps(content, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        self.assertEqual(expected, record["subject"]["subject_digest"])
+        self.assertEqual(hashlib.sha256((self.root / CONTRACT.GUARD_SCHEMA).read_bytes()).hexdigest(), record["authority"][0]["sha256"])
+        self.assertFalse(preview["admission_granted"])
+        self.assertFalse((self.root / self.ref).exists())
+        result = self.cli.author_input("review-input", request, self.ref, preview["preview_digest"])
+        self.assertEqual("authored", result["state"])
+        self.assertEqual(record, CONTRACT.load_mapping(self.root / self.ref))
+        with self.assertRaisesRegex(ValueError, "new file"):
+            self.cli.author_input("review-input", request, self.ref, preview["preview_digest"])
+
+    def test_refuses_wrong_subject_unknown_fields_and_protected_observations(self):
+        for key, value in (("expected_head", "0" * 40), ("version", "2.0"), ("execution_passed", True)):
+            request = self.review_request(); request[key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.cli.author_input("review-input", request)
+        request = self.review_request(); request["classification"]["tracked_write"] = True
+        with self.assertRaisesRegex(ValueError, "read-only"):
+            self.cli.author_input("review-input", request)
+        request = self.review_request(); request["authority_paths"] *= 2
+        with self.assertRaisesRegex(ValueError, "unique"):
+            self.cli.author_input("review-input", request)
+
+    def test_review_rejects_tree_as_commit_and_runtime_drift(self):
+        request = self.review_request(); request["base_sha"] = self.tree
+        with self.assertRaisesRegex(ValueError, "must name commits"):
+            self.cli.author_input("review-input", request)
+        request = self.review_request(); preview = self.cli.author_input("review-input", request)
+        path = self.root / ".ai/scripts/execution_artifact_contract.py"
+        original = path.read_bytes()
+        try:
+            path.write_bytes(original + b"\n")
+            with self.assertRaisesRegex(ValueError, "clean tracked HEAD"):
+                self.cli.author_input("review-input", request, self.ref, preview["preview_digest"])
+        finally:
+            path.write_bytes(original)
+
+    def test_current_input_cli_preview_then_explicit_create(self):
+        source = self.root / (self.ref + "-request.yaml")
+        source.write_bytes(CONTRACT.encoded(self.review_request()))
+        command = [sys.executable, "-B", str(self.root / ".ai/scripts/execution-artifacts.py"), "input", "--kind", "review-input", "--request", str(source)]
+        first = subprocess.run(command, capture_output=True, text=True)
+        self.assertEqual(0, first.returncode, first.stderr)
+        preview = json.loads(first.stdout)
+        missing = subprocess.run(command + ["--output", self.ref], capture_output=True, text=True)
+        self.assertNotEqual(0, missing.returncode)
+        self.assertFalse((self.root / self.ref).exists())
+        created = subprocess.run(command + ["--output", self.ref, "--expect", preview["preview_digest"]], capture_output=True, text=True)
+        self.assertEqual(0, created.returncode, created.stderr)
+        self.assertFalse(json.loads(created.stdout)["admission_granted"])
+
+    def test_preview_binds_criteria_and_refuses_unsafe_or_tracked_outputs(self):
+        request = self.review_request()
+        preview = self.cli.author_input("review-input", request)
+        changed = copy.deepcopy(request); changed["criteria"] = ["Changed acceptance criteria."]
+        with self.assertRaisesRegex(ValueError, "preview changed"):
+            self.cli.author_input("review-input", changed, self.ref, preview["preview_digest"])
+        for ref in ("../outside.yaml", CONTRACT.GUARD_SCHEMA, self.ref + "/../escape.yaml"):
+            with self.subTest(ref=ref), self.assertRaises(ValueError):
+                self.cli.author_input("review-input", request, ref, preview["preview_digest"])
+        self.assertFalse((self.root / self.ref).exists())
+
+    def test_dependency_request_never_runs_callable_and_binds_dependency_bytes(self):
+        refs = (".ai/scripts/observe-validation-dependencies.py", ".ai/assets/shared/validation-dependency-observation.schema.yaml")
+        for ref in refs:
+            target = self.root / ref; target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / ref, target)
+        dependency = ".dev/ai-context/local/observed.py"
+        (self.root / dependency).write_text("def check():\n    raise RuntimeError('must not execute')\n")
+        request = {"version": "1.0", "expected_head": self.head, "validator_id": "bounded-input",
+                   "harness": "in-process-python-callable/v1", "entrypoint": dependency, "callable": "check", "argv": [],
+                   "declared_dependencies": {"file": [dependency], "subprocess": [], "git": [], "environment": [], "runtime": ["python"]}}
+        preview = self.cli.author_input("dependency-request", request)
+        self.assertEqual(self.head, preview["record"]["subject"])
+        (self.root / dependency).write_text("def check():\n    return False\n")
+        with self.assertRaisesRegex(ValueError, "preview changed"):
+            self.cli.author_input("dependency-request", request, self.ref, preview["preview_digest"])
+
+    def test_prepare_request_preserves_explicit_inputs_and_does_not_create_dispatch(self):
+        original = ArtifactBehaviorTests.request(self)
+        request = {key: value for key, value in original.items() if key not in {"schema_version", "record_type", "expected_commit_sha"}}
+        request.update(version="1.0", expected_head=self.head)
+        preview = self.cli.author_input("prepare-request", request)
+        self.assertEqual(original, preview["record"])
+        self.assertFalse((self.root / self.ref).exists())
+        request["role"] = False
+        with self.assertRaises(ValueError):
+            self.cli.author_input("prepare-request", request)
+
+    def test_ledger_binds_document_bytes_and_never_promotes_synthetic_evidence(self):
+        document = ".dev/ai-context/local/ledger-source.txt"
+        (self.root / document).write_bytes(b"Observed limitation; no execution result.\n")
+        entry = {"acceptance_id": "AC-1", "issue": 320, "requires_actual_execution": False, "evidence_kind": "document",
+                 "command": "read retained report", "profile": "document", "outcome": "blocked", "evidence_ref": "ignored:" + document}
+        request = {"version": "1.0", "expected_head": self.head, "entries": [entry]}
+        preview = self.cli.author_input("evidence-ledger", request)
+        record = preview["record"]
+        self.assertEqual("blocked", record["human_report"]["entries"][0]["outcome"])
+        self.assertEqual(hashlib.sha256((self.root / document).read_bytes()).hexdigest(), record["entries"][0]["evidence_sha256"])
+        self.assertIsNone(record["entries"][0]["execution_receipt"])
+        entry["requires_actual_execution"] = True
+        with self.assertRaisesRegex(ValueError, "cannot satisfy"):
+            self.cli.author_input("evidence-ledger", request)
+        entry["requires_actual_execution"] = False; entry["issue"] = True
+        with self.assertRaisesRegex(ValueError, "integer"):
+            self.cli.author_input("evidence-ledger", request)
+
+    def test_publication_drift_cleans_only_own_unchanged_output(self):
+        from unittest.mock import patch
+        request = self.review_request(); preview = self.cli.author_input("review-input", request)
+        observed = self.cli.observed_git()
+        with patch.object(self.cli, "observed_git", side_effect=[observed, observed, {**observed, "tracked_status": " M changed"}]):
+            with self.assertRaisesRegex(ValueError, "drifted during input publication"):
+                self.cli.author_input("review-input", request, self.ref, preview["preview_digest"])
+        self.assertFalse((self.root / self.ref).exists())
+
+    def test_ledger_reads_existing_failed_receipt_without_reissuing_or_promoting_it(self):
+        output = self.ref + "-output.txt"; receipt_ref = self.ref + "-receipt.yaml"
+        (self.root / output).write_bytes(b"Synthetic fixture for a failed execution receipt.\n")
+        output_sha = hashlib.sha256((self.root / output).read_bytes()).hexdigest()
+        receipt = {"schema_version": "1.0", "record_type": "terminal-command-execution", "producer": "local-command-runner",
+                   "subject_sha": self.head, "command": "fixture-command", "profile": "fixture-profile",
+                   "started_at": "2026-09-22T00:00:00+00:00", "completed_at": "2026-09-22T00:00:01+00:00",
+                   "duration_seconds": 1, "executed": True, "synthetic": False, "outcome": "failed", "exit_code": 1,
+                   "evidence_refs": ["ignored:" + output], "evidence_sha256": output_sha}
+        receipt["receipt_sha256"] = hashlib.sha256(json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        raw_receipt = CONTRACT.encoded(receipt); (self.root / receipt_ref).write_bytes(raw_receipt)
+        entry = {"acceptance_id": "AC-fixture", "issue": 320, "requires_actual_execution": True, "evidence_kind": "actual-execution",
+                 "command": "fixture-command", "profile": "fixture-profile", "outcome": "failed", "evidence_ref": "ignored:" + output,
+                 "execution_receipt_ref": "ignored:" + receipt_ref}
+        request = {"version": "1.0", "expected_head": self.head, "entries": [entry]}
+        preview = self.cli.author_input("evidence-ledger", request)
+        self.assertEqual(receipt, preview["record"]["entries"][0]["execution_receipt"])
+        self.assertEqual(raw_receipt, (self.root / receipt_ref).read_bytes())
+        entry["outcome"] = "passed"
+        with self.assertRaisesRegex(ValueError, "does not bind"):
+            self.cli.author_input("evidence-ledger", request)
+        entry["outcome"] = "failed"; (self.root / output).write_bytes(b"Changed fixture bytes.\n")
+        with self.assertRaises(ValueError): self.cli.author_input("evidence-ledger", request, self.ref, preview["preview_digest"])
+        self.assertFalse((self.root / self.ref).exists())
+
+    def test_fixed_package_envelope_requirements_cannot_be_selected_as_user_input(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory(prefix="input-envelope-") as directory:
+            envelope = Path(directory).resolve(); payload = envelope / "payload"; payload.mkdir()
+            (envelope / "requirements.txt").write_bytes(b"PyYAML==6.0.2\n")
+            _, external, _, _ = self.cli.validators()
+            with patch.object(self.cli, "ROOT", payload):
+                self.assertEqual(b"PyYAML==6.0.2\n", self.cli.input_authority_bytes("package-envelope:requirements.txt", external))
+                with self.assertRaises(ValueError): self.cli.input_file("package-envelope:requirements.txt", {}, external)
+                (payload / "requirements.txt").write_bytes(b"different\n")
+                with self.assertRaisesRegex(ValueError, "authority changed"):
+                    self.cli.input_authority_bytes("package-envelope:requirements.txt", external)
+
+
 if __name__ == "__main__":
     unittest.main()

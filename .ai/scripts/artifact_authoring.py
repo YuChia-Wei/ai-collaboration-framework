@@ -55,15 +55,22 @@ CATALOGS = {
     "source-identities": (".ai/distribution/identity-registry.yaml", "identity_records", "id", {"display_name"}),
     "identity-consumers": (".ai/distribution/identity-registry.yaml", "consumer_contracts", "id", {"path", "selector"}),
     "governance-terms": (".dev/standards/AI-CONTEXT-OWNERSHIP.yaml", "governance_term_routing.terms", "term_id", {"qualified_term", "owner_anchor", "contextual_shorthand"}),
+    "rule-consumers": (".dev/standards/AI-CONTEXT-OWNERSHIP.yaml", "rules", "rule_id", {"derived_consumers"}),
+    "validation-gate-groups": (".ai/assets/shared/validation-gate-classification.yaml", "groups", "group_id", {"reason"}),
+    "validation-external-gates": (".ai/assets/shared/validation-gate-classification.yaml", "external_fresh_gates", "gate_id", {"reason"}),
     "shell-assets": (".ai/scripts/shell-assets.yaml", "assets", "path", {"lifecycle", "replacement"}),
 }
 CATALOG_VERSIONS = {key: "1.1" if key in {"source-identities", "identity-consumers"} else "1.0" for key in CATALOGS}
 CATALOG_VERSIONS["shell-assets"] = "2.0"
+for _classification_catalog in ("validation-gate-groups", "validation-external-gates"):
+    CATALOG_VERSIONS[_classification_catalog] = "validation-gate-classification/v1"
 CATALOG_RUNTIME = {
     "source-dispositions": ("validate-source-dispositions.py", "ai_context_package.py", "runtime_skill_entries.py", "ai_context_package_identity.py", "ai_context_release_projection.py"),
     "source-identities": ("validate-repository-identity.py", "ai_context_package_identity.py"),
     "identity-consumers": ("validate-repository-identity.py", "ai_context_package_identity.py"),
     "shell-assets": ("validate-shell-assets.py",),
+    "validation-gate-groups": ("validation_subject.py", "validation-profile-registry.sh"),
+    "validation-external-gates": ("validation_subject.py", "validation-profile-registry.sh"),
 }
 TARGET_SCHEMAS = tuple(".ai/assets/skills/ai-context-init/templates/" + name + ".schema.yaml" for name in ("technology-selection", "work-item-binding"))
 
@@ -801,11 +808,39 @@ def catalog_update(view: View, request: dict) -> None:
         elif identity == "shell-assets" and name == "replacement" and value is None:
             selected[name] = None
         else:
-            selected[name] = strings(value, name) if name in {"capability_tags", "stop_and_escalation", "patterns"} else string(value, name)
+            selected[name] = strings(value, name) if name in {"capability_tags", "stop_and_escalation", "patterns", "derived_consumers"} else string(value, name)
+    if identity == "rule-consumers":
+        _advance(data, request["timestamp"])
+        resolved_consumers: set[str] = set()
+        for consumer in selected["derived_consumers"]:
+            path = safe_path(view.root, consumer)
+            canonical_path = os.path.normcase(str(path.resolve()))
+            if canonical_path in resolved_consumers:
+                raise AuthoringError("derived consumers must resolve to unique files")
+            resolved_consumers.add(canonical_path)
+            content = view.read(consumer)
+            if content is None:
+                raise AuthoringError(f"missing derived consumer: {consumer}")
+            if not re.search(r"(?<![A-Za-z0-9_-])" + re.escape(record_id) + r"(?![A-Za-z0-9_-])", content.decode("utf-8")):
+                raise AuthoringError(f"derived consumer {consumer} must cite the exact rule id {record_id}")
     view.put(ref, dump(data))
     errors: list[str] = []
     if identity == "governance-terms":
         _module("validate-ai-context").validate_governance_term_routing_data(data, errors, root=view.path())
+    elif identity == "rule-consumers":
+        owner = ".dev/standards/AI-CONTEXT-OWNERSHIP.md"
+        if view.read(owner) is None: raise AuthoringError(f"missing rule ownership authority {owner}")
+        validator = _module("validate-ai-context")
+        validator.ROOT = view.path()
+        validator.validate_rule_ownership(errors)
+    elif identity in {"validation-gate-groups", "validation-external-gates"}:
+        validator = _module("validation_subject")
+        for authority in (validator.SCHEMA_REF, validator.CONTRACT_REF, validator.REGISTRY_REF, validator.SUBJECT_IMPLEMENTATION_REF):
+            if view.read(authority) is None: raise AuthoringError(f"missing classification authority {authority}")
+        # Target bytes are observed, never executed. The fixed running source
+        # registry supplies metadata only; its gate commands are not dispatched.
+        checks = validator.registry_snapshot(Path(__file__).resolve().parents[2])
+        validator.validate_classification_authority(data, checks)
     elif identity == "shell-assets":
         # Git index modes are authority distinct from HEAD and working bytes.
         view.observed["git:shell-index"] = git(view.root, "ls-files", "--stage", "*.sh")

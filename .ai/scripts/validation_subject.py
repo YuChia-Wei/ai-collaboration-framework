@@ -283,6 +283,13 @@ done
 
 def load_classification_authority(repo: Path) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
     authority = _load_yaml(repo / CLASSIFICATION_REF, "gate classification authority")
+    return validate_classification_authority(authority, registry_snapshot(repo))
+
+
+def validate_classification_authority(
+    authority: dict[str, Any], checks: Mapping[str, object]
+) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
+    """Validate candidate classification data without reading or executing files."""
     _exact_keys(
         authority,
         {
@@ -303,7 +310,6 @@ def load_classification_authority(repo: Path) -> tuple[dict[str, dict[str, Any]]
         or authority["reuse_eligibility_values"] != ELIGIBILITY
     ):
         raise SubjectError("gate classification authority identity is invalid")
-    checks = registry_snapshot(repo)
     classifications: dict[str, dict[str, Any]] = {}
     groups = authority["groups"]
     if not isinstance(groups, list) or not groups:

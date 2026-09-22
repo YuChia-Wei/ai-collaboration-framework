@@ -1,0 +1,56 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GAP-002",
+  "workflow_id": "2026-09-22-artifact-gap-reduction",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-22T13:53:52+08:00",
+  "updated_at": "2026-09-22T14:20:17+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260921-18-gav#AIC-002"
+  ],
+  "scope": {
+    "target": "Add permitted catalog maintenance operations and reconcile all original gap dispositions with a Chinese explanation.",
+    "files": [],
+    "constraints": [
+      "Preserve semantic authority and provider baselines.",
+      "Do not reclassify a gap as executable without a real producer."
+    ],
+    "non_goals": []
+  },
+  "execution": {
+    "steps": [
+      "Implement useful restricted operations.",
+      "Split mixed tooling registry routes.",
+      "Document retained semantic decisions and verification evidence."
+    ],
+    "validation": [
+      "Focused authoring, registry and applicable package/CLI checks."
+    ],
+    "last_completed_step": "Restricted gate and consumer authoring, all 16 dispositions and focused checks complete.",
+    "next_action": "Commit implementation candidate, obtain independent immutable verification and complete normal online admission."
+  },
+  "results": {
+    "summary": "Three restricted catalog selectors implemented, mixed registry route split, current owner/manual boundaries documented.",
+    "files_changed": [
+      ".ai/scripts/artifact_authoring.py",
+      ".ai/scripts/validation_subject.py",
+      ".ai/scripts/tests/test_artifact_catalogs.py",
+      ".ai/assets/shared/artifact-lifecycle-registry.json",
+      ".ai/scripts/README.md",
+      ".ai/scripts/validation-profile-registry.sh"
+    ],
+    "tests_run": [
+      "8 catalog cases passed (22.841 s); lifecycle routes 3 passed (13.729 s); profile registry 11 passed (19.394 s); canonical context and workflow artifact validation passed."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Independent verification and provider admission pending; remaining manual/semantic boundaries retained explicitly.",
+    "follow_up_needed": true
+  }
+}

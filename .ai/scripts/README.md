@@ -75,6 +75,43 @@ are outside this tool's migration scope.
 Compatibility remains tested with hand-authored inputs and independent expected
 outcomes, including failed results, authority drift and illegal custody paths.
 
+### Preparing Inputs
+
+`input` reduces manual preparation of four current input kinds. A read-only
+preview returns the proposed record and a digest. Creating a new file requires
+the same request and digest; the file must be ignored, untracked, contained and
+under an existing parent. Existing files are never overwritten. Referenced
+bytes, runtime authority, Git identity and tracked status are checked again
+before and after publication. Cleanup removes only this operation's unchanged
+output. A collision, linked path, changed input or unsupported version fails.
+
+```text
+python .ai/scripts/execution-artifacts.py input --kind review-input --request .dev/ai-context/local/review-request.yaml
+python .ai/scripts/execution-artifacts.py input --kind review-input --request .dev/ai-context/local/review-request.yaml --output .dev/ai-context/local/review-input.yaml --expect <preview-digest>
+```
+
+Every authoring request has `version: "1.0"` and an explicit full
+`expected_head` matching the clean tracked checkout. Other inputs are:
+
+| Kind | Caller supplies | Tool derives and checks |
+| --- | --- | --- |
+| `review-input` | `repository`, full `base_sha`, current `classification`, nonempty `criteria`, explicit `authority_paths` | Existing commit trees, canonical review-subject digest, exact authority byte hashes; canonical review preflight. |
+| `prepare-request` | Current execution-request semantic fields except `schema_version`, `record_type`, `expected_commit_sha` | Record constants and expected commit; request model, clean Git/cwd and any selected review-input checks. It does not produce packet/dispatch files. |
+| `dependency-request` | `validator_id`, supported `harness`, `entrypoint`, `callable`, `argv`, `declared_dependencies` with all five dimensions | Request schema identity and current subject; owner request checks and bound file bytes. It does not import or run the selected callable. |
+| `evidence-ledger` | Nonempty `entries` with explicit acceptance ID, Issue number, actual-execution requirement, evidence kind, command, profile, outcome and one typed local `evidence_ref`; an existing `execution_receipt_ref` when required | Evidence/receipt byte hashes, copied receipt, subject binding, human-report projection and ledger seal; canonical ledger validation. It never issues or repairs a receipt. |
+
+For ledger entries, the field names are `acceptance_id`, `issue`,
+`requires_actual_execution`, `evidence_kind`, `command`, `profile`, `outcome`,
+`evidence_ref` and optional `execution_receipt_ref`. Actual execution uses an
+existing `ignored:<repository-relative-path>` receipt and output. Failed and
+blocked observations retain their outcomes. Non-actual entries remain
+file-backed document/unit/fixture evidence, not execution substitutes.
+
+Input creation grants no approval, review outcome, live lease, freeze, reuse,
+dispatch execution or admission. The owner still supplies semantic facts and
+criteria, and subsequent operations perform their own current validation.
+These are current-version producers; they do not migrate historical evidence.
+
 ## Workflow And Assessment Authoring
 
 ### Lifecycle Routes And Catalog Updates
@@ -123,6 +160,27 @@ the remaining catalogs use 1.0. Disposition candidates are checked against the
 pinned committed source/profile partition, not uncommitted whole-worktree
 package truth. Shell checks bind Git index modes and exact runner declarations;
 required runnable gates cannot be retired through this operation.
+
+`validation-gate-groups` and `validation-external-gates` allow only an existing
+record's `reason`. Their version is `validation-gate-classification/v1`.
+Identity, membership, sensitivities, reuse eligibility, profiles and environment
+contracts remain protected. Metadata validation uses the executing source's
+fixed registry, observes the selected repository's bytes, and does not dispatch
+gate commands. Editing a reason still invalidates the raw authority binding.
+
+`rule-consumers` allows only an existing rule's `derived_consumers` in the source
+ownership catalog. Each selected path must be a unique canonical contained
+file citing the exact rule ID; canonical ownership and rule semantics remain
+protected. The supplied timestamp must advance `updated_at`. This checks
+references, not semantic parity between the rule and a consumer's prose.
+
+Lifecycle routes distinguish the executable shell-assets editor from the
+Python entrypoint, fixture-classification and executable Bash profile registries.
+The latter need coordinated code/semantic changes. Provider baseline and
+Git/provider policy editing remain semantic owner routes; lease, freeze,
+reuse, handoff, route matrix and opt-in local routing still expose their
+specific manual boundaries. None is reclassified as executable merely because
+a serializer or a validator exists.
 
 `skill.update` selects an existing canonical skill by `id` and accepts `changes`
 for inputs, outputs, constraints, triggers, handoff_rules and runtime_notes.

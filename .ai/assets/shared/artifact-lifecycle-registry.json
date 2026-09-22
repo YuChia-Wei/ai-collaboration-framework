@@ -69,19 +69,21 @@
         ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
       ],
       "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/execution-artifacts.py::build_evidence_ledger"
+      ],
       "validators": [
         ".ai/scripts/validate-agent-execution-guardrails.py::validate_evidence"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Current 1.0 ledger from explicit acceptance/outcome fields and existing local evidence/receipt files; derives byte digests, receipt copy, report projection and seal. Does not issue receipts or establish execution truth.",
       "migration": {
         "disposition": "preserve",
         "route": "Assemble actual evidence bindings and human parity; never synthesize passing evidence."
       },
       "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
-      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
       "applicability": "portable"
     },
     {
@@ -191,19 +193,21 @@
         ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
       ],
       "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/execution-artifacts.py::build_review_input"
+      ],
       "validators": [
         ".ai/scripts/validate-agent-execution-guardrails.py::validate_review_input"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Current 1.0 review input from explicit classification, criteria, repository identity, base commit and authority paths; derives current Git trees, subject digest and authority byte digests. Requires expected clean HEAD.",
       "migration": {
         "disposition": "regenerate",
         "route": "Bind actual immutable Git subject, criteria and authority before dispatch."
       },
       "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
-      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
       "applicability": "portable"
     },
     {
@@ -269,7 +273,7 @@
         ".ai/scripts/validate-agent-execution-guardrails.py::validate_lease"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Lease authoring remains manual under the guardrail owner. Lock acquisition exists, but acquire/release and crash recovery require a coordinated custody operation; an input serializer alone must not claim a live or released lease.",
       "migration": {
         "disposition": "owner-recovery",
         "route": "Supply observed snapshot and holder, then acquire and explicitly release the lock. Lock creation does not author the lease."
@@ -293,7 +297,7 @@
         ".ai/scripts/ai_context_cli_routing.py::validate_cli_execution_routing"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Optional ignored local configuration remains an explicit owner persistence operation after successful recovery and disclosure of exact path, fields and create/merge/replace action. No real personal binding is selected or written by this tooling follow-up.",
       "migration": {
         "disposition": "unsupported",
         "route": "Explicit opt-in owner configuration only; ignored, untracked and secret-free."
@@ -390,19 +394,21 @@
         ".ai/assets/shared/validation-dependency-observation.schema.yaml"
       ],
       "owner": ".ai/scripts/observe-validation-dependencies.py",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/execution-artifacts.py::build_dependency_request"
+      ],
       "validators": [
         ".ai/scripts/observe-validation-dependencies.py::validate_request"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Current request/v1 with explicit validator, supported harness, callable, argv and five dependency dimensions; derives subject from pinned clean HEAD and validates local references. Does not import or execute the selected callable.",
       "migration": {
         "disposition": "unsupported",
         "route": "Supply explicit harness, entrypoint and dependency request."
       },
       "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
-      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
       "applicability": "portable"
     },
     {
@@ -462,20 +468,22 @@
         ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
       ],
       "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/execution-artifacts.py::build_review_subject"
+      ],
       "validators": [
         ".ai/scripts/validate-agent-execution-guardrails.py::validate_review_input",
         ".ai/scripts/validate-validation-lifecycle.py::validate_audit"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Canonical independent-review-subject/v1 is derived as part of review-input authoring from existing commit trees and explicit repository identity; no review or admission is inferred.",
       "migration": {
         "disposition": "regenerate",
         "route": "Derive immutable Git tree identity and bind review authority."
       },
       "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
-      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
       "applicability": "portable"
     },
     {
@@ -571,7 +579,7 @@
         ".ai/scripts/validate-validation-lifecycle.py::validate_freeze"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Freeze sequencing and terminal release require observed mutation completion, workflow/declaration state and custody; retain the explicit owner record and validator instead of defaulting prerequisite booleans.",
       "migration": {
         "disposition": "owner-recovery",
         "route": "Observe freeze state, invalidate content drift and release explicitly."
@@ -589,13 +597,15 @@
         ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
       ],
       "owner": ".ai/scripts/validation_subject.py",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/artifact_authoring.py::catalog_update"
+      ],
       "validators": [
         ".ai/scripts/validation_subject.py::load_classification_authority"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Existing group or external gate reason only through validation-gate-groups / validation-external-gates selectors. Gate identity, membership, sensitivities, reuse eligibility, profiles and environment contracts are protected.",
       "migration": {
         "disposition": "unsupported",
         "route": "Preserve exact gate coverage when editing canonical classification authority."
@@ -619,7 +629,7 @@
         ".ai/scripts/validate-validation-lifecycle.py::validate_reuse_receipt"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Reuse receipt requires complete dependency, runtime, environment, original execution and fresh-gate proof. A serializer cannot resolve those proofs; follow the existing validation lifecycle owner without expanding reuse eligibility.",
       "migration": {
         "disposition": "regenerate",
         "route": "Supply complete dependency and authority proof with original evidence."
@@ -1032,7 +1042,7 @@
         ".ai/scripts/ai_context_upgrade_routes.py::load_route_matrix"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Current 1.1 routes require selected retained origins, cutovers, deprecations and real package/execution evidence. Author via the upgrade owner; legacy 1.0 stays parse-only until explicit reconciliation. No route choices or proof are generated.",
       "migration": {
         "disposition": "owner-reconciliation",
         "route": "Legacy 1.0 is parse-only and reconciliation-required; current 1.1 needs real edge proof."
@@ -1074,19 +1084,21 @@
         ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
       ],
       "owner": ".ai/scripts/execution-artifacts.py",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/execution-artifacts.py::build_prepare_request"
+      ],
       "validators": [
         ".ai/scripts/execution-artifacts.py::prepare"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Current 1.0 request from explicit semantic fields and expected clean HEAD; supplies record constants and validates shape, Git/cwd and selected review input. Packet/dispatch preparation and execution remain separate operations.",
       "migration": {
         "disposition": "unsupported",
         "route": "Supply explicit request facts; prepare does not write its own input request."
       },
       "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
-      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+      "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
       "applicability": "portable"
     },
     {
@@ -1223,14 +1235,14 @@
         ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
       ],
       "owner": ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py",
-      "authoring": "manual-gap",
+      "authoring": "semantic-owner",
       "producers": [],
       "validators": [
         ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py::schema_errors",
         ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py::contract_errors"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "The accepted provider baseline has no ordinary editable fields. The owning governance route requires an explicit new baseline decision, new ID/version and coordinated digest-bound source changes; existing validators do not grant that decision.",
       "migration": {
         "disposition": "unsupported",
         "route": "Author provider-owned reference contract and run its tests."
@@ -1873,7 +1885,7 @@
         ".ai/scripts/validate-workflow-handoff.py::main"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Use the owning checkpoint template and validator with captured Git, gate and attribution observations, registry registration and post-commit receiver verification. A future writer requires captured-observation replay and handoff-specific multi-file recovery; the ordinary generic create adapter is not safe for this lifecycle.",
       "migration": {
         "disposition": "unsupported",
         "route": "Use the owning semantic authoring route and preserve historical records."
@@ -2202,13 +2214,15 @@
         ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"
       ],
       "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
-      "authoring": "manual-gap",
-      "producers": [],
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/artifact_authoring.py::catalog_update"
+      ],
       "validators": [
         ".ai/scripts/validate-ai-context.py::validate_rule_ownership"
       ],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Existing-rule derived_consumers only through rule-consumers; unique contained files must cite the selected rule ID. Existing governance-terms has its separately documented prose fields. Owner, strength, routing and identity remain protected.",
       "migration": {
         "disposition": "unsupported",
         "route": "Use the owning semantic authoring route and preserve historical records."
@@ -2244,14 +2258,85 @@
       "applicability": "source"
     },
     {
-      "kind": "tooling-registries",
+      "kind": "shell-asset-registry",
       "baseline_refs": [
         "I17"
       ],
       "models": [
-        ".ai/scripts/python-entrypoints.json",
-        ".ai/scripts/shell-assets.yaml",
-        ".ai/scripts/test-fixture-classifications.json",
+        ".ai/scripts/shell-assets.yaml"
+      ],
+      "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "authoring": "executable",
+      "producers": [
+        ".ai/scripts/artifact_authoring.py::catalog_update"
+      ],
+      "validators": [
+        ".ai/scripts/validate-shell-assets.py::validate_repository_manifest"
+      ],
+      "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+      "writable": "Existing shell-assets selector edits lifecycle/replacement under exact Git executable mode, runner coverage and required-entrypoint validation; it does not execute scripts.",
+      "migration": {
+        "disposition": "unsupported",
+        "route": "Use the owning semantic authoring route and preserve historical records."
+      },
+      "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+      "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+      "applicability": "source"
+    },
+    {
+      "kind": "python-entrypoint-registry",
+      "baseline_refs": [
+        "I17"
+      ],
+      "models": [
+        ".ai/scripts/python-entrypoints.json"
+      ],
+      "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "authoring": "manual-gap",
+      "producers": [],
+      "validators": [
+        ".ai/scripts/validate-dependency-versions.py::validate_python_entrypoint_registry"
+      ],
+      "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+      "writable": "Coordinate entrypoint identity, portability, dependency profile and exit-code allocation with the actual CLI/import closure. Shape validation alone cannot choose these semantics.",
+      "migration": {
+        "disposition": "unsupported",
+        "route": "Use the owning semantic authoring route and preserve historical records."
+      },
+      "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+      "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+      "applicability": "source"
+    },
+    {
+      "kind": "fixture-classification-registry",
+      "baseline_refs": [
+        "I17"
+      ],
+      "models": [
+        ".ai/scripts/test-fixture-classifications.json"
+      ],
+      "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "authoring": "manual-gap",
+      "producers": [],
+      "validators": [
+        ".ai/scripts/test_fixture_runtime.py::load_classification_manifest"
+      ],
+      "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+      "writable": "Coordinate selected disposable fixture call sites and excluded durability/platform suites. Never promote a semantic storage test to disposable I/O through a generic registry editor.",
+      "migration": {
+        "disposition": "unsupported",
+        "route": "Use the owning semantic authoring route and preserve historical records."
+      },
+      "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+      "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+      "applicability": "source"
+    },
+    {
+      "kind": "validation-profile-registry",
+      "baseline_refs": [
+        "I17"
+      ],
+      "models": [
         ".ai/scripts/validation-profile-registry.sh"
       ],
       "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
@@ -2259,7 +2344,7 @@
       "producers": [],
       "validators": [],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "This is executable Bash and coupled gate/description/selection authority. Use a concrete reviewed code change with registry and selected gate tests; arbitrary metadata editing is not supported.",
       "migration": {
         "disposition": "unsupported",
         "route": "Use the owning semantic authoring route and preserve historical records."
@@ -2278,11 +2363,11 @@
         ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
       ],
       "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
-      "authoring": "manual-gap",
+      "authoring": "semantic-owner",
       "producers": [],
       "validators": [],
       "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
-      "writable": "No bounded executable writer registered; follow the declared owner route.",
+      "writable": "Use ai-context-governance for an explicitly approved concrete policy change and invariant-specific verification. These files define authority rather than an ordinary metadata catalog; no generic writer or version conversion is offered.",
       "migration": {
         "disposition": "unsupported",
         "route": "Use the owning semantic authoring route and preserve historical records."
