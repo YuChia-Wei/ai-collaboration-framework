@@ -1,0 +1,75 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-lesson-implementation-LESSON-001-handoff
+created_at: '2026-09-23T01:58:20+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml
+contract_exception: U001 proportional handoff; no native handoff-validator or independent verification claim
+repository:
+  worktree: F:/framework-next/330
+  branch: codex/2026-09-23-lesson-implementation
+  starting_commit: a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc
+  checkpoint_commit_source: containing-commit
+  persistent_git_common_database: C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git
+  terminal_identity: Read exact containing HEAD, actual commit message and clean worktree before callback
+workflow:
+  workflow_id: 2026-09-23-lesson-implementation
+  task_id: LESSON-001
+  status: completed
+  disposition: implementation-complete/validation-deferred
+  issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/330
+resume:
+  hidden_context_required: false
+  last_completed_action: Self-contained candidate-only Lesson implementation and limited static checks
+  exact_next_action: Coordinator reads immutable local commit and aligns the exact eight members with Issue 331 before first push
+  coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  model_source: explicit coordinator dispatch; not independent runtime attestation
+  sub_agents: none
+public_interfaces:
+  metadata_version: 1
+  skill: lesson@0.1.0
+  tool: lesson.fs
+  executable: scripts/lesson.py
+  invocation: python <absolute-package>/scripts/lesson.py --request <absolute-file|->
+  operations: [explain, create, inspect, query, validate, revise, render]
+  contract: src/skills/lesson/references/operations.md
+  configuration: src/skills/lesson/references/configuration.md
+  unexecuted_example: src/skills/lesson/references/example.md
+  record: lesson.record@1.0.0
+  dependency_closure: [lesson@0.1.0]
+  query_decision: Actual query digest binds normalized collection, exact text, schema and all selected raw bytes/errors; create reruns under lock
+package_members:
+- SKILL.md
+- skill-package.yaml
+- references/configuration.md
+- references/operations.md
+- references/example.md
+- schemas/lesson-record.schema.json
+- templates/lesson.md
+- scripts/lesson.py
+actual_checks:
+- UTF-8 and JSON/YAML parsing of the bounded changed trees
+- Python ast.parse without importing or running product code
+- Metadata-declared eight-member closure equals actual package files
+- Six package Markdown link file targets exist; operation anchor inspected
+- Author content inspection of strict config/parsing, query decisions, writes and cleanup
+precommit_checks:
+  instructions: Stage only the two assigned roots; inspect scope and git diff --cached --check; validate complete ignored message file before committing its exact bytes
+  command: python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-lesson-implementation/artifacts/commit-message.txt --workflow-id 2026-09-23-lesson-implementation
+  evidence: Actual output retained by task execution; committed Validation section records only completed checks
+verification:
+  status: deferred-by-owner
+  authority: U001
+  owner: program 322 coordinator / P7
+  items: [new CLI execution including help, behavioral tests, filesystem trials, package build, installation, migration, old validators except message format, independent audits, CI]
+  next_action: Select and run focused new-contract checks and supported filesystem trials at P7
+unresolved_decisions: []
+limits:
+- One cooperating writer; external editor races are outside the supported transaction model
+- Local NTFS or identified Linux local filesystem writes only; no platform acceptance claim
+- All selected symlink/reparse paths rejected; missing parents must fit write roots
+- Cleanup/publication failures retain none/committed/unknown state; no stale-lock recovery
+- No root/distribution/runtime/test edits, no record migration and no provider mutation
+proposed_index_row: '| 2026-09-23-lesson-implementation | ai-context-governance | completed | Issue #330; implementation complete, validation deferred-by-owner to P7 |'

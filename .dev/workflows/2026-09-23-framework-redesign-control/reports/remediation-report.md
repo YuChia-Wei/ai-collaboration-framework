@@ -28,3 +28,7 @@ Bounded P0 implementation is complete; first push, PR merge and provider closure
 ## P2 dispatch checkpoint
 
 P1 merged through PR #329 (`b4d54966a0ed704d6b300b9f965976e27cd8512d`). Issues #325/#326 and Project items were read back completed; #326 required explicit closure because the PR body auto-closed only #325. Both P2 Issues #330/#331 now exist with Project In progress, Target release Unassigned and Owner review Approved (execution authorization, not final acceptance). Independent execution dispatch is the next action. No product tests or new tool trials have run.
+
+## P2 code-delivery checkpoint
+
+#330/#331 local implementations have been received and combined. [P2 integration review](p2-integration.md) records exact subjects, member comparison, source-inspection limits and deferred first-use/platform/assembly concerns. This advances implementation only; F-01/F-02/F-05/F-07/F-08 remain partially resolved until later capability, installation and verification work. Program #322 is not complete.

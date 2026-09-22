@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-framework-p2-dispatch`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-framework-p2-integration`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -22,8 +22,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #324 | P0 transition control | scoped override, root/source pointers, one exact source-only distribution exclusion, own workflow | integrated PR #328; Issue/Project complete; P7 verification deferred |
 | #325 | P1-A portable contracts | `.dev/design/framework-next/portable-contracts/`, own workflow | integrated PR #329; Issue/Project complete |
 | #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | integrated PR #329; Issue/Project complete |
-| #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | active independent Astra Ultra task |
-| #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | active independent Astra Ultra task |
+| #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | local implementation complete; online integration pending |
+| #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | local implementation complete; online integration pending |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -41,7 +41,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #330 and #331 are running in separate Astra Ultra tasks and assigned RAM-disk worktrees from `a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc`. Task IDs and actual model/effort/worktree read-backs are in tasks/ISSUE-330.json and ISSUE-331.json. Await their local coherent deliveries, obtain #330 exact package members and reconcile #331 before first push. Completion callbacks return to this coordinator; if callback transport is rejected, inspect the task final/handoff directly. P1 is integrated via PR #329; product tool/build/install trials and full verification remain deferred to P7.
+Current action: #330 and #331 local deliveries are integrated on the dedicated P2 branch; see [source inspection and limits](reports/p2-integration.md). Exact eight-member metadata/manifest comparison matched. Arrange online PR integration, then open bounded P3 knowledge and work-management capabilities with a single owner for any shared contract decisions. All product execution remains deferred to P7; root runtime and installed state have not changed.
 
 ## Remaining work and verification
 

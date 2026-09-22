@@ -1,0 +1,34 @@
+{
+  "task_id": "LESSON-001",
+  "workflow_id": "2026-09-23-lesson-implementation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T01:51:34+08:00",
+  "updated_at": "2026-09-23T01:58:20+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance_note": "Explicit coordinator dispatch; no independent runtime attestation",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #330 standalone lesson.fs candidate implementation",
+    "files": ["src/skills/lesson/", ".dev/workflows/2026-09-23-lesson-implementation/"],
+    "constraints": ["U001", "one writer in assigned RAM worktree", "local commits before first push"],
+    "non_goals": ["promotion", "delete", "migration", "runtime trials", "tests", "provider mutation"]
+  },
+  "execution": {
+    "steps": ["Read live Issue, assigned handoff, P1 interfaces and U001", "Implement declared package members and operations"],
+    "validation": ["UTF-8/JSON/YAML readability", "Python ast.parse without product import", "Exact eight-member metadata closure and six local link targets", "Author content inspection; behavioral verification deferred-by-owner"],
+    "last_completed_step": "Candidate-only source, configuration/operations and custom-path example completed",
+    "next_action": "Coordinator integrates local commit and #331 exact closure; P7 selects runtime checks"
+  },
+  "results": {
+    "summary": "Eight-member standalone Lesson package implemented; all seven candidate operations are present. No product tool has been run.",
+    "files_changed": ["src/skills/lesson/", ".dev/workflows/2026-09-23-lesson-implementation/"],
+    "tests_run": [],
+    "finding_status": "addressed-with-validation-deferred",
+    "residual_risk": "Behavior/platform verification deferred-by-owner to program 322 coordinator / P7",
+    "follow_up_needed": true
+  }
+}
