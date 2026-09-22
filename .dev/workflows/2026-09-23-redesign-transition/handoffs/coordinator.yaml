@@ -1,0 +1,108 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-redesign-transition-coordinator
+created_at: '2026-09-23T01:13:05+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml
+template_version: unversioned-source-at-53c9c8e58615e87e36f7b74ea8851fe845312daa
+contract_exception: 'U001: adapted bounded handoff; critical gate, audit/fixture packet,
+  shared checkpoint registry and native handoff validation deferred-by-owner; no native
+  schema/validator compliance claimed'
+repository:
+  root: F:/framework-next/324
+  branch: codex/2026-09-23-redesign-transition
+  base_branch: main
+  starting_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+  bootstrap_commit: cfe15c40c34f4cc23936421beed57fa8c4851ab9
+  checkpoint_commit_source: containing-commit
+  resolve_delivery_head: git log -1 --format=%H -- .dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml
+  precommit_observation: Only scoped delivery files changed; post-commit HEAD/status
+    will be read back in coordinator callback
+  receiving_requirement: Confirm expected branch, resolve containing commit and verify
+    clean tracked/untracked status before transport; ignored message files may remain
+workflow:
+  workflow_id: 2026-09-23-redesign-transition
+  task_id: ISSUE-324
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/324
+  program_issue: '#322'
+  coordinator_thread: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
+  status: completed
+  verification_status: deferred-by-owner
+  implementation_state: implementation-complete/validation-deferred
+resume:
+  hidden_context_required: false
+  last_completed_action: Bounded P0 implementation and allowed document/Git/message
+    checks complete; delivery identified by containing commit
+  exact_next_action: Coordinator reads callback HEAD and containing commit, inspects
+    scope/diff, registers suggested index row, then arranges authorized first push/PR/online
+    merge
+  read_order:
+  - 'Issue #324'
+  - .dev/assessments/ASM-20260923-00-6oq/execution-plan.md (U001)
+  - .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md
+  - .dev/workflows/2026-09-23-redesign-transition/reports/remediation-report.md
+critical_gate:
+  status: deferred-by-owner
+  command: null
+  exit_code: null
+  authority: U001
+  next_owner: '#322 coordinator / P7'
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  model_source: user-declared
+  evidence_ref: 'Issue #324 and explicit coordinator dispatch'
+  sub_agents_used: false
+  child_conversations_created: false
+actual_checks:
+- Assigned clean starting worktree/branch/HEAD read-back
+- Issue/U001/CI-cleanup evidence and actual changed content read
+- Bootstrap direct JSON/YAML parse, staged diff whitespace and exact message format
+  check
+- Implementation diff check and bilingual/source boundary inspection
+- 11 UTF-8 files read, 3 YAML and 1 JSON parsed; 18 local Markdown file targets resolved
+- Two source Git blob IDs/SHA-256 digests and all seven CI rows matched pinned evidence
+- Delivery exact planned commit-message format check passed
+deferred_checks:
+  status: deferred-by-owner
+  authority: U001
+  next_owner: '#322 coordinator / P7'
+  scope:
+  - Legacy validators and critical/full/check-all gates
+  - All test suites and package/upgrade/migration/compatibility/benchmark trials
+  - Validation-only audit/packet/lease/native-handoff machinery
+  - Hosted required contexts and legacy admission machinery
+scope:
+- .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md
+- AGENTS.md
+- AGENTS.zh-TW.md
+- .dev/standards/WORKFLOW-GATE-POLICY.md
+- .dev/TEAM-GIT-FLOW-RULES.MD
+- .dev/workflows/2026-09-23-redesign-transition/
+remaining_decisions:
+  issue_324: none
+  p7: Pipeline/gate dispositions, redesigned checks and explicit restoration adoption
+    remain with P7
+  integration: Coordinator selects commit organization and online PR integration topology
+integration:
+  push: not-performed
+  pull_request: not-created
+  merge: not-performed
+  issue_closure: not-performed
+  shared_index: coordinator-owned; row below supplied for registration, not written
+    by issue 324
+protected_paths:
+- .dev/workflows/2026-09-23-framework-redesign-control/
+- .dev/workflows/INDEX.MD
+- .dev/assessments/ASM-20260923-00-6oq/
+- .github/
+- Other task worktrees
+- F:/ai-context-tests/
+updated_at: '2026-09-23T01:15:11+08:00'
+receiving_checks:
+- Read actual callback HEAD and git status before transport
+- Resolve containing commit of this file and compare branch/diff
+- Keep full verification deferred-by-owner; no legacy gate rerun
+suggested_workflow_index_row: '| [`2026-09-23-redesign-transition`](2026-09-23-redesign-transition/workflow.yaml)
+  | Establish temporary redesign governance and CI suspension records | `ai-context-governance`
+  | `completed` | `2026-09-23T01:15:11+08:00` | [plan](2026-09-23-redesign-transition/workflow-plan.md)
+  |'

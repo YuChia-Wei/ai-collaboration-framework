@@ -9,10 +9,11 @@
 - `base_branch`: `main`; branch segment: `1`
 - `worktree`: `F:/framework-next/324`
 - `starting_commit`: `53c9c8e58615e87e36f7b74ea8851fe845312daa`
-- `status`: `in_progress`; `current_phase`: `remediation`
+- `status`: `completed`; `current_phase`: `completed`
+- `implementation_state`: `implementation-complete/validation-deferred`; online integration remains pending coordinator action.
 - `artifact_root`: `.dev/workflows/2026-09-23-redesign-transition`
 - `created_at`: `2026-09-23T01:08:43+08:00`
-- `updated_at`: `2026-09-23T01:08:43+08:00`
+- `updated_at`: `2026-09-23T01:15:11+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -47,7 +48,7 @@ artifacts. No push, PR, merge or Issue closure belongs to this task.
 
 - Baseline: [ASM-20260923-00-6oq](../../assessments/ASM-20260923-00-6oq/assessment.yaml), selected finding `F-06`; original assessment remains unchanged.
 - Task: [ISSUE-324](tasks/ISSUE-324.json).
-- Planned delivery: `reports/remediation-report.md`, `evidence/ci-restoration-inventory.yaml`, `handoffs/coordinator.yaml`.
+- Delivery records: `reports/remediation-report.md`, `evidence/ci-restoration-inventory.yaml`, `handoffs/coordinator.yaml`.
 - Source evidence: coordinator `evidence/ci-suspension.json` and `evidence/branch-cleanup.json`; preserve original bytes and observation times.
 - Independent verification assessment: `deferred-by-owner`, next owner program #322 / P7; no fabricated assessment ID or audit pass.
 - Templates retain their structural purpose; U001 overrides critical gates, native handoff validation and validation-only audit fields. No claim of legacy schema/validator compliance.
@@ -56,7 +57,7 @@ artifacts. No push, PR, merge or Issue closure belongs to this task.
 
 | Finding | Severity | Owner | Disposition | Task | Validation |
 | --- | --- | --- | --- | --- | --- |
-| `ASM-20260923-00-6oq#F-06` | not rated in baseline | #324 for temporary governance; P7 for redesigned validation | P0 pending; full finding remains open through P7 | `ISSUE-324` | Allowed document/Git checks only; framework verification `deferred-by-owner` |
+| `ASM-20260923-00-6oq#F-06` | not rated in baseline | #324 for temporary governance; P7 for redesigned validation | P0 implementation complete; F-06 partially resolved, full verification deferred to P7 | `ISSUE-324` | Allowed document/Git checks only; framework verification `deferred-by-owner` |
 
 ## Stages And Checkpoints
 
@@ -78,12 +79,13 @@ artifacts. No push, PR, merge or Issue closure belongs to this task.
 
 ## Resume Checkpoint
 
-- Last completed action: authoritative inputs and sanitized CI/cleanup records read; clean assigned branch and starting SHA confirmed.
-- Current task: `ISSUE-324`, `in_progress`.
-- Exact next action: commit bootstrap, then create the scoped source override and restoration record.
-- Checks already performed: Issue read-back (open); Git root/branch/HEAD/status; evidence/document readability. Initial sandbox GitHub read failed with a local proxy connection error; scoped network read then succeeded. No credentials changed.
+- Last completed action: source override, aligned entry/policy pointers, restoration inventory and bounded handoff authored and inspected; allowed document/Git and exact planned message checks completed.
+- Current task: `ISSUE-324`, `completed` for local P0 implementation; verification remains `deferred-by-owner` under U001.
+- Exact next action: coordinator reads the delivered branch HEAD and `handoffs/coordinator.yaml`, inspects the scoped diff, registers the suggested index row, and arranges commit organization and the authorized first push/PR/online merge.
+- Checks already performed: Issue read-back (open); Git root/branch/HEAD/status; 11 UTF-8 files, 3 YAML and 1 JSON syntax parses, 18 local Markdown links; actual content/bilingual/scope inspection; two source blob/hash identities and seven inventory rows; clean diff whitespace; both exact planned commit messages passed format checks. Initial sandbox GitHub read failed with a local proxy connection error; scoped network read then succeeded. No credentials changed.
 - A tooling-path probe named two absent optional hook/config paths and exited 2; it was a discovery probe, not a validation result. Effective Git hooks configuration was read separately.
-- Shared index action: return a proposed row to the coordinator; do not write `.dev/workflows/INDEX.MD`.
+- Shared index action: use the proposed row in `handoffs/coordinator.yaml`; `.dev/workflows/INDEX.MD` remains unchanged by this task.
+- Delivery identity: this record and `handoffs/coordinator.yaml` travel in the local delivery commit. Resolve it with `git log -1 --format=%H -- .dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml`; final HEAD and clean-state read-back are returned in the coordinator callback, not fabricated in advance.
 - Blockers or unresolved design choices: none in the accepted P0 scope; P7 decisions remain separately owned.
 
 ## Branch Lifecycle
@@ -91,6 +93,8 @@ artifacts. No push, PR, merge or Issue closure belongs to this task.
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-09-23-redesign-transition` | `main` | assigned local start | `53c9c8e58615e87e36f7b74ea8851fe845312daa` | no push | 2026-09-23T01:08:43+08:00 | coordinator-created isolated worktree | same branch; bootstrap then P0 delivery |
+| 1 | `codex/2026-09-23-redesign-transition` | `main` | local bootstrap | `cfe15c40c34f4cc23936421beed57fa8c4851ab9` | no push | 2026-09-23T01:08:43+08:00 | explicit execution boundary | same branch; bounded policy delivery |
+| 1 | `codex/2026-09-23-redesign-transition` | `main` | local delivery | containing commit of `handoffs/coordinator.yaml` | coordinator integration pending | 2026-09-23T01:15:11+08:00 | implementation complete; verification deferred to P7 | coordinator reads HEAD/diff and prepares first push/PR |
 
 The integration gate remains a GitHub PR with U001 scope/content/Git read-back.
 Topology is selected by the coordinator before integration; the local task does

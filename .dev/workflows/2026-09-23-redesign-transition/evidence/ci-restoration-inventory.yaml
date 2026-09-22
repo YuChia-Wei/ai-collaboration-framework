@@ -1,0 +1,137 @@
+record_kind: issue-324-ci-restoration-inventory
+created_at: '2026-09-23T01:11:19+08:00'
+owner_issue: '#324'
+program_issue: '#322'
+authority: .dev/assessments/ASM-20260923-00-6oq/execution-plan.md (U001)
+observation_kind: projection-of-coordinator-evidence-not-fresh-provider-readback
+source_evidence:
+  ci_suspension:
+    path: .dev/workflows/2026-09-23-framework-redesign-control/evidence/ci-suspension.json
+    source_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+    git_blob: 7aa410773fbc056347e924f040c924760060b76f
+    sha256_git_blob_bytes: 0b24fcb5f5bbd0c7d52ab446a48b7eb00349f71de8bca8b741fb96ec9a408753
+  branch_cleanup:
+    path: .dev/workflows/2026-09-23-framework-redesign-control/evidence/branch-cleanup.json
+    source_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+    git_blob: 88a24e3fcf4a32707675450d69e3449aa0a967d8
+    sha256_git_blob_bytes: 17fe77d9946d93e01d41ec654ae8148f304a21de01850b5bfb5f88c221bc0f16
+ci_observations:
+  before_observed_at: '2026-09-23T00:56:53+08:00'
+  after_observed_at: '2026-09-23T00:57:00+08:00'
+  permissions_before:
+    enabled: true
+    allowed_actions: all
+    sha_pinning_required: false
+  permissions_after:
+    enabled: false
+    sha_pinning_required: false
+  runs_cancelled: 0
+  permission_note: allowed_actions is absent in the saved after response; do not infer
+    a restored or current value
+workflows:
+- id: 316930531
+  name: AI Context Governance
+  path: .github/workflows/governance.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+- id: 334993163
+  name: Nightly Full Validation Readiness
+  path: .github/workflows/nightly-full-readiness.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+- id: 313373704
+  name: Package AI Context Candidate
+  path: .github/workflows/package-candidate.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+- id: 316885236
+  name: Portable AI Context Gates
+  path: .github/workflows/portable-gates.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+- id: 313373707
+  name: Publish AI Context Release
+  path: .github/workflows/publish-release.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+- id: 363100663
+  name: Check Release Provider Access
+  path: .github/workflows/release-provider-preflight.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+- id: 341690089
+  name: Portable Test Fixture Acceleration
+  path: .github/workflows/test-fixture-acceleration.yml
+  before_state: active
+  after_state: disabled_manually
+  restoration_disposition: deferred-by-owner
+  next_owner: 'Program #322 coordinator / P7'
+provider_gate_baseline:
+  source: .dev/assessments/ASM-20260923-00-6oq/execution-plan.md (suspension/restoration
+    inventory section)
+  source_commit: 53c9c8e58615e87e36f7b74ea8851fe845312daa
+  observation_kind: recorded-plan-preflight-not-live-observation-by-issue-324
+  main_at_preflight: c2e7071335d02d9b8d40ab4dcaf437e690791741
+  open_pr_count_at_preflight: 0
+  main_branch_protection_at_preflight: HTTP 404 Branch not protected
+  rulesets_at_preflight: []
+  current_state: not-read-by-issue-324; P7 must refresh
+cleanup_projection:
+  main_at_cleanup: c2e7071335d02d9b8d40ab4dcaf437e690791741
+  local_deleted_count: 25
+  remote_deleted_count: 18
+  retained_unmerged:
+  - ref: refs/heads/codex/2026-08-31-subject-digest-evidence-reuse-design
+    sha: 3df455bd0ae6502b863990fd6aa104239d6f86ed
+    reason: not ancestor of origin/main
+  - ref: refs/heads/codex/luna-requirements-trial-20260908
+    sha: 9a239373259e3efc32a0786abb6a1813f34db8ef
+    reason: not ancestor of origin/main
+  preserved_worktrees_count: 3
+  ramdisk_test_directory: preserved without mutation
+  complete_per_ref_evidence: .dev/workflows/2026-09-23-framework-redesign-control/evidence/branch-cleanup.json
+  issue_324_cleanup_actions: none
+restoration:
+  status: deferred-by-owner
+  owner: 'Program #322 coordinator / separately assigned P7 work'
+  exit_criteria_ref: .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md#p7-restoration-review-and-exit
+  review_surfaces:
+  - All seven workflow IDs/paths and any current successors
+  - .github/workflows/
+  - .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml
+  - .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md
+  - Current source gate policies, required contexts and configured review gates
+  - Live repository Actions permissions
+  - Live main branch protection and rulesets
+  required_record:
+  - Disposition of every legacy workflow/gate with successor or retirement reason
+  - Selected new-contract checks, tiny fixtures and necessary I/O trials with actual
+    outcomes
+  - Owner adoption of exact workflow/context/settings restoration set
+  - Live restored-subset read-back and selected execution outcomes, including failures/deferrals
+  - Explicit retirement or narrowing of override with aligned entry/policy pointers
+  automatic_restore: false
+  credential_or_publication_authority: none
+projection_method:
+  generator: 'Issue #324 inline Python JSON/PyYAML projection; no repository validator'
+  generated_at: '2026-09-23T01:11:19+08:00'
+  scope: Two pinned coordinator evidence JSON files and the U001 provider-preflight
+    paragraph
+  exclusions: No fresh CI/provider observation, no pipeline execution, no cleanup
+    or credential actions
+  reproduce: Read each source_evidence git_blob with git cat-file blob; verify its
+    SHA-256; project before/after permissions and workflows by id; count cleanup arrays
+    and retain recorded disposition refs. Read the provider baseline only from the
+    pinned execution-plan.md.

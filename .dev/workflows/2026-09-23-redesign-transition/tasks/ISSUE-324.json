@@ -6,9 +6,9 @@
   "task_id": "ISSUE-324",
   "workflow_id": "2026-09-23-redesign-transition",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T01:08:43+08:00",
-  "updated_at": "2026-09-23T01:08:43+08:00",
+  "updated_at": "2026-09-23T01:15:11+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -55,16 +55,64 @@
       "git diff --check; git status and exact Git identity",
       "validate-git-commits.py --message-file only"
     ],
-    "last_completed_step": "Issue and U001 read; clean assigned branch/HEAD verified; sanitized CI/cleanup evidence inspected",
-    "next_action": "Commit bootstrap, then author bounded override and restoration record"
+    "last_completed_step": "P0 override, aligned source references, CI restoration inventory and bounded handoff completed; allowed file/Git and planned message checks observed",
+    "next_action": "Coordinator receives local delivery HEAD, registers suggested index row and arranges authorized first push/PR/online merge; P7 owns deferred verification"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "summary": "Issue #324 bounded P0 implementation complete under U001; source-only override and discovery pointers preserve ordinary authority boundaries. Full framework validation remains deferred-by-owner and F-06 remains partially resolved.",
+    "files_changed": [
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/workflows/2026-09-23-redesign-transition/evidence/ci-restoration-inventory.yaml",
+      ".dev/workflows/2026-09-23-redesign-transition/handoffs/coordinator.yaml",
+      ".dev/workflows/2026-09-23-redesign-transition/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-redesign-transition/tasks/ISSUE-324.json",
+      ".dev/workflows/2026-09-23-redesign-transition/workflow-plan.md",
+      ".dev/workflows/2026-09-23-redesign-transition/workflow.yaml"
+    ],
+    "tests_run": [
+      "No test suites executed; deferred-by-owner under U001"
+    ],
+    "checks_run": [
+      "UTF-8 readability for 11 selected files; direct parsing of 3 YAML files and 1 JSON file",
+      "18 local Markdown file targets resolved; root English/Traditional Chinese obligations inspected",
+      "Seven CI inventory rows compared with saved before/after evidence; two pinned Git blob IDs and SHA-256 digests matched",
+      "git diff --check and changed/protected path inspection",
+      "validate-git-commits.py --message-file for bootstrap and delivery messages passed before committing"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "F-06 validators/tests and pipeline redesign/acceptance remain for P7. No independent audit, CI pass, package/upgrade compatibility or performance result claimed. Online integration remains coordinator-owned.",
+    "follow_up_needed": true,
+    "acceptance_disposition": {
+      "AC1": {
+        "status": "implementation-complete",
+        "evidence": "reports/remediation-report.md#acceptance-disposition",
+        "verification_limit": "Implementer content inspection and lightweight checks only; full verification deferred-by-owner"
+      },
+      "AC2": {
+        "status": "implementation-complete",
+        "evidence": "reports/remediation-report.md#acceptance-disposition",
+        "verification_limit": "Implementer content inspection and lightweight checks only; full verification deferred-by-owner"
+      },
+      "AC3": {
+        "status": "implementation-complete",
+        "evidence": "reports/remediation-report.md#acceptance-disposition",
+        "verification_limit": "Implementer content inspection and lightweight checks only; full verification deferred-by-owner"
+      },
+      "AC4": {
+        "status": "implementation-complete",
+        "evidence": "reports/remediation-report.md#acceptance-disposition",
+        "verification_limit": "Implementer content inspection and lightweight checks only; full verification deferred-by-owner"
+      },
+      "AC5": {
+        "status": "implementation-complete",
+        "evidence": "reports/remediation-report.md#acceptance-disposition",
+        "verification_limit": "Implementer content inspection and lightweight checks only; full verification deferred-by-owner"
+      }
+    }
   },
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/324",
   "execution_provenance": {
