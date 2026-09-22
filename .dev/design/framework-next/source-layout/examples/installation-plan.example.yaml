@@ -4,9 +4,10 @@ implementation_status: planned
 executable: false
 owner_issue: 326
 scenario: one-Lesson-template-edit-in-a-development-commit
+phase_boundary: P2-development-candidate-only-not-published-stable
 caller_inputs:
   project_root: explicit-absolute-path-at-invocation
-  project_config: .ai/custom/framework.yaml # Proposed physical binding, not P1-A schema.
+  project_config: .ai/custom/framework.json # Coordinator-selected JSON binding; semantics owned by P1-A.
   local_config: null # Caller may explicitly provide an ignored config path.
   artifact_roots: read-from-selected-project-config
 selection:
@@ -17,9 +18,10 @@ selection:
   package_digest: null # Never fabricated from this example.
   adapter: codex
   adapter_input_digest: null
-  prior_stable_selection: capture-installed-lock-before-mutation
+  prior_selection: capture-actual-installed-state-before-mutation
+  prior_stable_selection: only-if-a-real-released-selection-is-already-installed
 managed_members:
-  core: five-exact-members-from-distribution-manifest.example.yaml
+  core: six-exact-members-from-distribution-manifest.example.yaml
   runtime:
     - .agents/skills/framework-lesson/SKILL.md
   lock: .ai/framework.lock

@@ -9,11 +9,13 @@
 
 ## 開發者使用方式
 
-日常選用明確版本與 digest 的 stable 成品。開發 Lesson 時，只改 `src/skills/lesson`，對已提交快照選擇 development，產生並安裝該 skill 與必要 runtime 入口。發現問題仍回 `src` 修正；`.ai/core`、`.agents/skills` 不形成第二份手工來源。這是 P2/P6 待實作的路徑，目前沒有假造可用 CLI。
+目標日常使用方式是選用明確版本與 digest 的 stable 成品；P2 僅建立 development candidate，不宣稱已發布 stable。開發 Lesson 時，只改 `src/skills/lesson`，對已提交快照選擇 development，產生並安裝該 skill 與必要 runtime 入口。發現問題仍回 `src` 修正；`.ai/core`、`.agents/skills` 不形成第二份手工來源。這是 P2/P6 待實作的路徑，目前沒有假造可用 CLI。
 
 `.ai/core` 是 framework 管理的選配內容；`.ai/custom`、根目錄指示與真實 Lesson/ADR/workflow 資料由專案擁有。資料可以放在指定位置，不必集中到 `.dev`。#325 擁有 metadata/config/schema 契約；本設計只決定安裝布局與映射，不複製 schema。
 
-已透過統籌對齊 #325：skill ID 為 `lesson`，schema 為 `lesson.record` 的 `1.0.0`，檔案為 `schemas/lesson-record.schema.json`；工具 `lesson.fs` 仍是 `planned`、`entrypoint=null`，不建立假的腳本。required 與 optional dependencies 都是空集合。
+已對照 #325 提交 `c3891615` 的 metadata 與設定契約：skill ID 為 `lesson`，schema 為 `lesson.record` 的 `1.0.0`，檔案為 `schemas/lesson-record.schema.json`；工具 `lesson.fs` 仍是 `planned`、`entrypoint=null`，不建立假的腳本。required 與 optional dependencies 都是空集合。分發清單共有六個成員，包含 `references/configuration.md` 與 `references/operations.md`。設定僅支援 JSON，本 repo 選定路徑為 `.ai/custom/framework.json`，其欄位語意仍由 #325 擁有。
+
+統籌已採納 stable core、lock 與精確 runtime 產物一起 tracked，以及首個 copied Codex 入口 `.agents/skills/framework-lesson/SKILL.md`。這是後續實作選擇，不代表目前已有可用或已發布的 stable 成品。
 
 ## 替換與回復
 

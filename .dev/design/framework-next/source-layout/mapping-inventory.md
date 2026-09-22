@@ -38,7 +38,7 @@ Current `src/readme.md` is a tracked placeholder (one byte in this checkout), no
 
 ## Bounded initial move and creation list
 
-This is a P2 proposal ceiling, not work performed by #326. The coordinator aligned the exact P1-A specimen names under `.dev/design/framework-next/portable-contracts/lesson/`: stable ID `lesson`, record family `lesson.record` version `1.0.0`, schema `schemas/lesson-record.schema.json`, template `templates/lesson.md`, reference `references/operations.md`, and planned tool `lesson.fs` with null entrypoint. Both dependency lists are empty. No speculative executable fills the tree.
+This is a P2 proposal ceiling, not work performed by #326. The coordinator aligned the exact P1-A specimen names under `.dev/design/framework-next/portable-contracts/lesson/`: stable ID `lesson`, record family `lesson.record` version `1.0.0`, schema `schemas/lesson-record.schema.json`, template `templates/lesson.md`, references `references/configuration.md` and `references/operations.md`, and planned tool `lesson.fs` with null entrypoint. Both dependency lists are empty. Cross-review matched the metadata/configuration files to P1-A commit `c3891615f97625e7c59cd871abea3c2b27b5021f`; the six-member mapping includes both references. The selected project configuration is JSON under P1-A. No speculative executable fills the tree; implementation tools add explicit members later.
 
 | Operation | Proposed target/input | Boundary |
 | --- | --- | --- |
@@ -46,12 +46,13 @@ This is a P2 proposal ceiling, not work performed by #326. The coordinator align
 | Create metadata | `src/skills/lesson/skill-package.yaml` | #325 field contract, `required=[]`; no parallel schema |
 | Adopt first schema member | `src/skills/lesson/schemas/lesson-record.schema.json` | Exact P1-A name; adopt #325 content without a second schema owner |
 | Extract/adapt template | `.dev/lessons/templates/lesson-template.md` -> `src/skills/lesson/templates/lesson.md` | Supported fields only; preserve records; retire old reusable ownership at cutover |
+| Adopt configuration contract | `src/skills/lesson/references/configuration.md` | Exact P1-A member; JSON config semantics stay with #325 |
 | Adopt operation contract | `src/skills/lesson/references/operations.md` | Exact P1-A member; tool `lesson.fs` stays planned/null until implementation |
 | Implement filesystem operations when authorized | File path selected by P2 and added explicitly to metadata/manifest | No `scripts/lesson.py` placeholder is packaged; explicit project/config roots |
 | Add one runtime template | `src/adapters/codex/skill-entry.md.template` | Exact prefixed runtime entry routes to installed core |
-| Add selection/mapping | `src/profiles/lesson-minimal.yaml`, `src/distribution/manifest.yaml` | Same closure for stable/development; no repo copy |
+| Add selection/mapping | `src/profiles/lesson-minimal.yaml`, `src/distribution/manifest.yaml` | Same closure for stable/development; P2 development candidate only; no repo copy |
 | Add maintainer invocation if needed | `tools/build-development.py` | Orchestrate manifest; no hidden consumer behavior or second manifest |
-| Install/wire root | Selected `.ai/core`, `.ai/framework.lock`, `.agents/skills/framework-lesson/SKILL.md`, `.ai/custom/framework.yaml`, reviewed root pointer | Coordinator owns root/shared/tracking/ignore edits; none here |
+| Install/wire root | Selected `.ai/core`, `.ai/framework.lock`, `.agents/skills/framework-lesson/SKILL.md`, `.ai/custom/framework.json`, reviewed root pointer | Coordinator adopted tracked stable core/lock/runtime and copied Codex entry; P2 only development. Root/shared/tracking/ignore edits remain separately owned; none here |
 
 ## Boundary hotspots and later inventory
 

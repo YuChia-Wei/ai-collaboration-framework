@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `final`
 - `created_at`: `2026-09-23T01:20:56+08:00`
-- `updated_at`: `2026-09-23T01:20:56+08:00`
+- `updated_at`: `2026-09-23T01:33:21+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.1`
 - `baseline_assessment`: `ASM-20260923-00-6oq` (design direction, not findings closed here)
@@ -22,7 +22,7 @@
 
 ## Remediation Summary
 
-Delivered the design-only scope of #326 in six source-layout documents/examples and five workflow artifacts. No product/runtime/source-root relocation occurred. Completed the governance template's bounded design task; package/install/rollback correctness and all legacy gates remain unverified. Closure decision: `ready-with-deferrals` for local design delivery, not provider integration or Issue closure.
+Delivered the design-only scope of #326 in six source-layout documents/examples and six workflow artifacts after the coordinator correction. Original delivery `42601292b9fa1d4fbd190c0d03f570c25e991624` and completed task SL326-001 remain traceable; additive task SL326-002 owns the correction. No product/runtime/source-root relocation occurred. Completed the governance template's bounded design task; package/install/rollback correctness and all legacy gates remain unverified. Closure decision: `ready-with-deferrals` for local design delivery, not provider integration or Issue closure.
 
 ## Acceptance Resolution Matrix
 
@@ -30,7 +30,7 @@ The IDs below are Issue acceptance criteria, not invented assessment findings.
 
 | Criterion | Status | Delivered content | Evidence/limit |
 | --- | --- | --- | --- |
-| AC1 | design-delivered | Ownership/input-output tables, exact five-member allowlist, source/project exclusion rules | Read content; no package executed |
+| AC1 | design-delivered | Ownership/input-output tables, exact six-member allowlist, source/project exclusion rules | Read content; no package executed |
 | AC2 | design-delivered | One-skill edit -> immutable development selection -> install -> fix source sequence | Described future behavior, no CLI availability claim |
 | AC3 | design-delivered | Whole replacement vs digest/mode delta; paired core/lock/runtime/config/record/index recovery | No migration/recovery trial |
 | AC4 | design-delivered | Bounded P2 move/create list plus later P3-P7 inventory | Curated groups, not complete relocation manifest |
@@ -41,12 +41,12 @@ The IDs below are Issue acceptance criteria, not invented assessment findings.
 - Design entry: `.dev/design/framework-next/source-layout/README.md`.
 - Canonical design: `design.md`; inventory: `mapping-inventory.md` in the same subtree.
 - Examples: `examples/distribution-manifest.example.yaml`, `examples/installation-plan.example.yaml`, `examples/layout.txt`; all explicitly unimplemented/non-executable.
-- Issue workflow: locator, plan, `tasks/SL326-001.json`, this report and `handoff.yaml`.
+- Issue workflow: locator, plan, `tasks/SL326-001.json`, `tasks/SL326-002.json`, this report and `handoff.yaml`.
 - Names aligned through coordinator with P1-A: `lesson`, `lesson.record` / `1.0.0`, schema/template/operations member paths and `lesson.fs` planned/null. No P1-A schema or config copied.
 - Initial branch/status read-back: clean `codex/2026-09-23-source-layout` at `53c9c8e58615e87e36f7b74ea8851fe845312daa`.
 - `git rev-parse --git-common-dir` located the persistent Git database at `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git`; worktree files are on F:.
 
-## Actual Checks
+## Original Delivery Checks (42601292)
 
 | Check | Observed result | Meaning |
 | --- | --- | --- |
@@ -77,4 +77,19 @@ No independent auditor or sub-agent was invoked. U001 defers validation-only aud
 
 The task and workflow are complete for design delivery only. Resolve delivery commit with `git log -1 --format=%H -- .dev/workflows/2026-09-23-source-layout/handoff.yaml`, then compare to branch HEAD. Exact final HEAD and clean-status read-back are returned to coordinator after the commit. No push, PR creation, merge, Issue closure, release/tag, credential mutation or downstream adoption is performed.
 
-No substantive contract conflict remains after name alignment. Coordinator review still selects the proposed tracked stable dogfood installation and generated Codex entry before implementation; no such root changes are made here. Final next action: coordinator cross-review, organize commits, then decide online integration under U001.
+Cross-review corrected the missing configuration reference and JSON binding. The coordinator adopted tracked stable dogfood and the first copied Codex entry as implementation choices; P2 remains development-only; no such root changes are made here. Final next action: coordinator cross-review, organize commits, then decide online integration under U001.
+
+## Corrigendum CR326-001
+
+This report was explicitly reopened following coordinator review of original delivery `42601292b9fa1d4fbd190c0d03f570c25e991624`; the original report and its observations remain retrievable at that commit. P1-A metadata and `references/configuration.md` were read-only compared with `c3891615f97625e7c59cd871abea3c2b27b5021f`. The current inventory includes all six declared entry/metadata/resource members, including both references. Config paths use `.ai/custom/framework.json`, following P1-A JSON-only semantics without copying or redefining the schema.
+
+The coordinator adopted tracked stable core/lock/exact runtime outputs and `.agents/skills/framework-lesson/SKILL.md` as the first copied entry. These are target choices; P2 is development-candidate-only and no stable release is implied. Tool/behavior validation and legacy gates remain deferred-by-owner to P7. Correction checks and final disposition follow; original delivery checks above retain their original scope.
+
+### Correction Checks And Disposition
+
+- P1-A metadata/configuration read-only files matched exact commit `c3891615f97625e7c59cd871abea3c2b27b5021f`.
+- Direct member inventory comparison found exactly six distinct manifest entries equal to entrypoint, metadata and P1-A declared references/schema/template. This is document consistency, not a package build.
+- Twelve UTF-8 files were readable; two JSON and four YAML files parsed; 23 local Markdown targets resolved. Actual correction diff was inspected and `git diff --check` passed.
+- `python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-source-layout/artifacts/cross-review-commit-message.txt --workflow-id 2026-09-23-source-layout` passed for the complete correction message.
+- CR326-001 and SL326-002 are complete for local design correction. No unresolved source-layout contract discrepancy remains from the coordinator's two findings. Original commit `42601292` is preserved; final additive HEAD is read back after commit and returned to the coordinator.
+- No tool/behavior tests, legacy gates, build/install/migration/recovery trials or CI ran; their disposition remains `deferred-by-owner` under U001 to P7.

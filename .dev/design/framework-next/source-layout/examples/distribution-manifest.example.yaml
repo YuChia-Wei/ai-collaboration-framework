@@ -44,10 +44,13 @@ components:
         destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
       - source: templates/lesson.md
         destination: .ai/core/skills/lesson/templates/lesson.md
+      - source: references/configuration.md
+        destination: .ai/core/skills/lesson/references/configuration.md
       - source: references/operations.md
         destination: .ai/core/skills/lesson/references/operations.md
     public_contract_reference:
       issue: 325
+      source_commit: c3891615f97625e7c59cd871abea3c2b27b5021f
       design_specimen: .dev/design/framework-next/portable-contracts/lesson/
       role: reference-only-not-a-build-input
       record_family: lesson.record
@@ -74,6 +77,7 @@ outputs:
     source: actual-installation-not-source-dogfood-lock
     envelope_member: false
 selection_modes:
+  p2_delivery: development-candidate-only-no-published-stable-claim
   stable:
     origin: explicitly-selected-released-artifact-and-digest
     floating_resolution: forbidden

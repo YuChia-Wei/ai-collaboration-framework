@@ -1,6 +1,6 @@
 # Source product boundary and installed dogfood design
 
-Status: P1-B design deliverable for [Issue #326](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/326), under #322. These are proposed implementation boundaries, not an installed product or a completed relocation. U001 selects the direction; the coordinator reconciles P1-A/P1-B before P2 implementation.
+Status: P1-B design deliverable for [Issue #326](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/326), under #322. These are design boundaries, not an installed product or a completed relocation. The coordinator has adopted tracked stable core/lock/exact runtime outputs and the first copied Codex entry as target choices; P2 remains development-candidate-only. U001 selects the direction; the coordinator reconciles P1-A/P1-B before P2 implementation.
 
 Authority: [execution plan, U001 and D01-D07](../../../assessments/ASM-20260923-00-6oq/execution-plan.md), [architecture A2/A7/A9](../../../assessments/ASM-20260923-00-6oq/architecture.md), and [issue handoff](../../../workflows/2026-09-23-framework-redesign-control/handoffs/issue-326.yaml). The inspected baseline is `53c9c8e58615e87e36f7b74ea8851fe845312daa`. The handoff's earlier `a4865f3` remains historical context; it is not this worktree's starting HEAD.
 
@@ -38,12 +38,12 @@ Coordinator read-back: package-relative metadata contains stable ID/version, ent
 | --- | --- | --- |
 | Skill metadata | Installed beside entrypoint with package-relative references unchanged | ID/version, dependency and ownership field syntax |
 | Dependency selection | Explicit selected IDs plus exact required closure; missing dependency/cycle is an error, not a network fetch | Declaration syntax; optional presence never becomes required |
-| Config | `.ai/custom/framework.yaml` is this project's proposed selected path | Precedence, meanings, locked permissions, containment, artifact bindings |
+| Config | `.ai/custom/framework.json` is this project's coordinator-selected JSON path | Precedence, meanings, locked permissions, containment, artifact bindings |
 | Records | Remain in caller-selected project-owned roots | Lesson schema, writable operations, template binding and conversion |
 | Runtime | Generated entry routes to installed skill | Availability/results; an entry is not evidence of tool execution |
 | Lock/manifest | Installation identity and file membership, separate from record formats | Do not repeat or version P1-A schemas inside a distribution schema |
 
-The coordinator supplied exact P1-A names: skill ID `lesson`, family `lesson.record`, schema version `1.0.0`, `schemas/lesson-record.schema.json`, `templates/lesson.md`, and `references/operations.md`. Tool ID `lesson.fs` is planned with `entrypoint=null`; required and optional dependencies are both empty. The source specimen belongs to `.dev/design/framework-next/portable-contracts/lesson/`. Metadata references are package-relative (`SKILL.md`, never `lesson/SKILL.md`). These names are aligned by coordinator read-back; the P1-A files are not yet integrated in this baseline. A design path creates no executable. No registry, general dependency solver, schema validator or installer is implemented here.
+The coordinator supplied exact P1-A names: skill ID `lesson`, family `lesson.record`, schema version `1.0.0`, `schemas/lesson-record.schema.json`, `templates/lesson.md`, `references/configuration.md`, and `references/operations.md`. Tool ID `lesson.fs` is planned with `entrypoint=null`; required and optional dependencies are both empty. The source specimen belongs to `.dev/design/framework-next/portable-contracts/lesson/`. Metadata references are package-relative (`SKILL.md`, never `lesson/SKILL.md`). Cross-review read the metadata and configuration reference from P1-A commit `c3891615f97625e7c59cd871abea3c2b27b5021f` and confirmed these exact six source members. The package and installed layout both include the configuration and operations references. P1-A supports JSON project/local configuration only; this design selects the physical project path without redefining its schema. Those files are not yet integrated into this branch. A design path creates no executable. No registry, general dependency solver, schema validator or installer is implemented here.
 
 ## Allowlist and outputs
 
@@ -81,11 +81,11 @@ After P2 implements the path, a developer changing one Lesson follows this minim
 3. Compare candidate inventory with installed lock and actual owned bytes. Preview managed additions/changes/deletions, runtime projection and independent data conversion.
 4. Apply the selected candidate to this worktree with explicit project/config paths. Preserve custom and artifact roots. Activate only after required implementation-time checks succeed, then emit the actual matching lock.
 5. Use the installed entry and configured Lesson store. Fix defects in `src`, rebuild and reinstall; no edit-back from `.ai/core`.
-6. Return to the captured stable selection through the same compatibility/drift plan. If development wrote data stable cannot read, use a supported conversion or paired data backup; changing the profile alone is insufficient.
+6. Return to the actual captured previous installation through the same compatibility/drift plan. Use a stable selection only when a real released installation was captured; an initial P2 candidate has no invented stable baseline. If development wrote data stable cannot read, use a supported conversion or paired data backup; changing the profile alone is insufficient.
 
 These are future operations, not available CLI commands or executed checks. P1-B does not run them. P7 owns later validation/tooling design.
 
-For this repository's dogfood, propose tracking stable `.ai/core`, lock and exact generated runtime files together, exposing a matching installation to a clone. `.ai/custom` and durable artifacts stay tracked by project choice. Development artifacts are temporary branch changes, not the default branch's stable selection. `dist` and local cache are ignored. A project may later select rebuild-on-install, but lock and generated files must still describe one selection. Existing ignore rules require explicit P2/P6 owner edits; this issue makes none.
+The coordinator adopted tracking stable `.ai/core`, lock and exact generated runtime files together as this repository's target dogfood layout, exposing a matching installation to a clone once a real stable artifact exists. The first selected runtime is the copied `.agents/skills/framework-lesson/SKILL.md` entry. P2 installs only an explicitly identified development candidate and must not label it published stable. `.ai/custom` and durable artifacts stay tracked by project choice. Development artifacts retain development identity even if their source is integrated; default-branch integration does not make a candidate stable. `dist` and local cache are ignored. A project may later select rebuild-on-install, but lock and generated files must still describe one selection. Existing ignore rules require explicit P2/P6 owner edits; this issue makes none.
 
 ## Whole replacement, delta I/O and recovery
 
@@ -116,6 +116,6 @@ The [inventory](mapping-inventory.md) separates initial Lesson work from later p
 
 Root policy/skills govern this project until the coordinator explicitly switches their entrypoints. Plain shell/Git can repair source without requiring a broken framework to bootstrap itself. Preserve historical records: no bulk conversion, history rewrite, arbitrary old-version upgrade guarantee, or source-release add-on in mandatory core.
 
-P1-B delivers design, inventory, examples and issue workflow. P2/P5/P6 implementation, P7 validators/tests/CI, release/publication and adoption remain with their owners. P1-A exact names are aligned; the coordinator still owns cross-review and integration of its finalized field semantics. Tracked stable installation and generated Codex entry are concrete defaults for coordinator review, not active runtime decisions.
+P1-B delivers design, inventory, examples and issue workflow. P2/P5/P6 implementation, P7 validators/tests/CI, release/publication and adoption remain with their owners. P1-A exact names are aligned; the coordinator still owns cross-review and integration of its finalized field semantics. Tracked stable installation and the first copied Codex entry are coordinator-adopted target choices, not active runtime state. Their implementation and any future stable publication remain separate work.
 
 Under U001, legacy validators, `check-all`/critical, suites, package builds, migration/upgrade trials, independent audit machinery and CI are `deferred-by-owner`. Only readability, JSON/YAML parsing, references/content, Git diff/status and exact commit-message format are checked here. They do not prove installation, portability or rollback behavior.

@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-23-source-layout`
 - `created_at`: `2026-09-23T01:08:23+08:00`
-- `updated_at`: `2026-09-23T01:20:56+08:00`
+- `updated_at`: `2026-09-23T01:33:21+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -43,7 +43,8 @@ Legacy validators, critical/check-all, test suites, package/upgrade/migration tr
 - Inventory: [mapping and staged transition](../../design/framework-next/source-layout/mapping-inventory.md).
 - Examples: `.dev/design/framework-next/source-layout/examples/`.
 - Report: `reports/remediation-report.md`.
-- Task: [SL326-001](tasks/SL326-001.json), the single coherent design task.
+- Original task: [SL326-001](tasks/SL326-001.json), preserved at its completed delivery.
+- Correction task: [SL326-002](tasks/SL326-002.json), coordinator cross-review correction.
 - Coordinator handoff: `handoff.yaml`, an adapted U001 record, not native handoff-validator compliance.
 - Verification assessment: `deferred-by-owner` under U001; no fake assessment instance.
 
@@ -51,7 +52,7 @@ Legacy validators, critical/check-all, test suites, package/upgrade/migration tr
 
 | Issue acceptance | Deliverable | Evidence boundary |
 | --- | --- | --- |
-| AC1: source-output mapping excludes history/custom | Design ownership/output tables, exact five-member manifest, inventory | Content inspection only; package behavior unexecuted |
+| AC1: source-output mapping excludes history/custom | Design ownership/output tables, exact six-member manifest, inventory | Content inspection only; package behavior unexecuted |
 | AC2: edit one skill and reach dev install | Design stable/development sequence; installed layout | Future path described; no implemented CLI claim |
 | AC3: replacement versus delta; paired recovery | Design I/O table/recovery sequence; installation example | No rollback or data-conversion execution claim |
 | AC4: bounded first move and later inventory | Inventory P2 list and P3-P7 dispositions | No whole-repository copy or old upgrade promise |
@@ -59,9 +60,9 @@ Legacy validators, critical/check-all, test suites, package/upgrade/migration tr
 
 ## P1-A Coordination
 
-The coordinator supplied #325 exact names: skill `lesson`, `skill-package.yaml`, `SKILL.md`, family `lesson.record` / `1.0.0`, `schemas/lesson-record.schema.json`, `templates/lesson.md`, `references/operations.md`, tool `lesson.fs` with planned implementation and null entrypoint, required/optional lists empty. Its specimen root is `.dev/design/framework-next/portable-contracts/lesson/`; it owns config/schema/operation semantics. This task maps those references without copying schemas. Final combined-content cross-review remains coordinator work.
+The coordinator supplied #325 exact names: skill `lesson`, `skill-package.yaml`, `SKILL.md`, family `lesson.record` / `1.0.0`, `schemas/lesson-record.schema.json`, `templates/lesson.md`, `references/configuration.md`, `references/operations.md`, tool `lesson.fs` with planned implementation and null entrypoint, required/optional lists empty. Its specimen root is `.dev/design/framework-next/portable-contracts/lesson/`; it owns config/schema/operation semantics. This task maps those references without copying schemas. Final combined-content cross-review remains coordinator work.
 
-Concrete P1-B defaults: physical core/custom/lock under `.ai`; copied generated Codex entry `framework-lesson`; one exact manifest; stable generated installation tracked together; development candidate explicitly selected from a commit. These are proposals for implementation, not changes to current active root policy.
+Concrete P1-B defaults: physical core/custom/lock under `.ai`; copied generated Codex entry `framework-lesson`; one exact manifest; stable generated installation tracked together; development candidate explicitly selected from a commit. The coordinator has adopted tracked stable core/lock/exact runtime outputs and the first copied Codex entry. P2 is development-candidate-only; this decision is not a stable publication or current root-policy change. Project configuration is JSON at `.ai/custom/framework.json`, following the P1-A configuration reference.
 
 ## Stages And Checkpoints
 
@@ -73,16 +74,23 @@ Concrete P1-B defaults: physical core/custom/lock under `.ai`; copied generated 
 
 ## Resume Checkpoint
 
-- Last completed action: six design artifacts authored and inspected; names aligned with P1-A; allowed checks and planned message format succeeded.
-- Current task: `SL326-001`, completed for design delivery; implementation and runtime validation remain outside this workflow.
+- Last completed action: CR326-001 six-member/JSON correction inspected against P1-A c3891615; adopted target layout recorded; allowed checks and correction message format succeeded.
+- Current task: `SL326-002`, completed for cross-review correction; original `SL326-001` remains completed and unchanged. Implementation and runtime validation remain outside this workflow.
 - Exact next action: coordinator reads this workflow's containing commit, cross-reviews #325/#326, organizes local commits and selects first push/PR integration.
 - Validation: see `reports/remediation-report.md`; no legacy gate/test/package/CI success is claimed.
 - Git state: dedicated local branch; resolve final delivery SHA from the containing commit; no push/PR/merge/Issue closure by this task.
-- Blockers: none for design delivery. Coordinator reviews tracked-stable dogfood and first Codex entry choices before P2; P7 owns validation/CI.
+- Blockers: none for corrected design delivery. Coordinator adopted tracked stable outputs and first copied Codex entry; P2 delivers development only, and P7 owns validation/CI.
 - Index: suggested row in `handoff.yaml`; shared index is intentionally unchanged because coordinator owns it.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Reason | Resume Action |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-09-23-source-layout` | `main` at `53c9c8e58615e87e36f7b74ea8851fe845312daa` | Local design delivery | Resolve containing commit after local commit | No push; coordinator owns PR integration | U001 P1-B | Cross-review #325/#326 and organize commits before first push |
+| 1 | `codex/2026-09-23-source-layout` | `main` at `53c9c8e58615e87e36f7b74ea8851fe845312daa` | Original local design delivery | `42601292b9fa1d4fbd190c0d03f570c25e991624` | No push; coordinator owns PR integration | U001 P1-B | Cross-review #325/#326 and organize commits before first push |
+| 1 | `codex/2026-09-23-source-layout` | Original delivery `42601292` | Additive cross-review correction | Resolve latest handoff containing commit | No push; coordinator owns integration | CR326-001 | Integrate corrected six-member/JSON design |
+
+## Cross-Review Correction CR326-001
+
+The coordinator reopened this design after delivery `42601292b9fa1d4fbd190c0d03f570c25e991624`. P1-A final commit `c3891615f97625e7c59cd871abea3c2b27b5021f` includes `references/configuration.md` as well as `references/operations.md` and supports JSON configuration only. The correction expands the exact inventory to six members and selects `.ai/custom/framework.json` across examples and prose. Metadata/configuration reference files were read-only and matched that commit.
+
+The coordinator also adopted tracked stable core/lock/exact runtime outputs and the first copied Codex entry. P2 remains a development candidate; no published stable availability is inferred. Original commit and completed task are preserved; SL326-002 owns this additive correction. Tool/behavior/legacy validation stays deferred-by-owner to P7 under U001.

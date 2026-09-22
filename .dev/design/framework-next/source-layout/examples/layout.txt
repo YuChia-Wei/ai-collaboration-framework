@@ -1,6 +1,8 @@
 ILLUSTRATIVE FUTURE LAYOUT. No product files below were created by #326.
 P1-A owns metadata/schema/operations. Tool lesson.fs is planned; entrypoint=null.
 Only the design examples and issue workflow are delivered here.
+Coordinator adopted tracked stable core/lock/exact runtime outputs as target layout.
+P2 delivers a development candidate only; no released stable artifact is implied.
 
 repository/
   src/                                      # manually editable PRODUCT source
@@ -9,6 +11,7 @@ repository/
       skill-package.yaml                    # package-relative P1-A references
       schemas/lesson-record.schema.json     # lesson.record, schema_version 1.0.0
       templates/lesson.md
+      references/configuration.md
       references/operations.md
                                               # no fake script for planned lesson.fs
     shared/                                 # no mandatory shared package for Lesson
@@ -24,9 +27,10 @@ repository/
       skill-package.yaml
       schemas/lesson-record.schema.json
       templates/lesson.md
+      references/configuration.md
       references/operations.md
     custom/                                 # project-owned, excluded from packages
-      framework.yaml                        # caller-selected config path
+      framework.json                        # selected project JSON configuration
       rules/
       skills/team-specialization/
     framework.lock                          # actual generated installation identity
@@ -49,7 +53,7 @@ repository/
 Future envelope for this exact selection:
   metadata/selection.json                   # generated identities/input digests
   metadata/files.json                       # generated path/owner/mode/digest list
-  payload/.ai/core/skills/lesson/...          # ONLY the five manifest-listed members
+  payload/.ai/core/skills/lesson/...          # ONLY the six manifest-listed members
   runtime/.agents/skills/framework-lesson/SKILL.md
                                               # generated, separately inventoried
 
