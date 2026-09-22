@@ -107,3 +107,7 @@ Python entrypoint、fixture classification 與 executable shell profile registry
 ### F-001 修正驗證紀錄
 
 `lifecycle-repair-01` 在 sandbox 啟動 Git Bash 時以 exit 3221225794 失敗，屬 execution-environment failure，保留原始紀錄。改用既有授權的 elevated Windows 測試邊界後，`lifecycle-repair-02` passed（0.815 秒）；`classification-01` 的兩項既有分類／變更矩陣案例 passed。新 gate 保持 input/environment、candidate-disabled、無 reusable profiles，唯一 pilot 仍未改變。修正後的 clean commit 會再次取得直接觀察，再由獨立 reviewer 檢查有限 delta；其他 authoring／package 程式未改動。
+
+### F-002 續作指引修正
+
+第二輪獨立審查已確認 F-001 解決，並證明原 package smoke 的相依範圍未變；整輪仍為 failed，因 workflow 首頁的舊下一步會誤導重跑已完成命令。Root 已更新 entrypoint、任務及目前阻擋狀態。此文件修正不改實作或 authority，接著只核對 F-002 的固定版本差異；不重跑 package smoke，也不覆寫兩輪 reviewer 原文。第三次審查以新的 workflow authorization 綁定該次 subject、前次失敗和唯一 packet，原 attempt count 不重設。

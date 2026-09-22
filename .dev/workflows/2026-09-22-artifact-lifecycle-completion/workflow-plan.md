@@ -11,7 +11,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-lifecycle-completion`
 - `created_at`: `2026-09-22T09:00:30.694010+08:00`
-- `updated_at`: `2026-09-22T09:58:32+08:00`
+- `updated_at`: `2026-09-22T10:09:38+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -47,8 +47,18 @@ Code graph refreshed at base HEAD, but its coverage excludes .ai/scripts and .ai
 
 ## Resume
 
-Implement family adapters and registry with explicit gaps, then focused validation and P4 disposition. Stop only for an actual owner-sensitive conflict. Final assessment/report must distinguish implementation completeness for supported operations from universal schema or semantic authoring coverage.
+Implementation and focused validation are complete. Follow the latest Review Repair Checkpoint below, then retain the verification assessment and final delivery review before the authorized local integration. Stop only for an actual owner-sensitive conflict; universal schema or semantic authoring coverage remains out of scope.
 
 ## Implementation And P4 Checkpoint
 
-Selected P3 adapters and the 91-kind lifecycle registry are implemented. The retained Chinese remediation report and P4 disposition matrix explain the 16 explicit manual gaps and why no blanket validator/test removal is justified. Focused authoring, catalog, routing, evaluation, profile and canonical checks passed with original attempts retained; the one initial stale-preview defect was repaired and retested. Next: freeze a clean implementation commit, prepare full independent review input/packet/lease, execute one package smoke in that review, then archive exact evidence and integrate locally after final delivery verification. No owner decision is currently required.
+Selected P3 adapters and the 91-kind lifecycle registry are implemented. The retained Chinese remediation report and P4 disposition matrix explain the 16 explicit manual gaps and why no blanket validator/test removal is justified. Focused authoring, catalog, routing, evaluation, profile and canonical checks passed with original attempts retained; the one initial stale-preview defect was repaired and retested. Historical next steps at the implementation freeze have been superseded by the Review Repair Checkpoint below; they are not current execution instructions.
+
+## Review Repair Checkpoint
+
+The original implementation was frozen at b29f3ae9c079b05ab144ba0eddd10294e452988a. Its first independent audit failed F-001 while the one package smoke passed 1/1; preserve both outcomes and the original sealed custody evidence. The classification repair is aa91d68479346f1c931920e4735ce84996b6b9d5. Root's clean-subject lifecycle-fixed-01 passed there. Independent attempt 2 resolved F-001 and proved the unchanged command-specific package dependencies, but failed F-002 because this entrypoint still directed obsolete work. Both reviewer bodies and the environment failure remain immutable.
+
+Current blocker: independent verification of this F-002 entrypoint repair, followed by evidence intake and final delivery admission. Root has corrected the resume instructions and task/report state. Do not execute another package smoke or behavior suite: no implementation or governing authority changed for F-002. The prior smoke remains b29 execution with bounded dependency proof; it is not relabeled as a new execution.
+
+Workflow authorization for attempt 3: under the owner's continuing implementation mandate, root authorizes exactly one bounded, read-only review of F-002 and the updated continuation state, plus unchanged-source verification. After committing this repair, prepare a fresh sealed workflow retry authorization bound to attempt 3, that exact commit, the attempt-2 failure digest and its single consuming packet. Preserve earlier attempts; do not reset their count. No additional behavioral command, provider action, credential use or scope expansion is authorized by this retry.
+
+Exact next action: freeze this documentation-only repair, dispatch that bounded independent review, then archive all original reviews and focused evidence into a new verification assessment. If accepted, complete the Chinese report and workflow, review the evidence-intake delta, and perform the already authorized local --no-ff merge with a current-main content rebind. No remote push, Issue/Project closure, release or target adoption is included. The 16 manual capability gaps remain explicit owner-selected future work, not newly fabricated executable coverage.
