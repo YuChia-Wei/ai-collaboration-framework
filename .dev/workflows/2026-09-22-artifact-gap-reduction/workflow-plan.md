@@ -11,7 +11,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-gap-reduction`
 - `created_at`: `2026-09-22T13:53:22+08:00`
-- `updated_at`: `2026-09-22T14:43:21+08:00`
+- `updated_at`: `2026-09-22T14:56:01+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -45,10 +45,14 @@ Use repository-required online Issue/Project, PR and integration gates. Any prov
 
 ## Resume Checkpoint
 
-- Last completed action: implementation checkpoint 8d00452d pushed and draft PR #321 created; independent audit attempt 1 failed F-001/F-002/F-003. Two initial hosted profiles also failed. The current repair addresses fixture module isolation, portable command examples and current-state pointers; original failures remain retained.
+- Last completed action: repair63b95af1 obtained all five required hosted successes; independent attempt2 resolved F-001/F-002 and the F-003 prose, but found the report updated_at unchanged. This correction refreshes that metadata; both failed audit bodies remain immutable.
 - Current task: GAP-002.
-- Exact next action: verify the containing repair commit against F-001/F-002/F-003, obtain the complete required execution-artifacts and core-only projection results on that subject, and perform bounded independent repair review before final evidence intake and online admission.
+- Exact next action: execute the newly authorized bounded third review on the containing metadata correction commit, proving the timestamp repair and unchanged behavior/authority; then retain final independent assessment and delivery metadata before provider admission.
 - Validation already completed: selected input, catalog and compatibility checks; actual counts, timings and prior failures are in reports/remediation-report.md.
 - Git baseline: main 237a01f437f3005ea57885714f6ebfc3037d196d, matching live remote read-back.
 - Graph: indexed project exists but its commit provenance is unavailable and current authoring nodes are missing. Scoped Git-tracked file reads are the explicit fallback; no absence claim is made.
-- Blockers: independent review and required CI are nonpassing until the repaired subject is verified. The PR declaration remains deferred. New provider baseline decisions and personal CLI routing selections remain owner-only inputs outside this delivery.
+- Blockers: independent review remains nonpassing only for the report timestamp until this correction is verified. Hosted checks passed on repair63b95af1; the PR declaration remains deferred. New provider baseline decisions and personal CLI routing selections remain owner-only inputs outside this delivery.
+
+## Third Review Authorization
+
+The workflow owner authorizes exactly one third independent attempt after the corrected report metadata is committed. Scope: F-003 timestamp correction, current repair chronology, exact unchanged implementation/authority proof and retained failed evidence. Reuse the already verified behavior with explicit Git identity proof; do not repeat behavioral suites or mutate a provider. Bind a fresh sealed workflow-retry-authorization to the new commit, the second failed report hash, attempt 3 and its sole consuming packet. One callback returns custody to root; no autonomous further retry is authorized.
