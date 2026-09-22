@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-22-artifact-gap-reduction`
 - `base_branch`: `main`
-- `status`: `in_progress`
+- `status`: `blocked`
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-22-artifact-gap-reduction`
 - `created_at`: `2026-09-22T13:53:22+08:00`
-- `updated_at`: `2026-09-22T14:56:01+08:00`
+- `updated_at`: `2026-09-22T15:10:37+08:00`
 - `branch_segment`: `1`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
@@ -45,14 +45,16 @@ Use repository-required online Issue/Project, PR and integration gates. Any prov
 
 ## Resume Checkpoint
 
-- Last completed action: repair63b95af1 obtained all five required hosted successes; independent attempt2 resolved F-001/F-002 and the F-003 prose, but found the report updated_at unchanged. This correction refreshes that metadata; both failed audit bodies remain immutable.
+- Last completed action: repair63b95af1 obtained all five required hosted successes. Attempt3 verified the report timestamp but retained F-003 for historical test wording; that wording is now corrected. All three failed review bodies remain immutable and the third lease is released.
 - Current task: GAP-002.
-- Exact next action: execute the newly authorized bounded third review on the containing metadata correction commit, proving the timestamp repair and unchanged behavior/authority; then retain final independent assessment and delivery metadata before provider admission.
+- Exact next action: obtain explicit owner authorization for a fourth bounded review of the corrected report chronology before dispatch. No fourth retry is currently authorized. After verification, retain independent assessment and final delivery metadata before provider admission.
 - Validation already completed: selected input, catalog and compatibility checks; actual counts, timings and prior failures are in reports/remediation-report.md.
 - Git baseline: main 237a01f437f3005ea57885714f6ebfc3037d196d, matching live remote read-back.
 - Graph: indexed project exists but its commit provenance is unavailable and current authoring nodes are missing. Scoped Git-tracked file reads are the explicit fallback; no absence claim is made.
-- Blockers: independent review remains nonpassing only for the report timestamp until this correction is verified. Hosted checks passed on repair63b95af1; the PR declaration remains deferred. New provider baseline decisions and personal CLI routing selections remain owner-only inputs outside this delivery.
+- Blockers: automatic approval review rejected creation of a fourth retry authorization after three failed reviews because explicit user authorization for that new owner-sensitive retry was missing. The wording correction is ready for review; independent acceptance and PR admission remain incomplete. Provider baselines and private CLI selections remain outside scope.
 
 ## Third Review Authorization
+
+Historical authorization: consumed by GAP-320-AUDIT-03. It does not authorize a fourth attempt.
 
 The workflow owner authorizes exactly one third independent attempt after the corrected report metadata is committed. Scope: F-003 timestamp correction, current repair chronology, exact unchanged implementation/authority proof and retained failed evidence. Reuse the already verified behavior with explicit Git identity proof; do not repeat behavioral suites or mutate a provider. Bind a fresh sealed workflow-retry-authorization to the new commit, the second failed report hash, attempt 3 and its sole consuming packet. One callback returns custody to root; no autonomous further retry is authorized.
