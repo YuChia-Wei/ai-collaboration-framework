@@ -1,0 +1,26 @@
+---
+name: $runtime_name
+description: $description
+---
+
+# $runtime_name
+
+Generated development entry for `$package_identity`. This entry does not prove
+installation, tool execution, validation or stable publication.
+
+Read [the installed skill]($installed_entrypoint) for its instructions. Resolve
+package resources from [the installed metadata]($installed_metadata), using the
+installed package directory as the explicit `package_root`.
+
+Obtain the caller's explicit `project_root`, configuration selection and operation.
+This project's selected configuration convention is `.ai/custom/framework.json`;
+it remains project-owned and is not supplied by this entry. Pass any chosen
+configuration path explicitly under the installed skill's configuration contract.
+Do not infer settings from the current working directory.
+
+Installed resources:
+
+$resources
+
+Use only the installed skill's declared tool interface. A development identity
+does not grant writes, migrate records or activate a different installation.

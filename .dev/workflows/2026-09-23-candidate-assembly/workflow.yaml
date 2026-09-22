@@ -1,0 +1,23 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-23-candidate-assembly
+workflow_kind: ai-context-maintenance
+title: Exact Git source selection and development candidate assembly
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+branch: codex/2026-09-23-candidate-assembly
+base_branch: main
+artifact_root: .dev/workflows/2026-09-23-candidate-assembly
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T01:44:29+08:00'
+updated_at: '2026-09-23T01:59:15+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+issue_url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/331
+starting_commit: a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc
+owner_override: .dev/assessments/ASM-20260923-00-6oq/execution-plan.md#U001
+verification:
+  status: deferred-by-owner
+  owner: program-322-coordinator/P7
+  next_action: Select and execute redesigned focused checks after implementation

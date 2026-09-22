@@ -1,0 +1,7 @@
+profile_version: 1
+id: lesson-minimal
+skills:
+  - id: lesson
+    version: 0.1.0
+adapters:
+  - codex

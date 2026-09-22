@@ -1,0 +1,58 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-candidate-assembly-ASSEMBLE-001-handoff
+created_at: '2026-09-23T01:59:15+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml
+contract_exception: 'U001: bounded local delivery; native handoff/audit validation and shared registration deferred to coordinator/P7'
+repository:
+  root: F:/framework-next/331
+  branch: codex/2026-09-23-candidate-assembly
+  starting_commit: a1d8b750b8c81fd17697a39e04b55c35c4f3c4dc
+  checkpoint_commit_source: containing-commit
+  delivery_identity: exact HEAD and committed message read back in final callback
+workflow:
+  workflow_id: 2026-09-23-candidate-assembly
+  task_id: ASSEMBLE-001
+  status: completed
+  scope: local-code-delivery-with-verification-deferred
+resume:
+  hidden_context_required: false
+  last_completed_action: Implemented exact selection, projection and assembly; no product execution
+  exact_next_action: Coordinator reads back final Issue-330 metadata/member bytes and integrates both local deliveries before first push
+critical_gate:
+  status: deferred-by-owner
+  command: null
+  exit_code: null
+  authority: U001/P7
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  model_source: explicit coordinator/user dispatch; no independent runtime attestation
+interface:
+  entrypoint: tools/build-development.py
+  api: distribution.assembly.assemble
+  profile: lesson-minimal
+  skill: lesson@0.1.0
+  tool: scripts/lesson.py
+  tool_invocation: '--request <explicit-file|->; JSON project_root/package_root/operation; never invoked by builder'
+  project_config_convention: .ai/custom/framework.json
+  runtime_destination: .agents/skills/framework-lesson/SKILL.md
+  exact_members:
+  - SKILL.md
+  - skill-package.yaml
+  - references/configuration.md
+  - references/operations.md
+  - references/example.md
+  - schemas/lesson-record.schema.json
+  - templates/lesson.md
+  - scripts/lesson.py
+  extra_helpers: []
+  metadata_version_change: false
+delivery:
+  push: not-performed
+  candidates_generated: false
+  installed_state_changed: false
+  product_execution: deferred-by-owner
+  index_row: reports/remediation-report.md
+  limitations: .dev/design/framework-next/distribution-implementation/README.md
+  outstanding_owner_decisions: []

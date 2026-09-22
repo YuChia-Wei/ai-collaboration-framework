@@ -1,0 +1,28 @@
+manifest_version: 1
+profiles:
+  - id: lesson-minimal
+    path: src/profiles/lesson-minimal.yaml
+components:
+  - id: lesson
+    source: src/skills/lesson
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/lesson/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/lesson/skill-package.yaml
+      - source: references/configuration.md
+        destination: .ai/core/skills/lesson/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/lesson/references/operations.md
+      - source: references/example.md
+        destination: .ai/core/skills/lesson/references/example.md
+      - source: schemas/lesson-record.schema.json
+        destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
+      - source: templates/lesson.md
+        destination: .ai/core/skills/lesson/templates/lesson.md
+      - source: scripts/lesson.py
+        destination: .ai/core/skills/lesson/scripts/lesson.py
+adapters:
+  - id: codex
+    template: src/adapters/codex/skill-entry.md.template
