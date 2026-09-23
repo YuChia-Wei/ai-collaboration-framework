@@ -455,3 +455,57 @@ independent review; old v0.18 checks become explicit historical/legacy support.
 Target Issue 15/worktree records this decision. Only preparation exists so far:
 config/stores, exact-byte Git attributes and durable before-state. No managed
 installation or active root route yet. Source U001 does not govern the target.
+
+
+## Complete target capture failure and Issue 386
+
+PR #385 merged online at b746cff2fc803c0c0f1473605ce2f02fbec1eec6; #382/#383
+are CLOSED/COMPLETED and Project Done, provider read back. Current continuation
+branch is codex/2026-09-23-complete-pilot-repair from that main.
+Target complete rc.1 public plan passed at c8d975f3 (131 members, 524 checked paths,
+maximum 237 UTF-16). Actual apply blocked with scan-limit during durable capture.
+All 131 managed destinations, lock and marker remain absent; 19 protected inputs
+match. Preserve 102 durable object files / 1,152,958 bytes in target pilot-9ceb050fed8f,
+operation i-d91db05cdd13e23b3adc27b7df0e6afb. No complete operation or recovery claim.
+The target workflow retains exact raw request/result/engine and bounded inventory.
+
+Static code suggests repeated cache clearing/listing accumulates the 20,000-entry
+limit; no confirmed root cause before controlled reproduction. Issue #386 owns
+only IO lookup/private reader/immediate capture changes and focused tests, preserving
+all read/scan limits and path safety. Owner directly confirmed its independent
+task and scope in call_LXr4GzoSMC5N6rgh7xWkXO3c; Project addition/Status separately
+confirmed in call_hdVF2EtoiU7cm5Ddq24Nv5ej. Auto-review initially rejected task creation
+and Project addition before those direct confirmations; no rejected action ran.
+
+Task 01a0cedd-9907-78a3-b94b-37192978d04c at F:/framework-next/386, branch
+codex/2026-09-23-installation-scan-budget, starts clean b746cff2. Runtime Astra/ultra
+verified by read-only task row; actual first progress confirms correct F: identity.
+Coordinator owns first push/integration and the later real-target retry. No unchanged
+retry or target activation; unselected U001 gates remain deferred-by-owner.
+
+
+## Issue 386 reviewed complete candidate repair
+
+Final 3afb4ff4207acb3e12e3953018736305a439ed21 is clean. Product source
+64bf9f6e800799976e46caa13d873f9fef898431 changes only installation_io.py and
+installation_state.py: fresh direct directory metadata/identity checks, complete
+bracketed listings, and explicit parent invalidation before own namespace writes.
+Limits/counters, closure/pin, exact path/byte/alias/link checks stay in force under
+the existing quiescent writer contract. Metadata is not a concurrency lease.
+Root reviewed product/test/trial driver; no actionable finding. All ten raw evidence
+hashes and ten executed/final engine file hashes match. Ten focused tests pass after
+one retained driver-field correction. Controlled old-cache behavior failed at
+20,001 entries; repaired 200 reads use 132 entries. No speed claim.
+
+One actual complete candidate trial at 64bf9f6e passed planned -> applied with
+131 raw members, exact lock/durable lock, absent markers and preserved protected/
+unknown sentinels. Eight trial launches, peak one owned child, two operation roots;
+568 files / 3,978,814 bytes at endpoint. Candidate identity remains #381 versioned
+0.19.0-rc.1. Project readiness remains not-assessed. Conditional Issue closure follows
+online integration. Real target retry requires a fresh exact engine pin and plan;
+its failed pre-marker residue remains. Unselected U001 gates deferred-by-owner.
+
+Target local 1269a5fa holds a preparation-blocked current gate. Nine focused tests,
+285 retained-file hashes and twenty actual resolver calls passed; target Git overlay
+validated its three commits. Root/runtime are unchanged; independent adoption review
+and complete target installation are still pending.

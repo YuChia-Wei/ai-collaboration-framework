@@ -227,3 +227,18 @@ Reviewed #382 local delivery 96386941 supplies all selected native cases across
 the truthful two-source continuation. Integrate #382/#383 online, then apply the
 complete #381 rc.1 candidate in target Issue 15 with its newly adopted current
 gate. Retain all failures and target independent review before readiness claims.
+
+
+## Complete pilot capture repair
+
+PR385 is merged; #382/#383 complete. Target complete rc.1 plan passed but actual
+apply hit scan-limit before managed writes. Preserve all target failure evidence.
+Directly confirmed #386 owns bounded IO/Reader repair and one full-candidate fixture
+trial; task 01a0cedd-9907-78a3-b94b-37192978d04c in F:/framework-next/386.
+Target gate development proceeds separately under its direct owner decision.
+
+
+#386 final 3afb4ff4 is reviewed; actual full-candidate fixture apply passed at
+64bf9f6e with all 131 members. Integrate online, then use a fresh engine pin/plan
+for target Issue 15 while preserving its prior capture failure. Current target
+gate is prepared at 1269a5fa and intentionally rejects incomplete admission.
