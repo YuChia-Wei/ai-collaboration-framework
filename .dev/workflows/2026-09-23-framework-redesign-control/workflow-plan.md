@@ -162,3 +162,9 @@ The source-pin repair and affected source review are locally complete (#370/#371
 #373 is active in `01a0cd49-7805-7202-9176-e8f7b4cf4285` at `F:/framework-next/373`, starting from `f8f0d073e6442df8a280c5941a2c7a1d6ed7060b`. Runtime Astra Ultra, actual first F: command and live Project In progress are verified in the dispatch record. No public-family passing result is implied.
 
 PR #374 is online at `c10d874dc658d86ba9e3cf064271ffcfe4a25a14`, with bounded #370/#371 closure and Project Done verified. #368/#369/#373 remain OPEN / In progress; all nine workflows and repository Actions remain disabled. Completed branch cleanup preserved all F: worktree and failed-fixture files.
+
+## Successor acceptance and first repair
+
+[Acceptance and bounded repair scope](reports/successor-acceptance-and-repair-scope.md)
+records the new coordinator, live provider state and #378 ownership. The owner order
+remains repair, rc.1 pilot, then overall validator/release/pipeline review.
