@@ -1,0 +1,71 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-370",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T15:05:56+08:00",
+  "updated_at": "2026-09-23T15:05:56+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370",
+  "phase": "P7 scoped installation source review",
+  "scope": {
+    "target": "Independent read-only review of fixed managed-installation source",
+    "files": [
+      ".dev/workflows/2026-09-23-installation-source-review/"
+    ],
+    "reviewed_source_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+    "read_scope": "Ten-file EnginePin closure and only directly relevant candidate/contract dependencies",
+    "constraints": [
+      "No source/test/policy/shared edits or product/native execution",
+      "No sub-agents, nested agents, executor-created tasks or callbacks",
+      "Concise fixed-source findings; no audit/lease/receipt machinery"
+    ],
+    "non_goals": [
+      "Implementation repairs",
+      "Runtime/native/provider acceptance",
+      "CI restoration, credentials, release or target adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify F: identity and fixed source bytes",
+      "Inspect accepted contracts and actual ten-file maintenance closure",
+      "Record substantiated findings and explicit unexecuted limits",
+      "Return coherent local review commit"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and complete planned-message checks only"
+    ],
+    "last_completed_step": "Issue created and write scope narrowed to one workflow; Project Planned",
+    "next_action": "Create independent Astra Ultra review task on exact assigned worktree"
+  },
+  "results": {
+    "summary": "Review selected; not started",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Source review cannot establish actual native behavior",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/370",
+    "branch": "codex/2026-09-23-installation-source-review",
+    "workflow_id": "2026-09-23-installation-source-review",
+    "thread_id": null,
+    "starting_commit_source": "Containing coordinator dispatch checkpoint; reviewed product bytes pinned separately"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
+    "implementation_status": "review pending",
+    "verification_state": "read-only review selected; all runtime cases unexecuted"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RObw",
+  "project_state": "Planned; only Status mutated"
+}

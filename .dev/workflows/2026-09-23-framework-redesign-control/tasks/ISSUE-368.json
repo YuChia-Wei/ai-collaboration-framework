@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T14:58:53+08:00",
-  "updated_at": "2026-09-23T14:58:53+08:00",
+  "updated_at": "2026-09-23T15:05:56+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -48,11 +48,11 @@
       "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
       "Direct syntax/reference/Git and complete planned-message checks"
     ],
-    "last_completed_step": "Issue created with correct attribution; Project Planned; exact dispatch preparation",
-    "next_action": "Create assigned worktree and independent Astra Ultra task after coordinator checkpoint"
+    "last_completed_step": "Independent task active; runtime and first F: identity verified; live Issue OPEN/Project In progress",
+    "next_action": "Receive implementation checkpoint with actual selected checks and remaining boundaries"
   },
   "results": {
-    "summary": "Implementation assignment selected; no execution or completion claimed",
+    "summary": "Implementation active; no completion or test result claimed",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
@@ -64,14 +64,18 @@
     "branch": "codex/2026-09-23-source-contract-checks",
     "workflow_id": "2026-09-23-source-contract-checks",
     "starting_commit_source": "Containing coordinator checkpoint after PR #367",
-    "thread_id": null,
-    "output_root": "F:/framework-next/p7-runs/368-contracts"
+    "thread_id": "01a0cd11-1dc9-7842-abba-65b8fac0edb8",
+    "output_root": "F:/framework-next/p7-runs/368-contracts",
+    "starting_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+    "evidence": "evidence/p7-implementation-dispatch.json",
+    "model_verified": "Read-only runtime row: gpt-6-astra / ultra",
+    "worktree_verified": "First actual repository command matched assigned F: root/branch/HEAD/common Git and clean state"
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
-    "implementation_status": "not started",
+    "implementation_status": "in progress",
     "verification_state": "selected cases authorized; not executed; other obligations deferred-by-owner"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RKIs",
-  "project_state": "Planned; only Status mutated"
+  "project_state": "In progress; Status only mutated; no other single-select values observed"
 }

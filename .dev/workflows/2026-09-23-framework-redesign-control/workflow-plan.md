@@ -42,8 +42,9 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design online PR #362; Issue/Project complete; adoption unperformed |
 | #364 | P7-A focused verification design | own design/workflow only | design online PR #367; Issue/Project complete |
 | #365 | P7-B pipeline/policy design | own design/workflow only | design online PR #367; Issue/Project complete |
-| #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | Issue created; Project Planned; independent dispatch next |
-| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | Issue created; Project Planned; native continuation awaits actual V3 interface |
+| #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | independent Astra Ultra task active; actual F: identity verified |
+| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | independent Astra Ultra task active; native continuation awaits actual V3 interface |
+| #370 | P7 installation source review | own review workflow only; fixed ten-file source read-only | Issue created; Project Planned; independent dispatch next |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -61,7 +62,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: dispatch #368/#369 independently from this coordinator checkpoint under [selected P7 execution](../../design/framework-next/p7-execution-selection.md). #364/#365 are online/closed through PR #367. Product cases are authorized only in #368; #369 may run its synthetic selector/event tests. Root adoption and CI restoration remain unperformed.
+Current action: receive #368/#369 implementation outcomes, dispatch the independent fixed-source #370 review, then arrange V2/V3 from the actual helper interface. [Dispatch observations](evidence/p7-implementation-dispatch.json) verify the two active tasks. Only assigned narrow execution is authorized; native/root/CI outcomes remain outstanding.
 
 ## P3 shared implementation continuation
 

@@ -126,3 +126,7 @@ and actual trial/review limitations for the user's explicit adoption. #365's
 Actions settings proposal is not yet adopted; branch protections, rulesets,
 credentials, release environment and seven disabled legacy workflows remain
 unchanged. Enablement, hosted success and override retirement remain distinct.
+
+## Parallel fixed-source review assignment
+
+[#370](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370) separately reviews the ten-file managed-installation closure at `38e6458f8d3e81dc2568daf1fa467571fb529fee` while #368/#369 implement their disjoint scopes. It writes only its own workflow findings and executes no product/native tool. Concrete defects feed later owning repair/V3 cases; a changed subject needs affected review again. This is the selected high-risk source review, without legacy audit/lease/receipt tooling, and cannot substitute for actual native evidence.
