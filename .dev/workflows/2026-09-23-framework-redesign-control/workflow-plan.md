@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p7-approved-return`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-coordinator-handoff`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -14,6 +14,21 @@
 U001 is the current owner-selected execution boundary. Follow repository skills, work-item/branch/workflow/commit discipline and online PR integration. Do not run or recreate legacy validators, test matrices, critical gates or hosted PR checks during early development. Final verification is deferred to P7; no waived/deferred check becomes passed. No sub-agents or child-created tasks. All implementation tasks use independent gpt-6-astra / ultra conversations.
 
 This coordinator owns dependencies, task/branch/PR mapping and integration. Issue workers own only their assigned files and issue workflow. The root index is coordinator-owned to avoid parallel edits. Every PR declares which Issue is complete versus still waiting for later delivery or verification.
+
+## Current continuation order (owner update, 2026-09-23)
+
+The owner requested a fresh Astra/Ultra coordinator and selected: repair known
+problems first, then a versioned dotnet-mq-arch-lab pilot, then overall validators,
+release path and pipeline review. Trial version: 0.19.0-rc.1; stable target: 0.19.0.
+Neither version is released by this selection. The rc.1 installation must retain
+a concrete path to the later stable version, not merely a changed version string.
+Only repair/pilot-required focused checks precede the pilot; CI remains disabled.
+
+The [current coordinator handoff](handoffs/coordinator-transfer.md) supersedes
+historical active-task/approval wording below. #368/#369/#373 are open with their
+returned checkpoints integrated; their latest turns are complete. Previous owner
+confirmations are resolved. Root adoption and target installation remain undone.
+The successor accepts shared-record ownership before updating the coordinator ID.
 
 ## Initial work allocation
 

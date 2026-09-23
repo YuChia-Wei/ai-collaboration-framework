@@ -6,6 +6,19 @@ Coordinator selection under program #322 / U001 after inspecting fixed designs
 The designs are retained proposals; this document resolves their shared execution
 boundaries. Selection is not a test result, root activation or CI restoration.
 
+## Owner-selected continuation order (2026-09-23)
+
+The [fresh-coordinator handoff](../../workflows/2026-09-23-framework-redesign-control/handoffs/coordinator-transfer.md)
+records the owner's later sequence: repair known issues, then the actual
+0.19.0-rc.1 dotnet-mq-arch-lab pilot, then review overall validators, the release
+path and pipelines. This order supersedes earlier sequencing/no-downstream-selection
+wording where they conflict. Only the minimal affected repair and pilot checks
+move before the pilot; it does not require completing the old full P7 plan first.
+The target pilot is now selected, subject to repair and its own project governance.
+Source CI remains disabled and the dormant rules remain ineffective. Version
+identity and rc.1-to-0.19.0 upgrade support must be concrete before target adoption;
+no tag, publication or successful upgrade is inferred by this planning update.
+
 ## Selected contracts and first assignments
 
 1. Adopt #364's [ownership and layers](verification-design/README.md), [bounded cases](verification-design/selected-checks.md)

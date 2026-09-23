@@ -1,0 +1,75 @@
+{
+  "record_kind": "framework-redesign-coordinator-resume",
+  "record_version": 1,
+  "created_at": "2026-09-23T21:30:00+08:00",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "program_issue": 322,
+  "hidden_context_required": false,
+  "checkpoint_commit_source": "containing-commit",
+  "observed_source_commit": "90051b7008e1de2fc87ef91e08f3fb7f54fa9555",
+  "predecessor_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+  "successor_thread": null,
+  "successor_binding": "Actual create_thread result and successor acceptance; do not infer a task ID from this record.",
+  "source_root": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+  "assigned_worktree": "F:/framework-next/coordinator-next",
+  "handoff_branch": "codex/2026-09-23-coordinator-handoff",
+  "receiving_branch": "codex/2026-09-23-redesign-continuation",
+  "requested_model": "gpt-6-astra",
+  "requested_reasoning_effort": "ultra",
+  "execution_provenance": {
+    "predecessor_model": "gpt-6-astra",
+    "predecessor_reasoning_effort": "ultra",
+    "source": "runtime-reported",
+    "evidence": "Read-only state_5.sqlite threads row for predecessor task on 2026-09-23; no successor runtime attestation yet."
+  },
+  "owner_sequence": [
+    "known-problem-repair",
+    "0.19.0-rc.1-dotnet-mq-arch-lab-pilot",
+    "validator-release-pipeline-review",
+    "0.19.0-stable-release-and-target-update"
+  ],
+  "trial_version": "0.19.0-rc.1",
+  "stable_target_version": "0.19.0",
+  "version_state": "owner-requested trial target; not tagged, built, published or installed",
+  "open_issues": [
+    322,
+    368,
+    369,
+    373
+  ],
+  "retained_tasks": [
+    {
+      "issue": 368,
+      "thread_id": "01a0cd11-1dc9-7842-abba-65b8fac0edb8",
+      "worktree": "F:/framework-next/368",
+      "head": "e71ccc989c3ae213a8e04cbe51abb80183022024"
+    },
+    {
+      "issue": 369,
+      "thread_id": "01a0cd11-7b98-7090-ae53-1bf7bf46a651",
+      "worktree": "F:/framework-next/369",
+      "head": "0725c3dd68e6d1cb4aca5d03343cd239b8c447a1"
+    },
+    {
+      "issue": 373,
+      "thread_id": "01a0cd49-7805-7202-9176-e8f7b4cf4285",
+      "worktree": "F:/framework-next/373",
+      "head": "7996b32d3d4f70553b203299e25dc69d9413ff9d"
+    }
+  ],
+  "target": {
+    "root": "C:/Github/YuChia/dotnet-mq-arch-lab",
+    "repository": "YuChia-Wei/dotnet-distributed-architecture-lab",
+    "observed_head": "cb122285af09e46b24102f22a0ad9d713219c1f2",
+    "installed_version": "v0.18.0",
+    "mutation_performed": false
+  },
+  "ci": {
+    "actions_enabled": false,
+    "disabled_workflow_count": 9,
+    "restoration_authorized": false
+  },
+  "next_action": "Verify receiving Git/provider identity, acknowledge receipt, then scope the reader and Windows writer compatibility repair under the latest owner sequence.",
+  "report": "coordinator-transfer.md",
+  "formal_handoff_validation": "deferred-by-owner under U001; not passed"
+}
