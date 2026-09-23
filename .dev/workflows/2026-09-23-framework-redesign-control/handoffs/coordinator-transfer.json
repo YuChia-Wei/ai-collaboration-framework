@@ -6,7 +6,7 @@
   "program_issue": 322,
   "hidden_context_required": false,
   "checkpoint_commit_source": "containing-commit",
-  "observed_source_commit": "90051b7008e1de2fc87ef91e08f3fb7f54fa9555",
+  "observed_source_commit": "63263834e334d094971719302a6da81e90765f0c",
   "predecessor_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
   "successor_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
   "successor_binding": "Actual create_thread result and successor acceptance; do not infer a task ID from this record.",
@@ -33,10 +33,7 @@
   "version_state": "Complete unpublished rc.1 candidate installed in isolated target; activation blocked by actual PR Git worktree defect and pending independent review",
   "open_issues": [
     322,
-    335,
-    368,
-    369,
-    373
+    369
   ],
   "retained_tasks": [
     {
@@ -70,7 +67,7 @@
     "disabled_workflow_count": 9,
     "restoration_authorized": false
   },
-  "next_action": "Review original #335 source return, integrate online, build new immutable rc.1 candidate and perform target delta before independent review",
+  "next_action": "Await direct decisions for target a17cc80 push/PR/online merge and original Issue369 native scope proposal. Reconcile recorded P7 selector/manual-admission and publication-contract gaps before separate policy/CI/stable adoption.",
   "report": "coordinator-transfer.md",
   "formal_handoff_validation": "deferred-by-owner under U001; not passed",
   "successor_acceptance": {
@@ -248,9 +245,9 @@
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
   },
-  "updated_at": "2026-09-23T18:21:59.164382+00:00",
+  "updated_at": "2026-09-23T18:27:01.957597+00:00",
   "latest_checkpoint": {
-    "source_main": "3185c0f6f9546145a9ef93e486a9232b0e90b4b4",
+    "source_main": "63263834e334d094971719302a6da81e90765f0c",
     "source_repair_pr": 388,
     "source_repair_issue": 335,
     "source_repair_delivery": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
@@ -265,8 +262,8 @@
     "review_packet": "P15-rc1-a17cc80-01",
     "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
     "report": "../reports/successor-acceptance-and-repair-scope.md",
-    "next_action": "Push reviewed source integration, create PR and merge online under existing authority; read back ancestry then close only accepted #368/#370 and synchronize Status. Keep #322/#369 and pending target/native owner decisions open.",
-    "observed_at": "2026-09-23T18:21:59.164382+00:00",
+    "next_action": "Await direct decisions for target a17cc80 push/PR/online merge and original Issue369 native scope proposal. Reconcile recorded P7 selector/manual-admission and publication-contract gaps before separate policy/CI/stable adoption.",
+    "observed_at": "2026-09-23T18:27:01.957597+00:00",
     "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
     "independent_review": "passed; no reportable findings",
     "selected_gate": {
@@ -287,7 +284,7 @@
         "executed_source": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
         "result": "12 methods passed once, zero skips; eight historical comparisons remain separate",
         "parent_review": "bounded common-route no actionable finding; exact output/input and historical custody verified",
-        "issue": "OPEN; bounded criteria and affected independent review satisfied; close only after online merge",
+        "issue": "CLOSED/COMPLETED; Project Done after bounded acceptance, affected review and online integration",
         "continuation_base": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
         "repair_scope": "direct_directory Windows alias refusal, necessary private existing-module helper/direct assembly caller; focused test_contracts and own records",
         "execution": "six affected methods passed once, zero skips, 7.488 s capture; includes two actual Lesson assemblies/readers; simulated Win32 alias regressions",
@@ -314,15 +311,15 @@
         "post_merge_records": "online PR392; completed worktree cleaned with archive receipt"
       }
     },
-    "source_integration": "CR-002 repair and independent review integrated locally; online PR/merge pending",
+    "source_integration": "PR394 MERGED at 63263834e334d094971719302a6da81e90765f0c; exact 21 paths and repair/review ancestry verified",
     "open_issues": [
       322,
-      368,
-      369,
-      370
+      369
     ],
     "closed_issues_observed": [
       335,
+      368,
+      370,
       373,
       378,
       381,
@@ -366,7 +363,7 @@
       "artifact_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
       "result": "one P2 CR-002 substantiated source finding; C-001 is unverified concern, not confirmed defect",
       "parent_verification": "ten engine raw/Git/prior/installed comparisons, one direct producer, two historical reports and four-record scope match",
-      "issue_status": "OPEN / Verification; bounded review complete, online integration required before closure",
+      "issue_status": "CLOSED/COMPLETED; Project Done after online integration",
       "cr002_re_review": {
         "subject": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
         "status": "completed; original task idle",
@@ -376,7 +373,8 @@
         "disposition": "CR-002 resolved-in-reviewed-source; no new substantiated finding",
         "report_sha256": "15e38a8516625cc5c061eff81c999ab5d1657fb9585defd1c31764257e1fd200",
         "parent_verification": "17 raw/Git bindings, 4 historical report/inventory hashes and exact four-path review scope matched"
-      }
+      },
+      "worktree_status": "completed checkout removed after durable ignored-file archive; fixed commits remain in shared Git"
     },
     "completed_cleanup_373": {
       "removed_worktree": "F:/framework-next/373",
@@ -420,7 +418,34 @@
       "admission_boundary": "main emits manual admission_requirements but exit status checks ownership errors and executed checks, not satisfaction of manual requirements",
       "disposition": "P7 adoption gap retained; no execution, policy activation or native extension selected by inventory"
     },
-    "integration_readback_record": ".dev/ai-context/local/framework-next-control/cr002-integration-closeout.json (populate from actual provider result after merge)"
+    "integration_readback_record": ".dev/ai-context/local/framework-next-control/cr002-integration-closeout.json; actual PR and both Issue/Status results captured",
+    "completed_cleanup_cr002": {
+      "issues": [
+        368,
+        370
+      ],
+      "ignored_files_archived": 20,
+      "archived_bytes": 440214,
+      "persistent_parent": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/framework-next-control/completed-worktree-archive",
+      "archives": [
+        "368-af5c4e39",
+        "370-67da0e4b"
+      ],
+      "preflight_failure_retained": "368-370-cleanup-preflight-01.json: existing historical 370 archive; stopped before copying/deleting; corrected unique destination",
+      "remote_branches": "already absent, no deletion",
+      "removed_worktrees": [
+        "F:/framework-next/368",
+        "F:/framework-next/370"
+      ],
+      "preserved": [
+        "historical 370 archive",
+        "all p7-runs and failed fixtures",
+        "F:/ai-context-tests",
+        "F:/framework-next/369",
+        "F:/framework-next/386",
+        "target pilot candidate/recovery/evidence"
+      ]
+    }
   },
   "checkpoint_history": [
     {
@@ -707,6 +732,20 @@
       },
       "stable_release_gap": "Existing source release policy still requires four admitted assets and retained origins; #381 unpublished schema-2 candidate is not a new-format publication contract. #365 explicitly leaves new-format release to separate selection/authority. No matrix, tag, publication or enablement executed.",
       "superseded_at": "2026-09-23T17:58:21.695505+00:00"
+    },
+    {
+      "kind": "superseded-top-level-navigation",
+      "observed_at": "2026-09-23T18:27:01.957597+00:00",
+      "open_issues": [
+        322,
+        335,
+        368,
+        369,
+        373
+      ],
+      "next_action": "Review original #335 source return, integrate online, build new immutable rc.1 candidate and perform target delta before independent review",
+      "observed_source_commit": "90051b7008e1de2fc87ef91e08f3fb7f54fa9555"
     }
-  ]
+  ],
+  "record_navigation": "latest_checkpoint and current top-level navigation are current; named earlier checkpoints and checkpoint_history retain historical observations"
 }

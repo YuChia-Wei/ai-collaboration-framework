@@ -460,3 +460,28 @@ CR-002 resolved in reviewed source, no new substantiated finding. Parent verifie
 #370 meet their bounded criteria; online integration remains required before
 conditional Issue closure and Project Done. C-001 remains unverified, with no
 new native or target acceptance claimed.
+
+
+## Verified CR-002 closeout; remaining owner decisions
+
+PR394 merged at 63263834e334d094971719302a6da81e90765f0c. Exact head, 21
+paths and all repair/review ancestors were read back. #368/#370 are now
+CLOSED/COMPLETED and their existing Project Status is Done; other fields stayed
+unchanged. #322/#369 remain open. No target provider action or native extension
+was executed. The current target remains locally admitted at a17cc80ef112368ff47109926aad22915a654b35.
+
+Completed #368/#370 worktrees and local branches were removed only after clean
+state, merged ancestry, idle original tasks and durable archive/hash checks.
+Twenty ignored files (440214 bytes) are preserved at the persistent source
+control archive in 368-af5c4e39 and 370-67da0e4b. Remote branches were already
+absent. The first cleanup preflight stopped before any copy/removal because
+the historical 370 archive already existed; that failure and the old archive
+remain, and the corrected unique destinations were verified after cleanup.
+All p7-runs/failed fixtures, F:/ai-context-tests, unfinished #369, the actual F386
+engine and all target candidate/recovery/admission evidence remain.
+
+Await the existing direct owner decisions for target seven-commit push/PR/merge
+and Issue369 native scope/roots. Before P7 adoption, reconcile the recorded
+selector-to-regression and manual-admission gaps. Stable publication also needs
+a separately selected/adopted new-format contract; no release, tag, policy or
+CI restoration is implied by this closeout. C-001 remains unverified.
