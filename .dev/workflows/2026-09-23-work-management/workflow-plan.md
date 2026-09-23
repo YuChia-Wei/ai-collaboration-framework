@@ -1,38 +1,31 @@
 # Work management design and implementation
 
-- Workflow: `2026-09-23-work-management`; owner: `ai-context-governance`.
-- Branch/worktree: `codex/2026-09-23-work-management`, `F:/framework-next/335`.
-- Base: main; starting commit `a34ecd3c9423b17b6bb745f598ef22fd7437dd24`.
-- State: **in_progress**, remediation-planning; Issue [#335](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335) is OPEN in the last live read.
-- Created/updated: 2026-09-23T08:18:00+08:00.
-- Template: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted under U001.
+- Workflow: 2026-09-23-work-management; owner: ai-context-governance.
+- Branch/worktree: codex/2026-09-23-work-management, F:/framework-next/335.
+- Original design base: a34ecd3c9423b17b6bb745f598ef22fd7437dd24.
+- Preserved design checkpoint: 446a579d03a25edf1b6e64b5e5c13016740025c0.
+- Source continuation base: 0d0556d4c60105a28eb39cfb06efab9b069728cb, adopted with git merge --ff-only after clean identity read-back.
+- State: **completed for bounded local source delivery**. [Issue #335](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335) remains OPEN in the last live read; provider integration/closure is coordinator-owned.
+- Created: 2026-09-23T08:18:00+08:00; updated: 2026-09-23T00:41:35+00:00.
+- Template: .ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md, version 1.2.0, adapted under U001.
 
-## Objective and ownership
+## Ownership and completion
 
-Design and later implement independent PR and local-backlog skills with one GitHub provider boundary. This first checkpoint writes only `.dev/design/framework-next/work-management/` and this workflow. Product source, shared configuration/parser/manifest/schema ownership, runtime entries, coordinator workflow/index and historical backlog remain protected.
+The coordinator explicitly resumed this same task and granted src/skills/pr/**, src/skills/local-backlog/** plus own design/workflow. No other source/config/manifest/profile/runtime/history files were edited. No sub-agent or executor-created task/worktree was used. Shared contract decisions supersede the first proposal; their original checkpoint remains unchanged in Git history.
 
-This two-task workflow retains unique cross-session state: an early contract commit, coordinator-owned interface reconciliation, later source ownership and source delivery, plus assigned P7 verification deferral. It is not padded with audit-only tasks. Governance templates are used proportionally; no legacy validator compliance is claimed.
-
-## Tasks and completion
-
-| Task | State | Bounded completion |
+| Task | State | Delivery |
 | --- | --- | --- |
-| [WM-001](tasks/WM-001.json) | completed | Reviewable contract, two record schema proposals, operations/members/config needs, lifecycle/authority tables and synthetic examples. |
-| [WM-002](tasks/WM-002.json) | in_progress | Receive coordinator reconciliation and explicit source ownership; implement actual source/tools/docs in this same task. No product source started at checkpoint. |
+| [WM-001](tasks/WM-001.json) | completed | Preserved early contract checkpoint and bounded authority/operations/schema proposals. |
+| [WM-002](tasks/WM-002.json) | completed | Complete independent PR/backlog source sets and one package-owned public GitHub adapter. |
 
-Contract delivery does not satisfy the Issue's final implementation outcome. Behavioral/schema/package/provider acceptance and CI are deferred-by-owner under U001 to program #322 coordinator / P7. Source implementation may later complete its bounded code-delivery scope without claiming those checks passed.
+This workflow retains a real cross-session design/ownership handoff and source continuation, not empty audit tasks. Completion closes its local code/document scope only. Runtime acceptance, distribution mapping, online integration, Issue/Project closure and P7 verification remain separate.
 
-## Decisions and next action
+## Selected interfaces
 
-[Integration proposal](../../design/framework-next/work-management/integration-proposal.json) contains:
-WM-C1 multi-namespace config semantics/version and existing-consumer changes;
-WM-C2 exact 10 PR / 8 backlog members plus package-owned pr.github tool;
-WM-C3 coordinated single-writer provider update versus explicitly unsupported atomic concurrency.
+[Integration inventory](../../design/framework-next/work-management/integration-proposal.json) records exact 10 PR / 8 backlog members. Both use metadata_version 2, config_version 2, one writable/readable schema and no skill dependencies. WM-C1/C2/C3 are selected by the coordinator: selected-namespace config isolation, public package-owned pr.github, and coordinated single-writer provider operations without server CAS. Mode/grant strings are not proof of permission/exclusion.
 
-Coordinator owns selections, shared files, first push and online integration. Resume this same task after those choices and source ownership are explicit. No new user approval checkpoint is being introduced. No push/PR/merge/Issue/Project mutation, credential change, runtime activation or release is authorized for this executor.
+## Evidence and remaining work
 
-## Evidence and branch checkpoint
+[Original contract report](reports/contract-checkpoint.md) remains historical. [Source report](reports/source-checkpoint.md) records actual static checks, limits and deferrals. [Receiving checkpoint](handoff.yaml) identifies the current containing commit without a self-referential SHA.
 
-[Report](reports/contract-checkpoint.md) and [receiving checkpoint](handoff.yaml) preserve observed facts, limitations and continuation. The containing commit identifies the local design checkpoint without a self-referential SHA. Original dispatch and P2 handoff remain unchanged. The local commit lands in the existing persistent common Git database; F: source files remain volatile.
-
-The same branch continues after coordinator reconciliation unless the coordinator explicitly assigns another existing branch/worktree. No executor-created task/worktree or sub-agent is permitted.
+All behavioral/schema/provider/package/build/install/migration/CI/audit execution remains deferred-by-owner under U001 to program #322 coordinator / P7. Next: coordinator reads the local commit, supplies the concrete integrated package subject to #337 for exact manifest/profile mapping, arranges first push/integration, then P7 chooses and runs verification. No provider write, first push, runtime activation, release or credential change was performed by this executor.

@@ -1,8 +1,8 @@
 # PR and local backlog contract checkpoint
 
-Issue [#335](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335), program [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322). **Design checkpoint; source implementation remains pending.**
+Issue [#335](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335), program [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322). **Bounded source implementation complete; execution verification deferred-by-owner to P7.**
 
-Read [contract](contract.md), [integration proposal](integration-proposal.json), [synthetic examples](examples.md) and the proposed schemas for [PR records](schemas/pr-record.schema.json) / [local work](schemas/local-backlog-record.schema.json). This subtree is source design evidence, not an installed package or activated backlog.
+Read [contract](contract.md), [integration proposal](integration-proposal.json), [synthetic examples](examples.md) and the proposed schemas for [PR records](schemas/pr-record.schema.json) / [local work](schemas/local-backlog-record.schema.json). This subtree records source design and selected implementation; it is not an installed package or activated backlog.
 
 ## Source binding
 
@@ -14,6 +14,6 @@ Observed P2 restrictions: the Lesson config parser accepts only `skills.lesson` 
 
 The current source repository still uses live GitHub Issues under `.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml`. Historical `.dev/backlog` is not reactivated. Source policy, U001, this design and workflow records are excluded from proposed package members.
 
-## Handoff boundary
+## Selected implementation and handoff
 
-The contract subtask may complete after its local commit. Overall workflow and Issue remain in_progress. The coordinator reconciles WM-C1/C2/C3, then resumes this same task with explicit source ownership. Product implementation, schema/behavior acceptance, package/install trials and CI remain outstanding; U001 assigns verification to program coordinator / P7.
+The coordinator selected config v2, metadata v2, exact 10/8 members and coordinated single-writer GitHub operations in [the shared contract](../p3-shared-contract.md). Source exists under src/skills/pr and src/skills/local-backlog, including the public pr.github adapter. Both local tasks are complete; the workflow closes only this bounded source delivery. Issue/Project/provider integration and closure remain coordinator-owned. Schema/behavior acceptance, package/install trials and CI remain deferred-by-owner under U001 to program coordinator / P7.
