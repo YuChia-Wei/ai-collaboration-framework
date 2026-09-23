@@ -1,0 +1,112 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ENG-347",
+  "workflow_id": "2026-09-23-engineering-methods",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T11:55:00+08:00",
+  "updated_at": "2026-09-23T12:04:39+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_evidence": "Declared coordinator dispatch; not independent runtime attestation",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/347",
+  "scope": {
+    "target": "Five independently selectable engineering instruction packages",
+    "files": [
+      "src/skills/diagnostic-analyst/",
+      "src/skills/ddd-ca-hex-architect/",
+      "src/skills/bdd-gwt-test-designer/",
+      "src/skills/local-change-implementer/",
+      "src/skills/slice-implementer/",
+      ".dev/design/framework-next/engineering-methods/",
+      ".dev/workflows/2026-09-23-engineering-methods/"
+    ],
+    "constraints": [
+      "U001",
+      "same assigned F: worktree and writer",
+      "source completion is not execution or acceptance"
+    ],
+    "non_goals": [
+      "shared mapping and root changes",
+      "diagnostic JSON 1.0",
+      "runtime tests or CI",
+      "push, PR, merge, publication and adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify authority and identity",
+      "Extract legacy method meaning",
+      "Implement five packages",
+      "Perform permitted direct checks and local commit"
+    ],
+    "last_completed_step": "All five package sources, direct content/syntax/reference/member checks and exact planned message format check",
+    "next_action": "Coordinator reads the containing local commit and exact inventory, then assigns shared mapping and integration; P7 selects redesigned checks",
+    "validation": [
+      "Direct content and syntax, references/members, Git diff, complete planned commit message only"
+    ]
+  },
+  "results": {
+    "summary": "Five instruction packages, 23 members and seven public operations; source complete with U001 verification assigned to P7",
+    "files_changed": [
+      ".dev/design/framework-next/engineering-methods/README.md",
+      ".dev/design/framework-next/engineering-methods/delivery.json",
+      ".dev/workflows/2026-09-23-engineering-methods/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-engineering-methods/tasks/ENG-347.json",
+      ".dev/workflows/2026-09-23-engineering-methods/workflow-plan.md",
+      ".dev/workflows/2026-09-23-engineering-methods/workflow.yaml",
+      "src/skills/bdd-gwt-test-designer/SKILL.md",
+      "src/skills/bdd-gwt-test-designer/references/design.md",
+      "src/skills/bdd-gwt-test-designer/references/review.md",
+      "src/skills/bdd-gwt-test-designer/skill-package.yaml",
+      "src/skills/ddd-ca-hex-architect/SKILL.md",
+      "src/skills/ddd-ca-hex-architect/references/design.md",
+      "src/skills/ddd-ca-hex-architect/references/review.md",
+      "src/skills/ddd-ca-hex-architect/skill-package.yaml",
+      "src/skills/diagnostic-analyst/SKILL.md",
+      "src/skills/diagnostic-analyst/references/diagnose.md",
+      "src/skills/diagnostic-analyst/skill-package.yaml",
+      "src/skills/local-change-implementer/SKILL.md",
+      "src/skills/local-change-implementer/references/implement.md",
+      "src/skills/local-change-implementer/skill-package.yaml",
+      "src/skills/slice-implementer/SKILL.md",
+      "src/skills/slice-implementer/references/implement.md",
+      "src/skills/slice-implementer/references/modes/command.md",
+      "src/skills/slice-implementer/references/modes/generic.md",
+      "src/skills/slice-implementer/references/modes/query.md",
+      "src/skills/slice-implementer/references/modes/reactor.md",
+      "src/skills/slice-implementer/references/remediation.md",
+      "src/skills/slice-implementer/references/test-handoff.md",
+      "src/skills/slice-implementer/skill-package.yaml"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Source delivery only; runtime, behavior, independent review and assessment finding closure not established",
+    "follow_up_needed": true
+  },
+  "verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "P7 selects redesigned checks after implementation"
+  },
+  "actual_checks": {
+    "utf8_files": 29,
+    "yaml_documents": 6,
+    "json_documents": 2,
+    "skill_frontmatter_documents": 5,
+    "local_markdown_links": 33,
+    "package_members": 23,
+    "source_inventory_sha256": "matched every package member",
+    "legacy_source_git_comparison": "unchanged original-to-resumed subjects",
+    "product_execution": "not-run",
+    "commit_message": {
+      "result": "passed",
+      "sha256": "757e45bea9784681ff63f80016f0d0d9f592e60de4d67a9c729cce6035ea8b08",
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/347/.dev/ai-context/local/commit-messages/issue-347.txt --workflow-id 2026-09-23-engineering-methods"
+    },
+    "staged_diff": "Initial report EOF warning corrected; subsequent git diff --cached --check exited 0"
+  }
+}
