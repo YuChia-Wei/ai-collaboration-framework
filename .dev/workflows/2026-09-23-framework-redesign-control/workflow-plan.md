@@ -2,6 +2,48 @@
 
 ## Latest actual checkpoint
 
+The complete target pilot is locally admitted at
+a17cc80ef112368ff47109926aad22915a654b35, unchanged full tree
+1f1bac4fcc564657ae8eddb4ee1c704cc85c7284. Independent reviewer
+/root/target_rc1_audit returned no reportable findings for content subject
+eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621.
+Its one current target gate passed in 25.923705 seconds; fourteen focused
+regressions were reused with exact-input proof. Parent compared all 316 authority
+files with raw and Git bytes, accepted the genuine receipt, passed --admit,
+validated released lease, and removed only the exact owned review lock. Target
+tracked bytes remain unchanged and clean.
+
+Durable target proof is under
+C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot/.dev/ai-context/local/rc1-independent-review/attempt-01:
+report.md, receipt.json, role-execution.json, parent-admission.execution.json,
+parent-closeout.json and parent-final-manifest.json. Runtime preflight preparation,
+the reviewer timestamp serialization failure, and the parent full-stat lock
+comparison failure remain retained. The latter stopped before unlink; stable
+identity plus exact owned-lock bytes admitted the later release. No behavioral
+gate rerun or retrospective success claim erased these failures.
+
+Target remote main remains cb122285af09e46b24102f22a0ad9d713219c1f2.
+The seven local commits are reviewable in the ignored rc1-integration-proposal.md;
+target push/PR/merge requires the pending separate direct owner decision. Issue 15
+remains open. Stable publication and actual rc.1-to-stable update are incomplete.
+
+Original #368/#369/#373 tasks were resumed for read-only evidence reconciliation,
+not replacement tasks or sub-agents. #369 identifies compatible V1/V2 command
+interfaces, missing generic native caller/hosted binding, changed engine bytes,
+owned-process termination and durable evidence retention gaps. Caller/driver
+changes, their selected executions, effective-policy cutover and CI adoption are
+not represented as done. #368/#373 current-input reuse decisions remain pending.
+
+Live source read-back: Actions enabled=false; all nine workflows
+disabled_manually; rulesets including inherited returned []; main/protection
+returned 404 with explicit Branch not protected. No setting was changed and no
+hosted pass is inferred. Source root adoption, remaining P7 acceptance, release
+delivery review and stable upgrade remain separate work. U001 and unselected
+legacy/full/formal/hosted deferrals remain effective.
+
+
+## Historical repair and review dispatch checkpoint
+
 PR #388 merged the original #335 linked-worktree repair at eca7c971; its selected
 real Git regression and installed target retry passed. #335 is closed / Project
 Done after bounded coordinator review and live readback. The new complete rc.1
