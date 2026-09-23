@@ -1,5 +1,9 @@
 # Issue #369 blocked local handoff
 
+This report retains checkpoint `5ee20036392b6ad217e4029c8a256e176e9d8cdf`.
+The later [runner-only follow-up](runner-binding-handoff.md) supersedes only the
+V1 binding-pending state below; original failures and policy refusal remain.
+
 Status: **local source-gate checkpoint; policy approval-blocked; no readiness claim**.
 Issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369
 Program: #322 / U001. Owner: program #322 coordinator / P7.

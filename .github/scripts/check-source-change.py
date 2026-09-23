@@ -20,6 +20,7 @@ MAX_BLOB = 1024 * 1024
 MAX_PATHS = 256
 MANIFEST = "src/distribution/manifest.yaml"
 RUNNER = "tests/framework_next/run.py"
+RUNNER_INTERFACE_COMMIT = "070a47335ffce99d31bd83e487447942539e4a9f"
 FAMILIES = frozenset({"lesson", "adr", "standards-promotion", "pr", "local-backlog",
                       "software-development-orchestrator", "problem-frame-author"})
 LEGACY_WORKFLOWS = frozenset({"governance.yml", "portable-gates.yml", "nightly-full-readiness.yml",
@@ -414,9 +415,12 @@ def content_checks(changes, before, after):
 def command_for(check):
     if check == "source-tests":
         return [sys.executable, "-I", "-B", ".github/tests/test_source_gates.py", "--json"]
-    if check == "contracts" or check.startswith("public:"):
-        # Coordinator binds the actual V1 result interface before this becomes runnable.
-        raise GateError("runner-binding-pending:#368:" + check)
+    if check == "contracts":
+        return [sys.executable, "-I", "-B", RUNNER, "--layer", "contracts"]
+    if check.startswith("public:") and check.removeprefix("public:") in FAMILIES:
+        # #368 explicitly reserves --layer public --family ID and exits 2.
+        # Refuse here until its actual implementation/result interface is delivered.
+        raise GateError("reserved-layer-not-implemented:#368:" + check)
     raise GateError("unknown selected command: " + check)
 
 
@@ -433,8 +437,53 @@ def run_selected(check, root, head, launch=bounded_run):
     if not entry.is_file() or entry.read_bytes() != expected:
         raise GateError("selected command missing or differs from pinned head: " + path)
     result = launch(argv, root, timeout=120, limit=65536)
+    return command_result(check, result)
+
+
+def contract_test_count(output):
+    """Read #368's real unittest + JSON observations; this is not a receipt schema.
+
+    The caller also requires exit 0, which the upstream runner guarantees only
+    after zero skips and successful cleanup. Missing/contradictory output fails
+    closed. Extra observation names are allowed; product assertions remain owned
+    by the actual runner, not reimplemented here.
+    """
+    try:
+        text = output.decode("utf-8").replace("\r\n", "\n")
+        summaries = re.findall(r"(?m)^Ran ([1-9][0-9]*) tests? in [0-9]+(?:\.[0-9]+)?s\n\nOK$", text)
+        if len(summaries) != 1 or re.search(
+                r"(?m)^(?:FAILED\b|OK \(|ERROR:|FAIL:|Traceback |usage:)| \.\.\. skipped\b", text):
+            raise GateError("contracts result missing, failed, skipped or ambiguous unittest summary")
+        observations = [strict_json(line.encode("utf-8")) for line in text.splitlines() if line.startswith("{")]
+        if any(not isinstance(item, dict) or "outcome" in item for item in observations):
+            raise GateError("contracts result contains an error or malformed observation")
+        runtimes = [item["runtime"] for item in observations if "runtime" in item]
+        accounting = [item["fixture_accounting"] for item in observations if "fixture_accounting" in item]
+        if len(runtimes) != 1 or len(accounting) != 1:
+            raise GateError("contracts result missing or duplicate runtime/cleanup observation")
+        runtime, fixture = runtimes[0], accounting[0]
+        if (not isinstance(runtime, dict) or not all(isinstance(runtime.get(key), str) and runtime[key]
+                for key in ("python", "executable", "PyYAML", "jsonschema", "referencing"))
+                or not isinstance(fixture, dict)
+                or not {"residue", "next_action", "observed_files", "process_total"} <= fixture.keys()
+                or fixture["residue"] is not None or fixture["next_action"] is not None
+                or any(type(fixture[key]) is not int or fixture[key] < 0
+                       for key in ("observed_files", "process_total"))):
+            raise GateError("contracts result malformed or cleanup incomplete")
+        return int(summaries[0])
+    except (UnicodeError, ValueError, TypeError) as exc:
+        raise GateError("contracts result has malformed observation bytes") from exc
+
+
+def command_result(check, result):
     if result.status != "passed" or result.code != 0:
-        raise GateError("selected command non-passing: " + check + ":" + result.status)
+        raise GateError("selected command non-passing: " + check + ":" + result.status + ":exit=" + str(result.code))
+    if check == "contracts":
+        return {"check": check, "status": "passed", "tests": contract_test_count(result.output),
+                "skipped": 0, "result_interface": "unittest-and-observations",
+                "interface_source_commit": RUNNER_INTERFACE_COMMIT}
+    if check != "source-tests":
+        raise GateError("unknown or reserved selected result: " + check)
     receipt = strict_json(result.output)
     if (not isinstance(receipt, dict) or receipt.get("status") != "passed"
             or type(receipt.get("tests")) is not int or receipt["tests"] <= 0
