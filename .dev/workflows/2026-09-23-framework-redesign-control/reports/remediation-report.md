@@ -70,3 +70,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P5 design selection and parallel source scope
 
 #342 design is complete at `66f353393b3f7ef59265d6c38b119a832e8113a9`. [Selected contract](../../../design/framework-next/p5-selected-contract.md) adopts honest instruction/tool metadata-v3 operations, eight specialist source responsibilities in #346/#347/#348, preserved legacy dispositions and conditional M01 input to #345. P4 #341 source and P6 #345 design continue independently. Structured frame/compliance and optional context maintenance remain queued; program findings and P7 acceptance remain open.
+
+## P4 source return
+
+#341 source `da04c0bb36fda9f48552ed5ee4f60efc18a95d9b` is locally integrated after [bounded source inspection](p4-source-integration.md). Ten-member workflow operations remain unmapped and unexecuted; #341 stays open for actual shared mapping. P5 design PR #349 is merged with #342 CLOSED/Project Done. Active source/design and P7 verification remain separate.

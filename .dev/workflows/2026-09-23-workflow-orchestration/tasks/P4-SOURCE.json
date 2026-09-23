@@ -6,9 +6,9 @@
   "task_id": "P4-SOURCE",
   "workflow_id": "2026-09-23-workflow-orchestration",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:09:21+08:00",
-  "updated_at": "2026-09-23T09:09:21+08:00",
+  "updated_at": "2026-09-23T01:44:27+00:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -20,7 +20,7 @@
   "scope": {
     "target": "Coordinator reconciliation and subsequent explicitly assigned source implementation",
     "files": [
-      "src/skills/software-development-orchestrator/ (proposed; not writable at first-stage checkpoint)",
+      "src/skills/software-development-orchestrator/",
       ".dev/design/framework-next/workflow-orchestration/",
       ".dev/workflows/2026-09-23-workflow-orchestration/"
     ],
@@ -45,22 +45,31 @@
     "validation": [
       "Direct syntax/reference/Git and planned commit-message format only"
     ],
-    "last_completed_step": "Contract input ready; no product source implementation",
-    "next_action": "Wait for coordinator selection of C341-01..05 and actual #334 dependency subject; then continue this SAME task."
+    "last_completed_step": "Implemented selected C341-01..05 in ten owned source members and ten operations; direct checks retained in source report.",
+    "next_action": "Coordinator handles actual shared mapping, first push and integration; P7 selects runtime verification."
   },
   "results": {
-    "summary": "Source work remains in progress at reconciliation boundary; implementation not started.",
-    "files_changed": [],
-    "tests_run": [
-      "deferred-by-owner: all product checks under U001; owner program #322 coordinator / P7"
+    "summary": "Portable workflow source implemented with one aggregate record, candidate-only composition and read-only retention previews; verification deferred-by-owner.",
+    "files_changed": [
+      "src/skills/software-development-orchestrator/ (exact ten members in source report)",
+      ".dev/design/framework-next/workflow-orchestration/ (selection/provenance updates)",
+      ".dev/workflows/2026-09-23-workflow-orchestration/ (source completion/handoff)"
     ],
-    "finding_status": "not-addressed",
-    "residual_risk": "Runtime behavior and schema acceptance remain unverified.",
+    "tests_run": [
+      "No product tests/CLI/schema execution under U001; deferred-by-owner to program #322 coordinator / P7.",
+      "19 UTF-8; 4 JSON; 2 YAML; 1 Python AST; 32 local Markdown links; 15 same-document schema references; direct inspection exit 0",
+      "Staged diff check initially exit 2 for extra EOF blank line; corrected and rechecked exit 0",
+      "Exact planned commit-message format validator exit 0; ignored original message bytes used for commit"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Schema/behavior/platform/concurrency/package acceptance remains deferred-by-owner to program #322 coordinator / P7; source existence is not acceptance.",
     "follow_up_needed": true
   },
   "delivery": {
-    "contract": "proposed-for-coordinator-reconciliation",
-    "implementation": "not-started",
-    "verification": "deferred-by-owner"
+    "contract": "C341-01..05 selected in p4-selected-contract.md",
+    "implementation": "source-implemented",
+    "verification": "deferred-by-owner",
+    "mapping": "coordinator-owned-pending",
+    "provider_integration": "not-performed"
   }
 }
