@@ -6,9 +6,9 @@
   "task_id": "ISSUE-346",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T12:00:33+08:00",
+  "updated_at": "2026-09-23T14:25:23+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -29,7 +29,9 @@
       "src/distribution/manifest.yaml",
       "src/profiles/work-management.yaml",
       "src/profiles/collaboration.yaml",
-      "src/profiles/engineering.yaml"
+      "src/profiles/engineering.yaml",
+      "src/profiles/source-repository.yaml",
+      "src/profiles/context-maintenance.yaml"
     ],
     "constraints": [
       "U001",
@@ -53,15 +55,15 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Same original task resumed at 4cda6689; third original mapping request rejected; record-only 7fab3ffd fast-forwarded into coordinator branch",
-    "next_action": "Direct user input in original #346 executor conversation is required by automatic approval review; no retry or replacement writer"
+    "last_completed_step": "Final 18/113 mapping 4ffa3881 received from clean original task and locally integrated after direct source checks",
+    "next_action": "Online PR and Issue/Project closure read-back; P7 designs then selected verification"
   },
   "results": {
-    "summary": "Owned source completed with P7 verification deferred",
+    "summary": "Bounded metadata/reviewer/source mapping complete; actual verification remains deferred",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "partially-resolved",
-    "residual_risk": "Manifest remains five packages/44 members; source verification deferred to P7",
+    "residual_risk": "Product, native, adoption and P7 acceptance remain unverified",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -80,11 +82,18 @@
     "verification_state": "deferred-by-owner",
     "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
     "integration_status": "source online in PR #353",
-    "mapping_status": "blocked-by-automatic-approval-review; direct input required in original executor task",
+    "mapping_status": "complete and locally integrated",
     "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md",
     "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
     "blocked_checkpoint": "7fab3ffd1698e2eb8ef791d6be7748f151506642",
-    "mapping_resume_base": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed"
+    "mapping_resume_base": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed",
+    "first_mapping_commit": "444327034aa14d9a9364c72e33e77ac879e9e5df",
+    "final_mapping_contract": "reports/p5-final-mapping-scope.md",
+    "final_mapping_commit": "4ffa3881484783a2e35152ad426bec359d2d9252",
+    "final_profiles": 7,
+    "actual_components": 18,
+    "actual_members": 113,
+    "integration_report": "reports/p5-final-mapping-integration.md"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPr0",
   "owner_confirmation": {
@@ -93,6 +102,6 @@
     "direct_user_reply": "確認 #346、#347 原定寫入範圍",
     "scope_record": "reports/p5-owner-confirmed-resume.md",
     "prior_rejections": "retained; new direct confirmation permits same original task to request scoped execution again",
-    "observed_result": "Third scoped request rejected before execution; forwarded coordinator confirmation not accepted as direct user input in executor conversation"
+    "observed_result": "Direct approval was subsequently supplied by the user in executor task; original four-file request accepted; all earlier refusals retained"
   }
 }

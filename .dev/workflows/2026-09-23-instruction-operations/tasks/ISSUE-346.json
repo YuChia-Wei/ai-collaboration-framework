@@ -6,9 +6,9 @@
   "task_id": "ISSUE-346",
   "workflow_id": "2026-09-23-instruction-operations",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:47:04+08:00",
-  "updated_at": "2026-09-23T11:56:40+08:00",
+  "updated_at": "2026-09-23T14:17:17+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -28,13 +28,19 @@
       "src/adapters/codex/skill-entry.md.template",
       "src/skills/code-reviewer/",
       ".dev/design/framework-next/instruction-operations/",
-      ".dev/workflows/2026-09-23-instruction-operations/"
+      ".dev/workflows/2026-09-23-instruction-operations/",
+      "src/distribution/manifest.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml",
+      "src/profiles/engineering.yaml",
+      "src/profiles/source-repository.yaml",
+      "src/profiles/context-maintenance.yaml"
     ],
     "constraints": [
       "U001",
       "One writer in assigned F:/framework-next/346 worktree",
       "Preserve v1/v2 metadata and P3 source",
-      "Mapping pending explicit coordinator actual-source handoff"
+      "Final mapping limited to the explicit eighteen-package/113-member handoff; no profile overlays or implicit union"
     ],
     "non_goals": [
       "Product execution, tests or CI",
@@ -52,12 +58,12 @@
     "validation": [
       "Direct syntax/content/reference/Git and exact planned message only"
     ],
-    "last_completed_step": "Verified the clean owner-confirmed base 4cda6689 and repeated direct metadata/tracked-member comparison after the third write request was rejected before execution",
-    "next_action": "Obtain trusted direct user authorization in this Issue #346 task or resolve the approval restriction; do not retry shared mapping or change writer"
+    "last_completed_step": "Final actual-source mapping implemented; all eighteen member closures, seven profile selections and protected rows/blobs compared directly",
+    "next_action": "Coordinator collects local final mapping commit and owns remote integration/Issue closure; P7 selects redesigned actual verification"
   },
   "delivery": {
     "source": "implemented-source-only",
-    "mapping": "blocked-by-approval-before-write",
+    "mapping": "final-eighteen-package-mapping-implemented-source-only",
     "package": {
       "id": "code-reviewer",
       "version": "0.1.0",
@@ -79,10 +85,13 @@
     "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
     "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
     "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md",
-    "mapping_resume_base": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed"
+    "mapping_resume_base": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed",
+    "mapping_checkpoint_base": "7fab3ffd1698e2eb8ef791d6be7748f151506642",
+    "final_mapping_base": "34400e0ff377301601be5b7e167ed9e05261830c",
+    "final_mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-final-mapping-scope.md"
   },
   "results": {
-    "summary": "Source delivered. Shared mapping remains unapplied after a third automatic approval rejection despite forwarded new owner confirmation. All prior failed attempts are retained; nine actual package closures match the handoff.",
+    "summary": "Bounded metadata-v3/reviewer source and actual-source mapping responsibility completed. Eighteen packages/113 members/seven profiles are explicitly mapped; original rows and protected profile blobs preserved. P7 verification, remote integration and provider closure remain separate.",
     "files_changed": [
       "src/distribution/package.py",
       "src/distribution/codex.py",
@@ -95,11 +104,17 @@
       ".dev/workflows/2026-09-23-instruction-operations/workflow.yaml",
       ".dev/workflows/2026-09-23-instruction-operations/workflow-plan.md",
       ".dev/workflows/2026-09-23-instruction-operations/tasks/ISSUE-346.json",
-      ".dev/workflows/2026-09-23-instruction-operations/reports/remediation-report.md"
+      ".dev/workflows/2026-09-23-instruction-operations/reports/remediation-report.md",
+      "src/distribution/manifest.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml",
+      "src/profiles/engineering.yaml",
+      "src/profiles/source-repository.yaml",
+      "src/profiles/context-maintenance.yaml"
     ],
     "tests_run": [],
     "finding_status": "partially-resolved",
-    "residual_risk": "Behavior, compatibility and real reviewer use remain unverified until P7.",
+    "residual_risk": "No product/loader/schema/build/install/runtime acceptance was executed under U001. Profiles are complete selections and sequential application does not imply union. Coordinator/P7 owns actual verification and adoption.",
     "follow_up_needed": true,
     "checks_performed": [
       {
@@ -216,6 +231,258 @@
       "profiles": 5
     },
     "next_action": "Obtain trusted direct user authorization in this Issue #346 task or resolve the approval restriction; do not retry shared mapping or change writer",
-    "verification": "deferred-by-owner; U001; program #322 coordinator / P7; P7 selects redesigned checks after implementation"
+    "verification": "deferred-by-owner; U001; program #322 coordinator / P7; P7 selects redesigned checks after implementation",
+    "historical_record": true,
+    "current_continuation": "mapping_checkpoint; prior failed outcomes and historical next actions are retained"
+  },
+  "mapping_checkpoint": {
+    "observed_at": "2026-09-23T13:30:34+08:00",
+    "status": "implemented-source-only",
+    "base_commit": "7fab3ffd1698e2eb8ef791d6be7748f151506642",
+    "approval": {
+      "source": "Direct user message in this Issue #346 task",
+      "text": "核准 #346 原定四個 manifest/profile 檔案的九套件 mapping 寫入，請繼續。"
+    },
+    "write_outcome": "scoped-write-executed",
+    "changed_paths": [
+      "src/distribution/manifest.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml",
+      "src/profiles/engineering.yaml",
+      ".dev/design/framework-next/instruction-operations/implementation.md",
+      ".dev/workflows/2026-09-23-instruction-operations/workflow.yaml",
+      ".dev/workflows/2026-09-23-instruction-operations/workflow-plan.md",
+      ".dev/workflows/2026-09-23-instruction-operations/tasks/ISSUE-346.json",
+      ".dev/workflows/2026-09-23-instruction-operations/reports/remediation-report.md"
+    ],
+    "packages": [
+      {
+        "id": "lesson",
+        "version": "0.2.0",
+        "members": 9
+      },
+      {
+        "id": "adr",
+        "version": "0.1.0",
+        "members": 8
+      },
+      {
+        "id": "standards-promotion",
+        "version": "0.1.0",
+        "members": 9
+      },
+      {
+        "id": "pr",
+        "version": "0.1.0",
+        "members": 10
+      },
+      {
+        "id": "local-backlog",
+        "version": "0.1.0",
+        "members": 8
+      },
+      {
+        "id": "software-development-orchestrator",
+        "version": "0.1.0",
+        "members": 10
+      },
+      {
+        "id": "code-reviewer",
+        "version": "0.1.0",
+        "members": 3
+      },
+      {
+        "id": "requirement-author",
+        "version": "0.1.0",
+        "members": 4
+      },
+      {
+        "id": "spec-author",
+        "version": "0.1.0",
+        "members": 7
+      }
+    ],
+    "total_packages": 9,
+    "total_payload_members": 68,
+    "total_profiles": 5,
+    "profiles": [
+      {
+        "id": "lesson-minimal",
+        "declared_payload_members": 9,
+        "expected_unrendered_codex_entries": 1
+      },
+      {
+        "id": "knowledge",
+        "declared_payload_members": 26,
+        "expected_unrendered_codex_entries": 3
+      },
+      {
+        "id": "work-management",
+        "declared_payload_members": 28,
+        "expected_unrendered_codex_entries": 3
+      },
+      {
+        "id": "engineering",
+        "declared_payload_members": 14,
+        "expected_unrendered_codex_entries": 3
+      },
+      {
+        "id": "collaboration",
+        "declared_payload_members": 68,
+        "expected_unrendered_codex_entries": 9
+      }
+    ],
+    "preservation": {
+      "five_original_component_rows_byte_equal": true,
+      "original_44_members_preserved": true,
+      "manifest_version": 1,
+      "profile_versions": 1,
+      "codex_adapter_unchanged": true,
+      "profile_sha256": {
+        "src/profiles/lesson-minimal.yaml": "1dc43c88e752a6bf825cf559f2e4b4589532d55c6c1d9c5c3431ba6c75720a4a",
+        "src/profiles/knowledge.yaml": "cfed94b54cd5dd98f252cbfbe89a95ddd7193ac308b1ca8415a689f0373948c9"
+      }
+    },
+    "actual_checks": [
+      "Direct UTF-8 and YAML syntax reads; no product imports",
+      "Compared all nine manifest member lists with actual package metadata and git ls-files; exact destinations match",
+      "Compared five profiles with handoff skill selections, exact versions and payload counts; runtime entry counts are expected and unrendered",
+      "Compared original five component-row bytes and lesson-minimal/knowledge bytes to checkpoint base; unchanged",
+      "git diff --check and exact product diff inspection",
+      "Direct syntax/reference readback of all nine changed files: 9 UTF-8, 5 YAML, 1 JSON and 17 existing local Markdown links",
+      "git check-ignore confirmed the complete planned message is ignored; python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-first-mapping.txt --workflow-id 2026-09-23-instruction-operations passed; commit uses those exact message bytes"
+    ],
+    "deferred": {
+      "state": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "P7 selects redesigned checks after implementation"
+    },
+    "next_action": "Coordinator receives the local commit and selects any later actual-source mapping; task remains in_progress",
+    "historical_record": true,
+    "current_continuation": "final_mapping_checkpoint; first mapping counts and observations are retained"
+  },
+  "final_mapping_checkpoint": {
+    "observed_at": "2026-09-23T14:16:17+08:00",
+    "status": "implemented-source-only",
+    "base_commit": "34400e0ff377301601be5b7e167ed9e05261830c",
+    "authority": "Coordinator-selected p5-final-mapping-scope.md under the original same-task actual-source mapping assignment and U001",
+    "source_checkpoints": {
+      "first_mapping": "444327034aa14d9a9364c72e33e77ac879e9e5df",
+      "engineering": "814fd12822bb270f17edbfe91d0864ba07c1aacb",
+      "structured": "7038ee97f809f359d776f5d74b4959e51dbe518d",
+      "context": "3de57ce8a128e71b3956e38640c83c4370d11fba"
+    },
+    "write_outcome": "scoped-write-executed",
+    "changed_paths": [
+      "src/distribution/manifest.yaml",
+      "src/profiles/engineering.yaml",
+      "src/profiles/collaboration.yaml",
+      "src/profiles/source-repository.yaml",
+      "src/profiles/context-maintenance.yaml",
+      ".dev/design/framework-next/instruction-operations/implementation.md",
+      ".dev/workflows/2026-09-23-instruction-operations/workflow.yaml",
+      ".dev/workflows/2026-09-23-instruction-operations/workflow-plan.md",
+      ".dev/workflows/2026-09-23-instruction-operations/tasks/ISSUE-346.json",
+      ".dev/workflows/2026-09-23-instruction-operations/reports/remediation-report.md"
+    ],
+    "component_member_counts": {
+      "lesson": 9,
+      "adr": 8,
+      "standards-promotion": 9,
+      "pr": 10,
+      "local-backlog": 8,
+      "software-development-orchestrator": 10,
+      "code-reviewer": 3,
+      "requirement-author": 4,
+      "spec-author": 7,
+      "diagnostic-analyst": 3,
+      "ddd-ca-hex-architect": 4,
+      "bdd-gwt-test-designer": 4,
+      "local-change-implementer": 3,
+      "slice-implementer": 9,
+      "problem-frame-author": 10,
+      "spec-compliance-validator": 6,
+      "ai-context-auditor": 3,
+      "ai-context-governance": 3
+    },
+    "total_components": 18,
+    "total_payload_members": 113,
+    "total_profiles": 7,
+    "profiles": [
+      {
+        "id": "lesson-minimal",
+        "packages": 1,
+        "declared_payload_members": 9,
+        "expected_unrendered_codex_entries": 1
+      },
+      {
+        "id": "knowledge",
+        "packages": 3,
+        "declared_payload_members": 26,
+        "expected_unrendered_codex_entries": 3
+      },
+      {
+        "id": "work-management",
+        "packages": 3,
+        "declared_payload_members": 28,
+        "expected_unrendered_codex_entries": 3
+      },
+      {
+        "id": "engineering",
+        "packages": 10,
+        "declared_payload_members": 53,
+        "expected_unrendered_codex_entries": 10
+      },
+      {
+        "id": "collaboration",
+        "packages": 16,
+        "declared_payload_members": 107,
+        "expected_unrendered_codex_entries": 16
+      },
+      {
+        "id": "source-repository",
+        "packages": 15,
+        "declared_payload_members": 99,
+        "expected_unrendered_codex_entries": 15
+      },
+      {
+        "id": "context-maintenance",
+        "packages": 2,
+        "declared_payload_members": 6,
+        "expected_unrendered_codex_entries": 2
+      }
+    ],
+    "preservation": {
+      "prior_nine_component_rows_byte_equal": true,
+      "prior_68_members_preserved": true,
+      "existing_profile_registration_rows_equal": true,
+      "manifest_version": 1,
+      "profile_versions": 1,
+      "codex_adapter_unchanged": true,
+      "protected_profile_git_blobs": {
+        "src/profiles/lesson-minimal.yaml": "540645382e5b40ae79e0069bf2ee5f36cd816761",
+        "src/profiles/knowledge.yaml": "8061bd801cc6065f9997b912694859979a1715b5",
+        "src/profiles/work-management.yaml": "0599e6a1ce14144ac0b145f7996e8cf8a0dea839"
+      },
+      "protected_profile_bytes_equal": true
+    },
+    "selection_limit": "Every profile is a complete selection, not an overlay; sequential apply does not implicitly union selections and may remove previously selected managed members. No combined profile is invented.",
+    "actual_checks": [
+      "Direct UTF-8/YAML read and exact member-set comparison against package metadata plus git ls-files for all eighteen components",
+      "Exact destination, version, component/profile selection and member-count comparison to handoff",
+      "Raw-byte comparison of original nine component rows and three protected profiles; retained exact Git blob identities",
+      "git diff --check and direct inspection of the five product files",
+      "Direct changed-file readback: 10 UTF-8 files, 6 YAML documents, 1 JSON document and 20 existing local Markdown links; task/locator both completed for bounded source/mapping",
+      "git check-ignore confirmed the complete planned message location; python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-final-mapping.txt --workflow-id 2026-09-23-instruction-operations passed; git commit uses that exact file"
+    ],
+    "verification": {
+      "state": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "P7 selects redesigned checks after implementation"
+    },
+    "workflow_outcome": "completed bounded source/mapping only",
+    "next_action": "Coordinator owns first push, online integration and Issue closure; P7 verification remains separate"
   }
 }

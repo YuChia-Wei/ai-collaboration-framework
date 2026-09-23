@@ -1,5 +1,5 @@
 profile_version: 1
-id: collaboration
+id: source-repository
 skills:
   - id: lesson
     version: 0.2.0
@@ -8,8 +8,6 @@ skills:
   - id: standards-promotion
     version: 0.1.0
   - id: pr
-    version: 0.1.0
-  - id: local-backlog
     version: 0.1.0
   - id: software-development-orchestrator
     version: 0.1.0

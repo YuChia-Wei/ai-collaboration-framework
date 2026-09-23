@@ -1,0 +1,71 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-365",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T14:25:23+08:00",
+  "updated_at": "2026-09-23T14:25:23+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/365",
+  "phase": "P7-B",
+  "scope": {
+    "target": "Replacement source gates and seven-pipeline dispositions",
+    "files": [
+      ".dev/design/framework-next/pipeline-redesign/",
+      ".dev/workflows/2026-09-23-pipeline-redesign/"
+    ],
+    "constraints": [
+      "U001; design only",
+      "One independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "Coordinator supplies post-online-integration checkpoint",
+      "Separate owners for verification and pipeline designs"
+    ],
+    "non_goals": [
+      "Product/schema/test/build/install/migration/CI execution",
+      "Source/tests/pipeline/root/policy changes",
+      "Provider mutations, credentials, publication or adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: identity and live Issue",
+      "Read selected actual source and contracts",
+      "Deliver bounded concrete design and direct content checks",
+      "Return coherent local commit before first push"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and full planned commit message only"
+    ],
+    "last_completed_step": "Issue created with source attribution; Project Planned; dispatch waits final mapping online integration",
+    "next_action": "Prepare assigned worktree and independent Astra Ultra task after source PR merge"
+  },
+  "results": {
+    "summary": "Design assignment prepared; no design delivery or execution yet",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Product verification and actual pipeline policy transition remain open",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/365",
+    "branch": "codex/2026-09-23-pipeline-redesign",
+    "workflow_id": "2026-09-23-pipeline-redesign",
+    "starting_commit_source": "Coordinator checkpoint after final mapping online integration",
+    "thread_id": null
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p7-design-handoff.md",
+    "implementation_status": "design pending",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Q4Rw",
+  "project_state": "Planned; other Project fields unchanged"
+}

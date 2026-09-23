@@ -5,5 +5,7 @@ skills:
     version: 0.1.0
   - id: local-backlog
     version: 0.1.0
+  - id: software-development-orchestrator
+    version: 0.1.0
 adapters:
   - codex

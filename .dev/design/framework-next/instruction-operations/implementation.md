@@ -92,8 +92,8 @@ specialist coverage and target-required gates remain explicit.
 
 The future generated entry is `.agents/skills/framework-code-reviewer/SKILL.md`.
 Its links resolve only to the three installed members above. No manifest/profile
-mapping or wrapper generation is performed in this source checkpoint. Mapping is
-pending the coordinator's actual-source handoff in the same task.
+mapping or wrapper generation was performed in the original source checkpoint.
+The subsequent original mapping delivery is recorded below; wrappers remain unrendered.
 
 ## Deferred P7 cases
 
@@ -125,3 +125,56 @@ migration/compatibility, independent audit/lease/effective-rule machinery and CI
 are **deferred-by-owner**, authority **U001**, owner **program #322 coordinator / P7**.
 Next action: **P7 selects redesigned checks after implementation**. Direct parsing
 and content inspection are syntax/source evidence only.
+
+## First actual mapping delivery
+
+The [first mapping handoff](../../../workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md)
+and later direct user approval in task #346 select nine actual packages only.
+At the local mapping checkpoint based on `7fab3ffd1698e2eb8ef791d6be7748f151506642`,
+manifest.yaml gains the actual workflow (10), reviewer (3), requirement (4) and
+specification (7) closures. Existing five rows/44 members stay byte-identical;
+all nine total 68 explicit package members. Every source/destination mapping keeps
+the member path under its owning package. No source design/workflow/history is mapped.
+
+Work-management adds only software-development-orchestrator@0.1.0; collaboration
+selects all nine; new engineering selects only code-reviewer, requirement-author
+and spec-author@0.1.0. lesson-minimal and knowledge remain byte-identical.
+Manifest/profile versions stay 1 and the Codex adapter remains selected. Declared
+payload counts and expected unrendered Codex-entry counts are 9/1, 26/3, 28/3, 14/3,
+68/9 for lesson-minimal, knowledge, work-management, engineering and collaboration.
+A profile is a convenience selection, not a new package dependency.
+
+This mapping does not register later engineering, structured or optional packages,
+activate root routes or produce installed artifacts. Source member/profile/byte
+comparisons are direct content evidence, not loader/schema/build/compatibility
+verification. P7 deferrals remain under U001. Prior approval failures and the
+successful later direct-user-authorized continuation remain in the issue-owned
+workflow report/task; future mapping requires the next explicit coordinator handoff.
+
+## Final actual-source mapping and complete selections
+
+The [final mapping handoff](../../../workflows/2026-09-23-framework-redesign-control/reports/p5-final-mapping-scope.md)
+adds nine delivered closures/45 members to the original nine/68, for 18 components
+and 113 explicit payload members. The original nine component rows, Codex adapter
+and protected lesson-minimal/knowledge/work-management profile bytes remain intact.
+Source-only records are not package members. Exact source counts and preserved
+Git blobs are retained in the owning workflow's final report/task.
+
+Engineering now selects ten packages/53 members; collaboration selects sixteen/107
+and excludes the two optional context-maintenance capabilities. New source-repository
+implements the selected adoption proposal plus the delivered engineering methods:
+fifteen packages/99 members, exactly collaboration minus local-backlog. New
+context-maintenance selects only ai-context-auditor and ai-context-governance:
+two packages/six members. All seven profiles remain version 1 with exact package
+versions and Codex only. Profile grouping introduces no package dependency.
+
+Each profile is a **complete selection**, not an overlay. Applying context-maintenance
+after an ordinary profile does not implicitly union them and may remove previously
+selected managed files. A deliberate combined profile requires a separate selection;
+none is invented here. No build, rendering, application or root adoption occurred.
+The profile declarations do not authorize those operations or prove compatibility.
+
+This completes #346's bounded source/mapping assignment. P7 retains actual product,
+installation and runtime verification under U001; provider closure and adoption stay
+separate. Historical source-only and first-mapping checkpoints above retain their
+original scoped observations rather than being rewritten as full verification.
