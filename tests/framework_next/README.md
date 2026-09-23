@@ -13,8 +13,8 @@ selected C1-C3/C5 and helper cases. No discovery of other tests, legacy validato
 profile build matrix or installed skill execution. Source blobs come from HEAD;
 the executing assembly requires its source implementation to match that commit.
 Fixture metadata is synthetic only where the test name/description says so.
-The current contracts module contains 20 methods. The coordinator-selected P7
-continuation executes only 12 methods once; eight historical core assertions
+The current contracts module contains 22 methods. The earlier selected P7
+continuation executed only 12 methods once; eight historical core assertions
 have a separate, limited byte-comparison record. See the
 [P7 reconciliation and execution record](../../.dev/workflows/2026-09-23-source-contract-checks/p7-verification-report.md).
 That combination is not a claim that all 20 methods passed in one invocation.
@@ -182,6 +182,17 @@ current all-contract pass. Issue 373 reports the separate-family passes above; i
 and integration remain pending. Native,
 versioned distribution, target adoption, independent review, CI and publication
 retain their respective owners and evidence boundaries.
+
+## CR-002 affected path selection
+
+The [CR-002 repair record](../../.dev/workflows/2026-09-23-source-contract-checks/cr002-repair-report.md)
+tracks the original #370 finding and the selected five path-admission methods
+plus one actual C5 method after a clean repair commit. The error-1 fallback now
+refuses directory-drive aliases; two added methods simulate Win32 queries and a
+mapping into a source descendant, including output/scratch refusal before
+allocation. These are not native mapping evidence. Existing metadata semantics,
+link/reparse, identity, hardlink and output/read budgets remain preserved.
+See the record for pending versus actual results and exact executed identity.
 
 ## Native Windows caller interface (Issue 382)
 

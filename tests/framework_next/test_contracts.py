@@ -8,7 +8,7 @@ from hashlib import sha256
 import io
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import posixpath
 import re
 import stat
@@ -18,7 +18,7 @@ import unittest
 from types import SimpleNamespace
 from urllib.parse import unquote, urlsplit
 
-from distribution import assembly, installation_state
+from distribution import assembly, git_source, installation_state
 from distribution.data import DistributionError, json_bytes, yaml_object
 from distribution.git_source import Blob, GitSource, direct_directory
 from distribution.package import check_references, load_package
@@ -410,6 +410,100 @@ class PathAdmissionTests(unittest.TestCase):
         else:
             with self.assertRaises(OSError):
                 direct_directory(View(), 'synthetic')
+
+    @contextmanager
+    def simulated_windows_drive(self, mapping=r'\Device\HarddiskVolume3', *, length=None, drive_type=3):
+        # In-memory Win32/path responses only; no SUBST or host setting changes.
+        import ctypes
+        import ntpath
+        from unittest.mock import Mock, patch
+
+        class View(PureWindowsPath):
+            def lstat(self):
+                identities = {r'F:\source': 101, r'F:\source\subdir': 102,
+                              r'F:\source\subdir\out': 103, 'X:\\': 102, r'X:\out': 103}
+                return SimpleNamespace(st_mode=stat.S_IFDIR, st_file_attributes=0,
+                                       st_dev=9, st_ino=identities.get(str(self), 200))
+
+            def is_dir(self):
+                return True
+
+            def resolve(self, *, strict):
+                error = OSError('simulated Win32 final-path failure')
+                error.winerror = 1
+                raise error
+
+        def query(drive, buffer, capacity):
+            buffer.value = mapping
+            return len(mapping) + 2 if length is None else length
+
+        kernel = SimpleNamespace(QueryDosDeviceW=Mock(side_effect=query),
+                                 GetDriveTypeW=Mock(return_value=drive_type))
+        # Patch module bindings, not global os.name or pathlib.Path.
+        with patch.object(git_source, 'os', SimpleNamespace(name='nt', path=ntpath)), \
+                patch.object(git_source, 'Path', View), \
+                patch.object(ctypes, 'WinDLL', return_value=kernel, create=True):
+            yield View, kernel
+
+    def test_simulated_windows_drive_mapping_refusals(self):
+        for kind in (2, 3, 5, 6):
+            with self.subTest(drive_type=kind), self.simulated_windows_drive(drive_type=kind) as (View, kernel):
+                value = View('X:/out')
+                self.assertEqual(direct_directory(value, 'simulated'), value)
+                self.assertEqual(kernel.QueryDosDeviceW.call_args.args[0], 'X:')
+                self.assertEqual(kernel.QueryDosDeviceW.call_args.args[2], 32768)
+                kernel.GetDriveTypeW.assert_called_once_with('X:\\')
+        invalid = [dict(mapping=value) for value in (
+            r'\??\F:\source\subdir', r'\??\F:\source',
+            r'\Device\HarddiskVolume3\source\subdir', r'\Device\Mup\server\share', '', 'unknown')]
+        invalid += [dict(length=value) for value in (0, 32768, 32769)]
+        invalid += [dict(drive_type=value) for value in (0, 1, 4, 7)]
+        for inputs in invalid:
+            with self.subTest(inputs=inputs), self.simulated_windows_drive(**inputs) as (View, kernel):
+                with self.assertRaisesRegex(DistributionError, 'direct local drive mapping'):
+                    direct_directory(View('X:/out'), 'simulated')
+        with self.simulated_windows_drive() as (View, kernel):
+            kernel.QueryDosDeviceW.side_effect = OSError('simulated query failure')
+            with self.assertRaisesRegex(OSError, 'simulated query failure'):
+                direct_directory(View('X:/out'), 'simulated')
+        print(json.dumps({'simulated_Win32_drive_mapping': {
+            'direct_types_admitted': 4, 'refusals': len(invalid) + 1,
+            'native_drive_mapping_created': False}}))
+
+    def test_simulated_descendant_drive_alias_refused_before_allocation(self):
+        from unittest.mock import patch
+        with self.simulated_windows_drive(r'\??\F:\source\subdir') as (View, kernel):
+            repository, descendant, alias = View('F:/source'), View('F:/source/subdir'), View('X:/out')
+            source = SimpleNamespace(repository=repository, repository_identity=(9, 101),
+                                     commit='a' * 40, tree='b' * 40, blobs={})
+            self.assertFalse(alias.is_relative_to(repository))
+            self.assertEqual(alias.parent.lstat().st_ino, descendant.lstat().st_ino)
+            self.assertEqual(alias.lstat().st_ino, (descendant / 'out').lstat().st_ino)
+            self.assertTrue(all((p.lstat().st_dev, p.lstat().st_ino) != source.repository_identity
+                                for p in (alias, *alias.parents)))
+            with self.assertRaisesRegex(DistributionError, 'direct local drive mapping'):
+                assembly.output_parent(alias, source, 'output-root')
+            selection = SimpleNamespace(members=(), packages=(), adapters=(), profile='lesson-minimal')
+
+            def query(drive, buffer, capacity):
+                buffer.value = r'\??\F:\source\subdir' if drive == 'X:' else r'\Device\HarddiskVolume3'
+                return len(buffer.value) + 2
+
+            kernel.QueryDosDeviceW.side_effect = query
+            # Immutable source selection is a stub here. Path admission and its
+            # ordering before the real builder's allocation boundary are exercised.
+            with patch.object(assembly, 'GitSource', return_value=source), \
+                    patch.object(assembly, 'implementation_identity', return_value=[]), \
+                    patch.object(assembly, 'select', return_value=selection), \
+                    patch.object(assembly, 'OwnedDirectory', side_effect=AssertionError('allocation reached')) as allocation:
+                for output, scratch in ((alias, View('F:/outside')), (View('F:/outside'), alias)):
+                    with self.subTest(output=str(output), scratch=str(scratch)):
+                        with self.assertRaisesRegex(DistributionError, 'direct local drive mapping'):
+                            assembly.assemble(repository, source.commit, 'lesson-minimal', output, scratch)
+                        allocation.assert_not_called()
+        print(json.dumps({'simulated_descendant_alias': {
+            'visible_ancestors_omit_repository_identity': True,
+            'output_and_scratch_refused_before_allocation': True, 'native_reproduction': False}}))
 
     def test_output_containment_and_synthetic_source_alias_identity(self):
         case = support.active_run().case('output-containment')

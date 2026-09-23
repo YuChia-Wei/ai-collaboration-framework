@@ -794,3 +794,91 @@ provider preflight or CI enablement was executed by this read-back. This is a
 remaining design/authority dependency, not a newly selected implementation Issue
 or task. Native #369 and target provider questions remain the two current pending
 owner decisions; elapsed time supplies neither answer.
+
+## Target evidence comparison after CR-002
+
+A bounded target-only record inventory by /root/target_gate_inventory inspected
+existing evidence at unchanged clean target a17cc80. No product/validator/native
+execution, artifact mutation or new audit/admission occurred. The candidate
+metadata pins source 1ce41a4f, git_source hash b10e8712 and assembly hash 231ce2c0.
+Target repaired-candidate-update.json records output/root/scratch beneath
+F:/framework-next/p7-runs/versioned-candidate/complete-1baa4b669c2d4e19a6c39809ece3b4df.
+Its metadata, retained runner outcomes and 132-file byte/mode parity do not record
+a DOS mapping query, physical ancestry or error-1 branch trace. The actual builder
+source root F:/framework-next/335 is coordinator-supplied rather than independently
+established by the target-only inventory. These same-drive lexical paths do not
+show the described alternative-drive alias input, but they do not exclude every
+native alias or prove physical containment. Missing observations do not establish
+that CR-002 occurred.
+
+The target preflight retains full target tree/criteria/binding and 316 target-relative
+authority pins, with fixed candidate/engine identities. A later repair in another
+source worktree alone does not mutate those bytes; this is an identity distinction,
+not a new safety/adoption decision or exclusion proof for CR-002. Existing review,
+admission and lease-release outcomes remain historical evidence at their subject.
+The target's pending integration proposal now discloses this source finding and
+these limits while retaining the same seven-commit scope.
+
+
+## CR-002 repaired locally; original affected review dispatched
+
+Original #368 returned clean delivery af5c4e39e193ef9cd161f203a5da211cfd95f7bf,
+source/test checkpoint 698654d77c81d2837c45e9e156e76d67734f6a28. The private
+Windows error-1 fallback now refuses non-direct DOS drive mappings. Existing
+assembly and PR/local-backlog metadata bytes remain unchanged. Five path
+methods and the actual C5 Lesson method passed once, zero skips, 7.488 seconds
+capture. C5 built/read two 13-file candidates; alias regressions use simulated
+Win32 responses, not native SUBST reproduction. No whole-suite pass is claimed.
+
+Parent verified eleven executing file hashes against raw and Git bytes, two
+exact raw streams including original ignored bins and readable renderings,
+four equal historical before/after inventories, three preserved source bindings,
+and unchanged source/test bytes at delivery. No product tests were rerun.
+The clean original F:/framework-next/370 was fast-forwarded to af5c4e39 for
+[the affected re-review](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370#issuecomment-5800331565).
+It owns only new review records plus existing review status; historical reports
+stay intact. Review, first push/integration and conditional Issue closure remain
+pending. C-001 stays unverified with no repair or native probe selected.
+
+## Fixed selector inventory before P7 adoption
+
+The original #369 task read 5440a9f410c9a8dd5ae7895195c9ba2a1a4a5b64 without
+mutations or execution. Its six explicitly mapped regression test files are
+test_engine_source (#371), test_installation_scan_budget (#386),
+test_pr_git_worktree (#335), test_protected_paths (#383),
+test_versioned_candidates (#381), and test_windows_paths (#378). Test-file-only
+changes emit owner-selected-regression-required. Direct implementation-only
+changes can select general contracts/public/native requirements without the
+corresponding named regression requirement. classify returns from implementation
+branches before the test-file branch; select visits changed paths only.
+The versioned candidate trial requirement is tied to build-candidate CLI changes,
+not all its direct implementation paths. This is an author inventory, not an
+independent review or product execution result.
+
+The selector emits admission_requirements, while its exit outcome reflects
+ownership errors and executed checks; it does not establish completion of the
+manual requirements. Before adoption, define the necessary implementation-to-
+regression bindings and who enforces unresolved admission requirements. Generic
+requirements are not proof that a named regression ran. No automatic broad
+matrix, CI activation, native extension or policy adoption follows this inventory.
+
+
+## CR-002 review accepted for online integration
+
+Original #370 returned clean review 67da0e4b9bf4b7e067f36cf8fd7d35c4e664c788.
+Its fixed subject is af5c4e39e193ef9cd161f203a5da211cfd95f7bf. CR-002 is
+resolved in reviewed source, with no new substantiated finding. Parent verified
+17 raw/Git source/evidence bindings, four historical report/inventory hashes,
+and exactly four review-owned paths. Report SHA-256:
+15e38a8516625cc5c061eff81c999ab5d1657fb9585defd1c31764257e1fd200.
+No product execution was repeated; prior reports retain their exact bytes.
+
+#368 bounded C1-C3/C5 and helper acceptance combines the prior twelve-method
+selected execution, limited historical core comparisons and this six-method
+affected execution. No single full-suite invocation is claimed. Its remaining
+changed-EnginePin review is now satisfied. #370 bounded current-engine review
+and CR-002 re-review are complete. Both Issues can close only after verified
+online integration, under the user conditional closure authority. Until that
+provider read-back they remain open; the ignored cr002-integration-closeout.json
+will preserve the actual result. #322/#369 remain open for P7 gaps and owner
+decisions; C-001 remains an unverified concern.

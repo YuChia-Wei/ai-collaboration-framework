@@ -248,9 +248,9 @@
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
   },
-  "updated_at": "2026-09-23T17:58:21.695505+00:00",
+  "updated_at": "2026-09-23T18:21:59.164382+00:00",
   "latest_checkpoint": {
-    "source_main": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
+    "source_main": "3185c0f6f9546145a9ef93e486a9232b0e90b4b4",
     "source_repair_pr": 388,
     "source_repair_issue": 335,
     "source_repair_delivery": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
@@ -265,8 +265,8 @@
     "review_packet": "P15-rc1-a17cc80-01",
     "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
     "report": "../reports/successor-acceptance-and-repair-scope.md",
-    "next_action": "Receive original #368 CR-002 repair and selected evidence; original #370 affected re-review. Await target provider and #369 native extension owner decisions.",
-    "observed_at": "2026-09-23T17:58:21.695505+00:00",
+    "next_action": "Push reviewed source integration, create PR and merge online under existing authority; read back ancestry then close only accepted #368/#370 and synchronize Status. Keep #322/#369 and pending target/native owner decisions open.",
+    "observed_at": "2026-09-23T18:21:59.164382+00:00",
     "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
     "independent_review": "passed; no reportable findings",
     "selected_gate": {
@@ -287,11 +287,15 @@
         "executed_source": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
         "result": "12 methods passed once, zero skips; eight historical comparisons remain separate",
         "parent_review": "bounded common-route no actionable finding; exact output/input and historical custody verified",
-        "issue": "OPEN / In progress; CR-002 repair active in original task",
+        "issue": "OPEN; bounded criteria and affected independent review satisfied; close only after online merge",
         "continuation_base": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
         "repair_scope": "direct_directory Windows alias refusal, necessary private existing-module helper/direct assembly caller; focused test_contracts and own records",
-        "execution": "affected focused checks plus one existing actual C5 selection only after clean repair checkpoint; no result yet",
-        "dispatch_turn": "01a0cf6a-320e-7dd1-8682-8bfe99840bec"
+        "execution": "six affected methods passed once, zero skips, 7.488 s capture; includes two actual Lesson assemblies/readers; simulated Win32 alias regressions",
+        "dispatch_turn": "01a0cf6a-320e-7dd1-8682-8bfe99840bec",
+        "repair_delivery": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
+        "repair_execution_source": "698654d77c81d2837c45e9e156e76d67734f6a28",
+        "parent_evidence_check": "eleven raw/Git execution file bindings, two exact raw streams/original bins, four equal historical inventory pairs and three preserved source bindings; no product rerun",
+        "affected_review": "67da0e4b9bf4b7e067f36cf8fd7d35c4e664c788; CR-002 resolved in reviewed source, no new substantiated finding"
       },
       "369": {
         "delivery": "5440a9f410c9a8dd5ae7895195c9ba2a1a4a5b64",
@@ -310,7 +314,7 @@
         "post_merge_records": "online PR392; completed worktree cleaned with archive receipt"
       }
     },
-    "source_integration": "PR392 MERGED; exact remote head/29 paths and all original ancestors verified",
+    "source_integration": "CR-002 repair and independent review integrated locally; online PR/merge pending",
     "open_issues": [
       322,
       368,
@@ -362,7 +366,17 @@
       "artifact_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
       "result": "one P2 CR-002 substantiated source finding; C-001 is unverified concern, not confirmed defect",
       "parent_verification": "ten engine raw/Git/prior/installed comparisons, one direct producer, two historical reports and four-record scope match",
-      "issue_status": "OPEN / Verification pending repair and affected re-review"
+      "issue_status": "OPEN / Verification; bounded review complete, online integration required before closure",
+      "cr002_re_review": {
+        "subject": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
+        "status": "completed; original task idle",
+        "assignment": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370#issuecomment-5800331565",
+        "scope": "changed private GitSource predicate, direct assembly path boundary and affected test/evidence; no product/native execution",
+        "artifact_commit": "67da0e4b9bf4b7e067f36cf8fd7d35c4e664c788",
+        "disposition": "CR-002 resolved-in-reviewed-source; no new substantiated finding",
+        "report_sha256": "15e38a8516625cc5c061eff81c999ab5d1657fb9585defd1c31764257e1fd200",
+        "parent_verification": "17 raw/Git bindings, 4 historical report/inventory hashes and exact four-path review scope matched"
+      }
     },
     "completed_cleanup_373": {
       "removed_worktree": "F:/framework-next/373",
@@ -379,7 +393,34 @@
       "id": "C-001",
       "status": "unverified native stored-case API premise; no repair selected",
       "owner": "coordinator later bounded verification selection; pending native scope is unchanged"
-    }
+    },
+    "target_cr002_inventory": {
+      "observed_at": "2026-09-23T18:05:44.062308+00:00",
+      "analyst": "/root/target_gate_inventory",
+      "scope": "read-only existing target records; no source F: reads or execution",
+      "target_head": "a17cc80ef112368ff47109926aad22915a654b35",
+      "raw_fact": "recorded candidate/output/scratch paths use F:/framework-next/p7-runs; no target record demonstrates the alternate-drive alias trigger",
+      "limit": "no DOS mapping/physical ancestry/error-1 branch trace; missing evidence neither excludes nor establishes CR-002 occurrence",
+      "identity": "external source repair alone does not change 316 target-relative pins or fixed target/candidate/engine bytes",
+      "new_admission": false
+    },
+    "selector_coverage_inventory": {
+      "commit": "5440a9f410c9a8dd5ae7895195c9ba2a1a4a5b64",
+      "analyst": "original Issue369 task, read-only; not independent review",
+      "finding": "six test-file paths carry explicit owner-selected regression requirements, but changes to their direct implementation paths can omit those named requirements",
+      "regression_owners": [
+        371,
+        386,
+        335,
+        383,
+        381,
+        378
+      ],
+      "selection_boundary": "classify returns earlier for implementation branches; select classifies diff paths only; no reverse implementation-to-regression binding",
+      "admission_boundary": "main emits manual admission_requirements but exit status checks ownership errors and executed checks, not satisfaction of manual requirements",
+      "disposition": "P7 adoption gap retained; no execution, policy activation or native extension selected by inventory"
+    },
+    "integration_readback_record": ".dev/ai-context/local/framework-next-control/cr002-integration-closeout.json (populate from actual provider result after merge)"
   },
   "checkpoint_history": [
     {

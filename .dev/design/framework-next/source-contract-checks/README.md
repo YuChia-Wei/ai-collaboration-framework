@@ -36,3 +36,11 @@ Native maintenance, versioned
 candidates, target admission, independent review, CI and publication keep their
 own source-bound evidence. Coordinator owns integration and later assignments;
 this work makes no provider or Issue/Project state changes.
+
+The subsequent owner-selected [CR-002 continuation](../../../workflows/2026-09-23-source-contract-checks/cr002-repair-report.md)
+narrows the Windows error-1 fallback to a direct local drive mapping, preserving
+all other admission and assembly guards. Two explicitly simulated methods cover
+source-descendant aliases and refusal before allocation. Only the five affected
+path methods and one existing actual C5 method are selected after the source
+checkpoint; all earlier reports retain their original identities and outcomes.
+The original #370 affected re-review follows coordinator integration.
