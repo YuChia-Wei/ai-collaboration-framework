@@ -1,0 +1,80 @@
+{
+  "observed_at": "2026-09-23T19:20:23+08:00",
+  "source_commit": "379213a1f575aff143fb29b665c42fe5f24b219c",
+  "command": "python -I -B tests/framework_next/run.py --layer contracts --output-root F:/framework-next/p7-runs/368-contracts",
+  "result": {
+    "methods": 17,
+    "successful_methods": 16,
+    "errors": 1,
+    "skipped": 0,
+    "exit": 1,
+    "unittest_wall_seconds": 13.796
+  },
+  "assembly": {
+    "source_commit": "379213a1f575aff143fb29b665c42fe5f24b219c",
+    "actual_builds": 2,
+    "files_per_candidate": 13,
+    "candidate_identity": "development:379213a1f575aff143fb29b665c42fe5f24b219c:23ae30cd50a229afb8be6612e023a0eb51ad57072b13a48356f0698ad86fb220",
+    "candidate_roots": [
+      "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3\\lesson-candidates\\candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d",
+      "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3\\lesson-candidates\\candidate-379213a1f575-bb476169605949f0893b02fbc959f07a"
+    ],
+    "reader_status": "next; not yet accepted"
+  },
+  "fixture_accounting": {
+    "authored_bytes": 30,
+    "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+    "observed_files": 58,
+    "observed_logical_bytes": 556829,
+    "process_total": 103,
+    "processes": {
+      "git": 103,
+      "other": 0,
+      "python": 0
+    },
+    "residue": "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3",
+    "retained_bytes": 556829,
+    "retained_files": 58,
+    "wall_seconds": 13.842
+  },
+  "additional_cleaned_probes": {
+    "files": 2,
+    "logical_bytes": 31,
+    "helper_authored_bytes": 31,
+    "processes": 0
+  },
+  "combined_observations": {
+    "files": 60,
+    "logical_bytes": 556860,
+    "helper_authored_bytes": 61,
+    "git_processes": 103,
+    "python_runner_processes": 1
+  },
+  "raw_capture_sha256": {
+    "stdout": "1a9a5d06ece146c8d2ffa0e1f49eb115a1f1ab1613e4d8333aa1625009cfd07e",
+    "stderr": "9bb9617fbe6f17fa5889952328dfa9d56cc2e6342d020e6839154997cdf03e0a"
+  },
+  "evidence_normalization": "CRLF to LF; strip trailing whitespace only",
+  "focused_path_checks": {
+    "command": "python -I -B tests/framework_next/run.py --layer contracts --case PathAdmissionTests --output-root F:/framework-next/p7-runs/368-contracts",
+    "methods": 3,
+    "passed": 3,
+    "exit": 0,
+    "wall_seconds": 0.005
+  },
+  "source_files_sha256": {
+    "src/distribution/git_source.py": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5",
+    "src/distribution/assembly.py": "79c9291cb22ba197fc7dfae042142e5f9df621ef424d997d3ed987d4c238b91f",
+    "src/skills/pr/skill-package.yaml": "e85987a6d2fc7f3c0276d99284c6612b1e314a729f4d4e8a8d90fc93d2153a86",
+    "src/skills/local-backlog/skill-package.yaml": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d"
+  },
+  "blocked": "installation_state._root strict final-path resolution; no reader/refusal success claimed",
+  "scope": "No installer edits; no native process probes, provider mutation, root adoption or CI restoration",
+  "handoff_direct_checks": {
+    "changed_text_files": 8,
+    "local_links": 9,
+    "ast_files": 3,
+    "source_test_bytes_unchanged_since_execution": true
+  },
+  "handoff_message_sha256": "c331dbeabbf6586f8c80e7eb85c81e004c846e6f8e4bff696eb254d45c97ff5c"
+}

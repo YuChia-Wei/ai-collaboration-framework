@@ -29,7 +29,7 @@ fresh live Issue read-back. Starting local HEAD:
   invalid roots; output containment; labelled synthetic link/reparse/identity
   drift/error branches. Synthetic doubles do not prove native link/process
   behavior. Observed helper allocation: one file / 15 bytes, zero subprocesses;
-  successful cleanup. Actual source/candidate tests await this repair commit.
+  successful cleanup. The subsequent committed-source results appear below.
 
 Source scope is exactly `src/distribution/git_source.py`,
 `src/distribution/assembly.py`, `src/skills/pr/skill-package.yaml`, and
@@ -38,15 +38,60 @@ updated in the original assignment. Installation state/writer/IO/coordination
 remain untouched. The reader has its own strict-root check and remains a
 potential independent residual; no success is forecast.
 
-## Next execution
+## Committed execution and remaining boundary
 
-Create one coherent local repair checkpoint, then run the selected contracts
-against that actual commit in `F:/framework-next/368`, using
-`F:/framework-next/p7-runs/368-contracts`. Preserve original evidence and new
-failures. The C5 case now reports real assembly byte/inventory/hash comparison
-before invoking the actual reader, retaining all reader/refusal assertions.
-This makes a reader block distinguishable from a build failure without changing
-acceptance. No profile beyond Lesson is physically assembled.
+Repair subject: `379213a1f575aff143fb29b665c42fe5f24b219c`.
+Actual command (workdir `F:/framework-next/368`):
+
+```text
+python -I -B tests/framework_next/run.py --layer contracts --output-root F:/framework-next/p7-runs/368-contracts
+```
+
+Result: **17 methods / 16 successful / one error / zero skips; exit 1**.
+C1 now passes exact owner/metadata/member/version/reference/projection comparisons
+for all 18 packages / 113 payload members / seven profiles. Real C3 GitSource
+regular/missing/nonregular member and wrong-root/traversal checks pass. C2 and
+all three path-protection regressions pass.
+
+C5 performed **two actual Lesson assemblies** from that committed repaired
+source. Both emitted exactly 13 files (9 payload + 1 entry + 3 metadata). Tests
+read all emitted bytes, compared payload against actual selected Git blobs,
+compared full mode/size/hash inventories, required identical selection/files
+bytes, independently recalculated candidate identity inputs/hash, and observed
+different run IDs/completion timestamps. Identity:
+`development:379213a1f575aff143fb29b665c42fe5f24b219c:23ae30cd50a229afb8be6612e023a0eb51ad57072b13a48356f0698ad86fb220`.
+
+The subsequent actual `installation_state.read_candidate` invocation failed at
+`src/distribution/installation_state.py:208`, inside `_root`, on its separate
+`Path.resolve(strict=True)` call: Windows error 1. This is now actual reader
+failure evidence, rather than the earlier predicted downstream block. The
+reader/mutation-refusal part of C5 remains **blocked-by-environment**; no native
+admission, plan/apply/recover, or complete C5 pass is claimed. Installation files
+remain outside the approved four-file repair and were not changed. Coordinator
+must assign a compatible reader-root repair/decision and affected independent
+review before completing acceptance; do not route candidates to another drive
+or patch the reader from the caller.
+
+Full new [stdout](evidence/contracts-repaired.stdout.txt),
+[stderr](evidence/contracts-repaired.stderr.txt), and
+[counts/hashes](repair-checks.json) are retained alongside original failures.
+Only text line endings/trailing whitespace were normalized; original captured
+hashes are recorded. No repeated selected run followed this unchanged residual.
+
+Runtime remained Python 3.13.14 / PyYAML 6.0.3 / jsonschema 4.26.0 / referencing
+0.37.0; no dependency installation. Unittest: 13.796 s; helper lifetime: 13.842 s.
+Main run: 58 observed/retained files, 556829 observed/retained logical bytes,
+30 helper-authored bytes, 103 actual Git subprocesses. Two cleaned helper probes
+add 2 files / 31 bytes; combined observations 60 files / 556860 bytes / 61
+helper-authored bytes. Add the Python runner for 104 known execution processes.
+All selected caps remained within bounds. These are checkpoint logical counts,
+not physical I/O, SSD wear, speed or token evidence.
+
+Retained run: `F:\framework-next\p7-runs\368-contracts\fn-612302fba311482d98c4d8be0ad3a1a3`. It contains both real candidates and
+scratch output. Preserve it until the coordinator records/authorizes inspection
+and cleanup; previous failed runs also remain. Durable evidence is retained in
+Git. The existing helper interface and reserved public/native failures are
+unchanged. No profile beyond Lesson was physically assembled.
 
 Changed EnginePin bytes require affected independent review; original-source
 #370 cannot cover this repair. Native/root/CI/all-profile/independent/provider
