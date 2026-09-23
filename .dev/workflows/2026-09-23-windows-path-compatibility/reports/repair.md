@@ -45,7 +45,7 @@ Failure. This was a test-harness exception-name mistake; those 15 production
 negative branches did not run. Corrected both package exception names to Fault
 before the second run. No actual fixture was allocated by this simulation run.
 
-## Remaining work
+## Checkpoint remaining work before actual observations
 
 Focused regression rerun, actual F: assembly/reader and Lesson write/read, then
 CBF and the distribution public plan. The existing unmodified source bootstrap
@@ -140,3 +140,77 @@ response. No evidence was overwritten to conceal either access failure.
 Final focused simulation refresh after the added mapping guard: 11 tests passed,
 0 skips, 0.237s. A temporary edit-command string emitted a Python invalid-escape
 SyntaxWarning; production/test source loaded successfully without that warning.
+
+## Final positive observations and current handoff
+
+Final source checkpoint: 218341375eb719d8c31df844d484f4837edfe630, clean at dispatch.
+Run: F:/framework-next/p7-runs/378-compatibility/fn-713341b2a99446449ccdc86dd3ec2be2.
+The exact nine tested source-file SHA-256 values are retained in
+[observations.json](observations.json) and matched the checkout at handoff.
+The remaining handoff commit changes only workflow records, not tested source.
+
+The bounded Python stdin selection imported test_windows_paths, allocated one
+FixtureRun at the explicit output parent, then executed:
+
+```python
+candidate = t.actual_reader(run)
+t.actual_lesson(run)
+t.actual_cbf(run)
+directory = run.case('distribution-component')
+backend = t.io.Backend({'project': directory}, {
+    'declared_by': 'Issue 378 fixture', 'declaration_reference': 'synthetic:378',
+    'failure_domain': 'process-termination'})
+backend._volume(directory)
+```
+
+It used `python -I -B -`, explicit F:/framework-next/378 cwd, support.use_run,
+and support.FixtureRun(Path('F:/framework-next/p7-runs/378-compatibility')).
+The prior affected CBF command used the same setup, `t.actual_cbf(run)`,
+`candidate = t.state.read_candidate(<first retained candidate path>)`, then
+`t.actual_plan(run, candidate)`. Every owned run was closed with `close(False)`
+to retain evidence, separately recording selected success rather than treating
+that retention argument as a test failure. No prior run was deleted or reused.
+
+Final selected positives: passed, exit 0, 8.169s. One Lesson-minimal assembly,
+10 managed-member reader acceptance; Lesson explain/query/create/inspect all
+exit 0 / succeeded with 670-byte identical record readback and no writer residue;
+CBF explain/create/inspect all exit 0 / ok with equal subject digests; direct
+distribution Backend construction/volume query passed. Candidate identity:
+development:218341375eb719d8c31df844d484f4837edfe630:ac87e54b955ab18a3bb5ccd542a19be5755bb8a4f1d544aba479174be5bdfd3e.
+36 retained files / 307676 logical bytes, 4606 helper-authored bytes,
+44 Git + 7 Python driver processes. No physical-I/O or opaque-child measurement.
+
+The complete public plan remains blocked at the **unmodified bootstrap**; it was
+not retried after the final guard. Acceptance item 5 is therefore partial for
+the distribution public surface even though its direct backend now succeeds.
+The two original scoped defects have positive real observations. Full Issue 378
+acceptance remains non-passing; the workflow/task remain in progress for the
+coordinator's scope disposition. Earlier CBF malformed-fixture failure and
+bootstrap failure remain beside the passes.
+
+### Precise additional-owner request
+
+The next required source owner is only
+`src/tools/maintain_framework.py::_direct` (line 51), whose strict resolve
+at line 60 raises WinError 1 on both the actual launch file and repository root.
+A bounded follow-on needs file **and** directory canonical admission before
+engine import, preserving the fixed engine pin, reparse/hardlink/byte/path limits
+and isolated source loader. The present directory fallback must not be copied
+blindly into a file bootstrap. Add a focused bootstrap positive/negative test and
+one complete public plan observation if the coordinator authorizes that owner.
+No repair to this file, loader redesign, runner redesign or broader source owner
+was performed here. No callback, provider mutation, push, PR or merge occurred.
+
+Final source inspection compared AST definitions with the starting commit:
+only _root, the eight backend helpers and their three caller implementations
+changed. The six local_write_backend copies and all eight helpers are identical
+by AST. Other existing function bodies, hardlink/containment/read/scan limits,
+writer locking, recovery and failure-domain definitions are unchanged; this is
+inspection evidence, not unexecuted behavioral coverage.
+
+Legacy validators, full matrices, audit/lease/handoff packets and hosted contexts
+remain deferred-by-owner under U001 to #322 coordinator/P7 post-pilot review.
+#368/#369/#373, downstream adoption, rc.1 pilot, release and CI are not complete
+by this repair. Coordinator owns affected source review and integration.
+
+Additional API reference: [DOS-device mapping](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-querydosdevicew).

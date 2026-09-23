@@ -4,7 +4,7 @@
   "owner_skill": "local-change-implementer",
   "status": "in_progress",
   "created_at": "2026-09-23T21:44:35+08:00",
-  "updated_at": "2026-09-23T21:49:03+08:00",
+  "updated_at": "2026-09-23T21:55:54+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "template_version": "1.5.0",
   "model": "gpt-6-astra",
@@ -27,14 +27,31 @@
     ]
   },
   "execution": {
-    "last_completed_step": "Source repair and 10 focused API simulation tests passed",
-    "next_action": "Run the once-selected actual F: cases against the coherent local checkpoint",
+    "last_completed_step": "Final scoped repair and 11 simulated regressions; actual reader, Lesson, CBF and direct Backend positives passed",
+    "next_action": "Coordinator reviews source and decides explicit additional owner src/tools/maintain_framework.py::_direct; public plan remains blocked",
     "deferred_items": [
       "U001 legacy validators, formal packets, full matrices, CI: deferred-by-owner to program #322 coordinator/P7 post-pilot review"
+    ],
+    "validation": [
+      "11 focused API simulation tests passed; original test failure retained",
+      "Actual final positives passed against 218341375eb719d8c31df844d484f4837edfe630; per-source hashes retained",
+      "Public plan unsupported/source-bootstrap; not retried or relabelled passed",
+      "Python AST, workflow JSON/YAML parsing, scoped AST comparison and git diff --check",
+      "Exact planned-message validation before every local commit"
     ]
   },
   "results": {
-    "summary": "Implementation in progress",
-    "follow_up_needed": true
+    "summary": "Two scoped defects repaired with real positive observations; Issue acceptance remains partial at out-of-scope bootstrap",
+    "follow_up_needed": true,
+    "finding_status": "partially-addressed-public-bootstrap-blocked",
+    "source_commits": [
+      "34e18e63142549b109d23222aeb5a4798ace95d0",
+      "218341375eb719d8c31df844d484f4837edfe630"
+    ],
+    "evidence": [
+      "reports/repair.md",
+      "reports/observations.json"
+    ],
+    "residual_risk": "Public distribution plan never reached backend through bootstrap; coordinator source review and next owner decision pending"
   }
 }
