@@ -1,4 +1,4 @@
-# Lesson configuration
+# Standards Promotion configuration
 
 The caller supplies absolute `project_root` and `package_root`, and optional
 explicit `project_config` / `local_config` paths. Relative config, store and
@@ -26,11 +26,11 @@ whole template object. Absent values inherit; arrays are never concatenated.
 | Setting | Default / accepted value |
 | --- | --- |
 | `store.kind` | `filesystem` only |
-| `store.root` | `notes/lessons`; nonempty project-relative or explicit absolute path |
+| `store.root` | `notes/promotions`; nonempty project-relative or explicit absolute path |
 | `store.tracking` | `tracked`; alternatively `ignored`; intent only, no Git edits |
-| `template` | `{origin: package, path: templates/lesson.md}`; atomic object; origin may be `project` |
+| `template` | `{origin: package, path: templates/promotion.md}`; atomic object; origin may be `project` |
 
-Project-only `constraints.lesson` supports `write_roots` (nonempty unique path
+Project-only `constraints.standards-promotion` supports `write_roots` (nonempty unique path
 array) and `locked_fields` (unique values from `store.root`, `store.tracking`,
 `template`). Omitted write roots allow the project/default store selected BEFORE
 local/invocation overrides. Locks compare against project/default values; changing
@@ -51,7 +51,7 @@ An external absolute store requires explicit project write roots and actual task
 authority. There is no disk discovery, relocation or migration fallback.
 
 A new identity may provision missing store directories only if EVERY created
-parent is within project and caller write roots. With default `notes/lessons`, prepare
+parent is within project and caller write roots. With default `notes/promotions`, prepare
 `notes` separately or explicitly allow that parent. Created directories remain on
 failure and are reported; no recursive rollback. A changed store selects another
 collection without moving any records. Persist the store binding with a durable
@@ -71,29 +71,26 @@ It creates no store. `runtime_capability: not-probed` and `tracking: intent-only
 are deliberate limits; successful explanation does not prove write availability.
 Do not put secrets in configs, retained evidence or templates.
 
-## Lesson v1 configuration compatibility
+## Project proposal and observation bindings
 
-Lesson also reads exact closed `config_version: 1`: only the `lesson` namespace,
-settings above, and project `write_roots`/`locked_fields`. Decision adapters are
-v2-only. No silent widening, conversion or automatic config edit; a v1/v2 selected
-project/local pair is rejected. Legacy tools may reject explicitly selected v2.
+`constraints.standards-promotion.source_read_roots` is a unique path array (at
+least one root needed to propose). `targets` is an array of
+`{id, path, applicability, allowed_actors, adoption_source, effect_source}`.
+IDs are nonblank/unique; canonical target aliases are rejected. Target paths are
+project-contained files, outside this store/package/config/template. Propose reads
+an existing UTF-8 target; reconcile can record a missing target. Applicability is
+one nonblank string matched exactly. Actors are a nonempty unique string array.
 
-## Project decision evidence
+Each source adapter is null (unavailable) or `{root, pointers}`. Evidence read
+roots cannot overlap protected content or the target. Roots are not write authority.
+Adoption pointers map subject_sha256, target_id, after_sha256, actor, decision,
+decided_at. Effect pointers map subject_sha256, target_id, after_sha256,
+adoption_sha256, applicability, state, effective_at. Pointers are distinct,
+non-root literal JSON Pointers; no invalid escapes, expressions or fetching.
+Source files are explicitly selected per reconcile with
+`{binding_id, path, expected_sha256}`; binding_id equals target ID.
 
-`constraints.lesson.decision_sources` is an optional array of
-`{id, root, allowed_actors, pointers}`. IDs and actor arrays are nonempty/unique.
-`root` is an explicit read root; it cannot be a volume root or overlap this store,
-package, config or selected template. `pointers` maps exactly
-`subject_sha256, actor, decision, decided_at` to distinct non-root literal JSON Pointers. Empty pointers,
-bad `~` escapes and duplicate decoded targets fail. Resolve objects/arrays only;
-no wildcard/expression/remote lookup. Mapped values must be scalars.
-
-An absent adapter blocks accept, not ordinary
-saved-record reads. A request selects `{binding_id, path, expected_sha256}`;
-path must be within that adapter root. Actual bytes must match the expected hash.
-Read the source and require current raw record digest, allowed actor, permitted
-decision and a decision time between record creation and source observation.
-Lesson permits accept and has no option.
-Capture source bytes/hash/time and project config/binding identity in the record.
-Actor strings rely on the project ownership/access process and are not authenticated
-signatures. A selection or generated approval flag cannot substitute for evidence.
+Missing selected sources or null adapters yield unresolved observations. Unsafe,
+unreadable, oversized, non-UTF-8 or changed-digest input fails that invocation;
+malformed JSON/mapped evidence retains its exact snapshot with unresolved diagnostics.
+See [authority](authority.md). No automatic decision/effect-file creation is allowed.

@@ -1,4 +1,4 @@
-# Lesson configuration
+# ADR configuration
 
 The caller supplies absolute `project_root` and `package_root`, and optional
 explicit `project_config` / `local_config` paths. Relative config, store and
@@ -26,11 +26,11 @@ whole template object. Absent values inherit; arrays are never concatenated.
 | Setting | Default / accepted value |
 | --- | --- |
 | `store.kind` | `filesystem` only |
-| `store.root` | `notes/lessons`; nonempty project-relative or explicit absolute path |
+| `store.root` | `notes/adrs`; nonempty project-relative or explicit absolute path |
 | `store.tracking` | `tracked`; alternatively `ignored`; intent only, no Git edits |
-| `template` | `{origin: package, path: templates/lesson.md}`; atomic object; origin may be `project` |
+| `template` | `{origin: package, path: templates/adr.md}`; atomic object; origin may be `project` |
 
-Project-only `constraints.lesson` supports `write_roots` (nonempty unique path
+Project-only `constraints.adr` supports `write_roots` (nonempty unique path
 array) and `locked_fields` (unique values from `store.root`, `store.tracking`,
 `template`). Omitted write roots allow the project/default store selected BEFORE
 local/invocation overrides. Locks compare against project/default values; changing
@@ -51,7 +51,7 @@ An external absolute store requires explicit project write roots and actual task
 authority. There is no disk discovery, relocation or migration fallback.
 
 A new identity may provision missing store directories only if EVERY created
-parent is within project and caller write roots. With default `notes/lessons`, prepare
+parent is within project and caller write roots. With default `notes/adrs`, prepare
 `notes` separately or explicitly allow that parent. Created directories remain on
 failure and are reported; no recursive rollback. A changed store selects another
 collection without moving any records. Persist the store binding with a durable
@@ -71,29 +71,22 @@ It creates no store. `runtime_capability: not-probed` and `tracking: intent-only
 are deliberate limits; successful explanation does not prove write availability.
 Do not put secrets in configs, retained evidence or templates.
 
-## Lesson v1 configuration compatibility
-
-Lesson also reads exact closed `config_version: 1`: only the `lesson` namespace,
-settings above, and project `write_roots`/`locked_fields`. Decision adapters are
-v2-only. No silent widening, conversion or automatic config edit; a v1/v2 selected
-project/local pair is rejected. Legacy tools may reject explicitly selected v2.
-
 ## Project decision evidence
 
-`constraints.lesson.decision_sources` is an optional array of
+`constraints.adr.decision_sources` is an optional array of
 `{id, root, allowed_actors, pointers}`. IDs and actor arrays are nonempty/unique.
 `root` is an explicit read root; it cannot be a volume root or overlap this store,
 package, config or selected template. `pointers` maps exactly
-`subject_sha256, actor, decision, decided_at` to distinct non-root literal JSON Pointers. Empty pointers,
+`subject_sha256, actor, decision, decided_at, option_id` to distinct non-root literal JSON Pointers. Empty pointers,
 bad `~` escapes and duplicate decoded targets fail. Resolve objects/arrays only;
 no wildcard/expression/remote lookup. Mapped values must be scalars.
 
-An absent adapter blocks accept, not ordinary
+An absent adapter blocks decide, not ordinary
 saved-record reads. A request selects `{binding_id, path, expected_sha256}`;
 path must be within that adapter root. Actual bytes must match the expected hash.
 Read the source and require current raw record digest, allowed actor, permitted
 decision and a decision time between record creation and source observation.
-Lesson permits accept and has no option.
+ADR permits accept with an existing option_id, or reject with null option_id.
 Capture source bytes/hash/time and project config/binding identity in the record.
 Actor strings rely on the project ownership/access process and are not authenticated
 signatures. A selection or generated approval flag cannot substitute for evidence.

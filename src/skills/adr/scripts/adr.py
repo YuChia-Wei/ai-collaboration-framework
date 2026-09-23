@@ -24,20 +24,20 @@ from datetime import datetime, timezone
 import uuid
 
 
-OWNER = 'lesson'
-VERSION = '0.2.0'
-SCHEMA_VERSION = '2.0.0'
-PREFIX = 'lesson'
-INITIAL = 'candidate'
-STATUSES = ('candidate', 'accepted', 'retired', 'superseded')
-OPERATIONS = ('explain', 'create', 'inspect', 'query', 'validate', 'revise', 'render', 'derive', 'accept', 'retire', 'supersede')
-AUTHORED = ('title', 'observation', 'evidence', 'conclusion', 'applies_when', 'does_not_apply_when', 'confidence', 'follow_up')
-SCHEMAS = {'1.0.0': 'schemas/lesson-record.schema.json', '2.0.0': 'schemas/lesson-record-v2.schema.json'}
-SEARCH_FIELDS = ('title', 'observation', 'conclusion')
-LEGACY_VERSION = '1.0.0'
+OWNER = 'adr'
+VERSION = '0.1.0'
+SCHEMA_VERSION = '1.0.0'
+PREFIX = 'adr'
+INITIAL = 'draft'
+STATUSES = ('draft', 'accepted', 'rejected', 'retired', 'superseded')
+OPERATIONS = ('explain', 'create', 'inspect', 'query', 'validate', 'revise', 'render', 'derive', 'decide', 'retire', 'supersede')
+AUTHORED = ('title', 'context', 'decision_drivers', 'options', 'consequences', 'evidence', 'applies_when', 'does_not_apply_when')
+SCHEMAS = {'1.0.0': 'schemas/adr-record.schema.json'}
+SEARCH_FIELDS = ('title', 'context', 'decision_drivers', 'options')
+LEGACY_VERSION = None
 MUTABLE = ('content', 'successor', 'decision')
 EXTRA_CONSTRAINTS = ('decision_sources',)
-SCRIPT = 'scripts/lesson.py'
+SCRIPT = 'scripts/adr.py'
 ROLE = OWNER + ".record"
 ID = re.compile(PREFIX + r"-[0-9a-f]{32}\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -839,39 +839,44 @@ def mapped_json(snapshot, mapping):
 
 
 
-DECISION_POINTERS = ("subject_sha256", "actor", "decision", "decided_at")
-DECISIONS = ("accept",)
-DECIDED_STATUSES = ("accepted",)
-TRANSITIONS = {"revise": {"candidate": ("candidate",)}, "accept": {"candidate": ("accepted",)},
-               "retire": {"candidate": ("retired",), "accepted": ("retired",)},
-               "supersede": {"candidate": ("superseded",), "accepted": ("superseded",)}}
+DECISION_POINTERS = ("subject_sha256", "actor", "decision", "decided_at", "option_id")
+DECISIONS = ("accept", "reject")
+DECIDED_STATUSES = ("accepted", "rejected")
+TRANSITIONS = {"revise": {"draft": ("draft",)}, "decide": {"draft": ("accepted", "rejected")},
+               "retire": {"draft": ("retired",), "accepted": ("retired",), "rejected": ("retired",)},
+               "supersede": {"accepted": ("superseded",)}}
 WRITE_FIELDS = {"create": ("content", "text", "decision"), "derive": ("reference", "expected_sha256", "reason", "text", "decision"),
                 "revise": ("reference", "expected_sha256", "content", "reason"),
-                "accept": ("reference", "expected_sha256", "reason", "decision_source"),
+                "decide": ("reference", "expected_sha256", "reason", "decision_source"),
                 "retire": ("reference", "expected_sha256", "reason"),
                 "supersede": ("reference", "expected_sha256", "reason", "successor")}
 SUCCESSOR_STATUS = "accepted"
 
 
 def check_option(content, decision, option):
-    if option is not None:
-        fail("decision-option", "Lesson acceptance has no ADR option.")
+    if (decision == "accept" and option not in [item["id"] for item in content["options"]]) or (decision == "reject" and option is not None):
+        fail("decision-option", "Acceptance must select an existing option; rejection must select null.")
 
 
 def content_semantics(content):
-    for key in ("title", "observation", "conclusion"):
+    for key in ("title", "context"):
         string(content[key], key)
-    for key in ("applies_when", "does_not_apply_when", "follow_up"):
-        text_array(content[key], key, key == "applies_when")
+    for key in ("decision_drivers", "consequences", "applies_when", "does_not_apply_when"):
+        text_array(content[key], key, key in ("decision_drivers", "applies_when"))
     evidence_semantics(content["evidence"])
-    if content["confidence"] not in ("tentative", "supported") or (not content["evidence"] and content["confidence"] != "tentative"):
-        fail("confidence", "Empty evidence requires tentative confidence; supported remains an authored claim.")
-
-
-def legacy_semantics(record):
-    if record["status"] != "candidate":
-        fail("legacy-state", "Legacy Lesson status remains candidate.")
-    content_semantics(record)
+    options = content["options"]
+    if type(options) is not list or len(options) < 2:
+        fail("options", "ADR requires at least two real alternatives.")
+    names = set()
+    for row in options:
+        fields(row, ("id", "summary", "benefits", "costs"))
+        name = string(row["id"], "option id")
+        string(row["summary"], "option summary")
+        if name in names:
+            fail("option-id", "Option IDs must be unique.")
+        names.add(name)
+        text_array(row["benefits"], "benefits")
+        text_array(row["costs"], "costs")
 
 
 

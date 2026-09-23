@@ -24,20 +24,20 @@ from datetime import datetime, timezone
 import uuid
 
 
-OWNER = 'lesson'
-VERSION = '0.2.0'
-SCHEMA_VERSION = '2.0.0'
-PREFIX = 'lesson'
-INITIAL = 'candidate'
-STATUSES = ('candidate', 'accepted', 'retired', 'superseded')
-OPERATIONS = ('explain', 'create', 'inspect', 'query', 'validate', 'revise', 'render', 'derive', 'accept', 'retire', 'supersede')
-AUTHORED = ('title', 'observation', 'evidence', 'conclusion', 'applies_when', 'does_not_apply_when', 'confidence', 'follow_up')
-SCHEMAS = {'1.0.0': 'schemas/lesson-record.schema.json', '2.0.0': 'schemas/lesson-record-v2.schema.json'}
-SEARCH_FIELDS = ('title', 'observation', 'conclusion')
-LEGACY_VERSION = '1.0.0'
-MUTABLE = ('content', 'successor', 'decision')
-EXTRA_CONSTRAINTS = ('decision_sources',)
-SCRIPT = 'scripts/lesson.py'
+OWNER = 'standards-promotion'
+VERSION = '0.1.0'
+SCHEMA_VERSION = '1.0.0'
+PREFIX = 'promotion'
+INITIAL = 'proposed'
+STATUSES = ('proposed', 'withdrawn', 'superseded')
+OPERATIONS = ('explain', 'propose', 'inspect', 'query', 'validate', 'revise', 'render', 'withdraw', 'supersede', 'reconcile')
+AUTHORED = ('title', 'target_id', 'baseline', 'replacement', 'rationale', 'applicability', 'conflicts', 'sources', 'target_binding', 'after_sha256', 'subject_sha256')
+SCHEMAS = {'1.0.0': 'schemas/promotion-record.schema.json'}
+SEARCH_FIELDS = ('title', 'rationale', 'replacement')
+LEGACY_VERSION = None
+MUTABLE = ('content', 'successor', 'observation')
+EXTRA_CONSTRAINTS = ('source_read_roots', 'targets')
+SCRIPT = 'scripts/standards_promotion.py'
 ROLE = OWNER + ".record"
 ID = re.compile(PREFIX + r"-[0-9a-f]{32}\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -839,136 +839,264 @@ def mapped_json(snapshot, mapping):
 
 
 
-DECISION_POINTERS = ("subject_sha256", "actor", "decision", "decided_at")
-DECISIONS = ("accept",)
-DECIDED_STATUSES = ("accepted",)
-TRANSITIONS = {"revise": {"candidate": ("candidate",)}, "accept": {"candidate": ("accepted",)},
-               "retire": {"candidate": ("retired",), "accepted": ("retired",)},
-               "supersede": {"candidate": ("superseded",), "accepted": ("superseded",)}}
-WRITE_FIELDS = {"create": ("content", "text", "decision"), "derive": ("reference", "expected_sha256", "reason", "text", "decision"),
-                "revise": ("reference", "expected_sha256", "content", "reason"),
-                "accept": ("reference", "expected_sha256", "reason", "decision_source"),
-                "retire": ("reference", "expected_sha256", "reason"),
-                "supersede": ("reference", "expected_sha256", "reason", "successor")}
-SUCCESSOR_STATUS = "accepted"
-
-
-def check_option(content, decision, option):
-    if option is not None:
-        fail("decision-option", "Lesson acceptance has no ADR option.")
-
-
-def content_semantics(content):
-    for key in ("title", "observation", "conclusion"):
-        string(content[key], key)
-    for key in ("applies_when", "does_not_apply_when", "follow_up"):
-        text_array(content[key], key, key == "applies_when")
-    evidence_semantics(content["evidence"])
-    if content["confidence"] not in ("tentative", "supported") or (not content["evidence"] and content["confidence"] != "tentative"):
-        fail("confidence", "Empty evidence requires tentative confidence; supported remains an authored claim.")
-
-
-def legacy_semantics(record):
-    if record["status"] != "candidate":
-        fail("legacy-state", "Legacy Lesson status remains candidate.")
-    content_semantics(record)
-
+ADOPTION_POINTERS = ("subject_sha256", "target_id", "after_sha256", "actor", "decision", "decided_at")
+EFFECT_POINTERS = ("subject_sha256", "target_id", "after_sha256", "adoption_sha256", "applicability", "state", "effective_at")
+TRANSITIONS = {"revise": {"proposed": ("proposed",)}, "reconcile": {"proposed": ("proposed",)},
+               "withdraw": {"proposed": ("withdrawn",)}, "supersede": {"proposed": ("superseded",)}}
+WRITE_FIELDS = {"propose": ("content", "text", "decision"), "revise": ("reference", "expected_sha256", "content", "reason"),
+                "withdraw": ("reference", "expected_sha256", "reason"),
+                "supersede": ("reference", "expected_sha256", "reason", "successor"),
+                "reconcile": ("reference", "expected_sha256")}
+SUCCESSOR_STATUS = "proposed"
 
 
 def validate_constraints(binding):
-    binding.decisions = {}
-    roots = set()
-    rows = binding.rules.get("decision_sources", [])
+    binding.targets, binding.source_roots = {}, []
+    for value in strings(binding.rules.get("source_read_roots", []), "source read roots"):
+        root = safe_path(value, binding.project)
+        if root == Path(root.anchor) or any(overlap(root, p) for p in (binding.store, binding.package, binding.template_path, *binding.config_paths)):
+            fail("source-root", "Source read root overlaps protected content.", "blocked")
+        if root in binding.source_roots:
+            fail("source-root-alias", "Source read roots contain a canonical path alias.")
+        binding.source_roots.append(root)
+    rows = binding.rules.get("targets", [])
     if type(rows) is not list:
-        fail("decision-sources", "Decision sources must be an array.")
+        fail("targets", "Targets must be an array.")
+    paths = set()
     for row in rows:
-        fields(row, ("id", "root", "allowed_actors", "pointers"))
-        name = string(row["id"], "decision source id")
-        if name in binding.decisions:
-            fail("decision-sources", "Duplicate decision source ID.")
-        root = safe_path(row["root"], binding.project)
-        if root == Path(root.anchor) or any(overlap(root, protected) for protected in (binding.store, binding.package, binding.template_path, *binding.config_paths)):
-            fail("decision-root", "Authority read root overlaps protected content.", "blocked")
-        if root in roots:
-            fail("decision-root-alias", "Decision source roots contain a canonical path alias.")
-        roots.add(root)
+        fields(row, ("id", "path", "applicability", "allowed_actors", "adoption_source", "effect_source"))
+        name = string(row["id"], "target id")
+        target = safe_path(row["path"], binding.project)
+        if not beneath(target, binding.project) or target == binding.project or any(overlap(target, p) for p in (binding.store, binding.package, binding.template_path, *binding.config_paths)):
+            fail("rule-target", "Rule target must be an explicit project-contained file outside protected content.", "blocked")
+        if name in binding.targets or target in paths:
+            fail("target-alias", "Duplicate target ID or canonical path alias.")
+        string(row["applicability"], "applicability")
         strings(row["allowed_actors"], "allowed actors", True)
-        pointers(row["pointers"], DECISION_POINTERS)
-        binding.decisions[name] = (row, root)
+        roots = {}
+        for kind, names in (("adoption_source", ADOPTION_POINTERS), ("effect_source", EFFECT_POINTERS)):
+            adapter = row[kind]
+            if adapter is not None:
+                fields(adapter, ("root", "pointers"))
+                root = safe_path(adapter["root"], binding.project)
+                if root == Path(root.anchor) or any(overlap(root, p) for p in (binding.store, binding.package, binding.template_path, target, *binding.config_paths)):
+                    fail("authority-root", "Authority read root overlaps protected content or the rule target.", "blocked")
+                pointers(adapter["pointers"], names)
+                roots[kind] = root
+        paths.add(target)
+        binding.targets[name] = (row, target, roots)
 
 
 def authority_summary(binding):
-    return sorted(binding.decisions)
+    return [{"target_id": name, "adoption_adapter": row["adoption_source"] is not None,
+             "effect_adapter": row["effect_source"] is not None} for name, (row, _, _) in sorted(binding.targets.items())]
 
 
-def read_decision(binding, current, raw, selection):
-    fields(selection, ("binding_id", "path", "expected_sha256"))
-    name = string(selection["binding_id"], "decision binding")
-    if name not in binding.decisions:
-        fail("decision-authority", "No selected project decision source is configured.", "blocked")
-    row, root = binding.decisions[name]
-    snapshot = read_snapshot(binding, evidence_path(binding, selection["path"], root), selection["expected_sha256"])
-    values = mapped_json(snapshot, row["pointers"])
-    if values["subject_sha256"] != digest(raw) or values["actor"] not in row["allowed_actors"]:
-        fail("decision-subject", "Owner decision does not bind this exact subject and allowed actor.", "blocked")
-    if values["decision"] not in DECISIONS:
-        fail("decision-value", "Unsupported owner decision.", "blocked")
-    if not timestamp(current["created_at"]) <= timestamp(values["decided_at"]) <= timestamp(snapshot["observed_at"]):
-        fail("decision-time", "Decision time is outside this subject's observation interval.", "blocked")
-    option = values.get("option_id")
-    check_option(current["content"], values["decision"], option)
-    return {"actor": values["actor"], "decision": values["decision"],
-            "decided_at": values["decided_at"], "subject_sha256": values["subject_sha256"],
-            "option_id": option, "evidence": snapshot,
-            "authority_binding": binding_snapshot(binding, name, row)}
+def proposal_subject(content):
+    return {"target_binding": content["target_binding"], "source_snapshots": content["sources"],
+            "content": {key: content[key] for key in ("title", "target_id", "baseline", "replacement", "rationale", "applicability", "conflicts")}}
+
+
+def content_semantics(content):
+    for key in ("title", "target_id", "rationale", "applicability"):
+        string(content[key], key)
+    if type(content["replacement"]) is not str:
+        fail("replacement", "Replacement must be a complete UTF-8 string.")
+    if content["after_sha256"] != digest(content["replacement"].encode("utf-8")) or content["subject_sha256"] != digest(encode(proposal_subject(content))):
+        fail("proposal-digest", "Stored replacement or proposal subject digest differs from its bytes.")
+    if type(content["sources"]) is not list or not content["sources"]:
+        fail("sources", "At least one source snapshot is required.")
+    for row in content["sources"]:
+        for key in ("kind", "id", "schema_version", "reason"):
+            string(row[key], "source " + key)
+    for row in content["conflicts"]:
+        string(row["subject"], "conflict subject")
+        string(row["reason"], "conflict reason")
+        if row["disposition"] not in ("preserve", "replace", "supersede", "unresolved"):
+            fail("conflicts", "Unknown conflict disposition.")
+    target = content["target_binding"]["binding"]
+    fields(target, ("id", "path", "applicability", "allowed_actors", "adoption_source", "effect_source"))
+    string(target["path"], "captured target path")
+    strings(target["allowed_actors"], "captured allowed actors", True)
+    for key, names in (("adoption_source", ADOPTION_POINTERS), ("effect_source", EFFECT_POINTERS)):
+        adapter = target[key]
+        if adapter is not None:
+            fields(adapter, ("root", "pointers"))
+            string(adapter["root"], "captured evidence root")
+            pointers(adapter["pointers"], names)
+    if content["target_binding"]["binding_id"] != content["target_id"] or target["id"] != content["target_id"] or target["applicability"] != content["applicability"]:
+        fail("target-binding", "Proposal differs from its captured target binding.")
+
+
+def ever_adopted(record):
+    observations = [record["observation"]] + [item["previous_state"]["observation"] for item in record["history"]]
+    return any(value is not None and value["adoption"] == "adopted" for value in observations)
 
 
 def authored_content(binding, value, current=None):
-    fields(value, AUTHORED, label="authored content")
-    return copy.deepcopy(value)
+    fields(value, ("title", "target_id", "expected_target_sha256", "replacement", "rationale", "applicability", "conflicts", "sources"), label="proposal input")
+    if current is not None and ever_adopted(current):
+        fail("adopted-proposal", "An ever-adopted proposal cannot be revised; create a new identity and obtain new adoption.", "blocked")
+    string(value["target_id"], "target id")
+    if value["target_id"] not in binding.targets or not binding.source_roots:
+        fail("promotion-authority", "Project target and source read roots are required.", "blocked")
+    target, target_path, _ = binding.targets[value["target_id"]]
+    if value["applicability"] != target["applicability"]:
+        fail("applicability", "Proposal applicability differs from the project target.")
+    captured_binding = binding_snapshot(binding, target["id"], target)
+    baseline = read_snapshot(binding, target_path, value["expected_target_sha256"])
+    if current is not None and (value["target_id"] != current["content"]["target_id"] or
+            not exact_equal(captured_binding, current["content"]["target_binding"]) or
+            baseline["sha256"] != current["content"]["baseline"]["sha256"]):
+        fail("proposal-baseline", "Changed target, config or baseline requires a new proposal identity.", "conflict")
+    if type(value["sources"]) is not list or not value["sources"]:
+        fail("sources", "At least one explicit evidence source is required.")
+    sources, seen = [], set()
+    for item in value["sources"]:
+        fields(item, ("path", "expected_sha256", "kind", "id", "schema_version", "reason"))
+        selected = safe_path(item["path"], binding.project)
+        roots = [root for root in binding.source_roots if beneath(selected, root)]
+        if not roots or selected in seen or selected == target_path:
+            fail("source-boundary", "Source is outside explicit read roots, duplicated or aliases the target.", "blocked")
+        selected = evidence_path(binding, item["path"], roots[0])
+        snapshot = read_snapshot(binding, selected, item["expected_sha256"])
+        # Identity matching is attribution checking, not foreign schema validation.
+        try:
+            source_data = parse_json(snapshot["utf8"].encode("utf-8"))
+        except Fault:
+            source_data = None
+        if type(source_data) is dict:
+            for key in ("kind", "id", "schema_version"):
+                if key in source_data and not exact_equal(source_data[key], item[key]):
+                    fail("source-identity", "Supplied descriptor differs from the selected JSON source.")
+        seen.add(selected)
+        sources.append({**{key: item[key] for key in ("kind", "id", "schema_version", "reason")}, "snapshot": snapshot})
+    content = {key: copy.deepcopy(value[key]) for key in ("title", "target_id", "replacement", "rationale", "applicability", "conflicts")}
+    content.update(baseline=baseline, sources=sources, target_binding=captured_binding)
+    if current is not None:
+        def comparison(value):
+            result = copy.deepcopy(value)
+            result.pop("after_sha256", None)
+            result.pop("subject_sha256", None)
+            result["baseline"].pop("observed_at", None)
+            for row in result["sources"]:
+                row["snapshot"].pop("observed_at", None)
+            return result
+        if exact_equal(comparison(content), comparison(current["content"])):
+            return copy.deepcopy(current["content"])
+    if type(content["replacement"]) is not str:
+        fail("replacement", "Expected complete replacement text.")
+    content["after_sha256"] = digest(content["replacement"].encode("utf-8"))
+    content["subject_sha256"] = digest(encode(proposal_subject(content)))
+    return content
+
+
+def inspect_evidence(binding, target_id, adapter, root, selection, diagnostics, label):
+    if adapter is None or selection is None:
+        diagnostics.append({"code": label + "-unavailable", "message": "No configured adapter or selected evidence file."})
+        return None
+    fields(selection, ("binding_id", "path", "expected_sha256"))
+    if selection["binding_id"] != target_id:
+        fail("evidence-binding", "Selection names another rule target.")
+    expected_digest(selection["expected_sha256"])
+    path = evidence_path(binding, selection["path"], root)
+    try:
+        return read_snapshot(binding, path, selection["expected_sha256"])
+    except Fault as exc:
+        if exc.code != "missing-file":
+            raise
+        binding.absent.add(path)
+        diagnostics.append({"code": label + "-missing", "message": "Selected evidence file is absent."})
+        return None
+
+
+def interpret_observation(content, adoption_snapshot, rule_snapshot, effect_snapshot, observed_at, diagnostics):
+    target = content["target_binding"]["binding"]
+    result = {"observed_at": observed_at, "adoption": "unresolved", "rule_content": "missing" if rule_snapshot is None else
+              "matches-proposal" if rule_snapshot["sha256"] == content["after_sha256"] else "drifted",
+              "effect": "unresolved", "authority_basis": "project-owned-local-evidence",
+              "adoption_snapshot": adoption_snapshot, "rule_snapshot": rule_snapshot,
+              "effect_snapshot": effect_snapshot, "diagnostics": diagnostics}
+    adoption = None
+    if adoption_snapshot is not None:
+        try:
+            adapter = target["adoption_source"]
+            if adapter is None:
+                fail("adoption-adapter", "Captured adoption adapter is unavailable.")
+            values = mapped_json(adoption_snapshot, adapter["pointers"])
+            if any(values[key] != content[key] for key in ("subject_sha256", "target_id", "after_sha256")) or values["actor"] not in target["allowed_actors"]:
+                fail("adoption-subject", "Owner evidence does not bind this subject, target, replacement and actor.")
+            if values["decision"] not in ("adopt", "reject", "revoke") or timestamp(values["decided_at"]) > timestamp(observed_at):
+                fail("adoption-decision", "Owner evidence has an unsupported decision or future timestamp.")
+            adoption = values
+            result["adoption"] = {"adopt": "adopted", "reject": "rejected", "revoke": "revoked"}[values["decision"]]
+        except (Fault, TypeError, KeyError) as exc:
+            result["diagnostics"].append({"code": "adoption-unresolved", "message": "Selected owner evidence could not establish a matching decision."})
+    if effect_snapshot is not None:
+        try:
+            adapter = target["effect_source"]
+            if adapter is None:
+                fail("effect-adapter", "Captured effect adapter is unavailable.")
+            values = mapped_json(effect_snapshot, adapter["pointers"])
+            if any(values[key] != content[key] for key in ("subject_sha256", "target_id", "after_sha256", "applicability")):
+                fail("effect-subject", "Effect declaration differs from the proposal subject.")
+            if adoption is None or values["adoption_sha256"] != adoption_snapshot["sha256"]:
+                fail("effect-adoption", "Effect declaration lacks matching exact adoption evidence.")
+            if not timestamp(adoption["decided_at"]) <= timestamp(values["effective_at"]) <= timestamp(observed_at):
+                fail("effect-time", "Effect chronology is not established.")
+            if values["state"] not in ("active", "inactive"):
+                fail("effect-state", "Unknown project effect state.")
+            if values["state"] == "inactive":
+                result["effect"] = "inactive"
+            elif result["adoption"] == "adopted" and result["rule_content"] == "matches-proposal":
+                result["effect"] = "effective"
+        except (Fault, TypeError, KeyError):
+            result["diagnostics"].append({"code": "effect-unresolved", "message": "Selected effect declaration could not establish current project-declared effect."})
+    if any(row["disposition"] == "unresolved" for row in content["conflicts"]):
+        result["diagnostics"].append({"code": "unresolved-conflicts", "message": "Conflicts remain; adoption is independent and effective state is unresolved."})
+        if result["effect"] == "effective":
+            result["effect"] = "unresolved"
+    return result
 
 
 def state_semantics(state, status):
     content_semantics(state["content"])
-    decision = state["decision"]
-    if status == INITIAL and decision is not None:
-        fail("decision-state", "Initial records cannot claim an owner decision.")
-    if status in DECIDED_STATUSES and decision is None:
-        fail("decision-state", "Decided records require captured owner evidence.")
-    if decision is not None:
-        if decision["decision"] not in DECISIONS:
-            fail("decision-value", "Unsupported stored decision.")
-        check_option(state["content"], decision["decision"], decision["option_id"])
-        if status == "accepted" and decision["decision"] != "accept":
-            fail("decision-state", "Accepted state requires an accept decision.")
-        if status == "rejected" and decision["decision"] != "reject":
-            fail("decision-state", "Rejected state requires a reject decision.")
-        authority = decision["authority_binding"]["binding"]
-        fields(authority, ("id", "root", "allowed_actors", "pointers"))
-        if decision["authority_binding"]["binding_id"] != string(authority["id"], "captured binding id"):
-            fail("decision-binding", "Decision binding ID differs from its captured configuration.")
-        pointers(authority["pointers"], DECISION_POINTERS)
-        mapped = mapped_json(decision["evidence"], authority["pointers"])
-        if any(not exact_equal(mapped[key], decision[key]) for key in DECISION_POINTERS):
-            fail("decision-evidence", "Stored decision differs from its exact source snapshot.")
-        if decision["actor"] not in strings(authority["allowed_actors"], "allowed actors", True):
-            fail("decision-authority", "Stored decision actor is outside the captured binding.")
-        if timestamp(decision["decided_at"]) > timestamp(decision["evidence"]["observed_at"]):
-            fail("decision-time", "Decision evidence predates the declared decision.")
     if (status == "superseded") != (state["successor"] is not None):
-        fail("successor-state", "Only a superseded record has a successor.")
+        fail("successor-state", "Only superseded proposals have successors.")
+    observation = state["observation"]
+    if observation is not None:
+        derived = interpret_observation(state["content"], observation["adoption_snapshot"], observation["rule_snapshot"],
+                                        observation["effect_snapshot"], observation["observed_at"], [])
+        if any(derived[key] != observation[key] for key in ("adoption", "rule_content", "effect")):
+            fail("observation-evidence", "Stored observation differs from its retained evidence.")
 
 
 def transition(binding, record, original, request):
     operation = request["operation"]
-    if operation in ("accept", "decide"):
-        record["decision"] = read_decision(binding, record, original, request["decision_source"])
-        record["status"] = "accepted" if record["decision"]["decision"] == "accept" else "rejected"
-    elif operation == "retire":
-        record["status"] = "retired"
+    if operation == "withdraw":
+        record["status"] = "withdrawn"
     elif operation == "supersede":
         record["successor"] = select_successor(binding, record, request["successor"])
         record["status"] = "superseded"
+    elif operation == "reconcile":
+        content = record["content"]
+        if content["target_id"] not in binding.targets:
+            fail("target-authority", "Captured project target is no longer configured.", "blocked")
+        target, path, roots = binding.targets[content["target_id"]]
+        if not exact_equal(binding_snapshot(binding, target["id"], target), content["target_binding"]):
+            fail("authority-drift", "Project target/config changed; create a new proposal.", "conflict")
+        diagnostics = []
+        adoption = inspect_evidence(binding, target["id"], target["adoption_source"], roots.get("adoption_source"), request.get("adoption_source"), diagnostics, "adoption")
+        effect = inspect_evidence(binding, target["id"], target["effect_source"], roots.get("effect_source"), request.get("effect_source"), diagnostics, "effect")
+        try:
+            actual = read_snapshot(binding, path)
+        except Fault as exc:
+            if exc.code != "missing-file":
+                raise
+            binding.absent.add(path)
+            actual = None
+            diagnostics.append({"code": "rule-missing", "message": "Configured rule file is absent."})
+        record["observation"] = interpret_observation(content, adoption, actual, effect, now_text(), diagnostics)
 
 
 
@@ -1081,9 +1209,16 @@ def validate_record(binding, record, expected_id=None):
             previous_time = event_time
         if record["history"] and previous_time != updated:
             fail("history-time", "Latest history time must equal updated_at.")
-        for state in [state_of(record), *[entry["previous_state"] for entry in record["history"]]]:
-            if state["decision"] is not None and timestamp(state["decision"]["decided_at"]) < created:
-                fail("decision-time", "Decision predates the record identity.")
+        states = [(state_of(record), updated)] + [(entry["previous_state"], timestamp(entry["recorded_at"])) for entry in record["history"]]
+        for state, limit_time in states:
+            observation = state["observation"]
+            if observation is not None:
+                observed = timestamp(observation["observed_at"])
+                if not created <= observed <= limit_time:
+                    fail("observation-time", "Observation is outside its record history interval.")
+                check_snapshots(observation, observed)
+        if record["provenance"]:
+            fail("promotion-provenance", "Promotion captures source evidence in content; it has no derive operation.")
         check_snapshots(record, updated)
         for link in [*record["provenance"], *([record["successor"]] if record["successor"] is not None else [])]:
             if link["role"] != ROLE or not ID.fullmatch(link["id"]) or link["id"] == record["id"] or link["schema_version"] not in SCHEMAS:

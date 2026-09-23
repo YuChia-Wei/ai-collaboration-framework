@@ -1,6 +1,6 @@
 metadata_version: 2
-id: lesson
-version: 0.2.0
+id: standards-promotion
+version: 0.1.0
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -11,112 +11,105 @@ runtime:
   requirement: Read selected public entry and resources
   for_operations:
   - explain
-  - create
+  - propose
   - inspect
   - query
   - validate
   - revise
   - render
-  - derive
-  - accept
-  - retire
+  - withdraw
   - supersede
+  - reconcile
   on_missing: unavailable
 - id: python
   version: '>=3.11,<4'
   for_operations:
   - explain
-  - create
+  - propose
   - inspect
   - query
   - validate
   - revise
   - render
-  - derive
-  - accept
-  - retire
+  - withdraw
   - supersede
+  - reconcile
   on_missing: unavailable
 - id: pyyaml
   version: '>=6,<7'
   for_operations:
   - explain
-  - create
+  - propose
   - inspect
   - query
   - validate
   - revise
   - render
-  - derive
-  - accept
-  - retire
+  - withdraw
   - supersede
+  - reconcile
   on_missing: unavailable
 - id: jsonschema
   version: '>=4.18,<5'
   for_operations:
-  - create
+  - propose
   - inspect
   - query
   - validate
   - revise
   - render
-  - derive
-  - accept
-  - retire
+  - withdraw
   - supersede
+  - reconcile
   on_missing: unavailable
 - id: filesystem
   requirement: Explicit local roots, bounded reads and exclusive atomic single-record
     writes; ignored local config in a Git project requires read-only Git
   for_operations:
   - explain
-  - create
+  - propose
   - inspect
   - query
   - validate
   - revise
   - render
-  - derive
-  - accept
-  - retire
+  - withdraw
   - supersede
+  - reconcile
   on_missing: unavailable
 configuration:
-  namespace: lesson
+  namespace: standards-promotion
   defaults:
     store:
       kind: filesystem
-      root: notes/lessons
+      root: notes/promotions
       tracking: tracked
     template:
       origin: package
-      path: templates/lesson.md
+      path: templates/promotion.md
 artifact_roles:
-- role: lesson.record
+- role: standards-promotion.record
   owner: project
-  schema: lesson.record@2.0.0
+  schema: standards-promotion.record@1.0.0
   read_schemas:
-  - lesson.record@1.0.0
-  - lesson.record@2.0.0
-  store_binding: lesson.store
-  identity: lesson-<32 lowercase hex digits>
-  filename: <id>.lesson.json
+  - standards-promotion.record@1.0.0
+  store_binding: standards-promotion.store
+  identity: promotion-<32 lowercase hex digits>
+  filename: <id>.promotion.json
   read_operations:
   - inspect
   - query
   - validate
   - render
   write_operations:
-  - create
+  - propose
   - revise
-  - derive
-  - accept
-  - retire
+  - withdraw
   - supersede
-- role: lesson.view
+  - reconcile
+- role: standards-promotion.view
   owner: derived
-  source_role: lesson.record
+  source_role: standards-promotion.record
   output: Result-only Markdown
   persistence: Export requires separate caller-owned write
   produce_operations:
@@ -125,42 +118,37 @@ resources:
   references:
   - references/configuration.md
   - references/operations.md
+  - references/authority.md
   - references/example.md
   schemas:
-  - id: lesson.record
+  - id: standards-promotion.record
     version: 1.0.0
-    path: schemas/lesson-record.schema.json
-    owner: lesson
-    migration: unsupported; preserve original; explicit derive is a new identity
-  - id: lesson.record
-    version: 2.0.0
-    path: schemas/lesson-record-v2.schema.json
-    owner: lesson
-    migration: unsupported; preserve original; explicit derive is a new identity
+    path: schemas/promotion-record.schema.json
+    owner: standards-promotion
+    migration: unsupported; preserve original
   templates:
-  - id: lesson.default-view
-    path: templates/lesson.md
-    input_role: lesson.record
-    output_role: lesson.view
-    owner: lesson
+  - id: standards-promotion.default-view
+    path: templates/promotion.md
+    input_role: standards-promotion.record
+    output_role: standards-promotion.view
+    owner: standards-promotion
   tools:
-  - id: lesson.fs
-    owner: lesson
+  - id: standards-promotion.fs
+    owner: standards-promotion
     implementation_status: implemented
-    entrypoint: scripts/lesson.py
+    entrypoint: scripts/standards_promotion.py
     operation_contract: references/operations.md
     operations:
     - explain
-    - create
+    - propose
     - inspect
     - query
     - validate
     - revise
     - render
-    - derive
-    - accept
-    - retire
+    - withdraw
     - supersede
+    - reconcile
 operations:
 - id: explain
   inputs:
@@ -168,9 +156,9 @@ operations:
   outputs:
   - own effective settings, field sources, config version, ignored namespace names
     and authority bindings
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
-- id: create
+- id: propose
   inputs:
   - explicit project_root/package_root and selected configuration
   - content
@@ -180,7 +168,7 @@ operations:
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
   - actual related_query and retained directory creations
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
 - id: inspect
   inputs:
@@ -188,7 +176,7 @@ operations:
   - reference
   outputs:
   - owned record, raw digest and historical evidence/freshness
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
 - id: query
   inputs:
@@ -197,7 +185,7 @@ operations:
   outputs:
   - matching references with status/version/raw digest
   - partial diagnostics and actual query_sha256
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
 - id: validate
   inputs:
@@ -205,7 +193,7 @@ operations:
   - reference
   outputs:
   - actual owned structure/semantic result and diagnostics
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
 - id: revise
   inputs:
@@ -216,42 +204,17 @@ operations:
   - reason
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
 - id: render
   inputs:
   - explicit project_root/package_root and selected configuration
   - reference
   outputs:
-  - lesson.view as result-only escaped Markdown
-  tool: lesson.fs
+  - standards-promotion.view as result-only escaped Markdown
+  tool: standards-promotion.fs
   implementation_status: implemented
-- id: derive
-  inputs:
-  - explicit project_root/package_root and selected configuration
-  - reference
-  - expected_sha256
-  - reason
-  - text
-  - decision
-  - optional statuses
-  outputs:
-  - record reference, actual persisted-byte digest, changed flag and mutation state
-  - actual related_query and retained directory creations
-  tool: lesson.fs
-  implementation_status: implemented
-- id: accept
-  inputs:
-  - explicit project_root/package_root and selected configuration
-  - reference
-  - expected_sha256
-  - reason
-  - decision_source
-  outputs:
-  - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
-  implementation_status: implemented
-- id: retire
+- id: withdraw
   inputs:
   - explicit project_root/package_root and selected configuration
   - reference
@@ -259,7 +222,7 @@ operations:
   - reason
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: standards-promotion.fs
   implementation_status: implemented
 - id: supersede
   inputs:
@@ -270,5 +233,16 @@ operations:
   - successor
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: standards-promotion.fs
+  implementation_status: implemented
+- id: reconcile
+  inputs:
+  - explicit project_root/package_root and selected configuration
+  - reference
+  - expected_sha256
+  - optional adoption_source and effect_source selections
+  outputs:
+  - record reference, actual persisted-byte digest, changed flag and mutation state
+  - independent adoption/rule-content/effect observation and snapshots
+  tool: standards-promotion.fs
   implementation_status: implemented
