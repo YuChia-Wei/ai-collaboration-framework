@@ -27,7 +27,7 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | source implementation active in same task |
 | #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
 | #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader merged PR #339; final mappings await packages |
-| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | design checkpoint dispatch preparation |
+| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | independent design checkpoint task active |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 

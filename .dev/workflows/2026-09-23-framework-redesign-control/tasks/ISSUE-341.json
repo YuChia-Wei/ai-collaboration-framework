@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:00:26+08:00",
-  "updated_at": "2026-09-23T09:00:26+08:00",
+  "updated_at": "2026-09-23T09:03:08+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -48,8 +48,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message format only"
     ],
-    "last_completed_step": "Issue created and Project assigned; design dispatch preparation",
-    "next_action": "Create independent Astra Ultra conversation in assigned F: worktree"
+    "last_completed_step": "Independent Astra Ultra task dispatched and initial runtime/Git identity read back",
+    "next_action": "Receive local P4 contract checkpoint; reconcile before source continuation"
   },
   "results": {
     "summary": "Design stage selected; no implementation delivered",
@@ -60,13 +60,14 @@
     "follow_up_needed": true
   },
   "dispatch": {
-    "thread_id": null,
+    "thread_id": "01a0cbc8-448d-7270-b27b-295295914afb",
     "worktree": "F:/framework-next/341",
     "branch": "codex/2026-09-23-workflow-orchestration",
     "workflow_id": "2026-09-23-workflow-orchestration",
-    "model_verified": "pending dispatch",
+    "model_verified": "Read-only runtime thread metadata: gpt-6-astra / ultra",
     "starting_commit_source": "coordinator bootstrap checkpoint",
-    "worktree_verified": "pending creation"
+    "worktree_verified": "Initial command actual cwd/root/branch/full HEAD/common-dir and clean status match assignment",
+    "starting_commit": "3a82b3654976fb26da7618a4404f49d7868d813a"
   },
   "delivery": {
     "contract_status": "pending",
