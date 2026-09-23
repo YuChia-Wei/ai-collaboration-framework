@@ -64,3 +64,19 @@ U001 keeps unselected legacy validators, formal audit/lease/handoff packets and
 hosted acceptance deferred-by-owner (owner #322 coordinator; next post-pilot
 review). No behavior, native installation, versioned package, downstream adoption,
 release or CI success is claimed by this administrative checkpoint.
+
+## Actual dispatch
+
+The app created task 01a0ce7e-5a76-70a2-88a6-a31c5cfe0000, titled
+"修復 #378：Windows reader 與 writer 相容性". The read-only runtime row
+reports gpt-6-astra / ultra. Its first repository command
+exec-f900be6d-71f9-465c-9953-c7ae80a3a760 completed with exit 0 at
+F:/framework-next/378, branch codex/2026-09-23-windows-path-compatibility,
+HEAD 70cff755bad2c2bc55bb10f7259af3871009bb03 and empty status. The app
+reported the task active; this is startup evidence, not implementation completion.
+
+The next version work is concrete: current assembly emits mode=development and
+release_version=null; installation_state rejects other candidate modes/versions.
+After #378 repair, select bounded real rc.1 candidate/lock identity and upgrade
+support before pilot installation. Renaming the current output is insufficient.
+The target provenance still records v0.18.0; it has not been changed here.
