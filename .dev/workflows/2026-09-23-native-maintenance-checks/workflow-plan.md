@@ -32,3 +32,7 @@ Read [report.md](report.md) and [task.json](task.json) for execution state and n
 ## Completed bounded attempt
 
 Executed clean a9af5fe793f938ac9b66f94034bda8a2cafb50ec once. Build and inspect succeeded; plan failed with protected-path WinError 1. No dependent public run was retried. Local task completes with N382-F01 owner handoff and incomplete native acceptance; see report and durable evidence.
+
+## Reopened selected continuation
+
+Coordinator authorized repaired-source retry on cb41982d. First four native cases passed; own empty-guard inventory failed before the competing apply. See [resume-report.md](resume-report.md) for retained evidence and the bounded two-case continuation.
