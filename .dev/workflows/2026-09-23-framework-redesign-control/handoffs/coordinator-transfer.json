@@ -248,16 +248,16 @@
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
   },
-  "updated_at": "2026-09-23T16:36:26.274287+00:00",
+  "updated_at": "2026-09-23T17:06:53.036836+00:00",
   "latest_checkpoint": {
-    "source_main": "eca7c971ad84441d67cd4e085ea89b08ba1acd2a",
+    "source_main": "e71712b71791170c3f4946e131ce867f82dade8f",
     "source_repair_pr": 388,
     "source_repair_issue": 335,
     "source_repair_delivery": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
     "source_repair_state": "CLOSED and Project Done; live readback",
     "target_commit": "a17cc80ef112368ff47109926aad22915a654b35",
     "target_root": "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot",
-    "target_status": "pilot-review; independent review dispatched, admission pending",
+    "target_status": "locally admitted; independent review and parent admission passed; lease released; target provider integration pending direct owner decision",
     "candidate_identity": "versioned:0.19.0-rc.1:1ce41a4f03f61e83bf9b99de3ce196887547e922:286088361638d65f741c0fd5c39b210b0bd868c2a08d1e235a3d5613d40bcdbb",
     "engine": "3afb4ff4207acb3e12e3953018736305a439ed21",
     "lock_sha256": "a04e2df01f5f6df6889b7c09daa1b9ae1c78e6b503aac852d5aa2b325c56a0e8",
@@ -265,7 +265,27 @@
     "review_packet": "P15-rc1-a17cc80-01",
     "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
     "report": "../reports/successor-acceptance-and-repair-scope.md",
-    "next_action": "Receive target independent review; admit and release unchanged lease only on pass; continue P7 review under separate adoption boundaries"
+    "next_action": "Obtain separate target integration decision; reconcile selected P7 evidence and concrete caller/native changes before policy/CI adoption; retain later stable delivery and actual upgrade.",
+    "observed_at": "2026-09-23T17:06:53.036836+00:00",
+    "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
+    "independent_review": "passed; no reportable findings",
+    "selected_gate": {
+      "attempts": 1,
+      "exit_code": 0,
+      "duration_seconds": 25.923705
+    },
+    "reused_focused_tests": 14,
+    "parent_authority_raw_git_matches": 316,
+    "parent_admission": "passed",
+    "lease": "released; owned review lock removed",
+    "target_evidence_root": "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot/.dev/ai-context/local/rc1-independent-review/attempt-01",
+    "target_receipt_sha256": "c87e1e95fb36254a5b86099879b3ee3c59f9f06aaff5b042ff1834807f98da8a",
+    "target_report_sha256": "92cbffece9e8488fe0abcbfc55c3de09ff9c5f746484ec1815ab2c1bfc7a9a0a",
+    "original_p7_tasks": {
+      "368": "read-only evidence reconciliation resumed",
+      "369": "read-only caller/native/policy gap proposal received; implementation and adoption pending",
+      "373": "read-only evidence reconciliation resumed"
+    }
   },
   "checkpoint_history": [
     {
@@ -280,6 +300,24 @@
       "resumed_worktree": "F:/framework-next/335",
       "resumed_branch": "codex/2026-09-24-pr-worktree-repair",
       "report": "../reports/successor-acceptance-and-repair-scope.md"
+    },
+    {
+      "source_main": "eca7c971ad84441d67cd4e085ea89b08ba1acd2a",
+      "source_repair_pr": 388,
+      "source_repair_issue": 335,
+      "source_repair_delivery": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
+      "source_repair_state": "CLOSED and Project Done; live readback",
+      "target_commit": "a17cc80ef112368ff47109926aad22915a654b35",
+      "target_root": "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot",
+      "target_status": "pilot-review; independent review dispatched, admission pending",
+      "candidate_identity": "versioned:0.19.0-rc.1:1ce41a4f03f61e83bf9b99de3ce196887547e922:286088361638d65f741c0fd5c39b210b0bd868c2a08d1e235a3d5613d40bcdbb",
+      "engine": "3afb4ff4207acb3e12e3953018736305a439ed21",
+      "lock_sha256": "a04e2df01f5f6df6889b7c09daa1b9ae1c78e6b503aac852d5aa2b325c56a0e8",
+      "independent_reviewer": "/root/target_rc1_audit",
+      "review_packet": "P15-rc1-a17cc80-01",
+      "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
+      "report": "../reports/successor-acceptance-and-repair-scope.md",
+      "next_action": "Receive target independent review; admit and release unchanged lease only on pass; continue P7 review under separate adoption boundaries"
     }
   ]
 }
