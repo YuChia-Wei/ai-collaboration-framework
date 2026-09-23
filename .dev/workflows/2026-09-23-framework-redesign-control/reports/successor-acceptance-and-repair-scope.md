@@ -509,3 +509,54 @@ Target local 1269a5fa holds a preparation-blocked current gate. Nine focused tes
 285 retained-file hashes and twenty actual resolver calls passed; target Git overlay
 validated its three commits. Root/runtime are unchanged; independent adoption review
 and complete target installation are still pending.
+
+
+## Actual target installed checkpoint and original Issue 335 continuation
+
+PR387 merged online at ff57a09b8443402caf3508dcee1fe0378753970f; #386 is
+CLOSED/COMPLETED and Project Done. Its F386 final engine remains pinned for target
+recovery; preserve F381 candidate and all p7-runs. Current coordinator branch
+codex/2026-09-24-rc1-pilot-continuation starts from that main.
+
+Target Issue 15 is locally committed clean at 24998b88851b0439896e4f9be51c479e83d73c15.
+The repaired engine 3afb4ff4 installed the unchanged complete #381 rc.1 candidate:
+131 raw managed members, exact lock 755a96ddab2e9eaebe26a49f4014e584ce2b852f09f7e829a57488301254d6f0,
+absent markers, 26 protected inputs and 285 retained authority inputs matched.
+The earlier incomplete 102-object operation remains intact. An intervening
+unowned-control plan was resolved by preserving the task-created empty guard
+under an actual exclusive native lock, with same-identity durable receipt.
+No force-break or deletion occurred; the valid installed guard remains.
+
+Actual raw candidate/index/fresh-checkout parity covers 132 files. Thirteen
+installed explain/query calls passed. Fourteen focused target-gate tests passed;
+one working-content gate passed in 25.073 seconds, checking 292 retained files,
+14 rules/four customizations/20 actual selectors and the existing three-commit
+Git range. First gate failure from Windows DirEntry omitted metadata is retained;
+direct lstat repair preserves hardlink refusal. Root EN/zh-TW/current registries
+now prepare exact Codex routes; 26 superseded directories/29 files plus four
+legacy entries are archived, while current lifecycle entries are legacy-only.
+
+Five actual local first-write/read lifecycles passed: Lesson candidate, ADR draft,
+local backlog draft, supporting planned workflow and proposed CBF snapshot.
+These are not acceptance or semantic compliance attestations. Promotion proposal
+is not executed without a concrete target/source binding; no owner authority is
+invented. Actual PR prepare failed with blocked/git-read, mutation_state=none.
+Exact sanitized Git isolation identifies --worktree config with multiple
+worktrees and worktreeConfig disabled (exit128). Real repository settings remain.
+
+Issue373 is test-only, so it is not the source repair owner. Original Issue335
+was reopened and its existing Project Status read back In progress. Original
+independent Astra/ultra task 01a0ca57-dcfc-7283-beba-5ee537610dd8 was unarchived
+and resumed in newly recreated F:/framework-next/335 from ff57a09b, branch
+codex/2026-09-24-pr-worktree-repair. It owns only PR git_subject/necessary private
+helper, affected operations/design/workflow and one focused Git-worktree
+regression file; actual tiny F: regression selection is recorded in live #335.
+No new task, source subagent, target edit or real Git-setting change is assigned.
+
+Target binding is pilot-blocked. Next review/integrate #335, build a new immutable
+unpublished rc.1 candidate, apply explicit managed delta using actual prior lock,
+then repeat affected observations and freeze for independent target admission.
+No target push/PR/merge, target Issue closure, stable upgrade, release/publication,
+CI restoration or broad P7 completion is inferred. Source unselected gates stay
+deferred-by-owner. Target durable report:
+C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot/.dev/workflows/2026-09-23-framework-rc1-pilot/checkpoint-report.md.

@@ -13,7 +13,7 @@
   "source_root": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
   "assigned_worktree": "F:/framework-next/coordinator-next",
   "handoff_branch": "codex/2026-09-23-coordinator-handoff",
-  "receiving_branch": "codex/2026-09-23-redesign-continuation",
+  "receiving_branch": "codex/2026-09-24-rc1-pilot-continuation",
   "requested_model": "gpt-6-astra",
   "requested_reasoning_effort": "ultra",
   "execution_provenance": {
@@ -30,9 +30,10 @@
   ],
   "trial_version": "0.19.0-rc.1",
   "stable_target_version": "0.19.0",
-  "version_state": "owner-requested trial target; not tagged, built, published or installed",
+  "version_state": "Complete unpublished rc.1 candidate installed in isolated target; activation blocked by actual PR Git worktree defect and pending independent review",
   "open_issues": [
     322,
+    335,
     368,
     369,
     373
@@ -69,7 +70,7 @@
     "disabled_workflow_count": 9,
     "restoration_authorized": false
   },
-  "next_action": "Verify receiving Git/provider identity, acknowledge receipt, then scope the reader and Windows writer compatibility repair under the latest owner sequence.",
+  "next_action": "Review original #335 source return, integrate online, build new immutable rc.1 candidate and perform target delta before independent review",
   "report": "coordinator-transfer.md",
   "formal_handoff_validation": "deferred-by-owner under U001; not passed",
   "successor_acceptance": {
@@ -246,5 +247,18 @@
     "actual_source": "64bf9f6e800799976e46caa13d873f9fef898431",
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
+  },
+  "updated_at": "2026-09-23T16:10:03.747166+00:00",
+  "latest_checkpoint": {
+    "source_main": "ff57a09b8443402caf3508dcee1fe0378753970f",
+    "target_commit": "24998b88851b0439896e4f9be51c479e83d73c15",
+    "target_root": "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot",
+    "target_status": "pilot-blocked",
+    "engine": "3afb4ff4207acb3e12e3953018736305a439ed21",
+    "resumed_issue": 335,
+    "resumed_task": "01a0ca57-dcfc-7283-beba-5ee537610dd8",
+    "resumed_worktree": "F:/framework-next/335",
+    "resumed_branch": "codex/2026-09-24-pr-worktree-repair",
+    "report": "../reports/successor-acceptance-and-repair-scope.md"
   }
 }

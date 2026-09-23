@@ -242,3 +242,13 @@ Target gate development proceeds separately under its direct owner decision.
 64bf9f6e with all 131 members. Integrate online, then use a fresh engine pin/plan
 for target Issue 15 while preserving its prior capture failure. Current target
 gate is prepared at 1269a5fa and intentionally rejects incomplete admission.
+
+## Installed pilot and PR Git worktree defect
+
+Target local checkpoint 24998b88 holds the actual complete installation,
+reconciled Codex/legacy routes and five local record lifecycles. It remains
+pilot-blocked by actual PR Git worktree inspection failure. Original #335/task
+resumed for a bounded source repair; see the latest successor report and live
+Issue. Current branch is codex/2026-09-24-rc1-pilot-continuation from ff57a09b.
+Preserve all old candidates/recovery/failed evidence. Independent target review
+follows a newly built immutable candidate and explicit target delta update.
