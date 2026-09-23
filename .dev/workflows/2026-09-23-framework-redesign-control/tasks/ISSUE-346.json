@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T09:38:34+08:00",
+  "updated_at": "2026-09-23T09:41:58+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -49,8 +49,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Issue/Project created and read back",
-    "next_action": "Dispatch independent Astra Ultra source task"
+    "last_completed_step": "Independent source task dispatched; runtime/F: identity read back",
+    "next_action": "Receive local owned source checkpoint before shared mapping"
   },
   "results": {
     "summary": "Source scope selected; no delivery yet",
@@ -61,17 +61,18 @@
     "follow_up_needed": true
   },
   "dispatch": {
-    "thread_id": null,
+    "thread_id": "01a0cbeb-c1c8-7ba1-a0c8-de9026a355ff",
     "worktree": "F:/framework-next/346",
     "branch": "codex/2026-09-23-instruction-operations",
     "workflow_id": "2026-09-23-instruction-operations",
     "starting_commit_source": "coordinator selected P5 checkpoint",
-    "model_verified": "pending",
-    "worktree_verified": "pending"
+    "model_verified": "read-only runtime metadata: gpt-6-astra / ultra",
+    "worktree_verified": "First actual F: command root/branch/full HEAD/common-dir and clean status match assignment",
+    "starting_commit": "842b73ca09d701d1561109255193d80439dc996b"
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p5-selected-contract.md",
-    "implementation_status": "pending",
+    "implementation_status": "active in independent task",
     "verification_state": "deferred-by-owner"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPr0"

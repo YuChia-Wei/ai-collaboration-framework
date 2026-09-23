@@ -1,0 +1,51 @@
+{
+  "observed_at": "2026-09-23T09:41:58+08:00",
+  "authority": "U001",
+  "records": [
+    {
+      "issue": 346,
+      "thread_id": "01a0cbeb-c1c8-7ba1-a0c8-de9026a355ff",
+      "title": "重構 P5-A：指令型技能與 Metadata v3",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "model_observation": "read-only runtime thread metadata",
+      "bootstrap_app_cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+      "actual_initial_command_cwd": "F:/framework-next/346",
+      "git_root": "F:/framework-next/346",
+      "branch": "codex/2026-09-23-instruction-operations",
+      "head": "842b73ca09d701d1561109255193d80439dc996b",
+      "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+      "initial_clean": true
+    },
+    {
+      "issue": 347,
+      "thread_id": "01a0cbeb-e880-79b3-a998-1b1aad0dce2c",
+      "title": "重構 P5-B：五項工程方法技能可攜化",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "model_observation": "read-only runtime thread metadata",
+      "bootstrap_app_cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+      "actual_initial_command_cwd": "F:/framework-next/347",
+      "git_root": "F:/framework-next/347",
+      "branch": "codex/2026-09-23-engineering-methods",
+      "head": "842b73ca09d701d1561109255193d80439dc996b",
+      "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+      "initial_clean": true
+    },
+    {
+      "issue": 348,
+      "thread_id": "01a0cbec-0818-71f1-a05a-9eb111754a45",
+      "title": "重構 P5-C：需求與規格撰寫技能可攜化",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "model_observation": "read-only runtime thread metadata",
+      "bootstrap_app_cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+      "actual_initial_command_cwd": "F:/framework-next/348",
+      "git_root": "F:/framework-next/348",
+      "branch": "codex/2026-09-23-portable-authoring",
+      "head": "842b73ca09d701d1561109255193d80439dc996b",
+      "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+      "initial_clean": true
+    }
+  ]
+}
