@@ -1,0 +1,71 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "P4-CONTRACT",
+  "workflow_id": "2026-09-23-workflow-orchestration",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T09:09:21+08:00",
+  "updated_at": "2026-09-23T09:12:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_source": "coordinator-declared-and-reported-runtime-readback; not independently attested here",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341",
+  "scope": {
+    "target": "Bounded portable workflow contract checkpoint",
+    "files": [
+      ".dev/design/framework-next/workflow-orchestration/",
+      ".dev/workflows/2026-09-23-workflow-orchestration/"
+    ],
+    "constraints": [
+      "U001",
+      "One assigned worktree/writer; no sub-agents or new tasks",
+      "Coordinator owns first push and shared files"
+    ],
+    "non_goals": [
+      "Product runtime checks",
+      "Issue/Project mutation",
+      "Release or adoption",
+      "First-stage product source changes",
+      "Shared mapping or index changes"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify exact worktree identity and clean baseline",
+      "Read Issue, U001 and selected public contracts",
+      "Author contract, record shapes, examples, precise member list and reconciliation questions",
+      "Commit limited-check checkpoint and notify coordinator"
+    ],
+    "validation": [
+      "Direct syntax/reference/Git and planned commit-message format only"
+    ],
+    "last_completed_step": "Contract authored with C341-01..05; check evidence retained in checkpoint report",
+    "next_action": "P4-SOURCE: coordinator reconciliation, then same-task implementation"
+  },
+  "results": {
+    "summary": "Design-only contract proposes one record family and ten operations/members, candidate-only specialist handoffs and conservative retention previews.",
+    "files_changed": [
+      ".dev/design/framework-next/workflow-orchestration/contract.md",
+      ".dev/design/framework-next/workflow-orchestration/record-shapes.md",
+      ".dev/design/framework-next/workflow-orchestration/README.md",
+      ".dev/design/framework-next/workflow-orchestration/interface-proposal.json",
+      ".dev/design/framework-next/workflow-orchestration/examples.json"
+    ],
+    "tests_run": [
+      "No product tests run; deferred-by-owner under U001 to program #322 coordinator / P7.",
+      "Direct UTF-8/JSON/YAML/local-link inspection exit 0; 11/5/1/19 respectively.",
+      "git diff --cached --check exit 0; exact eleven-path scope inspected.",
+      "Exact planned commit-message validator exit 0; same message file used for commit."
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Runtime behavior and schema acceptance remain unverified.",
+    "follow_up_needed": true
+  }
+}

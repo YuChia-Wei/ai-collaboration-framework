@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:00:26+08:00",
-  "updated_at": "2026-09-23T09:03:08+08:00",
+  "updated_at": "2026-09-23T09:22:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -22,7 +22,7 @@
     "files": [
       ".dev/design/framework-next/workflow-orchestration/",
       ".dev/workflows/2026-09-23-workflow-orchestration/",
-      "src/skills/software-development-orchestrator/ (after contract reconciliation only)"
+      "src/skills/software-development-orchestrator/"
     ],
     "constraints": [
       "U001",
@@ -32,7 +32,6 @@
     ],
     "non_goals": [
       "product execution/tests/CI",
-      "first-stage source implementation",
       "shared manifest/profile edits",
       "root cutover/historical migration",
       "provider actions/release/credentials"
@@ -48,15 +47,15 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message format only"
     ],
-    "last_completed_step": "Independent Astra Ultra task dispatched and initial runtime/Git identity read back",
-    "next_action": "Receive local P4 contract checkpoint; reconcile before source continuation"
+    "last_completed_step": "Received design checkpoint; C341-01..05 selected and actual P3 handoff requirements reconciled",
+    "next_action": "Dispatch same task on coordinator source-continuation checkpoint; receive owned implementation before mapping"
   },
   "results": {
-    "summary": "Design stage selected; no implementation delivered",
+    "summary": "Design checkpoint received and reconciled; source implementation authorized within exclusive package roots",
     "files_changed": [],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Workflow and cleanup semantics need contract reconciliation and later P7 verification",
+    "finding_status": "partially-resolved",
+    "residual_risk": "Workflow source is not yet delivered; runtime/schema/retention behavior remains assigned to P7",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -70,9 +69,11 @@
     "starting_commit": "3a82b3654976fb26da7618a4404f49d7868d813a"
   },
   "delivery": {
-    "contract_status": "pending",
-    "implementation_status": "not started",
-    "verification_state": "deferred-by-owner"
+    "contract_status": "selected for source continuation",
+    "implementation_status": "authorized; dispatch follows coherent coordinator checkpoint",
+    "verification_state": "deferred-by-owner",
+    "contract_checkpoint": "7f821ee866e7e54e551036785e19dffaa3d7ac39",
+    "decision_contract": ".dev/design/framework-next/p4-selected-contract.md"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PBzM"
 }
