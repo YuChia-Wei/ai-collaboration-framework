@@ -1,0 +1,3591 @@
+{
+  "status": "proposal-not-adopted",
+  "source_commit": "94741016bd7baae9936bb77dd6c4f56d37036e97",
+  "observed_at": "2026-09-23T09:17:49+08:00",
+  "generator": "Issue #342 direct Git inventory, UTF-8/JSON/YAML parsing and literal-reference extraction; no product imports or execution",
+  "limits": "Static source observation only. Registered producers/validators are declarations, not current runtime coverage. Design inventories are not a runtime registry.",
+  "registry": {
+    "path": ".ai/assets/shared/artifact-lifecycle-registry.json",
+    "git_blob": "25c439b11746fe47e10ff5d2f92073165ecc9f05",
+    "sha256": "dfff344605d5bd473df296baf1901760668fd2651a65284883eecd62ed74ed65"
+  },
+  "inventory_count": 95,
+  "legacy_applicability_counts": {
+    "portable": 60,
+    "source": 34,
+    "dotnet-backend-profile": 1
+  },
+  "legacy_authoring_counts": {
+    "executable": 61,
+    "semantic-owner": 20,
+    "manual-gap": 9,
+    "external": 4,
+    "creation-template": 1
+  },
+  "proposed_disposition_counts": {
+    "preserve-unsupported": 21,
+    "optional-deferred": 6,
+    "source-only": 33,
+    "replaced-preserve": 16,
+    "retired-preserve": 14,
+    "portable-selectable": 4,
+    "external-preserve": 1
+  },
+  "model_evidence": [
+    {
+      "path": ".ai/assets/CANONICAL-SCHEMA.MD",
+      "git_blob": "e6f47be7366a77588368ee44942b07ee5c8eb9a7",
+      "sha256": "1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772"
+    },
+    {
+      "path": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+      "git_blob": "fc00c431a3ad2a420bb09a52f76a04e25adafadd",
+      "sha256": "0ffc68fb5d48acb4a15465d9083a7e9965aee761dc6c84eae5e00ccf4dc6471d"
+    },
+    {
+      "path": ".ai/assets/shared/cli-execution-routing.schema.yaml",
+      "git_blob": "15dbc840cd2f2305912fdc06328441d0cefdb446",
+      "sha256": "e7cd8c2c5a07904f9558fe0b17b8fcf9b279ad1f8a2a280ef6ff9be2148ef926"
+    },
+    {
+      "path": ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml",
+      "git_blob": "0dd31db1b4ccd74aeca409408a55517904ab0d2b",
+      "sha256": "ac57c3a7fc1a528e7fb3c7338b95d29e78e75e875a4a77e08c9b820773c4ef8e"
+    },
+    {
+      "path": ".ai/assets/shared/provider-projection-registry.schema.yaml",
+      "git_blob": "7f8a67c52bb2068489f4bd419c99fe3f353495ee",
+      "sha256": "fb11843e29b6379032a56cfc3ca010e8a208fba9dee1edc3324a87f404952626"
+    },
+    {
+      "path": ".ai/assets/shared/validation-dependency-observation.schema.yaml",
+      "git_blob": "f6f6e6a6bc28368f0fbcb4b159bee3fd55fb9970",
+      "sha256": "d87c3e8cabd8890dbbb419fadb9868fe6f380b72aae9ee2427ff7f746dbe61e2"
+    },
+    {
+      "path": ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml",
+      "git_blob": "8258d986328f40b4003e3c6e877e5e76cc6ca49e",
+      "sha256": "7a1e496b045252c84fe4b0d7b9f487190f29ef89f18c513867d571de50d5aa05"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md",
+      "git_blob": "76545756fc36aabb43458b7a9ee876b7f255dba3",
+      "sha256": "9687dd7d5382ad08b784245348f7d4b0dc0ecfa74aaf9a8945bee5eb11786bc5"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml",
+      "git_blob": "819a708ba63976b94f7f2ec7d5c833aa9fc4040d",
+      "sha256": "28924dc81a01493a33c581905c143c61a71c4a579eb4122b9ea1bd0515697d5a"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml",
+      "git_blob": "b31f5d4af5e521a95e772bb3132f756de0fe7910",
+      "sha256": "485042f1884c21cc76a2140edf53ab5e4e85432f8a4b6f81ffea8e6a2488aa6c"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml",
+      "git_blob": "3efe53afee265e4a4f7db49ae180af9a88c6da04",
+      "sha256": "52a66bf8ab5759534fd534611c8c5b6b099e807071e5fb717f5e4713721a5ef6"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-governance/templates/release-publication/release.yaml",
+      "git_blob": "46079d280fbced3756e471bf04364f64214aa2a2",
+      "sha256": "1dcdaf38538d750d0c57951dfe6e6dfa9e61207d52b84d329d39c4f9e6622155"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-init/templates/project-config.template.yaml",
+      "git_blob": "e38bfd2457d571ee0df26fe3f7b47cc1f43e7cb5",
+      "sha256": "e83d207632207a3e4ed64d7bb6b2c5ce07e1241f9d1fad5cc1c91c8a5a8619f4"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml",
+      "git_blob": "ef3d2f0232e05641a90b2f8e4c9585dcdff7eb79",
+      "sha256": "096a2b7bee31cc9f975e484f8badff2cb4635389be2d45aa2fc6f6f8723296b1"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml",
+      "git_blob": "ff0a806f97cc7d22732e31c6ae0e7973ff83b9cc",
+      "sha256": "bd3ca0d831e31f991ea4a7a1b4305928b9242a3d89785cdab18a204028145bbb"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.schema.yaml",
+      "git_blob": "73d7cf4ecd38beb0de707777bbb8f9443802250a",
+      "sha256": "762c19b07e927b8f0f2b04caaf5679ab478fd39d0cf02bf88d743b75d7b50697"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md",
+      "git_blob": "b3f37d75b17e6dd732f89f28ac48e42db41eb0cf",
+      "sha256": "97f69a92609d572be798072696ebdf9fa077ca7971901680799da83c930b1a54"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.schema.yaml",
+      "git_blob": "b0225e41ba31f4b31c96a676b13d9243a3c2e50b",
+      "sha256": "24cad8212923f57a2d422bb778bc83a6a78d53b069021d25b54f233744c7c39f"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml",
+      "git_blob": "ed2bb8ede65ff25d79fbeeefa36c4480b36824bf",
+      "sha256": "2fa87ccfaabaea0e42990b9fc5182ab41e51f07ea6629d8e715f5dc8059ae591"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml",
+      "git_blob": "bf4d39c439a96d1c034ab8107ff71e2dbadfb68b",
+      "sha256": "cf43a4e142d4798d4d2d398085d2eb74f0678e43473f90e13299f7ea752d24da"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml",
+      "git_blob": "b089927802053687ce9fba62c0904537fac8f955",
+      "sha256": "32a28c326aafabe7f62377bc33453c15bfe5c1e965a4b9a1e41eb49b4eddf383"
+    },
+    {
+      "path": ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
+      "git_blob": "2321ee71b80cdfc54680d65b150a8a3cabb7eb66",
+      "sha256": "6febea2213250a2340d2bb25738dc659ff5eb3e139a25551f06a520257ff458c"
+    },
+    {
+      "path": ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md",
+      "git_blob": "169e8ee3d58c8bda5b7c70227144916ddf2d3817",
+      "sha256": "93958e99a1232f5e3449e7da6f03389402bfc2d5e955127d3ff9657b80a87d45"
+    },
+    {
+      "path": ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml",
+      "git_blob": "b01d93ec4867201ba1c50de228a003c28b3e156e",
+      "sha256": "dd48542d958db1aab02482a161fd1ae41d4b5eded475f6d54297892d4a241a35"
+    },
+    {
+      "path": ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml",
+      "git_blob": "5f3bb22977fba18a12a83f0676e0b986ff1636c0",
+      "sha256": "c72aff7fc3cdf641ffa81172eff8b36a437b443196cabfc9b02dbc185c32ec44"
+    },
+    {
+      "path": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+      "git_blob": "0a2fc48e3d52797e50a4db54f76252029ffa578c",
+      "sha256": "277aefae6565ff6bbac1aa56aa880dab4ec786db5acee91ef5c52a080c5b11fe"
+    },
+    {
+      "path": ".ai/assets/templates/command-template.yaml",
+      "git_blob": "fce45b87293e6a8783625b37e497ddb5ffa3524d",
+      "sha256": "ff032e806fe8ed1529be0c0f4f8bd9a920a7ef5b928c4c8d7f70573e3469bb48"
+    },
+    {
+      "path": ".ai/assets/templates/prompt-package-template.yaml",
+      "git_blob": "b168055364924b8be25b891d2a6db196981175c2",
+      "sha256": "e243e8e9c620ee5567741490841c6f273b994c4f312c0246f0a03cb119c89efb"
+    },
+    {
+      "path": ".ai/distribution/schemas/files.schema.yaml",
+      "git_blob": "e599cd78839034ef12058f0f73d42e9e41680e4a",
+      "sha256": "3ac447f58c4b6646c294a8e231a94179d74d693098bce1aad125c8667a917672"
+    },
+    {
+      "path": ".ai/distribution/schemas/identity-registry.schema.yaml",
+      "git_blob": "304ca8da4ae29e22220834267891c063119e1c73",
+      "sha256": "ee703f7e6394dfa88a34f8b02395ff7903f609c6176ff6985259e20e920416a0"
+    },
+    {
+      "path": ".ai/distribution/schemas/migration.schema.yaml",
+      "git_blob": "f6337dcafedc2d94e06c3887a062efe537b57000",
+      "sha256": "ad0dbe5f038295e7205ebaf95021e6d04eb7362fcc5e38afa9d2f5350d822fa1"
+    },
+    {
+      "path": ".ai/distribution/schemas/package.schema.yaml",
+      "git_blob": "c185a56288e54635a7668825c82db518039e960c",
+      "sha256": "6aefc5731ad41f0f72383b4c1760b01030ea5223858f396d0c7273bc02f6220b"
+    },
+    {
+      "path": ".ai/distribution/schemas/selected-inputs.schema.yaml",
+      "git_blob": "0d9f083208c5b7dc4841f89bde0cc6268d55842e",
+      "sha256": "917bc25fb4225ff01692d3c2ea68cedf9440e094cdceb07ca7425cabb805e122"
+    },
+    {
+      "path": ".ai/distribution/schemas/source-dispositions.schema.yaml",
+      "git_blob": "f7cf1d68d830119e0072cf4e0cc245a4304a92d8",
+      "sha256": "c0895d0c6fa1fb80abb8df52c3740b00790da71dbaad7885ca9861c15b4b48a1"
+    },
+    {
+      "path": ".ai/distribution/schemas/v015-package-validation-terminal.schema.yaml",
+      "git_blob": "d1fb045fef64aedd33b9794f0d6e324a0b6acbf1",
+      "sha256": "03106d7ae894732d3835803b9380e8927fb8bafb28f16959f451e5a955f4b57c"
+    },
+    {
+      "path": ".ai/evaluation/schemas/corpus-manifest.schema.yaml",
+      "git_blob": "027df65edcdacc65fff6052bff1493d39b0bd5f6",
+      "sha256": "6c5ed5359314c4cfae410a6751ddac55966e61b5197d32ed855108b2b5cd7aff"
+    },
+    {
+      "path": ".ai/evaluation/schemas/evaluation-result.schema.yaml",
+      "git_blob": "2e71c46ef0b83c76243af7ffa7e69cb3f265591e",
+      "sha256": "638c8852252c24c5379f3cc3bc2bbd92950c501a145f19a4f9ca8c9e4da1ec82"
+    },
+    {
+      "path": ".ai/evaluation/schemas/incident-fault-injection-result.schema.yaml",
+      "git_blob": "21925a8d44881bec4a2d3f047783f75ca1b915b5",
+      "sha256": "c0008708f5c373a49c4b3eb09acde95596bb2aaeb621f5f607608c2bdec504a9"
+    },
+    {
+      "path": ".ai/evaluation/schemas/incident-mutant-manifest.schema.yaml",
+      "git_blob": "67bed55b9adde04b63c93ebcea6d4a90e7cf1bd0",
+      "sha256": "1710152a8a0d6712537ae935bdd78ec75db3486dcbb46afb2e123f52facf0532"
+    },
+    {
+      "path": ".ai/scripts/ai_context_package_apply.py",
+      "git_blob": "a6ac812a17deb634be6e3a2fe0884152170c7856",
+      "sha256": "57c26b2127c663696db85a3e36315ba96e34ea2f30b4aba106e3b9065116747c"
+    },
+    {
+      "path": ".ai/scripts/artifact_lifecycle.py",
+      "git_blob": "13459f6829fbf7eec89b8f2179067434266c6d00",
+      "sha256": "84f01dde4504b413f56558f1bb452221c2697e53c84ac5e63c0c61ee329c0293"
+    },
+    {
+      "path": ".ai/scripts/python-entrypoints.json",
+      "git_blob": "70a35fb21e73360e1efb6bcb1ea88a6544630fe6",
+      "sha256": "bb0cf97d600cafdebb65295bc529dcce56b1b82c0590ba615f2995ffd4ec649a"
+    },
+    {
+      "path": ".ai/scripts/shell-assets.yaml",
+      "git_blob": "ffacb00a09edf05e2cac69dab35e2bf933ad0fb7",
+      "sha256": "0544cef2ff6a9fcdaadb1d18930cf690157e79053a02fdd8e0b64c398f0a4b13"
+    },
+    {
+      "path": ".ai/scripts/test-fixture-classifications.json",
+      "git_blob": "5c5f47f92c33bc0f1bb2e499dbb8db76e87b422a",
+      "sha256": "21c1f04348f3a2bc316705c60004b39602df02f9da52b0fef0014f212f64b053"
+    },
+    {
+      "path": ".ai/scripts/validation-evidence.py",
+      "git_blob": "316dd49e14ee8f114365426e7f672988bf98c2f1",
+      "sha256": "7b6301d388d5694aa8e0189bce55c13c8e92bad5c67d4b20a21cc60783a05c28"
+    },
+    {
+      "path": ".ai/scripts/validation-profile-registry.sh",
+      "git_blob": "80a5159bfd09bdc8ec8d19f9825c0d8a00334eb5",
+      "sha256": "e2bb5ea0ef6c0768e2e551580a1bb377172d7fb76e18553a9a364f0505e5abd0"
+    },
+    {
+      "path": ".dev/backlog/provider-mappings/github-issues.schema.yaml",
+      "git_blob": "d235bb5e85d3c0338f8743da3ca32759df4007c5",
+      "sha256": "5b727c1f315be25a204e38956e9d7143cb92480d4a59e4b59c2fe43cee1d22bf"
+    },
+    {
+      "path": ".dev/requirement/REQUIREMENT-GUIDE.MD",
+      "git_blob": "7406fe4df986e5669a5e78141a432db45a9be906",
+      "sha256": "6766e062ec8c76e0b43bb4cc2476ed383457d6371b84d5595e133c730004611c"
+    },
+    {
+      "path": ".dev/specs/SPEC-GUIDE.MD",
+      "git_blob": "e071093d607fb884d893d9d1cfaf92df69cbf7d4",
+      "sha256": "93ab55d471163999debdc7fc23cee33e986c1f94c3e411ef78ad4394ad859722"
+    },
+    {
+      "path": ".dev/specs/tests/TEST-SPEC-GUIDE.MD",
+      "git_blob": "859a59f2d05b43aaff25efef10023af2754fcb0b",
+      "sha256": "33bc289e1940c1e4e6b398f445072923afddd328cb656cfbbad9a50798708ccb"
+    },
+    {
+      "path": ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml",
+      "git_blob": "67b04f8750ef87d1ff69bad8d2354024affc61b1",
+      "sha256": "86962abb04fd3024125a7e3ed6121309e04c75a1f2c9d8b25c8799dca082bf8c"
+    },
+    {
+      "path": ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml",
+      "git_blob": "96623d63cf1d356b7354e83785e87510549d59b3",
+      "sha256": "d9cdf20b2b356ce6ed8937ba383381dabb8969f66e00f987a8258e6367445cdf"
+    },
+    {
+      "path": ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
+      "git_blob": "6dbf587ef853f18683c88a1e6d680d721dbdf200",
+      "sha256": "9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080"
+    },
+    {
+      "path": ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      "git_blob": "c79dbe3f2f380c06fa57b2b6bfe347d264a00a71",
+      "sha256": "a933d39f4f2f082c1bffc43bb8ec8f8b6d7686ef9bd9597f7c90937d8f1c60ea"
+    },
+    {
+      "path": ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+      "git_blob": "f93b2358c80eba8c73db22233b8ea068094cc1f7",
+      "sha256": "164250c78a038a46eeb670311577f00b54672a8cc0f2e2871455c7485b76f118"
+    },
+    {
+      "path": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      "git_blob": "5d0757539ba2bf3dd9a64194dd4da20ee811ec0b",
+      "sha256": "161046ba9f3524e7b702b6743056a5f9fd66076337a06230f97e96072e4e1bb5"
+    },
+    {
+      "path": ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml",
+      "git_blob": "fba3635a4659ad7e927962de5dc6f992d0b9d66a",
+      "sha256": "e08d4f6cee0622f70e9a272a545d898fbc2a1a7b7df3f3f7b56405dbaa6e9dde"
+    },
+    {
+      "path": "AGENTS.md",
+      "git_blob": "9399baa98ea1c69ffbabbf380ad479cc8857bd7f",
+      "sha256": "5d276f6889d9ce4ea34ddb14d6490d5306b13c39fccd42f0017e77d01cac087f"
+    }
+  ],
+  "groups": {
+    "F01": {
+      "kinds": [
+        "acceptance-evidence-ledger",
+        "agent-execution-classification",
+        "agent-execution-packet",
+        "agent-retry-decision",
+        "code-graph-freshness",
+        "independent-review-input",
+        "terminal-command-execution",
+        "workflow-retry-authorization",
+        "worktree-snapshot-lease"
+      ],
+      "category": "generated-observation-or-explicit-authority",
+      "disposition": "preserve-unsupported",
+      "proposed_owner": "P7 guardrail/evidence owner; P4 consumes only selected interface",
+      "reader": "Frozen legacy owner and registered readers; new ordinary skills consume explicit task evidence, not these packets",
+      "writer": "No new P5 writer; human classification/authorization and actual runtime observations cannot be generated from a template",
+      "validator": "P7 selects retained semantic checks; current validators in each observed row are not executed",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F02": {
+      "kinds": [
+        "cli-execution-routing-local"
+      ],
+      "category": "operator-local-config",
+      "disposition": "optional-deferred",
+      "proposed_owner": "P8 runtime/CLI owner",
+      "reader": "Explicit local configuration only; no discovery or automatic selection",
+      "writer": "Operator-authorized route binding only; no automatic creation",
+      "validator": "Future runtime owner; preserve legacy schema as historical definition",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F03": {
+      "kinds": [
+        "provider-neutral-capability-registry",
+        "provider-projection-registry",
+        "role-execution-bindings"
+      ],
+      "category": "source-tooling",
+      "disposition": "source-only",
+      "proposed_owner": "Source runtime maintainer / P8",
+      "reader": "Source-only selected bindings; never static presence as invocation evidence",
+      "writer": "Source owner concrete edit; retain observed bounded producers only in source",
+      "validator": "Source owner / P7 selects checks; no mandatory downstream registry",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F04": {
+      "kinds": [
+        "validation-dependency-observation-report",
+        "validation-dependency-observation-request",
+        "content-addressed-validation-audit",
+        "hosted-required-contexts",
+        "independent-review-subject",
+        "subject-evidence-rebind",
+        "subject-identity",
+        "subject-manifest",
+        "validation-freeze",
+        "validation-gate-classification",
+        "validation-reuse-receipt",
+        "validation-evidence-cache-sidecars"
+      ],
+      "category": "generated-observation-or-provider-fact",
+      "disposition": "preserve-unsupported",
+      "proposed_owner": "P7 validation/evidence owner",
+      "reader": "Frozen legacy owner reader; selected future consumer only after its contract is designed",
+      "writer": "Actual observer/validator only; hosted contexts from provider; human audit conclusions remain human/agent judgments",
+      "validator": "P7 redesigned checks; no cache or declaration satisfies current execution",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "Preserve historical evidence. Disposable cache may be regenerated only from real later execution; never converted into historical proof."
+    },
+    "F05": {
+      "kinds": [
+        "customizations-ledger",
+        "effective-rule-packet",
+        "effective-rule-state"
+      ],
+      "category": "project-context-maintenance",
+      "disposition": "optional-deferred",
+      "proposed_owner": "P5-M2 optional context governance",
+      "reader": "Optional maintenance may inspect pinned legacy records; ordinary selected skills require no effective-rule ledger",
+      "writer": "Future bounded maintenance tools only after decision semantics selected; adoption decisions remain external inputs",
+      "validator": "Same optional format owner, with P7 checks; no universal mandatory policy engine",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F06": {
+      "kinds": [
+        "target-technology-selection",
+        "target-work-item-binding-selection",
+        "project-config",
+        "target-provenance"
+      ],
+      "category": "project-config-and-installation-history",
+      "disposition": "replaced-preserve",
+      "proposed_owner": "P6 install/update owner; optional context owner for semantic decisions",
+      "reader": "Legacy reader for legacy envelope; new src config reader only for exact config_version 1/2",
+      "writer": "Project owner writes selected config; P6 future bounded installer owns installation identity, not target truth",
+      "validator": "P6 config/installation format owners and P7; legacy YAML is not new JSON by renaming",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No automatic legacy project-config/provenance conversion. Preserve; design explicit adoption separately. M01 covers only existing src JSON config 1 -> 2, not these legacy records."
+    },
+    "F07": {
+      "kinds": [
+        "delegation-run-record",
+        "multi-hop-checkpoint",
+        "multi-hop-outer-journal",
+        "multi-hop-preparation-failure",
+        "multi-hop-prepared-hop",
+        "multi-hop-resolver-result",
+        "multi-hop-route-intent",
+        "upgrade-remediation-decision",
+        "upgrade-remediation-packet",
+        "upgrade-route-matrix",
+        "package-apply-plan",
+        "package-transaction-journal",
+        "package-transaction-progress",
+        "upgrade-execution-receipts"
+      ],
+      "category": "historical-upgrade-transaction",
+      "disposition": "retired-preserve",
+      "proposed_owner": "P6 transition owner; historical legacy upgrader owner",
+      "reader": "Frozen legacy reader/record inspection for support; no new package promises to resume legacy transactions",
+      "writer": "No new writer for legacy history; preserve existing recovery evidence and require old owner for any outstanding transaction",
+      "validator": "P6 selects new update contract and P7 checks; no old multi-hop matrix rebuild",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "Unsupported cross-engine resume/conversion. Complete/recover any active old transaction under its original owner before new P6 adoption; never rewrite receipts."
+    },
+    "F08": {
+      "kinds": [
+        "execution-observations",
+        "execution-prepare-request",
+        "external-task-completion",
+        "external-task-dispatch",
+        "external-task-validation-receipt",
+        "ai-context-maintenance-workflow",
+        "ai-context-remediation-report",
+        "workflow-handoff-checkpoint"
+      ],
+      "category": "project-workflow-and-execution-observation",
+      "disposition": "replaced-preserve",
+      "proposed_owner": "P4 #341 workflow owner; optional context owner supplies domain prose",
+      "reader": "P4 future explicit selected workflow reader; legacy files remain readable by frozen owner",
+      "writer": "P4 mechanical writer owns IDs/references only; actual execution facts and decisions remain supplied/observed",
+      "validator": "P4 schema/lifecycle owner + P7; no claimed v1 migration before P4 contract selection",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "Preserve old workflow/report/checkpoint IDs. No mass migration or P5 schema proposal; future bounded import needs P4 exact input/output contract."
+    },
+    "F09": {
+      "kinds": [
+        "example-evidence-manifest"
+      ],
+      "category": "technology-example-observation",
+      "disposition": "optional-deferred",
+      "proposed_owner": "Selected dotnet extension owner / P7",
+      "reader": "Explicit selected example consumers only",
+      "writer": "Example author may record evidence references; execution facts require actual commands",
+      "validator": "Dotnet example owner/P7, no cross-technology requirement",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F10": {
+      "kinds": [
+        "engineering-guardrails-provider-compatibility-receipt",
+        "engineering-guardrails-provider-contract",
+        "engineering-guardrails-provider-execution-receipt",
+        "engineering-guardrails-provider-readiness-receipt",
+        "engineering-guardrails-provider-selection"
+      ],
+      "category": "external-provider-contract-or-observation",
+      "disposition": "source-only",
+      "proposed_owner": "Source provider-integration owner; external provider owns receipts",
+      "reader": "Original provider contract consumers only; no invented local schema authority",
+      "writer": "Provider produces actual receipts; source owner selects provider/contract with explicit authority",
+      "validator": "Provider contract checks / P7; no mechanical writer for external success",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F11": {
+      "kinds": [
+        "package-files-inventory",
+        "package-identity-metadata",
+        "source-identity-registry",
+        "package-migration-manifest",
+        "package-manifest",
+        "package-selected-input",
+        "release-package-input",
+        "source-dispositions-registry",
+        "v015-package-validation-terminal",
+        "release-records-and-notes"
+      ],
+      "category": "source-distribution-or-release-history",
+      "disposition": "source-only",
+      "proposed_owner": "Source distribution/release maintainer; P6 owns new install/update data",
+      "reader": "Frozen source readers for old formats; new development outputs have separate identities below",
+      "writer": "Actual source build/release tools and authorized maintainer; no P5 writer or portable release skill",
+      "validator": "P7 selected source gates; no schema success/publication inferred",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "Preserve releases and archive metadata unchanged. New src selection/files/build records are not conversions or evidence of old release compatibility."
+    },
+    "F12": {
+      "kinds": [
+        "ai-behavior-corpus-manifest",
+        "ai-behavior-case-result",
+        "ai-behavior-evaluation-result",
+        "incident-fault-injection-result",
+        "incident-mutant-manifest"
+      ],
+      "category": "source-evaluation-observation",
+      "disposition": "source-only",
+      "proposed_owner": "P7 evaluation owner",
+      "reader": "Selected source evaluation readers only",
+      "writer": "Corpus/mutant definitions by source author; result records only from actual evaluation",
+      "validator": "P7 redesigned evaluation checks",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F13": {
+      "kinds": [
+        "github-backlog-migration-receipt",
+        "framework-source-effective-rule-evidence",
+        "governance-term-routes",
+        "routing-rule-ownership-catalogs",
+        "shell-asset-lifecycle",
+        "shell-asset-registry",
+        "python-entrypoint-registry",
+        "fixture-classification-registry",
+        "validation-profile-registry",
+        "source-git-provider-policy"
+      ],
+      "category": "source-policy-tooling-or-history",
+      "disposition": "source-only",
+      "proposed_owner": "Source governance / P7; fixture evaluations remain #274/#275",
+      "reader": "Source tools at pinned models; source ownership never becomes portable selection requirement",
+      "writer": "Concrete reviewed source edits; actual migration/effective-rule observations remain evidence-bound",
+      "validator": "Source format owners/P7; executable Bash registry requires code ownership, not generic data editor",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F14": {
+      "kinds": [
+        "canonical-dynamic-role-metadata",
+        "canonical-skill-metadata",
+        "command-and-prompt-creation-templates",
+        "artifact-lifecycle-routing-registry"
+      ],
+      "category": "legacy-framework-metadata",
+      "disposition": "replaced-preserve",
+      "proposed_owner": "P5 package authors; coordinator distribution owner",
+      "reader": "Frozen legacy readers; new package loader explicitly reads metadata v1/v2 and proposed v3 only after implementation",
+      "writer": "Package author owns metadata; no generic runtime registry; legacy templates/role IDs retained as history",
+      "validator": "Distribution contract owner/P7; no declaration creates capability availability",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No universal skill.yaml -> skill-package.yaml converter: extracting useful meaning and removing hidden paths requires per-skill authoring."
+    },
+    "F15": {
+      "kinds": [
+        "audit-and-verification-assessment"
+      ],
+      "category": "project-optional-assessment",
+      "disposition": "optional-deferred",
+      "proposed_owner": "P5-M1 assessment authoring owner; #316 overlap retained",
+      "reader": "Legacy assessment reader for legacy records; optional future reader requires selected exact format",
+      "writer": "Human/agent owns conclusions; bounded authoring tool may own locator/ID/index mechanics only",
+      "validator": "Optional assessment format owner/P7; never auto-finalize unperformed verification",
+      "versions": "Preserve original bytes and source model identities at the pinned subject; no inferred new schema version, version range or new portable-reader compatibility.",
+      "migration": "No conversion edge. Preserve history; future adoption requires a selected explicit owner/format decision."
+    },
+    "F16": {
+      "kinds": [
+        "requirement-markdown",
+        "production-entity-adapter-spec",
+        "formal-test-spec",
+        "cbf-swf-problem-frame"
+      ],
+      "category": "project-artifact",
+      "disposition": "portable-selectable",
+      "proposed_owner": "P5-A1 requirement/spec owners; P5-A2 problem-frame owner",
+      "reader": "Owning instruction reads target-selected template; structured CBF/SWF consumers need exact selected schema contract",
+      "writer": "Semantic author drafts from real sources; future machine-owned persistence requires real useful family tool",
+      "validator": "Prose: semantic review, no invented schema. Structured frame: named future P5-A2 validator and target compliance are separate",
+      "versions": "Retain plain prose without compulsory format version. Legacy CBF/SWF is frozen to referenced playbook/templates; future machine version selection belongs to P5-A2.",
+      "migration": "Preserve existing prose and frame IDs/source bindings. No whole-project rewrite or automatic compliance upgrade."
+    },
+    "F17": {
+      "kinds": [
+        "provider-runtime-native-formats"
+      ],
+      "category": "external-runtime-format",
+      "disposition": "external-preserve",
+      "proposed_owner": "Provider/runtime format owner; P6 adapter author",
+      "reader": "Provider parser and supported adapter input only",
+      "writer": "Provider/operator or explicit generated projection; no universal local native-format writer",
+      "validator": "Provider contract and P7 adapter checks, not a competing schema",
+      "versions": "Version authority remains provider; generated adapter version is separately owned.",
+      "migration": "Unsupported generic conversion; preserve private settings. Project-owned AGENTS content is not overwritten."
+    }
+  },
+  "records": [
+    {
+      "kind": "acceptance-evidence-ledger",
+      "source_ordinal": 1,
+      "group": "F01",
+      "observed": {
+        "kind": "acceptance-evidence-ledger",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::build_evidence_ledger"
+        ],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_evidence"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Current 1.0 ledger from explicit acceptance/outcome fields and existing local evidence/receipt files; derives byte digests, receipt copy, report projection and seal. Does not issue receipts or establish execution truth.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Assemble actual evidence bindings and human parity; never synthesize passing evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "agent-execution-classification",
+      "source_ordinal": 2,
+      "group": "F01",
+      "observed": {
+        "kind": "agent-execution-classification",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::classify_execution"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Supply actual execution facts; classifier derives tier, not facts."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "agent-execution-packet",
+      "source_ordinal": 3,
+      "group": "F01",
+      "observed": {
+        "kind": "agent-execution-packet",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::prepare"
+        ],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_packet"
+        ],
+        "readable": "Packet 1.0 historical, 1.1 current.",
+        "writable": "Packet 1.1 through execution-artifacts prepare.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Prepare a fresh current packet; historical 1.0 reading does not admit a fresh packet."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "agent-retry-decision",
+      "source_ordinal": 4,
+      "group": "F01",
+      "observed": {
+        "kind": "agent-retry-decision",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_retry"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Retain failure and material state change; obtain required explicit retry authorization."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "code-graph-freshness",
+      "source_ordinal": 5,
+      "group": "F01",
+      "observed": {
+        "kind": "code-graph-freshness",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_graph"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Observe current graph SHA and coverage or record tracked-file fallback."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "independent-review-input",
+      "source_ordinal": 6,
+      "group": "F01",
+      "observed": {
+        "kind": "independent-review-input",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::build_review_input"
+        ],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_review_input"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Current 1.0 review input from explicit classification, criteria, repository identity, base commit and authority paths; derives current Git trees, subject digest and authority byte digests. Requires expected clean HEAD.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Bind actual immutable Git subject, criteria and authority before dispatch."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "terminal-command-execution",
+      "source_ordinal": 7,
+      "group": "F01",
+      "observed": {
+        "kind": "terminal-command-execution",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_evidence"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Obtain an actual command execution receipt and bind its persisted bytes."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "workflow-retry-authorization",
+      "source_ordinal": 8,
+      "group": "F01",
+      "observed": {
+        "kind": "workflow-retry-authorization",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::load_workflow_authorization"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Obtain explicit owner/workflow retry decision."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "worktree-snapshot-lease",
+      "source_ordinal": 9,
+      "group": "F01",
+      "observed": {
+        "kind": "worktree-snapshot-lease",
+        "baseline_refs": [
+          "E01"
+        ],
+        "models": [
+          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_lease"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Lease authoring remains manual under the guardrail owner. Lock acquisition exists, but acquire/release and crash recovery require a coordinated custody operation; an input serializer alone must not claim a live or released lease.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Supply observed snapshot and holder, then acquire and explicitly release the lock. Lock creation does not author the lease."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F01"
+    },
+    {
+      "kind": "cli-execution-routing-local",
+      "source_ordinal": 10,
+      "group": "F02",
+      "observed": {
+        "kind": "cli-execution-routing-local",
+        "baseline_refs": [
+          "E02"
+        ],
+        "models": [
+          ".ai/assets/shared/cli-execution-routing.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_cli_routing.py",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/ai_context_cli_routing.py::validate_cli_execution_routing"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Optional ignored local configuration remains an explicit owner persistence operation after successful recovery and disclosure of exact path, fields and create/merge/replace action. No real personal binding is selected or written by this tooling follow-up.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Explicit opt-in owner configuration only; ignored, untracked and secret-free."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F02"
+    },
+    {
+      "kind": "provider-neutral-capability-registry",
+      "source_ordinal": 11,
+      "group": "F03",
+      "observed": {
+        "kind": "provider-neutral-capability-registry",
+        "baseline_refs": [
+          "E03"
+        ],
+        "models": [
+          ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_sag003_capability_registry"
+        ],
+        "readable": "Current schema_version 1.0.",
+        "writable": "catalog.update on existing records and catalog-declared editable fields only.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "No evidenced historical edge; preserve originals and reconcile through the owning catalog."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Closed owner mappings reject unknown fields. No identity, owner-binding, native profile, availability or invocation changes. Provider profiles may be absent in portable targets.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F03"
+    },
+    {
+      "kind": "provider-projection-registry",
+      "source_ordinal": 12,
+      "group": "F03",
+      "observed": {
+        "kind": "provider-projection-registry",
+        "baseline_refs": [
+          "E04"
+        ],
+        "models": [
+          ".ai/assets/shared/provider-projection-registry.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_sag003_provider_projection_registry"
+        ],
+        "readable": "Current schema_version 1.0.",
+        "writable": "catalog.update on existing records and catalog-declared editable fields only.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "No evidenced historical edge; preserve originals and reconcile through the owning catalog."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Closed owner mappings reject unknown fields. No identity, owner-binding, native profile, availability or invocation changes. Provider profiles may be absent in portable targets.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F03"
+    },
+    {
+      "kind": "validation-dependency-observation-report",
+      "source_ordinal": 13,
+      "group": "F04",
+      "observed": {
+        "kind": "validation-dependency-observation-report",
+        "baseline_refs": [
+          "E05"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-dependency-observation.schema.yaml"
+        ],
+        "owner": ".ai/scripts/observe-validation-dependencies.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/observe-validation-dependencies.py::observe_request",
+          ".ai/scripts/observe-validation-dependencies.py::write_report"
+        ],
+        "validators": [
+          ".ai/scripts/observe-validation-dependencies.py::observe_request"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Run bounded observation and retain partial or unsupported coverage."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Producer self-checks are not an independent report validator.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "validation-dependency-observation-request",
+      "source_ordinal": 14,
+      "group": "F04",
+      "observed": {
+        "kind": "validation-dependency-observation-request",
+        "baseline_refs": [
+          "E05"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-dependency-observation.schema.yaml"
+        ],
+        "owner": ".ai/scripts/observe-validation-dependencies.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::build_dependency_request"
+        ],
+        "validators": [
+          ".ai/scripts/observe-validation-dependencies.py::validate_request"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Current request/v1 with explicit validator, supported harness, callable, argv and five dependency dimensions; derives subject from pinned clean HEAD and validates local references. Does not import or execute the selected callable.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Supply explicit harness, entrypoint and dependency request."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "content-addressed-validation-audit",
+      "source_ordinal": 15,
+      "group": "F04",
+      "observed": {
+        "kind": "content-addressed-validation-audit",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-validation-lifecycle.py::validate_audit"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Independent reviewer records actual dispositions and evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "hosted-required-contexts",
+      "source_ordinal": 16,
+      "group": "F04",
+      "observed": {
+        "kind": "hosted-required-contexts",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-validation-lifecycle.py::validate_required_contexts"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Refresh live required provider contexts for current head."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "independent-review-subject",
+      "source_ordinal": 17,
+      "group": "F04",
+      "observed": {
+        "kind": "independent-review-subject",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::build_review_subject"
+        ],
+        "validators": [
+          ".ai/scripts/validate-agent-execution-guardrails.py::validate_review_input",
+          ".ai/scripts/validate-validation-lifecycle.py::validate_audit"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Canonical independent-review-subject/v1 is derived as part of review-input authoring from existing commit trees and explicit repository identity; no review or admission is inferred.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Derive immutable Git tree identity and bind review authority."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "subject-evidence-rebind",
+      "source_ordinal": 18,
+      "group": "F04",
+      "observed": {
+        "kind": "subject-evidence-rebind",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validation_subject.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validation_subject.py::build_rebind_receipt"
+        ],
+        "validators": [
+          ".ai/scripts/validation_subject.py::validate_rebind_receipt"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Prove eligible content, dependency and authority equivalence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "subject-identity",
+      "source_ordinal": 19,
+      "group": "F04",
+      "observed": {
+        "kind": "subject-identity",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validation_subject.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validation_subject.py::build_subject_manifest"
+        ],
+        "validators": [
+          ".ai/scripts/validation_subject.py::validate_subject_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Derive identity with its manifest; no competing independent identity."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "subject-manifest",
+      "source_ordinal": 20,
+      "group": "F04",
+      "observed": {
+        "kind": "subject-manifest",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validation_subject.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validation_subject.py::build_subject_manifest"
+        ],
+        "validators": [
+          ".ai/scripts/validation_subject.py::validate_subject_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Build from observed tracked closure and invocation authority."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "validation-freeze",
+      "source_ordinal": 21,
+      "group": "F04",
+      "observed": {
+        "kind": "validation-freeze",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-validation-lifecycle.py::validate_freeze"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Freeze sequencing and terminal release require observed mutation completion, workflow/declaration state and custody; retain the explicit owner record and validator instead of defaulting prerequisite booleans.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Observe freeze state, invalidate content drift and release explicitly."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "validation-gate-classification",
+      "source_ordinal": 22,
+      "group": "F04",
+      "observed": {
+        "kind": "validation-gate-classification",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validation_subject.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validation_subject.py::load_classification_authority"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Existing group or external gate reason only through validation-gate-groups / validation-external-gates selectors. Gate identity, membership, sensitivities, reuse eligibility, profiles and environment contracts are protected.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Preserve exact gate coverage when editing canonical classification authority."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "validation-reuse-receipt",
+      "source_ordinal": 23,
+      "group": "F04",
+      "observed": {
+        "kind": "validation-reuse-receipt",
+        "baseline_refs": [
+          "E06"
+        ],
+        "models": [
+          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-validation-lifecycle.py::validate_reuse_receipt"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Reuse receipt requires complete dependency, runtime, environment, original execution and fresh-gate proof. A serializer cannot resolve those proofs; follow the existing validation lifecycle owner without expanding reuse eligibility.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Supply complete dependency and authority proof with original evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "customizations-ledger",
+      "source_ordinal": 24,
+      "group": "F05",
+      "observed": {
+        "kind": "customizations-ledger",
+        "baseline_refs": [
+          "E07"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_target_provenance.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_target_provenance.py::build_initialization_documents"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_target_provenance.py::validate_customizations"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Initialize or reconcile through provenance and explicit target decisions."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Initializer covers initial ledger only; subsequent arbitrary ledger editing remains semantic owner work.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F05"
+    },
+    {
+      "kind": "effective-rule-packet",
+      "source_ordinal": 25,
+      "group": "F05",
+      "observed": {
+        "kind": "effective-rule-packet",
+        "baseline_refs": [
+          "E08"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_effective_rules.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_effective_rules.py::build_packet_candidate",
+          ".ai/scripts/ai_context_effective_rules.py::build_effective_state_and_packets"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_effective_rules.py::_validate_packet"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Resolve from adopted authority; a candidate does not adopt target truth."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F05"
+    },
+    {
+      "kind": "effective-rule-state",
+      "source_ordinal": 26,
+      "group": "F05",
+      "observed": {
+        "kind": "effective-rule-state",
+        "baseline_refs": [
+          "E09"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_effective_rules.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_effective_rules.py::build_effective_state_and_packets",
+          ".ai/scripts/ai_context_effective_rules.py::write_effective_state_and_packets"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_effective_rules.py::validate_effective_rule_state"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Rebuild/adopt through target lifecycle preserving customizations."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F05"
+    },
+    {
+      "kind": "target-technology-selection",
+      "source_ordinal": 27,
+      "group": "F06",
+      "observed": {
+        "kind": "target-technology-selection",
+        "baseline_refs": [
+          "E10"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::target_selection"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_target_selection_records"
+        ],
+        "readable": "Unversioned nested selection; enclosing project-config schemaVersion is integer 1; definition version 1.0.",
+        "writable": "Existing project-config via target.technology or target.work-binding; preserve target extensions and unresolved values.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Only explicit caller target facts and decisions; never initialize or adopt implicitly."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F06"
+    },
+    {
+      "kind": "target-work-item-binding-selection",
+      "source_ordinal": 28,
+      "group": "F06",
+      "observed": {
+        "kind": "target-work-item-binding-selection",
+        "baseline_refs": [
+          "E11"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::target_selection"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_target_selection_records"
+        ],
+        "readable": "Unversioned nested selection; enclosing project-config schemaVersion is integer 1; definition version 1.0.",
+        "writable": "Existing project-config via target.technology or target.work-binding; preserve target extensions and unresolved values.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Only explicit caller target facts and decisions; never initialize or adopt implicitly."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F06"
+    },
+    {
+      "kind": "delegation-run-record",
+      "source_ordinal": 29,
+      "group": "F07",
+      "observed": {
+        "kind": "delegation-run-record",
+        "baseline_refs": [
+          "E12"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_upg004_delegation_run_record"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Record observed invocation or unavailable/not-applicable state."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "role-execution-bindings",
+      "source_ordinal": 30,
+      "group": "F03",
+      "observed": {
+        "kind": "role-execution-bindings",
+        "baseline_refs": [
+          "E13"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_sag003_upgrader_role_bindings"
+        ],
+        "readable": "Current schema_version 1.0.",
+        "writable": "catalog.update on existing records and catalog-declared editable fields only.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "No evidenced historical edge; preserve originals and reconcile through the owning catalog."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Closed owner mappings reject unknown fields. No identity, owner-binding, native profile, availability or invocation changes. Provider profiles may be absent in portable targets.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F03"
+    },
+    {
+      "kind": "multi-hop-checkpoint",
+      "source_ordinal": 31,
+      "group": "F07",
+      "observed": {
+        "kind": "multi-hop-checkpoint",
+        "baseline_refs": [
+          "E14"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_multi_hop_upgrade.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::finalize_hop"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_checkpoint_matches_active"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Use owning multi-hop transaction lifecycle; preserve sealed routes, actual failures and completed checkpoints."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "multi-hop-outer-journal",
+      "source_ordinal": 32,
+      "group": "F07",
+      "observed": {
+        "kind": "multi-hop-outer-journal",
+        "baseline_refs": [
+          "E14"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_multi_hop_upgrade.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::begin_multi_hop_upgrade",
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_persist_route_journal"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_journal_fields_valid",
+          ".ai/scripts/ai_context_target_provenance.py::validate_multi_hop_route_transactions"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use owning multi-hop transaction lifecycle; preserve sealed routes, actual failures and completed checkpoints."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "multi-hop-preparation-failure",
+      "source_ordinal": 33,
+      "group": "F07",
+      "observed": {
+        "kind": "multi-hop-preparation-failure",
+        "baseline_refs": [
+          "E14"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_multi_hop_upgrade.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_preserve_failed_preparation"
+        ],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Use owning multi-hop transaction lifecycle; preserve sealed routes, actual failures and completed checkpoints."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "multi-hop-prepared-hop",
+      "source_ordinal": 34,
+      "group": "F07",
+      "observed": {
+        "kind": "multi-hop-prepared-hop",
+        "baseline_refs": [
+          "E14"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_multi_hop_upgrade.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::prepare_next_hop"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_validate_prepared_hop"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use owning multi-hop transaction lifecycle; preserve sealed routes, actual failures and completed checkpoints."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "multi-hop-resolver-result",
+      "source_ordinal": 35,
+      "group": "F07",
+      "observed": {
+        "kind": "multi-hop-resolver-result",
+        "baseline_refs": [
+          "E14"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_multi_hop_upgrade.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::begin_multi_hop_upgrade"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_load_route"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use owning multi-hop transaction lifecycle; preserve sealed routes, actual failures and completed checkpoints."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "multi-hop-route-intent",
+      "source_ordinal": 36,
+      "group": "F07",
+      "observed": {
+        "kind": "multi-hop-route-intent",
+        "baseline_refs": [
+          "E14"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_multi_hop_upgrade.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::begin_multi_hop_upgrade"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_multi_hop_upgrade.py::_load_route"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use owning multi-hop transaction lifecycle; preserve sealed routes, actual failures and completed checkpoints."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "upgrade-remediation-decision",
+      "source_ordinal": 37,
+      "group": "F07",
+      "observed": {
+        "kind": "upgrade-remediation-decision",
+        "baseline_refs": [
+          "E15"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_package_apply.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/ai_context_package_apply.py::validate_upgrade_remediation_decision"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Owner supplies sealed approval/rejection bound to actual packet."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "upgrade-remediation-packet",
+      "source_ordinal": 38,
+      "group": "F07",
+      "observed": {
+        "kind": "upgrade-remediation-packet",
+        "baseline_refs": [
+          "E16"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_package_apply.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package_apply.py::build_upgrade_remediation_packet"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_package_apply.py::validate_upgrade_remediation_artifacts"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Reprepare from bound inputs; changed packet invalidates its prior decision."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "upgrade-route-matrix",
+      "source_ordinal": 39,
+      "group": "F07",
+      "observed": {
+        "kind": "upgrade-route-matrix",
+        "baseline_refs": [
+          "E17"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_upgrade_routes.py",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/ai_context_upgrade_routes.py::validate_matrix",
+          ".ai/scripts/ai_context_upgrade_routes.py::load_route_matrix"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Current 1.1 routes require selected retained origins, cutovers, deprecations and real package/execution evidence. Author via the upgrade owner; legacy 1.0 stays parse-only until explicit reconciliation. No route choices or proof are generated.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Legacy 1.0 is parse-only and reconciliation-required; current 1.1 needs real edge proof."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "execution-observations",
+      "source_ordinal": 40,
+      "group": "F08",
+      "observed": {
+        "kind": "execution-observations",
+        "baseline_refs": [
+          "E18"
+        ],
+        "models": [
+          ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
+        ],
+        "owner": ".ai/scripts/execution-artifacts.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/execution-artifacts.py::finalize"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Supply actual observations; finalization does not execute the task."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "execution-prepare-request",
+      "source_ordinal": 41,
+      "group": "F08",
+      "observed": {
+        "kind": "execution-prepare-request",
+        "baseline_refs": [
+          "E18"
+        ],
+        "models": [
+          ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
+        ],
+        "owner": ".ai/scripts/execution-artifacts.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::build_prepare_request"
+        ],
+        "validators": [
+          ".ai/scripts/execution-artifacts.py::prepare"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Current 1.0 request from explicit semantic fields and expected clean HEAD; supplies record constants and validates shape, Git/cwd and selected review input. Packet/dispatch preparation and execution remain separate operations.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Supply explicit request facts; prepare does not write its own input request."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring. The input CLI only creates a new ignored untracked file after a matching preview digest; it does not acquire custody or grant admission.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "external-task-completion",
+      "source_ordinal": 42,
+      "group": "F08",
+      "observed": {
+        "kind": "external-task-completion",
+        "baseline_refs": [
+          "E18"
+        ],
+        "models": [
+          ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
+        ],
+        "owner": ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::finalize"
+        ],
+        "validators": [
+          ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py::validate_completion"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "convert",
+          "route": "Only completion 1.2 to 1.3 through execution-artifacts migrate; preserve all original execution observations."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "external-task-dispatch",
+      "source_ordinal": 43,
+      "group": "F08",
+      "observed": {
+        "kind": "external-task-dispatch",
+        "baseline_refs": [
+          "E18"
+        ],
+        "models": [
+          ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
+        ],
+        "owner": ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/execution-artifacts.py::prepare"
+        ],
+        "validators": [
+          ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py::validate_dispatch"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "convert",
+          "route": "Only dispatch 1.2 to 1.3 through execution-artifacts migrate with current authority requirements."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "external-task-validation-receipt",
+      "source_ordinal": 44,
+      "group": "F08",
+      "observed": {
+        "kind": "external-task-validation-receipt",
+        "baseline_refs": [
+          "E18"
+        ],
+        "models": [
+          ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
+        ],
+        "owner": ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py::build_validation_receipt",
+          ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py::write_receipt_exclusively"
+        ],
+        "validators": [
+          ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py::validate_receipt"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Validate exact candidate bytes and issue a new receipt; never migrate receipts."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "example-evidence-manifest",
+      "source_ordinal": 45,
+      "group": "F09",
+      "observed": {
+        "kind": "example-evidence-manifest",
+        "baseline_refs": [
+          "E19"
+        ],
+        "models": [
+          ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-context.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_example_evidence_contract"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Author honest example provenance/tier; examples never become actual acceptance."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "dotnet-backend-profile"
+      },
+      "proposal_ref": "#/groups/F09"
+    },
+    {
+      "kind": "engineering-guardrails-provider-compatibility-receipt",
+      "source_ordinal": 46,
+      "group": "F10",
+      "observed": {
+        "kind": "engineering-guardrails-provider-compatibility-receipt",
+        "baseline_refs": [
+          "E20"
+        ],
+        "models": [
+          ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+        ],
+        "owner": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+        "authoring": "external",
+        "producers": [],
+        "validators": [],
+        "readable": "No record version declared by selected contract.",
+        "writable": "External provider producer; no repository producer registered.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Obtain actual provider-produced compatibility evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F10"
+    },
+    {
+      "kind": "engineering-guardrails-provider-contract",
+      "source_ordinal": 47,
+      "group": "F10",
+      "observed": {
+        "kind": "engineering-guardrails-provider-contract",
+        "baseline_refs": [
+          "E20"
+        ],
+        "models": [
+          ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+        ],
+        "owner": ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py::schema_errors",
+          ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py::contract_errors"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "The accepted provider baseline has no ordinary editable fields. The owning governance route requires an explicit new baseline decision, new ID/version and coordinated digest-bound source changes; existing validators do not grant that decision.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Author provider-owned reference contract and run its tests."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Binding points to contract tests, not an independent production validator.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F10"
+    },
+    {
+      "kind": "engineering-guardrails-provider-execution-receipt",
+      "source_ordinal": 48,
+      "group": "F10",
+      "observed": {
+        "kind": "engineering-guardrails-provider-execution-receipt",
+        "baseline_refs": [
+          "E20"
+        ],
+        "models": [
+          ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+        ],
+        "owner": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+        "authoring": "external",
+        "producers": [],
+        "validators": [],
+        "readable": "No record version declared by selected contract.",
+        "writable": "External provider producer; no repository producer registered.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Obtain actual provider-produced execution evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F10"
+    },
+    {
+      "kind": "engineering-guardrails-provider-readiness-receipt",
+      "source_ordinal": 49,
+      "group": "F10",
+      "observed": {
+        "kind": "engineering-guardrails-provider-readiness-receipt",
+        "baseline_refs": [
+          "E20"
+        ],
+        "models": [
+          ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+        ],
+        "owner": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+        "authoring": "external",
+        "producers": [],
+        "validators": [],
+        "readable": "No record version declared by selected contract.",
+        "writable": "External provider producer; no repository producer registered.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Obtain actual provider-produced readiness evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F10"
+    },
+    {
+      "kind": "engineering-guardrails-provider-selection",
+      "source_ordinal": 50,
+      "group": "F10",
+      "observed": {
+        "kind": "engineering-guardrails-provider-selection",
+        "baseline_refs": [
+          "E20"
+        ],
+        "models": [
+          ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+        ],
+        "owner": ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/tests/test_engineering_guardrails_provider_contract.py::selection_template_errors"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Supply explicit target/provider selections; unknown availability stays unknown."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F10"
+    },
+    {
+      "kind": "package-files-inventory",
+      "source_ordinal": 51,
+      "group": "F11",
+      "observed": {
+        "kind": "package-files-inventory",
+        "baseline_refs": [
+          "E21"
+        ],
+        "models": [
+          ".ai/distribution/schemas/files.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_package.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package.py::inventory_document"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_package.py::validate_archive",
+          ".ai/scripts/ai_context_package.py::load_previous_inventory"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Build new candidate from Git-tree payload; preserve published bytes."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "package-identity-metadata",
+      "source_ordinal": 52,
+      "group": "F11",
+      "observed": {
+        "kind": "package-identity-metadata",
+        "baseline_refs": [
+          "E22"
+        ],
+        "models": [
+          ".ai/distribution/schemas/identity-registry.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_package.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package.py::build_package"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_package.py::validate_archive"
+        ],
+        "readable": "Package identity 1.0.0/1.1.0 according to package version; source registry 1.1 is distinct.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Derive packaged identity from source registry and selected-input proof."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "source-identity-registry",
+      "source_ordinal": 53,
+      "group": "F11",
+      "observed": {
+        "kind": "source-identity-registry",
+        "baseline_refs": [
+          "E22"
+        ],
+        "models": [
+          ".ai/distribution/schemas/identity-registry.schema.yaml"
+        ],
+        "owner": ".ai/distribution/validators/product_identity_registry.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/distribution/validators/product_identity_registry.py::load_identity_registry"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "catalog.update source-identities or identity-consumers; existing records only.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Current 1.1 only; bounded display-name and yaml/text consumer-reference updates preserve identity and compatibility authority."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "package-migration-manifest",
+      "source_ordinal": 54,
+      "group": "F11",
+      "observed": {
+        "kind": "package-migration-manifest",
+        "baseline_refs": [
+          "E23"
+        ],
+        "models": [
+          ".ai/distribution/schemas/migration.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_package.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package.py::build_package",
+          ".ai/scripts/ai_context_package.py::migration_operations"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_package.py::validate_migration_metadata",
+          ".ai/scripts/ai_context_package.py::validate_archive"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Generate migration operations from selected inventories through package owner."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "package-manifest",
+      "source_ordinal": 55,
+      "group": "F11",
+      "observed": {
+        "kind": "package-manifest",
+        "baseline_refs": [
+          "E24"
+        ],
+        "models": [
+          ".ai/distribution/schemas/package.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_package.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package.py::build_package"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_package.py::validate_archive"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Build new candidate; retain immutable published identities and bytes."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "package-selected-input",
+      "source_ordinal": 56,
+      "group": "F11",
+      "observed": {
+        "kind": "package-selected-input",
+        "baseline_refs": [
+          "E25"
+        ],
+        "models": [
+          ".ai/distribution/schemas/selected-inputs.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_release_projection.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package.py::selected_input_document"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_release_projection.py::validate_selected_release_projection",
+          ".ai/scripts/ai_context_package.py::validate_archive"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Recompute exact selected inputs; never only change a discriminator."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "release-package-input",
+      "source_ordinal": 57,
+      "group": "F11",
+      "observed": {
+        "kind": "release-package-input",
+        "baseline_refs": [
+          "E25"
+        ],
+        "models": [
+          ".ai/distribution/schemas/selected-inputs.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_release_projection.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_release_projection.py::project_release_input"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_release_projection.py::validate_release_projection"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Preserve all release fields except declared exclusions, including unknown fields."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "source-dispositions-registry",
+      "source_ordinal": 58,
+      "group": "F11",
+      "observed": {
+        "kind": "source-dispositions-registry",
+        "baseline_refs": [
+          "E26"
+        ],
+        "models": [
+          ".ai/distribution/schemas/source-dispositions.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-source-dispositions.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-source-dispositions.py::validate_contract_data",
+          ".ai/scripts/validate-source-dispositions.py::validate_repository"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Current 1.0 only; edit existing patterns/reason and validate coverage against pinned committed source."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Projected contract checked against pinned HEAD profile and files, not uncommitted whole-worktree package truth. Classification, ownership and retention remain protected.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "v015-package-validation-terminal",
+      "source_ordinal": 59,
+      "group": "F11",
+      "observed": {
+        "kind": "v015-package-validation-terminal",
+        "baseline_refs": [
+          "E27"
+        ],
+        "models": [
+          ".ai/distribution/schemas/v015-package-validation-terminal.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_v015_validation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_v015_validation.py::execute_lane"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_v015_validation.py::validate_terminal_record"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Execute the selected lane and retain outcome, duration, retries and cleanup failures."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "ai-behavior-corpus-manifest",
+      "source_ordinal": 60,
+      "group": "F12",
+      "observed": {
+        "kind": "ai-behavior-corpus-manifest",
+        "baseline_refs": [
+          "E28"
+        ],
+        "models": [
+          ".ai/evaluation/schemas/corpus-manifest.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-behavior-evaluation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::validate_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "catalog.update changes existing case input/expected references only.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Current 1.0 only; owner authors independent inputs/expectations."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Static manifest validation does not execute the corpus or prove expected results; input and expectation bytes are observed.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F12"
+    },
+    {
+      "kind": "ai-behavior-case-result",
+      "source_ordinal": 61,
+      "group": "F12",
+      "observed": {
+        "kind": "ai-behavior-case-result",
+        "baseline_refs": [
+          "E29"
+        ],
+        "models": [
+          ".ai/evaluation/schemas/evaluation-result.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-behavior-evaluation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::evaluate_repository",
+          ".ai/scripts/validate-ai-behavior-evaluation.py::evaluate_software_development",
+          ".ai/scripts/validate-ai-behavior-evaluation.py::evaluate_customization",
+          ".ai/scripts/validate-ai-behavior-evaluation.py::evaluate_compatibility"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::run_corpus"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Compute selected facts through family evaluator; expected fixtures remain independent."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F12"
+    },
+    {
+      "kind": "ai-behavior-evaluation-result",
+      "source_ordinal": 62,
+      "group": "F12",
+      "observed": {
+        "kind": "ai-behavior-evaluation-result",
+        "baseline_refs": [
+          "E29"
+        ],
+        "models": [
+          ".ai/evaluation/schemas/evaluation-result.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-behavior-evaluation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::run_corpus",
+          ".ai/scripts/validate-ai-behavior-evaluation.py::write_yaml"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::compare_results"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Execute deterministic corpus and retain computed results; comparison uses independent baseline."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F12"
+    },
+    {
+      "kind": "incident-fault-injection-result",
+      "source_ordinal": 63,
+      "group": "F12",
+      "observed": {
+        "kind": "incident-fault-injection-result",
+        "baseline_refs": [
+          "E30"
+        ],
+        "models": [
+          ".ai/evaluation/schemas/incident-fault-injection-result.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-behavior-evaluation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::run_incident_fault_injection",
+          ".ai/scripts/validate-ai-behavior-evaluation.py::write_yaml_create_only"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::run_incident_fault_injection"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Execute deterministic mutants; retain synthetic nature and all survivor/failure outcomes."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Producer gates its own result; no standalone independent result validator registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F12"
+    },
+    {
+      "kind": "incident-mutant-manifest",
+      "source_ordinal": 64,
+      "group": "F12",
+      "observed": {
+        "kind": "incident-mutant-manifest",
+        "baseline_refs": [
+          "E31"
+        ],
+        "models": [
+          ".ai/evaluation/schemas/incident-mutant-manifest.schema.yaml"
+        ],
+        "owner": ".ai/scripts/validate-ai-behavior-evaluation.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-behavior-evaluation.py::validate_fault_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "catalog.update changes follow_up only; detector, criticality and candidate identities stay protected.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Current 1.0 only; caller supplies explicit exploratory follow-up."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F12"
+    },
+    {
+      "kind": "github-backlog-migration-receipt",
+      "source_ordinal": 65,
+      "group": "F13",
+      "observed": {
+        "kind": "github-backlog-migration-receipt",
+        "baseline_refs": [
+          "E32"
+        ],
+        "models": [
+          ".dev/backlog/provider-mappings/github-issues.schema.yaml"
+        ],
+        "owner": ".dev/backlog/provider-mappings/github-issues.schema.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Retain historical actual receipt; dry-run backlog plan is not its producer."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No production receipt writer/validator established by bounded current inventory; live provider truth requires fresh read-back.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "framework-source-effective-rule-evidence",
+      "source_ordinal": 66,
+      "group": "F13",
+      "observed": {
+        "kind": "framework-source-effective-rule-evidence",
+        "baseline_refs": [
+          "E33"
+        ],
+        "models": [
+          ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml"
+        ],
+        "owner": ".ai/scripts/ai_context_effective_rules.py",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_effective_rules.py::resolve_framework_source_rule_packet"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_effective_rules.py::_validated_source_evidence_schema"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Resolve transient source projection; target adoption remains separate."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Resolver/schema checks do not constitute a standalone evidence record validator.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "canonical-dynamic-role-metadata",
+      "source_ordinal": 67,
+      "group": "F14",
+      "observed": {
+        "kind": "canonical-dynamic-role-metadata",
+        "baseline_refs": [
+          "I01"
+        ],
+        "models": [
+          ".ai/assets/CANONICAL-SCHEMA.MD"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::role"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_canonical_manifest",
+          ".ai/scripts/validate-ai-context.py::validate_role_relationships"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "convert",
+          "route": "Only explicit dynamic role 1.0 to 1.1; preserve exact original bytes."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Existing dynamic roles only. Creation, promoted adapters, owner/status/identity and other version edges unsupported.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F14"
+    },
+    {
+      "kind": "canonical-skill-metadata",
+      "source_ordinal": 68,
+      "group": "F14",
+      "observed": {
+        "kind": "canonical-skill-metadata",
+        "baseline_refs": [
+          "I01"
+        ],
+        "models": [
+          ".ai/assets/CANONICAL-SCHEMA.MD"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::skill_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_canonical_manifest",
+          ".ai/scripts/validate-ai-context.py::validate_skill_wrapper_semantics"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Existing current metadata only; preserve thin wrappers, regenerate both declared pilot wrappers. Identity, owner/routing and reference changes remain protected; no general skill creation or migration.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F14"
+    },
+    {
+      "kind": "command-and-prompt-creation-templates",
+      "source_ordinal": 69,
+      "group": "F14",
+      "observed": {
+        "kind": "command-and-prompt-creation-templates",
+        "baseline_refs": [
+          "I02"
+        ],
+        "models": [
+          ".ai/assets/templates/command-template.yaml",
+          ".ai/assets/templates/prompt-package-template.yaml"
+        ],
+        "owner": ".ai/assets/CANONICAL-SCHEMA.MD",
+        "authoring": "creation-template",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Creation templates are not active manifest families; no artifact-version admission is inferred.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F14"
+    },
+    {
+      "kind": "ai-context-maintenance-workflow",
+      "source_ordinal": 70,
+      "group": "F08",
+      "observed": {
+        "kind": "ai-context-maintenance-workflow",
+        "baseline_refs": [
+          "I03"
+        ],
+        "models": [
+          ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::workflow"
+        ],
+        "validators": [
+          ".ai/scripts/validate-workflow-artifacts.py::validate_workflows"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Only ai-context-maintenance profile; workflow.progress and workflow.update maintain progress/body plus metadata. Opt-in remediation reports and current-state projections update in the same recoverable bundle; other skill bodies retain their own owner.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "ai-context-remediation-report",
+      "source_ordinal": 71,
+      "group": "F08",
+      "observed": {
+        "kind": "ai-context-remediation-report",
+        "baseline_refs": [
+          "I03"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md",
+          ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::remediation_report"
+        ],
+        "validators": [
+          ".ai/scripts/artifact_authoring.py::validate_workflow_report"
+        ],
+        "readable": "Current governance report template with exact Report Metadata; final reports remain immutable.",
+        "writable": "workflow.report creates or explicitly adopts/updates a current draft; workflow operations derive timestamps and current workflow/task state.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Explicitly adopt a current draft without changing its identity or creation time; other versions and final history require owner reconciliation."
+        },
+        "admissible": "Owning metadata and relationship validation; final editorial status additionally requires completed workflow and an existing final verification linked to workflow and baseline. No independent pass or provider admission is inferred.",
+        "limits": "Authored historical evidence and conclusions remain author-owned. Only opt-in canonical report paths are refreshed; no archive scan or silent reopening.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "audit-and-verification-assessment",
+      "source_ordinal": 72,
+      "group": "F15",
+      "observed": {
+        "kind": "audit-and-verification-assessment",
+        "baseline_refs": [
+          "I04"
+        ],
+        "models": [
+          ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md"
+        ],
+        "owner": ".ai/assets/skills/ai-context-auditor/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::assessment"
+        ],
+        "validators": [
+          ".ai/scripts/validate-assessment-artifacts.py::validate_assessments"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Final conclusions are immutable; use successor or reviewed addendum."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F15"
+    },
+    {
+      "kind": "workflow-handoff-checkpoint",
+      "source_ordinal": 73,
+      "group": "F08",
+      "observed": {
+        "kind": "workflow-handoff-checkpoint",
+        "baseline_refs": [
+          "I05"
+        ],
+        "models": [
+          ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-workflow-handoff.py::main"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Use the owning checkpoint template and validator with captured Git, gate and attribution observations, registry registration and post-commit receiver verification. A future writer requires captured-observation replay and handoff-specific multi-file recovery; the ordinary generic create adapter is not safe for this lifecycle.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Checkpoint authoring does not perform receiving-environment handoff.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F08"
+    },
+    {
+      "kind": "requirement-markdown",
+      "source_ordinal": 74,
+      "group": "F16",
+      "observed": {
+        "kind": "requirement-markdown",
+        "baseline_refs": [
+          "I06"
+        ],
+        "models": [
+          ".dev/requirement/REQUIREMENT-GUIDE.MD"
+        ],
+        "owner": ".ai/assets/skills/requirement-author/skill.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Semantic content has a dedicated authoring skill. No invented schema version, automatic semantic migration or compliance claim.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F16"
+    },
+    {
+      "kind": "production-entity-adapter-spec",
+      "source_ordinal": 75,
+      "group": "F16",
+      "observed": {
+        "kind": "production-entity-adapter-spec",
+        "baseline_refs": [
+          "I07"
+        ],
+        "models": [
+          ".dev/specs/SPEC-GUIDE.MD"
+        ],
+        "owner": ".ai/assets/skills/spec-author/skill.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Semantic content has a dedicated authoring skill. No invented schema version, automatic semantic migration or compliance claim.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F16"
+    },
+    {
+      "kind": "formal-test-spec",
+      "source_ordinal": 76,
+      "group": "F16",
+      "observed": {
+        "kind": "formal-test-spec",
+        "baseline_refs": [
+          "I08"
+        ],
+        "models": [
+          ".dev/specs/tests/TEST-SPEC-GUIDE.MD"
+        ],
+        "owner": ".ai/assets/skills/spec-author/skill.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Semantic content has a dedicated authoring skill. No invented schema version, automatic semantic migration or compliance claim.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F16"
+    },
+    {
+      "kind": "cbf-swf-problem-frame",
+      "source_ordinal": 77,
+      "group": "F16",
+      "observed": {
+        "kind": "cbf-swf-problem-frame",
+        "baseline_refs": [
+          "I09"
+        ],
+        "models": [
+          ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md"
+        ],
+        "owner": ".ai/assets/skills/problem-frame-author/skill.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Semantic content has a dedicated authoring skill. No invented schema version, automatic semantic migration or compliance claim.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F16"
+    },
+    {
+      "kind": "project-config",
+      "source_ordinal": 78,
+      "group": "F06",
+      "observed": {
+        "kind": "project-config",
+        "baseline_refs": [
+          "I10"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-init/templates/project-config.template.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-init/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::target_selection"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_target_selection_records"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Use init for initialization; existing target selections have explicit bounded operations."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Writer covers technologySelections and workItemBinding only. Other target config remains init-owned semantic fact authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F06"
+    },
+    {
+      "kind": "target-provenance",
+      "source_ordinal": 79,
+      "group": "F06",
+      "observed": {
+        "kind": "target-provenance",
+        "baseline_refs": [
+          "I11"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md"
+        ],
+        "owner": ".ai/assets/skills/ai-context-init/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_target_provenance.py::initialize_context",
+          ".ai/scripts/ai_context_target_provenance.py::finalize_context"
+        ],
+        "validators": [
+          ".ai/scripts/ai_context_target_provenance.py::validate_customizations"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-reconciliation",
+          "route": "Use provenance-aware initialization/finalization; no fabricated source history."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F06"
+    },
+    {
+      "kind": "package-apply-plan",
+      "source_ordinal": 80,
+      "group": "F07",
+      "observed": {
+        "kind": "package-apply-plan",
+        "baseline_refs": [
+          "I12"
+        ],
+        "models": [
+          ".ai/scripts/ai_context_package_apply.py"
+        ],
+        "owner": ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package_apply.py::build_plan"
+        ],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "regenerate",
+          "route": "Use original apply/resume/rollback lifecycle; unfinished journal v4 is not converted to v5."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Plan 2.2.0, journal /v5 and progress /v1 are distinct; no generic state rewrites.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "package-transaction-journal",
+      "source_ordinal": 81,
+      "group": "F07",
+      "observed": {
+        "kind": "package-transaction-journal",
+        "baseline_refs": [
+          "I12"
+        ],
+        "models": [
+          ".ai/scripts/ai_context_package_apply.py"
+        ],
+        "owner": ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package_apply.py::apply_plan"
+        ],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use original apply/resume/rollback lifecycle; unfinished journal v4 is not converted to v5."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Plan 2.2.0, journal /v5 and progress /v1 are distinct; no generic state rewrites.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "package-transaction-progress",
+      "source_ordinal": 82,
+      "group": "F07",
+      "observed": {
+        "kind": "package-transaction-progress",
+        "baseline_refs": [
+          "I12"
+        ],
+        "models": [
+          ".ai/scripts/ai_context_package_apply.py"
+        ],
+        "owner": ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_package_apply.py::apply_plan"
+        ],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use original apply/resume/rollback lifecycle; unfinished journal v4 is not converted to v5."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Plan 2.2.0, journal /v5 and progress /v1 are distinct; no generic state rewrites.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "upgrade-execution-receipts",
+      "source_ordinal": 83,
+      "group": "F07",
+      "observed": {
+        "kind": "upgrade-execution-receipts",
+        "baseline_refs": [
+          "I13"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md"
+        ],
+        "owner": ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/ai_context_target_provenance.py::finalize_context"
+        ],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "re-execute",
+          "route": "Run actual incoming/target validation and owning finalization; retain pending and terminal evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Receipt roles remain distinct; finalization producer does not establish arbitrary receipt authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F07"
+    },
+    {
+      "kind": "validation-evidence-cache-sidecars",
+      "source_ordinal": 84,
+      "group": "F04",
+      "observed": {
+        "kind": "validation-evidence-cache-sidecars",
+        "baseline_refs": [
+          "I14"
+        ],
+        "models": [
+          ".ai/scripts/validation-evidence.py"
+        ],
+        "owner": ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/validation-evidence.py::main"
+        ],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "owner-recovery",
+          "route": "Use record/finalize/seal/rebind lifecycle. Legacy cache disposal never creates historical evidence."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "No owner decision, actual observation, invocation, validation result or authorization is inferred from authoring.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F04"
+    },
+    {
+      "kind": "release-records-and-notes",
+      "source_ordinal": 85,
+      "group": "F11",
+      "observed": {
+        "kind": "release-records-and-notes",
+        "baseline_refs": [
+          "I15"
+        ],
+        "models": [
+          ".ai/assets/skills/ai-context-governance/templates/release-publication/release.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-ai-context-versions.py::validate_release"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "preserve",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Release preparation is read-only. Notes rendering does not author release state or provider acceptance.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F11"
+    },
+    {
+      "kind": "governance-term-routes",
+      "source_ordinal": 86,
+      "group": "F13",
+      "observed": {
+        "kind": "governance-term-routes",
+        "baseline_refs": [
+          "I16"
+        ],
+        "models": [
+          ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_governance_term_routing_data"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Existing terms only: qualified name, owner anchor and contextual shorthand. IDs, owner paths and machine bindings are protected; validation does not prove semantic equivalence.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "routing-rule-ownership-catalogs",
+      "source_ordinal": 87,
+      "group": "F13",
+      "observed": {
+        "kind": "routing-rule-ownership-catalogs",
+        "baseline_refs": [
+          "I16"
+        ],
+        "models": [
+          ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-ai-context.py::validate_rule_ownership"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Existing-rule derived_consumers only through rule-consumers; unique contained files must cite the selected rule ID. Existing governance-terms has its separately documented prose fields. Owner, strength, routing and identity remain protected.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Authority-bearing catalog authoring needs owner decisions; no general bounded writer registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "shell-asset-lifecycle",
+      "source_ordinal": 88,
+      "group": "F13",
+      "observed": {
+        "kind": "shell-asset-lifecycle",
+        "baseline_refs": [
+          "I17"
+        ],
+        "models": [
+          ".ai/scripts/shell-assets.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-shell-assets.py::validate_repository_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Existing shell lifecycle/replacement only. Git executable modes, exact runner coverage and mandatory runnable gates remain checked; no script execution is asserted.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "shell-asset-registry",
+      "source_ordinal": 89,
+      "group": "F13",
+      "observed": {
+        "kind": "shell-asset-registry",
+        "baseline_refs": [
+          "I17"
+        ],
+        "models": [
+          ".ai/scripts/shell-assets.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::catalog_update"
+        ],
+        "validators": [
+          ".ai/scripts/validate-shell-assets.py::validate_repository_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Existing shell-assets selector edits lifecycle/replacement under exact Git executable mode, runner coverage and required-entrypoint validation; it does not execute scripts.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "python-entrypoint-registry",
+      "source_ordinal": 90,
+      "group": "F13",
+      "observed": {
+        "kind": "python-entrypoint-registry",
+        "baseline_refs": [
+          "I17"
+        ],
+        "models": [
+          ".ai/scripts/python-entrypoints.json"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/validate-dependency-versions.py::validate_python_entrypoint_registry"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Coordinate entrypoint identity, portability, dependency profile and exit-code allocation with the actual CLI/import closure. Shape validation alone cannot choose these semantics.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "fixture-classification-registry",
+      "source_ordinal": 91,
+      "group": "F13",
+      "observed": {
+        "kind": "fixture-classification-registry",
+        "baseline_refs": [
+          "I17"
+        ],
+        "models": [
+          ".ai/scripts/test-fixture-classifications.json"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [
+          ".ai/scripts/test_fixture_runtime.py::load_classification_manifest"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Coordinate selected disposable fixture call sites and excluded durability/platform suites. Never promote a semantic storage test to disposable I/O through a generic registry editor.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "validation-profile-registry",
+      "source_ordinal": 92,
+      "group": "F13",
+      "observed": {
+        "kind": "validation-profile-registry",
+        "baseline_refs": [
+          "I17"
+        ],
+        "models": [
+          ".ai/scripts/validation-profile-registry.sh"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "manual-gap",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "This is executable Bash and coupled gate/description/selection authority. Use a concrete reviewed code change with registry and selected gate tests; arbitrary metadata editing is not supported.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Maintain entrypoint, shell, fixture and profile contracts through their existing validators/tests; no generic catalog writer registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "source-git-provider-policy",
+      "source_ordinal": 93,
+      "group": "F13",
+      "observed": {
+        "kind": "source-git-provider-policy",
+        "baseline_refs": [
+          "I18"
+        ],
+        "models": [
+          ".dev/standards/GIT-COMMIT-POLICY.yaml",
+          ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "semantic-owner",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Use ai-context-governance for an explicitly approved concrete policy change and invariant-specific verification. These files define authority rather than an ordinary metadata catalog; no generic writer or version conversion is offered.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Policy authoring cannot grant permission to weaken owner controls; no bounded writer registered.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F13"
+    },
+    {
+      "kind": "provider-runtime-native-formats",
+      "source_ordinal": 94,
+      "group": "F17",
+      "observed": {
+        "kind": "provider-runtime-native-formats",
+        "baseline_refs": [
+          "I19"
+        ],
+        "models": [
+          "AGENTS.md"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "external",
+        "producers": [],
+        "validators": [],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "No bounded executable writer registered; follow the declared owner route.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Use provider/runtime format owners and delegated checks; do not create competing local schemas or expose private settings.",
+        "applicability": "source"
+      },
+      "proposal_ref": "#/groups/F17"
+    },
+    {
+      "kind": "artifact-lifecycle-routing-registry",
+      "source_ordinal": 95,
+      "group": "F14",
+      "observed": {
+        "kind": "artifact-lifecycle-routing-registry",
+        "baseline_refs": [
+          "registry"
+        ],
+        "models": [
+          ".ai/scripts/artifact_lifecycle.py"
+        ],
+        "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "authoring": "executable",
+        "producers": [
+          ".ai/scripts/artifact_authoring.py::lifecycle_update"
+        ],
+        "validators": [
+          ".ai/scripts/artifact_lifecycle.py::validate_registry"
+        ],
+        "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
+        "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
+        "migration": {
+          "disposition": "unsupported",
+          "route": "Use the owning semantic authoring route and preserve historical records."
+        },
+        "admissible": "Requires owning semantic, relationship, authority and applicable execution/provider checks; registry presence grants no admission.",
+        "limits": "Existing row update only; kind/baseline identity and coverage are protected. Routing inventory does not establish schema semantics or universal executable coverage.",
+        "applicability": "portable"
+      },
+      "proposal_ref": "#/groups/F14"
+    }
+  ],
+  "proposal_resolution": "Each record proposal_ref selects exactly one groups entry containing category, disposition, proposed_owner, reader, writer, validator, versions and migration. Group members retain every original kind; this is design data, never a runtime registry."
+}

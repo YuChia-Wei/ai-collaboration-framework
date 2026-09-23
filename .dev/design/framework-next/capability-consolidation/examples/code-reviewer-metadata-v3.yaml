@@ -1,0 +1,33 @@
+# Proposed future package specimen only; not an implemented package or current accepted format.
+metadata_version: 3
+id: code-reviewer
+version: 0.1.0
+delivery_status: implemented
+entrypoint: SKILL.md
+dependencies:
+  required: []
+  optional: []
+runtime:
+- id: skill-instruction-reader
+  requirement: Read the selected instruction and permitted target evidence
+  for_operations:
+  - review
+  on_missing: unavailable
+configuration: null
+artifact_roles: []
+resources:
+  references:
+  - references/review.md
+  schemas: []
+  templates: []
+  tools: []
+operations:
+- id: review
+  execution: instruction
+  inputs:
+  - Explicit review scope and intended behavior
+  - Applicable target-owned rules and accessible evidence
+  outputs:
+  - Prose findings with evidence, impact, uncertainty and coverage limits
+  instructions: references/review.md
+  implementation_status: implemented

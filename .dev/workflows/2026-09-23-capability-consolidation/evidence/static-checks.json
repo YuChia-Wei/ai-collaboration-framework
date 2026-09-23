@@ -1,0 +1,232 @@
+{
+  "recorded_at": "2026-09-23T09:30:36+08:00",
+  "classification": "direct static read/parse/inventory inspection only; not tests, schema compliance, behavioral verification or independent audit",
+  "workdir": "F:/framework-next/342",
+  "checks": [
+    {
+      "id": "S01",
+      "operation": "Git exact root/branch/HEAD/common-dir/clean preflight",
+      "outcome": "observed-matching",
+      "evidence": "source-observation.json"
+    },
+    {
+      "id": "S02",
+      "operation": "Direct JSON original-row equality, 95 unique IDs/group membership; exact 16 tracked canonical skill set",
+      "outcome": "matching",
+      "counts": {
+        "skills": 16,
+        "kinds": 95,
+        "groups": 17
+      }
+    },
+    {
+      "id": "S03",
+      "operation": "Direct declared/member path equality for five packages; ADR specimen raw-byte equality",
+      "outcome": "matching",
+      "members": 44,
+      "schemas": 6
+    },
+    {
+      "id": "S04",
+      "operation": "UTF-8 read plus JSON/YAML direct syntax parse of owned artifacts",
+      "outcome": "readable-and-parsed",
+      "files": [
+        ".dev/design/framework-next/capability-consolidation/current-src-formats.json",
+        ".dev/design/framework-next/capability-consolidation/examples/adr-metadata-v2.yaml",
+        ".dev/design/framework-next/capability-consolidation/examples/code-reviewer-metadata-v3.yaml",
+        ".dev/design/framework-next/capability-consolidation/legacy-artifact-dispositions.json",
+        ".dev/design/framework-next/capability-consolidation/legacy-skills.json",
+        ".dev/workflows/2026-09-23-capability-consolidation/evidence/dependency-update.json",
+        ".dev/workflows/2026-09-23-capability-consolidation/evidence/related-issues.json",
+        ".dev/workflows/2026-09-23-capability-consolidation/evidence/source-observation.json",
+        ".dev/workflows/2026-09-23-capability-consolidation/evidence/static-checks.json",
+        ".dev/workflows/2026-09-23-capability-consolidation/tasks/P5-DESIGN-342.json",
+        ".dev/workflows/2026-09-23-capability-consolidation/workflow.yaml"
+      ]
+    },
+    {
+      "id": "S05",
+      "operation": "ast.parse selected distribution and package script text; no product imports or execution",
+      "outcome": "parsed",
+      "files": [
+        "src/distribution/package.py",
+        "src/distribution/selection.py",
+        "src/distribution/assembly.py",
+        "src/distribution/codex.py",
+        "src/skills/adr/scripts/adr.py",
+        "src/skills/lesson/scripts/lesson.py",
+        "src/skills/local-backlog/scripts/local_backlog.py",
+        "src/skills/pr/scripts/github.py",
+        "src/skills/pr/scripts/pr.py",
+        "src/skills/standards-promotion/scripts/standards_promotion.py"
+      ]
+    },
+    {
+      "id": "S06",
+      "operation": "Direct changed Markdown local file link existence inspection (fenced examples excluded)",
+      "outcome": "resolved",
+      "links": [
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/capability-disposition.md",
+          "target": "legacy-skills.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/dependency-update.md",
+          "target": "../../../workflows/2026-09-23-capability-consolidation/evidence/dependency-update.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/format-ownership.md",
+          "target": "legacy-artifact-dispositions.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/format-ownership.md",
+          "target": "current-src-formats.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/format-ownership.md",
+          "target": "dependency-update.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/implementation-slices.md",
+          "target": "dependency-update.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/implementation-slices.md",
+          "target": "../../../workflows/2026-09-23-capability-consolidation/evidence/related-issues.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/operation-model.md",
+          "target": "../../../workflows/2026-09-23-capability-consolidation/evidence/source-observation.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/operation-model.md",
+          "target": "examples/code-reviewer-metadata-v3.yaml"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/operation-model.md",
+          "target": "examples/adr-metadata-v2.yaml"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/operation-model.md",
+          "target": "current-src-formats.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/operation-model.md",
+          "target": "dependency-update.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "capability-disposition.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "legacy-artifact-dispositions.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "format-ownership.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "operation-model.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "implementation-slices.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "../../../workflows/2026-09-23-capability-consolidation/reports/handoff.md"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "legacy-skills.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "current-src-formats.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "../../../workflows/2026-09-23-capability-consolidation/evidence/source-observation.json"
+        },
+        {
+          "from": ".dev/design/framework-next/capability-consolidation/README.md",
+          "target": "dependency-update.md"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/reports/handoff.md",
+          "target": "../../../design/framework-next/capability-consolidation/README.md"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/reports/handoff.md",
+          "target": "../tasks/P5-DESIGN-342.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/reports/handoff.md",
+          "target": "../evidence/static-checks.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "../../design/framework-next/capability-consolidation/README.md"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "tasks/P5-DESIGN-342.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "evidence/source-observation.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "evidence/related-issues.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "evidence/dependency-update.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "evidence/static-checks.json"
+        },
+        {
+          "from": ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+          "target": "reports/handoff.md"
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "operation": "git diff --check / --cached --check and changed-path scope",
+      "outcome": "completed-exit-0",
+      "observation": "Initial staged diff --check succeeded and all 19 paths were in the two authorized roots; final receipt edits are staged and rechecked before commit. Git reported normal CRLF-to-LF normalization warnings; no settings changed."
+    },
+    {
+      "id": "S08",
+      "operation": ".ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-capability-consolidation/artifacts/commit-message.txt --workflow-id 2026-09-23-capability-consolidation",
+      "outcome": "passed",
+      "exit_code": 0,
+      "output": "Git commit validation passed for planned message.",
+      "message_sha256": "5d8d6aed5cc0aff71d7ee21cf2253c0ba1863863a4ab96eb7b9028ccf0cd3b16",
+      "message_file_ignored": ".gitignore:59 artifacts/"
+    }
+  ],
+  "deferrals": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select redesigned checks after source decisions and implementation",
+    "scope": [
+      "product CLI including help",
+      "schema validation",
+      "tests and fixtures",
+      "build/package/install/migration/compatibility trials",
+      "audit/lease/effective-rule/handoff validators",
+      "CI"
+    ]
+  },
+  "interpretation": "No acceptance/coverage claim beyond enumerated static evidence. Provider issue observations and coordinator dependency update have separate sources.",
+  "final_read_at": "2026-09-23T09:32:57+08:00",
+  "final_inventory_read": "95 original rows identical; proposal references resolve each unique kind into exactly one of 17 groups; compact skill metadata retains all dependency occurrences."
+}

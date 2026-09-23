@@ -1,0 +1,117 @@
+{
+  "status": "proposal-not-adopted",
+  "source_commit": "94741016bd7baae9936bb77dd6c4f56d37036e97",
+  "observed_at": "2026-09-23T09:17:49+08:00",
+  "generator": "Issue #342 direct Git inventory, UTF-8/JSON/YAML parsing and literal-reference extraction; no product imports or execution",
+  "limits": "Static source observation only. Registered producers/validators are declarations, not current runtime coverage. Design inventories are not a runtime registry.",
+  "starting_identity": {
+    "root": "F:\\framework-next\\342",
+    "branch": "codex/2026-09-23-capability-consolidation",
+    "head": "94741016bd7baae9936bb77dd6c4f56d37036e97",
+    "common_git_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+    "status_porcelain": ""
+  },
+  "declared_runtime": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "provenance": "coordinator dispatch declaration, not independent runtime attestation",
+    "subagents_used": false
+  },
+  "graph": {
+    "project": "framework-next-342",
+    "mode": "fast",
+    "persistence": false,
+    "status": "indexed",
+    "reported_nodes": 127261,
+    "reported_edges": 132954,
+    "reported_commit": null,
+    "limitations": "No commit attestation returned. .ai/assets, .ai/scripts, tools and all src skill scripts excluded; graph source ranges may predate inserted lines. Material facts use Git blobs/direct reads. Initial regex/file-filter query returned no match; unfiltered load_package query found actual symbol."
+  },
+  "key_inputs": [
+    {
+      "path": ".ai/assets/shared/artifact-lifecycle-registry.json",
+      "git_blob": "25c439b11746fe47e10ff5d2f92073165ecc9f05",
+      "sha256": "dfff344605d5bd473df296baf1901760668fd2651a65284883eecd62ed74ed65"
+    },
+    {
+      "path": "src/distribution/package.py",
+      "git_blob": "ffb0d580021d2c8bd33bd4aa0dbb804b5f81b135",
+      "sha256": "b2d5f7e9fc9b81b985bd94dc35adc5713242dc06b98e7f26ae1278bfebea78c4"
+    },
+    {
+      "path": "src/distribution/selection.py",
+      "git_blob": "5773973a457fdb7c8f8c013f9c325c13fd9121dc",
+      "sha256": "cf478983640a62713fa55afc40b584a1121e4999feec4872426129bdde212e2a"
+    },
+    {
+      "path": "src/distribution/assembly.py",
+      "git_blob": "6a0f9f0581959efada77d1a1336cf21b67b619fe",
+      "sha256": "86833541e8f5c8ebd85a555978368c2e29583f28a2028d555a18e2be67cbb6ce"
+    },
+    {
+      "path": "src/distribution/codex.py",
+      "git_blob": "55c4bf0394b0d753c6749b09deccab3ff4c4d0d5",
+      "sha256": "21eb7fef16ed6961a2ee36c62298f5e0ec61f4c8c8a69fb691d59348a793de08"
+    },
+    {
+      "path": "src/distribution/manifest.yaml",
+      "git_blob": "fe95c3f0720d6ec198a2b64b667c4af91f3c096d",
+      "sha256": "8e61c58b52029c9df4d08af483a05ec670e374711dce2b85ac1011f7382242fa"
+    },
+    {
+      "path": "src/profiles/lesson-minimal.yaml",
+      "git_blob": "3ed06fe5544743251d857005b0a3aa54da8fba0c",
+      "sha256": "9f2bc31cbbc5fcb81d7c8bdbcd0ca774c647f4ecd079c5e18026a7358d0aa773"
+    },
+    {
+      "path": ".dev/design/framework-next/p3-shared-contract.md",
+      "git_blob": "a9d74e9ef38117aa0dbaff6c6b686af9be6ee094",
+      "sha256": "e68b4b92cfb8364ef9ec2657ddf09717db4fce4c3809b21f6283634c065f4869"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-capability-consolidation-scope.md",
+      "git_blob": "ca70306b9d023675e26485bb9bfb4fb8d8d41046",
+      "sha256": "7761a4a2c1df725a64ba83a92f40301d939471da24b9fae4adb10ae1f65a34ea"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-framework-redesign-control/tasks/ISSUE-342.json",
+      "git_blob": "1b2085135a236908c907b2c14d0a3a5cfc927df2",
+      "sha256": "d2638d7a03b42c0b092b8181b61605c7704b180879868a0e33560226ce0c92ce"
+    }
+  ],
+  "failures": [
+    {
+      "action": "initial gh issue view 342",
+      "outcome": "blocked-by-environment",
+      "fingerprint": "sandbox proxy 127.0.0.1:9 refused connection",
+      "changed_state": "scoped normal sandbox escalation for authorized read-only GitHub access",
+      "subsequent_result": "read succeeded; not a credential change"
+    },
+    {
+      "action": "initial compact registry listing",
+      "outcome": "wrong property selected",
+      "detail": "Used kinds instead of records; produced no inventory rows; corrected after reading actual JSON keys."
+    },
+    {
+      "action": "first combined long documentation write command",
+      "outcome": "blocked-by-environment",
+      "fingerprint": "Windows CreateProcess os error 206; command line too long",
+      "changed_state": "Split into bounded shorter write commands within same authorized roots",
+      "subsequent_result": "Writes succeeded; failed process did not run"
+    }
+  ],
+  "checks": {
+    "legacy_skills": 16,
+    "legacy_artifact_kinds": 95,
+    "legacy_models": 58,
+    "real_src_packages": 5,
+    "schema_resources": 6
+  },
+  "deferred": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "scope": "product CLIs/help, schema validation, tests/fixtures/build/package/install/migration/compatibility, audits/leases/effective-rule packets, CI",
+    "next_action": "P7 selects redesigned checks after source/contract decisions"
+  }
+}
