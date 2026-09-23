@@ -1,0 +1,178 @@
+{
+  "kind": "Bounded CR-002 review source/evidence inventory; not an execution receipt or formal audit packet",
+  "reviewed_delivery_commit": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
+  "worker_execution_checkpoint": "698654d77c81d2837c45e9e156e76d67734f6a28",
+  "prior_review_delivery_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
+  "disposition": "ISSUE-370#CR-002 resolved-in-reviewed-source; no new substantiated finding",
+  "unverified_concern": "C-001 unchanged, unselected and not a confirmed defect",
+  "bound_execution_files": [
+    {
+      "path": "tests/framework_next/run.py",
+      "git_blob": "7c8c305c2c78c2e8e1b450373b1bd66554282d25",
+      "sha256": "7931ab23674dfa56dbfda02522e6bcb6dab7646d2a4f869a036ef8ed7f287ae0",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "tests/framework_next/support.py",
+      "git_blob": "45bbec18bb26af58cfc5516f5298c10918f58817",
+      "sha256": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "tests/framework_next/test_contracts.py",
+      "git_blob": "1baf6165ece2486317a4b8cf399112ee65e73bb3",
+      "sha256": "7d192f6efaa863d3b218f41762768d1d5ad9b3b2a9eefa7a8a98962da93793ab",
+      "changed_from_prior_review": true
+    },
+    {
+      "path": "src/distribution/assembly.py",
+      "git_blob": "01467d0f4e441275bfca1cce5ce3589f6213c101",
+      "sha256": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "src/distribution/installation_state.py",
+      "git_blob": "9ff4ea4a4ca3858592bb2ecf3da9bfdf7541085c",
+      "sha256": "2e841633d60f78ba1ca0070847536cb64e411494fbb235dedb8ec56b59a2d369",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "src/distribution/data.py",
+      "git_blob": "08da2c0b84703887b837297d6d2d63b023c2eebb",
+      "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "src/distribution/git_source.py",
+      "git_blob": "c6597e2e59dc3c9040031f5d1f0144e0542f2828",
+      "sha256": "3df8f70fcea76fef3a00ee958f0c4ebd5b71ac998aac45462ac233b73e0e5af8",
+      "changed_from_prior_review": true
+    },
+    {
+      "path": "src/distribution/package.py",
+      "git_blob": "0dc910ca76f4835a5cbf172abbda7595088861a9",
+      "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "src/distribution/selection.py",
+      "git_blob": "f9b8c96854d9f4698d0fd424eeca61bb73644f42",
+      "sha256": "d49d240a2c2c776ac90ca4fbe19d887e961031ba7f0fa0c7bcada7aea5e760cd",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "src/distribution/codex.py",
+      "git_blob": "b6210d9e8caa65d226af017ba6c3d6f0a12f50a0",
+      "sha256": "506e775df87b6a1816cb3be896fd8741fd5bfc7c137c425224561314578e083e",
+      "changed_from_prior_review": false
+    },
+    {
+      "path": "src/distribution/manifest.yaml",
+      "git_blob": "292f4d5c7c1c3f167c11245ed731c13fc166bfb4",
+      "sha256": "64e6e19d97266324782dccadc6b51113708c0e8a4b78f94819b0794dedc92a0e",
+      "changed_from_prior_review": false
+    }
+  ],
+  "engine_delta": {
+    "changed": [
+      "src/distribution/git_source.py"
+    ],
+    "unchanged": [
+      "src/distribution/__init__.py",
+      "src/distribution/data.py",
+      "src/distribution/installation.py",
+      "src/distribution/installation_io.py",
+      "src/distribution/installation_plan.py",
+      "src/distribution/installation_state.py",
+      "src/distribution/maintenance_coordination.py",
+      "src/distribution/package.py",
+      "src/tools/maintain_framework.py"
+    ],
+    "prior_hash_inventory": "current-engine-source-hashes.json",
+    "all_ten_raw_files_match_execution_checkpoint": true
+  },
+  "source_records": [
+    {
+      "path": ".dev/workflows/2026-09-23-source-contract-checks/cr002-repair-report.md",
+      "git_blob": "faa756abd5bc834a1f2a2024a2954b8ade2ae1f6",
+      "sha256": "6f8450595816165b9792eafafebbf9943fae6c13fb99e65bde0fad159cf030bc"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-source-contract-checks/cr002-checks.json",
+      "git_blob": "d6e375db25920d9f747180122df5aabe0ed5ac82",
+      "sha256": "9c3a0e49a3420db59c059819bef5aa6f1534f333a0c971ba83b4dd21a37ee56c"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-source-contract-checks/evidence/cr002-execution.json",
+      "git_blob": "c943465405205a024a80ad1c477613ad67800ff4",
+      "sha256": "43477a7eb31b60a4d166b92740125bc1ac8ec7df24f9e3cef065b4b845602eb9"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-source-contract-checks/evidence/cr002-capture.py",
+      "git_blob": "4e363284510bfccda29dbe7cc2699ddf6e7efbda",
+      "sha256": "1fab6577114454a515eda16d7080dbe2ee3bde453589f634638560a9ddf3e0e9"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-source-contract-checks/evidence/cr002-selected.stdout.txt",
+      "git_blob": "63952968cc8315f0cf6dc22c207dc38710eb35c1",
+      "sha256": "3c341e68dd42b255b02551f90785c2675861aa6f48705c0b8e4cb28c65a68bf2"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-source-contract-checks/evidence/cr002-selected.stderr.txt",
+      "git_blob": "9571060388bddc91e661c7fe7d7b8eeac3af1b7a",
+      "sha256": "fd31fec63d0db40922917775a09c4b713a4ffa8c3b246cab9107a21cdce804b1"
+    }
+  ],
+  "preserved_reports_and_inventory": [
+    {
+      "path": "report.md",
+      "sha256": "d03d04716f08653788ff066fb36cfa70d3b180cb183377bff00506684281425c"
+    },
+    {
+      "path": "affected-review.md",
+      "sha256": "b2f101af995e00c2ae38c78f94977b0f77409644939bc5b5332db53a772a1e9b"
+    },
+    {
+      "path": "current-engine-review.md",
+      "sha256": "e9dbf9facaedcf40d0d67f7a3cc132a001462746840e628bcc29c8345024ca05"
+    },
+    {
+      "path": "current-engine-source-hashes.json",
+      "sha256": "8acf38edcad26a56230db20bd31785f2202ea1e8cfe5eb873b1c7d8d7669ac9f"
+    }
+  ],
+  "embedded_raw_streams": {
+    "stdout": {
+      "bytes": 1758,
+      "sha256": "53344ab756459456c1bb764c9b0e7e8a0478c279acbce04d1fb25f9de606e06d",
+      "readable_copy_matches_after_crlf_normalization": true
+    },
+    "stderr": {
+      "bytes": 999,
+      "sha256": "86bd48d321f40678a5ae593bef97917aa6de20b6da110ce62690c164a86c7c4f",
+      "readable_copy_matches_after_crlf_normalization": true
+    }
+  },
+  "recorded_historical_inventories": {
+    "typed_before_after_equality": true,
+    "root_count": 4,
+    "entry_counts": [
+      142,
+      27,
+      27,
+      44
+    ],
+    "live_roots_reobserved_by_reviewer": false
+  },
+  "limits": [
+    "Only source/AST/data checks performed by reviewer; product/tests/capture/native code not imported or executed",
+    "Ignored original bin files and historical roots not reread live; equality verified in committed records",
+    "Six passing methods are attributed to repair worker; Win32 mapping/identity inputs simulated",
+    "No native SUBST reproduction, full engine acceptance, target adoption or provider mutation"
+  ],
+  "preserved_producer_and_metadata": {
+    "src/distribution/assembly.py": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70",
+    "src/skills/pr/skill-package.yaml": "e85987a6d2fc7f3c0276d99284c6612b1e314a729f4d4e8a8d90fc93d2153a86",
+    "src/skills/local-backlog/skill-package.yaml": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d"
+  }
+}
