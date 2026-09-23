@@ -1,0 +1,145 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-346",
+  "workflow_id": "2026-09-23-instruction-operations",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T09:47:04+08:00",
+  "updated_at": "2026-09-23T09:49:51+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Coordinator-declared independent task selection; no independent runtime attestation. No sub-agents or executor-created conversations.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346",
+  "finding_ids": [],
+  "decision_ids": [
+    "D342-01",
+    "D342-02"
+  ],
+  "scope": {
+    "target": "Metadata v3 instruction operations and common reviewer source, followed by coordinator-assigned exact mapping",
+    "files": [
+      "src/distribution/package.py",
+      "src/distribution/codex.py",
+      "src/distribution/selection.py",
+      "src/adapters/codex/skill-entry.md.template",
+      "src/skills/code-reviewer/",
+      ".dev/design/framework-next/instruction-operations/",
+      ".dev/workflows/2026-09-23-instruction-operations/"
+    ],
+    "constraints": [
+      "U001",
+      "One writer in assigned F:/framework-next/346 worktree",
+      "Preserve v1/v2 metadata and P3 source",
+      "Mapping pending explicit coordinator actual-source handoff"
+    ],
+    "non_goals": [
+      "Product execution, tests or CI",
+      "Unassigned mapping, other skill source, indexes, root activation",
+      "Push, PR, merge, Issue/Project mutation, release or adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read live Issue and fixed authority",
+      "Implement source and direct consumers",
+      "Perform only permitted bounded static checks",
+      "Return coherent local checkpoint before mapping assignment"
+    ],
+    "validation": [
+      "Direct syntax/content/reference/Git and exact planned message only"
+    ],
+    "last_completed_step": "Source implementation and permitted direct syntax/content/reference checks completed",
+    "next_action": "Return exact committed source checkpoint, then await coordinator actual-source mapping handoff in the same task; no push"
+  },
+  "delivery": {
+    "source": "implemented-source-only",
+    "mapping": "awaiting-coordinator-handoff",
+    "package": {
+      "id": "code-reviewer",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "members": [
+        "SKILL.md",
+        "skill-package.yaml",
+        "references/review.md"
+      ],
+      "public_operations": [
+        {
+          "id": "review",
+          "execution": "instruction",
+          "instructions": "references/review.md"
+        }
+      ]
+    }
+  },
+  "results": {
+    "summary": "Metadata-v3 union/null-config source, explicit Codex projection guidance and the three-member reviewer implemented. Bounded static checks completed; mapping remains unassigned and all behavioral verification is deferred under U001.",
+    "files_changed": [
+      "src/distribution/package.py",
+      "src/distribution/codex.py",
+      "src/distribution/selection.py",
+      "src/adapters/codex/skill-entry.md.template",
+      "src/skills/code-reviewer/SKILL.md",
+      "src/skills/code-reviewer/skill-package.yaml",
+      "src/skills/code-reviewer/references/review.md",
+      ".dev/design/framework-next/instruction-operations/implementation.md",
+      ".dev/workflows/2026-09-23-instruction-operations/workflow.yaml",
+      ".dev/workflows/2026-09-23-instruction-operations/workflow-plan.md",
+      ".dev/workflows/2026-09-23-instruction-operations/tasks/ISSUE-346.json",
+      ".dev/workflows/2026-09-23-instruction-operations/reports/remediation-report.md"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Behavior, compatibility and real reviewer use remain unverified until P7.",
+    "follow_up_needed": true,
+    "checks_performed": [
+      {
+        "command": "git rev-parse --show-toplevel; git branch --show-current; git rev-parse HEAD; git rev-parse --path-format=absolute --git-common-dir; git status --porcelain=v1 (separate invocations)",
+        "result": "Matched assigned worktree, branch, exact starting commit and persistent common Git directory; initially clean"
+      },
+      {
+        "command": "gh issue view 346 --repo YuChia-Wei/ai-collaboration-framework --json number,title,body,state,url",
+        "result": "OPEN; source assignment read back using scoped network escalation after sandbox proxy failure"
+      },
+      {
+        "command": "python -B - (pathlib UTF-8 decoding, ast.parse, json.loads, yaml.safe_load and local Markdown link existence; no product imports)",
+        "result": "12 UTF-8 files, 3 Python ASTs, 2 YAML documents, 1 JSON document, 1 frontmatter and 14 local links"
+      },
+      {
+        "command": "python -B - (AST literal-key read, stdlib Template syntax/identifier read and portable-package literal scan)",
+        "result": "Seven template identifiers match the literal projection keys; no source-only path/U001/program literals in the three package members; no template rendering"
+      },
+      {
+        "command": "git grep -n -F 'project_entry(' -- '*.py'",
+        "result": "One definition and one actual caller in selection.py; caller supplies explicit configuration"
+      },
+      {
+        "command": "git diff --check; git diff -- selected-source-paths; git status --short --untracked-files=all (separate invocations)",
+        "result": "No whitespace errors; source diff and exact 12-path scope inspected"
+      },
+      {
+        "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-source.txt --workflow-id 2026-09-23-instruction-operations",
+        "result": "Passed for complete planned message; git check-ignore confirmed the message file is ignored. The same message bytes are used by git commit -F."
+      }
+    ]
+  },
+  "verification": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "P7 selects redesigned checks after implementation",
+    "scope": [
+      "Product CLI/help",
+      "Schema validation",
+      "Tests/fixtures",
+      "Build/package/install/migration/compatibility",
+      "Independent audits/leases/effective-rule packets",
+      "CI"
+    ]
+  }
+}
