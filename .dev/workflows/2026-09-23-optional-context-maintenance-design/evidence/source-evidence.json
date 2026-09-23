@@ -1,0 +1,197 @@
+{
+  "record_kind": "issue-352-design-source-observation",
+  "generated_at": "2026-09-23T10:15:46.8921289+08:00",
+  "source_commit": "731d658b6004110fd59224ca39aa3a5d63891d91",
+  "generator": "Direct Git blob identity, raw worktree SHA-256 and read-only gh issue view; no product execution",
+  "scope": "Selected context policy, authoring source and public P3/P5/P4/layout interfaces",
+  "exclusions": [
+    "Product behavior",
+    "Schema validation",
+    "Tests",
+    "Active transaction inventory",
+    "Full repository/format inventory",
+    "Independent review",
+    "CI"
+  ],
+  "discovery": "Explicit tracked-file fallback. Shared graph SHA/coverage unavailable; no index query or mutation under assigned shared-index prohibition.",
+  "reproduction": "At source_commit, read named anchors and git rev-parse <commit>:<path>; worktree_sha256 identifies observed checkout bytes, which may differ from Git blobs by line endings. Provider results are timestamped observations, not future state.",
+  "sources": [
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "4cdde146e53b03815b601e78c6f80c4a83365b75",
+      "id": "E01",
+      "anchor": "purpose, outputs, constraints, workflow",
+      "path": ".ai/assets/skills/ai-context-auditor/skill.yaml",
+      "claim": "Transient scoped read-only auditing and optional durable assessment; product source/test exclusions.",
+      "worktree_sha256": "5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "392013838cce16c982d24a90fd3706e9c06114bd",
+      "id": "E02",
+      "anchor": "Transient Direct Mode; Standalone Durable Assessment Mode",
+      "path": ".ai/assets/skills/ai-context-auditor/references/output-contract.md",
+      "claim": "Conversation-only mode exists; durable source audit uses locator/report/index and preserves baseline.",
+      "worktree_sha256": "7e3766e9a3c9035ec21c59a8c4074494c3d69f642fb131f46dc2cfc00f8b9e32"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "e067c5532ef8cc9f87b36686d79e52ad2578fec6",
+      "id": "E03",
+      "anchor": "purpose, outputs, constraints",
+      "path": ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "claim": "Current combined governance, ledger, routing, wrapper and remediation responsibility.",
+      "worktree_sha256": "fd10be428b4207d300cba71970544ed9c6a108774dc6666f500fb13e995e5f3f"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "6dbf587ef853f18683c88a1e6d680d721dbdf200",
+      "id": "E04",
+      "anchor": "Ownership Boundary; Assessment Identity; Assessment Lifecycle",
+      "path": ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
+      "claim": "Source locator/index/finding identities and final-conclusion protection; persistence is not workflow or remediation authority.",
+      "worktree_sha256": "9b9fe995f8bfb1ecf273d0f3ed7da16f25dacd630b5fb05ab70c721bf8bde080"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "558c458e2ebbed2e8dc734a15dfb8834c6d5191c",
+      "id": "E05",
+      "anchor": "main",
+      "path": ".ai/scripts/artifact-authoring.py",
+      "claim": "Static public CLI definition: catalog/routes/preview/apply/recover; no invocation performed.",
+      "worktree_sha256": "97d13664594dc32db0e37005ccd323c8ee329b42a96651134e6e96f6537f9342"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "aa92ca8f40c84b0837be8a974d59ecfa1c0c4553",
+      "id": "E06",
+      "anchor": "OPERATIONS; assessment; catalog; recover",
+      "path": ".ai/scripts/artifact_authoring.py",
+      "claim": "Existing source operations, current-template boundary, immutable non-draft assessment and restricted journal recovery. No acceptance claim.",
+      "worktree_sha256": "fa6edc7a007e757e1c061fdb3e9a49c1af91fe29a2813fc316ad1054cf139389"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "b6986be6402caed409a4dac1672eed586ce2d9fc",
+      "id": "E07",
+      "anchor": "Request and result; ADR content and lifecycle",
+      "path": "src/skills/adr/references/operations.md",
+      "claim": "Public query/create/decide/derive interface; acceptance is distinct from implementation/rule adoption.",
+      "worktree_sha256": "7cf60de7bc560c7be7fefc1dc399fb557882846818eca710a78f8a4375b73ee7"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "2fbe961898a72bb8c753b02b4035a8095a067675",
+      "id": "E08",
+      "anchor": "Lesson content, lifecycle and compatibility",
+      "path": "src/skills/lesson/references/operations.md",
+      "claim": "v2 candidate/accept; read-only v1 and explicit derive; accepted learning is not a rule.",
+      "worktree_sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "daff1533f65e26b17e420e9e68524c89000b2f4e",
+      "id": "E09",
+      "anchor": "Proposal content and lifecycle",
+      "path": "src/skills/standards-promotion/references/operations.md",
+      "claim": "Proposal captures existing target/config/sources and real query evidence; no apply/import/migration.",
+      "worktree_sha256": "6e22b7519af5edb7972e5c7c66a009b669977973c8b235a216fc755bd5cd629f"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "b46bdeeb44092f66ec01149f5e3bcb45422931c8",
+      "id": "E10",
+      "anchor": "Four facts; Independent observation dimensions",
+      "path": "src/skills/standards-promotion/references/authority.md",
+      "claim": "Proposal/adoption/rule bytes/effect separate; local mapped evidence is not authentication or runtime enforcement proof.",
+      "worktree_sha256": "3df9b1f1ddfdc6aaf1df05d6b027b47144faa362e718e02a8e3218dc2d132792"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "bd5672f67b8cf9dde872f8acd9796d8a6a02bc40",
+      "id": "E11",
+      "anchor": "Authorities; Lifecycle; Fail-Closed Rules; Skill Boundaries",
+      "path": ".ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md",
+      "claim": "Current initialized-target ledger/provenance/effective-state/packet authority and owners, distinct from source mode.",
+      "worktree_sha256": "ffae037447082a2cfd14513cc9b030f3f4674325e6608db1281cf9752771be87"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "7e64a71dd7eeb73cd894708649f05398b105bb25",
+      "id": "E12",
+      "anchor": "One source and explicit consumers; Runtime projection and ownership conflicts; Whole replacement, delta I/O and recovery",
+      "path": ".dev/design/framework-next/source-layout/design.md",
+      "claim": "Selected design separates managed core/lock/runtime from project custom/data; P6 owns apply/recovery and root cutover remains future.",
+      "worktree_sha256": "0c2d2ca43ba709615f3017fe9ba6537b5f271d44f082f3eed0d8c727146f4875"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "0427cec4ab0c4158677695fb5ba6235434322b57",
+      "id": "E13",
+      "anchor": "D342-03 to D342-06; Exact metadata-v3 boundary; M01 handoff to P6",
+      "path": ".dev/design/framework-next/p5-selected-contract.md",
+      "claim": "Optional maintenance, no automatic old conversion, explicit null config/instruction union and P6 installation/M01.",
+      "worktree_sha256": "82719f9120854254ef057c9c66669b35816116e9031984177e5835e6fe94053a"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "f6e1b8501e9ab3227d5d2b431af36985e63686ac",
+      "id": "E14",
+      "anchor": "Legacy families F05/F07/F15; Other closed and generated formats",
+      "path": ".dev/design/framework-next/capability-consolidation/format-ownership.md",
+      "claim": "Context and assessment format decisions remain bounded; retired history does not abandon active original recovery.",
+      "worktree_sha256": "e5d5f668f77798a6a44c61fdc4d077d174085de808dbed56b5d686c39816bb98"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "b205b7767c850bcd8fe1e4e9aeb0c1471a1a09f7",
+      "id": "E15",
+      "anchor": "entire metadata",
+      "path": "src/skills/code-reviewer/skill-package.yaml",
+      "claim": "Actual three-member metadata-v3 instruction package uses null config and empty record/tool/dependency sets.",
+      "worktree_sha256": "e148f733d0270efbd139e05ec4257d9f25bf5ab6f34ad0d4093ea7cdf2e0f453"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "6f6eca4632227fae2b5babb2bb0fb7e51fdf68c8",
+      "id": "E16",
+      "anchor": "C341-02; candidate handoff paragraph",
+      "path": ".dev/design/framework-next/p4-selected-contract.md",
+      "claim": "Selected semantic candidates only; actual receiving references required, no private imports or implied acceptance.",
+      "worktree_sha256": "a669481a4811f4a7e62ccfe85d9962f37222f0949b79c5076292bd12f9bd78c1"
+    },
+    {
+      "verification": "static-inspection-only",
+      "git_blob": "e2c2669b8986383b19b41f272b54fed4e2b759c3",
+      "id": "E17",
+      "anchor": "Execution And Ownership; Verification During The Transition",
+      "path": ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
+      "claim": "Assigned F: worktree, no agents/new tasks, limited checks, commit-message exception and local handoff.",
+      "worktree_sha256": "0e2b4927d1a86a7626bc2eaf97555e25fda0cfd245bf4ad6447fe1eef557126d"
+    }
+  ],
+  "provider_observations": [
+    {
+      "observed_at": "2026-09-23T10:15:46.0826372+08:00",
+      "command": "gh issue view 352 --repo YuChia-Wei/ai-collaboration-framework --json number,title,body,state,url",
+      "result": {
+        "body": "ai-context 系列在一般下游應為選配。承接 #342 D342-03/D342-06，設計 ai-context-auditor / ai-context-governance 的最小可攜責任，評估 assessment 是否真的需要自有持久格式，不把 source release、全域治理與舊升級機器搬進下游。\n\n只寫 .dev/design/framework-next/optional-context-maintenance/ 及 .dev/workflows/2026-09-23-optional-context-maintenance-design/。\n\n- 以目前 Git-tracked 實際規則、工具與 #316 工作範圍為證據，區分可攜讀取分析、專案規範編修、source 自我維護、P6 安裝更新，以及應保留的歷史／現役恢復責任。\n- 先比較 prose-only optional audit + caller export、reuse project-selected structured format、自有最小 assessment record 三種方案。若推薦新 schema，明列真正 producer/read/query/validate/finalize/version/migration owner，stable identity、finalized conclusion protection、修訂／取代、明確來源及狀態。不要為紀錄本身再建 workflow/audit/receipt 鏈。\n- 定義 custom/protected core 邊界、caller-selected paths/template/tracking、缺少語意權威時的處置。對變成專案規範的建議，採用已存在 ADR/Lesson/standards-promotion 公開契約的可選交接；不暗自採納或直接呼叫私有實作。\n- 分析仍必要的 customization/semantic ledger 責任，能移除就給理由，必要狀態則限縮並指定單一 owner。不要建立 universal effective-rule engine、mandatory common runtime 或要求一般專案頻繁改 AI 規範。\n- 提供兩項 skill 可獨立選用的 entry/operation 草案、缺席行為、最小實作 slices、確切檔案 ownership、未解決決策及 P7 應觀察結果。安裝／更新與 M01 屬 P6；root 舊 route 不在本次啟用或刪除。\n\n完整設計與替代方案落地後回交統籌；不以 schema 的存在當成實作，不把 optional 維護變成一般任務的 prerequisite。\n屬於 program #322，依 U001 / .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md 執行。這是設計 Issue；不授權 src 實作、根目錄切換、舊文件轉換或刪除。使用一個獨立 gpt-6-astra / ultra 對話與統籌指定 F:/framework-next/<issue>/ worktree，不使用 sub-agents 或另建對話。保留 F:/ai-context-tests 與其他 worktree。\n\n只做必要的直接內容、UTF-8/JSON/YAML/AST 語法、參照、Git/diff 與完整 commit-message 檢查；product CLI/help、schema validation、tests/fixtures、build/install/migration、legacy validators、audit/lease 與 CI 一律 deferred-by-owner，owner program #322 coordinator / P7。完成本機設計 commit 與 final handoff 即停止；統籌唯讀收取交付並負責 shared files、push/PR/online merge。語法檢查不代表產品驗證。",
+        "number": 352,
+        "state": "OPEN",
+        "title": "P5-E: design optional context maintenance and assessment ownership",
+        "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/352"
+      }
+    },
+    {
+      "observed_at": "2026-09-23T10:15:46.8918220+08:00",
+      "command": "gh issue view 316 --repo YuChia-Wei/ai-collaboration-framework --json number,title,body,state,url",
+      "result": {
+        "body": "## Problem and accepted direction\n\nManual creation and maintenance of workflow and assessment bundles requires synchronized locator metadata, task records, template versions and index rows. The schema lifecycle assessment ASM-20260921-18-gav observed two preparation failures: workflow references supplied as paths instead of IDs, and an index title that did not exactly match its locator. The owner reviewed the report on 2026-09-21 and authorized proceeding in the proposed sequence.\n\n## Bounded P1 scope\n\nProvide one Python authoring entry point with family-specific operations for AI-context maintenance workflows and AI-context audit assessments. Support deterministic bundle creation, adding tasks, explicit task transitions, controlled locator metadata updates and draft assessment finalization. Reuse canonical templates and existing validator semantics. Provide a minimal capability declaration with explicit readable/writable/migration dispositions; unsupported versions remain rejected without rewriting historical records.\n\nProtect IDs, creation timestamps, assessed subjects and finalized conclusions. Synchronize only the selected index row. Preview planned changes, detect stale inputs, preserve unrelated prose and extension fields, and retain actionable recovery evidence for interrupted multi-file writes. Share mechanical helpers without duplicating semantic authority or claiming multi-file filesystem atomicity.\n\n## Acceptance\n\n1. Minimal semantic inputs produce complete workflow/assessment bundles accepted by existing validators; paths, template versions and index rows are derived.\n2. Invalid and missing relations are diagnosed before writing; workflow references use IDs.\n3. Title/status/update time changes synchronize the exact index row without rewriting unrelated rows or report prose.\n4. Task transitions preserve a single active task and require caller-supplied truthful completion observations; no default creates a passed result.\n5. Independent negative tests cover immutable identity/subject/final conclusions, collisions, unknown versions, concurrent edits and path escape.\n6. Injected write failures and interruption leave bounded, recoverable evidence; recovery never overwrites external edits.\n7. Comments and extension fields have an explicit preservation policy; dry-run changes no tracked files and fixed inputs render deterministically.\n8. Compatible optional and incompatible required contract evolution have independent regression oracles.\n9. Existing CLI/profile/package registrations remain compatible. Run focused tests and applicable packaging checks, then independent verification on an immutable subject.\n10. Deliver an explanation of motivation, behavior changes, retained/relaxed rules, measured mechanics and actual validation limits.\n\n## Boundaries and authorization\n\nOwner authorization: after reviewing the report, the owner said to follow the arranged process and begin the next step. This authorizes local bounded P1 implementation, workflow tracking and applicable verification. P2-P4 broad producer migrations and test/validator removals are deferred. This issue does not authorize push, PR, merge, Issue closure, Project-field changes, release allocation, publication or downstream adoption.\n\nRelated: closed #312 and #313; analysis workflow 2026-09-21-schema-artifact-lifecycle. Do not reopen prior issues or absorb #307/#308/#309.\n\n<!-- created-by: OpenAI Codex (gpt-6-astra, ultra) <noreply@openai.com> -->",
+        "number": 316,
+        "state": "OPEN",
+        "title": "Add deterministic workflow and assessment authoring with guarded multi-file updates",
+        "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/316"
+      }
+    }
+  ]
+}

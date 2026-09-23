@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T10:00:35+08:00",
-  "updated_at": "2026-09-23T10:05:06+08:00",
+  "updated_at": "2026-09-23T10:24:44+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -45,14 +45,14 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Independent design task dispatched; runtime and first F: identity read back",
-    "next_action": "Receive bounded local design checkpoint"
+    "last_completed_step": "Clean design received, bounded inspection and coordinator selections completed",
+    "next_action": "Online design integration and separately assigned source work"
   },
   "results": {
-    "summary": "Design selected; no delivery yet",
+    "summary": "Bounded design selected; source and P7 verification separate",
     "files_changed": [],
     "tests_run": [],
-    "finding_status": "not-addressed",
+    "finding_status": "partially-resolved",
     "residual_risk": "Design selection, implementation and P7 verification remain future work",
     "follow_up_needed": true
   },
@@ -67,9 +67,12 @@
     "worktree_verified": "First repository command actual F: cwd/root/branch/HEAD/common-dir and clean status match"
   },
   "delivery": {
-    "contract_status": "pending",
+    "contract_status": "selected",
     "implementation_status": "outside design Issue",
-    "verification_state": "deferred-by-owner"
+    "verification_state": "deferred-by-owner",
+    "design_commit": "ecf27befc599aa3ee589dff36d0597f0d1c24a8b",
+    "selected_contract": ".dev/design/framework-next/p5-final-capability-contract.md",
+    "integration_status": "locally integrated; online pending"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PYgE"
 }

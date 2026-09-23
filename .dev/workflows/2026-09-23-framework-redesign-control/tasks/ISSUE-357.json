@@ -1,0 +1,75 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-357",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T10:24:44+08:00",
+  "updated_at": "2026-09-23T10:30:37+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/357",
+  "phase": "P5-G",
+  "scope": {
+    "target": "Optional context maintenance instruction packages",
+    "files": [
+      "src/skills/ai-context-auditor/",
+      "src/skills/ai-context-governance/",
+      ".dev/design/framework-next/optional-context-implementation/",
+      ".dev/workflows/2026-09-23-optional-context-implementation/"
+    ],
+    "constraints": [
+      "U001",
+      "one independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "p5-final-capability-contract.md; preserve other writers",
+      "coordinator owns shared mapping and first push"
+    ],
+    "non_goals": [
+      "shared source/manifest/profile/adapter/root/index changes",
+      "product CLI/help/schema validation/tests/build/install/migration/CI",
+      "legacy conversion/deletion/provider/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify exact F: identity and selected design",
+      "Implement actual own complete package members",
+      "Return coherent local source commit and public interface/member handoff"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact planned commit-message only"
+    ],
+    "last_completed_step": "Independent Astra Ultra task dispatched; runtime row and first F: command observed",
+    "next_action": "Receive coherent local source and inspect actual package closure"
+  },
+  "results": {
+    "summary": "Independent source task active in assigned F: worktree",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Actual source/behavior/mapping pending; P7 deferred",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0cc19-2820-7061-9c6e-e5f305fdfbaf",
+    "worktree": "F:/framework-next/357",
+    "branch": "codex/2026-09-23-optional-context-implementation",
+    "workflow_id": "2026-09-23-optional-context-implementation",
+    "starting_commit_source": "containing coordinator checkpoint",
+    "starting_commit": "59877b8d2f61e9a95615ea95d597fe35da2f44cf",
+    "evidence": "evidence/p5-final-source-dispatch.json"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p5-final-capability-contract.md",
+    "implementation_status": "active; no delivery yet",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PhEc"
+}
