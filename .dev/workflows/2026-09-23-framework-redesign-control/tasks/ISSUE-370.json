@@ -5,9 +5,9 @@
   "task_id": "ISSUE-370",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T15:05:56+08:00",
-  "updated_at": "2026-09-23T15:32:56+08:00",
+  "updated_at": "2026-09-23T16:00:37+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -43,17 +43,17 @@
     "validation": [
       "Direct content/syntax/reference/Git and complete planned-message checks only"
     ],
-    "last_completed_step": "Fixed-source review delivered; P1 CR-001 unresolved and assigned #371",
-    "next_action": "Independently inspect affected fixed source after #371 loader repair; native obligations remain separate"
+    "last_completed_step": "Independent affected-source review returned clean; source finding resolved",
+    "next_action": "Coordinator online PR integration and bounded closure; public/native obligations stay with #322 / V3"
   },
   "results": {
-    "summary": "Fixed-source review delivered; P1 CR-001 unresolved and assigned #371",
+    "summary": "CR-001 resolved in fixed source; no new substantiated source defect; runtime gaps retained",
     "files_changed": [],
     "tests_run": [
       "Ten EnginePin source blobs/raw bytes match fixed subject; AST/read-only checks",
       "Source review only; no runtime reproduction or product/native trial"
     ],
-    "finding_status": "partially-resolved",
+    "finding_status": "resolved-in-source",
     "residual_risk": "Source review cannot establish actual native behavior",
     "follow_up_needed": true
   },
@@ -70,10 +70,22 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
-    "implementation_status": "partial; Issue remains open",
-    "verification_state": "selected results recorded; remaining obligations unfulfilled/deferred-by-owner",
+    "implementation_status": "bounded source/review complete; online integration pending",
+    "verification_state": "CR-001 independently resolved in source; 10 worker-run loader tests passed; public/native unestablished",
     "commit": "6de20bfeb059d74f1ba0ede96c28d312db04235f",
-    "integration_report": "reports/p7-implementation-checkpoint.md"
+    "integration_report": "reports/p7-implementation-checkpoint.md",
+    "checkpoint_pr": 372,
+    "checkpoint_merge": "3a21b0eb58e80752df010e7277aec55725b3061e",
+    "affected_review": {
+      "source_commit": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+      "delta_base": "fe6c63f87cb54e166fc796fd315f11e3c2212823",
+      "state": "returned; CR-001 resolved in source, no new substantiated defect",
+      "worktree": "F:/framework-next/370",
+      "thread_id": "01a0cd16-e671-7ae0-9f31-9ac1fd1e9b2a",
+      "scope": "Bootstrap loader delta plus test/evidence inspection; no runtime execution",
+      "review_commit": "066a964efe95062179bb1eff1376fc4b73aecb17"
+    },
+    "closure_disposition": "terminal-close for bounded source/review only; remaining V3 obligations tracked by #322"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RObw",
   "project_state": "In progress; Status only mutated; no other single-select values observed"

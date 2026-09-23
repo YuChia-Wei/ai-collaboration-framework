@@ -1,0 +1,73 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-373",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T16:00:37+08:00",
+  "updated_at": "2026-09-23T16:00:37+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/373",
+  "phase": "P7-V2",
+  "scope": {
+    "target": "Bounded actual public skill C4/C6 and T1-T7 checks",
+    "files": [
+      "tests/framework_next/test_knowledge.py",
+      "tests/framework_next/test_work.py",
+      "tests/framework_next/test_cbf.py",
+      "tests/framework_next/run.py (public dispatch only)",
+      "tests/framework_next/README.md",
+      ".dev/workflows/2026-09-23-public-skill-checks/",
+      ".dev/design/framework-next/public-skill-checks/"
+    ],
+    "constraints": [
+      "One independent Astra Ultra conversation, assigned F: checkout, no agents/callbacks",
+      "No product, helper, contracts/native, pipeline, root or shared-index edits",
+      "Direct committed resource fixtures are not candidate assembly/installation",
+      "One family at a time; caps and stop-on-shared-setup-failure per live Issue",
+      "No live provider writes/gh invocation, path fallback or blocked-write takeover"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify fixed F: worktree and live Issue",
+      "Read actual owner tools and fixed helper; implement selected public tests",
+      "Run one family at a time with real CLI and retain failures/limits",
+      "Return coherent local checkpoint and actual caller interface"
+    ],
+    "validation": [
+      "Only assigned T1-T7/C4/C6 focused public tests and labelled provider simulations",
+      "Direct syntax/reference/scope/Git and complete planned-message check"
+    ],
+    "last_completed_step": "Issue created, Project Planned read back; not dispatched",
+    "next_action": "Create assigned worktree and independent task from containing checkpoint"
+  },
+  "results": {
+    "summary": "V2 selected; no implementation or result claimed",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "No actual candidate/native/adoption evidence; product defects require separate repair",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/373",
+    "branch": "codex/2026-09-23-public-skill-checks",
+    "workflow_id": "2026-09-23-public-skill-checks",
+    "output_root": "F:/framework-next/p7-runs/373-public",
+    "starting_commit_source": "Containing coordinator checkpoint"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
+    "implementation_status": "not started",
+    "verification_state": "selected public cases not executed"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RtFs",
+  "project_state": "Planned; Status only; live OPEN and no other single-select values"
+}

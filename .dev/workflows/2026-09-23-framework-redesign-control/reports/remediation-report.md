@@ -145,3 +145,7 @@ PR #367 merged; #364/#365 are CLOSED/COMPLETED and Project Done by read-back. #3
 ## P7 selected execution active
 
 #368/#369 are active independent Astra Ultra tasks with actual F: identity and live Project In progress read back. #370 is a separately selected read-only installation review on fixed product bytes; it cannot count as native execution or silently repair the subject. Runtime/dispatch identity is retained in evidence/p7-implementation-dispatch.json. No implementation/test result is yet claimed.
+
+## First P7 execution checkpoint and source-pin repair
+
+PR #372 retained actual partial contracts and dormant source gates. #368 remains failed/approval-blocked; #369 has 28 passing focused selector tests but policy/public/native work remains incomplete. Initial independent review #370 found CR-001; #371 returned a narrow source-only loader repair and nine passing focused tests, with one public-entry refusal retained. [Affected source review](p7-source-pin-repair.md) is active. No F-01 through F-08 finding is finally closed; root adoption and CI restoration remain unperformed. All nine registered workflows are explicitly disabled.

@@ -63,9 +63,35 @@ def _direct(target: Path, *, directory: bool = False) -> None:
         raise ValueError("bootstrap path budget")
 
 
+class _VerifiedSourceFinder:
+    """Load only the local closure, from bytes retained after pin verification."""
+
+    def __init__(self, sources):
+        self.sources = sources
+
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname != "distribution" and not fullname.startswith("distribution."):
+            return None  # Host stdlib/PyYAML retain their existing import boundary.
+        if fullname not in self.sources:
+            raise ImportError("module outside fixed engine closure")
+        filename, _ = self.sources[fullname]
+        locations = [str(filename.parent)] if fullname == "distribution" else None
+        return importlib.util.spec_from_file_location(fullname, filename, loader=self,
+                                                     submodule_search_locations=locations)
+
+    def create_module(self, spec):
+        return None
+
+    def exec_module(self, module):
+        filename, content = self.sources[module.__spec__.name]
+        # Never ask a SourceLoader for code: even -B can read a valid old .pyc.
+        exec(compile(content, str(filename), "exec", dont_inherit=True), module.__dict__)
+
+
 def main() -> int:
     global _framework_bootstrap, _framework_bootstrap_bytes
     operation = "inspect"
+    finder = None
     try:
         if len(sys.argv) != 1 or not sys.flags.isolated or not sys.flags.dont_write_bytecode or sys.version_info < (3, 10):
             raise ValueError("requires isolated Python 3.10+ with -B and no options")
@@ -92,6 +118,7 @@ def main() -> int:
             raise ValueError("executing root")
         _direct(root, directory=True)
         total = len(raw)
+        sources = {}
         for expected, row in zip(ENGINE_FILES, rows):
             if type(row) is not dict or set(row) != {"path", "sha256"} or row["path"] != expected or type(row["sha256"]) is not str or not re.fullmatch(r"[0-9a-f]{64}", row["sha256"]):
                 raise ValueError("engine file binding")
@@ -105,6 +132,9 @@ def main() -> int:
             signature = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns)
             if len(content) > FILE_LIMIT or total > TOTAL_LIMIT or signature(before) != signature(after) or hashlib.sha256(content).hexdigest() != row["sha256"]:
                 raise ValueError("engine bytes")
+            if expected.startswith("src/distribution/"):
+                name = "distribution" if expected.endswith("/__init__.py") else "distribution." + target.stem
+                sources[name] = (target, content)
         if any(name == "distribution" or name.startswith("distribution.") for name in sys.modules):
             raise ValueError("preloaded product modules")
         # -I excludes cwd/PYTHONPATH/user site. Explicit host Python/venv and
@@ -112,19 +142,17 @@ def main() -> int:
         import yaml
         if str(getattr(yaml, "__version__", "")).split(".")[0] != "6":
             raise ValueError("PyYAML 6 required")
-        # Load exactly the known package, without putting the checkout on
-        # sys.path where local files could shadow host standard/dependency modules.
-        package_spec = importlib.util.spec_from_file_location("distribution", root / "src/distribution/__init__.py",
-                                                            submodule_search_locations=[str(root / "src/distribution")])
-        if package_spec is None or package_spec.loader is None:
-            raise ValueError("fixed package loader")
-        package = importlib.util.module_from_spec(package_spec)
-        sys.modules["distribution"] = package
-        package_spec.loader.exec_module(package)
+        # Intercept package initialization and every transitive/lazy local import.
+        # Keep the checkout off sys.path so host dependencies cannot be shadowed.
+        finder = _VerifiedSourceFinder(sources)
+        sys.meta_path.insert(0, finder)
+        import distribution
         _framework_bootstrap = (str(root), pin)
         _framework_bootstrap_bytes = total
         from distribution.installation import execute
     except (OSError, ValueError, TypeError, KeyError, ImportError, UnicodeError, RecursionError, OverflowError):
+        if finder is not None:
+            sys.meta_path.remove(finder)
         details = None
         if operation in {"apply", "recover"}:
             details = {"managed_state": "unsupported", "project_readiness": "not-assessed", "lock_sha256": None,
@@ -146,6 +174,8 @@ def main() -> int:
         # Never turn a dispatch/output failure into a fabricated unchanged result.
         sys.stderr.write("Maintenance dispatch or result delivery was interrupted. Preserve operation storage and inspect current state; no success/unchanged result is established.\n")
         return 2
+    finally:
+        sys.meta_path.remove(finder)
 
 
 if __name__ == "__main__":
