@@ -1,0 +1,60 @@
+{
+  "workflow_id": "2026-09-23-versioned-candidate",
+  "task_id": "VC01",
+  "owner_skill": "slice-implementer",
+  "status": "in_progress",
+  "created_at": "2026-09-23T22:34:24+08:00",
+  "updated_at": "2026-09-23T22:35:42+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "template_version": "1.5.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance": "Coordinator-dispatched model/effort; not independent runtime attestation.",
+  "mode": "generic",
+  "applicability_mode": "framework-source",
+  "authorization": "Issue #381, #322 U001 and direct user confirmation in this task: confirm stated scope and continue.",
+  "scope": "Explicit versioned assembly and shared selection/identity readers, complete profile and selected bounded tests only.",
+  "baseline": {
+    "worktree": "F:/framework-next/381",
+    "branch": "codex/2026-09-23-versioned-candidate",
+    "commit": "031233202f21e0793c9667cac872375d65e52be0",
+    "status": "clean"
+  },
+  "validation": [
+    {
+      "selection": "regressions",
+      "outcome": "passed",
+      "tests": 6,
+      "elapsed_test_seconds": 0.304,
+      "evidence": "evidence/regressions-01.txt",
+      "kind": "tiny synthetic source/lock/stable fixtures; actual shared readers",
+      "retained_files": 34,
+      "retained_bytes": 39430
+    },
+    {
+      "selection": "AST/JSON/YAML/readability/changed-links/scope/git diff --check",
+      "outcome": "passed"
+    },
+    {
+      "selection": "clean-commit complete public CLI assembly/read",
+      "outcome": "pending"
+    },
+    {
+      "selection": "public pinned-engine fixture plan",
+      "outcome": "pending"
+    }
+  ],
+  "results": {
+    "summary": "Versioned assembly/readers and complete profile implemented; six focused fixture tests passed. Clean-commit actual build/read and pinned fixture planning pending.",
+    "finding_status": "in_progress"
+  },
+  "deferrals": [
+    {
+      "outcome": "deferred-by-owner",
+      "authority": "#322 U001",
+      "owner": "program #322 coordinator / P7",
+      "scope": "Unselected legacy/full/history/profile matrices, formal packets, independent audit, CI/hosted gates",
+      "next_action": "Coordinator selects restored checks and owner adopts the exact P7 set."
+    }
+  ]
+}

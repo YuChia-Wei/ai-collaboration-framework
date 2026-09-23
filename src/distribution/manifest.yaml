@@ -1,5 +1,7 @@
 manifest_version: 1
 profiles:
+  - id: complete
+    path: src/profiles/complete.yaml
   - id: lesson-minimal
     path: src/profiles/lesson-minimal.yaml
   - id: knowledge

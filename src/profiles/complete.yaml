@@ -1,0 +1,41 @@
+profile_version: 1
+id: complete
+skills:
+  - id: lesson
+    version: 0.2.0
+  - id: adr
+    version: 0.1.0
+  - id: standards-promotion
+    version: 0.1.0
+  - id: pr
+    version: 0.1.0
+  - id: local-backlog
+    version: 0.1.0
+  - id: software-development-orchestrator
+    version: 0.1.0
+  - id: code-reviewer
+    version: 0.1.0
+  - id: requirement-author
+    version: 0.1.0
+  - id: spec-author
+    version: 0.1.0
+  - id: diagnostic-analyst
+    version: 0.1.0
+  - id: ddd-ca-hex-architect
+    version: 0.1.0
+  - id: bdd-gwt-test-designer
+    version: 0.1.0
+  - id: local-change-implementer
+    version: 0.1.0
+  - id: slice-implementer
+    version: 0.1.0
+  - id: problem-frame-author
+    version: 0.1.0
+  - id: spec-compliance-validator
+    version: 0.1.0
+  - id: ai-context-auditor
+    version: 0.1.0
+  - id: ai-context-governance
+    version: 0.1.0
+adapters:
+  - codex
