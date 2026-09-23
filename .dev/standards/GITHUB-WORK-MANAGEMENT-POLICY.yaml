@@ -1,3 +1,5 @@
+# Dormant source proposal: SOURCE-DEVELOPMENT-POLICY.md; not adopted or effective.
+# Comment-only pointer: all effective fields and applicable U001 remain unchanged.
 schema_version: "1.0"
 policy_id: "source-github-work-management"
 status: "active"

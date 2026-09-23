@@ -1,5 +1,10 @@
 # Repository Branch And Merge Policy
 
+Prospective applicability (dormant): the [source development policy](standards/SOURCE-DEVELOPMENT-POLICY.md)
+describes future source admission and handoff replacements. Dedicated branches,
+PR-only integration and distinct integration/terminal states remain. This pointer
+activates no lower gate and does not narrow the applicable U001 override.
+
 For this source repository's explicitly assigned program #322 work, apply the
 [temporary U001 execution override](standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
 before conflicting validation, handoff or integration gates below. Keep the

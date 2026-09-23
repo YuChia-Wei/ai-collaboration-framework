@@ -1,5 +1,10 @@
 # AI Context Source Release Policy
 
+Prospective applicability (dormant): ordinary source development has a separate
+[prospective policy](SOURCE-DEVELOPMENT-POLICY.md). This pointer changes no release,
+published-version, support or recovery contract and enables no publication flow.
+Any future release-format or applicability change needs its own scope and authority.
+
 ## Purpose And Distribution Boundary
 
 This source-only policy owns framework release preparation, source record
