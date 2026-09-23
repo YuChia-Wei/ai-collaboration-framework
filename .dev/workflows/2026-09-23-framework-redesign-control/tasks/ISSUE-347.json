@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T10:00:35+08:00",
+  "updated_at": "2026-09-23T11:53:11+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -49,8 +49,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Read-only preparation; automatic approval rejected assigned writes",
-    "next_action": "Await direct user confirmation requested by coordinator, then resume same task"
+    "last_completed_step": "Direct owner confirmation received in coordinator conversation; clean original F: worktree and Astra Ultra runtime row rechecked",
+    "next_action": "Fast-forward same original worktree to containing checkpoint and resume confirmed original writes; tool approval result remains to be observed"
   },
   "results": {
     "summary": "No source writes/commit delivered; automatic approval authorization recognition blocked",
@@ -72,8 +72,15 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p5-selected-contract.md",
-    "implementation_status": "blocked-by-approval-review",
+    "implementation_status": "owner-confirmed; same-task continuation pending",
     "verification_state": "deferred-by-owner"
   },
-  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPug"
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPug",
+  "owner_confirmation": {
+    "received_at": "2026-09-23T11:53:11+08:00",
+    "source_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+    "direct_user_reply": "確認 #346、#347 原定寫入範圍",
+    "scope_record": "reports/p5-owner-confirmed-resume.md",
+    "prior_rejections": "retained; new direct confirmation permits same original task to request scoped execution again"
+  }
 }

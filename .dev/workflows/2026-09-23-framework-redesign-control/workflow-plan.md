@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p6-adoption-plan`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p5-authorized-continuation`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -30,16 +30,16 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source online in PR #350; actual shared mapping pending |
 | #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design integrated PR #349; Issue/Project complete |
 | #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | design online PR #355; Issue/Project complete |
-| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source online; mapping blocked by automatic approval review |
-| #347 | P5-B engineering methods | five own instruction packages/design/workflow | write blocked by automatic approval review; awaiting direct confirmation |
+| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source online; original mapping directly confirmed, same task resuming |
+| #347 | P5-B engineering methods | five own instruction packages/design/workflow | original five-package writes directly confirmed, same task resuming |
 | #348 | P5-C portable authoring | two own instruction packages/design/workflow | source online PR #353; Issue/Project complete |
 | #351 | P5-D frame/compliance design | own design/workflow only | design online PR #358; Issue/Project complete |
 | #352 | P5-E optional maintenance design | own design/workflow only | design online PR #358; Issue/Project complete |
 | #354 | P6-B state/planning | own reader/plan modules and design/workflow | source online PR #360; Issue/Project complete; verification deferred |
 | #356 | P5-F frame/compliance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
 | #357 | P5-G optional maintenance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
-| #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | source inspected and locally integrated; online PR pending |
-| #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design selected and locally integrated; online PR pending |
+| #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | source online PR #362; Issue/Project complete; execution deferred |
+| #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design online PR #362; Issue/Project complete; adoption unperformed |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -57,7 +57,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate #359 source and #361 design online, then read back the provider receipt. After that checkpoint, resume #346/#347 only on the pending direct confirmation required by automatic approval review; complete actual mappings and remaining source before P7. #354/#356/#357 source is online in PR #360, with CLOSED/COMPLETED and Project Done read back. #359 is active under [the writer handoff](../../design/framework-next/p6-writer-handoff.md). #346 mapping and #347 engineering writes await the consolidated direct confirmation required by automatic approval review; no substituted writes. #351/#352 design is online PR #358 and CLOSED/Done. Product verification and CI remain deferred to P7.
+Current action: resume the original #346/#347 tasks under [the direct owner confirmation](reports/p5-owner-confirmed-resume.md). Their original scopes and F: worktrees are unchanged; observe actual tool admission before claiming the prior approval blocker cleared. #359/#361 are online through PR #362 with CLOSED/COMPLETED and Project Done read back. Complete actual source/mappings before P7; root adoption, product verification and CI remain deferred.
 
 ## P3 shared implementation continuation
 
@@ -94,3 +94,7 @@ PR #360 merged as `4b28710c39fed90acfd568cadbe3639ecb0ed722`; source Issues #354
 ## P6 maintenance and adoption return
 
 [Fixed-subject inspection and selection](reports/p6-maintenance-and-adoption-integration.md) records #359 source and #361 design. Both local worktrees were clean and tasks idle at handoff. The limited source/design checks passed; product behavior, root adoption and all final findings remain unverified. The live online receipt will be `.dev/ai-context/local/framework-next-control/p6-maintenance-adoption-readback.json`; no receipt exists merely because this locator is named. Source completion does not restore pipelines or begin P7.
+
+## Direct owner confirmation
+
+The owner directly confirmed “確認 #346、#347 原定寫入範圍”. [Scope and retained rejection history](reports/p5-owner-confirmed-resume.md) bind the reply to the same two tasks. No replacement writer or scope expansion is introduced. Their exact resumed checkpoint and first-command read-back will be recorded after dispatch.

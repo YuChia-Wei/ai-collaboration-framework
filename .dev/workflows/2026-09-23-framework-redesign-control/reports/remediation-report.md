@@ -100,3 +100,7 @@ PR #360 merged as `4b28710c39fed90acfd568cadbe3639ecb0ed722`; #354/#356/#357 are
 ## P6 source and adoption design return
 
 [Integration report](p6-maintenance-and-adoption-integration.md) selects actual #359 maintenance source and #361 concrete adoption design from their fixed local commits. Both bounded deliveries are locally complete; online PR/read-back is next. Root activation and native behavior remain unperformed. #346/#347 automatic approval blockers are unchanged; their direct confirmation is still pending, and P7 does not begin around those incomplete source/mapping dependencies.
+
+## Owner-confirmed original P5 continuation
+
+PR #362 is online; #359/#361 and Project state were read back completed. The owner subsequently replied directly “確認 #346、#347 原定寫入範圍”. [Original scope and continuation](p5-owner-confirmed-resume.md) resumes the same two tasks and preserves earlier automatic-review refusals. Actual tool admission and source delivery are still to be observed; no bypass, source expansion, root adoption or P7 execution is inferred.
