@@ -485,3 +485,27 @@ and Issue369 native scope/roots. Before P7 adoption, reconcile the recorded
 selector-to-regression and manual-admission gaps. Stable publication also needs
 a separately selected/adopted new-format contract; no release, tag, policy or
 CI restoration is implied by this closeout. C-001 remains unverified.
+
+
+## Target integrated; native expansion deferred by owner
+
+The user directly authorized dotnet-mq-arch-lab push/PR/online merge. Target PR16
+merged at cc0e345367a1d24f49bf8fa68e0eb668df9e5e55 from reviewed a17cc80.
+The seven commits and 222 diff paths were verified through three REST pages;
+the initial truncated 100-file read stopped before merge and remains recorded.
+The full tree is still 1f1bac4fcc564657ae8eddb4ee1c704cc85c7284. Current
+admission passed before push (21.335462 s) and after merge (32.807636 s). All
+48 original review artifacts / 346497 bytes matched; no tracked target bytes
+or review evidence changed. The target pilot checkout is clean. Issue15 stays
+open for later stable-version/update and rollback work; no release is claimed.
+
+The owner then explicitly deferred the proposed Issue369 native additions,
+concerned about later development interruptions and errors. The proposed
+native driver/runner/caller expansion and new native run remain unimplemented.
+The 44 focused tests and seven actual public-family results remain separate
+from historical source-bound Issue382 native results; they do not establish a
+current full native pipeline pass or sustained stability. Keep CI and policy
+inactive. Any later blocking gate set needs a concrete owner adoption decision.
+The selector/regression and manual-admission gaps stay recorded without a new
+implementation selection. No approval question remains pending for this
+deferred expansion. Decision: Issue369 comment 5804473245.
