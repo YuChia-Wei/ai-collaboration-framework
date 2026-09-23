@@ -27,10 +27,10 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | integrated PR #343; Issue/Project complete; P7 verification deferred |
 | #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
 | #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader PR #339 and final mapping PR #343 integrated; Issue/Project complete |
-| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source online in PR #350; actual shared mapping pending |
+| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source online PR #350; mapping online PR #366; Issue/Project complete |
 | #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design integrated PR #349; Issue/Project complete |
 | #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | design online PR #355; Issue/Project complete |
-| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | complete source/mapping locally integrated at 4ffa3881; online closure next |
+| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | complete source/mapping online PR #366; Issue/Project complete |
 | #347 | P5-B engineering methods | five own instruction packages/design/workflow | source online PR #363; Issue/Project complete; final mapping assigned to #346 |
 | #348 | P5-C portable authoring | two own instruction packages/design/workflow | source online PR #353; Issue/Project complete |
 | #351 | P5-D frame/compliance design | own design/workflow only | design online PR #358; Issue/Project complete |
@@ -40,8 +40,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #357 | P5-G optional maintenance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
 | #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | source online PR #362; Issue/Project complete; execution deferred |
 | #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design online PR #362; Issue/Project complete; adoption unperformed |
-| #364 | P7-A focused verification design | own design/workflow only | Project Planned; dispatch after mapping online integration |
-| #365 | P7-B pipeline/policy design | own design/workflow only | Project Planned; dispatch after mapping online integration |
+| #364 | P7-A focused verification design | own design/workflow only | independent Astra Ultra design active in assigned F: worktree |
+| #365 | P7-B pipeline/policy design | own design/workflow only | independent Astra Ultra design active in assigned F: worktree |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -59,7 +59,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate completed [final mapping](reports/p5-final-mapping-integration.md) online and close bounded #341/#346. Then dispatch #364/#365 independently under [P7 design scope](../../design/framework-next/p7-design-handoff.md). No product trial, root adoption or CI restoration is authorized by design dispatch.
+Current action: receive and reconcile the two active P7 designs (#364/#365) under [their scope](../../design/framework-next/p7-design-handoff.md). #341/#346 are online/closed through PR #366. No product trial, root adoption or CI restoration is inferred from design dispatch.
 
 ## P3 shared implementation continuation
 
@@ -108,3 +108,7 @@ The user reported “P5 A 已完成，可繼續”. Fixed first mapping `4443270
 ## Complete source selection and P7 entry
 
 Final #346 source/mapping `4ffa3881484783a2e35152ad426bec359d2d9252` is locally integrated. [Inspection and retained preparation outcomes](reports/p5-final-mapping-integration.md) record exact selection and the narrowed Project update after automatic review refusal. #364/#365 are design-only work items with disjoint ownership; they start only after this batch is online. Their proposed checks and replacement rules require coordinator reconciliation before bounded implementation/trials, with final owner adoption still required for CI restoration.
+
+## P7 design dispatch
+
+[Runtime and first-command read-back](evidence/p7-design-dispatch.json) binds both independent Astra Ultra tasks to `171f33474f88888fbe853600de04bfe9c5716b25` and their distinct F: worktrees. Project Status is In progress; no release or owner-review field was changed. PR #366 and #341/#346 closure/Project Done were read back at `2026-09-23T14:28:27.3418807+08:00`. Completed P5 branches were deleted only after merged-ancestry and clean-state proof; F:/framework-next/346 remains detached with all files preserved.

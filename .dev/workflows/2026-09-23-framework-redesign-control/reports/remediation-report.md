@@ -129,3 +129,7 @@ The original #346 executor received direct user input and delivered `444327034aa
 ## Final source/mapping locally complete
 
 [Final inspection](p5-final-mapping-integration.md) confirms 18 actual components/113 members/seven complete profiles at `4ffa3881484783a2e35152ad426bec359d2d9252`. #341/#346 bounded source/mapping work is completed locally and selected for online closure. #364/#365 begin only after that integration, to design focused verification and the source policy/pipeline transition independently. This does not resolve P7 findings, activate root routes, run deferred tools or restore CI.
+
+## P7 design work active
+
+PR #366 is merged as `171f33474f88888fbe853600de04bfe9c5716b25`; #341/#346 are CLOSED/COMPLETED and Project Done by live read-back. [Dispatch observations](../evidence/p7-design-dispatch.json) confirm #364/#365 each run as independent Astra Ultra tasks in assigned RAM worktrees. The source/mapping backlog is complete, but designs, actual verification, project adoption and pipeline transition are still open. CI remains disabled; no final finding is closed by dispatch.

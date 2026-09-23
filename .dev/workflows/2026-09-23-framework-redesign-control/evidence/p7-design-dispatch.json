@@ -1,0 +1,47 @@
+{
+  "record_kind": "p7-design-dispatch-observations",
+  "recorded_at": "2026-09-23T06:32:31.711Z",
+  "source_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+  "source_pr": 366,
+  "coordinator_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+  "tasks": [
+    {
+      "issue": 364,
+      "thread_id": "01a0ccf5-7821-7db3-b5b6-d070e483ddf1",
+      "title": "重構 P7-A：聚焦驗證與 Lesson 試行設計",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "runtime_evidence": "Read-only state_5.sqlite id/model/reasoning_effort row",
+      "worktree": "F:/framework-next/364",
+      "starting_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+      "first_command_id": "exec-761c7a28-09d6-4002-8128-063c573b64dc",
+      "actual_cwd": "F:\\framework-next\\364",
+      "first_command_output": "\r\nF:/framework-next/364\ncodex/2026-09-23-verification-design\n171f33474f88888fbe853600de04bfe9c5716b25\nC:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git\nPath\r\n----\r\nF:\\framework-next\\364\r\n\r\n",
+      "scope": "Design only; no product execution or CI restoration"
+    },
+    {
+      "issue": 365,
+      "thread_id": "01a0ccf5-8dce-7b31-9438-ae2935297156",
+      "title": "重構 P7-B：CI 與來源規範替換設計",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "runtime_evidence": "Read-only state_5.sqlite id/model/reasoning_effort row",
+      "worktree": "F:/framework-next/365",
+      "starting_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+      "first_command_id": "exec-c7123faa-0865-4a49-875d-d11dd690bccf",
+      "actual_cwd": "F:\\framework-next\\365",
+      "first_command_output": "\r\nF:/framework-next/365\ncodex/2026-09-23-pipeline-redesign\n171f33474f88888fbe853600de04bfe9c5716b25\nC:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git\nPath\r\n----\r\nF:\\framework-next\\365\r\n\r\n",
+      "scope": "Design only; no product execution or CI restoration"
+    }
+  ],
+  "provider_observation": {
+    "observed_at": "2026-09-23T14:31:43.1465239+08:00",
+    "issues": "364 and 365 OPEN",
+    "project_status": "In progress",
+    "mutated_fields": [
+      "Status"
+    ],
+    "other_field_mutations": []
+  },
+  "limits": "Identity/dispatch observations only; no design completion, product execution, acceptance or CI restoration."
+}
