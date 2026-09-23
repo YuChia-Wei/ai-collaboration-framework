@@ -1,0 +1,74 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-371",
+  "workflow_id": "2026-09-23-engine-source-pin",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T15:42:21+08:00",
+  "updated_at": "2026-09-23T15:45:18+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance": "Coordinator-declared model/effort selection; no independent runtime attestation. No sub-agents or callbacks.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/371",
+  "finding_ids": [
+    "ISSUE-370#CR-001"
+  ],
+  "scope": {
+    "target": "Compile retained verified bytes across the closed local maintenance module set",
+    "files": [
+      "src/tools/maintain_framework.py",
+      "tests/framework_next/test_engine_source.py",
+      ".dev/workflows/2026-09-23-engine-source-pin/workflow.yaml",
+      ".dev/workflows/2026-09-23-engine-source-pin/task.json",
+      ".dev/workflows/2026-09-23-engine-source-pin/report.md",
+      ".dev/workflows/2026-09-23-engine-source-pin/evidence.json"
+    ],
+    "constraints": [
+      "Existing path/hash/origin/type/host boundaries retained",
+      "No engine member or format/install/recovery changes",
+      "No helper/runner/policy/index changes",
+      "Stopped #368/#369 work remains with its original owners"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "Source repair, nine focused tests, one public refusal, local handoff records",
+    "next_action": "Coordinator resolves containing commit and arranges affected-source review in original #370; no executor retry or provider writes",
+    "validation": [
+      "Focused loader tests: 9 passed",
+      "One public attempt: blocked-before-dispatch; retained",
+      "Direct AST/raw-byte/reference/diff checks",
+      "Exact complete commit-message validator: passed, exit 0; message SHA-256 in evidence.json"
+    ],
+    "u001_adaptation": "Proportionate task/report/evidence only; legacy validators, formal handoff/audit/lease machinery and CI deferred-by-owner"
+  },
+  "results": {
+    "summary": "Local implementation complete; source closure uses verified bytes and ignores valid ambient cache.",
+    "files_changed": [
+      "src/tools/maintain_framework.py",
+      "tests/framework_next/test_engine_source.py",
+      ".dev/workflows/2026-09-23-engine-source-pin/workflow.yaml",
+      ".dev/workflows/2026-09-23-engine-source-pin/task.json",
+      ".dev/workflows/2026-09-23-engine-source-pin/report.md",
+      ".dev/workflows/2026-09-23-engine-source-pin/evidence.json"
+    ],
+    "tests_run": [
+      "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source",
+      "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source --public-entry"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Independent affected-source review and public/native evidence pending; generic F: bootstrap refusal not causally isolated here.",
+    "follow_up_needed": true
+  },
+  "handoff": {
+    "root": "F:\\framework-next\\371",
+    "branch": "codex/2026-09-23-engine-source-pin",
+    "starting_head": "fe6c63f87cb54e166fc796fd315f11e3c2212823",
+    "checkpoint_commit_source": "containing-commit",
+    "hidden_context_required": false,
+    "push": "not authorized",
+    "owner": "program #322 coordinator / original #370 reviewer",
+    "residue": "F:\\framework-next\\p7-runs\\371-engine-source\\fn-53f9ba958c7e4e608532c807c08cd7a2"
+  }
+}
