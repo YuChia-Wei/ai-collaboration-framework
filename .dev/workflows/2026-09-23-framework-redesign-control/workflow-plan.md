@@ -40,8 +40,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #357 | P5-G optional maintenance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
 | #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | source online PR #362; Issue/Project complete; execution deferred |
 | #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design online PR #362; Issue/Project complete; adoption unperformed |
-| #364 | P7-A focused verification design | own design/workflow only | independent Astra Ultra design active in assigned F: worktree |
-| #365 | P7-B pipeline/policy design | own design/workflow only | independent Astra Ultra design active in assigned F: worktree |
+| #364 | P7-A focused verification design | own design/workflow only | fixed design received and reconciled; online integration next |
+| #365 | P7-B pipeline/policy design | own design/workflow only | fixed design received and reconciled; online integration next |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -59,7 +59,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: receive and reconcile the two active P7 designs (#364/#365) under [their scope](../../design/framework-next/p7-design-handoff.md). #341/#346 are online/closed through PR #366. No product trial, root adoption or CI restoration is inferred from design dispatch.
+Current action: integrate both completed P7 designs online, then create the first two independent implementation Issues under [the selected sequence](../../design/framework-next/p7-execution-selection.md). Actual root adoption and CI restoration remain separate.
 
 ## P3 shared implementation continuation
 
@@ -112,3 +112,7 @@ Final #346 source/mapping `4ffa3881484783a2e35152ad426bec359d2d9252` is locally 
 ## P7 design dispatch
 
 [Runtime and first-command read-back](evidence/p7-design-dispatch.json) binds both independent Astra Ultra tasks to `171f33474f88888fbe853600de04bfe9c5716b25` and their distinct F: worktrees. Project Status is In progress; no release or owner-review field was changed. PR #366 and #341/#346 closure/Project Done were read back at `2026-09-23T14:28:27.3418807+08:00`. Completed P5 branches were deleted only after merged-ancestry and clean-state proof; F:/framework-next/346 remains detached with all files preserved.
+
+## P7 design reconciliation
+
+[Fixed design inspection](reports/p7-design-reconciliation.md) selects the bounded source checks and dormant pipeline/source-policy work. [Original-request coverage](reports/request-coverage-at-p7-entry.md) keeps actual use, root adoption and conditional future capabilities distinct. No product trial has yet run.

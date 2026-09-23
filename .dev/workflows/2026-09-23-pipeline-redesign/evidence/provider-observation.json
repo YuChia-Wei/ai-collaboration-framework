@@ -1,0 +1,159 @@
+{
+  "record_kind": "issue-365-provider-observation",
+  "source_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+  "repository": "YuChia-Wei/ai-collaboration-framework",
+  "observed_at": "2026-09-23T14:32:06+08:00",
+  "generation": "Bounded projection of actual gh read-only outputs in this task; not a raw API capture or current-state cache",
+  "scope": "Actions, seven workflows, main branch protection/rulesets, release environment and named legacy Issues",
+  "exclusions": [
+    "No provider writes or dispatch",
+    "No secret values, token validity or Projects permission inspection",
+    "No external journal/recovery inventory",
+    "No test or hosted-run execution"
+  ],
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/actions/permissions",
+      "outcome": "observed",
+      "value": {
+        "enabled": false,
+        "sha_pinning_required": false
+      },
+      "absent_fields": [
+        "allowed_actions"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/actions/permissions/workflow",
+      "outcome": "observed",
+      "value": {
+        "default_workflow_permissions": "read",
+        "can_approve_pull_request_reviews": false
+      }
+    },
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/actions/workflows",
+      "outcome": "observed",
+      "total_count": 7
+    },
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/branches/main",
+      "outcome": "observed",
+      "sha": "171f33474f88888fbe853600de04bfe9c5716b25",
+      "protected": false,
+      "required_status_checks": {
+        "enforcement_level": "off",
+        "contexts": [],
+        "checks": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/branches/main/protection",
+      "outcome": "HTTP 404 Branch not protected",
+      "interpretation": "Corroborated by main protected=false and empty effective rules; not generalized from a 404 alone"
+    },
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/rulesets?includes_parents=true",
+      "outcome": "observed",
+      "value": []
+    },
+    {
+      "method": "GET",
+      "path": "repos/YuChia-Wei/ai-collaboration-framework/rules/branches/main",
+      "outcome": "observed",
+      "value": []
+    }
+  ],
+  "workflows": [
+    {
+      "id": 316930531,
+      "name": "AI Context Governance",
+      "path": ".github/workflows/governance.yml",
+      "state": "disabled_manually"
+    },
+    {
+      "id": 334993163,
+      "name": "Nightly Full Validation Readiness",
+      "path": ".github/workflows/nightly-full-readiness.yml",
+      "state": "disabled_manually"
+    },
+    {
+      "id": 313373704,
+      "name": "Package AI Context Candidate",
+      "path": ".github/workflows/package-candidate.yml",
+      "state": "disabled_manually"
+    },
+    {
+      "id": 316885236,
+      "name": "Portable AI Context Gates",
+      "path": ".github/workflows/portable-gates.yml",
+      "state": "disabled_manually"
+    },
+    {
+      "id": 313373707,
+      "name": "Publish AI Context Release",
+      "path": ".github/workflows/publish-release.yml",
+      "state": "disabled_manually"
+    },
+    {
+      "id": 363100663,
+      "name": "Check Release Provider Access",
+      "path": ".github/workflows/release-provider-preflight.yml",
+      "state": "disabled_manually"
+    },
+    {
+      "id": 341690089,
+      "name": "Portable Test Fixture Acceleration",
+      "path": ".github/workflows/test-fixture-acceleration.yml",
+      "state": "disabled_manually"
+    }
+  ],
+  "source_policy_contexts": [
+    "Read-only governance contract",
+    "Build and validate candidate",
+    "Ubuntu prerequisite contract",
+    "Windows prerequisite contract",
+    "Ubuntu PR profile gate"
+  ],
+  "additional_reads": {
+    "observation_window": "2026-09-23T14:32:06+08:00 through 2026-09-23T14:34:08+08:00",
+    "release_environment": {
+      "name": "ai-context-release",
+      "protection_rules": [],
+      "deployment_branch_policy": null,
+      "secret_values_read": false
+    },
+    "issue_states": {
+      "274": "OPEN",
+      "275": "OPEN",
+      "302": "CLOSED",
+      "308": "OPEN",
+      "309": "OPEN",
+      "324": "CLOSED",
+      "365": "OPEN"
+    },
+    "release": {
+      "tagName": "v0.18.0",
+      "isDraft": false,
+      "isPrerelease": false,
+      "publishedAt": "2026-09-20T03:46:01Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.18.0"
+    },
+    "issue302_reported_history": "Manual publication closeout accepted by owner; hosted run 35487203277 failed. This task read the Issue report, not the run logs.",
+    "issue309": "Open hosted Project preflight defect; no tag move, rebuild or relabeling the failed run."
+  },
+  "limitations_and_failures": [
+    "Initial gh issue view 365/324 in sandbox failed: proxyconnect to 127.0.0.1:9 refused. Scoped read-only escalation succeeded; credentials/settings were not changed.",
+    "Initial speculative local reads ci.yml/release.yml/release.yaml returned absent. Complete seven-file inventory came from git ls-files and actual tracked YAML.",
+    "First official GitHub required-check documentation URL was unavailable through web tool; current official page was located by search.",
+    "Historical #324 allowed_actions=all is not a live observation of the disabled repository.",
+    "Live values describe observation times, not future restoration readiness."
+  ],
+  "reproduce": "Read the named REST endpoints with gh api (GET only), gh issue view for the listed Issue numbers, and gh release view v0.18.0. Inspect the seven workflow files and source policy at source_commit. Refresh before any later setting or admission decision."
+}

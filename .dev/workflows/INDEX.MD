@@ -8,6 +8,8 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-verification-design`](2026-09-23-verification-design/workflow.yaml) | Design Focused Verification And Windows Lesson Pilot | `ai-context-governance` | `completed` | `2026-09-23T14:44:32+08:00` | [plan](2026-09-23-verification-design/workflow-plan.md) |
+| [`2026-09-23-pipeline-redesign`](2026-09-23-pipeline-redesign/workflow.yaml) | Design Source Pipeline And Policy Replacement | `ai-context-governance` | `completed` | `2026-09-23T14:40:53+08:00` | [plan](2026-09-23-pipeline-redesign/workflow-plan.md) |
 | [`2026-09-23-engineering-methods`](2026-09-23-engineering-methods/workflow.yaml) | Five portable engineering instruction packages | `ai-context-governance` | `completed` | `2026-09-23T12:04:39+08:00` | [plan](2026-09-23-engineering-methods/workflow-plan.md) |
 | [`2026-09-23-managed-installation`](2026-09-23-managed-installation/workflow.yaml) | Issue 359 managed installation source | `ai-context-governance` | `completed` | `2026-09-23T11:19:33+08:00` | [plan](2026-09-23-managed-installation/workflow-plan.md) |
 | [`2026-09-23-source-adoption-design`](2026-09-23-source-adoption-design/workflow.yaml) | Source repository adoption and legacy route design | `ai-context-governance` | `completed` | `2026-09-23T11:21:19+08:00` | [plan](2026-09-23-source-adoption-design/workflow-plan.md) |

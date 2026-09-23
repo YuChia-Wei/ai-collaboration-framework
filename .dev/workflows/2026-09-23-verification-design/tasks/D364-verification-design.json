@@ -1,0 +1,71 @@
+{
+  "task_id": "D364-verification-design",
+  "workflow_id": "2026-09-23-verification-design",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T14:42:16+08:00",
+  "updated_at": "2026-09-23T14:44:32+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Coordinator-declared independent Astra/ultra conversation; declaration is not independent runtime attestation. No subagents, nested tasks or callbacks.",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #364 P7-A design only",
+    "files": [
+      ".dev/design/framework-next/verification-design/",
+      ".dev/workflows/2026-09-23-verification-design/"
+    ],
+    "constraints": [
+      "U001",
+      "Only assigned F:/framework-next/364 worktree",
+      "No product execution/implementation, CI, root/policy/index/provider mutation",
+      "No push/PR/merge or cross-task message",
+      "Preserve F:/ai-context-tests and other writers"
+    ],
+    "non_goals": [
+      "Test implementation or trial",
+      "Legacy benchmark/classification completion",
+      "Project activation or full acceptance"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Confirm assigned Git/source/live Issue",
+      "Inspect selected source/owners and #359/#361 handoffs",
+      "Define focused checks, roots, residuals and follow-up slices",
+      "Direct checks and complete planned-message validation",
+      "Coherent local commit and clean handoff"
+    ],
+    "validation": [
+      "Direct Python -I -B stdin content inspection: 26 source YAML, 8 schema JSON syntax only, 10 entry ASTs; exact 18 package / 113 member / 7 profile sets, 7 configured / 11 null-config packages. No product imports.",
+      "Seven authored UTF-8 files, one JSON, one YAML and 19 local Markdown file links passed; final changed-byte/scope/whitespace check required before commit.",
+      "Complete planned message passed validate-git-commits.py --message-file .dev/workflows/2026-09-23-verification-design/planned-message.tmp --workflow-id 2026-09-23-verification-design (exit 0); SHA-256 27b4be70a0eb02985f9d97139a0e50a4a9383b7adf4dc60cb496735c4e2ed898"
+    ],
+    "last_completed_step": "Design and permitted direct checks complete, including complete planned-message validation",
+    "next_action": "Commit local design and report exact Git identity/clean state; coordinator reconciles #365 and selects implementation"
+  },
+  "results": {
+    "summary": "Seven families with distinct shared/instruction/installer contracts; tiny Windows Lesson pilot and four implementation slices.",
+    "files_changed": [
+      ".dev/design/framework-next/verification-design/README.md",
+      ".dev/design/framework-next/verification-design/selected-checks.md",
+      ".dev/design/framework-next/verification-design/windows-pilot.md",
+      ".dev/workflows/2026-09-23-verification-design/workflow.yaml",
+      ".dev/workflows/2026-09-23-verification-design/workflow-plan.md",
+      ".dev/workflows/2026-09-23-verification-design/tasks/D364-verification-design.json",
+      ".dev/workflows/2026-09-23-verification-design/reports/design-handoff.md"
+    ],
+    "tests_run": [],
+    "residual_risk": "No assessment finding closure claimed; native/public/runtime/provider acceptance remains unexecuted.",
+    "follow_up_needed": true,
+    "completion_scope": "Assigned design only; no assessment finding resolution or product verification."
+  },
+  "verification_deferral": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Reconcile #364/#365, select bounded implementation and later trials before root adoption/restoration"
+  }
+}
