@@ -861,3 +861,24 @@ manual requirements. Before adoption, define the necessary implementation-to-
 regression bindings and who enforces unresolved admission requirements. Generic
 requirements are not proof that a named regression ran. No automatic broad
 matrix, CI activation, native extension or policy adoption follows this inventory.
+
+
+## CR-002 review accepted for online integration
+
+Original #370 returned clean review 67da0e4b9bf4b7e067f36cf8fd7d35c4e664c788.
+Its fixed subject is af5c4e39e193ef9cd161f203a5da211cfd95f7bf. CR-002 is
+resolved in reviewed source, with no new substantiated finding. Parent verified
+17 raw/Git source/evidence bindings, four historical report/inventory hashes,
+and exactly four review-owned paths. Report SHA-256:
+15e38a8516625cc5c061eff81c999ab5d1657fb9585defd1c31764257e1fd200.
+No product execution was repeated; prior reports retain their exact bytes.
+
+#368 bounded C1-C3/C5 and helper acceptance combines the prior twelve-method
+selected execution, limited historical core comparisons and this six-method
+affected execution. No single full-suite invocation is claimed. Its remaining
+changed-EnginePin review is now satisfied. #370 bounded current-engine review
+and CR-002 re-review are complete. Both Issues can close only after verified
+online integration, under the user conditional closure authority. Until that
+provider read-back they remain open; the ignored cr002-integration-closeout.json
+will preserve the actual result. #322/#369 remain open for P7 gaps and owner
+decisions; C-001 remains an unverified concern.

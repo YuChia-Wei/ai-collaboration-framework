@@ -8,161 +8,139 @@
   "workflow_owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T15:17:15+08:00",
-  "updated_at": "2026-09-24T01:53:33+08:00",
+  "updated_at": "2026-09-24T02:19:26+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "provenance": "Coordinator-selected independent conversation; declared runtime selection is not external attestation.",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370",
-  "reviewed_source_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
-  "starting_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
+  "reviewed_source_commit": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
+  "starting_commit": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
   "finding_ids": [
     "ISSUE-370#CR-002"
   ],
   "scope": {
-    "target": "Current-engine independent affected source review; no product or test execution",
+    "target": "CR-002 fixed-repair affected source review only",
     "files": [
-      ".dev/workflows/2026-09-23-installation-source-review/current-engine-review.md",
-      ".dev/workflows/2026-09-23-installation-source-review/current-engine-source-hashes.json",
+      ".dev/workflows/2026-09-23-installation-source-review/cr002-affected-review.md",
+      ".dev/workflows/2026-09-23-installation-source-review/cr002-review-evidence.json",
       ".dev/workflows/2026-09-23-installation-source-review/task.json",
       ".dev/workflows/2026-09-23-installation-source-review/workflow.yaml"
     ],
-    "engine_files": [
-      "src/distribution/__init__.py",
-      "src/distribution/data.py",
+    "read_code": [
       "src/distribution/git_source.py",
-      "src/distribution/installation.py",
-      "src/distribution/installation_io.py",
-      "src/distribution/installation_plan.py",
-      "src/distribution/installation_state.py",
-      "src/distribution/maintenance_coordination.py",
-      "src/distribution/package.py",
-      "src/tools/maintain_framework.py"
-    ],
-    "direct_producer_context": [
-      "src/distribution/assembly.py"
-    ],
-    "changed_engine_files": [
-      "src/distribution/data.py",
-      "src/distribution/git_source.py",
-      "src/distribution/installation_io.py",
-      "src/distribution/installation_plan.py",
-      "src/distribution/installation_state.py",
-      "src/tools/maintain_framework.py"
-    ],
-    "unchanged_engine_files": [
-      "src/distribution/__init__.py",
-      "src/distribution/installation.py",
-      "src/distribution/maintenance_coordination.py",
-      "src/distribution/package.py"
+      "src/distribution/assembly.py",
+      "tests/framework_next/test_contracts.py",
+      ".dev/workflows/2026-09-23-source-contract-checks/evidence/cr002-capture.py"
     ],
     "preserve_raw_bytes": [
       "report.md",
-      "affected-review.md"
+      "affected-review.md",
+      "current-engine-review.md",
+      "current-engine-source-hashes.json"
     ],
     "constraints": [
-      "Only F:/framework-next/370 repository execution and issue-owned record writes",
-      "No sub-agents, nested tasks or callbacks",
-      "No product/test imports or executions, fixture/native/public CLI trials or repairs",
-      "No provider/settings/credential writes or policy adoption"
+      "Only assigned F:/framework-next/370 repository execution and issue-owned record writes",
+      "No sub-agents, nested tasks, callbacks, product/test imports or execution",
+      "No native probes, fixtures, provider commands, source/test repairs or settings writes"
     ],
     "non_goals": [
-      "Native or behavioral acceptance",
-      "Whole-framework certification",
-      "CI restoration, release or downstream adoption"
+      "C-001 verification or repair",
+      "Whole engine/native/target acceptance",
+      "Policy adoption, CI restoration or publication"
     ]
   },
   "execution": {
     "steps": [
-      "Bind fixed subject and ten-file installed-engine equality",
-      "Trace changed path/version/cache behavior and direct source-isolation consumer",
-      "Read selected committed worker evidence with exact-source limitations",
-      "Record findings and hand off one clean local review commit"
+      "Verify fixed repair delivery and execution-source equality",
+      "Inspect direct mapping refusal, assembly boundary and focused regression semantics",
+      "Bind committed streams/inventories and distinguish attributed execution",
+      "Return one clean local report commit preserving historical reports"
     ],
     "validation": [
       {
-        "check": "Assigned root/branch/HEAD/common-dir/clean starting state",
+        "check": "Assigned root/branch/HEAD/common-dir/clean start",
         "result": "passed"
       },
       {
-        "check": "Ten raw fixed-source/checkout/installed-commit comparisons and historical report preservation",
+        "check": "Exact source/execution/checkpoint and preserved report bindings",
         "result": "passed",
-        "detail": "current-engine-source-hashes.json; raw git cat-file comparisons, not normalized content"
+        "detail": "Eleven execution files; one changed/nine unchanged EnginePin members; assembly/two metadata files and four historical review artifacts unchanged"
       },
       {
-        "check": "UTF-8/AST and unchanged loader, main, constants, read/lock/metadata helper ASTs",
+        "check": "Static source/test/capture inspection and AST preservation",
         "result": "passed",
-        "detail": "No product or test imports; selected direct producer parsed as text"
+        "detail": "No product/test/capture import or execution; private helper, one call and docstring are the only existing module changes"
       },
       {
-        "check": "Graph-guided fixed-source review and live assigned comment read-back",
-        "result": "completed",
-        "detail": "CR-002 SHOULD FIX/P2 source finding; C-001 conditional unverified casing concern; historical CR-001 source repair retained"
+        "check": "Committed evidence integrity and coverage classification",
+        "result": "passed",
+        "detail": "Embedded raw hashes/sizes, normalized text, six named OK methods, typed historical inventories and source identities agree; no live residue/bin attestation"
       },
       {
         "check": "Reviewer product/tests/native execution",
         "result": "not-executed",
-        "detail": "Explicitly excluded; worker receipts remain attributed"
+        "detail": "Explicitly prohibited; six worker passes remain attributed and alias inputs simulated"
       },
       {
-        "check": "Review record syntax, references, scope, preserved bytes and Git diff",
+        "check": "Final review records, links, scope and Git diff",
         "result": "passed",
-        "detail": "Direct UTF-8/JSON/YAML parsing, local links, exact four-file scope, raw fixed-source and historical-report comparisons; git diff --check exit 0."
+        "detail": "UTF-8/JSON/YAML, local links, exact four-record scope, fixed Git/hash bindings and preserved historical bytes; git diff --check exit 0."
       },
       {
         "check": "Complete planned-message validation",
         "result": "passed",
-        "detail": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/370/.dev/workflows/2026-09-23-installation-source-review/current-engine-commit-message.tmp --workflow-id 2026-09-23-installation-source-review; exit 0 before commit."
+        "detail": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/370/.dev/workflows/2026-09-23-installation-source-review/cr002-review-commit-message.tmp --workflow-id 2026-09-23-installation-source-review; exit 0 before commit."
       }
     ],
-    "last_completed_step": "Independent source review, attributed-evidence classification and direct record/planned-message checks",
-    "next_action": "Coordinator owns transport and CR-002 repair assignment, decides C-001 verification, and retains separate native/target/provider authority."
+    "last_completed_step": "CR-002 affected review, evidence classification and direct record/message checks complete",
+    "next_action": "Coordinator owns first transport and Issue disposition; no further repair identified here. C-001 unverified and all separate native/target/policy/CI/publication authority retained."
   },
   "results": {
-    "summary": "One SHOULD FIX/P2 source finding: descendant DOS-drive alias bypasses producer source-output isolation. Separate C-001 casing concern has an unresolved API premise and is not a confirmed defect. CR-001 source-only loader remains intact.",
+    "summary": "CR-002 resolved in reviewed source; no new substantiated finding. C-001 remains unverified and unselected.",
     "files_changed": [
-      ".dev/workflows/2026-09-23-installation-source-review/current-engine-review.md",
-      ".dev/workflows/2026-09-23-installation-source-review/current-engine-source-hashes.json",
+      ".dev/workflows/2026-09-23-installation-source-review/cr002-affected-review.md",
+      ".dev/workflows/2026-09-23-installation-source-review/cr002-review-evidence.json",
       ".dev/workflows/2026-09-23-installation-source-review/task.json",
       ".dev/workflows/2026-09-23-installation-source-review/workflow.yaml"
     ],
     "tests_run": [],
-    "finding_status": "remediation-recommended",
+    "finding_status": "resolved-in-reviewed-source",
     "findings": [
       {
         "id": "ISSUE-370#CR-002",
-        "severity": "SHOULD FIX",
-        "priority": 2,
-        "status": "open",
-        "verification": "source and primary API-contract reasoning; not reproduced"
+        "prior_severity": "SHOULD FIX",
+        "prior_priority": 2,
+        "status": "resolved-in-reviewed-source",
+        "reviewed_commit": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
+        "verification": "Independent source reasoning; attributed focused execution, no native reproduction"
       }
     ],
-    "historical_finding": {
-      "id": "ISSUE-370#CR-001",
-      "status": "resolved-in-source",
-      "basis": "verified finder and main AST unchanged from prior reviewed repair"
-    },
-    "residual_risk": "No independent behavioral/native run; historical native pin differs in IO/state. Attributed equal-byte #386 trial is selected plan/apply only.",
-    "follow_up_needed": true,
     "concerns": [
       {
         "id": "C-001",
         "status": "unverified-conditional-hypothesis",
         "confirmed_defect": false,
-        "runtime_reproduction": false,
-        "scope": "Protected-path stored-case proof through GetLongPathNameW",
-        "next_owner_action": "Coordinator decides bounded verification before repair disposition"
+        "selected_for_this_review": false,
+        "runtime_reproduction": false
       }
-    ]
+    ],
+    "historical_finding": {
+      "id": "ISSUE-370#CR-001",
+      "status": "resolved-in-prior-source-review",
+      "basis": "Entry and other nine engine files unchanged; no fresh full review claimed"
+    },
+    "residual_risk": "No reviewer product/test/native execution. Simulated alias regression plus attributed actual C5 does not establish native SUBST or whole-engine/target acceptance.",
+    "follow_up_needed": true
   },
   "handoff": {
     "repository_root": "F:/framework-next/370",
     "branch": "codex/2026-09-24-current-engine-review",
-    "reviewed_source_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
+    "reviewed_source_commit": "af5c4e39e193ef9cd161f203a5da211cfd95f7bf",
     "artifact_commit_source": "containing-commit",
-    "artifact_commit_resolution": "git log -1 --format=%H -- .dev/workflows/2026-09-23-installation-source-review/current-engine-review.md",
+    "artifact_commit_resolution": "git log -1 --format=%H -- .dev/workflows/2026-09-23-installation-source-review/cr002-affected-review.md",
     "hidden_context_required": false,
     "final_integration_owner": "Coordinator task 01a0ce78-db26-74e1-a615-2bd0599f7d0c",
-    "resume": "Read current-engine-review.md and current-engine-source-hashes.json. CR-002 is source-admitted predicate reasoning; C-001 is a conditional unverified API concern, not an executed reproduction. Coordinator assigns repair/verification and owns source/native/target/provider dispositions.",
+    "resume": "Read cr002-affected-review.md and cr002-review-evidence.json. CR-002 is resolved in this fixed source; no new finding. Preserve C-001 unverified status and all separate native/target/provider authority. Coordinator owns first transport and Issue disposition.",
     "transport": "local commit only; no push/PR/merge/Issue closure"
   },
   "retained_events": [
@@ -189,6 +167,10 @@
     {
       "kind": "review-evidence-calibration",
       "outcome": "Before finalization, separated CR-002 source-admitted violating witness from C-001 unresolved native casing premise; no additional product/native execution. Live #383 scope confirms exact-spelling requirement."
+    },
+    {
+      "kind": "cr002-affected-re-review",
+      "outcome": "Started clean at assigned af5c4e39 delivery; no provider command or product/native execution. Graph covers distribution only; named test/capture source read directly as text/AST. C-001 explicitly excluded."
     }
   ],
   "u001_adaptation": "Issue-owned report and resumable task only; legacy schema/audit/lease/receipt/handoff validators deferred-by-owner; source review completion is not product acceptance or Issue closure.",
@@ -198,15 +180,15 @@
     "report": "report.md",
     "disposition": "One MUST FIX / P1 CR-001; unchanged original report preserves its evidence and limitations."
   },
-  "delta_base_commit": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+  "delta_base_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
   "worker_evidence": {
-    "classification": "Attributed committed records; no reviewer execution",
-    "report": "current-engine-review.md#attributed-execution-evidence-and-limits",
-    "issue_386_raw_pin_files_match": true,
-    "issue_382_current_pin_differences": [
-      "src/distribution/installation_io.py",
-      "src/distribution/installation_state.py"
-    ],
+    "classification": "Attributed six-method selected repair execution, not reviewer execution",
+    "source_commit": "698654d77c81d2837c45e9e156e76d67734f6a28",
+    "record": "../2026-09-23-source-contract-checks/evidence/cr002-execution.json",
+    "independent_data_checks": "11 raw/Git source hashes, embedded streams and typed before/after inventories consistent",
+    "simulations": "Win32 mappings/identities and assembly immutable selection in descendant regression",
+    "actual_worker_scope": "Two actual Lesson assemblies/readers plus five synthetic corruptions",
+    "live_ignored_bins_or_roots_read_by_reviewer": false,
     "reviewer_execution": false
   },
   "previous_affected_review": {
@@ -221,5 +203,23 @@
       "public": "Exactly one unmodified attempt; source-bootstrap/unsupported before dispatch, child exit 1; no success or precise root cause established",
       "reviewer_execution": false
     }
-  }
+  },
+  "previous_current_engine_review": {
+    "reviewed_source_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
+    "artifact_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
+    "report": "current-engine-review.md",
+    "source_inventory": "current-engine-source-hashes.json",
+    "finding_status": "CR-002 SHOULD FIX/P2 at that subject; C-001 unverified",
+    "worker_evidence": {
+      "classification": "Attributed committed records; no reviewer execution",
+      "report": "current-engine-review.md#attributed-execution-evidence-and-limits",
+      "issue_386_raw_pin_files_match": true,
+      "issue_382_current_pin_differences": [
+        "src/distribution/installation_io.py",
+        "src/distribution/installation_state.py"
+      ],
+      "reviewer_execution": false
+    }
+  },
+  "worker_execution_checkpoint": "698654d77c81d2837c45e9e156e76d67734f6a28"
 }

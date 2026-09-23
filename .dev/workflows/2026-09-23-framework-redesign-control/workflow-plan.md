@@ -452,3 +452,11 @@ admission requirements. Retain these as P7 adoption gaps. Target seven-commit
 provider integration and the #369 native extension still await direct decisions.
 No policy, CI, release or target provider action is inferred. See the latest
 successor report and machine-readable handoff for evidence and boundaries.
+
+
+Original #370 completed affected review at 67da0e4b9bf4b7e067f36cf8fd7d35c4e664c788:
+CR-002 resolved in reviewed source, no new substantiated finding. Parent verified
+17 raw/Git bindings and four preserved historical reports/inventories. #368 and
+#370 meet their bounded criteria; online integration remains required before
+conditional Issue closure and Project Done. C-001 remains unverified, with no
+new native or target acceptance claimed.
