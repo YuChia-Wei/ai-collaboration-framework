@@ -1,5 +1,10 @@
 # Workflow Gate Policy
 
+Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+would permit direct mode for bounded source instruction/documentation improvements
+and workflows for durable transitions. It does not change the effective gates
+below or the applicable U001 override; replacement requires recorded owner adoption.
+
 For this source repository's explicitly assigned program #322 work, apply the
 [temporary U001 execution override](FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
 before conflicting validation, handoff or integration gates below. Keep the

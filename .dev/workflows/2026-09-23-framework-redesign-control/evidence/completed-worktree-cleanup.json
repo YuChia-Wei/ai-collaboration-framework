@@ -1,0 +1,299 @@
+{
+  "observed_at": "2026-09-23T20:58:12+08:00",
+  "authority": "Current user request: clean worktrees/branches only after confirming completion",
+  "base_main": "89c985d73978c51d06cebcffdc2e5bfc492293ac",
+  "removed_count": 25,
+  "targets": [
+    {
+      "issue": 324,
+      "path": "F:/framework-next/324",
+      "head": "ee8aadbbfc363ac9a206535134d0bdcd73e72203",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 3,
+      "archived_bytes": 3268
+    },
+    {
+      "issue": 325,
+      "path": "F:/framework-next/325",
+      "head": "c3891615f97625e7c59cd871abea3c2b27b5021f",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1020
+    },
+    {
+      "issue": 326,
+      "path": "F:/framework-next/326",
+      "head": "f2255fe3328bd91f8f9a54c7cea8a1e9e6ffecac",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 2059
+    },
+    {
+      "issue": 330,
+      "path": "F:/framework-next/330",
+      "head": "7224a57387ca181e7a940ff72f48b79708668d3e",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1395
+    },
+    {
+      "issue": 331,
+      "path": "F:/framework-next/331",
+      "head": "4b0c985cacc10b2eca174e09892c7a31c5051d3c",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 966
+    },
+    {
+      "issue": 334,
+      "path": "F:/framework-next/334",
+      "head": "552e218d039245482ed422be7d4fb642d5463ff0",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 2260
+    },
+    {
+      "issue": 335,
+      "path": "F:/framework-next/335",
+      "head": "5409641f19244bc44467af7fba3fc496d7f5195c",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 3,
+      "archived_bytes": 3204
+    },
+    {
+      "issue": 337,
+      "path": "F:/framework-next/337",
+      "head": "b38ef4a8dce57c2cb78fda6ae9c100d689605245",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 2569
+    },
+    {
+      "issue": 341,
+      "path": "F:/framework-next/341",
+      "head": "da04c0bb36fda9f48552ed5ee4f60efc18a95d9b",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 2295
+    },
+    {
+      "issue": 342,
+      "path": "F:/framework-next/342",
+      "head": "66f353393b3f7ef59265d6c38b119a832e8113a9",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1133
+    },
+    {
+      "issue": 345,
+      "path": "F:/framework-next/345",
+      "head": "8a479ddc3204d0f031d9b9844aeb933af26f36f7",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 2194
+    },
+    {
+      "issue": 346,
+      "path": "F:/framework-next/346",
+      "head": "4ffa3881484783a2e35152ad426bec359d2d9252",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 5,
+      "archived_bytes": 4663
+    },
+    {
+      "issue": 347,
+      "path": "F:/framework-next/347",
+      "head": "814fd12822bb270f17edbfe91d0864ba07c1aacb",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1066
+    },
+    {
+      "issue": 348,
+      "path": "F:/framework-next/348",
+      "head": "b6ba669ff465bb6c6429bcc24cdf9b37af0ce964",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1090
+    },
+    {
+      "issue": 351,
+      "path": "F:/framework-next/351",
+      "head": "214c1c1c9bc6da26c1202e7a92d7d678d54b1e3b",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 940
+    },
+    {
+      "issue": 352,
+      "path": "F:/framework-next/352",
+      "head": "ecf27befc599aa3ee589dff36d0597f0d1c24a8b",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 4216
+    },
+    {
+      "issue": 354,
+      "path": "F:/framework-next/354",
+      "head": "8be2f8ab807764cdd691cf81b537811c30bc64f7",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1033
+    },
+    {
+      "issue": 356,
+      "path": "F:/framework-next/356",
+      "head": "7038ee97f809f359d776f5d74b4959e51dbe518d",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1136
+    },
+    {
+      "issue": 357,
+      "path": "F:/framework-next/357",
+      "head": "3de57ce8a128e71b3956e38640c83c4370d11fba",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1297
+    },
+    {
+      "issue": 359,
+      "path": "F:/framework-next/359",
+      "head": "a2e5daf71a4a830eab109370597872253df4497e",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1106
+    },
+    {
+      "issue": 361,
+      "path": "F:/framework-next/361",
+      "head": "c76f25480cc8141695ecdb9a1ad8cf5962321d11",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 1002
+    },
+    {
+      "issue": 364,
+      "path": "F:/framework-next/364",
+      "head": "577f3922587ccd8cc8e314f5c558ad6991530886",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 946
+    },
+    {
+      "issue": 365,
+      "path": "F:/framework-next/365",
+      "head": "c75582b08f67da17f9548f2eb38fe67c2e6e765e",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 1,
+      "archived_bytes": 971
+    },
+    {
+      "issue": 370,
+      "path": "F:/framework-next/370",
+      "head": "066a964efe95062179bb1eff1376fc4b73aecb17",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 2048
+    },
+    {
+      "issue": 371,
+      "path": "F:/framework-next/371",
+      "head": "dc0f5c65d6dbfdd0954886340b149f99453c6705",
+      "issue_state": "CLOSED",
+      "issue_state_reason": "COMPLETED",
+      "head_in_main": true,
+      "removed": true,
+      "archived_files": 2,
+      "archived_bytes": 1593
+    }
+  ],
+  "archive": {
+    "ignored_root": ".dev/ai-context/local/framework-next-control/completed-worktree-archive",
+    "files": 41,
+    "bytes": 45470,
+    "copy_hash_verification": "SHA-256 equal before every removal"
+  },
+  "preserved": [
+    "F:/framework-next/368",
+    "F:/framework-next/369",
+    "F:/framework-next/373",
+    "F:/framework-next/p7-runs",
+    "F:/ai-context-tests",
+    "unrelated older worktrees",
+    "two historical unmerged experimental branches"
+  ],
+  "limitations": "No performance/physical-I/O/acceptance inference; incomplete Issues stay open"
+}

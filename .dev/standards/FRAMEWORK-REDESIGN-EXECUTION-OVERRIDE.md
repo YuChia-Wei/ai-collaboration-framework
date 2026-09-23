@@ -1,5 +1,10 @@
 # Framework Redesign Execution Override
 
+Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+and its root/template pointers may be written under the owner's #369 approval.
+That approval does not adopt the rules, narrow U001 or restore CI. A later recorded
+owner decision must name the effective scope/date, evidence and remaining deferrals.
+
 ## Authority And Applicability
 
 This temporary **source-repository-only** rule implements the owner's U001 in

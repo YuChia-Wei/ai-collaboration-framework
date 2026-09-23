@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T14:58:53+08:00",
-  "updated_at": "2026-09-23T15:43:48+08:00",
+  "updated_at": "2026-09-23T20:58:12+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -52,15 +52,16 @@
       "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
       "Direct syntax/reference/Git and complete planned-message checks"
     ],
-    "last_completed_step": "Partial contracts delivered; product repairs stopped by automatic approval",
-    "next_action": "Direct owner confirmation in original task before rejected four-file batch; preserve safeguards and failed evidence"
+    "last_completed_step": "Direct owner-approved four-file repair received; 16 of 17 methods successful, two real Lesson assemblies",
+    "next_action": "Integrate repair; assign installation reader compatibility and affected independent review before C5 acceptance"
   },
   "results": {
-    "summary": "Partial contracts delivered; product repairs stopped by automatic approval",
+    "summary": "Metadata and builder-path defects repaired; actual reader strict-root error remains",
     "files_changed": [],
     "tests_run": [
       "Final contracts: 14 methods; 11 successful; 3 affected methods; 7 errors; zero skips; exit 1",
-      "No C5 candidate built; initial F: failures retained"
+      "No C5 candidate built; initial F: failures retained",
+      "Repaired subject 379213a1: 17 methods / 16 successful / one reader error / zero skips, exit 1; two actual 13-file Lesson assemblies with matching identity"
     ],
     "finding_status": "partially-resolved",
     "residual_risk": "Product/root/native/provider acceptance remains distinct",
@@ -82,12 +83,13 @@
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
     "implementation_status": "partial; Issue remains open",
     "verification_state": "selected results recorded; remaining obligations unfulfilled/deferred-by-owner",
-    "commit": "070a47335ffce99d31bd83e487447942539e4a9f",
-    "integration_report": "reports/p7-implementation-checkpoint.md",
-    "approval_state": "rejected batch stopped; direct owner response pending in original task",
+    "commit": "e71ccc989c3ae213a8e04cbe51abb80183022024",
+    "integration_report": "reports/p7-approved-returns-and-cleanup.md",
+    "approval_state": "Direct owner confirmation received in original task; four-file repair written; prior refusal historical",
     "checkpoint_pr": 372,
     "checkpoint_merge": "3a21b0eb58e80752df010e7277aec55725b3061e",
-    "provider_correction": "Unintended keyword auto-close read back; reopened and Project Status restored to In progress; not acceptance"
+    "provider_correction": "Unintended keyword auto-close read back; reopened and Project Status restored to In progress; not acceptance",
+    "repair_subject": "379213a1f575aff143fb29b665c42fe5f24b219c"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RKIs",
   "project_state": "In progress; Status only mutated; no other single-select values observed"

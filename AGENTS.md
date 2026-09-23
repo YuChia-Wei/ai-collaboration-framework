@@ -16,6 +16,14 @@ handoff to the coordinator before first push. CI and legacy verification remain
 source-only; unrelated security, ownership, credential and publication boundaries
 remain in force.
 
+## Prospective Source Rules
+
+[The prospective source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
+is dormant. It describes selected checks, scoped review and concise handoff for
+source work only after explicit adoption. This pointer does not activate rules,
+replace the effective sections below, change skill routes or retire U001.
+CI restoration and the exact policy transition require recorded owner adoption.
+
 ## Scope And Authority
 
 - This is the source repository for a reusable AI collaboration framework, not a product application.

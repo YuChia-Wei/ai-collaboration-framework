@@ -1,5 +1,10 @@
 # GitHub Terminal Issue Closure Policy
 
+Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+would use per-Issue PR intent, selected checks/review and separate live read-back
+for adopted source work. This pointer changes no declaration, receipt or effective
+YAML field; the current policy and applicable U001 remain authoritative.
+
 This source-repository-only policy governs how a pull request references and
 closes named GitHub Issues. It is not portable target guidance, and a closing
 keyword never authorizes work.

@@ -1,5 +1,10 @@
 # Workflow Artifact Policy
 
+Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+would use an actually adopted owning package's records for its selected source
+scope. Existing and active legacy formats remain applicable; this pointer causes
+no date-based migration, new collection, dual records or effective format change.
+
 This policy defines the repository-wide discovery and metadata contract for durable workflows. It does not define one universal plan, task, or report shape.
 
 ## Ownership Boundary
