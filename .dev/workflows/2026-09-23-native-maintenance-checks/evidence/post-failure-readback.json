@@ -1,0 +1,236 @@
+{
+  "observed_at": "2026-09-23T14:40:31+00:00",
+  "purpose": "read-only post-failure inventory; no public retry",
+  "roots": {
+    "native": {
+      "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\63bb8cce",
+      "files": 30,
+      "bytes": 286909,
+      "inventory": {
+        "project/.gitattributes": {
+          "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+          "size": 8,
+          "mtime_ns": 1790174324229127300,
+          "mode": 438
+        },
+        "project/.gitignore": {
+          "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+          "size": 11,
+          "mtime_ns": 1790174324230634500,
+          "mode": 438
+        },
+        "project/AGENTS.md": {
+          "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+          "size": 44,
+          "mtime_ns": 1790174324229127300,
+          "mode": 438
+        },
+        "project/unknown/keep.txt": {
+          "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+          "size": 25,
+          "mtime_ns": 1790174324230634500,
+          "mode": 438
+        },
+        "project/.ai/custom/framework.json": {
+          "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+          "size": 37,
+          "mtime_ns": 1790174324230634500,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/runtime/.agents/skills/framework-lesson/SKILL.md": {
+          "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+          "size": 2421,
+          "mtime_ns": 1790174327899124500,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/skill-package.yaml": {
+          "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+          "size": 6336,
+          "mtime_ns": 1790174327892130200,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/SKILL.md": {
+          "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+          "size": 1706,
+          "mtime_ns": 1790174327846700100,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/templates/lesson.md": {
+          "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+          "size": 508,
+          "mtime_ns": 1790174327896124900,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/scripts/lesson.py": {
+          "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+          "size": 81052,
+          "mtime_ns": 1790174327880308000,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+          "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+          "size": 10420,
+          "mtime_ns": 1790174327867976600,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+          "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+          "size": 2596,
+          "mtime_ns": 1790174327876653200,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/configuration.md": {
+          "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+          "size": 6117,
+          "mtime_ns": 1790174327850699500,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/example.md": {
+          "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+          "size": 5014,
+          "mtime_ns": 1790174327853844400,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/operations.md": {
+          "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+          "size": 10852,
+          "mtime_ns": 1790174327857431900,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/metadata/build.json": {
+          "sha256": "aff363b8d6c0fe7622bbc8e41a7c8be252adf18445e154b9bd8a8e84d0cadc07",
+          "size": 3650,
+          "mtime_ns": 1790174327918665900,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/metadata/files.json": {
+          "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+          "size": 5924,
+          "mtime_ns": 1790174327909644400,
+          "mode": 438
+        },
+        "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/metadata/selection.json": {
+          "sha256": "3bbeb2701e4f6f4de3cef069d624220e459955048e21dbea7d0aabc390981b71",
+          "size": 8621,
+          "mtime_ns": 1790174327901637000,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/runtime/.agents/skills/framework-lesson/SKILL.md": {
+          "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+          "size": 2421,
+          "mtime_ns": 1790174327835128400,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/skill-package.yaml": {
+          "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+          "size": 6336,
+          "mtime_ns": 1790174327825616100,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/SKILL.md": {
+          "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+          "size": 1706,
+          "mtime_ns": 1790174327780967000,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/templates/lesson.md": {
+          "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+          "size": 508,
+          "mtime_ns": 1790174327828614600,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/scripts/lesson.py": {
+          "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+          "size": 81052,
+          "mtime_ns": 1790174327811580300,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+          "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+          "size": 10420,
+          "mtime_ns": 1790174327799549400,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+          "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+          "size": 2596,
+          "mtime_ns": 1790174327809064000,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/configuration.md": {
+          "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+          "size": 6117,
+          "mtime_ns": 1790174327783973100,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/example.md": {
+          "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+          "size": 5014,
+          "mtime_ns": 1790174327786973800,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/operations.md": {
+          "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+          "size": 10852,
+          "mtime_ns": 1790174327789973900,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/metadata/files.json": {
+          "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+          "size": 5924,
+          "mtime_ns": 1790174327843699200,
+          "mode": 438
+        },
+        "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/metadata/selection.json": {
+          "sha256": "3bbeb2701e4f6f4de3cef069d624220e459955048e21dbea7d0aabc390981b71",
+          "size": 8621,
+          "mtime_ns": 1790174327836640900,
+          "mode": 438
+        }
+      }
+    },
+    "observations": {
+      "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce",
+      "files": 4,
+      "bytes": 19666,
+      "inventory": {
+        "calls.jsonl": {
+          "sha256": "4b3f7ec5f9cd0b50dd514a93ed55ba7141a1262150d95ac3fc9382f252c40914",
+          "size": 7908,
+          "mtime_ns": 1790174328855939800,
+          "mode": 438
+        },
+        "engine-pin.json": {
+          "sha256": "4446630e1c611aa82dd3d2e4ac439004b1e1dc69edf353d43a52278c43a869a6",
+          "size": 1613,
+          "mtime_ns": 1790174324209152300,
+          "mode": 438
+        },
+        "protected-path-diagnosis.json": {
+          "sha256": "b8b4cff05b39c049ac039481d75f3ccc750039fafe7235dcc8c1cc4b32fd0122",
+          "size": 2541,
+          "mtime_ns": 1790174377768691200,
+          "mode": 438
+        },
+        "result.json": {
+          "sha256": "99ad9fe33cb4078446ae9be1e8edf028ac9c1ec3413418323a78604e7639647e",
+          "size": 7604,
+          "mtime_ns": 1790174328930575900,
+          "mode": 438
+        }
+      }
+    },
+    "recovery": {
+      "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\recovery\\63bb8cce",
+      "files": 0,
+      "bytes": 0,
+      "inventory": {}
+    }
+  },
+  "limits": {
+    "total_files_before_this_observation": 34,
+    "total_bytes_before_this_observation": 306575,
+    "max_files": 256,
+    "max_bytes": 16777216
+  }
+}

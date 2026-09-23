@@ -1,0 +1,162 @@
+{
+  "actual_complete": {
+    "bytes_including_receipt": 2334138,
+    "candidate_identity": "versioned:0.19.0-rc.1:3755b217421a4f1238f740a09de7e034ccf56038:691ef5f2202c02772e0af76c3789e0af829501d8dea5bc24837763fe1caf8a28",
+    "components": 18,
+    "evidence": "complete-result.json",
+    "files_including_receipt": 269,
+    "outcome": "passed",
+    "payload_members": 113,
+    "public_cli": "complete-cli.json",
+    "retained_run": "F:\\framework-next\\p7-runs\\versioned-candidate\\complete-ae3645163ae84569a1ccbacdb8fb4ad5",
+    "runtime_entries": 18,
+    "wall_seconds_after_selection_preflight": 19.642
+  },
+  "baseline": "031233202f21e0793c9667cac872375d65e52be0",
+  "clean_source_before_actual": true,
+  "deferred": {
+    "authority": "#322 U001",
+    "next_action": "Select restored checks and obtain owner adoption.",
+    "outcome": "deferred-by-owner",
+    "owner": "program #322 coordinator / P7",
+    "scope": "unselected legacy/formal/full/history/profile/hosted checks"
+  },
+  "focused_regressions": {
+    "bytes": 39430,
+    "classification": "tiny synthetic fixtures; actual shared reader tests",
+    "evidence": "regressions-01.txt",
+    "files": 34,
+    "outcome": "passed",
+    "retained_run": "F:/framework-next/p7-runs/versioned-candidate/fn-c6c22f2287c74eb08545c6a4a2405b43",
+    "seconds": 0.304,
+    "tests": 6
+  },
+  "future_stable_plan": {
+    "bytes": 53446,
+    "classification": "manually constructed rc lock and fictional future stable candidate; actual read-only public planner",
+    "engine": {
+      "files": [
+        {
+          "path": "src/distribution/__init__.py",
+          "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+        },
+        {
+          "path": "src/distribution/data.py",
+          "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+        },
+        {
+          "path": "src/distribution/git_source.py",
+          "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+        },
+        {
+          "path": "src/distribution/installation.py",
+          "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+        },
+        {
+          "path": "src/distribution/installation_io.py",
+          "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+        },
+        {
+          "path": "src/distribution/installation_plan.py",
+          "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+        },
+        {
+          "path": "src/distribution/installation_state.py",
+          "sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+        },
+        {
+          "path": "src/distribution/maintenance_coordination.py",
+          "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+        },
+        {
+          "path": "src/distribution/package.py",
+          "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+        },
+        {
+          "path": "src/tools/maintain_framework.py",
+          "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+        }
+      ],
+      "id": "framework-managed-installation",
+      "source_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+      "version": "1.0.0"
+    },
+    "evidence": "fixture-plan-transcript.json",
+    "files": 31,
+    "observed_outcomes": [
+      "planned",
+      "conflict/lock-conflict",
+      "conflict/candidate-selection",
+      "blocked/engine-head"
+    ],
+    "outcome": "passed",
+    "retained_run": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9"
+  },
+  "historical_nonpassing": [
+    {
+      "action": "create own workflow/design and external evidence parent",
+      "attempts": 2,
+      "kind": "automatic-approval-review",
+      "outcome": "rejected before execution",
+      "reason": "direct trusted authorization unavailable; tool-read coordinator approval insufficient",
+      "resolution": "direct user confirmation in this task, followed by ordinary approved scoped execution"
+    },
+    {
+      "diagnostic": "PermissionError reading external retained fixture transcript; rglob produced a partial two-file view",
+      "fingerprint": "8babbf81116e31264f016ab747ffaa36d0852e401d4e87727923902591c921ad",
+      "kind": "post-run restricted read-back",
+      "outcome": "blocked-by-environment",
+      "resolution": "normal scoped read permission; explicit fail-on-error traversal established 269 files / 2334138 bytes; no actual build or fixture plan rerun"
+    }
+  ],
+  "implementation_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+  "not_performed": [
+    "install",
+    "apply",
+    "recover",
+    "native interruption",
+    "target writes",
+    "publication",
+    "push",
+    "PR",
+    "Issue/Project mutation",
+    "root adoption",
+    "CI",
+    "credential changes"
+  ],
+  "observed_at": "2026-09-23T22:39:20+08:00",
+  "source_bindings": {
+    "src/distribution/assembly.py": {
+      "git_blob": "01467d0f4e441275bfca1cce5ce3589f6213c101",
+      "raw_execution_sha256": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70"
+    },
+    "src/distribution/data.py": {
+      "git_blob": "08da2c0b84703887b837297d6d2d63b023c2eebb",
+      "raw_execution_sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+    },
+    "src/distribution/installation_state.py": {
+      "git_blob": "486608a26fe034eaf5a5071e9b309613f2d9ae46",
+      "raw_execution_sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+    },
+    "src/distribution/manifest.yaml": {
+      "git_blob": "292f4d5c7c1c3f167c11245ed731c13fc166bfb4",
+      "raw_execution_sha256": "64e6e19d97266324782dccadc6b51113708c0e8a4b78f94819b0794dedc92a0e"
+    },
+    "src/profiles/complete.yaml": {
+      "git_blob": "25d49e8f3c2b9e4e9f1124dacbc30a814516a908",
+      "raw_execution_sha256": "fb2de112798ad21c3e1a9ec214acbfaffc6e466b991cba7c24847ffeabb1613c"
+    },
+    "tests/framework_next/test_contracts.py": {
+      "git_blob": "399d05e46f1b947b5854fe065dcc2a3d76e1e263",
+      "raw_execution_sha256": "083bc9a8776cb4b4ccbf978afd970fd86ecc5fe39501ce3f89b33a6f661a6b02"
+    },
+    "tests/framework_next/test_versioned_candidates.py": {
+      "git_blob": "34365d43c59b5ca4d6f40d55c1581b84f9ea0d32",
+      "raw_execution_sha256": "7470c73a3e544404cec4342614121b144a262af7e1f4c58c931913b2cbf44080"
+    },
+    "tools/build-candidate.py": {
+      "git_blob": "c8d2817dd1740a68921629134ffa5c4d4bf18213",
+      "raw_execution_sha256": "6a708c39a15e1a249c6cce81729e13ce3dd83c7417033f7b9364b4b38c7c6553"
+    }
+  }
+}

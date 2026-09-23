@@ -1,4 +1,4 @@
-"""Read-only candidate 1 / lock 1 readers and inspection (development API 1).
+"""Read-only selection 1/2 / lock 1 readers and inspection (development API 1).
 
 No product entry point, filesystem mutation, Git subprocess or source fetch.
 The executing reader closure is deliberately smaller than a future writer engine.
@@ -16,7 +16,8 @@ import stat
 import sys
 from typing import Any
 
-from .data import DistributionError, Paths, identifier, json_bytes, json_object, path, version
+from .data import (DistributionError, Paths, _candidate_identity as _identity_text,
+                   distribution_version, identifier, json_bytes, json_object, path, version)
 from .git_source import Blob
 from .package import check_references, load_package
 
@@ -393,9 +394,22 @@ def _dependencies(rows: Any, optional: bool) -> list:
 def _selection_inventory(selection: Any, inventory: Any) -> dict[str, dict]:
     _shape(selection, {"schema_version", "mode", "release_version", "source", "profile", "components",
                        "adapters", "build_inputs", "generator"})
-    _one(selection["schema_version"])
-    _check(selection["mode"] == "development" and selection["release_version"] is None,
-           "unsupported-candidate", "Only development candidates are supported.", outcome="unsupported")
+    schema = selection["schema_version"]
+    _check(type(schema) is int and schema in {1, 2}, "unsupported-version",
+           "Only exact integer selection versions 1 and 2 are supported.", outcome="unsupported")
+    if schema == 1:
+        _check(selection["mode"] == "development" and selection["release_version"] is None,
+               "unsupported-candidate", "Selection 1 requires development mode without a release version.", outcome="unsupported")
+        generator_id = "framework-development-assembly"
+    else:
+        _check(selection["mode"] == "versioned", "unsupported-candidate",
+               "Selection 2 requires explicit versioned mode.", outcome="unsupported")
+        _text(selection["release_version"])
+        try:
+            distribution_version(selection["release_version"], "release_version")
+        except DistributionError:
+            raise InstallationError("invalid-distribution-version", "Expected canonical MAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH-rc.N (N > 0).") from None
+        generator_id = "framework-versioned-assembly"
     _shape(selection["source"], {"commit", "tree"})
     commit = _oid(selection["source"]["commit"])
     _check(len(_oid(selection["source"]["tree"])) == len(commit), "git-format", "Mixed Git identity formats.")
@@ -439,7 +453,7 @@ def _selection_inventory(selection: Any, inventory: Any) -> dict[str, dict]:
     _paths([item["path"] for item in inputs])
     sources = {item["path"]: item for item in inputs}
     generator = _shape(selection["generator"], {"id", "implementation"})
-    _check(generator["id"] == "framework-development-assembly", "unsupported-generator", "Unknown candidate generator.", outcome="unsupported")
+    _check(generator["id"] == generator_id, "unsupported-generator", "Unknown candidate generator.", outcome="unsupported")
     implementation = _array(generator["implementation"])
     _check(bool(implementation), "empty-generator", "Generator provenance closure is empty.")
     seen_implementation = set()
@@ -519,7 +533,7 @@ def _selection_inventory(selection: Any, inventory: Any) -> dict[str, dict]:
 def _candidate_identity(selection: dict, inventory: dict) -> tuple[str, dict[str, str]]:
     hashes = {METADATA[0]: sha256(json_bytes(selection)).hexdigest(), METADATA[1]: sha256(json_bytes(inventory)).hexdigest()}
     digest = sha256(json_bytes(hashes)).hexdigest()
-    return f"development:{selection['source']['commit']}:{digest}", hashes
+    return _identity_text(selection["source"]["commit"], digest, selection["release_version"]), hashes
 
 
 def _yaml_bound(raw: bytes, name: str) -> None:

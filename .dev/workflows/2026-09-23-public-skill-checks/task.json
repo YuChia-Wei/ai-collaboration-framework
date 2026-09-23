@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T16:12:34+08:00",
-  "updated_at": "2026-09-23T16:24:57+08:00",
+  "updated_at": "2026-09-23T22:40:42+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "provenance_limit": "Declared coordinator dispatch; not independent runtime attestation.",
@@ -19,6 +19,21 @@
   "branch": "codex/2026-09-23-public-skill-checks",
   "output_parent": "F:/framework-next/p7-runs/373-public",
   "results": {
+    "implementation": "Minimal WorkflowTests deferred result fixture correction committed; product/helper/runner/other test classes unchanged.",
+    "verification": "Selected workflow family passed once on clean 8d09ec6c; five earlier passes retain c1fb1c1f attribution; PR cleanup still unresolved here.",
+    "report": "deferred-fixture-repair-report.md",
+    "observations": "evidence/deferred-fixture-repair-result.json",
+    "follow_up_needed": true
+  },
+  "next_action": "Coordinator integrates the clean fixture repair and observed workflow pass, then reconciles the separately assigned helper-owner PR cleanup result. No other family retry or rc.1/native/adoption/CI acceptance is inferred.",
+  "deferred": {
+    "disposition": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program 322 coordinator / P7",
+    "scope": "Unselected legacy/full/history/native/audit/lease/hosted checks, CI restoration and adoption",
+    "next_action": "Separate P7 selection/adoption; no automatic activation."
+  },
+  "previous_checkpoint_results": {
     "implementation": "Seven public family test bodies and fail-closed public dispatch delivered as a local checkpoint.",
     "verification": "partial; no complete round-trip acceptance",
     "report": "report.md",
@@ -26,12 +41,26 @@
     "source_predicates": "evidence/source-predicates.json",
     "follow_up_needed": true
   },
-  "next_action": "Coordinator inspects local commit/interface/evidence and assigns separately owned metadata or volume-query repair before fresh affected-family execution. Do not repeat unchanged writer failures.",
-  "deferred": {
-    "disposition": "deferred-by-owner",
-    "authority": "U001",
-    "owner": "program 322 coordinator / P7",
-    "scope": "Unselected legacy/full/history/native/audit/lease/hosted checks, CI restoration and adoption",
-    "next_action": "Separate P7 selection/adoption; no automatic activation."
+  "resumption": {
+    "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+    "previous_handoff_commit": "7996b32d3d4f70553b203299e25dc69d9413ff9d",
+    "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+    "scope": "Owner-authorized local fast-forward and seven unchanged selected family executions, once each; record-only local commit."
+  },
+  "prior_resumption_results": {
+    "implementation": "Existing public tests, runner, helper and product unchanged.",
+    "verification": "partial; five family passes, PR cleanup failed, workflow deferred fixture failed",
+    "report": "resume-c1fb1c1f-report.md",
+    "observations": "evidence/resume-c1fb1c1f-observations.json",
+    "follow_up_needed": true
+  },
+  "fixture_repair": {
+    "base_commit": "8b151f0aa31ec91277c5399251171ebc12902f35",
+    "repair_and_execution_commit": "8d09ec6c5d2d41bcf4e7e3e108640545d398fea1",
+    "family": "software-development-orchestrator",
+    "runner_exit": 0,
+    "public_launches": 37,
+    "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+    "execution_count": 1
   }
 }

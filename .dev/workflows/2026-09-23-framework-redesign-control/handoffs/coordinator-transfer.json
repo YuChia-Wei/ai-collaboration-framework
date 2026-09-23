@@ -92,5 +92,109 @@
       "observed_at": "2026-09-23T21:41:05+08:00",
       "state": "active; no completion inferred"
     }
+  },
+  "continuation_checkpoint": {
+    "observed_at": "2026-09-23T22:49:58+08:00",
+    "coordinator_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+    "branch": "codex/2026-09-23-rc1-preparation",
+    "integrated_main": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+    "repair_issue": 378,
+    "repair_pr": 380,
+    "repair_issue_state": "CLOSED/COMPLETED",
+    "repair_project_status": "Done",
+    "open_issues": [
+      322,
+      368,
+      369,
+      373,
+      381,
+      382,
+      383
+    ],
+    "pilot_scope": "complete new framework with existing target customizations",
+    "next_issue": 383,
+    "next_dispatch": "actual tasks created and first F: commands verified",
+    "target_mutation_performed": false,
+    "publication_performed": false,
+    "active_dispatches": [
+      {
+        "issue": 381,
+        "thread_id": "01a0cea5-3b1a-7312-ab81-3e5edd32d651",
+        "worktree": "F:/framework-next/381",
+        "branch": "codex/2026-09-23-versioned-candidate",
+        "starting_commit": "031233202f21e0793c9667cac872375d65e52be0",
+        "first_repository_command": "exec-932830e9-5377-43a1-8df2-8e8b865904c2"
+      },
+      {
+        "issue": 382,
+        "thread_id": "01a0cea9-e5fe-72c1-8f95-ce82d01927c2",
+        "worktree": "F:/framework-next/382",
+        "branch": "codex/2026-09-23-native-maintenance-checks",
+        "starting_commit": "031233202f21e0793c9667cac872375d65e52be0",
+        "first_repository_command": "exec-defa8165-89a3-4df0-83b7-6ea3f3ddaf64"
+      },
+      {
+        "issue": 383,
+        "thread_id": "01a0cebc-d5fe-7fc3-b0c3-aa41882a83c1",
+        "worktree": "F:/framework-next/383",
+        "branch": "codex/2026-09-23-protected-path-repair",
+        "starting_commit": "cc3189193788750277269f63f3753a639becc3c6",
+        "first_repository_command": "exec-507f6c25-52b7-4464-b024-e69ec72e64c1",
+        "runtime": "gpt-6-astra / ultra; sqlite read-back"
+      }
+    ],
+    "runtime_verification": "Read-only state_5.sqlite rows show gpt-6-astra / ultra for both actual tasks; first commands show assigned clean F: checkouts.",
+    "c5_return": {
+      "issue": 368,
+      "commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+      "tested_source": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "state": "local handoff inspected; one C5 method passed; online integration pending"
+    },
+    "completed_cleanup": {
+      "issue": 378,
+      "removed_worktree": "F:/framework-next/378",
+      "removed_local_branches": [
+        "codex/2026-09-23-windows-path-compatibility",
+        "codex/2026-09-23-repair-integration"
+      ],
+      "removed_remote_branch": "codex/2026-09-23-repair-integration",
+      "persistent_archive": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/framework-next-control/completed-worktree-archive/378",
+      "files": 5,
+      "bytes": 5187,
+      "p7_runs_preserved": true
+    },
+    "issue381_direct_approval": {
+      "observed_at": "2026-09-23T22:34:56+08:00",
+      "question_call": "call_yutsLG1ILDk9suMq7WvaVqRH",
+      "answer": "確認 #381 上述範圍並繼續",
+      "same_task_resumed": true,
+      "historical_automatic_refusals": 2
+    },
+    "codex_first_claude_decision": {
+      "question_call": "call_iJzGL8xNjR5LWk77ylqF6fZv",
+      "answer": "先完成 Codex：停用被取代的 Claude 舊入口並保留歷史，明示尚未支援新框架",
+      "target_mutation_performed": false
+    },
+    "versioned_candidate_return": {
+      "issue": 381,
+      "delivery": "5e5881817b1fd9edf50f0c7a50eca1b9aa270296",
+      "tested_source": "3755b217421a4f1238f740a09de7e034ccf56038",
+      "review": "no actionable finding in bounded fixed-source coordinator review",
+      "actual_build_read": "passed; full 18-component rc.1; publication/installation not performed",
+      "integration": "local merge in containing commit; online pending"
+    },
+    "workflow_fixture_return": {
+      "issue": 373,
+      "delivery": "fd19f252d1f6668bb6315ee67ac9528326fa2923",
+      "result": "workflow family passed; PR cleanup pending",
+      "integration": "local eec89605; online pending"
+    },
+    "native_return": {
+      "issue": 382,
+      "delivery": "878cefc7471ae77d80ddc3f1d358c2bce2704b95",
+      "result": "not-passed; protected path plan failure; dependent cases unexecuted",
+      "repair_issue": 383,
+      "driver_review_integration": "bounded fixed-source review no finding; local merge in containing commit; native acceptance incomplete"
+    }
   }
 }

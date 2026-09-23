@@ -50,6 +50,20 @@ def version(value: Any, label: str) -> str:
     return value
 
 
+def distribution_version(value: Any, label: str) -> str:
+    """An explicit distribution label, separate from component exact versions."""
+    value = string(value, label)
+    require(re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.[1-9][0-9]*)?", value) is not None,
+            f"{label}: expected canonical MAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH-rc.N (N > 0)")
+    return value
+
+
+def _candidate_identity(commit: str, digest: str, release_version: str | None) -> str:
+    """Identity over complete metadata; callers validate selection and digests."""
+    prefix = "development" if release_version is None else "versioned:" + distribution_version(release_version, "release_version")
+    return f"{prefix}:{commit}:{digest}"
+
+
 def version_one(value: Any, label: str) -> None:
     require(type(value) is int and value == 1, f"{label}: only integer version 1 is supported")
 

@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-coordinator-handoff`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-rc1-preparation`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -168,3 +168,44 @@ PR #374 is online at `c10d874dc658d86ba9e3cf064271ffcfe4a25a14`, with bounded #3
 [Acceptance and bounded repair scope](reports/successor-acceptance-and-repair-scope.md)
 records the new coordinator, live provider state and #378 ownership. The owner order
 remains repair, rc.1 pilot, then overall validator/release/pipeline review.
+
+## Repair integrated and complete rc.1 preparation
+
+PR #380 is merged at c1fb1c1fb07a6d246e3bcedd3cd851918f66b306. #378 is
+CLOSED/COMPLETED and Project Done after the owner directly authorized closure
+only for reviewed, accepted and online-integrated implementation Issues.
+#322/#368/#369/#373 stay open. The full-framework pilot choice supersedes the
+earlier Lesson-only target selection; source-root adoption remains separate.
+
+The original #368 and #373 tasks were restored from archive and resumed on the
+exact merged repair commit. #368 selects only C5 candidate/reader checks; #373
+selects its seven existing public families once each, with dependent stop on a
+new shared failure. Only their existing records may change in this continuation.
+No whole P7 admission, native or downstream success is inferred.
+
+Issue #381 prepares the missing versioned candidate identity, complete explicit
+18-component profile and rc.1-to-stable candidate/lock planning input contract.
+Its Issue records exact source/test ownership and bounded actual build/read
+acceptance. Publication, actual stable output and target installation are separate.
+The actual independent Astra/ultra #381 task is 01a0cea5-3b1a-7312-ab81-3e5edd32d651 in F:/framework-next/381.
+
+Issue #382 supplies bounded real Windows maintenance observations before target
+mutation. Its independent Astra/ultra task 01a0cea9-e5fe-72c1-8f95-ce82d01927c2
+uses F:/framework-next/382, an isolated tiny native fixture, and explicit durable
+C: recovery/observation parents. Product files stay read-only. Its development
+fixture does not establish #381 versioned-candidate or complete target acceptance.
+Both actual dispatches started clean at 031233202f21e0793c9667cac872375d65e52be0.
+
+#368 returned bd40c830: the single selected C5 method passed once on c1fb1c1f,
+including two real Lesson builds, reader acceptance and five synthetic refusals.
+The record-only handoff is locally inspected/integrated; prior failed whole runs
+remain visible. #368 stays open for its remaining reconciliation/review.
+
+
+## Complete rc.1 and native continuation
+
+The fixed #381 candidate implementation is reviewed for local integration.
+The latest coordinator report retains its actual build/read identity, the owner
+Codex-first Claude disposition, #373 workflow-only pass, and #382 native plan
+failure. #383 owns only the observed protected-input Windows path repair.
+Native acceptance and target installation remain pending.

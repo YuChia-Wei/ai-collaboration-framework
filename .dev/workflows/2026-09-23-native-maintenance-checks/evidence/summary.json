@@ -1,0 +1,116 @@
+{
+  "schema": "issue-382-observation-summary-v1",
+  "observed_at": "2026-09-23T22:42:06+08:00",
+  "source_commit": "a9af5fe793f938ac9b66f94034bda8a2cafb50ec",
+  "source_pin_raw_sha256": "4446630e1c611aa82dd3d2e4ac439004b1e1dc69edf353d43a52278c43a869a6",
+  "outcome": "not-passed",
+  "exit": 1,
+  "actual_calls": [
+    {
+      "label": "build-lesson",
+      "exit": 0,
+      "outcome": "assembled"
+    },
+    {
+      "label": "inspect-fresh",
+      "exit": 0,
+      "outcome": "inspected"
+    },
+    {
+      "label": "plan-fresh",
+      "exit": 1,
+      "outcome": "blocked"
+    }
+  ],
+  "unexecuted_subcases": [
+    "pin-hash-refusal",
+    "pin-membership-refusal",
+    "apply-fresh",
+    "same-content",
+    "drift-collision",
+    "writer-exclusion",
+    "interruption-recovery"
+  ],
+  "interruption_attempts": 0,
+  "readback_counts": {
+    "native": {
+      "files": 30,
+      "logical_bytes": 286909
+    },
+    "observations": {
+      "files": 5,
+      "logical_bytes": 30547
+    },
+    "recovery": {
+      "files": 0,
+      "logical_bytes": 0
+    }
+  },
+  "total_retained_files": 35,
+  "total_retained_logical_bytes": 317456,
+  "selected_public_helper_launches": 3,
+  "selected_driver_git_launches": 5,
+  "max_simultaneous_selected_children": 1,
+  "additional_execution": "One post-failure direct filesystem-primitive diagnostic; read-only inventory checks only; no further public/installer calls.",
+  "nested_launches": "unavailable",
+  "operation_roots": 0,
+  "product_mutation_controls": {
+    "lock": false,
+    "marker": false,
+    "guard": false
+  },
+  "finding": {
+    "id": "N382-F01",
+    "owner": "managed-installation source owner / coordinator",
+    "location": "src/distribution/installation_plan.py:77",
+    "direct_shared_caller": "src/distribution/installation.py:207",
+    "observation": "All five selected protected inputs match. Direct existing non-reparse F: .ai, .ai/custom and framework.json each raise OSError WinError 1 from Path.resolve(strict=True).",
+    "inference": "The unguarded strict resolution in _protected_path explains the public plan unreadable-input refusal before Backend/allocation.",
+    "raw_locator_correction": "The original diagnostic JSON named line 70 within the function; the exact failing expression is line 77.",
+    "smallest_repair_scope": "Protected-input direct path canonicalization in installation_plan._protected_path and focused refusal/preservation regression cases; shared apply/recover call consumes it. Preserve alias/reparse/link/containment refusal. No product repair authorized in 382."
+  },
+  "retry": "none; product failure stops dependent selected cases",
+  "evidence": {
+    "result.json": {
+      "sha256": "99ad9fe33cb4078446ae9be1e8edf028ac9c1ec3413418323a78604e7639647e",
+      "bytes": 7604,
+      "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce\\result.json",
+      "durable_raw_sha256": "99ad9fe33cb4078446ae9be1e8edf028ac9c1ec3413418323a78604e7639647e",
+      "durable_raw_bytes": 7604,
+      "tracked_encoding": "UTF-8 LF snapshot; raw original retained at original path; transcript stream fields remain lossless base64"
+    },
+    "calls.jsonl": {
+      "sha256": "4b3f7ec5f9cd0b50dd514a93ed55ba7141a1262150d95ac3fc9382f252c40914",
+      "bytes": 7908,
+      "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce\\calls.jsonl",
+      "durable_raw_sha256": "4b3f7ec5f9cd0b50dd514a93ed55ba7141a1262150d95ac3fc9382f252c40914",
+      "durable_raw_bytes": 7908,
+      "tracked_encoding": "UTF-8 LF snapshot; raw original retained at original path; transcript stream fields remain lossless base64"
+    },
+    "engine-pin.json": {
+      "sha256": "4446630e1c611aa82dd3d2e4ac439004b1e1dc69edf353d43a52278c43a869a6",
+      "bytes": 1613,
+      "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce\\engine-pin.json",
+      "durable_raw_sha256": "4446630e1c611aa82dd3d2e4ac439004b1e1dc69edf353d43a52278c43a869a6",
+      "durable_raw_bytes": 1613,
+      "tracked_encoding": "UTF-8 LF snapshot; raw original retained at original path; transcript stream fields remain lossless base64"
+    },
+    "protected-path-diagnosis.json": {
+      "sha256": "97c550afcf0d467a963d2c05c4a2e811a1f6074b42da23ff44324047bc40acc3",
+      "bytes": 2470,
+      "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce\\protected-path-diagnosis.json",
+      "durable_raw_sha256": "b8b4cff05b39c049ac039481d75f3ccc750039fafe7235dcc8c1cc4b32fd0122",
+      "durable_raw_bytes": 2541,
+      "tracked_encoding": "UTF-8 LF snapshot; raw original retained at original path; transcript stream fields remain lossless base64"
+    },
+    "post-failure-readback.json": {
+      "sha256": "87735341acfe2127967a4baaa9fb394e8ee7f41e3a910c5504a1c2a105f24646",
+      "bytes": 10645,
+      "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce\\post-failure-readback.json",
+      "durable_raw_sha256": "4a1a1045d1021284de8c31bb06f0a6dff4cc6c848d221004472526ac069c48c3",
+      "durable_raw_bytes": 10881,
+      "tracked_encoding": "UTF-8 LF snapshot; raw original retained at original path; transcript stream fields remain lossless base64"
+    }
+  },
+  "sandbox_observation": "A later non-escalated rglob undercounted private candidate directories and explicit snapshot got WinError 5; repeated read-only inventory with original scoped permission saw all retained files. Not a product/native retry."
+}

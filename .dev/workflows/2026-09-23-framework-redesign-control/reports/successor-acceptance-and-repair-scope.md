@@ -174,3 +174,216 @@ candidate/lock identity and a complete explicit package selection, preserve targ
 It cannot claim a whole-framework upgrade from a Lesson-only installation.
 Release publication, stable 0.19.0, later actual stable upgrade, CI restoration
 and broader validator/release/pipeline review remain separate outcomes.
+
+## Online repair outcome and next preparation (2026-09-23T22:21:01+08:00)
+
+PR #380 merged online at c1fb1c1fb07a6d246e3bcedd3cd851918f66b306 after
+remote head read-back matched c247d424c5e16797dc1345c2929b15a796c5573e.
+The first PR request with a closing keyword was refused by automatic approval
+review because Issue closure had not been directly authorized. A Refs-only PR
+was created; the owner then directly authorized closure only for accepted,
+reviewed and online-merged implementation Issues. The approved Closes #378
+body was applied before merge. Live read-back: #378 CLOSED/COMPLETED and Project
+Done. #322/#368/#369/#373 remain open. No hosted checks ran; U001 deferral remains.
+
+The coordinator fetched main and started clean branch
+codex/2026-09-23-rc1-preparation at the online merge. Previous branches, #378
+worktree and all failure/run evidence are still preserved at this checkpoint.
+
+First continuation dispatches to #368/#373 failed because the original tasks
+were archived; no execution followed those failed sends. Both original tasks
+were restored and successful follow-ups selected exact c1fb1c1f source: #368
+only CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals, #373
+seven existing public families sequentially. Product/tests/helpers remain
+read-only and failures stop affected continuation. No result is inferred.
+
+Current target read-back remains main cb122285af09e46b24102f22a0ad9d713219c1f2,
+provenance v0.18.0. The four recorded customization subjects cover governance,
+validation, repository truth and execution-provenance adoption. Existing .NET
+authority and these target contracts must be reconciled at pilot activation.
+Git status printed no changed paths but retained two pre-existing inaccessible
+.python-prerequisite-fixtures/shadow warnings; no complete untracked audit or
+cleanup is claimed. Target files were not mutated.
+
+Issue #381 selects the bounded missing prerequisite: closed versioned candidate
+selection v2 (legacy development v1 preserved), exact version/commit/digest
+identity, complete explicit 18-package profile, actual complete rc.1 public
+build/read and labelled future stable/lock planning fixtures. It does not
+rewrite legacy release support or infer published/stable/native/target success.
+The task/worktree dispatch is pending; its Issue is the exact scope.
+
+## Actual prerequisite dispatch and C5 return (2026-09-23T22:31:22+08:00)
+
+#381 task 01a0cea5-3b1a-7312-ab81-3e5edd32d651 and #382 task
+01a0cea9-e5fe-72c1-8f95-ce82d01927c2 were created as independent saved-project
+local tasks, with assigned F: worktrees and clean start 031233202f21e0793c9667cac872375d65e52be0.
+Read-only runtime rows verify gpt-6-astra / ultra. Actual first repository commands
+exec-932830e9-5377-43a1-8df2-8e8b865904c2 and
+exec-defa8165-89a3-4df0-83b7-6ea3f3ddaf64 verify the assigned F: root/branch/HEAD.
+No executor-created task or sub-agent was used. #381 Project Status was read back
+In progress; #382 Status update succeeded, with read-back still pending. No
+Owner review, Release or other Project field was changed.
+
+#382's exact Issue selects tiny native Windows installer mechanics using the
+repaired development input, not an additional target Lesson pilot. It may write
+only native tests/dispatch/README and own records, with the named ignored durable
+C: recovery/observation parents as the sole bootstrap exception. Real apply/no-op,
+collision/drift refusal, participating-writer exclusion and one unmodified public
+interruption attempt are selected; a missed window remains not-observed. Source
+product repairs and complete versioned-target acceptance are separate.
+
+The original #368 task completed clean at bd40c83060d55435df5d7bc015d8f5ab12085aea.
+Its exact c1fb1c1f C5 command ran once, exit 0, one method / zero skips in 10.725s
+unittest time (11.44s wrapper wall). Two real Lesson candidates agreed; the reader
+and five labelled synthetic refusal cases passed. Observed 51 files / 573579
+logical bytes and 89 Git launches; successful owned output cleaned and three
+prior failed roots remained unchanged. Root verified the four record-only paths,
+JSON/YAML/readability, diff and no src/tests delta. This does not claim a fresh
+whole suite, independent full source review, native/target/CI or Issue completion.
+
+After fresh clean/merged-ancestry checks, five ignored #378 message files (5187
+bytes) were copied with byte/hash read-back to the persistent completed-worktree
+archive/378. Only then were F:/framework-next/378 and its completed local branch
+removed. The merged repair-integration remote/local branches were deleted after
+remote SHA matched c247d424 and later ls-remote returned no branch. All p7-runs,
+F:/ai-context-tests and unfinished worktrees remain. Source commits are reachable
+from online main; recreating a former engine checkout still requires its exact pin.
+
+Target inventory adds no adoption claim: 194 tracked .NET-profile files, 14
+effective rule IDs and 20 retained routing rows; 15 old entries per runtime; no
+new tracked core/custom/lock or observed maintenance marker. These rule/catalog
+bytes, four customization subjects, provenance/history and target gate remain
+owned by the target. Complete pilot preparation must reconcile the 13 overlapping
+new capabilities, five added packages, and two old lifecycle entry points, with
+explicit handling of the absent new Claude adapter. No source U001 export or
+blanket .NET-framework equivalence is selected.
+
+## Direct #381 scope confirmation (2026-09-23T22:34:56+08:00)
+
+The original #381 executor retained eight partial code/profile/test/CLI paths.
+Automatic approval twice refused creating own workflow/design and external
+evidence directories because the earlier broad pilot choice and coordinator
+messages did not prove direct owner authority for this new implementation scope.
+No substitute writer, alternate directory or waived execution was selected.
+The coordinator's read-only diff inspection observed those partial changes; it
+is not fixed-commit review or a behavioral result.
+
+The user directly answered request_user_input_async
+call_yutsLG1ILDk9suMq7WvaVqRH: "確認 #381 上述範圍並繼續". The question
+explicitly names versioned candidate/reader/CLI, complete profile, focused tests,
+own workflow/design, F:/framework-next/381 and
+F:/framework-next/p7-runs/versioned-candidate, one full rc.1 build/read, local
+message-validated commits and continuation in the same #381 task. The approved
+follow-up was sent successfully to that original task. Prior refusals remain
+historical; completion, downstream writes, release publication and execution
+results are not supplied by this approval.
+
+## Seven-family return and minimal fixture repair selection
+
+Original #373 returned clean 8b151f0aa31ec91277c5399251171ebc12902f35. Each
+family ran once on c1fb1c1f: Lesson, ADR, promotion, local backlog and CBF passed.
+PR completed its actual Git and synthetic-provider assertions but failed
+cleanup (exit 2) on an owned read-only regular Git object; the pre-cleanup
+accounting was unavailable after the exception. Workflow completed its main
+round trip but its separate deferred-task fixture supplied an empty result
+and received the product's correct nonempty-result refusal (exit 1). Neither
+was retried unchanged. Both original failed roots and exact streams remain.
+
+Coordinator inspected all 30 record-only paths, parsed JSON/YAML, checked the
+diff and absence of src/tests changes, and independently decoded/hash-checked
+14 retained runner stdout/stderr streams. This is record/source inspection,
+not independent repetition of public operations. Actual public counts total
+215 across seven separate invocations, not one aggregate-cap run; nested
+process totals and PR pre-cleanup measurements remain unavailable.
+
+Selected original-owner continuation: #373 adds only a truthful synthetic
+deferred-task result in test_work.py and executes only its workflow family
+after committing. #368 repairs only verified owned read-only-file fixture
+cleanup and retained failure accounting in support.py, necessary contracts/
+public cleanup-report wiring in run.py, and FixtureSupportTests regressions.
+Native dispatch belongs to #382; #381's complete-profile expected table is a
+separate test_contracts.py region. Product files stay read-only in both repairs.
+The old PR failure residue is preserved; no all-family or C5 rerun is selected.
+Both existing tasks received their concrete continuation, and Issues retain
+OPEN state with actual partial evidence and precise next actions.
+
+
+## Complete rc.1 review and selected native repair
+
+The owner directly selected Codex first in call_iJzGL8xNjR5LWk77ylqF6fZv:
+"先完成 Codex：停用被取代的 Claude 舊入口並保留歷史，明示尚未支援新框架".
+The target pilot must retain old Claude history while disabling superseded
+entry points and explicitly mark the new framework unsupported in Claude.
+No target files have yet changed.
+
+Coordinator fixed-source review of #381 delivery
+5e5881817b1fd9edf50f0c7a50eca1b9aa270296 / implementation
+3755b217421a4f1238f740a09de7e034ccf56038 found no actionable defect in the
+bounded versioned selection/identity/reader/CLI/profile change. Legacy development
+selection remains supported; strict distribution labels, schema 2 closed shape
+and shared lock/candidate parsing preserve exact identity. No member/payload,
+bootstrap, pin loader, planner or writer changes were introduced. Eight source
+blob/raw bindings, all ten engine raw hashes, three actual candidate metadata
+hashes and CLI identity were independently compared. The first restricted
+candidate read was PermissionError; the ordinarily approved scoped read passed.
+This was evidence inspection, not a second build or behavioral run.
+Six focused synthetic tests passed; the separate actual full rc.1 build/read
+selected all 18 components, 113 payload members and 18 Codex entries, retaining
+269 files / 2334138 bytes. Source/profile/tests are unchanged by the final record
+commit. Future stable planning uses fictional metadata and is not publication
+or target upgrade evidence. Candidate and matching engine worktree are retained.
+
+#373 returned fd19f252d1f6668bb6315ee67ac9528326fa2923 after one truthful
+synthetic deferred-result fixture correction at 8d09ec6c5d2d41bcf4e7e3e108640545d398fea1.
+Only the workflow family ran: passed, 37 public / 41 measured processes,
+22.666 seconds, cleanup succeeded. Product/helper and other families stayed
+unchanged; original failed roots remain. Root inspected the exact three-line
+test delta and returned evidence. The PR cleanup result remains pending #368.
+
+#382 returned 878cefc7471ae77d80ddc3f1d358c2bce2704b95 with a real native
+not-passed result on a9af5fe793f938ac9b66f94034bda8a2cafb50ec: build and
+inspect succeeded, plan blocked/unreadable-input. Five protected inputs matched;
+plain F: protected paths fail strict resolve with WinError 1. There were only
+three selected children and zero apply/interruption attempts. All subsequent
+cases remain unexecuted. Native driver review/integration is still pending.
+Issue #383 selects only installation_plan._protected_path and necessary existing
+private-helper reuse, focused refusal regressions and one actual protected public
+plan. Original #382 owns native continuation after repaired-source integration.
+No unchanged retries, source U001 export, native acceptance, target adoption,
+CI restoration or publication is inferred.
+
+
+## Native driver review and #383 dispatch
+
+Coordinator reviewed fixed #382 test driver/runner delta at 878cefc7471ae77d80ddc3f1d358c2bce2704b95.
+The driver pins all ten raw engine files, uses isolated public subprocesses,
+owned fixture roots and independent native guard/notification helpers, caps
+selected children/operations/files, and preserves interruption not-observed as
+non-pass. Product bytes remain unchanged. Five tracked evidence hashes and
+ten engine raw hashes match; the post-run record commit has no source/test drift.
+No actionable finding was identified in this bounded driver review. Dependent
+apply/guard/interruption/recovery paths have static evidence only at this point.
+
+#383 was actually dispatched to 01a0cebc-d5fe-7fc3-b0c3-aa41882a83c1 in
+F:/framework-next/383, branch codex/2026-09-23-protected-path-repair, from
+cc3189193788750277269f63f3753a639becc3c6. First tool exec-507f6c25-52b7-4464-b024-e69ec72e64c1
+reported completion; clean F: HEAD was independently read back and runtime
+state_5.sqlite shows gpt-6-astra / ultra. Actual repair completion is not implied.
+#373 fixture return is locally integrated in eec89605; both exact runner stream
+hashes were independently decoded and verified.
+
+
+## Readonly fixture cleanup handoff
+
+#368 returned clean eb28d0b6290e257f9da187318efb3efe76a9cb9c. Coordinator
+reviewed the bounded helper, four runner-report lines and new FixtureSupportTests.
+Only registered direct regular single-link readonly Windows files qualify for
+one access-denied retry, with root/ancestor/file identity and attributes rechecked.
+Pre-cleanup accounting survives failure while exit remains nonzero. No actionable
+finding was identified; three tested file and four exact stream hashes match.
+The first three selected methods passed (including actual two-command tiny Git
+object cleanup); after two test-only refinements, only those two methods reran
+and passed. Final refusals cover 17 explicitly synthetic cases. Old PR residue
+remained unchanged. No complete suite or public family execution is implied.
+The original #373 task may now fast-forward to this integration and execute
+only PR once; all seven previous family observations keep their original subjects.

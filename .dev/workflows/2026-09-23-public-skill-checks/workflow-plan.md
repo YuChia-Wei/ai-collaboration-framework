@@ -1,8 +1,23 @@
 # Bounded public skill execution
 
-Current checkpoint: [report](report.md), [task](task.json), and
-[actual observations](evidence/observations.json). Implementation is handed off
-with partial execution; next action belongs to coordinator-owned repair selection.
+Current checkpoint: [deferred fixture repair](deferred-fixture-repair-report.md),
+[actual workflow result](evidence/deferred-fixture-repair-result.json), and
+[task](task.json). The single selected workflow family passed on clean repair
+commit `8d09ec6c5d2d41bcf4e7e3e108640545d398fea1`. Other family observations remain
+at their prior subjects; PR cleanup is still separate. Earlier checkpoints below
+remain historical, with their original failures and scope preserved.
+
+Previous checkpoint: [resumed report](resume-c1fb1c1f-report.md), [task](task.json), and
+[resumed observations](evidence/resume-c1fb1c1f-observations.json). On source
+`c1fb1c1fb07a6d246e3bcedd3cd851918f66b306`, seven unchanged families ran once
+each: five passed, PR cleanup failed, and the workflow deferred-task fixture failed.
+The owner authorized records-only local handoff; coordinator repair selection is next.
+No full public, rc.1 pilot, native or provider acceptance follows.
+
+Initial implementation and earlier evidence remain historical in the
+[original report](report.md) and [original observations](evidence/observations.json).
+The scope and source pin below describe that earlier checkpoint; this resumption
+authorizes only the local fast-forward, selected execution and own workflow records.
 
 Authority: owner dispatch, live [Issue 373](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/373),
 U001 and [selected P7 plan](../../design/framework-next/p7-execution-selection.md).

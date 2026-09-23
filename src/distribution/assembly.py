@@ -10,7 +10,7 @@ import stat
 import sys
 import uuid
 
-from .data import DistributionError, json_bytes, path, require
+from .data import DistributionError, _candidate_identity, distribution_version, json_bytes, path, require
 from .git_source import GitSource, direct_directory
 from .selection import select
 
@@ -128,6 +128,19 @@ class OwnedDirectory:
 
 
 def assemble(repository: Path, commit: str, profile: str, output_root: Path, scratch_root: Path) -> dict:
+    """Preserve the schema-1 development invocation and identity contract."""
+    return _assemble(repository, commit, profile, output_root, scratch_root, None)
+
+
+def assemble_versioned(repository: Path, commit: str, profile: str, output_root: Path,
+                       scratch_root: Path, *, release_version: str) -> dict:
+    """Assemble an explicitly versioned, unpublished schema-2 candidate."""
+    return _assemble(repository, commit, profile, output_root, scratch_root,
+                     distribution_version(release_version, "release_version"))
+
+
+def _assemble(repository: Path, commit: str, profile: str, output_root: Path,
+              scratch_root: Path, release_version: str | None) -> dict:
     """Return actual output locations only after complete content read-back.
 
     No network, archive/install lock, project settings, deletion or apply operation.
@@ -142,9 +155,9 @@ def assemble(repository: Path, commit: str, profile: str, output_root: Path, scr
     # Finish all immutable source/closure/reference checks before writing anything.
     files_document = {"schema_version": 1, "files": [member.identity() for member in selection.members]}
     selection_document = {
-        "schema_version": 1,
-        "mode": "development",
-        "release_version": None,
+        "schema_version": 1 if release_version is None else 2,
+        "mode": "development" if release_version is None else "versioned",
+        "release_version": release_version,
         "source": {"commit": source.commit, "tree": source.tree},
         "profile": selection.profile,
         "components": [{"id": package.id, "version": package.version,
@@ -155,7 +168,7 @@ def assemble(repository: Path, commit: str, profile: str, output_root: Path, scr
                        for package in selection.packages],
         "adapters": list(selection.adapters),
         "build_inputs": [source.blobs[name].identity() for name in sorted(source.blobs)],
-        "generator": {"id": "framework-development-assembly",
+        "generator": {"id": "framework-development-assembly" if release_version is None else "framework-versioned-assembly",
                       "implementation": [item["source"] for item in implementation]},
     }
     metadata = {"metadata/selection.json": json_bytes(selection_document),
@@ -188,7 +201,7 @@ def assemble(repository: Path, commit: str, profile: str, output_root: Path, scr
         completion = {
             "schema_version": 1, "outcome": "assembled", "run_id": run_id,
             "completed_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "candidate_identity": f"development:{commit}:{candidate_digest}",
+            "candidate_identity": _candidate_identity(commit, candidate_digest, release_version),
             "candidate_sha256": candidate_digest, "identity_inputs": identity_inputs,
             "source_commit": commit, "profile": profile,
             "runtime": {"python": sys.version.split()[0], "pyyaml": yaml.__version__, "os": os.name},

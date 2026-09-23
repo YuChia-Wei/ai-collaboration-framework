@@ -39,13 +39,16 @@ def arguments(argv=None):
         parser.error('--case is contracts only; select a complete public family')
     if args.layer != 'public' and args.public_read_only:
         parser.error('--public-read-only requires --layer public')
-    if args.layer == 'native-windows':
-        parser.error(f'layer {args.layer!r} is reserved but not implemented; no tests executed')
+    if args.layer == 'native-windows' and (args.case or args.output_root is not None):
+        parser.error('native-windows uses only its explicit --native-root; --case/--output-root are not native selections')
     return args
 
 
 def main(argv=None):
     args = arguments(argv)  # Reject unsupported selections before allocating/importing product.
+    if args.layer == 'native-windows':
+        import test_native_windows
+        return test_native_windows.main(args.native_root)
     if args.layer == 'public':
         return public_main(args)
     run = None
@@ -73,6 +76,8 @@ def main(argv=None):
             try:
                 print(json.dumps({'fixture_accounting': run.close(success)}, sort_keys=True), flush=True)
             except (support.FixtureError, OSError) as exc:
+                if isinstance(exc, support.FixtureCleanupError):
+                    print(json.dumps({'fixture_accounting': exc.accounting}, sort_keys=True), flush=True)
                 print(json.dumps({'outcome': 'cleanup-failed', 'residue': str(run.root),
                                   'diagnostic': str(exc), 'next_action': 'Inspect residue; do not retry cleanup blindly.'}), file=sys.stderr)
                 # Cleanup failure must never inherit the success return above.
@@ -126,6 +131,8 @@ def public_main(args):
                     try:
                         entry['fixture_accounting'] = run.close(success)
                     except Exception as exc:
+                        if isinstance(exc, support.FixtureCleanupError):
+                            entry['fixture_accounting'] = exc.accounting
                         entry.update(outcome='cleanup-failed', exit=2, residue=str(run.root),
                                      exception_type=type(exc).__name__, diagnostic=str(exc),
                                      next_action='Inspect residue; do not retry cleanup blindly.')

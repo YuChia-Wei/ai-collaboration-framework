@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-23T19:20:23+08:00",
+  "updated_at": "2026-09-23T22:47:50+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -27,11 +27,11 @@
     ]
   },
   "execution": {
-    "last_completed_step": "executed actual repaired committed source; retained two candidates and actual reader error",
-    "next_action": "coordinator assigns installation reader-root boundary and affected independent review; complete C5 after explicit scope reconciliation"
+    "last_completed_step": "Bounded readonly cleanup repair and focused regressions completed; exact byte evidence retained.",
+    "next_action": "Coordinator integrates helper/report catches with other owners and separately assigns PR family or broader checks."
   },
   "results": {
-    "summary": "Approved four-file repairs delivered; C1-C3 passed; two real Lesson builds; actual installation reader remains blocked.",
+    "summary": "Bounded readonly Git fixture cleanup and pre-cleanup accounting repair passed focused regressions; historical C5 pass and prior failures retained.",
     "files_changed": [
       "tests/framework_next/run.py",
       "tests/framework_next/support.py",
@@ -61,13 +61,45 @@
         "skipped": 0,
         "exit": 1,
         "unittest_wall_seconds": 13.796
+      },
+      {
+        "selection": "single affected C5 after #378",
+        "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+        "command": "python -I -B tests/framework_next/run.py --layer contracts --case CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals --output-root F:/framework-next/p7-runs/368-contracts",
+        "attempts": 1,
+        "methods": 1,
+        "passed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "exit": 0,
+        "unittest_wall_seconds": 10.725
+      },
+      {
+        "selection": "readonly cleanup helper follow-up",
+        "base_commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+        "evidence": "../cleanup-repair-checks.json",
+        "executions": [
+          {
+            "methods": 3,
+            "passed": 3,
+            "exit": 0
+          },
+          {
+            "methods": 2,
+            "passed": 2,
+            "exit": 0
+          }
+        ],
+        "distinct_methods": 3,
+        "final_synthetic_scenarios": 17,
+        "new_failures": 0
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "installation_state._root strict resolution fails on F:; candidate reader/refusals and changed EnginePin independent review remain incomplete.",
+    "residual_risk": "Focused helper evidence only. PR family/public suite/native/install/apply and broader acceptance remain separately assigned.",
     "follow_up_needed": true,
-    "delivery": "local repaired checkpoint and evidence only; coordinator owns push/PR/merge",
-    "verification_state": "16/17 methods successful; one actual reader error; other U001 obligations deferred-by-owner"
+    "delivery": "Local helper repair handoff; coordinator owns integration and subsequent execution.",
+    "verification_state": "Three distinct focused helper methods passed; two changed tests repeated and passed; old PR residue unchanged; unselected U001 gates deferred-by-owner."
   },
   "prior_results": {
     "summary": "Local implementation checkpoint; acceptance incomplete. Final 14 methods: 11 successful, three affected methods / seven errors.",
