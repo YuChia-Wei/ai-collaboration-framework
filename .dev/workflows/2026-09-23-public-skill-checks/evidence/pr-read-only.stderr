@@ -1,0 +1,20 @@
+test_selected (test_work.PrTests.test_selected) ... FAIL
+
+======================================================================
+FAIL: test_selected (test_work.PrTests.test_selected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\373\tests\framework_next\test_work.py", line 15, in test_selected
+    self.prepare('pr', 'pr.py', ['C4-config', 'C6-binding', 'T4-git-round-trip', 'T4-synthetic-provider'])
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 62, in prepare
+    explained = self.invoke('explain')
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 151, in invoke
+    self.assertEqual(result.returncode, 0, response)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : {'diagnostics': [{'code': 'yaml-token', 'message': 'YAML tags, aliases and anchors are forbidden.'}], 'mutation_state': 'none', 'operation': 'explain', 'outcome': 'invalid-input'}
+
+----------------------------------------------------------------------
+Ran 1 test in 1.158s
+
+FAILED (failures=1)

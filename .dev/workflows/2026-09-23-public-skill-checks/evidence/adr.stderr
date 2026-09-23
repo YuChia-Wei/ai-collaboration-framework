@@ -1,0 +1,21 @@
+test_selected (test_knowledge.AdrTests.test_selected) ... FAIL
+
+======================================================================
+FAIL: test_selected (test_knowledge.AdrTests.test_selected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 315, in test_selected
+    self.config_checks()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 183, in config_checks
+    self.invoke('explain', project_config=str(config), expect='invalid-input')
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 145, in invoke
+    self.assertIn(response['outcome'], expected, response)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unsupported' not found in {'invalid-input'} : {'diagnostics': [{'code': 'config-version', 'message': 'Unsupported exact integer config version.'}], 'mutation_state': 'none', 'operation': 'explain', 'outcome': 'unsupported'}
+
+----------------------------------------------------------------------
+Ran 1 test in 2.834s
+
+FAILED (failures=1)

@@ -2,9 +2,10 @@
 
 [#369](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369), program
 #322 / [selected P7 scope](../p7-execution-selection.md). **Partial; policy writes
-approval-blocked, contracts CLI bound; public/native implementation outstanding. No readiness or
+approval-blocked, contracts/public CLI bound; actual product acceptance and native implementation outstanding. No readiness or
 restoration claim.** Read the [initial handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/blocked-handoff.md)
-and [current runner binding](../../../workflows/2026-09-23-source-gates-implementation/reports/runner-binding-handoff.md).
+and [contracts binding](../../../workflows/2026-09-23-source-gates-implementation/reports/runner-binding-handoff.md),
+and [current public binding](../../../workflows/2026-09-23-source-gates-implementation/reports/public-binding-handoff.md).
 
 ## Delivered selector contract
 
@@ -26,7 +27,7 @@ The future hosted source job has a 10-minute limit; native has 15 minutes.
 | --- | --- |
 | Known source prose / declared package entry or reference | UTF-8/conflict checks, new/changed Markdown local file references, `git diff --check BASE HEAD`. File existence only; heading/semantic meaning remains review. Renames re-resolve unchanged relative links. |
 | Source selector/workflows/policies/root | `.github/tests/test_source_gates.py --json`; nonzero, absent, timed-out, failed, skipped or malformed result fails. Report review requirement separately. |
-| Package schema/template/tool/metadata | `contracts` binds the real #368 CLI; the owning public family remains **explicitly reserved/non-passing** until V2 implementation. |
+| Package schema/template/tool/metadata | `contracts` binds #368 and the owning `public:<family>` binds fixed #373; actual product acceptance is still incomplete and must fail truthfully. |
 | Shared distribution/profile/adapter | `contracts` and actual declared tool-family consumers; only declared members/profiles/adapters are recognized. Nonempty/unknown dependency impact fails for coordinator mapping. Separate affected-selection trials remain required; C1/C5 Lesson smoke is not blanket actual assembly coverage. |
 | Installation/maintenance | `contracts`, separate Windows native requirement and independent scoped review. No native command is launched by source gate. |
 | Legacy support/recovery, frozen backlog or unknown member | Narrow failure requiring its named owner/check selection, never a green placeholder or historical matrix. |
@@ -101,12 +102,12 @@ only that created child; the parent remains. No global TEMP/TMP or legacy fixtur
 setting is changed. This fixture behavior is not product filesystem validation.
 
 Coordinator owns direct owner confirmation for the blocked policy surfaces, #368
-integration and failed product acceptance, V2/V3 bindings, first push/PR/merge, scoped review, actual selected trials, root
+integration and failed product acceptance, V3 binding, first push/PR/merge, scoped review, actual selected trials, root
 adoption and the user's exact restoration decision. Keep #369 open; keep all
 seven old workflows disabled. Legacy matrices/packet machinery and CI remain
 `deferred-by-owner` under U001 until selected P7 adoption, never passed.
 
-## Fixed #368 binding follow-up
+## Historical #368-only binding follow-up
 
 Runner interface source: `070a47335ffce99d31bd83e487447942539e4a9f`.
 `contracts` selects `python -I -B tests/framework_next/run.py --layer contracts`.
@@ -121,3 +122,19 @@ retained actual result remains 14 methods / 11 successful / 3 affected with 7
 errors, **zero successful candidate builds**. These failures and the original
 #369 failure/24-pass checkpoint remain visible. See the current handoff above
 for exact interfaces, scope and remaining owners. CI remains disabled.
+
+## Current fixed #373 public binding
+
+Interface: `7996b32d3d4f70553b203299e25dc69d9413ff9d`.
+The seven public families now select `--layer public --family ID`; no read-only
+mode or aggregate is used. Their separate JSONL/stdout and unittest/stderr must
+agree with the requested family and pinned subject, complete declared phases,
+zero skips, actual process exit/outcome and cleanup/accounting. Calls are checked
+only for basic structure/count; original tests retain operation semantics.
+
+Final source-only tests passed 37/37, no skips, harness 1.541 s. Complete success
+responses are synthetic because no #373 family fully passed. The seven phase
+lists matched fixed source; retained ADR partial and PR failed output were
+correctly rejected. No product/public/native command ran. See the current public
+handoff above. Native and original policy approval remain blocked, and all
+reported #368/#373 product/backend failures remain unresolved. CI stays disabled.

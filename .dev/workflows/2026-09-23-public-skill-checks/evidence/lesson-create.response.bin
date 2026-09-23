@@ -1,0 +1,12 @@
+{
+  "diagnostics": [
+    {
+      "code": "filesystem",
+      "message": "Initial Windows writes require local NTFS."
+    }
+  ],
+  "directories_created": [],
+  "mutation_state": "none",
+  "operation": "create",
+  "outcome": "unsupported"
+}

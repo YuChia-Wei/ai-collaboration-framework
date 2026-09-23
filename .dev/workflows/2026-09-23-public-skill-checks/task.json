@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-373-PUBLIC",
+  "workflow_id": "2026-09-23-public-skill-checks",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T16:12:34+08:00",
+  "updated_at": "2026-09-23T16:24:57+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance_limit": "Declared coordinator dispatch; not independent runtime attestation.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/373",
+  "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+  "checkpoint_commit_source": "containing-commit",
+  "hidden_context_required": false,
+  "worktree": "F:/framework-next/373",
+  "branch": "codex/2026-09-23-public-skill-checks",
+  "output_parent": "F:/framework-next/p7-runs/373-public",
+  "results": {
+    "implementation": "Seven public family test bodies and fail-closed public dispatch delivered as a local checkpoint.",
+    "verification": "partial; no complete round-trip acceptance",
+    "report": "report.md",
+    "observations": "evidence/observations.json",
+    "source_predicates": "evidence/source-predicates.json",
+    "follow_up_needed": true
+  },
+  "next_action": "Coordinator inspects local commit/interface/evidence and assigns separately owned metadata or volume-query repair before fresh affected-family execution. Do not repeat unchanged writer failures.",
+  "deferred": {
+    "disposition": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program 322 coordinator / P7",
+    "scope": "Unselected legacy/full/history/native/audit/lease/hosted checks, CI restoration and adoption",
+    "next_action": "Separate P7 selection/adoption; no automatic activation."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+  "basis": "read-only source analysis; no native probes",
+  "guards": [
+    {
+      "path": "src/skills/lesson/scripts/lesson.py",
+      "line": 334,
+      "function": "local_write_backend",
+      "function_sha256": "3f9fb0edbf32c0d3f8099d6be240d62c6a51821415d0ef5c51f8d7ef6a811e35",
+      "windows_source": "def local_write_backend(store):\n    ancestor = store\n    while not ancestor.exists():\n        ancestor = ancestor.parent\n    if os.name == \"nt\":\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        root = ctypes.create_unicode_buffer(32768)\n        kernel.GetVolumePathNameW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumePathNameW.restype = ctypes.c_int\n        if not kernel.GetVolumePathNameW(str(ancestor), root, len(root)):\n            fail(\"filesystem\", \"Cannot identify the local write volume.\", \"unsupported\")\n        kernel.GetDriveTypeW.argtypes = [ctypes.c_wchar_p]\n        kernel.GetDriveTypeW.restype = ctypes.c_uint32\n        if kernel.GetDriveTypeW(root.value) not in (3, 6):\n            fail(\"filesystem\", \"Only local fixed or RAM volumes are supported for writes.\", \"unsupported\")\n        filesystem = ctypes.create_unicode_buffer(64)\n        kernel.GetVolumeInformationW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumeInformationW.restype = ctypes.c_int\n        if not kernel.GetVolumeInformationW(root.value, None, 0, None, None, None, filesystem, len(filesystem)) or filesystem.value != \"NTFS\":\n            fail(\"filesystem\", \"Initial Windows writes require local NTFS.\", \"unsupported\")\n        return \"local-ntfs\"\n"
+    },
+    {
+      "path": "src/skills/adr/scripts/adr.py",
+      "line": 334,
+      "function": "local_write_backend",
+      "function_sha256": "3f9fb0edbf32c0d3f8099d6be240d62c6a51821415d0ef5c51f8d7ef6a811e35",
+      "windows_source": "def local_write_backend(store):\n    ancestor = store\n    while not ancestor.exists():\n        ancestor = ancestor.parent\n    if os.name == \"nt\":\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        root = ctypes.create_unicode_buffer(32768)\n        kernel.GetVolumePathNameW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumePathNameW.restype = ctypes.c_int\n        if not kernel.GetVolumePathNameW(str(ancestor), root, len(root)):\n            fail(\"filesystem\", \"Cannot identify the local write volume.\", \"unsupported\")\n        kernel.GetDriveTypeW.argtypes = [ctypes.c_wchar_p]\n        kernel.GetDriveTypeW.restype = ctypes.c_uint32\n        if kernel.GetDriveTypeW(root.value) not in (3, 6):\n            fail(\"filesystem\", \"Only local fixed or RAM volumes are supported for writes.\", \"unsupported\")\n        filesystem = ctypes.create_unicode_buffer(64)\n        kernel.GetVolumeInformationW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumeInformationW.restype = ctypes.c_int\n        if not kernel.GetVolumeInformationW(root.value, None, 0, None, None, None, filesystem, len(filesystem)) or filesystem.value != \"NTFS\":\n            fail(\"filesystem\", \"Initial Windows writes require local NTFS.\", \"unsupported\")\n        return \"local-ntfs\"\n"
+    },
+    {
+      "path": "src/skills/standards-promotion/scripts/standards_promotion.py",
+      "line": 334,
+      "function": "local_write_backend",
+      "function_sha256": "3f9fb0edbf32c0d3f8099d6be240d62c6a51821415d0ef5c51f8d7ef6a811e35",
+      "windows_source": "def local_write_backend(store):\n    ancestor = store\n    while not ancestor.exists():\n        ancestor = ancestor.parent\n    if os.name == \"nt\":\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        root = ctypes.create_unicode_buffer(32768)\n        kernel.GetVolumePathNameW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumePathNameW.restype = ctypes.c_int\n        if not kernel.GetVolumePathNameW(str(ancestor), root, len(root)):\n            fail(\"filesystem\", \"Cannot identify the local write volume.\", \"unsupported\")\n        kernel.GetDriveTypeW.argtypes = [ctypes.c_wchar_p]\n        kernel.GetDriveTypeW.restype = ctypes.c_uint32\n        if kernel.GetDriveTypeW(root.value) not in (3, 6):\n            fail(\"filesystem\", \"Only local fixed or RAM volumes are supported for writes.\", \"unsupported\")\n        filesystem = ctypes.create_unicode_buffer(64)\n        kernel.GetVolumeInformationW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumeInformationW.restype = ctypes.c_int\n        if not kernel.GetVolumeInformationW(root.value, None, 0, None, None, None, filesystem, len(filesystem)) or filesystem.value != \"NTFS\":\n            fail(\"filesystem\", \"Initial Windows writes require local NTFS.\", \"unsupported\")\n        return \"local-ntfs\"\n"
+    },
+    {
+      "path": "src/skills/pr/scripts/pr.py",
+      "line": 868,
+      "function": "local_write_backend",
+      "function_sha256": "3f9fb0edbf32c0d3f8099d6be240d62c6a51821415d0ef5c51f8d7ef6a811e35",
+      "windows_source": "def local_write_backend(store):\n    ancestor = store\n    while not ancestor.exists():\n        ancestor = ancestor.parent\n    if os.name == \"nt\":\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        root = ctypes.create_unicode_buffer(32768)\n        kernel.GetVolumePathNameW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumePathNameW.restype = ctypes.c_int\n        if not kernel.GetVolumePathNameW(str(ancestor), root, len(root)):\n            fail(\"filesystem\", \"Cannot identify the local write volume.\", \"unsupported\")\n        kernel.GetDriveTypeW.argtypes = [ctypes.c_wchar_p]\n        kernel.GetDriveTypeW.restype = ctypes.c_uint32\n        if kernel.GetDriveTypeW(root.value) not in (3, 6):\n            fail(\"filesystem\", \"Only local fixed or RAM volumes are supported for writes.\", \"unsupported\")\n        filesystem = ctypes.create_unicode_buffer(64)\n        kernel.GetVolumeInformationW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumeInformationW.restype = ctypes.c_int\n        if not kernel.GetVolumeInformationW(root.value, None, 0, None, None, None, filesystem, len(filesystem)) or filesystem.value != \"NTFS\":\n            fail(\"filesystem\", \"Initial Windows writes require local NTFS.\", \"unsupported\")\n        return \"local-ntfs\"\n"
+    },
+    {
+      "path": "src/skills/local-backlog/scripts/local_backlog.py",
+      "line": 789,
+      "function": "local_write_backend",
+      "function_sha256": "3f9fb0edbf32c0d3f8099d6be240d62c6a51821415d0ef5c51f8d7ef6a811e35",
+      "windows_source": "def local_write_backend(store):\n    ancestor = store\n    while not ancestor.exists():\n        ancestor = ancestor.parent\n    if os.name == \"nt\":\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        root = ctypes.create_unicode_buffer(32768)\n        kernel.GetVolumePathNameW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumePathNameW.restype = ctypes.c_int\n        if not kernel.GetVolumePathNameW(str(ancestor), root, len(root)):\n            fail(\"filesystem\", \"Cannot identify the local write volume.\", \"unsupported\")\n        kernel.GetDriveTypeW.argtypes = [ctypes.c_wchar_p]\n        kernel.GetDriveTypeW.restype = ctypes.c_uint32\n        if kernel.GetDriveTypeW(root.value) not in (3, 6):\n            fail(\"filesystem\", \"Only local fixed or RAM volumes are supported for writes.\", \"unsupported\")\n        filesystem = ctypes.create_unicode_buffer(64)\n        kernel.GetVolumeInformationW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumeInformationW.restype = ctypes.c_int\n        if not kernel.GetVolumeInformationW(root.value, None, 0, None, None, None, filesystem, len(filesystem)) or filesystem.value != \"NTFS\":\n            fail(\"filesystem\", \"Initial Windows writes require local NTFS.\", \"unsupported\")\n        return \"local-ntfs\"\n"
+    },
+    {
+      "path": "src/skills/software-development-orchestrator/scripts/workflow.py",
+      "line": 550,
+      "function": "local_write_backend",
+      "function_sha256": "3f9fb0edbf32c0d3f8099d6be240d62c6a51821415d0ef5c51f8d7ef6a811e35",
+      "windows_source": "def local_write_backend(store):\n    ancestor = store\n    while not ancestor.exists():\n        ancestor = ancestor.parent\n    if os.name == \"nt\":\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        root = ctypes.create_unicode_buffer(32768)\n        kernel.GetVolumePathNameW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumePathNameW.restype = ctypes.c_int\n        if not kernel.GetVolumePathNameW(str(ancestor), root, len(root)):\n            fail(\"filesystem\", \"Cannot identify the local write volume.\", \"unsupported\")\n        kernel.GetDriveTypeW.argtypes = [ctypes.c_wchar_p]\n        kernel.GetDriveTypeW.restype = ctypes.c_uint32\n        if kernel.GetDriveTypeW(root.value) not in (3, 6):\n            fail(\"filesystem\", \"Only local fixed or RAM volumes are supported for writes.\", \"unsupported\")\n        filesystem = ctypes.create_unicode_buffer(64)\n        kernel.GetVolumeInformationW.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               ctypes.c_wchar_p, ctypes.c_uint32]\n        kernel.GetVolumeInformationW.restype = ctypes.c_int\n        if not kernel.GetVolumeInformationW(root.value, None, 0, None, None, None, filesystem, len(filesystem)) or filesystem.value != \"NTFS\":\n            fail(\"filesystem\", \"Initial Windows writes require local NTFS.\", \"unsupported\")\n        return \"local-ntfs\"\n"
+    },
+    {
+      "path": "src/skills/problem-frame-author/scripts/problem_frame.py",
+      "line": 564,
+      "function": "local_backend",
+      "function_sha256": "36c899cedb4be771d033ffa5dd30af912dfd6edfcb2f7d6604031f071373b405",
+      "windows_source": "def local_backend(directory):\n    \"\"\"Select a bounded local hard-link backend; no publication probe or fallback.\"\"\"\n    if os.name == \"nt\":\n        import ctypes\n        from ctypes import wintypes\n        kernel = ctypes.WinDLL(\"kernel32\", use_last_error=True)\n        kernel.GetVolumePathNameW.argtypes = (wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD)\n        kernel.GetDriveTypeW.argtypes = (wintypes.LPCWSTR,)\n        kernel.GetVolumeInformationW.argtypes = (wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD,\n                                               ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p,\n                                               wintypes.LPWSTR, wintypes.DWORD)\n        volume, filesystem = ctypes.create_unicode_buffer(32768), ctypes.create_unicode_buffer(64)\n        require(bool(kernel.GetVolumePathNameW(str(directory), volume, len(volume))),\n                \"store\", \"Local volume identity unavailable.\", \"unavailable\")\n        require(kernel.GetDriveTypeW(volume.value) in (3, 6), \"store\", \"Only local fixed/RAM volumes are selected.\", \"unavailable\")\n        require(bool(kernel.GetVolumeInformationW(volume.value, None, 0, None, None, None, filesystem, len(filesystem)))\n                and filesystem.value == \"NTFS\", \"store\", \"This backend requires local NTFS hard links.\", \"unavailable\")\n        return \"windows-ntfs-hard-link\"\n"
+    }
+  ],
+  "metadata": [
+    {
+      "family": "pr",
+      "metadata_sha256": "b86b3282bcb35ac5da5696c1defc30971e9d1a0be36bcdda030b3b903c7cf8f3",
+      "forbidden_tokens": [
+        {
+          "kind": "AnchorToken",
+          "line": 12
+        },
+        {
+          "kind": "AliasToken",
+          "line": 25
+        },
+        {
+          "kind": "AliasToken",
+          "line": 29
+        },
+        {
+          "kind": "AliasToken",
+          "line": 45
+        },
+        {
+          "kind": "AliasToken",
+          "line": 50
+        },
+        {
+          "kind": "AnchorToken",
+          "line": 54
+        },
+        {
+          "kind": "AliasToken",
+          "line": 128
+        }
+      ],
+      "parser_line": 245,
+      "parser_source_sha256": "411128fda0d987b52ac743f28bb59d3d98563344b5124549fce4dc28a566894d"
+    },
+    {
+      "family": "local-backlog",
+      "metadata_sha256": "9a896e92e3c2af61bd04b8adc49b269fb2947d9c4cedb90d5ec300dbfbadbbe3",
+      "forbidden_tokens": [
+        {
+          "kind": "AnchorToken",
+          "line": 12
+        },
+        {
+          "kind": "AliasToken",
+          "line": 23
+        },
+        {
+          "kind": "AliasToken",
+          "line": 27
+        },
+        {
+          "kind": "AliasToken",
+          "line": 42
+        },
+        {
+          "kind": "AliasToken",
+          "line": 46
+        }
+      ],
+      "parser_line": 187,
+      "parser_source_sha256": "411128fda0d987b52ac743f28bb59d3d98563344b5124549fce4dc28a566894d"
+    }
+  ]
+}

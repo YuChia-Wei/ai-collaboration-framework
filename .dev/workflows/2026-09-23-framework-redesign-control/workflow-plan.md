@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p5-authorized-continuation`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p7-public-control`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -42,9 +42,11 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design online PR #362; Issue/Project complete; adoption unperformed |
 | #364 | P7-A focused verification design | own design/workflow only | design online PR #367; Issue/Project complete |
 | #365 | P7-B pipeline/policy design | own design/workflow only | design online PR #367; Issue/Project complete |
-| #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | independent Astra Ultra task active; actual F: identity verified |
-| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | independent Astra Ultra task active; native continuation awaits actual V3 interface |
-| #370 | P7 installation source review | own review workflow only; fixed ten-file source read-only | independent Astra Ultra review active; fixed product subject |
+| #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | partial checkpoint online PR #372; original repair authorization pending |
+| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | contracts binding online PR #372; public binding received; policy authorization and native pending |
+| #370 | P7 installation source review | own review workflow only; fixed ten-file source read-only | affected review online PR #374; Issue/Project complete within source-review scope |
+| #371 | P7 source pin repair | maintenance source loading and focused cache tests | source/test checkpoint online PR #374; Issue/Project complete; public/native gaps retained |
+| #373 | P7-V2 public skill checks | public test families/dispatch and own records | local partial checkpoint received; no complete family acceptance |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -62,7 +64,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: receive #368/#369 implementation outcomes, receive the independent fixed-source #370 review, then arrange V2/V3 from the actual helper interface. [Dispatch observations](evidence/p7-implementation-dispatch.json) verify the two active tasks. Only assigned narrow execution is authorized; native/root/CI outcomes remain outstanding.
+Current action: deliver the [public partial checkpoint and actual caller binding](reports/p7-public-checkpoint.md) through online PR integration. Original #368 source repair and #369 policy authorization replies remain pending. Resolve the recorded F: path/volume limitation before affected writes or native trials; no unchanged public rerun is selected. #370/#371 bounded source work is complete online, while native/root/CI outcomes remain outstanding.
 
 ## P3 shared implementation continuation
 
@@ -70,7 +72,7 @@ Both contract checkpoints are received. [Reconciliation](reports/p3-contract-rec
 
 ## Remaining work and verification
 
-P4-P6 implementation and P7 redesigned validation/pipeline review remain open. Final independent review, tool trials and I/O tests have not run. Pipeline restoration is not scheduled automatically. [Remediation report](reports/remediation-report.md) maps current evidence without claiming final closure.
+P4-P6 source/design checkpoints are online. P7 selected source contracts and public checks have partial/failed evidence; the bounded source-pin repair and affected review are complete. Native installation, source adoption, effective policy transition and CI restoration remain open. Pipeline restoration is not scheduled automatically. Historical phase paragraphs below retain their observation-time statements; this resume checkpoint and current task records govern continuation.
 
 ## Remaining P5 design dispatch
 
@@ -143,3 +145,5 @@ PR #372 is MERGED at `3a21b0eb58e80752df010e7277aec55725b3061e`; all four P7 exe
 The source-pin repair and affected source review are locally complete (#370/#371); the test-only follow-up passed 10/10 with product bytes unchanged. Their bounded online closure keeps public/native obligations in #322 / V3. #373 is selected for independent public-family tests using the already delivered helper, without installer activation or takeover of blocked writes.
 
 #373 is active in `01a0cd49-7805-7202-9176-e8f7b4cf4285` at `F:/framework-next/373`, starting from `f8f0d073e6442df8a280c5941a2c7a1d6ed7060b`. Runtime Astra Ultra, actual first F: command and live Project In progress are verified in the dispatch record. No public-family passing result is implied.
+
+PR #374 is online at `c10d874dc658d86ba9e3cf064271ffcfe4a25a14`, with bounded #370/#371 closure and Project Done verified. #368/#369/#373 remain OPEN / In progress; all nine workflows and repository Actions remain disabled. Completed branch cleanup preserved all F: worktree and failed-fixture files.

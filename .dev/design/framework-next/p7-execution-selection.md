@@ -139,3 +139,18 @@ it does not grant restoration authority or assert hosted execution.
 ## Parallel fixed-source review assignment
 
 [#370](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370) separately reviews the ten-file managed-installation closure at `38e6458f8d3e81dc2568daf1fa467571fb529fee` while #368/#369 implement their disjoint scopes. It writes only its own workflow findings and executes no product/native tool. Concrete defects feed later owning repair/V3 cases; a changed subject needs affected review again. This is the selected high-risk source review, without legacy audit/lease/receipt tooling, and cannot substitute for actual native evidence.
+
+## V2 assignment and observed contract wording
+
+Issue #373 independently implements C4/C6 and T1-T7 after the #368 helper return.
+It may consume direct committed package-resource fixtures; those are not real
+candidate assembly or installed/native evidence. It exclusively owns new public
+family tests and run.py's public dispatch arm, preserving contracts/helper/native
+behavior. Product repairs, stopped #368/#369 writes and provider/CI changes are
+excluded. Actual failures return to their source owner.
+
+The V2 executor observed that delivered local-backlog states are
+`draft -> planned -> in_progress -> completed`; T5's proposed `active` wording
+was conceptual and is not an actual state. The coordinator selects the delivered
+public contract for the test sequence, preserving its prerequisites and terminal
+rules. Record this design-name discrepancy without editing product truth.

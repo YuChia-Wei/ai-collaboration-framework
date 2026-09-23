@@ -101,3 +101,19 @@ on real candidate assembly or installer activation and must not claim either.
 It owns only new public-family test files and the public dispatch arm of run.py;
 contracts/helper/native/product semantics remain unchanged. Actual failures go
 back to owning repair assignments, with no substitution for stopped writes.
+
+## Online completion read-back
+
+PR #374 merged at `c10d874dc658d86ba9e3cf064271ffcfe4a25a14`. Provider read-back
+at `2026-09-23T16:06:40.4648392+08:00` confirms that exact main, #370/#371
+CLOSED/COMPLETED and Project Done; #368/#369/#373 remain OPEN / In progress.
+Actions is disabled, all nine workflows are disabled_manually, checks are empty
+(not passed). The ignored detailed receipt is
+`.dev/ai-context/local/framework-next-control/p7-source-pin-readback.json`.
+
+Completed #370/#371 branches were removed only after clean-state, exact HEAD and
+merged-ancestry proof; F:/framework-next/370 and /371 remain detached at their
+fixed returned commits with all files intact. The merged coordinator branch was
+removed locally/remotely using an exact expected remote SHA lease. No active
+Issue branch or failed fixture was deleted. Continuation is
+`codex/2026-09-23-p7-public-control` from this online main.

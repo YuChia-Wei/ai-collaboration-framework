@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T16:00:37+08:00",
-  "updated_at": "2026-09-23T16:03:49+08:00",
+  "updated_at": "2026-09-23T16:38:02+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -45,14 +45,27 @@
       "Only assigned T1-T7/C4/C6 focused public tests and labelled provider simulations",
       "Direct syntax/reference/scope/Git and complete planned-message check"
     ],
-    "last_completed_step": "Independent task active; actual runtime/F: identity and live Project In progress verified",
-    "next_action": "Receive per-family actual public results and real caller interface"
+    "last_completed_step": "Received clean local checkpoint; coordinator inspected exact source/helper exclusion and retained partial public results",
+    "next_action": "Integrate actual caller binding, then resolve separately owned source and F: limitations before selected fresh family runs"
   },
   "results": {
-    "summary": "V2 selected; no implementation or result claimed",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
+    "summary": "Seven public test bodies delivered; five partial C4/C6 selections; no complete T1-T7 acceptance",
+    "files_changed": [
+      "tests/framework_next/test_knowledge.py",
+      "tests/framework_next/test_work.py",
+      "tests/framework_next/test_cbf.py",
+      "tests/framework_next/run.py",
+      "tests/framework_next/README.md",
+      ".dev/workflows/2026-09-23-public-skill-checks/"
+    ],
+    "tests_run": [
+      "Nine allocated runs returned nonzero; five families completed independent read-only C4/C6 assertions",
+      "Actual Lesson create refused filesystem; PR explain rejected metadata aliases; backlog not invoked",
+      "ADR/CBF harness expectation failures retained beside corrections; later body changes syntax/source inspected only",
+      "98 public Python + 36 helper Git launches; 136 files and 1605714 retained logical bytes; opaque grandchildren unavailable",
+      "Direct AST/JSON/YAML/references/diff checks passed; no product/helper change"
+    ],
+    "finding_status": "partially-resolved",
     "residual_risk": "No actual candidate/native/adoption evidence; product defects require separate repair",
     "follow_up_needed": true
   },
@@ -70,8 +83,10 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
-    "implementation_status": "in progress",
-    "verification_state": "selected public cases not executed"
+    "implementation_status": "partial local checkpoint received; Issue remains open",
+    "verification_state": "no complete public family pass; native/adoption/hosted unfulfilled",
+    "commit": "7996b32d3d4f70553b203299e25dc69d9413ff9d",
+    "integration_report": "reports/p7-public-checkpoint.md"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RtFs",
   "project_state": "In progress; Status only; live OPEN and no other single-select values"

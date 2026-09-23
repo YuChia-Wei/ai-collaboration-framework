@@ -26,3 +26,11 @@ The later [runner-only follow-up](reports/runner-binding-handoff.md) binds fixed
 source tests with labelled synthetic responses. Product failures remain upstream;
 public/native selections and policy writes remain blocked. No product test was
 run by this Issue. The follow-up commit preserves the prior failure/24-pass record.
+
+
+The [public caller follow-up](reports/public-binding-handoff.md) binds fixed #373's
+single-family JSONL/unittest interface. Final 37 source tests passed; all complete
+public success fixtures are synthetic. Phase lists matched exact upstream source,
+and retained partial/failed observations were rejected without public execution.
+Operation semantics stay with the runner; policy/native/product acceptance blocks
+remain. No dormant workflow change was needed for this follow-up.

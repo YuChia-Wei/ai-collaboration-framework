@@ -1,0 +1,6 @@
+test_selected (test_knowledge.PromotionTests.test_selected) ... skipped 'Explicit read-only selection: dependent write round-trip NOT EXECUTED; selection cannot pass.'
+
+----------------------------------------------------------------------
+Ran 1 test in 7.951s
+
+OK (skipped=1)
