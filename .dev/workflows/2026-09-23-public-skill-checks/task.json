@@ -5,9 +5,9 @@
   "task_id": "ISSUE-373-PUBLIC",
   "workflow_id": "2026-09-23-public-skill-checks",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T16:12:34+08:00",
-  "updated_at": "2026-09-24T01:16:23+08:00",
+  "updated_at": "2026-09-24T01:24:53+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "provenance_limit": "Declared coordinator dispatch; not independent runtime attestation.",
@@ -24,9 +24,10 @@
     "report": "common-source-e71712b7-report.md",
     "observations": "evidence/reconcile-e71712b7-results.json",
     "technical_selection_complete": true,
-    "follow_up_needed": true
+    "follow_up_needed": false,
+    "closeout": "Bounded Issue 373 workflow completed after coordinator-reported PR merge and Issue/Project closeout; no whole-P7 completion inferred."
   },
-  "next_action": "Coordinator reviews/integrates the records-only delivery, applies the supplied public README paragraph through its current owner, and decides Issue/Project closeout separately. No additional execution or whole-P7/CI/adoption completion is inferred.",
+  "next_action": "No further Issue 373 executor work. Coordinator integrates this records-only closeout and handles any separately authorized cleanup; whole-P7 obligations remain outside this completed workflow.",
   "deferred": {
     "disposition": "deferred-by-owner",
     "authority": "U001",
@@ -92,7 +93,7 @@
   },
   "common_source_revalidation": {
     "execution_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
-    "delivery_commit_source": "containing-commit",
+    "delivery_commit_source": "explicit validated delivery commit before post-merge record update",
     "selection": [
       "pr",
       "lesson",
@@ -112,6 +113,66 @@
       "driver_process_total": 255,
       "nested_launch_upper_bound_sum": 130,
       "reported_fixture_wall_seconds_sum": 100.585
+    },
+    "delivery_commit": "07b1778f3b6cfae689c98b10326b614149e437f3"
+  },
+  "completed_at": "2026-09-24T01:24:53+08:00",
+  "post_merge_closeout": {
+    "recorded_at": "2026-09-24T01:24:53+08:00",
+    "scope": "Issue 373 selected public C4/C6 and T1-T7 only",
+    "provider_observation_basis": "Reported by coordinator task 01a0ce78-db26-74e1-a615-2bd0599f7d0c in its closeout dispatch; this executor performed no provider query or operation.",
+    "coordinator_review": {
+      "outcome": "no actionable finding reported",
+      "checked": "14 raw streams, execution source/test hashes, phases, caps, cleanup and 29 owned delivery paths"
+    },
+    "execution_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+    "validated_delivery_commit": "07b1778f3b6cfae689c98b10326b614149e437f3",
+    "pull_request": {
+      "number": 391,
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/391",
+      "state": "MERGED",
+      "merged_at": "2026-09-23T17:22:12Z",
+      "merge_commit": "d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7",
+      "delivery_ancestry": "verified by coordinator"
+    },
+    "issue": {
+      "number": 373,
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "closed_at": "2026-09-23T17:22:43Z",
+      "comment_id": "5799514872",
+      "comment_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/373#issuecomment-5799514872",
+      "authority": "Coordinator reports execution of the direct conditional closure authorization"
+    },
+    "project": {
+      "item_id": "PVTI_lAHOAwvEG84Bez7wzg8RtFs",
+      "status": "Done",
+      "other_fields_changed": false,
+      "readback_by": "coordinator"
+    },
+    "executor_actions": "Only workflow.yaml, task.json, workflow-plan.md and the necessary existing report changed. No source pull/checkout, test execution, provider operation, raw-evidence mutation or cleanup.",
+    "post_merge_records_commit_source": "containing local commit; integration remains coordinator-owned",
+    "whole_P7_complete": false,
+    "record_validation": {
+      "observed_at": "2026-09-23T17:25:40.571435+00:00",
+      "checks": "Four-file UTF-8/JSON/YAML/local-links/scope/whitespace passed; raw evidence and tested bytes unchanged.",
+      "local_link_count": 20,
+      "message_path": "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-post-merge-closeout.txt",
+      "message_sha256": "23b9eb16b9f5f95edfb2669f17289628267a56b87b850ffa4753ec348c8c45f6",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\.ai\\scripts\\validate-git-commits.py",
+        "--message-file",
+        "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-post-merge-closeout.txt",
+        "--workflow-id",
+        "2026-09-23-public-skill-checks"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "exit": 0,
+      "stdout_base64": "R2l0IGNvbW1pdCB2YWxpZGF0aW9uIHBhc3NlZCBmb3IgcGxhbm5lZCBtZXNzYWdlLg0K",
+      "stderr_base64": ""
     }
   }
 }

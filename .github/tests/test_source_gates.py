@@ -139,6 +139,79 @@ class SelectionTests(unittest.TestCase):
         self.assertIn('public:lesson', result.checks)
         self.assertTrue(any('Lesson-only' in p for p in result.requirements))
 
+    def test_public_modules_select_their_actual_shared_consumers(self):
+        all_families = {'lesson', 'adr', 'standards-promotion', 'pr', 'local-backlog',
+                        'software-development-orchestrator', 'problem-frame-author'}
+        expected = {'test_knowledge.py': all_families,
+                    'test_work.py': {'pr', 'local-backlog', 'software-development-orchestrator'},
+                    'test_cbf.py': {'problem-frame-author'}}
+        for name, families in expected.items():
+            path = 'tests/framework_next/' + name
+            tree = SyntheticTree({path: '# synthetic module'})
+            with self.subTest(path=path):
+                result = self.select(tree, tree, path, path)
+                self.assertFalse(result.errors)
+                self.assertEqual(result.checks, {'content', 'whitespace'} | {'public:' + f for f in families})
+                self.assertEqual(result.owners, families | {'new-public-tests'})
+                self.assertFalse(result.requirements)
+
+    def test_versioned_builder_selects_declared_consumers_and_separate_trial(self):
+        path = 'tools/build-candidate.py'
+        tree = synthetic_package()
+        tree.files[path] = b'# synthetic versioned builder'
+        result = self.select(tree, tree, path, path)
+        self.assertFalse(result.errors)
+        self.assertEqual(result.checks, {'content', 'whitespace', 'contracts', 'public:lesson'})
+        self.assertEqual(result.owners, {'distribution'})
+        self.assertIn('versioned-candidate-trial-required:affected-selections', result.requirements)
+        self.assertIn('distribution-trial-required:affected-selections;contracts-build-Lesson-only', result.requirements)
+
+    def test_named_regressions_have_owners_but_no_automatic_dispatch(self):
+        expected = {'test_engine_source.py': 'engine-source-regressions:#371',
+                    'test_installation_scan_budget.py': 'installation-scan-budget-regressions:#386',
+                    'test_pr_git_worktree.py': 'pr-git-worktree-regressions:#335',
+                    'test_protected_paths.py': 'protected-path-regressions:#383',
+                    'test_versioned_candidates.py': 'versioned-candidate-regressions:#381',
+                    'test_windows_paths.py': 'windows-path-regressions:#378'}
+        for name, owner in expected.items():
+            path = 'tests/framework_next/' + name
+            tree = SyntheticTree({path: '# synthetic regression'})
+            with self.subTest(path=path):
+                result = self.select(tree, tree, path, path)
+                self.assertFalse(result.errors)
+                self.assertEqual(result.checks, {'content', 'whitespace'})
+                self.assertEqual(result.owners, {owner})
+                self.assertEqual(result.requirements, {'owner-selected-regression-required:' + path})
+                with self.assertRaises(gate.GateError):
+                    gate.command_for('regression:' + name)
+
+    def test_native_driver_remains_separate_and_unbound(self):
+        path = 'tests/framework_next/test_native_windows.py'
+        tree = SyntheticTree({path: '# synthetic native driver'})
+        result = self.select(tree, tree, path, path)
+        self.assertFalse(result.errors)
+        self.assertEqual(result.checks, {'content', 'whitespace'})
+        self.assertEqual(result.owners, {'native-test-driver:#382'})
+        self.assertEqual(result.requirements, {'native-trial-required:windows:V3-binding-pending',
+                                               'independent-scoped-review'})
+        with self.assertRaises(gate.GateError):
+            gate.command_for('native-windows')
+
+    def test_new_module_rename_and_deletion_keep_both_owners(self):
+        old, new = 'tests/framework_next/test_work.py', 'tests/framework_next/test_cbf.py'
+        result = self.select(SyntheticTree({old: '# old'}), SyntheticTree({new: '# new'}), old, new)
+        self.assertFalse(result.errors)
+        self.assertEqual(result.checks, {'content', 'whitespace', 'public:pr', 'public:local-backlog',
+                                        'public:software-development-orchestrator', 'public:problem-frame-author'})
+        for path, requirement in (
+                ('tests/framework_next/test_native_windows.py', 'native-trial-required:windows:V3-binding-pending'),
+                ('tests/framework_next/test_pr_git_worktree.py',
+                 'owner-selected-regression-required:tests/framework_next/test_pr_git_worktree.py')):
+            result = self.select(SyntheticTree({path: '# old'}), SyntheticTree({}), path, None)
+            self.assertFalse(result.errors)
+            self.assertIn(requirement, result.requirements)
+            self.assertEqual(result.checks, {'content', 'whitespace'})
+
     def test_source_policy_and_native_requirements_remain_separate(self):
         policy = '.dev/standards/SOURCE-DEVELOPMENT-POLICY.md'
         tree = SyntheticTree({policy: '# rules', 'src/distribution/installation.py': '# native'})
@@ -150,7 +223,9 @@ class SelectionTests(unittest.TestCase):
 
     def test_legacy_and_unknown_never_default_to_green_or_full_matrix(self):
         for path in ('.ai/scripts/old.py', '.dev/backlog/frozen.md', '.github/workflows/governance.yml',
-                     'unknown.md', 'src/new/unknown.py'):
+                     'unknown.md', 'src/new/unknown.py', 'tests/framework_next/test_future.py',
+                     'tests/framework_next/test_native_linux.py', 'tests/framework_next/test_pr_git_worktree_extra.py',
+                     'tools/build-candidate-extra.py'):
             with self.subTest(path=path):
                 tree = SyntheticTree({path: 'x'})
                 result = self.select(tree, tree, path, path)
@@ -213,7 +288,8 @@ class CommandTests(unittest.TestCase):
         # Hypothetical success in the *observed interface*, never product execution.
         runtime = {'python': '3.12.0', 'executable': 'synthetic-python', 'PyYAML': '6.0.3',
                    'jsonschema': '4.26.0', 'referencing': '0.37.0'}
-        accounting = {'observed_files': 2, 'process_total': 0, 'residue': residue, 'next_action': None}
+        accounting = {'observed_files': 2, 'process_total': 0, 'residue': residue, 'next_action': None,
+                      'measurement_phase': 'before-cleanup'}
         return (json.dumps({'runtime': runtime}) + '\n' +
                 'test_synthetic (SyntheticTests.test_synthetic) ... ok\n' + summary + '\n' +
                 json.dumps({'synthetic_probe': {'meaning': 'command parser test only'}}) + '\n' +
@@ -224,7 +300,7 @@ class CommandTests(unittest.TestCase):
             result = gate.command_result('contracts', gate.Outcome('passed', 0, output))
             self.assertEqual((result['tests'], result['skipped']), (2, 0))
             self.assertEqual(result['result_interface'], 'unittest-and-observations')
-            self.assertEqual(result['interface_source_commit'], '070a47335ffce99d31bd83e487447942539e4a9f')
+            self.assertEqual(result['interface_source_commit'], 'e71712b71791170c3f4946e131ce867f82dade8f')
         with self.assertRaises(gate.GateError):
             gate.command_result('contracts', gate.Outcome('passed', 0, b'{"status":"passed","tests":2,"skipped":0}'))
 
@@ -240,6 +316,16 @@ class CommandTests(unittest.TestCase):
                        self.synthetic_contract_output() + b'{"outcome":"unavailable-or-failed"}\n'):
             with self.assertRaises(gate.GateError):
                 gate.command_result('contracts', gate.Outcome('passed', 0, output))
+
+    def test_contract_cleanup_failure_retains_accounting_without_admission(self):
+        # Integrated runner emits pre-cleanup accounting even after partial deletion.
+        observed = self.synthetic_contract_output(residue='synthetic-partly-deleted-run')
+        error = json.dumps({'outcome': 'cleanup-failed', 'residue': 'synthetic-partly-deleted-run',
+                            'diagnostic': 'Synthetic cleanup refusal', 'next_action': 'Inspect residue; no retry.'}).encode() + b'\n'
+        for status, code, output in [('failed', 2, observed + error),
+                                     ('passed', 0, observed + error), ('passed', 0, observed)]:
+            with self.subTest(status=status, code=code), self.assertRaises(gate.GateError):
+                gate.command_result('contracts', gate.Outcome(status, code, output))
 
     def test_contract_skipped_missing_or_malformed_output_fails(self):
         for summary in ('', 'Ran 0 tests in 0.001s\n\nOK', 'Ran 2 tests in 0.003s\n\nOK (skipped=1)',
@@ -300,7 +386,7 @@ class CommandTests(unittest.TestCase):
 
 
 class PublicResultTests(unittest.TestCase):
-    """Every successful public response here is synthetic; #373 has no family pass."""
+    """Every public response here is synthetic; no public operation is launched."""
     subject = 'a' * 40
     stderr = b'test_selected (SyntheticTests.test_selected) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.123s\n\nOK\n'
 
@@ -362,7 +448,7 @@ class PublicResultTests(unittest.TestCase):
                 result = self.result(self.synthetic_rows(family), family=family)
                 self.assertEqual((result['family'], result['source_commit'], result['tests'], result['skipped']),
                                  (family, self.subject, 1, 0))
-                self.assertEqual(result['interface_source_commit'], '7996b32d3d4f70553b203299e25dc69d9413ff9d')
+                self.assertEqual(result['interface_source_commit'], 'e71712b71791170c3f4946e131ce867f82dade8f')
                 self.result(self.synthetic_rows(family), family=family, stderr=self.stderr.replace(b'\n', b'\r\n'))
 
     def test_subject_family_selection_and_complete_phases_must_match(self):
@@ -440,6 +526,25 @@ class PublicResultTests(unittest.TestCase):
             rows = self.synthetic_rows()
             rows[1]['public_family'][key] = value
             with self.assertRaises(gate.GateError): self.result(rows)
+
+    def test_public_cleanup_failure_with_complete_phases_is_not_success(self):
+        rows = self.synthetic_rows()
+        entry = rows[1]['public_family']
+        accounting = entry['fixture_accounting']
+        accounting['measurement_phase'] = 'before-cleanup'
+        self.result(rows)  # The added observation is also emitted on successful cleanup.
+        accounting.update(residue='synthetic-partly-deleted-run', next_action='Inspect residue; no retry.')
+        entry.update(outcome='cleanup-failed', exit=2, residue='synthetic-partly-deleted-run',
+                     exception_type='FixtureCleanupError', diagnostic='Synthetic cleanup refusal',
+                     next_action='Inspect residue; no retry.')
+        rows[2].update(outcome='not-passed', exit=2)
+        with self.assertRaises(gate.GateError):
+            gate.command_result('public:adr', gate.Outcome('failed', 2, self.stdout(rows), self.stderr), subject=self.subject)
+        with self.assertRaises(gate.GateError):
+            self.result(rows)  # A forged zero process exit cannot overrule cleanup evidence.
+        rows[2].update(outcome='passed', exit=0)
+        with self.assertRaises(gate.GateError):
+            self.result(rows)  # Neither a complete phase list nor final success hides failure.
 
     def test_call_counts_and_required_observation_shape(self):
         for key, value in {'exit': False, 'outcome': None, 'operation': '', 'phase': 'unknown'}.items():

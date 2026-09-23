@@ -13,6 +13,11 @@ selected C1-C3/C5 and helper cases. No discovery of other tests, legacy validato
 profile build matrix or installed skill execution. Source blobs come from HEAD;
 the executing assembly requires its source implementation to match that commit.
 Fixture metadata is synthetic only where the test name/description says so.
+The current contracts module contains 20 methods. The coordinator-selected P7
+continuation executes only 12 methods once; eight historical core assertions
+have a separate, limited byte-comparison record. See the
+[P7 reconciliation and execution record](../../.dev/workflows/2026-09-23-source-contract-checks/p7-verification-report.md).
+That combination is not a claim that all 20 methods passed in one invocation.
 
 The contracts arm imports only `test_contracts.py` by exact path. Exit 0 requires all
 selected tests successful with no skips and successful cleanup; 1 means test
@@ -78,12 +83,16 @@ launch ceilings, separately labelled as bounds, not measurements. The one select
 4 MiB+1 Lesson input is transient stdin and separately counted when executed.
 No physical-I/O, performance or token inference is made.
 
-Current evidence and limitations: [Issue 373 report](../../.dev/workflows/2026-09-23-public-skill-checks/report.md).
-The initial Lesson writer refused its F: volume query; dependent round-trips stay
-unexecuted. PR metadata failed its public parser at that checkpoint. The later
-approved alias expansion passes source contracts, but the public family has not
-been rerun against that repair. Read-only successes do not
-establish installation, actual write behavior, full public acceptance or CI.
+Current selected public evidence: [Issue 373 fixed-source handoff](../../.dev/workflows/2026-09-23-source-contract-checks/p7-verification-report.md#public-issue-373-handoff). All seven configured public families passed once each in separate invocations on source `e71712b71791170c3f4946e131ce867f82dade8f`, with complete selected C4/C6 and T1-T7 phases and successful cleanup. Original 160/256 per-invocation limits remain unchanged; the all-public aggregate was not executed and cannot fit the observed combined budget. Earlier failures and source-specific results remain preserved. These direct committed-resource tests do not establish candidate installation, native or actual provider acceptance, target adoption, CI, or whole-P7 completion.
+
+Across those separate invocations: 218 public + 37 driver Git = 255 measured
+driver processes; summed fixture time was 100.585 seconds. All 14 exact runner
+stdout/stderr streams remain preserved, but successful fixture cleanup removed
+full child transcripts and synthetic-provider bodies. Driver summaries/hashes
+cannot reconstruct those deleted bodies. The peer delivery is
+`07b1778f3b6cfae689c98b10326b614149e437f3`; coordinator evidence verification,
+integration and Issue 373 closure remain pending. This README records the fixed
+peer handoff without merging its records into this worktree.
 
 ## Small helper interface
 
@@ -103,6 +112,11 @@ The runner adds this checkout's `src` and test directory for imports under `-I`.
   identity checks, <=256 observed files / <=16 MiB retained bytes. Success cleans
   only the unique verified run. Failure retains it; the caller must record and
   inspect it before separately authorizing cleanup. Parent is never deleted.
+  A registered regular single-link readonly file may be retried once after fresh
+  path/ancestor/identity/attribute checks. Other errors and link/reparse/drift
+  observations remain failures. `FixtureCleanupError.accounting` retains the
+  measured `before-cleanup` counts even after partial deletion; both contracts
+  and public reports keep a cleanup failure nonzero.
 - `use_run(run)` / `active_run()`: narrow context used by runner and tests.
 - `run_process(argv, *, cwd, input=None, timeout=30) -> CompletedProcess[bytes]`:
   no shell, bytes I/O, <=8 MiB post-capture output check. This is for bounded
@@ -119,19 +133,24 @@ Fixture ancestry uses lstat, refuses links/reparse points, ambiguous paths,
 source containment and drive roots, then uses an absolute direct path. It does
 not require Windows' optional final-path API. The approved GitSource/assembly repair uses a narrow Windows error-1 fallback
 only after direct ancestor and stable device/inode checks; other errors still
-fail. The actual installation reader retains its separate strict-root check
-and currently refuses the assigned F: backend.
+fail. The installation reader has its own guarded Windows error-1 fallback,
+including stable ancestry and independent canonical-name/drive checks. The
+previous F: reader blocker was resolved for the historical C5 case on
+`c1fb1c1fb07a6d246e3bcedd3cd851918f66b306`. Later versioned-candidate and directory
+observation changes require the separately selected P7 C5 execution; no fallback
+permits aliases, links/reparse points or a silent change of root.
 
 The audit hook counts all subprocess launches made in this interpreter (including
-GitSource's nested Git) and stops before launch 257. It cannot observe opaque
-child-process grandchildren; future public/native workers must report those
+GitSource's nested Git) and stops before launch 257 per active run. It cannot observe opaque
+child-process grandchildren; public/native workers report those
 separately or as unavailable. Builder tests currently invoke the actual owner
 in-process, with its real Git subprocesses, not the CLI. Public builder/installer
 entry acceptance remains distinct.
 
 Accounting records maximum observed size per unique relative file at checkpoints,
-current retained bytes/files, helper-authored bytes, processes by executable and
-wall time. It is not cumulative physical I/O or a complete transient-write meter.
+retained bytes/files at measurement, helper-authored bytes, processes by executable
+and wall time. Close observations are labelled `before-cleanup`, including when
+cleanup later fails; they are not a count of the partial residue left afterward. It is not cumulative physical I/O or a complete transient-write meter.
 Tiny helper probes print separate counts before cleanup; combine those explicitly,
 never hide them in the parent total. Fixed tiny fixtures are measured after each
 material phase; file/byte checks are checkpoint limits, not filesystem quotas.
@@ -139,7 +158,7 @@ No giant 4 MiB boundary is selected here. No speed/wear/token claim is made.
 
 ## Selected scope and current limitations
 
-C1 asserts exact 18 owners / 113 declared members / seven profile selections,
+C1 asserts exact 18 owners / 113 declared members / eight profile selections,
 versions, destinations, Git bytes/modes, owner references and installed entry
 links. C2 asserts v1/v2/v3 union, schema identities and null configuration without
 invented stores/probes. Two implementation packages legitimately need an
@@ -149,14 +168,20 @@ reader, with five labelled synthetic candidate corruptions; no apply/recovery.
 
 The directly approved four-file repair preserves metadata semantics while
 expanding PR/backlog aliases and handles the observed F: error in GitSource/
-assembly. Committed-source execution now passes C1-C3 and completes two real
-Lesson builds; the subsequent installation reader still refuses F: strict root
-resolution, so C5 aggregate remains failing. Exact original and repaired
-observations are retained in the
+assembly. The historical repaired run passed 16 of 17 methods; its reader failure
+was later followed by one successful C5-only run. Read both outcomes in the
 [repair report](../../.dev/workflows/2026-09-23-source-contract-checks/repair-report.md).
-C4/C6 and public families are partially observed under Issue 373; native Windows,
-root adoption, independent review of the changed source, all-profile build
-acceptance, CI and publication remain separately assigned.
+The added `complete` profile selects all 18 owners / 113 payload members; logical
+projection is distinct from physical assembly of that profile. C5 remains the
+two-build development Lesson case, not a versioned-release or all-profile matrix.
+
+The [P7 record](../../.dev/workflows/2026-09-23-source-contract-checks/p7-verification-report.md)
+tracks the newly selected 12-method execution and the separate eight-assertion
+historical comparison. Do not relabel the older 16/17 or C5-only result as a
+current all-contract pass. Issue 373 reports the separate-family passes above; its coordinator verification
+and integration remain pending. Native,
+versioned distribution, target adoption, independent review, CI and publication
+retain their respective owners and evidence boundaries.
 
 ## Native Windows caller interface (Issue 382)
 
@@ -198,4 +223,7 @@ transient creations are explicitly unavailable. Counts are not performance claim
 All successful and failed fixture/recovery/observation outputs are retained.
 The coordinator owns later disposition; no prior run or recovery cleanup is done.
 
-Current execution evidence: [Issue 382 report](../../.dev/workflows/2026-09-23-native-maintenance-checks/report.md).
+Native evidence: [Issue 382 original report](../../.dev/workflows/2026-09-23-native-maintenance-checks/report.md)
+and [resumed observations](../../.dev/workflows/2026-09-23-native-maintenance-checks/resume-report.md).
+Those results retain their exact source pins and residual dispositions; the
+current #368 contracts selection does not execute native maintenance.

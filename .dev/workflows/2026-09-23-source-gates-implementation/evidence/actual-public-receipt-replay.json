@@ -1,0 +1,241 @@
+{
+  "recorded_at": "2026-09-24T01:27:23+08:00",
+  "record_kind": "actual-upstream-result-replay; not a new product execution",
+  "caller_commit": "76b2c013aef6493f9779f0226748315dfa469f16",
+  "caller_path": ".github/scripts/check-source-change.py",
+  "caller_sha256": "c6ee70abe9975babc1ecad56ecc704050b4cd8b3ed145348955c58566caac64a",
+  "execution_source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+  "upstream_receipt_commit": "d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7",
+  "upstream_receipt_blobs": [
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-results.json",
+      "git_blob": "0520e918adcdc99c158f701895abf9af5cd84d79",
+      "sha256": "eb154aa06529508a037281c0cc657d3dc9a3dbf2a56995f821cb1adb007c3143"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-raw-streams.json",
+      "git_blob": "12473781ad4299b3b3a1e37a69769e3b701a1667",
+      "sha256": "e91103ab1f5526b82ef559d1312c5fbb4722dcb82dc2152488597ed41580967a"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-pr.json",
+      "git_blob": "7c4c51532950867cb53cdabc448b31a728b0b363",
+      "sha256": "354254198e77eec9e89f90a88e52532bc09041ceaec0b7e9421eacda4761223c"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-lesson.json",
+      "git_blob": "d3a477353076704093c53142b05feb31adebcfd2",
+      "sha256": "0aae83293326d8c40024ea480ceed994a7f17707c226a339c427cee5379cd991"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-adr.json",
+      "git_blob": "2dd0f367349f1f7b7e945a122dad5ab7b7c90f8c",
+      "sha256": "ff94f027e3174cee5af9fd3bc1ca7b038162795aac2d8f4f6e39e650ec678681"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-standards-promotion.json",
+      "git_blob": "565cf96cd5df873f36366a42b0d303c2daa1c92a",
+      "sha256": "4421f6dfc4451e66f39fba7895c9a29f8a4bde9eff2a97483896f0e215457370"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-local-backlog.json",
+      "git_blob": "18b710528c232271cf1affe796ff0abe08bad5a0",
+      "sha256": "71aa19ee8193e5d644647040a75c8fdfcb71fc68dbfc59d00417bed257f762a0"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-software-development-orchestrator.json",
+      "git_blob": "61bdac6fdef62aa93581e9767476fc6b990998a2",
+      "sha256": "8b729c64564e86f8e41b08babbc9d38c9074e5345e7e22186eb883b524617c52"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-problem-frame-author.json",
+      "git_blob": "c7a4d6435b3405d6a9178111d8ad520f3a83fb2f",
+      "sha256": "279544e8de49c74cf4df28c985d230dd26640e2ab4772717d0b1b2d6440026e1"
+    }
+  ],
+  "preparation_observation": {
+    "outcome": "failed-read-preparation",
+    "reason": "An earlier inventory attempted JSON parsing of a stderr text file; it also inspected an older unprefixed raw-streams record. Corrected to the exact reconcile-e71712b7 JSON paths before replay.",
+    "product_execution": false,
+    "parser_replay_started_in_failed_preparation": false,
+    "classification": "Not an upstream behavioral failure."
+  },
+  "verified_streams": [
+    {
+      "name": "reconcile-e71712b7-pr.stdout",
+      "bytes": 9535,
+      "sha256": "04890551eeafd2263a43d4979db7337303a375b1079583f44a1e7b201deb1170",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-pr.stderr",
+      "bytes": 159,
+      "sha256": "558fdbb1fff604be9b3b0fd0a23a7c0f23b6e71698030550ac3b5d745ed108a5",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-lesson.stdout",
+      "bytes": 16504,
+      "sha256": "afa1940bd4c65e27c3802f8a506f5396c303bff88695c25eda2185d289e4da4c",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-lesson.stderr",
+      "bytes": 168,
+      "sha256": "1d7d699cee33be695adaf573a678a8bec439884a884e99099dc5960106c1c757",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-adr.stdout",
+      "bytes": 12281,
+      "sha256": "3e8b602c8d12916e92f7cc22b69f3dc9c65cf8d4200948caa7dc4cc4ee1e224e",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-adr.stderr",
+      "bytes": 165,
+      "sha256": "0a297a35de0469359e6a1a7e9b9d6c0fd46ef15e5a841b06c754d043beca864a",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-standards-promotion.stdout",
+      "bytes": 10697,
+      "sha256": "c416f19ab4e5a8fe1914f4ab6b881697f685e91c0376ea7a1ba0a651a7764adb",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-standards-promotion.stderr",
+      "bytes": 171,
+      "sha256": "d222b375b88fc84189abc953dbab0c3932b085be5a5c6c0429018304edce8f99",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-local-backlog.stdout",
+      "bytes": 11472,
+      "sha256": "4e827e0dcc04988f97db62db49f910c24d406b39b48491daeae25206fce4e00d",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-local-backlog.stderr",
+      "bytes": 164,
+      "sha256": "5a056f4d854c618d777efd31890b303de06164c0daef271e892048167a38e598",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-software-development-orchestrator.stdout",
+      "bytes": 13888,
+      "sha256": "ad986971f9ec65efe537fc4d855ff463ae8c2210669ef06d47391f9f8f3e5597",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-software-development-orchestrator.stderr",
+      "bytes": 165,
+      "sha256": "7e5252c4df7d91f0872a8faa3505f89a299ce1e28787370a763752153bcf69d9",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-problem-frame-author.stdout",
+      "bytes": 12519,
+      "sha256": "aa28ca548b9b292d5d138a78f921127719ba3ea7bcf9d185a049db19084aff86",
+      "capture_sha256_match": true
+    },
+    {
+      "name": "reconcile-e71712b7-problem-frame-author.stderr",
+      "bytes": 159,
+      "sha256": "fcbb5194f704dfa82cf50cb7388f8019abb9948cc2b40e50850a9add83cc81ae",
+      "capture_sha256_match": true
+    }
+  ],
+  "verified_test_source_sha256": {
+    "run.py": "7931ab23674dfa56dbfda02522e6bcb6dab7646d2a4f869a036ef8ed7f287ae0",
+    "support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+    "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+    "test_work.py": "022ce503e6c8a8344ab7716dadcc30f91e6878e3b85d80e568ea7ee709f36384",
+    "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+  },
+  "capture_identity_checks": "argv, cwd, exit and five test-file hashes match results and all seven capture records; recorded test hashes equal exact source Git blob SHA-256 without newline normalization",
+  "parser_replay": {
+    "tool_output_chunk": "7f7105",
+    "invocation": "python -I -B -; import only the fixed source selector; command_result(public:<family>, Outcome(passed, recorded runner_exit, exact stdout bytes, exact stderr bytes), subject=execution_source_commit)",
+    "outcome": "passed",
+    "families": [
+      {
+        "family": "pr",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 23
+      },
+      {
+        "family": "lesson",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 43
+      },
+      {
+        "family": "adr",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 31
+      },
+      {
+        "family": "standards-promotion",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 26
+      },
+      {
+        "family": "local-backlog",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 29
+      },
+      {
+        "family": "software-development-orchestrator",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 37
+      },
+      {
+        "family": "problem-frame-author",
+        "status": "passed",
+        "tests": 1,
+        "skipped": 0,
+        "public_launches": 29
+      }
+    ],
+    "observed_complete_phase_lists": true,
+    "observed_result_interface": "public-jsonl-and-unittest",
+    "observation_custody": "Results retained from the completed read-only tool invocation. Receipt generation rechecks source and stream hashes; it does not rerun parser or product tests.",
+    "product_or_framework_runner_launches": 0
+  },
+  "upstream_totals": {
+    "public_launches": 218,
+    "driver_git_launches": 37,
+    "driver_process_total": 255,
+    "nested_launch_upper_bound_sum": 130,
+    "reported_fixture_wall_seconds_sum": 100.585
+  },
+  "upstream_selection_kind": "Seven independent sequential family invocations on one unchanged clean tracked source; not the all-public aggregate command.",
+  "upstream_accounting_limits": [
+    "Totals span seven separate invocations, not one aggregate cap.",
+    "Actual nested child launches unavailable; their bounds are not observations.",
+    "Fixture wall time sum excludes capture, guard commands and task overhead; no speed claim.",
+    "Outer captures each launch one runner, separate from fixture driver counts.",
+    "Observed/retained bytes are before-cleanup measurements, not current retained output.",
+    "Full successful child transcripts/provider fixture files are deleted by unchanged cleanup. Runner streams retain phase/call summaries and hashes; exact deleted child output bytes are unavailable."
+  ],
+  "limits": [
+    "Seven upstream family invocations at e71712b7; not an all-public aggregate or a complete source-gate execution.",
+    "The PR provider evidence is synthetic, not actual provider acceptance.",
+    "The source selector itself was not invoked through its process runner in this replay; no timeout, cap or process-termination acceptance is established.",
+    "No product, tests/framework_next, selector, policy, CI, native or provider changes; no suite rerun.",
+    "#368 selected verification remains separately owned; no C5, native, hosted or complete P7 acceptance follows.",
+    "Upstream receipt is read from an immutable local Git commit; current provider Issue/PR/Project state was not independently read back."
+  ]
+}

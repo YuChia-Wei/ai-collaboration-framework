@@ -21,8 +21,8 @@ MAX_BLOB = 1024 * 1024
 MAX_PATHS = 256
 MANIFEST = "src/distribution/manifest.yaml"
 RUNNER = "tests/framework_next/run.py"
-RUNNER_INTERFACE_COMMIT = "070a47335ffce99d31bd83e487447942539e4a9f"
-PUBLIC_INTERFACE_COMMIT = "7996b32d3d4f70553b203299e25dc69d9413ff9d"
+RUNNER_INTERFACE_COMMIT = "e71712b71791170c3f4946e131ce867f82dade8f"
+PUBLIC_INTERFACE_COMMIT = "e71712b71791170c3f4946e131ce867f82dade8f"
 # Exact prepare(..., phases) declarations; PublicCase adds resource-setup.
 PUBLIC_PHASES = {family: ["resource-setup", "C4-config", "C6-binding", *phases]
                 for family, phases in {
@@ -36,6 +36,21 @@ PUBLIC_PHASES = {family: ["resource-setup", "C4-config", "C6-binding", *phases]
 }.items()}
 FAMILIES = frozenset({"lesson", "adr", "standards-promotion", "pr", "local-backlog",
                       "software-development-orchestrator", "problem-frame-author"})
+# PublicCase in test_knowledge is shared by all seven families. These are test
+# dependencies, not permission to discover or run unrelated regression modules.
+PUBLIC_TEST_FAMILIES = {
+    "tests/framework_next/test_knowledge.py": FAMILIES,
+    "tests/framework_next/test_work.py": frozenset({"pr", "local-backlog", "software-development-orchestrator"}),
+    "tests/framework_next/test_cbf.py": frozenset({"problem-frame-author"}),
+}
+OWNER_SELECTED_TESTS = {
+    "tests/framework_next/test_engine_source.py": "engine-source-regressions:#371",
+    "tests/framework_next/test_installation_scan_budget.py": "installation-scan-budget-regressions:#386",
+    "tests/framework_next/test_pr_git_worktree.py": "pr-git-worktree-regressions:#335",
+    "tests/framework_next/test_protected_paths.py": "protected-path-regressions:#383",
+    "tests/framework_next/test_versioned_candidates.py": "versioned-candidate-regressions:#381",
+    "tests/framework_next/test_windows_paths.py": "windows-path-regressions:#378",
+}
 LEGACY_WORKFLOWS = frozenset({"governance.yml", "portable-gates.yml", "nightly-full-readiness.yml",
     "package-candidate.yml", "publish-release.yml", "release-provider-preflight.yml",
     "test-fixture-acceleration.yml"})
@@ -347,13 +362,31 @@ def classify(path: str, ownership: Ownership, selection: Selection):
         selection.requirements.update({"native-trial-required:windows:V3-binding-pending", "independent-scoped-review"})
         selection.owners.add("installation")
         return
-    if path == MANIFEST or path in DISTRIBUTION_FILES or path == "tools/build-development.py" or path.startswith(("src/profiles/", "src/adapters/")):
+    if (path == MANIFEST or path in DISTRIBUTION_FILES
+            or path in {"tools/build-development.py", "tools/build-candidate.py"}
+            or path.startswith(("src/profiles/", "src/adapters/"))):
         if path.startswith(("src/profiles/", "src/adapters/")) and not ownership.declared_distribution(path):
             raise GateError("undeclared profile/adapter: " + path)
         selection.checks.add("contracts")
         selection.checks.update("public:" + family for family in ownership.families())
         selection.requirements.add("distribution-trial-required:affected-selections;contracts-build-Lesson-only")
+        if path == "tools/build-candidate.py":
+            selection.requirements.add("versioned-candidate-trial-required:affected-selections")
         selection.owners.add("distribution")
+        return
+    if path in PUBLIC_TEST_FAMILIES:
+        families = PUBLIC_TEST_FAMILIES[path]
+        selection.checks.update("public:" + family for family in families)
+        selection.owners.update(families)
+        selection.owners.add("new-public-tests")
+        return
+    if path == "tests/framework_next/test_native_windows.py":
+        selection.owners.add("native-test-driver:#382")
+        selection.requirements.update({"native-trial-required:windows:V3-binding-pending", "independent-scoped-review"})
+        return
+    if path in OWNER_SELECTED_TESTS:
+        selection.owners.add(OWNER_SELECTED_TESTS[path])
+        selection.requirements.add("owner-selected-regression-required:" + path)
         return
     if path in {"tests/framework_next/run.py", "tests/framework_next/support.py"}:
         selection.checks.add("contracts")

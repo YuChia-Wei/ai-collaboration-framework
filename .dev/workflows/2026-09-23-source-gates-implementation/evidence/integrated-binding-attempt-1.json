@@ -1,0 +1,45 @@
+{
+  "phase": "integrated-interface-binding",
+  "attempt": 1,
+  "started_at": "2026-09-23T17:18:46+00:00",
+  "base_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+  "tested_in_working_tree": true,
+  "tested_sha256": {
+    ".github/scripts/check-source-change.py": "c6ee70abe9975babc1ecad56ecc704050b4cd8b3ed145348955c58566caac64a",
+    ".github/tests/test_source_gates.py": "12f89eb096d2e2d223a38a58249c6708e3e618301183817bd1b0c5d06ed1147b",
+    ".github/scripts/run-source-native.py": "9aa9da9e3fc9e5becf3cdc9616b6dd434d286242d3593ec5654b8d503e3464c6",
+    ".github/workflows/source-checks.yml": "f969c5ee25ea55380fdb5e1c9a1d8970bf91c7ec238b70c07da979754e31e5d2",
+    ".github/workflows/source-native.yml": "cd9b07689c66aa916954a38079830d7b1d786b16a2961f59f1891342b33af3ea"
+  },
+  "argv": [
+    "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-B",
+    "F:/framework-next/369/.github/tests/test_source_gates.py",
+    "--output-root",
+    "F:\\framework-next\\p7-runs\\369-source-gates"
+  ],
+  "cwd": "F:\\framework-next\\369",
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "evidence_scope": "Synthetic selector/caller cases, bounded Python capture probes and the existing tiny real Git fixture; no product/public/native/hosted execution",
+  "product_execution": false,
+  "exit": 0,
+  "stdout": "test_actual_bounded_child_output_and_failure (__main__.CommandTests.test_actual_bounded_child_output_and_failure) ... ok\r\ntest_contract_cleanup_failure_retains_accounting_without_admission (__main__.CommandTests.test_contract_cleanup_failure_retains_accounting_without_admission) ... ok\r\ntest_contract_missing_pinned_runner_fails_before_launch (__main__.CommandTests.test_contract_missing_pinned_runner_fails_before_launch) ... ok\r\ntest_contract_nonzero_or_error_observation_cannot_pass (__main__.CommandTests.test_contract_nonzero_or_error_observation_cannot_pass) ... ok\r\ntest_contract_skipped_missing_or_malformed_output_fails (__main__.CommandTests.test_contract_skipped_missing_or_malformed_output_fails) ... ok\r\ntest_contract_success_uses_unittest_and_observations (__main__.CommandTests.test_contract_success_uses_unittest_and_observations) ... ok\r\ntest_missing_or_drifted_selected_command_fails_before_launch (__main__.CommandTests.test_missing_or_drifted_selected_command_fails_before_launch) ... ok\r\ntest_real_contract_argv_and_reserved_or_unknown_commands (__main__.CommandTests.test_real_contract_argv_and_reserved_or_unknown_commands) ... ok\r\ntest_synthetic_subprocess_outcomes_never_fake_hosted_success (__main__.CommandTests.test_synthetic_subprocess_outcomes_never_fake_hosted_success) ... ok\r\ntest_changed_links_resolve_and_missing_links_fail (__main__.ContentTests.test_changed_links_resolve_and_missing_links_fail) ... ok\r\ntest_duplicates_alias_depth_and_syntax (__main__.ContentTests.test_duplicates_alias_depth_and_syntax) ... ok\r\ntest_rename_rechecks_relative_links (__main__.ContentTests.test_rename_rechecks_relative_links) ... ok\r\ntest_draft_and_every_selected_action_run_on_fixed_pair (__main__.EventTests.test_draft_and_every_selected_action_run_on_fixed_pair) ... ok\r\ntest_native_is_manual_windows_main_and_unbound (__main__.EventTests.test_native_is_manual_windows_main_and_unbound) ... ok\r\ntest_workflow_context_is_unconditional_and_credential_free (__main__.EventTests.test_workflow_context_is_unconditional_and_credential_free) ... ok\r\ntest_actual_capture_separates_streams_under_one_total_bound (__main__.PublicResultTests.test_actual_capture_separates_streams_under_one_total_bound) ... ok\r\ntest_all_seven_exact_commands_and_synthetic_complete_formats (__main__.PublicResultTests.test_all_seven_exact_commands_and_synthetic_complete_formats) ... ok\r\ntest_call_counts_and_required_observation_shape (__main__.PublicResultTests.test_call_counts_and_required_observation_shape) ... ok\r\ntest_cleanup_and_accounting_must_be_successful_and_consistent (__main__.PublicResultTests.test_cleanup_and_accounting_must_be_successful_and_consistent) ... ok\r\ntest_missing_duplicate_malformed_or_reordered_observations_fail (__main__.PublicResultTests.test_missing_duplicate_malformed_or_reordered_observations_fail) ... ok\r\ntest_negative_child_exits_are_owned_by_the_actual_runner (__main__.PublicResultTests.test_negative_child_exits_are_owned_by_the_actual_runner) ... ok\r\ntest_nonzero_partial_skip_and_error_stderr_never_pass (__main__.PublicResultTests.test_nonzero_partial_skip_and_error_stderr_never_pass) ... ok\r\ntest_pinned_entry_and_head_are_forwarded_without_product_launch (__main__.PublicResultTests.test_pinned_entry_and_head_are_forwarded_without_product_launch) ... ok\r\ntest_public_cleanup_failure_with_complete_phases_is_not_success (__main__.PublicResultTests.test_public_cleanup_failure_with_complete_phases_is_not_success) ... ok\r\ntest_subject_family_selection_and_complete_phases_must_match (__main__.PublicResultTests.test_subject_family_selection_and_complete_phases_must_match) ... ok\r\ntest_two_commit_fixture_rename_delete_and_cli_event_pair (__main__.RealGitTests.test_two_commit_fixture_rename_delete_and_cli_event_pair) ... ok\r\ntest_behavior_and_template_select_exact_family (__main__.SelectionTests.test_behavior_and_template_select_exact_family) ... ok\r\ntest_deletion_retains_old_owner_and_command (__main__.SelectionTests.test_deletion_retains_old_owner_and_command) ... ok\r\ntest_distribution_expands_declared_consumers (__main__.SelectionTests.test_distribution_expands_declared_consumers) ... ok\r\ntest_duplicate_or_missing_ownership_fails (__main__.SelectionTests.test_duplicate_or_missing_ownership_fails) ... ok\r\ntest_instruction_member_is_lightweight (__main__.SelectionTests.test_instruction_member_is_lightweight) ... ok\r\ntest_legacy_and_unknown_never_default_to_green_or_full_matrix (__main__.SelectionTests.test_legacy_and_unknown_never_default_to_green_or_full_matrix) ... ok\r\ntest_named_regressions_have_owners_but_no_automatic_dispatch (__main__.SelectionTests.test_named_regressions_have_owners_but_no_automatic_dispatch) ... ok\r\ntest_native_driver_remains_separate_and_unbound (__main__.SelectionTests.test_native_driver_remains_separate_and_unbound) ... ok\r\ntest_new_module_rename_and_deletion_keep_both_owners (__main__.SelectionTests.test_new_module_rename_and_deletion_keep_both_owners) ... ok\r\ntest_parse_real_diff_shape_and_reject_incomplete (__main__.SelectionTests.test_parse_real_diff_shape_and_reject_incomplete) ... ok\r\ntest_public_modules_select_their_actual_shared_consumers (__main__.SelectionTests.test_public_modules_select_their_actual_shared_consumers) ... ok\r\ntest_rename_to_prose_does_not_drop_behavior (__main__.SelectionTests.test_rename_to_prose_does_not_drop_behavior) ... ok\r\ntest_rename_unions_old_and_new_families (__main__.SelectionTests.test_rename_unions_old_and_new_families) ... ok\r\ntest_source_policy_and_native_requirements_remain_separate (__main__.SelectionTests.test_source_policy_and_native_requirements_remain_separate) ... ok\r\ntest_transitive_uncertainty_fails (__main__.SelectionTests.test_transitive_uncertainty_fails) ... ok\r\ntest_undeclared_member_or_unknown_family_fails (__main__.SelectionTests.test_undeclared_member_or_unknown_family_fails) ... ok\r\ntest_unsafe_full_sha_and_paths (__main__.SelectionTests.test_unsafe_full_sha_and_paths) ... ok\r\ntest_versioned_builder_selects_declared_consumers_and_separate_trial (__main__.SelectionTests.test_versioned_builder_selects_declared_consumers_and_separate_trial) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 44 tests in 1.959s\r\n\r\nOK\r\n\r\n{\"duration_seconds\": 1.959, \"errors\": 0, \"evidence\": \"local selector/event contracts; synthetic ownership/command/provider inputs; tiny real Git diff; no hosted/product/native result\", \"failures\": 0, \"skipped\": 0, \"status\": \"passed\", \"tests\": 44}\r\n",
+  "stderr": "",
+  "capture_seconds": 2.203,
+  "fixture_parent_entries_before": [],
+  "fixture_parent_entries_after": [],
+  "tested_bytes_unchanged_after_run": true,
+  "result": {
+    "duration_seconds": 1.959,
+    "errors": 0,
+    "evidence": "local selector/event contracts; synthetic ownership/command/provider inputs; tiny real Git diff; no hosted/product/native result",
+    "failures": 0,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 44
+  },
+  "outcome": "passed",
+  "stdout_sha256": "c48637588ae1ba1e1af940694dc9b6a8ec8ce20c0aeafed30ebed14c3e2150c8",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

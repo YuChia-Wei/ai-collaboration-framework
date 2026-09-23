@@ -1,0 +1,235 @@
+{
+  "record_kind": "issue-368-bounded-p7-reconciliation",
+  "recorded_at": "2026-09-24T01:14:22+08:00",
+  "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "previous_local_head": "eb28d0b6290e257f9da187318efb3efe76a9cb9c",
+  "selected_source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+  "source_tree_oid": "dded1f87f95b07a4ea7836252fd191ec28f3b60c",
+  "workflow_id": "2026-09-23-source-contract-checks",
+  "authority": "Original #368/U001 continuation; coordinator explicitly selected the 12 methods once after source commit. Parent pilot/admission status is coordinator-reported, not verified here.",
+  "execution_status": "pending; source preparation only",
+  "selected_methods": 12,
+  "case_selectors": [
+    "SourceClosureTests",
+    "MetadataTests.test_c2_reject_version_types_and_duplicate_schema",
+    "MetadataTests.test_c2_reject_owner_and_undeclared_tool_or_reference",
+    "MetadataTests.test_c2_reject_mixed_union_and_null_config_artifact",
+    "SelectionTests.test_c3_real_git_regular_missing_nonregular_members",
+    "CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals",
+    "FixtureSupportTests.test_output_root_precedence_default_and_rejection",
+    "FixtureSupportTests.test_failed_run_preserves_owned_residue_and_rejects_identity_drift",
+    "FixtureSupportTests.test_reserved_and_unknown_runner_selections_fail_before_allocation",
+    "FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports",
+    "FixtureSupportTests.test_readonly_git_object_cleanup"
+  ],
+  "argv_after_python": [
+    "-I",
+    "-B",
+    "tests/framework_next/run.py",
+    "--layer",
+    "contracts",
+    "--case",
+    "SourceClosureTests",
+    "--case",
+    "MetadataTests.test_c2_reject_version_types_and_duplicate_schema",
+    "--case",
+    "MetadataTests.test_c2_reject_owner_and_undeclared_tool_or_reference",
+    "--case",
+    "MetadataTests.test_c2_reject_mixed_union_and_null_config_artifact",
+    "--case",
+    "SelectionTests.test_c3_real_git_regular_missing_nonregular_members",
+    "--case",
+    "CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals",
+    "--case",
+    "FixtureSupportTests.test_output_root_precedence_default_and_rejection",
+    "--case",
+    "FixtureSupportTests.test_failed_run_preserves_owned_residue_and_rejects_identity_drift",
+    "--case",
+    "FixtureSupportTests.test_reserved_and_unknown_runner_selections_fail_before_allocation",
+    "--case",
+    "FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports",
+    "--case",
+    "FixtureSupportTests.test_readonly_git_object_cleanup",
+    "--output-root",
+    "F:/framework-next/p7-runs/368-contracts"
+  ],
+  "timeout_seconds": 90,
+  "expected_seconds": [
+    15,
+    25
+  ],
+  "caps": {
+    "observed_files_per_run": 256,
+    "retained_bytes_per_run": 16777216,
+    "normal_authored_file_bytes": 16384,
+    "authored_bytes_per_run": 1048576,
+    "visible_processes_per_active_run": 256,
+    "git_timeout_seconds": 30,
+    "trusted_output_postcapture_bytes": 8388608
+  },
+  "historical_core_assertions": {
+    "count": 8,
+    "methods": [
+      "MetadataTests.test_c2_minimal_synthetic_v1",
+      "MetadataTests.test_c2_restricted_yaml_rejects_anchors_and_duplicate_keys",
+      "SelectionTests.test_c3_required_optional_version_and_cycle",
+      "SelectionTests.test_c3_selected_version_and_manifest_collisions",
+      "PathAdmissionTests.test_existing_direct_directory_and_invalid_roots",
+      "PathAdmissionTests.test_synthetic_link_identity_and_error_refusals",
+      "PathAdmissionTests.test_output_containment_and_synthetic_source_alias_identity",
+      "FixtureSupportTests.test_readonly_cleanup_refusals_preserve_accounting"
+    ],
+    "disposition": "limited local core assertion comparison only; not whole-run reuse or a fresh 20-method pass",
+    "ordinary_base": "379213a1f575aff143fb29b665c42fe5f24b219c",
+    "helper_base": "eb28d0b6290e257f9da187318efb3efe76a9cb9c",
+    "compared_target": "e71712b71791170c3f4946e131ce867f82dade8f",
+    "projection_sha256": "979af32f1bd608df4a4562c3cefd1421023f488855385cffb8a4529971d237c2",
+    "projection_definition": "SHA-256 of sorted [path-or-unit, raw-source SHA-256] pairs serialized as compact JSON; function slices include decorators and final newline.",
+    "projection_members": [
+      [
+        "src/distribution/__init__.py",
+        "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+      ],
+      [
+        "src/distribution/assembly.py#no_links",
+        "2e309e26a23ea18b334a410121e420e09e267cde3213cb35649d643d20241dc2"
+      ],
+      [
+        "src/distribution/assembly.py#output_parent",
+        "25309ed4cb391656d141ad07dfa2b1d0ca10a87bc3501f563c42d8c496adc93d"
+      ],
+      [
+        "src/distribution/codex.py",
+        "506e775df87b6a1816cb3be896fd8741fd5bfc7c137c425224561314578e083e"
+      ],
+      [
+        "src/distribution/data.py#DistributionError",
+        "0f65f02408fc5bb69ef96edded30c8a48a91c603f57bbdb7483d4c8ab4806756"
+      ],
+      [
+        "src/distribution/data.py#Paths",
+        "99eaa375fbb72ca44a9800ebd64e355dffd280a8eaab8035dc849df9ed7005e8"
+      ],
+      [
+        "src/distribution/data.py#Paths.__init__",
+        "2722a060c1e76b55eacbe10fdf3b700e79ecc0353890e595ca97311d7642fea3"
+      ],
+      [
+        "src/distribution/data.py#Paths.add",
+        "08aa891976ebc74ff45e47f289c8ada906dc16f1ae56ba47ab0c33d83b7de95d"
+      ],
+      [
+        "src/distribution/data.py#identifier",
+        "3dd5ab87d761d5c9e3e6673aca8114b4590cba0938ea1a63c442eac794667a29"
+      ],
+      [
+        "src/distribution/data.py#json_bytes",
+        "f5302f51fe54914bbcaf9acb8c252f53d5265457e900acd7584cc2daf5437b27"
+      ],
+      [
+        "src/distribution/data.py#json_object",
+        "92e679a2d4621c1542a9a8857583dbb6e51d9437eb89559d69746afd4b8db4b9"
+      ],
+      [
+        "src/distribution/data.py#mapping",
+        "8977b5cd2cd71803124612d9466252c66c1882995859954df6933e38397bf713"
+      ],
+      [
+        "src/distribution/data.py#path",
+        "096938a86d0b65b2ea80eb4ef86ba7197c944b958f68a17b3d14c4f2501dd432"
+      ],
+      [
+        "src/distribution/data.py#require",
+        "2eefdbfafe47afd36029ca641b4709d4355b0b60e8195613830af26790e2004e"
+      ],
+      [
+        "src/distribution/data.py#sequence",
+        "4f8882b110fa59e248051ce4b9d2f364fd57b3f6487704847f5c4d7d976b8587"
+      ],
+      [
+        "src/distribution/data.py#string",
+        "d9a3145a41741435603a87d3bc42a4871289a8a016f1b0a23e8c2a7e55056945"
+      ],
+      [
+        "src/distribution/data.py#version",
+        "6948bfc37253b8492e1c0db453385bb97118fdca02b62f928cc1f417710537f7"
+      ],
+      [
+        "src/distribution/data.py#version_one",
+        "58bd35fd7c9990c85177ce10f32104719c602d5a0124825d4f5a706723310429"
+      ],
+      [
+        "src/distribution/data.py#yaml_object",
+        "f30094d4439f380e4c6e371049537971f5ea30c80781ff52505d481b05873f33"
+      ],
+      [
+        "src/distribution/git_source.py",
+        "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+      ],
+      [
+        "src/distribution/package.py",
+        "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+      ],
+      [
+        "src/distribution/selection.py",
+        "d49d240a2c2c776ac90ca4fbe19d887e961031ba7f0fa0c7bcada7aea5e760cd"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#BlobInputs",
+        "eb19072962da4541aeea9a4b0a4cb50ff2c7876f7c19b25d5ecb8d83f72e8c3e"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#MetadataTests.test_c2_minimal_synthetic_v1",
+        "8787a77c6605f3d754547eb561fd6972d265e5253d86f46ea52b131d4e94d7d0"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#MetadataTests.test_c2_restricted_yaml_rejects_anchors_and_duplicate_keys",
+        "f330da558ff57df35b45165c9cdb1f0cd30187dc34f8d08396587137ce5d8f08"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#PathAdmissionTests",
+        "6f76017ca39d1e034a2e236608e81f73a1de79517b50fdde64dcd0f8bb661048"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#SelectionTests.test_c3_required_optional_version_and_cycle",
+        "8d72dd8456d7fbd783499af059329e741231c0151da9a20262353e68bc38c0ba"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#SelectionTests.test_c3_selected_version_and_manifest_collisions",
+        "1a6731d0e6e8f3ca069c1f36a675692a0c8dc3b38ebe0cb2661704cfa0b34e53"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#blob",
+        "28c823ac03b48f22954799be269d10cbaf3fc2243cf1f176e0fbb1dca37fd96d"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#instruction",
+        "53f518364be25aed7b2c085d52b9589fa619117b60f28357d4cb852b0231006b"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#load_synthetic",
+        "91d21b3c166276e70cc1cf34340c2a80bbad9c5d72eca539223bbf18f0e30572"
+      ],
+      [
+        "tests/framework_next/test_contracts.py#synthetic_selection",
+        "d2105b34405e063d51be7d6018c9d988c5feec1474ec83f1ae3ae386daabb0b4"
+      ]
+    ],
+    "helper_sha256": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+    "helper_refusal_test_sha256": "e04696cc46499eb88ca2cfc5fc414e4c494009f5478270dea55c826be844ede5",
+    "environment_limit": "Original runtime versions/executable are recorded; an exact prior Git binary/environment fingerprint is unavailable. Actual Git and runner integration are selected afresh."
+  },
+  "must_preserve": [
+    "Historical 14-method failure",
+    "Historical 16/17 repaired outcome",
+    "Historical C5-only pass",
+    "Readonly cleanup focused results",
+    "All old failed fixture runs"
+  ],
+  "remaining_boundaries": {
+    "public_p7": "pending Issue 373",
+    "native": "not selected here",
+    "provider_ci_release": "not selected; unselected U001 gates deferred-by-owner",
+    "full_20_method_invocation": "not selected and never inferred"
+  }
+}

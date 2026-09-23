@@ -777,15 +777,34 @@ class FixtureSupportTests(unittest.TestCase):
 
     def test_reserved_and_unknown_runner_selections_fail_before_allocation(self):
         import run as runner
-        examples = [[], ['--layer', 'unknown'], ['--layer', 'public'],
-                    ['--layer', 'public', '--family', 'lesson'],
+        native_path = str(support.active_run().root / 'parse-only-native-root')
+        examples = [[], ['--layer', 'unknown'],
                     ['--layer', 'public', '--family', 'unknown'], ['--layer', 'native-windows'],
-                    ['--layer', 'native-windows', '--native-root', str(support.active_run().root)],
                     ['--layer', 'contracts', '--family', 'lesson'],
-                    ['--layer', 'contracts', '--native-root', str(support.active_run().root)]]
+                    ['--layer', 'contracts', '--native-root', native_path],
+                    ['--layer', 'public', '--native-root', native_path],
+                    ['--layer', 'public', '--case', 'MetadataTests.test_c2_minimal_synthetic_v1'],
+                    ['--layer', 'contracts', '--public-read-only'],
+                    ['--layer', 'native-windows', '--native-root', native_path, '--case', 'any'],
+                    ['--layer', 'native-windows', '--native-root', native_path,
+                     '--output-root', str(support.active_run().root)]]
         for argv in examples:
             with self.subTest(argv=argv), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as caught:
                 runner.arguments(argv)
             self.assertEqual(caught.exception.code, 2)
+        # Parse only: accepted arguments do not dispatch a public/native caller,
+        # allocate a native root or establish filesystem admission of this path.
+        accepted = [(['--layer', 'public'], 'public', None, None, False),
+                    (['--layer', 'public', '--family', 'lesson'], 'public', 'lesson', None, False),
+                    (['--layer', 'public', '--family', 'lesson', '--public-read-only'],
+                     'public', 'lesson', None, True),
+                    (['--layer', 'native-windows', '--native-root', native_path],
+                     'native-windows', None, Path(native_path), False)]
+        for argv, layer, family, native_root, read_only in accepted:
+            with self.subTest(parse_only=argv):
+                args = runner.arguments(argv)
+                self.assertEqual((args.layer, args.family, args.native_root, args.public_read_only),
+                                 (layer, family, native_root, read_only))
+        self.assertFalse(Path(native_path).exists())
         args = runner.arguments(['--layer', 'contracts', '--case', 'MetadataTests.test_c2_minimal_synthetic_v1'])
         self.assertEqual(args.case, ['MetadataTests.test_c2_minimal_synthetic_v1'])
