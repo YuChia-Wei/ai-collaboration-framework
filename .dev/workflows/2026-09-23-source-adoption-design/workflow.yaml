@@ -1,0 +1,28 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-23-source-adoption-design
+workflow_kind: ai-context-maintenance
+title: Source repository adoption and legacy route design
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-09-23-source-adoption-design
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T11:17:20+08:00'
+updated_at: '2026-09-23T11:21:19+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+branch: codex/2026-09-23-source-adoption-design
+base_branch: main
+starting_commit: b4a147c1bc8ec00fcdb92a7006c142209c61a29f
+issue:
+  number: 361
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/361
+authority: U001; coordinator assignment and p6-source-adoption-handoff.md
+u001_adaptation: 'One design task and bounded report; audit/lease/acceptance/native
+  handoff/schema/CI gates deferred-by-owner to program #322 coordinator / P7; no shared
+  index edit.'
+tasks:
+- tasks/D361-source-adoption.json
+completion_scope: Bounded design delivered; verification deferred under U001; adoption,
+  integration and Issue closure remain separate.

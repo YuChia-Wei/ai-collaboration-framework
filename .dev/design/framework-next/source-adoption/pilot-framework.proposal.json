@@ -1,0 +1,22 @@
+{
+  "config_version": 2,
+  "skills": {
+    "lesson": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/lessons/records",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/lesson.md"
+      }
+    }
+  },
+  "constraints": {
+    "lesson": {
+      "write_roots": [".dev/lessons/records"],
+      "locked_fields": ["store.root", "store.tracking", "template"]
+    }
+  }
+}

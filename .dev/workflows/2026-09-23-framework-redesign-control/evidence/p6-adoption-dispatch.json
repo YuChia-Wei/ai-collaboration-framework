@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-09-23 03:06:32 UTC",
+  "issue": 361,
+  "thread_id": "01a0cc39-f271-7172-bf8c-ff04cc441635",
+  "title": "重構 P6-D：本 Repo 採用與舊路由處置",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_evidence": "read-only runtime threads row",
+  "starting_commit": "b4a147c1bc8ec00fcdb92a7006c142209c61a29f",
+  "first_command": {
+    "type": "commandExecution",
+    "id": "exec-5c4253be-1c27-4821-9672-7926120d562e",
+    "command": "\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-Location\ngit rev-parse --show-toplevel\ngit branch --show-current\ngit rev-parse HEAD\ngit rev-parse --path-format=absolute --git-common-dir\ngit status --short'",
+    "cwd": "F:\\framework-next\\361",
+    "status": "completed",
+    "exitCode": 0,
+    "durationMs": 1762,
+    "output": {
+      "text": "\r\nF:/framework-next/361\ncodex/2026-09-23-source-adoption-design\nb4a147c1bc8ec00fcdb92a7006c142209c61a29f\nC:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git\nPath\r\n----\r\nF:\\framework-next\\361\r\n\r\n",
+      "truncated": false
+    }
+  },
+  "state": "active; design-only; no source activation or execution inferred",
+  "verification": "deferred-by-owner: U001; program #322 coordinator / P7"
+}

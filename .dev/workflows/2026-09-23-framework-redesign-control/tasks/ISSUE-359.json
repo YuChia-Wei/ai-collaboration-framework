@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T10:46:00+08:00",
-  "updated_at": "2026-09-23T10:55:11+08:00",
+  "updated_at": "2026-09-23T11:27:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -50,15 +50,15 @@
     "validation": [
       "Direct content/syntax/reference/Git and complete planned message only"
     ],
-    "last_completed_step": "Independent Astra Ultra task dispatched; actual runtime row and first F: command verified",
-    "next_action": "Receive fixed source checkpoint and actual engine/backend/API handoff"
+    "last_completed_step": "Fixed local source inspected and integrated; coordinator online PR pending",
+    "next_action": "Complete online integration and read back Issue/Project; later source/mapping/adoption/P7 remain separate"
   },
   "results": {
-    "summary": "Source assignment selected; no delivery yet",
+    "summary": "Bounded source complete and locally integrated; no product execution or adoption",
     "files_changed": [],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Actual writer and native recovery behavior pending; P7 deferred",
+    "finding_status": "partially-resolved",
+    "residual_risk": "Native behavior, root adoption and program findings remain unverified; P7 deferred",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -72,8 +72,11 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p6-writer-handoff.md",
-    "implementation_status": "active; no delivery yet",
-    "verification_state": "deferred-by-owner"
+    "implementation_status": "source complete; execution deferred",
+    "verification_state": "deferred-by-owner",
+    "local_commit": "a2e5daf71a4a830eab109370597872253df4497e",
+    "integration_status": "locally integrated; online pending",
+    "integration_report": "reports/p6-maintenance-and-adoption-integration.md"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Pols"
 }

@@ -1,0 +1,87 @@
+{
+  "task_id": "I359-managed-maintenance",
+  "workflow_id": "2026-09-23-managed-installation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T11:10:11+08:00",
+  "updated_at": "2026-09-23T11:19:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Independent conversation selected by coordinator dispatch; declared provenance, not independent runtime attestation. No sub-agents or executor-created conversations.",
+  "finding_ids": [],
+  "scope": {
+    "target": "Closed managed maintenance API 1 and same-engine recovery source",
+    "files": [
+      "src/distribution/installation.py",
+      "src/distribution/installation_io.py",
+      "src/distribution/maintenance_coordination.py",
+      "src/distribution/installation_plan.py",
+      "src/distribution/installation_state.py",
+      "src/tools/maintain_framework.py",
+      ".dev/design/framework-next/managed-installation/handoff.md",
+      ".dev/design/framework-next/managed-installation/p7-cases.md"
+    ],
+    "constraints": [
+      "Assigned F:/framework-next/359 only; one tracked writer.",
+      "U001: source authoring and direct syntax/content/Git/message checks only.",
+      "Preserve ownership, formats, all-old drift, unknown content and project data."
+    ],
+    "non_goals": [
+      "M01, root activation, shared loader/adapter edits, CLI runtime selection, release, adoption, push, PR, merge and Issue/Project mutation."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read selected contracts and live Issue.",
+      "Implement native coordination, I/O, fixed bootstrap and exact apply/recover.",
+      "Review source, parse AST/JSON/YAML and links, check Git diff and complete message.",
+      "Commit locally and stop for coordinator collection."
+    ],
+    "validation": [
+      "UTF-8 and ast.parse of six Python sources using python -B -; no product import/compile.",
+      "Static ten-file engine closure and local import-symbol references checked from AST.",
+      "Own six artifacts decoded; task JSON and workflow YAML parsed; 14 local Markdown targets resolved.",
+      "Git identity/scope/diff inspection and git diff --check.",
+      "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/359.txt --workflow-id 2026-09-23-managed-installation: passed."
+    ],
+    "last_completed_step": "Source implementation, explicit support/limits handoff and U001-permitted checks complete; planned commit message validated.",
+    "next_action": "Commit this coherent source unit locally; coordinator collects the containing commit and owns first push/online PR. P7 selects actual execution before pilot."
+  },
+  "results": {
+    "summary": "Completed assigned source for closed maintenance API 1, native coordination and publication, fixed engine bootstrap and same-engine recovery. Source-only completion under U001; no behavioral acceptance claimed.",
+    "files_changed": [
+      "src/distribution/installation.py",
+      "src/distribution/installation_io.py",
+      "src/distribution/maintenance_coordination.py",
+      "src/distribution/installation_plan.py",
+      "src/distribution/installation_state.py",
+      "src/tools/maintain_framework.py",
+      ".dev/design/framework-next/managed-installation/handoff.md",
+      ".dev/design/framework-next/managed-installation/p7-cases.md",
+      ".dev/workflows/2026-09-23-managed-installation/workflow.yaml",
+      ".dev/workflows/2026-09-23-managed-installation/workflow-plan.md",
+      ".dev/workflows/2026-09-23-managed-installation/tasks/I359-managed-maintenance.json",
+      ".dev/workflows/2026-09-23-managed-installation/reports/remediation-report.md"
+    ],
+    "tests_run": [],
+    "finding_status": "not-applicable",
+    "residual_risk": "Native, interruption and recovery behavior deferred-by-owner under U001 to program #322 coordinator / P7.",
+    "follow_up_needed": true,
+    "finding_status_reason": "Implementation Issue with no assessment finding bound; no assessment closure claimed.",
+    "actual_checks": [
+      "UTF-8 and ast.parse of six Python sources using python -B -; no product import/compile.",
+      "Static ten-file engine closure and local import-symbol references checked from AST.",
+      "Own six artifacts decoded; task JSON and workflow YAML parsed; 14 local Markdown targets resolved.",
+      "Git identity/scope/diff inspection and git diff --check.",
+      "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/359.txt --workflow-id 2026-09-23-managed-installation: passed."
+    ]
+  },
+  "verification_deferral": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select and execute focused candidate/native/interruption/recovery/activation checks before pilot; adopt restored CI separately."
+  }
+}

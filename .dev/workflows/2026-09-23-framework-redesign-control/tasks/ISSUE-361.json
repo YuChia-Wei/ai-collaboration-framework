@@ -1,0 +1,75 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-361",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T11:04:49+08:00",
+  "updated_at": "2026-09-23T11:27:40+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/361",
+  "phase": "P6-D",
+  "scope": {
+    "target": "Concrete source-repository adoption and legacy route disposition design",
+    "files": [
+      ".dev/design/framework-next/source-adoption/",
+      ".dev/workflows/2026-09-23-source-adoption-design/"
+    ],
+    "constraints": [
+      "U001; one independent Astra Ultra task; no sub-agents or executor-created tasks",
+      "p6-source-adoption-handoff.md; actual delivered source and bounded current root observations",
+      "design only; coordinator owns shared files and first push"
+    ],
+    "non_goals": [
+      "source/configuration/root/legacy/mapping/CI mutation",
+      "blocked #346/#347 replacement writes",
+      "product execution, tests, migration, adoption or P7 verification"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Confirm exact assigned F: identity and selected inputs",
+      "Produce concrete path/owner/disposition matrix and staged adoption plan",
+      "Return coherent local design checkpoint and bounded workflow/report"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact complete planned commit-message only"
+    ],
+    "last_completed_step": "Fixed local design inspected and integrated; coordinator online PR pending",
+    "next_action": "Complete online integration and read back Issue/Project; later source/mapping/adoption/P7 remain separate"
+  },
+  "results": {
+    "summary": "Bounded design complete and locally integrated; no product execution or adoption",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Native behavior, root adoption and program findings remain unverified; P7 deferred",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/361",
+    "branch": "codex/2026-09-23-source-adoption-design",
+    "workflow_id": "2026-09-23-source-adoption-design",
+    "starting_commit_source": "containing coordinator checkpoint",
+    "thread_id": "01a0cc39-f271-7172-bf8c-ff04cc441635",
+    "starting_commit": "b4a147c1bc8ec00fcdb92a7006c142209c61a29f",
+    "evidence": "evidence/p6-adoption-dispatch.json"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p6-source-adoption-handoff.md",
+    "implementation_status": "design complete; actual adoption unperformed",
+    "verification_state": "deferred-by-owner",
+    "local_commit": "c76f25480cc8141695ecdb9a1ad8cf5962321d11",
+    "integration_status": "locally integrated; online pending",
+    "integration_report": "reports/p6-maintenance-and-adoption-integration.md"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Pt5U"
+}
