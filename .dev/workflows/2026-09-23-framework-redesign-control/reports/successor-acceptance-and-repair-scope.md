@@ -1,6 +1,40 @@
 # Successor acceptance and compatibility repair selection
 
-## Current integration and independent review continuation
+## Current affected-review result and repair assignment
+
+Observed at 2026-09-23T17:58:21.695505+00:00. Original #370 completed immutable review
+6d9184e8e01d826131d03dd603422b5a3a1a7e4a against ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f.
+Parent verified ten engine raw/Git/prior/installed comparisons, direct producer
+hash, both preserved historical reports and its exact four-record delivery.
+[Current-engine report](../2026-09-23-installation-source-review/current-engine-review.md)
+finds one P2 source defect, CR-002: Windows error-1 direct_directory fallback can
+admit a DOS-drive alias to a source descendant, evading the candidate producer's
+lexical/visible-ancestor output isolation. This is concrete source-predicate
+reasoning without a native mapping reproduction, not a maintenance apply/recover
+escape or existing-file overwrite.
+
+C-001 is a separate unverified protected-path casing/API premise. It is not a
+substantiated defect and does not select a source repair. The earlier CR-001
+loader disposition remains resolved; changed/unchanged source and attributed
+execution evidence are explicitly separated. Review completion is not blanket
+engine, native, target, policy/CI or publication acceptance.
+
+Original #368 task 01a0cd11-1dc9-7842-abba-65b8fac0edb8 now continues under its
+existing GitSource/assembly defect scope and Issue comment 5800095738. Its same
+F:/framework-next/368 branch was clean and fast-forwarded to the review delivery.
+The explicit Astra/ultra dispatch is active in app readback. Only direct_directory,
+its necessary existing-module private helper, immediate output_parent call if
+needed, test_contracts regressions and own records are selected. No actual SUBST
+mapping or host setting change is allowed. Only affected focused checks and one
+actual C5 selection may run after a clean repair checkpoint, with prior caps/raw
+output/failure preservation. No repair pass or handoff exists at this checkpoint.
+
+#368 and #370 stay OPEN; original #370 owns the affected re-review after repair.
+#369 native-extension and target-provider decisions remain pending. No source
+sub-agent, replacement task, C-001 repair, native trial, target mutation, policy
+adoption or CI restoration is created by this continuation.
+
+## Prior integration and independent review continuation
 
 Observed at 2026-09-23T17:44:32.050285+00:00. PR392 is MERGED at
 ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f; exact remote head, all 29 changed
@@ -740,3 +774,23 @@ The target reviewer is independent; source U001 is not applied to this target.
 Preserve F386 engine and all p7-runs. Target push/PR/merge/Issue15 closure, source
 P7 #368/#369/#373 reconciliation, CI adoption/restoration, stable 0.19.0 update and
 publication remain separate. No new source task or source subagent was created.
+
+## Later stable-release boundary read-back
+
+Read-only inspection of `.dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md`
+and `.dev/design/framework-next/pipeline-redesign/pipelines.md` confirms that
+#365's proposal preserves the existing release engine and explicitly excludes a
+new-format publication contract. Current policy still binds four exact ZIP/tar/
+checksum assets and retains v0.6.0, v0.9.0 and immediate-previous governed origins
+until an explicit versioned owner decision. #381's complete schema-2 versioned
+candidate and this actual rc.1 pilot do not supply those publication assets or
+silently retire those historical compatibility duties.
+
+Before stable publication, select a concrete new-format release contract and its
+smallest justified actual install/upgrade/recovery evidence, reconcile retained
+legacy-origin support under the owner, and separately review/adopt any release
+workflow change. No legacy matrix, archive builder, tag, release publication,
+provider preflight or CI enablement was executed by this read-back. This is a
+remaining design/authority dependency, not a newly selected implementation Issue
+or task. Native #369 and target provider questions remain the two current pending
+owner decisions; elapsed time supplies neither answer.

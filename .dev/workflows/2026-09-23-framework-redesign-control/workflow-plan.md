@@ -1,6 +1,40 @@
 # Framework redesign coordination
 
-## Current integration and independent review continuation
+## Current affected-review result and repair assignment
+
+Observed at 2026-09-23T17:58:21.695505+00:00. Original #370 completed immutable review
+6d9184e8e01d826131d03dd603422b5a3a1a7e4a against ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f.
+Parent verified ten engine raw/Git/prior/installed comparisons, direct producer
+hash, both preserved historical reports and its exact four-record delivery.
+[Current-engine report](../2026-09-23-installation-source-review/current-engine-review.md)
+finds one P2 source defect, CR-002: Windows error-1 direct_directory fallback can
+admit a DOS-drive alias to a source descendant, evading the candidate producer's
+lexical/visible-ancestor output isolation. This is concrete source-predicate
+reasoning without a native mapping reproduction, not a maintenance apply/recover
+escape or existing-file overwrite.
+
+C-001 is a separate unverified protected-path casing/API premise. It is not a
+substantiated defect and does not select a source repair. The earlier CR-001
+loader disposition remains resolved; changed/unchanged source and attributed
+execution evidence are explicitly separated. Review completion is not blanket
+engine, native, target, policy/CI or publication acceptance.
+
+Original #368 task 01a0cd11-1dc9-7842-abba-65b8fac0edb8 now continues under its
+existing GitSource/assembly defect scope and Issue comment 5800095738. Its same
+F:/framework-next/368 branch was clean and fast-forwarded to the review delivery.
+The explicit Astra/ultra dispatch is active in app readback. Only direct_directory,
+its necessary existing-module private helper, immediate output_parent call if
+needed, test_contracts regressions and own records are selected. No actual SUBST
+mapping or host setting change is allowed. Only affected focused checks and one
+actual C5 selection may run after a clean repair checkpoint, with prior caps/raw
+output/failure preservation. No repair pass or handoff exists at this checkpoint.
+
+#368 and #370 stay OPEN; original #370 owns the affected re-review after repair.
+#369 native-extension and target-provider decisions remain pending. No source
+sub-agent, replacement task, C-001 repair, native trial, target mutation, policy
+adoption or CI restoration is created by this continuation.
+
+## Prior integration and independent review continuation
 
 Observed at 2026-09-23T17:44:32.050285+00:00. PR392 is MERGED at
 ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f; exact remote head, all 29 changed
