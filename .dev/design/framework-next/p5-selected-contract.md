@@ -48,3 +48,7 @@ The pair cannot be claimed atomic: selected project/local versions must agree, r
 Only direct content/UTF-8/JSON/YAML/AST syntax without product imports or pycache, reference/Git/diff and exact planned commit-message checks are permitted now. Product CLI/help, schema validation, tests/fixtures, build/package/install/migration, audit/lease machinery and CI remain deferred-by-owner under U001 to program #322 coordinator / P7. Later checks cover actual instruction/tool union behavior, unchanged v1/v2 behavior, null config, owned paths, exact mapping and useful target use.
 
 Source completion does not activate a root skill, close unrelated #316/#318/#317 work, publish a release or certify downstream use. The coordinator owns integration and future explicit disposition of overlapping old Issues.
+
+## Actual mapping assignment after source delivery
+
+The coordinator expands #346 shared ownership through [the first actual mapping handoff](../../workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md): nine real packages, 68 payload members and five profiles. This supersedes the initial reviewer-only possible handoff above. #347 and future optional/structured packages are excluded until actual source delivery and a later exact handoff. No speculative rows or build execution.

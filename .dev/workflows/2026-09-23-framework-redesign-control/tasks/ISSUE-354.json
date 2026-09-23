@@ -1,0 +1,78 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-354",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T10:12:33+08:00",
+  "updated_at": "2026-09-23T10:15:28+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/354",
+  "phase": "P6-B",
+  "scope": {
+    "target": "Read-only managed installation state and delta planning",
+    "files": [
+      "src/distribution/installation_state.py",
+      "src/distribution/installation_plan.py",
+      "src/distribution/schemas/installation-*.schema.json if needed",
+      ".dev/design/framework-next/installation-planning/",
+      ".dev/workflows/2026-09-23-installation-planning/"
+    ],
+    "constraints": [
+      "U001",
+      "one independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "selected p6-selected-contract.md; preserve concurrent mapping writer",
+      "read-only product implementation; no product invocation now"
+    ],
+    "non_goals": [
+      "apply/recover/native lock/backend/bootstrap execution",
+      "shared loader/adapter/manifest/profile/root writes",
+      "product CLI/help, schema validation/tests/build/install/migration/CI",
+      "provider/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify exact F: identity and selected contract",
+      "Implement bounded candidate/lock reader and inspect/plan interfaces",
+      "Return coherent local source checkpoint and direct source handoff"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact planned commit-message only"
+    ],
+    "last_completed_step": "Independent source task dispatched; runtime/F: identity read back",
+    "next_action": "Receive bounded reader/planner local checkpoint"
+  },
+  "results": {
+    "summary": "Source scope selected; no implementation yet",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Actual candidate/plan/engine/backend behavior unverified; P7 deferred",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0cc0b-1bc5-76a0-a95a-090159fa3010",
+    "worktree": "F:/framework-next/354",
+    "branch": "codex/2026-09-23-installation-planning",
+    "workflow_id": "2026-09-23-installation-planning",
+    "starting_commit_source": "containing coordinator checkpoint",
+    "starting_commit": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
+    "model_verified": "read-only runtime metadata gpt-6-astra / ultra",
+    "worktree_verified": "First actual F: root/branch/HEAD/common-dir clean matches"
+  },
+  "delivery": {
+    "contract_status": "selected p6-selected-contract.md",
+    "implementation_status": "active independent source task",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Pc90"
+}

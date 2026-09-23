@@ -1,0 +1,108 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "INSTALL-DESIGN-001",
+  "workflow_id": "2026-09-23-installation-update-design",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T09:45:11+08:00",
+  "updated_at": "2026-09-23T10:04:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_source": "user-declared",
+  "runtime_attestation": "not independently obtained in this task",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/345",
+  "scope": {
+    "target": "Design-only installation, delta, recovery, M01 boundary and root cutover",
+    "files": [
+      ".dev/design/framework-next/installation-update/",
+      ".dev/workflows/2026-09-23-installation-update-design/"
+    ],
+    "constraints": [
+      "U001",
+      "No subagents or other conversations",
+      "No product invocation",
+      "Coordinator owns shared files and first push"
+    ],
+    "non_goals": [
+      "Product implementation",
+      "Actual install/migration/root activation",
+      "Provider/publication/downstream actions"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read source/Issue/authority",
+      "Define state and operations",
+      "Integrate selected P5 M01 input",
+      "Direct syntax/reference/diff/message checks",
+      "Commit and handoff"
+    ],
+    "validation": [
+      "Revision-start Git root/branch/full HEAD/common-dir and empty porcelain matched 51229b63565ce6e836d57a4b107cf6df5554bf7c",
+      "Direct revised-document read: 10 UTF8, 2 JSON, 1 YAML, 32 local Markdown references; zero syntax/reference errors",
+      "Direct API/example field read-back and targeted content search: no abandoned invocation API/compatibility selection contract",
+      "git diff --check returned no errors",
+      "Exact .revision-message.tmp planned-message validator passed; git check-ignore confirmed ignored path",
+      "Final staged syntax/scope/diff and post-commit identity/message-byte read-back recorded in final response"
+    ],
+    "last_completed_step": "Maintenance-only design revision complete with direct checks and exact planned-message validation",
+    "next_action": "Create additive local commit, return final exact identity/read-back, then stop for coordinator collection"
+  },
+  "results": {
+    "summary": "Revised quiescent maintenance proposal; no ordinary invocation runtime or automatic compatibility assessment",
+    "files_changed": [
+      ".dev/design/framework-next/installation-update/README.md",
+      ".dev/design/framework-next/installation-update/contract.md",
+      ".dev/design/framework-next/installation-update/cutover-and-slices.md",
+      ".dev/design/framework-next/installation-update/examples.json",
+      ".dev/design/framework-next/installation-update/formats.md",
+      ".dev/design/framework-next/installation-update/source-evidence.md",
+      ".dev/workflows/2026-09-23-installation-update-design/reports/design-handoff.md",
+      ".dev/workflows/2026-09-23-installation-update-design/tasks/INSTALL-DESIGN-001.json",
+      ".dev/workflows/2026-09-23-installation-update-design/workflow-plan.md",
+      ".dev/workflows/2026-09-23-installation-update-design/workflow.yaml"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Native maintenance backend, complete external engine pin/bootstrap, actual durable roots/profile, project-owned activation checks and conditional M01 implementation remain to select; caller quiescence cannot be proven",
+    "follow_up_needed": true
+  },
+  "verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "P7 selects redesigned checks after implementation."
+  },
+  "source_inputs": {
+    "base_commit": "758a7f51c745ee61625cc089b593367fd1a45533",
+    "p5_selection_commit": "842b73ca09d701d1561109255193d80439dc996b"
+  },
+  "delivery": {
+    "contract_status": "design-revision-complete; quiescent maintenance selected; implementation pending",
+    "implementation_status": "not-performed",
+    "activation": "not-performed",
+    "provider_mutation": "not-performed",
+    "checkpoint_commit_source": "containing-commit",
+    "hidden_context_required": false,
+    "checkpoint": "Resolve additive checkpoint from containing commit; final identity supplied after commit",
+    "prior_checkpoint": "51229b63565ce6e836d57a4b107cf6df5554bf7c",
+    "callback": "not attempted; coordinator requested final-only handoff"
+  },
+  "prior_checkpoint_checks": {
+    "commit": "51229b63565ce6e836d57a4b107cf6df5554bf7c",
+    "observations": [
+      "Initial and corrected Git identity/scope read-back matched",
+      "Direct source AST: 7 modules; manifest/profile YAML declarations only",
+      "Direct initial document check: 9 UTF8, 2 JSON, 1 YAML, 33 local links; no failures",
+      "Exact planned-message validator passed; ignored message file verified",
+      "Final direct document and staged diff/scope read-back before commit; actual result in final handoff"
+    ]
+  }
+}

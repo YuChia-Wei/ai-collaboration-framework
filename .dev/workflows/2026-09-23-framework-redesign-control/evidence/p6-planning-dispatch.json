@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-09-23 02:15:22 UTC",
+  "issue": 354,
+  "thread_id": "01a0cc0b-1bc5-76a0-a95a-090159fa3010",
+  "title": "重構 P6-B：唯讀安裝狀態與差異規劃",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_evidence": "read-only runtime threads row",
+  "worktree": "F:\\framework-next\\354",
+  "starting_commit": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
+  "first_command": {
+    "command": "\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-Location\ngit rev-parse --show-toplevel\ngit branch --show-current\ngit rev-parse HEAD\ngit rev-parse --path-format=absolute --git-common-dir\ngit status --porcelain=v1'",
+    "exit_code": 0,
+    "output": "\r\nF:/framework-next/354\ncodex/2026-09-23-installation-planning\n5986b2146bb4559609acb0d5c7d09e8570375ea8\nC:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git\nPath\r\n----\r\nF:\\framework-next\\354\r\n\r\n"
+  },
+  "mapping_continuation": {
+    "issue": 346,
+    "thread_id": "01a0cbeb-c1c8-7ba1-a0c8-de9026a355ff",
+    "worktree": "F:/framework-next/346",
+    "from": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
+    "to": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
+    "observation": "first identity clean; explicit fast-forward command exit 0"
+  },
+  "state": "active; no source/behavioral completion inferred",
+  "verification": "deferred-by-owner: U001, program #322 coordinator / P7"
+}

@@ -6,9 +6,9 @@
   "task_id": "ISSUE-348",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T10:00:35+08:00",
+  "updated_at": "2026-09-23T10:12:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -46,8 +46,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Clean source checkpoint received and bounded source inspection completed; locally integrated",
-    "next_action": "Online source integration; coordinator assigns actual mapping to #346"
+    "last_completed_step": "Source merged in PR #353; CLOSED/COMPLETED and Project Done read back",
+    "next_action": "Mapping #346; product verification P7"
   },
   "results": {
     "summary": "Owned source completed with P7 verification deferred",
@@ -72,8 +72,11 @@
     "implementation_status": "source completed and locally integrated",
     "verification_state": "deferred-by-owner",
     "source_commit": "b6ba669ff465bb6c6429bcc24cdf9b37af0ce964",
-    "integration_status": "online pending",
-    "mapping_status": "awaiting concrete coordinator handoff"
+    "integration_status": "online merged",
+    "mapping_status": "awaiting concrete coordinator handoff",
+    "pr": 353,
+    "merge_commit": "07b83383de467928701c8905c6bb0d5e8da8b246",
+    "provider_readback": "2026-09-23T10:06:56+08:00 CLOSED/COMPLETED; Project Done"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPx0"
 }

@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-installation-update-design`](2026-09-23-installation-update-design/workflow.yaml) | P6 managed installation and update design checkpoint | `ai-context-governance` | `completed` | `2026-09-23T10:04:23+08:00` | [plan](2026-09-23-installation-update-design/workflow-plan.md) |
 | [`2026-09-23-instruction-operations`](2026-09-23-instruction-operations/workflow.yaml) | Metadata v3 instruction operations and portable common reviewer | `ai-context-governance` | `in_progress` | `2026-09-23T09:49:09+08:00` | [plan](2026-09-23-instruction-operations/workflow-plan.md) |
 | [`2026-09-23-portable-authoring`](2026-09-23-portable-authoring/workflow.yaml) | Portable requirement and specification authoring source | `ai-context-governance` | `completed` | `2026-09-23 09:50:30+08:00` | [plan](2026-09-23-portable-authoring/workflow-plan.md) |
 | [`2026-09-23-capability-consolidation`](2026-09-23-capability-consolidation/workflow.yaml) | P5 capability and format disposition design | `ai-context-governance` | `completed` | `2026-09-23T09:31:22+08:00` | [plan](2026-09-23-capability-consolidation/workflow-plan.md) |

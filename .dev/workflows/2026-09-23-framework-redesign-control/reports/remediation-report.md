@@ -78,3 +78,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P5 instruction source and remaining design
 
 #346 and #348 sources are received and locally integrated after [bounded inspection](p5-instruction-integration.md). #341 source is online through PR #350 and awaits mapping. #347 is blocked before writes by automatic approval review; direct confirmation is pending. [#351/#352 design scope](p5-remaining-design-scope.md) addresses the remaining P5 format choices. #345 revises its proposed maintenance boundary; no installer is adopted or executed. P7 verification and program findings remain open.
+
+## P6 selected maintenance and actual mapping handoff
+
+[P6 reconciliation](p6-contract-selection.md) selects the revised #345 design and #354 read-only implementation scope. [Nine-package mapping](p5-actual-mapping-scope.md) resumes #346 against actual delivered source. #348 source is online/closed after PR #353. #351/#352 remain active and #347 remains blocked pending direct confirmation. This advances implementation planning, not P7 acceptance or root activation.
