@@ -1,0 +1,41 @@
+{
+  "observed_at": "2026-09-23T10:05:06+08:00",
+  "coordinator_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+  "authority": "U001 and owner instruction for independent Astra Ultra RAM-disk Issue tasks",
+  "dispatch": [
+    {
+      "issue": 351,
+      "thread_id": "01a0cc01-14a2-7f71-88a2-e1bf49ded345",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "model_evidence": "read-only state_5.sqlite threads row",
+      "first_repository_command": {
+        "cwd": "F:\\framework-next\\351",
+        "command": "\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-Location\n git rev-parse --show-toplevel\n git branch --show-current\n git rev-parse HEAD\n git rev-parse --path-format=absolute --git-common-dir\n git status --porcelain=v1'",
+        "exit_code": 0,
+        "output": "\r\nF:/framework-next/351\ncodex/2026-09-23-problem-frame-compliance-design\n731d658b6004110fd59224ca39aa3a5d63891d91\nC:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git\nPath\r\n----\r\nF:\\framework-next\\351\r\n\r\n"
+      },
+      "starting_commit": "731d658b6004110fd59224ca39aa3a5d63891d91",
+      "status": "active; no design completion inferred"
+    },
+    {
+      "issue": 352,
+      "thread_id": "01a0cc01-4653-7482-9d55-eeef665c1653",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "model_evidence": "read-only state_5.sqlite threads row",
+      "first_repository_command": {
+        "cwd": "F:\\framework-next\\352",
+        "command": "\"C:\\\\Program Files\\\\PowerShell\\\\7\\\\pwsh.exe\" -Command 'Get-Location; git rev-parse --show-toplevel; git branch --show-current; git rev-parse HEAD; git rev-parse --path-format=absolute --git-common-dir; git status --porcelain=v1'",
+        "exit_code": 0,
+        "output": "\r\nF:/framework-next/352\ncodex/2026-09-23-optional-context-maintenance-design\n731d658b6004110fd59224ca39aa3a5d63891d91\nC:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git\nPath\r\n----\r\nF:\\framework-next\\352\r\n\r\n"
+      },
+      "starting_commit": "731d658b6004110fd59224ca39aa3a5d63891d91",
+      "status": "active; no design completion inferred"
+    }
+  ],
+  "limitations": [
+    "App saved-project cwd is C: bootstrap; observed repository commands run in assigned F: worktrees.",
+    "No product invocation, schema/test/CI verification or final design completion is inferred."
+  ]
+}

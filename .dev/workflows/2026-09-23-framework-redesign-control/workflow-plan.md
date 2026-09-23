@@ -33,8 +33,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source inspected/locally integrated; same-task mapping pending |
 | #347 | P5-B engineering methods | five own instruction packages/design/workflow | write blocked by automatic approval review; awaiting direct confirmation |
 | #348 | P5-C portable authoring | two own instruction packages/design/workflow | source inspected/locally integrated; online integration pending |
-| #351 | P5-D frame/compliance design | own design/workflow only | selected; independent task dispatch next |
-| #352 | P5-E optional maintenance design | own design/workflow only | selected; independent task dispatch next |
+| #351 | P5-D frame/compliance design | own design/workflow only | independent design task active; runtime/F: identity verified |
+| #352 | P5-E optional maintenance design | own design/workflow only | independent design task active; runtime/F: identity verified |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -52,7 +52,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate actual #346/#348 source online, dispatch #351/#352 bounded designs and receive #345 quiescent-maintenance revision. #341 is online but awaits mapping; #347 is stopped before writes pending direct authorization confirmation required by automatic review. The coordinator reads completed task handoffs directly after callback rejection. See [P5 source review](reports/p5-instruction-integration.md) and [remaining design assignments](reports/p5-remaining-design-scope.md). Actual package mappings follow delivery; all product verification/CI remains deferred to P7.
+Current action: integrate actual #346/#348 source online, receive #351/#352 bounded designs and receive #345 quiescent-maintenance revision. #341 is online but awaits mapping; #347 is stopped before writes pending direct authorization confirmation required by automatic review. The coordinator reads completed task handoffs directly after callback rejection. See [P5 source review](reports/p5-instruction-integration.md) and [remaining design assignments](reports/p5-remaining-design-scope.md). Actual package mappings follow delivery; all product verification/CI remains deferred to P7.
 
 ## P3 shared implementation continuation
 
@@ -61,3 +61,7 @@ Both contract checkpoints are received. [Reconciliation](reports/p3-contract-rec
 ## Remaining work and verification
 
 P4-P6 implementation and P7 redesigned validation/pipeline review remain open. Final independent review, tool trials and I/O tests have not run. Pipeline restoration is not scheduled automatically. [Remediation report](reports/remediation-report.md) maps current evidence without claiming final closure.
+
+## Remaining P5 design dispatch
+
+Both tasks are active from shared checkpoint `731d658b6004110fd59224ca39aa3a5d63891d91`. [Runtime and first-command read-back](evidence/p5-remaining-design-dispatch.json) confirms gpt-6-astra / ultra and assigned F: worktrees. No source/design completion or verification is implied.
