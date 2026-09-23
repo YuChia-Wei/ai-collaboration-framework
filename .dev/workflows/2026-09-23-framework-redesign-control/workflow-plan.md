@@ -436,3 +436,19 @@ resumed for a bounded source repair; see the latest successor report and live
 Issue. Current branch is codex/2026-09-24-rc1-pilot-continuation from ff57a09b.
 Preserve all old candidates/recovery/failed evidence. Independent target review
 follows a newly built immutable candidate and explicit target delta update.
+
+
+## Current CR-002 affected review and P7 coverage gap
+
+Source PR393 is online at 3185c0f6f9546145a9ef93e486a9232b0e90b4b4.
+Original #368 returned af5c4e39e193ef9cd161f203a5da211cfd95f7bf: six affected
+methods passed once on 698654d7, including two actual Lesson builds/readers;
+Win32 alias cases are simulated. Parent verified exact inputs and raw outputs;
+the original #370 now reviews that fixed repair without product execution.
+
+The original #369 read-only inventory identifies missing named-regression
+bindings for implementation-only changes and unresolved enforcement of manual
+admission requirements. Retain these as P7 adoption gaps. Target seven-commit
+provider integration and the #369 native extension still await direct decisions.
+No policy, CI, release or target provider action is inferred. See the latest
+successor report and machine-readable handoff for evidence and boundaries.
