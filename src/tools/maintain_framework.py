@@ -10,6 +10,7 @@ sys.dont_write_bytecode = True  # Before any local product or dependency import.
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import re
 import stat
@@ -48,19 +49,71 @@ def _reject_number(value):
     raise ValueError("unsupported JSON number")
 
 
-def _direct(target: Path, *, directory: bool = False) -> None:
+def _direct_identity(target: Path, directory: bool) -> list:
+    """Observe plain ancestors and the selected file/directory before imports."""
+    result = []
     for item in reversed((target, *target.parents)):
         info = item.lstat()
         if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
             raise ValueError("linked bootstrap path")
-    info = target.lstat()
-    if (directory and not stat.S_ISDIR(info.st_mode)) or (not directory and
-            (not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > FILE_LIMIT)):
-        raise ValueError("invalid bootstrap member")
-    if target.resolve(strict=True) != target:
-        raise ValueError("noncanonical bootstrap path")
+        if item != target or directory:
+            if not stat.S_ISDIR(info.st_mode):
+                raise ValueError("invalid bootstrap directory")
+        elif not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or info.st_size > FILE_LIMIT:
+            raise ValueError("invalid bootstrap member")
+        result.append((info.st_dev, info.st_ino))
+    return result
+
+
+def _windows_canonical(target: Path) -> Path:
+    """Only _direct's error-1 path calls this stdlib-only pre-pin predicate."""
+    import ctypes
+    from ctypes import wintypes as w
+
+    if (not target.is_absolute() or str(target).startswith(("\\\\", "//"))
+            or ".." in target.parts):
+        raise ValueError("invalid bootstrap local path")
+    for part in target.parts[1:]:
+        if (part.endswith((".", " ")) or re.search(r'[<>:"|?*\x00-\x1f]', part)
+                or re.fullmatch(r"(?i)(CON|PRN|AUX|NUL|COM[0-9¹²³]|LPT[0-9¹²³])(?:\..*)?", part)):
+            raise ValueError("ambiguous bootstrap path")
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.QueryDosDeviceW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.QueryDosDeviceW.restype = w.DWORD
+    device = ctypes.create_unicode_buffer(32768)
+    length = kernel.QueryDosDeviceW(target.drive, device, len(device))
+    kernel.GetDriveTypeW.argtypes = [w.LPCWSTR]
+    kernel.GetDriveTypeW.restype = w.UINT
+    if (not 0 < length < len(device) or re.fullmatch(r"\\Device\\[^\\]+", device.value) is None
+            or kernel.GetDriveTypeW(target.anchor) not in {2, 3, 5, 6}):
+        raise ValueError("direct bootstrap drive unavailable")
+    kernel.GetLongPathNameW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.GetLongPathNameW.restype = w.DWORD
+    canonical = ctypes.create_unicode_buffer(32768)
+    length = kernel.GetLongPathNameW(str(target), canonical, len(canonical))
+    if not 0 < length < len(canonical):
+        raise ValueError("canonical bootstrap name unavailable")
+    return Path(canonical.value)
+
+
+def _direct(target: Path, *, directory: bool = False) -> None:
     if len(str(target).encode("utf-16-le")) // 2 > 240 or any(len(part.encode("utf-16-le")) // 2 > 255 for part in target.parts):
         raise ValueError("bootstrap path budget")
+    before = _direct_identity(target, directory)
+    try:
+        canonical = target.resolve(strict=True)
+    except OSError as exc:
+        if os.name != "nt" or getattr(exc, "winerror", None) != 1:
+            raise
+        # ERROR_INVALID_FUNCTION only. The native long-name query cannot by
+        # itself prove direct ancestry, usable identity or absence of DOS aliases.
+        if not all(device and inode for device, inode in before):
+            raise ValueError("bootstrap identity unavailable")
+        canonical = _windows_canonical(target)
+    if canonical != target:
+        raise ValueError("noncanonical bootstrap path")
+    if _direct_identity(target, directory) != before:
+        raise ValueError("bootstrap path identity changed")
 
 
 class _VerifiedSourceFinder:

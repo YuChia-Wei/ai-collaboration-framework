@@ -1,0 +1,77 @@
+{
+  "kind": "bounded-observation-summary; not a formal audit or acceptance packet",
+  "observed_at": "2026-09-23T21:55:54+08:00",
+  "source": {
+    "source_commit": "218341375eb719d8c31df844d484f4837edfe630",
+    "files": {
+      "src\\distribution\\installation_state.py": "ed0fa502b6ed4fed82a9aa3fd15f326af7acef6748ca3c438395d8052320c5db",
+      "src\\distribution\\installation_io.py": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6",
+      "src\\skills\\lesson\\scripts\\lesson.py": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+      "src\\skills\\adr\\scripts\\adr.py": "4e99f42c3e77c960810d51222c214ebc3bada5433d9736cab4f5b6aaece6b9c6",
+      "src\\skills\\standards-promotion\\scripts\\standards_promotion.py": "acccbc01d5a99d32cfa599243ab9359944ec5a6f1feee3a73b72e52379f80b4d",
+      "src\\skills\\pr\\scripts\\pr.py": "1e10c2254eac59a52a28c897458936be54506c764de44b2bc3d6292a2c61d21a",
+      "src\\skills\\local-backlog\\scripts\\local_backlog.py": "6a2b251aee90ae4226e589ef03417ec655fb61cf97ceb6f7b192181fd1378c32",
+      "src\\skills\\software-development-orchestrator\\scripts\\workflow.py": "7947654676ae802424366e696c22d3c7933a632543a120d1a5168fd14900b53e",
+      "src\\skills\\problem-frame-author\\scripts\\problem_frame.py": "c52f3692b6a22e587f67f4bdf0b1e0ac180468e01d2927cb9b1e571c9a6e1ae4"
+    }
+  },
+  "simulations": {
+    "command": "python -I -B tests/framework_next/test_windows_paths.py --mode regressions",
+    "tests": 11,
+    "skips": 0,
+    "seconds": 0.237,
+    "outcome": "passed",
+    "initial_failure": "10 tests / 15 subcase errors from test-only Failure attribute typo; corrected to Fault"
+  },
+  "actual_final": {
+    "run": "F:\\framework-next\\p7-runs\\378-compatibility\\fn-713341b2a99446449ccdc86dd3ec2be2",
+    "outcome": "selected-positive-checks-passed",
+    "full_issue_acceptance": false,
+    "checks": [
+      "actual lesson-minimal assembly/read_candidate",
+      "Lesson public explain/query/create/inspect",
+      "CBF public explain/create/inspect",
+      "direct distribution Backend volume observation"
+    ],
+    "seconds": 8.169,
+    "observed_files": 36,
+    "logical_bytes": 307676,
+    "authored_bytes": 4606,
+    "driver_processes": {
+      "git": 44,
+      "python": 7
+    },
+    "physical_io": "not-measured",
+    "opaque_child_launches": "unavailable"
+  },
+  "public_plan": {
+    "outcome": "blocked-before-distribution-dispatch",
+    "source_commit": "34e18e63142549b109d23222aeb5a4798ace95d0",
+    "exit": 1,
+    "response": {
+      "api_version": 1,
+      "changed": false,
+      "details": null,
+      "diagnostics": [
+        {
+          "code": "source-bootstrap",
+          "next_action": "Provide isolated Python 3.10+ with -B, existing PyYAML 6, exact external source checkout/pin and one bounded JSON request.",
+          "path": null,
+          "reason": "Fixed engine bootstrap or host prerequisites could not be established before dispatch."
+        }
+      ],
+      "operation": "plan",
+      "outcome": "unsupported"
+    },
+    "run": "F:\\framework-next\\p7-runs\\378-compatibility\\fn-09dccb468a544476811fa3ce1a3c9fc8",
+    "equivalent_retry": "not-executed",
+    "additional_owner": "src/tools/maintain_framework.py::_direct"
+  },
+  "residue_policy": "All three owned runs and all prior runs retained; F:/ai-context-tests untouched",
+  "deferred": {
+    "disposition": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator/P7",
+    "next_action": "post-pilot review of unselected legacy, formal packets and CI"
+  }
+}

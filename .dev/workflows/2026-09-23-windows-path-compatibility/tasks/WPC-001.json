@@ -1,0 +1,71 @@
+{
+  "task_id": "WPC-001",
+  "workflow_id": "2026-09-23-windows-path-compatibility",
+  "owner_skill": "local-change-implementer",
+  "status": "completed",
+  "created_at": "2026-09-23T21:44:35+08:00",
+  "updated_at": "2026-09-23T22:09:07+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "template_version": "1.5.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Declared dispatch, not independent runtime attestation",
+  "scope": {
+    "target": "Issue 378 reader root and three writer backend compatibility implementations; approved bootstrap path predicate continuation",
+    "files": [
+      "src/skills/lesson/scripts/lesson.py",
+      "src/skills/adr/scripts/adr.py",
+      "src/skills/standards-promotion/scripts/standards_promotion.py",
+      "src/skills/pr/scripts/pr.py",
+      "src/skills/local-backlog/scripts/local_backlog.py",
+      "src/skills/software-development-orchestrator/scripts/workflow.py",
+      "src/skills/problem-frame-author/scripts/problem_frame.py",
+      "src/distribution/installation_io.py",
+      "src/distribution/installation_state.py",
+      "tests/framework_next/test_windows_paths.py",
+      ".dev/workflows/2026-09-23-windows-path-compatibility/**",
+      "src/tools/maintain_framework.py"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "Seven focused bootstrap path regressions and one complete actual F: public plan passed on clean exact engine commit",
+    "next_action": "Coordinator reviews fixed source and integrates authorized online PR; P7 owns unselected verification",
+    "deferred_items": [
+      "U001 legacy validators, formal packets, full matrices, CI: deferred-by-owner to program #322 coordinator/P7 post-pilot review"
+    ],
+    "validation": [
+      "11 focused API simulation tests passed; original test failure retained",
+      "Actual final positives passed against 218341375eb719d8c31df844d484f4837edfe630; per-source hashes retained",
+      "Public plan unsupported/source-bootstrap; not retried or relabelled passed",
+      "Python AST, workflow JSON/YAML parsing, scoped AST comparison and git diff --check",
+      "Exact planned-message validation before every local commit",
+      "Bootstrap continuation: seven focused simulated tests passed, zero skips",
+      "One actual public plan on clean aa2bffb52c0acf521302cf9f08c649ad54246c98 passed with exact pin/digest and no root writes",
+      "Prior nine product hashes and full ten-member engine pin rechecked; previous failures retained"
+    ],
+    "continuation_authority": {
+      "issue_heading": "Approved continuation: bootstrap path predicate",
+      "owner_confirmation_here": "確認此範圍並繼續",
+      "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+      "previous_checkpoint": "9c27dd419116245426995580247ecdf7bf6358c8",
+      "prior_auto_review": "First write rejected because forwarded authorization did not establish security-sensitive bootstrap scope; no mutation. Direct confirmation then received in this task."
+    }
+  },
+  "results": {
+    "summary": "Bounded Issue 378 reader/writer/bootstrap repair locally completed; selected actual public plan now passes",
+    "follow_up_needed": true,
+    "finding_status": "addressed-in-local-source",
+    "source_commits": [
+      "34e18e63142549b109d23222aeb5a4798ace95d0",
+      "218341375eb719d8c31df844d484f4837edfe630",
+      "aa2bffb52c0acf521302cf9f08c649ad54246c98"
+    ],
+    "evidence": [
+      "reports/repair.md",
+      "reports/observations.json",
+      "reports/bootstrap-continuation.md",
+      "reports/bootstrap-observations.json"
+    ],
+    "residual_risk": "Coordinator independent source review/integration pending; apply/recover, pilot, broader validation and CI remain outside this local completion"
+  }
+}
