@@ -74,7 +74,28 @@ def _protected_path(root: Path, name: str) -> Path | None:
             state._check(stat.S_ISDIR(info.st_mode), "parent-collision", "Protected path parent is occupied.", name, "conflict")
         # resolve reads the exact existing path, not sibling names. On Windows
         # the final path spelling also rejects alternate-case/short-name aliases.
-        resolved = current.resolve(strict=True)
+        try:
+            resolved = current.resolve(strict=True)
+        except OSError as exc:
+            if os.name != "nt" or getattr(exc, "winerror", None) != 1:
+                raise
+            # ERROR_INVALID_FUNCTION is the only fallback. Keep the selected
+            # node and every ancestor direct and stable around the long-name
+            # query; no sibling listing or recursive data scan is needed.
+            ancestry = [(current, info), *((parent, parent.lstat()) for parent in current.parents)]
+            for ancestor, before in ancestry:
+                state._plain(before, name)
+                state._check(ancestor == current or stat.S_ISDIR(before.st_mode),
+                             "parent-collision", "Protected path parent is occupied.", name, "conflict")
+                state._check(bool(before.st_dev and before.st_ino), "path-identity",
+                             "Canonical fallback requires usable filesystem identities.", name)
+            resolved = state._windows_long_path(current)
+            for ancestor, before in ancestry:
+                after = ancestor.lstat()
+                state._plain(after, name)
+                state._check((before.st_dev, before.st_ino, before.st_mode)
+                             == (after.st_dev, after.st_ino, after.st_mode),
+                             "input-drift", "Protected path ancestry changed during admission.", name)
         state._check(resolved.is_relative_to(root)
                      and resolved.relative_to(root).parts == tuple(parts[:index + 1]),
                      "path-alias", "Protected path is not its exact canonical spelling.", name, "conflict")

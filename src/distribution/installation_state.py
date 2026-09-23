@@ -221,31 +221,36 @@ def _root(value: Any) -> Path:
             raise
         # ERROR_INVALID_FUNCTION: require direct stable identities and an
         # independent long-name check; abspath alone cannot reject short aliases.
-        import ctypes
-        from ctypes import wintypes as w
         _check(all(device and inode for device, inode in before), "invalid-root",
                "Canonical fallback requires usable filesystem identities.")
-        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
-        # Long names do not expand DOS-drive aliases; require a direct local
-        # device mapping as well, without selecting a different root.
-        kernel.QueryDosDeviceW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
-        kernel.QueryDosDeviceW.restype = w.DWORD
-        device = ctypes.create_unicode_buffer(32768)
-        length = kernel.QueryDosDeviceW(target.drive, device, len(device))
-        kernel.GetDriveTypeW.argtypes = [w.LPCWSTR]
-        kernel.GetDriveTypeW.restype = w.UINT
-        _check(0 < length < len(device) and re.fullmatch(r"\\Device\\[^\\]+", device.value) is not None
-               and kernel.GetDriveTypeW(target.anchor) in {2, 3, 5, 6},
-               "noncanonical-root", "Direct local drive mapping is unavailable.")
-        kernel.GetLongPathNameW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
-        kernel.GetLongPathNameW.restype = w.DWORD
-        canonical = ctypes.create_unicode_buffer(32768)
-        length = kernel.GetLongPathNameW(str(target), canonical, len(canonical))
-        _check(0 < length < len(canonical), "noncanonical-root", "Canonical root name is unavailable.")
-        resolved = Path(canonical.value)
+        resolved = _windows_long_path(target)
     _check(identities() == before, "root-drift", "Root ancestry changed during admission.")
     _check(resolved == target, "noncanonical-root", "Root must name its direct canonical location.")
     return target
+
+
+def _windows_long_path(target: Path) -> Path:
+    """Query one exact name after the caller guards direct, stable ancestry."""
+    import ctypes
+    from ctypes import wintypes as w
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    # Long names do not expand DOS-drive aliases; require a direct local
+    # device mapping as well, without selecting a different root.
+    kernel.QueryDosDeviceW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.QueryDosDeviceW.restype = w.DWORD
+    device = ctypes.create_unicode_buffer(32768)
+    length = kernel.QueryDosDeviceW(target.drive, device, len(device))
+    kernel.GetDriveTypeW.argtypes = [w.LPCWSTR]
+    kernel.GetDriveTypeW.restype = w.UINT
+    _check(0 < length < len(device) and re.fullmatch(r"\\Device\\[^\\]+", device.value) is not None
+           and kernel.GetDriveTypeW(target.anchor) in {2, 3, 5, 6},
+           "noncanonical-root", "Direct local drive mapping is unavailable.")
+    kernel.GetLongPathNameW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.GetLongPathNameW.restype = w.DWORD
+    canonical = ctypes.create_unicode_buffer(32768)
+    length = kernel.GetLongPathNameW(str(target), canonical, len(canonical))
+    _check(0 < length < len(canonical), "noncanonical-root", "Canonical root name is unavailable.")
+    return Path(canonical.value)
 
 
 class _Reader:

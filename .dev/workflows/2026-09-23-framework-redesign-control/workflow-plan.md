@@ -209,3 +209,13 @@ The latest coordinator report retains its actual build/read identity, the owner
 Codex-first Claude disposition, #373 workflow-only pass, and #382 native plan
 failure. #383 owns only the observed protected-input Windows path repair.
 Native acceptance and target installation remain pending.
+
+
+## Candidate online; repaired native continuation
+
+PR #384 merged at 9e114574; #381 closed/Done. Current branch is
+codex/2026-09-23-native-pilot-continuation from that main. The latest report
+records reviewed #383 protected-path repair and #373 PR-only pass. Resume the
+original #382 native driver on the integrated fixed repair; keep source checks
+and target activation separate. Target #15 has an isolated persistent worktree
+and planning-only records, with target-owned gate coupling under analysis.
