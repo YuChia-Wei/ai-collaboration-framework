@@ -36,3 +36,7 @@ Executed clean a9af5fe793f938ac9b66f94034bda8a2cafb50ec once. Build and inspect 
 ## Reopened selected continuation
 
 Coordinator authorized repaired-source retry on cb41982d. First four native cases passed; own empty-guard inventory failed before the competing apply. See [resume-report.md](resume-report.md) for retained evidence and the bounded two-case continuation.
+
+## Completed selected tail
+
+Clean ef4ffd9f tail returned exit 0: actual lock exclusion and exactly one marker-triggered public interruption with same-engine recovery passed. Combined six-case evidence keeps original cb41982d failures and separate source identities. Current handoff: [resume-report.md](resume-report.md).

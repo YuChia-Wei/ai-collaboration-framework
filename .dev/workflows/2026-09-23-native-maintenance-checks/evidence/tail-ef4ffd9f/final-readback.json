@@ -1,0 +1,1217 @@
+{
+  "all_engine_file_raw_hashes_equal_across_repaired_prefix_and_tail": true,
+  "interpretation": "Separate historical failure, repaired-prefix result and driver-tail result; no single six-case passing run claim.",
+  "interruption_attempts_all_runs": 1,
+  "nested_product_launches": "unavailable; not measured",
+  "observed_at": "2026-09-23T15:08:04+00:00",
+  "public_helper_launches_all_attempts": 22,
+  "runs": {
+    "63bb8cce": {
+      "driver_git_launches": 5,
+      "interruption_attempts": 0,
+      "public_helper_launches": 3,
+      "result_sha256": "99ad9fe33cb4078446ae9be1e8edf028ac9c1ec3413418323a78604e7639647e",
+      "roots": {
+        "native": {
+          "files": 30,
+          "inventory": {
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/metadata/files.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327843699200,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/metadata/selection.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327836640900,
+              "sha256": "3bbeb2701e4f6f4de3cef069d624220e459955048e21dbea7d0aabc390981b71",
+              "size": 8621
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327780967000,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327783973100,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327786973800,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327789973900,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327799549400,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327809064000,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790174327811580300,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790174327825616100,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327828614600,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "build-scratch/scratch-bdfd5474bff7448c999005de50d7d634/runtime/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327835128400,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/metadata/build.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327918665900,
+              "sha256": "aff363b8d6c0fe7622bbc8e41a7c8be252adf18445e154b9bd8a8e84d0cadc07",
+              "size": 3650
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/metadata/files.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327909644400,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/metadata/selection.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327901637000,
+              "sha256": "3bbeb2701e4f6f4de3cef069d624220e459955048e21dbea7d0aabc390981b71",
+              "size": 8621
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327846700100,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327850699500,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327853844400,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327857431900,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327867976600,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790174327876653200,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790174327880308000,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790174327892130200,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/payload/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327896124900,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "candidates/candidate-a9af5fe793f9-bdfd5474bff7448c999005de50d7d634/runtime/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790174327899124500,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "project/.ai/custom/framework.json": {
+              "mode": 438,
+              "mtime_ns": 1790174324230634500,
+              "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+              "size": 37
+            },
+            "project/.gitattributes": {
+              "mode": 438,
+              "mtime_ns": 1790174324229127300,
+              "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+              "size": 8
+            },
+            "project/.gitignore": {
+              "mode": 438,
+              "mtime_ns": 1790174324230634500,
+              "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+              "size": 11
+            },
+            "project/AGENTS.md": {
+              "mode": 438,
+              "mtime_ns": 1790174324229127300,
+              "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+              "size": 44
+            },
+            "project/unknown/keep.txt": {
+              "mode": 438,
+              "mtime_ns": 1790174324230634500,
+              "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+              "size": 25
+            }
+          },
+          "logical_bytes": 286909,
+          "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\63bb8cce"
+        },
+        "observations": {
+          "files": 5,
+          "inventory": {
+            "calls.jsonl": {
+              "mode": 438,
+              "mtime_ns": 1790174328855939800,
+              "sha256": "4b3f7ec5f9cd0b50dd514a93ed55ba7141a1262150d95ac3fc9382f252c40914",
+              "size": 7908
+            },
+            "engine-pin.json": {
+              "mode": 438,
+              "mtime_ns": 1790174324209152300,
+              "sha256": "4446630e1c611aa82dd3d2e4ac439004b1e1dc69edf353d43a52278c43a869a6",
+              "size": 1613
+            },
+            "post-failure-readback.json": {
+              "mode": 438,
+              "mtime_ns": 1790174431718614600,
+              "sha256": "4a1a1045d1021284de8c31bb06f0a6dff4cc6c848d221004472526ac069c48c3",
+              "size": 10881
+            },
+            "protected-path-diagnosis.json": {
+              "mode": 438,
+              "mtime_ns": 1790174377768691200,
+              "sha256": "b8b4cff05b39c049ac039481d75f3ccc750039fafe7235dcc8c1cc4b32fd0122",
+              "size": 2541
+            },
+            "result.json": {
+              "mode": 438,
+              "mtime_ns": 1790174328930575900,
+              "sha256": "99ad9fe33cb4078446ae9be1e8edf028ac9c1ec3413418323a78604e7639647e",
+              "size": 7604
+            }
+          },
+          "logical_bytes": 30547,
+          "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\63bb8cce"
+        },
+        "recovery": {
+          "files": 0,
+          "inventory": {},
+          "logical_bytes": 0,
+          "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\recovery\\63bb8cce"
+        }
+      },
+      "source_commit": "a9af5fe793f938ac9b66f94034bda8a2cafb50ec"
+    },
+    "a0292789": {
+      "driver_git_launches": 7,
+      "interruption_attempts": 1,
+      "public_helper_launches": 8,
+      "result_sha256": "4a9a1c8b0f4091e63207030c7271fddab3702f30a716453c23f972ce7c2c63b7",
+      "roots": {
+        "native": {
+          "files": 33,
+          "inventory": {
+            "interrupt-project/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790176041535472400,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "interrupt-project/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790176041565364700,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "interrupt-project/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790176041603085200,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "interrupt-project/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790176041645363200,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "interrupt-project/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790176041691929300,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "interrupt-project/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790176041741652400,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "interrupt-project/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790176041789307900,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "interrupt-project/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790176041832791500,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "interrupt-project/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790176041878366300,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "interrupt-project/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790176041916971800,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "interrupt-project/.ai/custom/framework.json": {
+              "mode": 438,
+              "mtime_ns": 1790176038591988300,
+              "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+              "size": 37
+            },
+            "interrupt-project/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790176042039161600,
+              "sha256": "d0bbb42957b2b78ff0bad69beeb018f75128643e6398465f8630c27986d9d4c8",
+              "size": 17374
+            },
+            "interrupt-project/.ai/local/installation.guard": {
+              "mode": 438,
+              "mtime_ns": 1790176039514555000,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "size": 0
+            },
+            "interrupt-project/.gitattributes": {
+              "mode": 438,
+              "mtime_ns": 1790176038590481100,
+              "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+              "size": 8
+            },
+            "interrupt-project/.gitignore": {
+              "mode": 438,
+              "mtime_ns": 1790176038590481100,
+              "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+              "size": 11
+            },
+            "interrupt-project/AGENTS.md": {
+              "mode": 438,
+              "mtime_ns": 1790176038590481100,
+              "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+              "size": 44
+            },
+            "interrupt-project/unknown/keep.txt": {
+              "mode": 438,
+              "mtime_ns": 1790176038591988300,
+              "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+              "size": 25
+            },
+            "scratch/i-d5a469490bcc125ce1993e050494fce3/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790176040019484800,
+              "sha256": "d0bbb42957b2b78ff0bad69beeb018f75128643e6398465f8630c27986d9d4c8",
+              "size": 17374
+            },
+            "scratch/i-d5a469490bcc125ce1993e050494fce3/metadata/build.json": {
+              "mode": 438,
+              "mtime_ns": 1790176039985827900,
+              "sha256": "1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf",
+              "size": 3650
+            },
+            "scratch/i-d5a469490bcc125ce1993e050494fce3/metadata/files.json": {
+              "mode": 438,
+              "mtime_ns": 1790176039977779700,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "scratch/i-d5a469490bcc125ce1993e050494fce3/metadata/selection.json": {
+              "mode": 438,
+              "mtime_ns": 1790176039964714800,
+              "sha256": "0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba",
+              "size": 8621
+            },
+            "scratch/i-d5a469490bcc125ce1993e050494fce3/plan.json": {
+              "mode": 438,
+              "mtime_ns": 1790176039992099700,
+              "sha256": "17be33584f79bec07d2f04e5dafbd965d3c11058e361d61e2bef7dc9876fb8d3",
+              "size": 9473
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790176040037622400,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790176040056254600,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790176040080301600,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790176040104026700,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790176040129991500,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790176040159865100,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790176040193043000,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790176040217615900,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790176040246625700,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790176040269960300,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "staging/i-d5a469490bcc125ce1993e050494fce3/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790176040006069700,
+              "sha256": "d0bbb42957b2b78ff0bad69beeb018f75128643e6398465f8630c27986d9d4c8",
+              "size": 17374
+            }
+          },
+          "logical_bytes": 333959,
+          "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\a0292789"
+        },
+        "observations": {
+          "files": 4,
+          "inventory": {
+            "calls.jsonl": {
+              "mode": 438,
+              "mtime_ns": 1790176042233705600,
+              "sha256": "d7ad4e589eb58c2f31c885906a0575d6f373cd48e5c1a1c236c123181b726135",
+              "size": 56503
+            },
+            "engine-pin.json": {
+              "mode": 438,
+              "mtime_ns": 1790176035371155800,
+              "sha256": "c2b8113b0eab3ce3da93904b65f5d660e3732adb807f1cc64da89a5de7f3c9de",
+              "size": 1613
+            },
+            "interrupted-state.json": {
+              "mode": 438,
+              "mtime_ns": 1790176040483545900,
+              "sha256": "81177b7cf886c9ba23429e837dcd5e19e0afc468516dc92c57015273f5f51f58",
+              "size": 1671
+            },
+            "result.json": {
+              "mode": 438,
+              "mtime_ns": 1790176042618340300,
+              "sha256": "4a9a1c8b0f4091e63207030c7271fddab3702f30a716453c23f972ce7c2c63b7",
+              "size": 10815
+            }
+          },
+          "logical_bytes": 70602,
+          "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\a0292789"
+        },
+        "recovery": {
+          "files": 15,
+          "inventory": {
+            "i-d5a469490bcc125ce1993e050494fce3/objects/0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba": {
+              "mode": 438,
+              "mtime_ns": 1790176039725216800,
+              "sha256": "0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba",
+              "size": 8621
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf": {
+              "mode": 438,
+              "mtime_ns": 1790176039744551800,
+              "sha256": "1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf",
+              "size": 3650
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623": {
+              "mode": 438,
+              "mtime_ns": 1790176039757261400,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320": {
+              "mode": 438,
+              "mtime_ns": 1790176039777842000,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996": {
+              "mode": 438,
+              "mtime_ns": 1790176039791636700,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e": {
+              "mode": 438,
+              "mtime_ns": 1790176039817520700,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894": {
+              "mode": 438,
+              "mtime_ns": 1790176039838554100,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d": {
+              "mode": 438,
+              "mtime_ns": 1790176039851420900,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b": {
+              "mode": 438,
+              "mtime_ns": 1790176039874697700,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b": {
+              "mode": 438,
+              "mtime_ns": 1790176039893406700,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a": {
+              "mode": 438,
+              "mtime_ns": 1790176039907913300,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/d0bbb42957b2b78ff0bad69beeb018f75128643e6398465f8630c27986d9d4c8": {
+              "mode": 438,
+              "mtime_ns": 1790176039920767600,
+              "sha256": "d0bbb42957b2b78ff0bad69beeb018f75128643e6398465f8630c27986d9d4c8",
+              "size": 17374
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4": {
+              "mode": 438,
+              "mtime_ns": 1790176039941486700,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/objects/f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16": {
+              "mode": 438,
+              "mtime_ns": 1790176039954514700,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "i-d5a469490bcc125ce1993e050494fce3/operation.json": {
+              "mode": 438,
+              "mtime_ns": 1790176040278517700,
+              "sha256": "3a26da3ff7a1a67c1393aefe3e852f8ba253ede54c89513aae4a5f70333e3592",
+              "size": 3781
+            }
+          },
+          "logical_bytes": 166372,
+          "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\recovery\\a0292789"
+        }
+      },
+      "source_commit": "ef4ffd9f286f49b6055d9a321abbd134b263ced8"
+    },
+    "cb3d1c6c": {
+      "driver_git_launches": 5,
+      "interruption_attempts": 0,
+      "public_helper_launches": 11,
+      "result_sha256": "af1e0f560e76d4635a9cb480f26563cd75aca5e4d6f8aa0a76a31a201f0e0d11",
+      "roots": {
+        "native": {
+          "files": 81,
+          "inventory": {
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/metadata/files.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765285301900,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/metadata/selection.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765278780600,
+              "sha256": "0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba",
+              "size": 8621
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765227460000,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765230457400,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765234976800,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765236977900,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765246999900,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765256078200,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790175765259075200,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790175765272131300,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765274136800,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "build-scratch/scratch-7488048202e34682ab02f360f8a5dd6e/runtime/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765277181800,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/metadata/build.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765358692900,
+              "sha256": "1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf",
+              "size": 3650
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/metadata/files.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765348170500,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/metadata/selection.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765341061500,
+              "sha256": "0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba",
+              "size": 8621
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765289302000,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765291806100,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765294385400,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765297393100,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765306909100,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175765316037500,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790175765319036500,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790175765330546900,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/payload/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765335064800,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "candidates/candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e/runtime/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175765339061000,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "collision-project/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770841636100,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "collision-project/.ai/custom/framework.json": {
+              "mode": 438,
+              "mtime_ns": 1790175770836636300,
+              "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+              "size": 37
+            },
+            "collision-project/.gitattributes": {
+              "mode": 438,
+              "mtime_ns": 1790175770836636300,
+              "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+              "size": 8
+            },
+            "collision-project/.gitignore": {
+              "mode": 438,
+              "mtime_ns": 1790175770836636300,
+              "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+              "size": 11
+            },
+            "collision-project/AGENTS.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770835636700,
+              "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+              "size": 44
+            },
+            "collision-project/unknown/keep.txt": {
+              "mode": 438,
+              "mtime_ns": 1790175770837635800,
+              "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+              "size": 25
+            },
+            "drift-project/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770272754100,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "drift-project/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770272754100,
+              "sha256": "bfa5a6c86ec08ac4cdcbdf24e4e7a2985349cc34e9f931bdf3bb098c39292e7a",
+              "size": 21
+            },
+            "drift-project/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770271748100,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "drift-project/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770271748100,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "drift-project/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770272754100,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "drift-project/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175770270244100,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "drift-project/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175770270244100,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "drift-project/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790175770270244100,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "drift-project/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790175770268242600,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "drift-project/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770269244500,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "drift-project/.ai/custom/framework.json": {
+              "mode": 438,
+              "mtime_ns": 1790175770267211600,
+              "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+              "size": 37
+            },
+            "drift-project/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790175770266209800,
+              "sha256": "20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca",
+              "size": 17374
+            },
+            "drift-project/.ai/local/installation.guard": {
+              "mode": 438,
+              "mtime_ns": 1790175770267211600,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "size": 0
+            },
+            "drift-project/.gitattributes": {
+              "mode": 438,
+              "mtime_ns": 1790175770265208200,
+              "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+              "size": 8
+            },
+            "drift-project/.gitignore": {
+              "mode": 438,
+              "mtime_ns": 1790175770265208200,
+              "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+              "size": 11
+            },
+            "drift-project/AGENTS.md": {
+              "mode": 438,
+              "mtime_ns": 1790175770265208200,
+              "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+              "size": 44
+            },
+            "drift-project/unknown/keep.txt": {
+              "mode": 438,
+              "mtime_ns": 1790175770266209800,
+              "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+              "size": 25
+            },
+            "project/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175768024835900,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "project/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175768052395100,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "project/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790175768089093600,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "project/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790175768129228700,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "project/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790175768170829300,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "project/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175768217543800,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "project/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175768264255000,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "project/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790175768303240700,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "project/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790175768351621300,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "project/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790175768388179400,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "project/.ai/custom/framework.json": {
+              "mode": 438,
+              "mtime_ns": 1790175760712731400,
+              "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+              "size": 37
+            },
+            "project/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790175768502881000,
+              "sha256": "20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca",
+              "size": 17374
+            },
+            "project/.ai/local/installation.guard": {
+              "mode": 438,
+              "mtime_ns": 1790175767135944800,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "size": 0
+            },
+            "project/.gitattributes": {
+              "mode": 438,
+              "mtime_ns": 1790175760712225300,
+              "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+              "size": 8
+            },
+            "project/.gitignore": {
+              "mode": 438,
+              "mtime_ns": 1790175760712731400,
+              "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+              "size": 11
+            },
+            "project/AGENTS.md": {
+              "mode": 438,
+              "mtime_ns": 1790175760712225300,
+              "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+              "size": 44
+            },
+            "project/unknown/keep.txt": {
+              "mode": 438,
+              "mtime_ns": 1790175760713740200,
+              "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+              "size": 25
+            },
+            "scratch/i-91297471d8510b6178a32e6297e02d04/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790175767578464900,
+              "sha256": "20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca",
+              "size": 17374
+            },
+            "scratch/i-91297471d8510b6178a32e6297e02d04/metadata/build.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767546901100,
+              "sha256": "1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf",
+              "size": 3650
+            },
+            "scratch/i-91297471d8510b6178a32e6297e02d04/metadata/files.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767538385700,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "scratch/i-91297471d8510b6178a32e6297e02d04/metadata/selection.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767526352700,
+              "sha256": "0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba",
+              "size": 8621
+            },
+            "scratch/i-91297471d8510b6178a32e6297e02d04/plan.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767552935100,
+              "sha256": "2aefc66425b8bec6b1ab859f9baf666d6f4565ba2114c12a72ea6d8fd3690485",
+              "size": 9463
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.agents/skills/framework-lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175767594493100,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/SKILL.md": {
+              "mode": 438,
+              "mtime_ns": 1790175767613026000,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/references/configuration.md": {
+              "mode": 438,
+              "mtime_ns": 1790175767637150500,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/references/example.md": {
+              "mode": 438,
+              "mtime_ns": 1790175767660683600,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/references/operations.md": {
+              "mode": 438,
+              "mtime_ns": 1790175767686419900,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767718066300,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/schemas/lesson-record.schema.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767747114900,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/scripts/lesson.py": {
+              "mode": 438,
+              "mtime_ns": 1790175767774687200,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/skill-package.yaml": {
+              "mode": 438,
+              "mtime_ns": 1790175767804320600,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/core/skills/lesson/templates/lesson.md": {
+              "mode": 438,
+              "mtime_ns": 1790175767826337600,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "staging/i-91297471d8510b6178a32e6297e02d04/.ai/framework.lock": {
+              "mode": 438,
+              "mtime_ns": 1790175767564957100,
+              "sha256": "20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca",
+              "size": 17374
+            }
+          },
+          "logical_bytes": 765400,
+          "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c"
+        },
+        "observations": {
+          "files": 3,
+          "inventory": {
+            "calls.jsonl": {
+              "mode": 438,
+              "mtime_ns": 1790175771710372800,
+              "sha256": "521600a09d4cc8b9ad97bdd55593494ab65db5d2ef41d486b9dc3fc736694a3d",
+              "size": 63912
+            },
+            "engine-pin.json": {
+              "mode": 438,
+              "mtime_ns": 1790175760693445800,
+              "sha256": "662210ff30e603f444a44a201fac775fae2ed25fb3892af3103318ee6937e0ff",
+              "size": 1613
+            },
+            "result.json": {
+              "mode": 438,
+              "mtime_ns": 1790175771874692400,
+              "sha256": "af1e0f560e76d4635a9cb480f26563cd75aca5e4d6f8aa0a76a31a201f0e0d11",
+              "size": 12940
+            }
+          },
+          "logical_bytes": 78465,
+          "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\cb3d1c6c"
+        },
+        "recovery": {
+          "files": 15,
+          "inventory": {
+            "i-91297471d8510b6178a32e6297e02d04/objects/0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba": {
+              "mode": 438,
+              "mtime_ns": 1790175767329847700,
+              "sha256": "0e11d21dce6517a948edd66b672b83d334cf9b17e2c2e0e77dd75ee9879ba4ba",
+              "size": 8621
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf": {
+              "mode": 438,
+              "mtime_ns": 1790175767348184900,
+              "sha256": "1461bba5ac9ac3a83aed5122cb6789386eafeaeb5bab558ca6fb8e36cab87fdf",
+              "size": 3650
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca": {
+              "mode": 438,
+              "mtime_ns": 1790175767359709600,
+              "sha256": "20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca",
+              "size": 17374
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623": {
+              "mode": 438,
+              "mtime_ns": 1790175767378272300,
+              "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+              "size": 10420
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320": {
+              "mode": 438,
+              "mtime_ns": 1790175767396330600,
+              "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+              "size": 6117
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996": {
+              "mode": 438,
+              "mtime_ns": 1790175767407844400,
+              "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+              "size": 81052
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e": {
+              "mode": 438,
+              "mtime_ns": 1790175767428981200,
+              "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+              "size": 2596
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894": {
+              "mode": 438,
+              "mtime_ns": 1790175767441629600,
+              "sha256": "56c003bfd14f6810e4b0ad5980f3b21b2de7643134b6a2a82f7093121a7e5894",
+              "size": 5924
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d": {
+              "mode": 438,
+              "mtime_ns": 1790175767451913900,
+              "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+              "size": 10852
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b": {
+              "mode": 438,
+              "mtime_ns": 1790175767470768900,
+              "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+              "size": 5014
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b": {
+              "mode": 438,
+              "mtime_ns": 1790175767482108500,
+              "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+              "size": 508
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a": {
+              "mode": 438,
+              "mtime_ns": 1790175767493630100,
+              "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+              "size": 6336
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4": {
+              "mode": 438,
+              "mtime_ns": 1790175767505660700,
+              "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4",
+              "size": 2421
+            },
+            "i-91297471d8510b6178a32e6297e02d04/objects/f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16": {
+              "mode": 438,
+              "mtime_ns": 1790175767516832700,
+              "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+              "size": 1706
+            },
+            "i-91297471d8510b6178a32e6297e02d04/operation.json": {
+              "mode": 438,
+              "mtime_ns": 1790175767835849900,
+              "sha256": "8b9bff268c56b375770d39feac4385fc373a480ef07c3721e76327150cc1c0de",
+              "size": 3748
+            }
+          },
+          "logical_bytes": 166339,
+          "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\recovery\\cb3d1c6c"
+        }
+      },
+      "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af"
+    }
+  },
+  "total_files_before_this_inventory": 186,
+  "total_logical_bytes_before_this_inventory": 1898593
+}
