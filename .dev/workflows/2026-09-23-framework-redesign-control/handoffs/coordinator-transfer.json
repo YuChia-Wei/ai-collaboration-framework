@@ -94,7 +94,7 @@
     }
   },
   "continuation_checkpoint": {
-    "observed_at": "2026-09-23T22:21:01+08:00",
+    "observed_at": "2026-09-23T22:31:22+08:00",
     "coordinator_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "branch": "codex/2026-09-23-rc1-preparation",
     "integrated_main": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
@@ -107,12 +107,51 @@
       368,
       369,
       373,
-      381
+      381,
+      382
     ],
     "pilot_scope": "complete new framework with existing target customizations",
     "next_issue": 381,
-    "next_dispatch": "pending actual task creation",
+    "next_dispatch": "actual tasks created and first F: commands verified",
     "target_mutation_performed": false,
-    "publication_performed": false
+    "publication_performed": false,
+    "active_dispatches": [
+      {
+        "issue": 381,
+        "thread_id": "01a0cea5-3b1a-7312-ab81-3e5edd32d651",
+        "worktree": "F:/framework-next/381",
+        "branch": "codex/2026-09-23-versioned-candidate",
+        "starting_commit": "031233202f21e0793c9667cac872375d65e52be0",
+        "first_repository_command": "exec-932830e9-5377-43a1-8df2-8e8b865904c2"
+      },
+      {
+        "issue": 382,
+        "thread_id": "01a0cea9-e5fe-72c1-8f95-ce82d01927c2",
+        "worktree": "F:/framework-next/382",
+        "branch": "codex/2026-09-23-native-maintenance-checks",
+        "starting_commit": "031233202f21e0793c9667cac872375d65e52be0",
+        "first_repository_command": "exec-defa8165-89a3-4df0-83b7-6ea3f3ddaf64"
+      }
+    ],
+    "runtime_verification": "Read-only state_5.sqlite rows show gpt-6-astra / ultra for both actual tasks; first commands show assigned clean F: checkouts.",
+    "c5_return": {
+      "issue": 368,
+      "commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+      "tested_source": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "state": "local handoff inspected; one C5 method passed; online integration pending"
+    },
+    "completed_cleanup": {
+      "issue": 378,
+      "removed_worktree": "F:/framework-next/378",
+      "removed_local_branches": [
+        "codex/2026-09-23-windows-path-compatibility",
+        "codex/2026-09-23-repair-integration"
+      ],
+      "removed_remote_branch": "codex/2026-09-23-repair-integration",
+      "persistent_archive": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/framework-next-control/completed-worktree-archive/378",
+      "files": 5,
+      "bytes": 5187,
+      "p7_runs_preserved": true
+    }
   }
 }

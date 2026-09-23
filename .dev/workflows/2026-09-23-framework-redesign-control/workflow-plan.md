@@ -187,4 +187,16 @@ Issue #381 prepares the missing versioned candidate identity, complete explicit
 18-component profile and rc.1-to-stable candidate/lock planning input contract.
 Its Issue records exact source/test ownership and bounded actual build/read
 acceptance. Publication, actual stable output and target installation are separate.
-The coordinator will dispatch one independent Astra/ultra task in F:/framework-next/381.
+The actual independent Astra/ultra #381 task is 01a0cea5-3b1a-7312-ab81-3e5edd32d651 in F:/framework-next/381.
+
+Issue #382 supplies bounded real Windows maintenance observations before target
+mutation. Its independent Astra/ultra task 01a0cea9-e5fe-72c1-8f95-ce82d01927c2
+uses F:/framework-next/382, an isolated tiny native fixture, and explicit durable
+C: recovery/observation parents. Product files stay read-only. Its development
+fixture does not establish #381 versioned-candidate or complete target acceptance.
+Both actual dispatches started clean at 031233202f21e0793c9667cac872375d65e52be0.
+
+#368 returned bd40c830: the single selected C5 method passed once on c1fb1c1f,
+including two real Lesson builds, reader acceptance and five synthetic refusals.
+The record-only handoff is locally inspected/integrated; prior failed whole runs
+remain visible. #368 stays open for its remaining reconciliation/review.

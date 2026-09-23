@@ -211,3 +211,49 @@ identity, complete explicit 18-package profile, actual complete rc.1 public
 build/read and labelled future stable/lock planning fixtures. It does not
 rewrite legacy release support or infer published/stable/native/target success.
 The task/worktree dispatch is pending; its Issue is the exact scope.
+
+## Actual prerequisite dispatch and C5 return (2026-09-23T22:31:22+08:00)
+
+#381 task 01a0cea5-3b1a-7312-ab81-3e5edd32d651 and #382 task
+01a0cea9-e5fe-72c1-8f95-ce82d01927c2 were created as independent saved-project
+local tasks, with assigned F: worktrees and clean start 031233202f21e0793c9667cac872375d65e52be0.
+Read-only runtime rows verify gpt-6-astra / ultra. Actual first repository commands
+exec-932830e9-5377-43a1-8df2-8e8b865904c2 and
+exec-defa8165-89a3-4df0-83b7-6ea3f3ddaf64 verify the assigned F: root/branch/HEAD.
+No executor-created task or sub-agent was used. #381 Project Status was read back
+In progress; #382 Status update succeeded, with read-back still pending. No
+Owner review, Release or other Project field was changed.
+
+#382's exact Issue selects tiny native Windows installer mechanics using the
+repaired development input, not an additional target Lesson pilot. It may write
+only native tests/dispatch/README and own records, with the named ignored durable
+C: recovery/observation parents as the sole bootstrap exception. Real apply/no-op,
+collision/drift refusal, participating-writer exclusion and one unmodified public
+interruption attempt are selected; a missed window remains not-observed. Source
+product repairs and complete versioned-target acceptance are separate.
+
+The original #368 task completed clean at bd40c83060d55435df5d7bc015d8f5ab12085aea.
+Its exact c1fb1c1f C5 command ran once, exit 0, one method / zero skips in 10.725s
+unittest time (11.44s wrapper wall). Two real Lesson candidates agreed; the reader
+and five labelled synthetic refusal cases passed. Observed 51 files / 573579
+logical bytes and 89 Git launches; successful owned output cleaned and three
+prior failed roots remained unchanged. Root verified the four record-only paths,
+JSON/YAML/readability, diff and no src/tests delta. This does not claim a fresh
+whole suite, independent full source review, native/target/CI or Issue completion.
+
+After fresh clean/merged-ancestry checks, five ignored #378 message files (5187
+bytes) were copied with byte/hash read-back to the persistent completed-worktree
+archive/378. Only then were F:/framework-next/378 and its completed local branch
+removed. The merged repair-integration remote/local branches were deleted after
+remote SHA matched c247d424 and later ls-remote returned no branch. All p7-runs,
+F:/ai-context-tests and unfinished worktrees remain. Source commits are reachable
+from online main; recreating a former engine checkout still requires its exact pin.
+
+Target inventory adds no adoption claim: 194 tracked .NET-profile files, 14
+effective rule IDs and 20 retained routing rows; 15 old entries per runtime; no
+new tracked core/custom/lock or observed maintenance marker. These rule/catalog
+bytes, four customization subjects, provenance/history and target gate remain
+owned by the target. Complete pilot preparation must reconcile the 13 overlapping
+new capabilities, five added packages, and two old lifecycle entry points, with
+explicit handling of the absent new Claude adapter. No source U001 export or
+blanket .NET-framework equivalence is selected.

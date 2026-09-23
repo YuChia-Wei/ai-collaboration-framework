@@ -76,5 +76,125 @@
     "ast_files": 3,
     "source_test_bytes_unchanged_since_execution": true
   },
-  "handoff_message_sha256": "c331dbeabbf6586f8c80e7eb85c81e004c846e6f8e4bff696eb254d45c97ff5c"
+  "handoff_message_sha256": "c331dbeabbf6586f8c80e7eb85c81e004c846e6f8e4bff696eb254d45c97ff5c",
+  "post_378_c5": {
+    "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+    "previous_local_head": "e71ccc989c3ae213a8e04cbe51abb80183022024",
+    "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+    "started_at": "2026-09-23T22:20:58+08:00",
+    "command": "python -I -B tests/framework_next/run.py --layer contracts --case CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals --output-root F:/framework-next/p7-runs/368-contracts",
+    "actual_argv": [
+      "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-I",
+      "-B",
+      "tests/framework_next/run.py",
+      "--layer",
+      "contracts",
+      "--case",
+      "CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals",
+      "--output-root",
+      "F:/framework-next/p7-runs/368-contracts"
+    ],
+    "workdir": "F:\\framework-next\\368",
+    "attempt_count": 1,
+    "exit_code": 0,
+    "outcome": "passed",
+    "wall_seconds": 11.44,
+    "stdout": "{\"runtime\": {\"PyYAML\": \"6.0.3\", \"executable\": \"C:\\\\Users\\\\h4227\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\", \"jsonschema\": \"4.26.0\", \"python\": \"3.13.14\", \"referencing\": \"0.37.0\"}}\r\n{\"C5_assembly\": {\"source_commit\": \"c1fb1c1fb07a6d246e3bcedd3cd851918f66b306\", \"actual_builds\": 2, \"files_per_candidate\": 13, \"candidate_identity\": \"development:c1fb1c1fb07a6d246e3bcedd3cd851918f66b306:262bede9ed874a1dbdb15b3d1f61871d4dfb4a136b600b795de192c5446ac2f6\", \"candidate_roots\": [\"F:\\\\framework-next\\\\p7-runs\\\\368-contracts\\\\fn-11e0762f5bfb4ad4b485d881bc4a7769\\\\lesson-candidates\\\\candidate-c1fb1c1fb07a-7770f713250a4c979296b4fdd0bae10b\", \"F:\\\\framework-next\\\\p7-runs\\\\368-contracts\\\\fn-11e0762f5bfb4ad4b485d881bc4a7769\\\\lesson-candidates\\\\candidate-c1fb1c1fb07a-e87660b549214ccc9fa5a7d95f8a6e9e\"], \"reader_status\": \"next; not yet accepted\"}}\r\n{\"C5\": {\"assemblies\": 2, \"files_per_candidate\": 13, \"payload\": 9, \"entries\": 1, \"metadata\": 3, \"synthetic_refusals\": 5, \"candidate_identity\": \"development:c1fb1c1fb07a6d246e3bcedd3cd851918f66b306:262bede9ed874a1dbdb15b3d1f61871d4dfb4a136b600b795de192c5446ac2f6\", \"native_apply\": \"not-executed\"}}\r\n{\"fixture_accounting\": {\"authored_bytes\": 11, \"next_action\": null, \"observed_files\": 51, \"observed_logical_bytes\": 573579, \"process_total\": 89, \"processes\": {\"git\": 89, \"other\": 0, \"python\": 0}, \"residue\": null, \"retained_bytes\": 573568, \"retained_files\": 50, \"wall_seconds\": 10.832}}\r\n",
+    "stderr": "test_c5_two_real_lesson_builds_and_reader_refusals (test_contracts.CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 1 test in 10.725s\r\n\r\nOK\r\n",
+    "stdout_sha256": "a4ed3f1efdda6785a4ae639c2a62cc768d5fa6b86b9325b157f9e9f74f3c22a7",
+    "stderr_sha256": "c8df222cef48eb56efe6cd376032e538e128ca1571cb39bfe05650c03c8dd57a",
+    "prior_run_roots_before": [
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-a9713554a15d4ca68b38842026f3a8a8",
+        "device": 12003918052740279813,
+        "inode": 281474976856946,
+        "mtime_ns": 1790147386122169300
+      },
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-7ce6045a9eae47e68aa3ecb5597100cc",
+        "device": 12003918052740279813,
+        "inode": 281474976856981,
+        "mtime_ns": 1790147560008056800
+      },
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3",
+        "device": 12003918052740279813,
+        "inode": 844424930289250,
+        "mtime_ns": 1790162338162972200
+      }
+    ],
+    "prior_run_roots_after": [
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-a9713554a15d4ca68b38842026f3a8a8",
+        "device": 12003918052740279813,
+        "inode": 281474976856946,
+        "mtime_ns": 1790147386122169300
+      },
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-7ce6045a9eae47e68aa3ecb5597100cc",
+        "device": 12003918052740279813,
+        "inode": 281474976856981,
+        "mtime_ns": 1790147560008056800
+      },
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3",
+        "device": 12003918052740279813,
+        "inode": 844424930289250,
+        "mtime_ns": 1790162338162972200
+      }
+    ],
+    "prior_root_identities_and_mtimes_unchanged": true,
+    "test_source_sha256": {
+      "tests/framework_next/run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+      "tests/framework_next/support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+      "tests/framework_next/test_contracts.py": "fe35f9f539941aeb0ccc51d4e826db67aac3e25e1b5ea37c1017cbb7e16fa512"
+    },
+    "summary": {
+      "methods": 1,
+      "passed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "unittest_wall_seconds": 10.725,
+      "assemblies": 2,
+      "candidate_files_each": 13,
+      "reader": "passed",
+      "synthetic_refusals": 5,
+      "candidate_identity": "development:c1fb1c1fb07a6d246e3bcedd3cd851918f66b306:262bede9ed874a1dbdb15b3d1f61871d4dfb4a136b600b795de192c5446ac2f6",
+      "fixture_accounting": {
+        "authored_bytes": 11,
+        "next_action": null,
+        "observed_files": 51,
+        "observed_logical_bytes": 573579,
+        "process_total": 89,
+        "processes": {
+          "git": 89,
+          "other": 0,
+          "python": 0
+        },
+        "residue": null,
+        "retained_bytes": 573568,
+        "retained_files": 50,
+        "wall_seconds": 10.832
+      },
+      "successful_run_removed": "F:\\framework-next\\p7-runs\\368-contracts\\fn-11e0762f5bfb4ad4b485d881bc4a7769",
+      "successful_run_removed_confirmed": true,
+      "known_processes": {
+        "git_in_test": 89,
+        "python_runner": 1,
+        "python_capture_wrapper": 1,
+        "git_wrapper_preflight": 2,
+        "total_including_wrapper_preflight": 93
+      }
+    },
+    "limits": [
+      "C5 only; whole contracts not rerun",
+      "No native/apply/install execution",
+      "No product/helper/test/runner edits",
+      "Earlier failures retained; prior run root identities and mtimes unchanged",
+      "Logical observations are not physical I/O or performance claims",
+      "U001 unselected gates remain deferred-by-owner"
+    ],
+    "recorded_at": "2026-09-23T22:22:35+08:00"
+  }
 }

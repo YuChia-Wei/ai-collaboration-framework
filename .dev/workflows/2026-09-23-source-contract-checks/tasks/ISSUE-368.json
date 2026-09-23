@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-23T19:20:23+08:00",
+  "updated_at": "2026-09-23T22:22:35+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -27,11 +27,11 @@
     ]
   },
   "execution": {
-    "last_completed_step": "executed actual repaired committed source; retained two candidates and actual reader error",
-    "next_action": "coordinator assigns installation reader-root boundary and affected independent review; complete C5 after explicit scope reconciliation"
+    "last_completed_step": "fast-forwarded exact local commit and executed affected C5 once; success and cleanup observed",
+    "next_action": "coordinator consumes C5 handoff and separately assigns full rc.1 pilot then broader gates; no additional executor run"
   },
   "results": {
-    "summary": "Approved four-file repairs delivered; C1-C3 passed; two real Lesson builds; actual installation reader remains blocked.",
+    "summary": "Single affected C5 passed after #378 on c1fb1c1f: two actual Lesson assemblies, actual reader and five synthetic refusals. Historical whole-contract runs retained.",
     "files_changed": [
       "tests/framework_next/run.py",
       "tests/framework_next/support.py",
@@ -61,13 +61,25 @@
         "skipped": 0,
         "exit": 1,
         "unittest_wall_seconds": 13.796
+      },
+      {
+        "selection": "single affected C5 after #378",
+        "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+        "command": "python -I -B tests/framework_next/run.py --layer contracts --case CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals --output-root F:/framework-next/p7-runs/368-contracts",
+        "attempts": 1,
+        "methods": 1,
+        "passed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "exit": 0,
+        "unittest_wall_seconds": 10.725
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "installation_state._root strict resolution fails on F:; candidate reader/refusals and changed EnginePin independent review remain incomplete.",
+    "residual_risk": "No fresh whole-contract, full rc.1 pilot, native/install/apply or broader gate acceptance from this C5-only run.",
     "follow_up_needed": true,
-    "delivery": "local repaired checkpoint and evidence only; coordinator owns push/PR/merge",
-    "verification_state": "16/17 methods successful; one actual reader error; other U001 obligations deferred-by-owner"
+    "delivery": "bounded C5 rerun completed locally; coordinator owns next pilot/gates and online integration",
+    "verification_state": "C5 passed on exact assigned commit; prior failures retained; unselected U001 gates deferred-by-owner"
   },
   "prior_results": {
     "summary": "Local implementation checkpoint; acceptance incomplete. Final 14 methods: 11 successful, three affected methods / seven errors.",
