@@ -1,0 +1,67 @@
+{
+  "task_id": "D361-source-adoption",
+  "workflow_id": "2026-09-23-source-adoption-design",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T11:17:20+08:00",
+  "updated_at": "2026-09-23T11:21:19+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Coordinator-declared independent Astra/ultra task; declaration is not independent runtime attestation. No subagents, new tasks or callbacks.",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #361 design-only",
+    "files": [
+      ".dev/design/framework-next/source-adoption/",
+      ".dev/workflows/2026-09-23-source-adoption-design/"
+    ],
+    "constraints": [
+      "U001",
+      "F:/framework-next/361 only",
+      "No root, source, mapping, config, installer, CI or history edits",
+      "No push/PR/provider mutation",
+      "Preserve F:/ai-context-tests"
+    ],
+    "non_goals": [
+      "Source implementation",
+      "Actual adoption",
+      "P7 behavior or pipeline verification",
+      "Replacing blocked #346/#347 work"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Confirm assigned Git identity",
+      "Read selected contracts and current non-code surfaces",
+      "Write concrete matrix, bindings, phases and recovery design",
+      "Direct format/reference/fixed-source/Git checks",
+      "Exact complete message validation and local commit"
+    ],
+    "validation": [
+      "Direct UTF-8/JSON/YAML syntax, local file-reference resolution and 37 fixed-source identity checks passed",
+      "Staged diff whitespace/scope inspection passed; rerun after final record updates",
+      "Exact complete planned message validator passed (exit 0); unchanged message SHA-256 db8724239030b9a731e4f04b2bdb6c1e2a2a53108a046e17138e50a871e8621b; complete output/message retained in evidence/commit-message-validation.txt"
+    ],
+    "last_completed_step": "Concrete design and direct checks complete, including exact complete planned-message pass",
+    "next_action": "Commit coherent local checkpoint and return final Git identity; coordinator owns integration and later adoption/P7"
+  },
+  "results": {
+    "summary": "Delivered exact path/owner/legacy disposition matrix, fixed Lesson pilot, broader and optional selections, reviewable root/config/Git proposals, separate backups/quiescence/rollback and explicit dependencies.",
+    "files_changed": [
+      ".dev/design/framework-next/source-adoption/",
+      ".dev/workflows/2026-09-23-source-adoption-design/"
+    ],
+    "tests_run": [],
+    "finding_status": "resolved",
+    "residual_risk": "Resolved means Issue #361 design criteria only. Actual source gaps, mapping, adoption and all U001-deferred verification remain with their named owners.",
+    "follow_up_needed": true
+  },
+  "verification_deferral": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select actual implementations and bounded new-contract checks before pilot/adoption"
+  }
+}

@@ -1,0 +1,806 @@
+{
+  "purpose": "Bounded direct Git and non-code metadata observation, not a schema, execution or acceptance receipt",
+  "observed_at": "2026-09-23T11:17:20+08:00",
+  "source_commit": "b4a147c1bc8ec00fcdb92a7006c142209c61a29f",
+  "worktree": "F:/framework-next/361",
+  "branch": "codex/2026-09-23-source-adoption-design",
+  "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+  "method": "git ls-files/rev-parse/show; Python -B pathlib strict UTF-8, json and yaml.safe_load; SHA-256; direct named-path existence",
+  "scope": "13 package metadata files and their exact tracked member names; four profiles; manifest; selected root/contracts; 16 legacy route triples; exact paths below",
+  "exclusions": "No archives, arbitrary config discovery, other checkouts, recovery/data-store scans, product imports or execution. No absent-target conclusion outside named paths.",
+  "packages": [
+    {
+      "id": "adr",
+      "version": "0.1.0",
+      "metadata_version": 2,
+      "configuration": {
+        "namespace": "adr",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/adrs",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/adr.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/adr/SKILL.md",
+        "src/skills/adr/references/configuration.md",
+        "src/skills/adr/references/example.md",
+        "src/skills/adr/references/operations.md",
+        "src/skills/adr/schemas/adr-record.schema.json",
+        "src/skills/adr/scripts/adr.py",
+        "src/skills/adr/skill-package.yaml",
+        "src/skills/adr/templates/adr.md"
+      ]
+    },
+    {
+      "id": "ai-context-auditor",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/ai-context-auditor/SKILL.md",
+        "src/skills/ai-context-auditor/references/audit.md",
+        "src/skills/ai-context-auditor/skill-package.yaml"
+      ]
+    },
+    {
+      "id": "ai-context-governance",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/ai-context-governance/SKILL.md",
+        "src/skills/ai-context-governance/references/maintenance.md",
+        "src/skills/ai-context-governance/skill-package.yaml"
+      ]
+    },
+    {
+      "id": "code-reviewer",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/code-reviewer/SKILL.md",
+        "src/skills/code-reviewer/references/review.md",
+        "src/skills/code-reviewer/skill-package.yaml"
+      ]
+    },
+    {
+      "id": "lesson",
+      "version": "0.2.0",
+      "metadata_version": 2,
+      "configuration": {
+        "namespace": "lesson",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/lessons",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/lesson.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/lesson/SKILL.md",
+        "src/skills/lesson/references/configuration.md",
+        "src/skills/lesson/references/example.md",
+        "src/skills/lesson/references/operations.md",
+        "src/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "src/skills/lesson/schemas/lesson-record.schema.json",
+        "src/skills/lesson/scripts/lesson.py",
+        "src/skills/lesson/skill-package.yaml",
+        "src/skills/lesson/templates/lesson.md"
+      ]
+    },
+    {
+      "id": "local-backlog",
+      "version": "0.1.0",
+      "metadata_version": 2,
+      "configuration": {
+        "namespace": "local-backlog",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/work-items",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/work-item.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/local-backlog/SKILL.md",
+        "src/skills/local-backlog/references/configuration.md",
+        "src/skills/local-backlog/references/example.md",
+        "src/skills/local-backlog/references/operations.md",
+        "src/skills/local-backlog/schemas/local-backlog-record.schema.json",
+        "src/skills/local-backlog/scripts/local_backlog.py",
+        "src/skills/local-backlog/skill-package.yaml",
+        "src/skills/local-backlog/templates/work-item.md"
+      ]
+    },
+    {
+      "id": "pr",
+      "version": "0.1.0",
+      "metadata_version": 2,
+      "configuration": {
+        "namespace": "pr",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/pull-requests",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/pr.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/pr/SKILL.md",
+        "src/skills/pr/references/configuration.md",
+        "src/skills/pr/references/example.md",
+        "src/skills/pr/references/github.md",
+        "src/skills/pr/references/operations.md",
+        "src/skills/pr/schemas/pr-record.schema.json",
+        "src/skills/pr/scripts/github.py",
+        "src/skills/pr/scripts/pr.py",
+        "src/skills/pr/skill-package.yaml",
+        "src/skills/pr/templates/pr.md"
+      ]
+    },
+    {
+      "id": "problem-frame-author",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": {
+        "namespace": "problem-frame-author",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "specs/problem-frames",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/cbf.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/problem-frame-author/SKILL.md",
+        "src/skills/problem-frame-author/references/authoring.md",
+        "src/skills/problem-frame-author/references/configuration.md",
+        "src/skills/problem-frame-author/references/example.md",
+        "src/skills/problem-frame-author/references/format.md",
+        "src/skills/problem-frame-author/references/operations.md",
+        "src/skills/problem-frame-author/schemas/cbf-record-v1.schema.json",
+        "src/skills/problem-frame-author/scripts/problem_frame.py",
+        "src/skills/problem-frame-author/skill-package.yaml",
+        "src/skills/problem-frame-author/templates/cbf.md"
+      ]
+    },
+    {
+      "id": "requirement-author",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/requirement-author/SKILL.md",
+        "src/skills/requirement-author/references/authoring.md",
+        "src/skills/requirement-author/references/requirement-template.md",
+        "src/skills/requirement-author/skill-package.yaml"
+      ]
+    },
+    {
+      "id": "software-development-orchestrator",
+      "version": "0.1.0",
+      "metadata_version": 2,
+      "configuration": {
+        "namespace": "software-development-orchestrator",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/workflows",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/workflow.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/software-development-orchestrator/SKILL.md",
+        "src/skills/software-development-orchestrator/references/composition.md",
+        "src/skills/software-development-orchestrator/references/configuration.md",
+        "src/skills/software-development-orchestrator/references/example.md",
+        "src/skills/software-development-orchestrator/references/operations.md",
+        "src/skills/software-development-orchestrator/references/retention.md",
+        "src/skills/software-development-orchestrator/schemas/workflow-record.schema.json",
+        "src/skills/software-development-orchestrator/scripts/workflow.py",
+        "src/skills/software-development-orchestrator/skill-package.yaml",
+        "src/skills/software-development-orchestrator/templates/workflow.md"
+      ]
+    },
+    {
+      "id": "spec-author",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/spec-author/SKILL.md",
+        "src/skills/spec-author/references/adapter-template.md",
+        "src/skills/spec-author/references/authoring.md",
+        "src/skills/spec-author/references/entity-template.md",
+        "src/skills/spec-author/references/formal-test-template.md",
+        "src/skills/spec-author/references/production-template.md",
+        "src/skills/spec-author/skill-package.yaml"
+      ]
+    },
+    {
+      "id": "spec-compliance-validator",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/spec-compliance-validator/SKILL.md",
+        "src/skills/spec-compliance-validator/profiles/dotnet.md",
+        "src/skills/spec-compliance-validator/references/compliance.md",
+        "src/skills/spec-compliance-validator/references/legacy-intake.md",
+        "src/skills/spec-compliance-validator/references/report-template.md",
+        "src/skills/spec-compliance-validator/skill-package.yaml"
+      ]
+    },
+    {
+      "id": "standards-promotion",
+      "version": "0.1.0",
+      "metadata_version": 2,
+      "configuration": {
+        "namespace": "standards-promotion",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/promotions",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/promotion.md"
+          }
+        }
+      },
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "members": [
+        "src/skills/standards-promotion/SKILL.md",
+        "src/skills/standards-promotion/references/authority.md",
+        "src/skills/standards-promotion/references/configuration.md",
+        "src/skills/standards-promotion/references/example.md",
+        "src/skills/standards-promotion/references/operations.md",
+        "src/skills/standards-promotion/schemas/promotion-record.schema.json",
+        "src/skills/standards-promotion/scripts/standards_promotion.py",
+        "src/skills/standards-promotion/skill-package.yaml",
+        "src/skills/standards-promotion/templates/promotion.md"
+      ]
+    }
+  ],
+  "package_count": 13,
+  "member_count": 90,
+  "manifest_components": [
+    {
+      "id": "lesson",
+      "members": 9
+    },
+    {
+      "id": "adr",
+      "members": 8
+    },
+    {
+      "id": "standards-promotion",
+      "members": 9
+    },
+    {
+      "id": "pr",
+      "members": 10
+    },
+    {
+      "id": "local-backlog",
+      "members": 8
+    }
+  ],
+  "manifest_member_count": 44,
+  "profiles": {
+    "src/profiles/collaboration.yaml": {
+      "profile_version": 1,
+      "id": "collaboration",
+      "skills": [
+        {
+          "id": "lesson",
+          "version": "0.2.0"
+        },
+        {
+          "id": "adr",
+          "version": "0.1.0"
+        },
+        {
+          "id": "standards-promotion",
+          "version": "0.1.0"
+        },
+        {
+          "id": "pr",
+          "version": "0.1.0"
+        },
+        {
+          "id": "local-backlog",
+          "version": "0.1.0"
+        }
+      ],
+      "adapters": [
+        "codex"
+      ]
+    },
+    "src/profiles/knowledge.yaml": {
+      "profile_version": 1,
+      "id": "knowledge",
+      "skills": [
+        {
+          "id": "lesson",
+          "version": "0.2.0"
+        },
+        {
+          "id": "adr",
+          "version": "0.1.0"
+        },
+        {
+          "id": "standards-promotion",
+          "version": "0.1.0"
+        }
+      ],
+      "adapters": [
+        "codex"
+      ]
+    },
+    "src/profiles/lesson-minimal.yaml": {
+      "profile_version": 1,
+      "id": "lesson-minimal",
+      "skills": [
+        {
+          "id": "lesson",
+          "version": "0.2.0"
+        }
+      ],
+      "adapters": [
+        "codex"
+      ]
+    },
+    "src/profiles/work-management.yaml": {
+      "profile_version": 1,
+      "id": "work-management",
+      "skills": [
+        {
+          "id": "pr",
+          "version": "0.1.0"
+        },
+        {
+          "id": "local-backlog",
+          "version": "0.1.0"
+        }
+      ],
+      "adapters": [
+        "codex"
+      ]
+    }
+  },
+  "legacy_routes": [
+    {
+      "id": "ai-context-auditor",
+      "paths": [
+        ".ai/assets/skills/ai-context-auditor/skill.yaml",
+        ".agents/skills/ai-context-auditor/SKILL.md",
+        ".claude/skills/ai-context-auditor/SKILL.md"
+      ]
+    },
+    {
+      "id": "ai-context-governance",
+      "paths": [
+        ".ai/assets/skills/ai-context-governance/skill.yaml",
+        ".agents/skills/ai-context-governance/SKILL.md",
+        ".claude/skills/ai-context-governance/SKILL.md"
+      ]
+    },
+    {
+      "id": "ai-context-init",
+      "paths": [
+        ".ai/assets/skills/ai-context-init/skill.yaml",
+        ".agents/skills/ai-context-init/SKILL.md",
+        ".claude/skills/ai-context-init/SKILL.md"
+      ]
+    },
+    {
+      "id": "ai-context-upgrader",
+      "paths": [
+        ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+        ".agents/skills/ai-context-upgrader/SKILL.md",
+        ".claude/skills/ai-context-upgrader/SKILL.md"
+      ]
+    },
+    {
+      "id": "ai-context-release-closeout",
+      "paths": [
+        ".ai/assets/skills/ai-context-release-closeout/skill.yaml",
+        ".agents/skills/ai-context-release-closeout/SKILL.md",
+        ".claude/skills/ai-context-release-closeout/SKILL.md"
+      ]
+    },
+    {
+      "id": "software-development-orchestrator",
+      "paths": [
+        ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+        ".agents/skills/software-development-orchestrator/SKILL.md",
+        ".claude/skills/software-development-orchestrator/SKILL.md"
+      ]
+    },
+    {
+      "id": "code-reviewer",
+      "paths": [
+        ".ai/assets/skills/code-reviewer/skill.yaml",
+        ".agents/skills/code-reviewer/SKILL.md",
+        ".claude/skills/code-reviewer/SKILL.md"
+      ]
+    },
+    {
+      "id": "diagnostic-analyst",
+      "paths": [
+        ".ai/assets/skills/diagnostic-analyst/skill.yaml",
+        ".agents/skills/diagnostic-analyst/SKILL.md",
+        ".claude/skills/diagnostic-analyst/SKILL.md"
+      ]
+    },
+    {
+      "id": "ddd-ca-hex-architect",
+      "paths": [
+        ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml",
+        ".agents/skills/ddd-ca-hex-architect/SKILL.md",
+        ".claude/skills/ddd-ca-hex-architect/SKILL.md"
+      ]
+    },
+    {
+      "id": "bdd-gwt-test-designer",
+      "paths": [
+        ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+        ".agents/skills/bdd-gwt-test-designer/SKILL.md",
+        ".claude/skills/bdd-gwt-test-designer/SKILL.md"
+      ]
+    },
+    {
+      "id": "local-change-implementer",
+      "paths": [
+        ".ai/assets/skills/local-change-implementer/skill.yaml",
+        ".agents/skills/local-change-implementer/SKILL.md",
+        ".claude/skills/local-change-implementer/SKILL.md"
+      ]
+    },
+    {
+      "id": "slice-implementer",
+      "paths": [
+        ".ai/assets/skills/slice-implementer/skill.yaml",
+        ".agents/skills/slice-implementer/SKILL.md",
+        ".claude/skills/slice-implementer/SKILL.md"
+      ]
+    },
+    {
+      "id": "requirement-author",
+      "paths": [
+        ".ai/assets/skills/requirement-author/skill.yaml",
+        ".agents/skills/requirement-author/SKILL.md",
+        ".claude/skills/requirement-author/SKILL.md"
+      ]
+    },
+    {
+      "id": "spec-author",
+      "paths": [
+        ".ai/assets/skills/spec-author/skill.yaml",
+        ".agents/skills/spec-author/SKILL.md",
+        ".claude/skills/spec-author/SKILL.md"
+      ]
+    },
+    {
+      "id": "problem-frame-author",
+      "paths": [
+        ".ai/assets/skills/problem-frame-author/skill.yaml",
+        ".agents/skills/problem-frame-author/SKILL.md",
+        ".claude/skills/problem-frame-author/SKILL.md"
+      ]
+    },
+    {
+      "id": "spec-compliance-validator",
+      "paths": [
+        ".ai/assets/skills/spec-compliance-validator/skill.yaml",
+        ".agents/skills/spec-compliance-validator/SKILL.md",
+        ".claude/skills/spec-compliance-validator/SKILL.md"
+      ]
+    }
+  ],
+  "named_path_observations": {
+    ".ai/core": "absent",
+    ".ai/framework.lock": "absent",
+    ".ai/custom": "absent",
+    ".ai/custom/framework.json": "absent",
+    ".ai/local": "absent",
+    ".ai/local/framework.json": "absent",
+    ".dev/project-config.yaml": "absent",
+    ".dev/ai-context/provenance.yaml": "absent",
+    ".dev/ai-context/customizations.yaml": "absent",
+    ".dev/lessons/records": "absent",
+    ".dev/adr/records": "absent",
+    ".dev/knowledge/promotions": "absent",
+    ".dev/workflows-v2": "absent",
+    ".dev/pull-requests": "absent",
+    ".dev/problem-frames/records": "absent",
+    "src/distribution/installation.py": "absent",
+    "src/tools/maintain_framework.py": "absent",
+    "src/skills/diagnostic-analyst": "absent",
+    "src/skills/ddd-ca-hex-architect": "absent",
+    "src/skills/bdd-gwt-test-designer": "absent",
+    "src/skills/local-change-implementer": "absent",
+    "src/skills/slice-implementer": "absent"
+  },
+  "selected_source_identities": [
+    {
+      "path": ".ai/INDEX.MD",
+      "git_blob": "984000404bb0053be7698119ef8325d739064902",
+      "sha256": "2a0e5298507d00e72302262b1fcfdf4afd484b176de0f24f38753d3452a8d785"
+    },
+    {
+      "path": ".ai/assets/skills/README.MD",
+      "git_blob": "988e24ea6deec796198911ffd9b5a1d5952d09bf",
+      "sha256": "6b0c95b20c50491d29440c61a17e311cc59265be9d2371e456969a6d8902508d"
+    },
+    {
+      "path": ".dev/INDEX.md",
+      "git_blob": "7fb0246b01628e83ffb6e42788ef4a979d30a8ed",
+      "sha256": "1aec714cf2d1e42155df7b0318e4c00f4401d7a8a470aa9f7271b499906ff025"
+    },
+    {
+      "path": ".dev/adr/README.md",
+      "git_blob": "66d63a7c860969db17a79c6ed5c87bec75717f65",
+      "sha256": "40a2100c175b1fe19004bdb4a08da7cbbfaa60e3e76d7dfa7bf7c8b8c5d58972"
+    },
+    {
+      "path": ".dev/design/framework-next/capability-consolidation/legacy-artifact-dispositions.json",
+      "git_blob": "5c17c85f6d989bb7069ce7718902945cb39dd5b9",
+      "sha256": "c748b60b103bfcd9fbcc2597a976c1f8b857ba7647171791e8f18c5c87cb540a"
+    },
+    {
+      "path": ".dev/design/framework-next/capability-consolidation/legacy-skills.json",
+      "git_blob": "68e6ddfce3af1b329c4e9670dcdb406fd6f134f9",
+      "sha256": "cdcb88038eb4279161aa32e76485f8058a84500b3b77011b3b23100f4036de86"
+    },
+    {
+      "path": ".dev/design/framework-next/installation-planning/handoff.md",
+      "git_blob": "e2b67e788ae2d578388696544572ca24084b335c",
+      "sha256": "72e2a4e11c84e010e7bd39eba0d5ac3541e2d0d288984aae948c41268d15b0b2"
+    },
+    {
+      "path": ".dev/design/framework-next/p6-selected-contract.md",
+      "git_blob": "41f1e1e393c9c3e6c254f6217420abf0d3ba8cae",
+      "sha256": "fe9a2f80a21f6db557e25c0c4593e8b606ab791909aa925280cc3aeb53a00db0"
+    },
+    {
+      "path": ".dev/design/framework-next/p6-source-adoption-handoff.md",
+      "git_blob": "c14580fe38749369b89f9432eb80f0fb15199321",
+      "sha256": "b408ba65e7ac0354685aa4ff5c1c7a660708fa93185beb5d6642559dc8089382"
+    },
+    {
+      "path": ".dev/design/framework-next/p6-writer-handoff.md",
+      "git_blob": "e95304e1d7ac101b0383d96069dd77af3a1b27e3",
+      "sha256": "29ee3bfc22dc5a58438ab3ed8f7c4853017168a30d5acd90a6bd97593d0b4159"
+    },
+    {
+      "path": ".dev/lessons/README.MD",
+      "git_blob": "93008de02f79a91c4fb6ca6754152ec147dd4d49",
+      "sha256": "7b784c3ec2452a2846a632115d96079e9754a403437dce1aa8f2b396610dc7ff"
+    },
+    {
+      "path": ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
+      "git_blob": "3f3936f81ef699b1e7b0e7dbcad3dc3cde55e9db",
+      "sha256": "7d1c87632198a5707d7b7cc14483628ec20beaf5dc4ee78ba59321eec9260a5a"
+    },
+    {
+      "path": ".gitattributes",
+      "git_blob": "623d5ac3bca909ae04754d848272e859768665ec",
+      "sha256": "4f085cb852365677c872d034e2238548592b9c4693cd9de874efeefd2386e39a"
+    },
+    {
+      "path": ".gitignore",
+      "git_blob": "470403e14c3c5f1a6e7567480394dc0e0bd80c38",
+      "sha256": "0c93799fb6c42f2ef1faef46d1baa6ae8672f0cdffec4ce39e7f9be5ccd6dadf"
+    },
+    {
+      "path": "AGENTS.md",
+      "git_blob": "9399baa98ea1c69ffbabbf380ad479cc8857bd7f",
+      "sha256": "5d276f6889d9ce4ea34ddb14d6490d5306b13c39fccd42f0017e77d01cac087f"
+    },
+    {
+      "path": "AGENTS.zh-TW.md",
+      "git_blob": "8865db16d48da07bb62c5ed4492868a739eefc1c",
+      "sha256": "9d95fdd00562b5a2362320f355e08dc3e1a120dd13716006130c895c35f9c73e"
+    },
+    {
+      "path": "CLAUDE.md",
+      "git_blob": "ff1d8624b59f9930cf97bd9ee7714613466eed1d",
+      "sha256": "8c045124b0923f37531f89394df6016510c45a2a4c6df2c0412de0641c0fbf82"
+    },
+    {
+      "path": "README.en.md",
+      "git_blob": "3237ce5ae5a56d6739e1eaf8030ecb29ae4573b3",
+      "sha256": "1f31a05f10ab85531b7cf1b1a492e263bf16e1049e2a8672930725dceae56297"
+    },
+    {
+      "path": "README.md",
+      "git_blob": "16d1e4febae247f13bc1c45f0ac1d2d17b589411",
+      "sha256": "d23f9426f526e466eaeb4eca877d1fab87f728f91cf02e0ab7dbffc76a03674c"
+    },
+    {
+      "path": "src/distribution/manifest.yaml",
+      "git_blob": "7bbc4d27f12079ce3574dc5265146c959018bfed",
+      "sha256": "55fd19e10283287c97ef8dad81210c724ef7ca7e0a804f68b021224d2a22bba4"
+    },
+    {
+      "path": "src/profiles/collaboration.yaml",
+      "git_blob": "656d62ec54291f6d133c2b3b768dcf36567967eb",
+      "sha256": "51c101591f2796a8b3d71e727600a346517069336166a72a2caa8e7264454c6a"
+    },
+    {
+      "path": "src/profiles/knowledge.yaml",
+      "git_blob": "8061bd801cc6065f9997b912694859979a1715b5",
+      "sha256": "cfed94b54cd5dd98f252cbfbe89a95ddd7193ac308b1ca8415a689f0373948c9"
+    },
+    {
+      "path": "src/profiles/lesson-minimal.yaml",
+      "git_blob": "540645382e5b40ae79e0069bf2ee5f36cd816761",
+      "sha256": "1dc43c88e752a6bf825cf559f2e4b4589532d55c6c1d9c5c3431ba6c75720a4a"
+    },
+    {
+      "path": "src/profiles/work-management.yaml",
+      "git_blob": "2f6c6c3ed372fdd47fe0c368699960b4749ca815",
+      "sha256": "bc87bff3d2caf7dbb08f0369201a278021995cfb7dd072598fc8220d9db5f32d"
+    },
+    {
+      "path": "src/skills/adr/skill-package.yaml",
+      "git_blob": "97dca5f4e1a3daecadae496b7fbd6405c520efa9",
+      "sha256": "af95402ce8fb7fe1f613bfaa09f3d6b2fc688d8ac73a5734d4f8232b202584ab"
+    },
+    {
+      "path": "src/skills/ai-context-auditor/skill-package.yaml",
+      "git_blob": "78dfe7aeaa717dfdafc8636ef51fbef99470dffc",
+      "sha256": "c88eff6a3e286b180b150357d71889bcf0a1ff3fe65aa6ededd6334c954395f6"
+    },
+    {
+      "path": "src/skills/ai-context-governance/skill-package.yaml",
+      "git_blob": "02c7ee665ca1367db062a172b60bd17d601d554e",
+      "sha256": "3189089591f3f2db743dd271882f91c164432ce679cdea3e91fc2a91249fac2a"
+    },
+    {
+      "path": "src/skills/code-reviewer/skill-package.yaml",
+      "git_blob": "b205b7767c850bcd8fe1e4e9aeb0c1471a1a09f7",
+      "sha256": "e148f733d0270efbd139e05ec4257d9f25bf5ab6f34ad0d4093ea7cdf2e0f453"
+    },
+    {
+      "path": "src/skills/lesson/skill-package.yaml",
+      "git_blob": "aa2c069ca6d1e7ccff83eb4fdecb7dec279214b4",
+      "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+    },
+    {
+      "path": "src/skills/local-backlog/skill-package.yaml",
+      "git_blob": "d1245e6e6cb4f503248cd8695bf32b6061eca34c",
+      "sha256": "9a896e92e3c2af61bd04b8adc49b269fb2947d9c4cedb90d5ec300dbfbadbbe3"
+    },
+    {
+      "path": "src/skills/pr/skill-package.yaml",
+      "git_blob": "ac411d6d7e6a2dba8d753e05485d98ab320ace0a",
+      "sha256": "b86b3282bcb35ac5da5696c1defc30971e9d1a0be36bcdda030b3b903c7cf8f3"
+    },
+    {
+      "path": "src/skills/problem-frame-author/skill-package.yaml",
+      "git_blob": "42f404b4e0885a40c2e3a42f5eb4d649fa07d733",
+      "sha256": "5705a4c55371ae26e949a8dbf605d3610797948b45464901d29956abb68b44af"
+    },
+    {
+      "path": "src/skills/requirement-author/skill-package.yaml",
+      "git_blob": "94c65266444b48af86490f29694caf5cbeacf8fd",
+      "sha256": "2127968b5f6d9776da7e36b7972d0d651b36b396a455f5a8fcbe3511c4ed35d9"
+    },
+    {
+      "path": "src/skills/software-development-orchestrator/skill-package.yaml",
+      "git_blob": "46ce2bd6eb765bf8df41a747f6c13b29a7994edc",
+      "sha256": "69f4b4f63f1a6a1bd816354a3dc62026b4b7402fc9fc5f0b10e2aeeb22de9a87"
+    },
+    {
+      "path": "src/skills/spec-author/skill-package.yaml",
+      "git_blob": "120abfe9d14acfe57c2e87c84aa9e3bfe164fee1",
+      "sha256": "0cb829b12b78e48799dae1e81f5655bd4d2457a6239e0ae9c71f874055e56ff9"
+    },
+    {
+      "path": "src/skills/spec-compliance-validator/skill-package.yaml",
+      "git_blob": "30ba18cb4f4cba3b7829c4387c32226005b1c6ec",
+      "sha256": "aedc751c6543dd905b84c40ef1f4f0aeaa58e40e75f723756e3929f6ba477410"
+    },
+    {
+      "path": "src/skills/standards-promotion/skill-package.yaml",
+      "git_blob": "a84f1ae525b5c86ce7cf4a20acbfbb54d0d2d7b5",
+      "sha256": "4727f91052636305e0651114f3a66e0bcb2f0d76e9cc8b6c73f63a2d19abd2e3"
+    }
+  ],
+  "issue_readback": {
+    "issue": 361,
+    "state": "OPEN",
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/361",
+    "method": "gh issue view 361 --repo YuChia-Wei/ai-collaboration-framework --json number,title,state,body,url",
+    "observed_in_this_session": true,
+    "other_provider_states": "not-read"
+  }
+}

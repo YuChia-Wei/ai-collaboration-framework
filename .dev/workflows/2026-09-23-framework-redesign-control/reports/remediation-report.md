@@ -2,16 +2,18 @@
 
 This is coordination evidence, not independent verification.
 
+Current snapshot at local #359/#361 integration; online provider state is separate. The sections below retain historical sequence and do not override this table. Every finding remains partially resolved; source delivery alone does not establish behavior or final adoption.
+
 | Baseline finding | Current disposition | Next owner/stage |
 | --- | --- | --- |
-| F-01 portable skill boundary | partially-resolved: P1 contract delivered | #325 then P2/P5 |
-| F-02 project ownership | partially-resolved: P1 ownership contract delivered | #325/#326 then P2/P5 |
-| F-03 workflow storage | not-addressed | #325 then P4 |
-| F-04 knowledge lifecycle | not-addressed | P2/P3-A |
-| F-05 schema ownership | partially-resolved: Lesson design family delivered | #325 then P5/P7 |
-| F-06 validation burden | partially-resolved: CI suspended; P0 override and corrected source-only exclusion delivered | P7 |
-| F-07 source/dogfood | partially-resolved: P1 layout delivered | #326 then P2/P6 |
-| F-08 replacement versus I/O | partially-resolved: design distinction delivered | #326 then P6/P7 |
+| F-01 portable skill boundary | partially-resolved: contracts, metadata v3, knowledge/work-management and most specialist packages delivered | #347 engineering source; #346 and later actual mappings; P7 |
+| F-02 project ownership | partially-resolved: explicit config/store ownership and managed installation boundary delivered | selected #361 root plan; actual root adoption/P7 |
+| F-03 workflow storage | partially-resolved: #341 portable workflow, resume, retrospective and retention-preview source online | #346 mapping; root adoption and P7; no destructive retention |
+| F-04 knowledge lifecycle | partially-resolved: Lesson/ADR/promotion source online with proposal/adoption/effect separation | root composition/adoption and P7; no automatic rule promotion |
+| F-05 schema ownership | partially-resolved: #342 inventory, actual package-owned formats/tools and closed installation reader delivered | operation writer source delivered; remaining mapping and P7 contract checks |
+| F-06 validation burden | partially-resolved: Actions and seven pipelines suspended, U001 active, no early product/test execution | P7 redesigned focused checks and owner-adopted pipeline subset |
+| F-07 source/dogfood | partially-resolved: src product source and candidate assembly delivered; root adoption not performed | writer and adoption plan delivered; remaining source/mapping, then pilot/P7 |
+| F-08 replacement versus I/O | partially-resolved: selected differential update/recovery design and complete maintenance source delivered | writer source delivered; later P7 execution and measured claims only |
 
 Administrative checks: exact planning commit/PR/main, live Actions state, merged-ref ancestry or PR proof, and retained-worktree status were read back. Product verification remains deferred-by-owner under U001. Earlier assessment editorial review is not a final architecture or implementation pass.
 
@@ -94,3 +96,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P5/P6 online source and adoption design
 
 PR #360 merged as `4b28710c39fed90acfd568cadbe3639ecb0ed722`; #354/#356/#357 are CLOSED/COMPLETED with Project Done read back. #359 continues source implementation. #361 now owns the concrete source-repository path/route/configuration adoption design under [its handoff](../../../design/framework-next/p6-source-adoption-handoff.md). It does not activate the product or bypass blocked #346/#347. Program findings and P7 verification remain open.
+
+## P6 source and adoption design return
+
+[Integration report](p6-maintenance-and-adoption-integration.md) selects actual #359 maintenance source and #361 concrete adoption design from their fixed local commits. Both bounded deliveries are locally complete; online PR/read-back is next. Root activation and native behavior remain unperformed. #346/#347 automatic approval blockers are unchanged; their direct confirmation is still pending, and P7 does not begin around those incomplete source/mapping dependencies.
