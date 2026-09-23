@@ -31,3 +31,9 @@ This workflow retains a real cross-session design/ownership handoff and source c
 [Original contract report](reports/contract-checkpoint.md) remains historical. [Source report](reports/source-checkpoint.md) records actual static checks, limits and deferrals. [Receiving checkpoint](handoff.yaml) identifies the current containing commit without a self-referential SHA.
 
 All behavioral/schema/provider/package/build/install/migration/CI/audit execution remains deferred-by-owner under U001 to program #322 coordinator / P7. Next: coordinator inspects CR335-001 against the preserved source checkpoint, reads the new local commit, supplies the concrete integrated package subject to #337 for exact manifest/profile mapping, arranges first push/integration, then P7 chooses and runs verification. No provider write, first push, runtime activation, release or credential change was performed by this executor.
+
+## P7 actual worktree repair continuation (2026-09-24)
+
+Live Issue 335 reopens this local outcome for the installed target's actual blocked/git-read failure. Current assigned branch is codex/2026-09-24-pr-worktree-repair at clean base ff57a09b8443402caf3508dcee1fe0378753970f in the rebuilt F:/framework-next/335. Earlier delivery and CR335-001 remain historical evidence. Current local state is in_progress, task [CR335-002](tasks/CR335-002.json); coordinator is 01a0ce78-db26-74e1-a615-2bd0599f7d0c.
+
+The [repair report](reports/pr-worktree-repair.md) records the source correction, selected real Git fixture and actual outcomes. Commit the source/test first, then run only tests/framework_next/test_pr_git_worktree.py under the Issue-selected limits. Other U001 deferrals and coordinator-owned first push, candidate rebuild, target update and provider integration remain in force.

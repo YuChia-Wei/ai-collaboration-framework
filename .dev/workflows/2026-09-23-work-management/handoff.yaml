@@ -8,19 +8,21 @@ repository:
   preserved_design_checkpoint: 446a579d03a25edf1b6e64b5e5c13016740025c0
   preserved_source_checkpoint: 5e632ed50242f13b44bec1884de24c496f5a93ea
   source_continuation_base: 0d0556d4c60105a28eb39cfb06efab9b069728cb
+  repair_continuation_base: ff57a09b8443402caf3508dcee1fe0378753970f
+  preserved_first_correction: 5409641f19244bc44467af7fba3fc496d7f5195c
   checkpoint_commit_source: containing-commit
-  branch: codex/2026-09-23-work-management
+  branch: codex/2026-09-24-pr-worktree-repair
   worktree: F:/framework-next/335
   common_git_dir: C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git
 workflow:
   id: 2026-09-23-work-management
   issue: 335
-  status: completed
+  status: in_progress
   completion_scope: Bounded local design, source implementation and CR335-001 correction only
   provider_issue_observation: OPEN
   completed_tasks: [WM-001, WM-002, CR335-001]
 delivery:
-  kind: local-source-correction-checkpoint
+  kind: p7-worktree-repair-in-progress
   changed_roots:
   - src/skills/pr/
   - src/skills/local-backlog/
@@ -29,17 +31,22 @@ delivery:
   inventory: .dev/design/framework-next/work-management/integration-proposal.json
   selected_decisions: [WM-C1, WM-C2, WM-C3]
   shared_decisions_unresolved: []
-  correction_finding: CR335-001
-  correction_base: 5e632ed50242f13b44bec1884de24c496f5a93ea
+  correction_finding: CR335-002
+  correction_base: ff57a09b8443402caf3508dcee1fe0378753970f
   first_push_owner: coordinator
 resume:
   hidden_context_required: false
-  coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
-  last_completed_action: Complete CR335-001 repository/worktree Git config source correction and direct static checks
-  exact_next_action: Coordinator inspects the CR335-001 diff against the preserved source checkpoint, integrates and assigns Issue 337 exact mappings; P7 selects execution verification.
+  coordinator_task: 01a0ce78-db26-74e1-a615-2bd0599f7d0c
+  last_completed_action: Prepare CR335-002 effective-scope correction and selected regression source
+  exact_next_action: Commit source/test, execute the Issue 335 selected worktree regression and return exact HEAD with truthful evidence to coordinator.
 verification:
   actual: Direct syntax, AST without imports, source/resource/link/Git inspection and exact planned message format
   deferred_status: deferred-by-owner
   authority: U001
   owner: program 322 coordinator / P7
   next_action: Select and execute final schema, behavior, provider, package and CI checks at P7
+selected_verification:
+  task: CR335-002
+  status: not-executed
+  command: python -I -B tests/framework_next/test_pr_git_worktree.py --output-root F:/framework-next/p7-runs/335-pr-worktree
+  authority: Live Issue 335 P7 continuation 2026-09-24

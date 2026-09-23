@@ -1,0 +1,42 @@
+{
+  "workflow_id": "2026-09-23-work-management",
+  "task_id": "CR335-002",
+  "owner_skill": "ai-context-governance",
+  "created_at": "2026-09-23T16:10:34+00:00",
+  "updated_at": "2026-09-23T16:10:34+00:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "status": "in_progress",
+  "finding_ids": [
+    "CR335-002"
+  ],
+  "authority": "Live Issue 335 Actual downstream worktree failure — P7 continuation 2026-09-24; coordinator task 01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "base_commit": "ff57a09b8443402caf3508dcee1fe0378753970f",
+  "scope": {
+    "files": [
+      "src/skills/pr/scripts/pr.py::git_subject",
+      "src/skills/pr/references/operations.md",
+      ".dev/design/framework-next/work-management/contract.md",
+      ".dev/workflows/2026-09-23-work-management/**",
+      "tests/framework_next/test_pr_git_worktree.py"
+    ],
+    "constraints": [
+      "No real repository settings or target bytes changed",
+      "No subagents/new tasks/provider/CI/shared package or manifest edits",
+      "Commit source and test before selected execution; preserve earlier checkpoints"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "Bounded source/test/docs prepared; 9 UTF-8, 2 AST, 1 JSON, 2 YAML, 10 local-link and diff checks passed.",
+    "next_action": "Commit this source/test checkpoint, then run the selected regression on its clean immutable commit."
+  },
+  "results": {
+    "tests_run": [],
+    "selected_test_status": "not-executed",
+    "other_verification_status": "deferred-by-owner",
+    "other_verification_owner": "program 322 coordinator / P7",
+    "summary": "Source prepared; no behavioral pass claimed."
+  }
+}
