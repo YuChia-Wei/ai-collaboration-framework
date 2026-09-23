@@ -1,0 +1,183 @@
+{
+  "observed_at": "2026-09-23T09:27:19+08:00",
+  "authority": "Coordinator follow-up in this task; selected Git objects read directly without merge",
+  "baseline_inventory": "94741016bd7baae9936bb77dd6c4f56d37036e97 remains unchanged",
+  "p3": {
+    "subject": "ac4175948045590d1a1942022435ab438ad30ac3",
+    "manifest": {
+      "commit": "ac4175948045590d1a1942022435ab438ad30ac3",
+      "path": "src/distribution/manifest.yaml",
+      "git_blob": "7bbc4d27f12079ce3574dc5265146c959018bfed",
+      "sha256": "55fd19e10283287c97ef8dad81210c724ef7ca7e0a804f68b021224d2a22bba4"
+    },
+    "profiles": [
+      {
+        "id": "lesson-minimal",
+        "source": {
+          "commit": "ac4175948045590d1a1942022435ab438ad30ac3",
+          "path": "src/profiles/lesson-minimal.yaml",
+          "git_blob": "540645382e5b40ae79e0069bf2ee5f36cd816761",
+          "sha256": "1dc43c88e752a6bf825cf559f2e4b4589532d55c6c1d9c5c3431ba6c75720a4a"
+        }
+      },
+      {
+        "id": "knowledge",
+        "source": {
+          "commit": "ac4175948045590d1a1942022435ab438ad30ac3",
+          "path": "src/profiles/knowledge.yaml",
+          "git_blob": "8061bd801cc6065f9997b912694859979a1715b5",
+          "sha256": "cfed94b54cd5dd98f252cbfbe89a95ddd7193ac308b1ca8415a689f0373948c9"
+        }
+      },
+      {
+        "id": "work-management",
+        "source": {
+          "commit": "ac4175948045590d1a1942022435ab438ad30ac3",
+          "path": "src/profiles/work-management.yaml",
+          "git_blob": "2f6c6c3ed372fdd47fe0c368699960b4749ca815",
+          "sha256": "bc87bff3d2caf7dbb08f0369201a278021995cfb7dd072598fc8220d9db5f32d"
+        }
+      },
+      {
+        "id": "collaboration",
+        "source": {
+          "commit": "ac4175948045590d1a1942022435ab438ad30ac3",
+          "path": "src/profiles/collaboration.yaml",
+          "git_blob": "656d62ec54291f6d133c2b3b768dcf36567967eb",
+          "sha256": "51c101591f2796a8b3d71e727600a346517069336166a72a2caa8e7264454c6a"
+        }
+      }
+    ],
+    "components": [
+      {
+        "id": "lesson",
+        "member_count": 9
+      },
+      {
+        "id": "adr",
+        "member_count": 8
+      },
+      {
+        "id": "standards-promotion",
+        "member_count": 9
+      },
+      {
+        "id": "pr",
+        "member_count": 10
+      },
+      {
+        "id": "local-backlog",
+        "member_count": 8
+      }
+    ],
+    "total_members": 44,
+    "provider_state": "Coordinator reports PR #343 merged, #334/#337 CLOSED/Done; no fresh provider reread by #342",
+    "package_source_diff": []
+  },
+  "p4": {
+    "selected_contract": {
+      "commit": "9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0",
+      "path": ".dev/design/framework-next/p4-selected-contract.md",
+      "git_blob": "6f6eca4632227fae2b5babb2bb0fb7e51fdf68c8",
+      "sha256": "a669481a4811f4a7e62ccfe85d9962f37222f0949b79c5076292bd12f9bd78c1"
+    },
+    "interface_evidence": {
+      "commit": "9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0",
+      "path": ".dev/design/framework-next/workflow-orchestration/interface-proposal.json",
+      "git_blob": "cd6eb69e467ebcac065568614933c96e847630be",
+      "sha256": "dcbae4cca6fad504ccb0a8b9933692ed9a20372653a5a2348e50825b57ca828c"
+    },
+    "package_id": "software-development-orchestrator",
+    "package_version": "0.1.0",
+    "metadata_version": 2,
+    "config_version": 2,
+    "schemas": [
+      {
+        "id": "software-development-orchestrator.record",
+        "version": "1.0.0",
+        "path": "schemas/workflow-record.schema.json",
+        "owner": "software-development-orchestrator",
+        "migration": "unsupported; preserve original"
+      }
+    ],
+    "members": [
+      "SKILL.md",
+      "skill-package.yaml",
+      "references/configuration.md",
+      "references/operations.md",
+      "references/retention.md",
+      "references/composition.md",
+      "references/example.md",
+      "schemas/workflow-record.schema.json",
+      "templates/workflow.md",
+      "scripts/workflow.py"
+    ],
+    "operations": [
+      "explain",
+      "create",
+      "inspect",
+      "query",
+      "checkpoint",
+      "transition",
+      "resume",
+      "retrospect",
+      "render",
+      "retention-preview"
+    ],
+    "planned_tool": {
+      "id": "software-development-orchestrator.fs",
+      "implementation_status": "planned",
+      "entrypoint": null,
+      "proposed_entrypoint": "scripts/workflow.py",
+      "operation_contract": "references/operations.md"
+    },
+    "roles": [
+      {
+        "role": "software-development-orchestrator.record",
+        "owner": "project",
+        "schema": "software-development-orchestrator.record@1.0.0",
+        "read_schemas": [
+          "software-development-orchestrator.record@1.0.0"
+        ],
+        "store_binding": "software-development-orchestrator.store",
+        "identity": "wf-<32 lowercase hex digits>",
+        "filename": "<id>.workflow.json",
+        "read_operations": [
+          "inspect",
+          "query",
+          "resume",
+          "render",
+          "retention-preview"
+        ],
+        "write_operations": [
+          "create",
+          "checkpoint",
+          "transition",
+          "retrospect"
+        ]
+      },
+      {
+        "role": "software-development-orchestrator.view",
+        "owner": "derived",
+        "source_role": "software-development-orchestrator.record",
+        "output": "result-only Markdown",
+        "persistence": "Caller-selected export is a separate write",
+        "produce_operations": [
+          "render"
+        ]
+      }
+    ],
+    "source_delivery": "not yet delivered per coordinator; selected design is not an implemented sixth package",
+    "selection_clarification": "Executable is sole operational authority for retention 30/90/null days and resume 12000 chars. Docs describe it. Metadata v2 remains closed; composition candidate-only, dependencies empty, retention preview only.",
+    "migration": "Legacy workflows preserve/unsupported; no import or conversion selected"
+  },
+  "verification": "Static JSON/YAML/Git reads only; execution deferred-by-owner under U001 to coordinator/P7",
+  "p6": {
+    "source": "Coordinator follow-up to #342, not independent provider read-back",
+    "issue": 345,
+    "task": "01a0cbe3-0204-7ec3-91c1-711fc4756894",
+    "worktree": "F:/framework-next/345",
+    "scope": "Installation/incremental update/durable recovery design only; consumes proposed M01 after coordinator selection",
+    "implementation": "not assigned by #342; no trial"
+  }
+}

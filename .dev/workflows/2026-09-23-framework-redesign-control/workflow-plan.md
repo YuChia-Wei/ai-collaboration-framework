@@ -28,8 +28,11 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
 | #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader PR #339 and final mapping PR #343 integrated; Issue/Project complete |
 | #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | design integrated PR #344; same task source implementation active |
-| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | independent design/inventory task active |
-| #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | Issue/Project ready; independent dispatch next |
+| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design inspected/selected; online integration pending |
+| #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | independent design task active; runtime/F: identity verified |
+| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | Issue/Project ready; source dispatch next |
+| #347 | P5-B engineering methods | five own instruction packages/design/workflow | Issue/Project ready; source dispatch next |
+| #348 | P5-C portable authoring | two own instruction packages/design/workflow | Issue/Project ready; source dispatch next |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -47,7 +50,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #334/#337 are integrated online through PR #343 with Issue CLOSED and Project Done read back. #335 is merged through PR #340. [P4 contract selection](../../design/framework-next/p4-selected-contract.md) reconciles #341 design with the actual P3 source; source continuation is active in the same task `01a0cbc8-448d-7270-b27b-295295914afb`. #342 design/inventory continues in `01a0cbd1-789e-7c72-9852-ba5edd3a6998`. P6 design #345 prepares [installation/update/recovery choices](reports/p6-installation-design-scope.md) independently; activation still waits for implementation and P7. Product execution remains deferred to P7.
+Current action: #334/#337 are integrated online through PR #343 with Issue CLOSED and Project Done read back. #335 is merged through PR #340. [P4 contract selection](../../design/framework-next/p4-selected-contract.md) reconciles #341 design with the actual P3 source; source continuation is active in the same task `01a0cbc8-448d-7270-b27b-295295914afb`. #342 design `66f353393b3f7ef59265d6c38b119a832e8113a9` is complete and [selected](../../design/framework-next/p5-selected-contract.md); dispatch #346/#347/#348 on the coherent coordinator checkpoint and integrate the design online. P6 design #345 runs in task `01a0cbe3-0204-7ec3-91c1-711fc4756894` and prepares [installation/update/recovery choices](reports/p6-installation-design-scope.md) independently; activation still waits for implementation and P7. Product execution remains deferred to P7.
 
 ## P3 shared implementation continuation
 

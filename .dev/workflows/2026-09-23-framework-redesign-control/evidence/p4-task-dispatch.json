@@ -15,5 +15,19 @@
   "clean": true,
   "source_stage": "contract only; source continuation requires coordinator reconciliation",
   "authority": "U001",
-  "dispatch_correction": "Canonical governance entry is skill.yaml; existing .agents runtime SKILL.md is valid. Initial canonical SKILL.md path was coordinator error and corrected in same task."
+  "dispatch_correction": "Canonical governance entry is skill.yaml; existing .agents runtime SKILL.md is valid. Initial canonical SKILL.md path was coordinator error and corrected in same task.",
+  "source_continuation": {
+    "observed_at": "2026-09-23T09:31:41+08:00",
+    "same_thread": true,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "model_observation": "read-only runtime thread metadata after continuation",
+    "initial_command_cwd": "F:/framework-next/341",
+    "initial_head": "7f821ee866e7e54e551036785e19dffaa3d7ac39",
+    "initial_clean": true,
+    "expected_root_branch_common_dir_matched": true,
+    "selected_commit": "9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0",
+    "actual_head_after_fast_forward": "9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0",
+    "scope": "owned P4 package implementation"
+  }
 }

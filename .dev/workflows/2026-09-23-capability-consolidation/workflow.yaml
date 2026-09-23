@@ -1,0 +1,30 @@
+template_metadata:
+  template_id: ai-context-governance-workflow-locator
+  template_version: 1.2.0
+  created_at: '2026-07-10T18:22:49+08:00'
+  updated_at: '2026-07-15T08:36:00+08:00'
+workflow_id: 2026-09-23-capability-consolidation
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_kind: ai-context-maintenance
+title: P5 capability and format disposition design
+owner_skill: ai-context-governance
+status: completed
+current_phase: design-complete-validation-deferred
+branch: codex/2026-09-23-capability-consolidation
+base_branch: main
+artifact_root: .dev/workflows/2026-09-23-capability-consolidation
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T09:29:36+08:00'
+updated_at: '2026-09-23T09:31:22+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+issue_url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/342
+program_issue: 322
+execution_override:
+  authority: U001
+  policy: .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md
+  adaptation: One design task; no audit/lease/handoff validator packets; own durable
+    handoff only; no shared index edit
+  verification: deferred-by-owner
+  owner: 'program #322 coordinator / P7'
