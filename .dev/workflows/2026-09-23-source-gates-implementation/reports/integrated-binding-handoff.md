@@ -107,3 +107,39 @@ dispositions remain unchanged. No provider read/write occurred in this follow-up
 Policies stay dormant. Independent source review, integration/first push, exact
 policy adoption and CI restoration remain coordinator/owner decisions. Unselected
 legacy matrices and formal packets remain deferred-by-owner under U001.
+
+## Actual #373 receipt follow-up
+
+The existing V2 parser at `76b2c013aef6493f9779f0226748315dfa469f16`
+accepted all seven recorded family results from execution source
+`e71712b71791170c3f4946e131ce867f82dade8f`. The immutable upstream receipt
+is contained in `d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7` at
+`.dev/workflows/2026-09-23-public-skill-checks/evidence/` with the
+`reconcile-e71712b7-` prefix. [Replay evidence](../evidence/actual-public-receipt-replay.json)
+retains exact receipt blob identities, all 14 decoded stream hashes, capture
+identity comparisons, five exact source-file hashes and observed parser results.
+No newline normalization was needed for the source-hash comparisons. The earlier
+read-preparation mistake is retained there; it was not a product-test failure.
+
+This was one parser replay per family using the captured stdout/stderr and process
+exit, not a product rerun or invocation of the complete source gate. No code repair
+was needed. The upstream totals are 218 public launches plus 37 driver Git launches
+(255), across seven separate invocations. They do not establish all-public aggregate
+execution or a combined cap. Nested child counts remain unavailable; recorded
+bounds are not observations. Successful child transcripts were cleaned upstream,
+and the PR provider fixture is synthetic. This replay establishes output
+compatibility, not timeout/process-termination, actual-provider, native or hosted
+acceptance. No additional source-test run was needed because its tested code bytes
+are unchanged.
+
+#373's historical failures remain in their original records; this later complete
+receipt supersedes the earlier incomplete public acceptance at the stated source.
+#368 retains its separate selected verification. Only #369-owned records changed;
+policies remain dormant, native scope is unchanged, and CI/adoption/first push stay
+with the coordinator and owner. Current remote Issue/PR/Project state was not
+independently read back by #369.
+
+Direct verification passed for the six owned record paths, UTF-8/JSON/YAML,
+18 local Markdown links, unchanged selector/native/test code bytes and whitespace.
+The exact planned commit message is checked separately before the local commit;
+no historical matrix, formal packet or product test is included.

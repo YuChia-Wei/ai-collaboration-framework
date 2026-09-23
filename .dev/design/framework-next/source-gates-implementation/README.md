@@ -31,7 +31,7 @@ The future hosted source job has a 10-minute limit; native has 15 minutes.
 | --- | --- |
 | Known source prose / declared package entry or reference | UTF-8/conflict checks, new/changed Markdown local file references, `git diff --check BASE HEAD`. File existence only; heading/semantic meaning remains review. Renames re-resolve unchanged relative links. |
 | Source selector/workflows/policies/root | `.github/tests/test_source_gates.py --json`; nonzero, absent, timed-out, failed, skipped or malformed result fails. Report review requirement separately. |
-| Package schema/template/tool/metadata | `contracts` binds #368 and the owning `public:<family>` binds fixed #373; actual product acceptance is still incomplete and must fail truthfully. |
+| Package schema/template/tool/metadata | `contracts` binds #368 and the owning `public:<family>` binds fixed #373; seven recorded #373 results pass V2 parsing; #368 acceptance remains separately owned. |
 | Shared distribution/profile/adapter | `contracts` and actual declared tool-family consumers; only declared members/profiles/adapters are recognized. Nonempty/unknown dependency impact fails for coordinator mapping. Separate affected-selection trials remain required; C1/C5 Lesson smoke is not blanket actual assembly coverage. |
 | Installation/maintenance | `contracts`, separate Windows native requirement and independent scoped review. No native command is launched by source gate. |
 | Legacy support/recovery, frozen backlog or unknown member | Narrow failure requiring its named owner/check selection, never a green placeholder or historical matrix. |
@@ -107,7 +107,7 @@ only that created child; the parent remains. No global TEMP/TMP or legacy fixtur
 setting is changed. This fixture behavior is not product filesystem validation.
 
 Dormant policy writing is directly authorized and complete. Coordinator still owns
-#368/#373 integration and failed product acceptance, V3 binding, first push/PR/merge,
+#368 verification and source integration, V3 binding, first push/PR/merge,
 scoped review, actual selected trials, root adoption and the user's exact policy
 adoption/restoration decision. Keep #369 open; keep all
 seven old workflows disabled. Legacy matrices/packet machinery and CI remain
@@ -181,3 +181,13 @@ successors remain byte-identical in this follow-up. Native caller, policies/root
 template, product/tests/framework_next and caps were not edited. The coordinator
 reports target pilot review/admission passed and lease released; that is separate
 reported target evidence, not execution or source-policy adoption by this task.
+
+## Actual public-result receipt
+
+The current handoff now includes a replay of the seven actual #373 family results
+at `e71712b71791170c3f4946e131ce867f82dade8f`, retained in immutable receipt commit
+`d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7`. All 14 exact runner stream hashes and
+five test-source hashes matched; the unchanged V2 parser accepted all seven.
+This does not rerun product tests, establish aggregate execution, or turn the
+synthetic provider fixture into actual provider acceptance. Native, hosted and
+policy/CI adoption boundaries remain unchanged.

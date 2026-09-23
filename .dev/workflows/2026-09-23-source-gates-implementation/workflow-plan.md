@@ -18,6 +18,14 @@ are retained in [attempt 1](evidence/integrated-binding-attempt-1.json).
 New result inputs are synthetic. No product/public/native/hosted test ran here.
 Caps, result parser semantics, process execution and command dispatch are unchanged.
 
+The later #373 actual receipt at `d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7`
+records all seven families at that same source. Fourteen exact stream hashes and
+five test-source hashes matched; the existing V2 parser accepted each recorded
+result. [Replay evidence](evidence/actual-public-receipt-replay.json) preserves the
+binding and limits. No code changed or product suite was rerun. These are seven
+separate upstream invocations; synthetic provider evidence is not actual provider
+acceptance.
+
 ## Retained checkpoints
 
 - [Initial refusal/failure](reports/blocked-handoff.md): broad policy write refusal
@@ -38,7 +46,8 @@ Known native/regression paths now identify their owners and separate admission
 requirements without dispatching new tests. Unknown paths remain fail-closed.
 Native caller/termination/hosted portability is outside this continuation, as are
 all tests/framework_next edits, product trials, policy activation and provider work.
-#368/#373 own their current selected checks. The coordinator reports target pilot
+#368 retains its selected checks; #373's complete recorded results now pass the
+V2 parser replay above. The coordinator reports target pilot
 review/admission passed and lease released; this task did not re-execute or verify
 that target and does not infer source-policy adoption from it.
 

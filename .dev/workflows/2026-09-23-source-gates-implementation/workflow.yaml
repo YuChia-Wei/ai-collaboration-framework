@@ -5,20 +5,20 @@ workflow_kind: ai-context-maintenance
 title: Dormant source gates and prospective policy implementation
 owner_skill: ai-context-governance
 status: in_progress
-current_phase: integrated-interface-binding
+current_phase: actual-public-receipt
 branch: codex/2026-09-23-source-gates
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-source-gates-implementation
 entrypoint: workflow-plan.md
 created_at: '2026-09-23T15:14:31+08:00'
-updated_at: "2026-09-24T01:21:28+08:00"
+updated_at: "2026-09-24T01:27:23+08:00"
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 issue_refs: ['#369']
 program_issue: '#322'
 source_commit: 38e6458f8d3e81dc2568daf1fa467571fb529fee
 owner_override: .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md (U001)
-verification_state: 44-focused-source-tests-passed; historical-failures-retained; unselected-obligations-deferred-by-owner
+verification_state: 44-focused-source-tests-passed; seven-actual-public-results-replayed; historical-failures-retained; unselected-obligations-deferred-by-owner
 verification_next_owner: "program #322 coordinator / P7"
 integration_state: local-checkpoint-only; not-pushed
 commit_identity: containing-commit; exact SHA returned in final handoff

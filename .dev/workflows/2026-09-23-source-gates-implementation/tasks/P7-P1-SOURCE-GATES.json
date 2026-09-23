@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:14:31+08:00",
-  "updated_at": "2026-09-24T01:21:28+08:00",
+  "updated_at": "2026-09-24T01:27:23+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -70,8 +70,8 @@
       "16 dormant policy/pointer files checked; 15 existing bodies retained; 2 exact-type YAML matches; 15 added local links; bilingual parity inspection",
       "44 source tests passed with no skips; caps, parsers, dispatch and process AST unchanged; raw output and tested hashes retained"
     ],
-    "last_completed_step": "Integrated V1/V2 provenance, exact ownership and cleanup-failure synthetic cases; 44 focused source tests passed",
-    "next_action": "Coordinator reviews/integrates local checkpoint; #368/#373 keep their selected checks; new native scope and policy/CI adoption stay separate"
+    "last_completed_step": "Verified 14 exact upstream streams and five source hashes; existing V2 parser accepted all seven actual recorded family results without product execution",
+    "next_action": "Coordinator reviews/integrates local checkpoint; #368 retains selected verification; native scope and policy/CI adoption remain separate"
   },
   "results": {
     "summary": "Integrated-interface source selector checkpoint; policy remains dormant and #369 native caller remains unbound",
@@ -145,7 +145,7 @@
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "No hosted evidence or native caller acceptance; #368/#373 own current product checks; independent source review and adoption remain coordinator-owned",
+    "residual_risk": "No hosted or native caller acceptance; #373 actual seven-family receipt accepted by V2 parser only; #368 verification and independent source review/adoption remain separately owned",
     "follow_up_needed": true
   },
   "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim",
@@ -230,6 +230,16 @@
     "automatic_new_regression_commands": false,
     "native_caller": "unchanged and unbound",
     "report": "reports/integrated-binding-handoff.md",
-    "coordinator_reported_target_state": "pilot review/admission passed; lease released; not re-executed or independently read back by #369"
+    "coordinator_reported_target_state": "pilot review/admission passed; lease released; not re-executed or independently read back by #369",
+    "actual_public_receipt": {
+      "execution_source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+      "receipt_commit": "d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7",
+      "caller_commit": "76b2c013aef6493f9779f0226748315dfa469f16",
+      "stream_hashes_verified": 14,
+      "parser_results_accepted": 7,
+      "product_execution_here": false,
+      "all_public_aggregate": false,
+      "evidence": "evidence/actual-public-receipt-replay.json"
+    }
   }
 }
