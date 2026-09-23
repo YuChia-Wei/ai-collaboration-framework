@@ -137,3 +137,7 @@ PR #366 is merged as `171f33474f88888fbe853600de04bfe9c5716b25`; #341/#346 are C
 ## P7 designs locally complete
 
 [Reconciliation](p7-design-reconciliation.md) receives #364/#365 at fixed commits and selects the first two implementation responsibilities. Source contracts and dormant pipeline/policy code may proceed under explicit Issue assignments after online design integration; selected runtime/native work and root adoption remain outstanding. CI stays disabled and no finding is finally closed.
+
+## P7 design online and implementation selected
+
+PR #367 merged; #364/#365 are CLOSED/COMPLETED and Project Done by read-back. #368/#369 now bind the first selected execution scopes. This permits only assigned focused cases and does not turn earlier deferrals into passes. Root activation and CI restoration remain outstanding; F-01 through F-08 remain partially resolved.

@@ -40,8 +40,10 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #357 | P5-G optional maintenance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
 | #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | source online PR #362; Issue/Project complete; execution deferred |
 | #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | design online PR #362; Issue/Project complete; adoption unperformed |
-| #364 | P7-A focused verification design | own design/workflow only | fixed design received and reconciled; online integration next |
-| #365 | P7-B pipeline/policy design | own design/workflow only | fixed design received and reconciled; online integration next |
+| #364 | P7-A focused verification design | own design/workflow only | design online PR #367; Issue/Project complete |
+| #365 | P7-B pipeline/policy design | own design/workflow only | design online PR #367; Issue/Project complete |
+| #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | Issue created; Project Planned; independent dispatch next |
+| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | Issue created; Project Planned; native continuation awaits actual V3 interface |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -59,7 +61,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate both completed P7 designs online, then create the first two independent implementation Issues under [the selected sequence](../../design/framework-next/p7-execution-selection.md). Actual root adoption and CI restoration remain separate.
+Current action: dispatch #368/#369 independently from this coordinator checkpoint under [selected P7 execution](../../design/framework-next/p7-execution-selection.md). #364/#365 are online/closed through PR #367. Product cases are authorized only in #368; #369 may run its synthetic selector/event tests. Root adoption and CI restoration remain unperformed.
 
 ## P3 shared implementation continuation
 
@@ -116,3 +118,7 @@ Final #346 source/mapping `4ffa3881484783a2e35152ad426bec359d2d9252` is locally 
 ## P7 design reconciliation
 
 [Fixed design inspection](reports/p7-design-reconciliation.md) selects the bounded source checks and dormant pipeline/source-policy work. [Original-request coverage](reports/request-coverage-at-p7-entry.md) keeps actual use, root adoption and conditional future capabilities distinct. No product trial has yet run.
+
+## First selected P7 implementation
+
+PR #367 merged at `01aeb8ae4f18132dfdd7ad3479346c78b9f5f913`; design Issues are CLOSED/COMPLETED and Project Done. #368 owns shared source checks; #369 owns dormant source gates and prospective rules, with native continuation kept open until actual V3 binding exists. New task Project Status is Planned only; release/owner-review fields were not changed. Completed design branches were removed after clean/merged proof; all RAM worktree files remain.

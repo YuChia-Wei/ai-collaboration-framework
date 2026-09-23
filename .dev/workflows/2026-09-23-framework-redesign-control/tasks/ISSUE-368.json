@@ -1,0 +1,77 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-368",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T14:58:53+08:00",
+  "updated_at": "2026-09-23T14:58:53+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
+  "phase": "P7-V1",
+  "scope": {
+    "target": "Focused source contract checks and fixture helper",
+    "files": [
+      "tests/framework_next/run.py",
+      "tests/framework_next/support.py",
+      "tests/framework_next/test_contracts.py",
+      "tests/framework_next/README.md",
+      ".dev/design/framework-next/source-contract-checks/",
+      ".dev/workflows/2026-09-23-source-contract-checks/"
+    ],
+    "selected_execution": "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
+    "constraints": [
+      "One independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "Explicit assigned F: worktree and one writer",
+      "Local coherent commits before first push; coordinator owns online integration"
+    ],
+    "non_goals": [
+      "Unselected legacy validators/full/history/upgrade matrices",
+      "Audit/lease/effective-rule/acceptance packet machinery",
+      "Root activation, CI restoration/provider changes, credentials, release or downstream adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: identity and live Issue",
+      "Read selected P7 contract and implement only exclusive responsibilities",
+      "Run assigned narrow checks and retain actual failures/limits",
+      "Return coherent local commit before first push"
+    ],
+    "validation": [
+      "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
+      "Direct syntax/reference/Git and complete planned-message checks"
+    ],
+    "last_completed_step": "Issue created with correct attribution; Project Planned; exact dispatch preparation",
+    "next_action": "Create assigned worktree and independent Astra Ultra task after coordinator checkpoint"
+  },
+  "results": {
+    "summary": "Implementation assignment selected; no execution or completion claimed",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Product/root/native/provider acceptance remains distinct",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/368",
+    "branch": "codex/2026-09-23-source-contract-checks",
+    "workflow_id": "2026-09-23-source-contract-checks",
+    "starting_commit_source": "Containing coordinator checkpoint after PR #367",
+    "thread_id": null,
+    "output_root": "F:/framework-next/p7-runs/368-contracts"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
+    "implementation_status": "not started",
+    "verification_state": "selected cases authorized; not executed; other obligations deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RKIs",
+  "project_state": "Planned; only Status mutated"
+}

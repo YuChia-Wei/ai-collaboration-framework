@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T14:25:23+08:00",
-  "updated_at": "2026-09-23T14:50:54+08:00",
+  "updated_at": "2026-09-23T14:58:53+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -43,8 +43,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and full planned commit message only"
     ],
-    "last_completed_step": "Fixed design received, clean worktree and owned content inspected; jointly reconciled for selected implementation",
-    "next_action": "Online design PR integration and Issue/Project closure read-back; create selected implementation Issues"
+    "last_completed_step": "Design PR #367 merged; Issue CLOSED/COMPLETED and Project Done read back",
+    "next_action": "Selected implementation #368/#369, then bounded public/native trials and root adoption"
   },
   "results": {
     "summary": "Bounded design complete locally; implementation and actual verification remain separate",
@@ -72,8 +72,11 @@
     "design_commit": "c75582b08f67da17f9548f2eb38fe67c2e6e765e",
     "integration_report": "reports/p7-design-reconciliation.md",
     "selected_execution": ".dev/design/framework-next/p7-execution-selection.md",
-    "issue_state": "OPEN",
-    "project_status": "In progress"
+    "issue_state": "CLOSED/COMPLETED",
+    "project_status": "Done",
+    "integration_status": "online PR #367 merged",
+    "merge_commit": "01aeb8ae4f18132dfdd7ad3479346c78b9f5f913",
+    "provider_readback_at": "2026-09-23T14:54:10.1868763+08:00"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Q4Rw",
   "project_state": "In progress; Status only was mutated; no other single-select values observed"
