@@ -2,6 +2,12 @@ manifest_version: 1
 profiles:
   - id: lesson-minimal
     path: src/profiles/lesson-minimal.yaml
+  - id: knowledge
+    path: src/profiles/knowledge.yaml
+  - id: work-management
+    path: src/profiles/work-management.yaml
+  - id: collaboration
+    path: src/profiles/collaboration.yaml
 components:
   - id: lesson
     source: src/skills/lesson
@@ -19,10 +25,98 @@ components:
         destination: .ai/core/skills/lesson/references/example.md
       - source: schemas/lesson-record.schema.json
         destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
+      - source: schemas/lesson-record-v2.schema.json
+        destination: .ai/core/skills/lesson/schemas/lesson-record-v2.schema.json
       - source: templates/lesson.md
         destination: .ai/core/skills/lesson/templates/lesson.md
       - source: scripts/lesson.py
         destination: .ai/core/skills/lesson/scripts/lesson.py
+  - id: adr
+    source: src/skills/adr
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/adr/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/adr/skill-package.yaml
+      - source: references/configuration.md
+        destination: .ai/core/skills/adr/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/adr/references/operations.md
+      - source: references/example.md
+        destination: .ai/core/skills/adr/references/example.md
+      - source: schemas/adr-record.schema.json
+        destination: .ai/core/skills/adr/schemas/adr-record.schema.json
+      - source: templates/adr.md
+        destination: .ai/core/skills/adr/templates/adr.md
+      - source: scripts/adr.py
+        destination: .ai/core/skills/adr/scripts/adr.py
+  - id: standards-promotion
+    source: src/skills/standards-promotion
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/standards-promotion/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/standards-promotion/skill-package.yaml
+      - source: references/configuration.md
+        destination: .ai/core/skills/standards-promotion/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/standards-promotion/references/operations.md
+      - source: references/authority.md
+        destination: .ai/core/skills/standards-promotion/references/authority.md
+      - source: references/example.md
+        destination: .ai/core/skills/standards-promotion/references/example.md
+      - source: schemas/promotion-record.schema.json
+        destination: .ai/core/skills/standards-promotion/schemas/promotion-record.schema.json
+      - source: templates/promotion.md
+        destination: .ai/core/skills/standards-promotion/templates/promotion.md
+      - source: scripts/standards_promotion.py
+        destination: .ai/core/skills/standards-promotion/scripts/standards_promotion.py
+  - id: pr
+    source: src/skills/pr
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/pr/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/pr/skill-package.yaml
+      - source: references/configuration.md
+        destination: .ai/core/skills/pr/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/pr/references/operations.md
+      - source: references/github.md
+        destination: .ai/core/skills/pr/references/github.md
+      - source: references/example.md
+        destination: .ai/core/skills/pr/references/example.md
+      - source: schemas/pr-record.schema.json
+        destination: .ai/core/skills/pr/schemas/pr-record.schema.json
+      - source: templates/pr.md
+        destination: .ai/core/skills/pr/templates/pr.md
+      - source: scripts/pr.py
+        destination: .ai/core/skills/pr/scripts/pr.py
+      - source: scripts/github.py
+        destination: .ai/core/skills/pr/scripts/github.py
+  - id: local-backlog
+    source: src/skills/local-backlog
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/local-backlog/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/local-backlog/skill-package.yaml
+      - source: references/configuration.md
+        destination: .ai/core/skills/local-backlog/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/local-backlog/references/operations.md
+      - source: references/example.md
+        destination: .ai/core/skills/local-backlog/references/example.md
+      - source: schemas/local-backlog-record.schema.json
+        destination: .ai/core/skills/local-backlog/schemas/local-backlog-record.schema.json
+      - source: templates/work-item.md
+        destination: .ai/core/skills/local-backlog/templates/work-item.md
+      - source: scripts/local_backlog.py
+        destination: .ai/core/skills/local-backlog/scripts/local_backlog.py
 adapters:
   - id: codex
     template: src/adapters/codex/skill-entry.md.template

@@ -1,0 +1,77 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-342",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T09:10:31+08:00",
+  "updated_at": "2026-09-23T09:12:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/342",
+  "phase": "P5-design",
+  "scope": {
+    "target": "Remaining portable capabilities, optional context maintenance and schema ownership dispositions",
+    "files": [
+      ".dev/design/framework-next/capability-consolidation/",
+      ".dev/workflows/2026-09-23-capability-consolidation/"
+    ],
+    "constraints": [
+      "U001",
+      "one independent Astra Ultra task; no sub-agents or child-created tasks",
+      "design/inventory only; proposals require coordinator selection",
+      "coordinator owns common contracts, future implementation slices and first push"
+    ],
+    "non_goals": [
+      "product source changes or execution",
+      "shared manifest/profile edits",
+      "legacy policy/schema/script rewrites",
+      "migration/deletion/root cutover",
+      "tests/CI/provider/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned worktree and scoped authorities",
+      "Inventory 16 canonical skills and 95 legacy artifact kinds plus new formats",
+      "Propose instruction-driven/tool operation representation and explicit dispositions",
+      "Return exact local design checkpoint and bounded implementation slices"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact planned commit-message format only"
+    ],
+    "last_completed_step": "Independent design task dispatched; runtime and actual F: identity read back",
+    "next_action": "Receive bounded capability/schema disposition design; select future implementation slices"
+  },
+  "results": {
+    "summary": "P5 design selected; no source implementation or disposition adoption",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Legacy dependency/disposition and operation model need bounded design; P7 verification pending",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0cbd1-789e-7c72-9852-ba5edd3a6998",
+    "worktree": "F:/framework-next/342",
+    "branch": "codex/2026-09-23-capability-consolidation",
+    "workflow_id": "2026-09-23-capability-consolidation",
+    "model_verified": "Read-only runtime thread metadata: gpt-6-astra / ultra",
+    "starting_commit_source": "coordinator bootstrap checkpoint",
+    "worktree_verified": "Initial command actual cwd/root/branch/full HEAD/common-dir and clean status match assignment",
+    "starting_commit": "94741016bd7baae9936bb77dd6c4f56d37036e97"
+  },
+  "delivery": {
+    "contract_status": "pending design",
+    "implementation_status": "outside this design Issue",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PGF0"
+}

@@ -1,15 +1,17 @@
-# Knowledge lifecycle contract checkpoint
+# Knowledge lifecycle selected source contract
 
-Design-only proposal for #334 / P3-A, inspected at
-`a34ecd3c9423b17b6bb745f598ef22fd7437dd24`. No runtime, package, project rule or
-implementation is activated by this document. Coordinator reconciliation precedes
-source work in the same task. U001 is source-only execution authority; it must
-not ship with portable packages. Behavioral/schema/CI verification remains
+The original design checkpoint is preserved at
+`99adb0762328c8f8d6cff7338f17caec99685c0a`. Coordinator-selected
+[P3 shared decisions](../p3-shared-contract.md) at
+`0d0556d4c60105a28eb39cfb06efab9b069728cb` authorize implementation in this same
+task and the three package roots. Source now implements this selected contract;
+this document does not activate a project rule or establish runtime acceptance.
+U001 remains source-only. Behavioral/schema/CI verification is
 `deferred-by-owner` to program #322 coordinator / P7.
 
 ## 1. Boundary and package selection
 
-Propose three independently selectable packages: `lesson@0.2.0`, `adr@0.1.0`,
+Select three independently selectable packages: `lesson@0.2.0`, `adr@0.1.0`,
 `standards-promotion@0.1.0`. These are source interface versions, not releases.
 All have empty required/optional skill dependencies. A Lesson is an observation
 qualified by evidence/applicability. An ADR describes alternatives and records an
@@ -145,7 +147,7 @@ provider adapter requires its own contract and permission.
 
 ## 5. Evidence-preserving standards promotion
 
-The proposed sole owner is `standards-promotion`. It writes only its proposal
+The selected sole owner is `standards-promotion`. It writes only its proposal
 store. Named project target bindings identify exact project-owned UTF-8 rule
 files; no universal directory, heading, rule-ID convention or standards schema.
 Initial scope is one existing file's complete replacement. New rule files,
@@ -187,7 +189,7 @@ multi-file edits, provider actions and automatic application are unsupported.
 Conflicts are authored entries `{subject, disposition, reason}` where disposition
 is preserve/replace/supersede/unresolved. A proposal may retain unresolved conflicts
 for review. Matching actual adoption is still reported independently, but effect stays unresolved until a NEW proposal
-revision explicitly resolves them and receives matching owner adoption. Existing
+identity explicitly resolves them and receives new matching owner adoption. Existing
 rules are not scanned globally or assumed conflict-free. Scope of review remains
 visible. Proposal revision after any observed adoption is blocked; create a new
 proposal instead. Retain source evidence even when its live file later changes.
@@ -197,12 +199,14 @@ This is not a cross-file transaction or protection against external writers
 ignoring coordination. Capture actual observation times; require decision time
 not in the future and effect time >= adoption time, <= observation time. Snapshot
 size/history growth stays within the whole-record limit; exceed -> unsupported
-before writing, never trim evidence silently. Unreadable evidence yields a missing
-snapshot plus a diagnostic, never invented bytes or digests.
+before writing, never trim evidence silently. Missing evidence yields a missing snapshot plus a diagnostic. Malformed JSON or
+mapped evidence retains exact UTF-8 bytes and unresolved diagnostics. Unsafe,
+unreadable, oversized, non-UTF-8 or changed-digest inputs fail without a new
+observation; never invent bytes/digests to claim a completed read.
 
 ## 6. Project config coexistence
 
-Recommend config_version 2 for the second actual consumer. v1 explicitly supports
+Select config_version 2 for the second actual consumer. v1 explicitly supports
 only Lesson; do not silently reinterpret its closed namespace semantics. v2 has
 required exact integer config_version, optional skills and (project only)
 constraints. Namespace keys follow the package ID grammar; values must be JSON
@@ -272,10 +276,10 @@ network filesystem support, cache, generic journal or power-loss guarantee.
 | Inspected P2 source | Selected reuse/change |
 | --- | --- |
 | lesson.py parse_json/parse_yaml/safe_path/read_bytes/exact_equal | Reuse semantics and bounded code locally; no other skill imports Lesson. |
-| config/settings/Binding | Currently Lesson-only, one schema/template. Owner-local implementations of v2 envelope/own settings and evidence adapters. |
+| config/settings/Binding | P2 was Lesson-only with one schema/template. Owner-local implementations of v2 envelope/own settings and evidence adapters. |
 | load_package | Exact lesson@0.1.0, one resource family. Replace with explicit supported package/schema identities, not heuristic compatibility. |
 | Writer/write_operation/query | Reuse single-record publication and strict failures; add owner lifecycle/history and query v2. |
-| distribution.package.load_package | Named packages already supported, but schemas keyed only by ID and artifact role has one closed schema field. Coordinator must reconcile metadata v2. |
+| distribution.package.load_package | Named packages already supported, but schemas keyed only by ID and artifact role has one closed schema field. Shared distribution metadata-v2 implementation belongs to #337. |
 | distribution.data | Similar strict primitives, but distribution-specific errors, blob inputs/path semantics; do not import build-time modules into installed skills. |
 | distribution manifest/selection/projection | Exact members remain coordinator-owned; no glob or undeclared helper. |
 
@@ -283,26 +287,23 @@ Bounded duplication is preferable here to extracting the entire 950-line Lesson
 script into a shared runtime. Pure primitive parity becomes focused P7 work;
 project authority text is never copied as policy. No new helper/member field.
 Extraction needs demonstrated stable consumers and an explicit distribution
-contract; this checkpoint proposes neither. New schemas are package-owned and
+contract; this source slice introduces neither. New schemas are package-owned and
 self-contained; only local #/$defs references may resolve, never remote/file refs.
 The P2 no-reference guard must be narrowed deliberately for these new schemas.
 
-## 8. Coordinator reconciliation and continuation
+## 8. Selected implementation and return
 
-See interface-proposal.yaml for exact members and source boundaries. Decisions:
+C334-01 through C334-04 are selected by the shared contract: config v2 isolation,
+metadata v2 with explicit readable/writable schemas, independent standards-promotion
+and exclusive package ownership. The shared loader/manifest/profile implementation
+belongs to #337/coordinator, not these installed packages. See
+[interface inventory](interface-proposal.yaml) for 9/8/9 exact members and 11/11/10
+operations. The original design commit remains unchanged historical evidence.
 
-- C334-01: config v2 namespace isolation; old Lesson config v1 compatibility.
-- C334-02: metadata v2 identifies schemas by (id, version), adds project-role
-  read_schemas, retains schema as the writable format. Duplicate pairs and
-  cross-kind ID collisions fail; v1 metadata reader remains intact.
-- C334-03: standards-promotion owns one-file proposals and local authority/effect
-  adapters, with no governance writer or automatic adoption.
-- C334-04: coordinator authorizes the three exact source roots after joint P3
-  review with #335; coordinator updates shared loader/profile/manifest contracts.
-
-Resume this same task after that reconciliation: record accepted deltas, implement
-only assigned packages, preserve v1 schema, hand off exact operations/members and
-commit coherent source. Design completion is not Issue completion. P7 later
-selects actual checks for mixed versions/preservation, source snapshots, namespace
-isolation, transitions/cycles, template compatibility, path/lock failures and
-adoption/content/effect drift. No design example or syntax read satisfies those.
+This executor returns a coherent local source commit before first push. Bounded
+implementation/workflow completion is separate from Issue/Project closure, provider
+integration, release and runtime acceptance. The coordinator owns those later states.
+P7 selects actual checks for mixed-version preservation/derive, namespace isolation,
+local schema resolution, histories/decisions/successor cycles, template compatibility,
+path/lock/cleanup failures and adoption/content/effect drift. No synthetic example,
+AST parse, local inventory inspection or Git checkpoint satisfies those behaviors.

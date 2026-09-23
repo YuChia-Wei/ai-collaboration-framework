@@ -1,6 +1,6 @@
-metadata_version: 1
+metadata_version: 2
 id: lesson
-version: 0.1.0
+version: 0.2.0
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
   optional: []
 runtime:
 - id: skill-instruction-reader
-  requirement: Read selected entrypoint and resources
+  requirement: Read selected public entry and resources
   for_operations:
   - explain
   - create
@@ -17,6 +17,10 @@ runtime:
   - validate
   - revise
   - render
+  - derive
+  - accept
+  - retire
+  - supersede
   on_missing: unavailable
 - id: python
   version: '>=3.11,<4'
@@ -28,6 +32,10 @@ runtime:
   - validate
   - revise
   - render
+  - derive
+  - accept
+  - retire
+  - supersede
   on_missing: unavailable
 - id: pyyaml
   version: '>=6,<7'
@@ -39,7 +47,10 @@ runtime:
   - validate
   - revise
   - render
-  purpose: Strict JSON-compatible package loading with duplicate/tag/alias rejection
+  - derive
+  - accept
+  - retire
+  - supersede
   on_missing: unavailable
 - id: jsonschema
   version: '>=4.18,<5'
@@ -50,11 +61,14 @@ runtime:
   - validate
   - revise
   - render
-  purpose: Draft 2020-12 structural checks with explicit format checks; semantics stay tool-owned
+  - derive
+  - accept
+  - retire
+  - supersede
   on_missing: unavailable
 - id: filesystem
-  requirement: Read selected files; writes require exclusive creation and atomic same-directory replacement
-  purpose: A selected local config in a Git project additionally requires read-only Git ignore verification
+  requirement: Explicit local roots, bounded reads and exclusive atomic single-record
+    writes; ignored local config in a Git project requires read-only Git
   for_operations:
   - explain
   - create
@@ -63,6 +77,10 @@ runtime:
   - validate
   - revise
   - render
+  - derive
+  - accept
+  - retire
+  - supersede
   on_missing: unavailable
 configuration:
   namespace: lesson
@@ -77,7 +95,10 @@ configuration:
 artifact_roles:
 - role: lesson.record
   owner: project
-  schema: lesson.record@1.0.0
+  schema: lesson.record@2.0.0
+  read_schemas:
+  - lesson.record@1.0.0
+  - lesson.record@2.0.0
   store_binding: lesson.store
   identity: lesson-<32 lowercase hex digits>
   filename: <id>.lesson.json
@@ -89,11 +110,15 @@ artifact_roles:
   write_operations:
   - create
   - revise
+  - derive
+  - accept
+  - retire
+  - supersede
 - role: lesson.view
   owner: derived
   source_role: lesson.record
-  output: result-only Markdown
-  persistence: Caller-selected export is a separate write
+  output: Result-only Markdown
+  persistence: Export requires separate caller-owned write
   produce_operations:
   - render
 resources:
@@ -106,7 +131,12 @@ resources:
     version: 1.0.0
     path: schemas/lesson-record.schema.json
     owner: lesson
-    migration: unsupported; preserve original
+    migration: unsupported; preserve original; explicit derive is a new identity
+  - id: lesson.record
+    version: 2.0.0
+    path: schemas/lesson-record-v2.schema.json
+    owner: lesson
+    migration: unsupported; preserve original; explicit derive is a new identity
   templates:
   - id: lesson.default-view
     path: templates/lesson.md
@@ -127,72 +157,118 @@ resources:
     - validate
     - revise
     - render
+    - derive
+    - accept
+    - retire
+    - supersede
 operations:
 - id: explain
   inputs:
-  - project_root
-  - package_root
-  - optional configuration sources
-  - optional settings overrides
+  - explicit project_root/package_root and selected configuration
   outputs:
-  - effective settings and source diagnostics
+  - own effective settings, field sources, config version, ignored namespace names
+    and authority bindings
   tool: lesson.fs
   implementation_status: implemented
 - id: create
   inputs:
-  - resolved binding
-  - authored Lesson content
-  - related query text and actual query_sha256
-  - explicit new-candidate decision and partial-query acknowledgment
+  - explicit project_root/package_root and selected configuration
+  - content
+  - text
+  - decision
+  - optional statuses and immutable extensions
   outputs:
-  - lesson.record reference
-  - actual content digest
+  - record reference, actual persisted-byte digest, changed flag and mutation state
+  - actual related_query and retained directory creations
   tool: lesson.fs
   implementation_status: implemented
 - id: inspect
   inputs:
-  - resolved binding
-  - lesson.record reference
+  - explicit project_root/package_root and selected configuration
+  - reference
   outputs:
-  - record
-  - actual content digest
+  - owned record, raw digest and historical evidence/freshness
   tool: lesson.fs
   implementation_status: implemented
 - id: query
   inputs:
-  - resolved binding
-  - optional case-insensitive literal text
+  - explicit project_root/package_root and selected configuration
+  - optional literal text and statuses
   outputs:
-  - matching record references
-  - partial-read diagnostics
-  - actual collection/query SHA-256 for a subsequent create decision
+  - matching references with status/version/raw digest
+  - partial diagnostics and actual query_sha256
   tool: lesson.fs
   implementation_status: implemented
 - id: validate
   inputs:
-  - resolved binding
-  - lesson.record reference
+  - explicit project_root/package_root and selected configuration
+  - reference
   outputs:
-  - structural and semantic diagnostics
+  - actual owned structure/semantic result and diagnostics
   tool: lesson.fs
   implementation_status: implemented
 - id: revise
   inputs:
-  - resolved binding
-  - lesson.record reference
+  - explicit project_root/package_root and selected configuration
+  - reference
   - expected_sha256
-  - replacement authored content
+  - content
+  - reason
   outputs:
-  - updated lesson.record reference
-  - actual content digest
+  - record reference, actual persisted-byte digest, changed flag and mutation state
   tool: lesson.fs
   implementation_status: implemented
 - id: render
   inputs:
-  - resolved binding
-  - lesson.record reference
-  - resolved template
+  - explicit project_root/package_root and selected configuration
+  - reference
   outputs:
-  - lesson.view
+  - lesson.view as result-only escaped Markdown
+  tool: lesson.fs
+  implementation_status: implemented
+- id: derive
+  inputs:
+  - explicit project_root/package_root and selected configuration
+  - reference
+  - expected_sha256
+  - reason
+  - text
+  - decision
+  - optional statuses
+  outputs:
+  - record reference, actual persisted-byte digest, changed flag and mutation state
+  - actual related_query and retained directory creations
+  tool: lesson.fs
+  implementation_status: implemented
+- id: accept
+  inputs:
+  - explicit project_root/package_root and selected configuration
+  - reference
+  - expected_sha256
+  - reason
+  - decision_source
+  outputs:
+  - record reference, actual persisted-byte digest, changed flag and mutation state
+  tool: lesson.fs
+  implementation_status: implemented
+- id: retire
+  inputs:
+  - explicit project_root/package_root and selected configuration
+  - reference
+  - expected_sha256
+  - reason
+  outputs:
+  - record reference, actual persisted-byte digest, changed flag and mutation state
+  tool: lesson.fs
+  implementation_status: implemented
+- id: supersede
+  inputs:
+  - explicit project_root/package_root and selected configuration
+  - reference
+  - expected_sha256
+  - reason
+  - successor
+  outputs:
+  - record reference, actual persisted-byte digest, changed flag and mutation state
   tool: lesson.fs
   implementation_status: implemented

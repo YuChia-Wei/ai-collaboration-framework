@@ -1,6 +1,6 @@
 # P3 metadata v2 distribution support
 
-This is the first-stage source implementation for [Issue #337](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/337), under [D-P3-02 and D-P3-05](../p3-shared-contract.md). It extends the [P2 assembly interface](README.md). The source has not been run: product CLI, builders, schema validation, tests, installation/migration and CI are `deferred-by-owner` under U001 to program #322 coordinator / P7.
+This records the loader and final package-mapping source implementation for [Issue #337](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/337), under [D-P3-02 and D-P3-05](../p3-shared-contract.md). It extends the [P2 assembly interface](README.md). The source has not been run: product CLI, builders, schema validation, tests, installation/migration and CI are `deferred-by-owner` under U001 to program #322 coordinator / P7.
 
 ## Explicit metadata versions
 
@@ -30,11 +30,24 @@ The metadata stays in its original data shape in `Package.metadata`; `Package.me
 
 The private pointer helper performs content-reference inspection only. No jsonschema validator, remote registry, package-tool import or package operation is invoked. Schema semantics, nested resource scopes and actual runtime behavior remain package-owner/P7 responsibilities. Project config version 2 is also package-owned; the builder does not parse another project configuration.
 
-## Existing consumers and later mapping
+## Existing consumers and actual P3 mapping
 
 Source inspection of `selection.select` shows that it already consumes `Package.members`, compares the manifest's exact member set, loads only selected Git blobs and calls `check_references`. `assembly.assemble` preserves each package's actual `metadata_version` in selection metadata. `tools/build-development.py` remains a thin CLI. No direct call-site change is needed for this source stage.
 
-Actual P3 source delivery is a later integration input. This checkpoint does not add manifest/profile entries or pretend that the five selected packages have arrived. The coordinator must supply the real integrated commit, exact member inventories and profile selection decisions to this same #337 task. Existing missing-member and closure checks are not relaxed.
+The coordinator supplied actual integrated source at `2bd7acdaf8a580df965396bdb9dbb8c05f6308af` and the [mapping assignment](../../../workflows/2026-09-23-framework-redesign-control/reports/p3-package-mapping-scope.md). Direct comparison of committed regular Git blobs, five metadata files and the knowledge/work-management interface inventories found exactly 44 members: lesson@0.2.0 (9), adr@0.1.0 (8), standards-promotion@0.1.0 (9), pr@0.1.0 (10), local-backlog@0.1.0 (8). All five declare metadata v2 and empty required/optional dependencies.
+
+The manifest maps each exact `src/skills/<id>/<member>` to `.ai/core/skills/<id>/<member>` with the suffix preserved. Both Lesson schemas are declared; the legacy schema remains blob `8bced2d86584c87d34f8ca2927aab95b7802a3ac`. The original Codex adapter declaration is retained. Missing-member and closure checks are unchanged.
+
+| Profile ID | Exact source selection | Declared package members |
+| --- | --- | --- |
+| lesson-minimal | lesson@0.2.0 | 9 |
+| knowledge | lesson@0.2.0, adr@0.1.0, standards-promotion@0.1.0 | 26 |
+| work-management | pr@0.1.0, local-backlog@0.1.0 | 18 |
+| collaboration | All five exact versions above | 44 |
+
+Every profile uses `profile_version: 1` and `adapters: [codex]`. The intentional Lesson profile bump to 0.2.0 selects the new source; it does not grant legacy-record writes. These convenience groups add no mandatory dependencies. Individual packages retain the existing explicit manifest/profile selection mechanism. Paths and counts describe source declarations, not generated runtime projections, installed capabilities or a release.
+
+No loader, skill or adapter code changed in the mapping continuation. The static comparison executed no product loader/select/build command, and produced no candidate, package digest, lock or receipt. Behavioral compatibility and real assembly remain deferred to program #322/P7.
 
 ## Deferred focused cases for P7
 

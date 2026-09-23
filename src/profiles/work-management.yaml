@@ -1,0 +1,9 @@
+profile_version: 1
+id: work-management
+skills:
+  - id: pr
+    version: 0.1.0
+  - id: local-backlog
+    version: 0.1.0
+adapters:
+  - codex

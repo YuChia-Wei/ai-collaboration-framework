@@ -1,164 +1,175 @@
-# Lesson Filesystem Operations, Version 0.1.0
+# Lesson filesystem operations 0.2.0
 
-`lesson.fs` is implemented at `scripts/lesson.py`. This describes the source
-interface, not evidence of execution or platform acceptance. Runtime requirements
-are in `skill-package.yaml`. The tool rejects duplicate keys, non-JSON YAML types,
-explicit tags, anchors, aliases and merge keys. JSON rejects BOMs, invalid UTF-8,
-unpaired surrogates and non-finite values, including overflow such as `1e999`.
-Metadata version and config version require exact integer types; other versions
-are explicit supported strings. Unknown keys fail at each owned object boundary.
+This is a public source interface. `implemented` means source exists; it does
+not establish installation, tested platform support or observed execution.
+Dependencies: Python >=3.11,<4, PyYAML >=6,<7, jsonschema >=4.18,<5 (except explain),
+explicit filesystem roots, and an instruction reader. No skill dependencies,
+provider calls, shared runtime or imports from another package.
 
-## Invocation and result protocol
-
-Run with Python >=3.11,<4 and declared PyYAML/jsonschema versions:
+## Request and result
 
 ```text
 python /absolute/package/scripts/lesson.py --request /absolute/request.json
 python /absolute/package/scripts/lesson.py --request -
 ```
 
-The second form reads one request from standard input. Request filenames must be
-absolute. Neither form infers a project/package/config path from cwd. `--help`
-only prints usage; it does not execute an operation or establish availability.
-Requests/files/serialized records are limited to 4 MiB each. Query selects at most
-10,000 direct record filenames; exceeding this bound is `unsupported`, never a
-truncated complete result. Limits are fixed in this version.
+The second form reads one JSON object from stdin. Required common fields are
+`operation`, absolute `project_root`, absolute `package_root`. Optional fields:
+`project_config`, `local_config`, `overrides`, `write_roots`; see
+[configuration](configuration.md). Unknown owned fields fail. JSON is strict
+UTF-8 without BOM, duplicate keys, invalid Unicode or nonfinite values. Metadata
+YAML additionally rejects explicit tags, aliases, anchors and merge keys.
+Every selected input, request and serialized record is bounded to 4 MiB.
+Schema refs are bounded acyclic local `#/$defs/...` only; no resource fetching.
 
-Every request is an object with required `operation`, absolute `project_root` and
-absolute `package_root`. The running script must belong to that package root.
-Optional common fields are explicit `project_config`, `local_config`, `overrides`
-(the Lesson settings object only), and caller `write_roots` (nonempty path array,
-which additionally restricts project permission). There is no implicit config
-search. Omitted optional fields inherit; explicit null is invalid.
+`reference` is exactly `{"role":"lesson.record","id":"lesson-<32 lowercase hex digits>"}`.
+It selects `<store>/<id>.lesson.json`. Updates require lowercase 64-hex
+`expected_sha256` of the ACTUAL raw record bytes. The tool, not the caller,
+generates identities, snapshots, timestamps, histories and observations.
+Reasons are nonblank. `content` is a full owned object, never a generic patch.
+Optional `extensions` is allowed only at create/propose, is a JSON object keyed
+by dotted namespaces, and cannot later be edited or removed through this tool.
 
-| Operation | Additional request fields |
-| --- | --- |
-| `explain` | None |
-| `query` | Optional `text` string; default empty |
-| `create` | Required `content`, `text`, `decision` |
-| `inspect`, `validate`, `render` | Required `reference` |
-| `revise` | Required `reference`, `expected_sha256`, `content` |
+Stdout is one UTF-8 JSON result with `operation`, `outcome`, `mutation_state`.
+Exit 0 means `succeeded`; unsuccessful operations exit 1. Ordinary `--help` is
+argparse usage text and grants no capability. Outcomes: `invalid-input`,
+`unsupported`, `unavailable`, `blocked`, `conflict`, `failed`; a dispatcher may
+report `not-executed` if it never invoked the tool. Diagnostics contain code and
+plain message, without echoing arbitrary inputs or exception text.
 
-`content` is the complete authored object below, not a partial patch. Create may
-include `extensions`; revise cannot supply that key. `reference` is exactly
-`{"role":"lesson.record","id":"lesson-<32 lowercase hex digits>"}`.
+| Operation | Required additional fields | Optional additional fields |
+| --- | --- | --- |
+| explain | None | None |
+| query | None | `text` (default empty), `statuses` |
+| inspect / validate / render | `reference` | None |
+| create | `content`, `text`, `decision` | `statuses`, `extensions` |
+| revise | `reference`, `expected_sha256`, `content`, `reason` | None |
+| derive | `reference`, `expected_sha256`, `reason`, `text`, `decision` | `statuses` |
+| accept | `reference`, `expected_sha256`, `reason`, `decision_source` | None |
+| retire | `reference`, `expected_sha256`, `reason` | None |
+| supersede | `reference`, `expected_sha256`, `reason`, `successor` | None |
 
-Standard output is one UTF-8 JSON object with `operation`, `outcome`, and
-`mutation_state`. An unrecognized operation reports `operation: null` and
-`unsupported`. A successful invocation exits 0; an unsuccessful operation exits
-1. CLI usage errors return JSON too. Help is the ordinary argparse usage surface.
-Diagnostics contain stable `code` and plain `message`; input payloads, exception
-text and config values are not echoed in errors. `explain` deliberately returns
-selected settings and normalized paths; do not put secrets in configuration.
+All writes require actual task authority. A JSON field, record, template or local
+actor string cannot authorize an action. Read results include exact record digest,
+store, reference and compatibility. Inspect adds the record and labels observations
+historical; successor freshness is `matches-captured`, `stale` or `unresolved`.
+Validate adds `valid: true` only after structural AND owned semantic checks;
+invalid records return failure, never approval. Render returns a result-only
+`view` with role/source/schema, historical freshness and escaped Markdown.
+Persisting/exporting that view is a separate caller-owned write.
 
-| Operation | Success fields in addition to the common envelope |
-| --- | --- |
-| `explain` | `settings`, leaf `sources`, normalized `project_root`, `package_root`, `store_root`, `template_path`, `locked_fields`, `write_roots`, `caller_write_roots`, `runtime_capability: not-probed`, `tracking: intent-only`, `unsupported_reasons` |
-| `query` | `store_root`, exact `text`, `matches` of `{reference,title,sha256}`, `partial`, per-file `diagnostics`, `query_sha256`, `selected_count` |
-| `create` | `reference`, exact persisted-byte `sha256`, `store_root`, `changed: true`, `related_query`, `directories_created` |
-| `revise` | `reference`, exact persisted-byte `sha256`, `store_root`, `changed`, `directories_created` |
-| `inspect` | `reference`, `sha256`, `store_root`, `record` |
-| `validate` | `reference`, `sha256`, `store_root`, `valid: true`, `diagnostics: []` |
-| `render` | `reference`, `sha256`, `store_root`, `view: {role: lesson.view, source: reference, schema_version, markdown}` |
+Writes return `reference`, persisted-byte `sha256`, `store_root`, `changed` and
+`directories_created`; new identities also return the actual `related_query`.
+Reconcile additionally returns the observed dimensions with
+`freshness: observed-this-invocation`; success means the observation was stored,
+not that adoption or effect succeeded. An uncertain/failed publication retains
+reference and intended digest when available. Read results do not rewrite data.
 
-An invalid record returns an unsuccessful result with diagnostics, never
-`valid: true`. Write results include `directories_created`, even on failure:
-newly created empty directories are retained, not recursively rolled back.
-Cleanup failure can override an otherwise committed result to `failed` while
-retaining the reference/digest. Inspect those results before any retry.
+## Query before a new identity
 
-### Related-record decision
+Query selects at most 10,000 direct `*.lesson.json` files, never recursively.
+An absent store is empty. Results have stable filename order, `matches`, exact
+`text`, normalized `statuses`, selected count, partial diagnostics and
+`query_sha256`. Matches include reference, title, status, schema version, raw digest
+and compatibility. Unsupported/malformed/unreadable records remain present in the
+query inventory and make the result partial; partial-empty is no absence proof.
+Search is case-insensitive literal substring over title/observation/conclusion.
+Omitted statuses means all supported statuses; an explicit array is nonempty,
+unique and contains only supported values.
 
-First execute `query` with a meaningful literal `text` (or empty text to examine
-all). Review matches and partial diagnostics. Choosing an existing candidate
-means `inspect`, then `revise` with its raw-byte digest. Choosing a new candidate
-means `create` with the same text/binding and this exact decision shape:
+Before create/propose/derive, inspect the actual query and choose a new identity
+using the SAME text/status selection and this shape:
 
 ```json
-{
-  "action": "new",
-  "query_sha256": "<actual query result, not an example digest>",
-  "acknowledge_partial": false,
-  "reason": "The observed cause and applicability differ from the listed candidates."
-}
+{"action":"new","query_sha256":"<actual query digest>","acknowledge_partial":false,"reason":"Distinct evidence and applicability after reviewing the query."}
 ```
 
-The placeholder above is not a valid hash. Use the actual returned 64 lowercase
-hex characters. `reason` must be nonblank. `acknowledge_partial` must be a boolean;
-set true only after a caller decision that acknowledges the listed limitations.
-The tool itself always reruns the query under its exclusive writer lock. It
-compares the resulting digest and refuses record publication on drift. A partial
-query additionally requires explicit acknowledgment; false returns `blocked`.
-The rerun is returned as `related_query` on success, query conflict or partial
-rejection, so the next decision has concrete evidence. The caller's decision is
-not a signed authorization receipt, dedup proof or content-uniqueness guarantee.
+Placeholders are not valid hashes. A partial query needs an actual caller decision
+and `acknowledge_partial: true`. Rerun the query under the store lock and compare
+its digest before publishing. Changed inventory/query => conflict; return the
+rerun as `related_query`. A query is not a content uniqueness proof.
 
-The query SHA-256 hashes sorted-key, indented UTF-8 JSON with one newline over:
-`query_version: 1`, normalized absolute `store_root`, exact case-sensitive request
-`text`, `record_schema: 1.0.0`, and filename-sorted `inventory`. Each entry has
-`filename` and actual raw-byte `sha256` if readable, plus a diagnostic `error`
-code if invalid. All selected records participate, including nonmatches and
-malformed records. Unreadable/link/oversized entries bind filename/error only;
-`partial: true` makes that limitation visible. Text search itself is
-case-insensitive, but changing the exact text changes the decision digest.
-Changing the store binding also changes it. No guessed digest or prior-query
-flag can suppress the tool's actual query. Read-only queries are not atomic
-snapshots against external editors; the under-lock rerun checks cooperating
-writer changes. Unknown concurrent editors remain outside the supported model.
+Digest version 2 hashes sorted-key, indent-2, non-ASCII UTF-8 JSON plus LF over
+`query_version`, normalized absolute `store_root`, exact `text`, sorted `statuses`,
+`read_schemas` and filename-sorted `inventory`. Readable files bind raw digests;
+invalid entries also bind their error code; unreadable entries bind name/error
+only. Nonmatches participate. Earlier query versions cannot authorize creation.
+No snapshot claim is made against external editors ignoring the lock.
 
-## Record and authoring boundary
+## Retention and one-record publication
 
-One JSON file stores the complete Lesson. Schema: `schemas/lesson-record.schema.json` relative to package root. `schema_version`, `kind`, `owner`, `id`, `status`, `created_at` and `updated_at` are tool-controlled. Invocation supplies authored `title`, `observation`, `evidence`, `conclusion`, `applies_when`, `does_not_apply_when`, `confidence`, `follow_up` and optional `extensions`.
+New records start at revision 1, initial status, equal actual creation/update times,
+empty history/provenance and null lifecycle facts. Every material update increments
+revision and appends operation, reason, prior revision/status/state/raw digest and
+actual event time. It retains removed content and old evidence. Prior digest is a
+historical observation, not reconstructable prior serialization or authentication.
+Times cannot regress. Equal authored content is a byte/time-preserving no-op;
+no revision/history is appended. Extensions are immutable. Unknown versions are
+preserved and unsupported; no deletion, bulk conversion or history compaction.
 
-IDs are `lesson-` plus UUID4's 32 lowercase hexadecimal digits. Initial status is always `candidate`; owner is `project`. Times are actual timezone-aware ISO 8601 execution times, never template values. `created_at` stays fixed. `updated_at` changes only for a material revision and cannot precede `created_at`.
+Resolve explicit bindings first. A writer exclusively creates
+`<store>/.lesson-write.lock` with an invocation token; existing locks are conflict,
+never auto-recovered. After locking, validate content/state/evidence and all frozen
+inputs, serialize within 4 MiB to a unique same-directory temp, fsync/close, then
+publish new identities with an exclusive hard link or update via atomic replace.
+Expected digests are rechecked under lock and immediately before replacement.
+Only the owned token/inode/temp is cleaned. Retained directory creation is reported.
+Cleanup failure overrides success to failed and never implies rollback.
 
-Evidence items contain `source` and `note`. Sources are opaque references, not instructions or automatically fetched paths/URLs. Empty evidence requires `tentative` confidence; `supported` needs at least one item. Supported remains a content claim, not proof of causality or approval. No adopted/active state exists yet.
+`mutation_state` describes record publication: `none` before publication/no-op,
+`committed` after complete publication/read-back, `unknown` on uncertain publication.
+It excludes transient lock/directory writes. Reread before retrying failed writes.
+Windows writes require local fixed/RAM NTFS; Linux requires an observed local
+ext2/ext3/ext4/xfs/btrfs/tmpfs/ramfs mount. Other/unproven/network backends fail
+unsupported; no trial files or fallback disk. This is code scope, not platform
+certification, power-loss durability or cross-file transaction support. Only
+cooperating writers are serialized; hostile/external editors remain outside it.
 
-Namespaced `extensions` preserve JSON values semantically. Initial revision cannot replace/remove extension data; creation may supply it. Unknown top-level fields or unsupported schema versions fail before mutation. Structural validation uses the supplied schema with date-time format checks enabled; the tool owns the additional semantics below.
+## Template boundary
 
-## Operation contracts
+The [default template](../templates/lesson.md) is inert UTF-8 text. Tokens use
+literal `{{token}}`, are replaced once, and cannot execute expressions, includes,
+HTML or path interpolation. Text is HTML/Markdown-escaped; arrays/objects are
+escaped JSON in authored order, not executable blocks. Missing, unknown or malformed
+tokens fail render. Repetition is allowed. Templates are read for every operation;
+token completeness is checked by render. Custom templates alter presentation only.
+Require id, schema_version, all authored content fields (title, observation, evidence, conclusion, applies_when, does_not_apply_when, confidence, follow_up), plus
+status, history and provenance for current records. decision is optional but included
+in the default view; legacy v1 permits the original content-only template.
+Only those tokens and decision are allowed. Derived/decision/successor state is
+retained in the record even if a custom presentation omits an optional token.
 
-| Operation | Inputs beyond frozen configuration | Behavior/output | Writes |
-| --- | --- | --- | --- |
-| `explain` | None | Effective values, field sources, constraints and path diagnostics; does not infer actual availability. | None |
-| `create` | Complete authored content, optional extensions | Query related candidates first; caller chooses revise or new. Generate identity/times, validate, exclusively create, return real reference/digest. | New candidate only |
-| `inspect` | `{role: lesson.record, id}` | Read direct filename, parse/validate, return record and SHA-256 of exact UTF-8 bytes. | None |
-| `query` | Optional literal text | Case-insensitive substring over title/observation/conclusion; empty selects all. Sort by ID; return references/titles, per-file errors and `partial` flag. | None |
-| `validate` | Reference | Check structure, filename/ID equality, versions, timestamp ordering, evidence/confidence. Never approves content. | None |
-| `revise` | Reference, lowercase 64-hex expected SHA-256, complete replacement authored content excluding extensions | Candidate-only; reread under lock, reject changed digest, preserve identity/creation time/extensions, update content/time, validate then replace. Equal content is a byte/time-preserving no-op. | Existing candidate only |
-| `render` | Reference and resolved template | Validate both; return Markdown with source ID/schema. Never imports view edits. | None; exporting requires caller-owned destination authority |
 
-Actual outcomes: `succeeded`, `invalid-input`, `unsupported`, `unavailable`, `blocked`, `conflict`, `failed`. A dispatcher that never started the tool reports `not-executed`. Query reports `partial: true` when any selected file cannot be interpreted; its partial result cannot prove no similar Lesson exists. Pre-create query output or an explicit caller decision acknowledging query limits must be available; an input flag alone does not prove the query ran. Dedup is a judgment, not a unique-content constraint.
+## Lesson content, lifecycle and compatibility
 
-## Bounded write behavior
+Writable schema: [lesson.record@2.0.0](../schemas/lesson-record-v2.schema.json).
+Authored content has title, observation, evidence, conclusion, applies_when,
+does_not_apply_when, confidence, follow_up. Strings are nonblank; text arrays
+preserve order, applies_when is nonempty. Evidence rows are `{source,note}` with
+inert references. Empty evidence requires `tentative`; `supported` requires an
+item but remains a content claim, never proof of causation/approval.
 
-1. Resolve runtime/config/authorization, freeze the store/template and validate authored content before material writes. The selected record schema is frozen too; this version rejects schema reference edges instead of resolving arbitrary remote resources.
-2. For create/revise exclusively create `<store>/.lesson-write.lock` with a unique invocation token. Existing lock is conflict; never guess it stale or delete another writer's lock. Reads need no lock.
-3. Under lock recheck containment/target identity. Revise compares current raw bytes to expected digest. A create ID collision fails without overwrite.
-4. Serialize validated UTF-8 JSON with one trailing newline to a unique same-directory temporary file. Flush with `fsync`, close, then create via exclusive hard-link publication (`os.link`) or revise via atomic same-directory `os.replace`. Unsupported filesystem semantics fail explicitly, including unproven shared/network backends. Windows writes initially require local fixed/RAM NTFS; Linux writes require a local ext2/ext3/ext4/xfs/btrfs/tmpfs/ramfs mount observed through `/proc/self/mountinfo`. Other platforms/backends return `unsupported` for writes. This allowlist is implementation scope, not tested platform certification. No storage probing creates trial files or chooses another disk.
-5. Readers see whole old/new records. Flush/close before publication. No power-loss durability claim, recovery journal or store migration is implied.
-6. Clean up only this invocation's verified temp file and matching-token lock. Cleanup failure or uncertain publication is `failed`, with `mutation_state: none | committed | unknown`; reread before retry. Never infer rollback merely from failure.
+Create -> candidate; candidate revise -> candidate; accept -> accepted only after
+actual mapped decision read-back. Candidate or accepted may retire, or supersede
+with an accepted same-store Lesson. Retired/superseded cannot mutate; accepted
+content cannot revise. Every decision preserves exact evidence and project binding.
+Accepting a Lesson never makes it a project rule.
 
-Existing lock files are never recovered automatically. Temp cleanup checks the
-owned inode and, after a complete write, the exact bytes; lock cleanup also
-requires the matching token. Partial lock writes remain for explicit recovery
-and report cleanup failure. `mutation_state` describes record publication, not
-transient lock/directory writes. A publication call with an uncertain error stays
-`unknown`; complete write/readback is `committed`; conflict before publication or
-an equal-content revision is `none`. Successful create removes its own extra
-temporary hard link. External permission and current filesystem failures remain
-real results, not inferred from metadata or `os.access`.
+Legacy [lesson.record@1.0.0](../schemas/lesson-record.schema.json) retains its
+unchanged schema and bytes. Inspect/query/validate/render support mixed v1/v2
+stores with `compatibility: read-only-legacy`; all v1 updates fail unsupported.
+Explicit derive from either supported version copies authored content/extensions
+into a NEW v2 candidate, resets decision/state and retains exact source snapshot,
+identity, version and store. The source remains untouched. No in-place, automatic,
+bulk or Markdown conversion. Legacy tools can reject v2 records/config.
 
-One cooperating writer per store is supported. External editors ignoring the lock can race; expected digests do not solve arbitrary concurrent writers. A record operation is not a transaction over standards, Issues and workflows. A shared mutation service or general locking framework is unnecessary here.
+## Successor boundary
 
-## Template binding
-
-Default `templates/lesson.md`; project override selects a UTF-8 file within project root. Templates are inert text: no execution, includes, expressions, path interpolation or recursive evaluation.
-
-Tokens: `id`, `schema_version`, `status`, `title`, `observation`, `evidence`, `conclusion`, `applies_when`, `does_not_apply_when`, `confidence`, `follow_up`, written `{{token}}`. Require `id`, `schema_version` and all authored-content tokens except `extensions`; `status` is optional. Unknown/malformed/missing required tokens fail before rendering. Repetition is allowed. Substitute once so token-like input cannot trigger another lookup.
-
-Arrays render in authored order as Markdown bullets; empty arrays as `None supplied`. Evidence is `source: note` escaped text, not executable instructions. Other values are Markdown-escaped plain text preserving line breaks. Do not interpret user HTML. Custom headings/order change presentation, not semantics or schema.
-
-## Version dispositions
-
-Read/write only `lesson.record@1.0.0`. Accept, supersede, retire, promote, delete, import, conversion and store migration are unsupported. Preserve unknown/historical bytes. Future owners select explicit convert/regenerate/re-execute/preserve behavior; no automatic compatibility/downgrade. P3-A owns lifecycle extension; P7 owns behavioral checks.
+`successor` is `{reference,expected_sha256}`. Select a distinct supported record in
+the SAME store/family, accepted (Lesson/ADR) or proposed (promotion). Promotion also
+requires the same captured target/config binding. Read, validate and pin its actual
+bytes; refuse a changed/missing/malformed chain, cross-store reference or cycle.
+Traversal is bounded at 1,000 links. Publication updates only the predecessor;
+no reverse link, successor mutation or multi-file transaction is inferred.
+Historical snapshots remain evidence if a live successor later changes; inspect
+reports its freshness separately. Derivation/supersession never imports authority.

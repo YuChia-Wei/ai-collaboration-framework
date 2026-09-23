@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p3-work-management-integration`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p4-orchestration-dispatch`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -24,9 +24,11 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | integrated PR #329; Issue/Project complete |
 | #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
 | #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
-| #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | source implementation active in same task |
-| #335 | P3-B work management | PR/local-backlog source and own design/workflow | source and correction locally integrated; online PR pending |
-| #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader merged PR #339; final mappings await packages |
+| #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | source inspected and locally integrated; online PR pending |
+| #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
+| #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader merged PR #339; final mapping inspected and locally integrated |
+| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | independent design checkpoint task active |
+| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | independent design/inventory task active |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -44,7 +46,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #335 source and CR335-001 correction are locally integrated; [inspection record](reports/p3-work-management-integration.md). Complete its online PR and Issue/Project read-back. #334 remains active. #337 loader stage is merged through PR #339 at `879b195160540f74bab2ac57cad148bcfaddbcbe`; its Issue/Project remain open/In progress for exact mappings after both package deliveries. Product execution remains deferred to P7.
+Current action: #334 knowledge source and #337 final 44-member/four-profile mapping are inspected and locally integrated; complete their combined online PR and Issue/Project read-back. See [knowledge inspection](reports/p3-knowledge-integration.md) and [mapping inspection](reports/p3-mapping-integration.md). #335 is merged/closed through PR #340. #341 workflow design runs in task `01a0cbc8-448d-7270-b27b-295295914afb`; #342 capability/schema design runs in task `01a0cbd1-789e-7c72-9852-ba5edd3a6998`. Both have verified Astra Ultra and assigned F: execution, and neither may change product/shared source before coordinator selection. Product execution remains deferred to P7.
 
 ## P3 shared implementation continuation
 

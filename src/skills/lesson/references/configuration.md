@@ -1,72 +1,99 @@
-# Lesson Configuration and Filesystem Binding, Version 1
+# Lesson configuration
 
-Caller supplies absolute `project_root`, absolute resolved `package_root` and optional explicit `project_config` / `local_config` paths. Relative config filenames resolve against project root. No upward search, cwd inference, environment interpolation or source-repository fallback. Omitted source means absent; explicitly named missing source is an error. Local config is deliberately selected machine-local input; in a Git project it must be ignored before use. Do not edit ignore rules automatically. No secrets are expected or echoed. JSON input must reject duplicate keys and non-finite numeric values. Check the integer config version with exact type (a boolean is not version 1).
+The caller supplies absolute `project_root` and `package_root`, and optional
+explicit `project_config` / `local_config` paths. Relative config, store and
+read-evidence paths resolve against the project root, never the config directory.
+No upward search, cwd inference, environment substitution or fallback directory.
+Explicitly named missing config is an error; no selected config means defaults
+without decision or promotion authority. The tool never edits configuration.
 
-Project JSON has `config_version: 1`, optional `skills.lesson` and optional `constraints.lesson`. Local JSON has `config_version: 1` and optional `skills.lesson` only. Invocation overrides contain only the Lesson settings object. The first resolver supports only `lesson`; generalize namespace handling only with a second actual consumer.
+## Namespace and precedence
 
-| Setting | Type/default | Override unit |
-| --- | --- | --- |
-| `store.kind` | Literal `filesystem` | Fixed; another value is unsupported. |
-| `store.root` | Nonempty path, `notes/lessons` | Scalar; relative to project root, not config directory. |
-| `store.tracking` | `tracked` or `ignored`, default `tracked` | Scalar; diagnostics only, no Git mutation. |
-| `template` | `{origin: package, path: templates/lesson.md}` | Atomic object; both keys required. Origin `package` or `project`. |
+Project JSON has exact integer `config_version: 2`, optional `skills` and optional
+`constraints`. Local JSON permits only `config_version` and `skills`; constraints
+are forbidden even for another namespace. Each namespace matches
+`[a-z][a-z0-9-]*(\.[a-z][a-z0-9-]*)*` and contains an object. Parse the full JSON
+syntax/envelope, then validate only this package's settings/constraints. Foreign
+objects remain inert; their values grant no permission and are never returned by
+`explain`. Unknown own fields, duplicate JSON keys, invalid Unicode, nonfinite
+values, bool/float versions and explicit null settings fail. Selected project and
+local files must use the same version. No automatic conversion is provided.
 
-Ordinary values resolve **invocation > local > project > package defaults**. Absent fields inherit; explicit null, wrong types, unknown keys and partial template objects fail. Merge `store` by its three leaves, replace `template` atomically, never concatenate arrays.
+Values resolve invocation > local > project > package defaults. `overrides`
+contains only this package's settings object. Merge store leaves; replace the
+whole template object. Absent values inherit; arrays are never concatenated.
 
-Project constraints are separate from this override chain:
+| Setting | Default / accepted value |
+| --- | --- |
+| `store.kind` | `filesystem` only |
+| `store.root` | `notes/lessons`; nonempty project-relative or explicit absolute path |
+| `store.tracking` | `tracked`; alternatively `ignored`; intent only, no Git edits |
+| `template` | `{origin: package, path: templates/lesson.md}`; atomic object; origin may be `project` |
 
-- `write_roots`: nonempty path array; relative entries resolve against project root. When omitted, allow only the store root selected by project settings plus defaults **before** local/invocation overrides. Caller authority may narrow this further. Overrides cannot expand permission.
-- `locked_fields`: optional array from `store.root`, `store.tracking`, `template`; locks each effective project/default value. Differing overrides fail, not silently ignored. Same-value repetition is harmless.
+Project-only `constraints.lesson` supports `write_roots` (nonempty unique path
+array) and `locked_fields` (unique values from `store.root`, `store.tracking`,
+`template`). Omitted write roots allow the project/default store selected BEFORE
+local/invocation overrides. Locks compare against project/default values; changing
+a locked value fails. Caller `write_roots` can narrow that scope; permissions are
+never unioned across namespaces or expanded by overrides. Actual task authority
+is required in addition to a path binding. Evidence adapters below are project
+constraints, never local/invocation settings.
 
-Local/invocation input cannot supply constraints, replace versions or bypass actual user/runtime authority. Changing accepted constraints is a separate project edit; requesting another output location is not that edit.
+## Paths, resources and storage
 
-Read-only `explain` returns values, winning source per field (`default`, `project`, `local`, `invocation`), normalized paths, locks, allowed roots and unsupported reasons. It creates no store and grants no writes. Static metadata cannot prove runtime capabilities.
+Roots must exist. Package resources are explicitly declared in metadata and
+contained in package root. The running executable must belong to that package.
+Project templates stay within project root; package templates must select the
+declared resource. Reject volume-root stores, parent traversal, all symlinks,
+junctions/reparse points, drive-relative/device/UNC paths and ambiguous Windows
+segments. A store cannot overlap package, selected config or template content.
+An external absolute store requires explicit project write roots and actual task
+authority. There is no disk discovery, relocation or migration fallback.
 
-## Filesystem roles and paths
+A new identity may provision missing store directories only if EVERY created
+parent is within project and caller write roots. With default `notes/lessons`, prepare
+`notes` separately or explicitly allow that parent. Created directories remain on
+failure and are reported; no recursive rollback. A changed store selects another
+collection without moving any records. Persist the store binding with a durable
+logical reference. Selected package/config/schema/template inputs are frozen and
+rechecked before publication. Identity drift, appearance of an input previously
+observed absent or changed input bytes produce conflict.
 
-Reference shape: `{role: lesson.record, id: lesson-<32 lowercase hex digits>}`. The caller also binds the store for this invocation. Resolve to `<store.root>/<id>.lesson.json`; identity is store-scoped, not a global registry. `lesson.view` is a rendering of the same record in the result. No record embeds the install root or source `.dev` layout.
+A selected local config within a Git project must already be ignored and untracked.
+The tool uses read-only Git with bounded calls and removes ambient Git variables;
+it does not change ignore rules. Missing required Git yields `unavailable`, and
+unproven ignored state yields `blocked`. No local config means no Git subprocess.
+The filesystem requirement includes this conditional capability.
 
-Freeze resolved settings, template bytes and store at operation start; do not reread changed settings midway. Recheck canonical containment/permission before writing. For nonexistent paths resolve the nearest existing ancestor before appending validated segments. Symlinks/junctions/reparse points cannot escape authorized roots. Reject volume-root stores, ambiguous paths, unsafe IDs and overlap with installed package content, config files or templates. Package resources stay in package root; project templates stay in project root. External templates are unsupported initially.
+`explain` returns effective settings, winning leaf sources, locks, allowed roots,
+selected config version, ignored namespace NAMES and authority binding identifiers.
+It creates no store. `runtime_capability: not-probed` and `tracking: intent-only`
+are deliberate limits; successful explanation does not prove write availability.
+Do not put secrets in configs, retained evidence or templates.
 
-An absolute/external store needs an explicit project `write_roots` entry containing it and actual caller permission. Reject relative paths escaping project root; use explicit absolute external bindings. No disk discovery or fallback. Fail unwritable stores before material output. Durable records never silently become scratch/cache. Volatile external storage requires a project durability decision; this tool does not provision backups.
+## Lesson v1 configuration compatibility
 
-Read only direct `*.lesson.json` children of the selected root. Missing store is empty for query and may be created by authorized create. Malformed/unknown-version records produce per-file diagnostics and an explicitly partial query result, never a complete empty result. No index is needed.
+Lesson also reads exact closed `config_version: 1`: only the `lesson` namespace,
+settings above, and project `write_roots`/`locked_fields`. Decision adapters are
+v2-only. No silent widening, conversion or automatic config edit; a v1/v2 selected
+project/local pair is rejected. Legacy tools may reject explicitly selected v2.
 
-Changing the binding selects another collection; it does not move records, change tracking or relocate references. A durable caller persisting a logical reference must persist its store binding too. Migration is separate; an active invocation retains its original binding.
+## Project decision evidence
 
-## Initial implementation limits
+`constraints.lesson.decision_sources` is an optional array of
+`{id, root, allowed_actors, pointers}`. IDs and actor arrays are nonempty/unique.
+`root` is an explicit read root; it cannot be a volume root or overlap this store,
+package, config or selected template. `pointers` maps exactly
+`subject_sha256, actor, decision, decided_at` to distinct non-root literal JSON Pointers. Empty pointers,
+bad `~` escapes and duplicate decoded targets fail. Resolve objects/arrays only;
+no wildcard/expression/remote lookup. Mapped values must be scalars.
 
-`scripts/lesson.py` rejects all selected symlinks, junctions and reparse points,
-including links whose current target is inside a root. It rejects `..` segments,
-drive-relative/device/UNC paths and ambiguous Windows filenames. Package and
-project roots must already exist. Resources are checked against their declared
-package root; the running executable must belong to the selected package.
-Absolute project-template paths are allowed only inside the explicit project.
-Package templates must identify a declared template resource.
-
-Create can provision the missing store directory and missing parents only when
-each directory lies within project write roots and any caller restriction.
-With the default `notes/lessons` constraint, provision `notes` separately first;
-or the project can explicitly allow `notes` to permit both directories. The tool
-does not expand the default bound just because a parent is absent. Created empty
-directories remain on failure and are listed in the result; cleanup never
-recursively deletes them. A frozen existing store directory must retain its
-filesystem identity for the operation.
-
-Git is needed only when a selected local config belongs to a Git project. The
-tool performs read-only `rev-parse --show-toplevel` and `check-ignore -q` calls,
-with timeouts, to require an ignored, untracked local config inside that project.
-Git-related ambient variables are excluded from these calls. A missing Git
-executable yields `unavailable`; inability to establish ignored state yields
-`blocked`. No local config means no Git subprocess. Files outside a Git project
-do not need Git. This conditional capability is part of the filesystem/local
-configuration requirement, not a mandatory skill dependency.
-
-Explain returns `unsupported_reasons: []` only after input binding succeeds;
-binding/config failures return a normal unsuccessful result with diagnostics.
-`runtime_capability: not-probed` means it has not attempted publication or tested
-the filesystem. It does not create a store or establish write availability.
-
-The declaration's `implemented` state means source exists. Actual runtime,
-filesystem, crash and concurrency behavior still requires execution evidence;
-neither metadata nor this document supplies it.
+An absent adapter blocks accept, not ordinary
+saved-record reads. A request selects `{binding_id, path, expected_sha256}`;
+path must be within that adapter root. Actual bytes must match the expected hash.
+Read the source and require current raw record digest, allowed actor, permitted
+decision and a decision time between record creation and source observation.
+Lesson permits accept and has no option.
+Capture source bytes/hash/time and project config/binding identity in the record.
+Actor strings rely on the project ownership/access process and are not authenticated
+signatures. A selection or generated approval flag cannot substitute for evidence.

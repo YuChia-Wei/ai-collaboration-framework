@@ -50,3 +50,15 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P3 work-management source stage
 
 #335 returned source `5e632ed50242f13b44bec1884de24c496f5a93ea` and bounded correction `5409641f19244bc44467af7fba3fc496d7f5195c`. [Coordinator inspection](p3-work-management-integration.md) retains CR335-001, its source correction and P7 verification ownership. This completes the bounded source work locally; online integration is next. #337 mapping still awaits both package sets and #334 remains active. No product tests, runtime calls or CI were run.
+
+## P4 design dispatch preparation
+
+#335 is now merged in PR #340 with Issue CLOSED/COMPLETED and Project Done read back. #341 is open for the portable workflow/retention contract stage; [selected scope](p4-orchestration-scope.md) distinguishes it from still-open legacy #316. P4 design can proceed while #334 source is active; implementation remains sequenced after contract reconciliation. #337 exact mapping still awaits the actual packages.
+
+## P3 knowledge source and actual mapping
+
+#334 source 552e218d039245482ed422be7d4fb642d5463ff0 is locally integrated after [bounded inspection](p3-knowledge-integration.md). F-04 now has concrete lifecycle/promotion source but remains partially resolved pending composition/adoption/verification. #337 receives [44-member/four-profile mapping](p3-package-mapping-scope.md) against all actual package source. #341 design dispatch is independently active with runtime/F: identity retained in evidence/p4-task-dispatch.json. Product execution remains deferred-by-owner.
+
+## P3 mapping source completion and P5 dispatch
+
+#337 final mapping b38ef4a8dce57c2cb78fda6ae9c100d689605245 is received and locally integrated after [direct source/configuration comparison](p3-mapping-integration.md). #334/#337 online integration is next. #342 design is independently active; runtime and F: identity are retained in evidence/p5-task-dispatch.json. #341/#342 remain open design work, and the program remains implementation-in-progress with verification deferred to P7.

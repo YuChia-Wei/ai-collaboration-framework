@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Candidate-only lesson.fs 0.1.0. JSON request in, one JSON result out.
+"""Standalone project-owned knowledge filesystem operations. JSON request in, one JSON result out.
 
 Public contract: ../references/operations.md. No source-repository imports.
 """
@@ -24,12 +24,24 @@ from datetime import datetime, timezone
 import uuid
 
 
-OPERATIONS = ("explain", "create", "inspect", "query", "validate", "revise", "render")
-AUTHORED = ("title", "observation", "evidence", "conclusion", "applies_when",
-            "does_not_apply_when", "confidence", "follow_up")
-CONTROLLED = ("schema_version", "kind", "owner", "id", "status", "created_at", "updated_at")
-ID = re.compile(r"lesson-[0-9a-f]{32}\Z")
+OWNER = 'lesson'
+VERSION = '0.2.0'
+SCHEMA_VERSION = '2.0.0'
+PREFIX = 'lesson'
+INITIAL = 'candidate'
+STATUSES = ('candidate', 'accepted', 'retired', 'superseded')
+OPERATIONS = ('explain', 'create', 'inspect', 'query', 'validate', 'revise', 'render', 'derive', 'accept', 'retire', 'supersede')
+AUTHORED = ('title', 'observation', 'evidence', 'conclusion', 'applies_when', 'does_not_apply_when', 'confidence', 'follow_up')
+SCHEMAS = {'1.0.0': 'schemas/lesson-record.schema.json', '2.0.0': 'schemas/lesson-record-v2.schema.json'}
+SEARCH_FIELDS = ('title', 'observation', 'conclusion')
+LEGACY_VERSION = '1.0.0'
+MUTABLE = ('content', 'successor', 'decision')
+EXTRA_CONSTRAINTS = ('decision_sources',)
+SCRIPT = 'scripts/lesson.py'
+ROLE = OWNER + ".record"
+ID = re.compile(PREFIX + r"-[0-9a-f]{32}\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
+NAMESPACE = re.compile(r"[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)*\Z")
 TOKEN = re.compile(r"\{\{([a-z_]+)\}\}")
 LIMIT = 4 * 1024 * 1024
 MAX_FILES = 10000
@@ -261,108 +273,8 @@ def resource(package, value):
     return path
 
 
-def load_package(package):
-    metadata = parse_yaml(read_bytes(package / "skill-package.yaml", "unsupported"))
-    fields(metadata, ("metadata_version", "id", "version", "delivery_status", "entrypoint",
-                      "dependencies", "runtime", "configuration", "artifact_roles", "resources", "operations"), label="metadata")
-    if type(metadata["metadata_version"]) is not int:
-        fail("metadata-version", "metadata_version must be an integer.")
-    if (metadata["metadata_version"] != 1 or metadata["id"] != "lesson" or
-            metadata["version"] != "0.1.0" or metadata["delivery_status"] != "implemented"):
-        fail("metadata-version", "Unsupported Lesson package identity, version or delivery state.", "unsupported")
-    if metadata["entrypoint"] != "SKILL.md":
-        fail("entrypoint", "Unsupported skill entrypoint.", "unsupported")
-    fields(metadata["dependencies"], ("required", "optional"), label="dependencies")
-    if metadata["dependencies"] != {"required": [], "optional": []}:
-        fail("dependency-closure", "This Lesson version has no skill dependencies.", "unsupported")
-    runtime_ids = []
-    if type(metadata["runtime"]) is not list:
-        fail("runtime", "runtime must be an array.")
-    for item in metadata["runtime"]:
-        fields(item, ("id", "for_operations", "on_missing"), ("version", "requirement", "purpose"), "runtime entry")
-        runtime_ids.append(string(item["id"], "runtime id"))
-        if not set(strings(item["for_operations"], "runtime operations", True)) <= set(OPERATIONS):
-            fail("runtime", "Unknown runtime operation.")
-        if item["on_missing"] != "unavailable" or ("version" in item) == ("requirement" in item):
-            fail("runtime", "Runtime must declare one version or requirement and unavailable disposition.")
-        for key in ("version", "requirement", "purpose"):
-            if key in item:
-                string(item[key], key)
-        expected = {"python": ">=3.11,<4", "pyyaml": ">=6,<7", "jsonschema": ">=4.18,<5"}
-        if item["id"] in expected and item.get("version") != expected[item["id"]]:
-            fail("runtime-version", "Unsupported runtime requirement.", "unsupported")
-    if sorted(runtime_ids) != sorted(("skill-instruction-reader", "python", "pyyaml", "jsonschema", "filesystem")):
-        fail("runtime", "Unknown, missing or duplicate runtime identity.")
-    fields(metadata["configuration"], ("namespace", "defaults"), label="configuration")
-    if metadata["configuration"]["namespace"] != "lesson":
-        fail("namespace", "Unsupported settings namespace.", "unsupported")
-    settings(metadata["configuration"]["defaults"], complete=True)
-    roles = metadata["artifact_roles"]
-    if type(roles) is not list or len(roles) != 2:
-        fail("roles", "Exactly the record and view roles are required.")
-    by_role = {}
-    for item in roles:
-        if type(item) is not dict or type(item.get("role")) is not str or item["role"] in by_role:
-            fail("roles", "Invalid or duplicate artifact role.")
-        by_role[item.get("role")] = item
-    if set(by_role) != {"lesson.record", "lesson.view"}:
-        fail("roles", "Unknown artifact role.")
-    fields(by_role["lesson.record"], ("role", "owner", "schema", "store_binding", "identity", "filename", "read_operations", "write_operations"))
-    fields(by_role["lesson.view"], ("role", "owner", "source_role", "output", "persistence", "produce_operations"))
-    record_role, view_role = by_role["lesson.record"], by_role["lesson.view"]
-    if (record_role["owner"] != "project" or record_role["schema"] != "lesson.record@1.0.0" or
-            record_role["store_binding"] != "lesson.store" or record_role["identity"] != "lesson-<32 lowercase hex digits>" or
-            record_role["filename"] != "<id>.lesson.json" or
-            record_role["read_operations"] != ["inspect", "query", "validate", "render"] or
-            record_role["write_operations"] != ["create", "revise"] or view_role["owner"] != "derived" or
-            view_role["source_role"] != "lesson.record" or view_role["produce_operations"] != ["render"]):
-        fail("roles", "Unsupported artifact role contract.", "unsupported")
-    string(view_role["output"], "view output")
-    string(view_role["persistence"], "view persistence")
-    resources = fields(metadata["resources"], ("references", "schemas", "templates", "tools"), label="resources")
-    paths = [metadata["entrypoint"], "skill-package.yaml"]
-    paths += strings(resources["references"], "references", True)
-    for kind in ("schemas", "templates", "tools"):
-        if type(resources[kind]) is not list or len(resources[kind]) != 1:
-            fail("resources", f"Exactly one {kind} resource is required.")
-    schema = fields(resources["schemas"][0], ("id", "version", "path", "owner", "migration"))
-    template = fields(resources["templates"][0], ("id", "path", "input_role", "output_role", "owner"))
-    tool = fields(resources["tools"][0], ("id", "owner", "implementation_status", "entrypoint", "operation_contract", "operations"))
-    if (schema["id"] != "lesson.record" or schema["version"] != "1.0.0" or schema["owner"] != "lesson" or
-            template["id"] != "lesson.default-view" or template["input_role"] != "lesson.record" or
-            template["output_role"] != "lesson.view" or template["owner"] != "lesson" or
-            tool["id"] != "lesson.fs" or tool["owner"] != "lesson" or tool["implementation_status"] != "implemented" or
-            tool["entrypoint"] != "scripts/lesson.py" or tool["operations"] != list(OPERATIONS)):
-        fail("resources", "Unsupported owned resource declaration.", "unsupported")
-    string(schema["migration"], "migration disposition")
-    if tool["operation_contract"] not in resources["references"]:
-        fail("resources", "Operation contract must be a declared reference.")
-    paths += [schema["path"], template["path"], tool["entrypoint"]]
-    for path in paths:
-        string(path, "resource path")
-    if len(paths) != len(set(paths)):
-        fail("resources", "Duplicate resource paths.")
-    for path in paths:
-        resource(package, path)
-    if resource(package, tool["entrypoint"]) != Path(__file__).resolve():
-        fail("package-binding", "Selected package does not own this executable.", "blocked")
-    if type(metadata["operations"]) is not list:
-        fail("operations", "operations must be an array.")
-    operation_ids = []
-    for item in metadata["operations"]:
-        fields(item, ("id", "inputs", "outputs", "tool", "implementation_status"), label="operation")
-        operation_ids.append(string(item["id"], "operation id"))
-        strings(item["inputs"], "inputs", True)
-        strings(item["outputs"], "outputs", True)
-        if item["tool"] != "lesson.fs" or item["implementation_status"] != "implemented":
-            fail("operation-state", "Tool operation is not implemented.", "unsupported")
-    if operation_ids != list(OPERATIONS):
-        fail("operations", "Unsupported operation declarations.", "unsupported")
-    return metadata
-
-
 def settings(value, complete=False):
-    fields(value, ("store", "template") if complete else (), () if complete else ("store", "template"), "Lesson settings")
+    fields(value, ("store", "template") if complete else (), () if complete else ("store", "template"), "selected skill settings")
     if "store" in value:
         store = fields(value["store"], ("kind", "root", "tracking") if complete else (),
                        () if complete else ("kind", "root", "tracking"), "store settings")
@@ -405,25 +317,6 @@ def git_local_ignored(project, local):
         fail("local-ignore", "Could not establish the selected local config's ignored state.", "blocked")
 
 
-def config(path, local=False):
-    value = parse_json(read_bytes(path))
-    fields(value, ("config_version",), ("skills",) if local else ("skills", "constraints"), "config")
-    if type(value["config_version"]) is not int:
-        fail("config-version", "config_version must have exact integer type.")
-    if value["config_version"] != 1:
-        fail("config-version", "Unsupported config version.", "unsupported")
-    skills = fields(value.get("skills", {}), (), ("lesson",), "skills")
-    lesson = settings(skills.get("lesson", {}))
-    constraints = fields(value.get("constraints", {}), (), ("lesson",), "constraints")
-    rules = fields(constraints.get("lesson", {}), (), ("write_roots", "locked_fields"), "Lesson constraints")
-    if "write_roots" in rules:
-        strings(rules["write_roots"], "write_roots", True)
-    locks = strings(rules.get("locked_fields", []), "locked_fields")
-    if not set(locks) <= {"store.root", "store.tracking", "template"}:
-        fail("locked-fields", "Unknown locked field.")
-    return lesson, rules
-
-
 def merge_settings(target, layer, sources, source):
     if "store" in layer:
         for key, value in layer["store"].items():
@@ -436,223 +329,6 @@ def merge_settings(target, layer, sources, source):
 
 def field_value(settings_value, field):
     return settings_value["template"] if field == "template" else settings_value["store"][field.split(".")[1]]
-
-
-class Binding:
-    def __init__(self, request):
-        self.project = safe_path(request["project_root"])
-        self.package = safe_path(request["package_root"])
-        if not self.project.is_dir() or not self.package.is_dir():
-            fail("root", "Explicit project and package roots must exist as directories.")
-        self.metadata = load_package(self.package)
-        self.settings = copy.deepcopy(self.metadata["configuration"]["defaults"])
-        self.sources = {key: "default" for key in ("store.kind", "store.root", "store.tracking", "template")}
-        self.config_paths = []
-        project_layer, rules = {}, {}
-        if "project_config" in request:
-            project_path = safe_path(request["project_config"], self.project)
-            self.config_paths.append(project_path)
-            project_layer, rules = config(project_path)
-        merge_settings(self.settings, project_layer, self.sources, "project")
-        self.project_settings = copy.deepcopy(self.settings)
-        self.locks = rules.get("locked_fields", [])
-        self.allowed = [safe_path(value, self.project) for value in rules.get("write_roots", [self.settings["store"]["root"]])]
-        self.caller_allowed = None
-        if "write_roots" in request:
-            self.caller_allowed = [safe_path(value, self.project) for value in strings(request["write_roots"], "caller write_roots", True)]
-        # Absolute external stores require explicit project roots, even when
-        # the root originated in project settings rather than an override.
-        self.explicit_roots = "write_roots" in rules
-        layers = []
-        if "local_config" in request:
-            local_path = safe_path(request["local_config"], self.project)
-            self.config_paths.append(local_path)
-            git_local_ignored(self.project, local_path)
-            layers.append(("local", config(local_path, local=True)[0]))
-        if "overrides" in request:
-            layers.append(("invocation", settings(request["overrides"])))
-        for source, layer in layers:
-            merge_settings(self.settings, layer, self.sources, source)
-            for locked in self.locks:
-                if not exact_equal(field_value(self.settings, locked), field_value(self.project_settings, locked)):
-                    fail("locked-field", f"Override changes project-locked field {locked}.", "blocked")
-        self.store = safe_path(self.settings["store"]["root"], self.project)
-        self.store_identity = identity(self.store.stat()) if self.store.exists() else None
-        template = self.settings["template"]
-        template_root = self.package if template["origin"] == "package" else self.project
-        self.template_path = safe_path(template["path"], template_root)
-        if not beneath(self.template_path, template_root):
-            fail("template-boundary", "Template must stay within its declared root.", "blocked")
-        if template["origin"] == "package" and self.template_path != resource(self.package, self.metadata["resources"]["templates"][0]["path"]):
-            fail("template-resource", "A package template must be a declared template resource.")
-        self.check_paths()
-        try:
-            self.template = read_bytes(self.template_path).decode("utf-8", errors="strict")
-        except UnicodeError:
-            fail("template-encoding", "Template must be UTF-8.")
-        validate_template(self.template)
-        self.validator = None
-        if request["operation"] != "explain":
-            dependency("jsonschema", (4, 18), (5, 0))
-            try:
-                from jsonschema import Draft202012Validator, FormatChecker
-                schema = parse_json(read_bytes(resource(self.package, self.metadata["resources"]["schemas"][0]["path"])))
-                # This schema family has no reference edges. Do not allow a
-                # replaced schema to cause implicit network or filesystem reads.
-                def no_refs(value):
-                    if type(value) is dict:
-                        if "$ref" in value or "$dynamicRef" in value:
-                            fail("schema-ref", "References are unsupported in the initial record schema.", "unsupported")
-                        for child in value.values():
-                            no_refs(child)
-                    elif type(value) is list:
-                        for child in value:
-                            no_refs(child)
-                no_refs(schema)
-                Draft202012Validator.check_schema(schema)
-                self.validator = Draft202012Validator(schema, format_checker=FormatChecker())
-            except ImportError:
-                fail("dependency", "jsonschema could not be imported.", "unavailable")
-            except Exception as exc:
-                if isinstance(exc, Fault):
-                    raise
-                fail("schema", "Invalid owned record schema.")
-
-    def check_paths(self):
-        for path in (self.project, self.package, self.store, self.template_path, *self.config_paths, *self.allowed, *(self.caller_allowed or [])):
-            if safe_path(str(path)) != path:
-                fail("binding-drift", "Frozen path binding changed.", "conflict")
-        if self.store == Path(self.store.anchor):
-            fail("store-root", "Volume-root stores are forbidden.", "blocked")
-        if self.store.exists() and not self.store.is_dir():
-            fail("store-type", "Store must be a directory.")
-        if self.store_identity is not None and (not self.store.exists() or identity(self.store.stat()) != self.store_identity):
-            fail("store-drift", "Frozen store directory identity changed.", "conflict")
-        if not any(beneath(self.store, root) for root in self.allowed):
-            fail("write-boundary", "Selected store exceeds project write roots.", "blocked")
-        if self.caller_allowed is not None and not any(beneath(self.store, root) for root in self.caller_allowed):
-            fail("caller-boundary", "Selected store exceeds caller write roots.", "blocked")
-        if not beneath(self.store, self.project) and not self.explicit_roots:
-            fail("external-store", "An external store requires explicit project write_roots.", "blocked")
-        if any(overlap(self.store, protected) for protected in (self.package, self.template_path, *self.config_paths)):
-            fail("overlap", "Store overlaps installed package, config or template content.", "blocked")
-
-    def explain(self):
-        return {"settings": self.settings, "sources": self.sources, "project_root": str(self.project),
-                "package_root": str(self.package), "store_root": str(self.store), "template_path": str(self.template_path),
-                "locked_fields": self.locks, "write_roots": [str(p) for p in self.allowed],
-                "caller_write_roots": None if self.caller_allowed is None else [str(p) for p in self.caller_allowed],
-                "runtime_capability": "not-probed", "tracking": "intent-only", "unsupported_reasons": []}
-
-    def record_path(self, ref):
-        fields(ref, ("role", "id"), label="record reference")
-        if ref["role"] != "lesson.record" or type(ref["id"]) is not str or not ID.fullmatch(ref["id"]):
-            fail("reference", "Invalid store-scoped Lesson reference.")
-        return safe_path(ref["id"] + ".lesson.json", self.store, relative_only=True)
-
-
-def validate_template(template):
-    found = set(TOKEN.findall(template))
-    required = set(AUTHORED) | {"id", "schema_version"}
-    if found - required - {"status"} or required - found:
-        fail("template-token", "Template contains unknown tokens or omits required tokens.")
-    remainder = TOKEN.sub("", template)
-    if "{{" in remainder or "}}" in remainder:
-        fail("template-token", "Malformed template token.")
-
-
-def validate_record(binding, record, expected_id=None):
-    fields(record, (*CONTROLLED, *AUTHORED), ("extensions",), "record")
-    if type(record["schema_version"]) is not str:
-        fail("record-version", "Record schema_version must be a string.")
-    if record["schema_version"] != "1.0.0":
-        fail("record-version", "Unsupported record schema version; original bytes preserved.", "unsupported")
-    errors = sorted(binding.validator.iter_errors(record), key=lambda error: str(list(error.absolute_path)))
-    if errors:
-        fail("record-schema", "Record does not satisfy lesson.record@1.0.0.")
-    if expected_id is not None and record["id"] != expected_id:
-        fail("record-identity", "Filename and record identity differ.")
-    if not ID.fullmatch(record["id"]):
-        fail("record-identity", "Invalid Lesson identity.")
-    if any(not re.fullmatch(r"[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+", key) for key in record.get("extensions", {})):
-        fail("extension-name", "Extension keys must be exact dotted namespaces.")
-    for field in ("title", "observation", "conclusion"):
-        string(record[field], field)
-    for field in ("applies_when", "does_not_apply_when", "follow_up"):
-        for value in record[field]:
-            string(value, field)
-    for item in record["evidence"]:
-        string(item["source"], "evidence source")
-        string(item["note"], "evidence note")
-    if not record["evidence"] and record["confidence"] != "tentative":
-        fail("confidence", "Empty evidence requires tentative confidence.")
-    try:
-        created = datetime.fromisoformat(record["created_at"].upper().replace("Z", "+00:00"))
-        updated = datetime.fromisoformat(record["updated_at"].upper().replace("Z", "+00:00"))
-        if created.tzinfo is None or updated.tzinfo is None or updated < created:
-            fail("record-time", "Record timestamps require zones and updated_at >= created_at.")
-    except ValueError:
-        fail("record-time", "Invalid record timestamps.")
-    return record
-
-
-def reference(record):
-    return {"role": "lesson.record", "id": record["id"]}
-
-
-def inspect_record(binding, ref):
-    path = binding.record_path(ref)
-    raw = read_bytes(path)
-    record = validate_record(binding, parse_json(raw), ref["id"])
-    return record, raw
-
-
-def authored(value, extensions=False):
-    return fields(value, AUTHORED, ("extensions",) if extensions else (), "authored content")
-
-
-def new_record(content):
-    now = datetime.now(timezone.utc).isoformat(timespec="microseconds")
-    return {"schema_version": "1.0.0", "kind": "lesson", "owner": "project",
-            "id": "lesson-" + uuid.uuid4().hex, "status": "candidate",
-            "created_at": now, "updated_at": now, **copy.deepcopy(content)}
-
-
-def query(binding, text):
-    if type(text) is not str:
-        fail("query-text", "Query text must be a string.")
-    binding.check_paths()
-    matches, diagnostics, inventory = [], [], []
-    try:
-        entries = sorted(binding.store.iterdir(), key=lambda p: p.name) if binding.store.exists() else []
-    except OSError:
-        fail("query-store", "Cannot enumerate the selected store.", "blocked")
-    selected = [path for path in entries if path.name.endswith(".lesson.json")]
-    if len(selected) > MAX_FILES:
-        fail("query-limit", "Store exceeds the 10000 direct-record query limit.", "unsupported")
-    for path in selected:
-        item = {"filename": path.name}
-        try:
-            raw = read_bytes(path)
-            item["sha256"] = digest(raw)
-            record_id = path.name.removesuffix(".lesson.json")
-            if not ID.fullmatch(record_id):
-                fail("filename", "Unsafe Lesson filename.")
-            record = validate_record(binding, parse_json(raw), record_id)
-            if any(text.casefold() in record[key].casefold() for key in ("title", "observation", "conclusion")):
-                matches.append({"reference": reference(record), "title": record["title"], "sha256": item["sha256"]})
-        except (Fault, OSError) as exc:
-            diagnostic = exc.diagnostic() if isinstance(exc, Fault) else {"code": "read-error", "message": "Selected record is unreadable."}
-            item["error"] = diagnostic["code"]
-            diagnostics.append({"filename": path.name, **diagnostic})
-        inventory.append(item)
-    # Includes even nonmatching/malformed raw bytes; unreadable files bind
-    # filename/error only, hence partial acknowledgment is never completeness.
-    subject = {"query_version": 1, "store_root": str(binding.store), "text": text,
-               "record_schema": "1.0.0", "inventory": inventory}
-    return {"store_root": str(binding.store), "text": text, "matches": matches,
-            "partial": bool(diagnostics), "diagnostics": diagnostics,
-            "query_sha256": digest(encode(subject)), "selected_count": len(selected)}
 
 
 def local_write_backend(store):
@@ -701,8 +377,8 @@ class Writer:
     def __init__(self, binding):
         self.binding = binding
         self.token = uuid.uuid4().hex
-        self.lock = binding.store / ".lesson-write.lock"
-        self.temp = binding.store / (".lesson-" + self.token + ".tmp")
+        self.lock = binding.store / ("." + OWNER + "-write.lock")
+        self.temp = binding.store / ("." + OWNER + "-" + self.token + ".tmp")
         self.owned = {}
         self.mutation_state = "none"
         self.directories_created = []
@@ -724,7 +400,7 @@ class Writer:
         self.binding.check_paths()
         local_write_backend(self.binding.store)
         if not self.binding.store.exists() and not allow_create:
-            fail("missing-store", "Revise requires an existing store and candidate.")
+            fail("missing-store", "This update requires an existing record store.")
         missing = []
         cursor = self.binding.store
         while not cursor.exists():
@@ -765,10 +441,10 @@ class Writer:
         except FileExistsError:
             self.mutation_state = "none"
             fail("record-collision", "Create identity already exists; no overwrite.", "conflict")
-        self.mutation_state = "committed"
         if read_bytes(path) != raw:
             self.mutation_state = "unknown"
             fail("publication-readback", "Published bytes could not be confirmed; reread before retry.", "failed")
+        self.mutation_state = "committed"
 
     def cleanup(self):
         failures = []
@@ -794,79 +470,828 @@ class Writer:
         return failures
 
 
+
+
+def timestamp(value):
+    string(value, "timestamp")
+    try:
+        parsed = datetime.fromisoformat(value.upper().replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError()
+        return parsed
+    except ValueError:
+        fail("timestamp", "Expected a timezone-aware ISO 8601 timestamp.")
+
+
+def now_text():
+    return datetime.now(timezone.utc).isoformat(timespec="microseconds")
+
+
+def expected_digest(value):
+    if type(value) is not str or not SHA256.fullmatch(value):
+        fail("expected-digest", "Expected an actual lowercase raw-byte SHA-256.")
+    return value
+
+
+def load_package(binding):
+    metadata = parse_yaml(binding.read_input(binding.package / "skill-package.yaml"))
+    fields(metadata, ("metadata_version", "id", "version", "delivery_status", "entrypoint",
+                      "dependencies", "runtime", "configuration", "artifact_roles", "resources", "operations"))
+    if type(metadata["metadata_version"]) is not int or metadata["metadata_version"] != 2:
+        fail("metadata-version", "This tool requires metadata version 2.", "unsupported")
+    if (metadata["id"], metadata["version"], metadata["delivery_status"], metadata["entrypoint"]) != (OWNER, VERSION, "implemented", "SKILL.md"):
+        fail("package-identity", "Unsupported package identity or delivery state.", "unsupported")
+    if not exact_equal(metadata["dependencies"], {"required": [], "optional": []}):
+        fail("dependency-closure", "This package has no skill dependencies.", "unsupported")
+    config_meta = fields(metadata["configuration"], ("namespace", "defaults"))
+    if config_meta["namespace"] != OWNER:
+        fail("namespace", "Configuration namespace must match the package.")
+    settings(config_meta["defaults"], complete=True)
+    resources = fields(metadata["resources"], ("references", "schemas", "templates", "tools"))
+    paths = ["SKILL.md", "skill-package.yaml"] + strings(resources["references"], "references", True)
+    pairs = set()
+    if type(resources["schemas"]) is not list:
+        fail("schemas", "Schema resources must be an array.")
+    for row in resources["schemas"]:
+        fields(row, ("id", "version", "path", "owner", "migration"))
+        pair = (string(row["id"], "schema id"), string(row["version"], "schema version"))
+        if pair in pairs or row["id"] != ROLE or row["version"] not in SCHEMAS or row["path"] != SCHEMAS[row["version"]] or row["owner"] != OWNER:
+            fail("schemas", "Unsupported or duplicate schema identity.", "unsupported")
+        pairs.add(pair)
+        string(row["migration"], "migration disposition")
+        paths.append(row["path"])
+    if pairs != {(ROLE, version) for version in SCHEMAS}:
+        fail("schemas", "Missing exact readable schema resource.", "unsupported")
+    for key in ("templates", "tools"):
+        if type(resources[key]) is not list or len(resources[key]) != 1:
+            fail("resource-count", "Exactly one owned template and tool are required.")
+    template = fields(resources["templates"][0], ("id", "path", "input_role", "output_role", "owner"))
+    tool = fields(resources["tools"][0], ("id", "owner", "implementation_status", "entrypoint", "operation_contract", "operations"))
+    if (template["id"], template["input_role"], template["output_role"], template["owner"]) != (OWNER + ".default-view", ROLE, OWNER + ".view", OWNER):
+        fail("template", "Unsupported template declaration.")
+    if (tool["id"], tool["owner"], tool["implementation_status"], tool["entrypoint"]) != (OWNER + ".fs", OWNER, "implemented", SCRIPT) or tool["operations"] != list(OPERATIONS):
+        fail("tool", "Unsupported public tool declaration.")
+    if tool["operation_contract"] not in resources["references"]:
+        fail("tool-contract", "Public operation contract must be declared.")
+    paths.extend((template["path"], tool["entrypoint"]))
+    if config_meta["defaults"]["template"] != {"origin": "package", "path": template["path"]}:
+        fail("template-default", "Default template must name the declared package template.")
+    if len(paths) != len({string(path, "resource path").casefold() for path in paths}):
+        fail("resource-path", "Duplicate or case-aliased resource paths.")
+    for path in paths:
+        binding.read_input(resource(binding.package, path))
+    if resource(binding.package, SCRIPT) != Path(__file__).resolve():
+        fail("package-binding", "This executable does not belong to the selected package.", "blocked")
+    roles = metadata["artifact_roles"]
+    if type(roles) is not list or len(roles) != 2:
+        fail("roles", "Exactly the owned record/view roles are required.")
+    by_role = {}
+    for row in roles:
+        if type(row) is not dict or type(row.get("role")) is not str or row["role"] in by_role:
+            fail("roles", "Duplicate or invalid role.")
+        by_role[row["role"]] = row
+    if set(by_role) != {ROLE, OWNER + ".view"}:
+        fail("roles", "Unsupported role identity.")
+    record = fields(by_role[ROLE], ("role", "owner", "schema", "read_schemas", "store_binding", "identity", "filename", "read_operations", "write_operations"))
+    reads = strings(record["read_schemas"], "read_schemas", True)
+    if set(reads) != {ROLE + "@" + version for version in SCHEMAS} or record["schema"] != ROLE + "@" + SCHEMA_VERSION:
+        fail("role-schema", "Exact readable/writable schema identities are required.")
+    if (record["owner"], record["store_binding"], record["identity"], record["filename"]) != ("project", OWNER + ".store", PREFIX + "-<32 lowercase hex digits>", "<id>." + PREFIX + ".json"):
+        fail("record-role", "Unsupported record ownership or storage identity.")
+    if record["read_operations"] != ["inspect", "query", "validate", "render"] or set(strings(record["write_operations"], "write operations", True)) != set(WRITE_FIELDS):
+        fail("role-operations", "Record role operation mismatch.")
+    view = fields(by_role[OWNER + ".view"], ("role", "owner", "source_role", "output", "persistence", "produce_operations"))
+    if (view["owner"], view["source_role"], view["produce_operations"]) != ("derived", ROLE, ["render"]):
+        fail("view", "Unsupported derived role.")
+    string(view["output"], "view output")
+    string(view["persistence"], "view persistence")
+    operation_ids = []
+    if type(metadata["operations"]) is not list:
+        fail("operations", "Expected operation declarations.")
+    for row in metadata["operations"]:
+        fields(row, ("id", "inputs", "outputs", "tool", "implementation_status"))
+        operation_ids.append(row["id"])
+        strings(row["inputs"], "inputs", True)
+        strings(row["outputs"], "outputs", True)
+        if row["tool"] != OWNER + ".fs" or row["implementation_status"] != "implemented":
+            fail("operations", "Unsupported tool mapping.")
+    if operation_ids != list(OPERATIONS):
+        fail("operations", "Public operation declarations do not match implementation.")
+    runtime_ids = []
+    if type(metadata["runtime"]) is not list:
+        fail("runtime", "Expected runtime declarations.")
+    for row in metadata["runtime"]:
+        fields(row, ("id", "for_operations", "on_missing"), ("version", "requirement", "purpose"))
+        runtime_ids.append(string(row["id"], "runtime id"))
+        if ("version" in row) == ("requirement" in row) or row["on_missing"] != "unavailable":
+            fail("runtime", "Runtime requires exactly one version/requirement and unavailable behavior.")
+        for key in ("version", "requirement", "purpose"):
+            if key in row:
+                string(row[key], key)
+        if not set(strings(row["for_operations"], "runtime operations", True)) <= set(OPERATIONS):
+            fail("runtime", "Unknown runtime operation.")
+        version = {"python": ">=3.11,<4", "pyyaml": ">=6,<7", "jsonschema": ">=4.18,<5"}.get(row["id"])
+        if version is not None and row.get("version") != version:
+            fail("runtime-version", "Unsupported runtime requirement.")
+    if sorted(runtime_ids) != sorted(("skill-instruction-reader", "python", "pyyaml", "jsonschema", "filesystem")):
+        fail("runtime", "Unknown, duplicate or missing runtime.")
+    return metadata
+
+
+def config(binding, path, local=False):
+    value = parse_json(binding.read_input(path))
+    fields(value, ("config_version",), ("skills",) if local else ("skills", "constraints"), "config")
+    version = value["config_version"]
+    if type(version) is not int or version not in ((1, 2) if OWNER == "lesson" else (2,)):
+        fail("config-version", "Unsupported exact integer config version.", "unsupported")
+    skills, constraints = value.get("skills", {}), value.get("constraints", {})
+    ignored = set()
+    for namespace_map in (skills, constraints):
+        if type(namespace_map) is not dict:
+            fail("namespace-envelope", "Namespace maps must be objects.")
+        for key, child in namespace_map.items():
+            if not NAMESPACE.fullmatch(key) or type(child) is not dict or (version == 1 and key != "lesson"):
+                fail("namespace-envelope", "Invalid or unsupported namespace envelope.")
+            if key != OWNER:
+                ignored.add(key)
+    selected = settings(skills.get(OWNER, {}))
+    rules = constraints.get(OWNER, {})
+    fields(rules, (), ("write_roots", "locked_fields", *(EXTRA_CONSTRAINTS if version == 2 else ())), "selected constraints")
+    if "write_roots" in rules:
+        strings(rules["write_roots"], "write_roots", True)
+    locks = strings(rules.get("locked_fields", []), "locked_fields")
+    if not set(locks) <= {"store.root", "store.tracking", "template"}:
+        fail("locked-fields", "Unknown locked field.")
+    return selected, rules, version, ignored
+
+
+def expand_schema(schema):
+    # Remove all reference edges before handing data to jsonschema. No retriever
+    # can follow remote/file references. Reject cycles and bound total expansion.
+    budget = [100000]
+    def expand(value, stack=(), depth=0):
+        budget[0] -= 1
+        if budget[0] < 0 or depth > 100:
+            fail("schema-limit", "Owned schema expansion exceeded its bound.", "unsupported")
+        if type(value) is list:
+            return [expand(child, stack, depth + 1) for child in value]
+        if type(value) is not dict:
+            return value
+        if any(key in value for key in ("$dynamicRef", "$recursiveRef", "$id")):
+            fail("schema-ref", "Dynamic/base schema references are unsupported.", "unsupported")
+        if "$ref" in value:
+            target = value["$ref"]
+            if len(value) != 1 or type(target) is not str or not re.fullmatch(r"#/\$defs/[A-Za-z0-9_-]+", target) or target in stack:
+                fail("schema-ref", "Only acyclic single local definition references are supported.", "unsupported")
+            name = target.split("/")[-1]
+            if name not in schema.get("$defs", {}):
+                fail("schema-ref", "Missing owned schema definition.")
+            return expand(schema["$defs"][name], (*stack, target), depth + 1)
+        return {key: expand(child, stack, depth + 1) for key, child in value.items()}
+    return expand(schema)
+
+
+class Binding:
+    def __init__(self, request):
+        self.inputs, self.absent = {}, set()
+        self.project = safe_path(request["project_root"])
+        self.package = safe_path(request["package_root"])
+        if not self.project.is_dir() or not self.package.is_dir():
+            fail("root", "Explicit project and package roots must exist.")
+        self.metadata = load_package(self)
+        self.settings = copy.deepcopy(self.metadata["configuration"]["defaults"])
+        self.sources = {key: "default" for key in ("store.kind", "store.root", "store.tracking", "template")}
+        self.config_paths, self.versions, self.ignored = [], [], set()
+        self.project_config = None
+        project_layer, self.rules = {}, {}
+        if "project_config" in request:
+            self.project_config = safe_path(request["project_config"], self.project)
+            self.config_paths.append(self.project_config)
+            project_layer, self.rules, version, ignored = config(self, self.project_config)
+            self.versions.append(version)
+            self.ignored |= ignored
+        merge_settings(self.settings, project_layer, self.sources, "project")
+        self.project_settings = copy.deepcopy(self.settings)
+        self.locks = self.rules.get("locked_fields", [])
+        self.allowed = [safe_path(value, self.project) for value in self.rules.get("write_roots", [self.settings["store"]["root"]])]
+        self.explicit_roots = "write_roots" in self.rules
+        self.caller_allowed = None
+        if "write_roots" in request:
+            self.caller_allowed = [safe_path(value, self.project) for value in strings(request["write_roots"], "caller write_roots", True)]
+        layers = []
+        if "local_config" in request:
+            path = safe_path(request["local_config"], self.project)
+            self.config_paths.append(path)
+            git_local_ignored(self.project, path)
+            values, _, version, ignored = config(self, path, local=True)
+            layers.append(("local", values))
+            self.versions.append(version)
+            self.ignored |= ignored
+        if len(set(self.versions)) > 1:
+            fail("config-version", "Selected project/local config versions must match.")
+        if "overrides" in request:
+            layers.append(("invocation", settings(request["overrides"])))
+        for source, layer in layers:
+            merge_settings(self.settings, layer, self.sources, source)
+            if any(not exact_equal(field_value(self.settings, key), field_value(self.project_settings, key)) for key in self.locks):
+                fail("locked-field", "Override changes a project-locked setting.", "blocked")
+        self.store = safe_path(self.settings["store"]["root"], self.project)
+        self.store_identity = identity(self.store.stat()) if self.store.exists() else None
+        template = self.settings["template"]
+        template_root = self.package if template["origin"] == "package" else self.project
+        self.template_path = safe_path(template["path"], template_root)
+        if not beneath(self.template_path, template_root):
+            fail("template-boundary", "Template escapes its declared root.", "blocked")
+        if template["origin"] == "package" and self.template_path != resource(self.package, self.metadata["resources"]["templates"][0]["path"]):
+            fail("template-resource", "Package template is undeclared.")
+        self.check_paths()
+        try:
+            self.template = self.read_input(self.template_path).decode("utf-8", errors="strict")
+        except UnicodeError:
+            fail("template-encoding", "Template must be strict UTF-8.")
+        validate_constraints(self)
+        self.validators = {}
+        if request["operation"] != "explain":
+            dependency("jsonschema", (4, 18), (5, 0))
+            try:
+                from jsonschema import Draft202012Validator, FormatChecker
+                for version, path in SCHEMAS.items():
+                    schema = parse_json(self.read_input(resource(self.package, path)))
+                    if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+                        fail("schema", "Owned schema must declare Draft 2020-12.")
+                    expanded = expand_schema(schema)
+                    Draft202012Validator.check_schema(expanded)
+                    self.validators[version] = Draft202012Validator(expanded, format_checker=FormatChecker())
+            except ImportError:
+                fail("dependency", "jsonschema could not be imported.", "unavailable")
+            except Fault:
+                raise
+            except Exception:
+                fail("schema", "Invalid bounded owned schema.")
+
+    def read_input(self, path):
+        raw = read_bytes(path)
+        sha = digest(raw)
+        if path in self.absent or (path in self.inputs and self.inputs[path] != sha):
+            fail("input-drift", "A selected input changed during this invocation.", "conflict")
+        self.inputs[path] = sha
+        return raw
+
+    def check_inputs(self):
+        for path, expected in self.inputs.items():
+            if digest(read_bytes(path)) != expected:
+                fail("input-drift", "Frozen input bytes changed before publication.", "conflict")
+        for path in self.absent:
+            safe_path(str(path))
+            if path.exists():
+                fail("input-drift", "A previously absent selected input appeared.", "conflict")
+
+    def check_paths(self):
+        for path in (self.project, self.package, self.store, self.template_path, *self.config_paths, *self.allowed, *(self.caller_allowed or [])):
+            if safe_path(str(path)) != path:
+                fail("binding-drift", "Frozen path binding changed.", "conflict")
+        if self.store == Path(self.store.anchor):
+            fail("store-root", "Volume-root stores are forbidden.", "blocked")
+        if self.store.exists() and not self.store.is_dir():
+            fail("store-type", "Store must be a directory.")
+        if self.store_identity is not None and (not self.store.exists() or identity(self.store.stat()) != self.store_identity):
+            fail("store-drift", "Frozen store identity changed.", "conflict")
+        if not any(beneath(self.store, path) for path in self.allowed):
+            fail("write-boundary", "Selected store exceeds project write roots.", "blocked")
+        if self.caller_allowed is not None and not any(beneath(self.store, path) for path in self.caller_allowed):
+            fail("caller-boundary", "Selected store exceeds caller write roots.", "blocked")
+        if not beneath(self.store, self.project) and not self.explicit_roots:
+            fail("external-store", "An external store needs explicit project write_roots.", "blocked")
+        if any(overlap(self.store, protected) for protected in (self.package, self.template_path, *self.config_paths)):
+            fail("overlap", "Store overlaps package/config/template content.", "blocked")
+
+    def record_path(self, reference):
+        fields(reference, ("role", "id"), label="reference")
+        if reference["role"] != ROLE or type(reference["id"]) is not str or not ID.fullmatch(reference["id"]):
+            fail("reference", "Invalid store-scoped record reference.")
+        return safe_path(reference["id"] + "." + PREFIX + ".json", self.store, relative_only=True)
+
+    def explain(self):
+        return {"namespace": OWNER, "config_version": self.versions[0] if self.versions else None,
+                "settings": self.settings, "sources": self.sources, "ignored_namespaces": sorted(self.ignored),
+                "store_root": str(self.store), "template_path": str(self.template_path),
+                "locked_fields": self.locks, "write_roots": [str(p) for p in self.allowed],
+                "caller_write_roots": None if self.caller_allowed is None else [str(p) for p in self.caller_allowed],
+                "authority_bindings": authority_summary(self), "runtime_capability": "not-probed",
+                "tracking": "intent-only", "unsupported_reasons": []}
+
+
+def evidence_path(binding, value, root):
+    path = safe_path(value, binding.project)
+    if not beneath(path, root) or any(overlap(path, protected) for protected in (binding.store, binding.package, binding.template_path, *binding.config_paths)):
+        fail("evidence-boundary", "Evidence escapes its configured read scope or overlaps protected content.", "blocked")
+    return path
+
+
+def read_snapshot(binding, path, expected=None):
+    raw = binding.read_input(path)
+    if expected is not None and digest(raw) != expected_digest(expected):
+        fail("evidence-drift", "Selected evidence differs from expected raw bytes.", "conflict")
+    try:
+        text = raw.decode("utf-8", errors="strict")
+        text.encode("utf-8", errors="strict")
+    except UnicodeError:
+        fail("evidence-encoding", "Evidence must be strict UTF-8.")
+    return {"path": str(path), "sha256": digest(raw), "utf8": text, "observed_at": now_text()}
+
+
+def binding_snapshot(binding, binding_id, value):
+    if binding.project_config is None:
+        fail("authority", "Project-owned authority configuration is required.", "blocked")
+    return {"binding_id": binding_id, "config_path": str(binding.project_config),
+            "config_sha256": binding.inputs[binding.project_config], "binding": copy.deepcopy(value)}
+
+
+def pointers(value, names):
+    fields(value, names, label="evidence pointers")
+    seen = set()
+    for pointer in value.values():
+        if type(pointer) is not str or not pointer.startswith("/") or re.search(r"~(?![01])", pointer):
+            fail("pointer", "Expected a non-root literal JSON Pointer.")
+        parts = tuple(part.replace("~1", "/").replace("~0", "~") for part in pointer[1:].split("/"))
+        if parts in seen:
+            fail("pointer-alias", "Mapped fields require distinct pointer targets.")
+        seen.add(parts)
+
+
+def mapped_json(snapshot, mapping):
+    value = parse_json(snapshot["utf8"].encode("utf-8"))
+    result = {}
+    for name, pointer in mapping.items():
+        item = value
+        for part in pointer[1:].split("/"):
+            part = part.replace("~1", "/").replace("~0", "~")
+            if type(item) is dict and part in item:
+                item = item[part]
+            elif type(item) is list and re.fullmatch(r"0|[1-9][0-9]*", part) and int(part) < len(item):
+                item = item[int(part)]
+            else:
+                fail("evidence-pointer", "Mapped evidence field cannot be resolved.")
+        if type(item) in (dict, list):
+            fail("evidence-type", "Mapped evidence fields must be scalar values.")
+        result[name] = item
+    return result
+
+
+
+DECISION_POINTERS = ("subject_sha256", "actor", "decision", "decided_at")
+DECISIONS = ("accept",)
+DECIDED_STATUSES = ("accepted",)
+TRANSITIONS = {"revise": {"candidate": ("candidate",)}, "accept": {"candidate": ("accepted",)},
+               "retire": {"candidate": ("retired",), "accepted": ("retired",)},
+               "supersede": {"candidate": ("superseded",), "accepted": ("superseded",)}}
+WRITE_FIELDS = {"create": ("content", "text", "decision"), "derive": ("reference", "expected_sha256", "reason", "text", "decision"),
+                "revise": ("reference", "expected_sha256", "content", "reason"),
+                "accept": ("reference", "expected_sha256", "reason", "decision_source"),
+                "retire": ("reference", "expected_sha256", "reason"),
+                "supersede": ("reference", "expected_sha256", "reason", "successor")}
+SUCCESSOR_STATUS = "accepted"
+
+
+def check_option(content, decision, option):
+    if option is not None:
+        fail("decision-option", "Lesson acceptance has no ADR option.")
+
+
+def content_semantics(content):
+    for key in ("title", "observation", "conclusion"):
+        string(content[key], key)
+    for key in ("applies_when", "does_not_apply_when", "follow_up"):
+        text_array(content[key], key, key == "applies_when")
+    evidence_semantics(content["evidence"])
+    if content["confidence"] not in ("tentative", "supported") or (not content["evidence"] and content["confidence"] != "tentative"):
+        fail("confidence", "Empty evidence requires tentative confidence; supported remains an authored claim.")
+
+
+def legacy_semantics(record):
+    if record["status"] != "candidate":
+        fail("legacy-state", "Legacy Lesson status remains candidate.")
+    content_semantics(record)
+
+
+
+def validate_constraints(binding):
+    binding.decisions = {}
+    roots = set()
+    rows = binding.rules.get("decision_sources", [])
+    if type(rows) is not list:
+        fail("decision-sources", "Decision sources must be an array.")
+    for row in rows:
+        fields(row, ("id", "root", "allowed_actors", "pointers"))
+        name = string(row["id"], "decision source id")
+        if name in binding.decisions:
+            fail("decision-sources", "Duplicate decision source ID.")
+        root = safe_path(row["root"], binding.project)
+        if root == Path(root.anchor) or any(overlap(root, protected) for protected in (binding.store, binding.package, binding.template_path, *binding.config_paths)):
+            fail("decision-root", "Authority read root overlaps protected content.", "blocked")
+        if root in roots:
+            fail("decision-root-alias", "Decision source roots contain a canonical path alias.")
+        roots.add(root)
+        strings(row["allowed_actors"], "allowed actors", True)
+        pointers(row["pointers"], DECISION_POINTERS)
+        binding.decisions[name] = (row, root)
+
+
+def authority_summary(binding):
+    return sorted(binding.decisions)
+
+
+def read_decision(binding, current, raw, selection):
+    fields(selection, ("binding_id", "path", "expected_sha256"))
+    name = string(selection["binding_id"], "decision binding")
+    if name not in binding.decisions:
+        fail("decision-authority", "No selected project decision source is configured.", "blocked")
+    row, root = binding.decisions[name]
+    snapshot = read_snapshot(binding, evidence_path(binding, selection["path"], root), selection["expected_sha256"])
+    values = mapped_json(snapshot, row["pointers"])
+    if values["subject_sha256"] != digest(raw) or values["actor"] not in row["allowed_actors"]:
+        fail("decision-subject", "Owner decision does not bind this exact subject and allowed actor.", "blocked")
+    if values["decision"] not in DECISIONS:
+        fail("decision-value", "Unsupported owner decision.", "blocked")
+    if not timestamp(current["created_at"]) <= timestamp(values["decided_at"]) <= timestamp(snapshot["observed_at"]):
+        fail("decision-time", "Decision time is outside this subject's observation interval.", "blocked")
+    option = values.get("option_id")
+    check_option(current["content"], values["decision"], option)
+    return {"actor": values["actor"], "decision": values["decision"],
+            "decided_at": values["decided_at"], "subject_sha256": values["subject_sha256"],
+            "option_id": option, "evidence": snapshot,
+            "authority_binding": binding_snapshot(binding, name, row)}
+
+
+def authored_content(binding, value, current=None):
+    fields(value, AUTHORED, label="authored content")
+    return copy.deepcopy(value)
+
+
+def state_semantics(state, status):
+    content_semantics(state["content"])
+    decision = state["decision"]
+    if status == INITIAL and decision is not None:
+        fail("decision-state", "Initial records cannot claim an owner decision.")
+    if status in DECIDED_STATUSES and decision is None:
+        fail("decision-state", "Decided records require captured owner evidence.")
+    if decision is not None:
+        if decision["decision"] not in DECISIONS:
+            fail("decision-value", "Unsupported stored decision.")
+        check_option(state["content"], decision["decision"], decision["option_id"])
+        if status == "accepted" and decision["decision"] != "accept":
+            fail("decision-state", "Accepted state requires an accept decision.")
+        if status == "rejected" and decision["decision"] != "reject":
+            fail("decision-state", "Rejected state requires a reject decision.")
+        authority = decision["authority_binding"]["binding"]
+        fields(authority, ("id", "root", "allowed_actors", "pointers"))
+        if decision["authority_binding"]["binding_id"] != string(authority["id"], "captured binding id"):
+            fail("decision-binding", "Decision binding ID differs from its captured configuration.")
+        pointers(authority["pointers"], DECISION_POINTERS)
+        mapped = mapped_json(decision["evidence"], authority["pointers"])
+        if any(not exact_equal(mapped[key], decision[key]) for key in DECISION_POINTERS):
+            fail("decision-evidence", "Stored decision differs from its exact source snapshot.")
+        if decision["actor"] not in strings(authority["allowed_actors"], "allowed actors", True):
+            fail("decision-authority", "Stored decision actor is outside the captured binding.")
+        if timestamp(decision["decided_at"]) > timestamp(decision["evidence"]["observed_at"]):
+            fail("decision-time", "Decision evidence predates the declared decision.")
+    if (status == "superseded") != (state["successor"] is not None):
+        fail("successor-state", "Only a superseded record has a successor.")
+
+
+def transition(binding, record, original, request):
+    operation = request["operation"]
+    if operation in ("accept", "decide"):
+        record["decision"] = read_decision(binding, record, original, request["decision_source"])
+        record["status"] = "accepted" if record["decision"]["decision"] == "accept" else "rejected"
+    elif operation == "retire":
+        record["status"] = "retired"
+    elif operation == "supersede":
+        record["successor"] = select_successor(binding, record, request["successor"])
+        record["status"] = "superseded"
+
+
+
+def text_array(value, label, nonempty=False):
+    if type(value) is not list or (nonempty and not value):
+        fail("array", "Expected an ordered text array for " + label + ".")
+    for item in value:
+        string(item, label)
+
+
+def evidence_semantics(value):
+    if type(value) is not list:
+        fail("evidence", "Evidence must be an array.")
+    for item in value:
+        fields(item, ("source", "note"))
+        string(item["source"], "evidence source")
+        string(item["note"], "evidence note")
+
+
+def is_legacy(record):
+    return LEGACY_VERSION is not None and record["schema_version"] == LEGACY_VERSION
+
+
+def content_of(record):
+    return {key: record[key] for key in AUTHORED} if is_legacy(record) else record["content"]
+
+
+def state_of(record):
+    return {key: copy.deepcopy(record[key]) for key in MUTABLE}
+
+
+def check_snapshots(value, limit_time):
+    if type(value) is dict:
+        if set(value) == {"path", "sha256", "utf8", "observed_at"}:
+            if digest(value["utf8"].encode("utf-8")) != value["sha256"] or timestamp(value["observed_at"]) > limit_time:
+                fail("snapshot", "Snapshot raw-byte digest or observation chronology is invalid.")
+        for key, child in value.items():
+            if key != "extensions":
+                check_snapshots(child, limit_time)
+    elif type(value) is list:
+        for item in value:
+            check_snapshots(item, limit_time)
+
+
+def validate_record(binding, record, expected_id=None):
+    if type(record) is not dict or type(record.get("schema_version")) is not str:
+        fail("record", "Record must declare a string schema version.")
+    version = record["schema_version"]
+    if version not in binding.validators:
+        fail("record-version", "Unsupported record version; original bytes preserved.", "unsupported")
+    if next(binding.validators[version].iter_errors(record), None) is not None:
+        fail("record-schema", "Record does not satisfy its selected owned structural schema.")
+    if expected_id is not None and record["id"] != expected_id:
+        fail("record-identity", "Filename and record identity differ.")
+    if any(not re.fullmatch(r"[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+", key) for key in record.get("extensions", {})):
+        fail("extension-name", "Extension keys must be dotted namespaces.")
+    created, updated = timestamp(record["created_at"]), timestamp(record["updated_at"])
+    if updated < created:
+        fail("record-time", "Record update time precedes creation.")
+    try:
+        if is_legacy(record):
+            legacy_semantics(record)
+            return record
+        if type(record["revision"]) is not int or record["revision"] != len(record["history"]) + 1:
+            fail("record-revision", "Revision must be an exact integer bound to retained history.")
+        state_semantics(state_of(record), record["status"])
+        if not record["history"] and any(record[key] is not None for key in MUTABLE if key != "content"):
+            fail("initial-evidence", "A new identity cannot inherit a decision, successor or observation.")
+        if not record["history"] and (record["status"] != INITIAL or updated != created):
+            fail("initial-state", "Revision one must preserve its initial lifecycle and actual creation time.")
+        previous_time = created
+        adopted_seen = False
+        for index, entry in enumerate(record["history"]):
+            if type(entry["from_revision"]) is not int or entry["from_revision"] != index + 1:
+                fail("history-revision", "History revisions must be contiguous exact integers.")
+            event_time = timestamp(entry["recorded_at"])
+            if event_time < previous_time or event_time > updated:
+                fail("history-time", "History timestamps are not chronological.")
+            before = entry["previous_state"]
+            after = record["history"][index + 1]["previous_state"] if index + 1 < len(record["history"]) else state_of(record)
+            before_status = entry["previous_status"]
+            after_status = record["history"][index + 1]["previous_status"] if index + 1 < len(record["history"]) else record["status"]
+            operation = entry["operation"]
+            if index == 0 and before_status != INITIAL:
+                fail("history-initial", "History must start at initial state.")
+            if after_status not in TRANSITIONS.get(operation, {}).get(before_status, ()):
+                fail("history-transition", "History contains an unsupported lifecycle transition.")
+            string(entry["reason"], "history reason")
+            state_semantics(before, before_status)
+            if index == 0 and any(before[key] is not None for key in MUTABLE if key != "content"):
+                fail("history-initial", "Initial history cannot contain inherited lifecycle evidence.")
+            check_snapshots(before, event_time)
+            if "observation" in before:
+                adopted_seen = adopted_seen or (before["observation"] is not None and before["observation"]["adoption"] == "adopted")
+                if operation == "revise" and adopted_seen:
+                    fail("adopted-history", "An ever-adopted proposal cannot have a revision.")
+            if operation not in ("revise",) and not exact_equal(before["content"], after["content"]):
+                fail("history-content", "Lifecycle operations cannot rewrite authored content.")
+            if operation in ("accept", "decide") and after["decision"]["subject_sha256"] != entry["previous_sha256"]:
+                fail("history-decision", "Decision must bind the exact pre-transition record digest.")
+            if "decision" in before and operation not in ("accept", "decide") and not exact_equal(before["decision"], after["decision"]):
+                fail("history-decision", "This operation cannot rewrite decision evidence.")
+            if operation != "supersede" and not exact_equal(before["successor"], after["successor"]):
+                fail("history-successor", "Only supersede may change a successor.")
+            if "observation" in before:
+                if operation == "revise" and after["observation"] is not None:
+                    fail("history-observation", "Proposal revision must clear current observation and retain it in history.")
+                if operation not in ("reconcile", "revise") and not exact_equal(before["observation"], after["observation"]):
+                    fail("history-observation", "This operation cannot change observations.")
+            previous_time = event_time
+        if record["history"] and previous_time != updated:
+            fail("history-time", "Latest history time must equal updated_at.")
+        for state in [state_of(record), *[entry["previous_state"] for entry in record["history"]]]:
+            if state["decision"] is not None and timestamp(state["decision"]["decided_at"]) < created:
+                fail("decision-time", "Decision predates the record identity.")
+        check_snapshots(record, updated)
+        for link in [*record["provenance"], *([record["successor"]] if record["successor"] is not None else [])]:
+            if link["role"] != ROLE or not ID.fullmatch(link["id"]) or link["id"] == record["id"] or link["schema_version"] not in SCHEMAS:
+                fail("lineage", "Lineage must name a distinct supported same-family identity.")
+            captured = parse_json(link["snapshot"]["utf8"].encode("utf-8"))
+            if type(captured) is not dict or any(captured.get(key) != link[key] for key in ("id", "schema_version")) or captured.get("kind") != OWNER:
+                fail("lineage-snapshot", "Lineage identity differs from its retained source bytes.")
+        return record
+    except Fault:
+        raise
+    except (KeyError, TypeError, ValueError, OverflowError):
+        fail("record-semantics", "Record contains malformed owned semantic data.")
+
+
+def reference(record):
+    return {"role": ROLE, "id": record["id"]}
+
+
+def inspect_record(binding, ref):
+    raw = read_bytes(binding.record_path(ref))
+    return validate_record(binding, parse_json(raw), ref["id"]), raw
+
+
+def new_record(content, extensions=None):
+    now = now_text()
+    value = {"schema_version": SCHEMA_VERSION, "kind": OWNER, "owner": "project", "id": PREFIX + "-" + uuid.uuid4().hex,
+             "status": INITIAL, "revision": 1, "created_at": now, "updated_at": now,
+             "content": copy.deepcopy(content), "successor": None, "provenance": [], "history": []}
+    value[MUTABLE[-1]] = None
+    if extensions is not None:
+        value["extensions"] = copy.deepcopy(extensions)
+    return value
+
+
+def query(binding, text, statuses=None):
+    if type(text) is not str:
+        fail("query-text", "Query text must be a string.")
+    selected_statuses = sorted(STATUSES) if statuses is None else sorted(strings(statuses, "statuses", True))
+    if not set(selected_statuses) <= set(STATUSES):
+        fail("query-status", "Unsupported query status.")
+    binding.check_paths()
+    try:
+        entries = sorted(binding.store.iterdir(), key=lambda path: path.name) if binding.store.exists() else []
+    except OSError:
+        fail("query-store", "Cannot enumerate the selected store.", "blocked")
+    selected = [path for path in entries if path.name.endswith("." + PREFIX + ".json")]
+    if len(selected) > MAX_FILES:
+        fail("query-limit", "Store exceeds the 10000 direct-record limit.", "unsupported")
+    matches, diagnostics, inventory = [], [], []
+    def flatten(value):
+        if type(value) is dict:
+            return "\n".join(flatten(child) for child in value.values())
+        if type(value) is list:
+            return "\n".join(flatten(child) for child in value)
+        return str(value)
+    for path in selected:
+        item = {"filename": path.name}
+        try:
+            raw = read_bytes(path)
+            item["sha256"] = digest(raw)
+            identity_id = path.name.removesuffix("." + PREFIX + ".json")
+            if not ID.fullmatch(identity_id):
+                fail("filename", "Invalid selected record filename.")
+            record = validate_record(binding, parse_json(raw), identity_id)
+            content = content_of(record)
+            if record["status"] in selected_statuses and any(text.casefold() in flatten(content[key]).casefold() for key in SEARCH_FIELDS):
+                matches.append({"reference": reference(record), "title": content["title"], "status": record["status"],
+                                "schema_version": record["schema_version"], "sha256": item["sha256"],
+                                "compatibility": "read-only-legacy" if is_legacy(record) else "current"})
+        except (Fault, OSError) as exc:
+            detail = exc.diagnostic() if isinstance(exc, Fault) else {"code": "read-error", "message": "Selected record is unreadable."}
+            item["error"] = detail["code"]
+            diagnostics.append({"filename": path.name, **detail})
+        inventory.append(item)
+    subject = {"query_version": 2, "store_root": str(binding.store), "text": text, "statuses": selected_statuses,
+               "read_schemas": [ROLE + "@" + version for version in sorted(SCHEMAS)], "inventory": inventory}
+    return {"store_root": str(binding.store), "text": text, "statuses": selected_statuses, "matches": matches,
+            "partial": bool(diagnostics), "diagnostics": diagnostics, "query_sha256": digest(encode(subject)), "selected_count": len(selected)}
+
+
+def select_successor(binding, current, selection):
+    fields(selection, ("reference", "expected_sha256"))
+    successor, raw = inspect_record(binding, selection["reference"])
+    expected_digest(selection["expected_sha256"])
+    if digest(raw) != selection["expected_sha256"]:
+        fail("successor-drift", "Successor bytes changed.", "conflict")
+    if is_legacy(successor) or successor["status"] != SUCCESSOR_STATUS or successor["id"] == current["id"]:
+        fail("successor-state", "Successor must be a distinct current record in the required state.")
+    if OWNER == "standards-promotion" and not exact_equal(current["content"]["target_binding"], successor["content"]["target_binding"]):
+        fail("successor-target", "Proposal successor must bind the same project target/config.")
+    seen = {current["id"]}
+    cursor, cursor_raw = successor, raw
+    for _ in range(1000):
+        if cursor["id"] in seen:
+            fail("successor-cycle", "Supersession would form a cycle.", "conflict")
+        seen.add(cursor["id"])
+        if binding.read_input(binding.record_path(reference(cursor))) != cursor_raw:
+            fail("successor-drift", "Successor changed while capturing its snapshot.", "conflict")
+        link = cursor["successor"]
+        if link is None:
+            break
+        if link["role"] != ROLE or safe_path(link["store_root"]) != binding.store:
+            fail("successor-store", "Cross-family or cross-store supersession is unsupported.", "unsupported")
+        cursor, cursor_raw = inspect_record(binding, {"role": link["role"], "id": link["id"]})
+        if digest(cursor_raw) != link["snapshot"]["sha256"]:
+            fail("successor-drift", "Supersession chain differs from its pinned evidence.", "conflict")
+    else:
+        fail("successor-limit", "Supersession chain exceeds the supported bound.", "unsupported")
+    return {"role": ROLE, "id": successor["id"], "schema_version": successor["schema_version"], "store_root": str(binding.store),
+            "snapshot": {"path": str(binding.record_path(reference(successor))), "sha256": digest(raw), "utf8": raw.decode("utf-8"), "observed_at": now_text()}}
+
+
 def write_operation(binding, request):
     operation = request["operation"]
-    content = authored(request["content"], extensions=operation == "create")
+    creating = operation in ("create", "propose", "derive")
     related = None
-    # A generated, unpersisted validation candidate is internal only.
-    candidate = new_record(content)
-    validate_record(binding, candidate)
-    if operation == "create":
-        decision = fields(request["decision"], ("action", "query_sha256", "acknowledge_partial", "reason"), label="create decision")
-        if decision["action"] != "new":
-            fail("create-decision", "Choose new explicitly, or invoke revise for a selected existing reference.")
-        if type(decision["query_sha256"]) is not str or not SHA256.fullmatch(decision["query_sha256"]):
-            fail("query-digest", "Expected actual query SHA-256.")
-        if type(decision["acknowledge_partial"]) is not bool:
-            fail("decision", "acknowledge_partial must be a boolean.")
-        string(decision["reason"], "decision reason")
+    if creating:
+        decision = fields(request["decision"], ("action", "query_sha256", "acknowledge_partial", "reason"))
+        if decision["action"] != "new" or type(decision["acknowledge_partial"]) is not bool:
+            fail("create-decision", "New identity and exact boolean partial acknowledgment are required.")
+        expected_digest(decision["query_sha256"])
+        string(decision["reason"], "new-record reason")
         if type(request["text"]) is not str:
             fail("query-text", "Query text must be a string.")
-    else:
+    if operation not in ("create", "propose"):
         binding.record_path(request["reference"])
-        if type(request["expected_sha256"]) is not str or not SHA256.fullmatch(request["expected_sha256"]):
-            fail("expected-digest", "Expected a lowercase raw-byte SHA-256.")
+        expected_digest(request["expected_sha256"])
+    if "reason" in request:
+        string(request["reason"], "transition reason")
     writer = Writer(binding)
     result = {"outcome": "failed"}
+    record = raw = None
     try:
-        writer.acquire(allow_create=operation == "create")
-        if operation == "create":
-            related = query(binding, request["text"])
+        writer.acquire(allow_create=creating)
+        if creating:
+            related = query(binding, request["text"], request.get("statuses"))
             if related["query_sha256"] != decision["query_sha256"]:
-                fail("query-conflict", "Collection or query changed; review the returned query and decide again.", "conflict")
+                fail("query-conflict", "Collection/query changed; review the new query and decide again.", "conflict")
             if related["partial"] and not decision["acknowledge_partial"]:
-                fail("partial-query", "Explicit acknowledgment of this partial query is required.", "blocked")
-            record = candidate
-            path = binding.record_path(reference(record))
+                fail("partial-query", "Explicit acknowledgment of query limits is required.", "blocked")
+            if operation == "derive":
+                source, original = inspect_record(binding, request["reference"])
+                if digest(original) != request["expected_sha256"]:
+                    fail("source-drift", "Derived source bytes changed.", "conflict")
+                if binding.read_input(binding.record_path(request["reference"])) != original:
+                    fail("source-drift", "Derived source changed while capturing its snapshot.", "conflict")
+                source_snapshot = {"path": str(binding.record_path(request["reference"])), "sha256": digest(original), "utf8": original.decode("utf-8"), "observed_at": now_text()}
+                record = new_record(content_of(source), source.get("extensions"))
+                record["provenance"] = [{"relation": "derived-from", "role": ROLE, "id": source["id"],
+                                         "schema_version": source["schema_version"], "store_root": str(binding.store), "snapshot": source_snapshot}]
+            else:
+                record = new_record(authored_content(binding, request["content"]), request.get("extensions"))
+            validate_record(binding, record)
             raw = encode(record)
-            writer.publish(path, raw, replacing=False)
+            binding.check_inputs()
+            writer.publish(binding.record_path(reference(record)), raw, replacing=False)
             changed = True
         else:
             current, original = inspect_record(binding, request["reference"])
             if digest(original) != request["expected_sha256"]:
-                fail("digest-conflict", "Record raw bytes changed; inspect before revising.", "conflict")
-            if all(exact_equal(current[key], content[key]) for key in AUTHORED):
-                record, raw, changed = current, original, False
+                fail("digest-conflict", "Record changed; inspect before updating.", "conflict")
+            if is_legacy(current):
+                fail("legacy-write", "Legacy records are read-only; derive a new identity explicitly.", "unsupported")
+            if current["status"] not in TRANSITIONS.get(operation, {}):
+                fail("transition", "Operation is not permitted from this lifecycle state.")
+            record = copy.deepcopy(current)
+            if operation == "revise":
+                record["content"] = authored_content(binding, request["content"], current)
+                if "observation" in record and not exact_equal(record["content"], current["content"]):
+                    record["observation"] = None
             else:
-                record = copy.deepcopy(current)
-                record.update(copy.deepcopy(content))
-                now = datetime.now(timezone.utc)
-                if now < datetime.fromisoformat(current["updated_at"].upper().replace("Z", "+00:00")):
-                    fail("clock-regression", "Actual clock precedes the record update time; no fabricated timestamp.", "blocked")
-                record["updated_at"] = now.isoformat(timespec="microseconds")
+                transition(binding, record, original, request)
+            changed = not exact_equal(state_of(record), state_of(current)) or record["status"] != current["status"]
+            if not changed:
+                raw = original
+            else:
+                now = now_text()
+                if timestamp(now) < timestamp(current["updated_at"]):
+                    fail("clock-regression", "Actual clock precedes the previous update.", "blocked")
+                record["history"].append({"from_revision": current["revision"], "operation": operation, "recorded_at": now,
+                    "reason": request.get("reason", "Observed selected project evidence."), "previous_sha256": digest(original),
+                    "previous_status": current["status"], "previous_state": state_of(current)})
+                record["revision"] += 1
+                record["updated_at"] = now
                 validate_record(binding, record, current["id"])
-                path = binding.record_path(request["reference"])
-                # Narrow the external-editor race; cooperating writers remain
-                # mandatory because compare+replace is not filesystem CAS.
-                if digest(read_bytes(path)) != request["expected_sha256"]:
-                    fail("digest-conflict", "Record changed during revision; no replacement.", "conflict")
                 raw = encode(record)
-                writer.publish(path, raw, replacing=True)
-                changed = True
-        result = {"outcome": "succeeded", "reference": reference(record), "sha256": digest(raw),
-                  "store_root": str(binding.store), "changed": changed}
+                binding.check_inputs()
+                if digest(read_bytes(binding.record_path(request["reference"]))) != request["expected_sha256"]:
+                    fail("digest-conflict", "Record changed before replacement.", "conflict")
+                writer.publish(binding.record_path(reference(record)), raw, replacing=True)
+        result = {"outcome": "succeeded", "reference": reference(record), "sha256": digest(raw), "store_root": str(binding.store), "changed": changed}
+        if operation == "reconcile":
+            result["observation"] = record["observation"]
+            result["freshness"] = "observed-this-invocation"
     except Fault as exc:
         result = {"outcome": exc.outcome, "diagnostics": [exc.diagnostic()]}
     except OSError:
-        result = {"outcome": "blocked" if writer.mutation_state == "none" else "failed",
-                  "diagnostics": [{"code": "write-io", "message": "Write failed; no fallback storage was selected."}]}
+        result = {"outcome": "blocked" if writer.mutation_state == "none" else "failed", "diagnostics": [{"code": "write-io", "message": "Write failed; no fallback or rollback inferred."}]}
     except (Exception, KeyboardInterrupt):
-        result = {"outcome": "failed", "diagnostics": [{"code": "write-failure", "message": "Unexpected write failure; inspect before retry."}]}
+        result = {"outcome": "failed", "diagnostics": [{"code": "write-failure", "message": "Unexpected write failure; reread before retry."}]}
     finally:
         cleanup = writer.cleanup()
         if cleanup:
             result["outcome"] = "failed"
             result.setdefault("diagnostics", []).extend(cleanup)
+        if writer.mutation_state != "none" and record is not None and raw is not None:
+            result.setdefault("reference", reference(record))
+            result.setdefault("intended_sha256", digest(raw))
         result["mutation_state"] = writer.mutation_state
         result["directories_created"] = writer.directories_created
         if related is not None:
@@ -875,22 +1300,32 @@ def write_operation(binding, request):
 
 
 def escape_markdown(text):
-    escaped = html.escape(text, quote=True)
-    return re.sub(r"([\\`*_{}\[\]()#+.!|>~-])", r"\\\1", escaped)
+    return re.sub(r"([\\`*_{}\[\]()#+.!|>~-])", r"\\\1", html.escape(text, quote=True))
 
 
 def render(binding, record):
+    content = content_of(record)
+    values = {**content, "id": record["id"], "schema_version": record["schema_version"], "status": record["status"],
+              "history": record.get("history", "Legacy schema: no lifecycle history; preserved read-only."),
+              "provenance": record.get("provenance", "Legacy schema: no derived provenance; preserved read-only."),
+              "decision": record.get("decision"), "observation": record.get("observation"), "proposal": content}
+    if OWNER == "standards-promotion":
+        required = {"id", "schema_version", "status", "proposal", "observation", "history"}
+        allowed = required | {"title"}
+    else:
+        required = set(AUTHORED) | {"id", "schema_version"}
+        if not is_legacy(record):
+            required |= {"status", "history", "provenance"} | ({"decision"} if OWNER == "adr" else set())
+        allowed = set(AUTHORED) | {"id", "schema_version", "status", "history", "provenance", "decision"}
+    found = set(TOKEN.findall(binding.template))
+    remainder = TOKEN.sub("", binding.template)
+    if required - found or found - allowed or "{{" in remainder or "}}" in remainder:
+        fail("template-token", "Template has unknown/malformed tokens or omits required content/lifecycle tokens.")
     def display(value):
-        if type(value) is list:
-            if not value:
-                return "None supplied"
-            lines = []
-            for item in value:
-                text = item["source"] + ": " + item["note"] if type(item) is dict else item
-                lines.append("- " + escape_markdown(text).replace("\n", "\n  "))
-            return "\n".join(lines)
-        return escape_markdown(value)
-    return TOKEN.sub(lambda match: display(record[match[1]]), binding.template)
+        if type(value) in (dict, list):
+            return escape_markdown(encode(value).decode("utf-8").rstrip())
+        return escape_markdown("None supplied" if value is None else str(value))
+    return TOKEN.sub(lambda match: display(values[match[1]]), binding.template)
 
 
 def execute(request):
@@ -900,29 +1335,49 @@ def execute(request):
         fail("request", "Request must name an operation.")
     operation = request["operation"]
     if operation not in OPERATIONS:
-        fail("operation", "Unsupported operation; candidate-only operations are declared in metadata.", "unsupported")
-    required = {"explain": (), "query": (), "create": ("content", "text", "decision"),
-                "revise": ("reference", "expected_sha256", "content"), "inspect": ("reference",),
-                "validate": ("reference",), "render": ("reference",)}[operation]
-    fields(request, (*common, *required), (*optional, *(("text",) if operation == "query" else ())), "request")
+        fail("operation", "Unsupported public operation.", "unsupported")
+    required = WRITE_FIELDS.get(operation, () if operation in ("explain", "query") else ("reference",))
+    operation_optional = ()
+    if operation in ("create", "propose"):
+        operation_optional = ("statuses", "extensions")
+    elif operation == "derive":
+        operation_optional = ("statuses",)
+    elif operation == "query":
+        operation_optional = ("text", "statuses")
+    elif operation == "reconcile":
+        operation_optional = ("adoption_source", "effect_source")
+    fields(request, (*common, *required), (*optional, *operation_optional), "request")
+    if "extensions" in request and type(request["extensions"]) is not dict:
+        fail("extensions", "Creation extensions must be a namespaced JSON object.")
     if not (3, 11) <= sys.version_info[:2] < (4, 0):
         fail("python-version", "Python >=3.11,<4 is required.", "unavailable")
     binding = Binding(request)
     if operation == "explain":
         return {"outcome": "succeeded", **binding.explain()}
     if operation == "query":
-        return {"outcome": "succeeded", **query(binding, request.get("text", ""))}
-    if operation in ("create", "revise"):
+        return {"outcome": "succeeded", **query(binding, request.get("text", ""), request.get("statuses"))}
+    if operation in WRITE_FIELDS:
         return write_operation(binding, request)
     record, raw = inspect_record(binding, request["reference"])
-    result = {"outcome": "succeeded", "reference": reference(record), "sha256": digest(raw), "store_root": str(binding.store)}
+    result = {"outcome": "succeeded", "reference": reference(record), "sha256": digest(raw), "store_root": str(binding.store),
+              "compatibility": "read-only-legacy" if is_legacy(record) else "current", "authority": "recorded-evidence-not-authenticated"}
     if operation == "inspect":
         result["record"] = record
+        result["observations_freshness"] = "historical-only"
+        if not is_legacy(record) and record["successor"] is not None:
+            link = record["successor"]
+            try:
+                if safe_path(link["store_root"]) != binding.store:
+                    fail("successor-store", "Stored successor belongs to another store.", "unsupported")
+                _, successor_raw = inspect_record(binding, {"role": link["role"], "id": link["id"]})
+                result["successor_freshness"] = "matches-captured" if digest(successor_raw) == link["snapshot"]["sha256"] else "stale"
+            except (Fault, OSError):
+                result["successor_freshness"] = "unresolved"
     elif operation == "validate":
         result.update(valid=True, diagnostics=[])
     else:
-        result.update(view={"role": "lesson.view", "source": reference(record), "schema_version": record["schema_version"],
-                            "markdown": render(binding, record)})
+        result["view"] = {"role": OWNER + ".view", "source": reference(record), "schema_version": record["schema_version"],
+                          "observations_freshness": "historical-only", "markdown": render(binding, record)}
     return result
 
 

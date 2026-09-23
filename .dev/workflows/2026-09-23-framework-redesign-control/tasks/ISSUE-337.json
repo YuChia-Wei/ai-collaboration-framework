@@ -6,9 +6,9 @@
   "task_id": "ISSUE-337",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T08:26:01+08:00",
-  "updated_at": "2026-09-23T08:48:27+08:00",
+  "updated_at": "2026-09-23T09:14:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -23,7 +23,12 @@
       "src/distribution/package.py",
       "necessary direct src/distribution/ call sites",
       ".dev/design/framework-next/distribution-implementation/",
-      ".dev/workflows/2026-09-23-p3-distribution/"
+      ".dev/workflows/2026-09-23-p3-distribution/",
+      "src/distribution/manifest.yaml",
+      "src/profiles/lesson-minimal.yaml",
+      "src/profiles/knowledge.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml"
     ],
     "constraints": [
       "U001",
@@ -49,19 +54,21 @@
     "validation": [
       "Direct syntax/source/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Received and inspected metadata-v2 source checkpoint; no material correction identified in bounded source review",
-    "next_action": "Await actual #334/#335 package integration, then resume same task for exact manifest/profile mapping"
+    "last_completed_step": "Received clean final mapping; compared fixed actual Git/metadata/manifest and four profiles; locally integrated",
+    "next_action": "Online PR/Issue/Project read-back; P7 verifies actual selection/assembly/runtime behavior"
   },
   "results": {
-    "summary": "First loader source stage complete and inspected; full Issue still awaits package mapping.",
+    "summary": "Both metadata-v2 loader and exact P3 mapping source stages complete and inspected; online integration pending.",
     "files_changed": [
       "src/distribution/package.py",
+      "src/distribution/manifest.yaml",
+      "src/profiles/",
       ".dev/design/framework-next/distribution-implementation/",
       ".dev/workflows/2026-09-23-p3-distribution/"
     ],
     "tests_run": [],
     "finding_status": "partially-resolved",
-    "residual_risk": "Metadata/package behavior unverified; final mapping depends on actual package delivery",
+    "residual_risk": "Runtime/schema/package behavior remains unexecuted under U001; P7 owns actual verification",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -71,18 +78,23 @@
     "workflow_id": "2026-09-23-p3-distribution",
     "model_verified": "read-only runtime thread metadata gpt-6-astra / ultra",
     "starting_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb",
-    "worktree_verified": "first command actual cwd and root/branch/HEAD/common-dir match assignment"
+    "worktree_verified": "first command actual cwd and root/branch/HEAD/common-dir match assignment",
+    "mapping_continuation_commit": "2bd7acdaf8a580df965396bdb9dbb8c05f6308af",
+    "mapping_worktree_verified": "Initial explicit F: command read clean loader checkpoint; authorized fast-forward to 2bd7acdaf8a580df965396bdb9dbb8c05f6308af completed"
   },
   "delivery": {
     "source_checkpoint": "13a08f3c886513cead3bfea080224f3323131977",
     "worktree_clean_observed": true,
     "source_stage": "complete; inspected under U001",
-    "mapping_stage": "awaiting actual package source",
-    "provider_integration": "source stage merged; mapping stage pending",
+    "mapping_stage": "complete; fixed-source mapping inspected",
+    "provider_integration": "loader merged PR #339; final mapping locally integrated, online PR pending",
     "verification_state": "deferred-by-owner",
     "pull_request": 339,
     "merge_commit": "879b195160540f74bab2ac57cad148bcfaddbcbe",
     "issue_state": "OPEN",
-    "project_status": "In progress"
+    "project_status": "In progress",
+    "mapping_assignment": "reports/p3-package-mapping-scope.md",
+    "mapping_checkpoint": "b38ef4a8dce57c2cb78fda6ae9c100d689605245",
+    "mapping_worktree_clean_observed": true
   }
 }

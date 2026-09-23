@@ -1,8 +1,9 @@
-# Draft record shapes and invariants
+# Record shapes and invariants
 
-These three Draft 2020-12 JSON schemas are design proposals. No schema validator
-or product tool has run against them. They are deliberately stored in the design
-subtree, not a shipping package; later schemas retain separate package ownership.
+These Draft 2020-12 schemas originated in the preserved design checkpoint and are
+selected for the three package-owned source implementations. Package schemas own
+runtime loading; these design copies document the shapes and synthetic examples.
+No schema validator or product tool has run against them in this source task.
 
 - [Lesson v2](schemas/lesson-record-v2.schema.json)
 - [ADR v1](schemas/adr-record.schema.json)
@@ -108,7 +109,9 @@ source_snapshots is the exact sources array; content is ONLY title, target_id,
 baseline, replacement, rationale, applicability and conflicts. Exclude computed
 digests and duplicate stored sources/binding. Hash P2 sorted-key/indent-2 UTF-8
 JSON plus LF. Observation and record lifecycle never change that subject;
-revising any subject input invalidates prior adoption and needs a new decision.
+a permitted unadopted revision changes the subject and needs a new decision.
+Once adoption was observed, conflict correction requires a NEW proposal identity
+and new matching adoption; revision of the adopted identity remains blocked.
 Only proposed/unadopted proposals can revise. A material proposal revision clears the current observation to null while retaining it in history. Same target and unchanged captured
 baseline/config are required; drift requires a new proposal. A prior observed
 adoption stays visible through history and prevents revision even after revocation.
@@ -118,8 +121,9 @@ Observation is null until reconcile. It records observed_at; adoption
 (matches-proposal/drifted/missing/unresolved); effect
 (effective/inactive/unresolved); authority_basis=project-owned-local-evidence;
 nullable adoption/rule/effect snapshots; and diagnostics of {code,message}.
-There is no caller-set approved boolean. Unresolved conflicts prevent effective conclusions; a matching actual adoption remains independently visible with an unresolved-conflicts diagnostic. Each component
-can be unresolved without hiding the other observed components.
+There is no caller-set approved boolean. Unresolved conflicts prevent effective conclusions; a matching actual adoption remains independently visible with an unresolved-conflicts diagnostic. Unresolved adoption/effect does not hide other known dimensions. The schema reserves
+rule_content=unresolved; this filesystem implementation fails unsafe/unreadable
+target input rather than publishing an invented completed observation.
 
 Inactive is reported only when a matching effect declaration says inactive;
 effective additionally requires matched actual adoption and target bytes. A

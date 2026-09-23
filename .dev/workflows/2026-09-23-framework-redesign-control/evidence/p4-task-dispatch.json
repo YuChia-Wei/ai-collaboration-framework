@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-09-23T09:03:08+08:00",
+  "issue": 341,
+  "thread_id": "01a0cbc8-448d-7270-b27b-295295914afb",
+  "title": "重構 P4：Workflow 編排、續作與保存規則",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_observation": "read-only local runtime thread metadata",
+  "bootstrap_app_cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+  "actual_initial_command_cwd": "F:/framework-next/341",
+  "git_root": "F:/framework-next/341",
+  "branch": "codex/2026-09-23-workflow-orchestration",
+  "head": "3a82b3654976fb26da7618a4404f49d7868d813a",
+  "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+  "clean": true,
+  "source_stage": "contract only; source continuation requires coordinator reconciliation",
+  "authority": "U001",
+  "dispatch_correction": "Canonical governance entry is skill.yaml; existing .agents runtime SKILL.md is valid. Initial canonical SKILL.md path was coordinator error and corrected in same task."
+}
