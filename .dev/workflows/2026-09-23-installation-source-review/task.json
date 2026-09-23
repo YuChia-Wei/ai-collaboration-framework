@@ -1,0 +1,138 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-370",
+  "workflow_id": "2026-09-23-installation-source-review",
+  "owner_skill": "code-reviewer",
+  "workflow_owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T15:17:15+08:00",
+  "updated_at": "2026-09-23T15:18:09+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance": "Coordinator-selected independent conversation; declared runtime selection is not external attestation.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370",
+  "reviewed_source_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+  "starting_commit": "ea627ad8bb9251b31035b494c8d1d6c235461c2f",
+  "finding_ids": [
+    "ISSUE-370#CR-001"
+  ],
+  "scope": {
+    "target": "Independent source-only review of fixed ten-file managed-installation closure",
+    "files": [
+      ".dev/workflows/2026-09-23-installation-source-review/report.md",
+      ".dev/workflows/2026-09-23-installation-source-review/workflow.yaml",
+      ".dev/workflows/2026-09-23-installation-source-review/task.json"
+    ],
+    "read_files": [
+      "src/tools/maintain_framework.py",
+      "src/distribution/__init__.py",
+      "src/distribution/data.py",
+      "src/distribution/git_source.py",
+      "src/distribution/package.py",
+      "src/distribution/installation.py",
+      "src/distribution/installation_io.py",
+      "src/distribution/installation_plan.py",
+      "src/distribution/installation_state.py",
+      "src/distribution/maintenance_coordination.py"
+    ],
+    "constraints": [
+      "Only F:/framework-next/370 repository execution and issue-owned writes",
+      "No sub-agents, nested agents, new conversations or callbacks",
+      "No product source repairs, product execution or provider writes"
+    ],
+    "non_goals": [
+      "Native or behavioral acceptance",
+      "Full-framework certification",
+      "CI restoration, release, credentials or adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned worktree and fixed-source bytes",
+      "Read selected live Issue/contracts and bounded source",
+      "Trace admission, writes and recovery; substantiate findings",
+      "Record source result and hand off one local commit"
+    ],
+    "validation": [
+      {
+        "check": "Worktree/root/branch/full HEAD/common-dir/status",
+        "result": "passed",
+        "detail": "Assigned starting identity, clean before report; common Git directory is persistent C:."
+      },
+      {
+        "check": "Ten fixed-source blobs and exact raw checkout bytes",
+        "result": "passed",
+        "detail": "Per-file rev-parse/hash-object plus byte comparison with git cat-file; ten UTF-8/AST parses; no product imports."
+      },
+      {
+        "check": "Live Issue #370 and accepted Issue #359",
+        "result": "read",
+        "detail": "Initial sandbox network read failed at local proxy; normal authorized read-only escalation succeeded."
+      },
+      {
+        "check": "Source reasoning",
+        "result": "completed-with-finding",
+        "detail": "One MUST FIX / P1 source defect CR-001; no runtime reproduction."
+      },
+      {
+        "check": "Product/native and legacy verification",
+        "result": "deferred-by-owner",
+        "authority": "U001 / Issue #370",
+        "owner": "program #322 coordinator / P7",
+        "next_action": "Separately select repair, N1 regression, changed-subject review and N2-N5 trials."
+      },
+      {
+        "check": "Review record UTF-8/JSON/YAML syntax, local references, scope and unchanged raw subject",
+        "result": "passed",
+        "detail": "Direct isolated parsing only; no schema validation or product import."
+      },
+      {
+        "check": "Complete planned commit message",
+        "result": "passed",
+        "detail": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/370/.dev/workflows/2026-09-23-installation-source-review/commit-message.tmp --workflow-id 2026-09-23-installation-source-review; exit 0."
+      }
+    ],
+    "last_completed_step": "Bounded common-route source review and fixed-source finding report",
+    "next_action": "Coordinator assigns CR-001 repair, N1 cache regression and affected changed-source review; transport and native evidence remain separate."
+  },
+  "results": {
+    "summary": "One MUST FIX / P1: standard local loaders can execute unpinned stale bytecode while source hashes and module origins match.",
+    "files_changed": [
+      ".dev/workflows/2026-09-23-installation-source-review/report.md",
+      ".dev/workflows/2026-09-23-installation-source-review/workflow.yaml",
+      ".dev/workflows/2026-09-23-installation-source-review/task.json"
+    ],
+    "tests_run": [],
+    "finding_status": "reported-not-repaired",
+    "residual_risk": "No native execution; cache defect source-established only. Externally reported F: strict-resolve error not reproduced; conservative recovery refusals retained.",
+    "follow_up_needed": true
+  },
+  "handoff": {
+    "repository_root": "F:/framework-next/370",
+    "branch": "codex/2026-09-23-installation-source-review",
+    "reviewed_source_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+    "artifact_commit_source": "containing-commit",
+    "artifact_commit_resolution": "git log -1 --format=%H -- .dev/workflows/2026-09-23-installation-source-review/report.md",
+    "hidden_context_required": false,
+    "final_integration_owner": "Coordinator task 01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+    "resume": "Read report.md and task.json at their containing commit; preserve the fixed reviewed SHA. Assign repair separately, then re-review the affected changed source; do not treat this report as a review of later bytes.",
+    "transport": "local commit only; no push/PR/merge/Issue closure"
+  },
+  "retained_events": [
+    {
+      "kind": "network-read-failure",
+      "outcome": "Initial sandbox proxy refused connection; escalated read succeeded; no approval rejection."
+    },
+    {
+      "kind": "missing-reference",
+      "outcome": "Guessed native-cases.md absent; tracked inventory identified windows-pilot.md."
+    },
+    {
+      "kind": "coordinator-observation",
+      "outcome": "Coordinator relayed #368 F: Path.resolve(strict=True) Incorrect function before tests; not independently reproduced or converted to product/native evidence."
+    }
+  ],
+  "u001_adaptation": "Issue-owned report and resumable task only; legacy schema/audit/lease/receipt/handoff validators deferred-by-owner; source review completion is not product acceptance or Issue closure."
+}
