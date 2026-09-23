@@ -35,7 +35,7 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #348 | P5-C portable authoring | two own instruction packages/design/workflow | source online PR #353; Issue/Project complete |
 | #351 | P5-D frame/compliance design | own design/workflow only | independent design task active; runtime/F: identity verified |
 | #352 | P5-E optional maintenance design | own design/workflow only | independent design task active; runtime/F: identity verified |
-| #354 | P6-B state/planning | own reader/plan modules and design/workflow | selected; independent source task dispatch next |
+| #354 | P6-B state/planning | own reader/plan modules and design/workflow | independent source task active; runtime/F: identity verified |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -53,7 +53,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate selected #345 maintenance design online, dispatch #354 read-only planner, and resume the SAME #346 task for [nine-package actual mapping](reports/p5-actual-mapping-scope.md). #351/#352 are active designs. #347 remains stopped before writes pending direct confirmation required by automatic approval review. #348 is CLOSED/Project Done after PR #353; #341 awaits mapping. All product verification and CI remain deferred to P7.
+Current action: integrate selected #345 maintenance design online, receive #354 read-only planner and the SAME #346 task for [nine-package actual mapping](reports/p5-actual-mapping-scope.md). #351/#352 are active designs. #347 remains stopped before writes pending direct confirmation required by automatic approval review. #348 is CLOSED/Project Done after PR #353; #341 awaits mapping. All product verification and CI remain deferred to P7.
 
 ## P3 shared implementation continuation
 
@@ -66,3 +66,7 @@ P4-P6 implementation and P7 redesigned validation/pipeline review remain open. F
 ## Remaining P5 design dispatch
 
 Both tasks are active from shared checkpoint `731d658b6004110fd59224ca39aa3a5d63891d91`. [Runtime and first-command read-back](evidence/p5-remaining-design-dispatch.json) confirms gpt-6-astra / ultra and assigned F: worktrees. No source/design completion or verification is implied.
+
+## P6 source and P5 mapping dispatch
+
+[Actual dispatch evidence](evidence/p6-planning-dispatch.json) records #354 runtime/F: identity and #346 explicit fast-forward to `5986b2146bb4559609acb0d5c7d09e8570375ea8`. They own different source paths. Neither implementation completion nor execution is inferred.
