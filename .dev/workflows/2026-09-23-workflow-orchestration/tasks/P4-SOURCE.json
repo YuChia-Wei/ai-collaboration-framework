@@ -1,0 +1,66 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "P4-SOURCE",
+  "workflow_id": "2026-09-23-workflow-orchestration",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T09:09:21+08:00",
+  "updated_at": "2026-09-23T09:09:21+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_source": "coordinator-declared-and-reported-runtime-readback; not independently attested here",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341",
+  "scope": {
+    "target": "Coordinator reconciliation and subsequent explicitly assigned source implementation",
+    "files": [
+      "src/skills/software-development-orchestrator/ (proposed; not writable at first-stage checkpoint)",
+      ".dev/design/framework-next/workflow-orchestration/",
+      ".dev/workflows/2026-09-23-workflow-orchestration/"
+    ],
+    "constraints": [
+      "U001",
+      "One assigned worktree/writer; no sub-agents or new tasks",
+      "Coordinator owns first push and shared files"
+    ],
+    "non_goals": [
+      "Product runtime checks",
+      "Issue/Project mutation",
+      "Release or adoption"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Reconcile C341-01..05 against actual P3 deliveries",
+      "Receive accepted same-task source scope",
+      "Implement only selected package and retain exact public members/operations",
+      "Return local source commits to coordinator before first push"
+    ],
+    "validation": [
+      "Direct syntax/reference/Git and planned commit-message format only"
+    ],
+    "last_completed_step": "Contract input ready; no product source implementation",
+    "next_action": "Wait for coordinator selection of C341-01..05 and actual #334 dependency subject; then continue this SAME task."
+  },
+  "results": {
+    "summary": "Source work remains in progress at reconciliation boundary; implementation not started.",
+    "files_changed": [],
+    "tests_run": [
+      "deferred-by-owner: all product checks under U001; owner program #322 coordinator / P7"
+    ],
+    "finding_status": "not-addressed",
+    "residual_risk": "Runtime behavior and schema acceptance remain unverified.",
+    "follow_up_needed": true
+  },
+  "delivery": {
+    "contract": "proposed-for-coordinator-reconciliation",
+    "implementation": "not-started",
+    "verification": "deferred-by-owner"
+  }
+}
