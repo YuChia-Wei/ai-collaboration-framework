@@ -74,3 +74,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P4 source return
 
 #341 source `da04c0bb36fda9f48552ed5ee4f60efc18a95d9b` is locally integrated after [bounded source inspection](p4-source-integration.md). Ten-member workflow operations remain unmapped and unexecuted; #341 stays open for actual shared mapping. P5 design PR #349 is merged with #342 CLOSED/Project Done. Active source/design and P7 verification remain separate.
+
+## P5 instruction source and remaining design
+
+#346 and #348 sources are received and locally integrated after [bounded inspection](p5-instruction-integration.md). #341 source is online through PR #350 and awaits mapping. #347 is blocked before writes by automatic approval review; direct confirmation is pending. [#351/#352 design scope](p5-remaining-design-scope.md) addresses the remaining P5 format choices. #345 revises its proposed maintenance boundary; no installer is adopted or executed. P7 verification and program findings remain open.

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:00:26+08:00",
-  "updated_at": "2026-09-23T09:49:36+08:00",
+  "updated_at": "2026-09-23T10:00:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -47,8 +47,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message format only"
     ],
-    "last_completed_step": "Received clean P4 source and completed bounded fixed-source inspection; locally integrated",
-    "next_action": "Online source integration, then coordinator-assigned actual package mapping via #346"
+    "last_completed_step": "Source integrated online through PR #350; Issue OPEN and Project In progress read back",
+    "next_action": "Exact actual-source mapping through #346"
   },
   "results": {
     "summary": "Ten-member workflow source implemented/inspected; shared mapping and P7 acceptance remain separate",
@@ -86,9 +86,13 @@
     "project_status": "In progress",
     "source_checkpoint": "da04c0bb36fda9f48552ed5ee4f60efc18a95d9b",
     "worktree_clean_observed": true,
-    "mapping_status": "pending actual source handoff to shared owner #346",
+    "mapping_status": "pending",
     "source_inspection": "reports/p4-source-integration.md",
-    "provider_integration": "source online PR pending; Issue remains open for mapping"
+    "provider_integration": "source online PR pending; Issue remains open for mapping",
+    "source_pr": 350,
+    "source_merge": "b64ade171d04811449b94c6e285634b07c17151b",
+    "source_integration": "online merged",
+    "provider_readback": "2026-09-23T09:52:25+08:00 OPEN / Project In progress"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PBzM"
 }

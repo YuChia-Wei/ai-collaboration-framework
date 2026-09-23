@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T09:41:58+08:00",
+  "updated_at": "2026-09-23T10:00:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -46,15 +46,15 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Independent source task dispatched; runtime/F: identity read back",
-    "next_action": "Receive local owned source checkpoint before shared mapping"
+    "last_completed_step": "Clean source checkpoint received and bounded source inspection completed; locally integrated",
+    "next_action": "Online source integration; coordinator assigns actual mapping to #346"
   },
   "results": {
-    "summary": "Source scope selected; no delivery yet",
+    "summary": "Owned source completed with P7 verification deferred",
     "files_changed": [],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Source delivery and P7 actual verification pending",
+    "finding_status": "partially-resolved",
+    "residual_risk": "Actual metadata/runtime/package/target-use verification deferred to P7; mapping pending",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -69,8 +69,11 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p5-selected-contract.md",
-    "implementation_status": "active in independent task",
-    "verification_state": "deferred-by-owner"
+    "implementation_status": "source completed and locally integrated",
+    "verification_state": "deferred-by-owner",
+    "source_commit": "b6ba669ff465bb6c6429bcc24cdf9b37af0ce964",
+    "integration_status": "online pending",
+    "mapping_status": "awaiting concrete coordinator handoff"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPx0"
 }

@@ -1,0 +1,119 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "AUTHORING-SOURCE",
+  "workflow_id": "2026-09-23-portable-authoring",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T09:46:17+08:00",
+  "updated_at": "2026-09-23T09:50:30+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_evidence": "Coordinator-declared dispatch; not independent runtime attestation",
+  "finding_ids": [],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/348",
+  "scope": {
+    "target": "Two standalone portable instruction packages",
+    "files": [
+      "src/skills/requirement-author/",
+      "src/skills/spec-author/",
+      ".dev/design/framework-next/portable-authoring/",
+      ".dev/workflows/2026-09-23-portable-authoring/"
+    ],
+    "constraints": [
+      "U001; independent conversation; assigned F: worktree; no sub-agents",
+      "Selected metadata-v3 contract; preserve other writers",
+      "Coordinator owns shared mapping and first push"
+    ],
+    "non_goals": [
+      "Shared source/mapping/index/root edits",
+      "Problem-frame/compliance or P3 changes",
+      "Product execution, tests, CI or provider writes"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned identity and live Issue",
+      "Deliver useful standalone authoring packages",
+      "Direct checks and exact planned commit-message check",
+      "Local commit and coordinator handoff"
+    ],
+    "validation": [
+      "python -B -: strict UTF-8 read-back of 16 owned files, JSON parse of 1 task and YAML parse of 3 documents plus 2 SKILL frontmatters",
+      "python -B -: 36 local Markdown references resolved; package members match declared entrypoint/metadata/resources; instruction targets exist; no source-only dependency strings",
+      "git diff --check and git diff --cached --check: no whitespace errors",
+      "python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-authoring/commit-message.cache --workflow-id 2026-09-23-portable-authoring: planned message passed"
+    ],
+    "last_completed_step": "Complete owned source and limited direct checks; exact planned message format checked",
+    "next_action": "Read local commit HEAD and clean status, then return to coordinator before first push"
+  },
+  "results": {
+    "summary": "Delivered requirement-author and spec-author 0.1.0 as independent metadata-v3 instruction packages. Exact four/seven members and draft/normalize operations recorded; source completion only.",
+    "files_changed": [
+      ".dev/design/framework-next/portable-authoring/design.md",
+      ".dev/workflows/2026-09-23-portable-authoring/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-portable-authoring/tasks/AUTHORING-SOURCE.json",
+      ".dev/workflows/2026-09-23-portable-authoring/workflow-plan.md",
+      ".dev/workflows/2026-09-23-portable-authoring/workflow.yaml",
+      "src/skills/requirement-author/SKILL.md",
+      "src/skills/requirement-author/references/authoring.md",
+      "src/skills/requirement-author/references/requirement-template.md",
+      "src/skills/requirement-author/skill-package.yaml",
+      "src/skills/spec-author/SKILL.md",
+      "src/skills/spec-author/references/adapter-template.md",
+      "src/skills/spec-author/references/authoring.md",
+      "src/skills/spec-author/references/entity-template.md",
+      "src/skills/spec-author/references/formal-test-template.md",
+      "src/skills/spec-author/references/production-template.md",
+      "src/skills/spec-author/skill-package.yaml"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Source exists; shared mapping/loader integration and actual package/target behavior remain unverified. No blanket assessment-finding resolution.",
+    "follow_up_needed": true
+  },
+  "verification": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "P7 selects redesigned checks after implementation"
+  },
+  "delivery": {
+    "implementation_status": "implemented",
+    "verification_state": "deferred-by-owner",
+    "workflow_completion_scope": "Bounded source implementation only under U001",
+    "source_members": {
+      "requirement-author": [
+        "SKILL.md",
+        "skill-package.yaml",
+        "references/authoring.md",
+        "references/requirement-template.md"
+      ],
+      "spec-author": [
+        "SKILL.md",
+        "skill-package.yaml",
+        "references/authoring.md",
+        "references/production-template.md",
+        "references/entity-template.md",
+        "references/adapter-template.md",
+        "references/formal-test-template.md"
+      ]
+    },
+    "operations": {
+      "requirement-author": [
+        "draft",
+        "normalize"
+      ],
+      "spec-author": [
+        "draft",
+        "normalize"
+      ]
+    },
+    "unresolved_decisions": [],
+    "integration_owner": "program #322 coordinator",
+    "git_identity": "Exact final carrier commit returned after local commit; no push"
+  }
+}

@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p5-source-integration`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p5-instruction-integration`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -27,12 +27,14 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | integrated PR #343; Issue/Project complete; P7 verification deferred |
 | #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
 | #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader PR #339 and final mapping PR #343 integrated; Issue/Project complete |
-| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source inspected/locally integrated; shared mapping and online integration pending |
+| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source online in PR #350; actual shared mapping pending |
 | #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design integrated PR #349; Issue/Project complete |
-| #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | independent design task active; runtime/F: identity verified |
-| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | independent source task active; runtime/F: identity verified |
-| #347 | P5-B engineering methods | five own instruction packages/design/workflow | independent source task active; runtime/F: identity verified |
-| #348 | P5-C portable authoring | two own instruction packages/design/workflow | independent source task active; runtime/F: identity verified |
+| #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | initial design returned; quiescent-maintenance revision requested in same task |
+| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source inspected/locally integrated; same-task mapping pending |
+| #347 | P5-B engineering methods | five own instruction packages/design/workflow | write blocked by automatic approval review; awaiting direct confirmation |
+| #348 | P5-C portable authoring | two own instruction packages/design/workflow | source inspected/locally integrated; online integration pending |
+| #351 | P5-D frame/compliance design | own design/workflow only | independent design task active; runtime/F: identity verified |
+| #352 | P5-E optional maintenance design | own design/workflow only | independent design task active; runtime/F: identity verified |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -50,7 +52,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #341 source `da04c0bb36fda9f48552ed5ee4f60efc18a95d9b` is inspected and locally integrated; complete source online integration and retain #341 open for actual mapping. [P4 inspection](reports/p4-source-integration.md) records the bounded checks and limits. #342 design is merged/closed through PR #349. #346/#347/#348 source tasks remain active on the selected P5 contract; #346 receives exact shared mapping only after its first source return and actual package reconciliation. #345 continues P6 design with selected M01 input. Runtime/schema/test/CI verification remains deferred to P7.
+Current action: integrate actual #346/#348 source online, receive #351/#352 bounded designs and receive #345 quiescent-maintenance revision. #341 is online but awaits mapping; #347 is stopped before writes pending direct authorization confirmation required by automatic review. The coordinator reads completed task handoffs directly after callback rejection. See [P5 source review](reports/p5-instruction-integration.md) and [remaining design assignments](reports/p5-remaining-design-scope.md). Actual package mappings follow delivery; all product verification/CI remains deferred to P7.
 
 ## P3 shared implementation continuation
 
@@ -59,3 +61,7 @@ Both contract checkpoints are received. [Reconciliation](reports/p3-contract-rec
 ## Remaining work and verification
 
 P4-P6 implementation and P7 redesigned validation/pipeline review remain open. Final independent review, tool trials and I/O tests have not run. Pipeline restoration is not scheduled automatically. [Remediation report](reports/remediation-report.md) maps current evidence without claiming final closure.
+
+## Remaining P5 design dispatch
+
+Both tasks are active from shared checkpoint `731d658b6004110fd59224ca39aa3a5d63891d91`. [Runtime and first-command read-back](evidence/p5-remaining-design-dispatch.json) confirms gpt-6-astra / ultra and assigned F: worktrees. No source/design completion or verification is implied.
