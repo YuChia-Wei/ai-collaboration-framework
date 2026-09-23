@@ -1,12 +1,25 @@
 # Framework redesign coordination
 
+## Latest actual checkpoint
+
+PR #388 merged the original #335 linked-worktree repair at eca7c971; its selected
+real Git regression and installed target retry passed. #335 is closed / Project
+Done after bounded coordinator review and live readback. The new complete rc.1
+candidate was built/read from 1ce41a4f and delta-installed with two changed files.
+Target is clean at a17cc80ef112368ff47109926aad22915a654b35, pilot-review, with
+131 managed hashes and 132 Git/index/checkout byte/mode comparisons passed.
+Independent target review P15-rc1-a17cc80-01 is dispatched; admission is pending.
+See handoffs/coordinator-transfer.json latest_checkpoint and the successor report.
+All earlier states below are preserved historical snapshots. Broader P7, target
+provider integration, CI adoption, stable upgrade and publication remain distinct.
+
 ## Workflow metadata
 
 - Workflow: `2026-09-23-framework-redesign-control`; owner: `ai-context-governance`.
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-rc1-preparation`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-24-rc1-pilot-continuation`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -15,7 +28,7 @@ U001 is the current owner-selected execution boundary. Follow repository skills,
 
 This coordinator owns dependencies, task/branch/PR mapping and integration. Issue workers own only their assigned files and issue workflow. The root index is coordinator-owned to avoid parallel edits. Every PR declares which Issue is complete versus still waiting for later delivery or verification.
 
-## Current continuation order (owner update, 2026-09-23)
+## Historical continuation handoff snapshot (owner update, 2026-09-23)
 
 The owner requested a fresh Astra/Ultra coordinator and selected: repair known
 problems first, then a versioned dotnet-mq-arch-lab pilot, then overall validators,
@@ -242,3 +255,13 @@ Target gate development proceeds separately under its direct owner decision.
 64bf9f6e with all 131 members. Integrate online, then use a fresh engine pin/plan
 for target Issue 15 while preserving its prior capture failure. Current target
 gate is prepared at 1269a5fa and intentionally rejects incomplete admission.
+
+## Installed pilot and PR Git worktree defect
+
+Target local checkpoint 24998b88 holds the actual complete installation,
+reconciled Codex/legacy routes and five local record lifecycles. It remains
+pilot-blocked by actual PR Git worktree inspection failure. Original #335/task
+resumed for a bounded source repair; see the latest successor report and live
+Issue. Current branch is codex/2026-09-24-rc1-pilot-continuation from ff57a09b.
+Preserve all old candidates/recovery/failed evidence. Independent target review
+follows a newly built immutable candidate and explicit target delta update.
