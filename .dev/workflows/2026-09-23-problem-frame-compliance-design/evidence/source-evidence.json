@@ -1,0 +1,186 @@
+{
+  "source_commit": "731d658b6004110fd59224ca39aa3a5d63891d91",
+  "recorded_at": "2026-09-23T10:15:03+08:00",
+  "generator": "Direct Git show/rev-parse and Python stdlib SHA-256; no product imports or execution",
+  "scope": "Selected Issue 351 contracts/templates/metadata and named shell helper; bounded tracked problem-frame subtree",
+  "exclusions": [
+    "product runtime",
+    "downstream targets",
+    "history-wide SWF search",
+    "shared code index",
+    "schema/test execution"
+  ],
+  "reproduce": "At source_commit: git show <commit>:<path>, git rev-parse <commit>:<path>, SHA-256 raw bytes; git ls-tree -r --name-only <commit> -- .dev/problem-frames",
+  "files": [
+    {
+      "path": ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
+      "git_blob": "e2c2669b8986383b19b41f272b54fed4e2b759c3",
+      "sha256": "0e2b4927d1a86a7626bc2eaf97555e25fda0cfd245bf4ad6447fe1eef557126d"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-framework-redesign-control/tasks/ISSUE-351.json",
+      "git_blob": "419cd14b26ea60f64d00a9babde0ceb34068921c",
+      "sha256": "24bc802e80e2d10c6ab3b63465dcf73ebef95622c88b5de8570d418be3ae529b"
+    },
+    {
+      "path": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-remaining-design-scope.md",
+      "git_blob": "2eaf00c892f2e4212a902dfb4c19c49f5f1b40d6",
+      "sha256": "00e745d5d19f7ec39fec4152fe93ae31eaa61f46a1e3e2fd3a64b41d748d4448"
+    },
+    {
+      "path": ".dev/design/framework-next/p5-selected-contract.md",
+      "git_blob": "0427cec4ab0c4158677695fb5ba6235434322b57",
+      "sha256": "82719f9120854254ef057c9c66669b35816116e9031984177e5835e6fe94053a"
+    },
+    {
+      "path": ".ai/assets/skills/problem-frame-author/skill.yaml",
+      "git_blob": "1aea3573df96a23b26da808a26b2b42a27b9968e",
+      "sha256": "4b3e9bf2071d8ab7429b78d2dd1842353defc4f4890b6282ba730eb198a8f1c5"
+    },
+    {
+      "path": ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md",
+      "git_blob": "169e8ee3d58c8bda5b7c70227144916ddf2d3817",
+      "sha256": "93958e99a1232f5e3449e7da6f03389402bfc2d5e955127d3ff9657b80a87d45"
+    },
+    {
+      "path": ".ai/assets/skills/problem-frame-author/references/source-mapping.md",
+      "git_blob": "fe9ad209ffba6d5e85aa79648e07c6e1d160f5fd",
+      "sha256": "daca8d6c0505ed970f5113c2d6c8456dce0a3eac217f58c0f329e6f82ad4655b"
+    },
+    {
+      "path": ".ai/assets/skills/problem-frame-author/references/output-contract.md",
+      "git_blob": "3b16010fd1776db36bbd260dae27197cdb56500c",
+      "sha256": "b6460dd3c3bd73d6abc519aa2eee4fccdacfed87191c9d14da4281f8a1c4d283"
+    },
+    {
+      "path": ".ai/assets/skills/spec-compliance-validator/skill.yaml",
+      "git_blob": "bb60b33ad069d4d3367544ea76c5ec81be207558",
+      "sha256": "5ffba449e3f55210c80b3493368536c8ebd409efd529a64b52884f4b4e962f04"
+    },
+    {
+      "path": ".ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md",
+      "git_blob": "80a983b429426197d9e7af8f84b13a399e6e8712",
+      "sha256": "009a7b82a12d2ed8b9e9f704379c61a58b0445a87779100e8fb416d64d726b5e"
+    },
+    {
+      "path": ".ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md",
+      "git_blob": "6559f419595f4e5b788529aaf7f6f148eb5ec332",
+      "sha256": "da1e547d75d26cf1f1bd5d83f69e821d723bc477bca5e7500eee9b017f63ac30"
+    },
+    {
+      "path": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "git_blob": "796b322b3a9f844ba916bd14ce7d65e83daa24bd",
+      "sha256": "e7be4ae0ee5eaef3e33583cc841a10401715d87bdf5e8f1997cc15a3e64cfc8e"
+    },
+    {
+      "path": ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md",
+      "git_blob": "23b3240473e5e06bde71ccf41ed4bbf3dfa85479",
+      "sha256": "c16fa0ae06165e1f51d7216da670b3dff2388918e651d2b7ac088742365376d6"
+    },
+    {
+      "path": ".ai/scripts/check-spec-compliance.sh",
+      "git_blob": "f4bd2233b3ca8616be3ef69260c6b6b9e24e572e",
+      "sha256": "77b759ec1ebc188f13963c2aced867cbab0626ad6de199a278cdf477ae174c59"
+    },
+    {
+      "path": ".dev/design/framework-next/capability-consolidation/legacy-artifact-dispositions.json",
+      "git_blob": "5c17c85f6d989bb7069ce7718902945cb39dd5b9",
+      "sha256": "c748b60b103bfcd9fbcc2597a976c1f8b857ba7647171791e8f18c5c87cb540a"
+    },
+    {
+      "path": ".dev/design/framework-next/capability-consolidation/capability-disposition.md",
+      "git_blob": "69ff0a65014e6f2779fc7a28a3689823077e4474",
+      "sha256": "739714e8c912234115e42cd7fccdd9c1183a94200813a467bb0d2e8bf8dcaeb9"
+    },
+    {
+      "path": ".dev/design/framework-next/capability-consolidation/operation-model.md",
+      "git_blob": "d88c0258cc36bff6ab3f3fa81ad535c57d79afe3",
+      "sha256": "fc3c684b11cc6767d4def7056da9b4bcaee81f8438f9168af156fdcbc36ea215"
+    },
+    {
+      "path": ".dev/design/framework-next/capability-consolidation/implementation-slices.md",
+      "git_blob": "2b64a933a86c1fd260ffcaf191394cc376f7fd7a",
+      "sha256": "7d8ab7da70011c81c6b4b308df5eaa789d9568f7d4b05a6af76691defe002c64"
+    },
+    {
+      "path": ".dev/design/framework-next/portable-authoring/design.md",
+      "git_blob": "b26f055b5261292e5946a1b35ae2584106387b09",
+      "sha256": "a56e0eda721d8396a21d1672ead8e99cda963942c28e835324dd7bddba6662ad"
+    },
+    {
+      "path": "src/skills/spec-author/skill-package.yaml",
+      "git_blob": "120abfe9d14acfe57c2e87c84aa9e3bfe164fee1",
+      "sha256": "0cb829b12b78e48799dae1e81f5655bd4d2457a6239e0ae9c71f874055e56ff9"
+    },
+    {
+      "path": "src/skills/adr/skill-package.yaml",
+      "git_blob": "97dca5f4e1a3daecadae496b7fbd6405c520efa9",
+      "sha256": "af95402ce8fb7fe1f613bfaa09f3d6b2fc688d8ac73a5734d4f8232b202584ab"
+    },
+    {
+      "path": "src/skills/adr/references/configuration.md",
+      "git_blob": "8bd0916c1a239d85f531b1206e85a12ed7aa0760",
+      "sha256": "a683f4a8a5d31bbe870b3fce8021fc27bbdffc142091f6a11705740c7dc067c3"
+    },
+    {
+      "path": ".dev/design/framework-next/distribution-implementation/metadata-v2.md",
+      "git_blob": "cb2798d7c8842881a969c87ddfcbd93b9d1a2169",
+      "sha256": "e6fda9278c4aaf280745b5ec59e506d6d8db5d170b753eb2ea3b5b662fd64414"
+    },
+    {
+      "path": ".gitignore",
+      "git_blob": "470403e14c3c5f1a6e7567480394dc0e0bd80c38",
+      "sha256": "0c93799fb6c42f2ef1faef46d1baa6ae8672f0cdffec4ce39e7f9be5ccd6dadf"
+    },
+    {
+      "path": ".dev/problem-frames/INDEX.md",
+      "git_blob": "e9a79eab85136adbc096f65405fefaa4e3337701",
+      "sha256": "4b4421f1b8e960b57672e23d089f0d0678a1c8bc8ba375a82fb3116c8a7c2c61"
+    },
+    {
+      "path": ".dev/problem-frames/README.MD",
+      "git_blob": "a8a03cdf07a6bc44f39e2add68a61184fd807369",
+      "sha256": "4774f632eceb0e51c63b819d53e1ee4108dcc25fdd14a4bf3704ab0913a026ae"
+    },
+    {
+      "path": ".dev/problem-frames/SEMANTICS.md",
+      "git_blob": "f1e0e39e7bdc791ea0f76fd43ef4c61da079b7d8",
+      "sha256": "2b627811e52eb5340c0fcf741164d09cabf85e5d01649b0f23ce5e0c792d66be"
+    },
+    {
+      "path": ".dev/problem-frames/templates/cbf-external-system/acceptance.yaml",
+      "git_blob": "1cf853dc573f2985f984ad158506037cc250c20f",
+      "sha256": "8113643a1d2a377903802589fb3159719df32e652829d581a882b465794690d4"
+    },
+    {
+      "path": ".dev/problem-frames/templates/cbf-external-system/controlled-domain/aggregate.yaml",
+      "git_blob": "d49eedda28696458cdc79485f0136b6e8ff18c31",
+      "sha256": "5cda912cbff0e13fa7cda216edbd05d6a55f86a7054ae78bc521f93a7cc959fb"
+    },
+    {
+      "path": ".dev/problem-frames/templates/cbf-external-system/frame.yaml",
+      "git_blob": "e53f32e023eabad9a741392d66dbf60e0fd5c0ac",
+      "sha256": "fb273e0368c815d410c5ccadb65832264d8b6656fb79096a5f59fbcc8c02b8ea"
+    },
+    {
+      "path": ".dev/problem-frames/templates/cbf-external-system/machine/machine.yaml",
+      "git_blob": "ea1cae9746452397298d7d4c412aeee1db78a7ea",
+      "sha256": "facbe9f9306ec36bff9e14fe03968e4150dd0d1bedcd33128dc6104e2916d8cb"
+    },
+    {
+      "path": ".dev/problem-frames/templates/cbf-external-system/machine/use-case.yaml",
+      "git_blob": "af149608bc52f3731d1abad9e7f9ff0413969699",
+      "sha256": "70eb4f33878bf8b61238873d67898717d9c2407e72dca96d2803df950ac05243"
+    }
+  ],
+  "tracked_problem_frame_subtree": [
+    ".dev/problem-frames/INDEX.md",
+    ".dev/problem-frames/README.MD",
+    ".dev/problem-frames/SEMANTICS.md",
+    ".dev/problem-frames/templates/cbf-external-system/acceptance.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/controlled-domain/aggregate.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/frame.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/machine/machine.yaml",
+    ".dev/problem-frames/templates/cbf-external-system/machine/use-case.yaml"
+  ]
+}
