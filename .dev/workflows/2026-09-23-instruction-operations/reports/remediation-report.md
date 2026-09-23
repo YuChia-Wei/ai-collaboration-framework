@@ -2,7 +2,7 @@
 
 - Report: `remediation-report-2026-09-23-instruction-operations`.
 - Owner: `ai-context-governance`; workflow: `2026-09-23-instruction-operations`.
-- Created: `2026-09-23T09:47:52+08:00`; updated: `2026-09-23T10:17:46+08:00`; status: mapping-blocked-by-approval; source checkpoint retained.
+- Created: `2026-09-23T09:47:52+08:00`; updated: `2026-09-23T11:56:40+08:00`; status: mapping-blocked-by-approval; source checkpoint retained.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`; version `2.0.1`.
 - Issue: [#346](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346).
 - Starting commit: `842b73ca09d701d1561109255193d80439dc996b`.
@@ -105,3 +105,21 @@ direct user authorization for the exact four shared mapping files, then continua
 in this same task. No alternate write route is attempted. Workflow/task remain
 in_progress; all product verification stays deferred-by-owner under U001 to program
 #322 coordinator / P7, which selects redesigned checks after implementation.
+
+### Third request after forwarded direct owner confirmation
+
+At clean base `4cda6689bf469a2273e14e237a0c3bf7ad4b6eed`, the new coordinator handoff
+reported the owner's explicit confirmation of the original #346/#347 write scope.
+One new scoped request was made for the same four mapping files. Automatic review
+again rejected it before execution, specifically because the approval was forwarded
+in transcript/file content rather than trusted direct user input in this task.
+The prior two failures remain failures. No alternate write mechanism was attempted.
+
+Refreshed direct YAML/Git member comparison confirms the nine selected source
+closures still total 68 and match tracked members. Actual mapping is still five
+packages/44 members/four profiles, and engineering.yaml is absent. Both protected
+profile byte comparisons remain equal. Only four issue-owned workflow records
+change to preserve this result. No product execution or additional package mapping
+occurred. A direct user confirmation in this #346 task, or app-level resolution of
+the approval restriction, is required before another request. All U001 deferrals
+and the in_progress workflow state remain; no push or callback is performed.

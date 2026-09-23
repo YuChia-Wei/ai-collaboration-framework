@@ -3,7 +3,7 @@
 - Workflow: `2026-09-23-instruction-operations`; owner: `ai-context-governance`.
 - Issue: [#346](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346).
 - Status: `in_progress`; phase: mapping selected but write blocked by automatic approval review.
-- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T10:17:46+08:00`.
+- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T11:56:40+08:00`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`; version `1.2.0`.
 - Branch: `codex/2026-09-23-instruction-operations`; base branch: `main`.
 - Worktree: `F:/framework-next/346`; exact starting commit: `842b73ca09d701d1561109255193d80439dc996b`.
@@ -99,3 +99,22 @@ collaboration.yaml and new engineering.yaml under the exact selected scope; then
 resume mapping in this same task. Until then, mapping is not implemented. Keep
 workflow/task in_progress. No callback, push, PR or CI action is requested; the
 coordinator will read the final result. All U001 verification deferrals remain.
+
+### Owner-confirmed resumption: third write still rejected
+
+The coordinator supplied the owner's new direct reply, recorded in
+[owner-confirmed resume](../2026-09-23-framework-redesign-control/reports/p5-owner-confirmed-resume.md),
+and advanced this same branch to `4cda6689bf469a2273e14e237a0c3bf7ad4b6eed`.
+This task read back the exact root/branch/HEAD/common Git directory and clean state.
+One new scoped request for the original four mapping files was made after this
+material authority change. Automatic review rejected it before execution because
+it required trusted direct user authorization in this conversation and did not
+accept forwarded transcript/file content. Earlier rejections remain unchanged.
+
+Fresh direct metadata/tracked-member comparison again confirms the selected nine
+packages/68 members exist, while the actual manifest remains five/44 with four
+profiles and no engineering.yaml. lesson-minimal and knowledge bytes are unchanged.
+Only this task's workflow records are updated. Next action: the user confirms the
+four-file mapping directly in task `01a0cbeb-c1c8-7ba1-a0c8-de9026a355ff`, or resolves
+the approval restriction through the app. Do not retry, change writer or bypass the
+rejection. No callback or provider write is performed. U001 deferrals remain.
