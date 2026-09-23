@@ -33,3 +33,14 @@ four report-wiring lines in `run.py`, and tiny regressions only inside
 [exact observations](cleanup-repair-checks.json). No C5 or PR family rerun,
 product edits, new native arm, profile-table or #373 workflow fixture changes.
 Coordinator retains integration and subsequent selected execution ownership.
+
+## Selected P7 continuation
+
+Coordinator adopted the read-only reconciliation and authorized the original
+worktree fast-forward to `e71712b71791170c3f4946e131ce867f82dade8f`, the narrow
+argument-test correction and current README/design refresh, followed by one
+12-method execution after a clean preparation commit. See the
+[P7 report](p7-verification-report.md) and [exact selection and limits](p7-reconciliation.json).
+Actual results get a separate local commit. Stop on failure/timeout/missing
+evidence; no extra trial, agent/task, provider mutation or push is authorized.
+The eight historical core assertions remain a separate limited comparison.
