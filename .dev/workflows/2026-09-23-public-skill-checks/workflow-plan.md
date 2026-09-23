@@ -2,10 +2,14 @@
 
 Current checkpoint: [common-source public pass](common-source-e71712b7-report.md),
 [seven actual results](evidence/reconcile-e71712b7-results.json), and [task](task.json).
-All seven families passed once each on unchanged clean
-`e71712b71791170c3f4946e131ce867f82dade8f`, with successful cleanup and original
-independent caps. The technical selection is complete; coordinator integration and
-Issue/Project closeout remain separate. README suggestion is handed to its owner.
+This bounded workflow is completed. All seven families passed once each on
+unchanged clean `e71712b71791170c3f4946e131ce867f82dade8f`; validated delivery is
+`07b1778f3b6cfae689c98b10326b614149e437f3`. The coordinator reported PR 391 merged,
+Issue 373 CLOSED/COMPLETED and its existing Project item Done. These are attributed
+coordinator read-backs, not new provider observations by this executor. See the
+report's post-merge closeout for exact identities/times. This local closeout record
+still awaits coordinator integration; whole-P7 completion is not implied. README
+wording remains handed to its separate owner.
 
 Previous checkpoint: [PR cleanup rerun](pr-cleanup-rerun-report.md),
 [actual result](evidence/pr-cleanup-rerun-result.json), and [task](task.json).

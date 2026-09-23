@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:14:31+08:00",
-  "updated_at": "2026-09-23T19:20:46+08:00",
+  "updated_at": "2026-09-24T01:27:23+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -61,18 +61,20 @@
       "Retain automatic rejection and first test failure",
       "Separately approved fixture correction and focused rerun",
       "Local checkpoint",
-      "Direct user confirmation; approved dormant policy/pointers; retained original rejection"
+      "Direct user confirmation; approved dormant policy/pointers; retained original rejection",
+      "Verified #369 task/worktree binding; exact clean fast-forward to e71712b7; bounded original-scope continuation"
     ],
     "validation": [
       "24 selected tests passed after retained WinError 1 failure",
       "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup",
-      "16 dormant policy/pointer files checked; 15 existing bodies retained; 2 exact-type YAML matches; 15 added local links; bilingual parity inspection"
+      "16 dormant policy/pointer files checked; 15 existing bodies retained; 2 exact-type YAML matches; 15 added local links; bilingual parity inspection",
+      "44 source tests passed with no skips; caps, parsers, dispatch and process AST unchanged; raw output and tested hashes retained"
     ],
-    "last_completed_step": "Original dormant policy/root/template scope implemented after direct user authorization; additive direct checks passed",
-    "next_action": "Coordinator integrates caller/runner and dormant text, resolves upstream failures and native binding, obtains scoped review and actual trials before separate adoption/restoration"
+    "last_completed_step": "Verified 14 exact upstream streams and five source hashes; existing V2 parser accepted all seven actual recorded family results without product execution",
+    "next_action": "Coordinator reviews/integrates local checkpoint; #368 retains selected verification; native scope and policy/CI adoption remain separate"
   },
   "results": {
-    "summary": "Dormant source gates and policy checkpoint; no policy adoption, CI/native readiness or full product acceptance",
+    "summary": "Integrated-interface source selector checkpoint; policy remains dormant and #369 native caller remains unbound",
     "tests_run": [
       {
         "attempt": 1,
@@ -126,10 +128,24 @@
         "harness_seconds": 1.541,
         "product_execution": false,
         "evidence_scope": "Synthetic complete public responses; local stream/selector cases only"
+      },
+      {
+        "attempt": 6,
+        "phase": "integrated-interface-binding",
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "harness_seconds": 1.959,
+        "capture_seconds": 2.203,
+        "product_execution": false,
+        "evidence": "evidence/integrated-binding-attempt-1.json",
+        "evidence_scope": "Synthetic selector/caller inputs and existing bounded Python/tiny Git probes; tested hashes bind working-tree execution"
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "#368 metadata/F: backend and #373 full-family acceptance unresolved; native blocked; independent review and adoption pending; no hosted evidence",
+    "residual_risk": "No hosted or native caller acceptance; #373 actual seven-family receipt accepted by V2 parser only; #368 verification and independent source review/adoption remain separately owned",
     "follow_up_needed": true
   },
   "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim",
@@ -153,7 +169,8 @@
     },
     "public": "See public_binding; fixed #373 CLI now bound, complete public acceptance remains unestablished",
     "native": "unimplemented-blocked",
-    "report": "reports/runner-binding-handoff.md"
+    "report": "reports/runner-binding-handoff.md",
+    "record_role": "historical-checkpoint; current interface is in integrated_binding"
   },
   "public_binding": {
     "source_commit": "7996b32d3d4f70553b203299e25dc69d9413ff9d",
@@ -177,7 +194,8 @@
     ],
     "public_read_only_used": false,
     "native": "unimplemented-blocked",
-    "report": "reports/public-binding-handoff.md"
+    "report": "reports/public-binding-handoff.md",
+    "record_role": "historical-checkpoint; current interface is in integrated_binding"
   },
   "dormant_policy": {
     "direct_owner_confirmation": "確認 #369 原定政策、AGENTS 與 PR template 寫入範圍；僅限尚未生效的規範及適用性指標，不啟用規範或 CI。",
@@ -197,5 +215,31 @@
     "runtime_tests_rerun": false,
     "provider_mutation": false,
     "report": "reports/dormant-policy-handoff.md"
+  },
+  "integrated_binding": {
+    "source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+    "previous_local_head": "0725c3dd68e6d1cb4aca5d03343cd239b8c447a1",
+    "task_id": "01a0cd11-7b98-7090-ae53-1bf7bf46a651",
+    "identity_evidence": ".dev/workflows/2026-09-23-framework-redesign-control/handoffs/coordinator-transfer.json at e71712b71791170c3f4946e131ce867f82dade8f",
+    "code_scope": [
+      ".github/scripts/check-source-change.py",
+      ".github/tests/test_source_gates.py"
+    ],
+    "result_semantics": "unchanged; added synthetic cleanup-failure cases",
+    "caps_and_process_execution": "unchanged",
+    "automatic_new_regression_commands": false,
+    "native_caller": "unchanged and unbound",
+    "report": "reports/integrated-binding-handoff.md",
+    "coordinator_reported_target_state": "pilot review/admission passed; lease released; not re-executed or independently read back by #369",
+    "actual_public_receipt": {
+      "execution_source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+      "receipt_commit": "d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7",
+      "caller_commit": "76b2c013aef6493f9779f0226748315dfa469f16",
+      "stream_hashes_verified": 14,
+      "parser_results_accepted": 7,
+      "product_execution_here": false,
+      "all_public_aggregate": false,
+      "evidence": "evidence/actual-public-receipt-replay.json"
+    }
   }
 }

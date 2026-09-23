@@ -1,6 +1,65 @@
 # Framework redesign coordination
 
-## Latest actual checkpoint
+## Current selected P7 integration checkpoint
+
+Observed at 2026-09-23T17:34:57.980273+00:00. The three original Issue tasks returned clean local
+deliveries: #368 edfae7a868c54a35deb871d179caf5acd40c2c00, #369
+5440a9f410c9a8dd5ae7895195c9ba2a1a4a5b64, and #373
+4ab8c0ca0b24e8921d17482c596458f4d7685c94. This containing commit preserves all three
+histories and the bounded coordinator review; online integration is the next
+provider action, not a result asserted by this commit.
+
+- #368 ran the selected 12 methods once at 29b0fafbf6cb4ac0a6caa57d24b841c8204241cd:
+  passed, zero skips/errors, two actual Lesson candidate builds/readers. Its eight
+  historical core comparisons remain separate from that invocation. Parent
+  verified raw streams, all eleven executable inputs and unchanged historical
+  failure inventories (240 entries, 93 file hashes, 674869 bytes). The only
+  executable change corrects parse-only valid public/native argument expectations.
+  Issue closure remains pending the required affected EnginePin independent review
+  and online integration. Earlier #370 reviewed the prior loader repair, not all
+  subsequent engine changes; current coordinator review does not replace it.
+- #373's seven separately invoked public families passed on
+  e71712b71791170c3f4946e131ce867f82dade8f. PR391 merged delivery 07b1778f at
+  d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7; live Issue state is CLOSED/COMPLETED
+  and Project Done. The returned four-record closeout is included here. Totals
+  span separate runs: 218 public plus 37 driver Git launches; opaque nested
+  launches are unavailable. All 14 runner streams remain; successful child
+  transcripts were removed by existing cleanup. No aggregate or hosted pass.
+- #369's bounded original-scope selector/test change passed 44 focused methods
+  once, zero skips. The tested working-tree bytes match code commit 76b2c013;
+  the final records-only commit does not change those bytes. Its existing V2
+  parser accepted all seven actual #373 captured results, with nine immutable
+  receipt blob identities, 14 stream hashes and five test-source hashes checked.
+  Replay launched no product runner. Only finite ownership maps/provenance
+  constants and classification changed; parsers, caps and native caller remain.
+  #369 stays OPEN / In progress for the separate native/policy/CI obligations.
+
+Coordinator common-route bounded source review found no actionable finding.
+This is not formal independent P7/policy-adoption review. Original failures,
+read-preparation errors and the limits of every evidence reuse remain visible.
+No product suite was repeated solely for integration.
+
+Completed worktrees F:/framework-next/381, /382 and /383 and their local branches
+were removed only after clean merged-ancestor/closed-Issue checks and exact
+persistent archive verification: ten ignored files, 10805 bytes in total, under
+C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/
+framework-next-control/completed-worktree-archive/{381,382,383}.
+Their remote branches were already absent; none was deleted by this cleanup.
+The initial remote-existence preflight stopped before deletion and is retained.
+All p7-runs, failed fixtures, F:/ai-context-tests and the F386 installed engine
+remain. F368/F369/F373 are retained at this checkpoint.
+
+The target pilot remains locally admitted and unchanged at
+a17cc80ef112368ff47109926aad22915a654b35. Two direct owner questions remain pending:
+target push/PR/online merge of those seven reviewed commits; and the exact #369
+native-driver/caller extension and explicit roots proposed in Issue comment
+5799329517. No dependent action is authorized by elapsed time. Source Actions
+and all nine workflows remain disabled at the last live readback, policies are
+dormant, and U001 applies. Root adoption, independent source adoption review,
+effective-policy/CI adoption, stable release/publication and actual stable target
+update remain incomplete and separately governed.
+
+## Prior admitted target checkpoint
 
 The complete target pilot is locally admitted at
 a17cc80ef112368ff47109926aad22915a654b35, unchanged full tree

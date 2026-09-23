@@ -1,0 +1,17 @@
+test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) ... ok
+test_c2_actual_v2_v3_union_and_null_config_projection (test_contracts.SourceClosureTests.test_c2_actual_v2_v3_union_and_null_config_projection) ... ok
+test_c2_reject_version_types_and_duplicate_schema (test_contracts.MetadataTests.test_c2_reject_version_types_and_duplicate_schema) ... ok
+test_c2_reject_owner_and_undeclared_tool_or_reference (test_contracts.MetadataTests.test_c2_reject_owner_and_undeclared_tool_or_reference) ... ok
+test_c2_reject_mixed_union_and_null_config_artifact (test_contracts.MetadataTests.test_c2_reject_mixed_union_and_null_config_artifact) ... ok
+test_c3_real_git_regular_missing_nonregular_members (test_contracts.SelectionTests.test_c3_real_git_regular_missing_nonregular_members) ... ok
+test_c5_two_real_lesson_builds_and_reader_refusals (test_contracts.CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals) ... ok
+test_output_root_precedence_default_and_rejection (test_contracts.FixtureSupportTests.test_output_root_precedence_default_and_rejection) ... ok
+test_failed_run_preserves_owned_residue_and_rejects_identity_drift (test_contracts.FixtureSupportTests.test_failed_run_preserves_owned_residue_and_rejects_identity_drift) ... ok
+test_reserved_and_unknown_runner_selections_fail_before_allocation (test_contracts.FixtureSupportTests.test_reserved_and_unknown_runner_selections_fail_before_allocation) ... ok
+test_cleanup_failure_accounting_in_contracts_and_public_reports (test_contracts.FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports) ... ok
+test_readonly_git_object_cleanup (test_contracts.FixtureSupportTests.test_readonly_git_object_cleanup) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 12.363s
+
+OK

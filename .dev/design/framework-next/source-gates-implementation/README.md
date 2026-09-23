@@ -1,13 +1,15 @@
 # Dormant source gates: local checkpoint
 
 [#369](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369), program
-#322 / [selected P7 scope](../p7-execution-selection.md). **Partial; directly
-authorized dormant policy delivered, contracts/public CLI bound; actual product
-acceptance and native implementation outstanding. No adoption or restoration claim.**
-Read the [current dormant-policy handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/dormant-policy-handoff.md)
-and [initial handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/blocked-handoff.md)
-and [contracts binding](../../../workflows/2026-09-23-source-gates-implementation/reports/runner-binding-handoff.md),
-and [current public binding](../../../workflows/2026-09-23-source-gates-implementation/reports/public-binding-handoff.md).
+#322 / [selected P7 scope](../p7-execution-selection.md). **Dormant source gates;
+V1/V2 interface provenance and finite ownership now bind integrated source
+`e71712b71791170c3f4946e131ce867f82dade8f`. Native caller and adoption remain separate.**
+Read the [current integrated-binding handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/integrated-binding-handoff.md).
+The [dormant-policy checkpoint](../../../workflows/2026-09-23-source-gates-implementation/reports/dormant-policy-handoff.md),
+[initial refusal/failure](../../../workflows/2026-09-23-source-gates-implementation/reports/blocked-handoff.md),
+[contracts binding](../../../workflows/2026-09-23-source-gates-implementation/reports/runner-binding-handoff.md)
+and [original public binding](../../../workflows/2026-09-23-source-gates-implementation/reports/public-binding-handoff.md)
+retain their historical source and evidence scope.
 
 ## Delivered selector contract
 
@@ -29,7 +31,7 @@ The future hosted source job has a 10-minute limit; native has 15 minutes.
 | --- | --- |
 | Known source prose / declared package entry or reference | UTF-8/conflict checks, new/changed Markdown local file references, `git diff --check BASE HEAD`. File existence only; heading/semantic meaning remains review. Renames re-resolve unchanged relative links. |
 | Source selector/workflows/policies/root | `.github/tests/test_source_gates.py --json`; nonzero, absent, timed-out, failed, skipped or malformed result fails. Report review requirement separately. |
-| Package schema/template/tool/metadata | `contracts` binds #368 and the owning `public:<family>` binds fixed #373; actual product acceptance is still incomplete and must fail truthfully. |
+| Package schema/template/tool/metadata | `contracts` binds #368 and the owning `public:<family>` binds fixed #373; seven recorded #373 results pass V2 parsing; #368 acceptance remains separately owned. |
 | Shared distribution/profile/adapter | `contracts` and actual declared tool-family consumers; only declared members/profiles/adapters are recognized. Nonempty/unknown dependency impact fails for coordinator mapping. Separate affected-selection trials remain required; C1/C5 Lesson smoke is not blanket actual assembly coverage. |
 | Installation/maintenance | `contracts`, separate Windows native requirement and independent scoped review. No native command is launched by source gate. |
 | Legacy support/recovery, frozen backlog or unknown member | Narrow failure requiring its named owner/check selection, never a green placeholder or historical matrix. |
@@ -105,7 +107,7 @@ only that created child; the parent remains. No global TEMP/TMP or legacy fixtur
 setting is changed. This fixture behavior is not product filesystem validation.
 
 Dormant policy writing is directly authorized and complete. Coordinator still owns
-#368/#373 integration and failed product acceptance, V3 binding, first push/PR/merge,
+#368 verification and source integration, V3 binding, first push/PR/merge,
 scoped review, actual selected trials, root adoption and the user's exact policy
 adoption/restoration decision. Keep #369 open; keep all
 seven old workflows disabled. Legacy matrices/packet machinery and CI remain
@@ -127,7 +129,7 @@ errors, **zero successful candidate builds**. These failures and the original
 #369 failure/24-pass checkpoint remain visible. See the current handoff above
 for exact interfaces, scope and remaining owners. CI remains disabled.
 
-## Current fixed #373 public binding
+## Historical fixed #373 public binding
 
 Interface: `7996b32d3d4f70553b203299e25dc69d9413ff9d`.
 The seven public families now select `--layer public --family ID`; no read-only
@@ -139,12 +141,12 @@ only for basic structure/count; original tests retain operation semantics.
 Final source-only tests passed 37/37, no skips, harness 1.541 s. Complete success
 responses are synthetic because no #373 family fully passed. The seven phase
 lists matched fixed source; retained ADR partial and PR failed output were
-correctly rejected. No product/public/native command ran. See the current public
-handoff above. Native and all reported #368/#373 product/backend failures remain
-unresolved. The later direct authorization permits dormant policy writes only;
-policy adoption and CI restoration remain outstanding. No provider setting changed.
+correctly rejected. No product/public/native command ran at that checkpoint.
+Those failures remain historical evidence; later product repairs and runs belong
+to their original owners. The current binding follow-up does not rerun them.
+Policy adoption and CI restoration remain separate. No provider setting changed.
 
-## Dormant policy follow-up
+## Historical dormant policy follow-up (0725c3dd)
 
 The direct owner confirmation is retained in the current handoff. Sixteen policy,
 root and template files now carry the dormant rules/pointers; all 15 existing
@@ -153,3 +155,39 @@ Fifteen added local links, UTF-8/newlines/whitespace and the additive diff passe
 direct checks. English/Traditional Chinese additions have matching meaning.
 Source code, tests, workflows and commit-policy YAML are unchanged in this follow-up.
 The earlier source tests are historical evidence, not newly executed policy tests.
+
+## Integrated interface and ownership follow-up
+
+Both V1/V2 interface constants now identify the integrated source above. Existing
+CLI, phase lists, result parsers, process execution and caps are unchanged. New
+synthetic cases preserve cleanup-failure refusal even after completed assertions
+or a forged success exit/final row. The focused source harness passed **44/44**,
+zero skips, 1.959 s; capture wall time 2.203 s. No product/public/native run occurred.
+
+| Changed exact file | Selection or remaining admission requirement |
+| --- | --- |
+| `test_knowledge.py` | All seven public families: its PublicCase is also imported by work and CBF modules. |
+| `test_work.py` | PR, local backlog and software-development-orchestrator public families. |
+| `test_cbf.py` | Problem-frame-author public family. |
+| `tools/build-candidate.py` | Existing distribution checks for declared consumers plus a separately required versioned-candidate trial. |
+| `test_native_windows.py` | Native-driver owner, pending V3 caller and independent scoped review; no native command dispatched. |
+| Six exact engine-source/scan-budget/PR-worktree/protected-path/versioned-candidate/Windows-path regression files | Named owners and `owner-selected-regression-required:<path>`; no new automatic regression command. |
+
+The test filenames above are under `tests/framework_next/`. Unknown names still
+fail closed; deletion and rename inspect both trees. Content/whitespace success
+for a named manual regression is not that regression's execution or acceptance;
+its admission requirement remains for the owner. All seven old workflows and both
+successors remain byte-identical in this follow-up. Native caller, policies/root/
+template, product/tests/framework_next and caps were not edited. The coordinator
+reports target pilot review/admission passed and lease released; that is separate
+reported target evidence, not execution or source-policy adoption by this task.
+
+## Actual public-result receipt
+
+The current handoff now includes a replay of the seven actual #373 family results
+at `e71712b71791170c3f4946e131ce867f82dade8f`, retained in immutable receipt commit
+`d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7`. All 14 exact runner stream hashes and
+five test-source hashes matched; the unchanged V2 parser accepted all seven.
+This does not rerun product tests, establish aggregate execution, or turn the
+synthetic provider fixture into actual provider acceptance. Native, hosted and
+policy/CI adoption boundaries remain unchanged.

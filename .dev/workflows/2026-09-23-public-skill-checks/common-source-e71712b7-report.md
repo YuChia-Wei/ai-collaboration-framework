@@ -98,12 +98,13 @@ unchanged caps; exit 0 and successful cleanup; complete runner captures with
 verified hashes/runtime/accounting; preserved prior evidence; no source/test edits.
 Record readability, JSON/YAML, links, Git scope/whitespace and complete planned
 message validation are retained in the local validation record. The execution
-SHA is e71712b7; the containing records-only commit is the separate delivery SHA.
+SHA remains `e71712b71791170c3f4946e131ce867f82dade8f`; the validated delivery
+SHA is `07b1778f3b6cfae689c98b10326b614149e437f3`. This subsequent records-only
+closeout has its own containing commit and does not change the executed subject.
 
-Technical public selection is complete and ready for coordinator closeout.
-The workflow stays in progress for delivery integration and coordinator-owned
-Issue/Project disposition; this task performs neither. README wording is supplied
-in [the proposed public paragraph](public-readme-suggestion.txt) for the #368 owner;
+The bounded technical workflow is now completed on the coordinator-reported
+post-merge observations below. README wording remains supplied in
+[the proposed public paragraph](public-readme-suggestion.txt) for the #368 owner;
 no README write is included here.
 
 C5, native, installation/target adoption, all-public aggregate, actual provider,
@@ -111,3 +112,31 @@ CI and whole-P7 completion are not established by these tests. Unselected legacy
 full/history/audit/lease/hosted gates remain `deferred-by-owner` under U001,
 owned by program 322 coordinator / P7. No push, PR, provider mutation, publication
 or adoption was performed. Only this existing workflow's records are delivered.
+
+## Post-merge closeout
+
+Observation source: coordinator task `01a0ce78-db26-74e1-a615-2bd0599f7d0c` reported
+the following provider read-backs in its closeout dispatch. This executor did not
+query or mutate the provider and did not pull/checkout the merged source.
+
+| Reported observation | Value |
+| --- | --- |
+| Review | No actionable finding after checking 14 raw streams, execution source/test hashes, phases/caps/cleanup and 29 owned paths |
+| PR | [391](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/391), merged at `2026-09-23T17:22:12Z` |
+| Merge commit | `d4db3fb8e83e74acbe3bdfd5acf03dbd18bae8b7`; delivery 07b1778f ancestry verified by coordinator |
+| Issue | 373 CLOSED/COMPLETED at `2026-09-23T17:22:43Z`, under the reported direct conditional closure authority |
+| Closure comment | [5799514872](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/373#issuecomment-5799514872) |
+| Existing Project item | `PVTI_lAHOAwvEG84Bez7wzg8RtFs`, Status Done; no other fields changed, per coordinator |
+
+The completed scope is only Issue 373's selected public C4/C6 and T1-T7 workflow.
+Whole-P7, CI restoration, publication and adoption are not completed by this
+closeout. Earlier failures, exact raw evidence, execution SHA and test results
+remain unchanged. No behavioral run, source/test/helper/runner/README edit,
+provider operation or cleanup was performed during this closeout.
+
+Only the existing locator, task, plan and this report changed. Direct record checks
+and exact planned-message validation precede the local closeout commit. The
+coordinator owns later integration of these records and separately authorized
+cleanup; no further Issue 373 executor work is pending after this local delivery.
+
+Actual closeout record checks passed: four UTF-8 records, JSON/YAML parsing, 20 local links, scope/whitespace and the complete planned-message validator (exit 0). The exact message hash and validator output are retained in `task.json` under `post_merge_closeout.record_validation`; this does not modify raw execution evidence.

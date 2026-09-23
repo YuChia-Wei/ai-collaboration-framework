@@ -5,25 +5,26 @@ workflow_kind: ai-context-maintenance
 title: Dormant source gates and prospective policy implementation
 owner_skill: ai-context-governance
 status: in_progress
-current_phase: dormant-policy-implemented
+current_phase: actual-public-receipt
 branch: codex/2026-09-23-source-gates
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-source-gates-implementation
 entrypoint: workflow-plan.md
 created_at: '2026-09-23T15:14:31+08:00'
-updated_at: "2026-09-23T19:20:46+08:00"
+updated_at: "2026-09-24T01:27:23+08:00"
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 issue_refs: ['#369']
 program_issue: '#322'
 source_commit: 38e6458f8d3e81dc2568daf1fa467571fb529fee
 owner_override: .dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md (U001)
-verification_state: dormant-policy-direct-checks-passed; prior-source-tests-retained; unselected-obligations-deferred-by-owner
+verification_state: 44-focused-source-tests-passed; seven-actual-public-results-replayed; historical-failures-retained; unselected-obligations-deferred-by-owner
 verification_next_owner: "program #322 coordinator / P7"
 integration_state: local-checkpoint-only; not-pushed
 commit_identity: containing-commit; exact SHA returned in final handoff
-runner_interface_source: 070a47335ffce99d31bd83e487447942539e4a9f
-current_runner_report: reports/public-binding-handoff.md
-public_interface_source: 7996b32d3d4f70553b203299e25dc69d9413ff9d
+runner_interface_source: e71712b71791170c3f4946e131ce867f82dade8f
+current_runner_report: reports/integrated-binding-handoff.md
+public_interface_source: e71712b71791170c3f4946e131ce867f82dade8f
 current_policy_report: reports/dormant-policy-handoff.md
 policy_state: directly-authorized-dormant-text-only; not-adopted; not-effective
+integrated_base_commit: e71712b71791170c3f4946e131ce867f82dade8f
