@@ -1,0 +1,55 @@
+{
+  "workflow_id": "2026-09-23-work-management",
+  "task_id": "CR335-002",
+  "owner_skill": "ai-context-governance",
+  "created_at": "2026-09-23T16:10:34+00:00",
+  "updated_at": "2026-09-23T16:17:46+00:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "status": "completed",
+  "finding_ids": [
+    "CR335-002"
+  ],
+  "authority": "Live Issue 335 Actual downstream worktree failure — P7 continuation 2026-09-24; coordinator task 01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "base_commit": "ff57a09b8443402caf3508dcee1fe0378753970f",
+  "scope": {
+    "files": [
+      "src/skills/pr/scripts/pr.py::git_subject",
+      "src/skills/pr/references/operations.md",
+      ".dev/design/framework-next/work-management/contract.md",
+      ".dev/workflows/2026-09-23-work-management/**",
+      "tests/framework_next/test_pr_git_worktree.py"
+    ],
+    "constraints": [
+      "No real repository settings or target bytes changed",
+      "No subagents/new tasks/provider/CI/shared package or manifest edits",
+      "Commit source and test before selected execution; preserve earlier checkpoints"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "Committed source/test at ad5d93eb; selected real Git regression passed once on that clean immutable source; retained raw evidence without changing tested bytes.",
+    "next_action": "Return evidence-only closing commit and clean exact HEAD; coordinator owns source review/integration and candidate/target retry."
+  },
+  "results": {
+    "tests_run": [
+      [
+        "python",
+        "-I",
+        "-B",
+        "F:/framework-next/335/tests/framework_next/test_pr_git_worktree.py",
+        "--output-root",
+        "F:/framework-next/p7-runs/335-pr-worktree"
+      ]
+    ],
+    "selected_test_status": "passed",
+    "other_verification_status": "deferred-by-owner",
+    "other_verification_owner": "program 322 coordinator / P7",
+    "summary": "Actual linked-worktree defect corrected and the selected regression passed; full framework and target acceptance are not claimed.",
+    "tested_commit": "ad5d93eb71bd8b9cd5aacf74917245f72188f3cd",
+    "execution_summary": ".dev/workflows/2026-09-23-work-management/evidence/CR335-002/execution-summary.json",
+    "finding_status": "corrected-selected-fixture-verified",
+    "follow_up_owner": "coordinator 01a0ce78-db26-74e1-a615-2bd0599f7d0c / target pilot owner"
+  }
+}

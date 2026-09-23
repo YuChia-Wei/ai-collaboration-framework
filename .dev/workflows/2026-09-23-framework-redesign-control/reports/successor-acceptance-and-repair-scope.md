@@ -560,3 +560,45 @@ No target push/PR/merge, target Issue closure, stable upgrade, release/publicati
 CI restoration or broad P7 completion is inferred. Source unselected gates stay
 deferred-by-owner. Target durable report:
 C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot/.dev/workflows/2026-09-23-framework-rc1-pilot/checkpoint-report.md.
+
+## Repaired candidate and frozen target independent review
+
+Original #335 delivered source/test ad5d93eb71bd8b9cd5aacf74917245f72188f3cd
+and evidence-only 1ce41a4f03f61e83bf9b99de3ce196887547e922. Parent common-route
+read-only review found no actionable issue; four raw evidence hashes and three
+source hashes matched. One selected real Git run passed (12 public, 95 Git,
+11.388 seconds), retaining the original exit128 and unsafe/invalid refusals.
+PR388 merged online at eca7c971ad84441d67cd4e085ea89b08ba1acd2a; remote identity
+and ancestry were read back. Issue335 is CLOSED and its existing Project Status
+Done after direct conditional closure authority. No other fields changed.
+
+One new complete public build/read from clean 1ce41a4f passed in 17.574 seconds:
+18 packages, 131 members; run F:/framework-next/p7-runs/versioned-candidate/
+complete-1baa4b669c2d4e19a6c39809ece3b4df. It remains an unpublished rc.1 candidate.
+Actual target exact-lock plan/apply changed two PR files and left 129 unchanged,
+using engine 3afb4ff4. New lock a04e2df01f5f6df6889b7c09daa1b9ae1c78e6b503aac852d5aa2b325c56a0e8.
+Seventy-two protected inputs, 292 retained authority files and five pilot records
+matched. All 131 managed hashes and 132 index/mode/raw-attribute/fresh-checkout
+comparisons passed. Original candidate/lock remain in prior Git and recovery
+custody. The coordinator's preliminary inventory-envelope assertion failed
+before public execution; corrected to the existing payload/ schema and retained.
+
+Actual installed PR prepare/inspect/render succeeded, creating only local
+pr-4588154f300b45fcb0c693c4e6d361b5 for the first three preparation commits.
+No target provider write or acceptance was inferred. Two legacy upgrader entries
+now clarify a source-comparison helper already absent at baseline; exact archived
+originals remain. Review criteria distinguish reviewer evidence from later parent
+admission/release, and pin exact content descriptor keys before freeze.
+
+Target clean commit a17cc80ef112368ff47109926aad22915a654b35 passed its seven-commit
+Git overlay. Fourteen focused gate tests reuse exact unchanged gate/test bytes and
+raw receipts. Target review preflight pins 316 authority files plus criteria,
+binding and full tree 1f1bac4fcc564657ae8eddb4ee1c704cc85c7284. Content subject
+eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621; packet/active
+lease validated before genuine /root/target_rc1_audit dispatch. Only that ignored
+review output may change. Review/admission/release are pending, not passed.
+The target reviewer is independent; source U001 is not applied to this target.
+
+Preserve F386 engine and all p7-runs. Target push/PR/merge/Issue15 closure, source
+P7 #368/#369/#373 reconciliation, CI adoption/restoration, stable 0.19.0 update and
+publication remain separate. No new source task or source subagent was created.
