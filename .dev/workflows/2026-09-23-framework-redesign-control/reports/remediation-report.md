@@ -58,3 +58,7 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P3 knowledge source and actual mapping
 
 #334 source 552e218d039245482ed422be7d4fb642d5463ff0 is locally integrated after [bounded inspection](p3-knowledge-integration.md). F-04 now has concrete lifecycle/promotion source but remains partially resolved pending composition/adoption/verification. #337 receives [44-member/four-profile mapping](p3-package-mapping-scope.md) against all actual package source. #341 design dispatch is independently active with runtime/F: identity retained in evidence/p4-task-dispatch.json. Product execution remains deferred-by-owner.
+
+## P3 mapping source completion and P5 dispatch
+
+#337 final mapping b38ef4a8dce57c2cb78fda6ae9c100d689605245 is received and locally integrated after [direct source/configuration comparison](p3-mapping-integration.md). #334/#337 online integration is next. #342 design is independently active; runtime and F: identity are retained in evidence/p5-task-dispatch.json. #341/#342 remain open design work, and the program remains implementation-in-progress with verification deferred to P7.

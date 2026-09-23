@@ -1,0 +1,18 @@
+{
+  "observed_at": "2026-09-23T09:12:24+08:00",
+  "issue": 342,
+  "thread_id": "01a0cbd1-789e-7c72-9852-ba5edd3a6998",
+  "title": "重構 P5：剩餘技能可攜性與 Schema 歸屬盤點",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_observation": "read-only runtime thread metadata",
+  "bootstrap_app_cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+  "actual_initial_command_cwd": "F:/framework-next/342",
+  "git_root": "F:/framework-next/342",
+  "branch": "codex/2026-09-23-capability-consolidation",
+  "head": "94741016bd7baae9936bb77dd6c4f56d37036e97",
+  "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+  "clean": true,
+  "scope": "design/inventory only; source implementation not assigned",
+  "authority": "U001"
+}

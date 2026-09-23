@@ -6,9 +6,9 @@
   "task_id": "ISSUE-337",
   "workflow_id": "2026-09-23-p3-distribution",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T08:33:01+08:00",
-  "updated_at": "2026-09-23T08:34:41+08:00",
+  "updated_at": "2026-09-23T09:12:38+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -16,11 +16,16 @@
     "ASM-20260923-00-6oq"
   ],
   "scope": {
-    "target": "Metadata v2 loader source support, followed by actual integrated P3 package mapping",
+    "target": "Completed metadata v2 loader source support and exact mapping of five actual P3 packages into four profiles",
     "files": [
       "src/distribution/package.py",
       ".dev/design/framework-next/distribution-implementation/",
-      ".dev/workflows/2026-09-23-p3-distribution/"
+      ".dev/workflows/2026-09-23-p3-distribution/",
+      "src/distribution/manifest.yaml",
+      "src/profiles/lesson-minimal.yaml",
+      "src/profiles/knowledge.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml"
     ],
     "constraints": [
       "U001; program #322 coordinator / P7 owns deferred verification",
@@ -45,11 +50,11 @@
       "Direct UTF-8, JSON/YAML and AST parsing without product import",
       "Source/reference inspection, Git diff and exact planned commit-message check only"
     ],
-    "last_completed_step": "Source implementation, permitted syntax/content/reference checks and exact complete planned commit-message validation",
-    "next_action": "Return coherent local commit to coordinator; resume same task only after actual package integration and exact manifest/profile assignment"
+    "last_completed_step": "Both bounded source stages complete; 44-member/four-profile comparison, changed artifact readability/links and exact complete mapping commit-message check completed",
+    "next_action": "Return coherent local completion commit and index row to coordinator for first push/PR/online merge/provider closure; P7 owns deferred execution"
   },
   "results": {
-    "summary": "Source support implemented for explicit metadata 1/2, schema pairs and readable/writable roles; actual package mapping remains outstanding.",
+    "summary": "Both source stages complete: explicit metadata v1/v2 support and exact 44-member manifest with lesson-minimal, knowledge, work-management and collaboration profiles. All product/schema/runtime verification remains deferred-by-owner under U001 to program #322/P7.",
     "files_changed": [
       "src/distribution/package.py",
       ".dev/design/framework-next/distribution-implementation/README.md",
@@ -57,11 +62,16 @@
       ".dev/workflows/2026-09-23-p3-distribution/workflow.yaml",
       ".dev/workflows/2026-09-23-p3-distribution/workflow-plan.md",
       ".dev/workflows/2026-09-23-p3-distribution/tasks/ISSUE-337.json",
-      ".dev/workflows/2026-09-23-p3-distribution/reports/source-checkpoint.md"
+      ".dev/workflows/2026-09-23-p3-distribution/reports/source-checkpoint.md",
+      "src/distribution/manifest.yaml",
+      "src/profiles/lesson-minimal.yaml",
+      "src/profiles/knowledge.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml"
     ],
     "tests_run": [],
     "finding_status": "partially-resolved",
-    "residual_risk": "Behavior, schema semantics, package assembly and compatibility unverified; exact mappings depend on actual #334/#335 source delivery.",
+    "residual_risk": "Assigned source implementation is complete; assessment/runtime/schema/package compatibility acceptance is unverified and remains P7-owned. Provider integration and closure are separate coordinator actions.",
     "follow_up_needed": true
   },
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/337",
@@ -85,7 +95,9 @@
     "starting_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb",
     "checkpoint_commit_source": "containing-commit",
     "coordinator_task": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
-    "hidden_context_required": false
+    "hidden_context_required": false,
+    "first_checkpoint": "13a08f3c886513cead3bfea080224f3323131977",
+    "mapping_baseline": "2bd7acdaf8a580df965396bdb9dbb8c05f6308af"
   },
   "actual_checks": [
     {
@@ -118,6 +130,132 @@
       "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-337.txt --workflow-id 2026-09-23-p3-distribution",
       "outcome": "completed",
       "exit_code": 0
+    },
+    {
+      "kind": "continuation Git admission",
+      "outcome": "completed",
+      "original_head": "13a08f3c886513cead3bfea080224f3323131977",
+      "fast_forward_head": "2bd7acdaf8a580df965396bdb9dbb8c05f6308af",
+      "before_and_after_status": "clean"
+    },
+    {
+      "kind": "actual source/configuration member comparison",
+      "outcome": "completed",
+      "baseline": "2bd7acdaf8a580df965396bdb9dbb8c05f6308af",
+      "members": 44,
+      "sets": [
+        "committed regular Git files",
+        "metadata-derived members",
+        "two interface inventories",
+        "manifest mappings"
+      ],
+      "differences": []
+    },
+    {
+      "kind": "exact profile/source reference comparison",
+      "outcome": "completed",
+      "profiles": 4,
+      "profile_member_counts": [
+        9,
+        26,
+        18,
+        44
+      ],
+      "differences": []
+    },
+    {
+      "kind": "mapping git diff --check and excluded-source diff",
+      "outcome": "completed",
+      "exit_code": 0,
+      "unchanged": [
+        "src/skills/",
+        "src/adapters/",
+        "src/distribution/package.py"
+      ]
+    },
+    {
+      "kind": "mapping artifact direct readability",
+      "outcome": "completed",
+      "utf8_files": 10,
+      "yaml_parsed": 6,
+      "json_parsed": 1
+    },
+    {
+      "kind": "mapping local Markdown link existence",
+      "outcome": "completed",
+      "links": 15
+    },
+    {
+      "kind": "exact planned mapping commit-message validation",
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-337-mapping.txt --workflow-id 2026-09-23-p3-distribution",
+      "outcome": "completed",
+      "exit_code": 0
     }
-  ]
+  ],
+  "continuation": {
+    "started_from": "13a08f3c886513cead3bfea080224f3323131977",
+    "baseline": "2bd7acdaf8a580df965396bdb9dbb8c05f6308af",
+    "advance": "git merge --ff-only",
+    "changed_paths": [
+      "src/distribution/manifest.yaml",
+      "src/profiles/lesson-minimal.yaml",
+      "src/profiles/knowledge.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml",
+      ".dev/design/framework-next/distribution-implementation/metadata-v2.md",
+      ".dev/workflows/2026-09-23-p3-distribution/workflow.yaml",
+      ".dev/workflows/2026-09-23-p3-distribution/workflow-plan.md",
+      ".dev/workflows/2026-09-23-p3-distribution/tasks/ISSUE-337.json",
+      ".dev/workflows/2026-09-23-p3-distribution/reports/source-checkpoint.md"
+    ],
+    "package_member_counts": {
+      "lesson": 9,
+      "adr": 8,
+      "standards-promotion": 9,
+      "pr": 10,
+      "local-backlog": 8
+    },
+    "total_members": 44,
+    "profiles": [
+      {
+        "id": "lesson-minimal",
+        "skills": [
+          "lesson@0.2.0"
+        ],
+        "members": 9
+      },
+      {
+        "id": "knowledge",
+        "skills": [
+          "lesson@0.2.0",
+          "adr@0.1.0",
+          "standards-promotion@0.1.0"
+        ],
+        "members": 26
+      },
+      {
+        "id": "work-management",
+        "skills": [
+          "pr@0.1.0",
+          "local-backlog@0.1.0"
+        ],
+        "members": 18
+      },
+      {
+        "id": "collaboration",
+        "skills": [
+          "lesson@0.2.0",
+          "adr@0.1.0",
+          "standards-promotion@0.1.0",
+          "pr@0.1.0",
+          "local-backlog@0.1.0"
+        ],
+        "members": 44
+      }
+    ],
+    "legacy_lesson_schema_blob": "8bced2d86584c87d34f8ca2927aab95b7802a3ac",
+    "adapter_declaration_unchanged": true,
+    "source_status": "completed",
+    "provider_status": "coordinator-owned; no executor mutation"
+  }
 }

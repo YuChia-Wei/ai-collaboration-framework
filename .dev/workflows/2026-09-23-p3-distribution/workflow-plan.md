@@ -9,15 +9,15 @@
 - `workflow_id`: `2026-09-23-p3-distribution`
 - `workflow_kind`: `ai-context-maintenance`; `owner_skill`: `ai-context-governance`.
 - Branch: `codex/2026-09-23-p3-distribution`; base: `main`; segment: `1`.
-- `status`: `in_progress`; `current_phase`: `remediation`.
+- `status`: `completed`; `current_phase`: `completed` (bounded source scope under U001).
 - Artifact root: `.dev/workflows/2026-09-23-p3-distribution`.
-- `created_at`: `2026-09-23T08:33:01+08:00`; `updated_at`: `2026-09-23T08:34:41+08:00`.
+- `created_at`: `2026-09-23T08:33:01+08:00`; `updated_at`: `2026-09-23T09:12:38+08:00`.
 
 ## Authority, objective and scope
 
 [Issue #337](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/337), the coordinator's explicit implementation dispatch and [P3 selected contract](../../design/framework-next/p3-shared-contract.md) authorize metadata v2 source support while preserving metadata v1. [U001](../../standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md) governs this source-only work. Live Issue read-back found it OPEN with the assigned first-stage scope; provider state is not implementation acceptance.
 
-First stage owns `src/distribution/package.py`, necessary direct distribution call sites, the distribution-implementation design and this workflow. Source inspection found no necessary call-site changes. No skill source, manifest/profile, root runtime, legacy tools, shared index or coordinator record is changed. No provider mutation, first push, publication, release, adoption or credential change is assigned to this executor.
+The first stage owned `src/distribution/package.py`, necessary direct distribution call sites, the distribution-implementation design and this workflow; source inspection found no necessary call-site changes. The [continuation assignment](../2026-09-23-framework-redesign-control/reports/p3-package-mapping-scope.md) authorized only the manifest, lesson-minimal plus knowledge/work-management/collaboration profiles, owned design and workflow. Both source stages are complete. Skill/adapter/loader code, root/runtime/core/custom, tests, CI, legacy tools, coordinator records and shared indexes were not changed in the mapping stage. First push, provider completion, release, adoption and credential changes remain outside this executor scope.
 
 The one-task workflow preserves the first local source handoff and independently resumable second mapping stage. Its unique state is the dependency on actual #334/#335 delivery and the coordinator's later exact mapping dispatch. No placeholder task is created for suspended auditing.
 
@@ -27,38 +27,39 @@ The one-task workflow preserves the first local source handoff and independently
 2. V2 schemas unique by exact `(id, version)` with distinct contained member paths; cross-kind IDs still unique.
 3. Every v2 project role has one writable `schema` and nonempty unique declared `read_schemas` including that writable identity. Derived roles and other closed fields stay unchanged.
 4. V2 schema references inspect only finite same-document `#/$defs/` pointers; no resolver, schema execution, external retrieval or skill import. Existing package-relative document checks remain.
-5. Later exact manifest/profile mappings use real integrated package members and independently select the five P3 packages. This criterion remains unfinished at the first source checkpoint.
+5. Exact manifest/profile mappings use real integrated package members and preserve independent selection of all five P3 packages. The continuation completed 44 members and the four authorized profiles by direct configuration/source comparison; runtime selection remains deferred.
 6. Record actual permitted checks and all U001 verification deferrals; hand coherent local commits to the coordinator before push.
 
 Source implementation and direct syntax inspection do not establish behavioral satisfaction of these criteria. P7 owns runtime verification.
 
 ## Artifacts and stages
 
-- Task: [ISSUE-337](tasks/ISSUE-337.json), `in_progress` across both implementation stages.
-- Report: [source checkpoint](reports/source-checkpoint.md), a draft report for the unfinished workflow.
+- Task: [ISSUE-337](tasks/ISSUE-337.json), `completed` for both bounded source stages, with P7 verification deferred.
+- Report: [source checkpoint and completion](reports/source-checkpoint.md), final for bounded source scope; retains the initial checkpoint observations.
 - Contract: [metadata v2 implementation](../../design/framework-next/distribution-implementation/metadata-v2.md).
-- Stage 1: loader source implementation, limited checks and local commit handoff.
-- Stage 2: after actual #334/#335 integration and coordinator dispatch, reconcile exact members and add authorized manifest/profile mappings in this same task.
+- Stage 1 completed: loader source implementation, limited checks and local commit handoff `13a08f3c886513cead3bfea080224f3323131977`; preserved unchanged.
+- Stage 2 completed: same task fast-forwarded from the clean first checkpoint to `2bd7acdaf8a580df965396bdb9dbb8c05f6308af`, then reconciled 44 actual members and the four exact profiles. No product execution was used for completion.
 - Behavioral/schema/package testing, independent audit, native handoff validation and CI: `deferred-by-owner`, U001, program #322 coordinator / P7. Next action: P7 selects and executes replacement checks on the integrated immutable subject. No audit packet or lease is fabricated.
 
-## Resume checkpoint
+## Completed source handoff
 
-- Assigned worktree: `F:/framework-next/337`.
-- Starting HEAD: `0d0556d4c60105a28eb39cfb06efab9b069728cb`; starting status clean.
-- Common Git directory: `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git` (existing persistent objects and refs; no main-checkout edits).
-- Implementation checkpoint identity: containing commit of this report, resolved with `git log -1 --format=%H -- .dev/workflows/2026-09-23-p3-distribution/reports/source-checkpoint.md`; exact transport HEAD is returned in the task handoff. It is not called a validated commit.
-- Last completed implementation: metadata v2 loader/reference source support. Limited observations and commit preparation are in the report.
-- Current task: `ISSUE-337`; Issue and workflow remain in progress.
-- Exact next action: coordinator reads the local checkpoint and actual #334/#335 package returns, integrates the chosen package subject, then sends this same task the exact manifest/profile scope. Do not map proposed or absent members and do not relax missing-file checks.
-- Needed mapping inputs: integrated commit; five real metadata files; exact member/source/destination inventories; chosen profile IDs, skill versions and adapter selections; any agreed resource/operation changes.
-- Selected package versions: lesson@0.2.0, adr@0.1.0, standards-promotion@0.1.0, pr@0.1.0 and local-backlog@0.1.0. These are selected source versions, not releases or proof of delivered source.
-- Preserve #334 checkpoint `99adb0762328c8f8d6cff7338f17caec99685c0a`, #335 checkpoint `446a579d03a25edf1b6e64b5e5c13016740025c0`, dispatch HEAD and every referenced handoff commit.
-- Coordinator task: `01a0c9d9-3b00-7b70-ad85-daff590e7ecd`; owns first push, PR, online merge, provider completion and shared index registration.
-- Execution provenance: OpenAI Codex; `gpt-6-astra`, `ultra`, user-declared dispatch requirement; no independent runtime attestation. No sub-agents, nested agents, new tasks or new worktrees were used.
-- Hidden conversation context required: false; follow the linked selected contract and current coordinator dispatch before later mapping edits.
+- Assigned worktree/branch: `F:/framework-next/337`, `codex/2026-09-23-p3-distribution`; same conversation and branch throughout.
+- First starting HEAD: `0d0556d4c60105a28eb39cfb06efab9b069728cb`; first implementation checkpoint: `13a08f3c886513cead3bfea080224f3323131977`.
+- Continuation admission: exact first checkpoint and clean status read back; `git merge --ff-only 2bd7acdaf8a580df965396bdb9dbb8c05f6308af` completed, resulting HEAD matched and status remained clean.
+- Common Git directory: `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git`; persistent objects/refs retained and no main-checkout edits.
+- Final mapping checkpoint identity: containing commit of this report, resolved with `git log -1 --format=%H -- .dev/workflows/2026-09-23-p3-distribution/reports/source-checkpoint.md`; exact HEAD is returned after the local commit. It is not a runtime-validated commit.
+- Last completed implementation: loader support followed by exact committed-source manifest/profile mapping. Actual checks and initial environment failure are retained in the report.
+- Task/workflow: `completed` for bounded source under U001. Issue/Project closure and online integration remain coordinator-owned; no closed/provider state is inferred.
+- Next action: coordinator reads the final local checkpoint, updates its shared index row, and performs separately authorized first push/PR/online merge and Issue/Project read-back. Program #322/P7 selects and executes deferred replacement checks.
+- Mapping result: lesson@0.2.0 (9), adr@0.1.0 (8), standards-promotion@0.1.0 (9), pr@0.1.0 (10), local-backlog@0.1.0 (8); four profiles with codex and profile_version 1. No unfinished implementation decision remains within #337's assigned source scope.
+- Preserve #334 design `99adb0762328c8f8d6cff7338f17caec99685c0a`, source `552e218d039245482ed422be7d4fb642d5463ff0`; #335 design `446a579d03a25edf1b6e64b5e5c13016740025c0`, corrected source `5409641f19244bc44467af7fba3fc496d7f5195c`; all #337/coordinator checkpoints.
+- Coordinator task: `01a0c9d9-3b00-7b70-ad85-daff590e7ecd`.
+- Execution provenance: OpenAI Codex, `gpt-6-astra` / `ultra`, user-declared dispatch requirement; no independent runtime attestation. No sub-agents, nested agents, new tasks or new worktrees.
+- Hidden conversation context required: false; the current source assignment and report contain the handoff.
 
 ## Branch lifecycle
 
-| Segment | Branch | Source | Checkpoint | Transport owner | Resume |
+| Stage | Branch | Input | Checkpoint | Transport owner | Remaining action |
 | --- | --- | --- | --- | --- | --- |
-| 1 | codex/2026-09-23-p3-distribution | 0d0556d4c60105a28eb39cfb06efab9b069728cb | Containing source implementation commit; local only | Program #322 coordinator | Same task after actual package reconciliation; integration does not complete this workflow |
+| Loader | codex/2026-09-23-p3-distribution | 0d0556d4c60105a28eb39cfb06efab9b069728cb | 13a08f3c886513cead3bfea080224f3323131977 | Program #322 coordinator | Preserved ancestor; coordinator reported PR #339 integration |
+| Actual mapping | Same branch after authorized fast-forward | 2bd7acdaf8a580df965396bdb9dbb8c05f6308af | Containing completion commit | Program #322 coordinator | Push/PR/online merge and provider closure; P7 verification remains deferred |

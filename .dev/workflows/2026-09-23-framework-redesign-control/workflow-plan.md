@@ -26,9 +26,9 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
 | #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | source inspected and locally integrated; online PR pending |
 | #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
-| #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader merged PR #339; actual package mapping selected |
+| #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader merged PR #339; final mapping inspected and locally integrated |
 | #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | independent design checkpoint task active |
-| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design dispatch preparation |
+| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | independent design/inventory task active |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -46,7 +46,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #334 source is received, inspected and locally integrated; [inspection record](reports/p3-knowledge-integration.md). Complete its online PR and Issue/Project read-back. Resume the same #337 task on the [actual five-package mapping](reports/p3-package-mapping-scope.md). #335 is merged/closed through PR #340. #341 design runs in independent task `01a0cbc8-448d-7270-b27b-295295914afb`; source implementation follows contract reconciliation. P5 [capability/schema disposition design](reports/p5-capability-consolidation-scope.md) is assigned separately to #342 without product/shared edits. Product execution remains deferred to P7.
+Current action: #334 knowledge source and #337 final 44-member/four-profile mapping are inspected and locally integrated; complete their combined online PR and Issue/Project read-back. See [knowledge inspection](reports/p3-knowledge-integration.md) and [mapping inspection](reports/p3-mapping-integration.md). #335 is merged/closed through PR #340. #341 workflow design runs in task `01a0cbc8-448d-7270-b27b-295295914afb`; #342 capability/schema design runs in task `01a0cbd1-789e-7c72-9852-ba5edd3a6998`. Both have verified Astra Ultra and assigned F: execution, and neither may change product/shared source before coordinator selection. Product execution remains deferred to P7.
 
 ## P3 shared implementation continuation
 
