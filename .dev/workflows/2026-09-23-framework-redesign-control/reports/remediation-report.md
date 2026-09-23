@@ -66,3 +66,7 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P3 online completion and P4 source selection
 
 PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CLOSED and Project Done were read back. P3 source integration is complete. [P4 reconciliation](p4-contract-reconciliation.md) selects C341-01..05 and the same-task source continuation; #342 remains independent design work. F-03/F-04 have design/source progress but are not finally resolved. Runtime/schema/CI verification remains deferred to P7.
+
+## P5 design selection and parallel source scope
+
+#342 design is complete at `66f353393b3f7ef59265d6c38b119a832e8113a9`. [Selected contract](../../../design/framework-next/p5-selected-contract.md) adopts honest instruction/tool metadata-v3 operations, eight specialist source responsibilities in #346/#347/#348, preserved legacy dispositions and conditional M01 input to #345. P4 #341 source and P6 #345 design continue independently. Structured frame/compliance and optional context maintenance remain queued; program findings and P7 acceptance remain open.

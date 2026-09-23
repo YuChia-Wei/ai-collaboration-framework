@@ -1,0 +1,76 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-348",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T09:38:34+08:00",
+  "updated_at": "2026-09-23T09:41:58+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/348",
+  "phase": "P5-C",
+  "scope": {
+    "target": "Requirement and specification authoring skills",
+    "files": [
+      "src/skills/requirement-author/",
+      "src/skills/spec-author/",
+      ".dev/design/framework-next/portable-authoring/",
+      ".dev/workflows/2026-09-23-portable-authoring/"
+    ],
+    "constraints": [
+      "U001",
+      "one independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "selected p5-selected-contract.md; preserve other writers",
+      "coordinator owns shared mapping assignment and first push"
+    ],
+    "non_goals": [
+      "product execution/tests/CI",
+      "unassigned shared mapping/index/root/runtime changes",
+      "legacy deletion/migration/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: identity and exact selected contract",
+      "Implement owned complete portable source",
+      "Return coherent local checkpoint and exact members/operations before first push"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact planned commit-message only"
+    ],
+    "last_completed_step": "Independent source task dispatched; runtime/F: identity read back",
+    "next_action": "Receive local owned source checkpoint before shared mapping"
+  },
+  "results": {
+    "summary": "Source scope selected; no delivery yet",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Source delivery and P7 actual verification pending",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": "01a0cbec-0818-71f1-a05a-9eb111754a45",
+    "worktree": "F:/framework-next/348",
+    "branch": "codex/2026-09-23-portable-authoring",
+    "workflow_id": "2026-09-23-portable-authoring",
+    "starting_commit_source": "coordinator selected P5 checkpoint",
+    "model_verified": "read-only runtime metadata: gpt-6-astra / ultra",
+    "worktree_verified": "First actual F: command root/branch/full HEAD/common-dir and clean status match assignment",
+    "starting_commit": "842b73ca09d701d1561109255193d80439dc996b"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p5-selected-contract.md",
+    "implementation_status": "active in independent task",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPx0"
+}

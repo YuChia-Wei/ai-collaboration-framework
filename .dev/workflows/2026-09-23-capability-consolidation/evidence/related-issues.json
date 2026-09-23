@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-09-23T09:29:36+08:00",
+  "observed_date_local": "2026-09-23",
+  "method": "gh issue view <number> --repo YuChia-Wei/ai-collaboration-framework --json number,title,body,state,url,updatedAt; read-only scoped network escalation after sandbox proxy failure",
+  "scope": "342 authoritative assignment; other six Issues scope-overlap only",
+  "mutations": false,
+  "records": [
+    {
+      "number": 342,
+      "title": "Design P5 remaining skill portability and explicit schema ownership dispositions",
+      "state": "OPEN",
+      "updatedAt": "2026-09-23T01:09:28Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/342"
+    },
+    {
+      "number": 316,
+      "title": "Add deterministic workflow and assessment authoring with guarded multi-file updates",
+      "state": "OPEN",
+      "updatedAt": "2026-09-21T13:26:18Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/316"
+    },
+    {
+      "number": 320,
+      "title": "Reduce remaining artifact authoring gaps while preserving evidence and owner boundaries",
+      "state": "CLOSED",
+      "updatedAt": "2026-09-22T12:24:51Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/320"
+    },
+    {
+      "number": 149,
+      "title": "[TOOL-004] 以受控比較選擇 Distribution CLI 與驗證器 Runtime",
+      "state": "OPEN",
+      "updatedAt": "2026-08-09T09:21:39Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/149"
+    },
+    {
+      "number": 168,
+      "title": "[CLI-002] 實作可安裝的唯讀 Distribution CLI 預覽",
+      "state": "OPEN",
+      "updatedAt": "2026-08-09T09:21:58Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/168"
+    },
+    {
+      "number": 274,
+      "title": "[PERF-003] Complete evidence-backed test-fixture I/O classification",
+      "state": "OPEN",
+      "updatedAt": "2026-08-30T15:51:09Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/274"
+    },
+    {
+      "number": 275,
+      "title": "[PERF-004] Measure and separate durability versus logical test-fixture costs",
+      "state": "OPEN",
+      "updatedAt": "2026-08-30T15:51:10Z",
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/275"
+    }
+  ]
+}

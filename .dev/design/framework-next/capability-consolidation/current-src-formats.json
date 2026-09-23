@@ -1,0 +1,1839 @@
+{
+  "status": "proposal-not-adopted",
+  "source_commit": "94741016bd7baae9936bb77dd6c4f56d37036e97",
+  "observed_at": "2026-09-23T09:17:49+08:00",
+  "generator": "Issue #342 direct Git inventory, UTF-8/JSON/YAML parsing and literal-reference extraction; no product imports or execution",
+  "limits": "Exact package/member/schema data from five real src packages. Closed non-schema formats and ownership are described in format-ownership.md. Manifest/profile still select Lesson 0.1.0 and 8 members at this subject; actual Lesson is 0.2.0 / 9 members. #337 separately owns mapping.",
+  "packages": [
+    {
+      "id": "adr",
+      "package_version": "0.1.0",
+      "metadata_version": 2,
+      "source": {
+        "path": "src/skills/adr/skill-package.yaml",
+        "git_blob": "97dca5f4e1a3daecadae496b7fbd6405c520efa9",
+        "sha256": "af95402ce8fb7fe1f613bfaa09f3d6b2fc688d8ac73a5734d4f8232b202584ab"
+      },
+      "members": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/adr-record.schema.json",
+        "scripts/adr.py",
+        "skill-package.yaml",
+        "templates/adr.md"
+      ],
+      "tracked_package_paths": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/adr-record.schema.json",
+        "scripts/adr.py",
+        "skill-package.yaml",
+        "templates/adr.md"
+      ],
+      "installed_mapping_rule": ".ai/core/skills/adr/<member>",
+      "schemas": [
+        {
+          "id": "adr.record",
+          "version": "1.0.0",
+          "path": "schemas/adr-record.schema.json",
+          "owner": "adr",
+          "migration": "unsupported; preserve original",
+          "definition": {
+            "path": "src/skills/adr/schemas/adr-record.schema.json",
+            "git_blob": "a04631d81fac04fa2377e2d26605cf0dae248bb0",
+            "sha256": "8d3e024b738f086e9fa77ac2f4667e5e8ac73e158d80bf250e37dc2060a59d21"
+          },
+          "root_required": [
+            "schema_version",
+            "kind",
+            "owner",
+            "id",
+            "status",
+            "revision",
+            "created_at",
+            "updated_at",
+            "content",
+            "successor",
+            "decision",
+            "provenance",
+            "history"
+          ],
+          "schema_declaration": "https://json-schema.org/draft/2020-12/schema",
+          "record_version_constraint": {
+            "const": "1.0.0"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "role": "adr.record",
+          "owner": "project",
+          "schema": "adr.record@1.0.0",
+          "read_schemas": [
+            "adr.record@1.0.0"
+          ],
+          "store_binding": "adr.store",
+          "identity": "adr-<32 lowercase hex digits>",
+          "filename": "<id>.adr.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "validate",
+            "render"
+          ],
+          "write_operations": [
+            "create",
+            "revise",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ]
+        },
+        {
+          "role": "adr.view",
+          "owner": "derived",
+          "source_role": "adr.record",
+          "output": "Result-only Markdown",
+          "persistence": "Export requires separate caller-owned write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "id": "adr.fs",
+          "owner": "adr",
+          "implementation_status": "implemented",
+          "entrypoint": "scripts/adr.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ]
+        }
+      ],
+      "operations": [
+        {
+          "id": "explain",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration"
+          ],
+          "outputs": [
+            "own effective settings, field sources, config version, ignored namespace names and authority bindings"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "create",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "content",
+            "text",
+            "decision",
+            "optional statuses and immutable extensions"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state",
+            "actual related_query and retained directory creations"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "inspect",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "owned record, raw digest and historical evidence/freshness"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "query",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "optional literal text and statuses"
+          ],
+          "outputs": [
+            "matching references with status/version/raw digest",
+            "partial diagnostics and actual query_sha256"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "validate",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "actual owned structure/semantic result and diagnostics"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "revise",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "content",
+            "reason"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "render",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "adr.view as result-only escaped Markdown"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "derive",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "text",
+            "decision",
+            "optional statuses"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state",
+            "actual related_query and retained directory creations"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "decide",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "decision_source"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "retire",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "supersede",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "successor"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "adr.fs",
+          "implementation_status": "implemented"
+        }
+      ],
+      "configuration": {
+        "namespace": "adr",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/adrs",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/adr.md"
+          }
+        }
+      },
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read selected public entry and resources",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "python",
+          "version": ">=3.11,<4",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "pyyaml",
+          "version": ">=6,<7",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "jsonschema",
+          "version": ">=4.18,<5",
+          "for_operations": [
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "filesystem",
+          "requirement": "Explicit local roots, bounded reads and exclusive atomic single-record writes; ignored local config in a Git project requires read-only Git",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "decide",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "state": "real source; build/install/runtime verification deferred-by-owner; current shared mapping incomplete"
+    },
+    {
+      "id": "lesson",
+      "package_version": "0.2.0",
+      "metadata_version": 2,
+      "source": {
+        "path": "src/skills/lesson/skill-package.yaml",
+        "git_blob": "aa2c069ca6d1e7ccff83eb4fdecb7dec279214b4",
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      "members": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/lesson-record-v2.schema.json",
+        "schemas/lesson-record.schema.json",
+        "scripts/lesson.py",
+        "skill-package.yaml",
+        "templates/lesson.md"
+      ],
+      "tracked_package_paths": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/lesson-record-v2.schema.json",
+        "schemas/lesson-record.schema.json",
+        "scripts/lesson.py",
+        "skill-package.yaml",
+        "templates/lesson.md"
+      ],
+      "installed_mapping_rule": ".ai/core/skills/lesson/<member>",
+      "schemas": [
+        {
+          "id": "lesson.record",
+          "version": "1.0.0",
+          "path": "schemas/lesson-record.schema.json",
+          "owner": "lesson",
+          "migration": "unsupported; preserve original; explicit derive is a new identity",
+          "definition": {
+            "path": "src/skills/lesson/schemas/lesson-record.schema.json",
+            "git_blob": "8bced2d86584c87d34f8ca2927aab95b7802a3ac",
+            "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+          },
+          "root_required": [
+            "schema_version",
+            "kind",
+            "owner",
+            "id",
+            "status",
+            "created_at",
+            "updated_at",
+            "title",
+            "observation",
+            "evidence",
+            "conclusion",
+            "applies_when",
+            "does_not_apply_when",
+            "confidence",
+            "follow_up"
+          ],
+          "schema_declaration": "https://json-schema.org/draft/2020-12/schema",
+          "record_version_constraint": {
+            "const": "1.0.0"
+          }
+        },
+        {
+          "id": "lesson.record",
+          "version": "2.0.0",
+          "path": "schemas/lesson-record-v2.schema.json",
+          "owner": "lesson",
+          "migration": "unsupported; preserve original; explicit derive is a new identity",
+          "definition": {
+            "path": "src/skills/lesson/schemas/lesson-record-v2.schema.json",
+            "git_blob": "7763615e0a654825e6936a7dfebad3163a657f6a",
+            "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+          },
+          "root_required": [
+            "schema_version",
+            "kind",
+            "owner",
+            "id",
+            "status",
+            "revision",
+            "created_at",
+            "updated_at",
+            "content",
+            "successor",
+            "decision",
+            "provenance",
+            "history"
+          ],
+          "schema_declaration": "https://json-schema.org/draft/2020-12/schema",
+          "record_version_constraint": {
+            "const": "2.0.0"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "role": "lesson.record",
+          "owner": "project",
+          "schema": "lesson.record@2.0.0",
+          "read_schemas": [
+            "lesson.record@1.0.0",
+            "lesson.record@2.0.0"
+          ],
+          "store_binding": "lesson.store",
+          "identity": "lesson-<32 lowercase hex digits>",
+          "filename": "<id>.lesson.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "validate",
+            "render"
+          ],
+          "write_operations": [
+            "create",
+            "revise",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ]
+        },
+        {
+          "role": "lesson.view",
+          "owner": "derived",
+          "source_role": "lesson.record",
+          "output": "Result-only Markdown",
+          "persistence": "Export requires separate caller-owned write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "id": "lesson.fs",
+          "owner": "lesson",
+          "implementation_status": "implemented",
+          "entrypoint": "scripts/lesson.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ]
+        }
+      ],
+      "operations": [
+        {
+          "id": "explain",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration"
+          ],
+          "outputs": [
+            "own effective settings, field sources, config version, ignored namespace names and authority bindings"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "create",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "content",
+            "text",
+            "decision",
+            "optional statuses and immutable extensions"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state",
+            "actual related_query and retained directory creations"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "inspect",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "owned record, raw digest and historical evidence/freshness"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "query",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "optional literal text and statuses"
+          ],
+          "outputs": [
+            "matching references with status/version/raw digest",
+            "partial diagnostics and actual query_sha256"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "validate",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "actual owned structure/semantic result and diagnostics"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "revise",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "content",
+            "reason"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "render",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "lesson.view as result-only escaped Markdown"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "derive",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "text",
+            "decision",
+            "optional statuses"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state",
+            "actual related_query and retained directory creations"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "accept",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "decision_source"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "retire",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "supersede",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "successor"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "lesson.fs",
+          "implementation_status": "implemented"
+        }
+      ],
+      "configuration": {
+        "namespace": "lesson",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/lessons",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/lesson.md"
+          }
+        }
+      },
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read selected public entry and resources",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "python",
+          "version": ">=3.11,<4",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "pyyaml",
+          "version": ">=6,<7",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "jsonschema",
+          "version": ">=4.18,<5",
+          "for_operations": [
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "filesystem",
+          "requirement": "Explicit local roots, bounded reads and exclusive atomic single-record writes; ignored local config in a Git project requires read-only Git",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "derive",
+            "accept",
+            "retire",
+            "supersede"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "state": "real source; build/install/runtime verification deferred-by-owner; current shared mapping incomplete"
+    },
+    {
+      "id": "local-backlog",
+      "package_version": "0.1.0",
+      "metadata_version": 2,
+      "source": {
+        "path": "src/skills/local-backlog/skill-package.yaml",
+        "git_blob": "d1245e6e6cb4f503248cd8695bf32b6061eca34c",
+        "sha256": "9a896e92e3c2af61bd04b8adc49b269fb2947d9c4cedb90d5ec300dbfbadbbe3"
+      },
+      "members": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/local-backlog-record.schema.json",
+        "scripts/local_backlog.py",
+        "skill-package.yaml",
+        "templates/work-item.md"
+      ],
+      "tracked_package_paths": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/local-backlog-record.schema.json",
+        "scripts/local_backlog.py",
+        "skill-package.yaml",
+        "templates/work-item.md"
+      ],
+      "installed_mapping_rule": ".ai/core/skills/local-backlog/<member>",
+      "schemas": [
+        {
+          "id": "local-backlog.record",
+          "version": "1.0.0",
+          "path": "schemas/local-backlog-record.schema.json",
+          "owner": "local-backlog",
+          "migration": "unsupported; preserve original",
+          "definition": {
+            "path": "src/skills/local-backlog/schemas/local-backlog-record.schema.json",
+            "git_blob": "9c508ebe914f4dc954e1a5754749796fb31e1a83",
+            "sha256": "0342c853227183386b70426390fc6e7798acd81dae542804c1cdd585b2291ea2"
+          },
+          "root_required": [
+            "schema_version",
+            "owner",
+            "created_at",
+            "updated_at",
+            "title",
+            "summary",
+            "references",
+            "kind",
+            "id",
+            "writable_authority",
+            "state",
+            "state_reason",
+            "acceptance",
+            "completion_evidence"
+          ],
+          "schema_declaration": "https://json-schema.org/draft/2020-12/schema",
+          "record_version_constraint": {
+            "const": "1.0.0"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "role": "local-backlog.record",
+          "owner": "project",
+          "schema": "local-backlog.record@1.0.0",
+          "read_schemas": [
+            "local-backlog.record@1.0.0"
+          ],
+          "store_binding": "local-backlog.store",
+          "identity": "work-<32 lowercase hex digits>",
+          "filename": "<id>.work-item.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "render"
+          ],
+          "write_operations": [
+            "create",
+            "revise",
+            "transition"
+          ]
+        },
+        {
+          "role": "local-backlog.view",
+          "owner": "derived",
+          "source_role": "local-backlog.record",
+          "output": "result-only Markdown",
+          "persistence": "Caller-selected export is a separate write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "id": "local-backlog.fs",
+          "owner": "local-backlog",
+          "implementation_status": "implemented",
+          "entrypoint": "scripts/local_backlog.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ]
+        }
+      ],
+      "operations": [
+        {
+          "id": "explain",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "create",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "inspect",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "query",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "revise",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "transition",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "render",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "local-backlog.fs",
+          "implementation_status": "implemented"
+        }
+      ],
+      "configuration": {
+        "namespace": "local-backlog",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/work-items",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/work-item.md"
+          }
+        }
+      },
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read selected package and resources",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "python",
+          "version": ">=3.11,<4",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "pyyaml",
+          "version": ">=6,<7",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "jsonschema",
+          "version": ">=4.18,<5",
+          "for_operations": [
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "filesystem",
+          "requirement": "Selected local files; writes need exclusive creation and same-directory atomic replacement",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "git",
+          "requirement": "Conditional: selected local-config ignore checks",
+          "for_operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "state": "real source; build/install/runtime verification deferred-by-owner; current shared mapping incomplete"
+    },
+    {
+      "id": "pr",
+      "package_version": "0.1.0",
+      "metadata_version": 2,
+      "source": {
+        "path": "src/skills/pr/skill-package.yaml",
+        "git_blob": "ac411d6d7e6a2dba8d753e05485d98ab320ace0a",
+        "sha256": "b86b3282bcb35ac5da5696c1defc30971e9d1a0be36bcdda030b3b903c7cf8f3"
+      },
+      "members": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/github.md",
+        "references/operations.md",
+        "schemas/pr-record.schema.json",
+        "scripts/github.py",
+        "scripts/pr.py",
+        "skill-package.yaml",
+        "templates/pr.md"
+      ],
+      "tracked_package_paths": [
+        "SKILL.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/github.md",
+        "references/operations.md",
+        "schemas/pr-record.schema.json",
+        "scripts/github.py",
+        "scripts/pr.py",
+        "skill-package.yaml",
+        "templates/pr.md"
+      ],
+      "installed_mapping_rule": ".ai/core/skills/pr/<member>",
+      "schemas": [
+        {
+          "id": "pr.record",
+          "version": "1.0.0",
+          "path": "schemas/pr-record.schema.json",
+          "owner": "pr",
+          "migration": "unsupported; preserve original",
+          "definition": {
+            "path": "src/skills/pr/schemas/pr-record.schema.json",
+            "git_blob": "be81c28ea7417891cda69ded54a430ff5bb1b105",
+            "sha256": "63023e31d3de42eec5602c0511c11514387db93453d01b917e066afc7def2c88"
+          },
+          "root_required": [
+            "schema_version",
+            "owner",
+            "created_at",
+            "updated_at",
+            "title",
+            "summary",
+            "references",
+            "kind",
+            "id",
+            "state",
+            "subject",
+            "validation"
+          ],
+          "schema_declaration": "https://json-schema.org/draft/2020-12/schema",
+          "record_version_constraint": {
+            "const": "1.0.0"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "role": "pr.record",
+          "owner": "project",
+          "schema": "pr.record@1.0.0",
+          "read_schemas": [
+            "pr.record@1.0.0"
+          ],
+          "store_binding": "pr.store",
+          "identity": "pr-<32 lowercase hex digits>",
+          "filename": "<id>.pr.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "render"
+          ],
+          "write_operations": [
+            "prepare",
+            "revise"
+          ]
+        },
+        {
+          "role": "pr.view",
+          "owner": "derived",
+          "source_role": "pr.record",
+          "output": "result-only Markdown",
+          "persistence": "Caller-selected export is a separate write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "id": "pr.fs",
+          "owner": "pr",
+          "implementation_status": "implemented",
+          "entrypoint": "scripts/pr.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render"
+          ]
+        },
+        {
+          "id": "pr.github",
+          "owner": "pr",
+          "implementation_status": "implemented",
+          "entrypoint": "scripts/github.py",
+          "operation_contract": "references/github.md",
+          "operations": [
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ]
+        }
+      ],
+      "operations": [
+        {
+          "id": "explain",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "prepare",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "inspect",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "query",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "revise",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "render",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "provider-read",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.github",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "provider-create",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.github",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "provider-update",
+          "inputs": [
+            "Explicit JSON request defined in the owned operation contract"
+          ],
+          "outputs": [
+            "Actual outcome, mutation state, output references and diagnostics"
+          ],
+          "tool": "pr.github",
+          "implementation_status": "implemented"
+        }
+      ],
+      "configuration": {
+        "namespace": "pr",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/pull-requests",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/pr.md"
+          }
+        }
+      },
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read selected package and resources",
+          "for_operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render",
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "python",
+          "version": ">=3.11,<4",
+          "for_operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render",
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "pyyaml",
+          "version": ">=6,<7",
+          "for_operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render",
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "jsonschema",
+          "version": ">=4.18,<5",
+          "for_operations": [
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "filesystem",
+          "requirement": "Selected local files; writes need exclusive creation and same-directory atomic replacement",
+          "for_operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render",
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "git",
+          "requirement": "Conditional: selected local-config ignore checks; PR prepare and requested source rebind",
+          "for_operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render",
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "gh",
+          "requirement": "Existing caller-authorized GitHub authentication; no credential provisioning",
+          "for_operations": [
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "state": "real source; build/install/runtime verification deferred-by-owner; current shared mapping incomplete"
+    },
+    {
+      "id": "standards-promotion",
+      "package_version": "0.1.0",
+      "metadata_version": 2,
+      "source": {
+        "path": "src/skills/standards-promotion/skill-package.yaml",
+        "git_blob": "a84f1ae525b5c86ce7cf4a20acbfbb54d0d2d7b5",
+        "sha256": "4727f91052636305e0651114f3a66e0bcb2f0d76e9cc8b6c73f63a2d19abd2e3"
+      },
+      "members": [
+        "SKILL.md",
+        "references/authority.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/promotion-record.schema.json",
+        "scripts/standards_promotion.py",
+        "skill-package.yaml",
+        "templates/promotion.md"
+      ],
+      "tracked_package_paths": [
+        "SKILL.md",
+        "references/authority.md",
+        "references/configuration.md",
+        "references/example.md",
+        "references/operations.md",
+        "schemas/promotion-record.schema.json",
+        "scripts/standards_promotion.py",
+        "skill-package.yaml",
+        "templates/promotion.md"
+      ],
+      "installed_mapping_rule": ".ai/core/skills/standards-promotion/<member>",
+      "schemas": [
+        {
+          "id": "standards-promotion.record",
+          "version": "1.0.0",
+          "path": "schemas/promotion-record.schema.json",
+          "owner": "standards-promotion",
+          "migration": "unsupported; preserve original",
+          "definition": {
+            "path": "src/skills/standards-promotion/schemas/promotion-record.schema.json",
+            "git_blob": "c6810bdbd7e726d7db192dad42c5d49ba26970c4",
+            "sha256": "0002b9d91dfd4cfea7a74d51567dd0d93bc03e7f3c6ad3ad974707996eb58b46"
+          },
+          "root_required": [
+            "schema_version",
+            "kind",
+            "owner",
+            "id",
+            "status",
+            "revision",
+            "created_at",
+            "updated_at",
+            "content",
+            "successor",
+            "observation",
+            "provenance",
+            "history"
+          ],
+          "schema_declaration": "https://json-schema.org/draft/2020-12/schema",
+          "record_version_constraint": {
+            "const": "1.0.0"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "role": "standards-promotion.record",
+          "owner": "project",
+          "schema": "standards-promotion.record@1.0.0",
+          "read_schemas": [
+            "standards-promotion.record@1.0.0"
+          ],
+          "store_binding": "standards-promotion.store",
+          "identity": "promotion-<32 lowercase hex digits>",
+          "filename": "<id>.promotion.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "validate",
+            "render"
+          ],
+          "write_operations": [
+            "propose",
+            "revise",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ]
+        },
+        {
+          "role": "standards-promotion.view",
+          "owner": "derived",
+          "source_role": "standards-promotion.record",
+          "output": "Result-only Markdown",
+          "persistence": "Export requires separate caller-owned write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "id": "standards-promotion.fs",
+          "owner": "standards-promotion",
+          "implementation_status": "implemented",
+          "entrypoint": "scripts/standards_promotion.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "propose",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ]
+        }
+      ],
+      "operations": [
+        {
+          "id": "explain",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration"
+          ],
+          "outputs": [
+            "own effective settings, field sources, config version, ignored namespace names and authority bindings"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "propose",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "content",
+            "text",
+            "decision",
+            "optional statuses and immutable extensions"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state",
+            "actual related_query and retained directory creations"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "inspect",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "owned record, raw digest and historical evidence/freshness"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "query",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "optional literal text and statuses"
+          ],
+          "outputs": [
+            "matching references with status/version/raw digest",
+            "partial diagnostics and actual query_sha256"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "validate",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "actual owned structure/semantic result and diagnostics"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "revise",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "content",
+            "reason"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "render",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference"
+          ],
+          "outputs": [
+            "standards-promotion.view as result-only escaped Markdown"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "withdraw",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "supersede",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "reason",
+            "successor"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "reconcile",
+          "inputs": [
+            "explicit project_root/package_root and selected configuration",
+            "reference",
+            "expected_sha256",
+            "optional adoption_source and effect_source selections"
+          ],
+          "outputs": [
+            "record reference, actual persisted-byte digest, changed flag and mutation state",
+            "independent adoption/rule-content/effect observation and snapshots"
+          ],
+          "tool": "standards-promotion.fs",
+          "implementation_status": "implemented"
+        }
+      ],
+      "configuration": {
+        "namespace": "standards-promotion",
+        "defaults": {
+          "store": {
+            "kind": "filesystem",
+            "root": "notes/promotions",
+            "tracking": "tracked"
+          },
+          "template": {
+            "origin": "package",
+            "path": "templates/promotion.md"
+          }
+        }
+      },
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read selected public entry and resources",
+          "for_operations": [
+            "explain",
+            "propose",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "python",
+          "version": ">=3.11,<4",
+          "for_operations": [
+            "explain",
+            "propose",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "pyyaml",
+          "version": ">=6,<7",
+          "for_operations": [
+            "explain",
+            "propose",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "jsonschema",
+          "version": ">=4.18,<5",
+          "for_operations": [
+            "propose",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "filesystem",
+          "requirement": "Explicit local roots, bounded reads and exclusive atomic single-record writes; ignored local config in a Git project requires read-only Git",
+          "for_operations": [
+            "explain",
+            "propose",
+            "inspect",
+            "query",
+            "validate",
+            "revise",
+            "render",
+            "withdraw",
+            "supersede",
+            "reconcile"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "state": "real source; build/install/runtime verification deferred-by-owner; current shared mapping incomplete"
+    }
+  ]
+}

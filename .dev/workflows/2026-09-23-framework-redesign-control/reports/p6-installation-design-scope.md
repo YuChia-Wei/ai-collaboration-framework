@@ -1,0 +1,26 @@
+# P6 managed installation and update design scope
+
+Program #322 / Issue #345, design only under U001. Current integrated source is `db41eebd52485661f5720c534bf17315316768fd`. P4 source and P5 capability decisions continue independently. Starting P6 contract design now is a sequencing choice; implementation and activation still depend on selected capabilities, formats and later P7 checks.
+
+Own only `.dev/design/framework-next/installation-update/` and `.dev/workflows/2026-09-23-installation-update-design/`. One independent Astra Ultra task uses F:/framework-next/345, branch `codex/2026-09-23-installation-update-design`. Return a local design checkpoint; this Issue ends at design, and selected implementation gets bounded successor ownership. No source/loader/manifest/profile, root/core/custom/runtime, historical-data, tests, pipeline or shared-index edits.
+
+## Concrete questions to resolve
+
+- Consume actual `src/distribution/` development candidate formats and exact adapter outputs, with source/blob evidence. P1 source-layout design supplies ownership/delta/recovery intent, not an implemented installer. Propose exact versions, operations, input/output shapes and implementation files; do not invent a released stable artifact.
+- Define clean install and same-engine selected-version update with no arbitrary historical/multi-hop matrix. Exact owned inventory, raw digest and mode determine unchanged/add/change/remove. Unknown or modified paths require reconciliation; directory membership gives no deletion authority.
+- Define `.ai/framework.lock`, managed `.ai/core` and exact generated runtime paths. Preserve `.ai/custom`, `.dev`, project configuration, selected record stores and unknown runtime files. Root entry documents remain project-owned. Do not reinterpret existing legacy files as installer-owned.
+- Separate package update from project-data/schema conversion. Read #342's eventual selected migration edge rather than authoring a competing generic migration system. If its decision is unavailable, name the concrete dependency and preserve unsupported data. Migration notes describe actual differences and required owner actions; they do not authorize rewriting custom content or authenticate success.
+- Make scratch/staging/recovery locations explicit. Disposable work may use caller-selected RAM disk; recovery material must survive its loss in a caller-selected durable store. No automatic disk discovery, whole-repo copy, global TEMP/TMP edit or proof of durability from a path name.
+- Give a small, coherent interruption/recovery state model, previous matching lock/core/runtime recovery set, actual digest checks and recovery-needed behavior. Do not promise cross-file/cross-volume atomicity. Newer external edits cannot be overwritten by blind rollback. Decide whether activation is withheld and how supported entrypoints recognize incomplete state.
+- Propose one-time source-repository dogfood cutover and fallback with one active owner per component. Source becomes canonical; root consumes a selected development artifact. Keep legacy history readable/frozen without mass conversion. Actual build/install and root activation wait for implementation plus selected P7 checks; this Issue performs neither.
+- Address Windows path/staging limits and overlap with #305, #43, #149 and #168 through exact scope disposition, without fulfilling/closing them by inference. No new CLI platform, distribution service or provider adapter.
+
+## Useful output and boundaries
+
+Deliver a concise Traditional Chinese rationale, implementable contract, exact synthetic examples, failure/recovery scenarios, coordinator decisions and independently owned implementation slices. For each new persisted machine format name its producer, reader, validator and version/migration owner. Avoid multiplying journals/receipts merely to reproduce legacy machinery; retain only state needed for safe apply/recovery and truthful results. Explain which manual or repeated maintenance the proposed tool removes and the limits of expected I/O savings. Do not claim measured SSD writes, lifespan or performance.
+
+Initial live open-Issue inventory found no existing #322 P6 replacement contract. #43 and #305 concern legacy compatibility/path behavior; #149/#168 concern future distribution CLI work and remain separate. P5/P4 unresolved inputs are explicit dependencies, not reasons to expand this design's write scope.
+
+Use ai-context-governance proportionally with U001. No sub-agents, nested agents or executor-created conversations. All repository commands use explicit F: workdir and all edits absolute assigned F: paths. Preserve F:/ai-context-tests and other worktrees. Return coherent local commits with exact HEAD, clean status, changed paths, actual/deferred checks and unresolved decisions before first push; coordinator owns shared files and online integration.
+
+Only direct UTF-8/content/JSON/YAML/AST syntax without product imports or pycache, references, Git/diff and exact planned commit-message checks are allowed. Product CLI/help, schema validation, tests/fixtures, package/build/install/migration/compatibility, audit/lease/effective-rule packets and CI remain deferred-by-owner under U001, owner program #322 coordinator / P7. No provider mutation, settings/credentials, release, publication or downstream adoption.

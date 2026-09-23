@@ -1,0 +1,94 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "P5-DESIGN-342",
+  "workflow_id": "2026-09-23-capability-consolidation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T09:29:36+08:00",
+  "updated_at": "2026-09-23T09:31:22+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "scope": {
+    "target": "Design-only exact skill/artifact inventory, operation model and future implementation slices",
+    "files": [
+      ".dev/design/framework-next/capability-consolidation/",
+      ".dev/workflows/2026-09-23-capability-consolidation/"
+    ],
+    "constraints": [
+      "U001",
+      "all repository commands explicitly at F:/framework-next/342",
+      "one writer; no sub-agents/new tasks",
+      "coordinator owns selection, shared files, first push and integration"
+    ],
+    "non_goals": [
+      "source/product/legacy policy edits",
+      "tests/CI/tools/migrations",
+      "provider mutations",
+      "root/runtime/config activation",
+      "history deletion",
+      "release/publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned identity/authority and actual Issue",
+      "Inventory 16 canonical skills and 95 legacy kinds plus actual src formats",
+      "Propose minimal operation representation, optional maintenance and exact-version migration candidate",
+      "Perform allowed static checks, exact planned message validation, local commit and coordinator handoff"
+    ],
+    "validation": [
+      "Direct UTF-8/JSON/YAML and AST reads; selected references/Git; diff --check; exact commit-message validator only"
+    ],
+    "last_completed_step": "16/95 exact inventory, actual src formats, minimal v3 proposal, future owners/M01 and permitted direct static checks",
+    "next_action": "Coordinator resolves the containing local commit, reviews/selects D342-01..06 and owns first push/integration; P7 selects later checks"
+  },
+  "results": {
+    "summary": "Bounded design complete; proposals unadopted, product implementation outside Issue, verification deferred-by-owner",
+    "files_changed": [
+      ".dev/design/framework-next/capability-consolidation/capability-disposition.md",
+      ".dev/design/framework-next/capability-consolidation/current-src-formats.json",
+      ".dev/design/framework-next/capability-consolidation/dependency-update.md",
+      ".dev/design/framework-next/capability-consolidation/examples/adr-metadata-v2.yaml",
+      ".dev/design/framework-next/capability-consolidation/examples/code-reviewer-metadata-v3.yaml",
+      ".dev/design/framework-next/capability-consolidation/format-ownership.md",
+      ".dev/design/framework-next/capability-consolidation/implementation-slices.md",
+      ".dev/design/framework-next/capability-consolidation/legacy-artifact-dispositions.json",
+      ".dev/design/framework-next/capability-consolidation/legacy-skills.json",
+      ".dev/design/framework-next/capability-consolidation/operation-model.md",
+      ".dev/design/framework-next/capability-consolidation/README.md",
+      ".dev/workflows/2026-09-23-capability-consolidation/evidence/dependency-update.json",
+      ".dev/workflows/2026-09-23-capability-consolidation/evidence/related-issues.json",
+      ".dev/workflows/2026-09-23-capability-consolidation/evidence/source-observation.json",
+      ".dev/workflows/2026-09-23-capability-consolidation/evidence/static-checks.json",
+      ".dev/workflows/2026-09-23-capability-consolidation/reports/handoff.md",
+      ".dev/workflows/2026-09-23-capability-consolidation/tasks/P5-DESIGN-342.json",
+      ".dev/workflows/2026-09-23-capability-consolidation/workflow-plan.md",
+      ".dev/workflows/2026-09-23-capability-consolidation/workflow.yaml"
+    ],
+    "tests_run": [],
+    "finding_status": "design-proposed-not-remediated",
+    "residual_risk": "Coordinator selection, future source owners and P7 verification pending",
+    "follow_up_needed": true,
+    "verification": "deferred-by-owner",
+    "verification_owner": "program #322 coordinator / P7",
+    "coverage": {
+      "legacy_skills": 16,
+      "legacy_kinds": 95,
+      "groups": 17,
+      "actual_src_packages": 5,
+      "actual_src_members": 44,
+      "actual_src_record_schemas": 6,
+      "supplemental_closed_format_classes": 16,
+      "selected_not_delivered_p4_schema": "software-development-orchestrator.record@1.0.0"
+    }
+  },
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/342",
+  "runtime_provenance": "Coordinator dispatch declaration; not independent runtime attestation; no sub-agents"
+}
