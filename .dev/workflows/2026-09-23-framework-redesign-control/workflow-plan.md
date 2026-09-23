@@ -24,8 +24,9 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #326 | P1-B source/consumer layout | `.dev/design/framework-next/source-layout/`, own workflow | integrated PR #329; Issue/Project complete |
 | #330 | P2-A Lesson implementation | `src/skills/lesson/`, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
 | #331 | P2-B candidate assembly | selected distribution/profile/adapter/tool paths, own workflow | integrated PR #333; Issue/Project complete; verification deferred |
-| #334 | P3-A knowledge lifecycle | knowledge-lifecycle design, own workflow; source scope follows contract reconciliation | contract reconciled; source continuation ready |
-| #335 | P3-B work management | work-management design, own workflow; source scope follows contract reconciliation | contract reconciled; source continuation ready |
+| #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | source implementation active in same task |
+| #335 | P3-B work management | PR/local-backlog source and own design/workflow | source implementation active in same task |
+| #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | independent Astra Ultra implementation active |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -43,7 +44,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #334/#335 design checkpoints are reconciled for source continuation under p3-shared-contract.md. Resume those same tasks and dispatch #337 for distribution loader support. Package delivery precedes #337's final manifest/profile stage; first pushes and online PR integration remain coordinator-owned. Issues remain open; all product execution remains deferred to P7.
+Current action: #334/#335 design checkpoints are reconciled for source continuation under p3-shared-contract.md. Those same tasks have resumed and #337 is active for distribution loader support; see [source dispatch evidence](evidence/p3-source-dispatch.json). Package delivery precedes #337's final manifest/profile stage; first pushes and online PR integration remain coordinator-owned. Issues remain open; all product execution remains deferred to P7.
 
 ## P3 shared implementation continuation
 
