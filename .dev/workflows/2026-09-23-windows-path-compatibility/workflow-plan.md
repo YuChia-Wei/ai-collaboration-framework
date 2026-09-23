@@ -27,11 +27,14 @@ Only #378-selected small checks and exact commit-message validation are enabled.
 Declared dispatch: OpenAI Codex, gpt-6-astra / ultra; this is not independent
 runtime attestation. No agents, new tasks, callback or provider writes.
 
-Current state: bootstrap continuation approved in live #378 and directly in
-this task. Only src/tools/maintain_framework.py::_direct and necessary private
-stdlib helpers join the source scope. Focused path checks precede a clean exact
-engine commit and one fresh full public plan. Prior refusals remain retained. See [repair observations](reports/repair.md) and
-[bounded evidence summary](reports/observations.json). Source review and
-online integration belong to coordinator 01a0ce78-db26-74e1-a615-2bd0599f7d0c.
-Return coherent local commits before first push. #368/#369/#373 acceptance,
-pilot, release and CI remain separate.
+Current state: local bounded repair completed, including the directly approved
+bootstrap continuation. Seven focused bootstrap/path regressions and one complete
+actual F: public plan passed on clean aa2bffb52c0acf521302cf9f08c649ad54246c98.
+Prior source observations and all failures remain retained. See
+[repair observations](reports/repair.md), [bootstrap continuation](reports/bootstrap-continuation.md)
+and [exact engine observations](reports/bootstrap-observations.json).
+
+Coordinator 01a0ce78-db26-74e1-a615-2bd0599f7d0c owns affected source review and
+online integration. Executor stops before first push. No Issue/Project mutation,
+apply/recover, rc.1 pilot, release or CI completion is implied. #368/#369/#373
+retain their separate acceptance and owner decisions.

@@ -214,3 +214,14 @@ remain deferred-by-owner under U001 to #322 coordinator/P7 post-pilot review.
 by this repair. Coordinator owns affected source review and integration.
 
 Additional API reference: [DOS-device mapping](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-querydosdevicew).
+
+## Approved continuation outcome
+
+The owner subsequently directly approved the precise bootstrap scope in this
+task. The continuation preserves every earlier observation above. See
+[bootstrap continuation](bootstrap-continuation.md) and
+[exact engine observations](bootstrap-observations.json): seven focused path
+regressions and the one fresh complete public plan passed against clean source
+aa2bffb52c0acf521302cf9f08c649ad54246c98. The prior bootstrap scope blocker is
+resolved for this selected local plan; no apply/recover, release, CI or downstream
+acceptance is inferred. Coordinator source review and integration are still pending.

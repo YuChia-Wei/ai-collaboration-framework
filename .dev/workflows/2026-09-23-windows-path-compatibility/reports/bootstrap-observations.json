@@ -1,0 +1,176 @@
+{
+  "kind": "bounded-observation-summary; not a formal audit or release acceptance packet",
+  "observed_at": "2026-09-23T22:09:07+08:00",
+  "command": "python -I -B tests/framework_next/test_windows_paths.py --mode public-plan --output-root F:/framework-next/p7-runs/378-compatibility",
+  "cwd": "F:\\framework-next\\378",
+  "source_commit": "aa2bffb52c0acf521302cf9f08c649ad54246c98",
+  "source_clean_at_dispatch": true,
+  "source_clean_at_readback": true,
+  "engine": {
+    "id": "framework-managed-installation",
+    "version": "1.0.0",
+    "source_commit": "aa2bffb52c0acf521302cf9f08c649ad54246c98",
+    "files": [
+      {
+        "path": "src/distribution/__init__.py",
+        "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+      },
+      {
+        "path": "src/distribution/data.py",
+        "sha256": "4b24ff0865ea96b5bc36809eadb8537120212376357697ce27461f7abda1984a"
+      },
+      {
+        "path": "src/distribution/git_source.py",
+        "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+      },
+      {
+        "path": "src/distribution/installation.py",
+        "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+      },
+      {
+        "path": "src/distribution/installation_io.py",
+        "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+      },
+      {
+        "path": "src/distribution/installation_plan.py",
+        "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+      },
+      {
+        "path": "src/distribution/installation_state.py",
+        "sha256": "ed0fa502b6ed4fed82a9aa3fd15f326af7acef6748ca3c438395d8052320c5db"
+      },
+      {
+        "path": "src/distribution/maintenance_coordination.py",
+        "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+      },
+      {
+        "path": "src/distribution/package.py",
+        "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+      },
+      {
+        "path": "src/tools/maintain_framework.py",
+        "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+      }
+    ]
+  },
+  "runtime": {
+    "python": "3.13.14",
+    "PyYAML": "6.0.3",
+    "jsonschema": "4.26.0",
+    "referencing": "0.37.0"
+  },
+  "focused_bootstrap_regressions": {
+    "command": "python -I -B tests/framework_next/test_windows_paths.py --mode bootstrap-regressions",
+    "evidence_kind": "simulated Windows API/path responses",
+    "tests": 7,
+    "skips": 0,
+    "outcome": "passed",
+    "seconds": 0.062
+  },
+  "actual": {
+    "run": "F:\\framework-next\\p7-runs\\378-compatibility\\fn-c0728898698d4e748dba5c70b0fc2221",
+    "exit": 0,
+    "outcome": "planned",
+    "candidate_identity": "development:aa2bffb52c0acf521302cf9f08c649ad54246c98:07523667a97fa9fc83c8fdd3b9c33f247f02a3a5e2d61cdb5a5eef9377715022",
+    "plan_sha256": "b634a82b9590541dc23219f62784b41d24b2a9eeacfc637109176e08efb44ade",
+    "delta_members": 10,
+    "prerequisites": [
+      {
+        "id": "candidate-provenance",
+        "next_action": "Available bytes/bindings match; provenance approval and source authenticity remain with caller.",
+        "owner": "caller",
+        "status": "satisfied"
+      },
+      {
+        "id": "durability-declaration",
+        "next_action": "Native filesystem/domain combination is supported; recovery survival is a caller assertion, not measured durability.",
+        "owner": "caller",
+        "status": "satisfied"
+      },
+      {
+        "id": "exclusive-operation-allocation",
+        "next_action": "Preflight actual unique paths and exclusively allocate the selected operation before managed mutation.",
+        "owner": "maintenance-writer",
+        "status": "pending"
+      },
+      {
+        "id": "fresh-input-observation",
+        "next_action": "Recompute this exact plan under a held native writer lock.",
+        "owner": "maintenance-writer",
+        "status": "pending"
+      },
+      {
+        "id": "lock-publication",
+        "next_action": "Next lock fits the closed reader and selected backend; publication remains a postcondition after full member read-back.",
+        "owner": "maintenance-writer",
+        "status": "satisfied"
+      },
+      {
+        "id": "maintenance-quiescence",
+        "next_action": "Supply a fresh exact-scope declaration; the engine cannot attest stopped activity.",
+        "owner": "caller",
+        "status": "pending"
+      },
+      {
+        "id": "mode-materialization",
+        "next_action": "Windows inventory-only; no ACL/executable enforcement.",
+        "owner": "maintenance-writer",
+        "status": "not-applicable"
+      },
+      {
+        "id": "native-writer-backend",
+        "next_action": "Selected native primitives and filesystem/domain checks are available; this is not platform certification.",
+        "owner": "maintenance-writer",
+        "status": "satisfied"
+      },
+      {
+        "id": "writer-engine-closure",
+        "next_action": "Fixed bootstrap, executing origins, exact source closure and observed checkout HEAD match the caller pin.",
+        "owner": "maintenance-writer",
+        "status": "satisfied"
+      },
+      {
+        "id": "writer-guard",
+        "next_action": "Acquire the inert guard with a native OS lock; no-op cannot create a missing guard.",
+        "owner": "maintenance-writer",
+        "status": "pending"
+      }
+    ],
+    "empty_project_scratch_recovery_preserved": true,
+    "native_apply_recover": "not-executed",
+    "run_seconds": 5.485,
+    "retained_files": 28,
+    "logical_bytes": 299332,
+    "helper_authored_bytes": 12548,
+    "driver_processes": {
+      "git": 44,
+      "python": 1
+    },
+    "physical_io": "not-measured",
+    "opaque_children": "unavailable",
+    "request_sha256": "f5c972696d72617b1e9e0cec2115d8e2aecb75735d761174dbe2c3f9ea27a5d0",
+    "response_sha256": "b491489f791246fb9fbb72357532588b38d0ccd6a209e13df1b9e8e908d24bac",
+    "stderr_bytes": 0
+  },
+  "evidence_reuse": {
+    "earlier_source_commit": "218341375eb719d8c31df844d484f4837edfe630",
+    "all_nine_previous_product_hashes_match": true,
+    "earlier_checks": [
+      "11 path/backend simulations",
+      "actual Lesson assembly/reader",
+      "Lesson public write/read",
+      "CBF public write/read",
+      "direct distribution backend"
+    ],
+    "reason": "Only bootstrap source changed in continuation; prior nine source files and host dependencies unchanged; new actual full public plan covers added bootstrap path."
+  },
+  "current_local_scope": "completed; all Issue 378 selected implementation observations available",
+  "coordinator_review_and_integration": "pending",
+  "provider_issue_mutation": "not-performed",
+  "legacy_and_ci": {
+    "disposition": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator/P7",
+    "next_action": "post-pilot review"
+  }
+}
