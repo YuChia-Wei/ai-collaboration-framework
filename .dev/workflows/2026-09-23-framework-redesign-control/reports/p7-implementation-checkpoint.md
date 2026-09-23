@@ -70,3 +70,25 @@ The planned online checkpoint uses Refs #368/#369/#370/#371, without closing
 unfinished Issues. New workflow definitions remain dormant under disabled
 repository Actions. No hosted pass, policy activation, P7 exit, root adoption,
 release or downstream acceptance follows from merging this checkpoint.
+
+## Contracts binding follow-up
+
+The original #369 task returned `6c5f4a298bc3ffdbea47348ae6ef8c9f4584b41d`:
+9 changed files, actual fixed #368 `--layer contracts` command and exit/unittest/
+observation parsing, plus explicit dormant dependencies. Its 28 focused tests
+passed, zero skips, 2.441 s; the new subprocess responses are synthetic, not
+product execution. The prior 24-pass checkpoint remains preserved. Coordinator
+inspection of the 9 fixed files and 9 local references passed direct syntax,
+whitespace and scope; no test rerun was needed. Public/native remain explicitly
+unimplemented/non-passing. Policies/root/template remain untouched.
+
+#371 is active in task `01a0cd2f-f89d-7381-a3cd-1e73ce02d8aa`, verified runtime
+`gpt-6-astra` / `ultra`, F:/framework-next/371 at starting commit
+`fe6c63f87cb54e166fc796fd315f11e3c2212823`. Its actual first Git command targeted
+that F: checkout. Live Project read-back shows OPEN / In progress with only
+Status selected. Source repair and affected review have not returned yet.
+
+Before transport, provider read-back at `2026-09-23T15:35:12.2652819+08:00`
+showed Actions disabled, all seven legacy workflows disabled_manually, and main
+`01aeb8ae4f18132dfdd7ad3479346c78b9f5f913`. The final transport read-back remains
+a separate observed step; these historical settings are not a hosted pass.

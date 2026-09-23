@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:14:31+08:00",
-  "updated_at": "2026-09-23T15:19:38+08:00",
+  "updated_at": "2026-09-23T15:34:12+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -49,8 +49,8 @@
       "24 selected tests passed after retained WinError 1 failure",
       "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup"
     ],
-    "last_completed_step": "Focused source-only tests passed; policy remains stopped",
-    "next_action": "Coordinator obtains direct owner approval and supplies fixed V1/V3 bindings"
+    "last_completed_step": "Actual #368 contracts CLI/result binding; 28 focused source tests passed; no product execution",
+    "next_action": "Coordinator integrates fixed runner, resolves upstream failures and policy approval, then supplies V2/V3 bindings"
   },
   "results": {
     "summary": "Partial local source-gate checkpoint; no CI/native/policy readiness",
@@ -71,11 +71,46 @@
         "outcome": "passed",
         "seconds": 1.733,
         "change": "Separately permitted source-test fixture-only preflight correction"
+      },
+      {
+        "attempt": 3,
+        "phase": "authorized-runner-binding-follow-up",
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "unittest_seconds": 2.44,
+        "harness_seconds": 2.441,
+        "evidence_scope": "Local source selector/event tests; synthetic runner responses and tiny real Git fixture",
+        "product_execution": false
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "Rejected prospective policy; V1 result binding and V3 native binding unavailable; no hosted evidence",
+    "residual_risk": "Policy approval blocked; upstream 368 has 3 affected methods/7 errors and no candidate build; public/native undelivered; no hosted evidence",
     "follow_up_needed": true
   },
-  "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim"
+  "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim",
+  "runner_binding": {
+    "source_commit": "070a47335ffce99d31bd83e487447942539e4a9f",
+    "argv": [
+      "python",
+      "-I",
+      "-B",
+      "tests/framework_next/run.py",
+      "--layer",
+      "contracts"
+    ],
+    "result": "Exit 0, positive no-skip unittest summary and runtime/complete cleanup observations",
+    "upstream_tests": {
+      "methods": 14,
+      "successful_methods": 11,
+      "affected_methods": 3,
+      "errors": 7,
+      "candidate_builds_succeeded": 0
+    },
+    "public": "reserved-not-implemented",
+    "native": "unimplemented-blocked",
+    "report": "reports/runner-binding-handoff.md"
+  }
 }

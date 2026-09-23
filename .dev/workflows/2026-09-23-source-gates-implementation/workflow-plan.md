@@ -19,3 +19,10 @@ PR or provider mutation was performed.
 
 Workflow templates are adapted under U001; no legacy schema/packet validation
 is claimed. Exact source/branch and next owners are in the handoff.
+
+
+The later [runner-only follow-up](reports/runner-binding-handoff.md) binds fixed
+#368's actual contracts CLI and unittest/observation output. It passed 28 selected
+source tests with labelled synthetic responses. Product failures remain upstream;
+public/native selections and policy writes remain blocked. No product test was
+run by this Issue. The follow-up commit preserves the prior failure/24-pass record.

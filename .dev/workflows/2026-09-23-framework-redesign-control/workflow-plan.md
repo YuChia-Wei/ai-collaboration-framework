@@ -133,3 +133,5 @@ PR #367 merged at `01aeb8ae4f18132dfdd7ad3479346c78b9f5f913`; design Issues are 
 ## First P7 returned checkpoint
 
 [Fixed-return reconciliation](reports/p7-implementation-checkpoint.md) records actual failed source contracts, passing selector tests, two automatic approval stops and the independent CR-001 finding. #368/#369 remain partial; #370 awaits affected re-review after repair #371. Unaffected real-runner binding continues only in the original #369 task. No product repair, CI restoration, native or root acceptance is implied.
+
+The #369 real contracts binding returned at `6c5f4a298bc3ffdbea47348ae6ef8c9f4584b41d`; 28 focused tests passed using synthetic runner results. Policy/public/native remain incomplete. #371 is active in its verified independent task and F: checkout; it does not take over the stopped path/policy writes.

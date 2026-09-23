@@ -199,10 +199,69 @@ class ContentTests(unittest.TestCase):
 
 
 class CommandTests(unittest.TestCase):
-    def test_unknown_and_unbound_selected_commands_fail(self):
-        for check in ('unknown', 'contracts', 'public:lesson'):
+    def test_real_contract_argv_and_reserved_or_unknown_commands(self):
+        self.assertEqual(gate.command_for('contracts'),
+                         [sys.executable, '-I', '-B', 'tests/framework_next/run.py', '--layer', 'contracts'])
+        for check in ('unknown', 'public:unknown', 'native-windows', *('public:' + f for f in gate.FAMILIES)):
             with self.assertRaises(gate.GateError):
                 gate.command_for(check)
+
+    @staticmethod
+    def synthetic_contract_output(summary='Ran 2 tests in 0.003s\n\nOK', *, residue=None):
+        # Hypothetical success in the *observed interface*, never product execution.
+        runtime = {'python': '3.12.0', 'executable': 'synthetic-python', 'PyYAML': '6.0.3',
+                   'jsonschema': '4.26.0', 'referencing': '0.37.0'}
+        accounting = {'observed_files': 2, 'process_total': 0, 'residue': residue, 'next_action': None}
+        return (json.dumps({'runtime': runtime}) + '\n' +
+                'test_synthetic (SyntheticTests.test_synthetic) ... ok\n' + summary + '\n' +
+                json.dumps({'synthetic_probe': {'meaning': 'command parser test only'}}) + '\n' +
+                json.dumps({'fixture_accounting': accounting}) + '\n').encode()
+
+    def test_contract_success_uses_unittest_and_observations(self):
+        for output in (self.synthetic_contract_output(), self.synthetic_contract_output().replace(b'\n', b'\r\n')):
+            result = gate.command_result('contracts', gate.Outcome('passed', 0, output))
+            self.assertEqual((result['tests'], result['skipped']), (2, 0))
+            self.assertEqual(result['result_interface'], 'unittest-and-observations')
+            self.assertEqual(result['interface_source_commit'], '070a47335ffce99d31bd83e487447942539e4a9f')
+        with self.assertRaises(gate.GateError):
+            gate.command_result('contracts', gate.Outcome('passed', 0, b'{"status":"passed","tests":2,"skipped":0}'))
+
+    def test_contract_nonzero_or_error_observation_cannot_pass(self):
+        for code in (1, 2, 7):
+            with self.assertRaisesRegex(gate.GateError, 'exit=' + str(code)):
+                gate.command_result('contracts', gate.Outcome('failed', code, self.synthetic_contract_output()))
+        for status in ('skipped', 'cancelled', 'timed-out', 'unavailable', 'output-limit'):
+            with self.assertRaises(gate.GateError):
+                gate.command_result('contracts', gate.Outcome(status, 0, self.synthetic_contract_output()))
+        for output in (self.synthetic_contract_output(residue='synthetic-retained-root'),
+                       self.synthetic_contract_output() + b'{"outcome":"cleanup-failed"}\n',
+                       self.synthetic_contract_output() + b'{"outcome":"unavailable-or-failed"}\n'):
+            with self.assertRaises(gate.GateError):
+                gate.command_result('contracts', gate.Outcome('passed', 0, output))
+
+    def test_contract_skipped_missing_or_malformed_output_fails(self):
+        for summary in ('', 'Ran 0 tests in 0.001s\n\nOK', 'Ran 2 tests in 0.003s\n\nOK (skipped=1)',
+                        'Ran 14 tests in 3.483s\n\nFAILED (errors=7)',
+                        'Ran 2 tests in 0.003s\n\nOK\nRan 2 tests in 0.003s\n\nOK'):
+            with self.assertRaises(gate.GateError):
+                gate.command_result('contracts', gate.Outcome('passed', 0, self.synthetic_contract_output(summary)))
+        output = self.synthetic_contract_output()
+        malformed = [b'', output.replace(b'"runtime"', b'"wrong"'),
+                     output.replace(b'"fixture_accounting"', b'"wrong"'), output + b'{bad json}\n',
+                     output + b'{"runtime":{}}\n', output + b'{"fixture_accounting":{}}\n',
+                     output.replace(b'"process_total": 0', b'"process_total": true'),
+                     output.replace(b'"next_action": null', b'"next_action": "inspect residue"'),
+                     output.replace(b'"observed_files": 2', b'"observed_files": -1'),
+                     output + b'\xff', output + b'ERROR: synthetic contradictory result\n']
+        for value in malformed:
+            with self.subTest(output=value[:60]), self.assertRaises(gate.GateError):
+                gate.command_result('contracts', gate.Outcome('passed', 0, value))
+
+    def test_contract_missing_pinned_runner_fails_before_launch(self):
+        calls = []
+        with self.assertRaises(gate.GateError):
+            gate.run_selected('contracts', ROOT, SyntheticTree({}), launch=lambda *a, **k: calls.append(a))
+        self.assertEqual(calls, [])
 
     def test_synthetic_subprocess_outcomes_never_fake_hosted_success(self):
         path = '.github/tests/test_source_gates.py'
@@ -270,6 +329,8 @@ class EventTests(unittest.TestCase):
         self.assertEqual(job['env']['SOURCE_BASE'], '${{ github.event.pull_request.base.sha }}')
         self.assertEqual(job['env']['SOURCE_HEAD'], '${{ github.event.pull_request.head.sha }}')
         self.assertEqual(job['steps'][-1]['if'], 'always()')
+        dependencies = next(step for step in job['steps'] if step.get('id') == 'dependencies')
+        self.assertEqual(dependencies['run'], "python -I -m pip install --disable-pip-version-check 'PyYAML>=6,<7' 'jsonschema>=4.18,<5' referencing")
         for step in job['steps']:
             self.assertNotIn('continue-on-error', step)
             if 'uses' in step:
