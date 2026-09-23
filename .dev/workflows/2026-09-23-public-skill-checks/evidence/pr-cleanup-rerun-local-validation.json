@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-09-23T22:56:41+08:00",
+  "source_commit": "67788471b0556b660e4f8b30cf1449c61127ba97",
+  "checks": {
+    "utf8_json_yaml": "passed",
+    "parsed_files": [
+      ".dev/workflows/2026-09-23-public-skill-checks/task.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/workflow.yaml",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/pr-cleanup-67788471-pr.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/pr-cleanup-rerun-result.json"
+    ],
+    "local_links": "passed",
+    "link_count": 18,
+    "raw_stream_integrity": "passed",
+    "scope": "passed; own workflow only",
+    "git_diff_check": "passed",
+    "source_tests_unchanged_after_execution": "passed"
+  },
+  "planned_message": {
+    "path": "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-pr-cleanup-result.txt",
+    "sha256": "d0de5187eaf9e51418be03fb4f920a4b25058f3b04229fcffe28afa9b35eed36",
+    "argv": [
+      "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-I",
+      "-B",
+      "F:\\framework-next\\373\\.ai\\scripts\\validate-git-commits.py",
+      "--message-file",
+      "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-pr-cleanup-result.txt",
+      "--workflow-id",
+      "2026-09-23-public-skill-checks"
+    ],
+    "cwd": "F:\\framework-next\\373",
+    "exit": 0,
+    "stdout_base64": "R2l0IGNvbW1pdCB2YWxpZGF0aW9uIHBhc3NlZCBmb3IgcGxhbm5lZCBtZXNzYWdlLg0K",
+    "stderr_base64": ""
+  },
+  "scope_limit": "Record checks only after one selected PR execution; no new behavioral run or repair."
+}

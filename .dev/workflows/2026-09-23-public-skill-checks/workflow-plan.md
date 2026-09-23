@@ -1,6 +1,12 @@
 # Bounded public skill execution
 
-Current checkpoint: [deferred fixture repair](deferred-fixture-repair-report.md),
+Current checkpoint: [PR cleanup rerun](pr-cleanup-rerun-report.md),
+[actual result](evidence/pr-cleanup-rerun-result.json), and [task](task.json).
+The one selected PR family passed with cleanup on clean
+`67788471b0556b660e4f8b30cf1449c61127ba97`. No other family was rerun; earlier
+results retain their original subjects. Old failure roots remain preserved.
+
+Previous checkpoint: [deferred fixture repair](deferred-fixture-repair-report.md),
 [actual workflow result](evidence/deferred-fixture-repair-result.json), and
 [task](task.json). The single selected workflow family passed on clean repair
 commit `8d09ec6c5d2d41bcf4e7e3e108640545d398fea1`. Other family observations remain
