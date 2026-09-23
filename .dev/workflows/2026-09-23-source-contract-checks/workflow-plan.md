@@ -1,0 +1,24 @@
+# Issue 368 execution
+
+Owning skill: ai-context-governance. Program #322 / U001 and
+[Issue #368](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368)
+authorize selected C1-C3/C5 implementation and local commits under the
+[P7 selection](../../design/framework-next/p7-execution-selection.md).
+
+Starting commit: `38e6458f8d3e81dc2568daf1fa467571fb529fee`.
+Assigned worktree: `F:/framework-next/368`; branch:
+`codex/2026-09-23-source-contract-checks`; base: `main`.
+One declared GPT-6 Astra / ultra implementation conversation. This is dispatch
+provenance, not independent runtime attestation. No agents or extra tasks.
+
+Implement exact source selections, metadata union negatives, tiny synthetic
+selection/Git cases and two actual Lesson assemblies with the actual read-only
+candidate reader. Publish the small runner/helper contract and measured outcomes.
+Keep changes inside assigned tests/design/workflow; observed distribution repairs
+require a failing regression. Coordinator record and shared indexes are read-only.
+
+U001 adapts skill templates proportionately. Audit/lease/acceptance packets,
+unselected legacy checks, C4/C6/public/native/root/CI/release/downstream acceptance
+remain deferred-by-owner: program #322 coordinator / P7 selects next execution.
+Local completion is separate from independent review, provider integration or
+Issue closure. Coordinator owns first push, PR and online merge.

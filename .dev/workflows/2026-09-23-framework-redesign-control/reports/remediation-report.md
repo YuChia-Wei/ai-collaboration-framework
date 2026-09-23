@@ -137,3 +137,11 @@ PR #366 is merged as `171f33474f88888fbe853600de04bfe9c5716b25`; #341/#346 are C
 ## P7 designs locally complete
 
 [Reconciliation](p7-design-reconciliation.md) receives #364/#365 at fixed commits and selects the first two implementation responsibilities. Source contracts and dormant pipeline/policy code may proceed under explicit Issue assignments after online design integration; selected runtime/native work and root adoption remain outstanding. CI stays disabled and no finding is finally closed.
+
+## P7 design online and implementation selected
+
+PR #367 merged; #364/#365 are CLOSED/COMPLETED and Project Done by read-back. #368/#369 now bind the first selected execution scopes. This permits only assigned focused cases and does not turn earlier deferrals into passes. Root activation and CI restoration remain outstanding; F-01 through F-08 remain partially resolved.
+
+## P7 selected execution active
+
+#368/#369 are active independent Astra Ultra tasks with actual F: identity and live Project In progress read back. #370 is a separately selected read-only installation review on fixed product bytes; it cannot count as native execution or silently repair the subject. Runtime/dispatch identity is retained in evidence/p7-implementation-dispatch.json. No implementation/test result is yet claimed.

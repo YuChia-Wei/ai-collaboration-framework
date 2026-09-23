@@ -1,0 +1,91 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-368",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T14:58:53+08:00",
+  "updated_at": "2026-09-23T15:32:56+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
+  "phase": "P7-V1",
+  "scope": {
+    "target": "Focused source contract checks and fixture helper",
+    "files": [
+      "tests/framework_next/run.py",
+      "tests/framework_next/support.py",
+      "tests/framework_next/test_contracts.py",
+      "tests/framework_next/README.md",
+      ".dev/design/framework-next/source-contract-checks/",
+      ".dev/workflows/2026-09-23-source-contract-checks/",
+      "src/skills/pr/skill-package.yaml (alias expansion only; exact parsed semantics preserved)",
+      "src/skills/local-backlog/skill-package.yaml (alias expansion only; exact parsed semantics preserved)",
+      "src/distribution/git_source.py (observed contract-preserving path repair)"
+    ],
+    "selected_execution": "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
+    "constraints": [
+      "One independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "Explicit assigned F: worktree and one writer",
+      "Local coherent commits before first push; coordinator owns online integration"
+    ],
+    "non_goals": [
+      "Unselected legacy validators/full/history/upgrade matrices",
+      "Audit/lease/effective-rule/acceptance packet machinery",
+      "Root activation, CI restoration/provider changes, credentials, release or downstream adoption"
+    ],
+    "observed_repair_reconciliation": "reports/p7-first-observed-repairs.md"
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: identity and live Issue",
+      "Read selected P7 contract and implement only exclusive responsibilities",
+      "Run assigned narrow checks and retain actual failures/limits",
+      "Return coherent local commit before first push"
+    ],
+    "validation": [
+      "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
+      "Direct syntax/reference/Git and complete planned-message checks"
+    ],
+    "last_completed_step": "Partial contracts delivered; product repairs stopped by automatic approval",
+    "next_action": "Direct owner confirmation in original task before rejected four-file batch; preserve safeguards and failed evidence"
+  },
+  "results": {
+    "summary": "Partial contracts delivered; product repairs stopped by automatic approval",
+    "files_changed": [],
+    "tests_run": [
+      "Final contracts: 14 methods; 11 successful; 3 affected methods; 7 errors; zero skips; exit 1",
+      "No C5 candidate built; initial F: failures retained"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Product/root/native/provider acceptance remains distinct",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/368",
+    "branch": "codex/2026-09-23-source-contract-checks",
+    "workflow_id": "2026-09-23-source-contract-checks",
+    "starting_commit_source": "Containing coordinator checkpoint after PR #367",
+    "thread_id": "01a0cd11-1dc9-7842-abba-65b8fac0edb8",
+    "output_root": "F:/framework-next/p7-runs/368-contracts",
+    "starting_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+    "evidence": "evidence/p7-implementation-dispatch.json",
+    "model_verified": "Read-only runtime row: gpt-6-astra / ultra",
+    "worktree_verified": "First actual repository command matched assigned F: root/branch/HEAD/common Git and clean state"
+  },
+  "delivery": {
+    "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
+    "implementation_status": "partial; Issue remains open",
+    "verification_state": "selected results recorded; remaining obligations unfulfilled/deferred-by-owner",
+    "commit": "070a47335ffce99d31bd83e487447942539e4a9f",
+    "integration_report": "reports/p7-implementation-checkpoint.md",
+    "approval_state": "rejected batch stopped; direct owner response pending in original task"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RKIs",
+  "project_state": "In progress; Status only mutated; no other single-select values observed"
+}

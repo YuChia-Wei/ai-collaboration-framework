@@ -1,0 +1,142 @@
+test_c5_two_real_lesson_builds_and_reader_refusals (test_contracts.CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals) ... ERROR
+test_failed_run_preserves_owned_residue_and_rejects_identity_drift (test_contracts.FixtureSupportTests.test_failed_run_preserves_owned_residue_and_rejects_identity_drift) ... ok
+test_output_root_precedence_default_and_rejection (test_contracts.FixtureSupportTests.test_output_root_precedence_default_and_rejection) ... ok
+test_reserved_and_unknown_runner_selections_fail_before_allocation (test_contracts.FixtureSupportTests.test_reserved_and_unknown_runner_selections_fail_before_allocation) ... ok
+test_c2_minimal_synthetic_v1 (test_contracts.MetadataTests.test_c2_minimal_synthetic_v1) ... ok
+test_c2_reject_mixed_union_and_null_config_artifact (test_contracts.MetadataTests.test_c2_reject_mixed_union_and_null_config_artifact) ... ok
+test_c2_reject_owner_and_undeclared_tool_or_reference (test_contracts.MetadataTests.test_c2_reject_owner_and_undeclared_tool_or_reference) ... ok
+test_c2_reject_version_types_and_duplicate_schema (test_contracts.MetadataTests.test_c2_reject_version_types_and_duplicate_schema) ... ok
+test_c2_restricted_yaml_rejects_anchors_and_duplicate_keys (test_contracts.MetadataTests.test_c2_restricted_yaml_rejects_anchors_and_duplicate_keys) ... ok
+test_c3_real_git_regular_missing_nonregular_members (test_contracts.SelectionTests.test_c3_real_git_regular_missing_nonregular_members) ... ERROR
+test_c3_required_optional_version_and_cycle (test_contracts.SelectionTests.test_c3_required_optional_version_and_cycle) ... ok
+test_c3_selected_version_and_manifest_collisions (test_contracts.SelectionTests.test_c3_selected_version_and_manifest_collisions) ... ok
+test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) ...
+  test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (package='pr') ... ERROR
+  test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (package='local-backlog') ... ERROR
+  test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (profile='work-management') ... ERROR
+  test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (profile='collaboration') ... ERROR
+  test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (profile='source-repository') ... ERROR
+test_c2_actual_v2_v3_union_and_null_config_projection (test_contracts.SourceClosureTests.test_c2_actual_v2_v3_union_and_null_config_projection) ... ok
+
+======================================================================
+ERROR: test_c5_two_real_lesson_builds_and_reader_refusals (test_contracts.CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 341, in test_c5_two_real_lesson_builds_and_reader_refusals
+    first = assembly.assemble(support.REPOSITORY, commit, 'lesson-minimal', root, root)
+  File "F:\framework-next\368\src\distribution\assembly.py", line 132, in assemble
+    source = GitSource(repository, commit)
+  File "F:\framework-next\368\src\distribution\git_source.py", line 30, in __init__
+    self.repository = repository.resolve(strict=True)
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 670, in resolve
+    return self.with_segments(os.path.realpath(self, strict=strict))
+                              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen ntpath>", line 696, in realpath
+OSError: [WinError 1] 功能錯誤。: 'F:\\framework-next\\368'
+
+======================================================================
+ERROR: test_c3_real_git_regular_missing_nonregular_members (test_contracts.SelectionTests.test_c3_real_git_regular_missing_nonregular_members)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 326, in test_c3_real_git_regular_missing_nonregular_members
+    source = GitSource(repository, commit)
+  File "F:\framework-next\368\src\distribution\git_source.py", line 30, in __init__
+    self.repository = repository.resolve(strict=True)
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\h4227\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py", line 670, in resolve
+    return self.with_segments(os.path.realpath(self, strict=strict))
+                              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen ntpath>", line 696, in realpath
+OSError: [WinError 1] 功能錯誤。: 'F:\\framework-next\\p7-runs\\368-contracts\\fn-7ce6045a9eae47e68aa3ecb5597100cc\\git-members\\repository'
+
+======================================================================
+ERROR: test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (package='pr')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 123, in test_c1_exact_packages_members_profiles_and_projection
+    package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
+  File "F:\framework-next\368\src\distribution\package.py", line 47, in load_package
+    data = mapping(yaml_object(blob.data, label), {
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 104, in yaml_object
+    require(getattr(event, "anchor", None) is None, f"{label}: YAML anchors are forbidden")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 17, in require
+    raise DistributionError(message)
+distribution.data.DistributionError: src/skills/pr/skill-package.yaml: YAML anchors are forbidden
+
+======================================================================
+ERROR: test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (package='local-backlog')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 123, in test_c1_exact_packages_members_profiles_and_projection
+    package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
+  File "F:\framework-next\368\src\distribution\package.py", line 47, in load_package
+    data = mapping(yaml_object(blob.data, label), {
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 104, in yaml_object
+    require(getattr(event, "anchor", None) is None, f"{label}: YAML anchors are forbidden")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 17, in require
+    raise DistributionError(message)
+distribution.data.DistributionError: src/skills/local-backlog/skill-package.yaml: YAML anchors are forbidden
+
+======================================================================
+ERROR: test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (profile='work-management')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 138, in test_c1_exact_packages_members_profiles_and_projection
+    result = select(source, profile)
+  File "F:\framework-next\368\src\distribution\selection.py", line 99, in select
+    package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
+  File "F:\framework-next\368\src\distribution\package.py", line 47, in load_package
+    data = mapping(yaml_object(blob.data, label), {
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 104, in yaml_object
+    require(getattr(event, "anchor", None) is None, f"{label}: YAML anchors are forbidden")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 17, in require
+    raise DistributionError(message)
+distribution.data.DistributionError: src/skills/pr/skill-package.yaml: YAML anchors are forbidden
+
+======================================================================
+ERROR: test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (profile='collaboration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 138, in test_c1_exact_packages_members_profiles_and_projection
+    result = select(source, profile)
+  File "F:\framework-next\368\src\distribution\selection.py", line 99, in select
+    package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
+  File "F:\framework-next\368\src\distribution\package.py", line 47, in load_package
+    data = mapping(yaml_object(blob.data, label), {
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 104, in yaml_object
+    require(getattr(event, "anchor", None) is None, f"{label}: YAML anchors are forbidden")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 17, in require
+    raise DistributionError(message)
+distribution.data.DistributionError: src/skills/pr/skill-package.yaml: YAML anchors are forbidden
+
+======================================================================
+ERROR: test_c1_exact_packages_members_profiles_and_projection (test_contracts.SourceClosureTests.test_c1_exact_packages_members_profiles_and_projection) (profile='source-repository')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\368\tests\framework_next\test_contracts.py", line 138, in test_c1_exact_packages_members_profiles_and_projection
+    result = select(source, profile)
+  File "F:\framework-next\368\src\distribution\selection.py", line 99, in select
+    package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
+  File "F:\framework-next\368\src\distribution\package.py", line 47, in load_package
+    data = mapping(yaml_object(blob.data, label), {
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 104, in yaml_object
+    require(getattr(event, "anchor", None) is None, f"{label}: YAML anchors are forbidden")
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\368\src\distribution\data.py", line 17, in require
+    raise DistributionError(message)
+distribution.data.DistributionError: src/skills/pr/skill-package.yaml: YAML anchors are forbidden
+
+----------------------------------------------------------------------
+Ran 14 tests in 3.483s
+
+FAILED (errors=7)

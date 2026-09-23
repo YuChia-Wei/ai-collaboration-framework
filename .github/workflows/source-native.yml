@@ -1,0 +1,57 @@
+# Dormant and intentionally non-passing until the real V3 interface is integrated.
+name: Source native checks
+on:
+  workflow_dispatch:
+    inputs:
+      subject_sha:
+        description: Full source commit SHA; V3 binding must be delivered before execution
+        required: true
+        type: string
+permissions: {}
+concurrency:
+  group: source-native-${{ inputs.subject_sha }}-windows
+  cancel-in-progress: false
+jobs:
+  native:
+    name: Source native trial
+    runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      SOURCE_SUBJECT: ${{ inputs.subject_sha }}
+    steps:
+      - name: Require manual main workflow and fixed subject
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_EVENT_NAME -ne 'workflow_dispatch' -or $env:GITHUB_REF -ne 'refs/heads/main') {
+            throw 'Native route requires the manual main workflow revision'
+          }
+          if ($env:SOURCE_SUBJECT -cnotmatch '^[0-9a-f]{40}$' -or $env:SOURCE_SUBJECT -eq ('0' * 40)) {
+            throw 'Expected full source SHA'
+          }
+      - name: Checkout trusted runner revision
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # verified v6, node24
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Python for native entry
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # verified v6, node24
+        with:
+          python-version: '3.12'
+      - name: Resolve actual native binding
+        id: native
+        shell: pwsh
+        run: python -I -B .github/scripts/run-source-native.py --subject "$env:SOURCE_SUBJECT"
+      - name: Native disposition even on failure
+        if: always()
+        shell: pwsh
+        run: |
+          @'
+          ## Source native trial
+
+          V3 binding is pending. No native case or subject checkout is implemented in this checkpoint.
+          This job cannot pass. Coordinator must bind and test the delivered Windows-only runner,
+          fixed subject and explicit native/recovery roots before proposing enablement.
+          '@ | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding utf8

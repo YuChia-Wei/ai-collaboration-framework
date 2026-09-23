@@ -1,0 +1,116 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "P7-P1-SOURCE-GATES",
+  "workflow_id": "2026-09-23-source-gates-implementation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T15:14:31+08:00",
+  "updated_at": "2026-09-23T15:34:12+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369",
+  "scope": {
+    "target": "Dormant source gates; prospective policy stopped by automatic review",
+    "files": [
+      ".github/scripts/check-source-change.py",
+      ".github/scripts/run-source-native.py",
+      ".github/tests/test_source_gates.py",
+      ".github/workflows/source-checks.yml",
+      ".github/workflows/source-native.yml",
+      ".dev/design/framework-next/source-gates-implementation/",
+      ".dev/workflows/2026-09-23-source-gates-implementation/"
+    ],
+    "constraints": [
+      "U001; one independent conversation; no sub-agents/callbacks",
+      "Exact assigned F: worktree; no rejected-policy retry",
+      "Local checkpoint only; coordinator owns integration"
+    ],
+    "non_goals": [
+      "Policy activation",
+      "Provider writes",
+      "Product/native trials",
+      "Legacy matrices"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Identity/live Issue reads",
+      "Implement own source selector/event tests",
+      "Retain automatic rejection and first test failure",
+      "Separately approved fixture correction and focused rerun",
+      "Local checkpoint"
+    ],
+    "validation": [
+      "24 selected tests passed after retained WinError 1 failure",
+      "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup"
+    ],
+    "last_completed_step": "Actual #368 contracts CLI/result binding; 28 focused source tests passed; no product execution",
+    "next_action": "Coordinator integrates fixed runner, resolves upstream failures and policy approval, then supplies V2/V3 bindings"
+  },
+  "results": {
+    "summary": "Partial local source-gate checkpoint; no CI/native/policy readiness",
+    "tests_run": [
+      {
+        "attempt": 1,
+        "tests": 24,
+        "errors": 1,
+        "outcome": "failed",
+        "seconds": 0.248,
+        "reason": "F: strict Path.resolve WinError 1 before Git fixture allocation"
+      },
+      {
+        "attempt": 2,
+        "tests": 24,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "seconds": 1.733,
+        "change": "Separately permitted source-test fixture-only preflight correction"
+      },
+      {
+        "attempt": 3,
+        "phase": "authorized-runner-binding-follow-up",
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "unittest_seconds": 2.44,
+        "harness_seconds": 2.441,
+        "evidence_scope": "Local source selector/event tests; synthetic runner responses and tiny real Git fixture",
+        "product_execution": false
+      }
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Policy approval blocked; upstream 368 has 3 affected methods/7 errors and no candidate build; public/native undelivered; no hosted evidence",
+    "follow_up_needed": true
+  },
+  "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim",
+  "runner_binding": {
+    "source_commit": "070a47335ffce99d31bd83e487447942539e4a9f",
+    "argv": [
+      "python",
+      "-I",
+      "-B",
+      "tests/framework_next/run.py",
+      "--layer",
+      "contracts"
+    ],
+    "result": "Exit 0, positive no-skip unittest summary and runtime/complete cleanup observations",
+    "upstream_tests": {
+      "methods": 14,
+      "successful_methods": 11,
+      "affected_methods": 3,
+      "errors": 7,
+      "candidate_builds_succeeded": 0
+    },
+    "public": "reserved-not-implemented",
+    "native": "unimplemented-blocked",
+    "report": "reports/runner-binding-handoff.md"
+  }
+}
