@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p5-instruction-integration`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p6-maintenance-contract`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -29,12 +29,13 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader PR #339 and final mapping PR #343 integrated; Issue/Project complete |
 | #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source online in PR #350; actual shared mapping pending |
 | #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design integrated PR #349; Issue/Project complete |
-| #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | initial design returned; quiescent-maintenance revision requested in same task |
-| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source inspected/locally integrated; same-task mapping pending |
+| #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | revised design selected/locally integrated; online integration pending |
+| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source online PR #353; first actual mapping handoff selected |
 | #347 | P5-B engineering methods | five own instruction packages/design/workflow | write blocked by automatic approval review; awaiting direct confirmation |
-| #348 | P5-C portable authoring | two own instruction packages/design/workflow | source inspected/locally integrated; online integration pending |
+| #348 | P5-C portable authoring | two own instruction packages/design/workflow | source online PR #353; Issue/Project complete |
 | #351 | P5-D frame/compliance design | own design/workflow only | independent design task active; runtime/F: identity verified |
 | #352 | P5-E optional maintenance design | own design/workflow only | independent design task active; runtime/F: identity verified |
+| #354 | P6-B state/planning | own reader/plan modules and design/workflow | selected; independent source task dispatch next |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -52,7 +53,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate actual #346/#348 source online, receive #351/#352 bounded designs and receive #345 quiescent-maintenance revision. #341 is online but awaits mapping; #347 is stopped before writes pending direct authorization confirmation required by automatic review. The coordinator reads completed task handoffs directly after callback rejection. See [P5 source review](reports/p5-instruction-integration.md) and [remaining design assignments](reports/p5-remaining-design-scope.md). Actual package mappings follow delivery; all product verification/CI remains deferred to P7.
+Current action: integrate selected #345 maintenance design online, dispatch #354 read-only planner, and resume the SAME #346 task for [nine-package actual mapping](reports/p5-actual-mapping-scope.md). #351/#352 are active designs. #347 remains stopped before writes pending direct confirmation required by automatic approval review. #348 is CLOSED/Project Done after PR #353; #341 awaits mapping. All product verification and CI remain deferred to P7.
 
 ## P3 shared implementation continuation
 
