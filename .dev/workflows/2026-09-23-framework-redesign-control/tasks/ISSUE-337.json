@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T08:26:01+08:00",
-  "updated_at": "2026-09-23T09:14:39+08:00",
+  "updated_at": "2026-09-23T09:22:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -54,11 +54,11 @@
     "validation": [
       "Direct syntax/source/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Received clean final mapping; compared fixed actual Git/metadata/manifest and four profiles; locally integrated",
-    "next_action": "Online PR/Issue/Project read-back; P7 verifies actual selection/assembly/runtime behavior"
+    "last_completed_step": "Source and exact mapping integrated online in PR #343; Issue CLOSED and Project Done read back",
+    "next_action": "P7 selects and executes redesigned verification; no runtime acceptance claimed"
   },
   "results": {
-    "summary": "Both metadata-v2 loader and exact P3 mapping source stages complete and inspected; online integration pending.",
+    "summary": "Bounded source delivery inspected and integrated online; Issue CLOSED and Project Done; verification remains deferred to P7.",
     "files_changed": [
       "src/distribution/package.py",
       "src/distribution/manifest.yaml",
@@ -87,12 +87,12 @@
     "worktree_clean_observed": true,
     "source_stage": "complete; inspected under U001",
     "mapping_stage": "complete; fixed-source mapping inspected",
-    "provider_integration": "loader merged PR #339; final mapping locally integrated, online PR pending",
+    "provider_integration": "merged online PR #343; Issue/Project completion read back",
     "verification_state": "deferred-by-owner",
-    "pull_request": 339,
-    "merge_commit": "879b195160540f74bab2ac57cad148bcfaddbcbe",
-    "issue_state": "OPEN",
-    "project_status": "In progress",
+    "pull_request": 343,
+    "merge_commit": "ac4175948045590d1a1942022435ab438ad30ac3",
+    "issue_state": "CLOSED",
+    "project_status": "Done",
     "mapping_assignment": "reports/p3-package-mapping-scope.md",
     "mapping_checkpoint": "b38ef4a8dce57c2cb78fda6ae9c100d689605245",
     "mapping_worktree_clean_observed": true

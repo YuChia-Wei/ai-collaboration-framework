@@ -1,0 +1,17 @@
+# P4 contract reconciliation and P3 provider closeout
+
+Coordinator design/content inspection only. Received #341 design commit `7f821ee866e7e54e551036785e19dffaa3d7ac39` with a clean assigned worktree. Read its contract, record shapes, exact interface inventory, synthetic examples and actual checkpoint report. Eleven files are limited to its owned design/workflow roots; no executable implementation is delivered yet.
+
+[Selected C341-01..05 and exclusive source scope](../../../design/framework-next/p4-selected-contract.md) authorize the same task to continue. The single-record design avoids mandatory per-task files and registries. It retains explicit dependencies, attributed evidence, retrospective handoffs and readable continuation. Ten operations include previews only; no scheduling, compaction, archiving or deletion executor is included. Those future directions remain later work rather than implied completion.
+
+Reconciled Lesson/ADR/promotion handoff requirements against actual P3 public operation references at `ac4175948045590d1a1942022435ab438ad30ac3`, especially real query/decision digests, complete promotion target/source inputs and separate lifecycle adoption. PR/backlog boundaries were already based on actual source in the proposal. No tool invocation or end-to-end composition acceptance occurred. C341-05 selects one executable operational-default authority with descriptive documentation and truthful explain provenance; current closed metadata v2 remains unchanged. Terminal workflows with unresolved candidates remain immutable/protected and require separately reconciled continuation.
+
+PR #343 merged online at `ac4175948045590d1a1942022435ab438ad30ac3`. Provider read-back at 2026-09-23T09:17:14.9935609+08:00 showed PR MERGED, main at that commit, #334 and #337 CLOSED and Project Done, #341/#342 OPEN and In progress. No status checks ran. The detailed local read-back is retained at `.dev/ai-context/local/framework-next-control/p3-final-integration-readback.json`; this durable summary is sufficient to distinguish source integration from P7 acceptance. Merged refs were cleaned after ancestry/clean-worktree checks; F: files remain preserved.
+
+One attempted read of `.dev/design/framework-next/README.md` failed because that path does not exist; the tracked-file inventory resolved the actual design paths. No source conclusion relied on that absent path. Actual package references and retained checkpoint bytes supplied the comparison. P5 #342 continues independent design/inventory work; #341 source ownership does not include metadata-v3 or shared mapping changes.
+
+U001 remains in force. Actual direct syntax/reference/Git and planned-message check results are recorded with the commit checkpoint. Product execution, schema/behavior/platform acceptance, CI and restoration remain deferred-by-owner to program #322 coordinator / P7. The program remains in progress.
+
+Coordinator record-edit preparation had two Python parse-time indentation failures; neither executed or wrote files. The corrected direct edit was run only after removing the erroneous line. These are preparation errors, not product failures or validation evidence.
+
+Actual coordinator checkpoint checks: strict UTF-8 read of 20 changed/new documents, direct parsing of 8 JSON and 2 YAML documents, and resolution of 337 local Markdown links completed. Staged/unstaged `git diff --check` completed. Direct parsing does not establish schema compliance.

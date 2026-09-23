@@ -1,0 +1,41 @@
+{
+  "handoff_kind": "U001-local-contract-checkpoint",
+  "workflow_id": "2026-09-23-workflow-orchestration",
+  "issue": 341,
+  "status": "in_progress",
+  "created_at": "2026-09-23T09:09:21+08:00",
+  "updated_at": "2026-09-23T09:12:33+08:00",
+  "repository_root": "F:/framework-next/341",
+  "branch": "codex/2026-09-23-workflow-orchestration",
+  "starting_commit": "3a82b3654976fb26da7618a4404f49d7868d813a",
+  "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+  "checkpoint_commit_source": "containing-commit",
+  "checkpoint_resolution": "git log -1 --format=%H -- .dev/workflows/2026-09-23-workflow-orchestration/handoff.json",
+  "current_task": "P4-SOURCE",
+  "completed_task": "P4-CONTRACT",
+  "hidden_context_required": false,
+  "contract": ".dev/design/framework-next/workflow-orchestration/contract.md",
+  "interface_proposal": ".dev/design/framework-next/workflow-orchestration/interface-proposal.json",
+  "report": "reports/checkpoint-report.md",
+  "decisions": [
+    "C341-01",
+    "C341-02",
+    "C341-03",
+    "C341-04",
+    "C341-05"
+  ],
+  "source_implementation": "not-started",
+  "verification": "deferred-by-owner",
+  "verification_owner": "program-322-coordinator/P7",
+  "native_handoff_validation": "deferred-by-owner under U001; this is not a native validator receipt",
+  "next_action": "Coordinator reconciles the five decisions and actual #334 source, then sends accepted source scope back to this SAME task. No source writes until then.",
+  "coordinator_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+  "first_push_owner": "coordinator",
+  "proposed_index_row": "| 2026-09-23-workflow-orchestration | ai-context-governance | in_progress | #341 P4 contract checkpoint; source implementation awaits coordinator reconciliation | .dev/workflows/2026-09-23-workflow-orchestration/workflow-plan.md |",
+  "callback": "After local commit, send exact HEAD, changed paths, actual/deferred checks and decisions once; if unavailable, retain this handoff and final response without unchanged retry.",
+  "actual_checks": [
+    "Strict UTF-8 read 11 files; JSON parse 5; YAML parse 1; local Markdown targets 19; exit 0",
+    "git diff --cached --check exit 0; staged path scope inspected",
+    "Exact planned message validator exit 0; original ignored message file retained"
+  ]
+}

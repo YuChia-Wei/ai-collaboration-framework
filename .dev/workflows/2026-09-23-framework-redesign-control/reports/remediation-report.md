@@ -62,3 +62,7 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P3 mapping source completion and P5 dispatch
 
 #337 final mapping b38ef4a8dce57c2cb78fda6ae9c100d689605245 is received and locally integrated after [direct source/configuration comparison](p3-mapping-integration.md). #334/#337 online integration is next. #342 design is independently active; runtime and F: identity are retained in evidence/p5-task-dispatch.json. #341/#342 remain open design work, and the program remains implementation-in-progress with verification deferred to P7.
+
+## P3 online completion and P4 source selection
+
+PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CLOSED and Project Done were read back. P3 source integration is complete. [P4 reconciliation](p4-contract-reconciliation.md) selects C341-01..05 and the same-task source continuation; #342 remains independent design work. F-03/F-04 have design/source progress but are not finally resolved. Runtime/schema/CI verification remains deferred to P7.

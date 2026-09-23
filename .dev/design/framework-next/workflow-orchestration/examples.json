@@ -1,0 +1,272 @@
+{
+  "example_status": "synthetic-design-only",
+  "execution_evidence": false,
+  "notice": "No named paths, IDs, times, writes, commands or results were actually created/executed. Operation snippets omit common absolute project_root/package_root fields until the real caller supplies them. Excerpts are not schema-accepted whole records.",
+  "tracked_project_config": {
+    "config_version": 2,
+    "skills": {
+      "software-development-orchestrator": {
+        "store": {
+          "kind": "filesystem",
+          "root": "notes/workflows",
+          "tracking": "tracked"
+        },
+        "template": {
+          "origin": "package",
+          "path": "templates/workflow.md"
+        },
+        "retention": {
+          "compact_after_days": 30,
+          "archive_after_days": 90,
+          "purge_after_days": null
+        },
+        "resume_budget_chars": 12000
+      }
+    },
+    "constraints": {
+      "software-development-orchestrator": {
+        "write_roots": [
+          "notes/workflows"
+        ],
+        "locked_fields": [
+          "store.root",
+          "store.tracking",
+          "retention"
+        ]
+      }
+    }
+  },
+  "ignored_project_config": {
+    "config_version": 2,
+    "skills": {
+      "software-development-orchestrator": {
+        "store": {
+          "kind": "filesystem",
+          "root": "scratch/private-workflows",
+          "tracking": "ignored"
+        },
+        "retention": {
+          "compact_after_days": 30,
+          "archive_after_days": 90,
+          "purge_after_days": null
+        }
+      }
+    },
+    "constraints": {
+      "software-development-orchestrator": {
+        "write_roots": [
+          "scratch/private-workflows"
+        ],
+        "locked_fields": [
+          "store.root",
+          "store.tracking"
+        ]
+      }
+    }
+  },
+  "storage_notes": [
+    "Provision parent folders or explicitly permit contained parent creation.",
+    "Tracking is intent. Establish ignore/tracking/backup separately; no config or Git edit is implied.",
+    "A teammate needs the selected store and binding plus an actual durable copy; an ignored local record alone does not provide that."
+  ],
+  "minimal_create": {
+    "operation": "create",
+    "content": {
+      "title": "Keep a retry change resumable",
+      "intent": "Record the bounded retry change and its actual evidence.",
+      "scope": {
+        "included": [
+          "One selected worker retry path"
+        ],
+        "excluded": [
+          "Global retry policy",
+          "Provider publication"
+        ]
+      },
+      "acceptance": [
+        {
+          "id": "A1",
+          "criterion": "The selected operation preserves failed-attempt evidence and has a bounded next action."
+        }
+      ],
+      "first_action": {
+        "action": "Inspect the selected retry path and record the current failure.",
+        "completion_condition": "A reproducible observation with an exact subject is recorded.",
+        "owner": "Project maintainer"
+      }
+    }
+  },
+  "initial_record_example": {
+    "schema_version": "1.0.0",
+    "kind": "workflow",
+    "owner": "project",
+    "id": "wf-4f6c50b2ef0f4b04a237f31a95cdd810",
+    "revision": 1,
+    "created_at": "2026-01-01T00:00:00+00:00",
+    "updated_at": "2026-01-01T00:00:00+00:00",
+    "state": "planned",
+    "state_reason": "Created as planned work.",
+    "content": {
+      "title": "Keep a retry change resumable",
+      "intent": "Record the bounded retry change and its actual evidence.",
+      "scope": {
+        "included": [
+          "One selected worker retry path"
+        ],
+        "excluded": [
+          "Global retry policy",
+          "Provider publication"
+        ]
+      },
+      "acceptance": [
+        {
+          "id": "A1",
+          "criterion": "The selected operation preserves failed-attempt evidence and has a bounded next action.",
+          "disposition": "not-executed",
+          "evidence_ids": [],
+          "reason": "Not executed by this tool.",
+          "deferral": null
+        }
+      ],
+      "tasks": [
+        {
+          "id": "T001",
+          "title": "Inspect the selected retry path and record the current failure.",
+          "action": "Inspect the selected retry path and record the current failure.",
+          "completion_condition": "A reproducible observation with an exact subject is recorded.",
+          "depends_on": [],
+          "state": "pending",
+          "reason": "",
+          "result": "",
+          "evidence_ids": [],
+          "deferral": null
+        }
+      ],
+      "evidence": [],
+      "decisions": [],
+      "references": [],
+      "next_action": {
+        "task_id": "T001",
+        "owner": "Project maintainer",
+        "action": "Inspect the selected retry path and record the current failure.",
+        "condition": "After actual task authorization."
+      }
+    },
+    "retrospective": null,
+    "history": []
+  },
+  "failure_resume_excerpt": {
+    "workflow_state": "blocked",
+    "task_states": {
+      "T001": "failed",
+      "T002": "pending"
+    },
+    "dependencies": {
+      "T002": [
+        "T001"
+      ]
+    },
+    "evidence": {
+      "id": "E1",
+      "task_id": "T001",
+      "summary": "Example reported attempt failed; no real command was run for this design.",
+      "disposition": "failed",
+      "subject": "synthetic input only",
+      "source_refs": [
+        "R1"
+      ],
+      "reported_by": "example caller",
+      "observed_at": "2026-01-01T00:01:00+00:00",
+      "basis": "caller-supplied"
+    },
+    "reference": {
+      "id": "R1",
+      "kind": "opaque",
+      "target": "example://retained-failure-log",
+      "schema": null,
+      "sha256": null,
+      "resolution": "unverified",
+      "blocking": false,
+      "evidence_value": "unknown",
+      "note": "Synthetic locator; not fetched or verified."
+    },
+    "next_action": {
+      "task_id": "T001",
+      "owner": "Project maintainer",
+      "action": "Resolve the reported precondition and decide whether a retry is authorized.",
+      "condition": "After failure source and subject are inspected."
+    },
+    "resume_note": "T002 remains blocked by T001. Failure stays visible; no retry is invoked."
+  },
+  "deferral_excerpt": {
+    "acceptance": {
+      "id": "A2",
+      "criterion": "Observe the explicitly selected environment-dependent behavior.",
+      "disposition": "deferred",
+      "evidence_ids": [],
+      "reason": "The designated environment is not available in this example.",
+      "deferral": {
+        "reason": "Selected environment unavailable",
+        "owner": "Project validation owner",
+        "trigger": "Environment becomes available",
+        "next_action": "Run the selected check and record actual subject/output.",
+        "authority_ref": "example://owner-deferral"
+      }
+    },
+    "completion_disposition": "with-deferrals",
+    "note": "Illustrates a field disposition only; not a completed record or acceptance evidence. Deferred work protects cleanup."
+  },
+  "no_knowledge_retrospective": {
+    "operation": "retrospect",
+    "retrospective": {
+      "outcome": "no-new-knowledge",
+      "reflection": {
+        "actual_outcome": "Example task adds no reusable engineering decision.",
+        "observations": "The local observation is already adequately retained in workflow evidence.",
+        "limitations": "No broader applicability was established."
+      },
+      "rationale": "Keep the workflow result; another Lesson or ADR would duplicate it.",
+      "candidates": []
+    }
+  },
+  "candidate_excerpt": {
+    "id": "K1",
+    "destination": "local-backlog@0.1.0",
+    "operation": "create",
+    "summary": "Track a separately scoped follow-up with title, summary and observable acceptance from the retained finding.",
+    "source_evidence_ids": [
+      "E1"
+    ],
+    "applicability": "The selected worker only",
+    "missing_inputs": [
+      "Actual follow-up acceptance and approved local store binding"
+    ],
+    "next_action": "Inspect/query the installed local-backlog public contract, then create only if authorized.",
+    "state": "open",
+    "result_refs": []
+  },
+  "retention_preview_request": {
+    "operation": "retention-preview",
+    "mode": "purge",
+    "selection": [
+      "wf-4f6c50b2ef0f4b04a237f31a95cdd810"
+    ]
+  },
+  "retention_expected_design": {
+    "for_initial_record": "protected: active or planned work",
+    "for_old_closed_record_with_unknown_external_references": "needs-owner-reconciliation; never safe-to-delete",
+    "compact": "Result-only summary retains original bytes; no compact mutation.",
+    "archive": "Name missing durable copy, read-back, reference continuity and compatible reader evidence; no copy/move.",
+    "purge": "Explain what would be lost and external uncertainty; no deletion permission."
+  },
+  "unsupported_cases": [
+    "Config v1 for this skill",
+    "Unknown record version",
+    "Same-store task dependency cycle",
+    "Expected digest drift or cooperating writer lock held",
+    "Resume required content over budget",
+    "Product request to execute purge/archive/compact",
+    "Foreign capability missing: preserve candidate and workflow",
+    "Attempt to satisfy a dependency with a deferred task"
+  ]
+}
