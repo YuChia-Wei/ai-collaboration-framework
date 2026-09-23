@@ -15,3 +15,5 @@ U001 remains in force. Actual direct syntax/reference/Git and planned-message ch
 Coordinator record-edit preparation had two Python parse-time indentation failures; neither executed or wrote files. The corrected direct edit was run only after removing the erroneous line. These are preparation errors, not product failures or validation evidence.
 
 Actual coordinator checkpoint checks: strict UTF-8 read of 20 changed/new documents, direct parsing of 8 JSON and 2 YAML documents, and resolution of 337 local Markdown links completed. Staged/unstaged `git diff --check` completed. Direct parsing does not establish schema compliance.
+
+PR #344 subsequently merged at `db41eebd52485661f5720c534bf17315316768fd`. Read-back at 2026-09-23T09:26:35.4825991+08:00 confirmed main, PR MERGED, #341 OPEN/Project In progress and no hosted checks. Source continuation was dispatched on `9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0`; its first command read clean F: design HEAD/branch/common-dir correctly.
