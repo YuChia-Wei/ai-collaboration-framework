@@ -2,9 +2,9 @@
   "workflow_id": "2026-09-23-versioned-candidate",
   "task_id": "VC01",
   "owner_skill": "slice-implementer",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T22:34:24+08:00",
-  "updated_at": "2026-09-23T22:35:42+08:00",
+  "updated_at": "2026-09-23T22:39:20+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "template_version": "1.5.0",
   "model": "gpt-6-astra",
@@ -37,16 +37,24 @@
     },
     {
       "selection": "clean-commit complete public CLI assembly/read",
-      "outcome": "pending"
+      "outcome": "passed",
+      "commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+      "evidence": "evidence/complete-result.json"
     },
     {
       "selection": "public pinned-engine fixture plan",
-      "outcome": "pending"
+      "outcome": "passed",
+      "commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+      "classification": "fictional future stable/manual rc fixture",
+      "evidence": "evidence/fixture-plan-transcript.json"
     }
   ],
   "results": {
-    "summary": "Versioned assembly/readers and complete profile implemented; six focused fixture tests passed. Clean-commit actual build/read and pinned fixture planning pending.",
-    "finding_status": "in_progress"
+    "summary": "Bounded Issue 381 implementation and selected focused/actual acceptance complete. Coordinator review/integration and target/release actions remain separate.",
+    "finding_status": "addressed",
+    "implementation_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+    "handoff": "handoff.md",
+    "unresolved_ownership_decisions": []
   },
   "deferrals": [
     {

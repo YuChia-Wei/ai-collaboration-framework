@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-B",
+    "F:\\framework-next\\381\\tools\\build-candidate.py",
+    "--repository",
+    "F:\\framework-next\\381",
+    "--commit",
+    "3755b217421a4f1238f740a09de7e034ccf56038",
+    "--profile",
+    "complete",
+    "--release-version",
+    "0.19.0-rc.1",
+    "--output-root",
+    "F:\\framework-next\\p7-runs\\versioned-candidate\\complete-ae3645163ae84569a1ccbacdb8fb4ad5",
+    "--scratch-root",
+    "F:\\framework-next\\p7-runs\\versioned-candidate\\complete-ae3645163ae84569a1ccbacdb8fb4ad5"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "stdout": "{\r\n  \"outcome\": \"assembled\",\r\n  \"candidate_root\": \"F:\\\\framework-next\\\\p7-runs\\\\versioned-candidate\\\\complete-ae3645163ae84569a1ccbacdb8fb4ad5\\\\candidate-3755b217421a-880decbc11734dae8fbc24939280fcbb\",\r\n  \"scratch_root\": \"F:\\\\framework-next\\\\p7-runs\\\\versioned-candidate\\\\complete-ae3645163ae84569a1ccbacdb8fb4ad5\\\\scratch-880decbc11734dae8fbc24939280fcbb\",\r\n  \"candidate_identity\": \"versioned:0.19.0-rc.1:3755b217421a4f1238f740a09de7e034ccf56038:691ef5f2202c02772e0af76c3789e0af829501d8dea5bc24837763fe1caf8a28\",\r\n  \"completion_metadata\": \"F:\\\\framework-next\\\\p7-runs\\\\versioned-candidate\\\\complete-ae3645163ae84569a1ccbacdb8fb4ad5\\\\candidate-3755b217421a-880decbc11734dae8fbc24939280fcbb\\\\metadata\\\\build.json\"\r\n}\r\n"
+}

@@ -1,6 +1,6 @@
 # Versioned candidate execution
 
-Workflow `2026-09-23-versioned-candidate`, task `VC01`, owner `slice-implementer`, generic mode. Created/updated 2026-09-23T22:34:24+08:00; in progress. Adapted from `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md` v1.4.0 under U001.
+Workflow `2026-09-23-versioned-candidate`, task `VC01`, owner `slice-implementer`, generic mode. Created/updated 2026-09-23T22:34:24+08:00; completed for bounded local scope. Adapted from `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md` v1.4.0 under U001.
 
 Authority: [Issue #381](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/381), [U001](../../standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md), the committed coordinator assignment, and the user's direct confirmation in this task of exact F: source/workflow/design/test/evidence/local-commit scope. Baseline `031233202f21e0793c9667cac872375d65e52be0` was clean at `F:/framework-next/381`, branch `codex/2026-09-23-versioned-candidate`.
 
@@ -24,3 +24,7 @@ The graph was freshly indexed as `framework-next-381` at baseline; installation-
 ## Implementation checkpoint (2026-09-23T22:35:42+08:00)
 
 Six focused tests passed in 0.304 seconds (run wall 0.370 seconds), with 34 retained files / 39,430 bytes. [Transcript](evidence/regressions-01.txt). This is tiny synthetic source/lock/future-stable evidence, not a release or target upgrade. Static parsing, exact declared component versions/member count, unchanged prior profiles/components, changed-link/scope checks and git diff --check passed. AST comparison confirmed only the intended existing assembly/selection/identity functions changed; bootstrap, loader, native IO, planner, apply/recover and payload bytes remain unchanged. The actual complete CLI and public pinned-engine fixture plan remain pending until the clean implementation commit.
+
+## Selected execution complete (2026-09-23T22:39:20+08:00)
+
+The clean implementation commit `3755b217421a4f1238f740a09de7e034ccf56038` passed the actual complete rc.1 CLI/reader comparison and separate public pinned-engine fixture-plan observation. See [handoff](handoff.md) and [observations](evidence/observations.json) for exact identity, paths, budgets, all actual/synthetic/deferred distinctions and retained historical failures. Only own evidence/records changed after those runs. Coordinator fixed-source review and integration remain next; no first push performed.
