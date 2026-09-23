@@ -1,0 +1,93 @@
+{
+  "recorded_at": "2026-09-23T10:17:53+08:00",
+  "authority": "U001 program #322",
+  "scope": "Direct design-document checks only; not schema or product validation",
+  "initial_identity": {
+    "worktree": "F:/framework-next/351",
+    "branch": "codex/2026-09-23-problem-frame-compliance-design",
+    "head": "731d658b6004110fd59224ca39aa3a5d63891d91",
+    "common_git_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+    "porcelain": "empty"
+  },
+  "actual_checks": [
+    {
+      "check": "Initial UTF-8/JSON/YAML/local Markdown links",
+      "outcome": "passed",
+      "counts": {
+        "utf8": 12,
+        "json": 5,
+        "yaml": 1,
+        "local_links": 18
+      }
+    },
+    {
+      "check": "git check-ignore -v -- .dev/workflows/2026-09-23-problem-frame-compliance-design/commit-message.tmp",
+      "outcome": "passed",
+      "evidence": ".gitignore line 82: *.tmp"
+    },
+    {
+      "check": "python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-problem-frame-compliance-design/commit-message.tmp --workflow-id 2026-09-23-problem-frame-compliance-design",
+      "outcome": "passed",
+      "output": "Git commit validation passed for planned message.",
+      "message_sha256": "0401d8a33d498d3cf0108f085388dddcea33c6553af743b96e21011e85fcd1c0"
+    },
+    {
+      "check": "Default Git hook directory inspection",
+      "outcome": "observed",
+      "evidence": "core.hooksPath is unset (git config --get exit 1); default hook directory contains no non-sample file; no configuration changed"
+    },
+    {
+      "check": "Final staged direct UTF-8/JSON/YAML/local Markdown links",
+      "outcome": "passed",
+      "counts": {
+        "utf8": 13,
+        "json": 6,
+        "yaml": 1,
+        "local_links": 19
+      },
+      "limits": "Parsing only; no example-versus-schema validation or product execution"
+    },
+    {
+      "check": "git diff --cached --check; staged path inventory and selected content diff inspection",
+      "outcome": "passed",
+      "files": 13,
+      "scope": "Exactly the two Issue 351 authorized roots"
+    }
+  ],
+  "preparation_failures": [
+    {
+      "observation": "Initial p5-selected-contract lookup under coordinator reports was absent",
+      "resolution": "Used actual .dev/design/framework-next/p5-selected-contract.md linked by scope report"
+    },
+    {
+      "observation": "Sandbox gh reads: loopback proxy refused connection",
+      "resolution": "Scoped require_escalated read succeeded; no provider mutation"
+    },
+    {
+      "observation": "First batch write exceeded Windows command-line limit, os error 206; process did not start",
+      "resolution": "Sequential per-file writes inside same two roots succeeded"
+    }
+  ],
+  "deferred": {
+    "outcome": "deferred-by-owner",
+    "owner": "program #322 coordinator / P7",
+    "authority": "U001",
+    "checks": [
+      "product CLI including help",
+      "schema validation",
+      "tests and fixtures",
+      "build/package/install",
+      "migration/compatibility",
+      "legacy validators except exact message",
+      "audit/lease/effective-rule/native handoff tooling",
+      "CI"
+    ],
+    "next_action": "Select redesigned checks after source implementation and restoration authority"
+  },
+  "limits": [
+    "JSON Schema and example were parsed as JSON only",
+    "No product imports or runtime execution",
+    "No independent audit or compliance/compatibility pass",
+    "Provider integration/Issue closure remain coordinator-owned"
+  ]
+}

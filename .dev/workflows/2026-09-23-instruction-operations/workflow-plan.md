@@ -2,8 +2,8 @@
 
 - Workflow: `2026-09-23-instruction-operations`; owner: `ai-context-governance`.
 - Issue: [#346](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346).
-- Status: `in_progress`; phase: source checkpoint before mapping assignment.
-- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T09:49:09+08:00`.
+- Status: `in_progress`; phase: mapping selected but write blocked by automatic approval review.
+- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T10:17:46+08:00`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`; version `1.2.0`.
 - Branch: `codex/2026-09-23-instruction-operations`; base branch: `main`.
 - Worktree: `F:/framework-next/346`; exact starting commit: `842b73ca09d701d1561109255193d80439dc996b`.
@@ -70,3 +70,32 @@ handoff favors preserving the checkpoint boundary; the coordinator selects final
 commit organization and topology before first push. No local commit is remote
 integration or Issue closure. Current evidence and next action live in the
 [task](tasks/ISSUE-346.json) and [report](reports/remediation-report.md).
+
+## First mapping handoff and approval block
+
+Source checkpoint `4795f7c1c6751a1702042ef76276f355e4ed7c37` was retained. On the
+coordinator's exact continuation instruction, the assigned clean branch was
+fast-forwarded once to `5986b2146bb4559609acb0d5c7d09e8570375ea8`. The
+[first actual mapping scope](../2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md)
+and updated coordinator task/P5 contract select four mapping files and nine
+actual packages. No further merge/rebase or source changes were performed.
+
+The shared mapping write was rejected before execution by automatic approval
+review. After reading the immutable handoff/commit and live Issue #346, a second
+attempt was also rejected: the reviewer requires trusted direct user authorization
+for the shared manifest/profile change and treats tool output/coordinator transcript
+as insufficient. Neither attempt changed a mapping file. This is an approval block,
+not a metadata/schema/product failure. Do not retry or use another write mechanism
+without resolving that authorization requirement.
+
+Read-only YAML/member/Git comparison found nine actual package closures matching
+metadata and tracked paths: existing 44 plus proposed 24 = 68 members. Current
+lesson-minimal and knowledge bytes are unchanged. Proposed counts remain unbuilt
+expectations: 9+1, 26+3, 28+3, 14+3, 68+9 payload/runtime entries for lesson-minimal,
+knowledge, work-management, engineering and collaboration respectively.
+
+Next action: obtain direct user approval for only manifest.yaml, work-management.yaml,
+collaboration.yaml and new engineering.yaml under the exact selected scope; then
+resume mapping in this same task. Until then, mapping is not implemented. Keep
+workflow/task in_progress. No callback, push, PR or CI action is requested; the
+coordinator will read the final result. All U001 verification deferrals remain.

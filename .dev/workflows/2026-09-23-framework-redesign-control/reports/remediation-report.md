@@ -82,3 +82,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P6 selected maintenance and actual mapping handoff
 
 [P6 reconciliation](p6-contract-selection.md) selects the revised #345 design and #354 read-only implementation scope. [Nine-package mapping](p5-actual-mapping-scope.md) resumes #346 against actual delivered source. #348 source is online/closed after PR #353. #351/#352 remain active and #347 remains blocked pending direct confirmation. This advances implementation planning, not P7 acceptance or root activation.
+
+## P5 remaining design selections
+
+[Bounded reconciliation](p5-final-capability-selection.md) selects #351 CBF/compliance and #352 optional-maintenance designs for #356/#357 source. The new scopes do not replace #346/#347 blocked writes; direct confirmation remains pending. #345 is online/closed and #354 continues independently. No framework findings, runtime behavior or CI restoration are declared complete.

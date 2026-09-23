@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T10:15:28+08:00",
+  "updated_at": "2026-09-23T10:24:44+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -53,15 +53,15 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Same task verified clean source and fast-forwarded to selected mapping checkpoint",
-    "next_action": "Receive first actual nine-package mapping checkpoint"
+    "last_completed_step": "Same task read-back complete; two mapping writes rejected; report-only commit returned",
+    "next_action": "Await consolidated direct user confirmation, then resume SAME task and mapping scope"
   },
   "results": {
     "summary": "Owned source completed with P7 verification deferred",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "partially-resolved",
-    "residual_risk": "Actual metadata/runtime/package/target-use verification deferred to P7; mapping pending",
+    "residual_risk": "Manifest remains five packages/44 members; source verification deferred to P7",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -80,9 +80,10 @@
     "verification_state": "deferred-by-owner",
     "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
     "integration_status": "source online in PR #353",
-    "mapping_status": "active in same task",
+    "mapping_status": "blocked-by-approval-review; no mapping written",
     "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md",
-    "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8"
+    "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
+    "blocked_checkpoint": "235cfaa5e2b915ce1722dec991c3cb8904c12691"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPr0"
 }

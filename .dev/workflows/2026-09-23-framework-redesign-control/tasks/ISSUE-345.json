@@ -6,9 +6,9 @@
   "task_id": "ISSUE-345",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:29:20+08:00",
-  "updated_at": "2026-09-23T10:12:33+08:00",
+  "updated_at": "2026-09-23T10:24:44+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -46,8 +46,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Revised 8a479ddc design inspected and selected; locally integrated",
-    "next_action": "Online design integration; #354 implements read-only state/plan"
+    "last_completed_step": "Design online PR #355; CLOSED/COMPLETED and Project Done read back",
+    "next_action": "Source #354 followed by actual maintenance writer/P7"
   },
   "results": {
     "summary": "Quiescent maintenance design selected; no product implementation or invocation",
@@ -74,7 +74,10 @@
     "initial_design_commit": "51229b63565ce6e836d57a4b107cf6df5554bf7c",
     "design_commit": "8a479ddc3204d0f031d9b9844aeb933af26f36f7",
     "selected_contract": ".dev/design/framework-next/p6-selected-contract.md",
-    "integration_status": "online pending"
+    "integration_status": "online merged",
+    "pr": 355,
+    "merge_commit": "8e4796cde7549b1f13a7a1ea13bbe738659aa98b",
+    "provider_readback": "2026-09-23T10:17:33+08:00 CLOSED/COMPLETED; Project Done"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PMbQ"
 }
