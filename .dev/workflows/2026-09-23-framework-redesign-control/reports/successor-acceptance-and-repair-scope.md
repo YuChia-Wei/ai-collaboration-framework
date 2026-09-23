@@ -482,3 +482,30 @@ codex/2026-09-23-installation-scan-budget, starts clean b746cff2. Runtime Astra/
 verified by read-only task row; actual first progress confirms correct F: identity.
 Coordinator owns first push/integration and the later real-target retry. No unchanged
 retry or target activation; unselected U001 gates remain deferred-by-owner.
+
+
+## Issue 386 reviewed complete candidate repair
+
+Final 3afb4ff4207acb3e12e3953018736305a439ed21 is clean. Product source
+64bf9f6e800799976e46caa13d873f9fef898431 changes only installation_io.py and
+installation_state.py: fresh direct directory metadata/identity checks, complete
+bracketed listings, and explicit parent invalidation before own namespace writes.
+Limits/counters, closure/pin, exact path/byte/alias/link checks stay in force under
+the existing quiescent writer contract. Metadata is not a concurrency lease.
+Root reviewed product/test/trial driver; no actionable finding. All ten raw evidence
+hashes and ten executed/final engine file hashes match. Ten focused tests pass after
+one retained driver-field correction. Controlled old-cache behavior failed at
+20,001 entries; repaired 200 reads use 132 entries. No speed claim.
+
+One actual complete candidate trial at 64bf9f6e passed planned -> applied with
+131 raw members, exact lock/durable lock, absent markers and preserved protected/
+unknown sentinels. Eight trial launches, peak one owned child, two operation roots;
+568 files / 3,978,814 bytes at endpoint. Candidate identity remains #381 versioned
+0.19.0-rc.1. Project readiness remains not-assessed. Conditional Issue closure follows
+online integration. Real target retry requires a fresh exact engine pin and plan;
+its failed pre-marker residue remains. Unselected U001 gates deferred-by-owner.
+
+Target local 1269a5fa holds a preparation-blocked current gate. Nine focused tests,
+285 retained-file hashes and twenty actual resolver calls passed; target Git overlay
+validated its three commits. Root/runtime are unchanged; independent adoption review
+and complete target installation are still pending.

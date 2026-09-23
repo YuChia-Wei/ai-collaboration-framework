@@ -219,7 +219,6 @@ class IO:
     def locate(self, root: Path, name: str) -> Path | None:
         state._root(str(root))
         self.contained_volume(root, name)
-        self.reader.listings.clear()
         return self.reader.locate(root, name)
 
     def contained_volume(self, root: Path, name: str) -> None:
@@ -247,6 +246,7 @@ class IO:
             target = self.locate(root, relative)
             if target is None:
                 target = root.joinpath(*parts[:index])
+                self.reader.forget_listing(target.parent)
                 target.mkdir(mode=0o700)
                 self.changes.record(role, relative)
                 self.backend.flush_directory(target.parent)
@@ -256,6 +256,7 @@ class IO:
     def directory(self, root: Path, name: str, role: str) -> Path:
         state._check(self.locate(root, name) is None, "operation-collision", "Exclusive operation path already exists.", name, "conflict")
         target = root / name
+        self.reader.forget_listing(target.parent)
         target.mkdir(mode=0o700)
         self.changes.record(role, name)
         self.backend.flush_directory(root)
@@ -265,6 +266,7 @@ class IO:
         self.parents(root, name, role)
         state._check(self.locate(root, name) is None, "exclusive-file", "Exclusive file path is occupied.", name, "conflict")
         target = root / name
+        self.reader.forget_listing(target.parent)
         descriptor = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0), 0o600)
         self.changes.record(role, name)
         try:
@@ -292,6 +294,7 @@ class IO:
         state._check(self.locate(root, temporary) is None, "sibling-collision", "Publication sibling must be absent.", temporary, "conflict")
         self.create(root, temporary, raw, "project", mode)
         self.expect(root, name, before, before_mode)
+        self.reader.forget_listing((root / name).parent)
         self.backend.move(root / temporary, root / name, replace=before is not None)
         self.changes.record("project", name)
         if name == state.MARKERS[0]:
@@ -304,6 +307,7 @@ class IO:
     def remove(self, root: Path, name: str, before: bytes, mode: str | None = None,
                category: str | None = None) -> None:
         self.expect(root, name, before, mode)
+        self.reader.forget_listing((root / name).parent)
         (root / name).unlink()
         self.changes.record("project", name)
         if category:
