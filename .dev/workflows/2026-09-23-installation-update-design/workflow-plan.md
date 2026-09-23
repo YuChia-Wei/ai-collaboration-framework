@@ -10,7 +10,7 @@ Identity: F:/framework-next/345, branch codex/2026-09-23-installation-update-des
 | --- | --- | --- |
 | A345-01 | Actual candidate/adapter/profile shapes and fixed identities | [Evidence](../../design/framework-next/installation-update/source-evidence.md), [formats](../../design/framework-next/installation-update/formats.md). |
 | A345-02 | Exact ownership, unchanged bytes/mode, preserved drift/custom/unknown | [Contract](../../design/framework-next/installation-update/contract.md). |
-| A345-03 | Explicit durable recovery/activation with bounded guarantees | Contract states and failure cases. |
+| A345-03 | Explicit durable recovery/activation with bounded guarantees | Maintenance contract states and failure cases. |
 | A345-04 | Separate package/conversion, selected M01, future metadata boundaries | Contract M01 section, formats and source pins. |
 | A345-05 | One-time root dogfood/fallback/single owner/P7 prerequisites | [Cutover/slices](../../design/framework-next/installation-update/cutover-and-slices.md). |
 | A345-06 | Synthetic shapes, accountable formats, useful maintenance reduction | [Examples](../../design/framework-next/installation-update/examples.json), formats, [Chinese explanation](../../design/framework-next/installation-update/README.md). |
@@ -20,6 +20,10 @@ Actual pre-edit: initial Git identity/empty porcelain matched; live five-Issue r
 
 Final direct syntax/reference/Git/message results are recorded in task and handoff report after execution. All product CLI/help, schema validators, tests/fixtures/build/package/install/migration/compatibility, I/O trials, audit/lease/effective-rule/receipt/native-handoff tooling and CI are deferred-by-owner; authority U001; owner program #322 coordinator / P7; next action P7 selects redesigned checks after implementation. No schema/behavior pass implied. Preserve F:/ai-context-tests/other worktrees.
 
-Return local commits/full HEAD/clean scope and remaining decisions to coordinator 01a0c9d9-3b00-7b70-ad85-daff590e7ecd. No push/PR/merge/provider/settings/credentials/tag/release/publication/downstream action. Coordinator owns shared loader/manifest/profiles/index/root/first push. Proposed I345-A..E and P7 are not created Issues.
+Return local commits/full HEAD/clean scope and remaining decisions in final response for coordinator 01a0c9d9-3b00-7b70-ad85-daff590e7ecd to collect read-only; no cross-task callback. No push/PR/merge/provider/settings/credentials/tag/release/publication/downstream action. Coordinator owns shared loader/manifest/profiles/index/root/first push. Proposed I345-A..E and P7 are not created Issues.
 
 One coherent design checkpoint is suitable for linear PR integration if selected; no transport performed. Resolve checkpoint as containing commit of this workflow, with final full HEAD read back separately to avoid self-reference. Hidden conversation context unnecessary. Design completion does not adopt D345 choices or implement M01.
+
+## Additive design revision
+
+Coordinator selected quiescent maintenance after local checkpoint 51229b63565ce6e836d57a4b107cf6df5554bf7c. Keep that commit/history, same branch/worktree/base and INSTALL-DESIGN-001 task. Revise API/state/examples/cutover/handoff together: writer-only OS lock; explicit unverifiable stopped-activity declaration; no invocation API/common launcher/compatibility plugin; external full-commit/file-hash engine pin; managed-bytes-consistent with project readiness not-assessed. Project selects public-reader activation checks separately. Existing unknown/drift/data ownership/durable before-after/M01 boundaries remain. New implementation or agent/task creation is outside scope.

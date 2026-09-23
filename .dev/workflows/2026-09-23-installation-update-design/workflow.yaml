@@ -8,13 +8,13 @@ workflow_kind: ai-context-maintenance
 title: P6 managed installation and update design checkpoint
 owner_skill: ai-context-governance
 status: completed
-current_phase: design-checkpoint
+current_phase: maintenance-design-checkpoint
 branch: codex/2026-09-23-installation-update-design
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-installation-update-design
 entrypoint: workflow-plan.md
 created_at: "2026-09-23T09:40:02+08:00"
-updated_at: "2026-09-23T09:48:20+08:00"
+updated_at: "2026-09-23T10:04:23+08:00"
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: "1.2.0"
 issue_url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/345

@@ -1,41 +1,35 @@
-# Local design handoff for #345
+# Local maintenance-design revision handoff for #345
 
-Design complete, proposed for coordinator selection. Implementation/activation/independent verification are not performed. One bounded task; no audit/lease/receipt recreation. Owning skill ai-context-governance, U001 adaptation. [Design entry](../../../design/framework-next/installation-update/README.md).
+Current deliverable is the coordinator-selected quiescent maintenance v1 revision. Design only; no implementation, product invocation, installation, conversion or activation. Owning skill ai-context-governance; U001/P7 deferral remains. [Design entry](../../../design/framework-next/installation-update/README.md).
 
-## Pins and custody
+## Identity and history
 
-- Worktree F:/framework-next/345; branch codex/2026-09-23-installation-update-design.
-- Starting commit 758a7f51c745ee61625cc089b593367fd1a45533; persistent common Git dir C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git.
-- P5 selected input 842b73ca09d701d1561109255193d80439dc996b read by Git show, no merge/rebase/base change. M01 selected, no implementation or execution.
-- Resolve local checkpoint as containing commit of this report; final full HEAD and clean status are read back after commit and sent to coordinator. No self-referential SHA in tracked content. No hidden context needed.
-- Required/user-declared gpt-6-astra / ultra; not independently runtime-attested here. No sub-agents or extra conversations created.
+Worktree F:/framework-next/345, branch codex/2026-09-23-installation-update-design, persistent common Git directory C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git. Original base 758a7f51c745ee61625cc089b593367fd1a45533 is unchanged. First design checkpoint 51229b63565ce6e836d57a4b107cf6df5554bf7c stays in history; no rebase. This additive revision follows an explicit coordinator instruction in the same conversation/task.
 
-## Delivered design
+P5 selected input remains 842b73ca09d701d1561109255193d80439dc996b, read by Git without merge. M01 design selection is not execution. Required/user-declared gpt-6-astra / ultra is not independent runtime attestation. No subagents/new conversations/tasks. Sole existing task INSTALL-DESIGN-001 tracks revision. Exact final HEAD is read back after commit; resolve this report's checkpoint as containing commit, avoiding self-reference.
 
-Six design files: README.md, contract.md, formats.md, examples.json, source-evidence.md, cutover-and-slices.md. Workflow has locator, plan, one task and this handoff. All writes remain within the two assigned roots; ignored planned-message file also stays under this workflow. No src/manifest/profile/adapter/root/custom/history/test/CI/shared-index changes.
+## Current contract
 
-Contract proposes exact engine/API/lock/operation v1, actual candidate v1 consumption and owned digest/mode delta. A full durable managed before/after set survives scratch/RAM loss; immutable operation and identical marker avoid a progress journal. Unknown/drift and later external edits stop mutation. Matching bytes/mode are untouched, while backups/read checks still cost I/O. No benchmark/lifespan claim.
+- Four public package operations: inspect, plan, apply, recover. No ordinary instruction/tool invocation API, mandatory common launcher or shared skill runtime. Adapter need not add a launcher for maintenance.
+- Caller explicitly disables affected capabilities and declares sessions/tools/external writers stopped. Engine can verify declaration fields/scope, not truth. Nonparticipating concurrent writers unsupported; hash rechecks do not resolve TOCTOU.
+- OS-held lock coordinates participating maintenance writers for their entire operation. File existence is not lock ownership. Markers disclose incomplete/no-owner-activation state; they do not stop arbitrary readers or control already-loaded text.
+- External development source checkout plus full commit/required-file raw hashes pins engine; no load from changed core or invented release. Same complete pin is required for recovery. Bootstrap/file closure/backend remain bounded implementation choices.
+- Exact owned digest/mode delta, no unchanged rewrites, preserved unknown/project data, complete durable managed before/after set and conditional recovery remain. Package completion is managed-bytes-consistent with project_readiness=not-assessed.
+- Full RAM project loss recovers only managed set. Missing source/config/records require project-owned recovery. Managed success is never whole-project ready. Project selects actual public reader(s) and activation decision separately; no installer compatibility plugin/scan/pass inference.
+- M01 only for real required closed P2 JSON pair 1->2, with all other values/absence/authority unchanged. Separate assigned owner and durable pair record. Completion proves its conversion invariants only, not general readiness. No unnecessary conversion for defaults/already-v2/null-config skills.
 
-M01 is separate and conditional: closed P2 project/local JSON exact integer 1->2 only, semantic values/absence/roots/locks preserved, no new namespace/default/authority. One minimal conversion-owner pair recovery record is proposed only for actual conversion. Package engine never writes config/records. Metadata v3 support consumes #346 actual loader/adapter delivery, not a new parser or shared skill runtime. #347/#348 are not assumed delivered.
+Six design files and four existing workflow files are aligned. No shared source/loader/manifest/profile/adapter/index/root/test/CI changes. Ignored revision message remains within this workflow. F:/ai-context-tests and other worktrees preserved.
 
-Dogfood proposal keeps one active owner per component, explicit project routing retirement, matching fallback and immutable source truth. Root activation waits for implementation and P7-selected real checks. #43/#305/#149/#168 were read OPEN and remain unfulfilled/separate.
+## Evidence boundaries
 
-## Actual observations and limitations
+Previous checkpoint retains original source/AST/YAML/Issue observations and initial network/authoring/read-command failures. They remain historical; no new product validation is inferred. This revision starts with matching root/branch/HEAD/common-dir and empty porcelain at 51229b63565ce6e836d57a4b107cf6df5554bf7c.
 
-- Initial and later corrected Git root/branch/full HEAD/common-dir reads matched; initial worktree clean.
-- Five read-only gh issue view results returned OPEN. Initial sandbox proxy refusal preserved; network escalation succeeded without credential/settings edits.
-- Graph scope returned zero src/distribution coverage/no current SHA. Explicit tracked Git/source/AST fallback used; no absence claim based on graph.
-- Python -B inline ast.parse read seven selected distribution modules; PyYAML read manifest/four profiles and declared 44 payload members. No product imports, CLI/help, schema validation or execution.
-- Direct UTF-8/JSON/YAML/local Markdown reference scan of the initial nine design/workflow files: 9 UTF-8, 2 JSON, 1 YAML, 33 local references, no failures. Later status/handoff additions receive final direct read-back before commit; the external final handoff reports that last result.
-- Exact planned-message command succeeded: `python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/345/.dev/workflows/2026-09-23-installation-update-design/.commit-message.tmp --workflow-id 2026-09-23-installation-update-design`. `git check-ignore` confirmed the same message path ignored. Commit must consume those exact bytes with git commit -F.
-- A first oversized authoring command failed before process creation (Windows error 206); smaller scoped writes succeeded. An accidental read-only `git branch --show-toplevel` failed; corrected `git rev-parse --show-toplevel` succeeded. Neither is a product path test or hidden passed check.
+Actual revision read-back: 10 UTF-8 files, 2 JSON, 1 YAML and 32 local Markdown references, zero syntax/reference errors. Direct API/example fields and targeted content inspection found no remaining abandoned invocation API/compatibility-selection contract. git diff --check reported no errors. Complete planned message .revision-message.tmp was confirmed ignored and passed `python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/345/.dev/workflows/2026-09-23-installation-update-design/.revision-message.tmp --workflow-id 2026-09-23-installation-update-design`. Final staged scope/syntax and committed-message byte equality are read back in final response after execution; none is schema/behavior evidence. All product CLI/help, schema validation, tests/fixtures/build/package/install/migration/compatibility/I/O trials, audit/lease/effective-rule/receipt/native handoff tooling and CI remain deferred-by-owner; authority U001; owner program #322 coordinator / P7; next action P7 selects redesigned checks after implementation.
 
-Product CLI/help, schema validation, tests/fixtures, builds/packages/install/migration/compatibility, performance/I/O trials, audit/lease/effective-rule/receipt/native handoff tooling and hosted CI are **deferred-by-owner**. Authority U001; owner program #322 coordinator / P7; next action P7 selects redesigned checks after implementation. No direct syntax/clean Git claim substitutes for any of them. Independent review not performed.
+## Successor ownership and remaining choices
 
-## Remaining selections and successor scopes
+I345-A candidate/state/read-only plan. I345-B maintenance writer coordination and external pinned engine bootstrap (no skill invocation changes). I345-C durable apply/recover. I345-D separately needed M01. I345-E coordinator root cutover and project-selected activation checks. P7 selects/runs mechanical cases and CI restoration separately.
 
-D345-01..06: adopt proposed state versions and recovery shape; select distribution guard/launcher and delivery route; choose exact profile/durable roots/failure model; assign M01 implementation and actual need; select narrow config/data compatibility reader. V3 instruction operation needs an explicit non-tool read boundary before activation. Future facade result-detail variants must be closed before shipping.
+Still select exact engine entry/bootstrap/dependency closure, native writer-lock/flush backend, durable paths/failure model, initial profile and project activation checks; assign M01 only upon actual need. Instruction skills need no new execution runtime. Unknown project compatibility remains unresolved outside installer success. #43/#305/#149/#168 are not fulfilled/closed by this design.
 
-I345-A owns reader/read-only plan; B distribution guard; C durable apply/recover; D separate M01 config transition with Lesson/v2 owners; E coordinator-owned root dogfood. P7 selects/runs actual checks. Shared loader/adapter/manifest/profiles/index/root and first push remain coordinator-owned.
-
-Stop after coherent local commit and send exact full HEAD/branch/worktree/clean status/changed paths/actual-deferred checks/decisions to task 01a0c9d9-3b00-7b70-ad85-daff590e7ecd. No push, PR, merge, Issue/Project/provider/settings/credentials/tag/release/publication/downstream actions. F:/ai-context-tests and other worktrees preserved.
+Coordinator requested final-only read-back collection. Do not send/retry a cross-task callback or ask user about it. Final response supplies exact HEAD, clean state, changed scope and actual/deferred checks; then stop. No push/PR/merge/provider/settings/credentials/tag/release/publication/downstream actions.

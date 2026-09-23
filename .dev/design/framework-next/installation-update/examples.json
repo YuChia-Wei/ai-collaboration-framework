@@ -8,7 +8,14 @@
     "installation_id": "33333333333333333333333333333333",
     "engine": {
       "id": "framework-managed-installation",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "files": [
+        {
+          "path": "src/distribution/installation.py",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
     },
     "mode_policy": "windows-inventory-only",
     "candidate_identity": "development:1111111111111111111111111111111111111111:4444444444444444444444444444444444444444444444444444444444444444",
@@ -121,7 +128,14 @@
     "operation_id": "66666666666666666666666666666666",
     "engine": {
       "id": "framework-managed-installation",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "files": [
+        {
+          "path": "src/distribution/installation.py",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
     },
     "installation_id": "33333333333333333333333333333333",
     "project_root": "F:/synthetic-project",
@@ -145,12 +159,17 @@
         "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
       }
     ],
-    "compatibility": {
-      "owner": "synthetic-selected-config-owner",
-      "selection_reference": "synthetic-only:not-a-pass",
-      "selection_sha256": "5555555555555555555555555555555555555555555555555555555555555555"
-    },
-    "project_data_action": "none"
+    "project_data_action": "none",
+    "maintenance": {
+      "declared_by": "synthetic-project-owner",
+      "declaration_reference": "synthetic-only:not-attestation",
+      "affected_capabilities": [
+        "example-skill"
+      ],
+      "sessions_stopped": true,
+      "tools_stopped": true,
+      "external_writers_stopped": true
+    }
   },
   "apply_request": {
     "api_version": 1,
@@ -168,16 +187,36 @@
       "declaration_reference": "synthetic-only:not-authority",
       "failure_domain": "synthetic-RAM-worktree-loss"
     },
-    "project_config_paths": [
-      "F:/synthetic-project/team/framework.json"
-    ],
-    "compatibility": {
-      "owner": "synthetic-selected-config-owner",
-      "selection_reference": "synthetic-only:not-a-pass",
-      "selection_sha256": "5555555555555555555555555555555555555555555555555555555555555555"
-    },
     "project_data_action": "none",
-    "expected_plan_sha256": "7777777777777777777777777777777777777777777777777777777777777777"
+    "expected_plan_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+    "engine": {
+      "id": "framework-managed-installation",
+      "version": "1.0.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "files": [
+        {
+          "path": "src/distribution/installation.py",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "maintenance": {
+      "declared_by": "synthetic-project-owner",
+      "declaration_reference": "synthetic-only:not-attestation",
+      "affected_capabilities": [
+        "example-skill"
+      ],
+      "sessions_stopped": true,
+      "tools_stopped": true,
+      "external_writers_stopped": true
+    },
+    "engine_root": "C:/synthetic-engine-checkout",
+    "protected_inputs": [
+      {
+        "path": "F:/synthetic-project/team/framework.json",
+        "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    ]
   },
   "recover_request": {
     "api_version": 1,
@@ -188,7 +227,29 @@
     "direction": "restore",
     "expected_lock_sha256": null,
     "expected_marker_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
-    "reconstruct_missing_managed": false
+    "reconstruct_missing_managed": false,
+    "engine": {
+      "id": "framework-managed-installation",
+      "version": "1.0.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "files": [
+        {
+          "path": "src/distribution/installation.py",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "engine_root": "C:/synthetic-engine-checkout",
+    "maintenance": {
+      "declared_by": "synthetic-project-owner",
+      "declaration_reference": "synthetic-only:not-attestation",
+      "affected_capabilities": [
+        "example-skill"
+      ],
+      "sessions_stopped": true,
+      "tools_stopped": true,
+      "external_writers_stopped": true
+    }
   },
   "delta_row": {
     "destination": ".ai/core/skills/example-skill/SKILL.md",
@@ -207,7 +268,14 @@
     "operation_id": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     "engine": {
       "id": "framework-config-transition",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "files": [
+        {
+          "path": "src/distribution/config_transition.py",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
     },
     "edge": "p2-json-config-1-to-2",
     "project_root": "F:/synthetic-project",
@@ -235,6 +303,16 @@
     "consumer_selection": {
       "reference": "synthetic-only:selected-v2-consumers",
       "sha256": "5555555555555555555555555555555555555555555555555555555555555555"
+    },
+    "maintenance": {
+      "declared_by": "synthetic-project-owner",
+      "declaration_reference": "synthetic-only:not-attestation",
+      "affected_capabilities": [
+        "example-skill"
+      ],
+      "sessions_stopped": true,
+      "tools_stopped": true,
+      "external_writers_stopped": true
     }
   },
   "m01_project_before": {
@@ -277,6 +355,87 @@
           "store.root"
         ]
       }
+    }
+  },
+  "example_limits": "Engine file list and source hashes are synthetic/incomplete; no execution or publication. Maintenance booleans are assertions, not proof. Results illustrate shape only.",
+  "apply_result": {
+    "api_version": 1,
+    "operation": "apply",
+    "outcome": "applied",
+    "changed": true,
+    "details": {
+      "managed_state": "managed-bytes-consistent",
+      "project_readiness": "not-assessed",
+      "lock_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+      "operation_root": "C:/synthetic-recovery/i-66666666666666666666666666666666",
+      "counts": {
+        "added": 2,
+        "changed": 0,
+        "removed": 0,
+        "unchanged": 0
+      },
+      "protected_input_state": "matches"
+    },
+    "diagnostics": []
+  },
+  "whole_loss_recovery_result": {
+    "api_version": 1,
+    "operation": "recover",
+    "outcome": "recovered",
+    "changed": true,
+    "details": {
+      "managed_state": "managed-bytes-consistent",
+      "project_readiness": "not-assessed",
+      "lock_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+      "operation_root": "C:/synthetic-recovery/i-66666666666666666666666666666666",
+      "counts": {
+        "added": 2,
+        "changed": 0,
+        "removed": 0,
+        "unchanged": 0
+      },
+      "protected_input_state": "unresolved"
+    },
+    "diagnostics": [
+      {
+        "code": "project-inputs-not-restored",
+        "path": "team/framework.json",
+        "reason": "Synthetic selected project input remains missing; only managed files restored.",
+        "next_action": "Project owner restores its data and selects public-reader activation checks before enabling affected capabilities."
+      }
+    ]
+  },
+  "whole_loss_recovery_request": {
+    "api_version": 1,
+    "operation": "recover",
+    "project_root": "F:/synthetic-project",
+    "operation_root": "C:/synthetic-recovery/i-66666666666666666666666666666666",
+    "operation_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "direction": "finish",
+    "expected_lock_sha256": null,
+    "expected_marker_sha256": null,
+    "reconstruct_missing_managed": true,
+    "engine": {
+      "id": "framework-managed-installation",
+      "version": "1.0.0",
+      "source_commit": "0000000000000000000000000000000000000000",
+      "files": [
+        {
+          "path": "src/distribution/installation.py",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "engine_root": "C:/synthetic-engine-checkout",
+    "maintenance": {
+      "declared_by": "synthetic-project-owner",
+      "declaration_reference": "synthetic-only:not-attestation",
+      "affected_capabilities": [
+        "example-skill"
+      ],
+      "sessions_stopped": true,
+      "tools_stopped": true,
+      "external_writers_stopped": true
     }
   }
 }

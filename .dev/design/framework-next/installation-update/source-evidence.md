@@ -13,7 +13,7 @@ Graph get_architecture on project ai-collaboration-prompts-dotnet-backend, path 
 | src/distribution/assembly.py | 6a0f9f0581959efada77d1a1336cf21b67b619fe | Document shapes, content identity, completion-last, Windows mode limitation; no installer. |
 | src/distribution/selection.py | 5773973a457fdb7c8f8c013f9c325c13fd9121dc | Member identity, exact mapping/closure and generated output fields. |
 | src/distribution/codex.py | 55c4bf0394b0d753c6749b09deccab3ff4c4d0d5 | Exact framework-prefixed Codex entry and installed-relative links. |
-| src/adapters/codex/skill-entry.md.template | 43cdbf2fbc94fdcf38f04be63467e960a9537131 | Project/config/operation guidance, no executable install guard. |
+| src/adapters/codex/skill-entry.md.template | 43cdbf2fbc94fdcf38f04be63467e960a9537131 | Project/config/operation guidance; ordinary invocation remains independent of maintenance coordination. |
 | src/distribution/data.py | 2d971b3d95ee66f7604719046f13cdc90c394305 | Canonical JSON and closed data/path helpers. |
 | src/distribution/git_source.py | f6b041d068fe553047f6bd615b7b13b8d2d6e122 | Regular raw Git blobs/modes/OIDs, exact commit/no fetch. |
 | src/distribution/package.py | ffb0d580021d2c8bd33bd4aa0dbb804b5f81b135 | Shared metadata loader owner, v1/v2 source at base. |
@@ -33,7 +33,7 @@ Selected references: [P1](../source-layout/design.md), [P2 interface](../distrib
 
 Coordinator supplied commit `842b73ca09d701d1561109255193d80439dc996b`. Read only with git show/ls-tree; no merge/cherry-pick/source write. [p5-selected-contract.md](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/842b73ca09d701d1561109255193d80439dc996b/.dev/design/framework-next/p5-selected-contract.md) blob `0427cec4ab0c4158677695fb5ba6235434322b57`; [implementation-slices.md M01](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/842b73ca09d701d1561109255193d80439dc996b/.dev/design/framework-next/capability-consolidation/implementation-slices.md) blob `2b64a933a86c1fd260ffcaf191394cc376f7fd7a`.
 
-M01 now selected for design: only actual-needed closed P2 project/local JSON exact integer 1->2, all other semantic values/absence unchanged, no defaults/permissions/namespaces added, conditional durable pair recovery. No migration implementation/execution. D342-01 selects metadata v3 instruction/tool union and restricted null configuration; #346 owns shared loader/adapter, #347/#348 own future packages. None is counted as delivered at this base. Contract explicitly preserves this distinction and remaining activation-interface selection.
+M01 now selected for design: only actual-needed closed P2 project/local JSON exact integer 1->2, all other semantic values/absence unchanged, no defaults/permissions/namespaces added, conditional durable pair recovery. No migration implementation/execution. D342-01 selects metadata v3 instruction/tool union and restricted null configuration; #346 owns shared loader/adapter, #347/#348 own future packages. None is counted as delivered at this base. Contract explicitly preserves this distinction and separate project activation ownership.
 
 ## Live Issue overlap
 
@@ -52,3 +52,11 @@ Read-only gh issue view for five Issues on 2026-09-23 approximately 09:31 +08:00
 Actual: Git identity/scope/content, seven distribution modules ast.parse, direct YAML profile/member extraction, live Issue reads. Design UTF-8/JSON/YAML/reference/diff and planned-message outcomes are recorded in [workflow](../../../workflows/2026-09-23-installation-update-design/workflow.yaml).
 
 Product CLI/help, schema validation, tests/fixtures, package/build/install/migration/compatibility, I/O/performance, independent audit/lease/effective-rule/receipt/handoff tooling, hosted checks and CI: deferred-by-owner, authority U001, owner program #322 coordinator / P7, next action select redesigned checks after implementation. Syntax is not schema/runtime/durability/platform/independent-review evidence.
+
+## Coordinator-selected revision after first checkpoint
+
+Original design commit 51229b63565ce6e836d57a4b107cf6df5554bf7c is retained. Coordinator then explicitly selected quiescent maintenance v1 and requested an additive design-only revision on the same branch/worktree, no source/base mutation. This current selection replaces the earlier per-invocation guard proposal.
+
+Affected sessions/tools/external writers are stopped by caller assertion, not tool attestation. OS lock coordinates maintenance writers only; markers communicate incomplete/no-activation state and cannot control arbitrary readers or loaded instructions. Concurrent nonparticipants are unsupported; hashes do not solve TOCTOU. Source-checkout engine outside project is pinned by full commit/file hashes. Managed consistency and project-selected public-reader readiness are separate; no compatibility plugin/scan or mandatory launcher. M01 remains conditional/separately assigned.
+
+Current revision uses only direct document/syntax/reference/Git/diff and planned-message checks. Previous AST/source/Issue observations retain their original time/subject; they are not rerun product acceptance. Coordinator requested final response only and will collect this checkpoint read-only; no cross-task callback is attempted.

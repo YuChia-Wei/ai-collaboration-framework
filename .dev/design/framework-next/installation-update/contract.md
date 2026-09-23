@@ -1,151 +1,150 @@
-# Managed installation contract proposal
+# Managed installation contract: quiescent maintenance v1
 
-Design only, proposed for #345. No operation below exists by virtue of this document. [Evidence](source-evidence.md), [formats](formats.md), and [cutover decisions](cutover-and-slices.md) form this bounded design. Implementation/activation require coordinator selection; U001 defers execution to P7.
+Design only for #345. Coordinator selected this bounded revision after checkpoint `51229b63565ce6e836d57a4b107cf6df5554bf7c`; that commit remains historical, not the current invocation model. [Evidence](source-evidence.md), [formats](formats.md) and [cutover](cutover-and-slices.md) complete the design. No installer, migration or root activation is executed. U001/P7 boundaries remain.
 
-## Version and support boundary
+## Maintenance boundary and versions
 
-Propose engine `framework-managed-installation@1.0.0`, API integer `1`, lock integer `1`, operation integer `1`. These are proposed contract versions, not a framework release or implemented executable. Accept development candidate selection/files/build JSON with exact integer `schema_version:1`, `mode=development`, `release_version=null`, builder `framework-development-assembly`. Manifest/profile v1 and metadata v1/v2 retain their owners. Metadata v3, stable archives, floating labels, historical chains and cross-engine recovery remain unsupported until selected. Bool/float/string versions do not equal integers.
+V1 installs while the affected capabilities are explicitly disabled for maintenance. Before apply/recover/M01 mutation, caller declares affected sessions, tools and external writers stopped. The tool checks the declaration's presence/scope, but cannot prove it is true or control agent text already loaded. Caller maintains quiescence until installation/config work and separately selected project activation checks finish.
 
-First transitions: absent installation -> one exact development candidate, or valid v1 installation -> another explicit candidate under this exact engine. Profile change is a complete selection change, never implicit dependency solving. Removal follows exact old inventory. Downgrade additionally needs compatible config/data readers. Semver, equal paths and unchanged package bytes are not compatibility proof.
+An OS-held exclusive lock coordinates ONLY participating maintenance writers for the entire apply/recover/M01 operation. File existence is never lock ownership. Instruction reading and ordinary skill/tool invocation do not join this lock, use a common launcher or acquire a shared runtime. Existing adapter does not need an installation launcher; instruction-only skills remain runtime-free.
 
-Read all three candidate documents, recompute bindings and inspect every listed file. Require raw bytes, declared Git mode, regular files, exact allowed destinations, member/adapter closure. Reject missing/extra candidate files, path/owner/source disagreement, case/prefix collisions, links/reparse points, unsupported versions, incomplete build metadata and mismatching hashes. `outcome=assembled` alone is insufficient. Canonical fields are in [formats](formats.md). Unknown candidate format fails; unknown target content is preserved.
+Concurrent nonparticipating writers are unsupported. Before/after hash checks detect some observed drift; they do not eliminate TOCTOU or make concurrent modification safe. A false quiescence declaration is not converted into a supported concurrency guarantee. Markers report incomplete maintenance and prohibit owner activation; they cannot force arbitrary readers to stop.
 
-Digests prove integrity, not signatures or trusted publication. Caller explicitly approves candidate identity. No fetch, credential discovery, runtime installation, rebuild or silent engine substitution. Running engine is pinned outside managed destinations and cannot update itself in this operation.
+Propose engine `framework-managed-installation@1.0.0`, API integer 1, lock integer 1, package operation integer 1. These are unreleased proposed contracts. Initial candidate input remains actual selection/files/build schema integer 1, development mode, release_version null and builder framework-development-assembly. Bool/float/string versions do not equal integers. Current base supports metadata v1/v2; consume #346's actual delivered loader/adapter for selected v3, never a second metadata parser or presumed #347/#348 package.
 
-## Public operations
+Supported package transitions: absent installation -> exact candidate, or valid v1 installation -> another exact candidate under the same pinned engine. Profile change replaces the complete selected inventory; no dependency solver, floating label, historical chain, stable publication or cross-engine recovery. A downgrade can make managed bytes consistent; it does not prove project config/data remain readable. That activation decision is separate.
 
-Product facade proposal: `src/distribution/installation.py`. A thin source invocation may call it; this does not select #149/#168 public CLI runtime or enable preview mutation commands.
+## Fixed external development engine
 
-| Function / API operation | Inputs and result |
+Run the development engine from an explicit source checkout OUTSIDE the project being modified, pinned to a full commit and hashes of every required implementation file. No load/import from rewritten `.ai/core`, ambient module search, automatic discovery/fetch, engine substitution or self-update. Input candidate commit may differ from engine commit; each has its own identity.
+
+`EnginePin` in [formats](formats.md) binds id/version/full source commit and the closed required-file raw SHA-256 set. Verify checkout Git identity and executing bytes before mutation/recovery. The implementation owner must close its actual local import/resource dependency set; missing/unknown closure blocks execution. Pinning bytes is not source authenticity or publication proof. Recovery requires the SAME engine pin, not merely equal version text. If that source checkout is lost, caller must explicitly restore/provide the matching checkout from durable Git before recovery; no automatic engine acquisition.
+
+The exact entry script, complete file set, interpreter/dependency prerequisites, pin verification bootstrap and later packaging are downstream implementation choices with one owner. This design does not invent a released binary, signature or installed shared runtime.
+
+## Candidate integrity and public operations
+
+Read all three candidate documents and listed files; recompute raw hashes, declared Git modes, source/profile/member/adapter bindings and closure. Reject missing/extra candidate files, invalid paths, aliases/prefix collisions, links/reparse points, unsupported metadata, incomplete completion metadata or digest disagreement. `outcome=assembled` alone is insufficient. Caller selects approved candidate identity; hashes are integrity, not trust signatures. Unknown target files are preserved.
+
+Proposed facade `src/distribution/installation.py`; a thin source entry may call it. It neither selects the #149 CLI runtime nor enables #168 preview mutation commands.
+
+| Operation | Contract |
 | --- | --- |
-| `inspect` | Explicit absolute project root, optional candidate root. Read-only integrity, owned/unknown/drift inventory, mode limitations and `uninstalled`, `ready`, `drift`, `recovery-needed`, `unsupported` or `blocked`. No runtime/data-compatibility claim. |
-| `plan` | Exact candidate/root, expected raw lock hash or null-for-absence, mode policy, explicit scratch/staging/recovery roots, durability declaration, selected config paths and P5 compatibility selection. Read-only delta/collisions/protected inputs/path budget/prerequisites and deterministic plan hash. No mkdir. |
-| `apply` | Plan inputs plus exact accepted plan hash. Recompute under exclusive coordination; fail on change. `unchanged` writes nothing. Otherwise establish durable before/after set, stage, block execution, mutate exact members, verify, publish lock, unblock. Return `applied`, `conflict`, `unsupported`, `blocked`, or `recovery-needed` with actual counts and recovery locator. |
-| `recover` | Explicit root, durable operation directory/hash, `direction=finish|restore`, expected current observed lock hash/null. No candidate or scratch dependency. Return `recovered`, `conflict`, `blocked`, `unsupported` or `recovery-needed`; never choose direction or erase unknown state automatically. |
-| `guarded-invoke` | Explicit installed skill/tool/operation plus project inputs. Hold coordination throughout invocation; verify marker absent, matching entire lock/core/runtime and exact installed entry. Invoke only declared interface. Package still owns config/data validation and actual operation authority. |
+| inspect | Read-only explicit project and optional candidate inspection. State uninstalled, managed-bytes-consistent, drift, recovery-needed, unsupported or blocked. No skill invocation or project-readiness verdict. |
+| plan | Exact candidate/root, expected lock hash/null, engine pin/root, mode policy, explicit scratch/staging/recovery roots and durability declaration; optional finite caller-selected protected inputs. Compute delta/collisions/path budget/maintenance scope and deterministic plan hash. No mkdir, config resolution, data scan or compatibility plugins. |
+| apply | Same inputs, accepted plan hash and fresh explicit maintenance declaration. Hold participating-writer lock; recompute inputs. Equal state returns unchanged with no content/state writes. Otherwise durable capture, marker, exact delta, complete read-back and lock publication. Applied means managed-bytes-consistent only; project_readiness is not-assessed. |
+| recover | Explicit operation directory/hash, same engine pin/root, fresh maintenance declaration, finish/restore direction and expected observed lock/marker hashes. Uses durable objects, not original scratch/candidate. Recovered means matching managed state (or uninstalled after undoing clean install), never project readiness. |
 
-API 1 requests/results have operation-specific closed fields in [formats](formats.md). Plans/results are transient, not admission receipts. No force/adopt-existing/overwrite-drift, uninstall, generic migration, cleanup scheduler or arbitrary shell operation. Package removal means another nonempty supported profile; whole uninstall needs later selection.
+There is no ordinary invocation/read API. Plans/results are transient, not receipts. No force/adopt-existing/overwrite-drift, uninstall, generic migration, cleanup scheduler or arbitrary shell operation. Removing a package means selecting another nonempty supported profile.
 
-No-op means candidate content identity, inventory, mode policy and actual owned state are equal. Rebuilding with another run UUID/time/build.json cannot change lock. No marker/staging/backup or lock rewrite. Plan still checks prerequisites; byte equality cannot bypass them.
+No-op requires candidate content identity, inventory, declared mode policy and actual owned state equal. Another build UUID/time cannot churn lock. No marker/staging/backup/lock rewrite or chmod. Acquire the already established writer coordination resource without replacing it; if unavailable, report blocked rather than creating state under a claimed no-op.
 
 ## Ownership and delta
 
-| Surface | Authority |
+| Surface | Owner/boundary |
 | --- | --- |
-| `.ai/framework.lock` | Installer-generated; project reviews/tracks alongside outputs. Never builder input, payload or hand-edited provenance. |
-| `.ai/core/skills/<id>/<member>` | Exact payload destinations from accepted candidate and old lock only. |
-| `.agents/skills/framework-<id>/SKILL.md` | Exact Codex destinations only; no sibling/custom/runtime-directory ownership. |
-| `.ai/framework.operation` | Package blocking marker, identical to durable operation.json. Presence/unreadability/malformed content means recovery-needed. Never committed as active installation. |
-| `.ai/config-transition.operation` | Separate M01 owner marker with identical durable M01 record; also blocks managed readers. Package engine cannot delete it. |
-| `.ai/local/installation.guard` | Inert coordination file reserved by explicit first adoption, never replaced/unlinked in ordinary use. Held native lock controls concurrency; contents confer no authority. No serialized lease/receipt. |
-| `.ai/custom`, `.dev`, selected config/templates/stores, root entries and unknown files | Project-owned; no implicit adoption, copy, conversion, chmod or recursive cleanup. |
+| `.ai/framework.lock` | Installer-generated, reviewed/tracked with exact outputs; never builder input or hand-edited provenance. |
+| `.ai/core/skills/<id>/<member>` | Exact payload destinations in accepted old/new inventory only. |
+| `.agents/skills/framework-<id>/SKILL.md` | Exact generated Codex destinations only; no directory/sibling/custom ownership. |
+| `.ai/framework.operation` | Package incomplete-maintenance marker, identical to durable record. Present/unreadable/malformed means recovery-needed; owner must not activate. No arbitrary-reader enforcement. |
+| `.ai/config-transition.operation` | M01 owner's corresponding marker. Package writer refuses it and cannot clear it. |
+| `.ai/local/installation.guard` | Inert, explicitly reserved maintenance coordination file. Native handle lock, not existence, excludes participating writers. Never replace/unlink to break a lock. No lease schema. |
+| `.ai/custom`, `.dev`, config/templates/stores, root entries and unknown files | Project-owned; no package copy/conversion/chmod/adoption/cleanup authority. |
 
-Check actual old bytes/mode for ALL old members, including unchanged ones. Compare raw SHA-256, length and Git mode. `unchanged`: same descriptor; `add`: absent old and absent target; `change`: owned old differs from new; `remove`: old owned absent new. Byte-identical unowned target still conflicts on add. Parent/child occupation, aliases and unknown files blocking new paths conflict. Unknown siblings are disclosed/preserved; leave empty directories. Directory membership grants no deletion authority.
+Before mutation verify ALL old members, including unchanged ones, against raw SHA-256/length/Git mode. Unchanged means equal descriptor; add requires absent old and absent target; change requires owned matching old; remove requires old owned absent new. Identical unowned bytes still collide. Aliases, parent/child occupation and reparse points conflict. Unknown siblings are disclosed/preserved; leave empty directories, no recursive delete. Reconciliation is project-owned; engine never implements a force choice.
 
-POSIX means materialized 0644/0755. Windows `inventory-only` retains 100644/100755 in lock without claiming ACL/executable-bit enforcement. Windows mode-only delta changes declared inventory/lock with zero member byte writes; return `mode-not-materialized`. Equal bytes/declared mode incur no write/chmod/mtime churn. Platform/mode-policy changes need a new explicit plan or unsupported result. No ACL/owner/ADS preservation claim follows from byte/mode parity.
+POSIX materializes exact 0644/0755. Windows inventory-only retains 100644/100755 but does not assert ACL/executable-bit enforcement. Windows mode-only change updates declared inventory/lock with no member byte write and explicit mode-not-materialized result. Equal bytes/mode incur no write/chmod/mtime churn. Mode-policy/platform changes require explicit plan or unsupported result. No unrelated ACL/owner/ADS preservation promise.
 
-Drift choices belong to project owner: preserve/select different capability or destination; repair source/build explicit candidate; independently reconcile/move customization. Engine executes none of them; re-plan afterwards. Legacy `.ai/assets`/wrappers never become managed merely by similarity.
+## Explicit roots and durable capture
 
-## Explicit roots and paths
+Caller supplies existing direct absolute roots; reject traversal, volume-root stores, drive-relative/device/UNC paths, links/reparse ancestors and ambiguous Windows names. No discovery, fallback, global TEMP/TMP edit or whole-project copy. Candidate/engine/recovery roots stay outside modified project; durable recovery cannot overlap candidate/engine/disposable roots. Scratch/staging may share one explicitly selected parent; otherwise selected roots do not overlap. Recheck containment at use.
 
-Caller supplies existing absolute direct roots. No disk discovery, upward search, fallback, parent creation, global TEMP/TMP changes or volume-root stores. Reject traversal, drive-relative/device/UNC paths, links/reparse ancestors, ambiguous Windows names, overlapping project/candidate/recovery/staging/scratch roots except scratch/staging may share one selected parent. Candidate and recovery are outside project. Recovery cannot be within candidate/disposable roots. Recheck containment at use.
+Allocate an exclusive 32-hex operation ID:
 
-Allocate one random 32-hex operation ID with exclusive creation:
+- `<scratch_root>/i-<id>/`: disposable calculations, RAM allowed.
+- `<staging_root>/i-<id>/`: disposable changed-file preparation, RAM allowed; same run if parent shared.
+- `<recovery_root>/i-<id>/operation.json`, `objects/<sha256>`: durable complete managed before/after set. Caller explicitly declares durability for selected failure domain; path/drive name cannot prove it.
+- Exact destination sibling `.fi-<12hex>`: prefix of SHA256(UTF8(operation_id + NUL + destination)); preflight uniqueness and exclusive absence. Collision blocks. Recovery clears only derived leftovers with expected bytes; unknown ones remain conflicts. Cross-volume copying is not atomic; single-file replacement uses supported same-directory primitive.
 
-- `<scratch_root>/i-<id>/`: disposable calculations; RAM allowed.
-- `<staging_root>/i-<id>/`: changed-file preparation; RAM allowed. When parents equal, use the same run directory.
-- `<recovery_root>/i-<id>/operation.json`, `objects/<sha256>`: durable operation, managed before/after bytes and metadata. Explicit caller declaration covers selected failure domain; drive label/type/path does not prove durability.
-- Destination sibling `.fi-<12hex>` for current member/lock/marker: exclusive allocation, suffix is the first 12 lowercase hex characters of SHA256(UTF8(operation_id + NUL + destination)); check uniqueness across this operation and exclusive absence on disk. A collision blocks, never overwrites. Short name rather than mirrored long filename. The complete temporary path set is derived from the immutable operation and known control destinations; recovery removes a leftover only if its bytes match an expected before/after/control object and it is not an active destination. Otherwise preserve/report conflict. Report/retain failures. Cross-volume copy is never called atomic; use verified bytes and supported same-directory single-file replacement.
+Budget all selected candidate/final/disposable/durable/control/temp paths. Proposed Windows refusal budget: full path 240 UTF-16 code units, segment 255, accounting for backend terminator/extra needs. This is a conservative product choice, not universal OS support evidence. Backend may be stricter. Fail before material writes; role/relative-path/length diagnostics avoid absolute host paths. No host/Git settings changes; #305 still requires actual evidence.
 
-Budget actual candidate/final/scratch/staging/recovery/control/sibling paths. Propose Windows full-path budget 240 UTF-16 code units and segment budget 255, counting any terminator/backend extra requirements. This is a conservative product refusal budget, not a universal OS limit. A backend may be stricter. Refuse before material writes; diagnostics show role/relative destination/length/limit without absolute host paths. No host or Git long-path settings edits; #305 still needs execution evidence.
+Stage only changed/add files and controls. Durable capture intentionally retains ALL old/new managed file bytes, exact locks and candidate metadata, deduplicated by SHA within one operation. It is a full managed snapshot, not a repository/data backup. No global cache service or retention engine. Failed/completed durable directories remain for separately authorized retention; scratch can disappear without losing the managed recovery set.
 
-Stage changed/add bytes and control documents only. Durable recovery is different: retain ALL old and new owned member bytes plus exact old/new lock and candidate metadata before managed mutation; deduplicate by SHA within this operation. Complete managed recovery, never whole repository copy. No global cache/retention service. Preserve completed/failed durable directories; later explicit cleanup is outside v1. Disposable scratch loss never replaces recovery proof.
+Optional protected_inputs are a finite caller-supplied file/hash set, used only for observed preservation checks. No parsing config meaning, enumerating record stores, following arbitrary references or inferring compatibility from hashes. Package apply never writes them. Unselected project data is outside the check, not declared validated.
 
-## Guard and activation
+## Apply and observable maintenance state
 
-All supported managed entrypoints join one guard. This is a distribution entry boundary, not a shared runtime imported into independent skills. Propose an exclusive native OS file lock on the inert guard file held throughout invocation/apply/recover; serialize v1 instead of shared-reader leases. Handle release follows process termination; file existence is not lock ownership. Native backend is a P7 prerequisite; never remove guard to break a live lock. Nonparticipating actors are outside coordination; rechecks protect accidental drift, not a malicious concurrent writer sandbox.
+Caller first disables affected capabilities/stops affected sessions, tools and external writers, then provides explicit maintenance declaration. API verifies declared scope equals old/new selected capability union; it cannot verify stopped activity. Quiescence continues after API return until owner activation. First install reserves coordination path explicitly; unknown preexisting control files require reconciliation.
 
-Current Codex template links resources but has no executable installation gate. Markdown instructions alone cannot enforce it. Before activation, coordinator supplies shared guard/launcher and exact supported route. Direct package scripts remain unsupported managed execution unless integrated with that guard. Engine/guard must run outside `.ai/core` so replacing files cannot replace recovery authority. First adoption reserves guard path explicitly; unknown existing control paths require reconciliation.
+Hold OS exclusive writer lock through preparation, mutation, final read-back and result. Handle release on termination does not erase marker. File existence is not lock ownership; native backend must be supported and later exercised by P7. No force unlock or guessed lease timeout.
 
-Guard requires readable supported lock, BOTH package/config markers absent, matching entire inventory and selected invocation inputs. Root policy/adapter route through it. Missing/malformed lock fails closed; in-flight invocation finishes before apply gets guard. Retained agent text gives no bypass permission. Every invocation rechecks installation then delegates config/schema/authority validation to package.
+1. Recompute candidate/engine/lock/owned drift/protected inputs/accepted plan under lock. A pre-maintenance preview is stale unless recomputation matches. Reject an unrelated active marker.
+2. Prepare next lock and complete durable closure; flush/read back using selected backend/failure-domain semantics. Write operation.json last and read it back. Incomplete capture causes zero managed mutations.
+3. Publish exact marker with required ordering before member mutation; retain old lock. Marker reports incomplete maintenance to caller and future maintenance operations, not an enforced reader gate.
+4. Recheck each old state immediately before exact replacement/removal. Use durable bytes if staging is lost; never truncate active target in place. These checks do not solve TOCTOU; nonparticipating concurrent writers remain unsupported. No per-file progress journal.
+5. Read complete new inventory and selected protected inputs. While marker remains, publish next lock via supported single-file replacement and verify bytes. No config/data compatibility evaluation occurs.
+6. After complete managed consistency, remove only this operation's marker; read back absence/lock/inventory. Report applied, managed-bytes-consistent, project_readiness=not-assessed and release writer lock. Owner still keeps capabilities inactive pending its separate activation checks. Failed durability/cleanup/read-back stays recovery-needed; retain durable objects.
 
-Apply sequence under guard:
+No cross-file/directory/volume/whole-operation atomicity. Single-file/flush ordering must be implemented and selected by P7 for the declared failure model. If marker-before-mutation/lock-before-marker-removal ordering cannot be established, block. Inspect detects corrupt/missing lock or mismatching files even if marker was lost; it does not stop arbitrary readers.
 
-1. Recompute candidate/lock/complete drift/protected-input/accepted-plan checks. P5 owns selected config/data compatibility. No conversion runs here.
-2. Prepare next lock and durable complete before/after closure. Finish/flush where supported/read back hashes and modes, write operation.json last, read back. Incomplete preparation causes zero managed mutations. Durability requires selected backend/failure-domain evidence, not merely successful flush.
-3. Create exact marker and read back with supported directory-durability ordering BEFORE member changes. Keep last-good lock untouched. Existing/partial/invalid marker admits only explicit recover.
-4. Recheck each old path immediately before replacement/removal. Use verified durable bytes if disposable staging vanished. Never truncate active file in place. No per-file journal; old/new states determine completion.
-5. Read back whole new inventory and protected inputs; marker remains. Replace next lock via same-directory primitive and verify exact bytes. New lock with marker still blocks runtime.
-6. Recheck matching state/readiness; remove only this exact marker, read back absence and inventory/lock, then return applied/release guard. Failed durability/cleanup/read-back stays recovery-needed. Retain durable set.
-
-No cross-file/directory/volume/whole-operation atomicity claim. Single-file and flush semantics are backend-specific and must be implemented/tested in P7. Backend unable to establish marker-before-mutation and lock-before-marker-removal ordering for selected failure model blocks apply. Corrupt/missing lock or mismatching members block even if marker was lost.
-
-States are observations, not mutable phase fields:
-
-| Observation | Interpretation |
+| Observation | Maintenance interpretation |
 | --- | --- |
-| No lock/marker, no destination conflict | Uninstalled; may plan. Legacy files remain project-owned. |
-| Supported lock, matching inventory, no marker | Managed bytes ready; config/data/capability/authority checks remain. |
-| Durable complete operation, marker absent, old matching state | Prepared, not active; begin only against original accepted inputs. |
-| Marker invalid/present, mixed before/after or torn lock | Recovery-needed, normal invocation blocked. |
-| Marker present, matching new lock/files | Activation incomplete; explicit finish may recheck and clear marker. |
-| Marker absent, matching new lock/files | Completed content state; no historical receipt inferred; old operation cannot authorize replay. |
+| No lock/marker, destinations unoccupied | Uninstalled; legacy project content unaffected. |
+| Supported lock, matching inventory, no markers | Managed-bytes-consistent; project readiness not assessed. |
+| Complete durable record, no marker, matching old state | Prepared, no mutation admitted without fresh declaration and matching inputs. |
+| Marker present/invalid, mixed bytes or torn lock | Recovery-needed; owner must keep affected capabilities disabled. |
+| Marker present, matching next lock/files | Managed publication incomplete; explicit finish can recheck and clear it. |
+| Marker absent, matching next state | Managed operation complete; no activation, data compatibility or historical receipt inferred. |
 
-## Recovery and RAM-disk loss
+## Recovery and full RAM-project loss
 
-Read exact durable operation and both complete lock object sets with the same engine version. Package recover refuses an active M01 marker; its owner must finish/reconcile it first. Caller also supplies expected current marker hash/null; a valid unrelated marker always conflicts. Check project binding, caller's expected observed current lock and marker. Existing lock may equal before/after, or null only in a defined absent state. Unrelated valid lock, unknown member bytes or reparse/control-file disagreement needs reconciliation. A torn lock can be repaired only at this operation's control path with explicit selection of its current observed hash; never overwrite another valid installation.
+Require same EnginePin and fresh caller maintenance declaration. Refuse unrelated valid marker/lock or active M01 marker. Check explicit expected current lock/marker hashes; a torn control file is repairable only when attributable to the selected interrupted operation, never by overwriting another valid installation.
 
-While marker exists, affected paths may be before, after, or the absence defined for add/remove. Finish writes after; restore writes before and removes only additions still matching after. Unknown bytes/modes conflict. Preflight whole set, then recheck each path. An unexpectedly missing previously present member is drift, not blanket restore authority. Interrupted restore uses same record; no reverse journal. Matching unchanged members receive no rewrite.
+During interrupted recovery, affected files may equal before, after, or the absence defined by add/remove. Finish writes after; restore writes before and removes only recognized additions still matching after. Unknown bytes/modes stop. Preflight all, then recheck each; no protection against a nonparticipating concurrent writer is claimed. Unexpected partial loss of previously present members is drift, not implicit overwrite authority. Same record supports interrupted restore; no reverse journal.
 
-Once marker is removed and a complete valid installation exists, recovery from a retained operation is read-only: already-matching or conflict. A later downgrade is a fresh package plan with current config/data checks and recovery capture. Old operation cannot authorize rollback after activation/use.
+With marker absent and complete valid managed installation present, retained operation is read-only evidence: already-matching or conflict. Later downgrade uses fresh package plan/snapshot; the project separately evaluates current data before activation. No replay of old operation over a used installation.
 
-After complete RAM-worktree loss, caller restores project-owned source/config/data through normal durable Git/backups and supplies exact operation directory. `reconstruct_missing_managed=true` is allowed only for absent lock/marker and wholly absent managed set at the same explicit project root; partial unexpected absence does not qualify. Recreate blocking marker first, then full previous lock/core/runtime from durable objects without original scratch/candidate. Relocation/other installation ID needs reconciliation outside v1. Clean-install before is null: restore removes only recognized additions and leaves uninstalled.
+For full RAM-project loss, caller explicitly recreates the project root at its original binding and selects the durable operation. `reconstruct_missing_managed=true` requires absent lock/markers and wholly absent managed set; partial unexpected loss does not qualify. Recreate marker then recover the complete selected before/after core/lock/runtime from durable objects without original candidate/scratch. Clean-install before=null restores uninstalled. Root relocation/another installation ID requires separate reconciliation.
 
-This cannot recover project data whose only copy was RAM. Missing/changed required config/data, missing durable object, unproven durability, unavailable exact engine or unreadable previous contracts blocks activation. May retain restored bytes with marker and remaining prerequisite, never call core-only restoration matching recovery. Unknown files/new external edits remain untouched. Package engine never restores project data.
+Only managed files are recoverable this way. Project source/config/data need their own durable Git/backups and owner recovery. The installer may report managed-bytes-consistent after restoring that set, even while project data remains missing, but must report project_readiness=not-assessed and disclose unresolved selected protected inputs. It cannot claim whole-project ready or recreate missing data. Normal apply requires protected inputs to match; explicit full-loss reconstruction may report their absence without writing them. Unknown present project content stays untouched. Missing managed objects/engine or conflicting managed bytes prevent completed managed recovery.
 
-## Selected P5 M01 boundary
+## Selected P5 M01, independent from package apply
 
-Coordinator follow-up supplied immutable selection `842b73ca09d701d1561109255193d80439dc996b`, read with Git show without merging it. [P5 selected contract](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/842b73ca09d701d1561109255193d80439dc996b/.dev/design/framework-next/p5-selected-contract.md) and [M01](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/842b73ca09d701d1561109255193d80439dc996b/.dev/design/framework-next/capability-consolidation/implementation-slices.md) supersede the previously unavailable-edge observation. Only this one edge is selected for P6 design; it is not implemented or executed.
+Coordinator selection `842b73ca09d701d1561109255193d80439dc996b`: [P5 contract](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/842b73ca09d701d1561109255193d80439dc996b/.dev/design/framework-next/p5-selected-contract.md), [M01](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/842b73ca09d701d1561109255193d80439dc996b/.dev/design/framework-next/capability-consolidation/implementation-slices.md). Read without changing base; no conversion implemented/executed.
 
-M01 is necessary only when actual selected consumers need v2 and explicit existing P2 JSON project/local config is version 1. Defaults, already-v2, absent unselected files, legacy YAML/provenance and records are outside conversion. Input is exact integer 1 with closed Lesson namespace, valid optional store/template settings and project write_roots/locked_fields. Local permits no constraints. Reject unknown keys/namespaces, duplicates, null/invalid settings, nonfinite values and bool/float versions. Selected project/local pair must agree.
+M01 applies ONLY when actual selected consumers need v2 and explicit existing closed P2 JSON project/local config uses exact integer 1. Defaults/already-v2, unselected absent files, legacy YAML/provenance and records need no conversion. Input has only accepted Lesson fields; project may contain its write_roots/locked_fields, local has no constraints. Reject unknown roots/namespaces, duplicates, invalid/null values, nonfinite numbers and bool/float versions. Selected pair versions agree.
 
-Output is exact integer 2 with all other semantic values AND absence unchanged. Preserve namespaces, write_roots, locked_fields and store/template settings. Do not add defaults, namespaces, decision_sources, permissions or authority. Raw encoding/formatting may change with explicit preview; retain exact raw before-bytes. New namespace authoring is a separate project action. Old P2 tools reject v2; changed version does not prove compatible runtime adoption.
+Output integer 2 preserves every other semantic value AND absence: no namespace/default/decision-source/permission/authority addition. Raw formatting may change with preview; durable original raw bytes remain. Adding namespaces is a separate project action. Old P2 tools reject v2. Lesson record 1->2 is not selected; derive creates a new identity.
 
-Package API keeps `project_data_action=none`. M01 uses separate future config-transition public operations `plan`, `convert`, `recover`, owned by a coordinator-assigned P6 config-transition implementer in agreement with Lesson and v2 consumers. Its exact conditional recovery format is in [formats](formats.md); it is not a generic conversion engine or an installer side effect. The engine never imports another skill's private config resolver or rewrites package metadata parsers. Existing/new loader authority remains #346/coordinator.
+Package project_data_action remains none. Separately assigned P6 config-transition owner provides plan/convert/recover for this one edge in agreement with actual config owners. It uses the maintenance-writer lock and explicit quiescence declaration, not an invocation runtime. Its own immutable marker records incomplete pair conversion; readers are stopped by caller, not marker enforcement. Capture durable exact before/after bytes first; individual replacements are not pair-atomic. Completion verifies only selected closed conversion semantics and consistent pair, then removes its marker. Project/capability readiness remains not-assessed by this mechanical outcome.
 
-M01 plan binds exact selected file paths and before hashes, proposed after bytes, actual need, consumer compatibility and explicit durable root. Convert uses the same project coordination boundary and its own blocking marker; package and config transitions cannot overlap. Capture durable before/after bytes before changing either file. Per-file replacement cannot be pair-atomic. Both markers block selected readers; hold activation until the pair agrees and selected consumers accept it. Recompute versions/digests before each write and completion. State is inferred from before/after hashes, not a mutable progress log.
+Project sequence: stop affected activity; select exact M01 only if needed; complete/recover pair under its owner; recompute separate package plan against actual input hashes; perform package maintenance; then project uses separately selected public reader(s) for intended activation. No automatic generic compatibility registry/plugin or data scanning. Unknown compatibility is unresolved, never passed. Caller keeps affected capabilities disabled until its checks/decision permit use.
 
-Sequence for a real v1 project needing a new v2 consumer: quiesce selected readers; plan package and M01 separately against their actual inputs; complete M01 under its owner; keep incompatible old readers inactive; recompute package plan against actual v2 config; apply package; activate only matching readers/pair. A package failure does not undo M01. Restore config only by explicit M01 recovery/new restore plan that proves the complete files still match its after bytes and no later namespace/constraint/meaning would be lost. Never down-convert newly edited v2 documents by changing the integer back. Missing matching backup, partial pair, external edits or unknown shape remains recovery-needed/unsupported.
+Package failure does not undo M01. Explicit M01 restore/new restore plan requires exact current files match captured after bytes, preserving later edits. Never reverse new v2 namespaces/constraints by merely replacing the integer. Missing backup or external edit blocks restoration. M01 completion/recovery makes no data compatibility guarantee.
 
-Lesson record 1.0.0 -> 2.0.0 is not a selected mutation edge: current Lesson reads both and derive creates new identity. Historical journals/records remain preserved/unsupported.
-
-D342-01 selects metadata v3 instruction/tool union and restricted configuration:null for future source. At this base only v1/v2 loader/candidates are delivered. Future installer support must consume #346's actual delivered loader/adapter and exact candidate selection metadata, never implement a competing metadata parser or assume #347/#348 planned packages exist. V3 instruction-only/null-config packages must not trigger config discovery/conversion/Python requirements. Guarding an instruction read differs from running a tool; the external distribution entry boundary must be explicitly extended before v3 activation. No shared skill runtime or per-skill private import is proposed. The adapter/guard extension is a coordinator decision, not new source in #345.
-
-Compatibility is a fresh check by the exact selected package/config owners and actual inputs, not a persisted pass flag or arbitrary report title. A general cross-skill compatibility scanner is not selected. Until the narrow public read/check interface is selected, return compatibility-unresolved for transitions needing it. Equal hashes alone are not reader proof. This remaining dependency is distinct from M01 edge selection, which is now resolved.
+Metadata-v3 instruction/tool and null-config semantics remain #346's shared loader/adapter responsibility. Installer consumes actually delivered candidates/metadata; it does not invent packages, require runtime/config for instruction-only packages or integrate ordinary instruction/tool invocation. This maintenance design requires no new common adapter launcher.
 
 ## Unexecuted P7 cases
 
-Design cases, not tests or fixtures run here.
+Design cases only, not tests or fixtures run here.
 
 | Case | Required result |
 | --- | --- |
-| Equal candidate rebuilt at another time | No member/lock/mode/mtime writes or operation directories. |
-| One template changed, entry unchanged | Only changed member replaced; entry untouched; lock changes; durable snapshot may still write. |
-| Mode-only delta | POSIX actual mode enforcement; Windows inventory-only change, no byte rewrite. |
-| Removed member + unknown sibling | Remove matching owned member; preserve sibling/directory. |
-| Byte-identical unowned destination | Conflict, no adoption. |
-| Owned drift/missing member/alias/reparse | Refuse apply; no force path. |
-| Partial build, wrong digest, unsupported version | Reject before target mutation. |
-| Interruption during durable preparation | No managed mutation; incomplete operation inadmissible. |
-| Crash after marker/between members/after lock | Guard blocks; explicit finish/restore recognizes hashes. |
-| Open Windows file/denied replacement | Recovery-needed; retained marker/objects; no unchanged retry. |
-| Candidate/staging RAM lost | Complete durable set sufficient for managed recovery. |
-| Whole worktree RAM lost | Reconstruct project data separately, explicit absent-managed recovery. |
-| External edits during interruption | Preserve, conflict, no blind overwrite. |
-| New installation used, marker absent | Fresh downgrade plan, no old-operation replay. |
-| Missing object/engine mismatch/config loss | Block activation, no invented backup. |
-| Path over budget/unsupported flush backend | Refuse before mutation; P7 resolves, no host setting change. |
-| Concurrent managed invocation | Native coordination conflict; no lease-breaking timeout. |
-| M01 first file changed, second blocked | Pair inactive; exact before/after conditional finish/restore only. |
-| M01 v2 gains namespace after conversion | No integer-only reverse; preserve new values and report unsupported recovery. |
-| Defaults/already v2/null-config instruction skill | No M01, no config creation. |
+| Equal candidate rebuilt | No managed/control writes, snapshots or mtime churn. |
+| One changed template, unchanged runtime | Replace only changed member; exact lock update; durable snapshot may still write. |
+| Mode-only delta | POSIX actual mode; Windows declared inventory only, no byte rewrite. |
+| Removed owned member + unknown sibling | Preserve sibling/directory. |
+| Identical unowned destination, drift/alias/reparse | Conflict; no adoption/force. |
+| Partial candidate/wrong hash/version | Refuse before mutation. |
+| Missing/false maintenance declaration | Missing blocks; truth unverified. Concurrent external writers unsupported. |
+| Two participating maintenance writers | OS lock excludes second for entire operation; no file-existence/timeout unlock inference. |
+| Agent has old instructions loaded | Caller must stop/restart affected session; marker cannot control it. |
+| Crash during snapshot | No managed mutation; incomplete durable set inadmissible. |
+| Crash after marker/between members/after lock | Recovery-needed, caller keeps capabilities disabled, explicit hash-bound finish/restore. |
+| Open Windows file/denied replacement | Retain marker/objects; recovery-needed. |
+| Candidate/staging RAM loss | Durable managed set sufficient, same pinned external engine required. |
+| Full RAM project lost | Managed reconstruction only; missing data disclosed; never whole-project ready. |
+| External edit during interruption | Preserve conflicting bytes; no blind restore or TOCTOU claim. |
+| Completed old operation replay | Refuse mutation; fresh maintenance plan needed. |
+| M01 partial pair/new v2 fields | Conditional recovery; never erase later meaning. |
+| Defaults/already-v2/null-config skill | No M01/config creation/runtime requirement. |

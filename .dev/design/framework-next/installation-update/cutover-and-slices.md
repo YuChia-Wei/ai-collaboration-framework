@@ -1,63 +1,62 @@
-# One-time dogfood cutover and bounded implementation
+# One-time dogfood and bounded maintenance implementation
 
-Proposal only. Current root collaboration policy and wrappers remain active. No file is moved, installed, disabled or made authoritative by this checkpoint. The coordinator owns root/shared-file decisions and first push. P7-selected implemented checks are prerequisites to activation.
+Coordinator-selected refinement of historical checkpoint 51229b63565ce6e836d57a4b107cf6df5554bf7c. Current root routes stay active until explicit project cutover; no file movement/install/activation here. Implementation and P7-selected checks precede adoption. No rebase or change to assigned base.
 
-## Coordinator selection points
+## Selected model and remaining implementation choices
 
-| ID | Proposed choice / unresolved dependency |
+| ID | Current disposition |
 | --- | --- |
-| D345-01 | Adopt engine/API/lock/operation v1, two serialized state formats, no arbitrary upgrade matrix, no force adoption, exact byte/mode delta and package-only apply. |
-| D345-02 | Adopt durable full managed before/after snapshots, explicit roots, immutable operation plus blocking marker, same-engine guarded recovery and conservative Windows path budgets. Accept initial snapshot I/O cost; no measured optimization claimed. |
-| D345-03 | Select distribution guard/launcher owner and exact delivery path outside the mutable managed set. All supported managed execution routes must participate. Existing source/adapter is not sufficient. |
-| D345-04 | Initial root pilot: `lesson-minimal` with current `lesson@0.2.0` and Codex. Broader profile is a later exact selection after P4/P5 mapping; no planned packages. Stable tracked dogfood waits for a real stable artifact; development remains explicitly labeled. |
-| D345-05 | M01 is selected by coordinator commit 842b73ca09d701d1561109255193d80439dc996b: conditional P2 JSON config 1->2 only. Select its implementation/state owner and actual target need; no conversion for defaults/already-v2. Narrow public compatibility reader still needs selection. |
-| D345-06 | Select actual durable/scratch/staging locations and failure domain for the eventual pilot; confirm tracking/ignore/byte-preserving attributes and supported backend. F: is not a backup declaration. |
+| D345-01 | V1 is quiescent maintenance: caller stops affected sessions/tools/external writers; no ordinary invocation API/common runtime. Mechanical completion means managed-bytes-consistent only. |
+| D345-02 | Retain exact delta, immutable package operation/marker, complete durable managed before/after set and same-engine recovery. Windows refusal budgets remain proposed implementation choices, not platform evidence. |
+| D345-03 | Maintenance writers alone hold OS lock throughout operation. Select native backend and fixed external development-engine bootstrap/file closure; no adapter launcher or instruction runtime. Declaration truth and nonparticipating writers are outside tool guarantees. |
+| D345-04 | Proposed initial profile lesson-minimal, actual lesson@0.2.0/Codex. Broader profile waits for actual mappings; stable identity needs actual release, never inferred from tracked development output. |
+| D345-05 | M01 conditional closed JSON 1->2 selected in P5 commit 842b73ca09d701d1561109255193d80439dc996b. Assign only for demonstrated target need. Project separately chooses public-reader activation checks; no installer compatibility plugin/scan. |
+| D345-06 | Select explicit durable/scratch/staging roots/failure domain, engine checkout+commit+raw hashes, tracking/ignore/attributes and actual activation window. A drive label or caller declaration is not technical proof. |
 
-At base 758a7f51c745ee61625cc089b593367fd1a45533 the P5 edge was unavailable. Subsequent coordinator input 842b73ca09d701d1561109255193d80439dc996b selects M01 and metadata v3 instruction/tool union with restricted null config. Read via Git without changing base; these are selected designs, not delivered source. #346 owns shared loader/adapter; #347/#348 future packages are not installable by inference. P4 selected `software-development-orchestrator@0.1.0` uses metadata/config v2 but its source is independent; no speculative manifest entry.
+#346 owns delivered metadata-v3 loader/adapter, #347/#348 their future packages; P6 consumes actual source/candidate shapes, no duplicate parser/speculative mapping. Null-config instruction packages retain no config/runtime requirement. P4 selection stays separate from source availability.
 
-## Component ownership at cutover
+## One active owner per component
 
-| Component | Before | Selected future owner and transition |
+| Component | Before | Future owner/transition |
 | --- | --- | --- |
-| Reusable selected skill meaning | Legacy active `.ai/assets/skills/<id>` route or no legacy counterpart; src candidate not activated | `src/skills/<id>` becomes sole editable product owner; `.ai/core/skills/<id>` is generated consumption. Identify each exact former active route before retiring it. |
-| Codex entry for selected capability | Existing legacy wrapper, if present | Exact `.agents/skills/framework-<id>/SKILL.md` generated by adapter with guard route. Reclassify only the reviewed old active route, never the directory. |
-| Unselected skills/runtime providers | Current root policy/wrapper owner | Keep current source-project route until its selected cutover. One semantic capability cannot be active under both routes. |
-| Core and lock | No installer ownership inferred | Installer owns accepted exact inventory and lock after install; track together by project policy. |
-| AGENTS.md, translation, CLAUDE.md, README | Project owner | Remain project-owned pointers/onboarding; update selected routing and guard instructions in a reviewed project change, never package replacement. |
-| `.ai/custom/framework.json`, templates/stores | Project owner | Remain project-owned; select/create only by separate project configuration action. |
-| `.dev/standards`, workflow/assessment/release history, tools/CI | Source project / historical owners | Remain source-owned; retired historical schemas/templates are labeled frozen evidence. No mass conversion. |
-| Shared loader/manifest/profiles/index/guard | Coordinator | Integrate bounded changes after actual package delivery. P6 has no inferred shared-file authority. |
+| Selected reusable skill | Existing active legacy route, or no predecessor | src/skills/<id> sole editable product owner; installed core is generated consumption. Identify/retire each exact former active route in project cutover. |
+| Selected Codex entry | Legacy wrapper if present | Exact generated framework-prefixed entry from delivered adapter; no maintenance launcher added. Reclassify only reviewed old route, never runtime directory. |
+| Unselected skills/providers | Existing project owner | Continue their current route until separately selected cutover; no missing package substitution. |
+| Core/lock | No inferred ownership | Exact installer inventory/lock after maintenance. Track consistently by project choice. |
+| AGENTS/translation/CLAUDE/README | Project owner | Remain project pointers. Update exact route and maintenance/activation instructions; no package replacement or enforcement claim over agent text. |
+| Config/templates/stores | Project owner | Preserved; M01 writes only independently selected exact pair when needed. |
+| Standards/history/release/tools/CI | Source/history owner | Remain source-only or labeled frozen evidence; no mass conversion. |
+| Shared loader/manifest/profiles/index | Coordinator | Integrate actual deliveries; not this design writer. |
 
-A directory rename is not semantic retirement. The cutover change identifies each active route, exact replacement and history owner. Plain source-maintainer Git/shell can repair an inactive framework; recovery must not depend on the broken installed tool.
+## One-time cutover
 
-## Proposed one-time sequence
+1. Implement selected mechanical slices. P7 chooses/runs fixed-subject candidate/inventory/delta, writer lock, interruption/durable recovery, byte/mode and path checks. No automatic restoration of all legacy gates. Project additionally selects actual public readers for intended activation; unknown results stay unresolved.
+2. Preview exact candidate/profile, engine checkout/pin, route inventory and legacy disposition, project routing/config hashes, tracking/attributes and backup scope. Capture project-owned routing/config/history as appropriate in durable Git or explicit backups, separate from managed snapshot. Ignored/external data needs its own backup.
+3. Explicitly disable affected capabilities; stop affected agent sessions/tools/external writers. Caller declares/maintains quiescence. Already-loaded instructions are not controlled by a file marker. Unrelated unaffected work remains outside selected maintenance scope; do not allow it to mutate managed paths.
+4. If M01 is actually needed, assign/complete or recover that pair under its owner first, with independent public contract. Keep affected capability use disabled. Then recompute package plan against actual inputs and perform maintenance with full durable capture and OS-held writer lock.
+5. Read back managed consistency. Package result does not activate anything. Coordinator changes exact root routes/retirements and byte-preserving attributes/ignore choices within the same caller-maintained window. No cross-file atomicity; interruption leaves affected capabilities disabled and marker/recovery obligations explicit.
+6. Project runs separately selected public-reader checks against actual config/data/intended capability. These are project checks, not new installer schema/compatibility plugins. Unknown/missing data or failed checks prevents owner readiness claim. Only owner decision after actual selected checks enables new routes and fresh sessions.
+7. Commit generated managed set and reviewed root routing coherently. Clones still inspect actual byte materialization and their project readiness; tracked files alone do not certify use. Retain old labeled history/recovery until explicit retention. Integration/publication/downstream/Issue closure remain distinct.
 
-1. Finish selected slices and consumed P5/P4 dependencies. On a fixed commit, P7 selects/runs candidate-integrity, ownership/delta, guard/concurrency, interruption/durable recovery, byte/mode and Windows-path cases. Record failures/limits; do not restore all legacy gates automatically.
-2. Coordinator prepares exact root transition preview: candidate/profile, active routes, old root/runtime/config hashes, each legacy disposition, tracked/untracked sets and package-data compatibility. Capture old project routing/config in a durable Git commit or explicit backup outside RAM, separate from installer recovery. Git does not cover ignored/external data.
-3. Quiesce agent/tool invocations and external data writers in scope. Hold guard for managed apply. Legacy wrappers are project-owned, never implicit installer deletion targets. Retire a semantically conflicting legacy route explicitly before exposing the new route.
-4. Apply selected development candidate with durable storage; read back matching lock/core/runtime. Coordinator changes root routing and byte-preserving attributes/ignore rules in the same quiescent window. Resume only when each chosen component has one active owner and P7 checks actually succeed. No cross-file atomicity; failure leaves the affected route inactive.
-5. Commit selected generated set and project routing coherently. A clone still checks platform materialization and obtains the selected guard engine; tracked files alone do not prove readiness. Development identity never becomes stable by merge/tracking.
-6. Retain labeled old history and matching recovery until owner-selected retention. Integration, Issue closure and publication are separate. This cutover does not close #43/#305/#149/#168 or adopt downstream.
+Before activation fallback: if any mutation occurred keep affected use disabled; restore matching managed snapshot via maintenance recovery and exact project routing/config snapshots via their owners with fresh drift checks. No whole-repo reset, unknown/newer edit overwrite or automatic data restore. If no mutation and old project state is intact, owner may end maintenance using old route after its separate checks.
 
-Fallback before activation: old selected route may remain active only while its complete matching inputs are intact and no new route is exposed. Once mutation starts, block both affected routes; restore managed state through the operation and selected project routing/config snapshots with fresh drift checks. Newer edits require reconciliation, never whole-repo reset.
+After use fallback: start NEW maintenance window and fresh package plan to previous actual candidate. Retained old operation cannot authorize replay over a used installation. Project checks whether current/new records are readable by previous capability; missing reverse conversion/backup means keep affected capability inactive. Package managed consistency alone cannot approve fallback. No invented stable baseline.
 
-Fallback after activation/use: do not replay an old operation. Select the previous actual candidate through a fresh plan and current config/data checks. If newly written data is unreadable by the old capability, keep the route inactive until its conversion/data-restore owner resolves it. No invented stable fallback. Restore project routing only after package/data state matches; preserve other work.
+If whole RAM project is lost, installer can reconstruct only managed bytes. Project restores its source/config/data from separate durable resources and selects fresh activation checks. A managed recovery success while those are missing remains project_readiness=not-assessed, never whole-project ready.
 
-## Independently owned implementation slices
+## Bounded successor slices
 
-Proposed successor scopes only; no Issue created or implementation authority inferred. One writer per shared file.
+No new Issues/implementation authority here. One writer per file; current design scope only.
 
-| Slice | Proposed files/responsibility | Delivery / dependencies |
+| Slice | Proposed scope | Observable result |
 | --- | --- | --- |
-| I345-A reader + read-only plan | `src/distribution/installation_state.py`, `installation_plan.py` | Exact candidate v1/lock reader, pure delta/path/no-op/drift plan. Metadata evolution stays coordinator-owned. |
-| I345-B guard boundary | `src/distribution/managed_execution.py`; coordinator owns adapter/package integration and delivery envelope | Held native guard across invocation/apply/recover, fail-closed mismatch, pinned engine outside managed content. Explicit platform/delivery route before activation. |
-| I345-C durable apply/recover | `src/distribution/installation_io.py`, `installation.py` | Consume A/B; complete durable closure, immutable operation/marker ordering, conditional finish/restore and RAM loss. No data conversion/self-update/new CLI platform. |
-| I345-D M01 config transition | Proposed `src/distribution/config_transition.py` and own state reader, coordinator assigns one owner with Lesson/v2 consumers | Only necessary closed JSON 1->2 and matching before/after pair recovery; no namespace/default/authority expansion. One conditional immutable state record, no generic migration engine. |
-| I345-E root dogfood | Coordinator-assigned pointers, legacy dispositions, attributes/ignore/config/generated set | One active route per component, selected profile, actual recovery/fallback/root read-back after P7. |
-| P7 checks | P7 owns focused cases/backend fixtures/pipeline | Actual candidate/plan/apply/guard/recovery/path evidence and accepted CI restoration subset. No pass result here. |
+| I345-A | installation_state.py, installation_plan.py under src/distribution | Actual candidate/lock reader, pure exact delta/path plan, explicit engine pin and byte-only protected inputs. |
+| I345-B | maintenance_coordination.py under src/distribution plus selected external entry bootstrap | OS-held participating-writer lock, explicit quiescence declaration, complete fixed engine-file identity. No skill invocation/adapter/runtime changes. |
+| I345-C | installation_io.py, installation.py under src/distribution | A/B consumers; durable closure/marker ordering, exact apply/recover, same-engine/RAM managed recovery, readiness always not-assessed. |
+| I345-D | Separately assigned config_transition.py/state ownership with Lesson/v2 owners | Conditional M01 exact pair and durable conditional recovery only; no generic migration or reader registry. |
+| I345-E | Coordinator-owned root routing/legacy dispositions/attributes/ignore/config/generated set | One active owner and actual project-selected activation decision in maintenance window. |
+| P7 | Separately owned focused cases/backend fixtures/pipeline | Actual new-contract evidence; exact selected CI restoration. No pass implied by design. |
 
-A/B can proceed independently after interface selection; C follows. D consumes P5 semantics but is a separately assigned P6 config-transition implementation. Coordinator owns assembly/manifest/profiles and integration. A thin `tools/manage-installation.py` may later forward to the facade if selected; it owns no product state logic, public binary identity or publication.
+A/B interfaces are agreed first; C follows. Source engine pin/entry/file closure and dependencies require explicit implementation selection, not a released package invented here. D is assigned only when actual M01 need exists. Coordinator retains shared loader/adapter/manifest/profile ownership; optional thin source command owns no product state logic or public CLI publication.
 
-## Avoided maintenance
-
-One inventory drives package delta, lock and recovery; one immutable operation replaces per-step journals and receipts. Conditional M01 has its own minimal pair record because package apply has no authority over project config. Runtime stays generated. Schema conversion is not duplicated in install. No multi-hop matrix, cache service, whole repository snapshot, global lifecycle registry or cleanup schedule. Remaining maintenance: bounded state readers, distribution guard backends, exact compatibility owners and focused failure checks. No mandatory shared skill runtime; v3 instruction read entry requires a separate selected extension, not a fake executable.
+Maintenance avoided: manual copying/runtime synchronization, guessing owned removals and reconstructing interruption from logs. One inventory and immutable operation drive managed recovery; optional M01 has one necessary pair record. No per-step journal/receipt matrix, historical upgrade graph, common invocation runtime, generic compatibility plugins, whole-project snapshots or cleanup service. Drift reads and complete durable snapshots still cost I/O; no measured savings claimed.
