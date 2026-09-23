@@ -42,3 +42,7 @@ P3 dispatch is active in two independent `gpt-6-astra / ultra` tasks. Exact task
 ## P3 contract reconciliation
 
 Both local design checkpoints are received and jointly reconciled; see [decisions and source scope](p3-contract-reconciliation.md). #334/#335 continue in the same tasks. #337 is open for concrete metadata-v2 distribution support. Implementation and P7 verification remain incomplete.
+
+## P3 loader source stage
+
+#337 returned metadata-v2 loader support at `13a08f3c886513cead3bfea080224f3323131977`. [Coordinator inspection](p3-loader-integration.md) records the bounded review and remaining package mapping dependency. Issue/workflow remain in_progress; no runtime or schema verification was performed.
