@@ -225,6 +225,17 @@ def _root(value: Any) -> Path:
         _check(all(device and inode for device, inode in before), "invalid-root",
                "Canonical fallback requires usable filesystem identities.")
         kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        # Long names do not expand DOS-drive aliases; require a direct local
+        # device mapping as well, without selecting a different root.
+        kernel.QueryDosDeviceW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+        kernel.QueryDosDeviceW.restype = w.DWORD
+        device = ctypes.create_unicode_buffer(32768)
+        length = kernel.QueryDosDeviceW(target.drive, device, len(device))
+        kernel.GetDriveTypeW.argtypes = [w.LPCWSTR]
+        kernel.GetDriveTypeW.restype = w.UINT
+        _check(0 < length < len(device) and re.fullmatch(r"\\Device\\[^\\]+", device.value) is not None
+               and kernel.GetDriveTypeW(target.anchor) in {2, 3, 5, 6},
+               "noncanonical-root", "Direct local drive mapping is unavailable.")
         kernel.GetLongPathNameW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
         kernel.GetLongPathNameW.restype = w.DWORD
         canonical = ctypes.create_unicode_buffer(32768)

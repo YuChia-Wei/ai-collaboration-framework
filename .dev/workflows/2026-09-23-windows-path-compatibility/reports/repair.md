@@ -67,3 +67,76 @@ installation, pilot, release, independent-review or CI acceptance is implied.
 Second focused simulation run: 10 tests passed, 0 skips, 0.188s. The first
 failed attempt above is retained. Actual checks have not yet run at this source
 checkpoint. Both public families use their supported file request protocol.
+
+## First actual F: run
+
+Source checkpoint 34e18e63142549b109d23222aeb5a4798ace95d0, clean at dispatch.
+Command: `python -I -B tests/framework_next/test_windows_paths.py --mode actual
+--output-root F:/framework-next/p7-runs/378-compatibility`.
+Run: F:/framework-next/p7-runs/378-compatibility/fn-c84e49b8d71b4f5db1bc38b9aec00793.
+Runtime: Python 3.13.14, PyYAML 6.0.3, jsonschema 4.26.0, referencing 0.37.0.
+
+- Actual Lesson-minimal assembly and installation_state.read_candidate: passed,
+  10 managed members, candidate identity
+  development:34e18e63142549b109d23222aeb5a4798ace95d0:7a38a78dc3ca0d355a0a3da32f767b67cbf14b7fc480eb39b5336ad20b20f83c.
+- Actual Lesson public explain/query/create/inspect: all exit 0, succeeded.
+  670-byte synthetic record retained, SHA-256 readback equal, no writer residue.
+  Fixture uses the direct source package, not an installed package.
+- CBF explain: exit 0, ok. First create: exit 2, invalid-input, mutation_state=none.
+  Exact fingerprint: shape / record.statements / Actor, command and controlled-domain
+  statements are required. This is an authored test-input defect before backend
+  writes, not a shared setup/backend failure. Add the two required fixture
+  statements, then rerun only CBF plus previously unexecuted distribution cases.
+- Distribution backend/public plan not executed in this stopped run.
+
+Overall exit 1, 10.791s; 33 files, 298299 observed/retained logical bytes,
+2817 helper-authored bytes, 43 Git and 6 Python driver launches. Physical I/O and
+opaque child subprocesses are not measured. The entire run and public transcript
+remain retained; prior runs and F:/ai-context-tests are untouched.
+
+## Final guard review and selected additional checks
+
+Read-only source inspection found that long-name conversion alone does not prove
+absence of a DOS drive alias. Before handoff, both fallback paths now require a
+successful QueryDosDeviceW mapping to a direct device, rejecting SUBST-style
+namespace aliases and device subpaths. Reader fallback also rejects remote or
+unknown drive type. This does not replace the selected path/volume or broaden
+filesystem support. Actual selected F: mapping query succeeded; no device or
+mapping was created or changed. The device label is not a causal attribution.
+
+The workflow selects an affected-check refresh because this adds a guard to the
+fallback code: focused simulation tests including mapping/alias failures, one
+actual reader/backend check and only affected public Lesson/CBF write/read.
+Do not repeat the already blocked public distribution bootstrap. Earlier pass
+observations remain historical against 34e18e63142549b109d23222aeb5a4798ace95d0.
+
+## Affected CBF retry and first distribution observation
+
+After correcting only the CBF test input, a bounded Python stdin command loaded
+`test_windows_paths`, allocated one FixtureRun, called `actual_cbf`, reread the
+retained candidate and called `actual_plan`. It did not repeat Lesson or assembly.
+Run: F:/framework-next/p7-runs/378-compatibility/fn-09dccb468a544476811fa3ce1a3c9fc8.
+
+CBF explain/create/inspect all returned exit 0 / ok. Direct distribution Backend
+construction and _volume succeeded: device=12003918052740279813, is_ram=false.
+The existing GetDriveTypeW observation is 3 (fixed); this does not prove physical
+persistence or change the caller's failure-domain declaration.
+
+The first complete public plan request failed: exit 1, outcome unsupported,
+changed=false, diagnostic source-bootstrap. Exact request, response and stderr
+are retained as plan-request.json, plan-response.json and plan-stderr.txt.
+No public plan pass, installation or writer recovery acceptance is established.
+Run exit 1; 1.717s, 8 files / 14799 logical bytes, 5306 helper-authored bytes,
+1 Git and 4 Python driver processes. All residue is retained.
+
+A separate read-only isolation called the unmodified bootstrap `_direct` on
+its actual script path and its checkout root: both raised OSError winerror=1.
+The public response is deliberately generic; this direct observation localizes
+an unresolved bootstrap admission path. No equivalent public retry was run.
+A sandbox read-back of the retained plan-response file was denied; later read-back
+uses normal scoped access. The earlier CLI transcript already returned the exact
+response. No evidence was overwritten to conceal either access failure.
+
+Final focused simulation refresh after the added mapping guard: 11 tests passed,
+0 skips, 0.237s. A temporary edit-command string emitted a Python invalid-escape
+SyntaxWarning; production/test source loaded successfully without that warning.

@@ -46,12 +46,13 @@ def info(*, device=123, inode=456, mode=stat.S_IFDIR, attributes=16):
 class Kernel:
     """Synthetic API returns only; never a native-volume acceptance fixture."""
     def __init__(self, *, error=144, filesystem='NTFS', kind=3, long_name=None,
-                 long_result=None, query_ok=True, serial=123, volume=None, open_ok=True):
+                 long_result=None, query_ok=True, serial=123, volume=None, open_ok=True, device=r'\Device\SyntheticVolume', device_result=None):
         self.error, self.filesystem, self.kind = error, filesystem, kind
         self.long_name, self.long_result, self.query_ok = long_name, long_result, query_ok
         self.serial, self.volume, self.open_ok = serial, volume, open_ok
+        self.device, self.device_result = device, device_result
         for name in ('GetVolumePathNameW', 'GetVolumeInformationW', 'GetVolumeInformationByHandleW',
-                     'GetLongPathNameW', 'CreateFileW', 'CloseHandle', 'GetDriveTypeW', 'MoveFileExW'):
+                     'QueryDosDeviceW', 'GetLongPathNameW', 'CreateFileW', 'CloseHandle', 'GetDriveTypeW', 'MoveFileExW'):
             setattr(self, name, Mock(side_effect=getattr(self, '_' + name, lambda *a: 1)))
 
     def _GetVolumePathNameW(self, path, out, length):
@@ -69,6 +70,10 @@ class Kernel:
         out.value = self.filesystem
         ctypes.cast(serial, ctypes.POINTER(w.DWORD))[0] = self.serial
         return int(self.query_ok)
+
+    def _QueryDosDeviceW(self, drive, out, length):
+        out.value = self.device
+        return len(out.value) + 2 if self.device_result is None else self.device_result
 
     def _GetLongPathNameW(self, path, out, length):
         out.value = self.long_name if self.long_name is not None else path
@@ -112,6 +117,22 @@ class SimulatedWindowsPaths(unittest.TestCase):
             self.assertEqual(state._root(str(DIRECT)), DIRECT)
         with simulated(), patch.object(Path, 'resolve', return_value=DIRECT):
             self.assertEqual(state._root(str(DIRECT)), DIRECT)
+
+    def test_fallbacks_refuse_drive_aliases_and_unavailable_mapping(self):
+        for kernel in (Kernel(device=r'\??\Z:\elsewhere'), Kernel(device=r'\Device\Volume\subdir'),
+                       Kernel(device_result=0), Kernel(device_result=32768)):
+            with self.subTest(device=kernel.device), simulated(kernel):
+                with self.assertRaises(state.InstallationError):
+                    state._root(str(DIRECT))
+                with self.assertRaises(OSError):
+                    io._windows_handle_filesystem(DIRECT, str(DIRECT.parent), kernel)
+                kernel.CreateFileW.assert_not_called()
+        with simulated(Kernel(kind=4)), self.assertRaises(state.InstallationError):
+            state._root(str(DIRECT))
+        with simulated() as (kernel, _, _), patch.object(state, 'os', SimpleNamespace(name='posix')):
+            with self.assertRaises(OSError):
+                state._root(str(DIRECT))
+            kernel.QueryDosDeviceW.assert_not_called()
 
     def test_reader_other_errors_do_not_fall_back(self):
         for code in (2, 5, 50, 144):
@@ -282,7 +303,9 @@ def actual_cbf(run):
               'frame_key': 'bounded-fixture', 'title': 'Synthetic path compatibility observation', 'derived_from': None,
               'sources': [{'id': 'SRC1', 'kind': 'requirement', 'reference': 'synthetic:378', 'revision': None,
                            'locator': 'Fictional input', 'sha256': None, 'authority': 'proposed', 'authority_reference': None}],
-              'statements': [{'id': 'CMD1', 'category': 'command', 'text': 'Observe a value.', 'basis': 'stated', 'source_ids': ['SRC1']}],
+              'statements': [{'id': name, 'category': category, 'text': text, 'basis': 'stated', 'source_ids': ['SRC1']}
+                             for name, category, text in [('ACTOR1', 'actor', 'A caller.'), ('CMD1', 'command', 'Observe a value.'),
+                                                          ('DOMAIN1', 'controlled-domain', 'Local fixture state.')]],
               'scenarios': [{'id': 'SC1', 'title': 'Observe one result', 'source_ids': ['SRC1'], 'given': ['A fixture'],
                              'when': ['The caller requests a value'], 'then': [{'id': 'THEN1', 'text': 'Observe a value.',
                              'basis': 'stated', 'source_ids': ['SRC1'], 'statement_ids': ['CMD1']}], 'tests_anchor': []}],

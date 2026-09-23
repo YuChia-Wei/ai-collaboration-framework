@@ -575,6 +575,13 @@ def _windows_handle_filesystem(directory, volume, kernel):
     before = snapshot()
     if len({device for device, _ in before}) != 1:
         raise OSError("volume identity differs across ancestors")
+    # A long-name query alone does not expand SUBST/DOS-device aliases.
+    kernel.QueryDosDeviceW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.QueryDosDeviceW.restype = w.DWORD
+    device = ctypes.create_unicode_buffer(32768)
+    length = kernel.QueryDosDeviceW(directory.drive, device, len(device))
+    if not 0 < length < len(device) or re.fullmatch(r"\\Device\\[^\\]+", device.value) is None:
+        raise OSError("direct drive mapping unavailable")
     kernel.GetLongPathNameW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
     kernel.GetLongPathNameW.restype = w.DWORD
     canonical = ctypes.create_unicode_buffer(32768)
@@ -606,7 +613,7 @@ def _windows_handle_filesystem(directory, volume, kernel):
         if not kernel.GetVolumeInformationByHandleW(handle, None, 0, ctypes.byref(serial), None, None,
                                                    filesystem, len(filesystem)):
             raise OSError("handle filesystem observation failed")
-        if serial.value != info.st_dev & 0xffffffff or snapshot() != before:
+        if serial.value != (info.st_dev & 0xffffffff) or snapshot() != before:
             raise OSError("directory volume identity changed")
         return filesystem.value
     finally:
