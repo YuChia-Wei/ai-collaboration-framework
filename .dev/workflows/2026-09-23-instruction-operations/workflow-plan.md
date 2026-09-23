@@ -2,8 +2,8 @@
 
 - Workflow: `2026-09-23-instruction-operations`; owner: `ai-context-governance`.
 - Issue: [#346](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346).
-- Status: `in_progress`; phase: first nine-package mapping implemented, awaiting the next coordinator handoff.
-- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T13:30:34+08:00`.
+- Status: `completed`; bounded source/mapping delivery complete; P7 verification and provider integration remain separate.
+- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T14:16:17+08:00`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`; version `1.2.0`.
 - Branch: `codex/2026-09-23-instruction-operations`; base branch: `main`.
 - Worktree: `F:/framework-next/346`; exact starting commit: `842b73ca09d701d1561109255193d80439dc996b`.
@@ -119,7 +119,7 @@ four-file mapping directly in task `01a0cbeb-c1c8-7ba1-a0c8-de9026a355ff`, or re
 the approval restriction through the app. Do not retry, change writer or bypass the
 rejection. No callback or provider write is performed. U001 deferrals remain.
 
-## Current checkpoint after direct in-task approval
+## First mapping checkpoint after direct in-task approval
 
 At `2026-09-23T13:30:34+08:00`, continuation in this same task consumed the user's direct reply:
 
@@ -147,3 +147,30 @@ Next action: coordinator reads the coherent local mapping commit and selects any
 later actual-source mapping in this same task. Workflow/task remain in_progress;
 no later package is implicitly authorized. No push, PR, callback, root activation,
 provider mutation or CI action is performed by this task.
+
+## Final bounded completion
+
+At `2026-09-23T14:16:17+08:00`, the same task read back clean base `34400e0ff377301601be5b7e167ed9e05261830c`,
+then consumed the [final actual-source handoff](../2026-09-23-framework-redesign-control/reports/p5-final-mapping-scope.md)
+and the selected source-adoption proposal. The scoped five-file mapping write was
+accepted. Prior approval failures stay retained as historical failures; the original
+nine-package mapping at `444327034aa14d9a9364c72e33e77ac879e9e5df` was preserved.
+
+The final manifest contains 18 actual components and 113 explicit members. Seven
+version-1 profiles select exact package versions with Codex only. Source-repository
+is the ordinary collaboration selection minus local-backlog. Optional context
+maintenance remains separately selected, outside every ordinary profile. The original
+nine component rows and lesson-minimal/knowledge/work-management bytes are unchanged.
+See the final report/task section for exact counts and preserved Git blob identities.
+
+Profiles are complete selections. Applying context-maintenance after an ordinary
+profile does not implicitly union them and may deselect earlier managed files.
+A deliberately combined selection is outside this batch; no overlay is invented.
+No apply, root adoption or installed artifact generation occurred here.
+
+The single workflow task is completed for its assigned source/mapping boundary.
+No implementation remains in this workflow. U001 assigns actual product/schema/
+behavior/build/install/migration/audit/CI verification to program #322 coordinator /
+P7, which selects redesigned checks after implementation. Provider Issue closure,
+remote integration and downstream adoption remain separately owned. The next action
+is coordinator collection of this coherent local commit; no push, PR or callback.

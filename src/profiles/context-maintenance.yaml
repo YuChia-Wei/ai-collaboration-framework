@@ -1,0 +1,9 @@
+profile_version: 1
+id: context-maintenance
+skills:
+  - id: ai-context-auditor
+    version: 0.1.0
+  - id: ai-context-governance
+    version: 0.1.0
+adapters:
+  - codex

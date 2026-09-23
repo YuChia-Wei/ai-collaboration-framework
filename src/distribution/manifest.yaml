@@ -10,6 +10,10 @@ profiles:
     path: src/profiles/engineering.yaml
   - id: collaboration
     path: src/profiles/collaboration.yaml
+  - id: source-repository
+    path: src/profiles/source-repository.yaml
+  - id: context-maintenance
+    path: src/profiles/context-maintenance.yaml
 components:
   - id: lesson
     source: src/skills/lesson
@@ -183,6 +187,132 @@ components:
         destination: .ai/core/skills/spec-author/references/adapter-template.md
       - source: references/formal-test-template.md
         destination: .ai/core/skills/spec-author/references/formal-test-template.md
+  - id: diagnostic-analyst
+    source: src/skills/diagnostic-analyst
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/diagnostic-analyst/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/diagnostic-analyst/skill-package.yaml
+      - source: references/diagnose.md
+        destination: .ai/core/skills/diagnostic-analyst/references/diagnose.md
+  - id: ddd-ca-hex-architect
+    source: src/skills/ddd-ca-hex-architect
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/ddd-ca-hex-architect/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/ddd-ca-hex-architect/skill-package.yaml
+      - source: references/design.md
+        destination: .ai/core/skills/ddd-ca-hex-architect/references/design.md
+      - source: references/review.md
+        destination: .ai/core/skills/ddd-ca-hex-architect/references/review.md
+  - id: bdd-gwt-test-designer
+    source: src/skills/bdd-gwt-test-designer
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/bdd-gwt-test-designer/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/bdd-gwt-test-designer/skill-package.yaml
+      - source: references/design.md
+        destination: .ai/core/skills/bdd-gwt-test-designer/references/design.md
+      - source: references/review.md
+        destination: .ai/core/skills/bdd-gwt-test-designer/references/review.md
+  - id: local-change-implementer
+    source: src/skills/local-change-implementer
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/local-change-implementer/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/local-change-implementer/skill-package.yaml
+      - source: references/implement.md
+        destination: .ai/core/skills/local-change-implementer/references/implement.md
+  - id: slice-implementer
+    source: src/skills/slice-implementer
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/slice-implementer/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/slice-implementer/skill-package.yaml
+      - source: references/implement.md
+        destination: .ai/core/skills/slice-implementer/references/implement.md
+      - source: references/modes/command.md
+        destination: .ai/core/skills/slice-implementer/references/modes/command.md
+      - source: references/modes/query.md
+        destination: .ai/core/skills/slice-implementer/references/modes/query.md
+      - source: references/modes/reactor.md
+        destination: .ai/core/skills/slice-implementer/references/modes/reactor.md
+      - source: references/modes/generic.md
+        destination: .ai/core/skills/slice-implementer/references/modes/generic.md
+      - source: references/test-handoff.md
+        destination: .ai/core/skills/slice-implementer/references/test-handoff.md
+      - source: references/remediation.md
+        destination: .ai/core/skills/slice-implementer/references/remediation.md
+  - id: problem-frame-author
+    source: src/skills/problem-frame-author
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/problem-frame-author/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/problem-frame-author/skill-package.yaml
+      - source: references/authoring.md
+        destination: .ai/core/skills/problem-frame-author/references/authoring.md
+      - source: references/format.md
+        destination: .ai/core/skills/problem-frame-author/references/format.md
+      - source: references/operations.md
+        destination: .ai/core/skills/problem-frame-author/references/operations.md
+      - source: references/configuration.md
+        destination: .ai/core/skills/problem-frame-author/references/configuration.md
+      - source: references/example.md
+        destination: .ai/core/skills/problem-frame-author/references/example.md
+      - source: schemas/cbf-record-v1.schema.json
+        destination: .ai/core/skills/problem-frame-author/schemas/cbf-record-v1.schema.json
+      - source: templates/cbf.md
+        destination: .ai/core/skills/problem-frame-author/templates/cbf.md
+      - source: scripts/problem_frame.py
+        destination: .ai/core/skills/problem-frame-author/scripts/problem_frame.py
+  - id: spec-compliance-validator
+    source: src/skills/spec-compliance-validator
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/spec-compliance-validator/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/spec-compliance-validator/skill-package.yaml
+      - source: references/compliance.md
+        destination: .ai/core/skills/spec-compliance-validator/references/compliance.md
+      - source: references/report-template.md
+        destination: .ai/core/skills/spec-compliance-validator/references/report-template.md
+      - source: references/legacy-intake.md
+        destination: .ai/core/skills/spec-compliance-validator/references/legacy-intake.md
+      - source: profiles/dotnet.md
+        destination: .ai/core/skills/spec-compliance-validator/profiles/dotnet.md
+  - id: ai-context-auditor
+    source: src/skills/ai-context-auditor
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/ai-context-auditor/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/ai-context-auditor/skill-package.yaml
+      - source: references/audit.md
+        destination: .ai/core/skills/ai-context-auditor/references/audit.md
+  - id: ai-context-governance
+    source: src/skills/ai-context-governance
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/ai-context-governance/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/ai-context-governance/skill-package.yaml
+      - source: references/maintenance.md
+        destination: .ai/core/skills/ai-context-governance/references/maintenance.md
 adapters:
   - id: codex
     template: src/adapters/codex/skill-entry.md.template

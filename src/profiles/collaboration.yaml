@@ -19,5 +19,19 @@ skills:
     version: 0.1.0
   - id: spec-author
     version: 0.1.0
+  - id: diagnostic-analyst
+    version: 0.1.0
+  - id: ddd-ca-hex-architect
+    version: 0.1.0
+  - id: bdd-gwt-test-designer
+    version: 0.1.0
+  - id: local-change-implementer
+    version: 0.1.0
+  - id: slice-implementer
+    version: 0.1.0
+  - id: problem-frame-author
+    version: 0.1.0
+  - id: spec-compliance-validator
+    version: 0.1.0
 adapters:
   - codex
