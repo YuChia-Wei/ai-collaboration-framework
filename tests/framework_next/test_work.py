@@ -219,7 +219,8 @@ class WorkflowTests(PublicCase):
         content = self.invoke('inspect', reference=ref)['record']['content']
         deferral = {'reason': 'Synthetic owner deferral.', 'owner': 'synthetic-owner', 'trigger': 'Separate actual work',
                     'next_action': 'Owner decides later.', 'authority_ref': 'synthetic:authority-only'}
-        content['tasks'][0].update(state='deferred', reason=deferral['reason'], deferral=deferral)
+        content['tasks'][0].update(state='deferred', reason=deferral['reason'],
+                                   result='Not executed; deferred in synthetic fixture.', deferral=deferral)
         content['acceptance'][0].update(disposition='deferred', reason=deferral['reason'], deferral=deferral)
         current = self.invoke('checkpoint', reference=ref, expected_sha256=current['sha256'], content=content, reason='Attributed deferral.')
         current = self.invoke('retrospect', reference=ref, expected_sha256=current['sha256'], retrospective=retrospective)

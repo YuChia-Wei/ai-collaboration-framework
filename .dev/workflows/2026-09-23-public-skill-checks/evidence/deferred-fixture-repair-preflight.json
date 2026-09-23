@@ -1,0 +1,70 @@
+{
+  "observed_at": "2026-09-23T14:38:37.718983+00:00",
+  "base_commit": "8b151f0aa31ec91277c5399251171ebc12902f35",
+  "prior_observation_source": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+  "repair": "Only WorkflowTests deferred T001 result becomes Not executed; deferred in synthetic fixture.",
+  "checks": {
+    "ast_utf8": "passed",
+    "exact_minimal_change": "passed",
+    "unchanged_other_classes": [
+      {
+        "class": "PrTests",
+        "normalized_source_sha256": "868819f54163bc2c7ad8bb8e9eacefceacd4c24826014c45adf3334deb539c3c",
+        "outcome": "unchanged"
+      },
+      {
+        "class": "BacklogTests",
+        "normalized_source_sha256": "47392da955b1d2dbced9c54f5340ffe549935a0a994d48acf407de112abd8d30",
+        "outcome": "unchanged"
+      }
+    ],
+    "unchanged_objects": {
+      "src": {
+        "prior_source_object": "e0cea754f766b1bbb48f2f401b9d0613cdbc5307",
+        "current_object": "e0cea754f766b1bbb48f2f401b9d0613cdbc5307",
+        "outcome": "unchanged"
+      },
+      "tests/framework_next/support.py": {
+        "prior_source_object": "d44208c66a87b110c0ab701fb8bf1c1938fb7407",
+        "current_object": "d44208c66a87b110c0ab701fb8bf1c1938fb7407",
+        "outcome": "unchanged"
+      },
+      "tests/framework_next/run.py": {
+        "prior_source_object": "71b8e75d30b4cb2ab04b50492ab1747a780a907f",
+        "current_object": "71b8e75d30b4cb2ab04b50492ab1747a780a907f",
+        "outcome": "unchanged"
+      },
+      "tests/framework_next/test_knowledge.py": {
+        "prior_source_object": "d2d84ffe16f88fb1544d90d529ce42a00bdeb2c6",
+        "current_object": "d2d84ffe16f88fb1544d90d529ce42a00bdeb2c6",
+        "outcome": "unchanged"
+      },
+      "tests/framework_next/test_cbf.py": {
+        "prior_source_object": "6730b2da3eb953003ed5ac2d76e2c326446fb93a",
+        "current_object": "6730b2da3eb953003ed5ac2d76e2c326446fb93a",
+        "outcome": "unchanged"
+      }
+    },
+    "git_diff_check": "passed"
+  },
+  "behavioral_status": "not-executed; one selected workflow run follows the clean fixture commit",
+  "prior_failures": "Preserved in resume-c1fb1c1f-workflow-failure.json and original run residue; no cleanup/retry performed in this preflight.",
+  "planned_message": {
+    "path": "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-deferred-fixture-fix.txt",
+    "sha256": "1de3f9e284e6ffb084167fa959d4f4840959fd88e3baac7e319fb09687a2fecc",
+    "argv": [
+      "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-I",
+      "-B",
+      "F:\\framework-next\\373\\.ai\\scripts\\validate-git-commits.py",
+      "--message-file",
+      "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-deferred-fixture-fix.txt",
+      "--workflow-id",
+      "2026-09-23-public-skill-checks"
+    ],
+    "cwd": "F:\\framework-next\\373",
+    "exit": 0,
+    "stdout_base64": "R2l0IGNvbW1pdCB2YWxpZGF0aW9uIHBhc3NlZCBmb3IgcGxhbm5lZCBtZXNzYWdlLg0K",
+    "stderr_base64": ""
+  }
+}
