@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p5-p6-source-integration`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p6-adoption-plan`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -35,10 +35,11 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #348 | P5-C portable authoring | two own instruction packages/design/workflow | source online PR #353; Issue/Project complete |
 | #351 | P5-D frame/compliance design | own design/workflow only | design online PR #358; Issue/Project complete |
 | #352 | P5-E optional maintenance design | own design/workflow only | design online PR #358; Issue/Project complete |
-| #354 | P6-B state/planning | own reader/plan modules and design/workflow | source inspected; online integration pending |
-| #356 | P5-F frame/compliance source | two own packages/design/workflow | source inspected; online integration pending |
-| #357 | P5-G optional maintenance source | two own packages/design/workflow | source inspected; online integration pending |
+| #354 | P6-B state/planning | own reader/plan modules and design/workflow | source online PR #360; Issue/Project complete; verification deferred |
+| #356 | P5-F frame/compliance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
+| #357 | P5-G optional maintenance source | two own packages/design/workflow | source online PR #360; Issue/Project complete; verification deferred |
 | #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | independent source task active; runtime/F: identity verified |
+| #361 | P6-D source adoption design | own concrete path/route/configuration adoption plan and workflow | assigned design; independent task dispatch follows this checkpoint |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -56,7 +57,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate inspected #354/#356/#357 source online. #359 is active under [the writer handoff](../../design/framework-next/p6-writer-handoff.md). #346 mapping and #347 engineering writes await the consolidated direct confirmation required by automatic approval review; no substituted writes. #351/#352 design is online PR #358 and CLOSED/Done. Product verification and CI remain deferred to P7.
+Current action: receive #359 maintenance source and dispatch #361 concrete source-repository adoption design. #354/#356/#357 source is online in PR #360, with CLOSED/COMPLETED and Project Done read back. #359 is active under [the writer handoff](../../design/framework-next/p6-writer-handoff.md). #346 mapping and #347 engineering writes await the consolidated direct confirmation required by automatic approval review; no substituted writes. #351/#352 design is online PR #358 and CLOSED/Done. Product verification and CI remain deferred to P7.
 
 ## P3 shared implementation continuation
 
@@ -81,3 +82,9 @@ Both tasks are active from shared checkpoint `731d658b6004110fd59224ca39aa3a5d63
 ## P6 writer dispatch
 
 [Runtime and first-command evidence](evidence/p6-writer-dispatch.json) records #359 on preserved checkpoint `f7fd09faeb52860fde9cde83ea6cf395df883f66`, with one owner for complete maintenance source. It has not executed or installed the product; P7 evidence remains deferred.
+
+## Source integration and adoption planning
+
+PR #360 merged as `4b28710c39fed90acfd568cadbe3639ecb0ed722`; source Issues #354/#356/#357 and Project state were read back at `2026-09-23T10:58:13.4943619+08:00`. All four completed source/integration branches were deleted only after clean worktree and merged-ancestry checks; F: worktree files remain detached at their handoff commits. Active #359 and blocked #346/#347 branches remain. The ignored provider read-back is `.dev/ai-context/local/framework-next-control/p5-p6-source-integration-readback.json`; retained source integration reports distinguish limited checks from deferred execution.
+
+[The #361 assignment](../../design/framework-next/p6-source-adoption-handoff.md) selects concrete adoption design only. It preserves the first Lesson pilot and explicitly separates broader root adoption, missing mappings/source, legacy recovery and later P7 observations.

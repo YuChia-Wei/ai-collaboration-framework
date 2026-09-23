@@ -72,7 +72,7 @@
     "verification_state": "deferred-by-owner",
     "design_commit": "ecf27befc599aa3ee589dff36d0597f0d1c24a8b",
     "selected_contract": ".dev/design/framework-next/p5-final-capability-contract.md",
-    "integration_status": "locally integrated; online pending",
+    "integration_status": "online merged",
     "pr": "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/358",
     "merge_commit": "69c8bb88fc528c3ea70cb8d0816838c4ad30837c",
     "provider_readback_at": "2026-09-23T10:33:58+08:00",

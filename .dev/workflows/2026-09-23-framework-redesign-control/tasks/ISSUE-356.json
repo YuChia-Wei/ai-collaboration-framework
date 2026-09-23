@@ -6,9 +6,9 @@
   "task_id": "ISSUE-356",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T10:24:44+08:00",
-  "updated_at": "2026-09-23T10:55:11+08:00",
+  "updated_at": "2026-09-23T11:04:49+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -46,11 +46,11 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Fixed clean source received and actual package/tool/schema/method content inspected",
-    "next_action": "Online PR integration; shared mapping and P7 follow separately"
+    "last_completed_step": "Source online through PR #360; Issue CLOSED/COMPLETED and Project Done read back",
+    "next_action": "Later selected mapping/adoption and P7 verification; no product execution implied"
   },
   "results": {
-    "summary": "Ten frame and six compliance members source-complete and inspected",
+    "summary": "Bounded source delivery integrated online; execution and adoption remain deferred",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
@@ -71,7 +71,13 @@
     "implementation_status": "source completed; online integration pending",
     "verification_state": "deferred-by-owner",
     "source_commit": "7038ee97f809f359d776f5d74b4959e51dbe518d",
-    "coordinator_report": "reports/p5-frame-source-integration.md"
+    "coordinator_report": "reports/p5-frame-source-integration.md",
+    "integration_status": "online merged",
+    "pr": "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/360",
+    "merge_commit": "4b28710c39fed90acfd568cadbe3639ecb0ed722",
+    "provider_readback_at": "2026-09-23T10:58:13.4943619+08:00",
+    "issue_state": "CLOSED",
+    "project_status": "Done"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Pg9w"
 }

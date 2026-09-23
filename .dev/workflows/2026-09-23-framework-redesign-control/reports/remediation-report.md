@@ -90,3 +90,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P5 specialists and P6 read-only source
 
 #354/#356/#357 fixed local source is inspected for online integration. See [P6 reader](p6-reader-source-integration.md), [frame/compliance](p5-frame-source-integration.md) and [optional maintenance](p5-optional-context-source-integration.md). #359 owns the complete subsequent maintenance writer under one independent Astra Ultra task. Shared mapping/engineering #346/#347 remain blocked by automatic approval review pending direct owner confirmation; all actual verification and CI stay deferred to P7. No whole-program finding is closed by these source checkpoints.
+
+## P5/P6 online source and adoption design
+
+PR #360 merged as `4b28710c39fed90acfd568cadbe3639ecb0ed722`; #354/#356/#357 are CLOSED/COMPLETED with Project Done read back. #359 continues source implementation. #361 now owns the concrete source-repository path/route/configuration adoption design under [its handoff](../../../design/framework-next/p6-source-adoption-handoff.md). It does not activate the product or bypass blocked #346/#347. Program findings and P7 verification remain open.
