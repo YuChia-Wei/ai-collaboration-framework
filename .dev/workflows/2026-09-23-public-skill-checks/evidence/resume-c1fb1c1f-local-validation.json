@@ -1,0 +1,67 @@
+{
+  "observed_at": "2026-09-23T14:32:34.042158+00:00",
+  "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+  "checks": {
+    "changed_scope": "passed; own workflow only",
+    "source_tests_unchanged": "passed; empty tracked diff from source",
+    "json_yaml_parse": {
+      "outcome": "passed",
+      "files": [
+        ".dev/workflows/2026-09-23-public-skill-checks/task.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/workflow.yaml",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-adr.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-backlog.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-cbf.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-lesson.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-observations.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-pr-cleanup.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-pr.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-promotion.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-raw-streams.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-workflow-failure.json",
+        ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-workflow.json"
+      ]
+    },
+    "local_markdown_links": {
+      "outcome": "passed",
+      "count": 19
+    },
+    "stream_integrity": "passed; all seven runner pairs and both retained failure bundles",
+    "git_diff_check": {
+      "exit": 0,
+      "stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "base64": ""
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "base64": ""
+      }
+    }
+  },
+  "planned_message": {
+    "path": "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-resume-c1fb1c1f.txt",
+    "sha256": "354bcd8f50607742afe8813bcf6204f82e394feac4411840b8688b44a8d29363",
+    "argv": [
+      "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-I",
+      "-B",
+      "F:\\framework-next\\373\\.ai\\scripts\\validate-git-commits.py",
+      "--message-file",
+      "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-resume-c1fb1c1f.txt",
+      "--workflow-id",
+      "2026-09-23-public-skill-checks"
+    ],
+    "cwd": "F:\\framework-next\\373",
+    "exit": 0,
+    "stdout": {
+      "sha256": "6c3240f2ba7f6fd678c295d87887ebe83cadeb7e6f2465ba5b4567493572b238",
+      "base64": "R2l0IGNvbW1pdCB2YWxpZGF0aW9uIHBhc3NlZCBmb3IgcGxhbm5lZCBtZXNzYWdlLg0K"
+    },
+    "stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "base64": ""
+    }
+  },
+  "scope_limit": "Record checks only. Five behavioral passes and two failures remain as observed; no execution retry or acceptance upgrade."
+}

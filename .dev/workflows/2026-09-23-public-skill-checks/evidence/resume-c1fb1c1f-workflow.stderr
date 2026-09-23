@@ -1,0 +1,17 @@
+test_selected (test_work.WorkflowTests.test_selected) ... FAIL
+
+======================================================================
+FAIL: test_selected (test_work.WorkflowTests.test_selected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\373\tests\framework_next\test_work.py", line 224, in test_selected
+    current = self.invoke('checkpoint', reference=ref, expected_sha256=current['sha256'], content=content, reason='Attributed deferral.')
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 152, in invoke
+    self.assertEqual(result.returncode, 0, response)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : {'diagnostics': [{'code': 'type', 'message': 'task result must be a nonempty string.'}], 'directories_created': [], 'mutation_state': 'none', 'operation': 'checkpoint', 'outcome': 'invalid-input'}
+
+----------------------------------------------------------------------
+Ran 1 test in 20.388s
+
+FAILED (failures=1)

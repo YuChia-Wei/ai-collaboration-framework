@@ -257,3 +257,52 @@ owned by the target. Complete pilot preparation must reconcile the 13 overlappin
 new capabilities, five added packages, and two old lifecycle entry points, with
 explicit handling of the absent new Claude adapter. No source U001 export or
 blanket .NET-framework equivalence is selected.
+
+## Direct #381 scope confirmation (2026-09-23T22:34:56+08:00)
+
+The original #381 executor retained eight partial code/profile/test/CLI paths.
+Automatic approval twice refused creating own workflow/design and external
+evidence directories because the earlier broad pilot choice and coordinator
+messages did not prove direct owner authority for this new implementation scope.
+No substitute writer, alternate directory or waived execution was selected.
+The coordinator's read-only diff inspection observed those partial changes; it
+is not fixed-commit review or a behavioral result.
+
+The user directly answered request_user_input_async
+call_yutsLG1ILDk9suMq7WvaVqRH: "確認 #381 上述範圍並繼續". The question
+explicitly names versioned candidate/reader/CLI, complete profile, focused tests,
+own workflow/design, F:/framework-next/381 and
+F:/framework-next/p7-runs/versioned-candidate, one full rc.1 build/read, local
+message-validated commits and continuation in the same #381 task. The approved
+follow-up was sent successfully to that original task. Prior refusals remain
+historical; completion, downstream writes, release publication and execution
+results are not supplied by this approval.
+
+## Seven-family return and minimal fixture repair selection
+
+Original #373 returned clean 8b151f0aa31ec91277c5399251171ebc12902f35. Each
+family ran once on c1fb1c1f: Lesson, ADR, promotion, local backlog and CBF passed.
+PR completed its actual Git and synthetic-provider assertions but failed
+cleanup (exit 2) on an owned read-only regular Git object; the pre-cleanup
+accounting was unavailable after the exception. Workflow completed its main
+round trip but its separate deferred-task fixture supplied an empty result
+and received the product's correct nonempty-result refusal (exit 1). Neither
+was retried unchanged. Both original failed roots and exact streams remain.
+
+Coordinator inspected all 30 record-only paths, parsed JSON/YAML, checked the
+diff and absence of src/tests changes, and independently decoded/hash-checked
+14 retained runner stdout/stderr streams. This is record/source inspection,
+not independent repetition of public operations. Actual public counts total
+215 across seven separate invocations, not one aggregate-cap run; nested
+process totals and PR pre-cleanup measurements remain unavailable.
+
+Selected original-owner continuation: #373 adds only a truthful synthetic
+deferred-task result in test_work.py and executes only its workflow family
+after committing. #368 repairs only verified owned read-only-file fixture
+cleanup and retained failure accounting in support.py, necessary contracts/
+public cleanup-report wiring in run.py, and FixtureSupportTests regressions.
+Native dispatch belongs to #382; #381's complete-profile expected table is a
+separate test_contracts.py region. Product files stay read-only in both repairs.
+The old PR failure residue is preserved; no all-family or C5 rerun is selected.
+Both existing tasks received their concrete continuation, and Issues retain
+OPEN state with actual partial evidence and precise next actions.
