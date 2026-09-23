@@ -455,3 +455,30 @@ independent review; old v0.18 checks become explicit historical/legacy support.
 Target Issue 15/worktree records this decision. Only preparation exists so far:
 config/stores, exact-byte Git attributes and durable before-state. No managed
 installation or active root route yet. Source U001 does not govern the target.
+
+
+## Complete target capture failure and Issue 386
+
+PR #385 merged online at b746cff2fc803c0c0f1473605ce2f02fbec1eec6; #382/#383
+are CLOSED/COMPLETED and Project Done, provider read back. Current continuation
+branch is codex/2026-09-23-complete-pilot-repair from that main.
+Target complete rc.1 public plan passed at c8d975f3 (131 members, 524 checked paths,
+maximum 237 UTF-16). Actual apply blocked with scan-limit during durable capture.
+All 131 managed destinations, lock and marker remain absent; 19 protected inputs
+match. Preserve 102 durable object files / 1,152,958 bytes in target pilot-9ceb050fed8f,
+operation i-d91db05cdd13e23b3adc27b7df0e6afb. No complete operation or recovery claim.
+The target workflow retains exact raw request/result/engine and bounded inventory.
+
+Static code suggests repeated cache clearing/listing accumulates the 20,000-entry
+limit; no confirmed root cause before controlled reproduction. Issue #386 owns
+only IO lookup/private reader/immediate capture changes and focused tests, preserving
+all read/scan limits and path safety. Owner directly confirmed its independent
+task and scope in call_LXr4GzoSMC5N6rgh7xWkXO3c; Project addition/Status separately
+confirmed in call_hdVF2EtoiU7cm5Ddq24Nv5ej. Auto-review initially rejected task creation
+and Project addition before those direct confirmations; no rejected action ran.
+
+Task 01a0cedd-9907-78a3-b94b-37192978d04c at F:/framework-next/386, branch
+codex/2026-09-23-installation-scan-budget, starts clean b746cff2. Runtime Astra/ultra
+verified by read-only task row; actual first progress confirms correct F: identity.
+Coordinator owns first push/integration and the later real-target retry. No unchanged
+retry or target activation; unselected U001 gates remain deferred-by-owner.

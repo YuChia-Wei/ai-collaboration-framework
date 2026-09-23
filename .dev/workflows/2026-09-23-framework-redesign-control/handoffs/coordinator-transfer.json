@@ -228,5 +228,19 @@
     "review": "root no actionable finding; 8 raw evidence bindings and 10 engine hashes verified",
     "target_readiness": "not-assessed",
     "next_action": "online integrate source; complete target Issue 15 under target gate decision"
+  },
+  "complete_pilot_repair": {
+    "observed_at": "2026-09-23T23:27:38+08:00",
+    "source_merged_pr": 385,
+    "source_main": "b746cff2fc803c0c0f1473605ce2f02fbec1eec6",
+    "issue": 386,
+    "thread_id": "01a0cedd-9907-78a3-b94b-37192978d04c",
+    "worktree": "F:/framework-next/386",
+    "branch": "codex/2026-09-23-installation-scan-budget",
+    "runtime_model": "gpt-6-astra",
+    "runtime_effort": "ultra",
+    "state": "active; no result inferred",
+    "target_state": "uninstalled; pre-marker capture residue retained; no unchanged retry",
+    "project_item": "PVTI_lAHOAwvEG84Bez7wzg8XBh0"
   }
 }
