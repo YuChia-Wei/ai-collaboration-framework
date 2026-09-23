@@ -1,6 +1,13 @@
 # Bounded public skill execution
 
-Current checkpoint: [resumed report](resume-c1fb1c1f-report.md), [task](task.json), and
+Current checkpoint: [deferred fixture repair](deferred-fixture-repair-report.md),
+[actual workflow result](evidence/deferred-fixture-repair-result.json), and
+[task](task.json). The single selected workflow family passed on clean repair
+commit `8d09ec6c5d2d41bcf4e7e3e108640545d398fea1`. Other family observations remain
+at their prior subjects; PR cleanup is still separate. Earlier checkpoints below
+remain historical, with their original failures and scope preserved.
+
+Previous checkpoint: [resumed report](resume-c1fb1c1f-report.md), [task](task.json), and
 [resumed observations](evidence/resume-c1fb1c1f-observations.json). On source
 `c1fb1c1fb07a6d246e3bcedd3cd851918f66b306`, seven unchanged families ran once
 each: five passed, PR cleanup failed, and the workflow deferred-task fixture failed.
