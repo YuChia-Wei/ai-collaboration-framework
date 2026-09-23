@@ -1,0 +1,1741 @@
+{
+  "observed_at": "2026-09-23T08:22:41.636352+00:00",
+  "runs": [
+    {
+      "family": "lesson",
+      "capture": "initial-attempts.json",
+      "outcome": "failed",
+      "exit": 1,
+      "public_launches": 3,
+      "fixture_accounting": {
+        "observed_files": 12,
+        "observed_logical_bytes": 129027,
+        "retained_bytes": 129027,
+        "authored_bytes": 4337,
+        "process_total": 7,
+        "processes": {
+          "git": 4,
+          "python": 3,
+          "other": 0
+        },
+        "residue": "F:/framework-next/p7-runs/373-public/fn-6950b8ee5ac24d939cf62416c0a345f4"
+      },
+      "durable_refusal": {
+        "response": "lesson-create.response.bin",
+        "sha256": "f04781a4012bc54c45c8bbba635098bd257f1f5a763688bc038b667fac0d2f28"
+      }
+    },
+    {
+      "blocked_before_write": true,
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4506dcf31f1059ff09d13a081b433d3ecf7d7fbf05e47f25d5968bed151127a7"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-file",
+              "message": "An explicitly selected file is missing."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4d0713e0954ec2476a222c4a361d85222d471cf26bab5d7ce058b2e2a0eec7ae"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c77d6ef6228138241339fe4ea9bdffec125bde13c214627f49b288598b13c809"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "55eeb225c6cec9a5c4091046ba6f2597ea4bb2535921e0a61d1b53d4684c09f8"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "message": "Duplicate object keys are invalid."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c965f95e2dd638f56c3e95f23c0a19bfced53d409198c6b0b05c8b06b29e4ed0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "namespace-envelope",
+              "message": "Invalid or unsupported namespace envelope."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4da868efe1746d7f3111dea0430f41f85df8806498f2a043aa593a11a7fdf57f"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in selected skill settings."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d1b65c9da1da41da76d311c29bf14b34018df7954bc278fc711670dcfd71417f"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in config."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "02113160f99454f2c71a6375bdb581311e96fa4b8b379b5ea80571e806df6585"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "locked-field",
+              "message": "Override changes a project-locked setting."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "fe69733ee04de596cd2d016d5b1113b20637e664a192462aa4d17ce7391a087e"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "caller-boundary",
+              "message": "Selected store exceeds caller write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "6b5d127c6ce5929f8f8b8ac4c2c304696c2a6d8ca8993c4edf974ee30c98d8db"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "write-boundary",
+              "message": "Selected store exceeds project write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "b8ab781b60ce79d3a3db99b06938cff9f7d6ac62023f81904400922dc224faaf"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "template-resource",
+              "message": "Package template is undeclared."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "488ed7b3c887a5922a5bde4aefe6a1cd4cef5387910a84fe8da3bb88bb6d1643"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "path",
+              "message": "Parent traversal and drive-relative paths are forbidden."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c134d9343e5a892708949b11194d88217ef792b924684f362afb8665bc53f26d"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "package-binding",
+              "message": "This executable does not belong to the selected package."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C6-binding",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "faae3ed633147abdcecc55efb466cc49ddcec968ea0a16ce60e3249284e86d50"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding"
+      ],
+      "exit": 1,
+      "failed_phase": null,
+      "family": "adr",
+      "fixture_accounting": {
+        "authored_bytes": 10312,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 15,
+        "observed_logical_bytes": 219686,
+        "process_total": 20,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 16
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-86e4997e1268433a8aad3acb3f25234b",
+        "retained_bytes": 218992,
+        "retained_files": 15,
+        "wall_seconds": 6.429
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "partial",
+      "public_launches": 16,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-86e4997e1268433a8aad3acb3f25234b\\adr\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "T2-round-trip",
+        "T2-decision-derive"
+      ],
+      "capture": "adr-read-only.stdout"
+    },
+    {
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "a612ecfde266a30cd4b14741f7c8d4286723fabc444d19784f90396675caa1aa"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-file",
+              "message": "An explicitly selected file is missing."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4d0713e0954ec2476a222c4a361d85222d471cf26bab5d7ce058b2e2a0eec7ae"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "e49a4bfdd78a454e758c781730b0b1b01df1fad0359cdb6cb2bbdd6d311aff11"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "b305cc9b4eda71f2cd5cdbcd326eec9324e60da1df31f21715b5b52211a102cd"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "message": "Duplicate object keys are invalid."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c965f95e2dd638f56c3e95f23c0a19bfced53d409198c6b0b05c8b06b29e4ed0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup"
+      ],
+      "exit": 1,
+      "failed_phase": "C4-config",
+      "family": "adr",
+      "fixture_accounting": {
+        "authored_bytes": 6108,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 14,
+        "observed_logical_bytes": 132267,
+        "process_total": 10,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 6
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-8d2337bd7d4849fca093651e84d622c2",
+        "retained_bytes": 131740,
+        "retained_files": 14,
+        "wall_seconds": 2.841
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 6,
+      "outcome": "failed",
+      "public_launches": 6,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-8d2337bd7d4849fca093651e84d622c2\\adr\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "C6-binding",
+        "T2-round-trip",
+        "T2-decision-derive"
+      ],
+      "capture": "adr.stdout"
+    },
+    {
+      "blocked_before_write": true,
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "ok",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "b09202de7660db1a180aae5613f7aaf1d90035017b4456653b0f21e7bb93ffd3"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-path",
+              "location": "project_config",
+              "message": "Selected path or ancestor does not exist."
+            }
+          ],
+          "exit": 4,
+          "expected": "unavailable",
+          "operation": "explain",
+          "outcome": "unavailable",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "431b40ee980fafa72cac89c4dbb8f8635d45261cc369c73123e9b01a5e54884c"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "ok",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "2dad84346c687f1b7958a89ecbc541fae4433ef2a7e66a7e132ab9617cca4c69"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "ok",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "765c05724fad490f572755983949b3a90dac35e7df3df1e137657c469b46ca5c"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "location": "project_config",
+              "message": "Duplicate JSON key."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d7b79280c567827ea9054e1c1887994232a00e8a61ca6340a11a2ebe77279e82"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "project_config",
+              "message": "Only exact integer config_version 2 is supported."
+            }
+          ],
+          "exit": 2,
+          "expected": "unsupported-version",
+          "operation": "explain",
+          "outcome": "unsupported-version",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "dd005de06d50b0221d3ddd342af85d8b59c1702deccf927650655effbe0141e1"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "project_config",
+              "message": "Only exact integer config_version 2 is supported."
+            }
+          ],
+          "exit": 2,
+          "expected": "unsupported-version",
+          "operation": "explain",
+          "outcome": "unsupported-version",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "dd005de06d50b0221d3ddd342af85d8b59c1702deccf927650655effbe0141e1"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "project_config",
+              "message": "Each namespace must be a named object."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "26afaa3a61662d3195faceaea4f454d5a9e852008bb2b2b079389499ab13245b"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "project_config.skills.own",
+              "message": "Missing required or unknown member."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "07a41ac8d900a9f9a2adba65671a53d64ddcee397d8044e4c15d1784c2fae9b8"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "local_config",
+              "message": "Missing required or unknown member."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "359b81aca9e49d4b349c3678abf1d8baa64b8af436c52fd97ba35a112aec09a5"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "locked-field",
+              "location": "configuration",
+              "message": "A locked field changed."
+            }
+          ],
+          "exit": 3,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d825e15934088abaa9c6ec0fc7ffa3b62df5475f8e89c73ca7c8f8e80e5cda7a"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "store.root",
+              "message": "Store exceeds effective write roots."
+            }
+          ],
+          "exit": 3,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "5ecab05e7b225d4627bec5e53224ba91f9d4e2da6ec3b05b35ea25d990bd1841"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "store.root",
+              "message": "External stores require explicit project write roots and task authority."
+            }
+          ],
+          "exit": 3,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "62a5f448ed351df710b3404ebc1d33df43c7ef1e11e714f27d1dd209c4f577b0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "template",
+              "message": "Select the declared package template."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "1ea020c8da2d04d219c69a21ca9f0683ad4a76e4434629116de6421c34ca4031"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "store.root",
+              "message": "Aliased path segment."
+            }
+          ],
+          "exit": 2,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "e6e0b952f546a3ea622e47a12ba8a1582b0163133e62e5c7ea866bd7917b7986"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "package_root",
+              "message": "Executable does not belong to selected package."
+            }
+          ],
+          "exit": 3,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C6-binding",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "bb322e9455b6e25c508f81d119ff24366ef2eb1e47c7b0a685bb9f72ec8b2ade"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding"
+      ],
+      "exit": 1,
+      "failed_phase": null,
+      "family": "problem-frame-author",
+      "fixture_accounting": {
+        "authored_bytes": 11641,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 17,
+        "observed_logical_bytes": 164197,
+        "process_total": 20,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 16
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-d1405a3b03aa406c808b04ddc043c8ed",
+        "retained_bytes": 163442,
+        "retained_files": 17,
+        "wall_seconds": 6.417
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "partial",
+      "public_launches": 16,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-d1405a3b03aa406c808b04ddc043c8ed\\problem-frame-author\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "T7-round-trip",
+        "T7-structural-negatives"
+      ],
+      "capture": "cbf-read-only-corrected.stdout"
+    },
+    {
+      "blocked_before_write": false,
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "ok",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c7203a5d7c71422490e057f22c69988ac31a8353c202d0010c518f68b5131b19"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-path",
+              "location": "project_config",
+              "message": "Selected path or ancestor does not exist."
+            }
+          ],
+          "exit": 4,
+          "expected": "unavailable",
+          "operation": "explain",
+          "outcome": "unavailable",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "431b40ee980fafa72cac89c4dbb8f8635d45261cc369c73123e9b01a5e54884c"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "ok",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "7cd051fc73714be1a359307a338035948ef8e8fc4ebdca35db7f6c08b4b6d3b6"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "ok",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "9cf0b66221fa10881a1c3a511af33e3ace4cff12f1704f9b889759514f42a712"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "location": "project_config",
+              "message": "Duplicate JSON key."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d7b79280c567827ea9054e1c1887994232a00e8a61ca6340a11a2ebe77279e82"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "shape",
+              "location": "project_config",
+              "message": "Only exact integer config_version 2 is supported."
+            }
+          ],
+          "exit": 2,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "unsupported-version",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "dd005de06d50b0221d3ddd342af85d8b59c1702deccf927650655effbe0141e1"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup"
+      ],
+      "exit": 1,
+      "failed_phase": "C4-config",
+      "family": "problem-frame-author",
+      "fixture_accounting": {
+        "authored_bytes": 6900,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 16,
+        "observed_logical_bytes": 105583,
+        "process_total": 10,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 6
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-b1aa5fdc5bf547b9ae01665a15a97dc0",
+        "retained_bytes": 105012,
+        "retained_files": 16,
+        "wall_seconds": 2.825
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 6,
+      "outcome": "failed",
+      "public_launches": 6,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-b1aa5fdc5bf547b9ae01665a15a97dc0\\problem-frame-author\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "C6-binding",
+        "T7-round-trip",
+        "T7-structural-negatives"
+      ],
+      "capture": "cbf-read-only.stdout"
+    },
+    {
+      "blocked_before_write": true,
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "e6389966f9ac8dcec6fa547ff72d7b282eb2872dbda9f91ff46595574e6fbaf7"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-file",
+              "message": "An explicitly selected file is missing."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4d0713e0954ec2476a222c4a361d85222d471cf26bab5d7ce058b2e2a0eec7ae"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "84035fd47a355ef8a6387c0208e1a52fe8d8f12ee4a0a2dc02a5353538f258c4"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d91f7f27c85b460ae2500e0e151459492644c203019b1b7c95b9ec6c06dad31e"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "message": "Duplicate object keys are invalid."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c965f95e2dd638f56c3e95f23c0a19bfced53d409198c6b0b05c8b06b29e4ed0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "namespace-envelope",
+              "message": "Invalid or unsupported namespace envelope."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4da868efe1746d7f3111dea0430f41f85df8806498f2a043aa593a11a7fdf57f"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in selected skill settings."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d1b65c9da1da41da76d311c29bf14b34018df7954bc278fc711670dcfd71417f"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in config."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "02113160f99454f2c71a6375bdb581311e96fa4b8b379b5ea80571e806df6585"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "locked-field",
+              "message": "Override changes a project-locked setting."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "fe69733ee04de596cd2d016d5b1113b20637e664a192462aa4d17ce7391a087e"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "caller-boundary",
+              "message": "Selected store exceeds caller write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "6b5d127c6ce5929f8f8b8ac4c2c304696c2a6d8ca8993c4edf974ee30c98d8db"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "write-boundary",
+              "message": "Selected store exceeds project write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "b8ab781b60ce79d3a3db99b06938cff9f7d6ac62023f81904400922dc224faaf"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "template-resource",
+              "message": "Package template is undeclared."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "488ed7b3c887a5922a5bde4aefe6a1cd4cef5387910a84fe8da3bb88bb6d1643"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "path",
+              "message": "Parent traversal and drive-relative paths are forbidden."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c134d9343e5a892708949b11194d88217ef792b924684f362afb8665bc53f26d"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "3b5b0eb933679c75504617712845120dd6cb260888a494dfec2cad17b3b4751c"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Selected project/local config versions must match."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "af4a1e072ce0922f413ac5be0a845d243c491b686f2a39bf8c4d6605afd9f21b"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "package-binding",
+              "message": "This executable does not belong to the selected package."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C6-binding",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "faae3ed633147abdcecc55efb466cc49ddcec968ea0a16ce60e3249284e86d50"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding"
+      ],
+      "exit": 1,
+      "failed_phase": null,
+      "family": "lesson",
+      "fixture_accounting": {
+        "authored_bytes": 11833,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 16,
+        "observed_logical_bytes": 225735,
+        "process_total": 22,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 18
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-4513f91c5e6447afa794989956be1d0e",
+        "retained_bytes": 224910,
+        "retained_files": 16,
+        "wall_seconds": 5.768
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 12,
+      "outcome": "partial",
+      "public_launches": 18,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-4513f91c5e6447afa794989956be1d0e\\lesson\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "T1-round-trip",
+        "C6-query-and-legacy",
+        "T1-decision-successor"
+      ],
+      "capture": "lesson-read-only.stdout"
+    },
+    {
+      "blocked_before_write": false,
+      "calls": [
+        {
+          "diagnostics": [
+            {
+              "code": "yaml-token",
+              "message": "YAML tags, aliases and anchors are forbidden."
+            }
+          ],
+          "exit": 1,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "592fbcb37e6c113808d6632e319bc8239cb651a8df2b019f13ba488f6811a924"
+        }
+      ],
+      "completed_phases": [],
+      "exit": 1,
+      "failed_phase": "resource-setup",
+      "family": "pr",
+      "fixture_accounting": {
+        "authored_bytes": 3388,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 13,
+        "observed_logical_bytes": 126915,
+        "process_total": 5,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 1
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-d72c3406628d4cc6bef0626a49d5de8d",
+        "retained_bytes": 126915,
+        "retained_files": 13,
+        "wall_seconds": 1.231
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 0,
+      "outcome": "failed",
+      "public_launches": 1,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-d72c3406628d4cc6bef0626a49d5de8d\\pr\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "C4-config",
+        "C6-binding",
+        "T4-git-round-trip",
+        "T4-synthetic-provider"
+      ],
+      "capture": "pr-read-only.stdout",
+      "durable_refusal": {
+        "response": "pr-explain.response.bin",
+        "sha256": "592fbcb37e6c113808d6632e319bc8239cb651a8df2b019f13ba488f6811a924"
+      }
+    },
+    {
+      "blocked_before_write": true,
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "a4499b735718ab06012dced874c7afea2800548f06697225571651c00b71cbd0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-file",
+              "message": "An explicitly selected file is missing."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4d0713e0954ec2476a222c4a361d85222d471cf26bab5d7ce058b2e2a0eec7ae"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "88e571d23da4353723aee4cf950798eecf3f39a0213df60332b9000096d7735d"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "261cecaa630422aa77a110f1ceb7e4dc595d7717ba2b6153e4019f804404b73d"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "message": "Duplicate object keys are invalid."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c965f95e2dd638f56c3e95f23c0a19bfced53d409198c6b0b05c8b06b29e4ed0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Unsupported exact integer config version."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "104adef8cc87c933371f48cfaab63f1b1f66d89e6d390f33182c9b520fff2f23"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "namespace-envelope",
+              "message": "Invalid or unsupported namespace envelope."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4da868efe1746d7f3111dea0430f41f85df8806498f2a043aa593a11a7fdf57f"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in selected skill settings."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "d1b65c9da1da41da76d311c29bf14b34018df7954bc278fc711670dcfd71417f"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in config."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "02113160f99454f2c71a6375bdb581311e96fa4b8b379b5ea80571e806df6585"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "locked-field",
+              "message": "Override changes a project-locked setting."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "fe69733ee04de596cd2d016d5b1113b20637e664a192462aa4d17ce7391a087e"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "caller-boundary",
+              "message": "Selected store exceeds caller write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "6b5d127c6ce5929f8f8b8ac4c2c304696c2a6d8ca8993c4edf974ee30c98d8db"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "write-boundary",
+              "message": "Selected store exceeds project write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "b8ab781b60ce79d3a3db99b06938cff9f7d6ac62023f81904400922dc224faaf"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "template-resource",
+              "message": "Package template is undeclared."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "488ed7b3c887a5922a5bde4aefe6a1cd4cef5387910a84fe8da3bb88bb6d1643"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "path",
+              "message": "Parent traversal and drive-relative paths are forbidden."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c134d9343e5a892708949b11194d88217ef792b924684f362afb8665bc53f26d"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "package-binding",
+              "message": "This executable does not belong to the selected package."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C6-binding",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "faae3ed633147abdcecc55efb466cc49ddcec968ea0a16ce60e3249284e86d50"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding"
+      ],
+      "exit": 1,
+      "failed_phase": null,
+      "family": "standards-promotion",
+      "fixture_accounting": {
+        "authored_bytes": 11546,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 16,
+        "observed_logical_bytes": 249550,
+        "process_total": 20,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 16
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-2f08edbf3d7b476e8ca4364d3b5727d3",
+        "retained_bytes": 248796,
+        "retained_files": 16,
+        "wall_seconds": 7.957
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "partial",
+      "public_launches": 16,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-2f08edbf3d7b476e8ca4364d3b5727d3\\standards-promotion\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "T3-round-trip",
+        "T3-reconciliation-boundaries"
+      ],
+      "capture": "promotion-read-only.stdout"
+    },
+    {
+      "blocked_before_write": true,
+      "calls": [
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "resource-setup",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "1fc79e379021eb516f98c0c5067bffa5fa56b9cb1618d7aa5fcbd01f7fbb406e"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "missing-file",
+              "message": "An explicitly selected file is missing."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "4d0713e0954ec2476a222c4a361d85222d471cf26bab5d7ce058b2e2a0eec7ae"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "28ecd072852c50d84816020e5a7fcadd3476ba659d7ca03684395ef313aceda4"
+        },
+        {
+          "diagnostics": [],
+          "exit": 0,
+          "expected": "success",
+          "operation": "explain",
+          "outcome": "succeeded",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "f97a3da79b02a340b30baf3de94fbe357139c70648b4f865c32f8b21745b0d6b"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "duplicate-key",
+              "message": "Duplicate object keys are invalid."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c965f95e2dd638f56c3e95f23c0a19bfced53d409198c6b0b05c8b06b29e4ed0"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Selected config must use exact integer version 2."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "75fb61f37ea0e044c0277363434601a0b24d8d4eb1b11659481ad2628fa68e29"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "config-version",
+              "message": "Selected config must use exact integer version 2."
+            }
+          ],
+          "exit": 1,
+          "expected": "unsupported",
+          "operation": "explain",
+          "outcome": "unsupported",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "75fb61f37ea0e044c0277363434601a0b24d8d4eb1b11659481ad2628fa68e29"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "namespace",
+              "message": "Each namespace must be a valid ID and object."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "fd47e4a67e610f1ecdf46ae86e16d362f420b48ff3ce5740a8168ea9501e1da1"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in skill settings."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "60e28c9266c51ee5e88d84d45c7710acf28987447c3e568f0f7169b14285cfb6"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "fields",
+              "message": "Invalid or unknown fields in config."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "02113160f99454f2c71a6375bdb581311e96fa4b8b379b5ea80571e806df6585"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "locked-field",
+              "message": "Override changes project-locked field store.tracking."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c523f0bb38da2923e2ea2e95ea9513944f87de877cb007df9fb9bd6ca97e5a8b"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "caller-boundary",
+              "message": "Selected store exceeds caller write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "6b5d127c6ce5929f8f8b8ac4c2c304696c2a6d8ca8993c4edf974ee30c98d8db"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "write-boundary",
+              "message": "Selected store exceeds project write roots."
+            }
+          ],
+          "exit": 1,
+          "expected": "blocked",
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "b8ab781b60ce79d3a3db99b06938cff9f7d6ac62023f81904400922dc224faaf"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "template-resource",
+              "message": "A package template must be a declared template resource."
+            }
+          ],
+          "exit": 1,
+          "expected": "invalid-input",
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "7a9d4d212c7dc59e3b4d51225a25568da61228254ccbe7908dc2c69c53b12a7d"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "path",
+              "message": "Parent traversal and drive-relative paths are forbidden."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "invalid-input",
+          "phase": "C4-config",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "c134d9343e5a892708949b11194d88217ef792b924684f362afb8665bc53f26d"
+        },
+        {
+          "diagnostics": [
+            {
+              "code": "package-binding",
+              "message": "Selected package does not own this executable."
+            }
+          ],
+          "exit": 1,
+          "expected": [
+            "invalid-input",
+            "blocked"
+          ],
+          "operation": "explain",
+          "outcome": "blocked",
+          "phase": "C6-binding",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_sha256": "68241f1693916eee622666396b7942dba74e81345bfa35dd0908a9676f43fc0b"
+        }
+      ],
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding"
+      ],
+      "exit": 1,
+      "failed_phase": null,
+      "family": "software-development-orchestrator",
+      "fixture_accounting": {
+        "authored_bytes": 12607,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 17,
+        "observed_logical_bytes": 257674,
+        "process_total": 20,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 16
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-af9dd1f085e94a409b571dcdc265eca0",
+        "retained_bytes": 256880,
+        "retained_files": 17,
+        "wall_seconds": 7.085
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "partial",
+      "public_launches": 16,
+      "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-af9dd1f085e94a409b571dcdc265eca0\\software-development-orchestrator\\public-transcript.jsonl",
+      "unexecuted_phases": [
+        "T6-round-trip",
+        "T6-with-deferrals"
+      ],
+      "capture": "workflow-read-only.stdout"
+    }
+  ],
+  "totals": {
+    "public_launches": 98,
+    "driver_git": 36,
+    "observed_logical_bytes": 1610634,
+    "retained_bytes": 1605714,
+    "helper_authored_bytes": 78672,
+    "observed_files": 136
+  },
+  "nested_child_launches": "unavailable as measured count; conservative source bounds recorded per run",
+  "backlog": {
+    "outcome": "not-executed",
+    "public_launches": 0,
+    "reason": "same verified parser/forbidden committed metadata tokens as observed PR setup failure; coordinator instructed stop affected shared setup"
+  },
+  "zero_public_record_publications": true,
+  "boundary_input_bytes_executed": 0,
+  "current_test_sha256": {
+    "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+    "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+    "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+    "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+    "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+  }
+}

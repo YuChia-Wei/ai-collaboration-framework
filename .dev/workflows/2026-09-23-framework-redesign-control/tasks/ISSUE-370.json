@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T15:05:56+08:00",
-  "updated_at": "2026-09-23T16:00:37+08:00",
+  "updated_at": "2026-09-23T16:08:53+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -44,7 +44,7 @@
       "Direct content/syntax/reference/Git and complete planned-message checks only"
     ],
     "last_completed_step": "Independent affected-source review returned clean; source finding resolved",
-    "next_action": "Coordinator online PR integration and bounded closure; public/native obligations stay with #322 / V3"
+    "next_action": "Retain bounded completed source/review; public/native obligations remain with #322 / V3"
   },
   "results": {
     "summary": "CR-001 resolved in fixed source; no new substantiated source defect; runtime gaps retained",
@@ -85,8 +85,12 @@
       "scope": "Bootstrap loader delta plus test/evidence inspection; no runtime execution",
       "review_commit": "066a964efe95062179bb1eff1376fc4b73aecb17"
     },
-    "closure_disposition": "terminal-close for bounded source/review only; remaining V3 obligations tracked by #322"
+    "closure_disposition": "terminal-close for bounded source/review only; remaining V3 obligations tracked by #322",
+    "pull_request": 374,
+    "merge_commit": "c10d874dc658d86ba9e3cf064271ffcfe4a25a14",
+    "integration_state": "online merged; bounded Issue CLOSED/COMPLETED and Project Done read back",
+    "provider_observed_at": "2026-09-23T16:06:40.4648392+08:00"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RObw",
-  "project_state": "In progress; Status only mutated; no other single-select values observed"
+  "project_state": "Done; live Issue CLOSED/COMPLETED"
 }
