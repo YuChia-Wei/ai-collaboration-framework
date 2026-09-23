@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T10:24:44+08:00",
-  "updated_at": "2026-09-23T10:24:44+08:00",
+  "updated_at": "2026-09-23T10:30:37+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -46,11 +46,11 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Issue/Project and concrete source scope selected",
-    "next_action": "Dispatch after bootstrap commit"
+    "last_completed_step": "Independent Astra Ultra task dispatched; runtime row and first F: command observed",
+    "next_action": "Receive coherent local source and inspect actual package closure"
   },
   "results": {
-    "summary": "Source scope selected; no delivery yet",
+    "summary": "Independent source task active in assigned F: worktree",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
@@ -58,15 +58,17 @@
     "follow_up_needed": true
   },
   "dispatch": {
-    "thread_id": null,
+    "thread_id": "01a0cc19-2820-7061-9c6e-e5f305fdfbaf",
     "worktree": "F:/framework-next/357",
     "branch": "codex/2026-09-23-optional-context-implementation",
     "workflow_id": "2026-09-23-optional-context-implementation",
-    "starting_commit_source": "containing coordinator checkpoint"
+    "starting_commit_source": "containing coordinator checkpoint",
+    "starting_commit": "59877b8d2f61e9a95615ea95d597fe35da2f44cf",
+    "evidence": "evidence/p5-final-source-dispatch.json"
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p5-final-capability-contract.md",
-    "implementation_status": "not started",
+    "implementation_status": "active; no delivery yet",
     "verification_state": "deferred-by-owner"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PhEc"

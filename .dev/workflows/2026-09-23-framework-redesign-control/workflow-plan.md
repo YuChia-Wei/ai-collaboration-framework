@@ -36,8 +36,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #351 | P5-D frame/compliance design | own design/workflow only | design inspected/selected; online integration pending |
 | #352 | P5-E optional maintenance design | own design/workflow only | design inspected/selected; online integration pending |
 | #354 | P6-B state/planning | own reader/plan modules and design/workflow | independent source task active; runtime/F: identity verified |
-| #356 | P5-F frame/compliance source | two own packages/design/workflow | selected; independent source dispatch next |
-| #357 | P5-G optional maintenance source | two own packages/design/workflow | selected; independent source dispatch next |
+| #356 | P5-F frame/compliance source | two own packages/design/workflow | independent source task active; runtime/F: identity verified |
+| #357 | P5-G optional maintenance source | two own packages/design/workflow | independent source task active; runtime/F: identity verified |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -72,3 +72,7 @@ Both tasks are active from shared checkpoint `731d658b6004110fd59224ca39aa3a5d63
 ## P6 source and P5 mapping dispatch
 
 [Actual dispatch evidence](evidence/p6-planning-dispatch.json) records #354 runtime/F: identity and #346 explicit fast-forward to `5986b2146bb4559609acb0d5c7d09e8570375ea8`. They own different source paths. Neither implementation completion nor execution is inferred.
+
+## Final P5 source dispatch
+
+[Runtime and first-command evidence](evidence/p5-final-source-dispatch.json) records #356 and #357 on the preserved design checkpoint `59877b8d2f61e9a95615ea95d597fe35da2f44cf`. Both use independent Astra Ultra tasks and distinct F: worktrees. No package mapping, product execution or acceptance is implied.
