@@ -1,0 +1,89 @@
+{
+  "before": {
+    "files": [
+      {
+        "path": "calls.jsonl",
+        "size": 855
+      },
+      {
+        "path": "engine-pin.json",
+        "size": 1613
+      },
+      {
+        "path": "project/.ai/custom/framework.json",
+        "size": 37
+      },
+      {
+        "path": "project/.gitattributes",
+        "size": 8
+      },
+      {
+        "path": "project/.gitignore",
+        "size": 11
+      },
+      {
+        "path": "project/AGENTS.md",
+        "size": 44
+      }
+    ],
+    "helper_launches": 3,
+    "observed_files": 6,
+    "observed_logical_bytes": 2568
+  },
+  "branch": "codex/2026-09-23-protected-path-repair",
+  "caps": {
+    "files": 96,
+    "helper_launches": 8,
+    "logical_bytes": 4194304
+  },
+  "clean": true,
+  "failure_domain": "process-termination; no apply/recovery selected",
+  "protected_inputs": [
+    {
+      "path": ".ai/custom/framework.json",
+      "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187"
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58"
+    },
+    {
+      "path": "protected-absent.txt",
+      "sha256": null
+    }
+  ],
+  "protected_source": "F:\\framework-next\\p7-runs\\native-w01\\382\\63bb8cce\\project",
+  "retention": "all outputs retained, no cleanup",
+  "root_identity": [
+    12003918052740279813,
+    844424930172146
+  ],
+  "run": "F:\\framework-next\\p7-runs\\protected-path-383\\ce4aed45",
+  "runtime": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "source_commit": "3c0832b89d73cfedfc625462d167a3811fdf7931",
+  "strict_resolve_observations": [
+    {
+      "error_type": "OSError",
+      "path": ".ai",
+      "winerror": 1
+    },
+    {
+      "error_type": "OSError",
+      "path": ".ai/custom",
+      "winerror": 1
+    },
+    {
+      "error_type": "OSError",
+      "path": ".ai/custom/framework.json",
+      "winerror": 1
+    }
+  ]
+}

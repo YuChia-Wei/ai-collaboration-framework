@@ -1,0 +1,156 @@
+{
+  "nested_product_git_launches": "unavailable",
+  "observations": {
+    "files": [
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/metadata/files.json",
+        "size": 5924
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/metadata/selection.json",
+        "size": 8621
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/SKILL.md",
+        "size": 1706
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/references/configuration.md",
+        "size": 6117
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/references/example.md",
+        "size": 5014
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/references/operations.md",
+        "size": 10852
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "size": 10420
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "size": 2596
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "size": 81052
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "size": 6336
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "size": 508
+      },
+      {
+        "path": "b/scratch-6ea97374cff74851879d270cd81f09ed/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "size": 2421
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/metadata/build.json",
+        "size": 3650
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/metadata/files.json",
+        "size": 5924
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/metadata/selection.json",
+        "size": 8621
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/SKILL.md",
+        "size": 1706
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/references/configuration.md",
+        "size": 6117
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/references/example.md",
+        "size": 5014
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/references/operations.md",
+        "size": 10852
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "size": 10420
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "size": 2596
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "size": 81052
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "size": 6336
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "size": 508
+      },
+      {
+        "path": "c/candidate-3c0832b89d73-6ea97374cff74851879d270cd81f09ed/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "size": 2421
+      },
+      {
+        "path": "calls.jsonl",
+        "size": 19063
+      },
+      {
+        "path": "engine-pin.json",
+        "size": 1613
+      },
+      {
+        "path": "plan-request.json",
+        "size": 3335
+      },
+      {
+        "path": "plan-response.json",
+        "size": 10142
+      },
+      {
+        "path": "plan-stderr.txt",
+        "size": 0
+      },
+      {
+        "path": "preflight.json",
+        "size": 2195
+      },
+      {
+        "path": "project/.ai/custom/framework.json",
+        "size": 37
+      },
+      {
+        "path": "project/.gitattributes",
+        "size": 8
+      },
+      {
+        "path": "project/.gitignore",
+        "size": 11
+      },
+      {
+        "path": "project/AGENTS.md",
+        "size": 44
+      },
+      {
+        "path": "result.json",
+        "size": 858
+      }
+    ],
+    "helper_launches": 5,
+    "observed_files": 36,
+    "observed_logical_bytes": 324090
+  },
+  "outcome": "passed",
+  "snapshot_excludes": "inventory.json"
+}

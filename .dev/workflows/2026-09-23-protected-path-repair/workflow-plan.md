@@ -38,6 +38,11 @@ restore CI, install a target, or authorize publication.
 
 ## Current state
 
-Implementation in progress. Actual selected execution has not run.
+Bounded implementation and the selected execution are complete. Repair checkpoint:
+`3c0832b89d73cfedfc625462d167a3811fdf7931`. Nine focused simulated regressions
+passed. One actual public plan passed from that clean commit; see
+[report.md](report.md) and [raw evidence manifest](evidence/manifest.json).
+The record commit leaves product/test bytes unchanged and does not relabel
+that executed source as a later commit. First push remains coordinator-owned.
 The first sandboxed GitHub read failed at the configured proxy; the subsequent
 scoped read-only query succeeded and observed Issue #383 OPEN with matching scope.

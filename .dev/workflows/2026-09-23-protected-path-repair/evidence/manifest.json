@@ -1,0 +1,56 @@
+{
+  "source_commit": "3c0832b89d73cfedfc625462d167a3811fdf7931",
+  "retained_root": "F:\\framework-next\\p7-runs\\protected-path-383\\ce4aed45",
+  "copy_semantics": "lossless raw evidence bytes; public stdout/stderr are also base64 in calls.jsonl",
+  "files": [
+    {
+      "path": "preflight.json",
+      "sha256": "1faec252bab032519871b316c6bd39a7a79d53be81f393937da669cd00812526",
+      "size": 2195
+    },
+    {
+      "path": "engine-pin.json",
+      "sha256": "01b8efdc98f6479236bde78ff2a73932905fee1315ec7dbefa35f24bbc87cb6d",
+      "size": 1613
+    },
+    {
+      "path": "calls.jsonl",
+      "sha256": "71cc0d6a64127b7de2b1eacba494408bbff9e092c575167e60b5b58693d56e0a",
+      "size": 19063
+    },
+    {
+      "path": "plan-request.json",
+      "sha256": "f576c9a1a5ce3b068a8fae15730d84561038ad1fac5207b7876ff634ba6ac8d4",
+      "size": 3335
+    },
+    {
+      "path": "plan-response.json",
+      "sha256": "8da1116ca581c8ead085f8066554454c225717dd8df4b3c7fe2b8ecedca30ab2",
+      "size": 10142
+    },
+    {
+      "path": "plan-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "result.json",
+      "sha256": "95e3963a9a5e617f88000ce409efb7474c6befadcb88b05e84e0b2878f7dce62",
+      "size": 858
+    },
+    {
+      "path": "inventory.json",
+      "sha256": "863c52a1e18a765fcd1ab8d3ad6d5c1a0e888c9af30175c231295cf589cc5cb6",
+      "size": 4955
+    }
+  ],
+  "run_close_observation": {
+    "files": 37,
+    "logical_bytes": 329045,
+    "helper_launches": 5,
+    "public_helper_launches": 2,
+    "driver_git_launches": 3,
+    "nested_product_git_launches": "unavailable"
+  },
+  "readback_limit": "sandboxed read of private mode-0700 output returned access denied; no new public run; scoped read/copy succeeded"
+}
