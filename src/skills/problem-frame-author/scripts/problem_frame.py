@@ -561,8 +561,74 @@ def render_record(record, template):
     return re.sub(r"\{\{(id|title|body)\}\}", lambda match: substitutions[match.group(1)], template)
 
 
+def _windows_handle_filesystem(directory, volume, kernel):
+    """Error-144 fallback: observe this direct directory, never substitute a drive.
+
+    The mount-path answer must be an ancestor on the same device. All ancestors
+    and the opened directory retain their identities; no link/reparse traversal
+    or short-name substitution is admitted. This is not a filesystem lease.
+    """
+    import ctypes
+    import msvcrt
+    from ctypes import wintypes as w
+
+    def snapshot():
+        rows = []
+        for current in (directory, *directory.parents):
+            info = current.lstat()
+            if (not stat.S_ISDIR(info.st_mode) or stat.S_ISLNK(info.st_mode)
+                    or getattr(info, "st_file_attributes", 0) & 0x400
+                    or not info.st_dev or not info.st_ino):
+                raise OSError("direct directory identity unavailable")
+            rows.append((info.st_dev, info.st_ino))
+        return rows
+
+    if (not directory.is_absolute() or str(directory).startswith(("\\\\", "//"))
+            or ".." in directory.parts or Path(volume) not in (directory, *directory.parents)):
+        raise OSError("direct volume path unavailable")
+    before = snapshot()
+    if len({device for device, _ in before}) != 1:
+        raise OSError("volume identity differs across ancestors")
+    kernel.GetLongPathNameW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.GetLongPathNameW.restype = w.DWORD
+    canonical = ctypes.create_unicode_buffer(32768)
+    length = kernel.GetLongPathNameW(str(directory), canonical, len(canonical))
+    if not 0 < length < len(canonical) or Path(canonical.value) != directory:
+        raise OSError("canonical directory identity unavailable")
+    kernel.CreateFileW.argtypes = [w.LPCWSTR, w.DWORD, w.DWORD, ctypes.c_void_p, w.DWORD, w.DWORD, w.HANDLE]
+    kernel.CreateFileW.restype = w.HANDLE
+    kernel.CloseHandle.argtypes = [w.HANDLE]
+    kernel.CloseHandle.restype = w.BOOL
+    kernel.GetVolumeInformationByHandleW.argtypes = [w.HANDLE, w.LPWSTR, w.DWORD, ctypes.POINTER(w.DWORD),
+                                                    ctypes.c_void_p, ctypes.c_void_p, w.LPWSTR, w.DWORD]
+    kernel.GetVolumeInformationByHandleW.restype = w.BOOL
+    # Metadata-only OPEN_EXISTING, BACKUP_SEMANTICS | OPEN_REPARSE_POINT.
+    handle = kernel.CreateFileW(str(directory), 0, 7, None, 3, 0x02200000, None)
+    if handle in (None, ctypes.c_void_p(-1).value):
+        raise OSError("directory handle unavailable")
+    try:
+        descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY)
+    except BaseException:
+        kernel.CloseHandle(handle)
+        raise
+    try:
+        info = os.fstat(descriptor)
+        if ((info.st_dev, info.st_ino) != before[0] or not stat.S_ISDIR(info.st_mode)
+                or getattr(info, "st_file_attributes", 0) & 0x400):
+            raise OSError("opened directory identity differs")
+        filesystem, serial = ctypes.create_unicode_buffer(64), w.DWORD()
+        if not kernel.GetVolumeInformationByHandleW(handle, None, 0, ctypes.byref(serial), None, None,
+                                                   filesystem, len(filesystem)):
+            raise OSError("handle filesystem observation failed")
+        if serial.value != info.st_dev & 0xffffffff or snapshot() != before:
+            raise OSError("directory volume identity changed")
+        return filesystem.value
+    finally:
+        os.close(descriptor)
+
+
 def local_backend(directory):
-    """Select a bounded local hard-link backend; no publication probe or fallback."""
+    """Select a bounded local hard-link backend; no publication probe."""
     if os.name == "nt":
         import ctypes
         from ctypes import wintypes
@@ -576,8 +642,13 @@ def local_backend(directory):
         require(bool(kernel.GetVolumePathNameW(str(directory), volume, len(volume))),
                 "store", "Local volume identity unavailable.", "unavailable")
         require(kernel.GetDriveTypeW(volume.value) in (3, 6), "store", "Only local fixed/RAM volumes are selected.", "unavailable")
-        require(bool(kernel.GetVolumeInformationW(volume.value, None, 0, None, None, None, filesystem, len(filesystem)))
-                and filesystem.value == "NTFS", "store", "This backend requires local NTFS hard links.", "unavailable")
+        if not kernel.GetVolumeInformationW(volume.value, None, 0, None, None, None, filesystem, len(filesystem)):
+            require(ctypes.get_last_error() == 144, "store", "Local filesystem observation failed.", "unavailable")
+            try:
+                filesystem.value = _windows_handle_filesystem(directory, volume.value, kernel)
+            except OSError:
+                fail("unavailable", "filesystem", "store", "Direct write volume cannot be verified.")
+        require(filesystem.value == "NTFS", "store", "This backend requires local NTFS hard links.", "unavailable")
         return "windows-ntfs-hard-link"
     if sys.platform == "linux":
         try:

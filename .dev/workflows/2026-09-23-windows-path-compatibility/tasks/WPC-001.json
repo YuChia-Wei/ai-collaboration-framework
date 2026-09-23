@@ -1,0 +1,40 @@
+{
+  "task_id": "WPC-001",
+  "workflow_id": "2026-09-23-windows-path-compatibility",
+  "owner_skill": "local-change-implementer",
+  "status": "in_progress",
+  "created_at": "2026-09-23T21:44:35+08:00",
+  "updated_at": "2026-09-23T21:49:03+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "template_version": "1.5.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Declared dispatch, not independent runtime attestation",
+  "scope": {
+    "target": "Issue 378 reader root and three writer backend compatibility implementations",
+    "files": [
+      "src/skills/lesson/scripts/lesson.py",
+      "src/skills/adr/scripts/adr.py",
+      "src/skills/standards-promotion/scripts/standards_promotion.py",
+      "src/skills/pr/scripts/pr.py",
+      "src/skills/local-backlog/scripts/local_backlog.py",
+      "src/skills/software-development-orchestrator/scripts/workflow.py",
+      "src/skills/problem-frame-author/scripts/problem_frame.py",
+      "src/distribution/installation_io.py",
+      "src/distribution/installation_state.py",
+      "tests/framework_next/test_windows_paths.py",
+      ".dev/workflows/2026-09-23-windows-path-compatibility/**"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "Source repair and 10 focused API simulation tests passed",
+    "next_action": "Run the once-selected actual F: cases against the coherent local checkpoint",
+    "deferred_items": [
+      "U001 legacy validators, formal packets, full matrices, CI: deferred-by-owner to program #322 coordinator/P7 post-pilot review"
+    ]
+  },
+  "results": {
+    "summary": "Implementation in progress",
+    "follow_up_needed": true
+  }
+}
