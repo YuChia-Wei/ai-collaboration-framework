@@ -1,0 +1,17 @@
+{
+  "result.json": {
+    "durable_path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\cb3d1c6c\\result.json",
+    "durable_raw_sha256": "af1e0f560e76d4635a9cb480f26563cd75aca5e4d6f8aa0a76a31a201f0e0d11",
+    "tracked_sha256": "af1e0f560e76d4635a9cb480f26563cd75aca5e4d6f8aa0a76a31a201f0e0d11"
+  },
+  "calls.jsonl": {
+    "durable_path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\cb3d1c6c\\calls.jsonl",
+    "durable_raw_sha256": "521600a09d4cc8b9ad97bdd55593494ab65db5d2ef41d486b9dc3fc736694a3d",
+    "tracked_sha256": "521600a09d4cc8b9ad97bdd55593494ab65db5d2ef41d486b9dc3fc736694a3d"
+  },
+  "engine-pin.json": {
+    "durable_path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\cb3d1c6c\\engine-pin.json",
+    "durable_raw_sha256": "662210ff30e603f444a44a201fac775fae2ed25fb3892af3103318ee6937e0ff",
+    "tracked_sha256": "662210ff30e603f444a44a201fac775fae2ed25fb3892af3103318ee6937e0ff"
+  }
+}

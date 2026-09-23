@@ -1,0 +1,56 @@
+{
+  "events": [
+    "local",
+    ".fi-75dc54f6e5af",
+    ".fi-75dc54f6e5af",
+    ".fi-75dc54f6e5af",
+    "framework.operation"
+  ],
+  "files": {
+    ".ai/custom/framework.json": {
+      "mode": 438,
+      "mtime_ns": 1790176038591988300,
+      "sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187",
+      "size": 37
+    },
+    ".ai/framework.operation": {
+      "mode": 438,
+      "mtime_ns": 1790176040449738900,
+      "sha256": "3a26da3ff7a1a67c1393aefe3e852f8ba253ede54c89513aae4a5f70333e3592",
+      "size": 3781
+    },
+    ".ai/local/installation.guard": {
+      "mode": 438,
+      "mtime_ns": 1790176039514555000,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    ".gitattributes": {
+      "mode": 438,
+      "mtime_ns": 1790176038590481100,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "size": 8
+    },
+    ".gitignore": {
+      "mode": 438,
+      "mtime_ns": 1790176038590481100,
+      "sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948",
+      "size": 11
+    },
+    "AGENTS.md": {
+      "mode": 438,
+      "mtime_ns": 1790176038590481100,
+      "sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58",
+      "size": 44
+    },
+    "unknown/keep.txt": {
+      "mode": 438,
+      "mtime_ns": 1790176038591988300,
+      "sha256": "0d60a0580f7f22eed9b6a88d607044bfd3add0ec869e8dd0a0408f7b4da0e579",
+      "size": 25
+    }
+  },
+  "marker_observed_sha256": "3a26da3ff7a1a67c1393aefe3e852f8ba253ede54c89513aae4a5f70333e3592",
+  "public_result": null,
+  "terminated_owned_public_process": true
+}

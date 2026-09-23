@@ -1,0 +1,357 @@
+{
+  "accounting": {
+    "driver_git_launches": 5,
+    "elapsed_seconds": 11.581,
+    "maximum_simultaneous_owned_children": 1,
+    "observed_created_file_names": 99,
+    "observed_logical_bytes": 1010204,
+    "public_helper_launches": 11,
+    "retained_files": 99,
+    "retained_logical_bytes": 1010204,
+    "retained_operation_roots": 1,
+    "transient_file_creation_total": "unavailable; snapshot names are a lower bound"
+  },
+  "branch": "codex/2026-09-23-native-maintenance-checks",
+  "candidate": {
+    "candidate_identity": "development:cb41982dde3af9d746624b6939f26fd2883623af:e06aaf8c47df6a9198987ac4e78f8b7da6f22e04249ccaa4f2e3514e0efc1247",
+    "candidate_root": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\candidates\\candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e",
+    "completion_metadata": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\candidates\\candidate-cb41982dde3a-7488048202e34682ab02f360f8a5dd6e\\metadata\\build.json",
+    "outcome": "assembled",
+    "scratch_root": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\build-scratch\\scratch-7488048202e34682ab02f360f8a5dd6e"
+  },
+  "cases": [
+    {
+      "ambient_source": "public -I -B fixed bootstrap; no product imported by driver",
+      "cache_limitation": "no new observed cache; adversarial cache substitution remains separately labelled synthetic evidence",
+      "candidate_identity": "development:cb41982dde3af9d746624b6939f26fd2883623af:e06aaf8c47df6a9198987ac4e78f8b7da6f22e04249ccaa4f2e3514e0efc1247",
+      "evidence_class": "actual-public-native",
+      "id": "entry-pin",
+      "outcome": "passed",
+      "plan_sha256": "2aefc66425b8bec6b1ab859f9baf666d6f4565ba2114c12a72ea6d8fd3690485"
+    },
+    {
+      "evidence_class": "actual-public-native",
+      "id": "fresh-apply",
+      "lock_sha256": "20841e723b40556e006abbc2e49f4f038f38c1159bccccf7674912794107abca",
+      "managed_members": 10,
+      "managed_state": "managed-bytes-consistent",
+      "marker_sha256": null,
+      "operation": {
+        "objects": 14,
+        "path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\recovery\\cb3d1c6c\\i-91297471d8510b6178a32e6297e02d04",
+        "sha256": "8b9bff268c56b375770d39feac4385fc373a480ef07c3721e76327150cc1c0de"
+      },
+      "outcome": "passed",
+      "project_readiness": "not-assessed",
+      "reported_counts": {
+        "added": 10,
+        "changed": 0,
+        "removed": 0,
+        "unchanged": 0
+      }
+    },
+    {
+      "evidence_class": "actual-public-native",
+      "full_file_snapshot_unchanged": true,
+      "id": "same-content",
+      "outcome": "passed",
+      "reported_counts": {
+        "added": 0,
+        "changed": 0,
+        "removed": 0,
+        "unchanged": 10
+      }
+    },
+    {
+      "collision_codes": [
+        "unowned-collision"
+      ],
+      "drift_codes": [
+        "owned-drift"
+      ],
+      "evidence_class": "actual-public-native",
+      "id": "drift-collision",
+      "outcome": "passed",
+      "setup": "authored bounded copy/drift and same-byte unowned file; real public/native refusal"
+    },
+    {
+      "diagnostic": "[Errno 13] Permission denied",
+      "evidence_class": "actual-public-native",
+      "exception_type": "PermissionError",
+      "id": "writer-exclusion",
+      "outcome": "failed"
+    }
+  ],
+  "cleanup": "retain all roots; program 322 coordinator owns disposition",
+  "command": [
+    "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-B",
+    "F:\\framework-next\\382\\tests\\framework_next\\run.py",
+    "--layer",
+    "native-windows",
+    "--native-root",
+    "F:\\framework-next\\p7-runs\\native-w01\\382"
+  ],
+  "diagnostic": "[Errno 13] Permission denied",
+  "engine_pin": {
+    "files": [
+      {
+        "path": "src/distribution/__init__.py",
+        "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+      },
+      {
+        "path": "src/distribution/data.py",
+        "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+      },
+      {
+        "path": "src/distribution/git_source.py",
+        "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+      },
+      {
+        "path": "src/distribution/installation.py",
+        "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+      },
+      {
+        "path": "src/distribution/installation_io.py",
+        "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+      },
+      {
+        "path": "src/distribution/installation_plan.py",
+        "sha256": "4f1f27eab89d3132a1c988487c8b66a4dd6c5e8d403ac91b3e3c37e99a143aca"
+      },
+      {
+        "path": "src/distribution/installation_state.py",
+        "sha256": "465aa66a03e28bb893b9140350fbc774729eb243a0f6d72b216f85a88023334b"
+      },
+      {
+        "path": "src/distribution/maintenance_coordination.py",
+        "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+      },
+      {
+        "path": "src/distribution/package.py",
+        "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+      },
+      {
+        "path": "src/tools/maintain_framework.py",
+        "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+      }
+    ],
+    "id": "framework-managed-installation",
+    "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af",
+    "version": "1.0.0"
+  },
+  "exception_type": "PermissionError",
+  "exit": 1,
+  "failure_domain": "process-termination",
+  "interface": "native-windows/382-v1",
+  "interruption_attempts": 0,
+  "launches": [
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\tools\\build-development.py",
+        "--repository",
+        "F:\\framework-next\\382",
+        "--commit",
+        "cb41982dde3af9d746624b6939f26fd2883623af",
+        "--profile",
+        "lesson-minimal",
+        "--output-root",
+        "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\candidates",
+        "--scratch-root",
+        "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\build-scratch"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 4.64,
+      "exit": 0,
+      "label": "build-lesson",
+      "pid": 23608,
+      "public_outcome": "assembled",
+      "started_at": "2026-09-23T15:02:40+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.4154,
+      "exit": 0,
+      "label": "inspect-fresh",
+      "pid": 62224,
+      "public_outcome": "inspected",
+      "started_at": "2026-09-23T15:02:45+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.4336,
+      "exit": 0,
+      "label": "plan-fresh",
+      "pid": 27936,
+      "public_outcome": "planned",
+      "started_at": "2026-09-23T15:02:45+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.1351,
+      "exit": 1,
+      "label": "refuse-pin-hash",
+      "pid": 48580,
+      "public_outcome": "unsupported",
+      "started_at": "2026-09-23T15:02:46+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.0979,
+      "exit": 1,
+      "label": "refuse-pin-membership",
+      "pid": 46268,
+      "public_outcome": "unsupported",
+      "started_at": "2026-09-23T15:02:46+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 2.0012,
+      "exit": 0,
+      "label": "apply-fresh",
+      "pid": 48080,
+      "public_outcome": "applied",
+      "started_at": "2026-09-23T15:02:46+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.5021,
+      "exit": 0,
+      "label": "plan-same-content",
+      "pid": 56552,
+      "public_outcome": "planned",
+      "started_at": "2026-09-23T15:02:48+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.7749,
+      "exit": 0,
+      "label": "apply-same-content",
+      "pid": 67808,
+      "public_outcome": "unchanged",
+      "started_at": "2026-09-23T15:02:49+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.4376,
+      "exit": 1,
+      "label": "refuse-owned-drift",
+      "pid": 31924,
+      "public_outcome": "conflict",
+      "started_at": "2026-09-23T15:02:50+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\src\\tools\\maintain_framework.py"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.3887,
+      "exit": 1,
+      "label": "refuse-unowned-same-bytes",
+      "pid": 58668,
+      "public_outcome": "conflict",
+      "started_at": "2026-09-23T15:02:50+00:00"
+    },
+    {
+      "command": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\382\\tests\\framework_next\\test_native_windows.py",
+        "--hold-guard",
+        "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\project\\.ai\\local\\installation.guard"
+      ],
+      "cwd": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c\\observations",
+      "elapsed_seconds": 0.1572,
+      "exit": 1,
+      "label": "guard-helper",
+      "pid": 37200,
+      "public_outcome": null,
+      "started_at": "2026-09-23T15:02:51+00:00"
+    }
+  ],
+  "nested_child_launches": "unavailable; product Git grandchildren not instrumented",
+  "outcome": "not-passed",
+  "project_readiness": "not-assessed",
+  "roots": {
+    "native": "F:\\framework-next\\p7-runs\\native-w01\\382\\cb3d1c6c",
+    "observations": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\cb3d1c6c",
+    "recovery": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\recovery\\cb3d1c6c"
+  },
+  "runtime": {
+    "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "os": "nt",
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "pyyaml": "6.0.3"
+  },
+  "selection": [
+    "entry-pin",
+    "fresh-apply",
+    "same-content",
+    "drift-collision",
+    "writer-exclusion",
+    "interruption-recovery"
+  ],
+  "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af",
+  "source_root": "F:\\framework-next\\382",
+  "started_at": "2026-09-23T15:02:40+00:00",
+  "transcript": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\cb3d1c6c\\calls.jsonl",
+  "unexecuted_cases": [
+    "interruption-recovery"
+  ]
+}

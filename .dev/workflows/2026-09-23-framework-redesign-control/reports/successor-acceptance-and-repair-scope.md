@@ -430,3 +430,28 @@ installation occurred. Target policy applies independently; source U001 is not
 exported. A bounded read-only target gate inventory is supporting analysis, not
 an independent adoption audit. Original main and inaccessible ignored fixtures
 remain unchanged.
+
+
+## Native prerequisites reconciled and target gate adopted
+
+Issue #382 returned clean 963869412c1647fad877e0118646535393eb0a56. Root reviewed
+71-line driver delta ef4ffd9f (empty locked guard hashing and hard-bound tail),
+all eight tracked/durable evidence bindings and ten raw engine hashes across
+cb41982d, ef4ffd9f and final source. No actionable finding. First four cases pass
+on cb41982d; two tail cases pass on ef4ffd9f after the driver-only repair. Original
+full-selection exit 1 remains; this is not one six-case passing execution.
+Actual native lock refusal/release and one genuine marker interruption followed
+by same-pin finish are observed. Ten managed members and fourteen durable objects
+match. All attempts retain 22 public/helper launches, peak two, two operations,
+187 files / 1,958,102 logical bytes. Prior protected-path and driver failures remain.
+No target readiness, stable upgrade, storage-loss, broad P7 or hosted pass inferred.
+The bounded #382 acceptance is satisfied; #383 was reviewed with nine focused
+regressions and one actual protected-path public plan. Conditional closure waits
+for online integration. U001 unselected gates remain deferred-by-owner.
+
+The target owner directly adopted call_9Yd5ZfJdp1eBXVZf4Vp09U1v: a current-layout
+gate preserving 14 rules, four customizations, exact hashes, Git attribution and
+independent review; old v0.18 checks become explicit historical/legacy support.
+Target Issue 15/worktree records this decision. Only preparation exists so far:
+config/stores, exact-byte Git attributes and durable before-state. No managed
+installation or active root route yet. Source U001 does not govern the target.

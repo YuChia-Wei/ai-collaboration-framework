@@ -219,3 +219,11 @@ records reviewed #383 protected-path repair and #373 PR-only pass. Resume the
 original #382 native driver on the integrated fixed repair; keep source checks
 and target activation separate. Target #15 has an isolated persistent worktree
 and planning-only records, with target-owned gate coupling under analysis.
+
+
+## Native prerequisite complete; target adoption underway
+
+Reviewed #382 local delivery 96386941 supplies all selected native cases across
+the truthful two-source continuation. Integrate #382/#383 online, then apply the
+complete #381 rc.1 candidate in target Issue 15 with its newly adopted current
+gate. Retain all failures and target independent review before readiness claims.

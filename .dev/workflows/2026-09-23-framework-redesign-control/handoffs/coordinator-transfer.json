@@ -215,5 +215,18 @@
       "baseline": "cb122285af09e46b24102f22a0ad9d713219c1f2",
       "state": "own planning records only; no installation or activation"
     }
+  },
+  "native_prerequisite_completion": {
+    "observed_at": "2026-09-23T23:15:08+08:00",
+    "issue": 382,
+    "final_head": "963869412c1647fad877e0118646535393eb0a56",
+    "passing_sources": [
+      "cb41982dde3af9d746624b6939f26fd2883623af",
+      "ef4ffd9f286f49b6055d9a321abbd134b263ced8"
+    ],
+    "single_six_case_pass": false,
+    "review": "root no actionable finding; 8 raw evidence bindings and 10 engine hashes verified",
+    "target_readiness": "not-assessed",
+    "next_action": "online integrate source; complete target Issue 15 under target gate decision"
   }
 }
