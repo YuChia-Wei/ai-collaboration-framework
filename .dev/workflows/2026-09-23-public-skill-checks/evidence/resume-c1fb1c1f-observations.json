@@ -1,0 +1,504 @@
+{
+  "recorded_at": "2026-09-23T22:30:41+08:00",
+  "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+  "previous_handoff_commit": "7996b32d3d4f70553b203299e25dc69d9413ff9d",
+  "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "executor_task": "01a0cd49-7805-7202-9176-e8f7b4cf4285",
+  "execution": "Seven separately selected sequential family invocations, once each; no aggregate invocation and no retries.",
+  "overall": "partial; 5 passed, 1 cleanup-failed, 1 fixture assertion failed",
+  "total_public_launches": 215,
+  "measured_process_total_all_families": null,
+  "process_accounting_limit": "PR cleanup exception suppressed fixture_accounting. Nested child actual launches are unavailable for all families; reported bounds are not actual counts.",
+  "scope": "Direct committed resource public tests only; source/tests/helper unchanged; no install/apply/native/provider/adoption acceptance.",
+  "families": [
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 4194305,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T1-round-trip",
+        "C6-query-and-legacy",
+        "T1-decision-successor",
+        "C6-input-boundary"
+      ],
+      "exit": 0,
+      "failed_phase": null,
+      "family": "lesson",
+      "fixture_accounting": {
+        "authored_bytes": 26290,
+        "next_action": null,
+        "observed_files": 21,
+        "observed_logical_bytes": 294891,
+        "process_total": 47,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 43
+        },
+        "residue": null,
+        "retained_bytes": 294467,
+        "retained_files": 21,
+        "wall_seconds": 24.814
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 12,
+      "outcome": "passed",
+      "public_launches": 43,
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-db8fcb790a9743048988a2ae65d203b2\\lesson\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-lesson.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "lesson",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 0,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-db8fcb790a9743048988a2ae65d203b2",
+      "fixture_exists_at_handoff": false,
+      "retained_bytes_semantics": "pre-cleanup measurement; success removed the fixture",
+      "operation_level_unexecuted": []
+    },
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 0,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T2-round-trip",
+        "T2-decision-derive"
+      ],
+      "exit": 0,
+      "failed_phase": null,
+      "family": "adr",
+      "fixture_accounting": {
+        "authored_bytes": 22854,
+        "next_action": null,
+        "observed_files": 19,
+        "observed_logical_bytes": 285668,
+        "process_total": 35,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 31
+        },
+        "residue": null,
+        "retained_bytes": 284618,
+        "retained_files": 19,
+        "wall_seconds": 17.929
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "passed",
+      "public_launches": 31,
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-f7b6cce57b4c43108fa41853b27b31b6\\adr\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-adr.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "adr",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 0,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-f7b6cce57b4c43108fa41853b27b31b6",
+      "fixture_exists_at_handoff": false,
+      "retained_bytes_semantics": "pre-cleanup measurement; success removed the fixture",
+      "operation_level_unexecuted": []
+    },
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 0,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T3-round-trip",
+        "T3-reconciliation-boundaries"
+      ],
+      "exit": 0,
+      "failed_phase": null,
+      "family": "standards-promotion",
+      "fixture_accounting": {
+        "authored_bytes": 21111,
+        "next_action": null,
+        "observed_files": 20,
+        "observed_logical_bytes": 292598,
+        "process_total": 30,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 26
+        },
+        "residue": null,
+        "retained_bytes": 291472,
+        "retained_files": 20,
+        "wall_seconds": 14.564
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "passed",
+      "public_launches": 26,
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-196d3772f3fb4fec80441f48dce3bb53\\standards-promotion\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-promotion.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "standards-promotion",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 0,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-196d3772f3fb4fec80441f48dce3bb53",
+      "fixture_exists_at_handoff": false,
+      "retained_bytes_semantics": "pre-cleanup measurement; success removed the fixture",
+      "operation_level_unexecuted": []
+    },
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 0,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T4-git-round-trip",
+        "T4-synthetic-provider"
+      ],
+      "diagnostic": "[WinError 5] \u5b58\u53d6\u88ab\u62d2\u3002: 'F:\\\\framework-next\\\\p7-runs\\\\373-public\\\\fn-c21e6bb478f64c759aed8dfdbba5ea6d\\\\pr\\\\project\\\\git-fixture\\\\.git\\\\objects\\\\0d\\\\23fa530318e9f5d15bea5f49dc23ec095ffa18'",
+      "exception_type": "PermissionError",
+      "exit": 2,
+      "failed_phase": null,
+      "family": "pr",
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 73,
+      "next_action": "Inspect residue; do not retry cleanup blindly.",
+      "outcome": "cleanup-failed",
+      "public_launches": 23,
+      "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d",
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d\\pr\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-pr.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "pr",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 2,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d",
+      "fixture_exists_at_handoff": true,
+      "retained_bytes_semantics": "retained failure fixture; PR accounting unavailable after partial cleanup",
+      "operation_level_unexecuted": []
+    },
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 0,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T5-round-trip"
+      ],
+      "exit": 0,
+      "failed_phase": null,
+      "family": "local-backlog",
+      "fixture_accounting": {
+        "authored_bytes": 18234,
+        "next_action": null,
+        "observed_files": 16,
+        "observed_logical_bytes": 180764,
+        "process_total": 33,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 29
+        },
+        "residue": null,
+        "retained_bytes": 180014,
+        "retained_files": 16,
+        "wall_seconds": 12.927
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "passed",
+      "public_launches": 29,
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-4d378d244cc1455f8675a06efbfc7ebc\\local-backlog\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-backlog.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "local-backlog",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 0,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-4d378d244cc1455f8675a06efbfc7ebc",
+      "fixture_exists_at_handoff": false,
+      "retained_bytes_semantics": "pre-cleanup measurement; success removed the fixture",
+      "operation_level_unexecuted": []
+    },
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 0,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T6-round-trip"
+      ],
+      "exit": 1,
+      "failed_phase": "T6-with-deferrals",
+      "family": "software-development-orchestrator",
+      "fixture_accounting": {
+        "authored_bytes": 29457,
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 19,
+        "observed_logical_bytes": 396420,
+        "process_total": 38,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 34
+        },
+        "residue": "F:\\framework-next\\p7-runs\\373-public\\fn-290c21edfb594765b635b8d9bda1fcb9",
+        "retained_bytes": 395594,
+        "retained_files": 19,
+        "wall_seconds": 20.467
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "failed",
+      "public_launches": 34,
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-290c21edfb594765b635b8d9bda1fcb9\\software-development-orchestrator\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-workflow.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "software-development-orchestrator",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 1,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-290c21edfb594765b635b8d9bda1fcb9",
+      "fixture_exists_at_handoff": true,
+      "retained_bytes_semantics": "retained failure fixture; PR accounting unavailable after partial cleanup",
+      "operation_level_unexecuted": [
+        "Second workflow retrospect",
+        "Second workflow transition active -> completed",
+        "Second workflow resume and with-deferrals assertions"
+      ]
+    },
+    {
+      "blocked_before_write": false,
+      "boundary_authored_bytes": 0,
+      "completed_phases": [
+        "resource-setup",
+        "C4-config",
+        "C6-binding",
+        "T7-round-trip",
+        "T7-structural-negatives"
+      ],
+      "exit": 0,
+      "failed_phase": null,
+      "family": "problem-frame-author",
+      "fixture_accounting": {
+        "authored_bytes": 31191,
+        "next_action": null,
+        "observed_files": 19,
+        "observed_logical_bytes": 210464,
+        "process_total": 33,
+        "processes": {
+          "git": 4,
+          "other": 0,
+          "python": 29
+        },
+        "residue": null,
+        "retained_bytes": 208255,
+        "retained_files": 19,
+        "wall_seconds": 13.756
+      },
+      "fixture_kind": "direct-committed-package-resources",
+      "nested_child_launches": "unavailable: unchanged public children are not instrumented",
+      "nested_launch_upper_bound": 9,
+      "outcome": "passed",
+      "public_launches": 29,
+      "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+      "transcript": "F:\\framework-next\\p7-runs\\373-public\\fn-a0e7a0d82c7944219c55c053743ca32d\\problem-frame-author\\public-transcript.jsonl",
+      "unexecuted_phases": [],
+      "capture": "resume-c1fb1c1f-cbf.json",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "problem-frame-author",
+        "--output-root",
+        "F:/framework-next/p7-runs/373-public"
+      ],
+      "cwd": "F:\\framework-next\\373",
+      "runner_exit": 0,
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      },
+      "test_file_sha256": {
+        "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+        "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+        "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+        "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+        "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+      },
+      "fixture_root": "F:\\framework-next\\p7-runs\\373-public\\fn-a0e7a0d82c7944219c55c053743ca32d",
+      "fixture_exists_at_handoff": false,
+      "retained_bytes_semantics": "pre-cleanup measurement; success removed the fixture",
+      "operation_level_unexecuted": []
+    }
+  ]
+}
