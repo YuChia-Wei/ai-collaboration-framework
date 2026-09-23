@@ -5,9 +5,9 @@
   "task_id": "ISSUE-365",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T14:25:23+08:00",
-  "updated_at": "2026-09-23T14:25:23+08:00",
+  "updated_at": "2026-09-23T14:50:54+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -43,14 +43,14 @@
     "validation": [
       "Direct content/syntax/reference/Git and full planned commit message only"
     ],
-    "last_completed_step": "Issue created with source attribution; Project Planned; dispatch waits final mapping online integration",
-    "next_action": "Prepare assigned worktree and independent Astra Ultra task after source PR merge"
+    "last_completed_step": "Fixed design received, clean worktree and owned content inspected; jointly reconciled for selected implementation",
+    "next_action": "Online design PR integration and Issue/Project closure read-back; create selected implementation Issues"
   },
   "results": {
-    "summary": "Design assignment prepared; no design delivery or execution yet",
+    "summary": "Bounded design complete locally; implementation and actual verification remain separate",
     "files_changed": [],
     "tests_run": [],
-    "finding_status": "not-addressed",
+    "finding_status": "partially-resolved",
     "residual_risk": "Product verification and actual pipeline policy transition remain open",
     "follow_up_needed": true
   },
@@ -59,13 +59,22 @@
     "branch": "codex/2026-09-23-pipeline-redesign",
     "workflow_id": "2026-09-23-pipeline-redesign",
     "starting_commit_source": "Coordinator checkpoint after final mapping online integration",
-    "thread_id": null
+    "thread_id": "01a0ccf5-8dce-7b31-9438-ae2935297156",
+    "starting_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+    "evidence": "evidence/p7-design-dispatch.json",
+    "model_verified": "Read-only runtime row: gpt-6-astra / ultra",
+    "worktree_verified": "First actual F: command matched root/branch/HEAD/common Git and clean state"
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p7-design-handoff.md",
-    "implementation_status": "design pending",
-    "verification_state": "deferred-by-owner"
+    "implementation_status": "design complete and locally integrated",
+    "verification_state": "deferred-by-owner",
+    "design_commit": "c75582b08f67da17f9548f2eb38fe67c2e6e765e",
+    "integration_report": "reports/p7-design-reconciliation.md",
+    "selected_execution": ".dev/design/framework-next/p7-execution-selection.md",
+    "issue_state": "OPEN",
+    "project_status": "In progress"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Q4Rw",
-  "project_state": "Planned; other Project fields unchanged"
+  "project_state": "In progress; Status only was mutated; no other single-select values observed"
 }

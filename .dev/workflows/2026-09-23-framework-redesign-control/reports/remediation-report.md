@@ -2,18 +2,18 @@
 
 This is coordination evidence, not independent verification.
 
-Current snapshot at local #359/#361 integration; online provider state is separate. The sections below retain historical sequence and do not override this table. Every finding remains partially resolved; source delivery alone does not establish behavior or final adoption.
+Current source snapshot is online PR #366 / `171f33474f88888fbe853600de04bfe9c5716b25`. P7 design dispatch is recorded at `9647feab5240ff10ed20d135acfa2d037c114f10`. The sections below retain historical sequence and do not override this table. Every finding remains partially resolved; source delivery alone does not establish behavior or final adoption. [Original-request coverage](request-coverage-at-p7-entry.md) distinguishes delivered source, pending actual use and intentionally deferred capability.
 
 | Baseline finding | Current disposition | Next owner/stage |
 | --- | --- | --- |
-| F-01 portable skill boundary | partially-resolved: contracts, metadata v3, knowledge/work-management and most specialist packages delivered | #347 engineering source; #346 and later actual mappings; P7 |
-| F-02 project ownership | partially-resolved: explicit config/store ownership and managed installation boundary delivered | selected #361 root plan; actual root adoption/P7 |
-| F-03 workflow storage | partially-resolved: #341 portable workflow, resume, retrospective and retention-preview source online | #346 mapping; root adoption and P7; no destructive retention |
-| F-04 knowledge lifecycle | partially-resolved: Lesson/ADR/promotion source online with proposal/adoption/effect separation | root composition/adoption and P7; no automatic rule promotion |
-| F-05 schema ownership | partially-resolved: #342 inventory, actual package-owned formats/tools and closed installation reader delivered | operation writer source delivered; remaining mapping and P7 contract checks |
-| F-06 validation burden | partially-resolved: Actions and seven pipelines suspended, U001 active, no early product/test execution | P7 redesigned focused checks and owner-adopted pipeline subset |
-| F-07 source/dogfood | partially-resolved: src product source and candidate assembly delivered; root adoption not performed | writer and adoption plan delivered; remaining source/mapping, then pilot/P7 |
-| F-08 replacement versus I/O | partially-resolved: selected differential update/recovery design and complete maintenance source delivered | writer source delivered; later P7 execution and measured claims only |
+| F-01 portable skill boundary | partially-resolved: 18 actual packages/113 members/seven complete profiles; empty skill dependency sets; instruction/tool metadata distinguished | #364 focused verification design; later selected trials |
+| F-02 project ownership | partially-resolved: explicit config/store ownership and managed installation boundary delivered | selected #361 root plan; actual root adoption after Lesson pilot |
+| F-03 workflow storage | partially-resolved: workflow, resume, retrospective and retention-preview source online and mapped | P7 actual tracked/ignored custom-path use; root adoption; no destructive retention |
+| F-04 knowledge lifecycle | partially-resolved: Lesson/ADR/promotion source online with proposal/adoption/effect separation | focused actual composition and root adoption; no automatic rule promotion |
+| F-05 schema ownership | partially-resolved: #342 legacy inventory, actual package-owned formats/tools and maintenance source delivered | #364 ownership/case design and selected actual contract checks; M01 conditional |
+| F-06 validation burden | partially-resolved: Actions and seven pipelines suspended, U001 active, no early product/test execution | #364/#365 focused-check and pipeline/policy designs, then execution and owner-adopted CI subset |
+| F-07 source/dogfood | partially-resolved: src product source and actual profile mapping complete; root adoption unperformed | isolated Lesson pilot, bounded root adoption and broader selected routing |
+| F-08 replacement versus I/O | partially-resolved: differential update/recovery source delivered; no runtime/cost proof | selected P7 public/native trials; logical I/O observations only where measured |
 
 Administrative checks: exact planning commit/PR/main, live Actions state, merged-ref ancestry or PR proof, and retained-worktree status were read back. Product verification remains deferred-by-owner under U001. Earlier assessment editorial review is not a final architecture or implementation pass.
 
@@ -129,3 +129,11 @@ The original #346 executor received direct user input and delivered `444327034aa
 ## Final source/mapping locally complete
 
 [Final inspection](p5-final-mapping-integration.md) confirms 18 actual components/113 members/seven complete profiles at `4ffa3881484783a2e35152ad426bec359d2d9252`. #341/#346 bounded source/mapping work is completed locally and selected for online closure. #364/#365 begin only after that integration, to design focused verification and the source policy/pipeline transition independently. This does not resolve P7 findings, activate root routes, run deferred tools or restore CI.
+
+## P7 design work active
+
+PR #366 is merged as `171f33474f88888fbe853600de04bfe9c5716b25`; #341/#346 are CLOSED/COMPLETED and Project Done by live read-back. [Dispatch observations](../evidence/p7-design-dispatch.json) confirm #364/#365 each run as independent Astra Ultra tasks in assigned RAM worktrees. The source/mapping backlog is complete, but designs, actual verification, project adoption and pipeline transition are still open. CI remains disabled; no final finding is closed by dispatch.
+
+## P7 designs locally complete
+
+[Reconciliation](p7-design-reconciliation.md) receives #364/#365 at fixed commits and selects the first two implementation responsibilities. Source contracts and dormant pipeline/policy code may proceed under explicit Issue assignments after online design integration; selected runtime/native work and root adoption remain outstanding. CI stays disabled and no finding is finally closed.

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T14:25:23+08:00",
+  "updated_at": "2026-09-23T14:32:36+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -55,8 +55,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Final 18/113 mapping 4ffa3881 received from clean original task and locally integrated after direct source checks",
-    "next_action": "Online PR and Issue/Project closure read-back; P7 designs then selected verification"
+    "last_completed_step": "PR #366 merged; Issue CLOSED/COMPLETED and Project Done read back at 2026-09-23T14:28:27+08:00",
+    "next_action": "P7 designs and subsequent selected actual verification; no source/mapping work remains"
   },
   "results": {
     "summary": "Bounded metadata/reviewer/source mapping complete; actual verification remains deferred",
@@ -81,8 +81,8 @@
     "implementation_status": "source completed and locally integrated",
     "verification_state": "deferred-by-owner",
     "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
-    "integration_status": "source online in PR #353",
-    "mapping_status": "complete and locally integrated",
+    "integration_status": "online PR #366 merged",
+    "mapping_status": "online complete; all 18 actual source packages",
     "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md",
     "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
     "blocked_checkpoint": "7fab3ffd1698e2eb8ef791d6be7748f151506642",
@@ -93,7 +93,11 @@
     "final_profiles": 7,
     "actual_components": 18,
     "actual_members": 113,
-    "integration_report": "reports/p5-final-mapping-integration.md"
+    "integration_report": "reports/p5-final-mapping-integration.md",
+    "merge_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+    "issue_state": "CLOSED/COMPLETED",
+    "project_status": "Done",
+    "provider_readback_at": "2026-09-23T14:28:27.3418807+08:00"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPr0",
   "owner_confirmation": {
