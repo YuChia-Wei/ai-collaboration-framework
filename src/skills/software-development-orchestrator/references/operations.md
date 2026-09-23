@@ -1,8 +1,96 @@
-# Workflow record and request shapes
+# Workflow public operations 0.1.0
 
-Current selection: [C341-01..05](../p4-selected-contract.md). Original proposal retained at 7f821ee866e7e54e551036785e19dffaa3d7ac39; the actual schema/tool/public semantics now live in the owned source package. Syntax inspection is not schema/runtime acceptance.
+Tool software-development-orchestrator.fs is scripts/workflow.py. Use Python
+>=3.11,<4 with PyYAML >=6,<7 and jsonschema >=4.18,<5 (except explain).
+No cross-skill imports, provider calls, task dispatch or command execution from
+record text. Source implementation is not certification of behavior or installation.
 
-Proposed schema family `software-development-orchestrator.record@1.0.0`, Draft 2020-12, one package-owned schema. This is a design specification, not schema validation. All object keys below are closed except creation-only namespaced extensions. Exact integer types exclude booleans/floats; semantic text is nonblank unless explicitly empty/null. Strict UTF-8 JSON rejects duplicate keys, invalid Unicode and non-finite numbers. Schema references stay in bounded acyclic same-document #/$defs; no external resolution.
+```text
+python /absolute/selected/package/scripts/workflow.py --request /absolute/request.json
+python /absolute/selected/package/scripts/workflow.py --request -
+```
+
+Input is one strict UTF-8 JSON object. Common required keys: operation,
+project_root, package_root. Optional common keys: project_config,local_config,
+overrides,write_roots. Unknown keys fail; roots/settings follow
+[configuration](configuration.md). Output is one JSON object containing operation,
+outcome,mutation_state; exit 0 only for succeeded, otherwise 1. CLI usage errors
+produce JSON; --help is usage, not permission or an availability claim.
+
+| Operation | Additional required keys | Optional | Effect |
+| --- | --- | --- | --- |
+| explain | none | none | Effective settings/source/locks; no record mutation. |
+| create | content (minimal shape below) | extensions | Exclusive publication of one new workflow. |
+| inspect | reference | none | Full supported record and actual raw digest. |
+| query | none | text, default empty | Case-insensitive literal title/intent matches, sorted by filename. |
+| checkpoint | reference,expected_sha256,content,reason | none | Complete current authored content; retain old state, clear current retrospective. |
+| transition | reference,expected_sha256,expected_state,target_state,reason | none | Workflow state/reason only, clearing terminal next_action. |
+| resume | reference | none | Required continuation view, binding, history changes and next action. |
+| retrospect | reference,expected_sha256,retrospective | none | Bound authored reflection/candidates only. |
+| render | reference | none | Escaped inert Markdown plus record/template/body digests, result only. |
+| retention-preview | mode,selection | none | [On-demand preview](retention.md); no cleanup execution. |
+
+reference is {role:software-development-orchestrator.record,id:wf-<32 lowercase hex>}.
+IDs are store-scoped. expected_sha256 is the actual raw 64-lowercase-hex digest
+returned by a read; no synthetic hash/ID/time can replace an observation.
+Extensions are creation-only JSON values under dotted namespace keys.
+
+Each request/input/serialized record/result is bounded to 4 MiB. Query/retention
+scans at most 10,000 direct filenames; overflow is unsupported, never silently
+truncated success. Malformed/unknown/unreadable records yield partial diagnostics.
+A non-atomic scan is not absence proof. Runtime evidence remains caller-attributed.
+
+Mutation results retain changed,reference,sha256,store_root,directories_created
+when available. mutation_state is none before/no publication, committed after
+publication/read-back, or unknown for uncertain publication. It excludes transient
+locks/parent creation. Cleanup failures override success and never imply rollback.
+An unchanged authored checkpoint/retrospective is byte/time-preserving no-op.
+Terminal writes are unsupported even for an otherwise identical request.
+
+Outcomes: succeeded,invalid-input,unsupported,unavailable,blocked,conflict,failed.
+No invocation must be described by the caller as not-executed, not a fabricated
+tool result. Inspect labels stored observations historical. Resume exposes current
+and historical candidate state; no stored command or owner string grants authority.
+
+## Workflow states and completion
+
+planned -> active/cancelled; active -> blocked/completed/cancelled;
+blocked -> active/cancelled; completed/cancelled are immutable.
+A reason and concrete current next action are required for nonterminal work.
+Blocked reason/next-action owner describe the blocker; resumption reason records
+the resolution. Task states/dependencies remain explicit rather than inferred.
+
+Complete requires every task completed/deferred/cancelled, every acceptance
+succeeded/not-applicable/deferred, no open decision or unresolved blocking reference,
+and a retrospective bound to current content. Failed/blocked/not-executed acceptance
+keeps work open. Deferred items have attributed authority, owner, reason, trigger
+and follow-up. Derived completion_disposition is with-deferrals or without-deferrals,
+never an aggregate verification pass. Cancellation preserves unfinished content,
+records a reason and clears next_action without a completion claim.
+
+No delete, import, conversion, store move, archive/compaction writer, generic
+scheduler or provider operation exists. Schema/version/config and package updates
+do not rewrite historical records. Unknown record versions remain unsupported,
+unmodified and visible in partial query diagnostics.
+
+## Rendering and resume
+
+Template tokens are id,title,intent,scope,state,acceptance,tasks,evidence,decisions,
+references,next_action,retrospective,history,storage_notice. All are required.
+Reject unknown/missing/malformed tokens. Substitution is one pass, escaped
+Markdown/HTML; no expression/include/eval or reverse import. Export is separately
+authorized caller work. State renders both state and reason.
+
+Resume preserves the full current content, raw record identity, retrospective,
+last known historical candidates, state changes/decision reversals and evidence.
+resume_budget_chars bounds the full summary. If meaning cannot fit, return
+unsupported with a limit diagnostic; inspect remains available for the full
+bounded original. No mandatory lifecycle metadata is silently truncated.
+
+## Record shape
+
+The owned [schema](../schemas/workflow-record.schema.json) and semantic rules below
+define exact record fields. Schema checks do not authenticate reports or authority.
 
 ## Controlled envelope
 
@@ -65,7 +153,7 @@ next_action is required non-null for planned/active/blocked, with an existing ta
 
 Authored request: {outcome,reflection,rationale,candidates}. outcome is no-new-knowledge or candidates. reflection is {actual_outcome,observations,limitations}; strings are nonblank; rationale explains the conclusion. no-new-knowledge requires []; candidates requires nonempty candidates.
 
-Candidate = {id,destination,operation,summary,source_evidence_ids,applicability,missing_inputs,next_action,state,result_refs}. Destination is one of the exact five identities in contract.md; operation is their selected public create/propose/prepare operation. state is open/handed-off/declined. Candidate IDs are stable. Open needs next_action; handed-off needs actual result_refs (existing reference IDs); declined needs a reason in summary. An artifact request alone is not handed-off evidence. This record never means accepted/adopted/published.
+Candidate = {id,destination,operation,summary,source_evidence_ids,applicability,missing_inputs,next_action,state,result_refs}. Destination is one of the exact five identities in composition.md; operation is their selected public create/propose/prepare operation. state is open/handed-off/declined. Candidate IDs are stable. Open needs next_action; handed-off needs actual result_refs (existing reference IDs); declined needs a reason in summary. An artifact request alone is not handed-off evidence. This record never means accepted/adopted/published.
 
 The tool adds basis=caller-supplied, actual recorded_at and content_sha256. Hash the current content with next_action replaced by null, sorted JSON keys, indent=2, ensure_ascii=false, LF termination and UTF-8 bytes. Arrays retain order. This is a retrospective input binding, not an execution receipt. Other content drift invalidates the retrospective and checkpoint clears it; old versions remain in history. Retrospect can update candidates before workflow completion, preserving old retrospective. A terminal record is immutable; later knowledge follow-up uses a successor workflow or the specialist directly.
 
@@ -75,6 +163,7 @@ Completion outcome is derived at read time as with-deferrals or without-deferral
 
 Input content={title,intent,scope,acceptance:[{id,criterion}],first_action:{action,completion_condition,owner}}. No caller ID/time/state/history is accepted. The initial task title equals first_action.action; T001 pending; all dependencies/evidence_ids empty, reason/result empty, deferral=null. Acceptance starts not-executed with reason "Not executed by this tool.", empty evidence_ids and deferral=null. Evidence/decisions/references empty; next_action points to T001 with supplied owner/action and condition "After actual task authorization." State planned. No retrospective, task completion or runtime availability is fabricated.
 
-## Limits and future schema
 
-All files/requests/full serialized records stay <=4 MiB. Task/acceptance/evidence/decision/reference/candidate/history IDs and chronology are checked by the owning future tool in addition to the schema. Unknown versions/keys, unsupported conversion, stale expected digest, cycle, missing internal reference and lost history fail before mutation. Initial schema authoring and runtime enforcement occur only after coordinator reconciliation; U001 currently defers all schema execution and behavioral tests.
+All stable reference IDs and their kind/target/schema/digest are retained; changing a target or digest needs a new reference ID. Resolution, evidence-value and explanatory observations may change with retained history. All old task/acceptance/decision/reference IDs remain present. Terminal tasks are fully immutable, not just their state. Completed tasks need reported success evidence tied to that task or workflow-level evidence. Semantic subject accuracy remains the caller responsibility.
+
+Historical candidate meaning is retained across content changes that invalidate the current retrospective. Open candidates remain visible to resume/retention even when no current retrospective exists. Neither a link nor a summary resolves them.

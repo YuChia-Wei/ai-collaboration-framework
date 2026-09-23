@@ -1,9 +1,9 @@
 {
   "proposal_id": "C341",
-  "status": "proposed-for-coordinator-reconciliation",
+  "status": "source-implemented-validation-deferred",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341",
   "baseline_commit": "3a82b3654976fb26da7618a4404f49d7868d813a",
-  "execution_status": "design-only",
+  "execution_status": "source-implemented-no-product-execution",
   "verification": "deferred-by-owner",
   "verification_owner": "program-322-coordinator/P7",
   "package": {
@@ -13,16 +13,15 @@
     "metadata_version": 2,
     "config_version": 2,
     "namespace": "software-development-orchestrator",
-    "delivery_status": "design-only",
+    "delivery_status": "implemented",
     "dependencies": {
       "required": [],
       "optional": []
     },
     "tool": {
       "id": "software-development-orchestrator.fs",
-      "implementation_status": "planned",
-      "entrypoint": null,
-      "proposed_entrypoint": "scripts/workflow.py",
+      "implementation_status": "implemented",
+      "entrypoint": "scripts/workflow.py",
       "operation_contract": "references/operations.md"
     },
     "roles": [
@@ -237,38 +236,38 @@
       },
       "resume_budget_chars": 12000
     },
-    "operational_default_authority": "Proposed references/configuration.md and scripts/workflow.py; requires C341-05. Not new metadata fields."
+    "operational_default_authority": "Selected C341-05: scripts/workflow.py is sole execution authority; references/configuration.md describes defaults; explain exposes sources. No additional metadata fields."
   },
   "composition": {
     "mode": "concrete-handoff-candidates-only",
     "invokes_other_packages": false,
     "private_imports": false,
-    "knowledge_source_state": "P3 selected public contract; reconcile Issue 334 actual source before implementation",
+    "knowledge_source_state": "Actual P3 public source reconciled at ac4175948045590d1a1942022435ab438ad30ac3; query/decision and promotion target/source evidence remain required by specialists.",
     "destinations": [
       {
         "package": "lesson@0.2.0",
         "operation": "create",
-        "source_status": "selected-contract-only"
+        "source_status": "actual-source-reference-inspected-no-execution"
       },
       {
         "package": "adr@0.1.0",
         "operation": "create",
-        "source_status": "selected-contract-only"
+        "source_status": "actual-source-reference-inspected-no-execution"
       },
       {
         "package": "standards-promotion@0.1.0",
         "operation": "propose",
-        "source_status": "selected-contract-only"
+        "source_status": "actual-source-reference-inspected-no-execution"
       },
       {
         "package": "local-backlog@0.1.0",
         "operation": "create",
-        "source_status": "source-reference-inspected-no-execution"
+        "source_status": "actual-source-reference-inspected-no-execution"
       },
       {
         "package": "pr@0.1.0",
         "operation": "prepare",
-        "source_status": "source-reference-inspected-no-execution"
+        "source_status": "actual-source-reference-inspected-no-execution"
       }
     ]
   },
@@ -284,27 +283,37 @@
     {
       "id": "C341-01",
       "question": "Adopt software-development-orchestrator@0.1.0, the one-file record and exact ten-member/ten-operation surface?",
-      "recommended": "Adopt the proposed package identity and bounded surface."
+      "recommended": "Adopt the proposed package identity and bounded surface.",
+      "status": "selected",
+      "selection_ref": ".dev/design/framework-next/p4-selected-contract.md"
     },
     {
       "id": "C341-02",
       "question": "Keep specialist composition candidate-only with empty skill dependencies and reconcile knowledge candidates against Issue 334 actual delivery?",
-      "recommended": "Adopt candidate-only handoff; coordinator supplies actual #334 subject before source implementation."
+      "recommended": "Adopt candidate-only handoff; coordinator supplies actual #334 subject before source implementation.",
+      "status": "selected",
+      "selection_ref": ".dev/design/framework-next/p4-selected-contract.md"
     },
     {
       "id": "C341-03",
       "question": "Keep compact/archive/purge preview-only, null-disabled ages, and no safe-to-delete outcome for purge?",
-      "recommended": "Adopt conservative previews; cleanup execution remains out of scope."
+      "recommended": "Adopt conservative previews; cleanup execution remains out of scope.",
+      "status": "selected",
+      "selection_ref": ".dev/design/framework-next/p4-selected-contract.md"
     },
     {
       "id": "C341-04",
       "question": "Allow workflow completion with explicit attributed deferrals while retaining acceptance/failure/follow-up and no overall pass?",
-      "recommended": "Adopt with-deferrals result; stricter project terminal decisions stay project-owned."
+      "recommended": "Adopt with-deferrals result; stricter project terminal decisions stay project-owned.",
+      "status": "selected",
+      "selection_ref": ".dev/design/framework-next/p4-selected-contract.md"
     },
     {
       "id": "C341-05",
       "question": "Retain metadata-v2's closed store/template defaults and define retention/resume operational defaults in this package's configuration reference/tool?",
-      "recommended": "Adopt package-owned operational defaults without changing shared loader or metadata version. A demand for additional machine metadata requires a separate version decision."
+      "recommended": "Adopt package-owned operational defaults without changing shared loader or metadata version. A demand for additional machine metadata requires a separate version decision.",
+      "status": "selected",
+      "selection_ref": ".dev/design/framework-next/p4-selected-contract.md"
     }
   ],
   "first_stage_write_roots": [
@@ -319,14 +328,18 @@
     "root runtime/projections/config",
     "first push and online integration"
   ],
-  "next_action": "Coordinator reconciles C341-01..05 against actual P3 packages and sends source scope back to the SAME task. Do not start source work before that.",
+  "next_action": "Coordinator inspects the actual ten-member source checkpoint, assigns shared manifest/profile mapping and first push. P7 owns redesigned verification; no product execution claimed.",
   "legacy_issue_316": "Separate open legacy authoring work; not fulfilled/closed. P5/P7 disposition required.",
-  "proposed_index_row": "| 2026-09-23-workflow-orchestration | ai-context-governance | in_progress | #341 P4 contract checkpoint; source implementation awaits coordinator reconciliation | .dev/workflows/2026-09-23-workflow-orchestration/workflow-plan.md |",
+  "proposed_index_row": "| 2026-09-23-workflow-orchestration | ai-context-governance | completed | #341 portable workflow source implemented; verification deferred-by-owner to program #322/P7 | .dev/workflows/2026-09-23-workflow-orchestration/workflow-plan.md |",
   "metadata_evidence": {
     "file": "src/distribution/package.py",
     "lines": "175-186",
     "finding": "configuration.defaults is closed to store/template",
     "method": "fresh narrowly scoped graph discovery plus direct tracked-file read-back; no product execution",
     "graph_scope": "F:/framework-next/341/src/distribution only; persistence=false; tool did not report index SHA"
-  }
+  },
+  "retained_design_checkpoint": "7f821ee866e7e54e551036785e19dffaa3d7ac39",
+  "selected_contract": ".dev/design/framework-next/p4-selected-contract.md",
+  "source_baseline": "9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0",
+  "updated_at": "2026-09-23T09:38:14+08:00"
 }

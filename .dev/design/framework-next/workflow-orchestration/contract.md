@@ -1,6 +1,8 @@
 # Portable workflow orchestration contract checkpoint
 
-Status: proposed-for-coordinator-reconciliation for [Issue #341](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341), P4 of #322. Design only; no product executable, schema acceptance, installation or runtime result is delivered here. Starting subject: `3a82b3654976fb26da7618a4404f49d7868d813a`.
+Current status: C341-01..05 selected by the coordinator in [p4-selected-contract.md](../p4-selected-contract.md); source implementation is delivered under src/skills/software-development-orchestrator/, with verification deferred-by-owner under U001. Selection subject: 9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0. The original design checkpoint 7f821ee866e7e54e551036785e19dffaa3d7ac39 is preserved. The text below retains that proposal; current executable/public references are package-owned. P3 knowledge source has been reconciled against the integrated actual public contracts, including query/decision/target/source requirements.
+
+Historical checkpoint status: proposed-for-coordinator-reconciliation for [Issue #341](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341), P4 of #322. Design only; no product executable, schema acceptance, installation or runtime result is delivered here. Starting subject: `3a82b3654976fb26da7618a4404f49d7868d813a`.
 
 Source authority: [U001](../../../assessments/ASM-20260923-00-6oq/execution-plan.md), [P4 scope](../../../workflows/2026-09-23-framework-redesign-control/reports/p4-orchestration-scope.md), [P1 portable contract](../portable-contracts/contract.md), [source layout](../source-layout/design.md) and the selected [P3 contract](../p3-shared-contract.md). These links explain this source proposal; the eventual package carries complete owned references and never requires these source files.
 

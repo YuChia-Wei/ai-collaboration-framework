@@ -1,0 +1,79 @@
+{
+  "handoff_kind": "U001-local-source-checkpoint",
+  "workflow_id": "2026-09-23-workflow-orchestration",
+  "issue": 341,
+  "status": "owned-source-completed-verification-deferred",
+  "created_at": "2026-09-23T09:38:14+08:00",
+  "updated_at": "2026-09-23T01:44:27+00:00",
+  "repository_root": "F:/framework-next/341",
+  "branch": "codex/2026-09-23-workflow-orchestration",
+  "git_common_dir": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git",
+  "retained_design_checkpoint": "7f821ee866e7e54e551036785e19dffaa3d7ac39",
+  "source_baseline": "9aa93ff4b9df396d28d0a9ae1bd2dd24715e05c0",
+  "checkpoint_commit_source": "containing-commit",
+  "checkpoint_resolution": "git log -1 --format=%H -- .dev/workflows/2026-09-23-workflow-orchestration/source-handoff.json",
+  "hidden_context_required": false,
+  "owner_skill": "ai-context-governance",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "model_source": "coordinator-declared/reported runtime observation; not independently attested here",
+  "selected_contract": ".dev/design/framework-next/p4-selected-contract.md",
+  "package": "software-development-orchestrator@0.1.0",
+  "source_root": "src/skills/software-development-orchestrator/",
+  "exact_members": [
+    "SKILL.md",
+    "skill-package.yaml",
+    "references/configuration.md",
+    "references/operations.md",
+    "references/retention.md",
+    "references/composition.md",
+    "references/example.md",
+    "schemas/workflow-record.schema.json",
+    "templates/workflow.md",
+    "scripts/workflow.py"
+  ],
+  "operations": [
+    "explain",
+    "create",
+    "inspect",
+    "query",
+    "checkpoint",
+    "transition",
+    "resume",
+    "retrospect",
+    "render",
+    "retention-preview"
+  ],
+  "config_version": 2,
+  "metadata_version": 2,
+  "read_schemas": [
+    "software-development-orchestrator.record@1.0.0"
+  ],
+  "write_schema": "software-development-orchestrator.record@1.0.0",
+  "implementation": "source-implemented",
+  "verification": "deferred-by-owner",
+  "verification_owner": "program-322-coordinator/P7",
+  "report": "reports/source-implementation.md",
+  "remaining_owner_decisions": [],
+  "limitations": [
+    "No schema/runtime/behavior/platform acceptance executed",
+    "No history import/conversion/store move",
+    "Cooperating writer and one-record publication only; no filesystem CAS or power-loss claim",
+    "Candidate-only specialist handoff; no foreign invocation/provider action",
+    "Retention previews only; no scheduling/compaction/archive/delete writer"
+  ],
+  "next_action": "Coordinator inspects source and assigns actual shared mapping/first push; P7 later selects focused verification. Issue/provider status remains coordinator-owned.",
+  "coordinator_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+  "first_push_owner": "coordinator",
+  "proposed_index_row": "| 2026-09-23-workflow-orchestration | ai-context-governance | completed | #341 portable workflow source implemented; verification deferred-by-owner to program #322/P7 | .dev/workflows/2026-09-23-workflow-orchestration/workflow-plan.md |",
+  "legacy_issue_316": "Separate legacy authoring scope; no fulfillment/closure; P5/P7 disposition",
+  "actual_checks": [
+    "19 UTF-8; 4 JSON; 2 YAML; 1 Python AST; 32 local Markdown links; 15 same-document schema references; direct inspection exit 0",
+    "Staged diff check initially exit 2 for extra EOF blank line; corrected and rechecked exit 0",
+    "Exact planned commit-message format validator exit 0; ignored original message bytes used for commit"
+  ],
+  "preparation_failures": [
+    "Windows process command-length error 206 before command execution; split source member writes succeeded",
+    "Orchestration JS quoting parse failure before execution; corrected direct edit succeeded"
+  ]
+}
