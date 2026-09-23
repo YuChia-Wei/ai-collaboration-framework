@@ -6,6 +6,7 @@ import argparse
 import ast
 from dataclasses import dataclass, field
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import posixpath
@@ -21,6 +22,18 @@ MAX_PATHS = 256
 MANIFEST = "src/distribution/manifest.yaml"
 RUNNER = "tests/framework_next/run.py"
 RUNNER_INTERFACE_COMMIT = "070a47335ffce99d31bd83e487447942539e4a9f"
+PUBLIC_INTERFACE_COMMIT = "7996b32d3d4f70553b203299e25dc69d9413ff9d"
+# Exact prepare(..., phases) declarations; PublicCase adds resource-setup.
+PUBLIC_PHASES = {family: ["resource-setup", "C4-config", "C6-binding", *phases]
+                for family, phases in {
+    "lesson": ["T1-round-trip", "C6-query-and-legacy", "T1-decision-successor", "C6-input-boundary"],
+    "adr": ["T2-round-trip", "T2-decision-derive"],
+    "standards-promotion": ["T3-round-trip", "T3-reconciliation-boundaries"],
+    "pr": ["T4-git-round-trip", "T4-synthetic-provider"],
+    "local-backlog": ["T5-round-trip"],
+    "software-development-orchestrator": ["T6-round-trip", "T6-with-deferrals"],
+    "problem-frame-author": ["T7-round-trip", "T7-structural-negatives"],
+}.items()}
 FAMILIES = frozenset({"lesson", "adr", "standards-promotion", "pr", "local-backlog",
                       "software-development-orchestrator", "problem-frame-author"})
 LEGACY_WORKFLOWS = frozenset({"governance.yml", "portable-gates.yml", "nightly-full-readiness.yml",
@@ -104,30 +117,40 @@ class Outcome:
     status: str
     code: int | None
     output: bytes = b""
+    stderr: bytes = b""
 
 
-def bounded_run(argv, cwd, *, timeout=60, limit=65536) -> Outcome:
-    """Capture at most limit bytes; terminate a noisy or timed-out direct child."""
+def bounded_run(argv, cwd, *, timeout=60, limit=65536, separate_streams=False) -> Outcome:
+    """Bound total capture; public JSONL/stdout stays separate from unittest/stderr."""
     try:
         child = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL,
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE if separate_streams else subprocess.STDOUT,
+                                 shell=False)
     except OSError:
         return Outcome("unavailable", None)
-    captured = bytearray()
+    captured, errors = bytearray(), bytearray()
     overflow = threading.Event()
-    def reader():
-        while chunk := child.stdout.read(4096):
-            remaining = limit - len(captured)
-            captured.extend(chunk[:remaining])
-            if len(chunk) > remaining:
-                overflow.set()
+    lock = threading.Lock()
+    def reader(stream, destination):
+        while chunk := stream.read(4096):
+            with lock:
+                remaining = limit - len(captured) - len(errors)
+                destination.extend(chunk[:remaining])
+                if len(chunk) > remaining:
+                    overflow.set()
+            if overflow.is_set():
                 try:
                     child.kill()
                 except OSError:
                     pass
                 break
-    thread = threading.Thread(target=reader, daemon=True)
-    thread.start()
+    streams = [(child.stdout, captured)]
+    if separate_streams:
+        streams.append((child.stderr, errors))
+    threads = [threading.Thread(target=reader, args=pair, daemon=True) for pair in streams]
+    for thread in threads:
+        thread.start()
     try:
         code = child.wait(timeout=timeout)
         status = "passed" if code == 0 else "failed"
@@ -135,14 +158,16 @@ def bounded_run(argv, cwd, *, timeout=60, limit=65536) -> Outcome:
         child.kill()
         child.wait(timeout=5)
         code, status = None, "timed-out"
-    thread.join(timeout=5)
-    if thread.is_alive():
+    for thread in threads:
+        thread.join(timeout=5)
+    if any(thread.is_alive() for thread in threads):
         status = "output-stream-not-closed"
     elif overflow.is_set():
         status = "output-limit"
-    if not thread.is_alive():
-        child.stdout.close()
-    return Outcome(status, code, bytes(captured))
+    for thread, (stream, _) in zip(threads, streams):
+        if not thread.is_alive():
+            stream.close()
+    return Outcome(status, code, bytes(captured), bytes(errors))
 
 
 class GitTree:
@@ -418,9 +443,7 @@ def command_for(check):
     if check == "contracts":
         return [sys.executable, "-I", "-B", RUNNER, "--layer", "contracts"]
     if check.startswith("public:") and check.removeprefix("public:") in FAMILIES:
-        # #368 explicitly reserves --layer public --family ID and exits 2.
-        # Refuse here until its actual implementation/result interface is delivered.
-        raise GateError("reserved-layer-not-implemented:#368:" + check)
+        return [sys.executable, "-I", "-B", RUNNER, "--layer", "public", "--family", check.removeprefix("public:")]
     raise GateError("unknown selected command: " + check)
 
 
@@ -436,6 +459,10 @@ def run_selected(check, root, head, launch=bounded_run):
             raise GateError("selected entry is linked")
     if not entry.is_file() or entry.read_bytes() != expected:
         raise GateError("selected command missing or differs from pinned head: " + path)
+    if check.startswith("public:"):
+        subject = full_sha(head.revision)
+        result = launch(argv, root, timeout=120, limit=65536, separate_streams=True)
+        return command_result(check, result, subject=subject)
     result = launch(argv, root, timeout=120, limit=65536)
     return command_result(check, result)
 
@@ -475,9 +502,87 @@ def contract_test_count(output):
         raise GateError("contracts result has malformed observation bytes") from exc
 
 
-def command_result(check, result):
+def public_family_result(family, subject, stdout, stderr):
+    """Validate the fixed #373 single-family completion evidence, never an RO gate."""
+    try:
+        subject = full_sha(subject)
+        if family not in PUBLIC_PHASES:
+            raise GateError("unknown public result family")
+        detail = stderr.decode("utf-8").replace("\r\n", "\n")
+        if (len(re.findall(r"(?m)^Ran 1 test in [0-9]+(?:\.[0-9]+)?s\n\nOK$", detail)) != 1
+                or re.search(r"(?m)^(?:FAILED\b|OK \(|ERROR:|FAIL:|Traceback |usage:|\{)| \.\.\. skipped\b", detail)
+                or len(re.findall(r"(?m)^Ran ", detail)) != 1):
+            raise GateError("public unittest result missing, failed, skipped or ambiguous")
+        # The actual single-family arm emits exactly runtime, public_family, selection.
+        lines = stdout.decode("utf-8").splitlines()
+        rows = [strict_json(line.encode("utf-8")) for line in lines]
+        if (len(rows) != 3 or any(not isinstance(row, dict) for row in rows)
+                or set(rows[0]) != {"runtime"} or set(rows[1]) != {"public_family"}
+                or set(rows[2]) != {"public_selection", "outcome", "exit", "unexecuted_families"}):
+            raise GateError("public JSONL missing, duplicated, reordered or malformed")
+        runtime, entry, final = rows[0]["runtime"], rows[1]["public_family"], rows[2]
+        if (not isinstance(runtime, dict) or not all(isinstance(runtime.get(key), str) and runtime[key]
+                for key in ("python", "executable", "PyYAML", "jsonschema", "referencing"))):
+            raise GateError("public runtime observation malformed")
+        if (final["public_selection"] != [family] or final["outcome"] != "passed"
+                or type(final["exit"]) is not int or final["exit"] != 0
+                or final["unexecuted_families"] != []):
+            raise GateError("public selection mismatched or incomplete")
+        fields = {"family", "outcome", "exit", "source_commit", "fixture_kind", "completed_phases",
+                  "failed_phase", "blocked_before_write", "unexecuted_phases", "public_launches", "calls",
+                  "fixture_accounting"}
+        phases = PUBLIC_PHASES[family]
+        if (not isinstance(entry, dict) or not fields <= entry.keys()
+                or {"exception_type", "diagnostic", "residue", "next_action"} & entry.keys()
+                or entry.get("current") is not None or entry["family"] != family
+                or entry["source_commit"] != subject or entry["outcome"] != "passed"
+                or type(entry["exit"]) is not int or entry["exit"] != 0
+                or entry["fixture_kind"] != "direct-committed-package-resources"
+                or entry["completed_phases"] != phases or entry["failed_phase"] is not None
+                or entry["blocked_before_write"] is not False or entry["unexecuted_phases"] != []):
+            raise GateError("public family/subject/phase completion missing or contradictory")
+        calls = entry["calls"]
+        if (not isinstance(calls, list) or type(entry["public_launches"]) is not int
+                or not 0 < entry["public_launches"] == len(calls) <= 160):
+            raise GateError("public launch count missing or inconsistent")
+        # Calls are diagnostics from the pinned test runner. Check shape/count only;
+        # expected negative operations may legitimately return nonzero child exits.
+        # PublicCase owns request/response assertions and operation/phase coverage.
+        for call in calls:
+            if (not isinstance(call, dict) or call.get("phase") not in phases
+                    or not isinstance(call.get("operation"), str) or not call["operation"]
+                    or type(call.get("exit")) is not int
+                    or not isinstance(call.get("outcome"), str) or not call["outcome"]):
+                raise GateError("public call observation incomplete or malformed")
+        fixture = entry["fixture_accounting"]
+        counters = {"observed_files", "observed_logical_bytes", "retained_files", "retained_bytes", "process_total"}
+        if (not isinstance(fixture, dict) or not counters | {"processes", "wall_seconds", "residue", "next_action"} <= fixture.keys()
+                or fixture["residue"] is not None or fixture["next_action"] is not None
+                or any(type(fixture[key]) is not int or fixture[key] < 0 for key in counters)
+                or type(fixture["wall_seconds"]) not in (int, float) or not math.isfinite(fixture["wall_seconds"])
+                or fixture["wall_seconds"] < 0 or not isinstance(fixture["processes"], dict)
+                or set(fixture["processes"]) != {"git", "python", "other"}
+                or any(type(value) is not int or value < 0 for value in fixture["processes"].values())
+                or sum(fixture["processes"].values()) != fixture["process_total"]
+                or fixture["process_total"] < len(calls)
+                or fixture["retained_files"] > fixture["observed_files"]
+                or fixture["retained_bytes"] > fixture["observed_logical_bytes"]):
+            raise GateError("public cleanup/accounting incomplete or inconsistent")
+        return {"check": "public:" + family, "status": "passed", "tests": 1, "skipped": 0,
+                "family": family, "source_commit": subject, "completed_phases": phases,
+                "public_launches": len(calls), "result_interface": "public-jsonl-and-unittest",
+                "interface_source_commit": PUBLIC_INTERFACE_COMMIT}
+    except (UnicodeError, ValueError, TypeError, KeyError, RecursionError) as exc:
+        raise GateError("public result malformed") from exc
+
+
+def command_result(check, result, *, subject=None):
     if result.status != "passed" or result.code != 0:
         raise GateError("selected command non-passing: " + check + ":" + result.status + ":exit=" + str(result.code))
+    if check.startswith("public:"):
+        if type(result.code) is not int:
+            raise GateError("public process exit is not an integer")
+        return public_family_result(check.removeprefix("public:"), subject, result.output, result.stderr)
     if check == "contracts":
         return {"check": check, "status": "passed", "tests": contract_test_count(result.output),
                 "skipped": 0, "result_interface": "unittest-and-observations",

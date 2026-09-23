@@ -1,5 +1,9 @@
 # Issue #369 runner binding follow-up
 
+This report retains checkpoint `6c5f4a298bc3ffdbea47348ae6ef8c9f4584b41d`.
+The later [public binding](public-binding-handoff.md) supersedes only the public
+reserved/unimplemented state below. Product failures and policy refusal remain.
+
 Status: **contracts CLI/result binding implemented; overall Issue remains partial**.
 Worktree `F:/framework-next/369`, branch `codex/2026-09-23-source-gates`.
 Prior local checkpoint: `5ee20036392b6ad217e4029c8a256e176e9d8cdf`.
