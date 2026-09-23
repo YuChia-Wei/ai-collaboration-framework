@@ -2,7 +2,7 @@
   "workflow_id": "2026-09-23-knowledge-lifecycle",
   "owner_skill": "ai-context-governance",
   "created_at": "2026-09-23T08:18:36+08:00",
-  "updated_at": "2026-09-23T08:18:36+08:00",
+  "updated_at": "2026-09-23T08:53:44+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "template_version": "1.1.0",
   "model": "gpt-6-astra",
@@ -11,15 +11,20 @@
   "finding_ids": [],
   "contract_exception": "U001; proportional task record; no legacy compliance claim",
   "task_id": "KL-002",
-  "status": "in_progress",
+  "status": "completed",
   "scope": {
-    "target": "Reconcile accepted interfaces, then implement lifecycle and promotion in explicitly assigned source",
+    "target": "Implement selected Lesson, ADR and standards-promotion source packages",
     "files": [
-      "Pending coordinator source handoff"
+      "src/skills/lesson/**",
+      "src/skills/adr/**",
+      "src/skills/standards-promotion/**",
+      ".dev/design/framework-next/knowledge-lifecycle/**",
+      ".dev/workflows/2026-09-23-knowledge-lifecycle/**"
     ],
     "constraints": [
-      "Current turn remains design-only",
-      "Do not mutate shared contracts or other worktrees"
+      "U001: source/syntax only; no product CLI, tests or schema execution",
+      "Preserve original design commit and Lesson v1 schema bytes",
+      "No shared files, push, PR or provider mutation"
     ],
     "non_goals": [
       "P7 behavioral/CI acceptance",
@@ -27,19 +32,28 @@
     ]
   },
   "execution": {
-    "last_completed_step": "Source ownership and interface proposals identified in KL-001",
-    "next_action": "Coordinator reconciles C334-01 through C334-04 with Issue #335, then resumes this same task with exact source ownership",
-    "implementation_started": false,
+    "last_completed_step": "Bounded source implementation and permitted direct syntax/data/reference/Git inspection complete",
+    "next_action": "Coordinator integrates local commit and hands exact mapping to #337; P7 selects and executes deferred verification",
+    "implementation_started": true,
     "validation": [
-      "deferred-by-owner: U001, program #322 coordinator / P7"
+      "Direct UTF-8/JSON/YAML/AST/reference/source inventory inspection completed; no product imports or execution",
+      "git diff --check: no whitespace errors",
+      "Legacy Lesson schema blob remains 8bced2d86584c87d34f8ca2927aab95b7802a3ac",
+      "Behavioral/schema/compatibility/filesystem/audit/CI: deferred-by-owner under U001 to program #322 coordinator / P7"
     ]
   },
   "results": {
-    "summary": "Contract reconciliation is active; product source implementation has not begun.",
-    "files_changed": [],
+    "summary": "Three selected standalone source packages completed; local workflow complete under U001 with assigned P7 verification deferral.",
+    "files_changed": [
+      "src/skills/lesson/**",
+      "src/skills/adr/**",
+      "src/skills/standards-promotion/**",
+      ".dev/design/framework-next/knowledge-lifecycle/**",
+      ".dev/workflows/2026-09-23-knowledge-lifecycle/**"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "No implementation/behavioral acceptance yet.",
-    "follow_up_needed": false
+    "finding_status": "source-implemented-verification-deferred",
+    "residual_risk": "Behavioral, schema, compatibility, filesystem, independent-review and CI execution deferred-by-owner to P7.",
+    "follow_up_needed": true
   }
 }

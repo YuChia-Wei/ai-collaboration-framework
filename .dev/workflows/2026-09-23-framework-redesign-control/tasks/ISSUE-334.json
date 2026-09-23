@@ -6,9 +6,9 @@
   "task_id": "ISSUE-334",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T02:14:01+08:00",
-  "updated_at": "2026-09-23T08:29:09+08:00",
+  "updated_at": "2026-09-23T09:05:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -53,15 +53,21 @@
     "validation": [
       "readability/JSON/YAML/source/reference/Git and planned commit-message format only"
     ],
-    "last_completed_step": "Same-task source continuation dispatched; assigned worktree HEAD read back at reconciliation commit",
-    "next_action": "Receive complete owned package source checkpoint before first push"
+    "last_completed_step": "Received clean source delivery and completed bounded fixed-source inspection; locally integrated",
+    "next_action": "Online PR and Issue/Project read-back; #337 exact mapping and P7 verification remain separate"
   },
   "results": {
-    "summary": "Bounded design checkpoint complete; shared decisions selected; source implementation next.",
-    "files_changed": [],
+    "summary": "Three knowledge package source sets delivered and inspected; local integration complete.",
+    "files_changed": [
+      "src/skills/lesson/",
+      "src/skills/adr/",
+      "src/skills/standards-promotion/",
+      ".dev/design/framework-next/knowledge-lifecycle/",
+      ".dev/workflows/2026-09-23-knowledge-lifecycle/"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Contract decisions, implementation and P7 verification pending",
+    "finding_status": "partially-resolved",
+    "residual_risk": "Runtime/schema/platform/local-evidence behavior unexecuted; P7 owns selected verification",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -77,8 +83,12 @@
   "delivery": {
     "contract_checkpoint": "99adb0762328c8f8d6cff7338f17caec99685c0a",
     "contract_status": "reviewed and reconciled for source continuation",
-    "implementation_status": "active",
+    "implementation_status": "complete; locally integrated",
     "verification_state": "deferred-by-owner",
-    "decision_contract": ".dev/design/framework-next/p3-shared-contract.md"
+    "decision_contract": ".dev/design/framework-next/p3-shared-contract.md",
+    "source_checkpoint": "552e218d039245482ed422be7d4fb642d5463ff0",
+    "worktree_clean_observed": true,
+    "provider_integration": "pending online PR",
+    "inspection": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p3-knowledge-integration.md"
   }
 }

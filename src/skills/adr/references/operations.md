@@ -1,4 +1,4 @@
-# Lesson filesystem operations 0.2.0
+# ADR filesystem operations 0.1.0
 
 This is a public source interface. `implemented` means source exists; it does
 not establish installation, tested platform support or observed execution.
@@ -9,8 +9,8 @@ provider calls, shared runtime or imports from another package.
 ## Request and result
 
 ```text
-python /absolute/package/scripts/lesson.py --request /absolute/request.json
-python /absolute/package/scripts/lesson.py --request -
+python /absolute/package/scripts/adr.py --request /absolute/request.json
+python /absolute/package/scripts/adr.py --request -
 ```
 
 The second form reads one JSON object from stdin. Required common fields are
@@ -22,8 +22,8 @@ YAML additionally rejects explicit tags, aliases, anchors and merge keys.
 Every selected input, request and serialized record is bounded to 4 MiB.
 Schema refs are bounded acyclic local `#/$defs/...` only; no resource fetching.
 
-`reference` is exactly `{"role":"lesson.record","id":"lesson-<32 lowercase hex digits>"}`.
-It selects `<store>/<id>.lesson.json`. Updates require lowercase 64-hex
+`reference` is exactly `{"role":"adr.record","id":"adr-<32 lowercase hex digits>"}`.
+It selects `<store>/<id>.adr.json`. Updates require lowercase 64-hex
 `expected_sha256` of the ACTUAL raw record bytes. The tool, not the caller,
 generates identities, snapshots, timestamps, histories and observations.
 Reasons are nonblank. `content` is a full owned object, never a generic patch.
@@ -45,7 +45,7 @@ plain message, without echoing arbitrary inputs or exception text.
 | create | `content`, `text`, `decision` | `statuses`, `extensions` |
 | revise | `reference`, `expected_sha256`, `content`, `reason` | None |
 | derive | `reference`, `expected_sha256`, `reason`, `text`, `decision` | `statuses` |
-| accept | `reference`, `expected_sha256`, `reason`, `decision_source` | None |
+| decide | `reference`, `expected_sha256`, `reason`, `decision_source` | None |
 | retire | `reference`, `expected_sha256`, `reason` | None |
 | supersede | `reference`, `expected_sha256`, `reason`, `successor` | None |
 
@@ -67,13 +67,13 @@ reference and intended digest when available. Read results do not rewrite data.
 
 ## Query before a new identity
 
-Query selects at most 10,000 direct `*.lesson.json` files, never recursively.
+Query selects at most 10,000 direct `*.adr.json` files, never recursively.
 An absent store is empty. Results have stable filename order, `matches`, exact
 `text`, normalized `statuses`, selected count, partial diagnostics and
 `query_sha256`. Matches include reference, title, status, schema version, raw digest
 and compatibility. Unsupported/malformed/unreadable records remain present in the
 query inventory and make the result partial; partial-empty is no absence proof.
-Search is case-insensitive literal substring over title/observation/conclusion.
+Search is case-insensitive literal substring over title/context/decision_drivers/options.
 Omitted statuses means all supported statuses; an explicit array is nonempty,
 unique and contains only supported values.
 
@@ -108,7 +108,7 @@ no revision/history is appended. Extensions are immutable. Unknown versions are
 preserved and unsupported; no deletion, bulk conversion or history compaction.
 
 Resolve explicit bindings first. A writer exclusively creates
-`<store>/.lesson-write.lock` with an invocation token; existing locks are conflict,
+`<store>/.adr-write.lock` with an invocation token; existing locks are conflict,
 never auto-recovered. After locking, validate content/state/evidence and all frozen
 inputs, serialize within 4 MiB to a unique same-directory temp, fsync/close, then
 publish new identities with an exclusive hard link or update via atomic replace.
@@ -127,41 +127,38 @@ cooperating writers are serialized; hostile/external editors remain outside it.
 
 ## Template boundary
 
-The [default template](../templates/lesson.md) is inert UTF-8 text. Tokens use
+The [default template](../templates/adr.md) is inert UTF-8 text. Tokens use
 literal `{{token}}`, are replaced once, and cannot execute expressions, includes,
 HTML or path interpolation. Text is HTML/Markdown-escaped; arrays/objects are
 escaped JSON in authored order, not executable blocks. Missing, unknown or malformed
 tokens fail render. Repetition is allowed. Templates are read for every operation;
 token completeness is checked by render. Custom templates alter presentation only.
-Require id, schema_version, all authored content fields (title, observation, evidence, conclusion, applies_when, does_not_apply_when, confidence, follow_up), plus
-status, history and provenance for current records. decision is optional but included
-in the default view; legacy v1 permits the original content-only template.
+Require id, schema_version, all authored content fields (title, context, decision_drivers, options, consequences, evidence, applies_when, does_not_apply_when), plus
+status, history and provenance for current records. decision is required for ADR.
 Only those tokens and decision are allowed. Derived/decision/successor state is
 retained in the record even if a custom presentation omits an optional token.
 
 
-## Lesson content, lifecycle and compatibility
+## ADR content and lifecycle
 
-Writable schema: [lesson.record@2.0.0](../schemas/lesson-record-v2.schema.json).
-Authored content has title, observation, evidence, conclusion, applies_when,
-does_not_apply_when, confidence, follow_up. Strings are nonblank; text arrays
-preserve order, applies_when is nonempty. Evidence rows are `{source,note}` with
-inert references. Empty evidence requires `tentative`; `supported` requires an
-item but remains a content claim, never proof of causation/approval.
+Schema: [adr.record@1.0.0](../schemas/adr-record.schema.json). Authored content:
+title, context, decision_drivers, options, consequences, evidence, applies_when,
+does_not_apply_when. Strings are nonblank; drivers/applicability arrays nonempty.
+At least two real options with unique IDs are required; each is
+`{id,summary,benefits,costs}` with ordered text arrays for benefits/costs. Evidence
+rows `{source,note}` are inert references, not automatically read files.
 
-Create -> candidate; candidate revise -> candidate; accept -> accepted only after
-actual mapped decision read-back. Candidate or accepted may retire, or supersede
-with an accepted same-store Lesson. Retired/superseded cannot mutate; accepted
-content cannot revise. Every decision preserves exact evidence and project binding.
-Accepting a Lesson never makes it a project rule.
+Create -> draft; only draft can revise. Decide reads configured actual evidence:
+accept selects an existing option ID and records accepted; reject requires null
+option ID and records rejected. Draft/accepted/rejected can retire. Only accepted
+can supersede, with an accepted same-store ADR. Retired/superseded records cannot
+mutate. Decisions capture actor/time/subject/source bytes and config binding;
+none proves implementation, validation, rule adoption or enforcement.
 
-Legacy [lesson.record@1.0.0](../schemas/lesson-record.schema.json) retains its
-unchanged schema and bytes. Inspect/query/validate/render support mixed v1/v2
-stores with `compatibility: read-only-legacy`; all v1 updates fail unsupported.
-Explicit derive from either supported version copies authored content/extensions
-into a NEW v2 candidate, resets decision/state and retains exact source snapshot,
-identity, version and store. The source remains untouched. No in-place, automatic,
-bulk or Markdown conversion. Legacy tools can reject v2 records/config.
+Derive from any supported ADR state copies authored content/extensions to a NEW
+draft with null decision and exact source identity/version/store/byte snapshot.
+The source is untouched. Rejected/accepted content corrections use derive;
+there is no import/migration from arbitrary historical Markdown or YAML.
 
 ## Successor boundary
 

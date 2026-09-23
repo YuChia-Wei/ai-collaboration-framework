@@ -2,17 +2,25 @@
 
 Record: {{id}} | Schema: {{schema_version}} | Status: {{status}}
 
-## Observation
+## Context
 
-{{observation}}
+{{context}}
+
+## Decision Drivers
+
+{{decision_drivers}}
+
+## Options
+
+{{options}}
+
+## Consequences
+
+{{consequences}}
 
 ## Evidence
 
 {{evidence}}
-
-## Conclusion
-
-{{conclusion}}
 
 ## Applies When
 
@@ -21,14 +29,6 @@ Record: {{id}} | Schema: {{schema_version}} | Status: {{status}}
 ## Does Not Apply When
 
 {{does_not_apply_when}}
-
-## Confidence
-
-{{confidence}}
-
-## Follow Up
-
-{{follow_up}}
 
 ## Decision
 

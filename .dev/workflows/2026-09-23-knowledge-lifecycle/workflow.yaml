@@ -4,22 +4,23 @@ workflow_id: 2026-09-23-knowledge-lifecycle
 workflow_kind: ai-context-maintenance
 title: ADR and Lesson lifecycle with evidence-preserving standards promotion
 owner_skill: ai-context-governance
-status: in_progress
-current_phase: contract-reconciliation
+status: completed
+current_phase: local-source-complete
 branch: codex/2026-09-23-knowledge-lifecycle
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-knowledge-lifecycle
 entrypoint: workflow-plan.md
 created_at: '2026-09-23T08:18:36+08:00'
-updated_at: '2026-09-23T08:21:22+08:00'
+updated_at: '2026-09-23T08:53:44+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
-template_version: '1.2.0'
+template_version: 1.2.0
 issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/334
 program: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
 coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
 assigned_worktree: F:/framework-next/334
 starting_commit: a34ecd3c9423b17b6bb745f598ef22fd7437dd24
-contract_exception: 'U001: proportional design checkpoint; legacy workflow/audit/schema validation deferred-by-owner'
+contract_exception: 'U001: local source implementation; behavioral/schema/legacy/audit/CI
+  validation deferred-by-owner'
 execution_provenance:
   runtime: OpenAI Codex
   model: gpt-6-astra
@@ -29,4 +30,7 @@ verification:
   status: deferred-by-owner
   authority: U001
   owner: program-322-coordinator/P7
-  next_action: select and execute redesigned focused behavioral/schema/CI checks in P7
+  next_action: select and execute redesigned focused behavioral/schema/CI checks in
+    P7
+selected_contract_commit: 0d0556d4c60105a28eb39cfb06efab9b069728cb
+implementation_skill: slice-implementer

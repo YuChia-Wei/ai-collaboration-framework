@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T08:26:01+08:00",
-  "updated_at": "2026-09-23T08:48:27+08:00",
+  "updated_at": "2026-09-23T09:05:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -23,7 +23,12 @@
       "src/distribution/package.py",
       "necessary direct src/distribution/ call sites",
       ".dev/design/framework-next/distribution-implementation/",
-      ".dev/workflows/2026-09-23-p3-distribution/"
+      ".dev/workflows/2026-09-23-p3-distribution/",
+      "src/distribution/manifest.yaml",
+      "src/profiles/lesson-minimal.yaml",
+      "src/profiles/knowledge.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml"
     ],
     "constraints": [
       "U001",
@@ -50,7 +55,7 @@
       "Direct syntax/source/reference/Git and exact planned commit-message only"
     ],
     "last_completed_step": "Received and inspected metadata-v2 source checkpoint; no material correction identified in bounded source review",
-    "next_action": "Await actual #334/#335 package integration, then resume same task for exact manifest/profile mapping"
+    "next_action": "Resume same task from supplied integration checkpoint for selected exact 44-member/four-profile mapping"
   },
   "results": {
     "summary": "First loader source stage complete and inspected; full Issue still awaits package mapping.",
@@ -77,12 +82,13 @@
     "source_checkpoint": "13a08f3c886513cead3bfea080224f3323131977",
     "worktree_clean_observed": true,
     "source_stage": "complete; inspected under U001",
-    "mapping_stage": "awaiting actual package source",
+    "mapping_stage": "selected from actual integrated packages; continuation dispatch next",
     "provider_integration": "source stage merged; mapping stage pending",
     "verification_state": "deferred-by-owner",
     "pull_request": 339,
     "merge_commit": "879b195160540f74bab2ac57cad148bcfaddbcbe",
     "issue_state": "OPEN",
-    "project_status": "In progress"
+    "project_status": "In progress",
+    "mapping_assignment": "reports/p3-package-mapping-scope.md"
   }
 }

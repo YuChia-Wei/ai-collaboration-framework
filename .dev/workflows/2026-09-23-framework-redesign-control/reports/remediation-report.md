@@ -54,3 +54,7 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P4 design dispatch preparation
 
 #335 is now merged in PR #340 with Issue CLOSED/COMPLETED and Project Done read back. #341 is open for the portable workflow/retention contract stage; [selected scope](p4-orchestration-scope.md) distinguishes it from still-open legacy #316. P4 design can proceed while #334 source is active; implementation remains sequenced after contract reconciliation. #337 exact mapping still awaits the actual packages.
+
+## P3 knowledge source and actual mapping
+
+#334 source 552e218d039245482ed422be7d4fb642d5463ff0 is locally integrated after [bounded inspection](p3-knowledge-integration.md). F-04 now has concrete lifecycle/promotion source but remains partially resolved pending composition/adoption/verification. #337 receives [44-member/four-profile mapping](p3-package-mapping-scope.md) against all actual package source. #341 design dispatch is independently active with runtime/F: identity retained in evidence/p4-task-dispatch.json. Product execution remains deferred-by-owner.

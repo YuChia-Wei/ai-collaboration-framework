@@ -1,4 +1,4 @@
-# Lesson filesystem operations 0.2.0
+# Standards Promotion filesystem operations 0.1.0
 
 This is a public source interface. `implemented` means source exists; it does
 not establish installation, tested platform support or observed execution.
@@ -9,8 +9,8 @@ provider calls, shared runtime or imports from another package.
 ## Request and result
 
 ```text
-python /absolute/package/scripts/lesson.py --request /absolute/request.json
-python /absolute/package/scripts/lesson.py --request -
+python /absolute/package/scripts/standards_promotion.py --request /absolute/request.json
+python /absolute/package/scripts/standards_promotion.py --request -
 ```
 
 The second form reads one JSON object from stdin. Required common fields are
@@ -22,8 +22,8 @@ YAML additionally rejects explicit tags, aliases, anchors and merge keys.
 Every selected input, request and serialized record is bounded to 4 MiB.
 Schema refs are bounded acyclic local `#/$defs/...` only; no resource fetching.
 
-`reference` is exactly `{"role":"lesson.record","id":"lesson-<32 lowercase hex digits>"}`.
-It selects `<store>/<id>.lesson.json`. Updates require lowercase 64-hex
+`reference` is exactly `{"role":"standards-promotion.record","id":"promotion-<32 lowercase hex digits>"}`.
+It selects `<store>/<id>.promotion.json`. Updates require lowercase 64-hex
 `expected_sha256` of the ACTUAL raw record bytes. The tool, not the caller,
 generates identities, snapshots, timestamps, histories and observations.
 Reasons are nonblank. `content` is a full owned object, never a generic patch.
@@ -42,12 +42,11 @@ plain message, without echoing arbitrary inputs or exception text.
 | explain | None | None |
 | query | None | `text` (default empty), `statuses` |
 | inspect / validate / render | `reference` | None |
-| create | `content`, `text`, `decision` | `statuses`, `extensions` |
+| propose | `content`, `text`, `decision` | `statuses`, `extensions` |
 | revise | `reference`, `expected_sha256`, `content`, `reason` | None |
-| derive | `reference`, `expected_sha256`, `reason`, `text`, `decision` | `statuses` |
-| accept | `reference`, `expected_sha256`, `reason`, `decision_source` | None |
-| retire | `reference`, `expected_sha256`, `reason` | None |
+| withdraw | `reference`, `expected_sha256`, `reason` | None |
 | supersede | `reference`, `expected_sha256`, `reason`, `successor` | None |
+| reconcile | `reference`, `expected_sha256` | `adoption_source`, `effect_source` |
 
 All writes require actual task authority. A JSON field, record, template or local
 actor string cannot authorize an action. Read results include exact record digest,
@@ -67,13 +66,13 @@ reference and intended digest when available. Read results do not rewrite data.
 
 ## Query before a new identity
 
-Query selects at most 10,000 direct `*.lesson.json` files, never recursively.
+Query selects at most 10,000 direct `*.promotion.json` files, never recursively.
 An absent store is empty. Results have stable filename order, `matches`, exact
 `text`, normalized `statuses`, selected count, partial diagnostics and
 `query_sha256`. Matches include reference, title, status, schema version, raw digest
 and compatibility. Unsupported/malformed/unreadable records remain present in the
 query inventory and make the result partial; partial-empty is no absence proof.
-Search is case-insensitive literal substring over title/observation/conclusion.
+Search is case-insensitive literal substring over title/rationale/replacement.
 Omitted statuses means all supported statuses; an explicit array is nonempty,
 unique and contains only supported values.
 
@@ -108,7 +107,7 @@ no revision/history is appended. Extensions are immutable. Unknown versions are
 preserved and unsupported; no deletion, bulk conversion or history compaction.
 
 Resolve explicit bindings first. A writer exclusively creates
-`<store>/.lesson-write.lock` with an invocation token; existing locks are conflict,
+`<store>/.standards-promotion-write.lock` with an invocation token; existing locks are conflict,
 never auto-recovered. After locking, validate content/state/evidence and all frozen
 inputs, serialize within 4 MiB to a unique same-directory temp, fsync/close, then
 publish new identities with an exclusive hard link or update via atomic replace.
@@ -127,41 +126,51 @@ cooperating writers are serialized; hostile/external editors remain outside it.
 
 ## Template boundary
 
-The [default template](../templates/lesson.md) is inert UTF-8 text. Tokens use
+The [default template](../templates/promotion.md) is inert UTF-8 text. Tokens use
 literal `{{token}}`, are replaced once, and cannot execute expressions, includes,
 HTML or path interpolation. Text is HTML/Markdown-escaped; arrays/objects are
 escaped JSON in authored order, not executable blocks. Missing, unknown or malformed
 tokens fail render. Repetition is allowed. Templates are read for every operation;
 token completeness is checked by render. Custom templates alter presentation only.
-Require id, schema_version, all authored content fields (title, observation, evidence, conclusion, applies_when, does_not_apply_when, confidence, follow_up), plus
-status, history and provenance for current records. decision is optional but included
-in the default view; legacy v1 permits the original content-only template.
-Only those tokens and decision are allowed. Derived/decision/successor state is
-retained in the record even if a custom presentation omits an optional token.
+Require id, schema_version, status, proposal (entire captured content), observation
+and history; title is optional. No other tokens are supported. The full proposal
+includes before/after text, sources, conflicts and captured target authority.
 
 
-## Lesson content, lifecycle and compatibility
+## Proposal content and lifecycle
 
-Writable schema: [lesson.record@2.0.0](../schemas/lesson-record-v2.schema.json).
-Authored content has title, observation, evidence, conclusion, applies_when,
-does_not_apply_when, confidence, follow_up. Strings are nonblank; text arrays
-preserve order, applies_when is nonempty. Evidence rows are `{source,note}` with
-inert references. Empty evidence requires `tentative`; `supported` requires an
-item but remains a content claim, never proof of causation/approval.
+Schema: [standards-promotion.record@1.0.0](../schemas/promotion-record.schema.json).
+Propose/revise content fields: title, target_id, expected_target_sha256, replacement,
+rationale, applicability, conflicts, sources. Replacement is one complete UTF-8
+string, including intentional empty text. Baseline must match actual existing
+target bytes. Conflicts are `{subject,disposition,reason}`; disposition is preserve,
+replace, supersede or unresolved. At least one source is required, each
+`{path,expected_sha256,kind,id,schema_version,reason}` within selected read roots.
+Read/capture exact bytes and require descriptor identity equality when present in
+JSON; opaque/non-JSON descriptors remain caller attribution, not schema validation.
 
-Create -> candidate; candidate revise -> candidate; accept -> accepted only after
-actual mapped decision read-back. Candidate or accepted may retire, or supersede
-with an accepted same-store Lesson. Retired/superseded cannot mutate; accepted
-content cannot revise. Every decision preserves exact evidence and project binding.
-Accepting a Lesson never makes it a project rule.
+The tool captures target/config binding, baseline, sources and observation times;
+computes after_sha256 = SHA256(UTF8(replacement)). The subject hashes sorted-key,
+indent-2 non-ASCII UTF-8 JSON + LF of `{target_binding,source_snapshots,content}`.
+source_snapshots is the full sources array; content is exactly title, target_id,
+baseline, replacement, rationale, applicability, conflicts. ID/history/observation
+and the two computed digests are excluded. This evidence subject differs from the
+raw record digest used for concurrency. Snapshot times participate in the subject;
+an equal-content revision compares inputs before refreshing times and writes nothing.
 
-Legacy [lesson.record@1.0.0](../schemas/lesson-record.schema.json) retains its
-unchanged schema and bytes. Inspect/query/validate/render support mixed v1/v2
-stores with `compatibility: read-only-legacy`; all v1 updates fail unsupported.
-Explicit derive from either supported version copies authored content/extensions
-into a NEW v2 candidate, resets decision/state and retains exact source snapshot,
-identity, version and store. The source remains untouched. No in-place, automatic,
-bulk or Markdown conversion. Legacy tools can reject v2 records/config.
+Propose -> proposed. Revise is allowed only while proposed and NEVER observed
+adopted, with identical target/config/baseline. Material revise clears current
+observation and retains it in history. Once any current/prior observation is adopted,
+revise remains blocked even after revocation. Conflicts then require a NEW proposal
+identity and new matching adoption. Changed target/config/baseline also requires a
+new proposal. Withdraw -> withdrawn, supersede -> superseded; both affect only the
+proposal, never roll back or supersede the actual rule. Terminal records are immutable.
+
+Reconcile while proposed independently reads selected owner evidence, actual target
+and effect declaration; appends real-time observations even if evidence is unchanged.
+It rechecks the captured project config/target binding exactly. Inspect/render never
+refresh these observations. See [authority](authority.md) for dimension semantics.
+There is NO apply, import, delete, external approval, bulk edit or migration operation.
 
 ## Successor boundary
 

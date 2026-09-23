@@ -1,6 +1,6 @@
 metadata_version: 2
-id: lesson
-version: 0.2.0
+id: adr
+version: 0.1.0
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -18,7 +18,7 @@ runtime:
   - revise
   - render
   - derive
-  - accept
+  - decide
   - retire
   - supersede
   on_missing: unavailable
@@ -33,7 +33,7 @@ runtime:
   - revise
   - render
   - derive
-  - accept
+  - decide
   - retire
   - supersede
   on_missing: unavailable
@@ -48,7 +48,7 @@ runtime:
   - revise
   - render
   - derive
-  - accept
+  - decide
   - retire
   - supersede
   on_missing: unavailable
@@ -62,7 +62,7 @@ runtime:
   - revise
   - render
   - derive
-  - accept
+  - decide
   - retire
   - supersede
   on_missing: unavailable
@@ -78,30 +78,29 @@ runtime:
   - revise
   - render
   - derive
-  - accept
+  - decide
   - retire
   - supersede
   on_missing: unavailable
 configuration:
-  namespace: lesson
+  namespace: adr
   defaults:
     store:
       kind: filesystem
-      root: notes/lessons
+      root: notes/adrs
       tracking: tracked
     template:
       origin: package
-      path: templates/lesson.md
+      path: templates/adr.md
 artifact_roles:
-- role: lesson.record
+- role: adr.record
   owner: project
-  schema: lesson.record@2.0.0
+  schema: adr.record@1.0.0
   read_schemas:
-  - lesson.record@1.0.0
-  - lesson.record@2.0.0
-  store_binding: lesson.store
-  identity: lesson-<32 lowercase hex digits>
-  filename: <id>.lesson.json
+  - adr.record@1.0.0
+  store_binding: adr.store
+  identity: adr-<32 lowercase hex digits>
+  filename: <id>.adr.json
   read_operations:
   - inspect
   - query
@@ -111,12 +110,12 @@ artifact_roles:
   - create
   - revise
   - derive
-  - accept
+  - decide
   - retire
   - supersede
-- role: lesson.view
+- role: adr.view
   owner: derived
-  source_role: lesson.record
+  source_role: adr.record
   output: Result-only Markdown
   persistence: Export requires separate caller-owned write
   produce_operations:
@@ -127,27 +126,22 @@ resources:
   - references/operations.md
   - references/example.md
   schemas:
-  - id: lesson.record
+  - id: adr.record
     version: 1.0.0
-    path: schemas/lesson-record.schema.json
-    owner: lesson
-    migration: unsupported; preserve original; explicit derive is a new identity
-  - id: lesson.record
-    version: 2.0.0
-    path: schemas/lesson-record-v2.schema.json
-    owner: lesson
-    migration: unsupported; preserve original; explicit derive is a new identity
+    path: schemas/adr-record.schema.json
+    owner: adr
+    migration: unsupported; preserve original
   templates:
-  - id: lesson.default-view
-    path: templates/lesson.md
-    input_role: lesson.record
-    output_role: lesson.view
-    owner: lesson
+  - id: adr.default-view
+    path: templates/adr.md
+    input_role: adr.record
+    output_role: adr.view
+    owner: adr
   tools:
-  - id: lesson.fs
-    owner: lesson
+  - id: adr.fs
+    owner: adr
     implementation_status: implemented
-    entrypoint: scripts/lesson.py
+    entrypoint: scripts/adr.py
     operation_contract: references/operations.md
     operations:
     - explain
@@ -158,7 +152,7 @@ resources:
     - revise
     - render
     - derive
-    - accept
+    - decide
     - retire
     - supersede
 operations:
@@ -168,7 +162,7 @@ operations:
   outputs:
   - own effective settings, field sources, config version, ignored namespace names
     and authority bindings
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: create
   inputs:
@@ -180,7 +174,7 @@ operations:
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
   - actual related_query and retained directory creations
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: inspect
   inputs:
@@ -188,7 +182,7 @@ operations:
   - reference
   outputs:
   - owned record, raw digest and historical evidence/freshness
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: query
   inputs:
@@ -197,7 +191,7 @@ operations:
   outputs:
   - matching references with status/version/raw digest
   - partial diagnostics and actual query_sha256
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: validate
   inputs:
@@ -205,7 +199,7 @@ operations:
   - reference
   outputs:
   - actual owned structure/semantic result and diagnostics
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: revise
   inputs:
@@ -216,15 +210,15 @@ operations:
   - reason
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: render
   inputs:
   - explicit project_root/package_root and selected configuration
   - reference
   outputs:
-  - lesson.view as result-only escaped Markdown
-  tool: lesson.fs
+  - adr.view as result-only escaped Markdown
+  tool: adr.fs
   implementation_status: implemented
 - id: derive
   inputs:
@@ -238,9 +232,9 @@ operations:
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
   - actual related_query and retained directory creations
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
-- id: accept
+- id: decide
   inputs:
   - explicit project_root/package_root and selected configuration
   - reference
@@ -249,7 +243,7 @@ operations:
   - decision_source
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: retire
   inputs:
@@ -259,7 +253,7 @@ operations:
   - reason
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
 - id: supersede
   inputs:
@@ -270,5 +264,5 @@ operations:
   - successor
   outputs:
   - record reference, actual persisted-byte digest, changed flag and mutation state
-  tool: lesson.fs
+  tool: adr.fs
   implementation_status: implemented
