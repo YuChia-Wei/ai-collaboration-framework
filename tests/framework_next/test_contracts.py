@@ -534,6 +534,207 @@ class CandidateTests(unittest.TestCase):
 
 
 class FixtureSupportTests(unittest.TestCase):
+    def test_readonly_git_object_cleanup(self):
+        case = support.active_run().case('readonly-git-cleanup')
+        child = support.FixtureRun(case, environment={})
+        with support.use_run(child):
+            repo = child.case('tiny-git')
+            support.git('init', '--bare', '--template=', str(repo))
+            oid = support.git('hash-object', '-w', '--stdin', cwd=repo,
+                              input=b'tiny readonly Git fixture\n').decode().strip()
+            loose = repo / 'objects' / oid[:2] / oid[2:]
+            info = loose.lstat()
+            self.assertTrue(stat.S_ISREG(info.st_mode))
+            self.assertEqual(info.st_nlink, 1)
+            if os.name == 'nt':
+                self.assertTrue(info.st_file_attributes & stat.FILE_ATTRIBUTE_READONLY)
+            measured = child.measure()
+            observed = child.close(True)
+        self.assertTrue(child.closed)
+        self.assertFalse(child.root.exists())
+        self.assertTrue(case.is_dir())
+        for key in ('processes', 'process_total', 'retained_files', 'retained_bytes'):
+            self.assertEqual(observed[key], measured[key])
+        self.assertEqual(observed['processes'], {'git': 2, 'python': 0, 'other': 0})
+        print(json.dumps({'actual_readonly_git_cleanup': observed}, sort_keys=True))
+
+    def test_readonly_cleanup_refusals_preserve_accounting(self):
+        from unittest.mock import patch
+        case = support.active_run().case('readonly-refusals')
+        child = support.FixtureRun(case, environment={})
+        nested = child.case('nested')
+        target = child.write(nested / 'tiny.txt', b'owned readonly refusal fixture\n')
+        outside = support.active_run().write(case / 'outside.txt', b'outside child; preserve\n')
+        os.chmod(target, target.lstat().st_mode & ~stat.S_IWRITE)
+        real_lstat = Path.lstat
+        actual = real_lstat(target)
+        original_identity = child.identity
+        modes = ('outside', 'traversal', 'unknown', 'file-identity', 'ancestor-identity',
+                 'root-identity', 'symlink', 'reparse', 'ancestor-reparse', 'nonregular',
+                 'hardlink', 'writable', 'attribute-drift', 'unknown-error', 'unknown-operation',
+                 'post-chmod-drift', 'retry-failure')
+        for mode in modes:
+            with self.subTest(synthetic_guard=mode):
+                prior = child.measure()
+                error = PermissionError('synthetic Windows unlink access denial')
+                error.winerror = 5
+                chmod_calls = []
+                unlink_calls = []
+
+                def baseline_lstat(path, *args, **kwargs):
+                    info = real_lstat(path, *args, **kwargs)
+                    if path != target or hasattr(info, 'st_file_attributes'):
+                        return info
+                    # Windows attribute semantics are synthetic on other hosts.
+                    return SimpleNamespace(**{name: getattr(info, name) for name in
+                        ('st_dev', 'st_ino', 'st_mode', 'st_nlink', 'st_size', 'st_mtime_ns')},
+                        st_file_attributes=stat.FILE_ATTRIBUTE_READONLY)
+
+                def simulated_lstat(path, *args, **kwargs):
+                    info = baseline_lstat(path, *args, **kwargs)
+                    fields = {name: getattr(info, name) for name in
+                              ('st_dev', 'st_ino', 'st_mode', 'st_nlink', 'st_size', 'st_mtime_ns')}
+                    fields['st_file_attributes'] = getattr(info, 'st_file_attributes', 0)
+                    if path == target:
+                        fields['st_file_attributes'] |= stat.FILE_ATTRIBUTE_READONLY
+                        if mode == 'file-identity' or (mode == 'post-chmod-drift' and chmod_calls):
+                            fields['st_ino'] = -1
+                        elif mode == 'symlink':
+                            fields['st_mode'] = stat.S_IFLNK | stat.S_IREAD
+                        elif mode == 'reparse':
+                            fields['st_file_attributes'] |= stat.FILE_ATTRIBUTE_REPARSE_POINT
+                        elif mode == 'nonregular':
+                            fields['st_mode'] = stat.S_IFDIR | stat.S_IREAD
+                        elif mode == 'hardlink':
+                            fields['st_nlink'] = 2
+                        elif mode == 'writable':
+                            fields['st_file_attributes'] &= ~stat.FILE_ATTRIBUTE_READONLY
+                        elif mode == 'attribute-drift':
+                            fields['st_file_attributes'] ^= stat.FILE_ATTRIBUTE_HIDDEN
+                        elif mode == 'retry-failure' and chmod_calls:
+                            fields['st_file_attributes'] = (fields['st_file_attributes'] &
+                                ~stat.FILE_ATTRIBUTE_READONLY) or stat.FILE_ATTRIBUTE_NORMAL
+                    if path == nested and mode == 'ancestor-identity':
+                        fields['st_ino'] = -1
+                    if path == nested and mode == 'ancestor-reparse':
+                        fields['st_file_attributes'] |= stat.FILE_ATTRIBUTE_REPARSE_POINT
+                    return SimpleNamespace(**fields)
+
+                def failed_unlink(*args):
+                    unlink_calls.append(args)
+                    raise PermissionError('synthetic one-retry failure')
+
+                def synthetic_rmtree(root, *, onerror):
+                    self.assertEqual(root, child.root)
+                    path = outside if mode == 'outside' else target
+                    if mode == 'traversal':
+                        path = nested / '..' / 'nested' / target.name
+                    if mode == 'unknown':
+                        path = child.write(child.root / 'late.txt', b'not in cleanup snapshot')
+                    if mode == 'root-identity':
+                        child.identity = (-1, -1)
+                    if mode == 'unknown-error':
+                        error.winerror = 32
+                    with patch.object(Path, 'lstat', simulated_lstat), \
+                         patch.object(support.os, 'chmod', side_effect=lambda *a: chmod_calls.append(a)), \
+                         patch.object(support.os, 'unlink', side_effect=failed_unlink):
+                        operation = os.rmdir if mode == 'unknown-operation' else os.unlink
+                        onerror(operation, str(path), (type(error), error, None))
+
+                try:
+                    with patch.object(Path, 'lstat', baseline_lstat), \
+                         patch.object(support.shutil, 'rmtree', synthetic_rmtree), \
+                         self.assertRaises(support.FixtureCleanupError) as caught:
+                        child.close(True)
+                finally:
+                    child.identity = original_identity
+                observed = caught.exception.accounting
+                for key in ('observed_files', 'observed_logical_bytes', 'retained_files',
+                            'retained_bytes', 'authored_bytes', 'processes', 'process_total'):
+                    self.assertEqual(observed[key], prior[key])
+                self.assertEqual(observed['measurement_phase'], 'before-cleanup')
+                self.assertEqual(observed['residue'], str(child.root))
+                self.assertGreaterEqual(observed['wall_seconds'], prior['wall_seconds'])
+                self.assertFalse(child.closed)
+                self.assertEqual(len(chmod_calls), 1 if mode in ('post-chmod-drift', 'retry-failure') else 0)
+                self.assertEqual(len(unlink_calls), 1 if mode == 'retry-failure' else 0)
+                self.assertEqual(target.read_bytes(), b'owned readonly refusal fixture\n')
+                self.assertEqual(outside.read_bytes(), b'outside child; preserve\n')
+                self.assertEqual(real_lstat(target).st_mode, actual.st_mode)
+        print(json.dumps({'synthetic_readonly_refusal_modes': list(modes),
+                          'fixture_accounting': child.close(True)}, sort_keys=True))
+
+    def test_cleanup_failure_accounting_in_contracts_and_public_reports(self):
+        from contextlib import redirect_stdout
+        from unittest.mock import patch
+        import run as runner
+        case = support.active_run().case('cleanup-reporting')
+
+        class SyntheticPublicCase(unittest.TestCase):
+            complete = True
+            blocked_before_write = False
+
+            def test_selected(self):
+                pass
+
+            def observation(self):
+                return {'synthetic_reporting_only': True, 'public_launches': 0,
+                        'nested_launch_upper_bound': 0}
+
+        result = SimpleNamespace(testsRun=1, wasSuccessful=lambda: True, skipped=[])
+        for layer in ('contracts', 'public'):
+            child = support.FixtureRun(case, environment={})
+            child.write(child.root / 'tiny.txt', b'preserve accounting\n')
+            deleted = child.write(child.root / 'deleted.txt', b'measured before deletion\n')
+            before = child.measure()
+
+            def partial_cleanup(root, **kwargs):
+                child.verify()
+                self.assertEqual(root, child.root)
+                support.direct_directory(deleted.parent)
+                deleted.unlink()
+                raise PermissionError('synthetic failure after one deletion')
+
+            stdout, stderr = io.StringIO(), io.StringIO()
+            argv = ['--layer', layer, '--output-root', str(case)]
+            argv += (['--case', 'FixtureSupportTests.test_readonly_git_object_cleanup'] if layer == 'contracts'
+                     else ['--family', 'pr', '--public-read-only'])
+            # Both dispatch branches are synthetic report plumbing only: no suite,
+            # public entry, Git fixture, provider or product operation runs here.
+            with patch.object(support, 'FixtureRun', return_value=child), \
+                 patch.object(support.shutil, 'rmtree', side_effect=partial_cleanup), \
+                 patch.object(runner.unittest.TextTestRunner, 'run', return_value=result), \
+                 patch.dict(runner.sys.modules, {'test_work': SimpleNamespace(PrTests=SyntheticPublicCase)}), \
+                 redirect_stdout(stdout), redirect_stderr(stderr):
+                if layer == 'contracts':
+                    with self.assertRaises(SystemExit) as caught:
+                        runner.main(argv)
+                    self.assertEqual(caught.exception.code, 2)
+                else:
+                    self.assertEqual(runner.main(argv), 2)
+            records = [json.loads(line) for line in stdout.getvalue().splitlines()]
+            if layer == 'contracts':
+                accounting = next(row['fixture_accounting'] for row in records if 'fixture_accounting' in row)
+                self.assertEqual(json.loads(stderr.getvalue())['outcome'], 'cleanup-failed')
+            else:
+                family = next(row['public_family'] for row in records if 'public_family' in row)
+                self.assertEqual((family['outcome'], family['exit']), ('cleanup-failed', 2))
+                accounting = family['fixture_accounting']
+                self.assertEqual(records[-1]['outcome'], 'not-passed')
+            for key in ('observed_files', 'observed_logical_bytes', 'retained_files', 'retained_bytes',
+                        'authored_bytes', 'processes', 'process_total'):
+                self.assertEqual(accounting[key], before[key])
+            self.assertEqual(accounting['residue'], str(child.root))
+            self.assertEqual(accounting['measurement_phase'], 'before-cleanup')
+            self.assertGreaterEqual(accounting['wall_seconds'], before['wall_seconds'])
+            self.assertTrue(child.root.exists())
+            self.assertFalse(deleted.exists())
+            self.assertEqual(accounting['retained_files'], 2)
+            self.assertEqual(child.measure()['retained_files'], 1)
+            print(json.dumps({'synthetic_cleanup_report': layer, 'exit': 2,
+                              'fixture_accounting': accounting}, sort_keys=True))
+            child.close(True)
+
     def test_output_root_precedence_default_and_rejection(self):
         run = support.active_run()
         case = run.case('root-precedence')

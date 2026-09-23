@@ -22,3 +22,14 @@ unselected legacy checks, C4/C6/public/native/root/CI/release/downstream accepta
 remain deferred-by-owner: program #322 coordinator / P7 selects next execution.
 Local completion is separate from independent review, provider integration or
 Issue closure. Coordinator owns first push, PR and online merge.
+
+## Bounded fixture cleanup follow-up
+
+After the C5 handoff at `bd40c83060d55435df5d7bc015d8f5ab12085aea`, the coordinator
+returned `support.py` ownership for the observed #373 readonly Git cleanup
+failure. Scope is guarded readonly recovery, preservation of measured accounting,
+four report-wiring lines in `run.py`, and tiny regressions only inside
+`FixtureSupportTests`. See [repair report](cleanup-repair-report.md) and
+[exact observations](cleanup-repair-checks.json). No C5 or PR family rerun,
+product edits, new native arm, profile-table or #373 workflow fixture changes.
+Coordinator retains integration and subsequent selected execution ownership.

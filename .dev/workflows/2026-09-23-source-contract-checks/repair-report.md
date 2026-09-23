@@ -161,3 +161,11 @@ Issue-owned workflow/report records receive this handoff; coordinator owns
 subsequent assignments and online integration. Unselected gates remain
 **deferred-by-owner**, U001, owner program #322 coordinator / P7, next action
 select the full rc.1 target pilot and subsequent broader checks separately.
+
+## Subsequent bounded helper follow-up
+
+The later coordinator assignment after the C5 record at `bd40c830` is documented
+in [readonly cleanup repair](cleanup-repair-report.md) and
+[its exact observations](cleanup-repair-checks.json). It repairs the separate
+#373 fixture cleanup failure. The C5 results above remain historical; no C5 or
+PR-family rerun was performed in that follow-up.

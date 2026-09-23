@@ -1,0 +1,590 @@
+{
+  "schema": "issue-368-readonly-cleanup-observations/v1",
+  "observed_at": "2026-09-23T22:47:50+08:00",
+  "scope": "FixtureRun readonly cleanup and contracts/public cleanup accounting only",
+  "authority": "Coordinator bounded resume of original #368 under program #322 U001; no subagents or new tasks.",
+  "base_commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+  "original_failure": {
+    "evidence_commit": "8b151f0aa31ec91277c5399251171ebc12902f35",
+    "evidence_path": ".dev/workflows/2026-09-23-public-skill-checks/evidence/resume-c1fb1c1f-pr-cleanup.json",
+    "evidence_sha256": "62f9b335c4454834851900a60914e8be2d8ffc63ae9f85639d40b1f4b9cb86d0",
+    "source_commit": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+    "fingerprint": {
+      "exception_type": "PermissionError",
+      "winerror": 5,
+      "operation": "support.FixtureRun.close -> shutil.rmtree",
+      "path": "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d\\pr\\project\\git-fixture\\.git\\objects\\0d\\23fa530318e9f5d15bea5f49dc23ec095ffa18",
+      "regular": true,
+      "attributes": 33,
+      "readonly": true,
+      "reparse": false,
+      "bytes": 134
+    }
+  },
+  "final_source_sha256": {
+    "support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+    "run.py": "ef9b51c0e932949aadf031dfd87028d26b054f1950284ac206e3f4e6bcba0f8b",
+    "test_contracts.py": "76c60dabc2ac525f0f1d403e4f656b9e33ea3c9cd8080b11b4c8c1d8987559f6"
+  },
+  "runs": [
+    {
+      "observed_at": "2026-09-23T14:43:33.483693+00:00",
+      "base_commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+      "source_sha256": {
+        "support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+        "run.py": "ef9b51c0e932949aadf031dfd87028d26b054f1950284ac206e3f4e6bcba0f8b",
+        "test_contracts.py": "253ad48159dce5c1055826438e7a0d84693059f98ba90f94b4d0f30e44de409e"
+      },
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "tests/framework_next/run.py",
+        "--layer",
+        "contracts",
+        "--case",
+        "FixtureSupportTests.test_readonly_git_object_cleanup",
+        "--case",
+        "FixtureSupportTests.test_readonly_cleanup_refusals_preserve_accounting",
+        "--case",
+        "FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports",
+        "--output-root",
+        "F:/framework-next/p7-runs/368-contracts"
+      ],
+      "returncode": 0,
+      "wrapper_wall_seconds": 0.599,
+      "stdout": "{\"runtime\": {\"PyYAML\": \"6.0.3\", \"executable\": \"C:\\\\Users\\\\h4227\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\", \"jsonschema\": \"4.26.0\", \"python\": \"3.13.14\", \"referencing\": \"0.37.0\"}}\r\n{\"actual_readonly_git_cleanup\": {\"authored_bytes\": 0, \"measurement_phase\": \"before-cleanup\", \"next_action\": null, \"observed_files\": 3, \"observed_logical_bytes\": 167, \"process_total\": 2, \"processes\": {\"git\": 2, \"other\": 0, \"python\": 0}, \"residue\": null, \"retained_bytes\": 167, \"retained_files\": 3, \"wall_seconds\": 0.115}}\r\n{\"fixture_accounting\": {\"authored_bytes\": 54, \"measurement_phase\": \"before-cleanup\", \"next_action\": null, \"observed_files\": 2, \"observed_logical_bytes\": 54, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": null, \"retained_bytes\": 54, \"retained_files\": 2, \"wall_seconds\": 0.035}, \"synthetic_readonly_refusal_modes\": [\"outside\", \"traversal\", \"unknown\", \"file-identity\", \"ancestor-identity\", \"root-identity\", \"symlink\", \"reparse\", \"ancestor-reparse\", \"nonregular\", \"hardlink\", \"writable\", \"unknown-error\", \"unknown-operation\", \"post-chmod-drift\"]}\r\n{\"exit\": 2, \"fixture_accounting\": {\"authored_bytes\": 20, \"measurement_phase\": \"before-cleanup\", \"next_action\": \"Inspect recorded failure and this owned run before explicit cleanup.\", \"observed_files\": 1, \"observed_logical_bytes\": 20, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": \"F:\\\\framework-next\\\\p7-runs\\\\368-contracts\\\\fn-1ae6b69601f749979c5f95a54dabc2f4\\\\cleanup-reporting\\\\fn-23db5afedd86464fbc3ef72671578500\", \"retained_bytes\": 20, \"retained_files\": 1, \"wall_seconds\": 0.016}, \"synthetic_cleanup_report\": \"contracts\"}\r\n{\"exit\": 2, \"fixture_accounting\": {\"authored_bytes\": 20, \"measurement_phase\": \"before-cleanup\", \"next_action\": \"Inspect recorded failure and this owned run before explicit cleanup.\", \"observed_files\": 1, \"observed_logical_bytes\": 20, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": \"F:\\\\framework-next\\\\p7-runs\\\\368-contracts\\\\fn-1ae6b69601f749979c5f95a54dabc2f4\\\\cleanup-reporting\\\\fn-dffee61c07a24ba699640f6afa3027a0\", \"retained_bytes\": 20, \"retained_files\": 1, \"wall_seconds\": 0.006}, \"synthetic_cleanup_report\": \"public\"}\r\n{\"fixture_accounting\": {\"authored_bytes\": 24, \"measurement_phase\": \"before-cleanup\", \"next_action\": null, \"observed_files\": 2, \"observed_logical_bytes\": 55, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": null, \"retained_bytes\": 24, \"retained_files\": 1, \"wall_seconds\": 0.325}}\r\n",
+      "stderr": "test_readonly_git_object_cleanup (test_contracts.FixtureSupportTests.test_readonly_git_object_cleanup) ... ok\r\ntest_readonly_cleanup_refusals_preserve_accounting (test_contracts.FixtureSupportTests.test_readonly_cleanup_refusals_preserve_accounting) ... ok\r\ntest_cleanup_failure_accounting_in_contracts_and_public_reports (test_contracts.FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 3 tests in 0.248s\r\n\r\nOK\r\n",
+      "stdout_sha256": "2285dd369f9d62620bf057f86e6d5469c7099e10e617df4033eaf0a26e8ce7ad",
+      "stderr_sha256": "316c5b6aead0a496fa48b5a95764244f333dd5dde826d26e4bf82ab9c3479b85",
+      "historical_pr_residue": "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d",
+      "historical_residue_unchanged": true,
+      "attempt": 1,
+      "tests_run": 3,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "unittest_wall_seconds": 0.248,
+      "historical_before_sha256": "2d5e0c6cf204b850bd47e969d30524264ca9a9d01cfb36f3b2a5e0e61e63bbf4",
+      "historical_after_sha256": "2d5e0c6cf204b850bd47e969d30524264ca9a9d01cfb36f3b2a5e0e61e63bbf4"
+    },
+    {
+      "observed_at": "2026-09-23T14:45:12.587497+00:00",
+      "base_commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+      "source_sha256": {
+        "support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+        "run.py": "ef9b51c0e932949aadf031dfd87028d26b054f1950284ac206e3f4e6bcba0f8b",
+        "test_contracts.py": "76c60dabc2ac525f0f1d403e4f656b9e33ea3c9cd8080b11b4c8c1d8987559f6"
+      },
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "tests/framework_next/run.py",
+        "--layer",
+        "contracts",
+        "--case",
+        "FixtureSupportTests.test_readonly_cleanup_refusals_preserve_accounting",
+        "--case",
+        "FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports",
+        "--output-root",
+        "F:/framework-next/p7-runs/368-contracts"
+      ],
+      "returncode": 0,
+      "reason": "Two changed test methods only: add one-retry/attribute-drift and partial-deletion accounting assertions.",
+      "wrapper_wall_seconds": 0.54,
+      "stdout": "{\"runtime\": {\"PyYAML\": \"6.0.3\", \"executable\": \"C:\\\\Users\\\\h4227\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\", \"jsonschema\": \"4.26.0\", \"python\": \"3.13.14\", \"referencing\": \"0.37.0\"}}\r\n{\"fixture_accounting\": {\"authored_bytes\": 54, \"measurement_phase\": \"before-cleanup\", \"next_action\": null, \"observed_files\": 2, \"observed_logical_bytes\": 54, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": null, \"retained_bytes\": 54, \"retained_files\": 2, \"wall_seconds\": 0.036}, \"synthetic_readonly_refusal_modes\": [\"outside\", \"traversal\", \"unknown\", \"file-identity\", \"ancestor-identity\", \"root-identity\", \"symlink\", \"reparse\", \"ancestor-reparse\", \"nonregular\", \"hardlink\", \"writable\", \"attribute-drift\", \"unknown-error\", \"unknown-operation\", \"post-chmod-drift\", \"retry-failure\"]}\r\n{\"exit\": 2, \"fixture_accounting\": {\"authored_bytes\": 45, \"measurement_phase\": \"before-cleanup\", \"next_action\": \"Inspect recorded failure and this owned run before explicit cleanup.\", \"observed_files\": 2, \"observed_logical_bytes\": 45, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": \"F:\\\\framework-next\\\\p7-runs\\\\368-contracts\\\\fn-ad34536555b5460a862f9b2008db0457\\\\cleanup-reporting\\\\fn-252d87a7082446a1b9827937bac68aa2\", \"retained_bytes\": 45, \"retained_files\": 2, \"wall_seconds\": 0.02}, \"synthetic_cleanup_report\": \"contracts\"}\r\n{\"exit\": 2, \"fixture_accounting\": {\"authored_bytes\": 45, \"measurement_phase\": \"before-cleanup\", \"next_action\": \"Inspect recorded failure and this owned run before explicit cleanup.\", \"observed_files\": 2, \"observed_logical_bytes\": 45, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": \"F:\\\\framework-next\\\\p7-runs\\\\368-contracts\\\\fn-ad34536555b5460a862f9b2008db0457\\\\cleanup-reporting\\\\fn-d7937c6a3690467b9dfe936bfa5b8029\", \"retained_bytes\": 45, \"retained_files\": 2, \"wall_seconds\": 0.008}, \"synthetic_cleanup_report\": \"public\"}\r\n{\"fixture_accounting\": {\"authored_bytes\": 24, \"measurement_phase\": \"before-cleanup\", \"next_action\": null, \"observed_files\": 2, \"observed_logical_bytes\": 55, \"process_total\": 0, \"processes\": {\"git\": 0, \"other\": 0, \"python\": 0}, \"residue\": null, \"retained_bytes\": 24, \"retained_files\": 1, \"wall_seconds\": 0.256}}\r\n",
+      "stderr": "test_readonly_cleanup_refusals_preserve_accounting (test_contracts.FixtureSupportTests.test_readonly_cleanup_refusals_preserve_accounting) ... ok\r\ntest_cleanup_failure_accounting_in_contracts_and_public_reports (test_contracts.FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 2 tests in 0.176s\r\n\r\nOK\r\n",
+      "stdout_sha256": "c77aed31f8c80c83e1d2f79b2ff52c63c7e9a5882efdd309001338564597601c",
+      "stderr_sha256": "0588a78cb88a8929c53933c035d20059fdfb32dd1982e8508cd4f25d3a21351b",
+      "historical_pr_residue": "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d",
+      "historical_residue_unchanged": true,
+      "attempt": 2,
+      "tests_run": 2,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "unittest_wall_seconds": 0.176,
+      "historical_before_sha256": "2d5e0c6cf204b850bd47e969d30524264ca9a9d01cfb36f3b2a5e0e61e63bbf4",
+      "historical_after_sha256": "2d5e0c6cf204b850bd47e969d30524264ca9a9d01cfb36f3b2a5e0e61e63bbf4"
+    }
+  ],
+  "preserved_historical_manifest": [
+    {
+      "path": ".",
+      "dev": 12003918052740279813,
+      "ino": 844424930164079,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173329861102100
+    },
+    {
+      "path": "pr",
+      "dev": 12003918052740279813,
+      "ino": 562949953427109,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 4096,
+      "mtime_ns": 1790173346664950300
+    },
+    {
+      "path": "pr/outside",
+      "dev": 12003918052740279813,
+      "ino": 844424930165864,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173336285682300
+    },
+    {
+      "path": "pr/package",
+      "dev": 12003918052740279813,
+      "ino": 844424930161193,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173346675481400
+    },
+    {
+      "path": "pr/project",
+      "dev": 12003918052740279813,
+      "ino": 562949953433725,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338033146900
+    },
+    {
+      "path": "pr/project/config.json",
+      "dev": 12003918052740279813,
+      "ino": 2814749767140454,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 126,
+      "mtime_ns": 1790173334977864200,
+      "sha256": "29984913ea4abea57ad28abe3ac840ca46353d28b44d27f8befb99790e51fa0d"
+    },
+    {
+      "path": "pr/project/empty-git-template",
+      "dev": 12003918052740279813,
+      "ino": 844424930165867,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338033146900
+    },
+    {
+      "path": "pr/project/git-fixture",
+      "dev": 12003918052740279813,
+      "ino": 844424930165866,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338698014700
+    },
+    {
+      "path": "pr/project/git-fixture/.git",
+      "dev": 12003918052740279813,
+      "ino": 1125899906876524,
+      "mode": 16895,
+      "attributes": 18,
+      "links": 1,
+      "size": 4096,
+      "mtime_ns": 1790173338814138000
+    },
+    {
+      "path": "pr/project/git-fixture/.git/COMMIT_EDITMSG",
+      "dev": 12003918052740279813,
+      "ino": 844424930165878,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 13,
+      "mtime_ns": 1790173338809625900,
+      "sha256": "44ae4148b3ed15048f626e0c723ee36354695caf87394af292b98ecc7ffb1785"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/config",
+      "dev": 12003918052740279813,
+      "ino": 1407374883587182,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 130,
+      "mtime_ns": 1790173338169565100,
+      "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/HEAD",
+      "dev": 12003918052740279813,
+      "ino": 562949953455217,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 24,
+      "mtime_ns": 1790173338171083900,
+      "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/index",
+      "dev": 12003918052740279813,
+      "ino": 844424930165881,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 145,
+      "mtime_ns": 1790173338807626800,
+      "sha256": "2364d971159ac97ed257a113b4adf0891317354275dfff9046b0021eaf0cba63"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/logs",
+      "dev": 12003918052740279813,
+      "ino": 562949953455232,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173346675481400
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects",
+      "dev": 12003918052740279813,
+      "ino": 562949953455218,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 4096,
+      "mtime_ns": 1790173338843677100
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/0d",
+      "dev": 12003918052740279813,
+      "ino": 562949953455228,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338289193400
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/0d/23fa530318e9f5d15bea5f49dc23ec095ffa18",
+      "dev": 12003918052740279813,
+      "ino": 562949953455229,
+      "mode": 33060,
+      "attributes": 33,
+      "links": 1,
+      "size": 134,
+      "mtime_ns": 1790173338289193400,
+      "sha256": "2406249beb0924295c59efc631de122e1fa51bb511465e3f9c7af8a7f56c3835"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/5c",
+      "dev": 12003918052740279813,
+      "ino": 1688849860297854,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338812141500
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/5c/bcbe52359d74232d5e18e04fb28593d19c924b",
+      "dev": 12003918052740279813,
+      "ino": 562949953455241,
+      "mode": 33060,
+      "attributes": 33,
+      "links": 1,
+      "size": 164,
+      "mtime_ns": 1790173338811136300,
+      "sha256": "c5e31f93be3834d20fe4844ec88acbea6743315739c06bc050121cfc67eebb20"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/90",
+      "dev": 12003918052740279813,
+      "ino": 562949953455223,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338229005600
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/90/be1f3056c4f471f977a28497b8d4b392c55a02",
+      "dev": 12003918052740279813,
+      "ino": 562949953455224,
+      "mode": 33060,
+      "attributes": 33,
+      "links": 1,
+      "size": 22,
+      "mtime_ns": 1790173338229005600,
+      "sha256": "7e2d860937eae1d919e00466505b42928c76d8d57c9847a2bef720203d99f81e"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/9b",
+      "dev": 12003918052740279813,
+      "ino": 562949953455226,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338287194800
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/9b/ff0693dece071f9a93e88220dc3b1feed570d3",
+      "dev": 12003918052740279813,
+      "ino": 562949953455227,
+      "mode": 33060,
+      "attributes": 33,
+      "links": 1,
+      "size": 55,
+      "mtime_ns": 1790173338287194800,
+      "sha256": "3b0d64ce57e7fc1e274f0999cbdfbaed0f7af87b5ac24f12f371610ebfcca7ed"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/d7",
+      "dev": 12003918052740279813,
+      "ino": 844424930165893,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338748704800
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/d7/8b334442c9042ba4df6927628c06c6d733c7dc",
+      "dev": 12003918052740279813,
+      "ino": 562949953455238,
+      "mode": 33060,
+      "attributes": 33,
+      "links": 1,
+      "size": 30,
+      "mtime_ns": 1790173338748704800,
+      "sha256": "904bdfd41ce715e7b1a3d743d39e5340e631647bbb6004ed90288af9c7e153cc"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/e7",
+      "dev": 12003918052740279813,
+      "ino": 562949953455239,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338807626800
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/e7/2837045dfad46a4b1a046d38b2991d5f084da0",
+      "dev": 12003918052740279813,
+      "ino": 562949953455240,
+      "mode": 33060,
+      "attributes": 33,
+      "links": 1,
+      "size": 55,
+      "mtime_ns": 1790173338807626800,
+      "sha256": "99dc25f1c06815f752f4408ef2cf148b9db2861f41526663b83491b8e4020679"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/info",
+      "dev": 12003918052740279813,
+      "ino": 562949953455220,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338171083900
+    },
+    {
+      "path": "pr/project/git-fixture/.git/objects/pack",
+      "dev": 12003918052740279813,
+      "ino": 562949953455219,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338171083900
+    },
+    {
+      "path": "pr/project/git-fixture/.git/refs",
+      "dev": 12003918052740279813,
+      "ino": 3377699720561773,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338170574900
+    },
+    {
+      "path": "pr/project/git-fixture/.git/refs/heads",
+      "dev": 12003918052740279813,
+      "ino": 844424930165871,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338813140100
+    },
+    {
+      "path": "pr/project/git-fixture/.git/refs/heads/fixture",
+      "dev": 12003918052740279813,
+      "ino": 562949953455243,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 41,
+      "mtime_ns": 1790173338813140100,
+      "sha256": "1b0cf35baa241d7bacb7fdf8cdd4eab5e7fe8f9eb5eb7ac58f7f7b51118d51ac"
+    },
+    {
+      "path": "pr/project/git-fixture/.git/refs/tags",
+      "dev": 12003918052740279813,
+      "ino": 562949953455216,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173338170574900
+    },
+    {
+      "path": "pr/project/git-fixture/change.txt",
+      "dev": 12003918052740279813,
+      "ino": 844424930165877,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 14,
+      "mtime_ns": 1790173338698014700,
+      "sha256": "184f0b5c4534948e83376573f405bfb61ec1ce90791e3838761ce8d99b754a69"
+    },
+    {
+      "path": "pr/project/local.json",
+      "dev": 12003918052740279813,
+      "ino": 1125899906876519,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 74,
+      "mtime_ns": 1790173334644427000,
+      "sha256": "e12db89139bf4e7b4d239308c06aa7d4edf8952ee388834876560ad85c51fc6a"
+    },
+    {
+      "path": "pr/project/notes",
+      "dev": 12003918052740279813,
+      "ino": 844424930165859,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173331232849400
+    },
+    {
+      "path": "pr/project/notes/pull-requests",
+      "dev": 12003918052740279813,
+      "ino": 844424930165860,
+      "mode": 16895,
+      "attributes": 16,
+      "links": 1,
+      "size": 0,
+      "mtime_ns": 1790173346524797000
+    },
+    {
+      "path": "pr/project/notes/pull-requests/pr-2fde3d453cd04d7ab984024e4a3c5e09.pr.json",
+      "dev": 12003918052740279813,
+      "ino": 562949953455244,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 1435,
+      "mtime_ns": 1790173342378674800,
+      "sha256": "d9749abda4eca48bbe80c4dc376cf2ef343187eb36992974cc03dbdc88203be3"
+    },
+    {
+      "path": "pr/project/view.md",
+      "dev": 12003918052740279813,
+      "ino": 2533274790429797,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 162,
+      "mtime_ns": 1790173331687721900,
+      "sha256": "1fe4e8221258bb2dde5ffdee6d8122380b5d65338ad84b67cdcae4a2725261ca"
+    },
+    {
+      "path": "pr/public-transcript.jsonl",
+      "dev": 12003918052740279813,
+      "ino": 844424930165601,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 39069,
+      "mtime_ns": 1790173346552874300,
+      "sha256": "a499d916aeb3c0cc5562778f2efdb65b9c4bc311c1eec423c418bd8178a31a39"
+    },
+    {
+      "path": "pr/request.json",
+      "dev": 12003918052740279813,
+      "ino": 7036874417800290,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 1157,
+      "mtime_ns": 1790173346008173000,
+      "sha256": "7dae31b57758d563d3dbb70e8cbb216af83b4d4f0fe38128c94c884106af4176"
+    },
+    {
+      "path": "pr/source-binding.json",
+      "dev": 12003918052740279813,
+      "ino": 7881299347932010,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 3137,
+      "mtime_ns": 1790173330500762700,
+      "sha256": "94785149ce3d4df019283472fdc24bd2ee5251d577791eb8ab0e6bb7839bc40c"
+    },
+    {
+      "path": "pr/synthetic-provider.json",
+      "dev": 12003918052740279813,
+      "ino": 2533274790429823,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 5254,
+      "mtime_ns": 1790173346665950700,
+      "sha256": "2e40e91d0fbfcd5de1fbb411beadb8985a5b02a51276d10c0787d383af2f0f84"
+    },
+    {
+      "path": "pr/wrong-entry.py",
+      "dev": 12003918052740279813,
+      "ino": 1407374883587177,
+      "mode": 33206,
+      "attributes": 32,
+      "links": 1,
+      "size": 65931,
+      "mtime_ns": 1790173337673838900,
+      "sha256": "1e10c2254eac59a52a28c897458936be54506c764de44b2bc3d6292a2c61d21a"
+    }
+  ],
+  "historical_manifest_sha256": "2d5e0c6cf204b850bd47e969d30524264ca9a9d01cfb36f3b2a5e0e61e63bbf4",
+  "static_checks": {
+    "python_syntax": "passed",
+    "other_test_classes": "AST unchanged against bd40c830",
+    "original_fixture_support_methods": "AST unchanged against bd40c830",
+    "successful_owned_run_roots": "absence read back for both runs",
+    "run_dispatch_changes": "none; two cleanup catches gain accounting report only"
+  },
+  "limits": [
+    "First pass: three methods; second pass: only the two modified synthetic methods.",
+    "Actual Git cleanup is reused from first pass with identical support.py and run.py bytes; positive test unchanged.",
+    "Reported retained counts are before cleanup, not remaining residue after partial deletion.",
+    "No fresh C5, contracts suite, PR/public family, native, install/apply, provider or CI execution.",
+    "Unselected U001 gates remain deferred-by-owner; program #322 coordinator / P7 owns subsequent assignments."
+  ]
+}

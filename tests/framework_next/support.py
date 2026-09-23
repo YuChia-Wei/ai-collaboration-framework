@@ -29,6 +29,13 @@ class FixtureError(RuntimeError):
     pass
 
 
+class FixtureCleanupError(FixtureError):
+    """Preserve the measured pre-cleanup observation after a partial deletion."""
+    def __init__(self, cause, accounting):
+        super().__init__(f'{type(cause).__name__}: {cause}')
+        self.accounting = accounting
+
+
 def check(condition, message):
     if not condition:
         raise FixtureError(message)
@@ -112,7 +119,7 @@ class FixtureRun:
         self.measure()
         return path
 
-    def measure(self):
+    def measure(self, *, _snapshot=None):
         self.verify()
         count = total = 0
         pending = [self.root]
@@ -120,6 +127,8 @@ class FixtureRun:
             directory = pending.pop()
             for item in directory.iterdir():
                 info = item.lstat()
+                if _snapshot is not None:
+                    _snapshot[item] = info
                 check(not stat.S_ISLNK(info.st_mode) and not
                       getattr(info, 'st_file_attributes', 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT,
                       'linked residue retained; cleanup refused')
@@ -138,16 +147,70 @@ class FixtureRun:
                 'processes': dict(self.processes), 'process_total': sum(self.processes.values()),
                 'wall_seconds': round(time.monotonic() - self.started, 3)}
 
+    def _cleanup_file(self, path, snapshot):
+        """Recheck the known file and every direct ancestor before each mutation."""
+        self.verify()
+        path = Path(path)
+        check(path.is_absolute() and path.is_relative_to(self.root) and '..' not in path.parts,
+              'cleanup retry escaped owned run')
+        direct_directory(path.parent)
+        for ancestor in path.parents:
+            if ancestor == self.root:
+                break
+            expected = snapshot.get(ancestor)
+            current = ancestor.lstat()
+            check(expected is not None and stat.S_ISDIR(expected.st_mode) and
+                  (current.st_dev, current.st_ino) == (expected.st_dev, expected.st_ino),
+                  'cleanup ancestor identity changed')
+        expected = snapshot.get(path)
+        info = path.lstat()
+        check(expected is not None and stat.S_ISREG(expected.st_mode) and
+              stat.S_ISREG(info.st_mode) and not
+              getattr(info, 'st_file_attributes', 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT,
+              'cleanup retry requires a known regular non-reparse file')
+        check(expected.st_nlink == info.st_nlink == 1, 'cleanup retry refuses multiple hard links')
+        check((info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns) ==
+              (expected.st_dev, expected.st_ino, expected.st_size, expected.st_mtime_ns),
+              'cleanup file identity or content changed')
+        return info
+
+    def _retry_readonly_unlink(self, function, path, exc_info, snapshot):
+        error = exc_info[1]
+        # Only the observed Windows access-denied unlink of a readonly file is
+        # recoverable. Directory, unknown-operation and other failures propagate.
+        if (function not in (os.unlink, os.remove) or not isinstance(error, PermissionError)
+                or getattr(error, 'winerror', None) != 5):
+            raise error
+        info = self._cleanup_file(path, snapshot)
+        attributes = getattr(info, 'st_file_attributes', 0)
+        check(attributes & stat.FILE_ATTRIBUTE_READONLY, 'cleanup retry requires a readonly file')
+        check(attributes == getattr(snapshot[Path(path)], 'st_file_attributes', 0),
+              'cleanup attributes changed before retry')
+        os.chmod(path, info.st_mode | stat.S_IWRITE)
+        after = self._cleanup_file(path, snapshot)
+        expected_attributes = attributes & ~stat.FILE_ATTRIBUTE_READONLY
+        check(getattr(after, 'st_file_attributes', 0) == (expected_attributes or stat.FILE_ATTRIBUTE_NORMAL),
+              'cleanup attributes changed unexpectedly')
+        function(path)  # one retry; an exception here is never retried recursively
+
     def close(self, success):
-        observation = self.measure()
+        snapshot = {}
+        observation = self.measure(_snapshot=snapshot)
+        observation['measurement_phase'] = 'before-cleanup'
+        observation['residue'] = str(self.root)
+        observation['next_action'] = 'Inspect recorded failure and this owned run before explicit cleanup.'
         if success:
-            # Full no-link walk and root identity/containment are checked immediately
-            # before recursive deletion. The supplied parent is never removed.
-            self.verify()
-            shutil.rmtree(self.root)
-            self.closed = True
-        observation['residue'] = None if success else str(self.root)
-        observation['next_action'] = None if success else 'Inspect recorded failure and this owned run before explicit cleanup.'
+            try:
+                # The full no-link walk registers the only files eligible for a
+                # readonly retry. Never remove the supplied parent or other runs.
+                self.verify()
+                shutil.rmtree(self.root, onerror=lambda fn, path, error:
+                              self._retry_readonly_unlink(fn, path, error, snapshot))
+                self.closed = True
+            except (FixtureError, OSError) as exc:
+                raise FixtureCleanupError(exc, observation) from exc
+            observation['residue'] = None
+            observation['next_action'] = None
         return observation
 
 
