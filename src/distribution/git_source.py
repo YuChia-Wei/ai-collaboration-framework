@@ -25,11 +25,28 @@ class Blob:
                 "size": len(self.data), "sha256": sha256(self.data).hexdigest()}
 
 
+def _require_windows_direct_drive(target: Path, label: str) -> None:
+    """Refuse directory-drive aliases when the final-path API is unavailable."""
+    import ctypes
+    from ctypes import wintypes as w
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.QueryDosDeviceW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD]
+    kernel.QueryDosDeviceW.restype = w.DWORD
+    device = ctypes.create_unicode_buffer(32768)
+    length = kernel.QueryDosDeviceW(target.drive, device, len(device))
+    kernel.GetDriveTypeW.argtypes = [w.LPCWSTR]
+    kernel.GetDriveTypeW.restype = w.UINT
+    require(0 < length < len(device) and re.fullmatch(r"\\Device\\[^\\]+", device.value) is not None
+            and kernel.GetDriveTypeW(target.anchor) in {2, 3, 5, 6},
+            f"{label}: final-path fallback requires a direct local drive mapping")
+
+
 def direct_directory(value: Path, label: str) -> Path:
     """Admit a direct directory when Windows lacks the final-path API.
 
     Only ERROR_INVALID_FUNCTION (1) may use the already checked absolute path.
-    Every ancestor must exist, be a plain directory and retain its identity.
+    The drive mapping must be direct and local; every ancestor must exist,
+    be a plain directory and retain its identity.
     This is bounded path admission, not a concurrent-filesystem/durability claim.
     """
     require(value.is_absolute() and ".." not in value.parts,
@@ -60,6 +77,7 @@ def direct_directory(value: Path, label: str) -> Path:
         require(all(device and inode for device, inode in before),
                 f"{label}: final-path fallback requires usable filesystem identities")
         resolved = Path(os.path.abspath(value))
+        _require_windows_direct_drive(resolved, label)
     require(identities() == before, f"{label}: directory identity changed during admission")
     return resolved
 

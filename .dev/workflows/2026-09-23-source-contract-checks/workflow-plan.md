@@ -52,3 +52,13 @@ and the P7 report retain exact identity/streams, separate child accounting and
 unchanged old failure inventories. Local scope is complete; the result checkpoint
 and selected-source commit remain distinct from coordinator integration or online
 closure. Eight historical core comparisons are not eight additional executions.
+
+## CR-002 affected continuation
+
+The original #370 reported a conditional Windows directory-drive alias gap on
+`ae40e6cb`, delivered at `6d9184e8`. The owner selected its narrow repair in
+the original #368 worktree. See [CR-002 report](cr002-repair-report.md) and
+[exact selection](cr002-checks.json). First commit the private predicate repair
+and meaningful simulated regressions, then run five affected path methods plus
+one existing actual C5 method once. Preserve all historical outcomes and residue.
+Original #370 affected re-review remains pending; no push or provider changes.

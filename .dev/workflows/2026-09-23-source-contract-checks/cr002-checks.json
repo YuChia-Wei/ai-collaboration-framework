@@ -1,0 +1,67 @@
+{
+  "record_kind": "issue-368-cr002-affected-repair",
+  "recorded_at": "2026-09-24T02:03:31+08:00",
+  "workflow_id": "2026-09-23-source-contract-checks",
+  "authority": {
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368#issuecomment-5800095738",
+    "updated_at": "2026-09-23T17:56:55Z",
+    "body": "## CR-002 affected repair continuation\r\n\r\nThe original independent #370 reviewed immutable source `ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f` and delivered review `6d9184e8e01d826131d03dd603422b5a3a1a7e4a`, report `.dev/workflows/2026-09-23-installation-source-review/current-engine-review.md`. Parent verified all ten engine hashes, producer hash, unchanged old reports and exact four-record scope.\r\n\r\nOne substantiated P2 source finding, CR-002: `git_source.direct_directory` returns lexical abspath after Windows final-path error 1 without refusing a DOS directory-drive mapping. With repository F:/source and X: mapped to F:/source/subdir, output X:/out avoids both lexical containment and the visible ancestor identity check, permitting exclusive candidate allocation inside the source subtree. This is source-predicate reasoning, not a native reproduced mapping, and is not an apply/recover escape. The separate C-001 stored-case API concern is unverified and is not selected for repair here.\r\n\r\nContinue in the original #368 Astra/ultra task and F:/framework-next/368, same branch, now clean at the review delivery. Within the existing GitSource/assembly observed-defect scope, repair `src/distribution/git_source.py::direct_directory` and directly necessary private stdlib helper in that existing module; adjust the direct `assembly.output_parent` call only if needed. Preserve unknown/other-error refusal, directness, stable identities, containment, link/reparse/hardlink guards, source immutability and all read/output budgets; add no engine member or new support promise. Prefer the narrow direct-drive mapping refusal already used by existing maintenance/bootstrap paths.\r\n\r\nAdd meaningful focused regressions in the existing `tests/framework_next/test_contracts.py`, especially mapping to a source descendant rather than only the root and refusal before allocation. Label simulated Win32 inputs honestly. Do not create or change actual SUBST mappings, drive settings, global environment or host configuration. Own existing README/design/workflow records remain in scope; no .github, metadata/profile, target or other owner records.\r\n\r\nAfter the minimal repair and its clean local source checkpoint, run only affected focused regressions plus one actual existing C5 Lesson assembly/reader selection from F:/framework-next/368 with explicit F:/framework-next/p7-runs/368-contracts. Keep the previous 256-file/16-MiB/256-visible-process limits and 90-second outer bound, all old failed roots and exact raw outputs. No public-family/full/native or new driver run. Stop on a failure and return evidence; no unchanged retry. No same-invocation historical-suite claim.\r\n\r\nReturn exact clean local commits, tested/executed identities, meaningful results and limitations. Validate exact complete commit messages under the existing workflow. No push; coordinator owns first integration and the original #370 affected re-review. #368 and #370 remain open. Source CI/policy, target provider action, stable publication and #369 native extension remain under their separate boundaries.\r\n",
+    "body_sha256": "d5f0ed4774a9dcfb830d008d47461d767d683c2a88908ab540ecac9ab8aec0d7"
+  },
+  "reviewed_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
+  "selected_source_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
+  "review_report": ".dev/workflows/2026-09-23-installation-source-review/current-engine-review.md",
+  "execution_status": "pending; source checkpoint required first",
+  "selected_methods": 6,
+  "case_selectors": [
+    "PathAdmissionTests",
+    "CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals"
+  ],
+  "argv_after_python": [
+    "-I",
+    "-B",
+    "tests/framework_next/run.py",
+    "--layer",
+    "contracts",
+    "--case",
+    "PathAdmissionTests",
+    "--case",
+    "CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals",
+    "--output-root",
+    "F:/framework-next/p7-runs/368-contracts"
+  ],
+  "timeout_seconds": 90,
+  "maximum_attempts": 1,
+  "caps": {
+    "observed_files_per_run": 256,
+    "retained_bytes_per_run": 16777216,
+    "normal_authored_file_bytes": 16384,
+    "authored_bytes_per_run": 1048576,
+    "visible_processes_per_active_run": 256,
+    "git_timeout_seconds": 30,
+    "trusted_output_postcapture_bytes": 8388608
+  },
+  "planned_code_sha256": {
+    "tests/framework_next/run.py": "7931ab23674dfa56dbfda02522e6bcb6dab7646d2a4f869a036ef8ed7f287ae0",
+    "tests/framework_next/support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+    "tests/framework_next/test_contracts.py": "7d192f6efaa863d3b218f41762768d1d5ad9b3b2a9eefa7a8a98962da93793ab",
+    "src/distribution/assembly.py": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70",
+    "src/distribution/installation_state.py": "2e841633d60f78ba1ca0070847536cb64e411494fbb235dedb8ec56b59a2d369",
+    "src/distribution/data.py": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d",
+    "src/distribution/git_source.py": "3df8f70fcea76fef3a00ee958f0c4ebd5b71ac998aac45462ac233b73e0e5af8",
+    "src/distribution/package.py": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+    "src/distribution/selection.py": "d49d240a2c2c776ac90ca4fbe19d887e961031ba7f0fa0c7bcada7aea5e760cd",
+    "src/distribution/codex.py": "506e775df87b6a1816cb3be896fd8741fd5bfc7c137c425224561314578e083e",
+    "src/distribution/manifest.yaml": "64e6e19d97266324782dccadc6b51113708c0e8a4b78f94819b0794dedc92a0e"
+  },
+  "simulated_evidence": "Win32 responses and directory identities are doubles; no native drive alias is created.",
+  "exclusions": [
+    "C-001 casing concern",
+    "public/full/native selections",
+    "new driver",
+    "engine member or backend promise",
+    "target/provider/policy/CI/publication changes"
+  ],
+  "independent_review": "pending original Issue 370 affected re-review after coordinator integration",
+  "other_verification": "deferred-by-owner: U001, program #322 coordinator / P7"
+}
