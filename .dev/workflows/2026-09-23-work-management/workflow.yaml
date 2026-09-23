@@ -1,0 +1,29 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-23-work-management
+workflow_kind: ai-context-maintenance
+title: PR and local backlog skills with one GitHub boundary
+owner_skill: ai-context-governance
+status: in_progress
+current_phase: remediation-planning
+branch: codex/2026-09-23-work-management
+base_branch: main
+artifact_root: .dev/workflows/2026-09-23-work-management
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T08:18:00+08:00'
+updated_at: '2026-09-23T08:18:00+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: '1.2.0'
+issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335
+program: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+contract_exception: 'U001: proportional records; native lifecycle/audit/handoff/schema verification deferred-by-owner to P7'
+execution_provenance:
+  runtime: OpenAI Codex
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  source: explicit coordinator/user dispatch declaration; no independent runtime attestation
+  sub_agents: none
+continuation:
+  current_task: WM-002
+  next_action: Coordinator reconciles WM-C1/C2/C3 and resumes this same task with explicit source ownership.
+  coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd

@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-09-23T08:29:09+08:00",
+  "runtime_evidence": "read-only local runtime thread metadata for all three tasks",
+  "git_evidence": "assigned #334/#335 HEAD matches fast-forward continuation; #337 first actual command cwd/root/branch/HEAD/common-dir match",
+  "tasks": [
+    {
+      "issue": 334,
+      "thread_id": "01a0ca57-c01d-73a3-9f3a-b21ef7bc73a1",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "worktree": "F:/framework-next/334",
+      "input_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb",
+      "status_at_readback": "active",
+      "scope": "owned package source"
+    },
+    {
+      "issue": 335,
+      "thread_id": "01a0ca57-dcfc-7283-beba-5ee537610dd8",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "worktree": "F:/framework-next/335",
+      "input_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb",
+      "status_at_readback": "active",
+      "scope": "owned package source"
+    },
+    {
+      "issue": 337,
+      "thread_id": "01a0cba9-6732-7d93-8fd1-f97925ff98c5",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "worktree": "F:/framework-next/337",
+      "input_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb",
+      "status_at_readback": "active",
+      "scope": "loader support first; actual mapping later"
+    }
+  ],
+  "limits": "No implementation completion or behavioral verification implied. App cwd C: is bootstrap only; assigned F: workdirs remain mandatory."
+}

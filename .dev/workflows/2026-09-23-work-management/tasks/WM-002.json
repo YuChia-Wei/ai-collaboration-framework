@@ -1,0 +1,54 @@
+{
+  "workflow_id": "2026-09-23-work-management",
+  "owner_skill": "ai-context-governance",
+  "created_at": "2026-09-23T08:18:00+08:00",
+  "updated_at": "2026-09-23T08:18:00+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "contract_exception": "U001; no native schema/audit/handoff acceptance claimed",
+  "task_id": "WM-002",
+  "status": "in_progress",
+  "scope": {
+    "target": "Coordinator reconciliation and subsequent implemented source",
+    "files": [
+      "src/skills/pr/** (proposed; not yet granted)",
+      "src/skills/local-backlog/** (proposed; not yet granted)"
+    ],
+    "constraints": [
+      "Source writes require coordinator's explicit ownership handoff",
+      "Shared files stay coordinator-owned",
+      "Continue this same task"
+    ],
+    "non_goals": [
+      "First push",
+      "Root runtime activation",
+      "P7 execution",
+      "Provider mutation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Receive adopted configuration and adapter contract",
+      "Receive explicit source ownership",
+      "Implement owned source/tools/docs",
+      "Return coherent local delivery for integration"
+    ],
+    "validation": [
+      "U001 permitted static checks only during P0-P6"
+    ],
+    "last_completed_step": "Contract proposal supplied; product implementation has not started",
+    "next_action": "Coordinator reconciles WM-C1/C2/C3 and resumes this task with explicit source ownership"
+  },
+  "results": {
+    "summary": "Implementation pending; active state records continuation and coordinator reconciliation, not source execution.",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "No implemented PR/backlog tools exist from this task yet.",
+    "follow_up_needed": true,
+    "follow_up_owner": "program #322 coordinator / P7"
+  }
+}
