@@ -28,3 +28,7 @@ Graph indexed in fast mode for `framework-next-382` at the clean start; it exclu
 Preparation limits retained: initial `gh issue view` failed through blocked local proxy; the GitHub connector then supplied the actual live Issue. Two guessed documentation/tool paths were absent; tracked path listing located `p7-execution-selection.md` and `tools/build-development.py`. Initial long file-write command failed with Windows error 206 before execution; split writes succeeded. None is native product execution.
 
 Read [report.md](report.md) and [task.json](task.json) for execution state and next action. Local checkpoints only; no push, PR, provider mutation, CI restoration, release/tag/publication or target activation.
+
+## Completed bounded attempt
+
+Executed clean a9af5fe793f938ac9b66f94034bda8a2cafb50ec once. Build and inspect succeeded; plan failed with protected-path WinError 1. No dependent public run was retried. Local task completes with N382-F01 owner handoff and incomplete native acceptance; see report and durable evidence.
