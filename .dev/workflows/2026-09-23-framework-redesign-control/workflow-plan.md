@@ -1,6 +1,42 @@
 # Framework redesign coordination
 
-## Current selected P7 integration checkpoint
+## Current integration and independent review continuation
+
+Observed at 2026-09-23T17:44:32.050285+00:00. PR392 is MERGED at
+ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f; exact remote head, all 29 changed
+paths and the three original delivery ancestors were verified. Empty hosted
+checks remain deferred-by-owner, not passed. #368 and #369 stay OPEN; #373 stays
+CLOSED/COMPLETED and Project Done.
+
+The original #370 independent Astra/ultra task
+01a0cd16-e671-7ae0-9f31-9ac1fd1e9b2a resumed in recreated F:/framework-next/370,
+branch codex/2026-09-24-current-engine-review, at that immutable merged source.
+Issue comment 5799832277 assigns the same ten-file EnginePin closure, focused on
+six changed files since reviewed source 0d29b9abf36804cb2587732232d807a1b754c3a0.
+All ten files equal the actual installed engine 3afb4ff4. Only its existing
+review-workflow records may change; original reports remain. Product/native
+execution, repairs and source sub-agents are excluded. Actual app readback showed
+active execution; explicit dispatch selects gpt-6-astra / ultra, without inventing
+new runtime attestation. Issue370 is OPEN and existing Project Status Verification;
+only Status changed. The review result is pending, not passed.
+
+F:/framework-next/373 and its local branch were removed after exact merged/clean,
+closed-Issue and idle-task checks. Seven ignored files (7483 bytes) are hash-checked
+in the persistent completed-worktree-archive/373 under the source bootstrap's
+ignored framework-next-control directory. The remote branch pointed to already
+merged 07b1778f; deletion used an exact-head lease and absence was read back.
+The first preflight stopped on its remote-absence assumption, and the second on
+PowerShell OrderedDictionary property projection; both stopped before archive or
+deletion and are retained. Explicit integer accumulation confirmed unchanged file
+bytes before the successful bounded attempt. All p7-runs and failed fixtures,
+F:/ai-context-tests, current F368/F369/F370 and installed F386 engine remain.
+
+Target a17cc80 remains locally admitted without provider integration. The two
+pending direct owner questions still govern target push/PR/merge and the #369
+native extension. CI/policy adoption, source-root adoption and stable release/
+actual target update remain incomplete. No dependent action follows elapsed time.
+
+## Prior selected P7 integration checkpoint
 
 Observed at 2026-09-23T17:34:57.980273+00:00. The three original Issue tasks returned clean local
 deliveries: #368 edfae7a868c54a35deb871d179caf5acd40c2c00, #369
