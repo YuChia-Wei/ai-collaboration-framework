@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-23T15:18:02+08:00",
+  "updated_at": "2026-09-23T19:18:28+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -19,12 +19,16 @@
       "tests/framework_next/test_contracts.py",
       "tests/framework_next/README.md",
       ".dev/design/framework-next/source-contract-checks/",
-      ".dev/workflows/2026-09-23-source-contract-checks/"
+      ".dev/workflows/2026-09-23-source-contract-checks/",
+      "src/distribution/git_source.py",
+      "src/distribution/assembly.py",
+      "src/skills/pr/skill-package.yaml",
+      "src/skills/local-backlog/skill-package.yaml"
     ]
   },
   "execution": {
-    "last_completed_step": "implemented selected tests; executed final layer; retained failures",
-    "next_action": "user approval required by auto-review before expanded four-file repair; coordinator owns resumption and independent review"
+    "last_completed_step": "direct user approved repair implemented; exact metadata equality and three focused path methods passed",
+    "next_action": "commit repaired source, then execute actual selected contracts against that commit"
   },
   "results": {
     "summary": "Local implementation checkpoint; acceptance incomplete. Final 14 methods: 11 successful, three affected methods / seven errors.",
@@ -56,7 +60,7 @@
     "residual_risk": "PR/backlog forbidden YAML anchors; assigned F: strict root API unavailable; C5 assembly/reader and real GitSource assertions not reached.",
     "follow_up_needed": true,
     "delivery": "local checkpoint; no push/PR/merge",
-    "verification_state": "failed and blocked-by-environment; other obligations deferred-by-owner U001",
-    "approval_block": "Expanded metadata/GitSource/assembly repair rejected before execution; no source changes or bypass retry."
+    "verification_state": "focused repair checks passed; committed-source C1/C3/C5 execution pending",
+    "approval_block": "historical rejection retained; direct user subsequently approved the bounded four-file repair"
   }
 }

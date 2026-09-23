@@ -1,5 +1,8 @@
 # Issue 368 local checkpoint
 
+Historical observation at `070a47335ffce99d31bd83e487447942539e4a9f`.
+See the [approved repair continuation](repair-report.md) for current status.
+
 Implementation is ready for coordinator inspection; selected acceptance is
 **not complete**. Final contracts command returned **1**: 14 test methods,
 11 successful methods, three affected methods producing seven error instances.
