@@ -76,6 +76,8 @@ def main(argv=None):
             try:
                 print(json.dumps({'fixture_accounting': run.close(success)}, sort_keys=True), flush=True)
             except (support.FixtureError, OSError) as exc:
+                if isinstance(exc, support.FixtureCleanupError):
+                    print(json.dumps({'fixture_accounting': exc.accounting}, sort_keys=True), flush=True)
                 print(json.dumps({'outcome': 'cleanup-failed', 'residue': str(run.root),
                                   'diagnostic': str(exc), 'next_action': 'Inspect residue; do not retry cleanup blindly.'}), file=sys.stderr)
                 # Cleanup failure must never inherit the success return above.
@@ -129,6 +131,8 @@ def public_main(args):
                     try:
                         entry['fixture_accounting'] = run.close(success)
                     except Exception as exc:
+                        if isinstance(exc, support.FixtureCleanupError):
+                            entry['fixture_accounting'] = exc.accounting
                         entry.update(outcome='cleanup-failed', exit=2, residue=str(run.root),
                                      exception_type=type(exc).__name__, diagnostic=str(exc),
                                      next_action='Inspect residue; do not retry cleanup blindly.')

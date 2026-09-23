@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-23T22:22:35+08:00",
+  "updated_at": "2026-09-23T22:47:50+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -27,11 +27,11 @@
     ]
   },
   "execution": {
-    "last_completed_step": "fast-forwarded exact local commit and executed affected C5 once; success and cleanup observed",
-    "next_action": "coordinator consumes C5 handoff and separately assigns full rc.1 pilot then broader gates; no additional executor run"
+    "last_completed_step": "Bounded readonly cleanup repair and focused regressions completed; exact byte evidence retained.",
+    "next_action": "Coordinator integrates helper/report catches with other owners and separately assigns PR family or broader checks."
   },
   "results": {
-    "summary": "Single affected C5 passed after #378 on c1fb1c1f: two actual Lesson assemblies, actual reader and five synthetic refusals. Historical whole-contract runs retained.",
+    "summary": "Bounded readonly Git fixture cleanup and pre-cleanup accounting repair passed focused regressions; historical C5 pass and prior failures retained.",
     "files_changed": [
       "tests/framework_next/run.py",
       "tests/framework_next/support.py",
@@ -73,13 +73,33 @@
         "skipped": 0,
         "exit": 0,
         "unittest_wall_seconds": 10.725
+      },
+      {
+        "selection": "readonly cleanup helper follow-up",
+        "base_commit": "bd40c83060d55435df5d7bc015d8f5ab12085aea",
+        "evidence": "../cleanup-repair-checks.json",
+        "executions": [
+          {
+            "methods": 3,
+            "passed": 3,
+            "exit": 0
+          },
+          {
+            "methods": 2,
+            "passed": 2,
+            "exit": 0
+          }
+        ],
+        "distinct_methods": 3,
+        "final_synthetic_scenarios": 17,
+        "new_failures": 0
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "No fresh whole-contract, full rc.1 pilot, native/install/apply or broader gate acceptance from this C5-only run.",
+    "residual_risk": "Focused helper evidence only. PR family/public suite/native/install/apply and broader acceptance remain separately assigned.",
     "follow_up_needed": true,
-    "delivery": "bounded C5 rerun completed locally; coordinator owns next pilot/gates and online integration",
-    "verification_state": "C5 passed on exact assigned commit; prior failures retained; unselected U001 gates deferred-by-owner"
+    "delivery": "Local helper repair handoff; coordinator owns integration and subsequent execution.",
+    "verification_state": "Three distinct focused helper methods passed; two changed tests repeated and passed; old PR residue unchanged; unselected U001 gates deferred-by-owner."
   },
   "prior_results": {
     "summary": "Local implementation checkpoint; acceptance incomplete. Final 14 methods: 11 successful, three affected methods / seven errors.",

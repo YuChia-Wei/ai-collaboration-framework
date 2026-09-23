@@ -371,3 +371,19 @@ reported completion; clean F: HEAD was independently read back and runtime
 state_5.sqlite shows gpt-6-astra / ultra. Actual repair completion is not implied.
 #373 fixture return is locally integrated in eec89605; both exact runner stream
 hashes were independently decoded and verified.
+
+
+## Readonly fixture cleanup handoff
+
+#368 returned clean eb28d0b6290e257f9da187318efb3efe76a9cb9c. Coordinator
+reviewed the bounded helper, four runner-report lines and new FixtureSupportTests.
+Only registered direct regular single-link readonly Windows files qualify for
+one access-denied retry, with root/ancestor/file identity and attributes rechecked.
+Pre-cleanup accounting survives failure while exit remains nonzero. No actionable
+finding was identified; three tested file and four exact stream hashes match.
+The first three selected methods passed (including actual two-command tiny Git
+object cleanup); after two test-only refinements, only those two methods reran
+and passed. Final refusals cover 17 explicitly synthetic cases. Old PR residue
+remained unchanged. No complete suite or public family execution is implied.
+The original #373 task may now fast-forward to this integration and execute
+only PR once; all seven previous family observations keep their original subjects.
