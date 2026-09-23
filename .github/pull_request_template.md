@@ -1,3 +1,15 @@
+<!--
+Dormant source-form preview; not adopted or effective.
+See .dev/standards/SOURCE-DEVELOPMENT-POLICY.md. The current form below remains
+applicable with U001; this comment activates no replacement or CI requirement.
+A later adopted source form would ask for scope and owner authority, actual checks
+and their limitations/deferrals, conditional independent review/native evidence,
+and each Issue's final or deferred disposition with next gate/owner.
+The owner must adopt the exact replacement and applicability before changing the
+active receipt/declaration checklist. No empty evidence section is required by
+this preview, and no current checklist is removed.
+-->
+
 ## Summary
 - What change is being introduced and why?
 

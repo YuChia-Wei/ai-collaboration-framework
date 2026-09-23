@@ -14,6 +14,13 @@ sub-agents 與執行對話自行建立更多對話，使用指定的 RAM-disk wo
 `deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
 與 publication 邊界繼續有效。
 
+## 前瞻 Source 規則
+
+[前瞻 source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md) 尚未啟用。
+它描述僅在明確採納後，才適用於 source 工作的選定檢查、限縮範圍審查與精簡交接。
+此指標不啟用規則、不取代下方現行條文、不變更 skill routes，也不終止 U001。
+CI 恢復與確切政策轉換必須有已記錄的 owner 採納決策。
+
 ## 適用範圍與 Authority
 
 - 這是可重用 AI collaboration framework 的 source repository，並非 product application。

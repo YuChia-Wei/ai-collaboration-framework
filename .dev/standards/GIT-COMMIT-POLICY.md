@@ -1,5 +1,10 @@
 # Git Commit Policy
 
+Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+retains grammar, exact planned-message validation, applicable workflow identity and
+truthful AI attribution. Its future removal of ordinary full-history/aggregate
+gates requires adoption; no executable field in `GIT-COMMIT-POLICY.yaml` changes.
+
 This policy defines commit title format, commit body structure, and commit timing for agent-assisted work.
 
 ## Title Format

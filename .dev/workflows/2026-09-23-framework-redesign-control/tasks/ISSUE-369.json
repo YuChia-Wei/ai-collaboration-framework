@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T14:58:53+08:00",
-  "updated_at": "2026-09-23T16:50:05+08:00",
+  "updated_at": "2026-09-23T20:58:12+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -51,17 +51,18 @@
       "Only new source-selector/event/outcome tests with labelled synthetic inputs; no product/native/provider execution",
       "Direct syntax/reference/Git and complete planned-message checks"
     ],
-    "last_completed_step": "Received public caller binding at 289852bd; 37 focused tests passed using synthetic complete outcomes and retained actual nonpass output",
-    "next_action": "Online partial checkpoint, direct owner policy confirmation, then later actual V3/native binding"
+    "last_completed_step": "Direct owner-approved dormant policy, bilingual pointers and PR preview received; effective bodies/YAML retained",
+    "next_action": "Integrate dormant policy; actual native binding and scoped review remain before completion; activation separate"
   },
   "results": {
-    "summary": "Dormant source gate with real contracts/public bindings; policy and native obligations remain",
+    "summary": "Source gates and dormant policy source delivered; native binding and scoped review incomplete",
     "files_changed": [],
     "tests_run": [
       "Initial selector run 24 tests / 1 error; retained F: path failure",
       "Separately permitted fixture-only repair: 24 passed, zero skips, 1.733 seconds",
       "Runner-binding follow-up: 28 passed, zero skips, 2.441 seconds; new result cases synthetic; no product tests",
-      "Public binding follow-up: 37 passed, zero skips, 1.541 seconds harness; complete success responses synthetic, no product/public/native execution"
+      "Public binding follow-up: 37 passed, zero skips, 1.541 seconds harness; complete success responses synthetic, no product/public/native execution",
+      "Dormant policy direct checks: 15 original bodies preserved, 2 parsed YAML documents exact-type/value equal, bilingual/15 references passed; runtime tests not repeated"
     ],
     "finding_status": "partially-resolved",
     "residual_risk": "Product/root/native/provider acceptance remains distinct",
@@ -83,9 +84,9 @@
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
     "implementation_status": "partial; Issue remains open",
     "verification_state": "selected results recorded; remaining obligations unfulfilled/deferred-by-owner",
-    "commit": "289852bd6661be31acfcfb16bef3f2ebd50629f2",
-    "integration_report": "reports/p7-public-checkpoint.md",
-    "approval_state": "rejected batch stopped; direct owner response pending in original task",
+    "commit": "0725c3dd68e6d1cb4aca5d03343cd239b8c447a1",
+    "integration_report": "reports/p7-approved-returns-and-cleanup.md",
+    "approval_state": "Direct owner confirmation received in original task; dormant edits written; no policy or CI adoption",
     "prior_checkpoint": "5ee20036392b6ad217e4029c8a256e176e9d8cdf",
     "checkpoint_pr": 372,
     "checkpoint_merge": "3a21b0eb58e80752df010e7277aec55725b3061e",

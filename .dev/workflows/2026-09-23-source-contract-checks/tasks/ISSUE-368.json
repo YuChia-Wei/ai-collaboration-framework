@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-23T15:18:02+08:00",
+  "updated_at": "2026-09-23T19:20:23+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -19,14 +19,57 @@
       "tests/framework_next/test_contracts.py",
       "tests/framework_next/README.md",
       ".dev/design/framework-next/source-contract-checks/",
-      ".dev/workflows/2026-09-23-source-contract-checks/"
+      ".dev/workflows/2026-09-23-source-contract-checks/",
+      "src/distribution/git_source.py",
+      "src/distribution/assembly.py",
+      "src/skills/pr/skill-package.yaml",
+      "src/skills/local-backlog/skill-package.yaml"
     ]
   },
   "execution": {
-    "last_completed_step": "implemented selected tests; executed final layer; retained failures",
-    "next_action": "user approval required by auto-review before expanded four-file repair; coordinator owns resumption and independent review"
+    "last_completed_step": "executed actual repaired committed source; retained two candidates and actual reader error",
+    "next_action": "coordinator assigns installation reader-root boundary and affected independent review; complete C5 after explicit scope reconciliation"
   },
   "results": {
+    "summary": "Approved four-file repairs delivered; C1-C3 passed; two real Lesson builds; actual installation reader remains blocked.",
+    "files_changed": [
+      "tests/framework_next/run.py",
+      "tests/framework_next/support.py",
+      "tests/framework_next/test_contracts.py",
+      "tests/framework_next/README.md",
+      ".dev/design/framework-next/source-contract-checks/README.md",
+      ".dev/workflows/2026-09-23-source-contract-checks/",
+      "src/distribution/git_source.py",
+      "src/distribution/assembly.py",
+      "src/skills/pr/skill-package.yaml",
+      "src/skills/local-backlog/skill-package.yaml"
+    ],
+    "tests_run": [
+      {
+        "command": "python -I -B tests/framework_next/run.py --layer contracts --case PathAdmissionTests --output-root F:/framework-next/p7-runs/368-contracts",
+        "methods": 3,
+        "passed": 3,
+        "exit": 0,
+        "wall_seconds": 0.005
+      },
+      {
+        "selection": "contracts",
+        "source_commit": "379213a1f575aff143fb29b665c42fe5f24b219c",
+        "methods": 17,
+        "successful_methods": 16,
+        "errors": 1,
+        "skipped": 0,
+        "exit": 1,
+        "unittest_wall_seconds": 13.796
+      }
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "installation_state._root strict resolution fails on F:; candidate reader/refusals and changed EnginePin independent review remain incomplete.",
+    "follow_up_needed": true,
+    "delivery": "local repaired checkpoint and evidence only; coordinator owns push/PR/merge",
+    "verification_state": "16/17 methods successful; one actual reader error; other U001 obligations deferred-by-owner"
+  },
+  "prior_results": {
     "summary": "Local implementation checkpoint; acceptance incomplete. Final 14 methods: 11 successful, three affected methods / seven errors.",
     "files_changed": [
       "tests/framework_next/run.py",
@@ -56,7 +99,7 @@
     "residual_risk": "PR/backlog forbidden YAML anchors; assigned F: strict root API unavailable; C5 assembly/reader and real GitSource assertions not reached.",
     "follow_up_needed": true,
     "delivery": "local checkpoint; no push/PR/merge",
-    "verification_state": "failed and blocked-by-environment; other obligations deferred-by-owner U001",
-    "approval_block": "Expanded metadata/GitSource/assembly repair rejected before execution; no source changes or bypass retry."
+    "verification_state": "focused repair checks passed; committed-source C1/C3/C5 execution pending",
+    "approval_block": "historical rejection retained; direct user subsequently approved the bounded four-file repair"
   }
 }

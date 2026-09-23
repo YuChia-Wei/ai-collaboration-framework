@@ -1,9 +1,11 @@
 # Dormant source gates: local checkpoint
 
 [#369](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369), program
-#322 / [selected P7 scope](../p7-execution-selection.md). **Partial; policy writes
-approval-blocked, contracts/public CLI bound; actual product acceptance and native implementation outstanding. No readiness or
-restoration claim.** Read the [initial handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/blocked-handoff.md)
+#322 / [selected P7 scope](../p7-execution-selection.md). **Partial; directly
+authorized dormant policy delivered, contracts/public CLI bound; actual product
+acceptance and native implementation outstanding. No adoption or restoration claim.**
+Read the [current dormant-policy handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/dormant-policy-handoff.md)
+and [initial handoff](../../../workflows/2026-09-23-source-gates-implementation/reports/blocked-handoff.md)
 and [contracts binding](../../../workflows/2026-09-23-source-gates-implementation/reports/runner-binding-handoff.md),
 and [current public binding](../../../workflows/2026-09-23-source-gates-implementation/reports/public-binding-handoff.md).
 
@@ -78,14 +80,15 @@ are retained prospective decisions, **not settings changes**.
 | 363100663 / release-provider-preflight.yml | Retain disabled, legacy release/provider-only. #309 owns unresolved hosted capability; no credential change or claim from local REST. |
 | 341690089 / test-fixture-acceleration.yml | Retire from proposed set without a self-hosted/nightly replacement. Preserve #274/#275 history and separately selected measurement obligations. |
 
-The precise mandatory-gate replacements remain the selected
-[#365 source-rule table](../pipeline-redesign/source-rules.md). The rejected policy
-implementation did not change its effective owners: five legacy contexts, audit
-receipt/declaration machinery, aggregate validators, handoff/lease/acceptance
-requirements and effective-rule YAML retain their original fields and applicable
-U001 deferrals. Planned ordinary-source replacements, retained release/support
-scope and unapplied file list are captured in the handoff; no hybrid schema fields
-or fabricated receipt was written.
+The precise mandatory-gate replacements are now recorded in the
+[dormant canonical source policy](../../../standards/SOURCE-DEVELOPMENT-POLICY.md),
+following the selected [#365 source-rule table](../pipeline-redesign/source-rules.md).
+Direct user confirmation resolved the earlier policy-write authorization block.
+Only prospective text and applicability pointers were added: five legacy contexts,
+audit receipt/declaration machinery, aggregate validators, handoff/lease/acceptance
+requirements and effective-rule YAML retain their existing fields and applicable
+U001 deferrals. Both roots retain their effective text and routes, and the PR form
+has only a dormant preview comment. No hybrid schema or active replacement exists.
 
 ## Verification and adoption boundaries
 
@@ -101,9 +104,10 @@ using absolute lexical paths and no-reparse directory ancestry. Cleanup removes
 only that created child; the parent remains. No global TEMP/TMP or legacy fixture
 setting is changed. This fixture behavior is not product filesystem validation.
 
-Coordinator owns direct owner confirmation for the blocked policy surfaces, #368
-integration and failed product acceptance, V3 binding, first push/PR/merge, scoped review, actual selected trials, root
-adoption and the user's exact restoration decision. Keep #369 open; keep all
+Dormant policy writing is directly authorized and complete. Coordinator still owns
+#368/#373 integration and failed product acceptance, V3 binding, first push/PR/merge,
+scoped review, actual selected trials, root adoption and the user's exact policy
+adoption/restoration decision. Keep #369 open; keep all
 seven old workflows disabled. Legacy matrices/packet machinery and CI remain
 `deferred-by-owner` under U001 until selected P7 adoption, never passed.
 
@@ -136,5 +140,16 @@ Final source-only tests passed 37/37, no skips, harness 1.541 s. Complete succes
 responses are synthetic because no #373 family fully passed. The seven phase
 lists matched fixed source; retained ADR partial and PR failed output were
 correctly rejected. No product/public/native command ran. See the current public
-handoff above. Native and original policy approval remain blocked, and all
-reported #368/#373 product/backend failures remain unresolved. CI stays disabled.
+handoff above. Native and all reported #368/#373 product/backend failures remain
+unresolved. The later direct authorization permits dormant policy writes only;
+policy adoption and CI restoration remain outstanding. No provider setting changed.
+
+## Dormant policy follow-up
+
+The direct owner confirmation is retained in the current handoff. Sixteen policy,
+root and template files now carry the dormant rules/pointers; all 15 existing
+bodies were preserved, and both parsed YAML values matched with exact types.
+Fifteen added local links, UTF-8/newlines/whitespace and the additive diff passed
+direct checks. English/Traditional Chinese additions have matching meaning.
+Source code, tests, workflows and commit-policy YAML are unchanged in this follow-up.
+The earlier source tests are historical evidence, not newly executed policy tests.

@@ -1,5 +1,10 @@
 # Source Work-Management Authority
 
+Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+would permit the selected #361 execution collection only after its actual adoption.
+No collection is created or made authoritative here; live GitHub authority,
+existing execution evidence and frozen-history boundaries remain unchanged.
+
 Rule ID: `SOURCE-WORK-MANAGEMENT-001`
 
 This source-repository-only policy separates current provider state, repository

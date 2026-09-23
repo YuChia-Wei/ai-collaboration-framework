@@ -11,7 +11,7 @@ import sys
 import uuid
 
 from .data import DistributionError, json_bytes, path, require
-from .git_source import GitSource
+from .git_source import GitSource, direct_directory
 from .selection import select
 
 
@@ -61,9 +61,14 @@ def output_parent(value: Path, source: GitSource, label: str) -> Path:
     require(value.is_absolute() and ".." not in value.parts, f"{label}: supply an explicit absolute directory without traversal")
     no_links(value)
     require(value.is_dir(), f"{label}: prepare the explicitly chosen directory before building")
-    resolved = value.resolve(strict=True)
+    resolved = direct_directory(value, label)
     require(not resolved.is_relative_to(source.repository),
             f"{label}: choose a scratch/output root outside the source worktree; installed/source surfaces are not destinations")
+    # Lexical containment alone cannot detect another drive name for the source.
+    for ancestor in (resolved, *resolved.parents):
+        info = ancestor.lstat()
+        require((info.st_dev, info.st_ino) != source.repository_identity,
+                f"{label}: source worktree aliases are not output destinations")
     return resolved
 
 

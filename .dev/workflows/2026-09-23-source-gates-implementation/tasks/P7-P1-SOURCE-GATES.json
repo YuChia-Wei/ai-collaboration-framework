@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:14:31+08:00",
-  "updated_at": "2026-09-23T16:46:30+08:00",
+  "updated_at": "2026-09-23T19:20:46+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -15,7 +15,7 @@
   ],
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369",
   "scope": {
-    "target": "Dormant source gates; prospective policy stopped by automatic review",
+    "target": "Dormant source gates, prospective source policy and applicability pointers; no activation",
     "files": [
       ".github/scripts/check-source-change.py",
       ".github/scripts/run-source-native.py",
@@ -23,12 +23,29 @@
       ".github/workflows/source-checks.yml",
       ".github/workflows/source-native.yml",
       ".dev/design/framework-next/source-gates-implementation/",
-      ".dev/workflows/2026-09-23-source-gates-implementation/"
+      ".dev/workflows/2026-09-23-source-gates-implementation/",
+      ".dev/standards/SOURCE-DEVELOPMENT-POLICY.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
+      ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/standards/AI-CONTEXT-BOUNDARY.md",
+      ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md",
+      ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
+      ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+      ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
+      ".github/pull_request_template.md"
     ],
     "constraints": [
       "U001; one independent conversation; no sub-agents/callbacks",
-      "Exact assigned F: worktree; no rejected-policy retry",
-      "Local checkpoint only; coordinator owns integration"
+      "Exact assigned F: worktree; original policy scope now directly owner-authorized as dormant text only",
+      "Local checkpoint only; coordinator owns integration",
+      "Current effective text, parsed policy YAML, routes and CI remain unchanged"
     ],
     "non_goals": [
       "Policy activation",
@@ -43,17 +60,19 @@
       "Implement own source selector/event tests",
       "Retain automatic rejection and first test failure",
       "Separately approved fixture correction and focused rerun",
-      "Local checkpoint"
+      "Local checkpoint",
+      "Direct user confirmation; approved dormant policy/pointers; retained original rejection"
     ],
     "validation": [
       "24 selected tests passed after retained WinError 1 failure",
-      "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup"
+      "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup",
+      "16 dormant policy/pointer files checked; 15 existing bodies retained; 2 exact-type YAML matches; 15 added local links; bilingual parity inspection"
     ],
-    "last_completed_step": "Fixed #373 public caller binding; proportional admission; 37 focused source tests passed; no product execution",
-    "next_action": "Coordinator integrates caller/runner, resolves policy approval and upstream metadata/backend failures, then selects actual runs/native work"
+    "last_completed_step": "Original dormant policy/root/template scope implemented after direct user authorization; additive direct checks passed",
+    "next_action": "Coordinator integrates caller/runner and dormant text, resolves upstream failures and native binding, obtains scoped review and actual trials before separate adoption/restoration"
   },
   "results": {
-    "summary": "Partial local source-gate checkpoint; no CI/native/policy readiness",
+    "summary": "Dormant source gates and policy checkpoint; no policy adoption, CI/native readiness or full product acceptance",
     "tests_run": [
       {
         "attempt": 1,
@@ -110,7 +129,7 @@
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "Policy approval stopped; #368 metadata/F: backend and #373 full-family acceptance unresolved; native blocked; no CI evidence",
+    "residual_risk": "#368 metadata/F: backend and #373 full-family acceptance unresolved; native blocked; independent review and adoption pending; no hosted evidence",
     "follow_up_needed": true
   },
   "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim",
@@ -159,5 +178,24 @@
     "public_read_only_used": false,
     "native": "unimplemented-blocked",
     "report": "reports/public-binding-handoff.md"
+  },
+  "dormant_policy": {
+    "direct_owner_confirmation": "確認 #369 原定政策、AGENTS 與 PR template 寫入範圍；僅限尚未生效的規範及適用性指標，不啟用規範或 CI。",
+    "recorded_at": "2026-09-23T19:20:46+08:00",
+    "status": "implemented-dormant",
+    "effective": false,
+    "approved_scope": "Original 16 policy/root/template files; prospective rules and applicability pointers only",
+    "original_rejection": "reports/blocked-handoff.md; retained historical evidence, resolved only for the directly approved dormant write",
+    "validation": {
+      "result": "passed",
+      "existing_bodies_preserved": 15,
+      "effective_yaml_exact_type_equal": 2,
+      "added_local_links": 15,
+      "bilingual_parity": "author-inspected; not independent review",
+      "exact_planned_message": "passed; message-file mode only"
+    },
+    "runtime_tests_rerun": false,
+    "provider_mutation": false,
+    "report": "reports/dormant-policy-handoff.md"
   }
 }
