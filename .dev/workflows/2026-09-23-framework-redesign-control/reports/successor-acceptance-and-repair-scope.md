@@ -174,3 +174,40 @@ candidate/lock identity and a complete explicit package selection, preserve targ
 It cannot claim a whole-framework upgrade from a Lesson-only installation.
 Release publication, stable 0.19.0, later actual stable upgrade, CI restoration
 and broader validator/release/pipeline review remain separate outcomes.
+
+## Online repair outcome and next preparation (2026-09-23T22:21:01+08:00)
+
+PR #380 merged online at c1fb1c1fb07a6d246e3bcedd3cd851918f66b306 after
+remote head read-back matched c247d424c5e16797dc1345c2929b15a796c5573e.
+The first PR request with a closing keyword was refused by automatic approval
+review because Issue closure had not been directly authorized. A Refs-only PR
+was created; the owner then directly authorized closure only for accepted,
+reviewed and online-merged implementation Issues. The approved Closes #378
+body was applied before merge. Live read-back: #378 CLOSED/COMPLETED and Project
+Done. #322/#368/#369/#373 remain open. No hosted checks ran; U001 deferral remains.
+
+The coordinator fetched main and started clean branch
+codex/2026-09-23-rc1-preparation at the online merge. Previous branches, #378
+worktree and all failure/run evidence are still preserved at this checkpoint.
+
+First continuation dispatches to #368/#373 failed because the original tasks
+were archived; no execution followed those failed sends. Both original tasks
+were restored and successful follow-ups selected exact c1fb1c1f source: #368
+only CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals, #373
+seven existing public families sequentially. Product/tests/helpers remain
+read-only and failures stop affected continuation. No result is inferred.
+
+Current target read-back remains main cb122285af09e46b24102f22a0ad9d713219c1f2,
+provenance v0.18.0. The four recorded customization subjects cover governance,
+validation, repository truth and execution-provenance adoption. Existing .NET
+authority and these target contracts must be reconciled at pilot activation.
+Git status printed no changed paths but retained two pre-existing inaccessible
+.python-prerequisite-fixtures/shadow warnings; no complete untracked audit or
+cleanup is claimed. Target files were not mutated.
+
+Issue #381 selects the bounded missing prerequisite: closed versioned candidate
+selection v2 (legacy development v1 preserved), exact version/commit/digest
+identity, complete explicit 18-package profile, actual complete rc.1 public
+build/read and labelled future stable/lock planning fixtures. It does not
+rewrite legacy release support or infer published/stable/native/target success.
+The task/worktree dispatch is pending; its Issue is the exact scope.

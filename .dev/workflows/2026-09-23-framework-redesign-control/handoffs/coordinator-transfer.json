@@ -92,5 +92,27 @@
       "observed_at": "2026-09-23T21:41:05+08:00",
       "state": "active; no completion inferred"
     }
+  },
+  "continuation_checkpoint": {
+    "observed_at": "2026-09-23T22:21:01+08:00",
+    "coordinator_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+    "branch": "codex/2026-09-23-rc1-preparation",
+    "integrated_main": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+    "repair_issue": 378,
+    "repair_pr": 380,
+    "repair_issue_state": "CLOSED/COMPLETED",
+    "repair_project_status": "Done",
+    "open_issues": [
+      322,
+      368,
+      369,
+      373,
+      381
+    ],
+    "pilot_scope": "complete new framework with existing target customizations",
+    "next_issue": 381,
+    "next_dispatch": "pending actual task creation",
+    "target_mutation_performed": false,
+    "publication_performed": false
   }
 }

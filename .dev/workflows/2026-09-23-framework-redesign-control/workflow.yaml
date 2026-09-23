@@ -6,12 +6,12 @@ title: Coordinate the portable-framework redesign
 owner_skill: ai-context-governance
 status: in_progress
 current_phase: remediation
-branch: codex/2026-09-23-repair-integration
+branch: codex/2026-09-23-rc1-preparation
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-framework-redesign-control
 entrypoint: workflow-plan.md
 created_at: '2026-09-23T01:03:26+08:00'
-updated_at: "2026-09-23T22:03:27+08:00"
+updated_at: "2026-09-23T22:21:01+08:00"
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 issue_refs:

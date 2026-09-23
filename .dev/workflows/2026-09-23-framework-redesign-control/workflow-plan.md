@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-coordinator-handoff`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-rc1-preparation`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -168,3 +168,23 @@ PR #374 is online at `c10d874dc658d86ba9e3cf064271ffcfe4a25a14`, with bounded #3
 [Acceptance and bounded repair scope](reports/successor-acceptance-and-repair-scope.md)
 records the new coordinator, live provider state and #378 ownership. The owner order
 remains repair, rc.1 pilot, then overall validator/release/pipeline review.
+
+## Repair integrated and complete rc.1 preparation
+
+PR #380 is merged at c1fb1c1fb07a6d246e3bcedd3cd851918f66b306. #378 is
+CLOSED/COMPLETED and Project Done after the owner directly authorized closure
+only for reviewed, accepted and online-integrated implementation Issues.
+#322/#368/#369/#373 stay open. The full-framework pilot choice supersedes the
+earlier Lesson-only target selection; source-root adoption remains separate.
+
+The original #368 and #373 tasks were restored from archive and resumed on the
+exact merged repair commit. #368 selects only C5 candidate/reader checks; #373
+selects its seven existing public families once each, with dependent stop on a
+new shared failure. Only their existing records may change in this continuation.
+No whole P7 admission, native or downstream success is inferred.
+
+Issue #381 prepares the missing versioned candidate identity, complete explicit
+18-component profile and rc.1-to-stable candidate/lock planning input contract.
+Its Issue records exact source/test ownership and bounded actual build/read
+acceptance. Publication, actual stable output and target installation are separate.
+The coordinator will dispatch one independent Astra/ultra task in F:/framework-next/381.
