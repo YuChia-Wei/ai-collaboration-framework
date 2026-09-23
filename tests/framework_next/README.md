@@ -83,14 +83,16 @@ launch ceilings, separately labelled as bounds, not measurements. The one select
 4 MiB+1 Lesson input is transient stdin and separately counted when executed.
 No physical-I/O, performance or token inference is made.
 
-Public evidence belongs to Issue 373. Its [initial report](../../.dev/workflows/2026-09-23-public-skill-checks/report.md),
-[later family observations](../../.dev/workflows/2026-09-23-public-skill-checks/resume-c1fb1c1f-report.md),
-and [focused PR cleanup rerun](../../.dev/workflows/2026-09-23-public-skill-checks/pr-cleanup-rerun-report.md)
-retain their own source identities, failures and scoped passes. The original
-writer/root and metadata failures are historical observations, not current
-universal blockers. Fresh public results for the selected P7 source are
-**pending Issue 373**. Source-contract or parser success does not establish
-public family, installation, live-provider or hosted CI acceptance.
+Current selected public evidence: [Issue 373 fixed-source handoff](../../.dev/workflows/2026-09-23-source-contract-checks/p7-verification-report.md#public-issue-373-handoff). All seven configured public families passed once each in separate invocations on source `e71712b71791170c3f4946e131ce867f82dade8f`, with complete selected C4/C6 and T1-T7 phases and successful cleanup. Original 160/256 per-invocation limits remain unchanged; the all-public aggregate was not executed and cannot fit the observed combined budget. Earlier failures and source-specific results remain preserved. These direct committed-resource tests do not establish candidate installation, native or actual provider acceptance, target adoption, CI, or whole-P7 completion.
+
+Across those separate invocations: 218 public + 37 driver Git = 255 measured
+driver processes; summed fixture time was 100.585 seconds. All 14 exact runner
+stdout/stderr streams remain preserved, but successful fixture cleanup removed
+full child transcripts and synthetic-provider bodies. Driver summaries/hashes
+cannot reconstruct those deleted bodies. The peer delivery is
+`07b1778f3b6cfae689c98b10326b614149e437f3`; coordinator evidence verification,
+integration and Issue 373 closure remain pending. This README records the fixed
+peer handoff without merging its records into this worktree.
 
 ## Small helper interface
 
@@ -176,7 +178,8 @@ two-build development Lesson case, not a versioned-release or all-profile matrix
 The [P7 record](../../.dev/workflows/2026-09-23-source-contract-checks/p7-verification-report.md)
 tracks the newly selected 12-method execution and the separate eight-assertion
 historical comparison. Do not relabel the older 16/17 or C5-only result as a
-current all-contract pass. Public results remain pending Issue 373; native,
+current all-contract pass. Issue 373 reports the separate-family passes above; its coordinator verification
+and integration remain pending. Native,
 versioned distribution, target adoption, independent review, CI and publication
 retain their respective owners and evidence boundaries.
 

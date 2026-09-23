@@ -28,7 +28,11 @@ core assertions have a separate limited hash comparison, not a fresh 20-method
 pass. The [P7 record](../../../workflows/2026-09-23-source-contract-checks/p7-verification-report.md)
 records pending/actual execution and completion conditions.
 
-Fresh public results are pending Issue 373. Native maintenance, versioned
+Issue 373 separately reports seven once-per-family passes on the common `e717`
+source in delivery `07b1778f`; coordinator verification/integration and Issue closure
+remain pending. That is not an all-public aggregate or a #368 execution. See the
+[fixed peer handoff](../../../workflows/2026-09-23-source-contract-checks/p7-verification-report.md#public-issue-373-handoff).
+Native maintenance, versioned
 candidates, target admission, independent review, CI and publication keep their
 own source-bound evidence. Coordinator owns integration and later assignments;
 this work makes no provider or Issue/Project state changes.

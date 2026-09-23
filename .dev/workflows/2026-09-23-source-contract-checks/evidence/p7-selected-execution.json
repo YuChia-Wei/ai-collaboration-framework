@@ -1,0 +1,5259 @@
+{
+  "started_at": "2026-09-23T17:17:27.758704+00:00",
+  "expected_head": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
+  "workdir": "F:\\framework-next\\368",
+  "capture_directory": "F:\\framework-next\\368\\.dev\\ai-context\\local\\p7-368-482ec56f78454c86807c19295c671aee",
+  "timeout_seconds": 90,
+  "tests_dispatched": true,
+  "outcome": "runner-passed",
+  "wrapper_git_calls": 7,
+  "selected_source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+  "source_tree_oid": "dded1f87f95b07a4ea7836252fd191ec28f3b60c",
+  "runtime": {
+    "python": "3.13.14",
+    "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "isolated": 1,
+    "dont_write_bytecode": true,
+    "packages": {
+      "PyYAML": "6.0.3",
+      "jsonschema": "4.26.0",
+      "referencing": "0.37.0"
+    },
+    "git": "git version 2.55.0.windows.3"
+  },
+  "capture_script_sha256": "8749dc88651e1f56764c0f572ebe8998ab9c45899582a67240b8031206b952b8",
+  "execution_file_sha256": {
+    "tests/framework_next/run.py": "7931ab23674dfa56dbfda02522e6bcb6dab7646d2a4f869a036ef8ed7f287ae0",
+    "tests/framework_next/support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+    "tests/framework_next/test_contracts.py": "241dfe83821f3fcd7f212e844420ed6855c4c573e1b97845c20f366e5bd14030",
+    "src/distribution/assembly.py": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70",
+    "src/distribution/installation_state.py": "2e841633d60f78ba1ca0070847536cb64e411494fbb235dedb8ec56b59a2d369",
+    "src/distribution/data.py": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d",
+    "src/distribution/git_source.py": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5",
+    "src/distribution/package.py": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+    "src/distribution/selection.py": "d49d240a2c2c776ac90ca4fbe19d887e961031ba7f0fa0c7bcada7aea5e760cd",
+    "src/distribution/codex.py": "506e775df87b6a1816cb3be896fd8741fd5bfc7c137c425224561314578e083e",
+    "src/distribution/manifest.yaml": "64e6e19d97266324782dccadc6b51113708c0e8a4b78f94819b0794dedc92a0e"
+  },
+  "historical_before": {
+    "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 844424930289250,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790162338162972200
+      },
+      {
+        "path": "cleanup-contract",
+        "device": 12003918052740279813,
+        "inode": 281474976868050,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337573600900
+      },
+      {
+        "path": "git-members",
+        "device": 12003918052740279813,
+        "inode": 281474976868059,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338196135300
+      },
+      {
+        "path": "git-members/empty-template",
+        "device": 12003918052740279813,
+        "inode": 281474976868060,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338162972200
+      },
+      {
+        "path": "git-members/repository",
+        "device": 12003918052740279813,
+        "inode": 281474976868061,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338777139900
+      },
+      {
+        "path": "git-members/repository/.git",
+        "device": 12003918052740279813,
+        "inode": 281474976868062,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 281474976868067,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790162338203648300,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "git-members/repository/.git/config",
+        "device": 12003918052740279813,
+        "inode": 844424930289376,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790162338202648600,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "git-members/repository/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 281474976868068,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338357475300
+      },
+      {
+        "path": "git-members/repository/.git/objects/0e",
+        "device": 12003918052740279813,
+        "inode": 281474976868077,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338357475300
+      },
+      {
+        "path": "git-members/repository/.git/objects/0e/1ce1e9e0ec45e6afa08334e6ea086e3ac04149",
+        "device": 12003918052740279813,
+        "inode": 281474976868078,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 137,
+        "mtime_ns": 1790162338357475300,
+        "sha256": "61f0c9b259e335b04cc19554cfd2ef725ca2ece75ebcb008cb12df44d6fc8f57"
+      },
+      {
+        "path": "git-members/repository/.git/objects/51",
+        "device": 12003918052740279813,
+        "inode": 281474976868071,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338242712500
+      },
+      {
+        "path": "git-members/repository/.git/objects/51/c58a0ee0d53a01e061d94002e84926562b9c07",
+        "device": 12003918052740279813,
+        "inode": 281474976868072,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 20,
+        "mtime_ns": 1790162338242712500,
+        "sha256": "eddc9f4b4f4ec8b02036ef4d105bf434f1c4cfb517dcc76f102e1168803e31f2"
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e",
+        "device": 12003918052740279813,
+        "inode": 281474976868073,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338282257300
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e/41eac40d7c18eb725a9daf7dc75de2d9116560",
+        "device": 12003918052740279813,
+        "inode": 281474976868074,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 63,
+        "mtime_ns": 1790162338282257300,
+        "sha256": "c33eb48a5a9c7d6789195c2464b989ef998171691c9797608931c0ea1494984b"
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef",
+        "device": 12003918052740279813,
+        "inode": 281474976868075,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338319584400
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef/1e2de65bdb37807454a669e72e943ae4efbd7c",
+        "device": 12003918052740279813,
+        "inode": 281474976868076,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 45,
+        "mtime_ns": 1790162338319584400,
+        "sha256": "d58289693fdbf8d59842921186fab7cd0e9565599b377b078fb571d1df55998e"
+      },
+      {
+        "path": "git-members/repository/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 281474976868070,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 281474976868069,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 1407374883710687,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 281474976868065,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338202648600
+      },
+      {
+        "path": "git-members/repository/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 281474976868066,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/nested",
+        "device": 12003918052740279813,
+        "inode": 281474976868079,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338777139900
+      },
+      {
+        "path": "lesson-candidates",
+        "device": 12003918052740279813,
+        "inode": 844424930289251,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790162337395472100
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d",
+        "device": 12003918052740279813,
+        "inode": 844424930289279,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332967285000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata",
+        "device": 12003918052740279813,
+        "inode": 281474976867991,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332984321200
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata/build.json",
+        "device": 12003918052740279813,
+        "inode": 281474976867994,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 3650,
+        "mtime_ns": 1790162332985321900,
+        "sha256": "35eda1a072bfbe1ff7739c3234939e969e590fb3b3063a9e1142e8d1efac01f8"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 281474976867993,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162332975807300,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 281474976867992,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162332968792300,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload",
+        "device": 12003918052740279813,
+        "inode": 844424930289280,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332904641900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 844424930289281,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332905641400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 2533274790553218,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332905641400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 1970324837131907,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332905641400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289284,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332961285700
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289285,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162332906640900,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 844424930289286,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332917674400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289287,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162332910157300,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289288,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162332914672800,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 1407374883710601,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162332917674400,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 844424930289290,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332940068800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289291,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162332928918800,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289292,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162332940068800,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 844424930289293,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332944573600
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 844424930289294,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162332944573600,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 844424930289295,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162332957765700,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 844424930289296,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332962288900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289297,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162332962288900,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime",
+        "device": 12003918052740279813,
+        "inode": 844424930289298,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332965282000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 844424930289299,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332965282000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 1407374883710612,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332965282000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289301,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332966282400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976867990,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162332966282400,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a",
+        "device": 12003918052740279813,
+        "inode": 281474976868022,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337452828900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata",
+        "device": 12003918052740279813,
+        "inode": 281474976868046,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337468343900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata/build.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868049,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 3650,
+        "mtime_ns": 1790162337469473400,
+        "sha256": "68e3073e5e7d4be2fa977cc1f4145db561d0bc4bddb4f84d4692a81106f109cf"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868048,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162337460343000,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868047,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162337452828900,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload",
+        "device": 12003918052740279813,
+        "inode": 281474976868023,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 281474976868024,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 281474976868025,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976868026,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868027,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337447149800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868028,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162337398982600,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 281474976868029,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337408492500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868030,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162337401983600,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868031,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162337404985800,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868032,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162337408492500,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 281474976868033,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337427122900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868034,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162337418515100,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868035,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162337427122900,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 281474976868036,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337430633800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 281474976868037,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162337430633800,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 281474976868038,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162337444148000,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 281474976868039,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337447149800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868040,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162337447149800,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime",
+        "device": 12003918052740279813,
+        "inode": 281474976868041,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337449665100
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 281474976868042,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337450664500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976868043,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337450664500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868044,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337450664500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868045,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162337450664500,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d",
+        "device": 12003918052740279813,
+        "inode": 844424930289252,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332889117900
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/metadata",
+        "device": 12003918052740279813,
+        "inode": 844424930289276,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332897124500
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289278,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162332897124500,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 1407374883710589,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162332890123000,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload",
+        "device": 12003918052740279813,
+        "inode": 844424930289253,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332796972200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 844424930289254,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332796972200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 844424930289255,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332796972200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 844424930289256,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332798477100
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289257,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332873093600
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289258,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162332798477100,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 844424930289259,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332824519400
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289260,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162332807488400,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289261,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162332817007900,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 3096224743974510,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162332825521300,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 1970324837131887,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332843554200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289264,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162332835032800,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289265,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162332843554200,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 844424930289266,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332853061000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 844424930289267,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162332853061000,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 844424930289268,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162332865577800,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 844424930289269,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332874093800
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289270,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162332874093800,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime",
+        "device": 12003918052740279813,
+        "inode": 1970324837131895,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332881614000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 1407374883710584,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332881614000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 844424930289273,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332881614000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289274,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332882611900
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289275,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162332882611900,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a",
+        "device": 12003918052740279813,
+        "inode": 281474976867995,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337386951300
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/metadata",
+        "device": 12003918052740279813,
+        "inode": 281474976868019,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337394469500
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868021,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162337394469500,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868020,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162337386951300,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload",
+        "device": 12003918052740279813,
+        "inode": 281474976867996,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337338743800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 281474976867997,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337338743800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 281474976867998,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337338743800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976867999,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337339754800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868000,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337381951900
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868001,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162337339754800,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 281474976868002,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337348752500
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868003,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162337343753300,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868004,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162337345753100,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868005,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162337348752500,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 281474976868006,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337365337900
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868007,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162337357215100,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868008,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162337365337900,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 281474976868009,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337368336400
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 281474976868010,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162337368336400,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 281474976868011,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162337379953700,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 281474976868012,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337382952500
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868013,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162337382952500,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime",
+        "device": 12003918052740279813,
+        "inode": 281474976868014,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 281474976868015,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976868016,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868017,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868018,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162337384953700,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "output-containment",
+        "device": 12003918052740279813,
+        "inode": 281474976868057,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338160456100
+      },
+      {
+        "path": "path-admission",
+        "device": 12003918052740279813,
+        "inode": 281474976868055,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338153240300
+      },
+      {
+        "path": "path-admission/ordinary-file",
+        "device": 12003918052740279813,
+        "inode": 281474976868056,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790162338153240300,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      },
+      {
+        "path": "root-precedence",
+        "device": 12003918052740279813,
+        "inode": 562949953578707,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337581111100
+      },
+      {
+        "path": "root-precedence/environment",
+        "device": 12003918052740279813,
+        "inode": 281474976868053,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337575602200
+      },
+      {
+        "path": "root-precedence/explicit",
+        "device": 12003918052740279813,
+        "inode": 562949953578708,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337574603500
+      },
+      {
+        "path": "root-precedence/file-root",
+        "device": 12003918052740279813,
+        "inode": 281474976868054,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790162337582111500,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      },
+      {
+        "path": "synthetic-path-errors",
+        "device": 12003918052740279813,
+        "inode": 281474976868058,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338161970800
+      }
+    ],
+    "F:\\framework-next\\p7-runs\\368-contracts\\fn-7ce6045a9eae47e68aa3ecb5597100cc": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 281474976856981,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560008056800
+      },
+      {
+        "path": "cleanup-contract",
+        "device": 12003918052740279813,
+        "inode": 281474976856983,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559444734700
+      },
+      {
+        "path": "git-members",
+        "device": 12003918052740279813,
+        "inode": 281474976856988,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560041204800
+      },
+      {
+        "path": "git-members/empty-template",
+        "device": 12003918052740279813,
+        "inode": 281474976856989,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560008056800
+      },
+      {
+        "path": "git-members/repository",
+        "device": 12003918052740279813,
+        "inode": 281474976856990,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560042204100
+      },
+      {
+        "path": "git-members/repository/.git",
+        "device": 12003918052740279813,
+        "inode": 281474976856991,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560049204600
+      },
+      {
+        "path": "git-members/repository/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 281474976856996,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790147560049204600,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "git-members/repository/.git/config",
+        "device": 12003918052740279813,
+        "inode": 844424930278305,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790147560047205000,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "git-members/repository/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 281474976856997,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560212876300
+      },
+      {
+        "path": "git-members/repository/.git/objects/3c",
+        "device": 12003918052740279813,
+        "inode": 281474976857006,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560213404500
+      },
+      {
+        "path": "git-members/repository/.git/objects/3c/d3bdbef7c3d970e9b5ef3f90436d6a2529ffdf",
+        "device": 12003918052740279813,
+        "inode": 281474976857007,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 137,
+        "mtime_ns": 1790147560213404500,
+        "sha256": "e5cb7bffe803474fed8ef513c983d66ec5366c7ae8043b6ffac1fdf76949e9ad"
+      },
+      {
+        "path": "git-members/repository/.git/objects/51",
+        "device": 12003918052740279813,
+        "inode": 281474976857000,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560089040700
+      },
+      {
+        "path": "git-members/repository/.git/objects/51/c58a0ee0d53a01e061d94002e84926562b9c07",
+        "device": 12003918052740279813,
+        "inode": 281474976857001,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 20,
+        "mtime_ns": 1790147560088514300,
+        "sha256": "eddc9f4b4f4ec8b02036ef4d105bf434f1c4cfb517dcc76f102e1168803e31f2"
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e",
+        "device": 12003918052740279813,
+        "inode": 281474976857002,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560129492700
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e/41eac40d7c18eb725a9daf7dc75de2d9116560",
+        "device": 12003918052740279813,
+        "inode": 281474976857003,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 63,
+        "mtime_ns": 1790147560128365500,
+        "sha256": "c33eb48a5a9c7d6789195c2464b989ef998171691c9797608931c0ea1494984b"
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef",
+        "device": 12003918052740279813,
+        "inode": 281474976857004,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560169480500
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef/1e2de65bdb37807454a669e72e943ae4efbd7c",
+        "device": 12003918052740279813,
+        "inode": 281474976857005,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 45,
+        "mtime_ns": 1790147560169480500,
+        "sha256": "d58289693fdbf8d59842921186fab7cd0e9565599b377b078fb571d1df55998e"
+      },
+      {
+        "path": "git-members/repository/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 281474976856999,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560049204600
+      },
+      {
+        "path": "git-members/repository/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 281474976856998,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560049204600
+      },
+      {
+        "path": "git-members/repository/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 1407374883699616,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560048204700
+      },
+      {
+        "path": "git-members/repository/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 281474976856994,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560048204700
+      },
+      {
+        "path": "git-members/repository/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 281474976856995,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560048204700
+      },
+      {
+        "path": "lesson-candidates",
+        "device": 12003918052740279813,
+        "inode": 281474976856982,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559107558000
+      },
+      {
+        "path": "root-precedence",
+        "device": 12003918052740279813,
+        "inode": 562949953567640,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559450734400
+      },
+      {
+        "path": "root-precedence/environment",
+        "device": 12003918052740279813,
+        "inode": 281474976856986,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559445735300
+      },
+      {
+        "path": "root-precedence/explicit",
+        "device": 12003918052740279813,
+        "inode": 562949953567641,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559445735300
+      },
+      {
+        "path": "root-precedence/file-root",
+        "device": 12003918052740279813,
+        "inode": 281474976856987,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790147559450734400,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      }
+    ],
+    "F:\\framework-next\\p7-runs\\368-contracts\\fn-a9713554a15d4ca68b38842026f3a8a8": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 281474976856946,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386122169300
+      },
+      {
+        "path": "cleanup-contract",
+        "device": 12003918052740279813,
+        "inode": 281474976856948,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385571306000
+      },
+      {
+        "path": "git-members",
+        "device": 12003918052740279813,
+        "inode": 281474976856953,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386155693100
+      },
+      {
+        "path": "git-members/empty-template",
+        "device": 12003918052740279813,
+        "inode": 281474976856954,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386123168700
+      },
+      {
+        "path": "git-members/repository",
+        "device": 12003918052740279813,
+        "inode": 281474976856955,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386156692900
+      },
+      {
+        "path": "git-members/repository/.git",
+        "device": 12003918052740279813,
+        "inode": 281474976856956,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386164270600
+      },
+      {
+        "path": "git-members/repository/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 281474976856961,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790147386163260400,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "git-members/repository/.git/config",
+        "device": 12003918052740279813,
+        "inode": 844424930278270,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790147386162693700,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "git-members/repository/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 281474976856962,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386326609900
+      },
+      {
+        "path": "git-members/repository/.git/objects/51",
+        "device": 12003918052740279813,
+        "inode": 281474976856965,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386203792300
+      },
+      {
+        "path": "git-members/repository/.git/objects/51/c58a0ee0d53a01e061d94002e84926562b9c07",
+        "device": 12003918052740279813,
+        "inode": 281474976856966,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 20,
+        "mtime_ns": 1790147386203792300,
+        "sha256": "eddc9f4b4f4ec8b02036ef4d105bf434f1c4cfb517dcc76f102e1168803e31f2"
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e",
+        "device": 12003918052740279813,
+        "inode": 281474976856967,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386247791100
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e/41eac40d7c18eb725a9daf7dc75de2d9116560",
+        "device": 12003918052740279813,
+        "inode": 281474976856968,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 63,
+        "mtime_ns": 1790147386247791100,
+        "sha256": "c33eb48a5a9c7d6789195c2464b989ef998171691c9797608931c0ea1494984b"
+      },
+      {
+        "path": "git-members/repository/.git/objects/aa",
+        "device": 12003918052740279813,
+        "inode": 281474976856971,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386327610500
+      },
+      {
+        "path": "git-members/repository/.git/objects/aa/d34d826f7f5713df8f7ab5eb89bf3e637b6432",
+        "device": 12003918052740279813,
+        "inode": 281474976856972,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 137,
+        "mtime_ns": 1790147386327610500,
+        "sha256": "785aaa11dc35ef7e64b10461a358d82c3415338b7fc5f7f70f98be93dca918f7"
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef",
+        "device": 12003918052740279813,
+        "inode": 281474976856969,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386286455000
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef/1e2de65bdb37807454a669e72e943ae4efbd7c",
+        "device": 12003918052740279813,
+        "inode": 281474976856970,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 45,
+        "mtime_ns": 1790147386285824600,
+        "sha256": "d58289693fdbf8d59842921186fab7cd0e9565599b377b078fb571d1df55998e"
+      },
+      {
+        "path": "git-members/repository/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 281474976856964,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386164270600
+      },
+      {
+        "path": "git-members/repository/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 281474976856963,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386164270600
+      },
+      {
+        "path": "git-members/repository/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 1407374883699581,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386163260400
+      },
+      {
+        "path": "git-members/repository/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 281474976856959,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386163260400
+      },
+      {
+        "path": "git-members/repository/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 281474976856960,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386163260400
+      },
+      {
+        "path": "lesson-candidates",
+        "device": 12003918052740279813,
+        "inode": 281474976856947,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385212164000
+      },
+      {
+        "path": "root-precedence",
+        "device": 12003918052740279813,
+        "inode": 562949953567605,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385577306600
+      },
+      {
+        "path": "root-precedence/environment",
+        "device": 12003918052740279813,
+        "inode": 281474976856951,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385572308000
+      },
+      {
+        "path": "root-precedence/explicit",
+        "device": 12003918052740279813,
+        "inode": 562949953567606,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385571306000
+      },
+      {
+        "path": "root-precedence/file-root",
+        "device": 12003918052740279813,
+        "inode": 281474976856952,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790147385577306600,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      }
+    ],
+    "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 844424930164079,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173329861102100
+      },
+      {
+        "path": "pr",
+        "device": 12003918052740279813,
+        "inode": 562949953427109,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790173346664950300
+      },
+      {
+        "path": "pr/outside",
+        "device": 12003918052740279813,
+        "inode": 844424930165864,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173336285682300
+      },
+      {
+        "path": "pr/package",
+        "device": 12003918052740279813,
+        "inode": 844424930161193,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173346675481400
+      },
+      {
+        "path": "pr/project",
+        "device": 12003918052740279813,
+        "inode": 562949953433725,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338033146900
+      },
+      {
+        "path": "pr/project/config.json",
+        "device": 12003918052740279813,
+        "inode": 2814749767140454,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 126,
+        "mtime_ns": 1790173334977864200,
+        "sha256": "29984913ea4abea57ad28abe3ac840ca46353d28b44d27f8befb99790e51fa0d"
+      },
+      {
+        "path": "pr/project/empty-git-template",
+        "device": 12003918052740279813,
+        "inode": 844424930165867,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338033146900
+      },
+      {
+        "path": "pr/project/git-fixture",
+        "device": 12003918052740279813,
+        "inode": 844424930165866,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338698014700
+      },
+      {
+        "path": "pr/project/git-fixture/.git",
+        "device": 12003918052740279813,
+        "inode": 1125899906876524,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790173338814138000
+      },
+      {
+        "path": "pr/project/git-fixture/.git/COMMIT_EDITMSG",
+        "device": 12003918052740279813,
+        "inode": 844424930165878,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 13,
+        "mtime_ns": 1790173338809625900,
+        "sha256": "44ae4148b3ed15048f626e0c723ee36354695caf87394af292b98ecc7ffb1785"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 562949953455217,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790173338171083900,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/config",
+        "device": 12003918052740279813,
+        "inode": 1407374883587182,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790173338169565100,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/index",
+        "device": 12003918052740279813,
+        "inode": 844424930165881,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 145,
+        "mtime_ns": 1790173338807626800,
+        "sha256": "2364d971159ac97ed257a113b4adf0891317354275dfff9046b0021eaf0cba63"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/logs",
+        "device": 12003918052740279813,
+        "inode": 562949953455232,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173346675481400
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 562949953455218,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790173338843677100
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/0d",
+        "device": 12003918052740279813,
+        "inode": 562949953455228,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338289193400
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/0d/23fa530318e9f5d15bea5f49dc23ec095ffa18",
+        "device": 12003918052740279813,
+        "inode": 562949953455229,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 134,
+        "mtime_ns": 1790173338289193400,
+        "sha256": "2406249beb0924295c59efc631de122e1fa51bb511465e3f9c7af8a7f56c3835"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/5c",
+        "device": 12003918052740279813,
+        "inode": 1688849860297854,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338812141500
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/5c/bcbe52359d74232d5e18e04fb28593d19c924b",
+        "device": 12003918052740279813,
+        "inode": 562949953455241,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 164,
+        "mtime_ns": 1790173338811136300,
+        "sha256": "c5e31f93be3834d20fe4844ec88acbea6743315739c06bc050121cfc67eebb20"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/90",
+        "device": 12003918052740279813,
+        "inode": 562949953455223,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338229005600
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/90/be1f3056c4f471f977a28497b8d4b392c55a02",
+        "device": 12003918052740279813,
+        "inode": 562949953455224,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 22,
+        "mtime_ns": 1790173338229005600,
+        "sha256": "7e2d860937eae1d919e00466505b42928c76d8d57c9847a2bef720203d99f81e"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/9b",
+        "device": 12003918052740279813,
+        "inode": 562949953455226,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338287194800
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/9b/ff0693dece071f9a93e88220dc3b1feed570d3",
+        "device": 12003918052740279813,
+        "inode": 562949953455227,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 55,
+        "mtime_ns": 1790173338287194800,
+        "sha256": "3b0d64ce57e7fc1e274f0999cbdfbaed0f7af87b5ac24f12f371610ebfcca7ed"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/d7",
+        "device": 12003918052740279813,
+        "inode": 844424930165893,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338748704800
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/d7/8b334442c9042ba4df6927628c06c6d733c7dc",
+        "device": 12003918052740279813,
+        "inode": 562949953455238,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 30,
+        "mtime_ns": 1790173338748704800,
+        "sha256": "904bdfd41ce715e7b1a3d743d39e5340e631647bbb6004ed90288af9c7e153cc"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/e7",
+        "device": 12003918052740279813,
+        "inode": 562949953455239,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338807626800
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/e7/2837045dfad46a4b1a046d38b2991d5f084da0",
+        "device": 12003918052740279813,
+        "inode": 562949953455240,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 55,
+        "mtime_ns": 1790173338807626800,
+        "sha256": "99dc25f1c06815f752f4408ef2cf148b9db2861f41526663b83491b8e4020679"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 562949953455220,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338171083900
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 562949953455219,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338171083900
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 3377699720561773,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338170574900
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 844424930165871,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338813140100
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs/heads/fixture",
+        "device": 12003918052740279813,
+        "inode": 562949953455243,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 41,
+        "mtime_ns": 1790173338813140100,
+        "sha256": "1b0cf35baa241d7bacb7fdf8cdd4eab5e7fe8f9eb5eb7ac58f7f7b51118d51ac"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 562949953455216,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338170574900
+      },
+      {
+        "path": "pr/project/git-fixture/change.txt",
+        "device": 12003918052740279813,
+        "inode": 844424930165877,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 14,
+        "mtime_ns": 1790173338698014700,
+        "sha256": "184f0b5c4534948e83376573f405bfb61ec1ce90791e3838761ce8d99b754a69"
+      },
+      {
+        "path": "pr/project/local.json",
+        "device": 12003918052740279813,
+        "inode": 1125899906876519,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 74,
+        "mtime_ns": 1790173334644427000,
+        "sha256": "e12db89139bf4e7b4d239308c06aa7d4edf8952ee388834876560ad85c51fc6a"
+      },
+      {
+        "path": "pr/project/notes",
+        "device": 12003918052740279813,
+        "inode": 844424930165859,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173331232849400
+      },
+      {
+        "path": "pr/project/notes/pull-requests",
+        "device": 12003918052740279813,
+        "inode": 844424930165860,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173346524797000
+      },
+      {
+        "path": "pr/project/notes/pull-requests/pr-2fde3d453cd04d7ab984024e4a3c5e09.pr.json",
+        "device": 12003918052740279813,
+        "inode": 562949953455244,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1435,
+        "mtime_ns": 1790173342378674800,
+        "sha256": "d9749abda4eca48bbe80c4dc376cf2ef343187eb36992974cc03dbdc88203be3"
+      },
+      {
+        "path": "pr/project/view.md",
+        "device": 12003918052740279813,
+        "inode": 2533274790429797,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 162,
+        "mtime_ns": 1790173331687721900,
+        "sha256": "1fe4e8221258bb2dde5ffdee6d8122380b5d65338ad84b67cdcae4a2725261ca"
+      },
+      {
+        "path": "pr/public-transcript.jsonl",
+        "device": 12003918052740279813,
+        "inode": 844424930165601,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 39069,
+        "mtime_ns": 1790173346552874300,
+        "sha256": "a499d916aeb3c0cc5562778f2efdb65b9c4bc311c1eec423c418bd8178a31a39"
+      },
+      {
+        "path": "pr/request.json",
+        "device": 12003918052740279813,
+        "inode": 7036874417800290,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1157,
+        "mtime_ns": 1790173346008173000,
+        "sha256": "7dae31b57758d563d3dbb70e8cbb216af83b4d4f0fe38128c94c884106af4176"
+      },
+      {
+        "path": "pr/source-binding.json",
+        "device": 12003918052740279813,
+        "inode": 7881299347932010,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 3137,
+        "mtime_ns": 1790173330500762700,
+        "sha256": "94785149ce3d4df019283472fdc24bd2ee5251d577791eb8ab0e6bb7839bc40c"
+      },
+      {
+        "path": "pr/synthetic-provider.json",
+        "device": 12003918052740279813,
+        "inode": 2533274790429823,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5254,
+        "mtime_ns": 1790173346665950700,
+        "sha256": "2e40e91d0fbfcd5de1fbb411beadb8985a5b02a51276d10c0787d383af2f0f84"
+      },
+      {
+        "path": "pr/wrong-entry.py",
+        "device": 12003918052740279813,
+        "inode": 1407374883587177,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 65931,
+        "mtime_ns": 1790173337673838900,
+        "sha256": "1e10c2254eac59a52a28c897458936be54506c764de44b2bc3d6292a2c61d21a"
+      }
+    ]
+  },
+  "argv": [
+    "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-B",
+    "tests/framework_next/run.py",
+    "--layer",
+    "contracts",
+    "--case",
+    "SourceClosureTests",
+    "--case",
+    "MetadataTests.test_c2_reject_version_types_and_duplicate_schema",
+    "--case",
+    "MetadataTests.test_c2_reject_owner_and_undeclared_tool_or_reference",
+    "--case",
+    "MetadataTests.test_c2_reject_mixed_union_and_null_config_artifact",
+    "--case",
+    "SelectionTests.test_c3_real_git_regular_missing_nonregular_members",
+    "--case",
+    "CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals",
+    "--case",
+    "FixtureSupportTests.test_output_root_precedence_default_and_rejection",
+    "--case",
+    "FixtureSupportTests.test_failed_run_preserves_owned_residue_and_rejects_identity_drift",
+    "--case",
+    "FixtureSupportTests.test_reserved_and_unknown_runner_selections_fail_before_allocation",
+    "--case",
+    "FixtureSupportTests.test_cleanup_failure_accounting_in_contracts_and_public_reports",
+    "--case",
+    "FixtureSupportTests.test_readonly_git_object_cleanup",
+    "--output-root",
+    "F:/framework-next/p7-runs/368-contracts"
+  ],
+  "exit_code": 0,
+  "execution_wall_seconds": 12.652,
+  "historical_after": {
+    "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 844424930289250,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790162338162972200
+      },
+      {
+        "path": "cleanup-contract",
+        "device": 12003918052740279813,
+        "inode": 281474976868050,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337573600900
+      },
+      {
+        "path": "git-members",
+        "device": 12003918052740279813,
+        "inode": 281474976868059,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338196135300
+      },
+      {
+        "path": "git-members/empty-template",
+        "device": 12003918052740279813,
+        "inode": 281474976868060,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338162972200
+      },
+      {
+        "path": "git-members/repository",
+        "device": 12003918052740279813,
+        "inode": 281474976868061,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338777139900
+      },
+      {
+        "path": "git-members/repository/.git",
+        "device": 12003918052740279813,
+        "inode": 281474976868062,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 281474976868067,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790162338203648300,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "git-members/repository/.git/config",
+        "device": 12003918052740279813,
+        "inode": 844424930289376,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790162338202648600,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "git-members/repository/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 281474976868068,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338357475300
+      },
+      {
+        "path": "git-members/repository/.git/objects/0e",
+        "device": 12003918052740279813,
+        "inode": 281474976868077,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338357475300
+      },
+      {
+        "path": "git-members/repository/.git/objects/0e/1ce1e9e0ec45e6afa08334e6ea086e3ac04149",
+        "device": 12003918052740279813,
+        "inode": 281474976868078,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 137,
+        "mtime_ns": 1790162338357475300,
+        "sha256": "61f0c9b259e335b04cc19554cfd2ef725ca2ece75ebcb008cb12df44d6fc8f57"
+      },
+      {
+        "path": "git-members/repository/.git/objects/51",
+        "device": 12003918052740279813,
+        "inode": 281474976868071,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338242712500
+      },
+      {
+        "path": "git-members/repository/.git/objects/51/c58a0ee0d53a01e061d94002e84926562b9c07",
+        "device": 12003918052740279813,
+        "inode": 281474976868072,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 20,
+        "mtime_ns": 1790162338242712500,
+        "sha256": "eddc9f4b4f4ec8b02036ef4d105bf434f1c4cfb517dcc76f102e1168803e31f2"
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e",
+        "device": 12003918052740279813,
+        "inode": 281474976868073,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338282257300
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e/41eac40d7c18eb725a9daf7dc75de2d9116560",
+        "device": 12003918052740279813,
+        "inode": 281474976868074,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 63,
+        "mtime_ns": 1790162338282257300,
+        "sha256": "c33eb48a5a9c7d6789195c2464b989ef998171691c9797608931c0ea1494984b"
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef",
+        "device": 12003918052740279813,
+        "inode": 281474976868075,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338319584400
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef/1e2de65bdb37807454a669e72e943ae4efbd7c",
+        "device": 12003918052740279813,
+        "inode": 281474976868076,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 45,
+        "mtime_ns": 1790162338319584400,
+        "sha256": "d58289693fdbf8d59842921186fab7cd0e9565599b377b078fb571d1df55998e"
+      },
+      {
+        "path": "git-members/repository/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 281474976868070,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 281474976868069,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 1407374883710687,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 281474976868065,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338202648600
+      },
+      {
+        "path": "git-members/repository/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 281474976868066,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338203648300
+      },
+      {
+        "path": "git-members/repository/nested",
+        "device": 12003918052740279813,
+        "inode": 281474976868079,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338777139900
+      },
+      {
+        "path": "lesson-candidates",
+        "device": 12003918052740279813,
+        "inode": 844424930289251,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790162337395472100
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d",
+        "device": 12003918052740279813,
+        "inode": 844424930289279,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332967285000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata",
+        "device": 12003918052740279813,
+        "inode": 281474976867991,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332984321200
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata/build.json",
+        "device": 12003918052740279813,
+        "inode": 281474976867994,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 3650,
+        "mtime_ns": 1790162332985321900,
+        "sha256": "35eda1a072bfbe1ff7739c3234939e969e590fb3b3063a9e1142e8d1efac01f8"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 281474976867993,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162332975807300,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 281474976867992,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162332968792300,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload",
+        "device": 12003918052740279813,
+        "inode": 844424930289280,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332904641900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 844424930289281,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332905641400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 2533274790553218,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332905641400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 1970324837131907,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332905641400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289284,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332961285700
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289285,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162332906640900,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 844424930289286,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332917674400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289287,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162332910157300,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289288,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162332914672800,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 1407374883710601,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162332917674400,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 844424930289290,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332940068800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289291,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162332928918800,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289292,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162332940068800,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 844424930289293,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332944573600
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 844424930289294,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162332944573600,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 844424930289295,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162332957765700,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 844424930289296,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332962288900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289297,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162332962288900,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime",
+        "device": 12003918052740279813,
+        "inode": 844424930289298,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332965282000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 844424930289299,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332965282000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 1407374883710612,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332965282000
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289301,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332966282400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976867990,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162332966282400,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a",
+        "device": 12003918052740279813,
+        "inode": 281474976868022,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337452828900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata",
+        "device": 12003918052740279813,
+        "inode": 281474976868046,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337468343900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata/build.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868049,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 3650,
+        "mtime_ns": 1790162337469473400,
+        "sha256": "68e3073e5e7d4be2fa977cc1f4145db561d0bc4bddb4f84d4692a81106f109cf"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868048,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162337460343000,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868047,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162337452828900,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload",
+        "device": 12003918052740279813,
+        "inode": 281474976868023,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 281474976868024,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 281474976868025,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976868026,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337397471400
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868027,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337447149800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868028,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162337398982600,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 281474976868029,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337408492500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868030,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162337401983600,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868031,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162337404985800,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868032,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162337408492500,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 281474976868033,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337427122900
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868034,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162337418515100,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868035,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162337427122900,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 281474976868036,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337430633800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 281474976868037,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162337430633800,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 281474976868038,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162337444148000,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 281474976868039,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337447149800
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868040,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162337447149800,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime",
+        "device": 12003918052740279813,
+        "inode": 281474976868041,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337449665100
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 281474976868042,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337450664500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976868043,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337450664500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868044,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337450664500
+      },
+      {
+        "path": "lesson-candidates/candidate-379213a1f575-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868045,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162337450664500,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d",
+        "device": 12003918052740279813,
+        "inode": 844424930289252,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332889117900
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/metadata",
+        "device": 12003918052740279813,
+        "inode": 844424930289276,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332897124500
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289278,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162332897124500,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 1407374883710589,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162332890123000,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload",
+        "device": 12003918052740279813,
+        "inode": 844424930289253,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332796972200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 844424930289254,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332796972200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 844424930289255,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332796972200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 844424930289256,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332798477100
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289257,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332873093600
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289258,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162332798477100,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 844424930289259,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332824519400
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289260,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162332807488400,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289261,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162332817007900,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 3096224743974510,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162332825521300,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 1970324837131887,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332843554200
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289264,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162332835032800,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 844424930289265,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162332843554200,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 844424930289266,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332853061000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 844424930289267,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162332853061000,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 844424930289268,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162332865577800,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 844424930289269,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332874093800
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289270,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162332874093800,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime",
+        "device": 12003918052740279813,
+        "inode": 1970324837131895,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332881614000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 1407374883710584,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332881614000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 844424930289273,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332881614000
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 844424930289274,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162332882611900
+      },
+      {
+        "path": "lesson-candidates/scratch-0d5d35724834454eaa71108f7f5fb61d/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 844424930289275,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162332882611900,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a",
+        "device": 12003918052740279813,
+        "inode": 281474976867995,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337386951300
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/metadata",
+        "device": 12003918052740279813,
+        "inode": 281474976868019,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337394469500
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/metadata/files.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868021,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5924,
+        "mtime_ns": 1790162337394469500,
+        "sha256": "e003cd562e5fa1d5b1f9d59cf76dd3ea5aba031d5a365319cb6004b665b53328"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/metadata/selection.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868020,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 8621,
+        "mtime_ns": 1790162337386951300,
+        "sha256": "34f19a52d9ee6baab9dee789f38e01fdf42f4c71ac3322aaf9803fa7ca3a43c8"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload",
+        "device": 12003918052740279813,
+        "inode": 281474976867996,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337338743800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai",
+        "device": 12003918052740279813,
+        "inode": 281474976867997,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337338743800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core",
+        "device": 12003918052740279813,
+        "inode": 281474976867998,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337338743800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976867999,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337339754800
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868000,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337381951900
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868001,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1706,
+        "mtime_ns": 1790162337339754800,
+        "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references",
+        "device": 12003918052740279813,
+        "inode": 281474976868002,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337348752500
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/configuration.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868003,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6117,
+        "mtime_ns": 1790162337343753300,
+        "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/example.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868004,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5014,
+        "mtime_ns": 1790162337345753100,
+        "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/references/operations.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868005,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10852,
+        "mtime_ns": 1790162337348752500,
+        "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas",
+        "device": 12003918052740279813,
+        "inode": 281474976868006,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337365337900
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record-v2.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868007,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 10420,
+        "mtime_ns": 1790162337357215100,
+        "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/schemas/lesson-record.schema.json",
+        "device": 12003918052740279813,
+        "inode": 281474976868008,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2596,
+        "mtime_ns": 1790162337365337900,
+        "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts",
+        "device": 12003918052740279813,
+        "inode": 281474976868009,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337368336400
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/scripts/lesson.py",
+        "device": 12003918052740279813,
+        "inode": 281474976868010,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 76755,
+        "mtime_ns": 1790162337368336400,
+        "sha256": "08811e62af04d37306fe168709f503c04c41ec6a6e1a3dea2846263aac45fa12"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/skill-package.yaml",
+        "device": 12003918052740279813,
+        "inode": 281474976868011,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 6336,
+        "mtime_ns": 1790162337379953700,
+        "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates",
+        "device": 12003918052740279813,
+        "inode": 281474976868012,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337382952500
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/payload/.ai/core/skills/lesson/templates/lesson.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868013,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 508,
+        "mtime_ns": 1790162337382952500,
+        "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b"
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime",
+        "device": 12003918052740279813,
+        "inode": 281474976868014,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents",
+        "device": 12003918052740279813,
+        "inode": 281474976868015,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills",
+        "device": 12003918052740279813,
+        "inode": 281474976868016,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson",
+        "device": 12003918052740279813,
+        "inode": 281474976868017,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337384953700
+      },
+      {
+        "path": "lesson-candidates/scratch-bb476169605949f0893b02fbc959f07a/runtime/.agents/skills/framework-lesson/SKILL.md",
+        "device": 12003918052740279813,
+        "inode": 281474976868018,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 2421,
+        "mtime_ns": 1790162337384953700,
+        "sha256": "f34888961544b11ba082200a854e2d99c654697b0883f3b1cb5e1f98e7c0a6c4"
+      },
+      {
+        "path": "output-containment",
+        "device": 12003918052740279813,
+        "inode": 281474976868057,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338160456100
+      },
+      {
+        "path": "path-admission",
+        "device": 12003918052740279813,
+        "inode": 281474976868055,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338153240300
+      },
+      {
+        "path": "path-admission/ordinary-file",
+        "device": 12003918052740279813,
+        "inode": 281474976868056,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790162338153240300,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      },
+      {
+        "path": "root-precedence",
+        "device": 12003918052740279813,
+        "inode": 562949953578707,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337581111100
+      },
+      {
+        "path": "root-precedence/environment",
+        "device": 12003918052740279813,
+        "inode": 281474976868053,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337575602200
+      },
+      {
+        "path": "root-precedence/explicit",
+        "device": 12003918052740279813,
+        "inode": 562949953578708,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162337574603500
+      },
+      {
+        "path": "root-precedence/file-root",
+        "device": 12003918052740279813,
+        "inode": 281474976868054,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790162337582111500,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      },
+      {
+        "path": "synthetic-path-errors",
+        "device": 12003918052740279813,
+        "inode": 281474976868058,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790162338161970800
+      }
+    ],
+    "F:\\framework-next\\p7-runs\\368-contracts\\fn-7ce6045a9eae47e68aa3ecb5597100cc": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 281474976856981,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560008056800
+      },
+      {
+        "path": "cleanup-contract",
+        "device": 12003918052740279813,
+        "inode": 281474976856983,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559444734700
+      },
+      {
+        "path": "git-members",
+        "device": 12003918052740279813,
+        "inode": 281474976856988,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560041204800
+      },
+      {
+        "path": "git-members/empty-template",
+        "device": 12003918052740279813,
+        "inode": 281474976856989,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560008056800
+      },
+      {
+        "path": "git-members/repository",
+        "device": 12003918052740279813,
+        "inode": 281474976856990,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560042204100
+      },
+      {
+        "path": "git-members/repository/.git",
+        "device": 12003918052740279813,
+        "inode": 281474976856991,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560049204600
+      },
+      {
+        "path": "git-members/repository/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 281474976856996,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790147560049204600,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "git-members/repository/.git/config",
+        "device": 12003918052740279813,
+        "inode": 844424930278305,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790147560047205000,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "git-members/repository/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 281474976856997,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560212876300
+      },
+      {
+        "path": "git-members/repository/.git/objects/3c",
+        "device": 12003918052740279813,
+        "inode": 281474976857006,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560213404500
+      },
+      {
+        "path": "git-members/repository/.git/objects/3c/d3bdbef7c3d970e9b5ef3f90436d6a2529ffdf",
+        "device": 12003918052740279813,
+        "inode": 281474976857007,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 137,
+        "mtime_ns": 1790147560213404500,
+        "sha256": "e5cb7bffe803474fed8ef513c983d66ec5366c7ae8043b6ffac1fdf76949e9ad"
+      },
+      {
+        "path": "git-members/repository/.git/objects/51",
+        "device": 12003918052740279813,
+        "inode": 281474976857000,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560089040700
+      },
+      {
+        "path": "git-members/repository/.git/objects/51/c58a0ee0d53a01e061d94002e84926562b9c07",
+        "device": 12003918052740279813,
+        "inode": 281474976857001,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 20,
+        "mtime_ns": 1790147560088514300,
+        "sha256": "eddc9f4b4f4ec8b02036ef4d105bf434f1c4cfb517dcc76f102e1168803e31f2"
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e",
+        "device": 12003918052740279813,
+        "inode": 281474976857002,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560129492700
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e/41eac40d7c18eb725a9daf7dc75de2d9116560",
+        "device": 12003918052740279813,
+        "inode": 281474976857003,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 63,
+        "mtime_ns": 1790147560128365500,
+        "sha256": "c33eb48a5a9c7d6789195c2464b989ef998171691c9797608931c0ea1494984b"
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef",
+        "device": 12003918052740279813,
+        "inode": 281474976857004,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560169480500
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef/1e2de65bdb37807454a669e72e943ae4efbd7c",
+        "device": 12003918052740279813,
+        "inode": 281474976857005,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 45,
+        "mtime_ns": 1790147560169480500,
+        "sha256": "d58289693fdbf8d59842921186fab7cd0e9565599b377b078fb571d1df55998e"
+      },
+      {
+        "path": "git-members/repository/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 281474976856999,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560049204600
+      },
+      {
+        "path": "git-members/repository/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 281474976856998,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560049204600
+      },
+      {
+        "path": "git-members/repository/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 1407374883699616,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560048204700
+      },
+      {
+        "path": "git-members/repository/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 281474976856994,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560048204700
+      },
+      {
+        "path": "git-members/repository/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 281474976856995,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147560048204700
+      },
+      {
+        "path": "lesson-candidates",
+        "device": 12003918052740279813,
+        "inode": 281474976856982,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559107558000
+      },
+      {
+        "path": "root-precedence",
+        "device": 12003918052740279813,
+        "inode": 562949953567640,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559450734400
+      },
+      {
+        "path": "root-precedence/environment",
+        "device": 12003918052740279813,
+        "inode": 281474976856986,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559445735300
+      },
+      {
+        "path": "root-precedence/explicit",
+        "device": 12003918052740279813,
+        "inode": 562949953567641,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147559445735300
+      },
+      {
+        "path": "root-precedence/file-root",
+        "device": 12003918052740279813,
+        "inode": 281474976856987,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790147559450734400,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      }
+    ],
+    "F:\\framework-next\\p7-runs\\368-contracts\\fn-a9713554a15d4ca68b38842026f3a8a8": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 281474976856946,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386122169300
+      },
+      {
+        "path": "cleanup-contract",
+        "device": 12003918052740279813,
+        "inode": 281474976856948,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385571306000
+      },
+      {
+        "path": "git-members",
+        "device": 12003918052740279813,
+        "inode": 281474976856953,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386155693100
+      },
+      {
+        "path": "git-members/empty-template",
+        "device": 12003918052740279813,
+        "inode": 281474976856954,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386123168700
+      },
+      {
+        "path": "git-members/repository",
+        "device": 12003918052740279813,
+        "inode": 281474976856955,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386156692900
+      },
+      {
+        "path": "git-members/repository/.git",
+        "device": 12003918052740279813,
+        "inode": 281474976856956,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386164270600
+      },
+      {
+        "path": "git-members/repository/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 281474976856961,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790147386163260400,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "git-members/repository/.git/config",
+        "device": 12003918052740279813,
+        "inode": 844424930278270,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790147386162693700,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "git-members/repository/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 281474976856962,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386326609900
+      },
+      {
+        "path": "git-members/repository/.git/objects/51",
+        "device": 12003918052740279813,
+        "inode": 281474976856965,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386203792300
+      },
+      {
+        "path": "git-members/repository/.git/objects/51/c58a0ee0d53a01e061d94002e84926562b9c07",
+        "device": 12003918052740279813,
+        "inode": 281474976856966,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 20,
+        "mtime_ns": 1790147386203792300,
+        "sha256": "eddc9f4b4f4ec8b02036ef4d105bf434f1c4cfb517dcc76f102e1168803e31f2"
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e",
+        "device": 12003918052740279813,
+        "inode": 281474976856967,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386247791100
+      },
+      {
+        "path": "git-members/repository/.git/objects/8e/41eac40d7c18eb725a9daf7dc75de2d9116560",
+        "device": 12003918052740279813,
+        "inode": 281474976856968,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 63,
+        "mtime_ns": 1790147386247791100,
+        "sha256": "c33eb48a5a9c7d6789195c2464b989ef998171691c9797608931c0ea1494984b"
+      },
+      {
+        "path": "git-members/repository/.git/objects/aa",
+        "device": 12003918052740279813,
+        "inode": 281474976856971,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386327610500
+      },
+      {
+        "path": "git-members/repository/.git/objects/aa/d34d826f7f5713df8f7ab5eb89bf3e637b6432",
+        "device": 12003918052740279813,
+        "inode": 281474976856972,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 137,
+        "mtime_ns": 1790147386327610500,
+        "sha256": "785aaa11dc35ef7e64b10461a358d82c3415338b7fc5f7f70f98be93dca918f7"
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef",
+        "device": 12003918052740279813,
+        "inode": 281474976856969,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386286455000
+      },
+      {
+        "path": "git-members/repository/.git/objects/ef/1e2de65bdb37807454a669e72e943ae4efbd7c",
+        "device": 12003918052740279813,
+        "inode": 281474976856970,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 45,
+        "mtime_ns": 1790147386285824600,
+        "sha256": "d58289693fdbf8d59842921186fab7cd0e9565599b377b078fb571d1df55998e"
+      },
+      {
+        "path": "git-members/repository/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 281474976856964,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386164270600
+      },
+      {
+        "path": "git-members/repository/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 281474976856963,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386164270600
+      },
+      {
+        "path": "git-members/repository/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 1407374883699581,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386163260400
+      },
+      {
+        "path": "git-members/repository/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 281474976856959,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386163260400
+      },
+      {
+        "path": "git-members/repository/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 281474976856960,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147386163260400
+      },
+      {
+        "path": "lesson-candidates",
+        "device": 12003918052740279813,
+        "inode": 281474976856947,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385212164000
+      },
+      {
+        "path": "root-precedence",
+        "device": 12003918052740279813,
+        "inode": 562949953567605,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385577306600
+      },
+      {
+        "path": "root-precedence/environment",
+        "device": 12003918052740279813,
+        "inode": 281474976856951,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385572308000
+      },
+      {
+        "path": "root-precedence/explicit",
+        "device": 12003918052740279813,
+        "inode": 562949953567606,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790147385571306000
+      },
+      {
+        "path": "root-precedence/file-root",
+        "device": 12003918052740279813,
+        "inode": 281474976856952,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 15,
+        "mtime_ns": 1790147385577306600,
+        "sha256": "3b2a43e3a5b13459006960eac2534b6a71bf7170ea998dc49b1990f23508a6d6"
+      }
+    ],
+    "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d": [
+      {
+        "path": ".",
+        "device": 12003918052740279813,
+        "inode": 844424930164079,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173329861102100
+      },
+      {
+        "path": "pr",
+        "device": 12003918052740279813,
+        "inode": 562949953427109,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790173346664950300
+      },
+      {
+        "path": "pr/outside",
+        "device": 12003918052740279813,
+        "inode": 844424930165864,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173336285682300
+      },
+      {
+        "path": "pr/package",
+        "device": 12003918052740279813,
+        "inode": 844424930161193,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173346675481400
+      },
+      {
+        "path": "pr/project",
+        "device": 12003918052740279813,
+        "inode": 562949953433725,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338033146900
+      },
+      {
+        "path": "pr/project/config.json",
+        "device": 12003918052740279813,
+        "inode": 2814749767140454,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 126,
+        "mtime_ns": 1790173334977864200,
+        "sha256": "29984913ea4abea57ad28abe3ac840ca46353d28b44d27f8befb99790e51fa0d"
+      },
+      {
+        "path": "pr/project/empty-git-template",
+        "device": 12003918052740279813,
+        "inode": 844424930165867,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338033146900
+      },
+      {
+        "path": "pr/project/git-fixture",
+        "device": 12003918052740279813,
+        "inode": 844424930165866,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338698014700
+      },
+      {
+        "path": "pr/project/git-fixture/.git",
+        "device": 12003918052740279813,
+        "inode": 1125899906876524,
+        "mode": 16895,
+        "attributes": 18,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790173338814138000
+      },
+      {
+        "path": "pr/project/git-fixture/.git/COMMIT_EDITMSG",
+        "device": 12003918052740279813,
+        "inode": 844424930165878,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 13,
+        "mtime_ns": 1790173338809625900,
+        "sha256": "44ae4148b3ed15048f626e0c723ee36354695caf87394af292b98ecc7ffb1785"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/HEAD",
+        "device": 12003918052740279813,
+        "inode": 562949953455217,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 24,
+        "mtime_ns": 1790173338171083900,
+        "sha256": "915b4fa4cb151d59ad3b20c3c43bc9ee2cb9755ed1de59c363bd64720e3297fc"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/config",
+        "device": 12003918052740279813,
+        "inode": 1407374883587182,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 130,
+        "mtime_ns": 1790173338169565100,
+        "sha256": "05becdb83bb897f6103c8d91439e2e9092144edf5b3955a746fce4975c12bfdc"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/index",
+        "device": 12003918052740279813,
+        "inode": 844424930165881,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 145,
+        "mtime_ns": 1790173338807626800,
+        "sha256": "2364d971159ac97ed257a113b4adf0891317354275dfff9046b0021eaf0cba63"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/logs",
+        "device": 12003918052740279813,
+        "inode": 562949953455232,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173346675481400
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects",
+        "device": 12003918052740279813,
+        "inode": 562949953455218,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 4096,
+        "mtime_ns": 1790173338843677100
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/0d",
+        "device": 12003918052740279813,
+        "inode": 562949953455228,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338289193400
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/0d/23fa530318e9f5d15bea5f49dc23ec095ffa18",
+        "device": 12003918052740279813,
+        "inode": 562949953455229,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 134,
+        "mtime_ns": 1790173338289193400,
+        "sha256": "2406249beb0924295c59efc631de122e1fa51bb511465e3f9c7af8a7f56c3835"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/5c",
+        "device": 12003918052740279813,
+        "inode": 1688849860297854,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338812141500
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/5c/bcbe52359d74232d5e18e04fb28593d19c924b",
+        "device": 12003918052740279813,
+        "inode": 562949953455241,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 164,
+        "mtime_ns": 1790173338811136300,
+        "sha256": "c5e31f93be3834d20fe4844ec88acbea6743315739c06bc050121cfc67eebb20"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/90",
+        "device": 12003918052740279813,
+        "inode": 562949953455223,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338229005600
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/90/be1f3056c4f471f977a28497b8d4b392c55a02",
+        "device": 12003918052740279813,
+        "inode": 562949953455224,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 22,
+        "mtime_ns": 1790173338229005600,
+        "sha256": "7e2d860937eae1d919e00466505b42928c76d8d57c9847a2bef720203d99f81e"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/9b",
+        "device": 12003918052740279813,
+        "inode": 562949953455226,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338287194800
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/9b/ff0693dece071f9a93e88220dc3b1feed570d3",
+        "device": 12003918052740279813,
+        "inode": 562949953455227,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 55,
+        "mtime_ns": 1790173338287194800,
+        "sha256": "3b0d64ce57e7fc1e274f0999cbdfbaed0f7af87b5ac24f12f371610ebfcca7ed"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/d7",
+        "device": 12003918052740279813,
+        "inode": 844424930165893,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338748704800
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/d7/8b334442c9042ba4df6927628c06c6d733c7dc",
+        "device": 12003918052740279813,
+        "inode": 562949953455238,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 30,
+        "mtime_ns": 1790173338748704800,
+        "sha256": "904bdfd41ce715e7b1a3d743d39e5340e631647bbb6004ed90288af9c7e153cc"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/e7",
+        "device": 12003918052740279813,
+        "inode": 562949953455239,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338807626800
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/e7/2837045dfad46a4b1a046d38b2991d5f084da0",
+        "device": 12003918052740279813,
+        "inode": 562949953455240,
+        "mode": 33060,
+        "attributes": 33,
+        "nlink": 1,
+        "size": 55,
+        "mtime_ns": 1790173338807626800,
+        "sha256": "99dc25f1c06815f752f4408ef2cf148b9db2861f41526663b83491b8e4020679"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/info",
+        "device": 12003918052740279813,
+        "inode": 562949953455220,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338171083900
+      },
+      {
+        "path": "pr/project/git-fixture/.git/objects/pack",
+        "device": 12003918052740279813,
+        "inode": 562949953455219,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338171083900
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs",
+        "device": 12003918052740279813,
+        "inode": 3377699720561773,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338170574900
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs/heads",
+        "device": 12003918052740279813,
+        "inode": 844424930165871,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338813140100
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs/heads/fixture",
+        "device": 12003918052740279813,
+        "inode": 562949953455243,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 41,
+        "mtime_ns": 1790173338813140100,
+        "sha256": "1b0cf35baa241d7bacb7fdf8cdd4eab5e7fe8f9eb5eb7ac58f7f7b51118d51ac"
+      },
+      {
+        "path": "pr/project/git-fixture/.git/refs/tags",
+        "device": 12003918052740279813,
+        "inode": 562949953455216,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173338170574900
+      },
+      {
+        "path": "pr/project/git-fixture/change.txt",
+        "device": 12003918052740279813,
+        "inode": 844424930165877,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 14,
+        "mtime_ns": 1790173338698014700,
+        "sha256": "184f0b5c4534948e83376573f405bfb61ec1ce90791e3838761ce8d99b754a69"
+      },
+      {
+        "path": "pr/project/local.json",
+        "device": 12003918052740279813,
+        "inode": 1125899906876519,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 74,
+        "mtime_ns": 1790173334644427000,
+        "sha256": "e12db89139bf4e7b4d239308c06aa7d4edf8952ee388834876560ad85c51fc6a"
+      },
+      {
+        "path": "pr/project/notes",
+        "device": 12003918052740279813,
+        "inode": 844424930165859,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173331232849400
+      },
+      {
+        "path": "pr/project/notes/pull-requests",
+        "device": 12003918052740279813,
+        "inode": 844424930165860,
+        "mode": 16895,
+        "attributes": 16,
+        "nlink": 1,
+        "size": 0,
+        "mtime_ns": 1790173346524797000
+      },
+      {
+        "path": "pr/project/notes/pull-requests/pr-2fde3d453cd04d7ab984024e4a3c5e09.pr.json",
+        "device": 12003918052740279813,
+        "inode": 562949953455244,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1435,
+        "mtime_ns": 1790173342378674800,
+        "sha256": "d9749abda4eca48bbe80c4dc376cf2ef343187eb36992974cc03dbdc88203be3"
+      },
+      {
+        "path": "pr/project/view.md",
+        "device": 12003918052740279813,
+        "inode": 2533274790429797,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 162,
+        "mtime_ns": 1790173331687721900,
+        "sha256": "1fe4e8221258bb2dde5ffdee6d8122380b5d65338ad84b67cdcae4a2725261ca"
+      },
+      {
+        "path": "pr/public-transcript.jsonl",
+        "device": 12003918052740279813,
+        "inode": 844424930165601,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 39069,
+        "mtime_ns": 1790173346552874300,
+        "sha256": "a499d916aeb3c0cc5562778f2efdb65b9c4bc311c1eec423c418bd8178a31a39"
+      },
+      {
+        "path": "pr/request.json",
+        "device": 12003918052740279813,
+        "inode": 7036874417800290,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 1157,
+        "mtime_ns": 1790173346008173000,
+        "sha256": "7dae31b57758d563d3dbb70e8cbb216af83b4d4f0fe38128c94c884106af4176"
+      },
+      {
+        "path": "pr/source-binding.json",
+        "device": 12003918052740279813,
+        "inode": 7881299347932010,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 3137,
+        "mtime_ns": 1790173330500762700,
+        "sha256": "94785149ce3d4df019283472fdc24bd2ee5251d577791eb8ab0e6bb7839bc40c"
+      },
+      {
+        "path": "pr/synthetic-provider.json",
+        "device": 12003918052740279813,
+        "inode": 2533274790429823,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 5254,
+        "mtime_ns": 1790173346665950700,
+        "sha256": "2e40e91d0fbfcd5de1fbb411beadb8985a5b02a51276d10c0787d383af2f0f84"
+      },
+      {
+        "path": "pr/wrong-entry.py",
+        "device": 12003918052740279813,
+        "inode": 1407374883587177,
+        "mode": 33206,
+        "attributes": 32,
+        "nlink": 1,
+        "size": 65931,
+        "mtime_ns": 1790173337673838900,
+        "sha256": "1e10c2254eac59a52a28c897458936be54506c764de44b2bc3d6292a2c61d21a"
+      }
+    ]
+  },
+  "historical_unchanged": true,
+  "remaining_new_runs": [],
+  "observations": [
+    {
+      "runtime": {
+        "PyYAML": "6.0.3",
+        "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "jsonschema": "4.26.0",
+        "python": "3.13.14",
+        "referencing": "0.37.0"
+      }
+    },
+    {
+      "C1": {
+        "source_commit": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
+        "packages": 18,
+        "payload_members": 113,
+        "profiles": 8,
+        "physical_assembly_scope": "separate C5; this observation is declarations only"
+      }
+    },
+    {
+      "C5_assembly": {
+        "source_commit": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
+        "actual_builds": 2,
+        "files_per_candidate": 13,
+        "candidate_identity": "development:29b0fafbf6cb4ac0a6caa57d24b841c8204241cd:5225533cf4e96438d4abf018411a9d6e62b6515e1b45b6d7207bf89adc5380ad",
+        "candidate_roots": [
+          "F:\\framework-next\\p7-runs\\368-contracts\\fn-f78fb69941c2430fa45be32b8b24dfaf\\lesson-candidates\\candidate-29b0fafbf6cb-37fdfef56b0e45269491dcd6dd175ec1",
+          "F:\\framework-next\\p7-runs\\368-contracts\\fn-f78fb69941c2430fa45be32b8b24dfaf\\lesson-candidates\\candidate-29b0fafbf6cb-4d7f56ee04ce4337992ea13f924bdf9f"
+        ],
+        "reader_status": "next; not yet accepted"
+      }
+    },
+    {
+      "C5": {
+        "assemblies": 2,
+        "files_per_candidate": 13,
+        "payload": 9,
+        "entries": 1,
+        "metadata": 3,
+        "synthetic_refusals": 5,
+        "candidate_identity": "development:29b0fafbf6cb4ac0a6caa57d24b841c8204241cd:5225533cf4e96438d4abf018411a9d6e62b6515e1b45b6d7207bf89adc5380ad",
+        "native_apply": "not-executed"
+      }
+    },
+    {
+      "zero_config_probe": {
+        "observed_files": 1,
+        "observed_logical_bytes": 5,
+        "retained_files": 1,
+        "retained_bytes": 5,
+        "authored_bytes": 5,
+        "processes": {
+          "git": 0,
+          "python": 0,
+          "other": 0
+        },
+        "process_total": 0,
+        "wall_seconds": 0.002,
+        "measurement_phase": "before-cleanup",
+        "residue": null,
+        "next_action": null
+      }
+    },
+    {
+      "synthetic_cleanup_probe": {
+        "observed_files": 1,
+        "observed_logical_bytes": 26,
+        "retained_files": 1,
+        "retained_bytes": 26,
+        "authored_bytes": 26,
+        "processes": {
+          "git": 0,
+          "python": 0,
+          "other": 0
+        },
+        "process_total": 0,
+        "wall_seconds": 0.001,
+        "measurement_phase": "before-cleanup",
+        "residue": null,
+        "next_action": null
+      }
+    },
+    {
+      "exit": 2,
+      "fixture_accounting": {
+        "authored_bytes": 45,
+        "measurement_phase": "before-cleanup",
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 2,
+        "observed_logical_bytes": 45,
+        "process_total": 0,
+        "processes": {
+          "git": 0,
+          "other": 0,
+          "python": 0
+        },
+        "residue": "F:\\framework-next\\p7-runs\\368-contracts\\fn-f78fb69941c2430fa45be32b8b24dfaf\\cleanup-reporting\\fn-827376773c684c158be436e0ab3230e7",
+        "retained_bytes": 45,
+        "retained_files": 2,
+        "wall_seconds": 0.018
+      },
+      "synthetic_cleanup_report": "contracts"
+    },
+    {
+      "exit": 2,
+      "fixture_accounting": {
+        "authored_bytes": 45,
+        "measurement_phase": "before-cleanup",
+        "next_action": "Inspect recorded failure and this owned run before explicit cleanup.",
+        "observed_files": 2,
+        "observed_logical_bytes": 45,
+        "process_total": 0,
+        "processes": {
+          "git": 0,
+          "other": 0,
+          "python": 0
+        },
+        "residue": "F:\\framework-next\\p7-runs\\368-contracts\\fn-f78fb69941c2430fa45be32b8b24dfaf\\cleanup-reporting\\fn-cdf0950ed56d451cb510bcc7822caab2",
+        "retained_bytes": 45,
+        "retained_files": 2,
+        "wall_seconds": 0.007
+      },
+      "synthetic_cleanup_report": "public"
+    },
+    {
+      "actual_readonly_git_cleanup": {
+        "authored_bytes": 0,
+        "measurement_phase": "before-cleanup",
+        "next_action": null,
+        "observed_files": 3,
+        "observed_logical_bytes": 167,
+        "process_total": 2,
+        "processes": {
+          "git": 2,
+          "other": 0,
+          "python": 0
+        },
+        "residue": null,
+        "retained_bytes": 167,
+        "retained_files": 3,
+        "wall_seconds": 0.107
+      }
+    },
+    {
+      "fixture_accounting": {
+        "authored_bytes": 26,
+        "measurement_phase": "before-cleanup",
+        "next_action": null,
+        "observed_files": 58,
+        "observed_logical_bytes": 574013,
+        "process_total": 103,
+        "processes": {
+          "git": 103,
+          "other": 0,
+          "python": 0
+        },
+        "residue": null,
+        "retained_bytes": 574002,
+        "retained_files": 57,
+        "wall_seconds": 12.408
+      }
+    }
+  ],
+  "candidate_owned_run_readback": [
+    {
+      "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-f78fb69941c2430fa45be32b8b24dfaf",
+      "exists": false
+    }
+  ],
+  "head_after": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
+  "status_after": "",
+  "evidence_complete": true,
+  "stdout_sha256": "708a5df4950a743152cfe8e4a4ec11c7b9f36649be8943c0173fb2b7a0c284ca",
+  "stdout_base64": "eyJydW50aW1lIjogeyJQeVlBTUwiOiAiNi4wLjMiLCAiZXhlY3V0YWJsZSI6ICJDOlxcVXNlcnNcXGg0MjI3XFxBcHBEYXRhXFxMb2NhbFxcUHJvZ3JhbXNcXFB5dGhvblxcUHl0aG9uMzEzXFxweXRob24uZXhlIiwgImpzb25zY2hlbWEiOiAiNC4yNi4wIiwgInB5dGhvbiI6ICIzLjEzLjE0IiwgInJlZmVyZW5jaW5nIjogIjAuMzcuMCJ9fQ0KeyJDMSI6IHsic291cmNlX2NvbW1pdCI6ICIyOWIwZmFmYmY2Y2I0YWMwYTZjYWE1N2QyNGI4NDFjODIwNDI0MWNkIiwgInBhY2thZ2VzIjogMTgsICJwYXlsb2FkX21lbWJlcnMiOiAxMTMsICJwcm9maWxlcyI6IDgsICJwaHlzaWNhbF9hc3NlbWJseV9zY29wZSI6ICJzZXBhcmF0ZSBDNTsgdGhpcyBvYnNlcnZhdGlvbiBpcyBkZWNsYXJhdGlvbnMgb25seSJ9fQ0KeyJDNV9hc3NlbWJseSI6IHsic291cmNlX2NvbW1pdCI6ICIyOWIwZmFmYmY2Y2I0YWMwYTZjYWE1N2QyNGI4NDFjODIwNDI0MWNkIiwgImFjdHVhbF9idWlsZHMiOiAyLCAiZmlsZXNfcGVyX2NhbmRpZGF0ZSI6IDEzLCAiY2FuZGlkYXRlX2lkZW50aXR5IjogImRldmVsb3BtZW50OjI5YjBmYWZiZjZjYjRhYzBhNmNhYTU3ZDI0Yjg0MWM4MjA0MjQxY2Q6NTIyNTUzM2NmNGU5NjQzOGQ0YWJmMDE4NDExYTlkNmU2MmI2NTE1ZTFiNDViNmQ3MjA3YmY4OWFkYzUzODBhZCIsICJjYW5kaWRhdGVfcm9vdHMiOiBbIkY6XFxmcmFtZXdvcmstbmV4dFxccDctcnVuc1xcMzY4LWNvbnRyYWN0c1xcZm4tZjc4ZmI2OTk0MWMyNDMwZmE0NWJlMzJiOGIyNGRmYWZcXGxlc3Nvbi1jYW5kaWRhdGVzXFxjYW5kaWRhdGUtMjliMGZhZmJmNmNiLTM3ZmRmZWY1NmIwZTQ1MjY5NDkxZGNkNmRkMTc1ZWMxIiwgIkY6XFxmcmFtZXdvcmstbmV4dFxccDctcnVuc1xcMzY4LWNvbnRyYWN0c1xcZm4tZjc4ZmI2OTk0MWMyNDMwZmE0NWJlMzJiOGIyNGRmYWZcXGxlc3Nvbi1jYW5kaWRhdGVzXFxjYW5kaWRhdGUtMjliMGZhZmJmNmNiLTRkN2Y1NmVlMDRjZTQzMzc5OTJlYTEzZjkyNGJkZjlmIl0sICJyZWFkZXJfc3RhdHVzIjogIm5leHQ7IG5vdCB5ZXQgYWNjZXB0ZWQifX0NCnsiQzUiOiB7ImFzc2VtYmxpZXMiOiAyLCAiZmlsZXNfcGVyX2NhbmRpZGF0ZSI6IDEzLCAicGF5bG9hZCI6IDksICJlbnRyaWVzIjogMSwgIm1ldGFkYXRhIjogMywgInN5bnRoZXRpY19yZWZ1c2FscyI6IDUsICJjYW5kaWRhdGVfaWRlbnRpdHkiOiAiZGV2ZWxvcG1lbnQ6MjliMGZhZmJmNmNiNGFjMGE2Y2FhNTdkMjRiODQxYzgyMDQyNDFjZDo1MjI1NTMzY2Y0ZTk2NDM4ZDRhYmYwMTg0MTFhOWQ2ZTYyYjY1MTVlMWI0NWI2ZDcyMDdiZjg5YWRjNTM4MGFkIiwgIm5hdGl2ZV9hcHBseSI6ICJub3QtZXhlY3V0ZWQifX0NCnsiemVyb19jb25maWdfcHJvYmUiOiB7Im9ic2VydmVkX2ZpbGVzIjogMSwgIm9ic2VydmVkX2xvZ2ljYWxfYnl0ZXMiOiA1LCAicmV0YWluZWRfZmlsZXMiOiAxLCAicmV0YWluZWRfYnl0ZXMiOiA1LCAiYXV0aG9yZWRfYnl0ZXMiOiA1LCAicHJvY2Vzc2VzIjogeyJnaXQiOiAwLCAicHl0aG9uIjogMCwgIm90aGVyIjogMH0sICJwcm9jZXNzX3RvdGFsIjogMCwgIndhbGxfc2Vjb25kcyI6IDAuMDAyLCAibWVhc3VyZW1lbnRfcGhhc2UiOiAiYmVmb3JlLWNsZWFudXAiLCAicmVzaWR1ZSI6IG51bGwsICJuZXh0X2FjdGlvbiI6IG51bGx9fQ0KeyJzeW50aGV0aWNfY2xlYW51cF9wcm9iZSI6IHsib2JzZXJ2ZWRfZmlsZXMiOiAxLCAib2JzZXJ2ZWRfbG9naWNhbF9ieXRlcyI6IDI2LCAicmV0YWluZWRfZmlsZXMiOiAxLCAicmV0YWluZWRfYnl0ZXMiOiAyNiwgImF1dGhvcmVkX2J5dGVzIjogMjYsICJwcm9jZXNzZXMiOiB7ImdpdCI6IDAsICJweXRob24iOiAwLCAib3RoZXIiOiAwfSwgInByb2Nlc3NfdG90YWwiOiAwLCAid2FsbF9zZWNvbmRzIjogMC4wMDEsICJtZWFzdXJlbWVudF9waGFzZSI6ICJiZWZvcmUtY2xlYW51cCIsICJyZXNpZHVlIjogbnVsbCwgIm5leHRfYWN0aW9uIjogbnVsbH19DQp7ImV4aXQiOiAyLCAiZml4dHVyZV9hY2NvdW50aW5nIjogeyJhdXRob3JlZF9ieXRlcyI6IDQ1LCAibWVhc3VyZW1lbnRfcGhhc2UiOiAiYmVmb3JlLWNsZWFudXAiLCAibmV4dF9hY3Rpb24iOiAiSW5zcGVjdCByZWNvcmRlZCBmYWlsdXJlIGFuZCB0aGlzIG93bmVkIHJ1biBiZWZvcmUgZXhwbGljaXQgY2xlYW51cC4iLCAib2JzZXJ2ZWRfZmlsZXMiOiAyLCAib2JzZXJ2ZWRfbG9naWNhbF9ieXRlcyI6IDQ1LCAicHJvY2Vzc190b3RhbCI6IDAsICJwcm9jZXNzZXMiOiB7ImdpdCI6IDAsICJvdGhlciI6IDAsICJweXRob24iOiAwfSwgInJlc2lkdWUiOiAiRjpcXGZyYW1ld29yay1uZXh0XFxwNy1ydW5zXFwzNjgtY29udHJhY3RzXFxmbi1mNzhmYjY5OTQxYzI0MzBmYTQ1YmUzMmI4YjI0ZGZhZlxcY2xlYW51cC1yZXBvcnRpbmdcXGZuLTgyNzM3Njc3M2M2ODRjMTU4YmU0MzZlMGFiMzIzMGU3IiwgInJldGFpbmVkX2J5dGVzIjogNDUsICJyZXRhaW5lZF9maWxlcyI6IDIsICJ3YWxsX3NlY29uZHMiOiAwLjAxOH0sICJzeW50aGV0aWNfY2xlYW51cF9yZXBvcnQiOiAiY29udHJhY3RzIn0NCnsiZXhpdCI6IDIsICJmaXh0dXJlX2FjY291bnRpbmciOiB7ImF1dGhvcmVkX2J5dGVzIjogNDUsICJtZWFzdXJlbWVudF9waGFzZSI6ICJiZWZvcmUtY2xlYW51cCIsICJuZXh0X2FjdGlvbiI6ICJJbnNwZWN0IHJlY29yZGVkIGZhaWx1cmUgYW5kIHRoaXMgb3duZWQgcnVuIGJlZm9yZSBleHBsaWNpdCBjbGVhbnVwLiIsICJvYnNlcnZlZF9maWxlcyI6IDIsICJvYnNlcnZlZF9sb2dpY2FsX2J5dGVzIjogNDUsICJwcm9jZXNzX3RvdGFsIjogMCwgInByb2Nlc3NlcyI6IHsiZ2l0IjogMCwgIm90aGVyIjogMCwgInB5dGhvbiI6IDB9LCAicmVzaWR1ZSI6ICJGOlxcZnJhbWV3b3JrLW5leHRcXHA3LXJ1bnNcXDM2OC1jb250cmFjdHNcXGZuLWY3OGZiNjk5NDFjMjQzMGZhNDViZTMyYjhiMjRkZmFmXFxjbGVhbnVwLXJlcG9ydGluZ1xcZm4tY2RmMDk1MGVkNTZkNDUxY2I1MTBiY2M3ODIyY2FhYjIiLCAicmV0YWluZWRfYnl0ZXMiOiA0NSwgInJldGFpbmVkX2ZpbGVzIjogMiwgIndhbGxfc2Vjb25kcyI6IDAuMDA3fSwgInN5bnRoZXRpY19jbGVhbnVwX3JlcG9ydCI6ICJwdWJsaWMifQ0KeyJhY3R1YWxfcmVhZG9ubHlfZ2l0X2NsZWFudXAiOiB7ImF1dGhvcmVkX2J5dGVzIjogMCwgIm1lYXN1cmVtZW50X3BoYXNlIjogImJlZm9yZS1jbGVhbnVwIiwgIm5leHRfYWN0aW9uIjogbnVsbCwgIm9ic2VydmVkX2ZpbGVzIjogMywgIm9ic2VydmVkX2xvZ2ljYWxfYnl0ZXMiOiAxNjcsICJwcm9jZXNzX3RvdGFsIjogMiwgInByb2Nlc3NlcyI6IHsiZ2l0IjogMiwgIm90aGVyIjogMCwgInB5dGhvbiI6IDB9LCAicmVzaWR1ZSI6IG51bGwsICJyZXRhaW5lZF9ieXRlcyI6IDE2NywgInJldGFpbmVkX2ZpbGVzIjogMywgIndhbGxfc2Vjb25kcyI6IDAuMTA3fX0NCnsiZml4dHVyZV9hY2NvdW50aW5nIjogeyJhdXRob3JlZF9ieXRlcyI6IDI2LCAibWVhc3VyZW1lbnRfcGhhc2UiOiAiYmVmb3JlLWNsZWFudXAiLCAibmV4dF9hY3Rpb24iOiBudWxsLCAib2JzZXJ2ZWRfZmlsZXMiOiA1OCwgIm9ic2VydmVkX2xvZ2ljYWxfYnl0ZXMiOiA1NzQwMTMsICJwcm9jZXNzX3RvdGFsIjogMTAzLCAicHJvY2Vzc2VzIjogeyJnaXQiOiAxMDMsICJvdGhlciI6IDAsICJweXRob24iOiAwfSwgInJlc2lkdWUiOiBudWxsLCAicmV0YWluZWRfYnl0ZXMiOiA1NzQwMDIsICJyZXRhaW5lZF9maWxlcyI6IDU3LCAid2FsbF9zZWNvbmRzIjogMTIuNDA4fX0NCg==",
+  "stderr_sha256": "3c5d9297ea99b0e4ced45375aed0772b83c999844227e9575b39eeb89905dc5a",
+  "stderr_base64": "dGVzdF9jMV9leGFjdF9wYWNrYWdlc19tZW1iZXJzX3Byb2ZpbGVzX2FuZF9wcm9qZWN0aW9uICh0ZXN0X2NvbnRyYWN0cy5Tb3VyY2VDbG9zdXJlVGVzdHMudGVzdF9jMV9leGFjdF9wYWNrYWdlc19tZW1iZXJzX3Byb2ZpbGVzX2FuZF9wcm9qZWN0aW9uKSAuLi4gb2sNCnRlc3RfYzJfYWN0dWFsX3YyX3YzX3VuaW9uX2FuZF9udWxsX2NvbmZpZ19wcm9qZWN0aW9uICh0ZXN0X2NvbnRyYWN0cy5Tb3VyY2VDbG9zdXJlVGVzdHMudGVzdF9jMl9hY3R1YWxfdjJfdjNfdW5pb25fYW5kX251bGxfY29uZmlnX3Byb2plY3Rpb24pIC4uLiBvaw0KdGVzdF9jMl9yZWplY3RfdmVyc2lvbl90eXBlc19hbmRfZHVwbGljYXRlX3NjaGVtYSAodGVzdF9jb250cmFjdHMuTWV0YWRhdGFUZXN0cy50ZXN0X2MyX3JlamVjdF92ZXJzaW9uX3R5cGVzX2FuZF9kdXBsaWNhdGVfc2NoZW1hKSAuLi4gb2sNCnRlc3RfYzJfcmVqZWN0X293bmVyX2FuZF91bmRlY2xhcmVkX3Rvb2xfb3JfcmVmZXJlbmNlICh0ZXN0X2NvbnRyYWN0cy5NZXRhZGF0YVRlc3RzLnRlc3RfYzJfcmVqZWN0X293bmVyX2FuZF91bmRlY2xhcmVkX3Rvb2xfb3JfcmVmZXJlbmNlKSAuLi4gb2sNCnRlc3RfYzJfcmVqZWN0X21peGVkX3VuaW9uX2FuZF9udWxsX2NvbmZpZ19hcnRpZmFjdCAodGVzdF9jb250cmFjdHMuTWV0YWRhdGFUZXN0cy50ZXN0X2MyX3JlamVjdF9taXhlZF91bmlvbl9hbmRfbnVsbF9jb25maWdfYXJ0aWZhY3QpIC4uLiBvaw0KdGVzdF9jM19yZWFsX2dpdF9yZWd1bGFyX21pc3Npbmdfbm9ucmVndWxhcl9tZW1iZXJzICh0ZXN0X2NvbnRyYWN0cy5TZWxlY3Rpb25UZXN0cy50ZXN0X2MzX3JlYWxfZ2l0X3JlZ3VsYXJfbWlzc2luZ19ub25yZWd1bGFyX21lbWJlcnMpIC4uLiBvaw0KdGVzdF9jNV90d29fcmVhbF9sZXNzb25fYnVpbGRzX2FuZF9yZWFkZXJfcmVmdXNhbHMgKHRlc3RfY29udHJhY3RzLkNhbmRpZGF0ZVRlc3RzLnRlc3RfYzVfdHdvX3JlYWxfbGVzc29uX2J1aWxkc19hbmRfcmVhZGVyX3JlZnVzYWxzKSAuLi4gb2sNCnRlc3Rfb3V0cHV0X3Jvb3RfcHJlY2VkZW5jZV9kZWZhdWx0X2FuZF9yZWplY3Rpb24gKHRlc3RfY29udHJhY3RzLkZpeHR1cmVTdXBwb3J0VGVzdHMudGVzdF9vdXRwdXRfcm9vdF9wcmVjZWRlbmNlX2RlZmF1bHRfYW5kX3JlamVjdGlvbikgLi4uIG9rDQp0ZXN0X2ZhaWxlZF9ydW5fcHJlc2VydmVzX293bmVkX3Jlc2lkdWVfYW5kX3JlamVjdHNfaWRlbnRpdHlfZHJpZnQgKHRlc3RfY29udHJhY3RzLkZpeHR1cmVTdXBwb3J0VGVzdHMudGVzdF9mYWlsZWRfcnVuX3ByZXNlcnZlc19vd25lZF9yZXNpZHVlX2FuZF9yZWplY3RzX2lkZW50aXR5X2RyaWZ0KSAuLi4gb2sNCnRlc3RfcmVzZXJ2ZWRfYW5kX3Vua25vd25fcnVubmVyX3NlbGVjdGlvbnNfZmFpbF9iZWZvcmVfYWxsb2NhdGlvbiAodGVzdF9jb250cmFjdHMuRml4dHVyZVN1cHBvcnRUZXN0cy50ZXN0X3Jlc2VydmVkX2FuZF91bmtub3duX3J1bm5lcl9zZWxlY3Rpb25zX2ZhaWxfYmVmb3JlX2FsbG9jYXRpb24pIC4uLiBvaw0KdGVzdF9jbGVhbnVwX2ZhaWx1cmVfYWNjb3VudGluZ19pbl9jb250cmFjdHNfYW5kX3B1YmxpY19yZXBvcnRzICh0ZXN0X2NvbnRyYWN0cy5GaXh0dXJlU3VwcG9ydFRlc3RzLnRlc3RfY2xlYW51cF9mYWlsdXJlX2FjY291bnRpbmdfaW5fY29udHJhY3RzX2FuZF9wdWJsaWNfcmVwb3J0cykgLi4uIG9rDQp0ZXN0X3JlYWRvbmx5X2dpdF9vYmplY3RfY2xlYW51cCAodGVzdF9jb250cmFjdHMuRml4dHVyZVN1cHBvcnRUZXN0cy50ZXN0X3JlYWRvbmx5X2dpdF9vYmplY3RfY2xlYW51cCkgLi4uIG9rDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NClJhbiAxMiB0ZXN0cyBpbiAxMi4zNjNzDQoNCk9LDQo=",
+  "finished_at": "2026-09-23T17:17:41.628633+00:00",
+  "accounting_boundary": "Fixture child/parent observations are separate. Wrapper Python, runner Python and wrapper Git reads are outside fixture audit counters."
+}

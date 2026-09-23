@@ -44,3 +44,11 @@ argument-test correction and current README/design refresh, followed by one
 Actual results get a separate local commit. Stop on failure/timeout/missing
 evidence; no extra trial, agent/task, provider mutation or push is authorized.
 The eight historical core assertions remain a separate limited comparison.
+
+The authorized continuation subsequently ran once on clean preparation commit
+`29b0fafbf6cb4ac0a6caa57d24b841c8204241cd`: 12 methods passed, zero
+failures/errors/skips, exit 0. [Actual execution](evidence/p7-selected-execution.json)
+and the P7 report retain exact identity/streams, separate child accounting and
+unchanged old failure inventories. Local scope is complete; the result checkpoint
+and selected-source commit remain distinct from coordinator integration or online
+closure. Eight historical core comparisons are not eight additional executions.

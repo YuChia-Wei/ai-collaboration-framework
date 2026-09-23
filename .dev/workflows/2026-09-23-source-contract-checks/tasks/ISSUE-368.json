@@ -5,9 +5,9 @@
   "task_id": "ISSUE-368",
   "workflow_id": "2026-09-23-source-contract-checks",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-24T01:14:22+08:00",
+  "updated_at": "2026-09-24T01:20:49+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -27,11 +27,11 @@
     ]
   },
   "execution": {
-    "last_completed_step": "Read-only reconciliation accepted; original branch fast-forwarded to selected e717; parser-only test and documentation prepared.",
-    "next_action": "Commit preparation, then execute the selected 12 methods once with 90-second timeout; stop and report any non-pass or evidence loss."
+    "last_completed_step": "One clean-commit selected execution passed all 12 methods; complete output/accounting and historical residue equality verified.",
+    "next_action": "Coordinator consumes #368 local results and separately verifies/integrates the #373 seven-family delivery; online Issue/Project disposition stays coordinator-owned."
   },
   "results": {
-    "summary": "Bounded readonly Git fixture cleanup and pre-cleanup accounting repair passed focused regressions; historical C5 pass and prior failures retained.",
+    "summary": "Selected P7 continuation: 12 methods passed once on 29b0fafb; eight historical core comparisons remain separate, not a fresh 20-method pass.",
     "files_changed": [
       "tests/framework_next/run.py",
       "tests/framework_next/support.py",
@@ -93,13 +93,26 @@
         "distinct_methods": 3,
         "final_synthetic_scenarios": 17,
         "new_failures": 0
+      },
+      {
+        "selection": "P7 12-method continuation",
+        "source_commit": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
+        "selected_integrated_source": "e71712b71791170c3f4946e131ce867f82dade8f",
+        "attempts": 1,
+        "methods": 12,
+        "passed": 12,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "exit": 0,
+        "evidence": "../evidence/p7-selected-execution.json"
       }
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "Focused helper evidence only. PR family/public suite/native/install/apply and broader acceptance remain separately assigned.",
-    "follow_up_needed": true,
-    "delivery": "Local helper repair handoff; coordinator owns integration and subsequent execution.",
-    "verification_state": "Three distinct focused helper methods passed; two changed tests repeated and passed; old PR residue unchanged; unselected U001 gates deferred-by-owner."
+    "finding_status": "resolved",
+    "residual_risk": "No full 20-method invocation, public P7, native, versioned release or overall P7 admission claim; their evidence/decisions remain with their owners.",
+    "follow_up_needed": false,
+    "delivery": "Bounded local work completed; coordinator owns integration and online Issue/Project disposition.",
+    "verification_state": "12 fresh selected passes plus 8 limited historical core comparisons; raw evidence complete and old failed runs unchanged."
   },
   "prior_results": {
     "summary": "Local implementation checkpoint; acceptance incomplete. Final 14 methods: 11 successful, three affected methods / seven errors.",
@@ -136,12 +149,40 @@
   },
   "p7_continuation": {
     "selected_source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
-    "status": "prepared-not-executed",
+    "status": "completed-local",
     "selection": "../p7-reconciliation.json",
     "report": "../p7-verification-report.md",
     "fresh_methods": 12,
     "historical_core_comparisons": 8,
     "full_20_method_pass_claimed": false,
-    "public_results": "pending Issue 373"
+    "public_results": "Peer reports seven independent family passes; coordinator verification/integration pending.",
+    "executed_commit": "29b0fafbf6cb4ac0a6caa57d24b841c8204241cd",
+    "attempts": 1,
+    "result": "../evidence/p7-selected-execution.json",
+    "passed": 12,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "unittest_wall_seconds": 12.363,
+    "capture_wall_seconds": 12.652,
+    "historical_runs_unchanged": true,
+    "new_failure_residue": [],
+    "peer_public_evidence": {
+      "delivery_commit": "07b1778f3b6cfae689c98b10326b614149e437f3",
+      "source_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+      "report": ".dev/workflows/2026-09-23-public-skill-checks/common-source-e71712b7-report.md",
+      "report_sha256": "ae13e1e8653dbd29721ebd599d79e32114401fe332e7c79852b6797eb1ff4899",
+      "families_passed": 7,
+      "separate_invocations": 7,
+      "aggregate_executed": false,
+      "public_launches": 218,
+      "driver_git_launches": 37,
+      "visible_driver_processes": 255,
+      "summed_fixture_seconds": 100.585,
+      "runner_streams_retained": 14,
+      "full_successful_child_transcripts": "removed by successful fixture cleanup",
+      "coordinator_state": "evidence verification/integration and Issue 373 closure pending"
+    }
   }
 }
