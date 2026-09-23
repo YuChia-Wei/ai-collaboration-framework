@@ -1,0 +1,120 @@
+{
+  "kind": "Bounded source identity inventory; not a validation receipt or audit packet",
+  "reviewed_source_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
+  "prior_reviewed_source_commit": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+  "installed_engine_comparison_commit": "3afb4ff4207acb3e12e3953018736305a439ed21",
+  "binding": "Independent git cat-file raw-byte equality; full EnginePin commit identities remain distinct",
+  "engine_files": [
+    {
+      "path": "src/distribution/__init__.py",
+      "change_from_prior": "unchanged",
+      "git_blob": "fca5683977f2046233795428cc0c16feece19ce6",
+      "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25",
+      "prior_sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/data.py",
+      "change_from_prior": "changed",
+      "git_blob": "08da2c0b84703887b837297d6d2d63b023c2eebb",
+      "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d",
+      "prior_sha256": "4b24ff0865ea96b5bc36809eadb8537120212376357697ce27461f7abda1984a",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/git_source.py",
+      "change_from_prior": "changed",
+      "git_blob": "f90c5eb0b53752adf22b48d938bc517b43cb047e",
+      "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5",
+      "prior_sha256": "fd5fd7a4cd98f73c8f7854d4865ffb5f013ca226dd503d570b514b530c7d20b5",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/installation.py",
+      "change_from_prior": "unchanged",
+      "git_blob": "958c8b6ae64168b14889187fb431db1736fe4dae",
+      "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce",
+      "prior_sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/installation_io.py",
+      "change_from_prior": "changed",
+      "git_blob": "d252983b6664d704795103f24faafbb454d28862",
+      "sha256": "69496398f69908e2ebc2d470934fc55b0eaf6fdcca1df60bd2274c002ad56148",
+      "prior_sha256": "2518315dac0def78aa99b682e14b6c53715b305d58780cda97e2f4a05aa6818e",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/installation_plan.py",
+      "change_from_prior": "changed",
+      "git_blob": "e5d68f78663727669bb37b276d819ac8073311b3",
+      "sha256": "4f1f27eab89d3132a1c988487c8b66a4dd6c5e8d403ac91b3e3c37e99a143aca",
+      "prior_sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/installation_state.py",
+      "change_from_prior": "changed",
+      "git_blob": "9ff4ea4a4ca3858592bb2ecf3da9bfdf7541085c",
+      "sha256": "2e841633d60f78ba1ca0070847536cb64e411494fbb235dedb8ec56b59a2d369",
+      "prior_sha256": "1fcdc4d928250f8130b54effd109967ef21eb0dba8a24ad25f8866ba1edbb4fe",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/maintenance_coordination.py",
+      "change_from_prior": "unchanged",
+      "git_blob": "d6bdb5147678d62580cdbb392c2c9cae53877298",
+      "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a",
+      "prior_sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/distribution/package.py",
+      "change_from_prior": "unchanged",
+      "git_blob": "0dc910ca76f4835a5cbf172abbda7595088861a9",
+      "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+      "prior_sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+      "matches_installed_engine_and_checkout": true
+    },
+    {
+      "path": "src/tools/maintain_framework.py",
+      "change_from_prior": "changed",
+      "git_blob": "2e23df5bae9c4c3a8d652b8b9cdf1422689b828c",
+      "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e",
+      "prior_sha256": "8030be53ee2988e21628ad11f348ad18a5f4114a0fcdb79e96dc473e23bdcf3d",
+      "matches_installed_engine_and_checkout": true
+    }
+  ],
+  "direct_producer_context": [
+    {
+      "path": "src/distribution/assembly.py",
+      "sha256": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70"
+    }
+  ],
+  "preserved_reports": [
+    {
+      "path": "report.md",
+      "sha256": "d03d04716f08653788ff066fb36cfa70d3b180cb183377bff00506684281425c"
+    },
+    {
+      "path": "affected-review.md",
+      "sha256": "b2f101af995e00c2ae38c78f94977b0f77409644939bc5b5332db53a772a1e9b"
+    }
+  ],
+  "worker_pin_comparisons": {
+    "issue_386": {
+      "source_commit": "64bf9f6e800799976e46caa13d873f9fef898431",
+      "all_ten_source_hashes_match": true,
+      "classification": "Attributed selected public trial; no independent execution or full-pin reuse"
+    },
+    "issue_382_tail": {
+      "source_commit": "ef4ffd9f286f49b6055d9a321abbd134b263ced8",
+      "differing_files": [
+        "src/distribution/installation_io.py",
+        "src/distribution/installation_state.py"
+      ],
+      "classification": "Historical native evidence; not current-engine native acceptance"
+    }
+  }
+}
