@@ -1,7 +1,7 @@
 schema_version: '1.0'
 checkpoint_id: 2026-09-23-work-management-source
 created_at: '2026-09-23T08:18:00+08:00'
-updated_at: '2026-09-23T00:51:28+00:00'
+updated_at: "2026-09-23T16:17:46+00:00"
 contract_exception: 'U001 proportional source receiving checkpoint; native validation deferred-by-owner'
 repository:
   starting_commit: a34ecd3c9423b17b6bb745f598ef22fd7437dd24
@@ -17,12 +17,12 @@ repository:
 workflow:
   id: 2026-09-23-work-management
   issue: 335
-  status: in_progress
-  completion_scope: Bounded local design, source implementation and CR335-001 correction only
+  status: completed
+  completion_scope: Bounded local source delivery, CR335-002 repair and selected P7 fixture; full framework and target acceptance remain separate
   provider_issue_observation: OPEN
-  completed_tasks: [WM-001, WM-002, CR335-001]
+  completed_tasks: [WM-001, WM-002, CR335-001, CR335-002]
 delivery:
-  kind: p7-worktree-repair-in-progress
+  kind: p7-worktree-repair-checkpoint
   changed_roots:
   - src/skills/pr/
   - src/skills/local-backlog/
@@ -37,8 +37,8 @@ delivery:
 resume:
   hidden_context_required: false
   coordinator_task: 01a0ce78-db26-74e1-a615-2bd0599f7d0c
-  last_completed_action: Prepare CR335-002 effective-scope correction and selected regression source
-  exact_next_action: Commit source/test, execute the Issue 335 selected worktree regression and return exact HEAD with truthful evidence to coordinator.
+  last_completed_action: Complete CR335-002 selected regression on immutable source ad5d93eb and retain raw evidence
+  exact_next_action: Coordinator reviews/integrates, rebuilds an immutable candidate and separately updates/retries the installed target.
 verification:
   actual: Direct syntax, AST without imports, source/resource/link/Git inspection and exact planned message format
   deferred_status: deferred-by-owner
@@ -47,6 +47,9 @@ verification:
   next_action: Select and execute final schema, behavior, provider, package and CI checks at P7
 selected_verification:
   task: CR335-002
-  status: not-executed
+  status: passed
   command: python -I -B tests/framework_next/test_pr_git_worktree.py --output-root F:/framework-next/p7-runs/335-pr-worktree
   authority: Live Issue 335 P7 continuation 2026-09-24
+  tested_commit: ad5d93eb71bd8b9cd5aacf74917245f72188f3cd
+  evidence: .dev/workflows/2026-09-23-work-management/evidence/CR335-002/execution-summary.json
+  source_rebind: Closing commit changes evidence and workflow records only; tested package and test support bytes remain unchanged.

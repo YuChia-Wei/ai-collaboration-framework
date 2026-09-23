@@ -3,12 +3,12 @@
   "task_id": "CR335-002",
   "owner_skill": "ai-context-governance",
   "created_at": "2026-09-23T16:10:34+00:00",
-  "updated_at": "2026-09-23T16:10:34+00:00",
+  "updated_at": "2026-09-23T16:17:46+00:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "template_version": "1.1.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
-  "status": "in_progress",
+  "status": "completed",
   "finding_ids": [
     "CR335-002"
   ],
@@ -29,14 +29,27 @@
     ]
   },
   "execution": {
-    "last_completed_step": "Bounded source/test/docs prepared; 9 UTF-8, 2 AST, 1 JSON, 2 YAML, 10 local-link and diff checks passed.",
-    "next_action": "Commit this source/test checkpoint, then run the selected regression on its clean immutable commit."
+    "last_completed_step": "Committed source/test at ad5d93eb; selected real Git regression passed once on that clean immutable source; retained raw evidence without changing tested bytes.",
+    "next_action": "Return evidence-only closing commit and clean exact HEAD; coordinator owns source review/integration and candidate/target retry."
   },
   "results": {
-    "tests_run": [],
-    "selected_test_status": "not-executed",
+    "tests_run": [
+      [
+        "python",
+        "-I",
+        "-B",
+        "F:/framework-next/335/tests/framework_next/test_pr_git_worktree.py",
+        "--output-root",
+        "F:/framework-next/p7-runs/335-pr-worktree"
+      ]
+    ],
+    "selected_test_status": "passed",
     "other_verification_status": "deferred-by-owner",
     "other_verification_owner": "program 322 coordinator / P7",
-    "summary": "Source prepared; no behavioral pass claimed."
+    "summary": "Actual linked-worktree defect corrected and the selected regression passed; full framework and target acceptance are not claimed.",
+    "tested_commit": "ad5d93eb71bd8b9cd5aacf74917245f72188f3cd",
+    "execution_summary": ".dev/workflows/2026-09-23-work-management/evidence/CR335-002/execution-summary.json",
+    "finding_status": "corrected-selected-fixture-verified",
+    "follow_up_owner": "coordinator 01a0ce78-db26-74e1-a615-2bd0599f7d0c / target pilot owner"
   }
 }

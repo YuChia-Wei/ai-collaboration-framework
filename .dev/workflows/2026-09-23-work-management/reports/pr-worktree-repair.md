@@ -29,3 +29,17 @@ This is a selected P7 behavioral run only. Provider/network operations, full/his
 Source/test prepared; selected behavioral execution is not-executed until the clean immutable checkpoint exists. No new pass is claimed here. Declared runtime is gpt-6-astra / ultra; no independent runtime attestation, sub-agent or new task/worktree creation is claimed.
 
 Direct pre-commit checks completed: 9 UTF-8 files, 2 Python ASTs without imports, 1 JSON document, 2 YAML documents, 10 local links and git diff --check (exit 0). The selected behavioral run remains not-executed before this checkpoint.
+
+## Actual selected result
+
+The source/test checkpoint ad5d93eb71bd8b9cd5aacf74917245f72188f3cd was clean before execution. The exact selected command exited 0 from 2026-09-23T16:15:34.101727+00:00 through 2026-09-23T16:15:45.489352+00:00 (11.388 seconds). This was one run, with actual Git 2.55.0.windows.3. Four successful public outcomes cover disabled prepare/render, enabled missing config and enabled safe config; six expected unsupported/git-config outcomes cover both consumed scopes; two expected blocked/git-read outcomes preserve invalid-config failures. The old explicit-scope command separately reproduced exit 128.
+
+[Execution summary](../evidence/CR335-002/execution-summary.json) links the exact source, command, limits and byte-preserved evidence hashes. [Raw report](../evidence/CR335-002/report.json), [Git launch events](../evidence/CR335-002/git-launches.jsonl), [direct Git results](../evidence/CR335-002/process-results.jsonl) and [public requests/results](../evidence/CR335-002/public-results.jsonl) are retained. The actual run remains at F:/framework-next/p7-runs/335-pr-worktree/fn-cdc972971aca4aaca2ed382dfe3b1fc7. No cleanup was attempted.
+
+Actual counts: 12 public launches; 95 Git launches comprising 86 product, seven fixture (including old-command rejection) and two source-identity reads. The fixture has two commits, one authored tracked file and one linked worktree. Measured post-step inventory has 29 observed/retained files and 7,455 authored fixture/input bytes. The conservative created-file bound is 198, below 256; this is not an exact census of transient Git file creation. Raw report support.accounting process fields contain unused default zeros because that legacy helper's process observer was not activated; they are not measurements. The explicit audited launch counts and event log are authoritative for this selected run.
+
+The first sandbox read-back of the exclusive fixture directory failed with PermissionError. A scoped read-only retry using the execution permission succeeded; this did not rerun the product or consume another fixture attempt. All expected failures remain in the raw evidence.
+
+The closing commit updates workflow/evidence only. Source, operations reference, test and test-support bytes are unchanged from the tested commit; exact Git diff/hash read-back binds that preserved subject. Local CR335-002 repair/selected-fixture scope is completed. No installed target rerun, candidate rebuild, provider acceptance or CI pass is claimed. Those next actions remain coordinator-owned.
+
+Closing record checks: 10 UTF-8 files, 3 JSON documents, 2 YAML documents, 116 JSONL records and 15 local links read/parsed successfully; raw evidence SHA-256 values matched their byte-preserved copies, git diff --check exited 0, and the tested package/test/support diff from ad5d93eb was empty. These closing checks do not rerun or expand the selected behavioral test.
