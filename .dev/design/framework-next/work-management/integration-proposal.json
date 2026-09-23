@@ -1,0 +1,233 @@
+{
+  "proposal_version": 1,
+  "status": "design-only",
+  "issue": 335,
+  "source_commit": "a34ecd3c9423b17b6bb745f598ef22fd7437dd24",
+  "packages": [
+    {
+      "id": "pr",
+      "version": "0.1.0",
+      "metadata_version": 1,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "namespace": "pr",
+      "default_store": "notes/pull-requests",
+      "source": "src/skills/pr",
+      "installed": ".ai/core/skills/pr",
+      "members": [
+        "SKILL.md",
+        "skill-package.yaml",
+        "references/configuration.md",
+        "references/operations.md",
+        "references/github.md",
+        "references/example.md",
+        "schemas/pr-record.schema.json",
+        "templates/pr.md",
+        "scripts/pr.py",
+        "scripts/github.py"
+      ],
+      "schemas": [
+        {
+          "id": "pr.record",
+          "version": "1.0.0",
+          "path": "schemas/pr-record.schema.json",
+          "owner": "pr",
+          "migration": "unsupported; preserve original"
+        }
+      ],
+      "tools": [
+        {
+          "id": "pr.fs",
+          "entrypoint": "scripts/pr.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "prepare",
+            "inspect",
+            "query",
+            "revise",
+            "render"
+          ]
+        },
+        {
+          "id": "pr.github",
+          "entrypoint": "scripts/github.py",
+          "operation_contract": "references/github.md",
+          "operations": [
+            "provider-read",
+            "provider-create",
+            "provider-update"
+          ]
+        }
+      ],
+      "artifact_roles": [
+        {
+          "role": "pr.record",
+          "owner": "project",
+          "schema": "pr.record@1.0.0",
+          "store_binding": "pr.store",
+          "identity": "pr-<32 lowercase UUID4 hex>",
+          "filename": "<id>.pr.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "render"
+          ],
+          "write_operations": [
+            "prepare",
+            "revise"
+          ]
+        },
+        {
+          "role": "pr.view",
+          "owner": "derived",
+          "source_role": "pr.record",
+          "output": "result-only Markdown",
+          "persistence": "Caller export is a separate write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "local-backlog",
+      "version": "0.1.0",
+      "metadata_version": 1,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "namespace": "local-backlog",
+      "default_store": "notes/work-items",
+      "source": "src/skills/local-backlog",
+      "installed": ".ai/core/skills/local-backlog",
+      "members": [
+        "SKILL.md",
+        "skill-package.yaml",
+        "references/configuration.md",
+        "references/operations.md",
+        "references/example.md",
+        "schemas/local-backlog-record.schema.json",
+        "templates/work-item.md",
+        "scripts/local_backlog.py"
+      ],
+      "schemas": [
+        {
+          "id": "local-backlog.record",
+          "version": "1.0.0",
+          "path": "schemas/local-backlog-record.schema.json",
+          "owner": "local-backlog",
+          "migration": "unsupported; preserve original"
+        }
+      ],
+      "tools": [
+        {
+          "id": "local-backlog.fs",
+          "entrypoint": "scripts/local_backlog.py",
+          "operation_contract": "references/operations.md",
+          "operations": [
+            "explain",
+            "create",
+            "inspect",
+            "query",
+            "revise",
+            "transition",
+            "render"
+          ]
+        }
+      ],
+      "artifact_roles": [
+        {
+          "role": "local-backlog.record",
+          "owner": "project",
+          "schema": "local-backlog.record@1.0.0",
+          "store_binding": "local-backlog.store",
+          "identity": "work-<32 lowercase UUID4 hex>",
+          "filename": "<id>.work-item.json",
+          "read_operations": [
+            "inspect",
+            "query",
+            "render"
+          ],
+          "write_operations": [
+            "create",
+            "revise",
+            "transition"
+          ]
+        },
+        {
+          "role": "local-backlog.view",
+          "owner": "derived",
+          "source_role": "local-backlog.record",
+          "output": "result-only Markdown",
+          "persistence": "Caller export is a separate write",
+          "produce_operations": [
+            "render"
+          ]
+        }
+      ]
+    }
+  ],
+  "runtime_requirements": {
+    "local": [
+      "skill-instruction-reader",
+      "python >=3.11,<4",
+      "pyyaml >=6,<7",
+      "jsonschema >=4.18,<5",
+      "selected supported local filesystem"
+    ],
+    "conditional": [
+      "git for PR prepare and selected local-config ignore checks",
+      "gh and existing authorized runtime authentication for provider operations"
+    ],
+    "evidence": "Declared requirements only; no capability execution claimed"
+  },
+  "decisions": [
+    {
+      "id": "WM-C1",
+      "owner": "coordinator",
+      "subject": "Multi-namespace configuration",
+      "recommended": "Validate envelope/namespace shape and selected namespace strictly; keep sibling namespace objects inert. Reconcile Lesson and P3-A consumers together and explicitly decide config version.",
+      "alternative": "Coordinator-owned explicit namespace registration",
+      "affected_shared_paths": [
+        "src/skills/lesson/scripts/lesson.py",
+        "src/skills/lesson/references/configuration.md",
+        "coordinator-selected P3-A consumers"
+      ],
+      "status": "pending-coordinator"
+    },
+    {
+      "id": "WM-C2",
+      "owner": "coordinator",
+      "subject": "Exact package members and PR adapter ownership",
+      "recommended": "Adopt 10 PR / 8 local-backlog members; declare scripts/github.py as public pr.github tool, not a helper or standalone dependency.",
+      "affected_shared_paths": [
+        "src/distribution/manifest.yaml",
+        "src/profiles/pr-minimal.yaml",
+        "src/profiles/local-backlog-minimal.yaml"
+      ],
+      "status": "pending-coordinator"
+    },
+    {
+      "id": "WM-C3",
+      "owner": "coordinator",
+      "subject": "Provider expected-state guarantee",
+      "recommended": "Coordinated single writer with preflight/post-read; explicit race/unknown outcomes; no server CAS claim.",
+      "alternative": "Keep provider-update unsupported until a proven conditional-write interface is selected.",
+      "affected_shared_paths": [],
+      "status": "pending-coordinator"
+    }
+  ],
+  "metadata_changes": "No metadata_version 1 shape changes proposed: defaults retain store/template, owned resources use existing arrays, no provider artifact role/helper field.",
+  "manifest_action": "Coordinator maps each exact source member to installed prefix/member and selects independent minimal profiles after implementation. No glob, design inclusion or root activation.",
+  "continuation": "Resume this same task only after coordinator reconciles common interfaces and grants explicit source ownership; shared files remain coordinator-owned.",
+  "verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select and execute final behavioral/schema/package/provider checks at P7."
+  }
+}
