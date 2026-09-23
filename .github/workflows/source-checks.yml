@@ -1,0 +1,85 @@
+# Dormant under program #322 / U001. Merge does not adopt policy or restore Actions.
+name: Source checks
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+permissions: {}
+concurrency:
+  group: source-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  source-change:
+    name: Source change gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
+      SOURCE_HEAD: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Validate fixed event identities
+        id: identity
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, re
+          for key in ('SOURCE_BASE', 'SOURCE_HEAD'):
+              value = os.environ[key]
+              if not re.fullmatch(r'[0-9a-f]{40}', value) or value == '0' * 40:
+                  raise SystemExit('invalid full event SHA')
+          PY
+      - name: Checkout exact event head
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # verified v6, node24
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Fetch only exact base
+        id: base
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, re, subprocess
+          base = os.environ['SOURCE_BASE']
+          if not re.fullmatch(r'[0-9a-f]{40}', base):
+              raise SystemExit('invalid base SHA')
+          subprocess.run(['git', 'fetch', '--no-tags', '--depth=1',
+                          'https://github.com/YuChia-Wei/ai-collaboration-framework.git', base],
+                         check=True, timeout=60)
+          PY
+      - name: Python for selected checks
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # verified v6, node24
+        with:
+          python-version: '3.12'
+      - name: Explicit selector dependency
+        id: dependencies
+        shell: bash
+        run: python -I -m pip install --disable-pip-version-check 'PyYAML>=6,<7'
+      - name: Run selected source checks
+        id: gate
+        shell: bash
+        run: python -I -B .github/scripts/check-source-change.py --base "$SOURCE_BASE" --head "$SOURCE_HEAD"
+      - name: Source disposition even on failure
+        if: always()
+        env:
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+          IDENTITY_OUTCOME: ${{ steps.identity.outcome }}
+          BASE_OUTCOME: ${{ steps.base.outcome }}
+          DEPENDENCY_OUTCOME: ${{ steps.dependencies.outcome }}
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          summary = {key: os.environ.get(key, '')[:80] for key in
+                     ('GATE_OUTCOME', 'IDENTITY_OUTCOME', 'BASE_OUTCOME', 'DEPENDENCY_OUTCOME')}
+          for key in ('SOURCE_BASE', 'SOURCE_HEAD'):
+              value = os.environ.get(key, '')
+              summary[key] = value if re.fullmatch(r'[0-9a-f]{40}', value) else 'invalid'
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as stream:
+              stream.write('## Source change gate\n\n' + json.dumps(summary, sort_keys=True) + '\n\n')
+              stream.write('See bounded selector JSON in the run log for selected checks and outstanding admission requirements. '
+                           'Only actual success passes; skipped, missing or failed steps do not. '
+                           'A source result does not satisfy a required native trial or scoped review.\n')
+          PY
