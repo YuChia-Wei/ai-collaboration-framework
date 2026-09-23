@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T16:00:37+08:00",
-  "updated_at": "2026-09-23T16:00:37+08:00",
+  "updated_at": "2026-09-23T16:03:49+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -45,8 +45,8 @@
       "Only assigned T1-T7/C4/C6 focused public tests and labelled provider simulations",
       "Direct syntax/reference/scope/Git and complete planned-message check"
     ],
-    "last_completed_step": "Issue created, Project Planned read back; not dispatched",
-    "next_action": "Create assigned worktree and independent task from containing checkpoint"
+    "last_completed_step": "Independent task active; actual runtime/F: identity and live Project In progress verified",
+    "next_action": "Receive per-family actual public results and real caller interface"
   },
   "results": {
     "summary": "V2 selected; no implementation or result claimed",
@@ -61,13 +61,18 @@
     "branch": "codex/2026-09-23-public-skill-checks",
     "workflow_id": "2026-09-23-public-skill-checks",
     "output_root": "F:/framework-next/p7-runs/373-public",
-    "starting_commit_source": "Containing coordinator checkpoint"
+    "starting_commit_source": "Containing coordinator checkpoint",
+    "thread_id": "01a0cd49-7805-7202-9176-e8f7b4cf4285",
+    "starting_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+    "runtime_verified": "Read-only runtime row gpt-6-astra / ultra",
+    "first_command_id": "exec-192ec604-a1f4-4624-b417-9158ca32f86d",
+    "worktree_verified": "Actual first repository command used assigned F: cwd/root/branch/HEAD/common Git and exit 0"
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
-    "implementation_status": "not started",
+    "implementation_status": "in progress",
     "verification_state": "selected public cases not executed"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RtFs",
-  "project_state": "Planned; Status only; live OPEN and no other single-select values"
+  "project_state": "In progress; Status only; live OPEN and no other single-select values"
 }

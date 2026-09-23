@@ -141,3 +141,5 @@ PR #372 is MERGED at `3a21b0eb58e80752df010e7277aec55725b3061e`; all four P7 exe
 [Source-pin repair handoff](reports/p7-source-pin-repair.md) receives #371 at `0d29b9abf36804cb2587732232d807a1b754c3a0`: nine focused loader tests passed; one unmodified public-entry attempt refused before dispatch. The original #370 task reviews only that fixed source delta and evidence limits. Blocked path/policy writes and public/native obligations remain separate.
 
 The source-pin repair and affected source review are locally complete (#370/#371); the test-only follow-up passed 10/10 with product bytes unchanged. Their bounded online closure keeps public/native obligations in #322 / V3. #373 is selected for independent public-family tests using the already delivered helper, without installer activation or takeover of blocked writes.
+
+#373 is active in `01a0cd49-7805-7202-9176-e8f7b4cf4285` at `F:/framework-next/373`, starting from `f8f0d073e6442df8a280c5941a2c7a1d6ed7060b`. Runtime Astra Ultra, actual first F: command and live Project In progress are verified in the dispatch record. No public-family passing result is implied.
