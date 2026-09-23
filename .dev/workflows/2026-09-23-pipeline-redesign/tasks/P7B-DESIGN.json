@@ -1,0 +1,117 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "P7B-DESIGN",
+  "workflow_id": "2026-09-23-pipeline-redesign",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T14:35:00+08:00",
+  "updated_at": "2026-09-23T14:40:53+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance": "Coordinator explicitly assigned this independent conversation; declared selection, not independent runtime attestation",
+  "issue_refs": [
+    "#365"
+  ],
+  "finding_ids": [],
+  "scope": {
+    "target": "Design seven-workflow and source-gate replacement only",
+    "write_roots": [
+      ".dev/design/framework-next/pipeline-redesign/",
+      ".dev/workflows/2026-09-23-pipeline-redesign/"
+    ],
+    "constraints": [
+      "No sub-agents, new tasks or callback",
+      "Only assigned F:/framework-next/365 worktree",
+      "No product execution, CI/settings/credential/provider writes",
+      "Coherent local commit before first push; coordinator owns integration"
+    ]
+  },
+  "acceptance": [
+    "All seven old IDs have reasoned retain/replace/retire disposition",
+    "Affected mandatory gates and exact future source edits are explicit",
+    "Fresh provider observations include unavailable/failed limits",
+    "Future events, contexts, permissions, concurrency and unresolved #364 bindings are concrete",
+    "Source rules, #361 adoption, old support and user restoration boundary remain separate"
+  ],
+  "execution": {
+    "steps": [
+      "Verified assigned clean base/common Git",
+      "Read U001, skill, P7 handoff, live Issue, seven workflows and scoped source policies",
+      "Read live provider state and named legacy obligations",
+      "Drafted bounded design and owner continuation"
+    ],
+    "validation": [
+      {
+        "kind": "direct-content",
+        "command": "Inline Python stdin: strict UTF-8; json.loads; yaml.safe_load; changed Markdown local-link and conflict-marker inspection",
+        "outcome": "passed",
+        "observed_at": "2026-09-23T14:39:37+08:00",
+        "counts": {
+          "files": 8,
+          "json": 2,
+          "yaml": 1,
+          "markdown": 5,
+          "local_links": 12
+        },
+        "limit": "Syntax/readability/reference evidence only"
+      },
+      {
+        "kind": "direct-inventory",
+        "command": "git ls-files .github/workflows/* plus direct YAML name comparison against provider projection",
+        "outcome": "passed",
+        "workflows": 7
+      },
+      {
+        "kind": "git-scope",
+        "command": "git diff --cached --check; git diff --cached --name-only; git status --short",
+        "outcome": "passed",
+        "observed_at": "2026-09-23T14:40:53+08:00",
+        "files": 8,
+        "scope": "Only the two assigned roots; staged whitespace clean"
+      },
+      {
+        "kind": "planned-message",
+        "command": "python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-pipeline-redesign/commit-message.tmp --workflow-id 2026-09-23-pipeline-redesign",
+        "outcome": "passed",
+        "observed_at": "2026-09-23T14:40:29+08:00",
+        "exit_code": 0
+      }
+    ],
+    "last_completed_step": "Design and actual permitted checks complete; final commit/read-back follows without changing the proposal's authority",
+    "next_action": "Coordinator reconciles with #364 and selects implementation; design adoption, actual trials/root adoption and user restoration adoption remain separate"
+  },
+  "results": {
+    "summary": "Bounded design complete; no pipeline implementation, product execution or provider mutation",
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "independent_review": "deferred-by-owner",
+    "residual_risk": "No executable implementation or trial evidence; #364 bindings and actual adoption remain pending",
+    "follow_up_needed": true,
+    "files_changed": [
+      ".dev/design/framework-next/pipeline-redesign/README.md",
+      ".dev/design/framework-next/pipeline-redesign/pipelines.md",
+      ".dev/design/framework-next/pipeline-redesign/source-rules.md",
+      ".dev/workflows/2026-09-23-pipeline-redesign/evidence/provider-observation.json",
+      ".dev/workflows/2026-09-23-pipeline-redesign/tasks/P7B-DESIGN.json",
+      ".dev/workflows/2026-09-23-pipeline-redesign/workflow.yaml",
+      ".dev/workflows/2026-09-23-pipeline-redesign/workflow-plan.md",
+      ".dev/workflows/2026-09-23-pipeline-redesign/reports/design-handoff.md"
+    ]
+  },
+  "verification": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Reconcile both P7 designs, select implementation and actual trials before exact user restoration adoption"
+  },
+  "resume": {
+    "source_commit": "171f33474f88888fbe853600de04bfe9c5716b25",
+    "branch": "codex/2026-09-23-pipeline-redesign",
+    "worktree": "F:/framework-next/365",
+    "delivery_commit_source": "containing-commit",
+    "hidden_context_required": false,
+    "exact_next_action": "Coordinator reviews README.md, pipelines.md and source-rules.md against #364, selects bounded implementation; no implicit CI enablement"
+  }
+}
