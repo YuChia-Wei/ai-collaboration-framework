@@ -92,8 +92,8 @@ specialist coverage and target-required gates remain explicit.
 
 The future generated entry is `.agents/skills/framework-code-reviewer/SKILL.md`.
 Its links resolve only to the three installed members above. No manifest/profile
-mapping or wrapper generation is performed in this source checkpoint. Mapping is
-pending the coordinator's actual-source handoff in the same task.
+mapping or wrapper generation was performed in the original source checkpoint.
+The subsequent original mapping delivery is recorded below; wrappers remain unrendered.
 
 ## Deferred P7 cases
 
@@ -125,3 +125,28 @@ migration/compatibility, independent audit/lease/effective-rule machinery and CI
 are **deferred-by-owner**, authority **U001**, owner **program #322 coordinator / P7**.
 Next action: **P7 selects redesigned checks after implementation**. Direct parsing
 and content inspection are syntax/source evidence only.
+
+## First actual mapping delivery
+
+The [first mapping handoff](../../../workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md)
+and later direct user approval in task #346 select nine actual packages only.
+At the local mapping checkpoint based on `7fab3ffd1698e2eb8ef791d6be7748f151506642`,
+manifest.yaml gains the actual workflow (10), reviewer (3), requirement (4) and
+specification (7) closures. Existing five rows/44 members stay byte-identical;
+all nine total 68 explicit package members. Every source/destination mapping keeps
+the member path under its owning package. No source design/workflow/history is mapped.
+
+Work-management adds only software-development-orchestrator@0.1.0; collaboration
+selects all nine; new engineering selects only code-reviewer, requirement-author
+and spec-author@0.1.0. lesson-minimal and knowledge remain byte-identical.
+Manifest/profile versions stay 1 and the Codex adapter remains selected. Declared
+payload counts and expected unrendered Codex-entry counts are 9/1, 26/3, 28/3, 14/3,
+68/9 for lesson-minimal, knowledge, work-management, engineering and collaboration.
+A profile is a convenience selection, not a new package dependency.
+
+This mapping does not register later engineering, structured or optional packages,
+activate root routes or produce installed artifacts. Source member/profile/byte
+comparisons are direct content evidence, not loader/schema/build/compatibility
+verification. P7 deferrals remain under U001. Prior approval failures and the
+successful later direct-user-authorized continuation remain in the issue-owned
+workflow report/task; future mapping requires the next explicit coordinator handoff.

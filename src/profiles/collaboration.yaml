@@ -11,5 +11,13 @@ skills:
     version: 0.1.0
   - id: local-backlog
     version: 0.1.0
+  - id: software-development-orchestrator
+    version: 0.1.0
+  - id: code-reviewer
+    version: 0.1.0
+  - id: requirement-author
+    version: 0.1.0
+  - id: spec-author
+    version: 0.1.0
 adapters:
   - codex
