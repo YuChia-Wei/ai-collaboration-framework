@@ -1,0 +1,11 @@
+test_existing_direct_directory_and_invalid_roots (test_contracts.PathAdmissionTests.test_existing_direct_directory_and_invalid_roots) ... ok
+test_output_containment_and_synthetic_source_alias_identity (test_contracts.PathAdmissionTests.test_output_containment_and_synthetic_source_alias_identity) ... ok
+test_simulated_descendant_drive_alias_refused_before_allocation (test_contracts.PathAdmissionTests.test_simulated_descendant_drive_alias_refused_before_allocation) ... ok
+test_simulated_windows_drive_mapping_refusals (test_contracts.PathAdmissionTests.test_simulated_windows_drive_mapping_refusals) ... ok
+test_synthetic_link_identity_and_error_refusals (test_contracts.PathAdmissionTests.test_synthetic_link_identity_and_error_refusals) ... ok
+test_c5_two_real_lesson_builds_and_reader_refusals (test_contracts.CandidateTests.test_c5_two_real_lesson_builds_and_reader_refusals) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 7.216s
+
+OK

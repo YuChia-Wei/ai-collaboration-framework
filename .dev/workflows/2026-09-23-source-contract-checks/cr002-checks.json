@@ -11,7 +11,7 @@
   "reviewed_commit": "ae40e6cb0d49cdfb8e2174c732d74e1d918d0c2f",
   "selected_source_commit": "6d9184e8e01d826131d03dd603422b5a3a1a7e4a",
   "review_report": ".dev/workflows/2026-09-23-installation-source-review/current-engine-review.md",
-  "execution_status": "pending; source checkpoint required first",
+  "execution_status": "completed-local; original #370 affected re-review pending",
   "selected_methods": 6,
   "case_selectors": [
     "PathAdmissionTests",
@@ -63,5 +63,99 @@
     "target/provider/policy/CI/publication changes"
   ],
   "independent_review": "pending original Issue 370 affected re-review after coordinator integration",
-  "other_verification": "deferred-by-owner: U001, program #322 coordinator / P7"
+  "other_verification": "deferred-by-owner: U001, program #322 coordinator / P7",
+  "executed_commit": "698654d77c81d2837c45e9e156e76d67734f6a28",
+  "source_tree_oid": "29e9dc1c1d66e59ec55a87d0c135d00f78235e7a",
+  "completed_at": "2026-09-24T02:05:59+08:00",
+  "result": {
+    "attempts": 1,
+    "methods": 6,
+    "passed": 6,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "unittest_wall_seconds": 7.216,
+    "capture_wall_seconds": 7.488,
+    "record": "evidence/cr002-execution.json",
+    "simulated_Win32_drive_mapping": {
+      "direct_types_admitted": 4,
+      "refusals": 14,
+      "native_drive_mapping_created": false
+    },
+    "simulated_descendant_alias": {
+      "visible_ancestors_omit_repository_identity": true,
+      "output_and_scratch_refused_before_allocation": true,
+      "native_reproduction": false
+    },
+    "actual_C5": {
+      "assemblies": 2,
+      "files_per_candidate": 13,
+      "payload": 9,
+      "entries": 1,
+      "metadata": 3,
+      "synthetic_refusals": 5,
+      "candidate_identity": "development:698654d77c81d2837c45e9e156e76d67734f6a28:0cca4a6ed0413b629f1cc0f09006b89b554267317370b172a3a29853d62da5ac",
+      "native_apply": "not-executed"
+    },
+    "fixture_accounting": {
+      "authored_bytes": 26,
+      "measurement_phase": "before-cleanup",
+      "next_action": null,
+      "observed_files": 52,
+      "observed_logical_bytes": 573594,
+      "process_total": 89,
+      "processes": {
+        "git": 89,
+        "other": 0,
+        "python": 0
+      },
+      "residue": null,
+      "retained_bytes": 573583,
+      "retained_files": 51,
+      "wall_seconds": 7.261
+    },
+    "visible_processes_including_runner": 90,
+    "capture_inclusive_known_processes": 98,
+    "process_accounting_limit": "Known launches in this capture only; no global physical-I/O or opaque OS process claim.",
+    "historical_roots_unchanged": [
+      "F:\\framework-next\\p7-runs\\368-contracts\\fn-612302fba311482d98c4d8be0ad3a1a3",
+      "F:\\framework-next\\p7-runs\\368-contracts\\fn-7ce6045a9eae47e68aa3ecb5597100cc",
+      "F:\\framework-next\\p7-runs\\368-contracts\\fn-a9713554a15d4ca68b38842026f3a8a8",
+      "F:\\framework-next\\p7-runs\\373-public\\fn-c21e6bb478f64c759aed8dfdbba5ea6d"
+    ],
+    "successful_run_readback": [
+      {
+        "path": "F:\\framework-next\\p7-runs\\368-contracts\\fn-ca5616d76af342efab7d7f3a58aad07f",
+        "exists": false
+      }
+    ],
+    "remaining_new_runs": [],
+    "raw_streams": {
+      "stdout": {
+        "bytes": 1758,
+        "sha256": "53344ab756459456c1bb764c9b0e7e8a0478c279acbce04d1fb25f9de606e06d",
+        "storage": "base64 in evidence/cr002-execution.json; original .bin remains ignored capture output"
+      },
+      "stderr": {
+        "bytes": 999,
+        "sha256": "86bd48d321f40678a5ae593bef97917aa6de20b6da110ce62690c164a86c7c4f",
+        "storage": "base64 in evidence/cr002-execution.json; original .bin remains ignored capture output"
+      }
+    }
+  },
+  "preserved_source_bytes": {
+    "src/distribution/assembly.py": "231ce2c0a14f7cfec1604dea662c1008007b8579e9c32fe36c087ec75a13ac70",
+    "src/skills/pr/skill-package.yaml": "e85987a6d2fc7f3c0276d99284c6612b1e314a729f4d4e8a8d90fc93d2153a86",
+    "src/skills/local-backlog/skill-package.yaml": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d"
+  },
+  "static_checks": {
+    "python_ast_parse": "passed for the two changed code files and capture script",
+    "json_yaml_parse": "passed for changed records; syntax only",
+    "changed_document_links": "all local targets exist",
+    "original_git_source": "Exact source equality after removing only the new helper/call and docstring change",
+    "git_diff_check": "passed before source commit",
+    "source_commit_message": "complete planned message passed before commit",
+    "metadata_semantics": "No current mutation; retained original alias-expansion evidence stays historical"
+  }
 }

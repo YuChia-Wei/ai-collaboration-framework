@@ -62,3 +62,9 @@ the original #368 worktree. See [CR-002 report](cr002-repair-report.md) and
 and meaningful simulated regressions, then run five affected path methods plus
 one existing actual C5 method once. Preserve all historical outcomes and residue.
 Original #370 affected re-review remains pending; no push or provider changes.
+
+CR-002 execution then passed once on clean `698654d7`: six methods, no
+failures/errors/skips, exact raw streams retained, all four historical failure
+inventories unchanged and successful fixture cleanup confirmed. The bounded
+local result is complete; original #370 affected re-review remains pending.
+See the CR-002 report for source/result identity separation and all limits.

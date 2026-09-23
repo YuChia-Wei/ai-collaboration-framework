@@ -5,9 +5,9 @@
   "task_id": "ISSUE-368",
   "workflow_id": "2026-09-23-source-contract-checks",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T15:05:07+08:00",
-  "updated_at": "2026-09-24T02:03:31+08:00",
+  "updated_at": "2026-09-24T02:05:59+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368",
@@ -27,8 +27,8 @@
     ]
   },
   "execution": {
-    "last_completed_step": "CR-002 private drive-mapping guard and two simulated regression methods prepared; no behavioral execution yet.",
-    "next_action": "Commit this source checkpoint, execute only the six selected methods once, preserve raw evidence, then hand off for original #370 affected re-review."
+    "last_completed_step": "CR-002 selected six methods passed once on clean 698654d7; raw streams complete and all four old failure inventories unchanged.",
+    "next_action": "Coordinator integrates the exact local source/results; original #370 performs affected re-review. Issues remain open; no push or provider mutation."
   },
   "results": {
     "summary": "Selected P7 continuation: 12 methods passed once on 29b0fafb; eight historical core comparisons remain separate, not a fresh 20-method pass.",
@@ -186,9 +186,18 @@
     }
   },
   "cr002_continuation": {
-    "status": "source-prepared-execution-pending",
+    "status": "completed-local-review-pending",
     "selection": "../cr002-checks.json",
     "report": "../cr002-repair-report.md",
-    "previous_results": "Existing results and p7_continuation remain historical and unchanged."
+    "previous_results": "Existing results and p7_continuation remain historical and unchanged.",
+    "executed_commit": "698654d77c81d2837c45e9e156e76d67734f6a28",
+    "attempts": 1,
+    "passed": 6,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "result": "../evidence/cr002-execution.json",
+    "independent_review": "pending original #370 affected re-review"
   }
 }
