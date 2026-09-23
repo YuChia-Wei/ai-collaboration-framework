@@ -1,13 +1,13 @@
 {
   "proposal_version": 1,
-  "status": "design-only",
+  "status": "implemented-source; runtime acceptance deferred-by-owner",
   "issue": 335,
   "source_commit": "a34ecd3c9423b17b6bb745f598ef22fd7437dd24",
   "packages": [
     {
       "id": "pr",
       "version": "0.1.0",
-      "metadata_version": 1,
+      "metadata_version": 2,
       "dependencies": {
         "required": [],
         "optional": []
@@ -78,6 +78,9 @@
           "write_operations": [
             "prepare",
             "revise"
+          ],
+          "read_schemas": [
+            "pr.record@1.0.0"
           ]
         },
         {
@@ -90,12 +93,13 @@
             "render"
           ]
         }
-      ]
+      ],
+      "config_version": 2
     },
     {
       "id": "local-backlog",
       "version": "0.1.0",
-      "metadata_version": 1,
+      "metadata_version": 2,
       "dependencies": {
         "required": [],
         "optional": []
@@ -156,6 +160,9 @@
             "create",
             "revise",
             "transition"
+          ],
+          "read_schemas": [
+            "local-backlog.record@1.0.0"
           ]
         },
         {
@@ -168,7 +175,8 @@
             "render"
           ]
         }
-      ]
+      ],
+      "config_version": 2
     }
   ],
   "runtime_requirements": {
@@ -190,44 +198,43 @@
       "id": "WM-C1",
       "owner": "coordinator",
       "subject": "Multi-namespace configuration",
-      "recommended": "Validate envelope/namespace shape and selected namespace strictly; keep sibling namespace objects inert. Reconcile Lesson and P3-A consumers together and explicitly decide config version.",
-      "alternative": "Coordinator-owned explicit namespace registration",
       "affected_shared_paths": [
         "src/skills/lesson/scripts/lesson.py",
         "src/skills/lesson/references/configuration.md",
         "coordinator-selected P3-A consumers"
       ],
-      "status": "pending-coordinator"
+      "status": "selected-by-coordinator",
+      "selected": "Config v2 namespace envelope with selected-owner deep validation; v1 remains closed Lesson-only; no registry/shared parser."
     },
     {
       "id": "WM-C2",
       "owner": "coordinator",
       "subject": "Exact package members and PR adapter ownership",
-      "recommended": "Adopt 10 PR / 8 local-backlog members; declare scripts/github.py as public pr.github tool, not a helper or standalone dependency.",
       "affected_shared_paths": [
         "src/distribution/manifest.yaml",
         "src/profiles/pr-minimal.yaml",
         "src/profiles/local-backlog-minimal.yaml"
       ],
-      "status": "pending-coordinator"
+      "status": "selected-by-coordinator",
+      "selected": "10 PR / 8 backlog exact members; pr.github is package-owned public tool."
     },
     {
       "id": "WM-C3",
       "owner": "coordinator",
       "subject": "Provider expected-state guarantee",
-      "recommended": "Coordinated single writer with preflight/post-read; explicit race/unknown outcomes; no server CAS claim.",
-      "alternative": "Keep provider-update unsupported until a proven conditional-write interface is selected.",
       "affected_shared_paths": [],
-      "status": "pending-coordinator"
+      "status": "selected-by-coordinator",
+      "selected": "Coordinated single-writer preflight/post-read; server CAS unsupported; mode/grant strings do not prove coordination/permission."
     }
   ],
-  "metadata_changes": "No metadata_version 1 shape changes proposed: defaults retain store/template, owned resources use existing arrays, no provider artifact role/helper field.",
+  "metadata_changes": "Selected metadata v2 adds exact schema-pair identity and required read_schemas for project roles. These packages each use one readable schema equal to the writable schema; remaining closed shapes unchanged.",
   "manifest_action": "Coordinator maps each exact source member to installed prefix/member and selects independent minimal profiles after implementation. No glob, design inclusion or root activation.",
-  "continuation": "Resume this same task only after coordinator reconciles common interfaces and grants explicit source ownership; shared files remain coordinator-owned.",
+  "continuation": "Return local implemented source commit to coordinator; #337 owns concrete manifest/profile mapping after integration. No first push or source-root activation by this executor.",
   "verification": {
     "status": "deferred-by-owner",
     "authority": "U001",
     "owner": "program #322 coordinator / P7",
     "next_action": "Select and execute final behavioral/schema/package/provider checks at P7."
-  }
+  },
+  "selected_contract_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb"
 }

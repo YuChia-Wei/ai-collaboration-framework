@@ -8,7 +8,7 @@ A project with an existing planning parent selects:
 
 ```json
 {
-  "config_version": 1,
+  "config_version": 2,
   "skills": {
     "local-backlog": {"store": {"kind": "filesystem", "root": "planning/items", "tracking": "tracked"}},
     "pr": {"store": {"kind": "filesystem", "root": "planning/pull-requests", "tracking": "tracked"}}
@@ -20,7 +20,7 @@ A project with an existing planning parent selects:
 }
 ```
 
-This uses the proposed WM-C1 envelope, not current P2 compatibility. An ignored collection changes tracking to ignored; the project establishes ignore rules separately. No source repository setting is changed.
+This uses selected config v2; closed P2 config v1 is not accepted by these two packages. An ignored collection changes tracking to ignored; the project establishes ignore rules separately. No source repository setting is changed.
 
 Illustrative local create content:
 

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T08:26:01+08:00",
-  "updated_at": "2026-09-23T08:37:23+08:00",
+  "updated_at": "2026-09-23T08:48:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -78,7 +78,11 @@
     "worktree_clean_observed": true,
     "source_stage": "complete; inspected under U001",
     "mapping_stage": "awaiting actual package source",
-    "provider_integration": "pending",
-    "verification_state": "deferred-by-owner"
+    "provider_integration": "source stage merged; mapping stage pending",
+    "verification_state": "deferred-by-owner",
+    "pull_request": 339,
+    "merge_commit": "879b195160540f74bab2ac57cad148bcfaddbcbe",
+    "issue_state": "OPEN",
+    "project_status": "In progress"
   }
 }
