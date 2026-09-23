@@ -27,9 +27,10 @@ Only #378-selected small checks and exact commit-message validation are enabled.
 Declared dispatch: OpenAI Codex, gpt-6-astra / ultra; this is not independent
 runtime attestation. No agents, new tasks, callback or provider writes.
 
-Current state: scoped repair delivered; public distribution plan blocked at the
-unmodified bootstrap. WPC-001 remains in progress for the coordinator scope
-decision. See [repair observations](reports/repair.md) and
+Current state: bootstrap continuation approved in live #378 and directly in
+this task. Only src/tools/maintain_framework.py::_direct and necessary private
+stdlib helpers join the source scope. Focused path checks precede a clean exact
+engine commit and one fresh full public plan. Prior refusals remain retained. See [repair observations](reports/repair.md) and
 [bounded evidence summary](reports/observations.json). Source review and
 online integration belong to coordinator 01a0ce78-db26-74e1-a615-2bd0599f7d0c.
 Return coherent local commits before first push. #368/#369/#373 acceptance,

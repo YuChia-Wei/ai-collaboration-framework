@@ -1,6 +1,8 @@
 """Issue 378 only: labelled Windows API simulations and tiny actual observations.
 
 Run with python -I -B tests/framework_next/test_windows_paths.py --mode regressions.
+Use --mode bootstrap-regressions for the approved pre-pin path continuation,
+and --mode public-plan for its one fresh actual reader/complete public plan.
 Actual modes require an explicit --output-root and retain their unique run.
 No full family matrix, installation/apply, native-runner replacement or CI gate.
 """
@@ -39,8 +41,14 @@ for family, script in SCRIPTS.items():
     MODULES[family] = module
 
 
-def info(*, device=123, inode=456, mode=stat.S_IFDIR, attributes=16):
-    return SimpleNamespace(st_dev=device, st_ino=inode, st_mode=mode, st_file_attributes=attributes)
+BOOTSTRAP_SPEC = importlib.util.spec_from_file_location('wpc_bootstrap', support.REPOSITORY / 'src/tools/maintain_framework.py')
+bootstrap = importlib.util.module_from_spec(BOOTSTRAP_SPEC)
+BOOTSTRAP_SPEC.loader.exec_module(bootstrap)
+
+
+def info(*, device=123, inode=456, mode=stat.S_IFDIR, attributes=16, links=1, size=0):
+    return SimpleNamespace(st_dev=device, st_ino=inode, st_mode=mode, st_file_attributes=attributes,
+                           st_nlink=links, st_size=size)
 
 
 class Kernel:
@@ -247,6 +255,126 @@ class SimulatedWindowsPaths(unittest.TestCase):
         self.assertEqual(caught.exception.diagnostic['code'], 'recovery-failure-domain')
 
 
+@contextmanager
+def bootstrap_simulated(target, *, kernel=None, selected=None, ancestor=None, error=1, after=None):
+    """All path metadata and native API answers here are explicit simulations."""
+    kernel = kernel or Kernel()
+    calls = {}
+    def observe(path):
+        calls[path] = calls.get(path, 0) + 1
+        if after is not None and calls[path] > 1:
+            changed = after(path)
+            if changed is not None:
+                return changed
+        return (selected or info(mode=stat.S_IFREG)) if path == target else (ancestor or info())
+    with ExitStack() as stack:
+        stack.enter_context(patch.object(ctypes, 'WinDLL', return_value=kernel))
+        stat_call = stack.enter_context(patch.object(Path, 'lstat', autospec=True, side_effect=observe))
+        stack.enter_context(patch.object(Path, 'resolve', side_effect=windows_error(error)))
+        yield kernel, stat_call
+
+
+class SimulatedBootstrapPaths(unittest.TestCase):
+    def test_file_and_directory_error_one_and_ordinary_resolution(self):
+        for directory in (False, True):
+            target = DIRECT if directory else DIRECT / 'entry.py'
+            selected = info(mode=stat.S_IFDIR if directory else stat.S_IFREG, size=bootstrap.FILE_LIMIT)
+            with self.subTest(directory=directory), bootstrap_simulated(target, selected=selected):
+                self.assertIsNone(bootstrap._direct(target, directory=directory))
+            with bootstrap_simulated(target, selected=selected) as (kernel, _), patch.object(Path, 'resolve', return_value=target):
+                self.assertIsNone(bootstrap._direct(target, directory=directory))
+                kernel.QueryDosDeviceW.assert_not_called()
+
+    def test_other_errors_and_non_windows_do_not_fall_back(self):
+        target = DIRECT / 'entry.py'
+        for code in (2, 5, 50, 144):
+            with self.subTest(code=code), bootstrap_simulated(target, error=code) as (kernel, _):
+                with self.assertRaises(OSError) as caught:
+                    bootstrap._direct(target)
+                self.assertEqual(caught.exception.winerror, code)
+                kernel.QueryDosDeviceW.assert_not_called()
+        with bootstrap_simulated(target) as (kernel, _), patch.object(bootstrap, 'os', SimpleNamespace(name='posix')):
+            with self.assertRaises(OSError):
+                bootstrap._direct(target)
+            kernel.QueryDosDeviceW.assert_not_called()
+
+    def test_kinds_links_hardlinks_and_file_budget(self):
+        target = DIRECT / 'entry.py'
+        for selected in (info(mode=stat.S_IFDIR), info(mode=stat.S_IFLNK),
+                         info(mode=stat.S_IFREG, attributes=0x400), info(mode=stat.S_IFREG, links=2),
+                         info(mode=stat.S_IFREG, size=bootstrap.FILE_LIMIT + 1),
+                         info(mode=stat.S_IFREG, inode=0), info(mode=stat.S_IFREG, device=0)):
+            with self.subTest(selected=selected), bootstrap_simulated(target, selected=selected), self.assertRaises(ValueError):
+                bootstrap._direct(target)
+        for ancestor in (info(mode=stat.S_IFREG), info(mode=stat.S_IFLNK), info(attributes=0x410), info(inode=0)):
+            with self.subTest(ancestor=ancestor), bootstrap_simulated(target, ancestor=ancestor), self.assertRaises(ValueError):
+                bootstrap._direct(target)
+        with bootstrap_simulated(target), self.assertRaises(ValueError):
+            bootstrap._direct(target, directory=True)
+
+    def test_identity_or_protection_drift_is_refused(self):
+        target = DIRECT / 'entry.py'
+        for selected in (info(mode=stat.S_IFREG, inode=999), info(mode=stat.S_IFREG, device=999),
+                         info(mode=stat.S_IFREG, links=2), info(mode=stat.S_IFREG, attributes=0x400),
+                         info(mode=stat.S_IFREG, size=bootstrap.FILE_LIMIT + 1)):
+            with self.subTest(selected=selected), bootstrap_simulated(target, after=lambda p: selected if p == target else None), self.assertRaises(ValueError):
+                bootstrap._direct(target)
+        for ancestor in (info(inode=999), info(attributes=0x400), info(mode=stat.S_IFREG)):
+            with self.subTest(ancestor=ancestor), bootstrap_simulated(target, after=lambda p: ancestor if p == target.parent else None), self.assertRaises(ValueError):
+                bootstrap._direct(target)
+
+    def test_fallback_rejects_lexical_and_canonical_aliases(self):
+        for value in ('relative.py', 'Z:/direct/../entry.py', '//host/share/entry.py', '//?/Z:/direct/entry.py',
+                      'Z:/direct/entry.', 'Z:/direct/entry ', 'Z:/direct/entry.py:stream', 'Z:/direct/NUL.txt'):
+            target = Path(value)
+            with self.subTest(value=value), bootstrap_simulated(target), self.assertRaises(ValueError):
+                bootstrap._direct(target)
+        target = DIRECT / 'SHORT~1.PY'
+        with bootstrap_simulated(target, kernel=Kernel(long_name=str(DIRECT / 'long-entry.py'))), self.assertRaisesRegex(ValueError, 'noncanonical'):
+            bootstrap._direct(target)
+        target = DIRECT / 'entry.py'
+        for kernel in (Kernel(device=r'\??\Z:\alias'), Kernel(device=r'\Device\Volume\subdir'), Kernel(kind=4), Kernel(kind=0),
+                       Kernel(device_result=0), Kernel(device_result=32768), Kernel(long_result=0), Kernel(long_result=32768)):
+            with self.subTest(kernel=kernel), bootstrap_simulated(target, kernel=kernel), self.assertRaises(ValueError):
+                bootstrap._direct(target)
+
+    def test_path_budget_precedes_metadata_and_fallback(self):
+        for value in ('Z:/' + 'a' * 240, 'Z:/' + '\U0001f600' * 120):
+            target = Path(value)
+            with self.subTest(value=value), bootstrap_simulated(target) as (kernel, stat_call):
+                with self.assertRaisesRegex(ValueError, 'path budget'):
+                    bootstrap._direct(target)
+                stat_call.assert_not_called()
+                kernel.QueryDosDeviceW.assert_not_called()
+
+    def test_pre_pin_root_binding_and_path_refusals_never_reach_loader(self):
+        import builtins
+        import io as streams
+        target = DIRECT / 'src/tools/maintain_framework.py'
+        request = {'operation': 'plan', 'engine_root': str(DIRECT.parent / 'wrong-root'),
+                   'engine': {'id': 'framework-managed-installation', 'version': '1.0.0', 'source_commit': 'a' * 40,
+                              'files': [{'path': p, 'sha256': '0' * 64} for p in bootstrap.ENGINE_FILES]}}
+        original_import = builtins.__import__
+        def guarded_import(name, *args, **kwargs):
+            if name == 'distribution' or name.startswith('distribution.'):
+                raise AssertionError('pre-pin product import')
+            return original_import(name, *args, **kwargs)
+        for defect in ('root-binding', 'reparse', 'access-error'):
+            stdout = streams.BytesIO()
+            selected = info(mode=stat.S_IFREG, attributes=0x400 if defect == 'reparse' else 0)
+            with self.subTest(defect=defect), bootstrap_simulated(target, selected=selected, error=5 if defect == 'access-error' else 1), \
+                    patch.object(bootstrap, '__file__', str(target)), patch.object(sys, 'argv', [str(target)]), \
+                    patch.object(sys, 'stdin', SimpleNamespace(buffer=streams.BytesIO(json.dumps(request).encode()))), \
+                    patch.object(sys, 'stdout', SimpleNamespace(buffer=stdout)), \
+                    patch.object(bootstrap, '_VerifiedSourceFinder', side_effect=AssertionError('premature loader')) as loader, \
+                    patch.object(builtins, '__import__', side_effect=guarded_import):
+                code = bootstrap.main()
+            result = json.loads(stdout.getvalue())
+            self.assertEqual((code, result['outcome'], result['changed']), (1, 'unsupported', False))
+            self.assertEqual(result['diagnostics'][0]['code'], 'source-bootstrap')
+            loader.assert_not_called()
+
+
 def public(run, family, project, operation, **values):
     package = support.REPOSITORY / 'src/skills' / family
     request = dict(operation=operation, project_root=str(project), package_root=str(package), **values)
@@ -336,20 +464,27 @@ def actual_plan(run, candidate):
         run.write(run.root / name, raw)
     response = json.loads(result.stdout)
     support.check(result.returncode == 0 and response['outcome'] == 'planned', str(response))
+    plan = response['plan']
+    support.check(plan['engine'] == pin and plan['candidate_identity'] == candidate.identity, 'plan source binding mismatch')
+    support.check(sha256(state.json_bytes(plan)).hexdigest() == response['plan_sha256'], 'plan digest mismatch')
+    prerequisites = {row['id']: row['status'] for row in plan['prerequisites']}
+    support.check(prerequisites['native-writer-backend'] == 'satisfied' and prerequisites['writer-engine-closure'] == 'satisfied',
+                  'plan did not establish native backend and pinned source closure')
     support.check(all(not list(root.iterdir()) for root in roots.values()), 'plan mutated fixture roots')
     print(json.dumps({'actual_distribution_plan': 'passed', 'exit': result.returncode, 'outcome': response['outcome'],
-                      'engine_source_commit': commit, 'native_apply': 'not-executed'}), flush=True)
+                      'engine_source_commit': commit, 'plan_sha256': response['plan_sha256'], 'delta_members': len(plan['delta']),
+                      'prerequisites': prerequisites, 'native_apply': 'not-executed'}), flush=True)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--mode', required=True, choices=['regressions', 'actual'])
+    parser.add_argument('--mode', required=True, choices=['regressions', 'bootstrap-regressions', 'actual', 'public-plan'])
     parser.add_argument('--output-root', type=Path)
     args = parser.parse_args()
     support.check(os.name == 'nt' and sys.flags.isolated and sys.dont_write_bytecode, 'requires Windows and -I -B')
-    if args.mode == 'regressions':
+    if args.mode in {'regressions', 'bootstrap-regressions'}:
         print('Evidence kind: simulated Windows API/path responses; not native acceptance.', flush=True)
-        result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(SimulatedWindowsPaths))
+        result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(SimulatedBootstrapPaths if args.mode == 'bootstrap-regressions' else SimulatedWindowsPaths))
         return 0 if result.wasSuccessful() and not result.skipped else 1
     support.check(args.output_root is not None, 'actual observations require explicit --output-root')
     run = support.FixtureRun(args.output_root)
@@ -358,9 +493,10 @@ def main():
         with support.use_run(run):
             print(json.dumps({'actual_run': str(run.root), 'runtime': support.runtime_versions()}), flush=True)
             candidate = actual_reader(run)
-            actual_lesson(run)
-            # The first actual writer setup succeeded before another backend runs.
-            actual_cbf(run)
+            if args.mode == 'actual':
+                actual_lesson(run)
+                # The first actual writer setup succeeded before another backend runs.
+                actual_cbf(run)
             actual_plan(run, candidate)
             success = True
     finally:
