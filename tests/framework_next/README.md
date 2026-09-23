@@ -21,10 +21,10 @@ exceptions also remain nonzero. Failed output is retained and its exact run path
 and next action are printed; no auto retry. Results are unittest output plus
 small JSON observations on stdout, not a universal acceptance receipt.
 
-The native invocation remains reserved (**exit 2 before allocation**, no green stub):
+The bounded Issue 382 native selection uses its exact provisioned roots:
 
 ```text
-python -I -B tests/framework_next/run.py --layer native-windows --native-root EXPLICIT_ROOT
+python -I -B tests/framework_next/run.py --layer native-windows --native-root F:/framework-next/p7-runs/native-w01/382
 ```
 
 The seven public family IDs are `lesson`, `adr`, `standards-promotion`, `pr`,
@@ -157,3 +157,45 @@ observations are retained in the
 C4/C6 and public families are partially observed under Issue 373; native Windows,
 root adoption, independent review of the changed source, all-profile build
 acceptance, CI and publication remain separately assigned.
+
+## Native Windows caller interface (Issue 382)
+
+This selection is bound to the clean committed `F:/framework-next/382` source,
+`lesson-minimal` development candidate, and the exact native parent above. Before
+calling, explicitly provision that parent and these two ignored/untracked parents:
+
+- `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/p7/n382/recovery`
+- `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/p7/n382/observations`
+
+No environment fallback, global temp changes, dependency install or drive discovery.
+Each call exclusively allocates one short child under each parent. The engine stays
+outside fixtures. Only process termination with OS/storage available is selected.
+A future caller must reconcile these fixed bindings; this is not a generic hosted
+Windows acceptance route. `--case` and `--output-root` are rejected for native.
+
+The driver builds once with the real builder, then invokes the unmodified public
+`maintain_framework.py` using `-I -B` and the complete raw EnginePin. Six result rows
+cover inspect/plan/pin refusal, fresh apply, same-content no-op, drift/collision
+refusal, a second process holding the real native guard, and one notification-based
+public interruption attempt with exact same-engine finish when attributable. The
+small copied drift setup is labelled synthetic; its public refusal is real. There
+are no product hooks, inserted delays, simulated successful applies or retry loop.
+
+Stdout is one JSON object with `native_windows`, interface `native-windows/382-v1`,
+source/pin/command, fixed selection, per-case outcomes, unexecuted cases, launches,
+counts, residual paths and cleanup ownership. Exit 0 requires all six rows passed;
+1 means failed or partial (including `not-observed` interruption); 2 means setup or
+accounting/cleanup failure. Product failure stops dependent cases. Raw requests and
+base64 stdout/stderr stay in durable `calls.jsonl`; `result.json` is the observation.
+The isolated command/pin and unchanged cache inventory are native observations;
+adversarial cache-loader tests are separate synthetic evidence. No project readiness,
+whole-P7, versioned candidate, stable upgrade, CI or target adoption is inferred.
+
+Caps are two simultaneous owned children, 30 public/helper launches, three durable
+operation roots, 256 observed created file names and 16 MiB retained logical output.
+Driver Git launches are counted separately; opaque product grandchildren and total
+transient creations are explicitly unavailable. Counts are not performance claims.
+All successful and failed fixture/recovery/observation outputs are retained.
+The coordinator owns later disposition; no prior run or recovery cleanup is done.
+
+Current execution evidence: [Issue 382 report](../../.dev/workflows/2026-09-23-native-maintenance-checks/report.md).

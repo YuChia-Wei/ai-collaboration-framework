@@ -1,0 +1,71 @@
+{
+  "kind": "read-only Python filesystem primitive observation; not another public trial",
+  "product_source": "src/distribution/installation_plan.py:70",
+  "selected_inputs": [
+    {
+      "path": ".ai/custom/framework.json",
+      "matches": true,
+      "actual_sha256": "f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187"
+    },
+    {
+      "path": ".gitattributes",
+      "matches": true,
+      "actual_sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": ".gitignore",
+      "matches": true,
+      "actual_sha256": "c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948"
+    },
+    {
+      "path": "AGENTS.md",
+      "matches": true,
+      "actual_sha256": "1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58"
+    },
+    {
+      "path": "protected-absent.txt",
+      "matches": true,
+      "actual_sha256": null
+    }
+  ],
+  "primitive": [
+    {
+      "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\63bb8cce\\project\\.ai",
+      "device": 12003918052740279813,
+      "inode": 844424930155351,
+      "reparse": false,
+      "strict_resolve": null,
+      "exception_type": "OSError",
+      "winerror": 1,
+      "errno": 22,
+      "diagnostic": "[WinError 1] \u529f\u80fd\u932f\u8aa4\u3002: 'F:\\\\framework-next\\\\p7-runs\\\\native-w01\\\\382\\\\63bb8cce\\\\project\\\\.ai'"
+    },
+    {
+      "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\63bb8cce\\project\\.ai\\custom",
+      "device": 12003918052740279813,
+      "inode": 844424930155352,
+      "reparse": false,
+      "strict_resolve": null,
+      "exception_type": "OSError",
+      "winerror": 1,
+      "errno": 22,
+      "diagnostic": "[WinError 1] \u529f\u80fd\u932f\u8aa4\u3002: 'F:\\\\framework-next\\\\p7-runs\\\\native-w01\\\\382\\\\63bb8cce\\\\project\\\\.ai\\\\custom'"
+    },
+    {
+      "path": "F:\\framework-next\\p7-runs\\native-w01\\382\\63bb8cce\\project\\.ai\\custom\\framework.json",
+      "device": 12003918052740279813,
+      "inode": 844424930155353,
+      "reparse": false,
+      "strict_resolve": null,
+      "exception_type": "OSError",
+      "winerror": 1,
+      "errno": 22,
+      "diagnostic": "[WinError 1] \u529f\u80fd\u932f\u8aa4\u3002: 'F:\\\\framework-next\\\\p7-runs\\\\native-w01\\\\382\\\\63bb8cce\\\\project\\\\.ai\\\\custom\\\\framework.json'"
+    }
+  ],
+  "mutation_controls": {
+    "lock_exists": false,
+    "marker_exists": false,
+    "guard_exists": false
+  }
+}

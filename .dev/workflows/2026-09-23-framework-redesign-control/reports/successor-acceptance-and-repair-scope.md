@@ -351,3 +351,23 @@ private-helper reuse, focused refusal regressions and one actual protected publi
 plan. Original #382 owns native continuation after repaired-source integration.
 No unchanged retries, source U001 export, native acceptance, target adoption,
 CI restoration or publication is inferred.
+
+
+## Native driver review and #383 dispatch
+
+Coordinator reviewed fixed #382 test driver/runner delta at 878cefc7471ae77d80ddc3f1d358c2bce2704b95.
+The driver pins all ten raw engine files, uses isolated public subprocesses,
+owned fixture roots and independent native guard/notification helpers, caps
+selected children/operations/files, and preserves interruption not-observed as
+non-pass. Product bytes remain unchanged. Five tracked evidence hashes and
+ten engine raw hashes match; the post-run record commit has no source/test drift.
+No actionable finding was identified in this bounded driver review. Dependent
+apply/guard/interruption/recovery paths have static evidence only at this point.
+
+#383 was actually dispatched to 01a0cebc-d5fe-7fc3-b0c3-aa41882a83c1 in
+F:/framework-next/383, branch codex/2026-09-23-protected-path-repair, from
+cc3189193788750277269f63f3753a639becc3c6. First tool exec-507f6c25-52b7-4464-b024-e69ec72e64c1
+reported completion; clean F: HEAD was independently read back and runtime
+state_5.sqlite shows gpt-6-astra / ultra. Actual repair completion is not implied.
+#373 fixture return is locally integrated in eec89605; both exact runner stream
+hashes were independently decoded and verified.

@@ -94,7 +94,7 @@
     }
   },
   "continuation_checkpoint": {
-    "observed_at": "2026-09-23T22:46:51+08:00",
+    "observed_at": "2026-09-23T22:49:58+08:00",
     "coordinator_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "branch": "codex/2026-09-23-rc1-preparation",
     "integrated_main": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
@@ -132,6 +132,15 @@
         "branch": "codex/2026-09-23-native-maintenance-checks",
         "starting_commit": "031233202f21e0793c9667cac872375d65e52be0",
         "first_repository_command": "exec-defa8165-89a3-4df0-83b7-6ea3f3ddaf64"
+      },
+      {
+        "issue": 383,
+        "thread_id": "01a0cebc-d5fe-7fc3-b0c3-aa41882a83c1",
+        "worktree": "F:/framework-next/383",
+        "branch": "codex/2026-09-23-protected-path-repair",
+        "starting_commit": "cc3189193788750277269f63f3753a639becc3c6",
+        "first_repository_command": "exec-507f6c25-52b7-4464-b024-e69ec72e64c1",
+        "runtime": "gpt-6-astra / ultra; sqlite read-back"
       }
     ],
     "runtime_verification": "Read-only state_5.sqlite rows show gpt-6-astra / ultra for both actual tasks; first commands show assigned clean F: checkouts.",
@@ -178,14 +187,14 @@
       "issue": 373,
       "delivery": "fd19f252d1f6668bb6315ee67ac9528326fa2923",
       "result": "workflow family passed; PR cleanup pending",
-      "integration": "pending"
+      "integration": "local eec89605; online pending"
     },
     "native_return": {
       "issue": 382,
       "delivery": "878cefc7471ae77d80ddc3f1d358c2bce2704b95",
       "result": "not-passed; protected path plan failure; dependent cases unexecuted",
       "repair_issue": 383,
-      "driver_review_integration": "pending"
+      "driver_review_integration": "bounded fixed-source review no finding; local merge in containing commit; native acceptance incomplete"
     }
   }
 }

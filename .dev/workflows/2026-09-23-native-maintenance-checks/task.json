@@ -1,0 +1,49 @@
+{
+  "task_id": "N382-NATIVE",
+  "workflow_id": "2026-09-23-native-maintenance-checks",
+  "owner_skill": "local-change-implementer",
+  "status": "completed",
+  "created_at": "2026-09-23T22:37:49+08:00",
+  "updated_at": "2026-09-23T22:42:06+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "template_version": "1.5.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance_limit": "Coordinator-declared dispatch; not independent runtime attestation.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/382",
+  "starting_commit": "031233202f21e0793c9667cac872375d65e52be0",
+  "worktree": "F:\\framework-next\\382",
+  "branch": "codex/2026-09-23-native-maintenance-checks",
+  "checkpoint_commit_source": "containing-commit",
+  "hidden_context_required": false,
+  "acceptance": [
+    "Public inspect/plan plus raw hash and membership refusal on one real lesson-minimal candidate.",
+    "Fresh apply with full managed bytes/lock/marker, protected/unknown preservation and durable object integrity.",
+    "Same-content no-op; owned drift and same-byte unowned collision refusal.",
+    "Two real owned Windows processes; native guard refusal then admission after owned helper termination.",
+    "One unmodified public apply interruption attempt after real marker notification; exact admissible finish or honest residual.",
+    "Strict non-pass aggregation, bounded launch/file/byte/operation counts, durable raw observations."
+  ],
+  "results": {
+    "summary": "Bounded driver and one actual selected attempt delivered. Product plan failure stops dependent cases; native acceptance remains incomplete.",
+    "validation": [
+      "Direct AST parse; four invalid argument selections refused, valid native binding accepted without product imports.",
+      "git diff --check"
+    ],
+    "follow_up_needed": true,
+    "finding_status": "handed-off-to-coordinator",
+    "verification": "not-passed",
+    "actual_source_commit": "a9af5fe793f938ac9b66f94034bda8a2cafb50ec",
+    "native_exit": 1,
+    "report": "report.md",
+    "observations": "evidence/summary.json"
+  },
+  "deferred": {
+    "disposition": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program 322 coordinator / P7",
+    "scope": "All unselected legacy/full/history/formal/audit/lease/hosted validation; CI adoption, complete target pilot, versioned candidate and stable upgrade.",
+    "next_action": "Coordinator selects affected follow-up; no automatic activation."
+  },
+  "next_action": "Coordinator assigns N382-F01 protected-path repair and selects a fresh affected native run after integration. Preserve all residue; 382 does not repair product, retry public calls, or activate target/CI."
+}

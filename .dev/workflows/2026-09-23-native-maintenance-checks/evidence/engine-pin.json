@@ -1,0 +1,47 @@
+{
+  "files": [
+    {
+      "path": "src/distribution/__init__.py",
+      "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+    },
+    {
+      "path": "src/distribution/data.py",
+      "sha256": "4b24ff0865ea96b5bc36809eadb8537120212376357697ce27461f7abda1984a"
+    },
+    {
+      "path": "src/distribution/git_source.py",
+      "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+    },
+    {
+      "path": "src/distribution/installation.py",
+      "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+    },
+    {
+      "path": "src/distribution/installation_io.py",
+      "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+    },
+    {
+      "path": "src/distribution/installation_plan.py",
+      "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+    },
+    {
+      "path": "src/distribution/installation_state.py",
+      "sha256": "ed0fa502b6ed4fed82a9aa3fd15f326af7acef6748ca3c438395d8052320c5db"
+    },
+    {
+      "path": "src/distribution/maintenance_coordination.py",
+      "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+    },
+    {
+      "path": "src/distribution/package.py",
+      "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+    },
+    {
+      "path": "src/tools/maintain_framework.py",
+      "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+    }
+  ],
+  "id": "framework-managed-installation",
+  "source_commit": "a9af5fe793f938ac9b66f94034bda8a2cafb50ec",
+  "version": "1.0.0"
+}
