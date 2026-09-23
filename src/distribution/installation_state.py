@@ -22,7 +22,7 @@ from .package import check_references, load_package
 
 __all__ = ["InstallationError", "Candidate", "InstalledLock", "Observation",
            "read_candidate", "read_lock", "observe_installation", "inspect",
-           "READER_ENGINE_FILES", "LIMITS"]
+           "READER_ENGINE_FILES", "ENGINE_FILES", "LIMITS"]
 
 LIMITS = {"document_bytes": 4 * 1024 * 1024, "file_bytes": 16 * 1024 * 1024,
           "total_bytes": 128 * 1024 * 1024, "members": 4096, "components": 128,
@@ -33,6 +33,10 @@ READER_ENGINE_FILES = tuple(sorted((
     "src/distribution/__init__.py", "src/distribution/data.py",
     "src/distribution/git_source.py", "src/distribution/package.py",
     "src/distribution/installation_state.py", "src/distribution/installation_plan.py",
+)))
+ENGINE_FILES = tuple(sorted((*READER_ENGINE_FILES,
+    "src/distribution/installation.py", "src/distribution/installation_io.py",
+    "src/distribution/maintenance_coordination.py", "src/tools/maintain_framework.py",
 )))
 METADATA = ("metadata/selection.json", "metadata/files.json", "metadata/build.json")
 LOCK_PATH = ".ai/framework.lock"
@@ -209,7 +213,10 @@ class _Reader:
     """One call's bounded reads/listings. Caches are observations, not a lease."""
 
     def __init__(self):
-        self.bytes = 0
+        bootstrap_bytes = getattr(sys.modules.get("__main__"), "_framework_bootstrap_bytes", 0)
+        _check(type(bootstrap_bytes) is int and 0 <= bootstrap_bytes <= LIMITS["total_bytes"],
+               "bootstrap-read-budget", "Bootstrap read accounting is invalid.")
+        self.bytes = bootstrap_bytes
         self.entries = 0
         self.listings: dict[Path, dict[str, str]] = {}
 
@@ -555,22 +562,10 @@ class Candidate:
     contents: dict[str, bytes]
 
 
-def read_candidate(candidate_root: str, *, _reader: _Reader | None = None) -> Candidate:
-    """Read exact emitted candidate closure; no external source reproduction.
-
-    Source/profile/generator identities are provenance. Public operation
-    boundaries translate filesystem/format exceptions into safe diagnostics.
-    """
-    _check(sys.dont_write_bytecode, "bytecode-policy", "Start the host with -B before importing the reader; implicit bytecode writes are unsupported.", outcome="unsupported")
-    reader = _reader or _Reader()
-    root = _root(candidate_root)
-    raw = {}
-    docs = {}
-    for name in METADATA:
-        target = reader.locate(root, name)
-        _check(target is not None, "incomplete-candidate", "Candidate metadata document is missing.", name)
-        raw[name] = reader.read(target, name, LIMITS["document_bytes"])
-        docs[name] = _document(raw[name], name)
+def _candidate_documents(raw: dict[str, bytes]) -> tuple:
+    """Shared candidate semantics for filesystem input and durable recovery objects."""
+    _shape(raw, set(METADATA))
+    docs = {name: _document(raw[name], name) for name in METADATA}
     selection, inventory, build = (docs[name] for name in METADATA)
     members = _selection_inventory(selection, inventory)
     identity, identity_inputs = _candidate_identity(selection, inventory)
@@ -604,6 +599,24 @@ def read_candidate(candidate_root: str, *, _reader: _Reader | None = None) -> Ca
         _digest(item["execution_file_sha256"])
     _check([item["source"] for item in executing] == selection["generator"]["implementation"],
            "generator-binding", "Build execution provenance differs from selection.")
+    return selection, inventory, build, members, identity
+
+
+def read_candidate(candidate_root: str, *, _reader: _Reader | None = None) -> Candidate:
+    """Read exact emitted candidate closure; no external source reproduction.
+
+    Source/profile/generator identities are provenance. Public operation
+    boundaries translate filesystem/format exceptions into safe diagnostics.
+    """
+    _check(sys.dont_write_bytecode, "bytecode-policy", "Start the host with -B before importing the reader; implicit bytecode writes are unsupported.", outcome="unsupported")
+    reader = _reader or _Reader()
+    root = _root(candidate_root)
+    raw = {}
+    for name in METADATA:
+        target = reader.locate(root, name)
+        _check(target is not None, "incomplete-candidate", "Candidate metadata document is missing.", name)
+        raw[name] = reader.read(target, name, LIMITS["document_bytes"])
+    selection, inventory, build, members, identity = _candidate_documents(raw)
     expected = set(METADATA) | {row["path"] for row in members.values()}
     directories = {"/".join(name.split("/")[:i]) for name in expected for i in range(1, len(name.split("/")))}
     pending, found = [(root, "")], set()
@@ -636,14 +649,8 @@ class InstalledLock:
     members: dict[str, dict]
 
 
-def read_lock(project_root: str, *, _reader: _Reader | None = None) -> InstalledLock | None:
-    """Read lock 1; absence confers no ownership. Does not establish file state."""
-    reader = _reader or _Reader()
-    root = _root(project_root)
-    target = reader.locate(root, LOCK_PATH)
-    if target is None:
-        return None
-    raw = reader.read(target, LOCK_PATH, LIMITS["document_bytes"])
+def _lock_bytes(raw: bytes) -> InstalledLock:
+    """One lock parser shared by live observation and durable operations."""
     document = _document(raw, LOCK_PATH)
     _shape(document, {"lock_version", "installation_id", "engine", "mode_policy", "candidate_identity", "selection", "inventory"})
     _one(document["lock_version"])
@@ -656,6 +663,17 @@ def read_lock(project_root: str, *, _reader: _Reader | None = None) -> Installed
     identity, _ = _candidate_identity(document["selection"], document["inventory"])
     _check(document["candidate_identity"] == identity, "lock-identity", "Embedded candidate identity disagrees.", LOCK_PATH)
     return InstalledLock(document, raw, sha256(raw).hexdigest(), members)
+
+
+def read_lock(project_root: str, *, _reader: _Reader | None = None) -> InstalledLock | None:
+    """Read lock 1; absence confers no ownership. Does not establish file state."""
+    reader = _reader or _Reader()
+    root = _root(project_root)
+    target = reader.locate(root, LOCK_PATH)
+    if target is None:
+        return None
+    raw = reader.read(target, LOCK_PATH, LIMITS["document_bytes"])
+    return _lock_bytes(raw)
 
 
 @dataclass(frozen=True)
@@ -792,19 +810,31 @@ def _engine(reader: _Reader, root: Path, pin: dict) -> None:
     _check(os.name in {"posix", "nt"}, "unsupported-platform", "Reader platform is unsupported.", outcome="unsupported")
     _check(sys.dont_write_bytecode, "bytecode-policy", "Start the host with -B before importing product/dependency modules.", outcome="unsupported")
     _engine_shape(pin)
-    _check(tuple(row["path"] for row in pin["files"]) == READER_ENGINE_FILES,
-           "unsupported-engine-closure", "Pin must name this reader/planner closure exactly; writer closure requires later integration.", outcome="unsupported")
+    _check(tuple(row["path"] for row in pin["files"]) == ENGINE_FILES,
+           "unsupported-engine-closure", "Pin must name the complete source maintenance engine closure exactly.", outcome="unsupported")
     _check(Path(__file__).resolve().parents[2] == root, "executing-engine-root", "Explicit engine root differs from executing reader checkout.")
+    bootstrap = sys.modules.get("__main__")
+    _check(getattr(bootstrap, "_framework_bootstrap", None) == (str(root), pin)
+           and Path(getattr(bootstrap, "__file__", "")).resolve() == root / "src/tools/maintain_framework.py",
+           "engine-bootstrap", "Use the fixed isolated source entry; caller imports alone do not establish bootstrap.", outcome="unsupported")
     _check(_head(reader, root) == pin["source_commit"], "engine-head", "Engine checkout HEAD differs from the explicit pin.")
     for row in pin["files"]:
         target = reader.locate(root, row["path"])
         _check(target is not None, "engine-file", "Pinned engine file is missing.", row["path"])
         _check(sha256(reader.read(target, row["path"])).hexdigest() == row["sha256"], "engine-drift", "Engine execution bytes differ from pin.", row["path"])
-        module_name = __package__ if row["path"].endswith("/__init__.py") else __package__ + "." + Path(row["path"]).stem
+        module_name = ("__main__" if row["path"] == "src/tools/maintain_framework.py" else
+                       __package__ if row["path"].endswith("/__init__.py") else
+                       __package__ + "." + Path(row["path"]).stem)
         module = sys.modules.get(module_name)
         if module is not None:
             _check(getattr(module, "__file__", None) is not None and Path(module.__file__).resolve() == target,
                    "engine-module-origin", "Loaded module originates outside the pinned checkout.", row["path"])
+
+    expected_modules = {__package__} | {__package__ + "." + Path(name).stem
+                       for name in ENGINE_FILES if name.startswith("src/distribution/") and not name.endswith("/__init__.py")}
+    actual_modules = {name for name in sys.modules if name == __package__ or name.startswith(__package__ + ".")}
+    _check(actual_modules == expected_modules, "engine-import-closure",
+           "Loaded local package modules differ from the closed maintenance engine.", outcome="unsupported")
 
 
 def _roots_disjoint(roots: dict[str, Path]) -> None:
@@ -814,8 +844,10 @@ def _roots_disjoint(roots: dict[str, Path]) -> None:
                 continue
             if {name, other_name} == {"scratch", "staging"} and root == other:
                 continue
-            _check(not root.is_relative_to(other) and not other.is_relative_to(root),
-                   "root-overlap", "Selected roots overlap; only identical scratch/staging parents may be shared.")
+            left, right = root.stat(), other.stat()
+            _check(not root.is_relative_to(other) and not other.is_relative_to(root)
+                   and (left.st_dev, left.st_ino) != (right.st_dev, right.st_ino),
+                   "root-overlap", "Selected roots overlap or alias; only identical scratch/staging parents may be shared.")
 
 
 def _request(request: Any, operation: str, extra: set[str], optional: set[str] = frozenset()) -> dict:

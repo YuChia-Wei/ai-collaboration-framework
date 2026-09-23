@@ -1,7 +1,6 @@
-"""Read-only exact managed installation planning; no apply/recover facade.
+"""Read-only exact plans shared with the coordinated maintenance facade.
 
-A planned result is a transient observation. Pending writer/backend/bootstrap
-prerequisites prevent treating it as mutation admission or project readiness.
+Preview checks do not acquire writer exclusion or establish caller quiescence.
 """
 from __future__ import annotations
 
@@ -12,6 +11,7 @@ import stat
 
 from .data import json_bytes
 from . import installation_state as state
+from .installation_io import Backend
 
 __all__ = ["plan", "member_delta", "is_noop"]
 
@@ -105,10 +105,10 @@ def _protected(reader: state._Reader, root: Path, requested: list, managed: set[
 
 def _path_budget(roots: dict[str, Path], candidate: state.Candidate,
                  old: state.InstalledLock | None, delta: list[dict], protected: list[dict], engine: dict) -> dict:
-    """Budget the selected future layout without allocating IDs or directories.
+    """Budget the selected writer layout without allocating IDs or directories.
 
-    Fixed-width placeholders are length calculations only. The future writer
-    must select a real ID, check exclusive absence and budget its actual backend.
+    Fixed-width placeholders are length calculations only. Apply selects a real
+    ID, checks exclusive absence and budgets every actual backend path.
     """
     operation = "i-" + "0" * 32
     paths: set[tuple[str, str]] = {(role, "") for role in roots}
@@ -147,120 +147,119 @@ def _path_budget(roots: dict[str, Path], candidate: state.Candidate,
             "backend_certification": "not-assessed"}
 
 
-def _prerequisites(noop: bool, windows: bool, mode_only: bool, guard_present: bool) -> list[dict]:
+PLAN_FIELDS = {"candidate_root", "candidate_identity", "expected_lock_sha256", "mode_policy",
+               "scratch_root", "staging_root", "recovery_root", "durability", "protected_inputs", "project_data_action"}
+
+
+class PlanConflict(state.InstallationError):
+    def __init__(self, drift: list[dict]):
+        super().__init__("owned-drift", "Every old member must match before maintenance.", outcome="conflict")
+        self.diagnostics = [{"code": "owned-drift", "path": row["path"], "reason": row["reason"],
+                             "next_action": "Reconcile owned state without overwriting drift, then plan again."} for row in drift]
+
+
+def _prerequisites(noop: bool, windows: bool, mode_only: bool) -> list[dict]:
+    # Stable across acquisition/first-install guard creation. Runtime observations
+    # are discharged privately by apply, never smuggled into a reusable plan hash.
     rows = [
-        {"id": "candidate-provenance", "status": "satisfied", "owner": "caller",
-         "next_action": "Available bytes/bindings matched; separately approve provenance. External source authenticity/reproduction is not established."},
-        {"id": "durability-declaration", "status": "pending", "owner": "maintenance-writer/P7",
-         "next_action": "Confirm selected failure-domain support; declaration alone does not prove durability."},
-        {"id": "exclusive-operation-allocation", "status": "not-required" if noop else "pending", "owner": "maintenance-writer",
-         "next_action": "No allocation for no-op; otherwise allocate exclusive real operation/sibling names and recheck actual path budgets."},
-        {"id": "fresh-input-observation", "status": "pending", "owner": "maintenance-writer",
-         "next_action": "Recompute under writer coordination and require the accepted plan hash; cached observations are not a lease."},
-        {"id": "lock-publication", "status": "not-required" if noop else "pending", "owner": "maintenance-writer",
-         "next_action": "Preserve lock bytes for no-op; otherwise publish the next exact inventory lock after complete managed read-back."},
-        {"id": "maintenance-quiescence", "status": "pending", "owner": "caller",
-         "next_action": "Stop affected sessions/tools/external writers and supply the exact maintenance-scope declaration before mutation."},
-        {"id": "mode-materialization", "status": "not-applicable" if windows else "pending", "owner": "maintenance-writer",
-         "next_action": ("mode-not-materialized: Windows retains declared inventory only; mode-only delta writes no member bytes."
-                         if windows and mode_only else "Windows retains declared inventory only; no ACL/executable enforcement."
-                         if windows else "Preserve exact 0644/0755; a mode-only delta must not rewrite member bytes.")},
-        {"id": "native-writer-backend", "status": "pending", "owner": "maintenance-writer/P7",
-         "next_action": "Integrate and exercise OS-held writer exclusion, replacement, flush and recovery ordering before use."},
-        {"id": "writer-engine-closure", "status": "pending", "owner": "maintenance-writer",
-         "next_action": "Close executing entry/bootstrap/dependency/resource set and dependency provisioning; this pin covers readers/planner only."},
-        {"id": "writer-guard", "status": "pending", "owner": "maintenance-writer",
-         "next_action": ("Existing inert file is observed, not lock ownership; verify supported native coordination without replacing it."
-                         if guard_present else "Explicitly reserve first-install coordination separately; a claimed no-op may not create a guard.")},
+        ("candidate-provenance", "satisfied", "caller", "Available bytes/bindings match; provenance approval and source authenticity remain with caller."),
+        ("durability-declaration", "satisfied", "caller", "Native filesystem/domain combination is supported; recovery survival is a caller assertion, not measured durability."),
+        ("exclusive-operation-allocation", "not-required" if noop else "pending", "maintenance-writer", "Preflight actual unique paths and exclusively allocate the selected operation before managed mutation."),
+        ("fresh-input-observation", "pending", "maintenance-writer", "Recompute this exact plan under a held native writer lock."),
+        ("lock-publication", "not-required" if noop else "satisfied", "maintenance-writer", "Next lock fits the closed reader and selected backend; publication remains a postcondition after full member read-back."),
+        ("maintenance-quiescence", "pending", "caller", "Supply a fresh exact-scope declaration; the engine cannot attest stopped activity."),
+        ("mode-materialization", "not-applicable" if windows else "satisfied", "maintenance-writer",
+         "mode-not-materialized: Windows inventory-only; mode-only changes do not rewrite bytes." if windows and mode_only else
+         "Windows inventory-only; no ACL/executable enforcement." if windows else "Native exact 0644/0755 support; mode-only changes avoid byte replacement."),
+        ("native-writer-backend", "satisfied", "maintenance-writer", "Selected native primitives and filesystem/domain checks are available; this is not platform certification."),
+        ("writer-engine-closure", "satisfied", "maintenance-writer", "Fixed bootstrap, executing origins, exact source closure and observed checkout HEAD match the caller pin."),
+        ("writer-guard", "pending", "maintenance-writer", "Acquire the inert guard with a native OS lock; no-op cannot create a missing guard."),
     ]
-    return sorted(rows, key=lambda row: row["id"])
+    return [{"id": name, "status": status, "owner": owner, "next_action": action}
+            for name, status, owner, action in sorted(rows)]
+
+
+def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -> tuple:
+    """Recompute from raw inputs. own_guard is internal held-handle provenance."""
+    state._text(request["candidate_identity"])
+    state._digest(request["expected_lock_sha256"], nullable=True)
+    state._text(request["mode_policy"])
+    state._check((os.name, request["mode_policy"]) in {("posix", "posix-permissions"), ("nt", "windows-inventory-only")},
+                 "mode-platform", "Explicit mode policy is unsupported on this platform.", outcome="unsupported")
+    state._check(request["project_data_action"] == "none", "project-data-action", "Only project_data_action=none is supported.", outcome="unsupported")
+    durability = state._shape(request["durability"], {"declared_by", "declaration_reference", "failure_domain"})
+    for value in durability.values():
+        state._text(value)
+    reader.listings.clear()
+    roots = {role: state._root(request[role + "_root"]) for role in ("project", "engine", "candidate", "scratch", "staging", "recovery")}
+    state._roots_disjoint(roots)
+    state._engine(reader, roots["engine"], request["engine"])
+    candidate = state.read_candidate(request["candidate_root"], _reader=reader)
+    state._check(candidate.identity == request["candidate_identity"], "candidate-selection", "Candidate differs from caller-selected identity.", outcome="conflict")
+    observation = state.observe_installation(request["project_root"], candidate, _reader=reader)
+    state._check(not observation.markers, "maintenance-marker", "An incomplete/inaccessible maintenance marker blocks planning.", outcome="blocked")
+    old = observation.lock
+    state._check((old.sha256 if old else None) == request["expected_lock_sha256"],
+                 "lock-conflict", "Observed raw lock identity differs from expected hash/absence.", state.LOCK_PATH, "conflict")
+    if observation.drift:
+        raise PlanConflict(observation.drift)
+    if old:
+        state._check(old.document["mode_policy"] == request["mode_policy"], "mode-policy-transition",
+                     "Changing an installed mode policy needs a separately supported transition.", outcome="unsupported")
+    names = set(candidate.members) | (set(old.members) if old else set())
+    state._paths(sorted(names))
+    delta = member_delta(old, candidate)
+    for row in delta:
+        if row["action"] == "add":
+            target = reader.locate(roots["project"], row["destination"])
+            state._check(target is None, "unowned-collision", "Destination exists without old inventory ownership, even if bytes match.", row["destination"], "conflict")
+    # Reserved controls may have absent ancestors; locating checks aliases,
+    # linked ancestors and parent occupation without creating anything.
+    guard = reader.locate(roots["project"], state.GUARD_PATH)
+    if guard is not None:
+        info = guard.lstat()
+        state._check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size == 0,
+                     "guard-conflict", "Reserved coordination path is not a direct regular file.", state.GUARD_PATH, "conflict")
+        state._check(old is not None or own_guard, "unowned-control", "Clean install cannot adopt a preexisting coordination file.", state.GUARD_PATH, "conflict")
+    protected = _protected(reader, roots["project"], request["protected_inputs"], names)
+    # Exact fixed-width lock shape budget, without publishing a lock or ID.
+    prospective_lock = {"lock_version": 1, "installation_id": old.document["installation_id"] if old else "0" * 32,
+                        "engine": request["engine"], "mode_policy": request["mode_policy"],
+                        "candidate_identity": candidate.identity, "selection": candidate.selection,
+                        "inventory": candidate.inventory}
+    state._check(len(json_bytes(prospective_lock)) <= state.LIMITS["document_bytes"],
+                 "lock-limit", "Resulting lock would exceed its reader byte limit.")
+    backend = Backend(roots, durability)
+    budget = _path_budget(roots, candidate, old, delta, protected, request["engine"])
+    noop = is_noop(observation, candidate, request["mode_policy"])
+    capabilities = {item["id"] for item in candidate.selection["components"]}
+    if old:
+        capabilities.update(item["id"] for item in old.document["selection"]["components"])
+    document = {"api_version": 1, "operation": "plan", "project_root": str(roots["project"]),
+                "candidate_identity": candidate.identity, "engine": request["engine"],
+                "expected_lock_sha256": request["expected_lock_sha256"], "mode_policy": request["mode_policy"],
+                "roots": {role: str(roots[role]) for role in ("engine", "candidate", "scratch", "staging", "recovery")},
+                "durability": durability, "project_data_action": "none", "protected_inputs": protected,
+                "maintenance_scope": sorted(capabilities), "delta": delta,
+                "preserved_unknown": observation.unknown, "path_budget": budget,
+                "prerequisites": _prerequisites(noop, os.name == "nt", any(row["action"] == "mode-only" for row in delta))}
+    # Snapshot caller-owned containers; later caller mutations cannot silently
+    # change the returned plan without changing its advertised hash.
+    raw = json_bytes(document)
+    state._check(len(raw) <= state.LIMITS["document_bytes"], "plan-limit", "Plan exceeds serialization byte limit.")
+    document = state._document(raw, "plan.json")
+    result = {"api_version": 1, "operation": "plan", "outcome": "planned", "plan": document,
+              "plan_sha256": sha256(raw).hexdigest()}
+    return result, candidate, observation, roots, backend
 
 
 def plan(request: dict | bytes) -> dict:
-    """Closed API 1 plan: exact observations/delta only, with no material writes.
-
-    All plan hashes use distribution.data.json_bytes. No stamp or random value
-    enters identity. Every failed plan has details=null and changed=false.
-    """
-    project_phase = False
+    """Closed API 1 preview with no allocation, lock acquisition or writes."""
     try:
-        request = state._request(request, "plan", {"candidate_root", "candidate_identity", "expected_lock_sha256",
-                                         "mode_policy", "scratch_root", "staging_root", "recovery_root",
-                                         "durability", "protected_inputs", "project_data_action"})
-        state._text(request["candidate_identity"])
-        state._digest(request["expected_lock_sha256"], nullable=True)
-        state._text(request["mode_policy"])
-        state._check((os.name, request["mode_policy"]) in {("posix", "posix-permissions"), ("nt", "windows-inventory-only")},
-                     "mode-platform", "Explicit mode policy is unsupported on this platform.", outcome="unsupported")
-        state._check(request["project_data_action"] == "none", "project-data-action", "Only project_data_action=none is supported.", outcome="unsupported")
-        durability = state._shape(request["durability"], {"declared_by", "declaration_reference", "failure_domain"})
-        for value in durability.values():
-            state._text(value)
-        reader = state._Reader()
-        roots = {role: state._root(request[role + "_root"]) for role in ("project", "engine", "candidate", "scratch", "staging", "recovery")}
-        state._roots_disjoint(roots)
-        state._engine(reader, roots["engine"], request["engine"])
-        candidate = state.read_candidate(request["candidate_root"], _reader=reader)
-        state._check(candidate.identity == request["candidate_identity"], "candidate-selection", "Candidate differs from caller-selected identity.", outcome="conflict")
-        project_phase = True
-        observation = state.observe_installation(request["project_root"], candidate, _reader=reader)
-        state._check(not observation.markers, "maintenance-marker", "An incomplete/inaccessible maintenance marker blocks planning.", outcome="blocked")
-        old = observation.lock
-        state._check((old.sha256 if old else None) == request["expected_lock_sha256"],
-                     "lock-conflict", "Observed raw lock identity differs from expected hash/absence.", state.LOCK_PATH, "conflict")
-        if observation.drift:
-            return {"api_version": 1, "operation": "plan", "outcome": "conflict", "changed": False, "details": None,
-                    "diagnostics": [{"code": "owned-drift", "path": row["path"], "reason": row["reason"],
-                                     "next_action": "Reconcile owned state without overwriting drift, then plan again."} for row in observation.drift]}
-        if old:
-            state._check(old.document["mode_policy"] == request["mode_policy"], "mode-policy-transition",
-                         "Changing an installed mode policy needs a separately supported transition.", outcome="unsupported")
-        names = set(candidate.members) | (set(old.members) if old else set())
-        state._paths(sorted(names))
-        delta = member_delta(old, candidate)
-        for row in delta:
-            if row["action"] == "add":
-                target = reader.locate(roots["project"], row["destination"])
-                state._check(target is None, "unowned-collision", "Destination exists without old inventory ownership, even if bytes match.", row["destination"], "conflict")
-        # Reserved controls may have absent ancestors; locating checks aliases,
-        # linked ancestors and parent occupation without creating anything.
-        guard = reader.locate(roots["project"], state.GUARD_PATH)
-        if guard is not None:
-            info = guard.lstat()
-            state._check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
-                         "guard-conflict", "Reserved coordination path is not a direct regular file.", state.GUARD_PATH, "conflict")
-            state._check(old is not None, "unowned-control", "Clean install cannot adopt a preexisting coordination file.", state.GUARD_PATH, "conflict")
-        protected = _protected(reader, roots["project"], request["protected_inputs"], names)
-        # Exact fixed-width lock shape budget, without publishing a lock or ID.
-        prospective_lock = {"lock_version": 1, "installation_id": old.document["installation_id"] if old else "0" * 32,
-                            "engine": request["engine"], "mode_policy": request["mode_policy"],
-                            "candidate_identity": candidate.identity, "selection": candidate.selection,
-                            "inventory": candidate.inventory}
-        state._check(len(json_bytes(prospective_lock)) <= state.LIMITS["document_bytes"],
-                     "lock-limit", "Resulting lock would exceed its reader byte limit.")
-        budget = _path_budget(roots, candidate, old, delta, protected, request["engine"])
-        noop = is_noop(observation, candidate, request["mode_policy"])
-        capabilities = {item["id"] for item in candidate.selection["components"]}
-        if old:
-            capabilities.update(item["id"] for item in old.document["selection"]["components"])
-        document = {"api_version": 1, "operation": "plan", "project_root": str(roots["project"]),
-                    "candidate_identity": candidate.identity, "engine": request["engine"],
-                    "expected_lock_sha256": request["expected_lock_sha256"], "mode_policy": request["mode_policy"],
-                    "roots": {role: str(roots[role]) for role in ("engine", "candidate", "scratch", "staging", "recovery")},
-                    "durability": durability, "project_data_action": "none", "protected_inputs": protected,
-                    "maintenance_scope": sorted(capabilities), "delta": delta,
-                    "preserved_unknown": observation.unknown, "path_budget": budget,
-                    "prerequisites": _prerequisites(noop, os.name == "nt", any(row["action"] == "mode-only" for row in delta), guard is not None)}
-        # Snapshot caller-owned containers; later caller mutations cannot silently
-        # change the returned plan without changing its advertised hash.
-        raw = json_bytes(document)
-        state._check(len(raw) <= state.LIMITS["document_bytes"], "plan-limit", "Plan exceeds serialization byte limit.")
-        document = state._document(raw, "plan.json")
-        return {"api_version": 1, "operation": "plan", "outcome": "planned", "plan": document,
-                "plan_sha256": sha256(raw).hexdigest()}
+        request = state._request(request, "plan", PLAN_FIELDS)
+        return _prepare(request, state._Reader())[0]
     except (state.InstallationError, OSError, UnicodeError, ValueError, TypeError, RecursionError, OverflowError) as exc:
         result = state._failure("plan", exc)
-        if project_phase and isinstance(exc, state.InstallationError) and exc.diagnostic["code"] in {
-                "path-collision", "path-alias", "parent-collision", "linked-path", "not-regular", "hardlinked-file"}:
-            result["outcome"] = "conflict"
+        if isinstance(exc, PlanConflict):
+            result["diagnostics"] = exc.diagnostics
         return result
