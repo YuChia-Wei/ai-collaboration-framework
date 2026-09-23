@@ -263,10 +263,28 @@ class _Reader:
         self.bytes = bootstrap_bytes
         self.entries = 0
         self.listings: dict[Path, dict[str, str]] = {}
+        self._listing_observations: dict[Path, tuple] = {}
+
+    def forget_listing(self, directory: Path) -> None:
+        """Own namespace mutations invalidate observations even on coarse clocks."""
+        self.listings.pop(directory, None)
+        self._listing_observations.pop(directory, None)
+
+    def _directory_observation(self, directory: Path) -> tuple:
+        info = directory.lstat()
+        _plain(info, None)
+        _check(stat.S_ISDIR(info.st_mode), "parent-collision", "Required parent is not a direct directory.")
+        _check(info.st_dev and info.st_ino, "directory-identity", "Directory identity is unavailable.")
+        return (info.st_dev, info.st_ino, info.st_mode, info.st_size,
+                info.st_mtime_ns, info.st_ctime_ns, getattr(info, "st_file_attributes", 0))
 
     def listing(self, directory: Path) -> dict[str, str]:
-        if directory in self.listings:
+        # Revalidate the direct directory before reuse. This is an observation
+        # under the existing quiescent-writer contract, never a filesystem lease.
+        before = self._directory_observation(directory)
+        if directory in self.listings and self._listing_observations.get(directory) == before:
             return self.listings[directory]
+        self.forget_listing(directory)
         names = {}
         with os.scandir(directory) as rows:
             for row in rows:
@@ -275,7 +293,10 @@ class _Reader:
                 folded = row.name.casefold()
                 _check(folded not in names, "path-alias", "Case aliases exist in a required directory.")
                 names[folded] = row.name
+        _check(self._directory_observation(directory) == before,
+               "directory-drift", "Directory changed during listing; no partial inventory.")
         self.listings[directory] = names
+        self._listing_observations[directory] = before
         return names
 
     def locate(self, root: Path, name: str) -> Path | None:
