@@ -8,6 +8,8 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-instruction-operations`](2026-09-23-instruction-operations/workflow.yaml) | Metadata v3 instruction operations and portable common reviewer | `ai-context-governance` | `in_progress` | `2026-09-23T09:49:09+08:00` | [plan](2026-09-23-instruction-operations/workflow-plan.md) |
+| [`2026-09-23-portable-authoring`](2026-09-23-portable-authoring/workflow.yaml) | Portable requirement and specification authoring source | `ai-context-governance` | `completed` | `2026-09-23 09:50:30+08:00` | [plan](2026-09-23-portable-authoring/workflow-plan.md) |
 | [`2026-09-23-capability-consolidation`](2026-09-23-capability-consolidation/workflow.yaml) | P5 capability and format disposition design | `ai-context-governance` | `completed` | `2026-09-23T09:31:22+08:00` | [plan](2026-09-23-capability-consolidation/workflow-plan.md) |
 | [`2026-09-23-workflow-orchestration`](2026-09-23-workflow-orchestration/workflow.yaml) | Portable workflow orchestration, continuation and retention previews | `ai-context-governance` | `completed` | `2026-09-23T01:44:27+00:00` | [plan](2026-09-23-workflow-orchestration/workflow-plan.md) |
 | [`2026-09-23-p3-distribution`](2026-09-23-p3-distribution/workflow.yaml) | P3 metadata v2 distribution support and actual package mapping | `ai-context-governance` | `completed` | `2026-09-23T09:12:38+08:00` | [plan](2026-09-23-p3-distribution/workflow-plan.md) |

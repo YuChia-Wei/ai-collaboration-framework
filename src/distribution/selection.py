@@ -139,7 +139,9 @@ def select(source: GitSource, profile_id: str) -> Selection:
             members.append(Member("payload", maps[key][name], key, blob.mode, blob.data, blob))
         for adapter_id in sorted(selected_adapters):
             template = source.read(adapters[adapter_id]["template"])
-            destination, data = project_entry(template.data, key, package.version, frontmatter["description"], maps[key])
+            destination, data = project_entry(template.data, key, package.version,
+                                              frontmatter["description"], maps[key],
+                                              configuration=package.metadata["configuration"])
             output_paths.add(destination, f"{adapter_id}/{key}")
             member = Member("runtime", destination, f"{adapter_id}/{key}", "100644", data)
             members.append(member)

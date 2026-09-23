@@ -12,7 +12,8 @@ from .data import require
 
 
 def project_entry(template_bytes: bytes, package_id: str, package_version: str,
-                  description: str, destinations: dict[str, str]) -> tuple[str, bytes]:
+                  description: str, destinations: dict[str, str],
+                  *, configuration: dict | None) -> tuple[str, bytes]:
     runtime_name = f"framework-{package_id}"
     destination = f".agents/skills/{runtime_name}/SKILL.md"
     directory = posixpath.dirname(destination)
@@ -20,6 +21,22 @@ def project_entry(template_bytes: bytes, package_id: str, package_version: str,
     def relative(member: str) -> str:
         return posixpath.relpath(destinations[member], directory)
 
+    if configuration is None:
+        configuration_guidance = (
+            "This package declares `configuration: null`. It needs no framework "
+            "configuration file or managed record store. Do not resolve or create "
+            "either for this package. Obtain only the target inputs required by "
+            "the selected operation."
+        )
+    else:
+        configuration_guidance = (
+            "Obtain the caller's explicit `project_root`, configuration selection "
+            "and operation. This project's selected configuration convention is "
+            "`.ai/custom/framework.json`; it remains project-owned and is not "
+            "supplied by this entry. Pass any chosen configuration path explicitly "
+            "under the installed skill's configuration contract. Do not infer "
+            "settings from the current working directory."
+        )
     template = Template(template_bytes.decode("utf-8", errors="strict"))
     values = {
         "runtime_name": runtime_name,
@@ -27,6 +44,7 @@ def project_entry(template_bytes: bytes, package_id: str, package_version: str,
         "package_identity": f"{package_id}@{package_version}",
         "installed_entrypoint": relative("SKILL.md"),
         "installed_metadata": relative("skill-package.yaml"),
+        "configuration_guidance": configuration_guidance,
         "resources": "\n".join(f"- [{member}]({relative(member)})" for member in sorted(destinations)
                                 if member not in {"SKILL.md", "skill-package.yaml"}),
     }

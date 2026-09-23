@@ -1,4 +1,4 @@
-"""Consume explicit package metadata versions 1/2; never resolve project settings."""
+"""Consume explicit package metadata versions 1/2/3; never resolve project settings."""
 
 from __future__ import annotations
 
@@ -52,8 +52,8 @@ def load_package(blob: Blob) -> Package:
     if type(metadata_version) is int and metadata_version == 1:
         version_one(metadata_version, label)
     else:
-        require(type(metadata_version) is int and metadata_version == 2,
-                f"{label}: only integer metadata versions 1 and 2 are supported")
+        require(type(metadata_version) is int and metadata_version in {2, 3},
+                f"{label}: only integer metadata versions 1, 2 and 3 are supported")
     owner = identifier(data["id"], label)
     version(data["version"], label)
     require(data["delivery_status"] == "implemented", f"{owner}: design-only packages cannot be built as implemented candidates")
@@ -113,17 +113,35 @@ def load_package(blob: Blob) -> Package:
                     f"{owner}: operation contract must be a declared reference")
             require(bool(text_array(resource["operations"], label)), f"{owner}: tool needs operations")
 
-    operations = named(data["operations"], {"inputs", "outputs", "tool", "implementation_status"}, set(), label)
+    operation_fields = {"inputs", "outputs", "implementation_status"}
+    if metadata_version == 3:
+        operations = named(data["operations"], operation_fields | {"execution"},
+                           {"tool", "instructions"}, label)
+    else:
+        operations = named(data["operations"], operation_fields | {"tool"}, set(), label)
     require(bool(operations), f"{owner}: operations cannot be empty")
+    tool_operations = {}
     for operation_id, operation in operations.items():
+        operation_label = f"{owner}.{operation_id}"
         text_array(operation["inputs"], label)
         text_array(operation["outputs"], label)
-        require(operation["implementation_status"] == "implemented", f"{owner}.{operation_id}: operation is not implemented")
+        require(operation["implementation_status"] == "implemented", f"{operation_label}: operation is not implemented")
+        if metadata_version == 3:
+            execution = string(operation["execution"], operation_label)
+            require(execution in {"instruction", "tool"}, f"{operation_label}: unknown execution kind")
+            arm = "instructions" if execution == "instruction" else "tool"
+            mapping(operation, operation_fields | {"id", "execution", arm}, set(), operation_label)
+            if execution == "instruction":
+                instruction = path(operation["instructions"], operation_label)
+                require(instruction in resources["references"],
+                        f"{operation_label}: instructions must be a declared reference")
+                continue
         tool_id = string(operation["tool"], label)
         require(tool_id in tools and operation_id in tools[tool_id]["operations"],
-                f"{owner}.{operation_id}: tool mapping is inconsistent")
+                f"{operation_label}: tool mapping is inconsistent")
+        tool_operations[operation_id] = tool_id
     for tool_id, tool in tools.items():
-        require(set(tool["operations"]) == {key for key, op in operations.items() if op["tool"] == tool_id},
+        require(set(tool["operations"]) == {key for key, value in tool_operations.items() if value == tool_id},
                 f"{owner}.{tool_id}: public operations and tool operations disagree")
 
     runtimes = named(data["runtime"], {"for_operations", "on_missing"}, {"requirement", "version", "purpose"}, label)
@@ -141,11 +159,11 @@ def load_package(blob: Blob) -> Package:
         require(type(role) is dict, f"{owner}: artifact role must be an object")
         if role.get("owner") == "project":
             role_fields = {"role", "owner", "schema", "store_binding", "identity", "filename", "read_operations", "write_operations"}
-            if metadata_version == 2:
+            if metadata_version in {2, 3}:
                 role_fields.add("read_schemas")
             mapping(role, role_fields, set(), label)
             declared_schemas = {f"{item['id']}@{item['version']}" for item in schemas.values()}
-            if metadata_version == 2:
+            if metadata_version in {2, 3}:
                 string(role["schema"], label)
                 readable = text_array(role["read_schemas"], label)
                 require(bool(readable) and set(readable) <= declared_schemas,
@@ -174,16 +192,20 @@ def load_package(blob: Blob) -> Package:
         require(template["input_role"] in roles and template["output_role"] in roles,
                 f"{owner}: template role binding is missing")
 
-    config = mapping(data["configuration"], {"namespace", "defaults"}, set(), label)
-    require(config["namespace"] == owner, f"{owner}: configuration namespace mismatch")
-    defaults = mapping(config["defaults"], {"store", "template"}, set(), label)
-    store = mapping(defaults["store"], {"kind", "root", "tracking"}, set(), label)
-    require(store["kind"] == "filesystem" and store["tracking"] in {"tracked", "ignored"},
-            f"{owner}: unsupported default store")
-    path(store["root"], f"{owner} default store")
-    template = mapping(defaults["template"], {"origin", "path"}, set(), label)
-    require(template["origin"] == "package" and template["path"] in {item["path"] for item in templates.values()},
-            f"{owner}: default template must be a declared package resource")
+    if metadata_version == 3 and data["configuration"] is None:
+        require(not roles and not schemas and not templates,
+                f"{owner}: null configuration requires empty artifact_roles, schemas and templates")
+    else:
+        config = mapping(data["configuration"], {"namespace", "defaults"}, set(), label)
+        require(config["namespace"] == owner, f"{owner}: configuration namespace mismatch")
+        defaults = mapping(config["defaults"], {"store", "template"}, set(), label)
+        store = mapping(defaults["store"], {"kind", "root", "tracking"}, set(), label)
+        require(store["kind"] == "filesystem" and store["tracking"] in {"tracked", "ignored"},
+                f"{owner}: unsupported default store")
+        path(store["root"], f"{owner} default store")
+        template = mapping(defaults["template"], {"origin", "path"}, set(), label)
+        require(template["origin"] == "package" and template["path"] in {item["path"] for item in templates.values()},
+                f"{owner}: default template must be a declared package resource")
     return Package(data, frozenset(members))
 
 
@@ -195,7 +217,7 @@ def _same_document_schema_reference(document: dict, reference: str, label: str) 
     resolution. Schema validation remains the package owner's responsibility.
     """
     require(reference.startswith("#/$defs/"),
-            f"{label}: metadata v2 schema references must use same-document #/$defs/ pointers")
+            f"{label}: metadata v2/v3 schema references must use same-document #/$defs/ pointers")
     require(re.search(r"%(?![0-9a-fA-F]{2})", reference) is None,
             f"{label}: malformed schema reference escape")
     pointer = unquote(reference[1:], encoding="utf-8", errors="strict")
@@ -233,6 +255,15 @@ def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
         resolved = posixpath.normpath(posixpath.join(posixpath.dirname(source_name), parsed.path))
         require(resolved in package.members,
                 f"{package.id}/{source_name}: reference {target!r} is outside the selected package closure")
+
+    if package.metadata["metadata_version"] == 3:
+        for operation in package.metadata["operations"]:
+            if operation["execution"] == "instruction":
+                name = operation["instructions"]
+                require(name in blobs, f"{package.id}: instruction reference is missing: {name}")
+                # Instructions are UTF-8 text even when their extension is not .md.
+                # Reading source establishes presence, never invocation or approval.
+                blobs[name].data.decode("utf-8", errors="strict")
 
     for name, blob in blobs.items():
         if name.endswith(".md"):

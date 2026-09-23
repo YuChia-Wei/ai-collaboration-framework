@@ -1,0 +1,72 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-352",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T10:00:35+08:00",
+  "updated_at": "2026-09-23T10:00:35+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/352",
+  "phase": "P5-E",
+  "scope": {
+    "target": "Optional context maintenance and assessment ownership design",
+    "files": [
+      ".dev/design/framework-next/optional-context-maintenance/",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/"
+    ],
+    "constraints": [
+      "U001",
+      "one independent Astra Ultra task; no sub-agents or executor-created conversations",
+      "design only; implementation is separately selected",
+      "coordinator owns shared files and first push"
+    ],
+    "non_goals": [
+      "source implementation or product execution/tests/CI",
+      "root activation or historical migration",
+      "shared manifest/profile edits",
+      "provider/settings/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify exact assigned F: identity and selected inputs",
+      "Create bounded own design/workflow",
+      "Return coherent design commit and final handoff before first push"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact planned commit-message only"
+    ],
+    "last_completed_step": "Online Issue and Project assignment created",
+    "next_action": "Dispatch independent Astra Ultra design task after bootstrap commit"
+  },
+  "results": {
+    "summary": "Design selected; no delivery yet",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Design selection, implementation and P7 verification remain future work",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": null,
+    "worktree": "F:/framework-next/352",
+    "branch": "codex/2026-09-23-optional-context-maintenance-design",
+    "workflow_id": "2026-09-23-optional-context-maintenance-design",
+    "starting_commit_source": "containing coordinator bootstrap checkpoint"
+  },
+  "delivery": {
+    "contract_status": "pending",
+    "implementation_status": "outside design Issue",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PYgE"
+}
