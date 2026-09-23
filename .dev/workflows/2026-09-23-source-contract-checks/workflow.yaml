@@ -1,0 +1,21 @@
+template_metadata:
+  template_id: ai-context-governance-workflow-locator
+  template_version: 1.2.0
+workflow_id: 2026-09-23-source-contract-checks
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_kind: ai-context-maintenance
+title: Focused source contracts and bounded fixtures
+owner_skill: ai-context-governance
+status: in_progress
+current_phase: P7-V1-local-handoff
+branch: codex/2026-09-23-source-contract-checks
+base_branch: main
+artifact_root: .dev/workflows/2026-09-23-source-contract-checks
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T15:05:07+08:00'
+updated_at: '2026-09-23T15:18:02+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+issue_url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/368
+execution_override: U001; selected C1-C3/C5 only; other gates deferred-by-owner

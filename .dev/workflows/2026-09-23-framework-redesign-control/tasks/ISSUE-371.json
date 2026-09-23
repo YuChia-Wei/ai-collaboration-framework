@@ -1,0 +1,70 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "ISSUE-371",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T15:32:56+08:00",
+  "updated_at": "2026-09-23T15:32:56+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/371",
+  "phase": "P7 CR-001 repair",
+  "scope": {
+    "target": "Source-only verified-byte maintenance bootstrap loader",
+    "files": [
+      "src/tools/maintain_framework.py (verified-source loading only)",
+      "tests/framework_next/test_engine_source.py",
+      ".dev/workflows/2026-09-23-engine-source-pin/",
+      ".dev/design/framework-next/engine-source-pin/"
+    ],
+    "constraints": [
+      "No path-resolution/canonical-root/security relaxation",
+      "Do not take over stopped #368/#369 writes",
+      "No runner/helper edits; separate writer scope",
+      "One independent Astra Ultra task; no sub-agents/callbacks/provider writes"
+    ],
+    "selected_execution": "New focused loader tests and at most one bounded N1 public-entry stale-cache attempt; no project mutation"
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: identity, Issue and fixed CR-001 report",
+      "Repair verified-source-only loader within exact entry scope",
+      "Run only selected focused tests; preserve F: public-entry refusal if observed",
+      "Return one local checkpoint for affected independent review"
+    ],
+    "validation": [
+      "Selected loader tests",
+      "Direct syntax/reference/scope/Git and exact planned message"
+    ],
+    "last_completed_step": "Issue created and added to Project; not dispatched",
+    "next_action": "Create assigned worktree from containing checkpoint and independent Astra Ultra task"
+  },
+  "results": {
+    "summary": "Planned repair; no source changes or execution claimed",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "CR-001 unresolved; affected independent review and native acceptance remain",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "worktree": "F:/framework-next/371",
+    "branch": "codex/2026-09-23-engine-source-pin",
+    "workflow_id": "2026-09-23-engine-source-pin",
+    "starting_commit_source": "Containing coordinator checkpoint",
+    "output_root": "F:/framework-next/p7-runs/371-engine-source"
+  },
+  "delivery": {
+    "decision_contract": "reports/p7-implementation-checkpoint.md",
+    "implementation_status": "not started",
+    "verification_state": "selected cases assigned; not executed"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Rdu4",
+  "project_state": "Planned; Status only; live read-back OPEN and no other single-select values"
+}

@@ -44,7 +44,7 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #365 | P7-B pipeline/policy design | own design/workflow only | design online PR #367; Issue/Project complete |
 | #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | independent Astra Ultra task active; actual F: identity verified |
 | #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | independent Astra Ultra task active; native continuation awaits actual V3 interface |
-| #370 | P7 installation source review | own review workflow only; fixed ten-file source read-only | Issue created; Project Planned; independent dispatch next |
+| #370 | P7 installation source review | own review workflow only; fixed ten-file source read-only | independent Astra Ultra review active; fixed product subject |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -62,7 +62,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: receive #368/#369 implementation outcomes, dispatch the independent fixed-source #370 review, then arrange V2/V3 from the actual helper interface. [Dispatch observations](evidence/p7-implementation-dispatch.json) verify the two active tasks. Only assigned narrow execution is authorized; native/root/CI outcomes remain outstanding.
+Current action: receive #368/#369 implementation outcomes, receive the independent fixed-source #370 review, then arrange V2/V3 from the actual helper interface. [Dispatch observations](evidence/p7-implementation-dispatch.json) verify the two active tasks. Only assigned narrow execution is authorized; native/root/CI outcomes remain outstanding.
 
 ## P3 shared implementation continuation
 
@@ -123,3 +123,13 @@ Final #346 source/mapping `4ffa3881484783a2e35152ad426bec359d2d9252` is locally 
 ## First selected P7 implementation
 
 PR #367 merged at `01aeb8ae4f18132dfdd7ad3479346c78b9f5f913`; design Issues are CLOSED/COMPLETED and Project Done. #368 owns shared source checks; #369 owns dormant source gates and prospective rules, with native continuation kept open until actual V3 binding exists. New task Project Status is Planned only; release/owner-review fields were not changed. Completed design branches were removed after clean/merged proof; all RAM worktree files remain.
+
+#370 also started with verified Astra Ultra runtime and actual F: identity. Project is In progress by live read-back; the reviewed product subject remains `38e6458f8d3e81dc2568daf1fa467571fb529fee`. No review result is implied.
+
+## First actual checks and narrow repair
+
+[#368 observations and scope reconciliation](reports/p7-first-observed-repairs.md) retain initial F: preparation failure, the later actual selected run, two metadata alias repairs, an incorrect test assumption and the bounded GitSource path repair. There is no passing layer result yet. The original #370 subject remains fixed; any engine change receives affected later review.
+
+## First P7 returned checkpoint
+
+[Fixed-return reconciliation](reports/p7-implementation-checkpoint.md) records actual failed source contracts, passing selector tests, two automatic approval stops and the independent CR-001 finding. #368/#369 remain partial; #370 awaits affected re-review after repair #371. Unaffected real-runner binding continues only in the original #369 task. No product repair, CI restoration, native or root acceptance is implied.

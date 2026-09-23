@@ -1,0 +1,81 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "task_id": "P7-P1-SOURCE-GATES",
+  "workflow_id": "2026-09-23-source-gates-implementation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T15:14:31+08:00",
+  "updated_at": "2026-09-23T15:19:38+08:00",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369",
+  "scope": {
+    "target": "Dormant source gates; prospective policy stopped by automatic review",
+    "files": [
+      ".github/scripts/check-source-change.py",
+      ".github/scripts/run-source-native.py",
+      ".github/tests/test_source_gates.py",
+      ".github/workflows/source-checks.yml",
+      ".github/workflows/source-native.yml",
+      ".dev/design/framework-next/source-gates-implementation/",
+      ".dev/workflows/2026-09-23-source-gates-implementation/"
+    ],
+    "constraints": [
+      "U001; one independent conversation; no sub-agents/callbacks",
+      "Exact assigned F: worktree; no rejected-policy retry",
+      "Local checkpoint only; coordinator owns integration"
+    ],
+    "non_goals": [
+      "Policy activation",
+      "Provider writes",
+      "Product/native trials",
+      "Legacy matrices"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Identity/live Issue reads",
+      "Implement own source selector/event tests",
+      "Retain automatic rejection and first test failure",
+      "Separately approved fixture correction and focused rerun",
+      "Local checkpoint"
+    ],
+    "validation": [
+      "24 selected tests passed after retained WinError 1 failure",
+      "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup"
+    ],
+    "last_completed_step": "Focused source-only tests passed; policy remains stopped",
+    "next_action": "Coordinator obtains direct owner approval and supplies fixed V1/V3 bindings"
+  },
+  "results": {
+    "summary": "Partial local source-gate checkpoint; no CI/native/policy readiness",
+    "tests_run": [
+      {
+        "attempt": 1,
+        "tests": 24,
+        "errors": 1,
+        "outcome": "failed",
+        "seconds": 0.248,
+        "reason": "F: strict Path.resolve WinError 1 before Git fixture allocation"
+      },
+      {
+        "attempt": 2,
+        "tests": 24,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "seconds": 1.733,
+        "change": "Separately permitted source-test fixture-only preflight correction"
+      }
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Rejected prospective policy; V1 result binding and V3 native binding unavailable; no hosted evidence",
+    "follow_up_needed": true
+  },
+  "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim"
+}

@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T14:58:53+08:00",
-  "updated_at": "2026-09-23T15:05:56+08:00",
+  "updated_at": "2026-09-23T15:32:56+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -23,7 +23,10 @@
       "tests/framework_next/test_contracts.py",
       "tests/framework_next/README.md",
       ".dev/design/framework-next/source-contract-checks/",
-      ".dev/workflows/2026-09-23-source-contract-checks/"
+      ".dev/workflows/2026-09-23-source-contract-checks/",
+      "src/skills/pr/skill-package.yaml (alias expansion only; exact parsed semantics preserved)",
+      "src/skills/local-backlog/skill-package.yaml (alias expansion only; exact parsed semantics preserved)",
+      "src/distribution/git_source.py (observed contract-preserving path repair)"
     ],
     "selected_execution": "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
     "constraints": [
@@ -35,7 +38,8 @@
       "Unselected legacy validators/full/history/upgrade matrices",
       "Audit/lease/effective-rule/acceptance packet machinery",
       "Root activation, CI restoration/provider changes, credentials, release or downstream adoption"
-    ]
+    ],
+    "observed_repair_reconciliation": "reports/p7-first-observed-repairs.md"
   },
   "execution": {
     "steps": [
@@ -48,14 +52,17 @@
       "C1-C3/C5 product imports and focused contract tests; tiny real Lesson assembly/reader; observed existing distribution-owner repairs only",
       "Direct syntax/reference/Git and complete planned-message checks"
     ],
-    "last_completed_step": "Independent task active; runtime and first F: identity verified; live Issue OPEN/Project In progress",
-    "next_action": "Receive implementation checkpoint with actual selected checks and remaining boundaries"
+    "last_completed_step": "Partial contracts delivered; product repairs stopped by automatic approval",
+    "next_action": "Direct owner confirmation in original task before rejected four-file batch; preserve safeguards and failed evidence"
   },
   "results": {
-    "summary": "Implementation active; no completion or test result claimed",
+    "summary": "Partial contracts delivered; product repairs stopped by automatic approval",
     "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
+    "tests_run": [
+      "Final contracts: 14 methods; 11 successful; 3 affected methods; 7 errors; zero skips; exit 1",
+      "No C5 candidate built; initial F: failures retained"
+    ],
+    "finding_status": "partially-resolved",
     "residual_risk": "Product/root/native/provider acceptance remains distinct",
     "follow_up_needed": true
   },
@@ -73,8 +80,11 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p7-execution-selection.md",
-    "implementation_status": "in progress",
-    "verification_state": "selected cases authorized; not executed; other obligations deferred-by-owner"
+    "implementation_status": "partial; Issue remains open",
+    "verification_state": "selected results recorded; remaining obligations unfulfilled/deferred-by-owner",
+    "commit": "070a47335ffce99d31bd83e487447942539e4a9f",
+    "integration_report": "reports/p7-implementation-checkpoint.md",
+    "approval_state": "rejected batch stopped; direct owner response pending in original task"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8RKIs",
   "project_state": "In progress; Status only mutated; no other single-select values observed"

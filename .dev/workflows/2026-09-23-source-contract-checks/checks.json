@@ -1,0 +1,52 @@
+{
+  "observed_at": "2026-09-23T15:18:02+08:00",
+  "subject_source_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+  "direct_checks": {
+    "utf8_files_before_this_record": 11,
+    "ast_python_files": 3,
+    "json_files": 1,
+    "yaml_files": 1,
+    "local_markdown_links": 9,
+    "outcome": "passed"
+  },
+  "git_diff_check": "passed after text-only evidence normalization; full staged scope",
+  "commit_message": {
+    "path": ".dev/ai-context/local/commit-messages/issue-368.txt",
+    "ignored": true,
+    "sha256": "421bc57d381acaefddfc962b78668a0c7bcd55ec430227518f0515d375dd7be4",
+    "command": "python -I -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-368.txt --workflow-id 2026-09-23-source-contract-checks",
+    "exit": 0
+  },
+  "selected_contracts": {
+    "exit": 1,
+    "methods": 14,
+    "successful_methods": 11,
+    "error_instances": 7,
+    "skipped": 0,
+    "outcome": "failed; environment and out-of-scope package blockers"
+  },
+  "test_file_sha256": {
+    "tests/framework_next/run.py": "9b28262fad3623f5d9ff81c9e500ee6b3c558239b941bcbf0ebb3e171d9192f7",
+    "tests/framework_next/support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+    "tests/framework_next/test_contracts.py": "3a5c137e6d679730e8e4935deb287c5ac074df0796c56b323a7cb101dc768a2c"
+  },
+  "not_claimed": [
+    "schema compliance",
+    "independent review",
+    "C5 successful execution",
+    "native acceptance",
+    "CI success"
+  ],
+  "expanded_repair": "rejected by automatic approval review before execution; no source mutations",
+  "evidence_normalization": {
+    "contracts-final.stdout.txt": {
+      "original_capture_sha256": "025821c50e08c8a81b24b60f446dc71a224d0906090cc3533e5d6d0361c3bae7",
+      "normalization": "CRLF to LF; strip trailing whitespace only"
+    },
+    "contracts-final.stderr.txt": {
+      "original_capture_sha256": "3cb649d0f72354a7ede900f62c73630d9a209a543c919bccb4ba7814d53ea1de",
+      "normalization": "CRLF to LF; strip trailing whitespace only"
+    }
+  },
+  "initial_staged_diff_check": "failed: raw stderr contained one trailing space at line 13; retained here before normalization"
+}

@@ -1,7 +1,6 @@
 {
   "record_kind": "p7-implementation-dispatch-observations",
   "recorded_at": "2026-09-23T15:05:56+08:00",
-  "starting_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
   "coordinator_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
   "tasks": [
     {
@@ -15,7 +14,8 @@
       "branch": "codex/2026-09-23-source-contract-checks",
       "first_command_id": "exec-f84aa87c-74a8-4d1e-983c-cc74ec6334fe",
       "first_command_result": "exit 0; assigned F: root/branch and starting commit; persistent C: common Git; clean status",
-      "bootstrap_cwd": "Registered C: project; not repository execution authority"
+      "bootstrap_cwd": "Registered C: project; not repository execution authority",
+      "starting_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee"
     },
     {
       "issue": 369,
@@ -28,7 +28,23 @@
       "branch": "codex/2026-09-23-source-gates",
       "first_command_id": "exec-e5f5352e-2ff5-4c87-8b34-fedd46ef4956",
       "first_command_result": "exit 0; assigned F: root/branch and starting commit; persistent C: common Git; clean status",
-      "bootstrap_cwd": "Registered C: project; not repository execution authority"
+      "bootstrap_cwd": "Registered C: project; not repository execution authority",
+      "starting_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee"
+    },
+    {
+      "issue": 370,
+      "thread_id": "01a0cd16-e671-7ae0-9f31-9ac1fd1e9b2a",
+      "title": "重構 P7：安裝與復原固定來源獨立審查",
+      "model": "gpt-6-astra",
+      "reasoning_effort": "ultra",
+      "runtime_evidence": "Read-only state_5.sqlite row",
+      "worktree": "F:/framework-next/370",
+      "branch": "codex/2026-09-23-installation-source-review",
+      "starting_commit": "ea627ad8bb9251b31035b494c8d1d6c235461c2f",
+      "reviewed_source_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+      "first_command_id": "exec-781011d9-4e7b-4361-9fa3-5f0fd25fb4c6",
+      "first_command_result": "exit 0; assigned F: root/branch/HEAD; persistent C: common Git; clean status",
+      "scope": "Read-only fixed-source review; no product execution or repair"
     }
   ],
   "provider_observation": {
@@ -40,5 +56,16 @@
     ],
     "other_field_mutations": []
   },
-  "limits": "Actual independent runtime and first repository command identity only; no implementation completion or passing tests claimed."
+  "limits": "Actual independent runtime and first repository command identity only; no implementation completion or passing tests claimed.",
+  "first_implementation_start_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+  "review_provider_observation": {
+    "observed_at": "2026-09-23T15:08:00.6573230+08:00",
+    "issue": 370,
+    "issue_state": "OPEN",
+    "project_status": "In progress",
+    "mutated_fields": [
+      "Status"
+    ],
+    "other_field_mutations": []
+  }
 }
