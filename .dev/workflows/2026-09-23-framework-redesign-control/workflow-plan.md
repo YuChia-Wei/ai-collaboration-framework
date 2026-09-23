@@ -6,7 +6,7 @@
 - Program: [#322](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322).
 - Baseline: [assessment](../../assessments/ASM-20260923-00-6oq/report.md), [authorized execution plan and U001](../../assessments/ASM-20260923-00-6oq/execution-plan.md).
 - Planning checkpoint: `cee653cedd922e39c5b6dd2c64be7b2b5fad5b98`; merged through PR #323 as `a4865f355c71aa5c80d1a2c50b7a30ddb6ab5e66`.
-- Branch: `codex/2026-09-23-p5-contract-reconciliation`; base: `main`; status: `in_progress`.
+- Branch: `codex/2026-09-23-p5-source-integration`; base: `main`; status: `in_progress`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version 1.2.0, adapted for U001.
 
 ## Authority and completion
@@ -27,8 +27,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #334 | P3-A knowledge lifecycle | Lesson/ADR/promotion source and own design/workflow | integrated PR #343; Issue/Project complete; P7 verification deferred |
 | #335 | P3-B work management | PR/local-backlog source and own design/workflow | integrated PR #340; Issue/Project complete; P7 verification deferred |
 | #337 | P3-C distribution support | metadata loader/direct call sites and own design/workflow; exact mappings follow actual source | loader PR #339 and final mapping PR #343 integrated; Issue/Project complete |
-| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | design integrated PR #344; same task source implementation active |
-| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design inspected/selected; online integration pending |
+| #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source inspected/locally integrated; shared mapping and online integration pending |
+| #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design integrated PR #349; Issue/Project complete |
 | #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | independent design task active; runtime/F: identity verified |
 | #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | independent source task active; runtime/F: identity verified |
 | #347 | P5-B engineering methods | five own instruction packages/design/workflow | independent source task active; runtime/F: identity verified |
@@ -50,7 +50,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: #334/#337 are integrated online through PR #343 with Issue CLOSED and Project Done read back. #335 is merged through PR #340. [P4 contract selection](../../design/framework-next/p4-selected-contract.md) reconciles #341 design with the actual P3 source; source continuation is active in the same task `01a0cbc8-448d-7270-b27b-295295914afb`. #342 design `66f353393b3f7ef59265d6c38b119a832e8113a9` is complete and [selected](../../design/framework-next/p5-selected-contract.md); source tasks #346/#347/#348 are active on `842b73ca09d701d1561109255193d80439dc996b`; integrate the design online. P6 design #345 runs in task `01a0cbe3-0204-7ec3-91c1-711fc4756894` and prepares [installation/update/recovery choices](reports/p6-installation-design-scope.md) independently; activation still waits for implementation and P7. Product execution remains deferred to P7.
+Current action: #341 source `da04c0bb36fda9f48552ed5ee4f60efc18a95d9b` is inspected and locally integrated; complete source online integration and retain #341 open for actual mapping. [P4 inspection](reports/p4-source-integration.md) records the bounded checks and limits. #342 design is merged/closed through PR #349. #346/#347/#348 source tasks remain active on the selected P5 contract; #346 receives exact shared mapping only after its first source return and actual package reconciliation. #345 continues P6 design with selected M01 input. Runtime/schema/test/CI verification remains deferred to P7.
 
 ## P3 shared implementation continuation
 

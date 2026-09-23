@@ -1,5 +1,7 @@
 # 可攜 workflow 編排設計 checkpoint
 
+目前狀態：C341-01～05 已由[統籌選定](../p4-selected-contract.md)，十個成員／十個操作的 source 已完成；尚未建置、安裝或執行驗證。原設計 commit 7f821ee866e7e54e551036785e19dffaa3d7ac39 保留，下面是當時的設計說明。實作與限制見 [source 交付報告](../../../workflows/2026-09-23-workflow-orchestration/reports/source-implementation.md)。
+
 這是 [#341](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341) 的第一階段設計，尚未實作產品。英文 [contract.md](contract.md) 與 [record-shapes.md](record-shapes.md) 是本提案的契約；本頁提供繁體中文說明。[interface-proposal.json](interface-proposal.json) 列出完整檔案、操作與待協調事項；[examples.json](examples.json) 全部是假設案例，沒有執行證據。
 
 建議保留 `software-development-orchestrator` 這個 skill 身分，提供十個公開操作。專案指定 filesystem store；一份 JSON 保存意圖、範圍、驗收項目、工作相依、證據、未決問題、下一步及回顧。它不要求固定 `.dev` 路徑，也不替每個 task 產生 locator、索引與 receipt。專門技能仍可直接使用，workflow 不接管它們的成果或權限。
