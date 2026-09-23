@@ -306,3 +306,48 @@ separate test_contracts.py region. Product files stay read-only in both repairs.
 The old PR failure residue is preserved; no all-family or C5 rerun is selected.
 Both existing tasks received their concrete continuation, and Issues retain
 OPEN state with actual partial evidence and precise next actions.
+
+
+## Complete rc.1 review and selected native repair
+
+The owner directly selected Codex first in call_iJzGL8xNjR5LWk77ylqF6fZv:
+"先完成 Codex：停用被取代的 Claude 舊入口並保留歷史，明示尚未支援新框架".
+The target pilot must retain old Claude history while disabling superseded
+entry points and explicitly mark the new framework unsupported in Claude.
+No target files have yet changed.
+
+Coordinator fixed-source review of #381 delivery
+5e5881817b1fd9edf50f0c7a50eca1b9aa270296 / implementation
+3755b217421a4f1238f740a09de7e034ccf56038 found no actionable defect in the
+bounded versioned selection/identity/reader/CLI/profile change. Legacy development
+selection remains supported; strict distribution labels, schema 2 closed shape
+and shared lock/candidate parsing preserve exact identity. No member/payload,
+bootstrap, pin loader, planner or writer changes were introduced. Eight source
+blob/raw bindings, all ten engine raw hashes, three actual candidate metadata
+hashes and CLI identity were independently compared. The first restricted
+candidate read was PermissionError; the ordinarily approved scoped read passed.
+This was evidence inspection, not a second build or behavioral run.
+Six focused synthetic tests passed; the separate actual full rc.1 build/read
+selected all 18 components, 113 payload members and 18 Codex entries, retaining
+269 files / 2334138 bytes. Source/profile/tests are unchanged by the final record
+commit. Future stable planning uses fictional metadata and is not publication
+or target upgrade evidence. Candidate and matching engine worktree are retained.
+
+#373 returned fd19f252d1f6668bb6315ee67ac9528326fa2923 after one truthful
+synthetic deferred-result fixture correction at 8d09ec6c5d2d41bcf4e7e3e108640545d398fea1.
+Only the workflow family ran: passed, 37 public / 41 measured processes,
+22.666 seconds, cleanup succeeded. Product/helper and other families stayed
+unchanged; original failed roots remain. Root inspected the exact three-line
+test delta and returned evidence. The PR cleanup result remains pending #368.
+
+#382 returned 878cefc7471ae77d80ddc3f1d358c2bce2704b95 with a real native
+not-passed result on a9af5fe793f938ac9b66f94034bda8a2cafb50ec: build and
+inspect succeeded, plan blocked/unreadable-input. Five protected inputs matched;
+plain F: protected paths fail strict resolve with WinError 1. There were only
+three selected children and zero apply/interruption attempts. All subsequent
+cases remain unexecuted. Native driver review/integration is still pending.
+Issue #383 selects only installation_plan._protected_path and necessary existing
+private-helper reuse, focused refusal regressions and one actual protected public
+plan. Original #382 owns native continuation after repaired-source integration.
+No unchanged retries, source U001 export, native acceptance, target adoption,
+CI restoration or publication is inferred.

@@ -94,7 +94,7 @@
     }
   },
   "continuation_checkpoint": {
-    "observed_at": "2026-09-23T22:31:22+08:00",
+    "observed_at": "2026-09-23T22:46:51+08:00",
     "coordinator_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "branch": "codex/2026-09-23-rc1-preparation",
     "integrated_main": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
@@ -108,10 +108,11 @@
       369,
       373,
       381,
-      382
+      382,
+      383
     ],
     "pilot_scope": "complete new framework with existing target customizations",
-    "next_issue": 381,
+    "next_issue": 383,
     "next_dispatch": "actual tasks created and first F: commands verified",
     "target_mutation_performed": false,
     "publication_performed": false,
@@ -159,6 +160,32 @@
       "answer": "確認 #381 上述範圍並繼續",
       "same_task_resumed": true,
       "historical_automatic_refusals": 2
+    },
+    "codex_first_claude_decision": {
+      "question_call": "call_iJzGL8xNjR5LWk77ylqF6fZv",
+      "answer": "先完成 Codex：停用被取代的 Claude 舊入口並保留歷史，明示尚未支援新框架",
+      "target_mutation_performed": false
+    },
+    "versioned_candidate_return": {
+      "issue": 381,
+      "delivery": "5e5881817b1fd9edf50f0c7a50eca1b9aa270296",
+      "tested_source": "3755b217421a4f1238f740a09de7e034ccf56038",
+      "review": "no actionable finding in bounded fixed-source coordinator review",
+      "actual_build_read": "passed; full 18-component rc.1; publication/installation not performed",
+      "integration": "local merge in containing commit; online pending"
+    },
+    "workflow_fixture_return": {
+      "issue": 373,
+      "delivery": "fd19f252d1f6668bb6315ee67ac9528326fa2923",
+      "result": "workflow family passed; PR cleanup pending",
+      "integration": "pending"
+    },
+    "native_return": {
+      "issue": 382,
+      "delivery": "878cefc7471ae77d80ddc3f1d358c2bce2704b95",
+      "result": "not-passed; protected path plan failure; dependent cases unexecuted",
+      "repair_issue": 383,
+      "driver_review_integration": "pending"
     }
   }
 }

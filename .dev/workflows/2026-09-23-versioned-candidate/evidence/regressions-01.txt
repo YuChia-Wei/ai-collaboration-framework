@@ -1,0 +1,13 @@
+{"mode": "regressions", "evidence_kind": "tiny synthetic fixtures; no actual release or target upgrade", "run_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-c6c22f2287c74eb08545c6a4a2405b43", "runtime": {"python": "3.13.14", "executable": "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe", "PyYAML": "6.0.3", "jsonschema": "4.26.0", "referencing": "0.37.0"}}
+test_closed_schema_mode_version_generator_rules_shared_with_lock (__main__.VersionedTests.test_closed_schema_mode_version_generator_rules_shared_with_lock) ... ok
+test_fixture_lock_readback_and_same_schema_stable_plan_semantics (__main__.VersionedTests.test_fixture_lock_readback_and_same_schema_stable_plan_semantics) ... ok
+test_legacy_and_versioned_identity_exact_metadata_binding (__main__.VersionedTests.test_legacy_and_versioned_identity_exact_metadata_binding) ... ok
+test_mismatched_identity_version_commit_digest_and_noncanonical_bytes (__main__.VersionedTests.test_mismatched_identity_version_commit_digest_and_noncanonical_bytes) ... ok
+test_strict_distribution_grammar_and_unchanged_component_grammar (__main__.VersionedTests.test_strict_distribution_grammar_and_unchanged_component_grammar) ... ok
+test_versioned_api_requires_version_before_source_or_output (__main__.VersionedTests.test_versioned_api_requires_version_before_source_or_output) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.304s
+
+OK
+{"accounting": {"observed_files": 34, "observed_logical_bytes": 39430, "retained_files": 34, "retained_bytes": 39430, "authored_bytes": 0, "processes": {"git": 0, "python": 0, "other": 0}, "process_total": 0, "wall_seconds": 0.37, "residue": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-c6c22f2287c74eb08545c6a4a2405b43", "next_action": "Inspect recorded failure and this owned run before explicit cleanup.", "selected_checks_passed": true, "retention": "Issue 381 evidence, including failures"}}

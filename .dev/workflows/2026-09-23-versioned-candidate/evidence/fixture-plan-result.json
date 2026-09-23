@@ -1,0 +1,28 @@
+{
+  "engine_source_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+  "evidence_kind": "synthetic future stable and manually constructed rc lock; actual public read-only planner",
+  "installation_apply_recover": "not-performed",
+  "observations": [
+    {
+      "case": "same-schema-stable-fixture",
+      "expected_refusal": null,
+      "outcome": "planned"
+    },
+    {
+      "case": "wrong-lock-fixture",
+      "expected_refusal": "lock-conflict",
+      "outcome": "conflict"
+    },
+    {
+      "case": "wrong-candidate-fixture",
+      "expected_refusal": "candidate-selection",
+      "outcome": "conflict"
+    },
+    {
+      "case": "wrong-engine-fixture",
+      "expected_refusal": "engine-head",
+      "outcome": "blocked"
+    }
+  ],
+  "publication": "not-performed"
+}

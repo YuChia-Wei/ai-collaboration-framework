@@ -1,0 +1,541 @@
+{
+  "same-schema-stable-fixture": {
+    "evidence_kind": "fictional rc lock and future stable fixture; actual read-only public planner",
+    "exit": 0,
+    "request": {
+      "api_version": 1,
+      "candidate_identity": "versioned:0.19.0:1111111111111111111111111111111111111111:dc3e8e4972b426493949a85e7caa53d1adf96677bb317d85b9aa9ea72da12850",
+      "candidate_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\future-stable-fixture\\candidate-111111111111-54a134b301cd49e6b45da1774cb5898b",
+      "durability": {
+        "declaration_reference": "synthetic:381",
+        "declared_by": "Issue 381 synthetic fixture",
+        "failure_domain": "process-termination"
+      },
+      "engine": {
+        "files": [
+          {
+            "path": "src/distribution/__init__.py",
+            "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+          },
+          {
+            "path": "src/distribution/data.py",
+            "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+          },
+          {
+            "path": "src/distribution/git_source.py",
+            "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+          },
+          {
+            "path": "src/distribution/installation.py",
+            "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+          },
+          {
+            "path": "src/distribution/installation_io.py",
+            "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+          },
+          {
+            "path": "src/distribution/installation_plan.py",
+            "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+          },
+          {
+            "path": "src/distribution/installation_state.py",
+            "sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+          },
+          {
+            "path": "src/distribution/maintenance_coordination.py",
+            "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+          },
+          {
+            "path": "src/distribution/package.py",
+            "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+          },
+          {
+            "path": "src/tools/maintain_framework.py",
+            "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+          }
+        ],
+        "id": "framework-managed-installation",
+        "source_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+        "version": "1.0.0"
+      },
+      "engine_root": "F:\\framework-next\\381",
+      "expected_lock_sha256": "301a6dc78e2b7a47376d4e8b4a5812f9ebdf93c0636a5c270b338e91282abd41",
+      "mode_policy": "windows-inventory-only",
+      "operation": "plan",
+      "project_data_action": "none",
+      "project_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\project-fixture",
+      "protected_inputs": [],
+      "recovery_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\recovery",
+      "scratch_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch",
+      "staging_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch"
+    },
+    "response": {
+      "api_version": 1,
+      "operation": "plan",
+      "outcome": "planned",
+      "plan": {
+        "api_version": 1,
+        "candidate_identity": "versioned:0.19.0:1111111111111111111111111111111111111111:dc3e8e4972b426493949a85e7caa53d1adf96677bb317d85b9aa9ea72da12850",
+        "delta": [
+          {
+            "action": "unchanged",
+            "after": {
+              "kind": "payload",
+              "mode": "100644",
+              "owner": "tiny",
+              "sha256": "f3a4cfedf41b2983d1d64d14d7967a05a736bb5eea29ea8c51859d2af4c20e46",
+              "size": 82
+            },
+            "before": {
+              "kind": "payload",
+              "mode": "100644",
+              "owner": "tiny",
+              "sha256": "f3a4cfedf41b2983d1d64d14d7967a05a736bb5eea29ea8c51859d2af4c20e46",
+              "size": 82
+            },
+            "destination": ".ai/core/skills/tiny/SKILL.md"
+          },
+          {
+            "action": "unchanged",
+            "after": {
+              "kind": "payload",
+              "mode": "100644",
+              "owner": "tiny",
+              "sha256": "525c3fb673264f793b0b9929b6a7ba2bb78fccdfcb1c623d0289c6f781792de4",
+              "size": 31
+            },
+            "before": {
+              "kind": "payload",
+              "mode": "100644",
+              "owner": "tiny",
+              "sha256": "525c3fb673264f793b0b9929b6a7ba2bb78fccdfcb1c623d0289c6f781792de4",
+              "size": 31
+            },
+            "destination": ".ai/core/skills/tiny/review.md"
+          },
+          {
+            "action": "unchanged",
+            "after": {
+              "kind": "payload",
+              "mode": "100644",
+              "owner": "tiny",
+              "sha256": "00d3ef59f1bcb00ddb04275fee32b7f5022208bda8b5cc29596339dc831432a2",
+              "size": 815
+            },
+            "before": {
+              "kind": "payload",
+              "mode": "100644",
+              "owner": "tiny",
+              "sha256": "00d3ef59f1bcb00ddb04275fee32b7f5022208bda8b5cc29596339dc831432a2",
+              "size": 815
+            },
+            "destination": ".ai/core/skills/tiny/skill-package.yaml"
+          }
+        ],
+        "durability": {
+          "declaration_reference": "synthetic:381",
+          "declared_by": "Issue 381 synthetic fixture",
+          "failure_domain": "process-termination"
+        },
+        "engine": {
+          "files": [
+            {
+              "path": "src/distribution/__init__.py",
+              "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+            },
+            {
+              "path": "src/distribution/data.py",
+              "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+            },
+            {
+              "path": "src/distribution/git_source.py",
+              "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+            },
+            {
+              "path": "src/distribution/installation.py",
+              "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+            },
+            {
+              "path": "src/distribution/installation_io.py",
+              "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+            },
+            {
+              "path": "src/distribution/installation_plan.py",
+              "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+            },
+            {
+              "path": "src/distribution/installation_state.py",
+              "sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+            },
+            {
+              "path": "src/distribution/maintenance_coordination.py",
+              "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+            },
+            {
+              "path": "src/distribution/package.py",
+              "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+            },
+            {
+              "path": "src/tools/maintain_framework.py",
+              "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+            }
+          ],
+          "id": "framework-managed-installation",
+          "source_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+          "version": "1.0.0"
+        },
+        "expected_lock_sha256": "301a6dc78e2b7a47376d4e8b4a5812f9ebdf93c0636a5c270b338e91282abd41",
+        "maintenance_scope": [
+          "tiny"
+        ],
+        "mode_policy": "windows-inventory-only",
+        "operation": "plan",
+        "path_budget": {
+          "backend_certification": "not-assessed",
+          "checked_paths": 42,
+          "full_path_utf16_limit": 240,
+          "maximum_full_path_utf16": 207,
+          "maximum_segment_utf16": 64,
+          "policy": "conservative-windows-v1",
+          "segment_utf16_limit": 255
+        },
+        "prerequisites": [
+          {
+            "id": "candidate-provenance",
+            "next_action": "Available bytes/bindings match; provenance approval and source authenticity remain with caller.",
+            "owner": "caller",
+            "status": "satisfied"
+          },
+          {
+            "id": "durability-declaration",
+            "next_action": "Native filesystem/domain combination is supported; recovery survival is a caller assertion, not measured durability.",
+            "owner": "caller",
+            "status": "satisfied"
+          },
+          {
+            "id": "exclusive-operation-allocation",
+            "next_action": "Preflight actual unique paths and exclusively allocate the selected operation before managed mutation.",
+            "owner": "maintenance-writer",
+            "status": "pending"
+          },
+          {
+            "id": "fresh-input-observation",
+            "next_action": "Recompute this exact plan under a held native writer lock.",
+            "owner": "maintenance-writer",
+            "status": "pending"
+          },
+          {
+            "id": "lock-publication",
+            "next_action": "Next lock fits the closed reader and selected backend; publication remains a postcondition after full member read-back.",
+            "owner": "maintenance-writer",
+            "status": "satisfied"
+          },
+          {
+            "id": "maintenance-quiescence",
+            "next_action": "Supply a fresh exact-scope declaration; the engine cannot attest stopped activity.",
+            "owner": "caller",
+            "status": "pending"
+          },
+          {
+            "id": "mode-materialization",
+            "next_action": "Windows inventory-only; no ACL/executable enforcement.",
+            "owner": "maintenance-writer",
+            "status": "not-applicable"
+          },
+          {
+            "id": "native-writer-backend",
+            "next_action": "Selected native primitives and filesystem/domain checks are available; this is not platform certification.",
+            "owner": "maintenance-writer",
+            "status": "satisfied"
+          },
+          {
+            "id": "writer-engine-closure",
+            "next_action": "Fixed bootstrap, executing origins, exact source closure and observed checkout HEAD match the caller pin.",
+            "owner": "maintenance-writer",
+            "status": "satisfied"
+          },
+          {
+            "id": "writer-guard",
+            "next_action": "Acquire the inert guard with a native OS lock; no-op cannot create a missing guard.",
+            "owner": "maintenance-writer",
+            "status": "pending"
+          }
+        ],
+        "preserved_unknown": [],
+        "project_data_action": "none",
+        "project_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\project-fixture",
+        "protected_inputs": [],
+        "roots": {
+          "candidate": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\future-stable-fixture\\candidate-111111111111-54a134b301cd49e6b45da1774cb5898b",
+          "engine": "F:\\framework-next\\381",
+          "recovery": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\recovery",
+          "scratch": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch",
+          "staging": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch"
+        }
+      },
+      "plan_sha256": "a94de0131f91e285f77edabdc82b41e0a31dd732a209bb15e6074eb64ffc6ba8"
+    },
+    "stderr": ""
+  },
+  "wrong-candidate-fixture": {
+    "evidence_kind": "fictional rc lock and future stable fixture; actual read-only public planner",
+    "exit": 1,
+    "request": {
+      "api_version": 1,
+      "candidate_identity": "versioned:0.19.0-rc.1:1111111111111111111111111111111111111111:2624344d7120189cf75720ed4160a503389035169d8fcc62bcebafec855af504",
+      "candidate_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\future-stable-fixture\\candidate-111111111111-54a134b301cd49e6b45da1774cb5898b",
+      "durability": {
+        "declaration_reference": "synthetic:381",
+        "declared_by": "Issue 381 synthetic fixture",
+        "failure_domain": "process-termination"
+      },
+      "engine": {
+        "files": [
+          {
+            "path": "src/distribution/__init__.py",
+            "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+          },
+          {
+            "path": "src/distribution/data.py",
+            "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+          },
+          {
+            "path": "src/distribution/git_source.py",
+            "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+          },
+          {
+            "path": "src/distribution/installation.py",
+            "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+          },
+          {
+            "path": "src/distribution/installation_io.py",
+            "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+          },
+          {
+            "path": "src/distribution/installation_plan.py",
+            "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+          },
+          {
+            "path": "src/distribution/installation_state.py",
+            "sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+          },
+          {
+            "path": "src/distribution/maintenance_coordination.py",
+            "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+          },
+          {
+            "path": "src/distribution/package.py",
+            "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+          },
+          {
+            "path": "src/tools/maintain_framework.py",
+            "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+          }
+        ],
+        "id": "framework-managed-installation",
+        "source_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+        "version": "1.0.0"
+      },
+      "engine_root": "F:\\framework-next\\381",
+      "expected_lock_sha256": "301a6dc78e2b7a47376d4e8b4a5812f9ebdf93c0636a5c270b338e91282abd41",
+      "mode_policy": "windows-inventory-only",
+      "operation": "plan",
+      "project_data_action": "none",
+      "project_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\project-fixture",
+      "protected_inputs": [],
+      "recovery_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\recovery",
+      "scratch_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch",
+      "staging_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch"
+    },
+    "response": {
+      "api_version": 1,
+      "changed": false,
+      "details": null,
+      "diagnostics": [
+        {
+          "code": "candidate-selection",
+          "next_action": "Reconcile the explicit input and retry.",
+          "path": null,
+          "reason": "Candidate differs from caller-selected identity."
+        }
+      ],
+      "operation": "plan",
+      "outcome": "conflict"
+    },
+    "stderr": ""
+  },
+  "wrong-engine-fixture": {
+    "evidence_kind": "fictional rc lock and future stable fixture; actual read-only public planner",
+    "exit": 1,
+    "request": {
+      "api_version": 1,
+      "candidate_identity": "versioned:0.19.0:1111111111111111111111111111111111111111:dc3e8e4972b426493949a85e7caa53d1adf96677bb317d85b9aa9ea72da12850",
+      "candidate_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\future-stable-fixture\\candidate-111111111111-54a134b301cd49e6b45da1774cb5898b",
+      "durability": {
+        "declaration_reference": "synthetic:381",
+        "declared_by": "Issue 381 synthetic fixture",
+        "failure_domain": "process-termination"
+      },
+      "engine": {
+        "files": [
+          {
+            "path": "src/distribution/__init__.py",
+            "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+          },
+          {
+            "path": "src/distribution/data.py",
+            "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+          },
+          {
+            "path": "src/distribution/git_source.py",
+            "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+          },
+          {
+            "path": "src/distribution/installation.py",
+            "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+          },
+          {
+            "path": "src/distribution/installation_io.py",
+            "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+          },
+          {
+            "path": "src/distribution/installation_plan.py",
+            "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+          },
+          {
+            "path": "src/distribution/installation_state.py",
+            "sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+          },
+          {
+            "path": "src/distribution/maintenance_coordination.py",
+            "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+          },
+          {
+            "path": "src/distribution/package.py",
+            "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+          },
+          {
+            "path": "src/tools/maintain_framework.py",
+            "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+          }
+        ],
+        "id": "framework-managed-installation",
+        "source_commit": "0000000000000000000000000000000000000000",
+        "version": "1.0.0"
+      },
+      "engine_root": "F:\\framework-next\\381",
+      "expected_lock_sha256": "301a6dc78e2b7a47376d4e8b4a5812f9ebdf93c0636a5c270b338e91282abd41",
+      "mode_policy": "windows-inventory-only",
+      "operation": "plan",
+      "project_data_action": "none",
+      "project_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\project-fixture",
+      "protected_inputs": [],
+      "recovery_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\recovery",
+      "scratch_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch",
+      "staging_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch"
+    },
+    "response": {
+      "api_version": 1,
+      "changed": false,
+      "details": null,
+      "diagnostics": [
+        {
+          "code": "engine-head",
+          "next_action": "Reconcile the explicit input and retry.",
+          "path": null,
+          "reason": "Engine checkout HEAD differs from the explicit pin."
+        }
+      ],
+      "operation": "plan",
+      "outcome": "blocked"
+    },
+    "stderr": ""
+  },
+  "wrong-lock-fixture": {
+    "evidence_kind": "fictional rc lock and future stable fixture; actual read-only public planner",
+    "exit": 1,
+    "request": {
+      "api_version": 1,
+      "candidate_identity": "versioned:0.19.0:1111111111111111111111111111111111111111:dc3e8e4972b426493949a85e7caa53d1adf96677bb317d85b9aa9ea72da12850",
+      "candidate_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\future-stable-fixture\\candidate-111111111111-54a134b301cd49e6b45da1774cb5898b",
+      "durability": {
+        "declaration_reference": "synthetic:381",
+        "declared_by": "Issue 381 synthetic fixture",
+        "failure_domain": "process-termination"
+      },
+      "engine": {
+        "files": [
+          {
+            "path": "src/distribution/__init__.py",
+            "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+          },
+          {
+            "path": "src/distribution/data.py",
+            "sha256": "c92b1f4495434ca3df045d67c210d347537aea8a7cf3f6d2bcf1f626ac827c2d"
+          },
+          {
+            "path": "src/distribution/git_source.py",
+            "sha256": "b10e87121133896acefbb682ab1fffafc91c614ec6015b479833cb07a600c5e5"
+          },
+          {
+            "path": "src/distribution/installation.py",
+            "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+          },
+          {
+            "path": "src/distribution/installation_io.py",
+            "sha256": "23656400b6da163acbe4ef78671604290d422078efbdaab102e627e111e3f7f6"
+          },
+          {
+            "path": "src/distribution/installation_plan.py",
+            "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+          },
+          {
+            "path": "src/distribution/installation_state.py",
+            "sha256": "8db8c8517e1352e26755b216117a33355fff7c168261bc460331902ab6697453"
+          },
+          {
+            "path": "src/distribution/maintenance_coordination.py",
+            "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+          },
+          {
+            "path": "src/distribution/package.py",
+            "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+          },
+          {
+            "path": "src/tools/maintain_framework.py",
+            "sha256": "97020adde6f3c1f38e6ee3f73731e5483d96fa281245684507e1a0a6fa96d91e"
+          }
+        ],
+        "id": "framework-managed-installation",
+        "source_commit": "3755b217421a4f1238f740a09de7e034ccf56038",
+        "version": "1.0.0"
+      },
+      "engine_root": "F:\\framework-next\\381",
+      "expected_lock_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "mode_policy": "windows-inventory-only",
+      "operation": "plan",
+      "project_data_action": "none",
+      "project_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\project-fixture",
+      "protected_inputs": [],
+      "recovery_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\recovery",
+      "scratch_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch",
+      "staging_root": "F:\\framework-next\\p7-runs\\versioned-candidate\\fn-11cbafa435df4dcdad21baeb805033b9\\scratch"
+    },
+    "response": {
+      "api_version": 1,
+      "changed": false,
+      "details": null,
+      "diagnostics": [
+        {
+          "code": "lock-conflict",
+          "next_action": "Reconcile the explicit input and retry.",
+          "path": ".ai/framework.lock",
+          "reason": "Observed raw lock identity differs from expected hash/absence."
+        }
+      ],
+      "operation": "plan",
+      "outcome": "conflict"
+    },
+    "stderr": ""
+  }
+}

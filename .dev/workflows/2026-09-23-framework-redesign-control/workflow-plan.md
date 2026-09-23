@@ -200,3 +200,12 @@ Both actual dispatches started clean at 031233202f21e0793c9667cac872375d65e52be0
 including two real Lesson builds, reader acceptance and five synthetic refusals.
 The record-only handoff is locally inspected/integrated; prior failed whole runs
 remain visible. #368 stays open for its remaining reconciliation/review.
+
+
+## Complete rc.1 and native continuation
+
+The fixed #381 candidate implementation is reviewed for local integration.
+The latest coordinator report retains its actual build/read identity, the owner
+Codex-first Claude disposition, #373 workflow-only pass, and #382 native plan
+failure. #383 owns only the observed protected-input Windows path repair.
+Native acceptance and target installation remain pending.

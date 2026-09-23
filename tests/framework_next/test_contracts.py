@@ -35,7 +35,8 @@ PROFILES = {'lesson-minimal': ({'lesson'}, 9), 'knowledge': (KNOWLEDGE, 26),
             'work-management': (WORK, 28), 'engineering': (ENGINEERING, 53),
             'collaboration': (KNOWLEDGE | WORK | ENGINEERING, 107),
             'source-repository': ((KNOWLEDGE | WORK | ENGINEERING) - {'local-backlog'}, 99),
-            'context-maintenance': (MAINTENANCE, 6)}
+            'context-maintenance': (MAINTENANCE, 6),
+            'complete': (KNOWLEDGE | WORK | ENGINEERING | MAINTENANCE, 113)}
 
 
 def blob(name, value):
@@ -164,7 +165,7 @@ class SourceClosureTests(unittest.TestCase):
                     self.assertEqual(set(targets), {d for d, (p, _) in wanted.items() if p == owner})
                     self.assertNotRegex(text, r'src/|\.ai/assets/|\.dev/|[A-Za-z]:[\\/]')
         print(json.dumps({'C1': {'source_commit': commit, 'packages': 18, 'payload_members': 113,
-                                'profiles': 7, 'physical_assembly_scope': 'separate C5; this observation is declarations only'}}))
+                                'profiles': 8, 'physical_assembly_scope': 'separate C5; this observation is declarations only'}}))
 
     def test_c2_actual_v2_v3_union_and_null_config_projection(self):
         _, _, source = actual_source()
