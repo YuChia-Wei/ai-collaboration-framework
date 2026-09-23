@@ -5,9 +5,9 @@
   "workflow_id": "2026-09-23-installation-scan-budget",
   "task_id": "ISSUE-386",
   "owner_skill": "local-change-implementer",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T23:33:12+08:00",
-  "updated_at": "2026-09-23T23:33:12+08:00",
+  "updated_at": "2026-09-23T23:35:50+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "provenance": "Coordinator-selected independent conversation; declared selection is not runtime attestation.",
@@ -30,8 +30,10 @@
   },
   "execution": {
     "focused": "10/10 passed after one retained driver-field correction",
-    "public_trial": "pending-clean-commit",
-    "static": "UTF-8/AST and diff checks; exact-message validation required before commit"
+    "public_trial": "passed; planned then applied; 131 raw members exact; project readiness not-assessed",
+    "static": "UTF-8/AST/JSON/YAML, unchanged limits/closure/root helpers and diff checks passed; exact source commit message passed",
+    "actual_public_source_commit": "64bf9f6e800799976e46caa13d873f9fef898431",
+    "actual_result": "public-result.json"
   },
   "retained_failures": [
     "observations/focused-result.json",
@@ -40,8 +42,13 @@
   "handoff": {
     "coordinator": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "transport": "local-only",
-    "exact_head": "resolve containing commit; public source commit is separately retained by driver",
-    "hidden_context_required": false
+    "exact_head": "Resolve containing closeout commit; actual EnginePin source remains 64bf9f6e800799976e46caa13d873f9fef898431",
+    "hidden_context_required": false,
+    "remaining_decisions": [
+      "coordinator review/integration/first push",
+      "separate real-target retry",
+      "P7 adoption/restoration of unselected gates"
+    ]
   },
   "deferred": {
     "status": "deferred-by-owner",

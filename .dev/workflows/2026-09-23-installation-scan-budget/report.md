@@ -1,6 +1,8 @@
 # Issue #386 installation scan budget
 
-Status: implementation and focused checks complete; committed-clean public trial pending.
+Status: bounded implementation, focused checks and one committed-clean public trial complete.
+Actual EnginePin/source commit: 64bf9f6e800799976e46caa13d873f9fef898431.
+This closeout changes Issue records only; it does not retarget the executed EnginePin.
 The coordinator owns review, integration, first push, provider state and target retry.
 This is not target readiness or full-framework acceptance.
 
@@ -80,7 +82,7 @@ python -I -B tests/framework_next/test_installation_scan_budget.py --root F:/fra
 
 ## One actual public trial
 
-After committing all source/driver/records clean, execute:
+Executed once after committing all source/driver/records clean:
 python -I -B .dev/workflows/2026-09-23-installation-scan-budget/public-trial.py
 
 The driver uses the fixed read-only candidate:
@@ -105,6 +107,31 @@ or alternate root. Stop on public failure and retain outputs.
 Success requires all 131 raw managed members, exact lock bytes against the durable object
 and public hash, both markers absent, protected/unknown sentinels exact, unchanged candidate
 and engine bytes, and clean source. Project readiness remains not-assessed.
+
+## Actual public outcome
+
+[public-result.json](public-result.json) binds the compact result and raw evidence hashes.
+One public plan returned planned; one public apply returned applied / managed-bytes-consistent.
+All 131 raw members match the unchanged fixed candidate; exact lock bytes match both the
+public hash and durable captured object; both engine-declared markers are absent.
+Protected and unknown sentinels remain exact. All 134 selected candidate files and all ten
+raw engine members were unchanged after execution. Source remained clean on the same branch.
+Project readiness remains not-assessed. No actual target was mutated.
+
+Observed trial resource use: eight launches including this driver, five Git readers and
+two public children; maximum one directly owned child; exactly two operation directories.
+At the trial endpoint, all selected output roots including prior failed focused fixtures
+contained 568 files / 3,978,814 logical bytes, below 700 / 16 MiB. Closeout message bytes
+are later evidence and are not included in that point-in-time total. No speed claim is made;
+opaque nested/transient process counts and internal public listing counters are unavailable.
+The separate earlier causal/focused phase launched one baseline helper and two focused
+helpers (the latter includes the retained driver failure), not additional public trials.
+
+Durable result:
+C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/p7/n386/observations/p-441400f2/result.json
+
+Native tiny project:
+F:/framework-next/p7-runs/scan-budget-386/p-441400f2/project
 
 ## Original target failure retained
 
