@@ -1,0 +1,26 @@
+# P6 maintenance writer assignment
+
+[Issue #359](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/359) is the one coherent successor to actual #354 reader/planner `8be2f8ab807764cdd691cf81b537811c30bc64f7`. Its independent Astra Ultra task receives a checkpoint containing this assignment and both reader files. Use [selected P6 contract](p6-selected-contract.md), [actual interfaces](installation-planning/handoff.md), and the selected [formats](installation-update/formats.md), [ordering/recovery contract](installation-update/contract.md) and [cutover boundaries](installation-update/cutover-and-slices.md).
+
+## Owned source and deliverable
+
+Own `src/distribution/maintenance_coordination.py`, `installation_io.py`, `installation.py`, necessary direct integration of `installation_state.py`/`installation_plan.py`, one thin `src/tools/maintain_framework.py` development entry, optional same-owner `src/distribution/schemas/installation-*.schema.json` only with actual producer/reader, and own managed-installation design/workflow. Current six-file reader closure is not the final engine closure. No loader/manifest/profile/adapter/assembly, skill, root/index, CI, legacy recovery or project-data edits.
+
+Deliver closed inspect/plan/apply/recover, exact lock/operation/marker handling, OS-held participating-writer coordination, supported file publication/removal/modes/flush, same-engine finish/restore and truthful partial state. One owner may make the necessary state/plan helper/public-boundary changes without a concurrent lock-helper task. Reuse actual metadata and parsing owners. Any substantive change to selected ownership, formats, recovery guarantees or project boundary returns to the coordinator.
+
+## Concrete integration obligations
+
+- Select and document native platform/failure-domain support. Unsupported combinations fail explicitly; a source implementation is not platform or durability evidence. Resolve planner prerequisites through actual input/source/backend checks; do not turn P7 evidence deferral into a permanent product policy or unconditional admitted flag.
+- Bind all actual local entry/bootstrap/import/resource files in the fixed external EnginePin. Suppress bytecode before product imports; Python/PyYAML are explicit host prerequisites, with no implicit install. Observe origin/raw hashes and checkout provenance within the documented limits; do not claim loaded-memory attestation or source authenticity.
+- A thin explicit JSON request/result source entry is maintenance tooling, not #149 runtime/CLI selection or a new ordinary skill launcher. No fetch, release, credential, provider or adoption action.
+- Recompute inputs/accepted plan under native writer exclusion and fresh caller quiescence declaration. Guard existence is not lock ownership; never replace/unlink it to break a held lock. No-op writes/allocates nothing and cannot create missing coordination. All first-install guard/ancestor writes count toward truthful partial change.
+- Capture/read back complete exact before/after managed bytes, locks and three metadata documents in explicit durable storage, deduplicated within one operation. Immutable operation/identical marker precede managed mutation. Stage only changed files; full managed read-back precedes lock publication; marker removal is last. No multi-file atomicity, whole-project backup, per-step journal, generic migration or cleanup service.
+- Preserve all unowned/unknown/newer data. All-old drift includes unchanged files. Same-byte unowned collision stays conflict. POSIX mode-only must avoid member byte replacement; Windows declared mode remains inventory-only. Protected input checks read only caller-selected paths, without data-store scans.
+- Enforce real operation and deterministic sibling-name uniqueness, all actual path budgets and explicit root containment. Do not silently choose temporary or recovery roots or modify global TEMP/TMP. Preserve operation directories; no recursive cleanup.
+- Recovery uses exact immutable operation/hash, same engine pin, current expected lock/marker and a fresh declaration. Unknown/newer edits block. Whole-loss managed reconstruction is only for wholly absent managed content at the original binding; source/config/data remain separately owned and project_readiness is always not-assessed. Completed operations are not rollback authority after later use.
+
+## Execution boundary
+
+Use F:/framework-next/359, one writer, no sub-agents or executor-created conversations. Preserve F:/ai-context-tests. Direct content/UTF-8/AST/JSON/YAML/reference/Git checks and exact complete commit-message check only under U001. Product CLI/help/import, schema validation, tests/fixtures, build/package/install/migration/probes, audits/leases/acceptance packets and CI are **deferred-by-owner**, program #322 coordinator / P7. Do not execute primitives to certify the backend during authoring.
+
+Return one coherent local source checkpoint with actual API/engine member list/dependency/backend support handoff and explicit limitations. Coordinator owns first push/PR/online merge, later P7 selection and project cutover. M01 remains unassigned without actual need. #346/#347 blocked actions and shared mapping remain with their original owners.

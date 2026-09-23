@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T10:24:44+08:00",
-  "updated_at": "2026-09-23T10:30:37+08:00",
+  "updated_at": "2026-09-23T10:46:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -46,15 +46,15 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Independent Astra Ultra task dispatched; runtime row and first F: command observed",
-    "next_action": "Receive coherent local source and inspect actual package closure"
+    "last_completed_step": "Fixed clean local source received and coordinator content inspection completed",
+    "next_action": "Online PR integration; actual verification stays with P7"
   },
   "results": {
-    "summary": "Independent source task active in assigned F: worktree",
+    "summary": "Source content inspected; no behavioral acceptance or installation inferred",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
-    "residual_risk": "Actual source/behavior/mapping pending; P7 deferred",
+    "residual_risk": "P7 verification and separately owned integration/cutover remain",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -68,8 +68,10 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p5-final-capability-contract.md",
-    "implementation_status": "active; no delivery yet",
-    "verification_state": "deferred-by-owner"
+    "implementation_status": "source completed; online integration pending",
+    "verification_state": "deferred-by-owner",
+    "source_commit": "3de57ce8a128e71b3956e38640c83c4370d11fba",
+    "coordinator_report": "reports/p5-optional-context-source-integration.md"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PhEc"
 }

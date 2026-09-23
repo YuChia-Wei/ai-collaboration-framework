@@ -1,0 +1,70 @@
+{
+  "workflow_id": "2026-09-23-installation-planning",
+  "task_id": "ISSUE-354",
+  "owner_skill": "ai-context-governance",
+  "created_at": "2026-09-23T10:31:35+08:00",
+  "updated_at": "2026-09-23T10:39:14+08:00",
+  "state": "bounded-source-checkpoint",
+  "worktree": "F:/framework-next/354",
+  "branch": "codex/2026-09-23-installation-planning",
+  "starting_commit": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
+  "checkpoint_commit_source": "containing-commit",
+  "hidden_context_required": false,
+  "integration_owner": "program #322 coordinator; task 01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+  "api_handoff": ".dev/design/framework-next/installation-planning/handoff.md",
+  "changed_paths": [
+    "src/distribution/installation_state.py",
+    "src/distribution/installation_plan.py",
+    ".dev/design/framework-next/installation-planning/handoff.md",
+    ".dev/workflows/2026-09-23-installation-planning/workflow.yaml",
+    ".dev/workflows/2026-09-23-installation-planning/workflow-plan.md",
+    ".dev/workflows/2026-09-23-installation-planning/tasks/ISSUE-354.json",
+    ".dev/workflows/2026-09-23-installation-planning/reports/remediation-report.md",
+    ".dev/workflows/2026-09-23-installation-planning/handoff.json"
+  ],
+  "actual_checks": [
+    "Initial root/branch/full HEAD/common Git directory/status read-back",
+    "Issue #354 live read-back via scoped network escalation",
+    "First UTF-8/AST source parsing; product not imported",
+    "Both modules UTF-8/AST parsed after source edits; product not imported",
+    "Issue-owned records directly JSON/YAML parsed",
+    "12 changed local Markdown links resolve within worktree",
+    "Static import/open/call inventory inspected; no product code invoked",
+    "Final UTF-8/AST/JSON/YAML direct parsing: 8 files; no product imports",
+    "Final local Markdown references: 13 resolved inside worktree",
+    "git diff --cached --check passed; staged changed paths exactly the 8 assigned outputs",
+    "Exact UTF-8/LF planned commit-message validator passed; SHA-256 56608e8124ff040bb7fd8864b7fdfee3627f2664fd8f5992a8a4519586ce74c0"
+  ],
+  "limitations_and_failed_attempts": [
+    "Initial sandbox gh read failed because network proxy 127.0.0.1:9 refused the connection; scoped escalation succeeded.",
+    "An exploratory Get-Content src/distribution/source.py failed: actual tracked module is git_source.py; source read corrected.",
+    "First long source-write command was not launched: Windows os error 206 command length; bounded writes succeeded.",
+    "Code graph indexed assigned checkout with persistence=false; tool supplied no index SHA attestation. Native tracked-file/source reads established material facts."
+  ],
+  "deferral": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select and run new focused checks before pilot/adoption."
+  },
+  "next_action": "Coordinator reads this containing commit and final exact HEAD/clean read-back before arranging any push/PR/merge; assign subsequent sole writer and P7 checks.",
+  "provider_mutations": [],
+  "product_invocations": [],
+  "shared_index_changes": [],
+  "u001_adaptation": "Issue-owned bounded receiving record, not a legacy schema-validated audit/lease/handoff packet.",
+  "remaining_work": [
+    "Sole writer integrates complete engine/bootstrap/import/resource closure and selected native backend",
+    "Implement/apply/recover durable managed closure in separately assigned scope",
+    "P7 selects and performs focused new behavioral/platform checks",
+    "Project owner chooses config/data/public-reader activation checks separately"
+  ],
+  "commit_message": {
+    "path": ".dev/workflows/2026-09-23-installation-planning/artifacts/commit-message.txt",
+    "ignored_by": ".gitignore artifacts/ rule",
+    "sha256": "56608e8124ff040bb7fd8864b7fdfee3627f2664fd8f5992a8a4519586ce74c0",
+    "validator_command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-installation-planning/artifacts/commit-message.txt --workflow-id 2026-09-23-installation-planning",
+    "result": "passed",
+    "scope": "planned message only; no history matrix"
+  },
+  "retained_check_history": "First reference pass resolved 12 local links; after adding the report handoff link the final pass resolved 13."
+}

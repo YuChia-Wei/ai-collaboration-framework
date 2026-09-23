@@ -8,6 +8,8 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-installation-planning`](2026-09-23-installation-planning/workflow.yaml) | Read-only installation state and planning | `ai-context-governance` | `completed` | `2026-09-23T10:39:14+08:00` | [plan](2026-09-23-installation-planning/workflow-plan.md) |
+| [`2026-09-23-optional-context-implementation`](2026-09-23-optional-context-implementation/workflow.yaml) | Optional context instruction packages | `ai-context-governance` | `completed` | `2026-09-23T10:38:08+08:00` | [plan](2026-09-23-optional-context-implementation/workflow-plan.md) |
 | [`2026-09-23-problem-frame-compliance-design`](2026-09-23-problem-frame-compliance-design/workflow.yaml) | Portable problem-frame and compliance contract design | `ai-context-governance` | `completed` | `2026-09-23T10:16:25+08:00` | [plan](2026-09-23-problem-frame-compliance-design/workflow-plan.md) |
 | [`2026-09-23-optional-context-maintenance-design`](2026-09-23-optional-context-maintenance-design/workflow.yaml) | Optional context maintenance and assessment ownership design | `ai-context-governance` | `completed` | `2026-09-23T10:18:43.0502001+08:00` | [plan](2026-09-23-optional-context-maintenance-design/workflow-plan.md) |
 | [`2026-09-23-installation-update-design`](2026-09-23-installation-update-design/workflow.yaml) | P6 managed installation and update design checkpoint | `ai-context-governance` | `completed` | `2026-09-23T10:04:23+08:00` | [plan](2026-09-23-installation-update-design/workflow-plan.md) |

@@ -1,0 +1,86 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-354",
+  "workflow_id": "2026-09-23-installation-planning",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T10:31:35+08:00",
+  "updated_at": "2026-09-23T10:39:14+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Independent conversation as explicitly dispatched; declared model/effort, not independent runtime attestation. No sub-agents or child conversations.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/354",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "scope": {
+    "target": "Candidate 1 / lock 1 readers and read-only exact inspection/planning",
+    "files": [
+      "src/distribution/installation_state.py",
+      "src/distribution/installation_plan.py",
+      ".dev/design/framework-next/installation-planning/handoff.md",
+      ".dev/workflows/2026-09-23-installation-planning/"
+    ],
+    "constraints": [
+      "U001",
+      "Assigned F:/framework-next/354 only",
+      "No shared loader/adapter/manifest/profile/root/index writes"
+    ],
+    "non_goals": [
+      "apply/recover/bootstrap/native writer backend",
+      "config/data semantics and M01",
+      "product invocation, tests, schema validation, build, migration, CI",
+      "provider mutations/publication/downstream"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify identity and authority",
+      "Implement bounded read-only APIs",
+      "Inspect source and syntax; commit exact validated message"
+    ],
+    "validation": [
+      "Direct UTF-8/JSON/YAML/AST without product imports",
+      "Changed links, Git scope/diff checks",
+      "Exact complete commit message validation under U001"
+    ],
+    "last_completed_step": "Source-only completion, final direct syntax/link/source checks, staged scope/diff inspection and exact planned message validation",
+    "next_action": "Coordinator collects local containing commit plus final HEAD/clean read-back; separately controls transport, sole writer integration and P7."
+  },
+  "results": {
+    "summary": "Source-only readers/planner complete for this Issue; no product behavior executed or accepted.",
+    "files_changed": [
+      "src/distribution/installation_state.py",
+      "src/distribution/installation_plan.py",
+      ".dev/design/framework-next/installation-planning/handoff.md",
+      ".dev/workflows/2026-09-23-installation-planning/workflow.yaml",
+      ".dev/workflows/2026-09-23-installation-planning/workflow-plan.md",
+      ".dev/workflows/2026-09-23-installation-planning/tasks/ISSUE-354.json",
+      ".dev/workflows/2026-09-23-installation-planning/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-installation-planning/handoff.json"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Behavior, dependency/bootstrap closure, native platform and durability unverified.",
+    "follow_up_needed": true,
+    "checks_performed": [
+      "UTF-8 and AST parse of both modules, without product imports",
+      "Direct JSON/YAML parsing of issue-owned records",
+      "12 local Markdown links resolve inside the assigned worktree",
+      "AST import/open/call inventory and direct source inspection",
+      "Final direct checks covered all 8 files and 13 local Markdown links",
+      "git diff --cached --check passed; exactly 8 scoped paths staged",
+      "Exact UTF-8/LF planned commit message passed validate-git-commits.py --message-file; hash recorded in handoff.json"
+    ]
+  },
+  "verification_deferral": {
+    "state": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select and run new focused checks before pilot/adoption."
+  }
+}
