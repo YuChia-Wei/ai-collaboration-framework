@@ -7,17 +7,20 @@ from functools import lru_cache
 from hashlib import sha256
 import io
 import json
+import os
 from pathlib import Path
 import posixpath
 import re
+import stat
 import tempfile
 import time
 import unittest
+from types import SimpleNamespace
 from urllib.parse import unquote, urlsplit
 
 from distribution import assembly, installation_state
 from distribution.data import DistributionError, json_bytes, yaml_object
-from distribution.git_source import Blob, GitSource
+from distribution.git_source import Blob, GitSource, direct_directory
 from distribution.package import check_references, load_package
 from distribution.selection import select
 import support
@@ -324,6 +327,12 @@ class SelectionTests(unittest.TestCase):
         commit = support.git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
                              'commit-tree', root_tree, cwd=repository, input=b'Synthetic member fixture\n').decode().strip()
         source = GitSource(repository, commit)
+        nested = repository / 'nested'
+        nested.mkdir()
+        with self.assertRaisesRegex(DistributionError, 'worktree root'):
+            GitSource(nested, commit)
+        with self.assertRaisesRegex(DistributionError, 'traversal'):
+            GitSource(repository / '..' / repository.name, commit)
         self.assertEqual((source.read('src/regular').mode, source.read('src/regular').data), ('100755', b'tiny\n'))
         with self.assertRaisesRegex(DistributionError, 'missing exact Git member'):
             source.read('src/missing')
@@ -331,6 +340,89 @@ class SelectionTests(unittest.TestCase):
             source.read('src/link')
         # Actual Git tree/link modes; no native OS symlink or installation probe.
         run.measure()
+
+
+class PathAdmissionTests(unittest.TestCase):
+    def test_existing_direct_directory_and_invalid_roots(self):
+        run = support.active_run()
+        case = run.case('path-admission')
+        self.assertEqual(direct_directory(case, 'fixture'), case)
+        for value in [Path('relative'), case / '..' / 'escape']:
+            with self.subTest(value=str(value)), self.assertRaises(DistributionError):
+                direct_directory(value, 'fixture')
+        with self.assertRaises(FileNotFoundError):
+            direct_directory(case / 'missing', 'fixture')
+        ordinary = run.write(case / 'ordinary-file', b'not a directory')
+        with self.assertRaisesRegex(DistributionError, 'direct directory'):
+            direct_directory(ordinary, 'fixture')
+        if os.name == 'nt':
+            for name in ['alias~1', 'trailing.', 'trailing ', 'NUL.txt', 'stream:ads']:
+                with self.subTest(name=name), self.assertRaisesRegex(DistributionError, 'ambiguous'):
+                    direct_directory(case / name, 'fixture')
+
+    def test_synthetic_link_identity_and_error_refusals(self):
+        # Local path doubles exercise admission branches, not native links/syscalls.
+        # No global Path/OS monkeypatch; actual filesystem evidence is separate.
+        case = support.active_run().case('synthetic-path-errors')
+
+        class View:
+            def __init__(self, *, mode=stat.S_IFDIR, attributes=0, inode=17,
+                         winerror=1, drift=False, parents=None):
+                self.parts = case.parts
+                self.parents = case.parents if parents is None else parents
+                self.mode, self.attributes, self.inode = mode, attributes, inode
+                self.winerror, self.drift, self.calls = winerror, drift, 0
+
+            def __str__(self):
+                return str(case)
+
+            def __fspath__(self):
+                return str(case)
+
+            def is_absolute(self):
+                return True
+
+            def lstat(self):
+                self.calls += 1
+                return SimpleNamespace(st_mode=self.mode, st_file_attributes=self.attributes,
+                                       st_dev=9, st_ino=self.inode + (self.calls if self.drift else 0))
+
+            def resolve(self, *, strict):
+                error = OSError('synthetic final-path failure')
+                error.winerror = self.winerror
+                raise error
+
+        for view in [View(mode=stat.S_IFLNK), View(attributes=stat.FILE_ATTRIBUTE_REPARSE_POINT),
+                     View(parents=(View(attributes=stat.FILE_ATTRIBUTE_REPARSE_POINT),))]:
+            with self.subTest(kind=(view.mode, view.attributes)), self.assertRaisesRegex(DistributionError, 'links/reparse'):
+                direct_directory(view, 'synthetic')
+        for code in [2, 5, 50]:
+            with self.subTest(error=code), self.assertRaises(OSError) as caught:
+                direct_directory(View(winerror=code), 'synthetic')
+            self.assertEqual(caught.exception.winerror, code)
+        if os.name == 'nt':
+            self.assertEqual(direct_directory(View(), 'synthetic'), case)
+            with self.assertRaisesRegex(DistributionError, 'usable filesystem identities'):
+                direct_directory(View(inode=0), 'synthetic')
+            with self.assertRaisesRegex(DistributionError, 'identity changed'):
+                direct_directory(View(drift=True), 'synthetic')
+        else:
+            with self.assertRaises(OSError):
+                direct_directory(View(), 'synthetic')
+
+    def test_output_containment_and_synthetic_source_alias_identity(self):
+        case = support.active_run().case('output-containment')
+        info = support.REPOSITORY.lstat()
+        source = SimpleNamespace(repository=support.REPOSITORY,
+                                 repository_identity=(info.st_dev, info.st_ino))
+        with self.assertRaisesRegex(DistributionError, 'outside the source worktree'):
+            assembly.output_parent(support.REPOSITORY / 'src', source, 'output-root')
+        self.assertEqual(assembly.output_parent(case, source, 'output-root'), case)
+        # Synthetic source identity simulates a second spelling for an ancestor.
+        info = case.parent.lstat()
+        source.repository_identity = (info.st_dev, info.st_ino)
+        with self.assertRaisesRegex(DistributionError, 'source worktree aliases'):
+            assembly.output_parent(case, source, 'output-root')
 
 
 class CandidateTests(unittest.TestCase):
@@ -344,6 +436,32 @@ class CandidateTests(unittest.TestCase):
         second = assembly.assemble(support.REPOSITORY, commit, 'lesson-minimal', root, root)
         run.measure()
         a, b = Path(first['candidate_root']), Path(second['candidate_root'])
+        expected = select(source, 'lesson-minimal')
+        emitted = {}
+        for candidate in (a, b):
+            names = {p.relative_to(candidate).as_posix() for p in candidate.rglob('*') if p.is_file()}
+            self.assertEqual(names, set(installation_state.METADATA) | {m.candidate_path for m in expected.members})
+            self.assertEqual(len(names), 13)
+            for member in expected.members:
+                self.assertEqual((candidate / member.candidate_path).read_bytes(), member.data)
+            emitted[candidate] = {name: (candidate / name).read_bytes() for name in installation_state.METADATA}
+            files = json.loads(emitted[candidate]['metadata/files.json'])
+            self.assertEqual(files['files'], [m.identity() for m in expected.members])
+        for name in ['metadata/selection.json', 'metadata/files.json']:
+            self.assertEqual(emitted[a][name], emitted[b][name])
+        builds = [json.loads(emitted[p]['metadata/build.json']) for p in (a, b)]
+        identity_inputs = {name: sha256(emitted[a][name]).hexdigest()
+                           for name in ['metadata/selection.json', 'metadata/files.json']}
+        expected_identity = f'development:{commit}:' + sha256(json_bytes(identity_inputs)).hexdigest()
+        for build in builds:
+            self.assertEqual(build['candidate_identity'], expected_identity)
+            self.assertEqual(build['identity_inputs'], identity_inputs)
+        self.assertNotEqual(builds[0]['run_id'], builds[1]['run_id'])
+        self.assertNotEqual(builds[0]['completed_at'], builds[1]['completed_at'])
+        print(json.dumps({'C5_assembly': {'source_commit': commit, 'actual_builds': 2,
+                                        'files_per_candidate': 13, 'candidate_identity': expected_identity,
+                                        'candidate_roots': [str(a), str(b)],
+                                        'reader_status': 'next; not yet accepted'}}), flush=True)
         left, right = installation_state.read_candidate(str(a)), installation_state.read_candidate(str(b))
         self.assertEqual(left.identity, right.identity)
         self.assertEqual(left.selection, right.selection)

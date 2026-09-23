@@ -80,7 +80,9 @@ No physical-I/O, performance or token inference is made.
 
 Current evidence and limitations: [Issue 373 report](../../.dev/workflows/2026-09-23-public-skill-checks/report.md).
 The initial Lesson writer refused its F: volume query; dependent round-trips stay
-unexecuted. PR metadata fails its own public parser. Read-only successes do not
+unexecuted. PR metadata failed its public parser at that checkpoint. The later
+approved alias expansion passes source contracts, but the public family has not
+been rerun against that repair. Read-only successes do not
 establish installation, actual write behavior, full public acceptance or CI.
 
 ## Small helper interface
@@ -115,9 +117,10 @@ The runner adds this checkout's `src` and test directory for imports under `-I`.
 
 Fixture ancestry uses lstat, refuses links/reparse points, ambiguous paths,
 source containment and drive roots, then uses an absolute direct path. It does
-not require Windows' optional final-path API. Product roots retain their actual
-owner's checks: on the assigned F: backend strict resolution currently fails.
-No product canonicalization rule was weakened to make these tests green.
+not require Windows' optional final-path API. The approved GitSource/assembly repair uses a narrow Windows error-1 fallback
+only after direct ancestor and stable device/inode checks; other errors still
+fail. The actual installation reader retains its separate strict-root check
+and currently refuses the assigned F: backend.
 
 The audit hook counts all subprocess launches made in this interpreter (including
 GitSource's nested Git) and stops before launch 257. It cannot observe opaque
@@ -144,11 +147,13 @@ authorized target editor. C3 covers synthetic selection negatives and one tiny
 real Git fixture. C5 calls actual Lesson assembly twice and actual candidate
 reader, with five labelled synthetic candidate corruptions; no apply/recovery.
 
-Initial execution found out-of-scope anchors in PR/backlog metadata and the
-assigned F: backend's strict-resolution refusal. The tests remain failing;
-C5 must not be reported as two successful builds. Exact observations, source
-bindings, residuals and next actions live in the
-[Issue 368 report](../../.dev/workflows/2026-09-23-source-contract-checks/report.md).
+The directly approved four-file repair preserves metadata semantics while
+expanding PR/backlog aliases and handles the observed F: error in GitSource/
+assembly. Committed-source execution now passes C1-C3 and completes two real
+Lesson builds; the subsequent installation reader still refuses F: strict root
+resolution, so C5 aggregate remains failing. Exact original and repaired
+observations are retained in the
+[repair report](../../.dev/workflows/2026-09-23-source-contract-checks/repair-report.md).
 C4/C6 and public families are partially observed under Issue 373; native Windows,
-root adoption, independent review, all-profile build acceptance, CI and publication
-remain separately assigned.
+root adoption, independent review of the changed source, all-profile build
+acceptance, CI and publication remain separately assigned.

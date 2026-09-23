@@ -9,7 +9,7 @@ dependencies:
 runtime:
 - id: skill-instruction-reader
   requirement: Read selected package and resources
-  for_operations: &id001
+  for_operations:
   - explain
   - create
   - inspect
@@ -20,11 +20,25 @@ runtime:
   on_missing: unavailable
 - id: python
   version: '>=3.11,<4'
-  for_operations: *id001
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - revise
+  - transition
+  - render
   on_missing: unavailable
 - id: pyyaml
   version: '>=6,<7'
-  for_operations: *id001
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - revise
+  - transition
+  - render
   on_missing: unavailable
 - id: jsonschema
   version: '>=4.18,<5'
@@ -39,11 +53,25 @@ runtime:
 - id: filesystem
   requirement: Selected local files; writes need exclusive creation and same-directory
     atomic replacement
-  for_operations: *id001
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - revise
+  - transition
+  - render
   on_missing: unavailable
 - id: git
   requirement: 'Conditional: selected local-config ignore checks'
-  for_operations: *id001
+  for_operations:
+  - explain
+  - create
+  - inspect
+  - query
+  - revise
+  - transition
+  - render
   on_missing: unavailable
 configuration:
   namespace: local-backlog

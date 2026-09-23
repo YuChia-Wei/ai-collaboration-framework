@@ -1,0 +1,22 @@
+{
+  "baseline_commit": "070a47335ffce99d31bd83e487447942539e4a9f",
+  "proof": {
+    "pr": {
+      "before_sha256": "b86b3282bcb35ac5da5696c1defc30971e9d1a0be36bcdda030b3b903c7cf8f3",
+      "after_sha256": "e85987a6d2fc7f3c0276d99284c6612b1e314a729f4d4e8a8d90fc93d2153a86",
+      "recursive_exact_type_value_and_order": "passed",
+      "anchor_groups_expanded": [
+        "id001",
+        "id002"
+      ]
+    },
+    "local-backlog": {
+      "before_sha256": "9a896e92e3c2af61bd04b8adc49b269fb2947d9c4cedb90d5ec300dbfbadbbe3",
+      "after_sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d",
+      "recursive_exact_type_value_and_order": "passed",
+      "anchor_groups_expanded": [
+        "id001"
+      ]
+    }
+  }
+}

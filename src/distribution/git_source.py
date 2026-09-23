@@ -7,6 +7,7 @@ from hashlib import sha256
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 
 from .data import DistributionError, path, require
@@ -24,16 +25,59 @@ class Blob:
                 "size": len(self.data), "sha256": sha256(self.data).hexdigest()}
 
 
+def direct_directory(value: Path, label: str) -> Path:
+    """Admit a direct directory when Windows lacks the final-path API.
+
+    Only ERROR_INVALID_FUNCTION (1) may use the already checked absolute path.
+    Every ancestor must exist, be a plain directory and retain its identity.
+    This is bounded path admission, not a concurrent-filesystem/durability claim.
+    """
+    require(value.is_absolute() and ".." not in value.parts,
+            f"{label}: use an absolute directory without traversal")
+    require(not str(value).startswith(("\\\\", "//")), f"{label}: network/device roots are unsupported")
+    if os.name == "nt":
+        for part in value.parts[1:]:
+            require(not part.endswith((".", " ")) and not re.search(r'[<>:"|?*~\x00-\x1f]', part)
+                    and re.fullmatch(r"(?i)(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?", part) is None,
+                    f"{label}: ambiguous or aliased directory segment")
+
+    def identities():
+        result = []
+        for current in (value, *value.parents):
+            info = current.lstat()
+            require(stat.S_ISDIR(info.st_mode) and not stat.S_ISLNK(info.st_mode)
+                    and not getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT,
+                    f"{label}: every ancestor must be a direct directory without links/reparse points")
+            result.append((info.st_dev, info.st_ino))
+        return result
+
+    before = identities()
+    try:
+        resolved = value.resolve(strict=True)
+    except OSError as exc:
+        if os.name != "nt" or getattr(exc, "winerror", None) != 1:
+            raise
+        require(all(device and inode for device, inode in before),
+                f"{label}: final-path fallback requires usable filesystem identities")
+        resolved = Path(os.path.abspath(value))
+    require(identities() == before, f"{label}: directory identity changed during admission")
+    return resolved
+
+
 class GitSource:
     def __init__(self, repository: Path, commit: str):
         require(repository.is_absolute(), "repository must be an explicit absolute worktree root")
-        self.repository = repository.resolve(strict=True)
+        self.repository = direct_directory(repository, "repository")
+        root_info = self.repository.lstat()
+        self.repository_identity = (root_info.st_dev, root_info.st_ino)
         require(re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", commit) is not None,
                 "commit must be one full lowercase Git object ID, never a branch, tag or abbreviation")
         self.commit = commit
         self.blobs: dict[str, Blob] = {}
-        actual_root = Path(self._git("rev-parse", "--show-toplevel").decode().strip()).resolve(strict=True)
-        require(actual_root == self.repository, "repository must name its worktree root")
+        actual_root = direct_directory(Path(self._git("rev-parse", "--show-toplevel").decode().strip()), "Git worktree root")
+        root_info = actual_root.lstat()
+        require(actual_root == self.repository and (root_info.st_dev, root_info.st_ino) == self.repository_identity,
+                "repository must name its unchanged worktree root")
         promisor_keys = self._git("config", "--name-only", "--get-regexp",
                                   r"^(extensions\.partialclone|remote\..*\.promisor)$", allow_absent=True)
         require(not promisor_keys.strip(),
