@@ -1,0 +1,24 @@
+workflow_id: 2026-09-23-engineering-methods
+workflow_kind: ai-context-maintenance
+owner_skill: ai-context-governance
+status: completed
+current_phase: local-source-handoff
+branch: codex/2026-09-23-engineering-methods
+base_branch: main
+artifact_root: .dev/workflows/2026-09-23-engineering-methods
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T11:55:00+08:00'
+updated_at: '2026-09-23T12:04:39+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+adaptation: U001 proportional source workflow; no claim of legacy schema or lifecycle validation
+issue_url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/347
+program: 322
+original_starting_commit: 842b73ca09d701d1561109255193d80439dc996b
+resumed_starting_commit: 4cda6689bf469a2273e14e237a0c3bf7ad4b6eed
+verification:
+  status: deferred-by-owner
+  authority: U001
+  owner: "program #322 coordinator / P7"
+  next_action: P7 selects redesigned checks after implementation
+completion_scope: Five package sources complete; coordinator integration and P7 verification remain separate

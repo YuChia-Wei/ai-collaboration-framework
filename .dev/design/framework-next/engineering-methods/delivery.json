@@ -1,0 +1,418 @@
+{
+  "purpose": "Actual source members for coordinator integration; not a package/schema/runtime validation result",
+  "issue": 347,
+  "source_base_commit": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed",
+  "observed_at": "2026-09-23T12:01:34+08:00",
+  "generator": "Direct pathlib/hashlib file reads and PyYAML safe_load; no product imports",
+  "scope": [
+    "diagnostic-analyst",
+    "ddd-ca-hex-architect",
+    "bdd-gwt-test-designer",
+    "local-change-implementer",
+    "slice-implementer"
+  ],
+  "excluded": "Shared mapping, other packages, runtime generation and product execution",
+  "reproduction": "Read each listed skill-package.yaml as text/YAML; enumerate files only in its src/skills directory and compute SHA-256 from raw bytes",
+  "package_count": 5,
+  "member_count": 23,
+  "public_operation_count": 7,
+  "implementation_status": "source-present",
+  "verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "P7 selects redesigned checks after implementation"
+  },
+  "packages": [
+    {
+      "id": "diagnostic-analyst",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "artifact_roles": [],
+      "resources": {
+        "references": [
+          "references/diagnose.md"
+        ],
+        "schemas": [],
+        "templates": [],
+        "tools": []
+      },
+      "operations": [
+        {
+          "id": "diagnose",
+          "execution": "instruction",
+          "inputs": [
+            "Observed symptom, expected behavior, subject and environment",
+            "Applicable target rules, evidence and its limitations",
+            "Authorized investigation scope, commands, instruments, destinations and stopping conditions"
+          ],
+          "outputs": [
+            "Prose hypotheses with falsifiers, observation coverage and evidence",
+            "Reproduction and causal isolation results with confirmed, unconfirmed or blocked conclusion",
+            "Bounded repair proposal and proposed or actually verified regression binding"
+          ],
+          "instructions": "references/diagnose.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read the diagnostic instructions and permitted caller evidence",
+          "for_operations": [
+            "diagnose"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "members": [
+        {
+          "path": "references/diagnose.md",
+          "sha256": "b421aa9ae69b2dd0644da9633c342f1c40d0da74871423b1a08ab6519adcf488"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "4e96a9c31d6fa83bb1f95ec6c9b830d292e0323450f40a0bd94463626d946462"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "41ea28386a84941cb58f8a79e0965a1f6197233548b18e4fee53faf7b2cae2aa"
+        }
+      ]
+    },
+    {
+      "id": "ddd-ca-hex-architect",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "artifact_roles": [],
+      "resources": {
+        "references": [
+          "references/design.md",
+          "references/review.md"
+        ],
+        "schemas": [],
+        "templates": [],
+        "tools": []
+      },
+      "operations": [
+        {
+          "id": "design",
+          "execution": "instruction",
+          "inputs": [
+            "Bounded design goal, requirements, acceptance and quality constraints",
+            "Target architecture decisions, selected technology guidance and compatibility constraints",
+            "Existing authorization and any caller-selected output destination"
+          ],
+          "outputs": [
+            "Architecture proposal with language, invariants, boundaries, alternatives and tradeoffs",
+            "Observable acceptance, risks, unresolved decisions and optional implementation or ADR handoff"
+          ],
+          "instructions": "references/design.md",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Fixed architecture artifact identity and permitted evidence",
+            "Requirements, target decisions, selected rules and requested review coverage"
+          ],
+          "outputs": [
+            "Read-only findings with criterion, location, impact, evidence and uncertainty",
+            "Review classification, coverage, valid alternatives and bounded handoff"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read the selected architecture instructions and permitted target artifacts",
+          "for_operations": [
+            "design",
+            "review"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "members": [
+        {
+          "path": "references/design.md",
+          "sha256": "6454161c1748f30832cb2a74db5f681a34ad9303da5bb4ed608935c0bb6441c0"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "9121b136f15648e9ca9ff1cf94e1cfeb6f05afc7ed6554001b89cdcf9da36012"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "584e06353be2977bb91234936faa190870b3e5ca33d04de6cb3cda050a884983"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "a4a6d4634f5b534cc838ef3e3a35dd78c26d20c724f6f829e138ceb950b40f69"
+        }
+      ]
+    },
+    {
+      "id": "bdd-gwt-test-designer",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "artifact_roles": [],
+      "resources": {
+        "references": [
+          "references/design.md",
+          "references/review.md"
+        ],
+        "schemas": [],
+        "templates": [],
+        "tools": []
+      },
+      "operations": [
+        {
+          "id": "design",
+          "execution": "instruction",
+          "inputs": [
+            "Requirements, specifications, acceptance or explicitly labeled observed behavior",
+            "Bounded behavior, selected testing conventions and existing authoring authority",
+            "Optional caller-selected scenario format and output destination"
+          ],
+          "outputs": [
+            "Traceable GWT scenarios with concrete data, observable assertions and test levels",
+            "Setup notes, expected-value sources, gaps and bounded implementation handoff"
+          ],
+          "instructions": "references/design.md",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Fixed scenario artifact identity, source behavior and acceptance",
+            "Applicable target rules, selected testing conventions and requested coverage"
+          ],
+          "outputs": [
+            "Read-only findings with evidence, impact, uncertainty and suggested corrections",
+            "Review classification, acceptance coverage and implementation handoff limits"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read the selected scenario instructions and permitted caller sources",
+          "for_operations": [
+            "design",
+            "review"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "members": [
+        {
+          "path": "references/design.md",
+          "sha256": "d49357af2ab5eaf1b562436c6ed1d17ded54fd07d5db2df271def99be5283668"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "2db7f59e489d0d1b99b26b5db245379a4793281d83fe0f5a79186fdaa7d61f28"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "fb3bb4b5650ebd3664f879d7916ac21de30327e1e7d357785b26e5255dfa9b51"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "56f180f30ec09ed1d38bb5b9cbfd8f70ac6ae1847cadb9ad27e57318eabddb48"
+        }
+      ]
+    },
+    {
+      "id": "local-change-implementer",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "artifact_roles": [],
+      "resources": {
+        "references": [
+          "references/implement.md"
+        ],
+        "schemas": [],
+        "templates": [],
+        "tools": []
+      },
+      "operations": [
+        {
+          "id": "implement",
+          "execution": "instruction",
+          "inputs": [
+            "One primary technical target, local operation and allowed dependency radius",
+            "Existing authorization, accepted behavior and applicable target rules",
+            "Selected technology, authorized edit destinations and target validation commands"
+          ],
+          "outputs": [
+            "Bounded code change and actual touched radius",
+            "Compatibility notes, actual check outcomes and explicit skipped or blocked checks",
+            "Remaining uncertainty or a concrete out-of-scope decision handoff"
+          ],
+          "instructions": "references/implement.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read local implementation instructions and permitted target sources",
+          "for_operations": [
+            "implement"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "authorized-target-editor",
+          "requirement": "Inspect and edit the explicitly authorized target paths",
+          "for_operations": [
+            "implement"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "members": [
+        {
+          "path": "references/implement.md",
+          "sha256": "6d66a8a31b14e66d9cfa5ca3bfe8276032007e52e9bfb3de11a95b8960594ea3"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "2847ca089fe0c092a329027dcb8f588b2c8fcc42c8c78e60d34a0b19844ab44c"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "6dbeef2b61767328cb0b96114333240f41c05694e354273dbe96238fcdd8c9a5"
+        }
+      ]
+    },
+    {
+      "id": "slice-implementer",
+      "version": "0.1.0",
+      "metadata_version": 3,
+      "configuration": null,
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "artifact_roles": [],
+      "resources": {
+        "references": [
+          "references/implement.md",
+          "references/modes/command.md",
+          "references/modes/query.md",
+          "references/modes/reactor.md",
+          "references/modes/generic.md",
+          "references/test-handoff.md",
+          "references/remediation.md"
+        ],
+        "schemas": [],
+        "templates": [],
+        "tools": []
+      },
+      "operations": [
+        {
+          "id": "implement",
+          "execution": "instruction",
+          "inputs": [
+            "One bounded goal, intent, acceptance, non-goals and exactly one command, query, reactor or generic mode",
+            "Existing authorization, target normative sources and optional finding evidence kept separately",
+            "Accepted architecture, selected technology guidance, permitted paths and target validation commands",
+            "Scenario input when concrete tests are in scope and optional remediation overlay"
+          ],
+          "outputs": [
+            "Bounded implementation, actual touched files and compatibility notes",
+            "Actual validation outcomes, deferred work and scenario-to-assertion mapping when applicable",
+            "Finding dispositions when selected and any concrete missing-decision handoff"
+          ],
+          "instructions": "references/implement.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "runtime": [
+        {
+          "id": "skill-instruction-reader",
+          "requirement": "Read the implementation instructions, selected mode and permitted target sources",
+          "for_operations": [
+            "implement"
+          ],
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "authorized-target-editor",
+          "requirement": "Inspect and edit the explicitly authorized target paths",
+          "for_operations": [
+            "implement"
+          ],
+          "on_missing": "unavailable"
+        }
+      ],
+      "members": [
+        {
+          "path": "references/implement.md",
+          "sha256": "296d8454fcc6104b2d384512351e5d742ae6875dfeda4fcc04848b83f6daa3fa"
+        },
+        {
+          "path": "references/modes/command.md",
+          "sha256": "84ac15d6c632f1047dc6854446b8b817544c63f6bada6d2b278185e579ab1c69"
+        },
+        {
+          "path": "references/modes/generic.md",
+          "sha256": "9e6dee258a57075c55caa5b476013d668c51ef30b49567809ec2a8f07d1514a2"
+        },
+        {
+          "path": "references/modes/query.md",
+          "sha256": "ee68d214075c667029bd4e754bb4ba0d4f56176c5b02ea2da439f2521455d251"
+        },
+        {
+          "path": "references/modes/reactor.md",
+          "sha256": "5b9eced03f03a950a8782c34581c87acaf980b4d12fc8343e60d669a73c39d68"
+        },
+        {
+          "path": "references/remediation.md",
+          "sha256": "de891b07adc4fb4aebe856bbe9ccd5410eab5651fcaf007ade9555496e73a277"
+        },
+        {
+          "path": "references/test-handoff.md",
+          "sha256": "93f6b031afaa28ad8e11358df0e5247afe062a0a13a8237466bcc219583ef395"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "1ee8e843a6dca577392e9c91019e1543df47d57e866f39fc78c523560dad4c5f"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "f85a3fdca6bc196fda0a4e87ced3f0fd38a1001613505bd75f23e61dbcb65f49"
+        }
+      ]
+    }
+  ]
+}

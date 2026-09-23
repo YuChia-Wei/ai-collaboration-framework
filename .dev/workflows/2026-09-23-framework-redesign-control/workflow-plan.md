@@ -30,8 +30,8 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #341 | P4 workflow orchestration | own contract/workflow first; source follows reconciliation | source online in PR #350; actual shared mapping pending |
 | #342 | P5 capability/schema design | own design/workflow only; implementation slices follow selection | design integrated PR #349; Issue/Project complete |
 | #345 | P6-A installation/update design | own design/workflow only; implementation follows selection | design online PR #355; Issue/Project complete |
-| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source online; original mapping directly confirmed, same task resuming |
-| #347 | P5-B engineering methods | five own instruction packages/design/workflow | original five-package writes directly confirmed, same task resuming |
+| #346 | P5-A instruction support/reviewer | shared loader/adapter plus own reviewer package; mapping follows actual delivery | source online; third mapping request rejected; direct input in executor task required by automatic review |
+| #347 | P5-B engineering methods | five own instruction packages/design/workflow | source locally complete at 814fd128; online integration next; mapping and P7 separate |
 | #348 | P5-C portable authoring | two own instruction packages/design/workflow | source online PR #353; Issue/Project complete |
 | #351 | P5-D frame/compliance design | own design/workflow only | design online PR #358; Issue/Project complete |
 | #352 | P5-E optional maintenance design | own design/workflow only | design online PR #358; Issue/Project complete |
@@ -57,7 +57,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: resume the original #346/#347 tasks under [the direct owner confirmation](reports/p5-owner-confirmed-resume.md). Their original scopes and F: worktrees are unchanged; observe actual tool admission before claiming the prior approval blocker cleared. #359/#361 are online through PR #362 with CLOSED/COMPLETED and Project Done read back. Complete actual source/mappings before P7; root adoption, product verification and CI remain deferred.
+Current action: integrate #347's completed bounded source online and preserve #346's renewed approval refusal under [the direct owner confirmation](reports/p5-owner-confirmed-resume.md). Automatic review requires direct user input in the original #346 task; the coordinator does not replace that writer or retry its mapping. #359/#361 are online through PR #362 with CLOSED/COMPLETED and Project Done read back. Complete actual source/mappings before P7; root adoption, product verification and CI remain deferred.
 
 ## P3 shared implementation continuation
 
@@ -97,4 +97,4 @@ PR #360 merged as `4b28710c39fed90acfd568cadbe3639ecb0ed722`; source Issues #354
 
 ## Direct owner confirmation
 
-The owner directly confirmed “確認 #346、#347 原定寫入範圍”. [Scope and retained rejection history](reports/p5-owner-confirmed-resume.md) bind the reply to the same two tasks. No replacement writer or scope expansion is introduced. Their exact resumed checkpoint and first-command read-back will be recorded after dispatch.
+The owner directly confirmed “確認 #346、#347 原定寫入範圍”. [Scope and retained rejection history](reports/p5-owner-confirmed-resume.md) bind the reply to the same two tasks at resumed checkpoint `4cda6689bf469a2273e14e237a0c3bf7ad4b6eed`. #346 returned record-only checkpoint `7fab3ffd1698e2eb8ef791d6be7748f151506642` after automatic review again required direct user input in that executor task. #347 returned source `814fd12822bb270f17edbfe91d0864ba07c1aacb`; [bounded inspection](reports/p5-engineering-source-integration.md) selects it for online integration. No replacement writer or scope expansion is introduced.
