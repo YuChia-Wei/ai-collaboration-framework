@@ -1,0 +1,11 @@
+{
+  "diagnostics": [
+    {
+      "code": "yaml-token",
+      "message": "YAML tags, aliases and anchors are forbidden."
+    }
+  ],
+  "mutation_state": "none",
+  "operation": "explain",
+  "outcome": "invalid-input"
+}

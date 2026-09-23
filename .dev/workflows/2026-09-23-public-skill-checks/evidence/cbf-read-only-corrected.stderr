@@ -1,0 +1,6 @@
+test_selected (test_cbf.CbfTests.test_selected) ... skipped 'Explicit read-only selection: dependent write round-trip NOT EXECUTED; selection cannot pass.'
+
+----------------------------------------------------------------------
+Ran 1 test in 6.410s
+
+OK (skipped=1)

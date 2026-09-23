@@ -1,0 +1,21 @@
+test_selected (test_cbf.CbfTests.test_selected) ... FAIL
+
+======================================================================
+FAIL: test_selected (test_cbf.CbfTests.test_selected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\framework-next\373\tests\framework_next\test_cbf.py", line 14, in test_selected
+    self.config_checks()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 194, in config_checks
+    self.invoke('explain', project_config=str(config), expect=expected)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\framework-next\373\tests\framework_next\test_knowledge.py", line 155, in invoke
+    self.assertIn(response['outcome'], expected, response)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'unsupported-version' not found in {'invalid-input'} : {'operation': 'explain', 'outcome': 'unsupported-version', 'changed': False, 'mutation_state': 'none', 'reference': None, 'subject_sha256': None, 'result': None, 'diagnostics': [{'code': 'shape', 'location': 'project_config', 'message': 'Only exact integer config_version 2 is supported.'}], 'residue': []}
+
+----------------------------------------------------------------------
+Ran 1 test in 2.817s
+
+FAILED (failures=1)

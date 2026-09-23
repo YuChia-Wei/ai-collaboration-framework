@@ -14,27 +14,74 @@ profile build matrix or installed skill execution. Source blobs come from HEAD;
 the executing assembly requires its source implementation to match that commit.
 Fixture metadata is synthetic only where the test name/description says so.
 
-The runner imports only `test_contracts.py` by exact path. Exit 0 requires all
+The contracts arm imports only `test_contracts.py` by exact path. Exit 0 requires all
 selected tests successful with no skips and successful cleanup; 1 means test
 failure; 2 means argument, dependency, setup or cleanup failure. Unexpected
 exceptions also remain nonzero. Failed output is retained and its exact run path
 and next action are printed; no auto retry. Results are unittest output plus
 small JSON observations on stdout, not a universal acceptance receipt.
 
-Reserved invocations (currently **exit 2 before allocation**, no green stubs):
+The native invocation remains reserved (**exit 2 before allocation**, no green stub):
 
 ```text
-python -I -B tests/framework_next/run.py --layer public --family lesson
-python -I -B tests/framework_next/run.py --layer public
 python -I -B tests/framework_next/run.py --layer native-windows --native-root EXPLICIT_ROOT
 ```
 
-The seven future family IDs are `lesson`, `adr`, `standards-promotion`, `pr`,
+The seven public family IDs are `lesson`, `adr`, `standards-promotion`, `pr`,
 `local-backlog`, `software-development-orchestrator`, `problem-frame-author`.
 Unknown layers/families fail. `--family` belongs only to public; `--native-root`
 belongs only to native-windows and is mandatory there. No disposable setting
-selects a native root. Later workers must implement those paths explicitly;
-registration/presence cannot count as execution.
+selects a native root. Registration/presence cannot count as execution.
+
+## Public caller interface
+
+```text
+python -I -B tests/framework_next/run.py --layer public --family lesson --output-root F:/framework-next/p7-runs/373-public
+python -I -B tests/framework_next/run.py --layer public --family lesson --public-read-only --output-root F:/framework-next/p7-runs/373-public
+```
+
+Select one family during development. Omitted `--family` explicitly selects all
+seven, sequentially, with a separate verified child per family and shared public/
+process ceilings. Aggregate stops on the first non-pass and names the remaining
+unexecuted families; it may stop at a cap. `--case` remains
+contracts-only. The public arm loads only its named family and shared public
+assertions. It copies exact committed package resources through `git_blobs`,
+retaining their relative paths and source manifest. These are **direct resource
+fixtures**, not assembled or installed packages. Source-derived resource bytes
+are separate from bounded authored request/config fixtures.
+
+Stdout is JSON lines: `runtime`, one `public_family` per attempted family, then
+`public_selection` / `outcome` / `exit`. Unittest details are stderr. Family rows
+include completed/failed/unexecuted phases, public launch results, source commit,
+raw transcript location and existing helper accounting. Transcript stdout/stderr
+are losslessly base64 encoded. Public protocol success is `succeeded`/0 except
+CBF `ok`/0; negative CBF exits retain their actual 2/3/4 meanings.
+
+Runner exit **0** requires every selected phase, no skips and successful cleanup;
+**1** means failed or partial selected work; **2** means argument, dependency,
+import, setup or cleanup failure. A missing module cannot pass. Explicit
+`--public-read-only` executes independent C4/C6 assertions and stops before the
+write-dependent round-trip; it **always remains partial/nonzero**, even if unittest
+prints `OK (skipped=1)`. It does not satisfy a full family gate. Invalid explicit
+output roots never fall back. All failed/partial residue remains owned by its run.
+
+One sequential family test stops its dependent cases at the first failure.
+The PR fixture has two commits/one tracked UTF-8 file. Its provider cases use the
+unchanged adapter with a bounded synthetic `run_bounded` transport and an extra
+subprocess denial guard; they cannot establish live provider acceptance. No tool
+fabricates a validate operation for PR/backlog/workflow. Backlog follows actual
+`draft -> planned -> in_progress -> completed` states.
+
+The helper counts driver subprocesses. Opaque child launches are reported
+unavailable; the public assertions reserve conservative source-derived nested
+launch ceilings, separately labelled as bounds, not measurements. The one selected
+4 MiB+1 Lesson input is transient stdin and separately counted when executed.
+No physical-I/O, performance or token inference is made.
+
+Current evidence and limitations: [Issue 373 report](../../.dev/workflows/2026-09-23-public-skill-checks/report.md).
+The initial Lesson writer refused its F: volume query; dependent round-trips stay
+unexecuted. PR metadata fails its own public parser. Read-only successes do not
+establish installation, actual write behavior, full public acceptance or CI.
 
 ## Small helper interface
 
@@ -102,5 +149,6 @@ assigned F: backend's strict-resolution refusal. The tests remain failing;
 C5 must not be reported as two successful builds. Exact observations, source
 bindings, residuals and next actions live in the
 [Issue 368 report](../../.dev/workflows/2026-09-23-source-contract-checks/report.md).
-C4/C6, public families, native Windows, root adoption, independent review,
-all-profile build acceptance, CI and publication remain separately assigned.
+C4/C6 and public families are partially observed under Issue 373; native Windows,
+root adoption, independent review, all-profile build acceptance, CI and publication
+remain separately assigned.

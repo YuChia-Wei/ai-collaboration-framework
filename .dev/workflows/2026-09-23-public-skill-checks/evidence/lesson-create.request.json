@@ -1,0 +1,24 @@
+{
+  "content": {
+    "applies_when": [
+      "Synthetic fixture only."
+    ],
+    "conclusion": "Tentative fixture conclusion.",
+    "confidence": "tentative",
+    "does_not_apply_when": [],
+    "evidence": [],
+    "follow_up": [],
+    "observation": "One bounded observation.",
+    "title": "selected fixture lesson"
+  },
+  "decision": {
+    "acknowledge_partial": false,
+    "action": "new",
+    "query_sha256": "5380b039b46445e6933c4ea6d775051e8abb54d4007a83331bf830aa6f3dab5d",
+    "reason": "Synthetic fixture identity after the actual public query."
+  },
+  "operation": "create",
+  "package_root": "F:\\framework-next\\p7-runs\\373-public\\fn-6950b8ee5ac24d939cf62416c0a345f4\\lesson\\package",
+  "project_root": "F:\\framework-next\\p7-runs\\373-public\\fn-6950b8ee5ac24d939cf62416c0a345f4\\lesson\\project",
+  "text": "selected fixture"
+}

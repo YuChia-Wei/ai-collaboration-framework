@@ -1,0 +1,12 @@
+{
+  "source_commit": "f8f0d073e6442df8a280c5941a2c7a1d6ed7060b",
+  "live_issue_read": {"number": 373, "state": "open", "title": "P7 V2: exercise bounded public skill contracts and round-trips", "method": "read-only GitHub connector"},
+  "lesson_attempts": [
+    {"attempt": 1, "surface": "workspace sandbox", "runner_reported_exit": 2, "public_launches": 0, "exception": "PermissionError", "diagnostic": "WinError 5 access denied creating F:/framework-next/p7-runs/373-public", "disposition": "blocked-by-environment"},
+    {"attempt": 2, "material_change": "Scoped sandbox escalation granted for the same authorized F: command", "exit": 1, "public_launches": 3, "operations": ["explain succeeded", "query succeeded", "create unsupported"], "diagnostic": {"code": "filesystem", "message": "Initial Windows writes require local NTFS."}, "residue": "F:/framework-next/p7-runs/373-public/fn-6950b8ee5ac24d939cf62416c0a345f4", "counts": {"files": 12, "observed_logical_bytes": 129027, "retained_bytes": 129027, "authored_bytes": 4337, "driver_git": 4, "public_python": 3, "wall_seconds": 2.221}, "not_executed": ["remaining T1 round-trip", "C6-query-and-legacy", "T1-decision-successor", "C4-config", "C6-binding"]}
+  ],
+  "preparation_failure": "Initial apply_patch could not create the new F: workflow parent; scoped New-Item then created only the authorized workflow/evidence directory. No public command ran in that failed preparation call.",
+  "raw_response_location": "The retained lesson/public-transcript.jsonl contains base64 of unmodified stdout/stderr for each actual public call.",
+  "predicate": "src/skills/lesson/scripts/lesson.py local_write_backend: not GetVolumeInformationW(...) OR filesystem.value != NTFS; exact branch does not distinguish the two predicates.",
+  "limitation": "No native/system probe, source patch, fallback or third Lesson attempt. Later test-only additions were syntax checked; no behavior reuse claim."
+}

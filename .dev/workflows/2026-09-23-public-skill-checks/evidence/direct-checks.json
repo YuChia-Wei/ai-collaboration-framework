@@ -1,0 +1,86 @@
+{
+  "observed_at": "2026-09-23T08:24:57.245786+00:00",
+  "python_ast": "passed",
+  "json_yaml_parse": "passed",
+  "changed_markdown_links": "passed",
+  "contracts_main_ast_after_removing_public_dispatch": "identical",
+  "excluded_test_files": "unchanged",
+  "argument_checks": [
+    {
+      "label": "invalid-explicit-root",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "lesson",
+        "--output-root",
+        "F:\\framework-next\\373"
+      ],
+      "exit": 2,
+      "stdout": "{\"runtime\": {\"PyYAML\": \"6.0.3\", \"executable\": \"C:\\\\Users\\\\h4227\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\python.exe\", \"jsonschema\": \"4.26.0\", \"python\": \"3.13.14\", \"referencing\": \"0.37.0\"}}\r\n{\"public_family\": {\"diagnostic\": \"fixture root must be outside and not contain the source worktree\", \"exception_type\": \"FixtureError\", \"exit\": 2, \"family\": \"lesson\", \"outcome\": \"unavailable-or-failed\"}}\r\n{\"exit\": 2, \"outcome\": \"not-passed\", \"public_selection\": [\"lesson\"], \"unexecuted_families\": []}\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "native-still-reserved",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "native-windows",
+        "--native-root",
+        "F:/framework-next/p7-runs"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: run.py [-h] --layer {contracts,public,native-windows}\r\n              [--family {lesson,adr,standards-promotion,pr,local-backlog,software-development-orchestrator,problem-frame-author}]\r\n              [--output-root OUTPUT_ROOT] [--native-root NATIVE_ROOT]\r\n              [--case CASE] [--public-read-only]\r\nrun.py: error: layer 'native-windows' is reserved but not implemented; no tests executed\r\n"
+    },
+    {
+      "label": "unknown-family",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "missing"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: run.py [-h] --layer {contracts,public,native-windows}\r\n              [--family {lesson,adr,standards-promotion,pr,local-backlog,software-development-orchestrator,problem-frame-author}]\r\n              [--output-root OUTPUT_ROOT] [--native-root NATIVE_ROOT]\r\n              [--case CASE] [--public-read-only]\r\nrun.py: error: argument --family: invalid choice: 'missing' (choose from 'lesson', 'adr', 'standards-promotion', 'pr', 'local-backlog', 'software-development-orchestrator', 'problem-frame-author')\r\n"
+    },
+    {
+      "label": "public-case-refused",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+        "--layer",
+        "public",
+        "--family",
+        "lesson",
+        "--case",
+        "Missing.test"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "usage: run.py [-h] --layer {contracts,public,native-windows}\r\n              [--family {lesson,adr,standards-promotion,pr,local-backlog,software-development-orchestrator,problem-frame-author}]\r\n              [--output-root OUTPUT_ROOT] [--native-root NATIVE_ROOT]\r\n              [--case CASE] [--public-read-only]\r\nrun.py: error: --case is contracts only; select a complete public family\r\n"
+    }
+  ],
+  "behavioral_limit": "No product or round-trip retry. Final test edits are syntax/reference/source inspected, not newly executed full acceptance.",
+  "test_sha256": {
+    "run.py": "c3e21b5aba8c8c32c10af3777718e0c7d14c0514df6800faf8ebc49cd3dada63",
+    "support.py": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+    "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+    "test_work.py": "fcfebc82228b384f311c81dbb5d83ea8c9b7bb140696b47acbad542835f59f3c",
+    "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+  }
+}
