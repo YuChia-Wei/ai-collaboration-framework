@@ -1,0 +1,123 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-337",
+  "workflow_id": "2026-09-23-p3-distribution",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T08:33:01+08:00",
+  "updated_at": "2026-09-23T08:34:41+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "scope": {
+    "target": "Metadata v2 loader source support, followed by actual integrated P3 package mapping",
+    "files": [
+      "src/distribution/package.py",
+      ".dev/design/framework-next/distribution-implementation/",
+      ".dev/workflows/2026-09-23-p3-distribution/"
+    ],
+    "constraints": [
+      "U001; program #322 coordinator / P7 owns deferred verification",
+      "Assigned F:/framework-next/337 only; one independent task; no sub-agents",
+      "Coordinator owns first push; coherent local source checkpoint first"
+    ],
+    "non_goals": [
+      "Skill source changes",
+      "Speculative manifest/profile entries",
+      "Project config interpretation or schema execution by builder",
+      "Provider/credential/release/adoption changes"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read assigned Git identity, live Issue, U001 and selected contract",
+      "Implement metadata v2 source support retaining v1",
+      "Inspect source and permitted syntax/reference/Git checks, validate exact message and commit locally",
+      "Resume same task for exact mappings after actual package integration and coordinator assignment"
+    ],
+    "validation": [
+      "Direct UTF-8, JSON/YAML and AST parsing without product import",
+      "Source/reference inspection, Git diff and exact planned commit-message check only"
+    ],
+    "last_completed_step": "Source implementation, permitted syntax/content/reference checks and exact complete planned commit-message validation",
+    "next_action": "Return coherent local commit to coordinator; resume same task only after actual package integration and exact manifest/profile assignment"
+  },
+  "results": {
+    "summary": "Source support implemented for explicit metadata 1/2, schema pairs and readable/writable roles; actual package mapping remains outstanding.",
+    "files_changed": [
+      "src/distribution/package.py",
+      ".dev/design/framework-next/distribution-implementation/README.md",
+      ".dev/design/framework-next/distribution-implementation/metadata-v2.md",
+      ".dev/workflows/2026-09-23-p3-distribution/workflow.yaml",
+      ".dev/workflows/2026-09-23-p3-distribution/workflow-plan.md",
+      ".dev/workflows/2026-09-23-p3-distribution/tasks/ISSUE-337.json",
+      ".dev/workflows/2026-09-23-p3-distribution/reports/source-checkpoint.md"
+    ],
+    "tests_run": [],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Behavior, schema semantics, package assembly and compatibility unverified; exact mappings depend on actual #334/#335 source delivery.",
+    "follow_up_needed": true
+  },
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/337",
+  "verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select and execute redesigned checks on the integrated immutable subject",
+    "report": "reports/source-checkpoint.md"
+  },
+  "execution_provenance": {
+    "runtime": "OpenAI Codex",
+    "model_source": "user-declared",
+    "evidence": "Coordinator explicit independent gpt-6-astra / ultra dispatch",
+    "runtime_attested": false,
+    "sub_agents_used": false
+  },
+  "resume": {
+    "worktree": "F:/framework-next/337",
+    "branch": "codex/2026-09-23-p3-distribution",
+    "starting_commit": "0d0556d4c60105a28eb39cfb06efab9b069728cb",
+    "checkpoint_commit_source": "containing-commit",
+    "coordinator_task": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+    "hidden_context_required": false
+  },
+  "actual_checks": [
+    {
+      "kind": "AST syntax",
+      "outcome": "completed",
+      "files": [
+        "src/distribution/package.py"
+      ],
+      "product_imported": false
+    },
+    {
+      "kind": "direct readability",
+      "outcome": "completed",
+      "utf8_files": 7,
+      "json_parsed": 1,
+      "yaml_parsed": 1
+    },
+    {
+      "kind": "local Markdown link existence",
+      "outcome": "completed",
+      "links": 14
+    },
+    {
+      "kind": "git diff --check",
+      "outcome": "completed",
+      "exit_code": 0
+    },
+    {
+      "kind": "exact planned commit-message validation",
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-337.txt --workflow-id 2026-09-23-p3-distribution",
+      "outcome": "completed",
+      "exit_code": 0
+    }
+  ]
+}
