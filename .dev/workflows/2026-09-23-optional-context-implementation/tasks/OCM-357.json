@@ -1,0 +1,91 @@
+{
+  "task_id": "OCM-357",
+  "workflow_id": "2026-09-23-optional-context-implementation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T10:35:25+08:00",
+  "updated_at": "2026-09-23T10:38:08+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Declared dispatch for one independent conversation; not independently attested. No sub-agents.",
+  "source_issue": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/357",
+  "finding_ids": [],
+  "decision_ids": [
+    "D352-01",
+    "D352-02",
+    "D352-03",
+    "D352-04",
+    "D352-05",
+    "D352-06"
+  ],
+  "scope": {
+    "target": "Two independently optional context instruction packages, source only",
+    "files": [
+      "src/skills/ai-context-auditor/SKILL.md",
+      "src/skills/ai-context-auditor/skill-package.yaml",
+      "src/skills/ai-context-auditor/references/audit.md",
+      "src/skills/ai-context-governance/SKILL.md",
+      "src/skills/ai-context-governance/skill-package.yaml",
+      "src/skills/ai-context-governance/references/maintenance.md",
+      ".dev/design/framework-next/optional-context-implementation/",
+      ".dev/workflows/2026-09-23-optional-context-implementation/"
+    ],
+    "constraints": [
+      "U001 source authoring only",
+      "One writer in F:/framework-next/357",
+      "No shared mapping, profile, loader, adapter, root, index or CI edits"
+    ],
+    "non_goals": [
+      "Product execution or behavior acceptance",
+      "Source owner replacement or legacy retirement",
+      "Provider mutation or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read current authority and selected design",
+      "Author six package members",
+      "Record scope and handoff",
+      "Perform allowed direct checks and complete message validation",
+      "Commit locally and read back identity"
+    ],
+    "validation": [
+      "python -B -: strict UTF-8 (11 files), json.loads (1), yaml.safe_load (3 metadata plus 2 frontmatter), 17 local Markdown links and actual package-reference read-back passed; no product import or schema validator",
+      "git diff --cached --check: passed for all 11 staged files; git status --short --untracked-files=all confirmed assigned scope",
+      "Authored-content inspection: exactly six package members, instruction-only operation routes, null configuration and empty dependencies/roles/schemas/templates/tools",
+      "rg source-only marker query: exit 1 means no matches in the six fully read package members",
+      "python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-optional-context-implementation/artifacts/357-commit.txt --workflow-id 2026-09-23-optional-context-implementation: passed"
+    ],
+    "last_completed_step": "Complete source authoring and permitted direct checks, including the exact planned commit message",
+    "next_action": "Preserve one coherent local commit and read back HEAD/status; coordinator owns first push and shared integration, P7 owns deferred verification"
+  },
+  "verification_deferral": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "scope": "Product CLI/help/import, schema validation, tests/fixtures/build/package/install/migration, legacy validators, audit/lease/effective-rule/acceptance packets, native handoff validation and CI",
+    "next_action": "Select and run redesigned checks and actual-use observations at P7"
+  },
+  "results": {
+    "summary": "Six source members implement D352-01 through D352-06 with permitted direct checks. Source completion only; no behavior acceptance or assessment finding resolution.",
+    "files_changed": [
+      "src/skills/ai-context-auditor/SKILL.md",
+      "src/skills/ai-context-auditor/skill-package.yaml",
+      "src/skills/ai-context-auditor/references/audit.md",
+      "src/skills/ai-context-governance/SKILL.md",
+      "src/skills/ai-context-governance/skill-package.yaml",
+      "src/skills/ai-context-governance/references/maintenance.md",
+      ".dev/design/framework-next/optional-context-implementation/README.md",
+      ".dev/workflows/2026-09-23-optional-context-implementation/workflow.yaml",
+      ".dev/workflows/2026-09-23-optional-context-implementation/workflow-plan.md",
+      ".dev/workflows/2026-09-23-optional-context-implementation/tasks/OCM-357.json",
+      ".dev/workflows/2026-09-23-optional-context-implementation/reports/source-delivery.md"
+    ],
+    "tests_run": [],
+    "finding_status": "addressed",
+    "residual_risk": "Instruction behavior, package selection, installation and compatibility remain unverified under U001.",
+    "follow_up_needed": true
+  }
+}
