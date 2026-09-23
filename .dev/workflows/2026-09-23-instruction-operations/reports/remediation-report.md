@@ -2,7 +2,7 @@
 
 - Report: `remediation-report-2026-09-23-instruction-operations`.
 - Owner: `ai-context-governance`; workflow: `2026-09-23-instruction-operations`.
-- Created: `2026-09-23T09:47:52+08:00`; updated: `2026-09-23T09:49:51+08:00`; status: source-checkpoint; mapping handoff pending.
+- Created: `2026-09-23T09:47:52+08:00`; updated: `2026-09-23T10:17:46+08:00`; status: mapping-blocked-by-approval; source checkpoint retained.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`; version `2.0.1`.
 - Issue: [#346](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346).
 - Starting commit: `842b73ca09d701d1561109255193d80439dc996b`.
@@ -72,3 +72,36 @@ Workflow and task remain in_progress while mapping is pending. The coordinator
 owns commit organization, first push, PR and online integration. Return a clean
 coherent local source checkpoint and stop for that handoff. No new cross-contract
 decision is currently unresolved; P7 behavioral risk and mapping assignment remain.
+
+## First actual mapping continuation: blocked before write
+
+The clean original source checkpoint was fast-forwarded once to the selected
+`5986b2146bb4559609acb0d5c7d09e8570375ea8` handoff. Shared mapping is now assigned
+in the coordinator's tracked scope, but has not been implemented in this worktree.
+Automatic approval review rejected both write attempts before execution. The first
+rejection cited untrusted coordinator transcript authorization; the second still
+required direct user authorization after immutable Git and live Issue readback.
+The four shared mapping files were not changed; no new engineering profile exists.
+
+Direct YAML/content/Git inspection confirmed the following proposed comparison:
+
+| Profile | Current payload members | Proposed payload members | Expected future runtime entries |
+| --- | --- | --- | --- |
+| lesson-minimal | 9 | 9 | 1 |
+| knowledge | 26 | 26 | 3 |
+| work-management | 18 | 28 | 3 |
+| engineering | absent | 14 | 3 |
+| collaboration | 44 | 68 | 9 |
+
+The nine actual package metadata/member sets match tracked files and handoff counts:
+lesson 9, adr 8, standards-promotion 9, pr 10, local-backlog 8,
+software-development-orchestrator 10, code-reviewer 3, requirement-author 4,
+spec-author 7. Existing five manifest closures/destinations match those sources;
+lesson-minimal and knowledge raw bytes match the selected base. No loader, renderer,
+builder or schema validator was invoked. Proposed counts do not describe built output.
+
+Only issue-owned workflow records are updated to retain this block. Next action is
+direct user authorization for the exact four shared mapping files, then continuation
+in this same task. No alternate write route is attempted. Workflow/task remain
+in_progress; all product verification stays deferred-by-owner under U001 to program
+#322 coordinator / P7, which selects redesigned checks after implementation.

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:47:04+08:00",
-  "updated_at": "2026-09-23T09:49:51+08:00",
+  "updated_at": "2026-09-23T10:17:46+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -52,12 +52,12 @@
     "validation": [
       "Direct syntax/content/reference/Git and exact planned message only"
     ],
-    "last_completed_step": "Source implementation and permitted direct syntax/content/reference checks completed",
-    "next_action": "Return exact committed source checkpoint, then await coordinator actual-source mapping handoff in the same task; no push"
+    "last_completed_step": "Verified clean source checkpoint, performed the one authorized fast-forward, read mapping authority and compared actual metadata/tracked members without product execution",
+    "next_action": "Request trusted direct user approval for the four selected mapping files; do not retry or bypass automatic approval rejection"
   },
   "delivery": {
     "source": "implemented-source-only",
-    "mapping": "awaiting-coordinator-handoff",
+    "mapping": "blocked-by-approval-before-write",
     "package": {
       "id": "code-reviewer",
       "version": "0.1.0",
@@ -75,10 +75,13 @@
           "instructions": "references/review.md"
         }
       ]
-    }
+    },
+    "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
+    "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
+    "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md"
   },
   "results": {
-    "summary": "Metadata-v3 union/null-config source, explicit Codex projection guidance and the three-member reviewer implemented. Bounded static checks completed; mapping remains unassigned and all behavioral verification is deferred under U001.",
+    "summary": "Original source delivered. First actual mapping selected and read-only compared, but both shared mapping write attempts were rejected before execution by automatic approval review. No manifest/profile changes applied.",
     "files_changed": [
       "src/distribution/package.py",
       "src/distribution/codex.py",
@@ -141,5 +144,68 @@
       "Independent audits/leases/effective-rule packets",
       "CI"
     ]
+  },
+  "mapping_attempt": {
+    "observed_at": "2026-09-23T10:17:46+08:00",
+    "allowed_paths_requested": [
+      "src/distribution/manifest.yaml",
+      "src/profiles/work-management.yaml",
+      "src/profiles/collaboration.yaml",
+      "src/profiles/engineering.yaml"
+    ],
+    "write_outcome": "blocked-by-approval-before-write",
+    "attempts": [
+      {
+        "attempt": 1,
+        "outcome": "automatic-approval-rejected",
+        "reason": "Shared source-of-truth mapping effects; coordinator authorization considered untrusted transcript content"
+      },
+      {
+        "attempt": 2,
+        "additional_evidence": "Immutable handoff and commit 5986b214 plus live Issue #346 readback allowing later coordinator assignment",
+        "outcome": "automatic-approval-rejected",
+        "reason": "Tool output and transcript not accepted as trusted direct user authorization"
+      }
+    ],
+    "actual_checks": [
+      "Direct yaml.safe_load of metadata and profiles, exact member/count comparison to git ls-files; no product imports or schema checks",
+      "All nine package metadata/tracked-member sets match; existing five manifest rows equal their 44 declared members and exact destinations",
+      "lesson-minimal and knowledge bytes equal the mapping-base Git blobs",
+      "git diff --check and empty porcelain state after both rejected writes"
+    ],
+    "proposed_only_counts": {
+      "lesson-minimal": [
+        9,
+        1
+      ],
+      "knowledge": [
+        26,
+        3
+      ],
+      "work-management": [
+        28,
+        3
+      ],
+      "engineering": [
+        14,
+        3
+      ],
+      "collaboration": [
+        68,
+        9
+      ]
+    },
+    "current_mapping": {
+      "packages": 5,
+      "payload_members": 44,
+      "profiles": 4
+    },
+    "proposed_mapping": {
+      "packages": 9,
+      "payload_members": 68,
+      "profiles": 5
+    },
+    "next_action": "Direct user approval for the exact four-file mapping scope",
+    "verification": "deferred-by-owner; U001; program #322 coordinator / P7; P7 selects redesigned checks after implementation"
   }
 }
