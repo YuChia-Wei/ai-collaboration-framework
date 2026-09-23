@@ -1,0 +1,342 @@
+{
+  "issue": 371,
+  "recorded_at": "2026-09-23T15:56:45+08:00",
+  "starting_head": "fe6c63f87cb54e166fc796fd315f11e3c2212823",
+  "reviewed_product_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
+  "review_report_commit": "6de20bfeb059d74f1ba0ede96c28d312db04235f",
+  "engine_files": [
+    {
+      "path": "src/distribution/__init__.py",
+      "reviewed_blob": "fca5683977f2046233795428cc0c16feece19ce6",
+      "reviewed_sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25",
+      "current_sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/data.py",
+      "reviewed_blob": "2d971b3d95ee66f7604719046f13cdc90c394305",
+      "reviewed_sha256": "4b24ff0865ea96b5bc36809eadb8537120212376357697ce27461f7abda1984a",
+      "current_sha256": "4b24ff0865ea96b5bc36809eadb8537120212376357697ce27461f7abda1984a",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/git_source.py",
+      "reviewed_blob": "f6b041d068fe553047f6bd615b7b13b8d2d6e122",
+      "reviewed_sha256": "fd5fd7a4cd98f73c8f7854d4865ffb5f013ca226dd503d570b514b530c7d20b5",
+      "current_sha256": "fd5fd7a4cd98f73c8f7854d4865ffb5f013ca226dd503d570b514b530c7d20b5",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/installation.py",
+      "reviewed_blob": "958c8b6ae64168b14889187fb431db1736fe4dae",
+      "reviewed_sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce",
+      "current_sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/installation_io.py",
+      "reviewed_blob": "93ba125f1d613c6afc7bc0b9a7b5b1321d74e82c",
+      "reviewed_sha256": "2518315dac0def78aa99b682e14b6c53715b305d58780cda97e2f4a05aa6818e",
+      "current_sha256": "2518315dac0def78aa99b682e14b6c53715b305d58780cda97e2f4a05aa6818e",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/installation_plan.py",
+      "reviewed_blob": "745d028a9e3736af7a4f5382b0123fec99754a29",
+      "reviewed_sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626",
+      "current_sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/installation_state.py",
+      "reviewed_blob": "9f74ec2e5645fdf261918eba3fc304382b5b8d56",
+      "reviewed_sha256": "1fcdc4d928250f8130b54effd109967ef21eb0dba8a24ad25f8866ba1edbb4fe",
+      "current_sha256": "1fcdc4d928250f8130b54effd109967ef21eb0dba8a24ad25f8866ba1edbb4fe",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/maintenance_coordination.py",
+      "reviewed_blob": "d6bdb5147678d62580cdbb392c2c9cae53877298",
+      "reviewed_sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a",
+      "current_sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/distribution/package.py",
+      "reviewed_blob": "0dc910ca76f4835a5cbf172abbda7595088861a9",
+      "reviewed_sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+      "current_sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd",
+      "raw_unchanged": true
+    },
+    {
+      "path": "src/tools/maintain_framework.py",
+      "reviewed_blob": "94741f16abaf17e221472f9b03f9cfa0953e4c66",
+      "reviewed_sha256": "f5725eb689979df7a58a3bb35acb440c6485aa84075a92b4d0101cb6891e282e",
+      "current_sha256": "8030be53ee2988e21628ad11f348ad18a5f4114a0fcdb79e96dc473e23bdcf3d",
+      "raw_unchanged": false
+    }
+  ],
+  "test_sha256": "bfe916dc9f86c08b50549ed1b750b8a798c68c62f62f4ca96efd90ecad0ae249",
+  "helper": {
+    "commit": "070a47335ffce99d31bd83e487447942539e4a9f",
+    "path": "tests/framework_next/support.py",
+    "sha256": "19be1c9a862a204c2051fe71141191372335213790dffcf1523693e3b9896703",
+    "raw_unchanged": true
+  },
+  "runtime": {
+    "python": "3.13.14",
+    "PyYAML": "6.0.3",
+    "isolated": 1,
+    "dont_write_bytecode": 1
+  },
+  "focused": {
+    "command": "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source",
+    "exit_code": 0,
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "test_seconds": 1.279,
+    "fixture_accounting": {
+      "observed_files": 96,
+      "observed_logical_bytes": 79978,
+      "authored_bytes": 79978,
+      "retained_bytes_before_cleanup": 79968,
+      "git_processes": 8,
+      "python_processes": 0,
+      "wall_seconds": 1.285,
+      "residue": null
+    }
+  },
+  "public": {
+    "command": "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source --public-entry",
+    "attempts": 1,
+    "tool_reported_shell_exit": 1,
+    "child_exit": 1,
+    "harness_return_in_source": 2,
+    "status": "blocked-before-dispatch",
+    "source_and_pin_unchanged": true,
+    "valid_cache_control_admitted": true,
+    "cache_unchanged": true,
+    "request": {
+      "operation": "inspect",
+      "engine_root": "F:\\framework-next\\p7-runs\\371-engine-source\\fn-53f9ba958c7e4e608532c807c08cd7a2\\public-entry",
+      "engine": {
+        "id": "framework-managed-installation",
+        "version": "1.0.0",
+        "source_commit": "0f9548d3f7facc53fa73958dba218eff7d2e1484",
+        "files": [
+          {
+            "path": "src/distribution/__init__.py",
+            "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+          },
+          {
+            "path": "src/distribution/data.py",
+            "sha256": "4b24ff0865ea96b5bc36809eadb8537120212376357697ce27461f7abda1984a"
+          },
+          {
+            "path": "src/distribution/git_source.py",
+            "sha256": "fd5fd7a4cd98f73c8f7854d4865ffb5f013ca226dd503d570b514b530c7d20b5"
+          },
+          {
+            "path": "src/distribution/installation.py",
+            "sha256": "6fa380bd79bbc18879841d3dff5083537fe788b86b1f3159f48430e40cebafce"
+          },
+          {
+            "path": "src/distribution/installation_io.py",
+            "sha256": "2518315dac0def78aa99b682e14b6c53715b305d58780cda97e2f4a05aa6818e"
+          },
+          {
+            "path": "src/distribution/installation_plan.py",
+            "sha256": "b9cddd6e376cc1bd68354ee5778c6bdfa570e4e3ea5ef5378a53195ec2e2c626"
+          },
+          {
+            "path": "src/distribution/installation_state.py",
+            "sha256": "1fcdc4d928250f8130b54effd109967ef21eb0dba8a24ad25f8866ba1edbb4fe"
+          },
+          {
+            "path": "src/distribution/maintenance_coordination.py",
+            "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+          },
+          {
+            "path": "src/distribution/package.py",
+            "sha256": "38c21ade871b03dc393c5172f0596a267263bb21a8d718a28b305742a57564bd"
+          },
+          {
+            "path": "src/tools/maintain_framework.py",
+            "sha256": "8030be53ee2988e21628ad11f348ad18a5f4114a0fcdb79e96dc473e23bdcf3d"
+          }
+        ]
+      }
+    },
+    "response": {
+      "api_version": 1,
+      "changed": false,
+      "details": {
+        "drift": null,
+        "managed_state": "unsupported",
+        "mode_policy": null,
+        "owned": null,
+        "project_readiness": "not-assessed",
+        "unknown": null
+      },
+      "diagnostics": [
+        {
+          "code": "source-bootstrap",
+          "next_action": "Provide isolated Python 3.10+ with -B, existing PyYAML 6, exact external source checkout/pin and one bounded JSON request.",
+          "path": null,
+          "reason": "Fixed engine bootstrap or host prerequisites could not be established before dispatch."
+        }
+      ],
+      "operation": "inspect",
+      "outcome": "unsupported"
+    },
+    "stderr": "",
+    "residue": "F:\\framework-next\\p7-runs\\371-engine-source\\fn-53f9ba958c7e4e608532c807c08cd7a2",
+    "fixture_accounting": {
+      "observed_files": 36,
+      "observed_logical_bytes": 216288,
+      "authored_bytes": 2458,
+      "retained_bytes": 216288,
+      "git_processes": 5,
+      "python_processes": 1,
+      "wall_seconds": 0.378
+    },
+    "limit": "No public pinned-source execution or native installation acceptance; exact failing bootstrap predicate is not isolated by generic response. No retry."
+  },
+  "retained_initial_events": [
+    {
+      "action": "sandboxed gh issue view 371",
+      "outcome": "failed",
+      "reason": "proxyconnect 127.0.0.1:9 refused",
+      "followup": "normal read-only escalation succeeded; Issue OPEN"
+    },
+    {
+      "action": "initial graph queries scoped with regex-like file_pattern",
+      "outcome": "no results",
+      "followup": "name search and File query returned installation_state._engine and 13 distribution files; no absence claim"
+    },
+    {
+      "action": "first inline AST/constants/scope verification",
+      "outcome": "failed",
+      "reason": "AttributeError: 'Attribute' object has no attribute 'id' in comparison script",
+      "followup": "Changed comparison to ast.dump of whole assignments; second attempt passed. Product/test source unchanged; first command stopped before message validator."
+    },
+    {
+      "action": "precommit staged/raw byte comparison",
+      "outcome": "failed-before-commit",
+      "reason": "Git normalized newly authored workflow CRLF to LF, so staged evidence.json differed from checkout bytes",
+      "followup": "Normalize only owned workflow records and ignored message to LF, revalidate exact message and staged bytes; product/test source unchanged."
+    }
+  ],
+  "graph": {
+    "project": "framework-371",
+    "mode": "fast",
+    "persistence": false,
+    "head_during_index": "fe6c63f87cb54e166fc796fd315f11e3c2212823",
+    "tool_commit_attestation": null,
+    "distribution_files": 13,
+    "entry_excluded": true,
+    "fallback": "tracked entry/helper/test files read explicitly; raw identities checked separately"
+  },
+  "deferred": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "scope": "legacy validators/matrices, CI and native installation acceptance",
+    "next_action": "coordinator-selected affected source review in original #370; resolve public/native dependency in its owning task"
+  },
+  "direct_checks": {
+    "outcome": "passed",
+    "checks": [
+      "UTF-8/Python AST",
+      "JSON/YAML parsing",
+      "report local references",
+      "unchanged bootstrap constants and _direct/_pairs/_reject_number AST",
+      "ten source/test hashes",
+      "exact six-file scope",
+      "git diff --check",
+      "git check-ignore commit-message.tmp"
+    ],
+    "message_command": "python -I -B F:/framework-next/371/.ai/scripts/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
+    "message_exit_code": 0,
+    "message_sha256": "c2c60f6497be32eadef45bd264697d666c3826c23f8d77d88f94e844c537939c",
+    "prior_message_sha256": "954fef03cfa75d26330708245450d6ce976d66a95f33c990097ec98ab4140fa1"
+  },
+  "followup": {
+    "recorded_at": "2026-09-23T15:56:45+08:00",
+    "starting_head": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+    "authority": "Coordinator bounded test-only follow-up in the same Issue 371 task",
+    "changed_paths": [
+      "tests/framework_next/test_engine_source.py",
+      ".dev/workflows/2026-09-23-engine-source-pin/workflow.yaml",
+      ".dev/workflows/2026-09-23-engine-source-pin/task.json",
+      ".dev/workflows/2026-09-23-engine-source-pin/report.md",
+      ".dev/workflows/2026-09-23-engine-source-pin/evidence.json"
+    ],
+    "test_sha256": "b8bbbe7e89529e804e92ca34af3ff6dce7aa8a60193e7355d3a58d3fa4d6be92",
+    "product_closure_raw_unchanged_from": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+    "helper_and_runner_raw_unchanged": true,
+    "review_context": {
+      "source": "coordinator message",
+      "reported": "Original Issue 370 source review is returning CR-001 resolved in source with no new source defect; delayed allowed-import coverage gap identified.",
+      "reviewer_execution_of_tests": "not claimed",
+      "independent_review_readback": "not performed in this test-only follow-up"
+    },
+    "focused": {
+      "command": "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source",
+      "runs": 1,
+      "exit_code": 0,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "test_seconds": 1.629,
+      "fixture_accounting": {
+        "observed_files": 107,
+        "observed_logical_bytes": 89889,
+        "authored_bytes": 89889,
+        "retained_bytes_before_cleanup": 89879,
+        "git_processes": 9,
+        "python_processes": 0,
+        "wall_seconds": 1.637,
+        "residue": null
+      }
+    },
+    "new_case": "EngineSourceTests.test_allowed_delayed_import_executes_verified_source_despite_valid_cache",
+    "assertions": [
+      "module absent at dispatch entry",
+      "real bootstrap/finder loads allowed package module on demand",
+      "valid stale-cache control executes its distinct sentinel",
+      "dispatch returns pinned source value",
+      "loader/origin match verified source",
+      "cache/source/pin unchanged",
+      "finder removed after success"
+    ],
+    "unit_boundary": "invoke explicitly substitutes _direct; no native path admission or product installation claimed",
+    "public_trial": {
+      "new_attempts": 0,
+      "original_attempts_retained": 1,
+      "limitation": "Original single request was incomplete as an operation request. Its pre-dispatch bootstrap refusal is retained and cannot serve as a future positive N1/native request.",
+      "next_action": "Later V3 must prepare a complete valid public-operation fixture after path applicability is resolved."
+    },
+    "graph": "Existing graph predates the newly committed test; no freshness/absence claim. Explicit tracked-file fallback read only the selected test and owning records.",
+    "message_command": "python -I -B F:/framework-next/371/.ai/scripts/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/followup-commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
+    "message_sha256": "62b2157c2a7b655006f9049d9d644744e3bec973f8baa089592d5e23642897c7",
+    "next_owner": "Coordinator reconciles source-bound review and V3/native gap; no push or callback from this executor",
+    "direct_checks": {
+      "outcome": "passed",
+      "message_exit_code": 0,
+      "checks": [
+        "one added test method only; previous test AST unchanged",
+        "original focused/public/failure evidence unchanged",
+        "ten product files and helper/runner raw-identical to fixed starting commit",
+        "UTF-8/AST/JSON/YAML/reference checks",
+        "exact five-file scope",
+        "git diff --check",
+        "ignored message identity and absence of Issue-closing keyword pattern",
+        "complete planned-message validator"
+      ]
+    }
+  }
+}

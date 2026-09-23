@@ -135,3 +135,11 @@ PR #367 merged at `01aeb8ae4f18132dfdd7ad3479346c78b9f5f913`; design Issues are 
 [Fixed-return reconciliation](reports/p7-implementation-checkpoint.md) records actual failed source contracts, passing selector tests, two automatic approval stops and the independent CR-001 finding. #368/#369 remain partial; #370 awaits affected re-review after repair #371. Unaffected real-runner binding continues only in the original #369 task. No product repair, CI restoration, native or root acceptance is implied.
 
 The #369 real contracts binding returned at `6c5f4a298bc3ffdbea47348ae6ef8c9f4584b41d`; 28 focused tests passed using synthetic runner results. Policy/public/native remain incomplete. #371 is active in its verified independent task and F: checkout; it does not take over the stopped path/policy writes.
+
+PR #372 is MERGED at `3a21b0eb58e80752df010e7277aec55725b3061e`; all four P7 execution/review Issues remain open. The provider auto-close of #368 was corrected and both newly registered workflows explicitly disabled; all nine are now disabled_manually. [The retained checkpoint report](reports/p7-implementation-checkpoint.md) records exact transitions and the next source-pin repair/review.
+
+[Source-pin repair handoff](reports/p7-source-pin-repair.md) receives #371 at `0d29b9abf36804cb2587732232d807a1b754c3a0`: nine focused loader tests passed; one unmodified public-entry attempt refused before dispatch. The original #370 task reviews only that fixed source delta and evidence limits. Blocked path/policy writes and public/native obligations remain separate.
+
+The source-pin repair and affected source review are locally complete (#370/#371); the test-only follow-up passed 10/10 with product bytes unchanged. Their bounded online closure keeps public/native obligations in #322 / V3. #373 is selected for independent public-family tests using the already delivered helper, without installer activation or takeover of blocked writes.
+
+#373 is active in `01a0cd49-7805-7202-9176-e8f7b4cf4285` at `F:/framework-next/373`, starting from `f8f0d073e6442df8a280c5941a2c7a1d6ed7060b`. Runtime Astra Ultra, actual first F: command and live Project In progress are verified in the dispatch record. No public-family passing result is implied.

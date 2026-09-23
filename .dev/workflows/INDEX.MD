@@ -8,9 +8,10 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-engine-source-pin`](2026-09-23-engine-source-pin/workflow.yaml) | Issue 371 verified-source maintenance bootstrap | `ai-context-governance` | `completed` | `2026-09-23T15:56:45+08:00` | [report](2026-09-23-engine-source-pin/report.md) |
 | [`2026-09-23-source-contract-checks`](2026-09-23-source-contract-checks/workflow.yaml) | Focused source contracts and bounded fixtures | `ai-context-governance` | `in_progress` | `2026-09-23T15:18:02+08:00` | [entry](2026-09-23-source-contract-checks/workflow-plan.md) |
 | [`2026-09-23-source-gates-implementation`](2026-09-23-source-gates-implementation/workflow.yaml) | Dormant source gates and prospective policy implementation | `ai-context-governance` | `in_progress` | `2026-09-23T15:34:12+08:00` | [entry](2026-09-23-source-gates-implementation/workflow-plan.md) |
-| [`2026-09-23-installation-source-review`](2026-09-23-installation-source-review/workflow.yaml) | Issue #370 independent fixed-source managed-installation review | `ai-context-governance` | `completed` | `2026-09-23T15:18:09+08:00` | [entry](2026-09-23-installation-source-review/report.md) |
+| [`2026-09-23-installation-source-review`](2026-09-23-installation-source-review/workflow.yaml) | Issue #370 independent fixed-source managed-installation review | `ai-context-governance` | `completed` | `2026-09-23T15:52:30+08:00` | [review](2026-09-23-installation-source-review/affected-review.md) |
 | [`2026-09-23-verification-design`](2026-09-23-verification-design/workflow.yaml) | Design Focused Verification And Windows Lesson Pilot | `ai-context-governance` | `completed` | `2026-09-23T14:44:32+08:00` | [plan](2026-09-23-verification-design/workflow-plan.md) |
 | [`2026-09-23-pipeline-redesign`](2026-09-23-pipeline-redesign/workflow.yaml) | Design Source Pipeline And Policy Replacement | `ai-context-governance` | `completed` | `2026-09-23T14:40:53+08:00` | [plan](2026-09-23-pipeline-redesign/workflow-plan.md) |
 | [`2026-09-23-engineering-methods`](2026-09-23-engineering-methods/workflow.yaml) | Five portable engineering instruction packages | `ai-context-governance` | `completed` | `2026-09-23T12:04:39+08:00` | [plan](2026-09-23-engineering-methods/workflow-plan.md) |

@@ -92,3 +92,31 @@ Before transport, provider read-back at `2026-09-23T15:35:12.2652819+08:00`
 showed Actions disabled, all seven legacy workflows disabled_manually, and main
 `01aeb8ae4f18132dfdd7ad3479346c78b9f5f913`. The final transport read-back remains
 a separate observed step; these historical settings are not a hosted pass.
+
+## Online transport and corrected provider state
+
+PR #372 merged at `3a21b0eb58e80752df010e7277aec55725b3061e`. Read-back at
+`2026-09-23T15:40:20.1687996+08:00` confirmed MERGED, main equal to that SHA,
+Actions disabled and checks empty (not passed). New workflow IDs 364914272
+(source-checks.yml) and 364914274 (source-native.yml) registered active under the
+repository-wide suspension; the coordinator then explicitly disabled both under
+the owner's all-CI-stop instruction. All nine workflows were read back as
+`disabled_manually`. This changes the future restoration inventory: the adopted
+new IDs must explicitly be enabled, in addition to any owner-adopted Actions
+setting. No workflow was executed or policy activated.
+
+An unintended provider transition was discovered, not hidden: GitHub's closed
+event for #368 at `2026-09-23T07:39:52Z` cited coordinator commit
+`fe6c63f87cb54e166fc796fd315f11e3c2212823`. Its prose placed the keyword `fixed`
+immediately before the Issue reference, causing automatic Issue closure and
+Project Done despite the explicit deferred PR disposition. The coordinator
+reopened #368 and restored only Project Status to In progress; live read-back
+confirmed OPEN / In progress. No product acceptance was inferred. Future commit
+prose must be checked for unintended provider closing syntax before push; keep
+these published referenced commits intact rather than rewriting history.
+
+The already merged coordinator branch was removed locally and remotely only
+after ancestry/clean-state proof, with the remote deletion bound to expected SHA
+`61eaa81653b34d3b2142a40ace3bebac45068e8a`. Active Issue branches and every F:
+worktree/file remain preserved. Continuation uses
+`codex/2026-09-23-p7-source-pin-control` from the online merge.

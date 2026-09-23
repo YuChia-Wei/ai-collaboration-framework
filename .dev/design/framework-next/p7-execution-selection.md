@@ -127,6 +127,15 @@ Actions settings proposal is not yet adopted; branch protections, rulesets,
 credentials, release environment and seven disabled legacy workflows remain
 unchanged. Enablement, hosted success and override retirement remain distinct.
 
+After PR #372, the two new definitions registered as workflow IDs `364914272`
+(`source-checks.yml`) and `364914274` (`source-native.yml`). The coordinator
+explicitly disabled both under the owner's CI suspension instruction; read-back
+on 2026-09-23 showed all nine workflows `disabled_manually` and Actions disabled.
+Any later owner-adopted restoration must explicitly enable only the adopted new
+workflow IDs as well as the adopted repository Actions settings. The seven old
+IDs remain disabled unless separately adopted. This records observed setup;
+it does not grant restoration authority or assert hosted execution.
+
 ## Parallel fixed-source review assignment
 
 [#370](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/370) separately reviews the ten-file managed-installation closure at `38e6458f8d3e81dc2568daf1fa467571fb529fee` while #368/#369 implement their disjoint scopes. It writes only its own workflow findings and executes no product/native tool. Concrete defects feed later owning repair/V3 cases; a changed subject needs affected review again. This is the selected high-risk source review, without legacy audit/lease/receipt tooling, and cannot substitute for actual native evidence.
