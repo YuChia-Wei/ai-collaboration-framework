@@ -1,0 +1,29 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-23-problem-frame-implementation
+workflow_kind: ai-context-maintenance
+title: Portable CBF snapshots and scoped compliance source
+owner_skill: ai-context-governance
+status: completed
+current_phase: local-source-handoff
+artifact_root: .dev/workflows/2026-09-23-problem-frame-implementation
+entrypoint: workflow-plan.md
+created_at: '2026-09-23T10:31:28+08:00'
+updated_at: '2026-09-23T10:48:58+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+branch: codex/2026-09-23-problem-frame-implementation
+base_branch: main
+base_commit: 59877b8d2f61e9a95615ea95d597fe35da2f44cf
+issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/356
+program: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+authority: U001 and coordinator assignment; source authoring and local commit only
+verification: deferred-by-owner
+verification_owner: 'program #322 coordinator / P7'
+execution_provenance:
+  model: gpt-6-astra
+  reasoning_effort: ultra
+  basis: Explicit coordinator dispatch declaration; not independent runtime attestation
+  subagents: none
+completion_scope: Source implementation only; behavior and provider integration remain
+  separately owned

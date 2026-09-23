@@ -1,0 +1,98 @@
+{
+  "task_id": "PF-356-01",
+  "workflow_id": "2026-09-23-problem-frame-implementation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T10:31:28+08:00",
+  "updated_at": "2026-09-23T10:48:58+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "provenance_note": "Explicit dispatcher selection, not independent runtime attestation; no subagents",
+  "finding_ids": [],
+  "issue": 356,
+  "scope": {
+    "target": "Two independent portable packages and their actual shared public structure-result interface",
+    "files": [
+      "src/skills/problem-frame-author/",
+      "src/skills/spec-compliance-validator/",
+      ".dev/design/framework-next/problem-frame-implementation/",
+      ".dev/workflows/2026-09-23-problem-frame-implementation/"
+    ],
+    "constraints": [
+      "U001 source authoring only",
+      "Exact 10 + 6 package members",
+      "Assigned worktree only"
+    ],
+    "non_goals": [
+      "Legacy/SWF migration",
+      "Shared mapping or root activation",
+      "Product execution or CI",
+      "Push/PR/merge/provider mutation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Confirm assigned clean identity",
+      "Read owner selection, design and governance route",
+      "Implement owned packages",
+      "Direct syntax/content/reference checks",
+      "Validate complete commit message and commit locally"
+    ],
+    "last_completed_step": "Source authoring, full direct syntax/reference checks, staged scope/diff inspection and complete planned-message validation",
+    "next_action": "Receiving coordinator inspects containing local commit, owns mapping/remote integration; P7 owns deferred behavior"
+  },
+  "results": {
+    "summary": "Completed bounded package source and handoff; behavior/schema/package/backend/CI verification remains deferred-by-owner under U001",
+    "files_changed": [
+      ".dev/design/framework-next/problem-frame-implementation/README.md",
+      ".dev/workflows/2026-09-23-problem-frame-implementation/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-problem-frame-implementation/tasks/PF-356-01.json",
+      ".dev/workflows/2026-09-23-problem-frame-implementation/workflow-plan.md",
+      ".dev/workflows/2026-09-23-problem-frame-implementation/workflow.yaml",
+      "src/skills/problem-frame-author/SKILL.md",
+      "src/skills/problem-frame-author/references/authoring.md",
+      "src/skills/problem-frame-author/references/configuration.md",
+      "src/skills/problem-frame-author/references/example.md",
+      "src/skills/problem-frame-author/references/format.md",
+      "src/skills/problem-frame-author/references/operations.md",
+      "src/skills/problem-frame-author/schemas/cbf-record-v1.schema.json",
+      "src/skills/problem-frame-author/scripts/problem_frame.py",
+      "src/skills/problem-frame-author/skill-package.yaml",
+      "src/skills/problem-frame-author/templates/cbf.md",
+      "src/skills/spec-compliance-validator/SKILL.md",
+      "src/skills/spec-compliance-validator/profiles/dotnet.md",
+      "src/skills/spec-compliance-validator/references/compliance.md",
+      "src/skills/spec-compliance-validator/references/legacy-intake.md",
+      "src/skills/spec-compliance-validator/references/report-template.md",
+      "src/skills/spec-compliance-validator/skill-package.yaml"
+    ],
+    "tests_run": [],
+    "checks_run": [
+      "UTF-8/direct JSON/YAML parse",
+      "Python AST parse without import or pycache",
+      "Exact member and declared resource closure",
+      "20 package Markdown link checks",
+      "Full 21-file UTF-8/direct parse check: JSON 2, YAML 3, AST 1; 31 changed Markdown links",
+      "Staged diff --check, stat and complete 21-path scope inspection",
+      "Complete planned message validator passed; message SHA-256 3ec0d31bbb2fe6dcfa80a45a3130cd2cacc53a40ecd4f401bae0bb5926c4b546"
+    ],
+    "follow_up_needed": true,
+    "residual_risk": "All runtime/schema/publication/platform/compatibility claims await P7 observations"
+  },
+  "verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "next_action": "Select and run required actual behavior, backend failure, package and target-evidence observations"
+  },
+  "commit_handoff": {
+    "branch": "codex/2026-09-23-problem-frame-implementation",
+    "worktree": "F:/framework-next/356",
+    "base": "59877b8d2f61e9a95615ea95d597fe35da2f44cf",
+    "commit_identity": "Containing source-delivery commit; exact SHA supplied after commit in final handoff",
+    "message_sha256": "3ec0d31bbb2fe6dcfa80a45a3130cd2cacc53a40ecd4f401bae0bb5926c4b546",
+    "push": "not performed; coordinator-owned"
+  }
+}

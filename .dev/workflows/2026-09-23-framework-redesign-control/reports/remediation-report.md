@@ -86,3 +86,7 @@ PR #343 merged at `ac4175948045590d1a1942022435ab438ad30ac3`; #334/#337 Issue CL
 ## P5 remaining design selections
 
 [Bounded reconciliation](p5-final-capability-selection.md) selects #351 CBF/compliance and #352 optional-maintenance designs for #356/#357 source. The new scopes do not replace #346/#347 blocked writes; direct confirmation remains pending. #345 is online/closed and #354 continues independently. No framework findings, runtime behavior or CI restoration are declared complete.
+
+## P5 specialists and P6 read-only source
+
+#354/#356/#357 fixed local source is inspected for online integration. See [P6 reader](p6-reader-source-integration.md), [frame/compliance](p5-frame-source-integration.md) and [optional maintenance](p5-optional-context-source-integration.md). #359 owns the complete subsequent maintenance writer under one independent Astra Ultra task. Shared mapping/engineering #346/#347 remain blocked by automatic approval review pending direct owner confirmation; all actual verification and CI stay deferred to P7. No whole-program finding is closed by these source checkpoints.
