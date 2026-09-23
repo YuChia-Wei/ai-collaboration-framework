@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-23-problem-frame-implementation`](2026-09-23-problem-frame-implementation/workflow.yaml) | CBF snapshot owner and scoped compliance source | `ai-context-governance` | `completed` | `2026-09-23T10:48:58+08:00` | [plan](2026-09-23-problem-frame-implementation/workflow-plan.md) |
 | [`2026-09-23-installation-planning`](2026-09-23-installation-planning/workflow.yaml) | Read-only installation state and planning | `ai-context-governance` | `completed` | `2026-09-23T10:39:14+08:00` | [plan](2026-09-23-installation-planning/workflow-plan.md) |
 | [`2026-09-23-optional-context-implementation`](2026-09-23-optional-context-implementation/workflow.yaml) | Optional context instruction packages | `ai-context-governance` | `completed` | `2026-09-23T10:38:08+08:00` | [plan](2026-09-23-optional-context-implementation/workflow-plan.md) |
 | [`2026-09-23-problem-frame-compliance-design`](2026-09-23-problem-frame-compliance-design/workflow.yaml) | Portable problem-frame and compliance contract design | `ai-context-governance` | `completed` | `2026-09-23T10:16:25+08:00` | [plan](2026-09-23-problem-frame-compliance-design/workflow-plan.md) |

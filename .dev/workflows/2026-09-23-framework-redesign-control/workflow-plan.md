@@ -36,9 +36,9 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #351 | P5-D frame/compliance design | own design/workflow only | design online PR #358; Issue/Project complete |
 | #352 | P5-E optional maintenance design | own design/workflow only | design online PR #358; Issue/Project complete |
 | #354 | P6-B state/planning | own reader/plan modules and design/workflow | source inspected; online integration pending |
-| #356 | P5-F frame/compliance source | two own packages/design/workflow | independent source task active; runtime/F: identity verified |
+| #356 | P5-F frame/compliance source | two own packages/design/workflow | source inspected; online integration pending |
 | #357 | P5-G optional maintenance source | two own packages/design/workflow | source inspected; online integration pending |
-| #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | exact scope assigned; independent dispatch next |
+| #359 | P6-C maintenance writer | coordination/bootstrap/apply/recover and direct state/plan integration | independent source task active; runtime/F: identity verified |
 
 The two P1 design issues may proceed in parallel with P0 because each receives U001 directly and owns separate files. Integrate the transition control first, reconcile the P1 contracts together, then open P2 implementation against the integrated design. Do not start mass migration or validator rewrites early. Later stages remain in execution-plan.md until their input contracts are ready; do not create many speculative implementation issues now.
 
@@ -56,7 +56,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate inspected #354/#357 source and dispatch #359 under [the writer handoff](../../design/framework-next/p6-writer-handoff.md). #356 frame/compliance source continues. #346 mapping and #347 engineering writes await the consolidated direct confirmation required by automatic approval review; no substituted writes. #351/#352 design is online PR #358 and CLOSED/Done. Product verification and CI remain deferred to P7.
+Current action: integrate inspected #354/#356/#357 source online. #359 is active under [the writer handoff](../../design/framework-next/p6-writer-handoff.md). #346 mapping and #347 engineering writes await the consolidated direct confirmation required by automatic approval review; no substituted writes. #351/#352 design is online PR #358 and CLOSED/Done. Product verification and CI remain deferred to P7.
 
 ## P3 shared implementation continuation
 
@@ -77,3 +77,7 @@ Both tasks are active from shared checkpoint `731d658b6004110fd59224ca39aa3a5d63
 ## Final P5 source dispatch
 
 [Runtime and first-command evidence](evidence/p5-final-source-dispatch.json) records #356 and #357 on the preserved design checkpoint `59877b8d2f61e9a95615ea95d597fe35da2f44cf`. Both use independent Astra Ultra tasks and distinct F: worktrees. No package mapping, product execution or acceptance is implied.
+
+## P6 writer dispatch
+
+[Runtime and first-command evidence](evidence/p6-writer-dispatch.json) records #359 on preserved checkpoint `f7fd09faeb52860fde9cde83ea6cf395df883f66`, with one owner for complete maintenance source. It has not executed or installed the product; P7 evidence remains deferred.
