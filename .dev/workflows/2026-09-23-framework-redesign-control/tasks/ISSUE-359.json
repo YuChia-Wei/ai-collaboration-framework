@@ -6,9 +6,9 @@
   "task_id": "ISSUE-359",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T10:46:00+08:00",
-  "updated_at": "2026-09-23T11:27:40+08:00",
+  "updated_at": "2026-09-23T11:53:11+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -50,8 +50,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and complete planned message only"
     ],
-    "last_completed_step": "Fixed local source inspected and integrated; coordinator online PR pending",
-    "next_action": "Complete online integration and read back Issue/Project; later source/mapping/adoption/P7 remain separate"
+    "last_completed_step": "Online PR #362 merged; Issue CLOSED/COMPLETED and Project Done read back",
+    "next_action": "Remaining source/mapping, actual adoption and P7 verification remain separate"
   },
   "results": {
     "summary": "Bounded source complete and locally integrated; no product execution or adoption",
@@ -75,8 +75,13 @@
     "implementation_status": "source complete; execution deferred",
     "verification_state": "deferred-by-owner",
     "local_commit": "a2e5daf71a4a830eab109370597872253df4497e",
-    "integration_status": "locally integrated; online pending",
-    "integration_report": "reports/p6-maintenance-and-adoption-integration.md"
+    "integration_status": "online merged",
+    "integration_report": "reports/p6-maintenance-and-adoption-integration.md",
+    "pr": "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/362",
+    "merge_commit": "3f9c12ea5c7f9dddfabd24bd16a8658f711dae39",
+    "provider_readback_at": "2026-09-23T11:32:26.9933918+08:00",
+    "issue_state": "CLOSED",
+    "project_status": "Done"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8Pols"
 }

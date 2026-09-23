@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T10:24:44+08:00",
+  "updated_at": "2026-09-23T12:00:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -53,8 +53,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Same task read-back complete; two mapping writes rejected; report-only commit returned",
-    "next_action": "Await consolidated direct user confirmation, then resume SAME task and mapping scope"
+    "last_completed_step": "Same original task resumed at 4cda6689; third original mapping request rejected; record-only 7fab3ffd fast-forwarded into coordinator branch",
+    "next_action": "Direct user input in original #346 executor conversation is required by automatic approval review; no retry or replacement writer"
   },
   "results": {
     "summary": "Owned source completed with P7 verification deferred",
@@ -80,10 +80,19 @@
     "verification_state": "deferred-by-owner",
     "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
     "integration_status": "source online in PR #353",
-    "mapping_status": "blocked-by-approval-review; no mapping written",
+    "mapping_status": "blocked-by-automatic-approval-review; direct input required in original executor task",
     "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md",
     "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
-    "blocked_checkpoint": "235cfaa5e2b915ce1722dec991c3cb8904c12691"
+    "blocked_checkpoint": "7fab3ffd1698e2eb8ef791d6be7748f151506642",
+    "mapping_resume_base": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed"
   },
-  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPr0"
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPr0",
+  "owner_confirmation": {
+    "received_at": "2026-09-23T11:53:11+08:00",
+    "source_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+    "direct_user_reply": "確認 #346、#347 原定寫入範圍",
+    "scope_record": "reports/p5-owner-confirmed-resume.md",
+    "prior_rejections": "retained; new direct confirmation permits same original task to request scoped execution again",
+    "observed_result": "Third scoped request rejected before execution; forwarded coordinator confirmation not accepted as direct user input in executor conversation"
+  }
 }

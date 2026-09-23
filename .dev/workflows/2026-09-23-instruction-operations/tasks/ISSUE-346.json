@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T09:47:04+08:00",
-  "updated_at": "2026-09-23T10:17:46+08:00",
+  "updated_at": "2026-09-23T11:56:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -52,8 +52,8 @@
     "validation": [
       "Direct syntax/content/reference/Git and exact planned message only"
     ],
-    "last_completed_step": "Verified clean source checkpoint, performed the one authorized fast-forward, read mapping authority and compared actual metadata/tracked members without product execution",
-    "next_action": "Request trusted direct user approval for the four selected mapping files; do not retry or bypass automatic approval rejection"
+    "last_completed_step": "Verified the clean owner-confirmed base 4cda6689 and repeated direct metadata/tracked-member comparison after the third write request was rejected before execution",
+    "next_action": "Obtain trusted direct user authorization in this Issue #346 task or resolve the approval restriction; do not retry shared mapping or change writer"
   },
   "delivery": {
     "source": "implemented-source-only",
@@ -78,10 +78,11 @@
     },
     "source_commit": "4795f7c1c6751a1702042ef76276f355e4ed7c37",
     "mapping_base": "5986b2146bb4559609acb0d5c7d09e8570375ea8",
-    "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md"
+    "mapping_contract": ".dev/workflows/2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md",
+    "mapping_resume_base": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed"
   },
   "results": {
-    "summary": "Original source delivered. First actual mapping selected and read-only compared, but both shared mapping write attempts were rejected before execution by automatic approval review. No manifest/profile changes applied.",
+    "summary": "Source delivered. Shared mapping remains unapplied after a third automatic approval rejection despite forwarded new owner confirmation. All prior failed attempts are retained; nine actual package closures match the handoff.",
     "files_changed": [
       "src/distribution/package.py",
       "src/distribution/codex.py",
@@ -165,6 +166,15 @@
         "additional_evidence": "Immutable handoff and commit 5986b214 plus live Issue #346 readback allowing later coordinator assignment",
         "outcome": "automatic-approval-rejected",
         "reason": "Tool output and transcript not accepted as trusted direct user authorization"
+      },
+      {
+        "attempt": 3,
+        "observed_at": "2026-09-23T11:56:40+08:00",
+        "material_authority_change": "Coordinator forwarded the new direct user reply confirming the original #346/#347 write scope; durable source .dev/workflows/2026-09-23-framework-redesign-control/reports/p5-owner-confirmed-resume.md",
+        "subject": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed",
+        "outcome": "automatic-approval-rejected-before-execution",
+        "reason": "Shared manifest/profile source-of-truth changes; claimed approval appears only in untrusted transcript and file content, not trusted direct user authorization in this conversation",
+        "post_rejection_state": "clean; mapping unchanged; original nine/68 source comparison refreshed; five/44 current mapping and four profiles; no engineering.yaml"
       }
     ],
     "actual_checks": [
@@ -205,7 +215,7 @@
       "payload_members": 68,
       "profiles": 5
     },
-    "next_action": "Direct user approval for the exact four-file mapping scope",
+    "next_action": "Obtain trusted direct user authorization in this Issue #346 task or resolve the approval restriction; do not retry shared mapping or change writer",
     "verification": "deferred-by-owner; U001; program #322 coordinator / P7; P7 selects redesigned checks after implementation"
   }
 }

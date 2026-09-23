@@ -6,9 +6,9 @@
   "task_id": "ISSUE-347",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T10:00:35+08:00",
+  "updated_at": "2026-09-23T12:08:22+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -49,15 +49,45 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Read-only preparation; automatic approval rejected assigned writes",
-    "next_action": "Await direct user confirmation requested by coordinator, then resume same task"
+    "last_completed_step": "Received fixed source 814fd128, clean assigned worktree and idle original task; coordinator inspected all five contained methods and exact 23-member inventory",
+    "next_action": "Online PR integration and Issue/Project read-back; later exact mapping remains separately assigned, P7 verification deferred"
   },
   "results": {
-    "summary": "No source writes/commit delivered; automatic approval authorization recognition blocked",
-    "files_changed": [],
+    "summary": "Five instruction packages, 23 members and seven operations delivered and selected for online integration",
+    "files_changed": [
+      ".dev/design/framework-next/engineering-methods/README.md",
+      ".dev/design/framework-next/engineering-methods/delivery.json",
+      ".dev/workflows/2026-09-23-engineering-methods/reports/remediation-report.md",
+      ".dev/workflows/2026-09-23-engineering-methods/tasks/ENG-347.json",
+      ".dev/workflows/2026-09-23-engineering-methods/workflow-plan.md",
+      ".dev/workflows/2026-09-23-engineering-methods/workflow.yaml",
+      "src/skills/bdd-gwt-test-designer/SKILL.md",
+      "src/skills/bdd-gwt-test-designer/references/design.md",
+      "src/skills/bdd-gwt-test-designer/references/review.md",
+      "src/skills/bdd-gwt-test-designer/skill-package.yaml",
+      "src/skills/ddd-ca-hex-architect/SKILL.md",
+      "src/skills/ddd-ca-hex-architect/references/design.md",
+      "src/skills/ddd-ca-hex-architect/references/review.md",
+      "src/skills/ddd-ca-hex-architect/skill-package.yaml",
+      "src/skills/diagnostic-analyst/SKILL.md",
+      "src/skills/diagnostic-analyst/references/diagnose.md",
+      "src/skills/diagnostic-analyst/skill-package.yaml",
+      "src/skills/local-change-implementer/SKILL.md",
+      "src/skills/local-change-implementer/references/implement.md",
+      "src/skills/local-change-implementer/skill-package.yaml",
+      "src/skills/slice-implementer/SKILL.md",
+      "src/skills/slice-implementer/references/implement.md",
+      "src/skills/slice-implementer/references/modes/command.md",
+      "src/skills/slice-implementer/references/modes/generic.md",
+      "src/skills/slice-implementer/references/modes/query.md",
+      "src/skills/slice-implementer/references/modes/reactor.md",
+      "src/skills/slice-implementer/references/remediation.md",
+      "src/skills/slice-implementer/references/test-handoff.md",
+      "src/skills/slice-implementer/skill-package.yaml"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Source delivery and P7 actual verification pending",
+    "finding_status": "partially-resolved",
+    "residual_risk": "Shared mapping and P7 actual verification remain; source completion does not close framework findings",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -72,8 +102,23 @@
   },
   "delivery": {
     "decision_contract": ".dev/design/framework-next/p5-selected-contract.md",
-    "implementation_status": "blocked-by-approval-review",
-    "verification_state": "deferred-by-owner"
+    "implementation_status": "source-completed",
+    "verification_state": "deferred-by-owner",
+    "resumed_starting_commit": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed",
+    "source_commit": "814fd12822bb270f17edbfe91d0864ba07c1aacb",
+    "integration_status": "locally integrated; online PR pending",
+    "actual_packages": 5,
+    "actual_members": 23,
+    "instruction_operations": 7,
+    "inspection_report": "reports/p5-engineering-source-integration.md"
   },
-  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPug"
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPug",
+  "owner_confirmation": {
+    "received_at": "2026-09-23T11:53:11+08:00",
+    "source_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+    "direct_user_reply": "確認 #346、#347 原定寫入範圍",
+    "scope_record": "reports/p5-owner-confirmed-resume.md",
+    "prior_rejections": "retained; new direct confirmation permits same original task to request scoped execution again",
+    "observed_result": "Scoped original source writes accepted in same executor task; previous failed attempts retained in worker report"
+  }
 }
