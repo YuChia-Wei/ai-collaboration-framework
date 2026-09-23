@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T02:14:01+08:00",
-  "updated_at": "2026-09-23T02:20:03+08:00",
+  "updated_at": "2026-09-23T08:26:01+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -20,6 +20,9 @@
   "scope": {
     "target": "ADR/Lesson lifecycle and project standards promotion",
     "files": [
+      "src/skills/lesson/",
+      "src/skills/adr/",
+      "src/skills/standards-promotion/",
       ".dev/design/framework-next/knowledge-lifecycle/",
       ".dev/workflows/2026-09-23-knowledge-lifecycle/"
     ],
@@ -43,16 +46,18 @@
       "Create issue workflow in_progress",
       "Design bounded public/schema/config/authority interfaces",
       "Commit local contract checkpoint and return to coordinator",
-      "Resume source implementation in same task after joint reconciliation"
+      "Resume source implementation in same task after joint reconciliation",
+      "Implement assigned packages under reconciled config v2 / metadata v2",
+      "Return coherent local source commit with actual/deferred checks before first push"
     ],
     "validation": [
       "readability/JSON/YAML/source/reference/Git and planned commit-message format only"
     ],
-    "last_completed_step": "Independent Astra Ultra task created; assigned F: Git identity and runtime model read back",
-    "next_action": "Receive local design contract checkpoint; reconcile shared interfaces before source continuation in same task"
+    "last_completed_step": "Received clean local contract checkpoint and reconciled shared configuration/metadata versions",
+    "next_action": "Resume same independent task for owned package source implementation from containing reconciliation commit"
   },
   "results": {
-    "summary": "",
+    "summary": "Bounded design checkpoint complete; shared decisions selected; source implementation next.",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
@@ -67,5 +72,12 @@
     "model_verified": "read-only runtime thread metadata: gpt-6-astra / ultra",
     "starting_commit": "a34ecd3c9423b17b6bb745f598ef22fd7437dd24",
     "worktree_verified": "first command execution cwd and Git root/branch/HEAD/common-dir match assignment"
+  },
+  "delivery": {
+    "contract_checkpoint": "99adb0762328c8f8d6cff7338f17caec99685c0a",
+    "contract_status": "reviewed and reconciled for source continuation",
+    "implementation_status": "not-started",
+    "verification_state": "deferred-by-owner",
+    "decision_contract": ".dev/design/framework-next/p3-shared-contract.md"
   }
 }

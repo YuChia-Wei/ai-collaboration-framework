@@ -1,0 +1,119 @@
+proposal_id: C334
+status: proposed-for-coordinator-reconciliation
+issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/334
+source_commit: a34ecd3c9423b17b6bb745f598ef22fd7437dd24
+execution_status: design-only
+verification: deferred-by-owner
+verification_owner: program-322-coordinator/P7
+shared_decisions:
+  - id: C334-01
+    subject: project-config-envelope
+    recommended: config_version 2; validate only selected namespace; foreign namespaces opaque objects
+    retained: Lesson reads unchanged closed config_version 1; no implicit conversion
+    reconcile_with: Issue 335
+  - id: C334-02
+    subject: metadata-readable-schema-versions
+    recommended: metadata_version 2; schemas keyed by id+version; project artifact role adds read_schemas
+    write_selection: existing schema field names the only writable version
+    retained: version 1 loader; reject duplicate schema pairs and cross-kind resource ID collisions
+    coordinator_files:
+      - src/distribution/package.py
+      - src/distribution/manifest.yaml
+      - src/profiles/
+    constraint: No helper/member field, global registry or automatic version negotiation
+  - id: C334-03
+    subject: promotion-owner
+    recommended: standards-promotion, independently selectable
+    mechanism: persist one-file replacement proposal; later read actual owner adoption, rule bytes and effect evidence
+    constraint: no apply operation; project-only evidence adapters; no arbitrary governance write
+  - id: C334-04
+    subject: implementation-ownership
+    recommended: resume same task after explicit source-root handoff
+    executor_roots:
+      - src/skills/lesson/
+      - src/skills/adr/
+      - src/skills/standards-promotion/
+    coordinator_owns:
+      - shared configuration and metadata contracts
+      - src/distribution/
+      - src/profiles/
+      - runtime projections and root entries
+      - .dev/workflows/INDEX.MD
+      - .dev/workflows/2026-09-23-framework-redesign-control/
+packages:
+  - id: lesson
+    proposed_version: 0.2.0
+    metadata_version: 2
+    namespace: lesson
+    dependencies: {required: [], optional: []}
+    tool: lesson.fs
+    entrypoint: scripts/lesson.py
+    writable_schema: lesson.record@2.0.0
+    readable_schemas: [lesson.record@1.0.0, lesson.record@2.0.0]
+    operations: [explain, create, inspect, query, validate, revise, render, derive, accept, retire, supersede]
+    exact_members:
+      - SKILL.md
+      - skill-package.yaml
+      - references/configuration.md
+      - references/operations.md
+      - references/example.md
+      - schemas/lesson-record.schema.json
+      - schemas/lesson-record-v2.schema.json
+      - templates/lesson.md
+      - scripts/lesson.py
+    preserve_bytes: schemas/lesson-record.schema.json
+  - id: adr
+    proposed_version: 0.1.0
+    metadata_version: 2
+    namespace: adr
+    dependencies: {required: [], optional: []}
+    tool: adr.fs
+    entrypoint: scripts/adr.py
+    writable_schema: adr.record@1.0.0
+    readable_schemas: [adr.record@1.0.0]
+    operations: [explain, create, inspect, query, validate, revise, render, derive, decide, retire, supersede]
+    exact_members:
+      - SKILL.md
+      - skill-package.yaml
+      - references/configuration.md
+      - references/operations.md
+      - references/example.md
+      - schemas/adr-record.schema.json
+      - templates/adr.md
+      - scripts/adr.py
+  - id: standards-promotion
+    proposed_version: 0.1.0
+    metadata_version: 2
+    namespace: standards-promotion
+    dependencies: {required: [], optional: []}
+    tool: standards-promotion.fs
+    entrypoint: scripts/standards_promotion.py
+    writable_schema: standards-promotion.record@1.0.0
+    readable_schemas: [standards-promotion.record@1.0.0]
+    operations: [explain, propose, inspect, query, validate, revise, render, withdraw, supersede, reconcile]
+    exact_members:
+      - SKILL.md
+      - skill-package.yaml
+      - references/configuration.md
+      - references/operations.md
+      - references/authority.md
+      - references/example.md
+      - schemas/promotion-record.schema.json
+      - templates/promotion.md
+      - scripts/standards_promotion.py
+runtime:
+  inherited_requirements: [skill-instruction-reader, python, pyyaml, jsonschema, filesystem]
+  new_shared_runtime: false
+  package_calls: none
+  record_schema_refs: same-document-only
+  metadata_schema_identity: exact-id-and-version
+version_dispositions:
+  lesson_v1: preserve bytes; read only; explicit derive to new identity; no migration edge
+  unknown_record: preserve and report unsupported; partial query
+  project_config_v1: Lesson compatibility only; owner edits to v2 are explicit
+  metadata_v1: retain reader; reject unsupported v2 without mutation
+  history: no bulk conversion
+first_turn_write_roots:
+  - .dev/design/framework-next/knowledge-lifecycle/
+  - .dev/workflows/2026-09-23-knowledge-lifecycle/
+next_action: coordinator reconciles C334-01 through C334-04, then resumes this same task with explicit source ownership

@@ -1,0 +1,10 @@
+{
+  "observed_at": "2026-09-23T08:26:01+08:00",
+  "source": "live exact ProjectV2Item GraphQL read-back",
+  "issue": 337,
+  "item_id": "PVTI_lAHOAwvEG84Bez7wzg8Oz9k",
+  "status": "In progress",
+  "target_release": "Unassigned",
+  "owner_review": "Approved",
+  "owner_review_meaning": "execution authorization only"
+}

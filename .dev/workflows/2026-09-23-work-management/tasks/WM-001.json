@@ -1,0 +1,62 @@
+{
+  "workflow_id": "2026-09-23-work-management",
+  "owner_skill": "ai-context-governance",
+  "created_at": "2026-09-23T08:18:00+08:00",
+  "updated_at": "2026-09-23T08:18:00+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "contract_exception": "U001; no native schema/audit/handoff acceptance claimed",
+  "task_id": "WM-001",
+  "status": "completed",
+  "scope": {
+    "target": "Early PR/local-backlog design checkpoint",
+    "files": [
+      ".dev/design/framework-next/work-management/**",
+      ".dev/workflows/2026-09-23-work-management/**"
+    ],
+    "constraints": [
+      "No product/shared file edits",
+      "No sub-agents",
+      "No product/legacy validator execution"
+    ],
+    "non_goals": [
+      "Source implementation",
+      "Provider mutation",
+      "Issue closure"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read assigned Git identity and live Issue",
+      "Inspect P1/P2 contracts and selected actual source",
+      "Specify independent records, operations, package members and authority",
+      "Retain source-only checkpoint and P7 deferrals"
+    ],
+    "validation": [
+      "Direct UTF-8/JSON/YAML reads and reference inspection",
+      "Git diff --check",
+      "Exact planned commit-message format validation"
+    ],
+    "last_completed_step": "Bounded contract/specimen prepared for local design commit",
+    "next_action": "Coordinator consumes containing commit and reconciles WM-C1/C2/C3"
+  },
+  "results": {
+    "summary": "Design checkpoint defines independent PR and local-backlog packages, owned schemas, operations and exact members; implementation remains pending.",
+    "files_changed": [
+      ".dev/design/framework-next/work-management/README.md",
+      ".dev/design/framework-next/work-management/contract.md",
+      ".dev/design/framework-next/work-management/examples.md",
+      ".dev/design/framework-next/work-management/integration-proposal.json",
+      ".dev/design/framework-next/work-management/schemas/pr-record.schema.json",
+      ".dev/design/framework-next/work-management/schemas/local-backlog-record.schema.json"
+    ],
+    "tests_run": [],
+    "finding_status": "addressed",
+    "residual_risk": "Design-only; behavioral/schema/product/CI verification deferred-by-owner to P7. Provider concurrency guarantee requires coordinator reconciliation.",
+    "follow_up_needed": true,
+    "follow_up_owner": "program #322 coordinator / P7; WM-002 carries implementation in this workflow"
+  }
+}

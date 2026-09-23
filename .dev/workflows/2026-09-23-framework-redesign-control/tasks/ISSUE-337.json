@@ -1,0 +1,71 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-337",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-09-23T08:26:01+08:00",
+  "updated_at": "2026-09-23T08:26:01+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/337",
+  "phase": "P3-C",
+  "scope": {
+    "target": "Metadata v2 readable schemas and actual P3 distribution mapping",
+    "files": [
+      "src/distribution/package.py",
+      "necessary direct src/distribution/ call sites",
+      ".dev/design/framework-next/distribution-implementation/",
+      ".dev/workflows/2026-09-23-p3-distribution/"
+    ],
+    "constraints": [
+      "U001",
+      "no sub-agents or child-created tasks",
+      "coordinator owns first push",
+      "source loader checkpoint precedes actual package manifest mapping"
+    ],
+    "non_goals": [
+      "product execution/tests/CI",
+      "skill source mutation",
+      "speculative manifest entries",
+      "root cutover",
+      "migration/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: worktree and read selected contract",
+      "Implement bounded metadata v2 source support while preserving v1",
+      "Return local source checkpoint",
+      "Resume same task on actual integrated package delivery for exact mappings"
+    ],
+    "validation": [
+      "Direct syntax/source/reference/Git and exact planned commit-message only"
+    ],
+    "last_completed_step": "Issue/Project created; shared contract selected",
+    "next_action": "Create assigned worktree and independent task"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Metadata/package behavior unverified; final mapping depends on actual package delivery",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": null,
+    "worktree": "F:/framework-next/337",
+    "branch": "codex/2026-09-23-p3-distribution",
+    "workflow_id": "2026-09-23-p3-distribution",
+    "starting_commit_source": "containing reconciliation commit",
+    "model_verified": false
+  }
+}

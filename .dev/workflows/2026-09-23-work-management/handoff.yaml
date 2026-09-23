@@ -1,0 +1,36 @@
+schema_version: '1.0'
+checkpoint_id: 2026-09-23-work-management-contract
+created_at: '2026-09-23T08:18:00+08:00'
+updated_at: '2026-09-23T08:18:00+08:00'
+contract_exception: 'U001 proportional receiving checkpoint; native handoff validation deferred-by-owner'
+repository:
+  starting_commit: a34ecd3c9423b17b6bb745f598ef22fd7437dd24
+  checkpoint_commit_source: containing-commit
+  branch: codex/2026-09-23-work-management
+  worktree: F:/framework-next/335
+  common_git_dir: C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git
+workflow:
+  id: 2026-09-23-work-management
+  issue: 335
+  status: in_progress
+  completed_task: WM-001
+  active_task: WM-002
+delivery:
+  kind: local-contract-checkpoint
+  changed_roots:
+  - .dev/design/framework-next/work-management/
+  - .dev/workflows/2026-09-23-work-management/
+  proposal: .dev/design/framework-next/work-management/integration-proposal.json
+  decisions: [WM-C1, WM-C2, WM-C3]
+  first_push_owner: coordinator
+resume:
+  hidden_context_required: false
+  coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
+  last_completed_action: Design contract checkpoint; no product source implemented
+  exact_next_action: Reconcile config/member/provider concurrency choices, then resume this same task with explicit source ownership.
+verification:
+  allowed: Direct UTF-8/JSON/YAML/reference/Git checks and exact message format validation only
+  deferred_status: deferred-by-owner
+  authority: U001
+  owner: program 322 coordinator / P7
+  next_action: Select and execute final schema, behavior, package, provider and CI verification at P7

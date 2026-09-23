@@ -1,0 +1,304 @@
+{
+  "example_status": "synthetic-design-only",
+  "execution_evidence": false,
+  "note": "Invented initial records/config; hashes bind only included synthetic text. Paths were not created. No owner adoption, decision, rule effect or product execution is claimed.",
+  "project_config": {
+    "config_version": 2,
+    "skills": {
+      "lesson": {
+        "store": {
+          "root": "knowledge/lessons"
+        }
+      },
+      "adr": {
+        "store": {
+          "root": "knowledge/adrs"
+        },
+        "template": {
+          "origin": "project",
+          "path": "team/templates/adr.md"
+        }
+      },
+      "standards-promotion": {
+        "store": {
+          "root": "knowledge/promotions"
+        }
+      },
+      "example.other": {
+        "owned_setting": "Opaque to these consumers."
+      }
+    },
+    "constraints": {
+      "lesson": {
+        "write_roots": [
+          "knowledge/lessons"
+        ],
+        "locked_fields": [
+          "store.root"
+        ],
+        "decision_sources": [
+          {
+            "id": "lesson-review",
+            "root": "team/lesson-decisions",
+            "allowed_actors": [
+              "fictional-owner"
+            ],
+            "pointers": {
+              "subject_sha256": "/decision/subject_sha256",
+              "actor": "/decision/actor",
+              "decision": "/decision/decision",
+              "decided_at": "/decision/decided_at"
+            }
+          }
+        ]
+      },
+      "adr": {
+        "write_roots": [
+          "knowledge/adrs"
+        ],
+        "decision_sources": [
+          {
+            "id": "architecture-owner",
+            "root": "team/architecture-decisions",
+            "allowed_actors": [
+              "fictional-owner"
+            ],
+            "pointers": {
+              "subject_sha256": "/decision/subject_sha256",
+              "actor": "/decision/actor",
+              "decision": "/decision/decision",
+              "decided_at": "/decision/decided_at",
+              "option_id": "/decision/option_id"
+            }
+          }
+        ]
+      },
+      "standards-promotion": {
+        "write_roots": [
+          "knowledge/promotions"
+        ],
+        "source_read_roots": [
+          "knowledge/lessons",
+          "knowledge/adrs"
+        ],
+        "targets": [
+          {
+            "id": "retry-standard",
+            "path": "team/retry-standard.md",
+            "applicability": "fictional-service",
+            "allowed_actors": [
+              "fictional-owner"
+            ],
+            "adoption_source": {
+              "root": "team/adoptions",
+              "pointers": {
+                "subject_sha256": "/decision/subject_sha256",
+                "target_id": "/decision/target_id",
+                "after_sha256": "/decision/after_sha256",
+                "actor": "/decision/actor",
+                "decision": "/decision/decision",
+                "decided_at": "/decision/decided_at"
+              }
+            },
+            "effect_source": {
+              "root": "team/effects",
+              "pointers": {
+                "subject_sha256": "/effect/subject_sha256",
+                "target_id": "/effect/target_id",
+                "after_sha256": "/effect/after_sha256",
+                "adoption_sha256": "/effect/adoption_sha256",
+                "applicability": "/effect/applicability",
+                "state": "/effect/state",
+                "effective_at": "/effect/effective_at"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "project_config_exact_utf8": "{\n  \"config_version\": 2,\n  \"constraints\": {\n    \"adr\": {\n      \"decision_sources\": [\n        {\n          \"allowed_actors\": [\n            \"fictional-owner\"\n          ],\n          \"id\": \"architecture-owner\",\n          \"pointers\": {\n            \"actor\": \"/decision/actor\",\n            \"decided_at\": \"/decision/decided_at\",\n            \"decision\": \"/decision/decision\",\n            \"option_id\": \"/decision/option_id\",\n            \"subject_sha256\": \"/decision/subject_sha256\"\n          },\n          \"root\": \"team/architecture-decisions\"\n        }\n      ],\n      \"write_roots\": [\n        \"knowledge/adrs\"\n      ]\n    },\n    \"lesson\": {\n      \"decision_sources\": [\n        {\n          \"allowed_actors\": [\n            \"fictional-owner\"\n          ],\n          \"id\": \"lesson-review\",\n          \"pointers\": {\n            \"actor\": \"/decision/actor\",\n            \"decided_at\": \"/decision/decided_at\",\n            \"decision\": \"/decision/decision\",\n            \"subject_sha256\": \"/decision/subject_sha256\"\n          },\n          \"root\": \"team/lesson-decisions\"\n        }\n      ],\n      \"locked_fields\": [\n        \"store.root\"\n      ],\n      \"write_roots\": [\n        \"knowledge/lessons\"\n      ]\n    },\n    \"standards-promotion\": {\n      \"source_read_roots\": [\n        \"knowledge/lessons\",\n        \"knowledge/adrs\"\n      ],\n      \"targets\": [\n        {\n          \"adoption_source\": {\n            \"pointers\": {\n              \"actor\": \"/decision/actor\",\n              \"after_sha256\": \"/decision/after_sha256\",\n              \"decided_at\": \"/decision/decided_at\",\n              \"decision\": \"/decision/decision\",\n              \"subject_sha256\": \"/decision/subject_sha256\",\n              \"target_id\": \"/decision/target_id\"\n            },\n            \"root\": \"team/adoptions\"\n          },\n          \"allowed_actors\": [\n            \"fictional-owner\"\n          ],\n          \"applicability\": \"fictional-service\",\n          \"effect_source\": {\n            \"pointers\": {\n              \"adoption_sha256\": \"/effect/adoption_sha256\",\n              \"after_sha256\": \"/effect/after_sha256\",\n              \"applicability\": \"/effect/applicability\",\n              \"effective_at\": \"/effect/effective_at\",\n              \"state\": \"/effect/state\",\n              \"subject_sha256\": \"/effect/subject_sha256\",\n              \"target_id\": \"/effect/target_id\"\n            },\n            \"root\": \"team/effects\"\n          },\n          \"id\": \"retry-standard\",\n          \"path\": \"team/retry-standard.md\"\n        }\n      ],\n      \"write_roots\": [\n        \"knowledge/promotions\"\n      ]\n    }\n  },\n  \"skills\": {\n    \"adr\": {\n      \"store\": {\n        \"root\": \"knowledge/adrs\"\n      },\n      \"template\": {\n        \"origin\": \"project\",\n        \"path\": \"team/templates/adr.md\"\n      }\n    },\n    \"example.other\": {\n      \"owned_setting\": \"Opaque to these consumers.\"\n    },\n    \"lesson\": {\n      \"store\": {\n        \"root\": \"knowledge/lessons\"\n      }\n    },\n    \"standards-promotion\": {\n      \"store\": {\n        \"root\": \"knowledge/promotions\"\n      }\n    }\n  }\n}\n",
+  "lesson_candidate": {
+    "schema_version": "2.0.0",
+    "kind": "lesson",
+    "owner": "project",
+    "id": "lesson-11111111111111111111111111111111",
+    "status": "candidate",
+    "revision": 1,
+    "created_at": "2026-01-01T00:00:00+00:00",
+    "updated_at": "2026-01-01T00:00:00+00:00",
+    "content": {
+      "title": "Synthetic retry observation",
+      "observation": "A fictional retry reused an old request body.",
+      "evidence": [],
+      "conclusion": "Inspect body identity when investigating retries.",
+      "applies_when": [
+        "The fictional operation is retried."
+      ],
+      "does_not_apply_when": [
+        "No retry occurred."
+      ],
+      "confidence": "tentative",
+      "follow_up": [
+        "Collect real evidence."
+      ]
+    },
+    "provenance": [],
+    "history": [],
+    "successor": null,
+    "extensions": {
+      "example.synthetic": {
+        "execution_evidence": false
+      }
+    },
+    "decision": null
+  },
+  "adr_draft": {
+    "schema_version": "1.0.0",
+    "kind": "adr",
+    "owner": "project",
+    "id": "adr-22222222222222222222222222222222",
+    "status": "draft",
+    "revision": 1,
+    "created_at": "2026-01-01T00:00:00+00:00",
+    "updated_at": "2026-01-01T00:00:00+00:00",
+    "content": {
+      "title": "Synthetic retry design alternatives",
+      "context": "A fictional service is considering retry semantics.",
+      "decision_drivers": [
+        "Avoid repeated side effects."
+      ],
+      "options": [
+        {
+          "id": "retain",
+          "summary": "Retain current behavior.",
+          "benefits": [
+            "No implementation cost."
+          ],
+          "costs": [
+            "Repeat side effects may remain."
+          ]
+        },
+        {
+          "id": "bind",
+          "summary": "Bind retries to request identity.",
+          "benefits": [
+            "Make intent explicit."
+          ],
+          "costs": [
+            "Additional state."
+          ]
+        }
+      ],
+      "consequences": [
+        "No decision has been made."
+      ],
+      "evidence": [],
+      "applies_when": [
+        "This fictional service retries commands."
+      ],
+      "does_not_apply_when": []
+    },
+    "provenance": [],
+    "history": [],
+    "successor": null,
+    "extensions": {
+      "example.synthetic": {
+        "execution_evidence": false
+      }
+    },
+    "decision": null
+  },
+  "promotion_proposal": {
+    "schema_version": "1.0.0",
+    "kind": "standards-promotion",
+    "owner": "project",
+    "id": "promotion-33333333333333333333333333333333",
+    "status": "proposed",
+    "revision": 1,
+    "created_at": "2026-01-01T00:00:00+00:00",
+    "updated_at": "2026-01-01T00:00:00+00:00",
+    "content": {
+      "title": "Synthetic proposal for review",
+      "target_id": "retry-standard",
+      "baseline": {
+        "path": "/synthetic-project/team/retry-standard.md",
+        "sha256": "19fc8c326ada630aed4a314c3851ce288c03242069b7e3c7a51d7db0ccf94199",
+        "utf8": "# Fictional retry guidance\n",
+        "observed_at": "2026-01-01T00:00:00+00:00"
+      },
+      "replacement": "# Fictional retry guidance\nRecord request identity before retrying.\n",
+      "rationale": "Discuss whether the fictional observation warrants a rule.",
+      "applicability": "fictional-service",
+      "conflicts": [
+        {
+          "subject": "Existing retry behavior",
+          "disposition": "unresolved",
+          "reason": "Owner review has not occurred."
+        }
+      ],
+      "sources": [
+        {
+          "kind": "lesson",
+          "id": "lesson-11111111111111111111111111111111",
+          "schema_version": "2.0.0",
+          "reason": "Synthetic observation selected for discussion, not accepted evidence.",
+          "snapshot": {
+            "path": "/synthetic-project/knowledge/lessons/lesson-11111111111111111111111111111111.lesson.json",
+            "sha256": "7e2d8f82ceddf9d7657d424ffa637ec44727d79f78ed9dddbc6334064fde644f",
+            "utf8": "{\n  \"content\": {\n    \"applies_when\": [\n      \"The fictional operation is retried.\"\n    ],\n    \"conclusion\": \"Inspect body identity when investigating retries.\",\n    \"confidence\": \"tentative\",\n    \"does_not_apply_when\": [\n      \"No retry occurred.\"\n    ],\n    \"evidence\": [],\n    \"follow_up\": [\n      \"Collect real evidence.\"\n    ],\n    \"observation\": \"A fictional retry reused an old request body.\",\n    \"title\": \"Synthetic retry observation\"\n  },\n  \"created_at\": \"2026-01-01T00:00:00+00:00\",\n  \"decision\": null,\n  \"extensions\": {\n    \"example.synthetic\": {\n      \"execution_evidence\": false\n    }\n  },\n  \"history\": [],\n  \"id\": \"lesson-11111111111111111111111111111111\",\n  \"kind\": \"lesson\",\n  \"owner\": \"project\",\n  \"provenance\": [],\n  \"revision\": 1,\n  \"schema_version\": \"2.0.0\",\n  \"status\": \"candidate\",\n  \"successor\": null,\n  \"updated_at\": \"2026-01-01T00:00:00+00:00\"\n}\n",
+            "observed_at": "2026-01-01T00:00:00+00:00"
+          }
+        }
+      ],
+      "target_binding": {
+        "binding_id": "retry-standard",
+        "config_path": "/synthetic-project/team/framework.json",
+        "config_sha256": "9f827179e55766dda8506061b0ca69c115a40dd480913d789dfcdf90bc42aff7",
+        "binding": {
+          "id": "retry-standard",
+          "path": "team/retry-standard.md",
+          "applicability": "fictional-service",
+          "allowed_actors": [
+            "fictional-owner"
+          ],
+          "adoption_source": {
+            "root": "team/adoptions",
+            "pointers": {
+              "subject_sha256": "/decision/subject_sha256",
+              "target_id": "/decision/target_id",
+              "after_sha256": "/decision/after_sha256",
+              "actor": "/decision/actor",
+              "decision": "/decision/decision",
+              "decided_at": "/decision/decided_at"
+            }
+          },
+          "effect_source": {
+            "root": "team/effects",
+            "pointers": {
+              "subject_sha256": "/effect/subject_sha256",
+              "target_id": "/effect/target_id",
+              "after_sha256": "/effect/after_sha256",
+              "adoption_sha256": "/effect/adoption_sha256",
+              "applicability": "/effect/applicability",
+              "state": "/effect/state",
+              "effective_at": "/effect/effective_at"
+            }
+          }
+        }
+      },
+      "after_sha256": "0397f688eec058d349cd09e4624654c8867fe545bd159f1962aaf3a2631a22d6",
+      "subject_sha256": "126c2b1417bd8acfd019fbddfe9b2eecdf0e321a0fc6fd16a90871e8f488270a"
+    },
+    "provenance": [],
+    "history": [],
+    "successor": null,
+    "extensions": {
+      "example.synthetic": {
+        "execution_evidence": false
+      }
+    },
+    "observation": null
+  },
+  "custom_adr_template": "# {{title}}\nID: {{id}} / schema {{schema_version}} / {{status}}\n\n{{context}}\n\n{{decision_drivers}}\n\n{{options}}\n\n{{consequences}}\n\n{{evidence}}\n\n{{applies_when}}\n\n{{does_not_apply_when}}\n\n{{decision}}\n\n{{history}}\n\n{{provenance}}\n"
+}
