@@ -1,0 +1,48 @@
+{
+  "observed_at": "2026-09-23T17:17:12.100998+00:00",
+  "execution_commit": "e71712b71791170c3f4946e131ce867f82dade8f",
+  "checks": {
+    "changed_scope": "passed; own workflow only",
+    "tested_source_tests_tools_README_unchanged": "passed",
+    "utf8_json_yaml": "passed",
+    "parsed_files": [
+      ".dev/workflows/2026-09-23-public-skill-checks/task.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/workflow.yaml",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-adr.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-lesson.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-local-backlog.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-pr.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-problem-frame-author.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-raw-streams.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-results.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-software-development-orchestrator.json",
+      ".dev/workflows/2026-09-23-public-skill-checks/evidence/reconcile-e71712b7-standards-promotion.json"
+    ],
+    "local_markdown_links": "passed",
+    "link_count": 20,
+    "README_suggestion_links": "passed relative to intended tests/framework_next/README.md",
+    "all_14_exact_runner_streams": "passed",
+    "all_seven_families_complete": "passed",
+    "all_seven_new_fixture_roots_absent": "passed",
+    "git_diff_check": "passed"
+  },
+  "planned_message": {
+    "path": "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-common-source-e717-results.txt",
+    "sha256": "5af48a1f79a30b154e42dc4696ab657a80254934be36391eb3077038f9e3a937",
+    "argv": [
+      "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-I",
+      "-B",
+      "F:\\framework-next\\373\\.ai\\scripts\\validate-git-commits.py",
+      "--message-file",
+      "F:\\framework-next\\373\\.dev\\ai-context\\local\\commit-messages\\373-common-source-e717-results.txt",
+      "--workflow-id",
+      "2026-09-23-public-skill-checks"
+    ],
+    "cwd": "F:\\framework-next\\373",
+    "exit": 0,
+    "stdout_base64": "R2l0IGNvbW1pdCB2YWxpZGF0aW9uIHBhc3NlZCBmb3IgcGxhbm5lZCBtZXNzYWdlLg0K",
+    "stderr_base64": ""
+  },
+  "limits": "Direct record checks only after the selected seven independent runs. No other testing, formal packet or provider action."
+}
