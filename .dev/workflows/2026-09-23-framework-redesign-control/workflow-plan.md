@@ -43,7 +43,7 @@ This coordinator owns dependencies, task/branch/PR mapping and integration. Issu
 | #364 | P7-A focused verification design | own design/workflow only | design online PR #367; Issue/Project complete |
 | #365 | P7-B pipeline/policy design | own design/workflow only | design online PR #367; Issue/Project complete |
 | #368 | P7-V1 source contracts | runner/helper/contract tests and selected observed distribution repairs | partial checkpoint online PR #372; original repair authorization pending |
-| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | contracts binding online PR #372; public binding active; policy authorization pending |
+| #369 | P7-P1 dormant source gates | .github source gates/tests and prospective source policy | contracts binding online PR #372; public binding received; policy authorization and native pending |
 | #370 | P7 installation source review | own review workflow only; fixed ten-file source read-only | affected review online PR #374; Issue/Project complete within source-review scope |
 | #371 | P7 source pin repair | maintenance source loading and focused cache tests | source/test checkpoint online PR #374; Issue/Project complete; public/native gaps retained |
 | #373 | P7-V2 public skill checks | public test families/dispatch and own records | local partial checkpoint received; no complete family acceptance |
@@ -64,7 +64,7 @@ Workers return local commits before push. Coordinator inspects exact scope and o
 
 ## Resume checkpoint
 
-Current action: integrate the [public partial checkpoint](reports/p7-public-checkpoint.md) and receive the actual caller binding in the original #369 task. Original #368 source repair and #369 policy authorization replies remain pending. Resolve the recorded F: path/volume limitation before affected writes or native trials; no unchanged public rerun is selected. #370/#371 bounded source work is complete online, while native/root/CI outcomes remain outstanding.
+Current action: deliver the [public partial checkpoint and actual caller binding](reports/p7-public-checkpoint.md) through online PR integration. Original #368 source repair and #369 policy authorization replies remain pending. Resolve the recorded F: path/volume limitation before affected writes or native trials; no unchanged public rerun is selected. #370/#371 bounded source work is complete online, while native/root/CI outcomes remain outstanding.
 
 ## P3 shared implementation continuation
 

@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T15:14:31+08:00",
-  "updated_at": "2026-09-23T15:34:12+08:00",
+  "updated_at": "2026-09-23T16:46:30+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "finding_ids": [
@@ -49,8 +49,8 @@
       "24 selected tests passed after retained WinError 1 failure",
       "Direct Python/YAML/UTF-8/whitespace and 113-member selector lookup"
     ],
-    "last_completed_step": "Actual #368 contracts CLI/result binding; 28 focused source tests passed; no product execution",
-    "next_action": "Coordinator integrates fixed runner, resolves upstream failures and policy approval, then supplies V2/V3 bindings"
+    "last_completed_step": "Fixed #373 public caller binding; proportional admission; 37 focused source tests passed; no product execution",
+    "next_action": "Coordinator integrates caller/runner, resolves policy approval and upstream metadata/backend failures, then selects actual runs/native work"
   },
   "results": {
     "summary": "Partial local source-gate checkpoint; no CI/native/policy readiness",
@@ -84,10 +84,33 @@
         "harness_seconds": 2.441,
         "evidence_scope": "Local source selector/event tests; synthetic runner responses and tiny real Git fixture",
         "product_execution": false
+      },
+      {
+        "attempt": 4,
+        "phase": "public-binding-intermediate",
+        "tests": 37,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "harness_seconds": 3.971,
+        "product_execution": false,
+        "superseded_by": "Coordinator requested removal of duplicate operation-level checks; final proportional caller follows"
+      },
+      {
+        "attempt": 5,
+        "phase": "public-binding-final",
+        "tests": 37,
+        "errors": 0,
+        "skipped": 0,
+        "outcome": "passed",
+        "unittest_seconds": 1.54,
+        "harness_seconds": 1.541,
+        "product_execution": false,
+        "evidence_scope": "Synthetic complete public responses; local stream/selector cases only"
       }
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "Policy approval blocked; upstream 368 has 3 affected methods/7 errors and no candidate build; public/native undelivered; no hosted evidence",
+    "residual_risk": "Policy approval stopped; #368 metadata/F: backend and #373 full-family acceptance unresolved; native blocked; no CI evidence",
     "follow_up_needed": true
   },
   "owner_override": "U001; selected P7 tests only; no legacy schema/packet compliance claim",
@@ -109,8 +132,32 @@
       "errors": 7,
       "candidate_builds_succeeded": 0
     },
-    "public": "reserved-not-implemented",
+    "public": "See public_binding; fixed #373 CLI now bound, complete public acceptance remains unestablished",
     "native": "unimplemented-blocked",
     "report": "reports/runner-binding-handoff.md"
+  },
+  "public_binding": {
+    "source_commit": "7996b32d3d4f70553b203299e25dc69d9413ff9d",
+    "argv": [
+      "python",
+      "-I",
+      "-B",
+      "tests/framework_next/run.py",
+      "--layer",
+      "public",
+      "--family",
+      "<selected-id>"
+    ],
+    "admission": "Pinned subject/family; complete phases; zero-skip unittest; exit/outcome; basic calls/count and successful cleanup/accounting",
+    "success_fixture_basis": "synthetic only; no #373 full family passed",
+    "upstream_residuals": [
+      "Lesson filesystem refusal",
+      "PR yaml-token failure",
+      "backlog unexecuted",
+      "#368 metadata/backend failures"
+    ],
+    "public_read_only_used": false,
+    "native": "unimplemented-blocked",
+    "report": "reports/public-binding-handoff.md"
   }
 }

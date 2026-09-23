@@ -5,6 +5,8 @@ No product modules, installation, native cases, legacy validators or provider ca
 from __future__ import annotations
 import argparse
 from contextlib import redirect_stdout
+from copy import deepcopy
+from unittest.mock import patch
 import importlib.util
 import io
 import json
@@ -202,7 +204,7 @@ class CommandTests(unittest.TestCase):
     def test_real_contract_argv_and_reserved_or_unknown_commands(self):
         self.assertEqual(gate.command_for('contracts'),
                          [sys.executable, '-I', '-B', 'tests/framework_next/run.py', '--layer', 'contracts'])
-        for check in ('unknown', 'public:unknown', 'native-windows', *('public:' + f for f in gate.FAMILIES)):
+        for check in ('unknown', 'public:unknown', 'native-windows'):
             with self.assertRaises(gate.GateError):
                 gate.command_for(check)
 
@@ -295,6 +297,209 @@ class CommandTests(unittest.TestCase):
         self.assertEqual(len(noisy.output), 1024)
         failed = gate.bounded_run([sys.executable, '-I', '-B', '-c', 'raise SystemExit(7)'], ROOT)
         self.assertEqual((failed.status, failed.code), ('failed', 7))
+
+
+class PublicResultTests(unittest.TestCase):
+    """Every successful public response here is synthetic; #373 has no family pass."""
+    subject = 'a' * 40
+    stderr = b'test_selected (SyntheticTests.test_selected) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.123s\n\nOK\n'
+
+    @staticmethod
+    def balance(entry):
+        count = len(entry['calls'])
+        entry['public_launches'] = count
+        entry['fixture_accounting']['processes'] = {'git': 4, 'python': count, 'other': 0}
+        entry['fixture_accounting']['process_total'] = count + 4
+
+    def synthetic_rows(self, family='adr'):
+        # Protocol-shaped hypothetical complete observations, not recorded execution.
+        phases = list(gate.PUBLIC_PHASES[family])
+        calls = []
+        for phase in phases:
+            if phase == 'T4-synthetic-provider':  # Actual runner uses in-process fake transport.
+                continue
+            if phase == 'C6-input-boundary':
+                calls.append({'operation': 'oversize-request', 'phase': phase, 'exit': 1, 'outcome': 'unsupported',
+                              'stdin_bytes': 4 * 1024 * 1024 + 1, 'stdin_sha256': 'b' * 64,
+                              'stdout_sha256': 'c' * 64, 'diagnostics': [{'code': 'size-limit'}]})
+            else:
+                calls.append({'operation': 'explain', 'phase': phase, 'expected': 'success', 'exit': 0,
+                              'stdout_sha256': 'b' * 64, 'stderr_sha256': 'c' * 64,
+                              'outcome': 'ok' if family == 'problem-frame-author' else 'succeeded', 'diagnostics': []})
+        entry = {'family': family, 'outcome': 'passed', 'exit': 0, 'source_commit': self.subject,
+                 'fixture_kind': 'direct-committed-package-resources', 'completed_phases': phases,
+                 'failed_phase': None, 'blocked_before_write': False, 'unexecuted_phases': [],
+                 'public_launches': len(calls), 'calls': calls,
+                 'nested_child_launches': 'unavailable: unchanged public children are not instrumented',
+                 'nested_launch_upper_bound': 0, 'boundary_authored_bytes': 4 * 1024 * 1024 + 1 if family == 'lesson' else 0,
+                 'transcript': 'synthetic-transcript-never-executed.jsonl',
+                 'fixture_accounting': {'observed_files': 8, 'observed_logical_bytes': 1000,
+                     'retained_files': 8, 'retained_bytes': 1000, 'authored_bytes': 100,
+                     'processes': {}, 'process_total': 0, 'wall_seconds': 0.123, 'residue': None, 'next_action': None}}
+        self.balance(entry)
+        return [{'runtime': {'python': '3.12.0', 'executable': 'synthetic-python', 'PyYAML': '6.0.3',
+                             'jsonschema': '4.26.0', 'referencing': '0.37.0'}},
+                {'public_family': entry},
+                {'public_selection': [family], 'outcome': 'passed', 'exit': 0, 'unexecuted_families': []}]
+
+    @staticmethod
+    def stdout(rows):
+        return ('\n'.join(json.dumps(row, sort_keys=True) for row in rows) + '\n').encode()
+
+    def result(self, rows, *, family='adr', subject=None, stderr=None):
+        return gate.command_result('public:' + family,
+            gate.Outcome('passed', 0, self.stdout(rows), self.stderr if stderr is None else stderr),
+            subject=self.subject if subject is None else subject)
+
+    def test_all_seven_exact_commands_and_synthetic_complete_formats(self):
+        self.assertEqual(set(gate.PUBLIC_PHASES), gate.FAMILIES)
+        for family in sorted(gate.FAMILIES):
+            with self.subTest(family=family):
+                argv = gate.command_for('public:' + family)
+                self.assertEqual(argv, [sys.executable, '-I', '-B', gate.RUNNER, '--layer', 'public', '--family', family])
+                self.assertNotIn('--public-read-only', argv)
+                self.assertNotIn('--case', argv)
+                result = self.result(self.synthetic_rows(family), family=family)
+                self.assertEqual((result['family'], result['source_commit'], result['tests'], result['skipped']),
+                                 (family, self.subject, 1, 0))
+                self.assertEqual(result['interface_source_commit'], '7996b32d3d4f70553b203299e25dc69d9413ff9d')
+                self.result(self.synthetic_rows(family), family=family, stderr=self.stderr.replace(b'\n', b'\r\n'))
+
+    def test_subject_family_selection_and_complete_phases_must_match(self):
+        changes = [((2, 'public_selection'), ['lesson']), ((2, 'public_selection'), ['adr', 'lesson']),
+                   ((2, 'unexecuted_families'), ['lesson']), ((2, 'outcome'), 'not-passed'), ((2, 'exit'), False),
+                   ((1, 'public_family', 'family'), 'lesson'), ((1, 'public_family', 'source_commit'), 'b' * 40),
+                   ((1, 'public_family', 'outcome'), 'partial'), ((1, 'public_family', 'outcome'), 'failed'),
+                   ((1, 'public_family', 'exit'), 1), ((1, 'public_family', 'exit'), 0.0),
+                   ((1, 'public_family', 'failed_phase'), 'T2-round-trip'),
+                   ((1, 'public_family', 'blocked_before_write'), True),
+                   ((1, 'public_family', 'blocked_before_write'), 0),
+                   ((1, 'public_family', 'unexecuted_phases'), ['T2-round-trip']),
+                   ((1, 'public_family', 'completed_phases'), ['resource-setup', 'C4-config', 'C6-binding']),
+                   ((1, 'public_family', 'completed_phases'), list(reversed(gate.PUBLIC_PHASES['adr']))),
+                   ((1, 'public_family', 'completed_phases'), gate.PUBLIC_PHASES['adr'] + ['T2-decision-derive']),
+                   ((1, 'public_family', 'current'), 'T2-round-trip')]
+        for path, value in changes:
+            rows = self.synthetic_rows()
+            parent = rows
+            for key in path[:-1]: parent = parent[key]
+            parent[path[-1]] = value
+            with self.subTest(path=path, value=value), self.assertRaises(gate.GateError):
+                self.result(rows)
+        for subject in ('HEAD', 'b' * 40, '0' * 40):
+            with self.assertRaises(gate.GateError): self.result(self.synthetic_rows(), subject=subject)
+        with self.assertRaises(gate.GateError):
+            gate.command_result('public:adr', gate.Outcome('passed', 0, self.stdout(self.synthetic_rows()), self.stderr))
+
+    def test_missing_duplicate_malformed_or_reordered_observations_fail(self):
+        original = self.synthetic_rows()
+        outputs = [b'', b'not JSON\n', b'{"status":"passed"}\n', self.stdout(original[:2]),
+                   self.stdout(original + [original[1]]), self.stdout([original[0], original[2], original[1]]),
+                   self.stdout(original) + b'\xff', self.stdout(original).replace(b'"exit": 0', b'"exit": 0, "exit": 0', 1)]
+        for output in outputs:
+            with self.subTest(output=output[:50]), self.assertRaises(gate.GateError):
+                gate.command_result('public:adr', gate.Outcome('passed', 0, output, self.stderr), subject=self.subject)
+        for index, keys in ((0, ['runtime']), (1, ['public_family']), (2, list(original[2]))):
+            for key in keys:
+                rows = deepcopy(original)
+                del rows[index][key]
+                with self.assertRaises(gate.GateError): self.result(rows)
+        for key in ('family', 'outcome', 'exit', 'source_commit', 'fixture_kind', 'completed_phases',
+                    'failed_phase', 'blocked_before_write', 'unexecuted_phases', 'public_launches', 'calls', 'fixture_accounting'):
+            rows = deepcopy(original)
+            del rows[1]['public_family'][key]
+            with self.subTest(missing_family_key=key), self.assertRaises(gate.GateError): self.result(rows)
+
+    def test_nonzero_partial_skip_and_error_stderr_never_pass(self):
+        output = self.stdout(self.synthetic_rows())
+        for status, code in [('failed', 1), ('failed', 2), ('failed', 7), ('passed', False),
+                             ('skipped', 0), ('timed-out', None), ('unavailable', None), ('output-limit', 0)]:
+            with self.assertRaises(gate.GateError):
+                gate.command_result('public:adr', gate.Outcome(status, code, output, self.stderr), subject=self.subject)
+        for detail in (b'', self.stderr.replace(b'Ran 1 test', b'Ran 0 tests'),
+                       self.stderr.replace(b'OK\n', b'OK (skipped=1)\n'),
+                       self.stderr.replace(b'OK\n', b'FAILED (errors=1)\n'), self.stderr * 2,
+                       self.stderr + b'ERROR: contradictory error\n',
+                       self.stderr + b'{"outcome":"cleanup-failed"}\n',
+                       self.stderr + b'Traceback (most recent call last):\n', self.stderr + b'\xff'):
+            with self.assertRaises(gate.GateError): self.result(self.synthetic_rows(), stderr=detail)
+
+    def test_cleanup_and_accounting_must_be_successful_and_consistent(self):
+        values = {'residue': 'synthetic-retained-run', 'next_action': 'inspect residue', 'observed_files': False,
+                  'retained_files': 99, 'retained_bytes': 1001, 'process_total': 0,
+                  'processes': {'git': 4, 'python': True, 'other': 0}, 'wall_seconds': float('inf')}
+        for key, value in values.items():
+            rows = self.synthetic_rows()
+            rows[1]['public_family']['fixture_accounting'][key] = value
+            with self.subTest(key=key), self.assertRaises(gate.GateError): self.result(rows)
+        for key in set(self.synthetic_rows()[1]['public_family']['fixture_accounting']) - {'authored_bytes'}:
+            rows = self.synthetic_rows()
+            del rows[1]['public_family']['fixture_accounting'][key]
+            with self.assertRaises(gate.GateError): self.result(rows)
+        for key, value in {'public_launches': 0, 'calls': None}.items():
+            rows = self.synthetic_rows()
+            rows[1]['public_family'][key] = value
+            with self.assertRaises(gate.GateError): self.result(rows)
+
+    def test_call_counts_and_required_observation_shape(self):
+        for key, value in {'exit': False, 'outcome': None, 'operation': '', 'phase': 'unknown'}.items():
+            rows = self.synthetic_rows()
+            rows[1]['public_family']['calls'][0][key] = value
+            with self.subTest(key=key), self.assertRaises(gate.GateError): self.result(rows)
+        for key in ('operation', 'phase', 'exit', 'outcome'):
+            rows = self.synthetic_rows()
+            del rows[1]['public_family']['calls'][0][key]
+            with self.assertRaises(gate.GateError): self.result(rows)
+        rows = self.synthetic_rows()
+        rows[1]['public_family']['calls'].pop()
+        with self.assertRaises(gate.GateError): self.result(rows)  # Reported launch count no longer matches.
+        rows = self.synthetic_rows()
+        rows[1]['public_family']['calls'] = []
+        self.balance(rows[1]['public_family'])
+        with self.assertRaises(gate.GateError): self.result(rows)
+
+    def test_negative_child_exits_are_owned_by_the_actual_runner(self):
+        # The caller must not rebuild the public operation/response protocol matrix.
+        for family, outcome, code in [('adr', 'conflict', 1), ('problem-frame-author', 'unsupported-version', 2),
+                                       ('problem-frame-author', 'conflict', 3), ('problem-frame-author', 'unavailable', 4)]:
+            rows = self.synthetic_rows(family)
+            entry = rows[1]['public_family']
+            negative = {**entry['calls'][-1], 'expected': [outcome, 'invalid-input'], 'outcome': outcome, 'exit': code}
+            entry['calls'].append(negative)
+            self.balance(entry)
+            self.result(rows, family=family)
+        self.result(self.synthetic_rows('lesson'), family='lesson')
+
+    def test_pinned_entry_and_head_are_forwarded_without_product_launch(self):
+        path = '.github/tests/test_source_gates.py'
+        tree = SyntheticTree({path: (ROOT / path).read_bytes()})
+        tree.revision = self.subject
+        calls = []
+        def synthetic_launch(argv, root, **options):
+            calls.append((argv, options))
+            return gate.Outcome('passed', 0, self.stdout(self.synthetic_rows()), self.stderr)
+        # Only route the existence check to our own file; no upstream file is copied/imported.
+        with patch.object(gate, 'command_for', return_value=[sys.executable, '-I', '-B', path]):
+            result = gate.run_selected('public:adr', ROOT, tree, launch=synthetic_launch)
+            self.assertEqual(result['source_commit'], self.subject)
+            self.assertTrue(calls[0][1]['separate_streams'])
+            tree.revision = 'b' * 40
+            with self.assertRaises(gate.GateError): gate.run_selected('public:adr', ROOT, tree, launch=synthetic_launch)
+        launches = []
+        with self.assertRaises(gate.GateError):
+            gate.run_selected('public:adr', ROOT, SyntheticTree({}), launch=lambda *a, **k: launches.append(a))
+        self.assertEqual(launches, [])
+
+    def test_actual_capture_separates_streams_under_one_total_bound(self):
+        result = gate.bounded_run([sys.executable, '-I', '-B', '-c',
+            'import sys; print("synthetic stdout"); print("synthetic stderr", file=sys.stderr)'], ROOT, separate_streams=True)
+        self.assertEqual(result.status, 'passed')
+        self.assertEqual(result.output.strip(), b'synthetic stdout')
+        self.assertEqual(result.stderr.strip(), b'synthetic stderr')
+        result = gate.bounded_run([sys.executable, '-I', '-B', '-c',
+            'import sys; print("x"*20000); print("y"*20000, file=sys.stderr)'], ROOT, limit=1024, separate_streams=True)
+        self.assertEqual(result.status, 'output-limit')
+        self.assertEqual(len(result.output) + len(result.stderr), 1024)
 
 
 class EventTests(unittest.TestCase):

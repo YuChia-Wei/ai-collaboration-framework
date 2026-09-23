@@ -40,11 +40,25 @@ fallback, weaken guards, diagnose a driver defect or establish native acceptance
 
 ## Integration and next owners
 
-The original Issue 369 conversation is assigned the actual public caller
-binding from this checkpoint. It may change its gate/result parser, focused
-synthetic tests and own records only. It must reject partial/skipped/mismatched
-or absent execution and cleanup evidence. No public writer rerun or policy
-write is assigned. Native dispatch remains unavailable.
+The original Issue 369 conversation returned the actual public caller binding
+at `289852bd6661be31acfcfb16bef3f2ebd50629f2`, based on its preserved
+`6c5f4a298bc3ffdbea47348ae6ef8c9f4584b41d`. Its eight changed files comprise
+the gate/result parser, focused tests and six own records; its F: worktree was
+clean. [The binding handoff](../../2026-09-23-source-gates-implementation/reports/public-binding-handoff.md)
+retains the real CLI, separate bounded streams and exact subject/family/phases,
+zero-skip and cleanup checks. Product, public tests, policies, root entries,
+PR template and workflow definitions are unchanged. Native dispatch remains
+unavailable.
+
+The final focused gate run passed 37/37, zero skips, 1.541 seconds including
+harness time (unittest 1.540 seconds). Complete public success responses are
+synthetic. Separate tiny child programs exercised stream capture, and retained
+ADR partial / PR failed outputs were rejected without rerunning public tools.
+The earlier 37-test version is retained in the handoff; its redundant operation
+checks were removed before the final run. No performance claim or complete
+public acceptance follows. Coordinator inspected the fixed delta and verified
+excluded paths; an initial report lookup used a nonexistent top-level path and
+was corrected to the actual issue-owned handoff path without executing tests.
 
 Issues 368, 369 and 373 remain open. Automatic approval review stopped the
 original four-file path/metadata repair and prospective policy/root/template
@@ -52,6 +66,15 @@ batch for insufficient trusted write authorization. Required direct replies in
 their original tasks are still pending; the caller binding is a separately
 permitted responsibility, not a replacement writer for those stopped actions.
 Volume-guard repair across skill tools is outside the four-file repair scope.
+
+| Original task | Current next action |
+| --- | --- |
+| Issue 368 / `01a0cd11-1dc9-7842-abba-65b8fac0edb8` | Direct owner reply for GitSource/assembly path admission and the two PR/backlog metadata resources; preserve path/link protections and data semantics. |
+| Issue 369 / `01a0cd11-7b98-7090-ae53-1bf7bf46a651` | Public caller binding received; direct owner reply still required for the stopped prospective policy/root/template batch, followed later by actual native binding. |
+| Issue 373 / `01a0cd49-7805-7202-9176-e8f7b4cf4285` | Retain its local source and failed fixtures; no writer retries before source/environment disposition. |
+
+The caller must consume the runner's bounded outcome contract, not duplicate
+all skill request/response validators or create another receipt framework.
 
 After the blocked source repairs and a supported F: path/volume disposition,
 select only affected fresh public runs. Native N1-N5, first Lesson pilot, root
