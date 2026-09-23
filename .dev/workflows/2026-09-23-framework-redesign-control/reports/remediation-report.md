@@ -50,3 +50,7 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P3 work-management source stage
 
 #335 returned source `5e632ed50242f13b44bec1884de24c496f5a93ea` and bounded correction `5409641f19244bc44467af7fba3fc496d7f5195c`. [Coordinator inspection](p3-work-management-integration.md) retains CR335-001, its source correction and P7 verification ownership. This completes the bounded source work locally; online integration is next. #337 mapping still awaits both package sets and #334 remains active. No product tests, runtime calls or CI were run.
+
+## P4 design dispatch preparation
+
+#335 is now merged in PR #340 with Issue CLOSED/COMPLETED and Project Done read back. #341 is open for the portable workflow/retention contract stage; [selected scope](p4-orchestration-scope.md) distinguishes it from still-open legacy #316. P4 design can proceed while #334 source is active; implementation remains sequenced after contract reconciliation. #337 exact mapping still awaits the actual packages.

@@ -1,0 +1,77 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ISSUE-341",
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-23T09:00:26+08:00",
+  "updated_at": "2026-09-23T09:00:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-20260923-00-6oq"
+  ],
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/341",
+  "phase": "P4",
+  "scope": {
+    "target": "Portable organizational workflow, resumable records and retention previews",
+    "files": [
+      ".dev/design/framework-next/workflow-orchestration/",
+      ".dev/workflows/2026-09-23-workflow-orchestration/",
+      "src/skills/software-development-orchestrator/ (after contract reconciliation only)"
+    ],
+    "constraints": [
+      "U001",
+      "one independent Astra Ultra task; no sub-agents or child-created tasks",
+      "early local contract checkpoint before product implementation",
+      "coordinator owns common contracts, indexes and first push"
+    ],
+    "non_goals": [
+      "product execution/tests/CI",
+      "first-stage source implementation",
+      "shared manifest/profile edits",
+      "root cutover/historical migration",
+      "provider actions/release/credentials"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned F: worktree and read Issue/U001/selected contracts",
+      "Create proportional issue workflow",
+      "Return bounded local contract checkpoint with examples and exact interface/member proposal",
+      "Resume source implementation in same task after coordinator reconciliation"
+    ],
+    "validation": [
+      "Direct content/syntax/reference/Git and exact planned commit-message format only"
+    ],
+    "last_completed_step": "Issue created and Project assigned; design dispatch preparation",
+    "next_action": "Create independent Astra Ultra conversation in assigned F: worktree"
+  },
+  "results": {
+    "summary": "Design stage selected; no implementation delivered",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Workflow and cleanup semantics need contract reconciliation and later P7 verification",
+    "follow_up_needed": true
+  },
+  "dispatch": {
+    "thread_id": null,
+    "worktree": "F:/framework-next/341",
+    "branch": "codex/2026-09-23-workflow-orchestration",
+    "workflow_id": "2026-09-23-workflow-orchestration",
+    "model_verified": "pending dispatch",
+    "starting_commit_source": "coordinator bootstrap checkpoint",
+    "worktree_verified": "pending creation"
+  },
+  "delivery": {
+    "contract_status": "pending",
+    "implementation_status": "not started",
+    "verification_state": "deferred-by-owner"
+  },
+  "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PBzM"
+}

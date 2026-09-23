@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T02:14:01+08:00",
-  "updated_at": "2026-09-23T08:55:01+08:00",
+  "updated_at": "2026-09-23T09:00:26+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -53,10 +53,10 @@
       "readability/JSON/YAML/source/reference/Git and planned commit-message format only"
     ],
     "last_completed_step": "Received clean corrected source; inspected CR335-001 affected diff and locally integrated preserved checkpoints",
-    "next_action": "Online PR integration and Issue/Project read-back; final mapping owned by #337 and runtime verification by P7"
+    "next_action": "#337 actual mapping; program #322/P7 verification"
   },
   "results": {
-    "summary": "Bounded PR/local-backlog source implementation and CR335-001 correction complete; online integration pending.",
+    "summary": "Bounded source implementation and CR335-001 correction integrated through PR #340; Issue closed and Project Done.",
     "files_changed": [
       "src/skills/pr/",
       "src/skills/local-backlog/",
@@ -87,7 +87,11 @@
     "source_checkpoint": "5e632ed50242f13b44bec1884de24c496f5a93ea",
     "worktree_clean_observed": true,
     "review_finding": "CR335-001 source-corrected; behavioral verification deferred to P7",
-    "provider_integration": "locally integrated; online PR pending",
-    "corrective_checkpoint": "5409641f19244bc44467af7fba3fc496d7f5195c"
+    "provider_integration": "merged online; Issue/Project read back complete",
+    "corrective_checkpoint": "5409641f19244bc44467af7fba3fc496d7f5195c",
+    "pull_request": 340,
+    "merge_commit": "dcab46c9d3697e22baf8c31374ea620b8d280316",
+    "issue_state": "CLOSED",
+    "project_status": "Done"
   }
 }
