@@ -94,10 +94,10 @@
     }
   },
   "continuation_checkpoint": {
-    "observed_at": "2026-09-23T22:49:58+08:00",
+    "observed_at": "2026-09-23T23:00:58+08:00",
     "coordinator_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
-    "branch": "codex/2026-09-23-rc1-preparation",
-    "integrated_main": "c1fb1c1fb07a6d246e3bcedd3cd851918f66b306",
+    "branch": "codex/2026-09-23-native-pilot-continuation",
+    "integrated_main": "9e1145743202e41f7f806304e7ed97e537ecc31b",
     "repair_issue": 378,
     "repair_pr": 380,
     "repair_issue_state": "CLOSED/COMPLETED",
@@ -107,7 +107,6 @@
       368,
       369,
       373,
-      381,
       382,
       383
     ],
@@ -181,7 +180,7 @@
       "tested_source": "3755b217421a4f1238f740a09de7e034ccf56038",
       "review": "no actionable finding in bounded fixed-source coordinator review",
       "actual_build_read": "passed; full 18-component rc.1; publication/installation not performed",
-      "integration": "local merge in containing commit; online pending"
+      "integration": "PR384 merged 9e114574; issue CLOSED/COMPLETED; Project Done"
     },
     "workflow_fixture_return": {
       "issue": 373,
@@ -195,6 +194,39 @@
       "result": "not-passed; protected path plan failure; dependent cases unexecuted",
       "repair_issue": 383,
       "driver_review_integration": "bounded fixed-source review no finding; local merge in containing commit; native acceptance incomplete"
+    },
+    "protected_path_return": {
+      "issue": 383,
+      "delivery": "8f49e6b20e81eb3ff6dbf8afbdf5675dd71e0f66",
+      "tested_source": "3c0832b89d73cfedfc625462d167a3811fdf7931",
+      "review": "bounded fixed-source coordinator review no actionable finding",
+      "result": "nine focused simulations and one actual protected public plan passed",
+      "next": "original #382 selected native execution"
+    },
+    "pr_family_return": {
+      "issue": 373,
+      "delivery": "085fb3758d0550959d58bd20e91a41ac5903b096",
+      "result": "one PR family passed on 67788471; records-only integration pending"
+    },
+    "target_preparation": {
+      "issue": "YuChia-Wei/dotnet-distributed-architecture-lab#15",
+      "worktree": "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot",
+      "branch": "codex/2026-09-23-framework-rc1-pilot",
+      "baseline": "cb122285af09e46b24102f22a0ad9d713219c1f2",
+      "state": "own planning records only; no installation or activation"
     }
+  },
+  "native_prerequisite_completion": {
+    "observed_at": "2026-09-23T23:15:08+08:00",
+    "issue": 382,
+    "final_head": "963869412c1647fad877e0118646535393eb0a56",
+    "passing_sources": [
+      "cb41982dde3af9d746624b6939f26fd2883623af",
+      "ef4ffd9f286f49b6055d9a321abbd134b263ced8"
+    ],
+    "single_six_case_pass": false,
+    "review": "root no actionable finding; 8 raw evidence bindings and 10 engine hashes verified",
+    "target_readiness": "not-assessed",
+    "next_action": "online integrate source; complete target Issue 15 under target gate decision"
   }
 }

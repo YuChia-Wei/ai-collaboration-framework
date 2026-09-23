@@ -1,0 +1,79 @@
+{
+  "schema": "issue-382-native-completion-v1",
+  "observed_at": "2026-09-23T23:09:39+08:00",
+  "status": "selected-cases-observed-across-authorized-continuation",
+  "single_six_case_passing_run": false,
+  "prefix_run_exit": 1,
+  "tail_run_exit": 0,
+  "sources": {
+    "development_candidate_and_first_four_cases": "cb41982dde3af9d746624b6939f26fd2883623af",
+    "engine_and_driver_tail": "ef4ffd9f286f49b6055d9a321abbd134b263ced8"
+  },
+  "raw_engine_file_hashes_equal": true,
+  "candidate_identity": "development:cb41982dde3af9d746624b6939f26fd2883623af:e06aaf8c47df6a9198987ac4e78f8b7da6f22e04249ccaa4f2e3514e0efc1247",
+  "cases": [
+    {
+      "id": "entry-pin",
+      "outcome": "passed",
+      "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af",
+      "evidence": "resume-cb41982d/result.json"
+    },
+    {
+      "id": "fresh-apply",
+      "outcome": "passed",
+      "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af",
+      "evidence": "resume-cb41982d/result.json"
+    },
+    {
+      "id": "same-content",
+      "outcome": "passed",
+      "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af",
+      "evidence": "resume-cb41982d/result.json"
+    },
+    {
+      "id": "drift-collision",
+      "outcome": "passed",
+      "source_commit": "cb41982dde3af9d746624b6939f26fd2883623af",
+      "evidence": "resume-cb41982d/result.json"
+    },
+    {
+      "id": "writer-exclusion",
+      "outcome": "passed",
+      "source_commit": "ef4ffd9f286f49b6055d9a321abbd134b263ced8",
+      "evidence": "tail-ef4ffd9f/result.json"
+    },
+    {
+      "id": "interruption-recovery",
+      "outcome": "passed",
+      "source_commit": "ef4ffd9f286f49b6055d9a321abbd134b263ced8",
+      "evidence": "tail-ef4ffd9f/result.json"
+    }
+  ],
+  "prior_failures_retained": [
+    "63bb8cce: original product protected-input plan failure",
+    "cb3d1c6c: driver tried to read held empty guard; no competing apply or interruption then"
+  ],
+  "native_interruption_attempts": 1,
+  "interruption_location": "real marker published, no managed members or lock present in observed interrupted state",
+  "recovery": "same full EnginePin finish; 10 additions, exact managed bytes, lock, marker removal, protected and unknown preservation, 14 durable objects verified",
+  "project_readiness": "not-assessed",
+  "failure_domain": "process-termination with OS/storage available",
+  "counts": {
+    "all_attempts_public_helper_launches": 22,
+    "all_attempts_driver_git_launches": 17,
+    "maximum_simultaneous_owned_children": 2,
+    "retained_operation_roots_all_attempts": 2,
+    "retained_files_including_final_inventory": 187,
+    "retained_logical_bytes_including_final_inventory": 1958102,
+    "observed_file_names_including_removed_marker": 188,
+    "nested_product_launches": "unavailable",
+    "unobserved_transient_creation_total": "unavailable"
+  },
+  "cleanup_owner": "program 322 coordinator; all three owned child sets and recovery operations retained",
+  "residual_decisions": [
+    "Coordinator integration/review and separate complete target pilot governance",
+    "Versioned-candidate/stable upgrade adoption and any changed-subject follow-up",
+    "CI, publication and unselected U001/P7 gates remain deferred-by-owner"
+  ],
+  "tail_pin_file_raw_sha256": "c2b8113b0eab3ce3da93904b65f5d660e3732adb807f1cc64da89a5de7f3c9de"
+}

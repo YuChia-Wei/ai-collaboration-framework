@@ -387,3 +387,71 @@ and passed. Final refusals cover 17 explicitly synthetic cases. Old PR residue
 remained unchanged. No complete suite or public family execution is implied.
 The original #373 task may now fast-forward to this integration and execute
 only PR once; all seven previous family observations keep their original subjects.
+
+
+## Online candidate integration and protected-path repair
+
+PR #384 merged at 9e1145743202e41f7f806304e7ed97e537ecc31b after remote
+head 67788471 read-back and MERGEABLE/CLEAN admission. Live Issue #381 is
+CLOSED/COMPLETED and Project Done; #382/#383 remain OPEN/In progress.
+Actions enabled=false and all nine workflows disabled_manually were read back.
+No hosted checks ran. The coordinator continues from that main on
+codex/2026-09-23-native-pilot-continuation; the complete candidate and engine
+worktree are retained for the pilot rather than cleaned while still needed.
+
+#383 clean delivery 8f49e6b20e81eb3ff6dbf8afbdf5675dd71e0f66 was reviewed
+against baseline cc318919 and actual source 3c0832b89d73cfedfc625462d167a3811fdf7931.
+Only installation_plan._protected_path and extraction of the unchanged Windows
+query into installation_state._windows_long_path alter product code. Fallback
+is restricted to Windows ERROR_INVALID_FUNCTION, with every ancestor direct,
+nonzero stable identities, the existing drive/long-name checks and exact
+relative spelling/containment. Original byte/absence/hardlink admission remains.
+Coordinator found no actionable defect in this bounded source/test review;
+eight evidence hashes and ten engine raw hashes match, with no product/test
+drift in the record-only delivery. Nine simulated regressions passed and the
+one actual protected F: public plan returned planned; five bindings unchanged,
+37 files / 329045 bytes / five directly observed children. No apply/recover
+acceptance is supplied by that plan. Original #382 now owns one fresh selected
+native run after this integration, preserving every prior failed root.
+
+#373 returned records-only 085fb3758d0550959d58bd20e91a41ac5903b096. Its
+only fresh PR-family run passed at 67788471, 23 public calls / 36 measured
+processes, 12.7 seconds, cleanup succeeded. Two exact stream hashes and no
+product/test/tool delta were independently checked. Each earlier family result
+retains its original subject; no invented common-head all-family execution.
+
+Target Issue YuChia-Wei/dotnet-distributed-architecture-lab#15 now binds the
+owner's full Codex-first pilot. A separate persistent target worktree at
+C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot began clean at cb122285af09e46b24102f22a0ad9d713219c1f2
+on codex/2026-09-23-framework-rc1-pilot. Only its own plan/task and read-only
+baseline inventory have been created: 194 .NET assets, 14 rule identities and
+four customization IDs. No current authority/core/lock/runtime changes or
+installation occurred. Target policy applies independently; source U001 is not
+exported. A bounded read-only target gate inventory is supporting analysis, not
+an independent adoption audit. Original main and inaccessible ignored fixtures
+remain unchanged.
+
+
+## Native prerequisites reconciled and target gate adopted
+
+Issue #382 returned clean 963869412c1647fad877e0118646535393eb0a56. Root reviewed
+71-line driver delta ef4ffd9f (empty locked guard hashing and hard-bound tail),
+all eight tracked/durable evidence bindings and ten raw engine hashes across
+cb41982d, ef4ffd9f and final source. No actionable finding. First four cases pass
+on cb41982d; two tail cases pass on ef4ffd9f after the driver-only repair. Original
+full-selection exit 1 remains; this is not one six-case passing execution.
+Actual native lock refusal/release and one genuine marker interruption followed
+by same-pin finish are observed. Ten managed members and fourteen durable objects
+match. All attempts retain 22 public/helper launches, peak two, two operations,
+187 files / 1,958,102 logical bytes. Prior protected-path and driver failures remain.
+No target readiness, stable upgrade, storage-loss, broad P7 or hosted pass inferred.
+The bounded #382 acceptance is satisfied; #383 was reviewed with nine focused
+regressions and one actual protected-path public plan. Conditional closure waits
+for online integration. U001 unselected gates remain deferred-by-owner.
+
+The target owner directly adopted call_9Yd5ZfJdp1eBXVZf4Vp09U1v: a current-layout
+gate preserving 14 rules, four customizations, exact hashes, Git attribution and
+independent review; old v0.18 checks become explicit historical/legacy support.
+Target Issue 15/worktree records this decision. Only preparation exists so far:
+config/stores, exact-byte Git attributes and durable before-state. No managed
+installation or active root route yet. Source U001 does not govern the target.

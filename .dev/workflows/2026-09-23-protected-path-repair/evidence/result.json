@@ -1,0 +1,20 @@
+{
+  "candidate_identity": "development:3c0832b89d73cfedfc625462d167a3811fdf7931:2d9f67acfbeb908f6deb34026a5208666cc9ae43c4d323824ecada4bdc1e64fb",
+  "evidence_kind": "actual F: public plan; no apply/recover",
+  "outcome": "passed",
+  "plan_sha256": "ba243ff7099f433caba2cdf9458741a9a0751f5f4ddc4dcb58e6343351c42bf7",
+  "prerequisites": {
+    "candidate-provenance": "satisfied",
+    "durability-declaration": "satisfied",
+    "exclusive-operation-allocation": "pending",
+    "fresh-input-observation": "pending",
+    "lock-publication": "satisfied",
+    "maintenance-quiescence": "pending",
+    "mode-materialization": "not-applicable",
+    "native-writer-backend": "satisfied",
+    "writer-engine-closure": "satisfied",
+    "writer-guard": "pending"
+  },
+  "protected_inputs_unchanged": true,
+  "source_commit": "3c0832b89d73cfedfc625462d167a3811fdf7931"
+}

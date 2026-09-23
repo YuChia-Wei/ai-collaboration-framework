@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-23T16:12:34+08:00",
-  "updated_at": "2026-09-23T22:40:42+08:00",
+  "updated_at": "2026-09-23T22:56:41+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "provenance_limit": "Declared coordinator dispatch; not independent runtime attestation.",
@@ -19,13 +19,13 @@
   "branch": "codex/2026-09-23-public-skill-checks",
   "output_parent": "F:/framework-next/p7-runs/373-public",
   "results": {
-    "implementation": "Minimal WorkflowTests deferred result fixture correction committed; product/helper/runner/other test classes unchanged.",
-    "verification": "Selected workflow family passed once on clean 8d09ec6c; five earlier passes retain c1fb1c1f attribution; PR cleanup still unresolved here.",
-    "report": "deferred-fixture-repair-report.md",
-    "observations": "evidence/deferred-fixture-repair-result.json",
+    "implementation": "Records only after coordinator-integrated cleanup repair; no product/helper/runner/test changes.",
+    "verification": "One selected PR family passed with cleanup on clean 67788471; other six family observations retain their earlier subjects.",
+    "report": "pr-cleanup-rerun-report.md",
+    "observations": "evidence/pr-cleanup-rerun-result.json",
     "follow_up_needed": true
   },
-  "next_action": "Coordinator integrates the clean fixture repair and observed workflow pass, then reconciles the separately assigned helper-owner PR cleanup result. No other family retry or rc.1/native/adoption/CI acceptance is inferred.",
+  "next_action": "Coordinator integrates this PR pass and reconciles separately bound family observations for the owner-selected continuation. No full suite, native, pilot/adoption or CI acceptance is inferred.",
   "deferred": {
     "disposition": "deferred-by-owner",
     "authority": "U001",
@@ -62,5 +62,24 @@
     "public_launches": 37,
     "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "execution_count": 1
+  },
+  "prior_fixture_repair_results": {
+    "implementation": "Minimal WorkflowTests deferred result fixture correction committed; product/helper/runner/other test classes unchanged.",
+    "verification": "Selected workflow family passed once on clean 8d09ec6c; five earlier passes retain c1fb1c1f attribution; PR cleanup still unresolved here.",
+    "report": "deferred-fixture-repair-report.md",
+    "observations": "evidence/deferred-fixture-repair-result.json",
+    "follow_up_needed": true
+  },
+  "pr_cleanup_rerun": {
+    "previous_handoff_commit": "fd19f252d1f6668bb6315ee67ac9528326fa2923",
+    "source_commit": "67788471b0556b660e4f8b30cf1449c61127ba97",
+    "family": "pr",
+    "execution_count": 1,
+    "runner_exit": 0,
+    "public_launches": 23,
+    "driver_git_launches": 13,
+    "cleanup": "succeeded",
+    "old_failure_roots": "preserved with original transcript hashes",
+    "coordinator_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c"
   }
 }

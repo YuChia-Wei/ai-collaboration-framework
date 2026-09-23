@@ -1,0 +1,37 @@
+{
+  "result.json": {
+    "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\a0292789\\result.json",
+    "durable_raw_sha256": "4a9a1c8b0f4091e63207030c7271fddab3702f30a716453c23f972ce7c2c63b7",
+    "durable_raw_bytes": 10815,
+    "tracked_sha256": "4a9a1c8b0f4091e63207030c7271fddab3702f30a716453c23f972ce7c2c63b7",
+    "tracked_bytes": 10815
+  },
+  "calls.jsonl": {
+    "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\a0292789\\calls.jsonl",
+    "durable_raw_sha256": "d7ad4e589eb58c2f31c885906a0575d6f373cd48e5c1a1c236c123181b726135",
+    "durable_raw_bytes": 56503,
+    "tracked_sha256": "d7ad4e589eb58c2f31c885906a0575d6f373cd48e5c1a1c236c123181b726135",
+    "tracked_bytes": 56503
+  },
+  "engine-pin.json": {
+    "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\a0292789\\engine-pin.json",
+    "durable_raw_sha256": "c2b8113b0eab3ce3da93904b65f5d660e3732adb807f1cc64da89a5de7f3c9de",
+    "durable_raw_bytes": 1613,
+    "tracked_sha256": "c2b8113b0eab3ce3da93904b65f5d660e3732adb807f1cc64da89a5de7f3c9de",
+    "tracked_bytes": 1613
+  },
+  "interrupted-state.json": {
+    "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\a0292789\\interrupted-state.json",
+    "durable_raw_sha256": "81177b7cf886c9ba23429e837dcd5e19e0afc468516dc92c57015273f5f51f58",
+    "durable_raw_bytes": 1671,
+    "tracked_sha256": "81177b7cf886c9ba23429e837dcd5e19e0afc468516dc92c57015273f5f51f58",
+    "tracked_bytes": 1671
+  },
+  "final-readback.json": {
+    "original": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\p7\\n382\\observations\\a0292789\\final-readback.json",
+    "durable_raw_sha256": "74ed1710192436208d8c67d72f152296bb7010fdf4fbe8f7098af5bc8f24e50b",
+    "durable_raw_bytes": 59509,
+    "tracked_sha256": "74ed1710192436208d8c67d72f152296bb7010fdf4fbe8f7098af5bc8f24e50b",
+    "tracked_bytes": 59509
+  }
+}

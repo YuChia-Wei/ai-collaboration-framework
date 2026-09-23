@@ -65,7 +65,12 @@ def snapshot(root):
             else:
                 check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1, 'nonregular/hardlinked residue')
                 check(len(rows) < MAX_FILES and info.st_size <= MAX_BYTES, 'file observation cap')
-                rows[target.relative_to(root).as_posix()] = {'sha256': digest(target), 'size': info.st_size,
+                # The reserved empty guard can hold a native byte-range lock. Even an
+                # EOF read may conflict with that range on Windows. Its checked zero
+                # length establishes the empty digest without reading locked bytes.
+                empty_guard = target.parts[-3:] == ('.ai', 'local', 'installation.guard') and info.st_size == 0
+                observed_hash = sha256(b'').hexdigest() if empty_guard else digest(target)
+                rows[target.relative_to(root).as_posix()] = {'sha256': observed_hash, 'size': info.st_size,
                     'mtime_ns': info.st_mtime_ns, 'mode': stat.S_IMODE(info.st_mode)}
     return rows
 
@@ -381,6 +386,56 @@ class NativeRun:
         check(self.git('rev-parse', 'HEAD').decode().strip() == self.commit and
               not self.git('status', '--porcelain=v1', '--untracked-files=all').strip(), 'fixed source drift')
 
+    def resume_tail(self, previous_observations):
+        """Issue 382 only: continue the observed driver failure, never retry apply setup."""
+        previous = Path(previous_observations)
+        check(previous.parent == OBSERVATIONS and previous.name == 'cb3d1c6c', 'unselected continuation')
+        prior_raw = (previous / 'result.json').read_bytes()
+        prior = json.loads(prior_raw)
+        check(prior['source_commit'] == 'cb41982dde3af9d746624b6939f26fd2883623af'
+              and prior['interruption_attempts'] == 0, 'wrong previous source/attempt count')
+        check([(r['id'], r['outcome']) for r in prior['cases']] ==
+              [(name, 'passed') for name in CASES[:4]] + [('writer-exclusion', 'failed')], 'wrong prior case boundary')
+        check(prior['cases'][-1]['exception_type'] == 'PermissionError', 'different driver failure')
+        check(prior['engine_pin']['files'] == self.pin['files'], 'product engine bytes changed; continuation not admitted')
+        calls = [json.loads(line) for line in (previous / 'calls.jsonl').read_text().splitlines()]
+        helper = calls[-1]
+        check(helper['label'] == 'guard-helper' and json.loads(base64.b64decode(helper['stdout_base64']))['held'] is True,
+              'prior helper did not establish its native lock')
+        check(not any(r['label'] in {'apply-while-guard-held', 'apply-interruption-once'} for r in calls),
+              'dependent public attempt already occurred')
+        prior_root = NATIVE / previous.name
+        check(Path(prior['roots']['native']) == prior_root, 'previous native root mismatch')
+        self.project = prior_root / 'project'
+        self.candidate = prior['candidate']
+        candidate = Path(self.candidate['candidate_root'])
+        check(candidate.is_relative_to(prior_root / 'candidates'), 'candidate escaped prior exclusive root')
+        self.inventory = json.loads((candidate / 'metadata/files.json').read_bytes())
+        self.selection = json.loads((candidate / 'metadata/selection.json').read_bytes())
+        check(self.selection['source']['commit'] == prior['source_commit'], 'candidate source mismatch')
+        self.candidate_before = snapshot(candidate)
+        self.protected = next(row['request']['protected_inputs'] for row in calls if row['label'] == 'plan-fresh')
+        for row in self.protected:
+            check(digest(self.project / row['path']) == row['sha256'], 'prior protected bytes drifted')
+        self.result.update(interface='native-windows/382-tail-v1', selection=list(CASES[4:]),
+            command=[sys.executable, '-I', '-B', str(Path(__file__).absolute()), '--resume-tail', str(NATIVE), str(previous)],
+            candidate=self.candidate, reused_project=str(self.project),
+            continuation=dict(previous_observations=str(previous), previous_result_sha256=sha256(prior_raw).hexdigest(),
+                previous_source_commit=prior['source_commit'], engine_file_hashes_equal=True,
+                completed_cases_retained=list(CASES[:4]),
+                selection_reason='Empty-guard snapshot fix only; prior installed fixture reused read-only for no-op exclusion. Interruption uses new project and current engine pin.'))
+        before = snapshot(self.project)
+        plan = self.plan_request(self.project, self.protected)
+        planned = self.public('plan-resume-noop', plan, {'planned'})
+        self.noop_request = self.apply_request(plan, planned, 'fresh continuation no-op declaration')
+        self.case('writer-exclusion', self.exclusion)
+        check(snapshot(self.project) == before, 'continuation changed prior installed fixture')
+        self.case('interruption-recovery', self.interrupt_once)
+        check(snapshot(candidate) == self.candidate_before, 'reused candidate changed')
+        check(self.caches() == self.source_caches, 'source bytecode changed')
+        check(self.git('rev-parse', 'HEAD').decode().strip() == self.commit and
+              not self.git('status', '--porcelain=v1', '--untracked-files=all').strip(), 'fixed continuation source drift')
+
     def exclusion(self):
         guard = self.project / GUARD
         identity = (guard.stat().st_dev, guard.stat().st_ino, guard.stat().st_mtime_ns)
@@ -580,12 +635,16 @@ def hold_guard(path):
     return 0
 
 
-def main(native_root):
+def main(native_root, previous_observations=None):
     run = NativeRun()
     try:
         run.prepare(native_root)
-        run.selected()
-        passed = len(run.result['cases']) == len(CASES) and all(row['outcome'] == 'passed' for row in run.result['cases'])
+        if previous_observations is None:
+            run.selected()
+        else:
+            run.resume_tail(previous_observations)
+        selected = run.result['selection']
+        passed = len(run.result['cases']) == len(selected) and all(row['outcome'] == 'passed' for row in run.result['cases'])
         run.result.update(outcome='passed' if passed else 'not-passed', exit=0 if passed else 1)
     except Exception as exc:
         run.result.update(outcome='not-passed', exit=1 if run.result['cases'] else 2,
@@ -597,7 +656,7 @@ def main(native_root):
                 process.communicate(timeout=5)
                 run.result.update(outcome='not-passed', exit=2, cleanup_failure='owned child needed final termination')
         done = {row['id'] for row in run.result['cases']}
-        run.result['unexecuted_cases'] = [case for case in CASES if case not in done]
+        run.result['unexecuted_cases'] = [case for case in run.result['selection'] if case not in done]
         try:
             run.save()
         except Exception as exc:
@@ -609,6 +668,8 @@ def main(native_root):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) == 4 and sys.argv[1] == '--resume-tail':
+        raise SystemExit(main(NATIVE, sys.argv[3]) if Path(sys.argv[2]) == NATIVE else 2)
     if len(sys.argv) == 3 and sys.argv[1] == '--hold-guard':
         raise SystemExit(hold_guard(sys.argv[2]))
     raise SystemExit('Use run.py --layer native-windows --native-root with the exact Issue 382 binding.')
