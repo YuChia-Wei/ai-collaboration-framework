@@ -1,6 +1,13 @@
 # Bounded public skill execution
 
-Current checkpoint: [PR cleanup rerun](pr-cleanup-rerun-report.md),
+Current checkpoint: [common-source public pass](common-source-e71712b7-report.md),
+[seven actual results](evidence/reconcile-e71712b7-results.json), and [task](task.json).
+All seven families passed once each on unchanged clean
+`e71712b71791170c3f4946e131ce867f82dade8f`, with successful cleanup and original
+independent caps. The technical selection is complete; coordinator integration and
+Issue/Project closeout remain separate. README suggestion is handed to its owner.
+
+Previous checkpoint: [PR cleanup rerun](pr-cleanup-rerun-report.md),
 [actual result](evidence/pr-cleanup-rerun-result.json), and [task](task.json).
 The one selected PR family passed with cleanup on clean
 `67788471b0556b660e4f8b30cf1449c61127ba97`. No other family was rerun; earlier

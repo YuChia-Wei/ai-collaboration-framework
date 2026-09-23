@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-I",
+    "-B",
+    "F:\\framework-next\\373\\tests\\framework_next\\run.py",
+    "--layer",
+    "public",
+    "--family",
+    "problem-frame-author",
+    "--output-root",
+    "F:/framework-next/p7-runs/373-public"
+  ],
+  "cwd": "F:\\framework-next\\373",
+  "runner_exit": 0,
+  "test_file_sha256": {
+    "run.py": "7931ab23674dfa56dbfda02522e6bcb6dab7646d2a4f869a036ef8ed7f287ae0",
+    "support.py": "ff2c5ad9ebcde1e750fe9b4523a1f54bb528bfd8678b58f887d45afc01978f87",
+    "test_knowledge.py": "5b3545bfa07f0a0e80cbaf447c367d441fd6d7fa3cfcda397fbdb5924b739218",
+    "test_work.py": "022ce503e6c8a8344ab7716dadcc30f91e6878e3b85d80e568ea7ee709f36384",
+    "test_cbf.py": "7e471684c08c98decf575972e46449fb3866fd8dd5781e7947d5d9401bc56b0b"
+  },
+  "capture_driver_subprocesses": 1,
+  "stdout_sha256": "aa28ca548b9b292d5d138a78f921127719ba3ea7bcf9d185a049db19084aff86",
+  "stderr_sha256": "fcbb5194f704dfa82cf50cb7388f8019abb9948cc2b40e50850a9add83cc81ae"
+}
