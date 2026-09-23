@@ -1,10 +1,13 @@
 schema_version: '1.0'
-checkpoint_id: 2026-09-23-work-management-contract
+checkpoint_id: 2026-09-23-work-management-source
 created_at: '2026-09-23T08:18:00+08:00'
-updated_at: '2026-09-23T08:18:00+08:00'
-contract_exception: 'U001 proportional receiving checkpoint; native handoff validation deferred-by-owner'
+updated_at: '2026-09-23T00:51:28+00:00'
+contract_exception: 'U001 proportional source receiving checkpoint; native validation deferred-by-owner'
 repository:
   starting_commit: a34ecd3c9423b17b6bb745f598ef22fd7437dd24
+  preserved_design_checkpoint: 446a579d03a25edf1b6e64b5e5c13016740025c0
+  preserved_source_checkpoint: 5e632ed50242f13b44bec1884de24c496f5a93ea
+  source_continuation_base: 0d0556d4c60105a28eb39cfb06efab9b069728cb
   checkpoint_commit_source: containing-commit
   branch: codex/2026-09-23-work-management
   worktree: F:/framework-next/335
@@ -12,25 +15,31 @@ repository:
 workflow:
   id: 2026-09-23-work-management
   issue: 335
-  status: in_progress
-  completed_task: WM-001
-  active_task: WM-002
+  status: completed
+  completion_scope: Bounded local design, source implementation and CR335-001 correction only
+  provider_issue_observation: OPEN
+  completed_tasks: [WM-001, WM-002, CR335-001]
 delivery:
-  kind: local-contract-checkpoint
+  kind: local-source-correction-checkpoint
   changed_roots:
+  - src/skills/pr/
+  - src/skills/local-backlog/
   - .dev/design/framework-next/work-management/
   - .dev/workflows/2026-09-23-work-management/
-  proposal: .dev/design/framework-next/work-management/integration-proposal.json
-  decisions: [WM-C1, WM-C2, WM-C3]
+  inventory: .dev/design/framework-next/work-management/integration-proposal.json
+  selected_decisions: [WM-C1, WM-C2, WM-C3]
+  shared_decisions_unresolved: []
+  correction_finding: CR335-001
+  correction_base: 5e632ed50242f13b44bec1884de24c496f5a93ea
   first_push_owner: coordinator
 resume:
   hidden_context_required: false
   coordinator_task: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
-  last_completed_action: Design contract checkpoint; no product source implemented
-  exact_next_action: Reconcile config/member/provider concurrency choices, then resume this same task with explicit source ownership.
+  last_completed_action: Complete CR335-001 repository/worktree Git config source correction and direct static checks
+  exact_next_action: Coordinator inspects the CR335-001 diff against the preserved source checkpoint, integrates and assigns Issue 337 exact mappings; P7 selects execution verification.
 verification:
-  allowed: Direct UTF-8/JSON/YAML/reference/Git checks and exact message format validation only
+  actual: Direct syntax, AST without imports, source/resource/link/Git inspection and exact planned message format
   deferred_status: deferred-by-owner
   authority: U001
   owner: program 322 coordinator / P7
-  next_action: Select and execute final schema, behavior, package, provider and CI verification at P7
+  next_action: Select and execute final schema, behavior, provider, package and CI checks at P7

@@ -2,7 +2,7 @@
   "workflow_id": "2026-09-23-work-management",
   "owner_skill": "ai-context-governance",
   "created_at": "2026-09-23T08:18:00+08:00",
-  "updated_at": "2026-09-23T08:18:00+08:00",
+  "updated_at": "2026-09-23T00:40:02+00:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "template_version": "1.1.0",
   "model": "gpt-6-astra",
@@ -10,17 +10,20 @@
   "finding_ids": [],
   "contract_exception": "U001; no native schema/audit/handoff acceptance claimed",
   "task_id": "WM-002",
-  "status": "in_progress",
+  "status": "completed",
   "scope": {
     "target": "Coordinator reconciliation and subsequent implemented source",
     "files": [
-      "src/skills/pr/** (proposed; not yet granted)",
-      "src/skills/local-backlog/** (proposed; not yet granted)"
+      "src/skills/pr/**",
+      "src/skills/local-backlog/**",
+      ".dev/design/framework-next/work-management/**",
+      ".dev/workflows/2026-09-23-work-management/**"
     ],
     "constraints": [
-      "Source writes require coordinator's explicit ownership handoff",
-      "Shared files stay coordinator-owned",
-      "Continue this same task"
+      "Source ownership explicitly granted by coordinator after shared commit 0d0556d4",
+      "Shared files and other package owners preserved",
+      "Same task, no sub-agents or new tasks",
+      "U001 static checks only"
     ],
     "non_goals": [
       "First push",
@@ -39,16 +42,21 @@
     "validation": [
       "U001 permitted static checks only during P0-P6"
     ],
-    "last_completed_step": "Contract proposal supplied; product implementation has not started",
-    "next_action": "Coordinator reconciles WM-C1/C2/C3 and resumes this task with explicit source ownership"
+    "last_completed_step": "Implemented both complete standalone packages and package-owned GitHub adapter; static source/readability inspection complete.",
+    "next_action": "Return containing local commit to coordinator for #337 mapping/integration; P7 owns execution verification."
   },
   "results": {
-    "summary": "Implementation pending; active state records continuation and coordinator reconciliation, not source execution.",
-    "files_changed": [],
+    "summary": "Bounded local source implementation completed: 10 PR members, 8 local-backlog members, config/metadata v2, explicit lifecycle and GitHub expected-state operations. No runtime acceptance claimed.",
+    "files_changed": [
+      "src/skills/pr/**",
+      "src/skills/local-backlog/**",
+      ".dev/design/framework-next/work-management/**",
+      ".dev/workflows/2026-09-23-work-management/**"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "No implemented PR/backlog tools exist from this task yet.",
+    "finding_status": "addressed",
+    "residual_risk": "All product/schema/provider/CI execution remains deferred-by-owner to program #322 coordinator / P7. Provider operations have no server CAS guarantee.",
     "follow_up_needed": true,
-    "follow_up_owner": "program #322 coordinator / P7"
+    "follow_up_owner": "Coordinator integration / #337 concrete manifest mapping / P7 verification"
   }
 }

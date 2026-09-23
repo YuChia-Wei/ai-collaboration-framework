@@ -46,3 +46,7 @@ Both local design checkpoints are received and jointly reconciled; see [decision
 ## P3 loader source stage
 
 #337 returned metadata-v2 loader support at `13a08f3c886513cead3bfea080224f3323131977`. [Coordinator inspection](p3-loader-integration.md) records the bounded review and remaining package mapping dependency. Issue/workflow remain in_progress; no runtime or schema verification was performed.
+
+## P3 work-management source stage
+
+#335 returned source `5e632ed50242f13b44bec1884de24c496f5a93ea` and bounded correction `5409641f19244bc44467af7fba3fc496d7f5195c`. [Coordinator inspection](p3-work-management-integration.md) retains CR335-001, its source correction and P7 verification ownership. This completes the bounded source work locally; online integration is next. #337 mapping still awaits both package sets and #334 remains active. No product tests, runtime calls or CI were run.
