@@ -6,14 +6,14 @@
   "program_issue": 322,
   "hidden_context_required": false,
   "checkpoint_commit_source": "containing-commit",
-  "observed_source_commit": "3395ee005f2d41e1a1c03d553a086a4c29fb0b9f",
+  "observed_source_commit": "4b80791c696ffad6a0b1bda30ee7bda233db21c0",
   "predecessor_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
   "successor_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
   "successor_binding": "Actual create_thread result and successor acceptance; do not infer a task ID from this record.",
   "source_root": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
   "assigned_worktree": "F:/framework-next/coordinator-next",
   "handoff_branch": "codex/2026-09-23-coordinator-handoff",
-  "receiving_branch": "codex/2026-09-24-target-provider-closeout",
+  "receiving_branch": "codex/2026-09-24-archive-ready",
   "requested_model": "gpt-6-astra",
   "requested_reasoning_effort": "ultra",
   "execution_provenance": {
@@ -30,44 +30,34 @@
   ],
   "trial_version": "0.19.0-rc.1",
   "stable_target_version": "0.19.0",
-  "version_state": "Complete unpublished rc.1 candidate installed in isolated target; activation blocked by actual PR Git worktree defect and pending independent review",
+  "version_state": "Tagged installed Codex rc.1 candidate; target PR16 integrated; no hosted Release or stable 0.19.0 publication",
   "open_issues": [
     322,
     369
   ],
   "retained_tasks": [
     {
-      "issue": 368,
-      "thread_id": "01a0cd11-1dc9-7842-abba-65b8fac0edb8",
-      "worktree": "F:/framework-next/368",
-      "head": "e71ccc989c3ae213a8e04cbe51abb80183022024"
-    },
-    {
       "issue": 369,
       "thread_id": "01a0cd11-7b98-7090-ae53-1bf7bf46a651",
       "worktree": "F:/framework-next/369",
-      "head": "0725c3dd68e6d1cb4aca5d03343cd239b8c447a1"
-    },
-    {
-      "issue": 373,
-      "thread_id": "01a0cd49-7805-7202-9176-e8f7b4cf4285",
-      "worktree": "F:/framework-next/373",
-      "head": "7996b32d3d4f70553b203299e25dc69d9413ff9d"
+      "head": "5440a9f410c9a8dd5ae7895195c9ba2a1a4a5b64",
+      "state": "native expansion deferred-by-owner; no automatic dispatch"
     }
   ],
   "target": {
     "root": "C:/Github/YuChia/dotnet-mq-arch-lab",
     "repository": "YuChia-Wei/dotnet-distributed-architecture-lab",
-    "observed_head": "cb122285af09e46b24102f22a0ad9d713219c1f2",
-    "installed_version": "v0.18.0",
-    "mutation_performed": false
+    "observed_head": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+    "installed_version": "0.19.0-rc.1",
+    "mutation_performed": true,
+    "pilot_root": "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot"
   },
   "ci": {
     "actions_enabled": false,
     "disabled_workflow_count": 9,
     "restoration_authorized": false
   },
-  "next_action": "Retain completed target rc.1 integration. Native test/caller expansion is deferred by direct owner decision; do not implement or activate it. P7 policy/CI and stable publication remain separate future adoption work.",
+  "next_action": "Owner inspects tagged rc.1 source and integrated target, then explicitly opens a new 0.19.0 task. Preserve #369 native deferral, inactive CI/policy and pinned target; read external archive README and fresh Git/provider state first.",
   "report": "coordinator-transfer.md",
   "formal_handoff_validation": "deferred-by-owner under U001; not passed",
   "successor_acceptance": {
@@ -245,9 +235,9 @@
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
   },
-  "updated_at": "2026-09-23T23:12:06.313035+00:00",
+  "updated_at": "2026-09-24T07:34:15.344638+08:00",
   "latest_checkpoint": {
-    "source_main": "3395ee005f2d41e1a1c03d553a086a4c29fb0b9f",
+    "source_main": "4b80791c696ffad6a0b1bda30ee7bda233db21c0",
     "source_repair_pr": 388,
     "source_repair_issue": 335,
     "source_repair_delivery": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
@@ -262,8 +252,8 @@
     "review_packet": "P15-rc1-a17cc80-01",
     "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
     "report": "../reports/successor-acceptance-and-repair-scope.md",
-    "next_action": "Retain completed target rc.1 integration. Native test/caller expansion is deferred by direct owner decision; do not implement or activate it. P7 policy/CI and stable publication remain separate future adoption work.",
-    "observed_at": "2026-09-23T23:12:06.313035+00:00",
+    "next_action": "Owner inspects tagged rc.1 source and integrated target, then explicitly opens a new 0.19.0 task. Preserve #369 native deferral, inactive CI/policy and pinned target; read external archive README and fresh Git/provider state first.",
+    "observed_at": "2026-09-24T07:34:15.344638+08:00",
     "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
     "independent_review": "passed; no reportable findings",
     "selected_gate": {
@@ -383,7 +373,7 @@
       "preflight_failures_retained": 2,
       "p7_runs_preserved": true
     },
-    "stable_release_gap": "Existing source release policy still requires four admitted assets and retained origins; #381 unpublished schema-2 candidate is not a new-format publication contract. #365 explicitly leaves new-format release to separate selection/authority. No matrix, tag, publication or enablement executed.",
+    "stable_release_gap": "The owner authorized the existing pilot baseline tag only. New-format publication contract and stable 0.19.0 remain unselected; no hosted Release, asset publication, CI restoration or policy adoption.",
     "unverified_concern": {
       "id": "C-001",
       "status": "unverified native stored-case API premise; no repair selected",
@@ -476,6 +466,39 @@
       "implementation_dispatched": false,
       "ci_enabled": false,
       "future_gate_adoption": "separate concrete owner decision; no automatic follow-up"
+    },
+    "archive_ready": {
+      "owner_intent": "archive current work tasks, inspect results, open a new task later",
+      "external_root": "C:/Github/YuChia/ai-collaboration-framework-analysis/codex/framework-rc1-closeout-20260924",
+      "readme": "README.md",
+      "baseline": "baseline.json",
+      "operation_ledger": "cleanup-results.json",
+      "cleanup_counts_before_checkpoint_integration": {
+        "worktree-remove": 8,
+        "local-branch-delete": 11,
+        "remote-branch-delete": 9
+      },
+      "dirty_f_worktrees_backed_up": [
+        "framework-entries",
+        "framework-messaging",
+        "framework-release"
+      ],
+      "p7_files_copied": 1623,
+      "retained_worktrees": [
+        "F:/framework-next/369",
+        "F:/framework-next/386",
+        "F:/framework-next/coordinator-next",
+        "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot"
+      ],
+      "no_automatic_continuation": true
+    },
+    "rc_baseline_tag": {
+      "name": "v0.19.0-rc.1",
+      "object": "40e41e7b4f33cb07ca84d789b768e40bcbe6f13f",
+      "commit": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
+      "remote_verified": true,
+      "owner_authority": "Direct 2026-09-24 request to tag the just-installed baseline",
+      "release_published": false
     }
   },
   "checkpoint_history": [
@@ -776,6 +799,38 @@
       ],
       "next_action": "Review original #335 source return, integrate online, build new immutable rc.1 candidate and perform target delta before independent review",
       "observed_source_commit": "90051b7008e1de2fc87ef91e08f3fb7f54fa9555"
+    },
+    {
+      "kind": "superseded-initial-target-and-task-navigation",
+      "observed_at": "2026-09-24T07:34:15.344638+08:00",
+      "target": {
+        "root": "C:/Github/YuChia/dotnet-mq-arch-lab",
+        "repository": "YuChia-Wei/dotnet-distributed-architecture-lab",
+        "observed_head": "cb122285af09e46b24102f22a0ad9d713219c1f2",
+        "installed_version": "v0.18.0",
+        "mutation_performed": false
+      },
+      "retained_tasks": [
+        {
+          "issue": 368,
+          "thread_id": "01a0cd11-1dc9-7842-abba-65b8fac0edb8",
+          "worktree": "F:/framework-next/368",
+          "head": "e71ccc989c3ae213a8e04cbe51abb80183022024"
+        },
+        {
+          "issue": 369,
+          "thread_id": "01a0cd11-7b98-7090-ae53-1bf7bf46a651",
+          "worktree": "F:/framework-next/369",
+          "head": "0725c3dd68e6d1cb4aca5d03343cd239b8c447a1"
+        },
+        {
+          "issue": 373,
+          "thread_id": "01a0cd49-7805-7202-9176-e8f7b4cf4285",
+          "worktree": "F:/framework-next/373",
+          "head": "7996b32d3d4f70553b203299e25dc69d9413ff9d"
+        }
+      ],
+      "version_state": "Complete unpublished rc.1 candidate installed in isolated target; activation blocked by actual PR Git worktree defect and pending independent review"
     }
   ],
   "record_navigation": "latest_checkpoint and current top-level navigation are current; named earlier checkpoints and checkpoint_history retain historical observations"

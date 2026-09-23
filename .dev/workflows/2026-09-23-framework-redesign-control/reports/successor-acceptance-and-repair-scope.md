@@ -1,5 +1,55 @@
 # Successor acceptance and compatibility repair selection
 
+## Current checkpoint: ready for owner inspection and task archival
+
+The owner will archive the work tasks and inspect the framework and mq lab
+before opening a new task for 0.19.0. No automatic continuation, native expansion
+or CI restoration is selected. Program #322 and Issue #369 remain open.
+
+Direct owner authorization created and pushed annotated tag v0.19.0-rc.1
+at installed candidate source 1ce41a4f03f61e83bf9b99de3ce196887547e922.
+Tag object: 40e41e7b4f33cb07ca84d789b768e40bcbe6f13f. Remote peeled commit
+matched. This names the existing Codex pilot baseline; no GitHub Release or
+assets were published. It does not retroactively validate release-source records
+or change the installed engine pin 3afb4ff4207acb3e12e3953018736305a439ed21.
+
+Target PR16 remains integrated at cc0e345367a1d24f49bf8fa68e0eb668df9e5e55.
+Both C: target checkouts are clean at that commit. Keep the pilot checkout:
+the historical review descriptor includes its absolute root. Inspecting the same
+tree in original main does not claim relocated admission. The old source main
+9338a85 was only a historical one-shot bootstrap; its seven exact files were
+archived before updating that checkout. Do not rerun the historical preflight.
+
+Cleanup removed eight clean merged worktrees, eleven merged local branches and
+nine merged remote branches before this checkpoint integration. Each removed
+worktree's ignored evidence was archived and hash-checked first. A stale upstream
+caused one safe branch deletion refusal; the failure is retained, then merged
+HEAD/main ancestry was confirmed and that obsolete upstream was cleared.
+
+External reports, raw evidence and restart guidance are stored in:
+C:/Github/YuChia/ai-collaboration-framework-analysis/codex/framework-rc1-closeout-20260924/README.md.
+baseline.json preserves source/candidate/engine/target identities;
+cleanup-results.json is the operation ledger; per-root manifests bind copied
+bytes. The analysis repository's pre-existing changes were left untouched.
+
+Preserved: unfinished F369; pinned F386 engine; coordinator checkout; all
+p7-runs/failed fixtures and F:/ai-context-tests; target pilot/recovery data;
+three dirty F:/codex-v018-evaluation worktrees; unmerged design/Luna branches
+and Luna checkout; the historical v016 projection with an unreleased lease.
+The three dirty F: worktrees include independent raw-file, index and working
+diff backups on C:. All 1623 p7-runs files also have verified C: byte copies.
+Byte archives preserve evidence, not original filesystem identities or runtime
+leases. RAM-disk roots must be reconstructed and rechecked if lost.
+
+Future 0.19.0 work starts from this checkpoint, the external README and current
+provider/Git readback. Preserve the owner's #369 deferral. Select any new
+native/CI/policy adoption and publication contract explicitly; do not restore
+legacy full matrices automatically. New-framework Claude adapters remain
+unsupported. Historical sections below retain earlier observations; this
+checkpoint and latest_checkpoint control current navigation.
+
+Observed: 2026-09-24T07:34:15.344638+08:00.
+
 ## Current affected-review result and repair assignment
 
 Observed at 2026-09-23T17:58:21.695505+00:00. Original #370 completed immutable review
