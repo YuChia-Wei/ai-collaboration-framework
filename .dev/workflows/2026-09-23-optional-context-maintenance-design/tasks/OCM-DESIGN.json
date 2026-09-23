@@ -1,0 +1,126 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "OCM-DESIGN",
+  "workflow_id": "2026-09-23-optional-context-maintenance-design",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-23T10:05:49+08:00",
+  "updated_at": "2026-09-23T10:18:43.0502001+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_provenance": "Coordinator-created independent task; model/effort declared by dispatch and coordinator read-back, not self-generated runtime attestation. No sub-agents or new conversations.",
+  "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/352",
+  "finding_ids": [],
+  "scope": {
+    "target": "Complete Issue #352 optional-maintenance design",
+    "files": [
+      ".dev/design/framework-next/optional-context-maintenance/",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/"
+    ],
+    "constraints": [
+      "U001",
+      "Assigned F:/framework-next/352 worktree",
+      "Design only",
+      "One writer",
+      "Local commit then stop"
+    ],
+    "non_goals": [
+      "src implementation",
+      "Shared index/manifest/profile/root/custom changes",
+      "Historical migration/deletion",
+      "Product execution/tests/schema/build/install/audit/lease/CI",
+      "Provider mutation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify assigned identity",
+      "Read actual authority/source/public interfaces and Issues",
+      "Compare three persistence options",
+      "Define optional boundaries and state ownership",
+      "Author independent operation drafts and exact slices",
+      "Complete limited checks and exact message validation",
+      "Local commit and final handoff"
+    ],
+    "validation": [
+      "Direct content and strict UTF-8/JSON/YAML parsing",
+      "Markdown path references and source identity read-back",
+      "Git changed paths/diff/whitespace",
+      "Complete ignored commit-message validator"
+    ],
+    "last_completed_step": "Bounded design, static source/provider evidence, direct syntax/reference/identity checks, staged scope/diff and complete message validation completed",
+    "next_action": "Coordinator reads the containing local design commit and final HEAD/status, selects implementation, reconciles shared index/#316/P6 and owns push/PR/online merge"
+  },
+  "results": {
+    "summary": "Complete Issue #352 design: D352-01..06, three alternatives, source/legacy/P6 boundaries, independent drafts, minimal state, exact source slices and P7 observations. Implementation is unselected.",
+    "files_changed": [
+      ".dev/design/framework-next/optional-context-maintenance/README.md",
+      ".dev/design/framework-next/optional-context-maintenance/drafts/ai-context-auditor/SKILL.md",
+      ".dev/design/framework-next/optional-context-maintenance/drafts/ai-context-governance/SKILL.md",
+      ".dev/design/framework-next/optional-context-maintenance/implementation-plan.md",
+      ".dev/design/framework-next/optional-context-maintenance/operations-and-handoffs.md",
+      ".dev/design/framework-next/optional-context-maintenance/responsibility-boundaries.md",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/evidence/source-evidence.json",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/reports/design-delivery.md",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/tasks/OCM-DESIGN.json",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/workflow-plan.md",
+      ".dev/workflows/2026-09-23-optional-context-maintenance-design/workflow.yaml"
+    ],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Design only; instruction behavior, actual tool handoffs and all P7 verification unexecuted",
+    "follow_up_needed": true
+  },
+  "deferred_verification": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "items": [
+      "Product CLI/help",
+      "Schema validation",
+      "Tests/fixtures",
+      "Build/package/install/migration",
+      "Legacy validators except complete planned commit message",
+      "Independent audit/review/lease machinery",
+      "CI"
+    ],
+    "next_action": "Select future implemented-contract checks and actual-use observations; run under P7 authority and retain outcomes"
+  },
+  "handoff": {
+    "coordinator_task": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+    "worktree": "F:/framework-next/352",
+    "branch": "codex/2026-09-23-optional-context-maintenance-design",
+    "starting_commit": "731d658b6004110fd59224ca39aa3a5d63891d91",
+    "transport": "Local Git commit and final only; coordinator reads directly",
+    "next_owner_action": "Select design/slices, reconcile shared index/#316/P6, arrange push/PR/online merge"
+  },
+  "actual_checks": [
+    {
+      "command": "python -B .dev/workflows/2026-09-23-optional-context-maintenance-design/direct-checks.tmp",
+      "outcome": "passed",
+      "observations": "11 UTF-8 files; 2 JSON; 1 YAML; 2 YAML frontmatter; 22 relative Markdown references; 17 Git blob and raw-byte identities",
+      "limits": "Direct syntax/reference/identity only; no schema or product execution"
+    },
+    {
+      "command": "git diff --cached --check and git diff --cached --name-only",
+      "outcome": "passed",
+      "observations": "11 added files, all within the two authorized roots; no whitespace errors"
+    },
+    {
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/352/.dev/workflows/2026-09-23-optional-context-maintenance-design/commit-message.tmp --workflow-id 2026-09-23-optional-context-maintenance-design",
+      "outcome": "passed",
+      "message_sha256": "3ae131349078c89218c622666bed8123604684de3cad2777e663ea8790998700",
+      "observations": "Git commit validation passed for planned message."
+    }
+  ],
+  "check_preparation": {
+    "failed": "Post-staging direct helper initially rejected all tracked additions with a no-diff assertion",
+    "material_fix": "Restrict changed/untracked paths to authorized roots while retaining exact HEAD/branch and all source identity checks",
+    "rerun": "passed: same 11 files, 22 references, 17 source identities",
+    "record": "reports/design-delivery.md"
+  }
+}
