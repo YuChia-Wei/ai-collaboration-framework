@@ -1,5 +1,7 @@
 # Development candidate 組裝介面
 
+下文保留 P2-B 交付時的介面與當時狀態。P3 的 metadata v2、readable/writable schema 與後續實際 mapping 邊界見 [P3 metadata v2 增補](metadata-v2.md)；增補仍是未執行的 source implementation。
+
 這是 [Issue #331](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/331) 的 P2-B 程式交付說明，依 [P1/P2 整合安排](../../../workflows/2026-09-23-framework-redesign-control/reports/p1-integration-and-p2-scope.md) 實作。[P1-A](../portable-contracts/contract.md) 擁有 skill metadata；[P1-B](../source-layout/design.md) 擁有 source / installed output 邊界。
 
 程式尚未執行。U001 將 CLI 試行、build、測試、安裝和 CI 延後到 P7；以下是實作介面與待試行命令，不是已生成的 candidate、lock 或 receipt。這個 branch 沒有 #330 的 skill source，整合後才能提供完整來源 commit。

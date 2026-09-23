@@ -1,4 +1,4 @@
-"""Consume the version 1 package interface; do not resolve project settings."""
+"""Consume explicit package metadata versions 1/2; never resolve project settings."""
 
 from __future__ import annotations
 
@@ -48,11 +48,16 @@ def load_package(blob: Blob) -> Package:
         "metadata_version", "id", "version", "delivery_status", "entrypoint",
         "dependencies", "runtime", "configuration", "artifact_roles", "resources", "operations",
     }, set(), label)
-    version_one(data["metadata_version"], label)
+    metadata_version = data["metadata_version"]
+    if type(metadata_version) is int and metadata_version == 1:
+        version_one(metadata_version, label)
+    else:
+        require(type(metadata_version) is int and metadata_version == 2,
+                f"{label}: only integer metadata versions 1 and 2 are supported")
     owner = identifier(data["id"], label)
     version(data["version"], label)
     require(data["delivery_status"] == "implemented", f"{owner}: design-only packages cannot be built as implemented candidates")
-    require(data["entrypoint"] == "SKILL.md", f"{owner}: version 1 entrypoint must be SKILL.md")
+    require(data["entrypoint"] == "SKILL.md", f"{owner}: version {metadata_version} entrypoint must be SKILL.md")
     declared = Paths()
     members = set()
 
@@ -78,10 +83,20 @@ def load_package(blob: Blob) -> Package:
     resources = mapping(data["resources"], {"references", "schemas", "templates", "tools"}, set(), label)
     for reference in sequence(resources["references"], label):
         member(reference, "reference")
-    schemas = named(resources["schemas"], {"version", "path", "owner", "migration"}, set(), label)
+    if metadata_version == 1:
+        schemas = named(resources["schemas"], {"version", "path", "owner", "migration"}, set(), label)
+    else:
+        # Only schemas gain pair identities. Keep named() unchanged for v1 and
+        # every other resource/dependency/operation consumer.
+        schemas = {}
+        for schema in sequence(resources["schemas"], label):
+            mapping(schema, {"id", "version", "path", "owner", "migration"}, set(), label)
+            identity = (identifier(schema["id"], label), version(schema["version"], label))
+            require(identity not in schemas, f"{owner}: duplicate schema identity {identity[0]}@{identity[1]}")
+            schemas[identity] = schema
     templates = named(resources["templates"], {"path", "input_role", "output_role", "owner"}, set(), label)
     tools = named(resources["tools"], {"owner", "implementation_status", "entrypoint", "operation_contract", "operations"}, set(), label)
-    resource_ids = [*schemas, *templates, *tools]
+    resource_ids = [*{item["id"] for item in schemas.values()}, *templates, *tools]
     require(len(resource_ids) == len(set(resource_ids)), f"{owner}: duplicate resource identity")
     for schema in schemas.values():
         version(schema["version"], label)
@@ -125,8 +140,18 @@ def load_package(blob: Blob) -> Package:
     for role in sequence(data["artifact_roles"], label):
         require(type(role) is dict, f"{owner}: artifact role must be an object")
         if role.get("owner") == "project":
-            mapping(role, {"role", "owner", "schema", "store_binding", "identity", "filename", "read_operations", "write_operations"}, set(), label)
-            require(role["schema"] in {f"{item['id']}@{item['version']}" for item in schemas.values()},
+            role_fields = {"role", "owner", "schema", "store_binding", "identity", "filename", "read_operations", "write_operations"}
+            if metadata_version == 2:
+                role_fields.add("read_schemas")
+            mapping(role, role_fields, set(), label)
+            declared_schemas = {f"{item['id']}@{item['version']}" for item in schemas.values()}
+            if metadata_version == 2:
+                string(role["schema"], label)
+                readable = text_array(role["read_schemas"], label)
+                require(bool(readable) and set(readable) <= declared_schemas,
+                        f"{owner}: read_schemas must name nonempty declared exact schema references")
+                require(role["schema"] in readable, f"{owner}: read_schemas must include the writable schema")
+            require(role["schema"] in declared_schemas,
                     f"{owner}: artifact role references an undeclared schema")
             for key in ("read_operations", "write_operations"):
                 require(set(text_array(role[key], label)) <= operations.keys(), f"{owner}: role names unknown operations")
@@ -160,6 +185,36 @@ def load_package(blob: Blob) -> Package:
     require(template["origin"] == "package" and template["path"] in {item["path"] for item in templates.values()},
             f"{owner}: default template must be a declared package resource")
     return Package(data, frozenset(members))
+
+
+def _same_document_schema_reference(document: dict, reference: str, label: str) -> None:
+    """Inspect one finite JSON pointer; never expand refs or invoke a resolver.
+
+    The selected document is the only lookup root. A target containing another
+    reference is not followed, so chained/cyclic refs cannot trigger unbounded
+    resolution. Schema validation remains the package owner's responsibility.
+    """
+    require(reference.startswith("#/$defs/"),
+            f"{label}: metadata v2 schema references must use same-document #/$defs/ pointers")
+    require(re.search(r"%(?![0-9a-fA-F]{2})", reference) is None,
+            f"{label}: malformed schema reference escape")
+    pointer = unquote(reference[1:], encoding="utf-8", errors="strict")
+    target = document
+    for token in pointer[1:].split("/"):
+        require(re.search(r"~(?![01])", token) is None, f"{label}: malformed JSON pointer escape")
+        token = token.replace("~1", "/").replace("~0", "~")
+        if type(target) is dict:
+            require(token in target, f"{label}: schema reference target is missing")
+            target = target[token]
+        elif type(target) is list:
+            require(re.fullmatch(r"0|[1-9][0-9]*", token) is not None
+                    and len(token) <= len(str(len(target))), f"{label}: invalid schema reference index")
+            index = int(token)
+            require(index < len(target), f"{label}: schema reference target is missing")
+            target = target[index]
+        else:
+            require(False, f"{label}: schema reference traverses a scalar")
+    require(type(target) in {dict, bool}, f"{label}: schema reference must select an object or boolean schema")
 
 
 def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
@@ -198,7 +253,10 @@ def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
             if type(value) is dict:
                 for key, child in value.items():
                     if key in {"$ref", "$dynamicRef"}:
-                        local_reference(name, string(child, name))
+                        if package.metadata["metadata_version"] == 1:
+                            local_reference(name, string(child, name))
+                        else:
+                            _same_document_schema_reference(schema, string(child, name), f"{package.id}/{name}")
                     walk(child)
             elif type(value) is list:
                 for child in value:
