@@ -218,6 +218,32 @@ class EngineSourceTests(unittest.TestCase):
         self.assertIs(sys.modules['distribution.installation'].json, json)
         self.assertIs(sys.modules['distribution.installation'].yaml, yaml)
 
+    def test_allowed_delayed_import_executes_verified_source_despite_valid_cache(self):
+        """Unit _direct substitution via invoke; actual bootstrap/finder dispatch."""
+        root, request = fixture('allowed-delayed-import', overrides={
+            'src/distribution/installation.py':
+                b'import sys\n'
+                b'def execute(raw):\n'
+                b"    absent_before = 'distribution.package' not in sys.modules\n"
+                b'    from . import package\n'
+                b"    return {'outcome': 'inspected', 'absent_before': absent_before, 'value': package.VALUE}\n"})
+        target = root / 'src/distribution/package.py'
+        source_before = target.read_bytes()
+        pin_before = json.dumps(request['engine'], sort_keys=True)
+        cache, cache_raw = valid_cache(target, fail_on_import=True)
+        before_meta = list(sys.meta_path)
+        code, result, stderr = invoke(root, request)
+        self.assertEqual((code, stderr), (0, ''))
+        self.assertEqual(result, {'outcome': 'inspected', 'absent_before': True, 'value': 'source'})
+        delayed = sys.modules['distribution.package']
+        self.assertIsInstance(delayed.__loader__, bootstrap._VerifiedSourceFinder)
+        self.assertEqual(Path(delayed.__file__), target)
+        self.assertEqual(delayed.__spec__.origin, str(target))
+        self.assertEqual(cache.read_bytes(), cache_raw)
+        self.assertEqual(target.read_bytes(), source_before)
+        self.assertEqual(json.dumps(request['engine'], sort_keys=True), pin_before)
+        self.assertEqual(sys.meta_path, before_meta)
+
     def test_finder_remains_active_during_dispatch_and_is_removed_on_failure(self):
         root, request = fixture('lazy-import', overrides={'src/distribution/installation.py':
             b'def execute(raw):\n    from . import unlisted\n'})

@@ -1,6 +1,6 @@
 {
   "issue": 371,
-  "recorded_at": "2026-09-23T15:45:18+08:00",
+  "recorded_at": "2026-09-23T15:56:45+08:00",
   "starting_head": "fe6c63f87cb54e166fc796fd315f11e3c2212823",
   "reviewed_product_commit": "38e6458f8d3e81dc2568daf1fa467571fb529fee",
   "review_report_commit": "6de20bfeb059d74f1ba0ede96c28d312db04235f",
@@ -262,5 +262,81 @@
     "message_exit_code": 0,
     "message_sha256": "c2c60f6497be32eadef45bd264697d666c3826c23f8d77d88f94e844c537939c",
     "prior_message_sha256": "954fef03cfa75d26330708245450d6ce976d66a95f33c990097ec98ab4140fa1"
+  },
+  "followup": {
+    "recorded_at": "2026-09-23T15:56:45+08:00",
+    "starting_head": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+    "authority": "Coordinator bounded test-only follow-up in the same Issue 371 task",
+    "changed_paths": [
+      "tests/framework_next/test_engine_source.py",
+      ".dev/workflows/2026-09-23-engine-source-pin/workflow.yaml",
+      ".dev/workflows/2026-09-23-engine-source-pin/task.json",
+      ".dev/workflows/2026-09-23-engine-source-pin/report.md",
+      ".dev/workflows/2026-09-23-engine-source-pin/evidence.json"
+    ],
+    "test_sha256": "b8bbbe7e89529e804e92ca34af3ff6dce7aa8a60193e7355d3a58d3fa4d6be92",
+    "product_closure_raw_unchanged_from": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+    "helper_and_runner_raw_unchanged": true,
+    "review_context": {
+      "source": "coordinator message",
+      "reported": "Original Issue 370 source review is returning CR-001 resolved in source with no new source defect; delayed allowed-import coverage gap identified.",
+      "reviewer_execution_of_tests": "not claimed",
+      "independent_review_readback": "not performed in this test-only follow-up"
+    },
+    "focused": {
+      "command": "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source",
+      "runs": 1,
+      "exit_code": 0,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "test_seconds": 1.629,
+      "fixture_accounting": {
+        "observed_files": 107,
+        "observed_logical_bytes": 89889,
+        "authored_bytes": 89889,
+        "retained_bytes_before_cleanup": 89879,
+        "git_processes": 9,
+        "python_processes": 0,
+        "wall_seconds": 1.637,
+        "residue": null
+      }
+    },
+    "new_case": "EngineSourceTests.test_allowed_delayed_import_executes_verified_source_despite_valid_cache",
+    "assertions": [
+      "module absent at dispatch entry",
+      "real bootstrap/finder loads allowed package module on demand",
+      "valid stale-cache control executes its distinct sentinel",
+      "dispatch returns pinned source value",
+      "loader/origin match verified source",
+      "cache/source/pin unchanged",
+      "finder removed after success"
+    ],
+    "unit_boundary": "invoke explicitly substitutes _direct; no native path admission or product installation claimed",
+    "public_trial": {
+      "new_attempts": 0,
+      "original_attempts_retained": 1,
+      "limitation": "Original single request was incomplete as an operation request. Its pre-dispatch bootstrap refusal is retained and cannot serve as a future positive N1/native request.",
+      "next_action": "Later V3 must prepare a complete valid public-operation fixture after path applicability is resolved."
+    },
+    "graph": "Existing graph predates the newly committed test; no freshness/absence claim. Explicit tracked-file fallback read only the selected test and owning records.",
+    "message_command": "python -I -B F:/framework-next/371/.ai/scripts/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/followup-commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
+    "message_sha256": "62b2157c2a7b655006f9049d9d644744e3bec973f8baa089592d5e23642897c7",
+    "next_owner": "Coordinator reconciles source-bound review and V3/native gap; no push or callback from this executor",
+    "direct_checks": {
+      "outcome": "passed",
+      "message_exit_code": 0,
+      "checks": [
+        "one added test method only; previous test AST unchanged",
+        "original focused/public/failure evidence unchanged",
+        "ten product files and helper/runner raw-identical to fixed starting commit",
+        "UTF-8/AST/JSON/YAML/reference checks",
+        "exact five-file scope",
+        "git diff --check",
+        "ignored message identity and absence of Issue-closing keyword pattern",
+        "complete planned-message validator"
+      ]
+    }
   }
 }

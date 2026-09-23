@@ -7,7 +7,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T15:42:21+08:00",
-  "updated_at": "2026-09-23T15:45:18+08:00",
+  "updated_at": "2026-09-23T15:56:45+08:00",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
   "provenance": "Coordinator-declared model/effort selection; no independent runtime attestation. No sub-agents or callbacks.",
@@ -33,18 +33,19 @@
     ]
   },
   "execution": {
-    "last_completed_step": "Source repair, nine focused tests, one public refusal, local handoff records",
-    "next_action": "Coordinator resolves containing commit and arranges affected-source review in original #370; no executor retry or provider writes",
+    "last_completed_step": "Test-only follow-up: successful delayed allowed import against a valid different cache; updated focused suite 10 passed in one run",
+    "next_action": "Coordinator reconciles original Issue 370 source-bound review; later V3 prepares a complete positive public-operation fixture after path applicability is resolved",
     "validation": [
       "Focused loader tests: 9 passed",
       "One public attempt: blocked-before-dispatch; retained",
       "Direct AST/raw-byte/reference/diff checks",
-      "Exact complete commit-message validator: passed, exit 0; message SHA-256 in evidence.json"
+      "Exact complete commit-message validator: passed, exit 0; message SHA-256 in evidence.json",
+      "Test-only follow-up suite: one run, 10 passed; original 9-pass and single public refusal retained"
     ],
     "u001_adaptation": "Proportionate task/report/evidence only; legacy validators, formal handoff/audit/lease machinery and CI deferred-by-owner"
   },
   "results": {
-    "summary": "Local implementation complete; source closure uses verified bytes and ignores valid ambient cache.",
+    "summary": "Source implementation unchanged from 0d29b9ab; delayed allowed-import coverage added. Coordinator reports source resolution; public/native acceptance remains pending.",
     "files_changed": [
       "src/tools/maintain_framework.py",
       "tests/framework_next/test_engine_source.py",
@@ -58,7 +59,7 @@
       "python -I -B F:/framework-next/371/tests/framework_next/test_engine_source.py --output-root F:/framework-next/p7-runs/371-engine-source --public-entry"
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "Independent affected-source review and public/native evidence pending; generic F: bootstrap refusal not causally isolated here.",
+    "residual_risk": "Original public operation request was incomplete; its retained refusal cannot serve as a future positive N1/native request. New unit evidence is not reviewer execution or native acceptance.",
     "follow_up_needed": true
   },
   "handoff": {
@@ -70,5 +71,20 @@
     "push": "not authorized",
     "owner": "program #322 coordinator / original #370 reviewer",
     "residue": "F:\\framework-next\\p7-runs\\371-engine-source\\fn-53f9ba958c7e4e608532c807c08cd7a2"
+  },
+  "followup": {
+    "starting_head": "0d29b9abf36804cb2587732232d807a1b754c3a0",
+    "changed_paths": [
+      "tests/framework_next/test_engine_source.py",
+      ".dev/workflows/2026-09-23-engine-source-pin/workflow.yaml",
+      ".dev/workflows/2026-09-23-engine-source-pin/task.json",
+      ".dev/workflows/2026-09-23-engine-source-pin/report.md",
+      ".dev/workflows/2026-09-23-engine-source-pin/evidence.json"
+    ],
+    "source_review_binding": "Product closure raw-identical to 0d29b9abf36804cb2587732232d807a1b754c3a0; review result supplied by coordinator",
+    "public_retries": 0,
+    "status": "completed-local-test-only",
+    "current_test_sha256": "b8bbbe7e89529e804e92ca34af3ff6dce7aa8a60193e7355d3a58d3fa4d6be92",
+    "direct_checks": "passed; exact complete follow-up message validated with exit 0"
   }
 }
