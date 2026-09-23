@@ -121,3 +121,7 @@ original task delivered five packages/23 members/seven instruction operations;
 its bounded source work is completed with P7 verification deferred. Online
 PR integration is next. #346 mapping remains blocked, all prior refusals are
 retained, and no broader mapping or P7 execution is inferred.
+
+## First mapping admitted and final mapping assigned
+
+The original #346 executor received direct user input and delivered `444327034aa14d9a9364c72e33e77ac879e9e5df`: nine packages/68 members/five profiles, preserved original rows and protected profile blobs. The coordinator inspected and locally integrated it. Prior refusals remain failures, while this later attempt succeeded. #347 is online through PR #363 with Issue/Project completion read back. [Final mapping assignment](p5-final-mapping-scope.md) now includes only delivered source, with optional maintenance separate. #341 source/mapping is locally complete and waits online integration; #346 remains in progress until the final mapping return. P7 and program findings remain open.

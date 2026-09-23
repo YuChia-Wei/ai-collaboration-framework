@@ -6,9 +6,9 @@
   "task_id": "ISSUE-341",
   "workflow_id": "2026-09-23-framework-redesign-control",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-23T09:00:26+08:00",
-  "updated_at": "2026-09-23T10:00:35+08:00",
+  "updated_at": "2026-09-23T14:11:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -47,11 +47,11 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message format only"
     ],
-    "last_completed_step": "Source integrated online through PR #350; Issue OPEN and Project In progress read back",
-    "next_action": "Exact actual-source mapping through #346"
+    "last_completed_step": "Ten-member workflow source and its actual manifest/profile mapping locally integrated via 44432703",
+    "next_action": "Online PR integration and Issue/Project closure read-back; P7 verification remains deferred"
   },
   "results": {
-    "summary": "Ten-member workflow source implemented/inspected; shared mapping and P7 acceptance remain separate",
+    "summary": "Bounded workflow source and mapping locally complete; online integration and P7 remain separate",
     "files_changed": [
       "src/skills/software-development-orchestrator/",
       ".dev/design/framework-next/workflow-orchestration/",
@@ -59,7 +59,7 @@
     ],
     "tests_run": [],
     "finding_status": "partially-resolved",
-    "residual_risk": "No actual runtime/schema/platform/summary acceptance; manifest/profile mapping still pending",
+    "residual_risk": "No actual runtime/schema/platform/summary acceptance; P7 verification remains deferred",
     "follow_up_needed": true
   },
   "dispatch": {
@@ -86,13 +86,14 @@
     "project_status": "In progress",
     "source_checkpoint": "da04c0bb36fda9f48552ed5ee4f60efc18a95d9b",
     "worktree_clean_observed": true,
-    "mapping_status": "pending",
+    "mapping_status": "locally completed",
     "source_inspection": "reports/p4-source-integration.md",
-    "provider_integration": "source online PR pending; Issue remains open for mapping",
+    "provider_integration": "first mapping online integration pending; Issue remains open until merge",
     "source_pr": 350,
     "source_merge": "b64ade171d04811449b94c6e285634b07c17151b",
     "source_integration": "online merged",
-    "provider_readback": "2026-09-23T09:52:25+08:00 OPEN / Project In progress"
+    "provider_readback": "2026-09-23T09:52:25+08:00 OPEN / Project In progress",
+    "mapping_commit": "444327034aa14d9a9364c72e33e77ac879e9e5df"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PBzM"
 }

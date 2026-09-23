@@ -6,6 +6,8 @@ profiles:
     path: src/profiles/knowledge.yaml
   - id: work-management
     path: src/profiles/work-management.yaml
+  - id: engineering
+    path: src/profiles/engineering.yaml
   - id: collaboration
     path: src/profiles/collaboration.yaml
 components:
@@ -117,6 +119,70 @@ components:
         destination: .ai/core/skills/local-backlog/templates/work-item.md
       - source: scripts/local_backlog.py
         destination: .ai/core/skills/local-backlog/scripts/local_backlog.py
+  - id: software-development-orchestrator
+    source: src/skills/software-development-orchestrator
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/software-development-orchestrator/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
+      - source: references/configuration.md
+        destination: .ai/core/skills/software-development-orchestrator/references/configuration.md
+      - source: references/operations.md
+        destination: .ai/core/skills/software-development-orchestrator/references/operations.md
+      - source: references/retention.md
+        destination: .ai/core/skills/software-development-orchestrator/references/retention.md
+      - source: references/composition.md
+        destination: .ai/core/skills/software-development-orchestrator/references/composition.md
+      - source: references/example.md
+        destination: .ai/core/skills/software-development-orchestrator/references/example.md
+      - source: schemas/workflow-record.schema.json
+        destination: .ai/core/skills/software-development-orchestrator/schemas/workflow-record.schema.json
+      - source: templates/workflow.md
+        destination: .ai/core/skills/software-development-orchestrator/templates/workflow.md
+      - source: scripts/workflow.py
+        destination: .ai/core/skills/software-development-orchestrator/scripts/workflow.py
+  - id: code-reviewer
+    source: src/skills/code-reviewer
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/code-reviewer/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/code-reviewer/skill-package.yaml
+      - source: references/review.md
+        destination: .ai/core/skills/code-reviewer/references/review.md
+  - id: requirement-author
+    source: src/skills/requirement-author
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/requirement-author/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/requirement-author/skill-package.yaml
+      - source: references/authoring.md
+        destination: .ai/core/skills/requirement-author/references/authoring.md
+      - source: references/requirement-template.md
+        destination: .ai/core/skills/requirement-author/references/requirement-template.md
+  - id: spec-author
+    source: src/skills/spec-author
+    metadata: skill-package.yaml
+    members:
+      - source: SKILL.md
+        destination: .ai/core/skills/spec-author/SKILL.md
+      - source: skill-package.yaml
+        destination: .ai/core/skills/spec-author/skill-package.yaml
+      - source: references/authoring.md
+        destination: .ai/core/skills/spec-author/references/authoring.md
+      - source: references/production-template.md
+        destination: .ai/core/skills/spec-author/references/production-template.md
+      - source: references/entity-template.md
+        destination: .ai/core/skills/spec-author/references/entity-template.md
+      - source: references/adapter-template.md
+        destination: .ai/core/skills/spec-author/references/adapter-template.md
+      - source: references/formal-test-template.md
+        destination: .ai/core/skills/spec-author/references/formal-test-template.md
 adapters:
   - id: codex
     template: src/adapters/codex/skill-entry.md.template

@@ -1,11 +1,11 @@
 profile_version: 1
-id: work-management
+id: engineering
 skills:
-  - id: pr
+  - id: code-reviewer
     version: 0.1.0
-  - id: local-backlog
+  - id: requirement-author
     version: 0.1.0
-  - id: software-development-orchestrator
+  - id: spec-author
     version: 0.1.0
 adapters:
   - codex

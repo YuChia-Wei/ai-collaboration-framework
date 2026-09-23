@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-23T09:38:34+08:00",
-  "updated_at": "2026-09-23T12:08:22+08:00",
+  "updated_at": "2026-09-23T14:11:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -49,8 +49,8 @@
     "validation": [
       "Direct content/syntax/reference/Git and exact planned commit-message only"
     ],
-    "last_completed_step": "Received fixed source 814fd128, clean assigned worktree and idle original task; coordinator inspected all five contained methods and exact 23-member inventory",
-    "next_action": "Online PR integration and Issue/Project read-back; later exact mapping remains separately assigned, P7 verification deferred"
+    "last_completed_step": "PR #363 merged; Issue CLOSED/COMPLETED and Project Done read back at 2026-09-23T12:11:16+08:00",
+    "next_action": "Exact shared mapping now assigned to #346; actual P7 verification remains deferred"
   },
   "results": {
     "summary": "Five instruction packages, 23 members and seven operations delivered and selected for online integration",
@@ -106,11 +106,14 @@
     "verification_state": "deferred-by-owner",
     "resumed_starting_commit": "4cda6689bf469a2273e14e237a0c3bf7ad4b6eed",
     "source_commit": "814fd12822bb270f17edbfe91d0864ba07c1aacb",
-    "integration_status": "locally integrated; online PR pending",
+    "integration_status": "online PR #363 merged",
     "actual_packages": 5,
     "actual_members": 23,
     "instruction_operations": 7,
-    "inspection_report": "reports/p5-engineering-source-integration.md"
+    "inspection_report": "reports/p5-engineering-source-integration.md",
+    "merge_commit": "1c555f93148091baa7ce1157e687587fd31726c2",
+    "provider_issue_state": "CLOSED/COMPLETED",
+    "provider_project_status": "Done"
   },
   "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg8PPug",
   "owner_confirmation": {

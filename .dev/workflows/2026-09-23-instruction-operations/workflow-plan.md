@@ -2,8 +2,8 @@
 
 - Workflow: `2026-09-23-instruction-operations`; owner: `ai-context-governance`.
 - Issue: [#346](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/346).
-- Status: `in_progress`; phase: mapping selected but write blocked by automatic approval review.
-- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T11:56:40+08:00`.
+- Status: `in_progress`; phase: first nine-package mapping implemented, awaiting the next coordinator handoff.
+- Created: `2026-09-23T09:47:04+08:00`; updated: `2026-09-23T13:30:34+08:00`.
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`; version `1.2.0`.
 - Branch: `codex/2026-09-23-instruction-operations`; base branch: `main`.
 - Worktree: `F:/framework-next/346`; exact starting commit: `842b73ca09d701d1561109255193d80439dc996b`.
@@ -44,7 +44,7 @@ The coordinator owns other package sources, manifest/profiles until explicit
 handoff, indexes/root activation and first push. No remote write, root cutover,
 release, deletion, credentials/settings change or downstream adoption is authorized.
 
-## Stages and resume
+## Source checkpoint stages and historical resume
 
 1. Inspect live authority and exact assigned Git identity: completed.
 2. Implement the source vertical slice and record direct syntax/content/reference
@@ -118,3 +118,32 @@ Only this task's workflow records are updated. Next action: the user confirms th
 four-file mapping directly in task `01a0cbeb-c1c8-7ba1-a0c8-de9026a355ff`, or resolves
 the approval restriction through the app. Do not retry, change writer or bypass the
 rejection. No callback or provider write is performed. U001 deferrals remain.
+
+## Current checkpoint after direct in-task approval
+
+At `2026-09-23T13:30:34+08:00`, continuation in this same task consumed the user's direct reply:
+
+> 核准 #346 原定四個 manifest/profile 檔案的九套件 mapping 寫入，請繼續。
+
+The assigned root/branch/common Git directory and clean HEAD
+`7fab3ffd1698e2eb8ef791d6be7748f151506642` were read back. The next scoped write
+request succeeded. The three earlier rejected attempts remain historical failures;
+their pending-approval next actions are superseded by this section.
+
+The original [first mapping handoff](../2026-09-23-framework-redesign-control/reports/p5-actual-mapping-scope.md)
+is implemented in exactly four product files: manifest.yaml, work-management.yaml,
+collaboration.yaml and new engineering.yaml. Nine packages have 68 explicit payload
+members. Manifest/profile versions remain 1 and the Codex adapter is unchanged.
+The existing five component rows/44 members and lesson-minimal/knowledge bytes are
+preserved. Other delivered or planned packages are excluded from this batch.
+
+Direct content comparison checked metadata, tracked members, exact destinations,
+profile selections/versions/counts and preserved bytes. No schema validation,
+product import/CLI, build/render, tests or installation occurred. See the current
+[report](reports/remediation-report.md) and task mapping_checkpoint for exact counts,
+files, actual checks and U001 deferrals.
+
+Next action: coordinator reads the coherent local mapping commit and selects any
+later actual-source mapping in this same task. Workflow/task remain in_progress;
+no later package is implicitly authorized. No push, PR, callback, root activation,
+provider mutation or CI action is performed by this task.

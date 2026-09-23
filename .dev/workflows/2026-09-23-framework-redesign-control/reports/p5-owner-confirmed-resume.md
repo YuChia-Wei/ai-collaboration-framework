@@ -45,3 +45,7 @@ for its original four-file, nine-package mapping, or resolution of the app's
 approval restriction. Do not retry the rejected write merely because more
 coordinator records exist. #347's independent five-package source work may
 continue within its accepted scope; actual delivery remains to be observed.
+
+## Later direct executor-task approval accepted
+
+The user subsequently sent the requested confirmation directly to the original #346 task. Its original four-file mapping request was accepted and source commit `444327034aa14d9a9364c72e33e77ac879e9e5df` was returned from a clean worktree. The coordinator received “P5 A 已完成，可繼續”, inspected the actual nine/68 mapping, and selected [the final actual-source continuation](p5-final-mapping-scope.md). The three earlier refusals above remain historical failures; the old pending action no longer describes current admission.
