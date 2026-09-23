@@ -1,13 +1,13 @@
 # Work management design and implementation
 
 - Workflow: 2026-09-23-work-management; owner: ai-context-governance.
-- Branch/worktree: codex/2026-09-23-work-management, F:/framework-next/335.
+- Current branch/worktree: codex/2026-09-24-pr-worktree-repair, F:/framework-next/335.
 - Original design base: a34ecd3c9423b17b6bb745f598ef22fd7437dd24.
 - Preserved design checkpoint: 446a579d03a25edf1b6e64b5e5c13016740025c0.
 - Preserved source checkpoint: 5e632ed50242f13b44bec1884de24c496f5a93ea.
 - Source continuation base: 0d0556d4c60105a28eb39cfb06efab9b069728cb, adopted with git merge --ff-only after clean identity read-back.
-- State: **completed for bounded local source delivery**. [Issue #335](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335) remains OPEN in the last live read; provider integration/closure is coordinator-owned.
-- Created: 2026-09-23T08:18:00+08:00; updated: 2026-09-23T00:51:28+00:00.
+- State: **completed for bounded local source delivery and CR335-002 selected fixture**. [Issue #335](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/335) remains OPEN in the last live read; provider integration/closure is coordinator-owned.
+- Created: 2026-09-23T08:18:00+08:00; updated: 2026-09-23T16:18:29+00:00.
 - Template: .ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md, version 1.2.0, adapted under U001.
 
 ## Ownership and completion
@@ -31,3 +31,11 @@ This workflow retains a real cross-session design/ownership handoff and source c
 [Original contract report](reports/contract-checkpoint.md) remains historical. [Source report](reports/source-checkpoint.md) records actual static checks, limits and deferrals. [Receiving checkpoint](handoff.yaml) identifies the current containing commit without a self-referential SHA.
 
 All behavioral/schema/provider/package/build/install/migration/CI/audit execution remains deferred-by-owner under U001 to program #322 coordinator / P7. Next: coordinator inspects CR335-001 against the preserved source checkpoint, reads the new local commit, supplies the concrete integrated package subject to #337 for exact manifest/profile mapping, arranges first push/integration, then P7 chooses and runs verification. No provider write, first push, runtime activation, release or credential change was performed by this executor.
+
+## P7 actual worktree repair continuation (2026-09-24)
+
+Live Issue 335 reopens this local outcome for the installed target's actual blocked/git-read failure. Current assigned branch is codex/2026-09-24-pr-worktree-repair at clean base ff57a09b8443402caf3508dcee1fe0378753970f in the rebuilt F:/framework-next/335. Earlier delivery and CR335-001 remain historical evidence. Current local state is completed for the repair and selected fixture, task [CR335-002](tasks/CR335-002.json); coordinator is 01a0ce78-db26-74e1-a615-2bd0599f7d0c.
+
+The [repair report](reports/pr-worktree-repair.md) records the source correction, selected real Git fixture and actual outcomes. Commit the source/test first, then run only tests/framework_next/test_pr_git_worktree.py under the Issue-selected limits. Other U001 deferrals and coordinator-owned first push, candidate rebuild, target update and provider integration remain in force.
+
+P7 result: source/test checkpoint ad5d93eb71bd8b9cd5aacf74917245f72188f3cd passed the selected regression once in 11.388 seconds: 12 public / 95 Git launches, 29 observed files, 7,455 authored bytes, conservative file-creation bound 198. [Execution summary](evidence/CR335-002/execution-summary.json) distinguishes expected rejection outcomes and measurement limits. The closing commit changes records/evidence only.

@@ -1,0 +1,60 @@
+{
+  "task_id": "CR335-002",
+  "tested_commit": "ad5d93eb71bd8b9cd5aacf74917245f72188f3cd",
+  "command": [
+    "python",
+    "-I",
+    "-B",
+    "F:/framework-next/335/tests/framework_next/test_pr_git_worktree.py",
+    "--output-root",
+    "F:/framework-next/p7-runs/335-pr-worktree"
+  ],
+  "exit_code": 0,
+  "outcome": "passed",
+  "duration_seconds": 11.388,
+  "public_launches": 12,
+  "git_launches": 95,
+  "git_launch_kinds": {
+    "fixture-git": 7,
+    "product-git": 86,
+    "source-identity": 2
+  },
+  "observed_files": 29,
+  "retained_files": 29,
+  "authored_bytes": 7455,
+  "created_file_conservative_upper_bound": 198,
+  "limits": {
+    "public_launches": 32,
+    "git_launches": 96,
+    "created_files": 256,
+    "authored_bytes": 1048576,
+    "commits": 2,
+    "authored_repository_files": 4,
+    "linked_worktrees": 1
+  },
+  "actual_fixture_shape": {
+    "commits": 2,
+    "authored_repository_files": 1,
+    "linked_worktrees": 1
+  },
+  "public_outcomes": {
+    "succeeded": 4,
+    "unsupported_expected": 6,
+    "blocked_expected": 2
+  },
+  "old_command_reproduced_exit": 128,
+  "copied_evidence_sha256": {
+    "report.json": "3a35a6231cab5eafb442556785c4c20ddee0e453628abafc89fcd6eda8e7235c",
+    "git-launches.jsonl": "ec1ba956acc68f864a1fe7f42835fde9386e8e968a2aed74149b139b9df3e36b",
+    "process-results.jsonl": "ee4303021cf8fe317b7d8a9cd9ff5d5671fdefb240bb228ee2a22be59826ac42",
+    "public-results.jsonl": "e0db2879edf3b1a6f0e5f3c1f46a7e3e19fe834eaebea8098f7fe8d4a6b4252c"
+  },
+  "measurement_notes": [
+    "The raw support.accounting process fields were not instrumented and contain default zeros; they are not process measurements. Use explicit audited public_launches and git_launches plus their event logs.",
+    "Observed file paths are measured after steps; the 198 creation bound is conservative analysis of this finite fixture, not an exact transient file-creation census.",
+    "Raw evidence is retained byte-for-byte; source-identity and fixture setup Git launches are included in 95. Shell orchestration, provider readback and static commit/check commands are outside the selected fixture launch counts."
+  ],
+  "source_unchanged_after_run": true,
+  "other_verification": "deferred-by-owner under U001 to program 322 coordinator / P7",
+  "next_action": "Coordinator reviews and integrates, builds an immutable candidate and separately updates/retries the installed target."
+}
