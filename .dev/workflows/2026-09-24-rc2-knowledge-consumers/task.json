@@ -1,0 +1,52 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "task_id": "S5C-consumers",
+  "workflow_id": "2026-09-24-rc2-knowledge-consumers",
+  "owner_skill": "local-change-implementer",
+  "status": "in_progress",
+  "created_at": "2026-09-24T20:53:28+08:00",
+  "updated_at": "2026-09-24T20:53:28+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-6-sol",
+  "reasoning_effort": "high",
+  "acceptance_ids": [
+    "S5C-A1",
+    "S5C-A2",
+    "S5C-A3",
+    "S5C-A4",
+    "S5C-A5",
+    "S5C-A6"
+  ],
+  "scope": {
+    "goal": "Five optional installed-knowledge instruction consumers under Issue #407",
+    "owned_roots": [
+      "src/skills/ddd-ca-hex-architect/",
+      "src/skills/code-reviewer/",
+      "src/skills/bdd-gwt-test-designer/",
+      "src/skills/slice-implementer/",
+      "src/skills/local-change-implementer/",
+      ".dev/workflows/2026-09-24-rc2-knowledge-consumers/"
+    ],
+    "constraints": [
+      "S3 owns shared distribution",
+      "No source or target adoption",
+      "Stop before first push"
+    ]
+  },
+  "results": {
+    "summary": "Instruction and metadata source drafted; exact S3 seam and final acceptance pending.",
+    "acceptance": {
+      "S5C-A1": "source-drafted",
+      "S5C-A2": "protocol-drafted; S3-seam-pending",
+      "S5C-A3": "source-drafted; actual-authority-use-deferred-by-owner",
+      "S5C-A4": "transient-result-declared; actual-use-deferred-by-owner",
+      "S5C-A5": "exact-member-handoff-drafted; S3-seam-pending",
+      "S5C-A6": "direct-checks-in-progress; actual-use-deferred-by-owner"
+    },
+    "behavioral_verification": "deferred-by-owner",
+    "deferred_owner": "program #322 coordinator / selected S6/P7",
+    "provider_integration": "not-performed",
+    "next_action": "Bind the final instructions and handoff to S3's published verified-resource/binding interface, then finalize direct checks and local delivery."
+  }
+}

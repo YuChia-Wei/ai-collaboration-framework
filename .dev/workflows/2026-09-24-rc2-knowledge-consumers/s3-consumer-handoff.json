@@ -1,0 +1,540 @@
+{
+  "handoff_version": 1,
+  "issue": 407,
+  "workflow_id": "2026-09-24-rc2-knowledge-consumers",
+  "base_commit": "50adb657b388074e072c8a7ed15a93368a7ba149",
+  "s1_contract_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+  "accepted_s2_commit": "f22674e20da3448488cfd89cc0778b252e4cc685",
+  "components": [
+    {
+      "id": "ddd-ca-hex-architect",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7f38475d8356604ee42657c61150630f23829670120221962858b06bb8fb48fe",
+          "size": 1442,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "5735d7984d00b569c9e71b276d19355a3623c2a15c1f51dfc8ae83f3574e1cef",
+          "size": 2446,
+          "mode": "100644"
+        },
+        {
+          "path": "references/design.md",
+          "sha256": "036ba9ee7fa6806ad4c5a36bc6ad9511f9ce10fa5399bda635701e5642609b76",
+          "size": 6785,
+          "mode": "100644"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "3279ef7b29431fc9640c68446340ab6b199495e1aad9cca0bcd816ba780a990a",
+          "size": 5854,
+          "mode": "100644"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "id": "design",
+          "execution": "instruction",
+          "inputs": [
+            "Bounded design goal, requirements, acceptance and quality constraints",
+            "Target architecture decisions, selected technology guidance and compatibility constraints",
+            "Existing authorization and any caller-selected output destination"
+          ],
+          "outputs": [
+            "Architecture proposal with language, invariants, boundaries, alternatives and tradeoffs",
+            "Observable acceptance, risks, unresolved decisions and optional implementation or ADR handoff"
+          ],
+          "instructions": "references/design.md",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Fixed architecture artifact identity and permitted evidence",
+            "Requirements, target decisions, selected rules and requested review coverage"
+          ],
+          "outputs": [
+            "Read-only findings with criterion, location, impact, evidence and uncertainty",
+            "Review classification, coverage, valid alternatives and bounded handoff"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-architecture",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-architecture",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/transactional-messaging-standards.md",
+            "member:standards/coding-standards/usecase-standards.md",
+            "member:standards/project-structure.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "id": "code-reviewer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a48c9efa36cf893c0bc5fed93ce84598b7e75149b4e87858b7b99620f9dbcfd0",
+          "size": 1649,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "3e904d693ab8c01ba73043fa4b6cc8cc303a9f79a48c3d3e2e2efe9f2656a32b",
+          "size": 1763,
+          "mode": "100644"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "3f2fca5920deb476c85da3ce1fae11396923709788c634f730c7dfb01e58c46d",
+          "size": 9947,
+          "mode": "100644"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Explicit review subject, scope and intended behavior",
+            "Applicable target-owned rules, requested coverage and permitted evidence"
+          ],
+          "outputs": [
+            "Prose findings with location, trigger, impact, evidence and uncertainty",
+            "Reviewed coverage, unavailable checks and remaining acceptance limitations"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-review",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-review",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "id": "bdd-gwt-test-designer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "408f4333b9716f373f1341793ebaa121451e1fb861e0858b44619f687a047dca",
+          "size": 1584,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "3d6a0f626e774d7e00a40ccd64bf041a37bcb5896d122d821cacd2f9aec242c2",
+          "size": 2190,
+          "mode": "100644"
+        },
+        {
+          "path": "references/design.md",
+          "sha256": "57647ccf981944ada443808704e3d8606db3a74dcf00d59a7c1bef4e16ccd1ec",
+          "size": 7821,
+          "mode": "100644"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "26a582af35e3530a0b4c583ade0894ee2d55bb0442b80e74a15acd31b9e5751b",
+          "size": 5713,
+          "mode": "100644"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "id": "design",
+          "execution": "instruction",
+          "inputs": [
+            "Requirements, specifications, acceptance or explicitly labeled observed behavior",
+            "Bounded behavior, selected testing conventions and existing authoring authority",
+            "Optional caller-selected scenario format and output destination"
+          ],
+          "outputs": [
+            "Traceable GWT scenarios with concrete data, observable assertions and test levels",
+            "Setup notes, expected-value sources, gaps and bounded implementation handoff"
+          ],
+          "instructions": "references/design.md",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Fixed scenario artifact identity, source behavior and acceptance",
+            "Applicable target rules, selected testing conventions and requested coverage"
+          ],
+          "outputs": [
+            "Read-only findings with evidence, impact, uncertainty and suggested corrections",
+            "Review classification, acceptance coverage and implementation handoff limits"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-test-design",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:references/GWT-TEST-HANDOFF-CONTRACT.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-test-design",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/coding-standards/test-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "id": "slice-implementer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7fb7542531e36732eea61fb73871c826e4e3a11878dc17afe171c5ec5df26b9c",
+          "size": 1647,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "f4765da3b8d1658fda734dd33021a92601ba19005a7509ff1089ebf79daf994f",
+          "size": 2612,
+          "mode": "100644"
+        },
+        {
+          "path": "references/implement.md",
+          "sha256": "81e5599181d601d5e592690551084e0f95460836a4d6a45c531cf85a407d1ae8",
+          "size": 8147,
+          "mode": "100644"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "id": "implement",
+          "execution": "instruction",
+          "inputs": [
+            "One bounded goal, intent, acceptance, non-goals and exactly one command, query, reactor or generic mode",
+            "Existing authorization, target normative sources and optional finding evidence kept separately",
+            "Accepted architecture, selected technology guidance, permitted paths and target validation commands",
+            "Scenario input when concrete tests are in scope and optional remediation overlay"
+          ],
+          "outputs": [
+            "Bounded implementation, actual touched files and compatibility notes",
+            "Actual validation outcomes, deferred work and scenario-to-assertion mapping when applicable",
+            "Finding dispositions when selected and any concrete missing-decision handoff"
+          ],
+          "instructions": "references/implement.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-implementation",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:references/GWT-TEST-HANDOFF-CONTRACT.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-implementation",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/transactional-messaging-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "id": "local-change-implementer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d26f17b90239157fa6d231f64d6f753a40e1b239cbab30156cb96599aaad0445",
+          "size": 1404,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "6061c93f386a8f778f07906e060bc3a32df2d63f21aa9644606000c84a8b7dd0",
+          "size": 2045,
+          "mode": "100644"
+        },
+        {
+          "path": "references/implement.md",
+          "sha256": "04f36d1232651500eb9aeb204041dc9581b465ca630b94c531fb8d153cd9bd01",
+          "size": 6675,
+          "mode": "100644"
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ]
+      },
+      "operations": [
+        {
+          "id": "implement",
+          "execution": "instruction",
+          "inputs": [
+            "One primary technical target, local operation and allowed dependency radius",
+            "Existing authorization, accepted behavior and applicable target rules",
+            "Selected technology, authorized edit destinations and target validation commands"
+          ],
+          "outputs": [
+            "Bounded code change and actual touched radius",
+            "Compatibility notes, actual check outcomes and explicit skipped or blocked checks",
+            "Remaining uncertainty or a concrete out-of-scope decision handoff"
+          ],
+          "instructions": "references/implement.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-local-change",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-local-change",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    }
+  ],
+  "shared_s3_changes_requested": [
+    "Integrate the five metadata-4 skill components at version 0.2.0 using these exact raw member rows, metadata, operation and optional-dependency declarations.",
+    "Do not auto-select engineering-common or dotnet-backend, or mutate source/target desired selections, profiles or presets for this consumer change.",
+    "Supply a verified selected installed-resource index and binding/authority observations with exact member identity and selected package/resource IDs. Consumer instructions perform task-scoped filtering and target-owned normative interpretation; no alternate parser is added."
+  ],
+  "verified_reader_seam": {
+    "status": "pending-s3-published-interface",
+    "required_before_final_delivery": "S3 publishes concrete verified installed-resource lookup, selected binding observation and authority raw-hash interface; align these five operation instructions to its actual names/shapes without guessing."
+  },
+  "scope": "Five instruction-only skill roots; shared manifest/catalog and target adoption remain S3/coordinator-owned.",
+  "verification": {
+    "direct": "UTF-8/YAML/resource-ID/Git/diff inspection; member hashes computed from current raw bytes",
+    "behavioral": "deferred-by-owner",
+    "owner": "program #322 coordinator / selected S6/P7"
+  }
+}

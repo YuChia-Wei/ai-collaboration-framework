@@ -1,5 +1,39 @@
 # Common review method
 
+## Selected installed knowledge for review
+
+For requested knowledge coverage, take the caller's explicit installed lock and
+selection, `project_root`, capability `review`, operation `review`,
+execution-mode, affected paths/file types, requested coverage and permitted
+target authority inputs. Use the distribution reader's verified installed resource index and
+binding observations. Without a verified selected installation or reader observation,
+continue only common work and report requested specialist coverage unavailable;
+do not fall back to source-tree package links or infer technology from a suffix.
+
+Treat metadata-4 `knowledge_consumption` resources as an allowed set, not an
+instruction to load it all. Intersect that set with selected packages, matching capability/operation/execution-mode,
+path-prefix, technology-profile and file-type selectors, and this task; load only the resource IDs
+needed for this subject. Verify each selected member's raw identity and the
+binding's raw target-authority identity through that verified reader. Interpret
+knowledge as guidance and examples as illustrations. A normative rule requires
+an adopted binding and the existing target-owned resolver/gate; the source
+catalog alone cannot adopt it. Preserve conditional applicability as conditional.
+Stale, ambiguous or conflicting authority blocks the affected normative
+coverage; do not create a replacement rule parser or ask again for unchanged
+saved adoption.
+
+Return a transient result with `status` (available, unavailable or blocked),
+`loaded_resources` (package, version, resource ID, member, SHA-256, use_as),
+`applicable_rule_ids`, `conditional_rule_ids`, `authorities` (path, SHA-256,
+selector), `coverage` (capability, operation, technology profile, status,
+missing) and bounded `diagnostics` (code, relative path or null, reason, next
+action). Name each missing package, resource, authority, rule or target predicate
+needed for requested coverage. Optional absence is unavailable; required
+specialist gaps cannot be reported as covered. Continue unaffected common work
+with the limit disclosed. Keep this result in the conversation unless the
+actual task authorizes persistence; never save installation/configuration
+implicitly.
+
 ## Establish the subject and authority
 
 Identify the requested files or diff, its base and reviewed revision when available,
