@@ -776,3 +776,19 @@ S5C-A6 and exact body read-back. Its five skill roots are disjoint from S3. Fina
 consumer instructions must bind to S3's concrete reading seam before acceptance;
 the coordinator will serially return changed component rows to S3. This is separate
 from source and mq-lab adoption and does not retire any retained legacy owner.
+
+## S5 consumer dispatch and adoption preparation (2026-09-24)
+
+The bounded consumer sub-agent started from clean 50adb657b388074e072c8a7ed15a93368a7ba149;
+#407's existing Project item was changed to In progress and read back. No new item
+was created. [Adoption preparation](reports/rc2-adoption-preparation.md) records
+the fixed source operation map, mixed legacy duties, minimal paired edit-intent
+set and fresh target baseline comparison. These are inputs, not adoption evidence.
+
+S3's attempted outgoing coordinator callback was rejected by automatic approval
+review for destination-sharing authority. No callback was sent; the speculative
+regex discrepancy in that attempt was independently resolved by the producer's
+direct code-point inspection. No schema correction is selected. S3 was instructed
+not to retry or publish the refused callback. The coordinator can receive its
+ordinary final response/local handoff through the parent event wait, so this does
+not block authorized implementation or require an alternate outbound route.
