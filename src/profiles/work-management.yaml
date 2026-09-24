@@ -1,11 +1,10 @@
-profile_version: 1
+preset_version: 1
 id: work-management
+version: 0.1.0
 skills:
-  - id: pr
-    version: 0.1.0
-  - id: local-backlog
-    version: 0.1.0
-  - id: software-development-orchestrator
-    version: 0.1.0
+- local-backlog
+- pr
+- software-development-orchestrator
+knowledge: []
 adapters:
-  - codex
+- codex

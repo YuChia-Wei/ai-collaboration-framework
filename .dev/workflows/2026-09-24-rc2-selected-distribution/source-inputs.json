@@ -1,0 +1,2661 @@
+{
+  "files": [
+    {
+      "git_blob": "78f0052e0c006c9431d4b0592a7a389af3056f21",
+      "mode": "100644",
+      "path": "src/adapters/claude/skill-entry-v2.md.template",
+      "sha256": "11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d921d032e",
+      "size": 1201
+    },
+    {
+      "git_blob": "3592b853bea3a18ebaa84ea1a2ee35db67392d88",
+      "mode": "100644",
+      "path": "src/adapters/codex/skill-entry-v2.md.template",
+      "sha256": "68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4",
+      "size": 1199
+    },
+    {
+      "git_blob": "a76b8be9362b062a1a4fa766e4c8f6581fe0b686",
+      "mode": "100644",
+      "path": "src/adapters/codex/skill-entry.md.template",
+      "sha256": "f181a38f61472e65594f8b5b0889e8d096b68bec06036c1f53a2ad2c2536137a",
+      "size": 1303
+    },
+    {
+      "git_blob": "fca5683977f2046233795428cc0c16feece19ce6",
+      "mode": "100644",
+      "path": "src/distribution/__init__.py",
+      "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25",
+      "size": 150
+    },
+    {
+      "git_blob": "a16c1a2c3607271af91cf46ce810510620925ac1",
+      "mode": "100644",
+      "path": "src/distribution/assembly.py",
+      "sha256": "b8a538993f2594fccdbbc5912c36a5e8f8feeb92d6a2782cb4c02700b6bf7815",
+      "size": 11564
+    },
+    {
+      "git_blob": "daeea6383d5e1299b1ee5ecedfb37303c8ec4e2d",
+      "mode": "100644",
+      "path": "src/distribution/catalog.py",
+      "sha256": "df3f8c1a4bf2bdd96e40f4e9d999801e39c71f4ee9b478b2a4da80a337916c43",
+      "size": 35018
+    },
+    {
+      "git_blob": "9db914bb23c0bb2230c25fae9bb645c6973e70e0",
+      "mode": "100644",
+      "path": "src/distribution/claude.py",
+      "sha256": "18957246af18bf5c168186605b58506ce08329a1861a1d038ab8a7dcd77775c3",
+      "size": 4685
+    },
+    {
+      "git_blob": "079f22f770f43fdac8caaa9cbc58ab6019634bd1",
+      "mode": "100644",
+      "path": "src/distribution/codex.py",
+      "sha256": "c6f8224e265f6ba5e037d358638885eaab76c1adb6f4b670e091dc8a2328f8d8",
+      "size": 7858
+    },
+    {
+      "git_blob": "2efd7220072336e29d50b2519400c4180af77fd0",
+      "mode": "100644",
+      "path": "src/distribution/content.py",
+      "sha256": "593891c340cd92097a09839b1848a1d602cb542f6bcd64cc464fafc42a8203e6",
+      "size": 13617
+    },
+    {
+      "git_blob": "5ca44e10bfe4ab4e4e6237d3f102d16dea16507b",
+      "mode": "100644",
+      "path": "src/distribution/contracts.py",
+      "sha256": "bb5f0bbd2b5c2796534d43727f9c2565d10aada033c3c2fbe325476681280215",
+      "size": 26620
+    },
+    {
+      "git_blob": "2919c7398c25af2aa983699d8508e4f46eb77d92",
+      "mode": "100644",
+      "path": "src/distribution/data.py",
+      "sha256": "a7a60fde09abb30bb6af9772e7ed6704f0e3b74c134b94e3da44d5fd10f12a1b",
+      "size": 9100
+    },
+    {
+      "git_blob": "2356ee6cede64e71a916339c5fa27a9ed691805d",
+      "mode": "100644",
+      "path": "src/distribution/git_source.py",
+      "sha256": "37060d072caba1420faa77933d0da32fb51b794a4fa4ff29c218cadfad6fd4bb",
+      "size": 7457
+    },
+    {
+      "git_blob": "fb40e1aa26a67248c25e463f860623048f69da17",
+      "mode": "100644",
+      "path": "src/distribution/installation.py",
+      "sha256": "43756f975b4ff49bdabc686224a13a935144621bc242a0bbd53ed87c48a41bc5",
+      "size": 42014
+    },
+    {
+      "git_blob": "11734e306b4f03c0ad678562a977bc4c30f2bcec",
+      "mode": "100644",
+      "path": "src/distribution/installation_io.py",
+      "sha256": "d84ecdd811ede66618bfc5ca5f932937cef2e4115b27f91d9abddfb840a6ac45",
+      "size": 18350
+    },
+    {
+      "git_blob": "8d657d10064a95b78f69547544c11dfe9e817e33",
+      "mode": "100644",
+      "path": "src/distribution/installation_plan.py",
+      "sha256": "83cecdbd40589fb47bd103fc8d52d687dcbc47f03057b35f554a10c68bb5ec59",
+      "size": 25581
+    },
+    {
+      "git_blob": "2d243ea21ab9a27e98901b0870db23ff40cfcc89",
+      "mode": "100644",
+      "path": "src/distribution/installation_state.py",
+      "sha256": "18c1f1df6df8a3a96e0a1eedac4fce6f44230a1c6e1fffe13a4bf0a706ccca23",
+      "size": 58097
+    },
+    {
+      "git_blob": "d6bdb5147678d62580cdbb392c2c9cae53877298",
+      "mode": "100644",
+      "path": "src/distribution/maintenance_coordination.py",
+      "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a",
+      "size": 5704
+    },
+    {
+      "git_blob": "0bd815fbd9dabc8b96f7758bc77e7d03f437cf6d",
+      "mode": "100644",
+      "path": "src/distribution/manifest.yaml",
+      "sha256": "8890c77a56e678ba743801418c6d6a2d7ea0d8c797d403811f42a65fbe747fc8",
+      "size": 53686
+    },
+    {
+      "git_blob": "45fffbd3a273e8ba0502b9428b9d426c89cdda0e",
+      "mode": "100644",
+      "path": "src/distribution/package.py",
+      "sha256": "f0677644df30f0d9f211dc669da6ecdb5ffcb27a90e996b4b9e036d2e610281c",
+      "size": 18372
+    },
+    {
+      "git_blob": "22fb3136fa7ccf5d55e0c3078d13b68d05933edf",
+      "mode": "100644",
+      "path": "src/distribution/selection.py",
+      "sha256": "d36be253554e30bffb98f3740e35ce9909fb638c171d68435c7bfc46beaf68fc",
+      "size": 8608
+    },
+    {
+      "git_blob": "c227ab7974c0222194580ad25e2575bc019a5061",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/README.md",
+      "sha256": "b06ec5687a06f90dc2a6f2d7846488b90e84ffc7f55c48637b61165f6678320f",
+      "size": 3690
+    },
+    {
+      "git_blob": "48e636917b52e1af779cbcedb6d5027af12c701b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/content-package.yaml",
+      "sha256": "99972262191ba03a98ab68b543776aaf60e60d33564023d87f676aa479623a7e",
+      "size": 247347
+    },
+    {
+      "git_blob": "1c10dcee5163d03a83e59803b385a3d2121fe788",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/design/architecture-playbook.md",
+      "sha256": "789f7a337009411400c941c63224d0db817f2e1f84414e446bf024844f7123ed",
+      "size": 4636
+    },
+    {
+      "git_blob": "400b35010c8fcfac05a06487b424a235a00c3bb0",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/design/design-routing.yaml",
+      "sha256": "4ad3df8010a2fcdf4f0a774f6e0dcbfac9ad3002d07d39c346c2b2506a115804",
+      "size": 660
+    },
+    {
+      "git_blob": "06def4db477047ab65b9ae322693ab1a78029ca5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/design/source-map.md",
+      "sha256": "a717edbd540ddd135d34d675b968ebb1cc7e1fca3496e5d2c5cb5d1f3b324b69",
+      "size": 4114
+    },
+    {
+      "git_blob": "16afbc344152cd13602e4f99e99ae72788d7f789",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/engineering-rule-catalog.yaml",
+      "sha256": "1222842d9153acb61b08c86bc2d45ceaf965e0466cd7bd279a372453a6c8b4be",
+      "size": 57155
+    },
+    {
+      "git_blob": "5bade9b970d2275ff8744e334e66120cf90ad804",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/Plan.cs",
+      "sha256": "91c91645b798a3dd8e97d034ca7886cfb36c0dfeabe3f9dac7e9c52ada22f2e7",
+      "size": 17366
+    },
+    {
+      "git_blob": "058d486603916eb58f6a68335aa2c2f4fa9d893a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/PlanEvents.cs",
+      "sha256": "e599563a7b932cf898a0f405558496868b4c7bf627efd10bbde07bd04732b879",
+      "size": 7682
+    },
+    {
+      "git_blob": "09abd6495426d5917f65cf48c5d0a1308e93d08c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/PlanId.cs",
+      "sha256": "a75bc4281e8a4298cb91ed6f7021bf1d2347072597321ff0c6534819e387b4da",
+      "size": 509
+    },
+    {
+      "git_blob": "a37a8f2b4ba0eb625b95b24ab247aa02233e0e13",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/Project.cs",
+      "sha256": "4adf7253a10bb4b2f04d4bdc73eabf79af27a8759514894106213135edb44d16",
+      "size": 3654
+    },
+    {
+      "git_blob": "9b9d4c0f8cef7fd93d10351f6d9bef6f290d1526",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/ProjectId.cs",
+      "sha256": "b9542cb03edb026360f37e0313e9c0adf0916f0f972fb8d680bf34eabafdf6c9",
+      "size": 524
+    },
+    {
+      "git_blob": "07b1e65233128415d730299b3b661dfbd44cb2f4",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/ProjectName.cs",
+      "sha256": "1aee24e19038b87740f6678ec253524349912738be2bf35de002c0c1d7e510b3",
+      "size": 460
+    },
+    {
+      "git_blob": "4e376b372993613c922b8393754c502e12ab7beb",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/README.md",
+      "sha256": "250064e67a3a7d59b540e3f14c613c5e2984f3b0b1fbc86b9f3ac10601b668df",
+      "size": 5235
+    },
+    {
+      "git_blob": "255629d9117e74df14f87c05e096573f1f3833d5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/TagEvents.cs",
+      "sha256": "3ef18a99cf97ccd4e6606d42bf8b605898e89874972767583cf43fc9fb8d2ad2",
+      "size": 3021
+    },
+    {
+      "git_blob": "56fe1d1dad404a6005e943f61554f08c7a1d09da",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/TagId.cs",
+      "sha256": "712afbcae4461881e1c93d9e00c5cda0819b2fc4f88cbffd48936147203d0920",
+      "size": 573
+    },
+    {
+      "git_blob": "2ea922f1a734407df7273c9eb665d9a99dd9bfee",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aggregate/TaskId.cs",
+      "sha256": "7456f890cc3622400881ff80af91f775a93d853422033c55b65388e16483fde2",
+      "size": 509
+    },
+    {
+      "git_blob": "5d64e6ba6579fb66098c8fd941df0a71b57e3a44",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/InMemoryRepositoryConfig.cs",
+      "sha256": "913f48db1757afb653bdd9813b3a20c9341d14c641cfa9c2fdb5e3f023af4d0f",
+      "size": 1268
+    },
+    {
+      "git_blob": "aa26210617da8cec9dc65b66d654383a6834862e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/OutboxRepositoryConfig.cs",
+      "sha256": "a72c17cb458b6844e4107703eaf9b7183fbd93663814cb6bc6337fc54a05f50b",
+      "size": 548
+    },
+    {
+      "git_blob": "893e951ddac9b628f4fe28581eff1d98c30ea3a7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/Program.cs",
+      "sha256": "aa4adae87d3725a5564a0b4a77949d4ae3ee1209d863aef2615ef931a56b34cc",
+      "size": 927
+    },
+    {
+      "git_blob": "a5115339e6564c3a89a5df9ad1f59b0768a36a12",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/README.md",
+      "sha256": "2d45c26e8ae3d001a8cd0b50d01edd99f4deda845c44a16867861baed9384863",
+      "size": 1349
+    },
+    {
+      "git_blob": "5bca4394f431f3de0e8116150f524d34f441f1c5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/UseCaseConfiguration.cs",
+      "sha256": "c10ea6f869f00b13bae15193013db9788a26b7895d780620aec587560d2d2efe",
+      "size": 1239
+    },
+    {
+      "git_blob": "8b562617abed890db4379203434c753492f2167a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/appsettings.InMemory.json",
+      "sha256": "fe955c04b8f70ef4049117f49bfeb0e44ef525b27293126edf13164d28122d11",
+      "size": 158
+    },
+    {
+      "git_blob": "c20815476215d7c0acf6931f5fe4dfb566d0fb84",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/appsettings.Outbox.json",
+      "sha256": "96743debca773a451ac90fe04c658ea88817f01e128b6000534dc062900d24cf",
+      "size": 422
+    },
+    {
+      "git_blob": "9259082da714cb6732894f214b32e32c03179c10",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/appsettings.TestInMemory.json",
+      "sha256": "fe0927545098650eda1076e0779e5fe8edd12ba4cd86518ada78deae17499044",
+      "size": 158
+    },
+    {
+      "git_blob": "6630e99ccce0ad0acbfa764c371a1ea98cb17f51",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/appsettings.TestOutbox.json",
+      "sha256": "a989d62b535b9414d005eeb99f9a2bc4bab6d242bf4692f7c33bc8540dd1ccf0",
+      "size": 810
+    },
+    {
+      "git_blob": "e8c9bad00134edb23c487c8a0b1626ac3e833ae5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/aspnet-core/appsettings.json",
+      "sha256": "c0ccf4cdcf41b2fe16f4e8fbe66f8b35666b59567db07cc7b13d81b083e657fd",
+      "size": 516
+    },
+    {
+      "git_blob": "cdaf73884cc0a9e53053b061b05bbf935910f736",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-gherkin-example/README.md",
+      "sha256": "1944edbf4985d0a52b76a58a1fe564da9ee8bd00efcd58bb6bee09e142e20db4",
+      "size": 1285
+    },
+    {
+      "git_blob": "5d8c2c45295a668750a9bec63e2e4d9b4200bee7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-gherkin-example/aggregate-outbox-repository.feature",
+      "sha256": "7540ee3a3373dcdec391318883866c18899d0a73e235c9dcf565ee6f757d1772",
+      "size": 1011
+    },
+    {
+      "git_blob": "3a1e9dc13fa957211fb9c430e514b476544c5c5d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-gherkin-example/complete-usecase-with-rules.feature",
+      "sha256": "71149a8125c22ccf809219d82a1a11bbb2bf1a225233d70a985d2f2a1eb6d48a",
+      "size": 1971
+    },
+    {
+      "git_blob": "b7f67053110476815f664290fa814e4a0f1ce8bf",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-gherkin-example/create-task-usecase.feature",
+      "sha256": "7413888d141492f2a7058e090939f6fa24f9dd2ea3d3c96f0ff0df1aee30b7af",
+      "size": 954
+    },
+    {
+      "git_blob": "d56f106123f8f85bb806c6fb087dd583bfc92546",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-gherkin-example/rule-design-before-after.md",
+      "sha256": "0420367d66beee8d5c987956cc4884474a301a384a8cd27d04ce9770984f624f",
+      "size": 1564
+    },
+    {
+      "git_blob": "377b9aeacc365804b329f80c005ddd32272ac9a0",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-gherkin-example/rule-migration-guide.md",
+      "sha256": "9c4059e4447a5a65bb0ebecd8a56318f154e96019f8ef71a59987780b121cf80",
+      "size": 1233
+    },
+    {
+      "git_blob": "9fa230022de1090cdbce508ff238c01199bea22b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs",
+      "sha256": "1565fc720856feae8f25cd2d7a6ab70f8e392670d2cf4748a4fea8abb334784f",
+      "size": 3483
+    },
+    {
+      "git_blob": "4d3f5bbe35e920c97511c01b8567bec32b20d17c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs",
+      "sha256": "82ae8e1cc37e04f98a2f13ab4f6525a72b5ddcefd37b2cf301ade3358130340e",
+      "size": 5861
+    },
+    {
+      "git_blob": "65e4cbd3659f9dd81d59836ae2a649aaf3f0ebe8",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-given-when-then-example/README.md",
+      "sha256": "6fefe637b7cd96301f1d8acfd7e42036f5ec348c17b3ffcceb6440081dcc2f6b",
+      "size": 1094
+    },
+    {
+      "git_blob": "64d2c8308283ef9f690b3aa4b4af22c8ccfa4880",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-given-when-then-example/rule-design-before-after.md",
+      "sha256": "88d984fca4fbfcc151f3f365af47e9a58072c9e18c3353a6d30da22f13556e78",
+      "size": 1541
+    },
+    {
+      "git_blob": "7d5fcec922c53d073b6dd3a7742f128308dbcd62",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-given-when-then-example/rule-migration-guide.md",
+      "sha256": "22a94b0d2607c46f5e65ba579dc54d4ab0037389cbe8f0d41940666bacac3494",
+      "size": 1400
+    },
+    {
+      "git_blob": "6b533635ba203e9fd556f9c24cd17913a0b76649",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs",
+      "sha256": "a25b4746585d9a2fdfd8295ad04d62fc48e303f4de169e399d4eb6428c70aaea",
+      "size": 1223
+    },
+    {
+      "git_blob": "50eea4f6888bf0545b27c958033b3b654430b362",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs",
+      "sha256": "80cb56ce50c933992fde03fe13f46abfa143b242968b7ccdd3f9540778201acd",
+      "size": 3476
+    },
+    {
+      "git_blob": "4c076f08b67c3b87f8bac8185b481514433f091c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj",
+      "sha256": "4ce195e23fd752c0c5e0542d4010cc9d99153018e21dd196f52cb2fd2717fbf8",
+      "size": 209
+    },
+    {
+      "git_blob": "5fb1432247fa4c4ed0cea6f4bf06b6996c897a3f",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/Directory.Build.props",
+      "sha256": "94dd99e37b6d6d66fb4bbc35cec6dedd563d18388ff7626dc78ad0aeca1e0cce",
+      "size": 613
+    },
+    {
+      "git_blob": "765346e5343d46ac83654843869dc06b65b2bdc4",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/NuGet.Config",
+      "sha256": "aec93b5637ab6d62470979a008990a4a336a287ab83a3f2541849ae735674055",
+      "size": 197
+    },
+    {
+      "git_blob": "21bf9e913fa3246e5a1095ed5e5b025343aa8649",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs",
+      "sha256": "37ea6c47634bdf622e9028e5a762a6f2b848091181e3c86d54a42264f24af74d",
+      "size": 3283
+    },
+    {
+      "git_blob": "d983fdbf39f1239d2ccd53bbe12074ed974dd524",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj",
+      "sha256": "c145a98638224354a344543697ec1a508a23a96a1a08bbf8bb2a4bddc28002e6",
+      "size": 140
+    },
+    {
+      "git_blob": "7b353570f776d2a09672185bd28a24c281bdc040",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/README.md",
+      "sha256": "eee7d6ae67a10e721d6e6184d8894984d67d34adf0e2e8dd4cb6ffdcdd7d40f7",
+      "size": 3595
+    },
+    {
+      "git_blob": "5e42d2b240f1c6507e6218ec49ebf6a2fbe59063",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/bdd-step-methods/scenarios.md",
+      "sha256": "5a7be6ed0ad207e42ee78413dd71cb316f2ef8a3ff6cb4709b3b6233b62ef3c5",
+      "size": 4442
+    },
+    {
+      "git_blob": "42c457fe22314a2cb1b13e0b50bee3f86bc95586",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/contract/CONTRACT-GUIDE.md",
+      "sha256": "52748ae107cbe0ad29e440b894b2fb468a7ee0139816b3d25ab5395d1c8b86bc",
+      "size": 2682
+    },
+    {
+      "git_blob": "0d6fe6317c24f53699fe25e7a607a3a2eb7e3185",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/contract/README.md",
+      "sha256": "70ac235a3b6497c1020781db4792d297b4e4d78baee87b6caa66235a1f22f370",
+      "size": 981
+    },
+    {
+      "git_blob": "d319d23991f1780653da039ed490e8555874d9ee",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/contract/aggregate-contract-example.md",
+      "sha256": "e678084c6488869656e864b5e3aa66d869a6105fd357f7fa1ad7411f9b75f6c5",
+      "size": 2385
+    },
+    {
+      "git_blob": "256ee0308a5bd4123827689e652e36958f58637f",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/contract/usecase-contract-example.md",
+      "sha256": "ca4b4db25ade0d016f3474d83529f468f6bebf58d08ac2ac2c1a634678be7c83",
+      "size": 1587
+    },
+    {
+      "git_blob": "b327b9c668b669fcc70e8e4ba022a3d1dfed4a9e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/contract/value-object-contract-example.md",
+      "sha256": "70dac70e4a585b87a54f4fe5e4bc63ce78659caf714824cc3331fc30199b9bb8",
+      "size": 766
+    },
+    {
+      "git_blob": "f9371d2b9c3619bdf308ed6bf7aa68542a4de206",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/controller/CreateTaskController.cs",
+      "sha256": "d139f9a36e1571e80221447aa1192af5769c180f2fd4b8782bfb8a2dade57f58",
+      "size": 1963
+    },
+    {
+      "git_blob": "2e0cef0450a9dd7aff366f16dc55c74e9d78c2fc",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/controller/CreateTaskRequest.cs",
+      "sha256": "e5fc3fa24a41c426a7411d682aa2e756fb8dda811f35cc18530450c37fad4221",
+      "size": 175
+    },
+    {
+      "git_blob": "e7fc4b70365c358bb4594916d055480d1f8cb054",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/controller/CreateTaskResponse.cs",
+      "sha256": "c5c69bccdfbda4fb84540e9801e0839c1435dec302af3cfb8408e8424c2407c6",
+      "size": 210
+    },
+    {
+      "git_blob": "76943419912d348bf2d53133e6c32e96b9d6fb50",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/controller/README.md",
+      "sha256": "b73ac5f9848101f22320761427db41de12ca4810da98f6305d7ad48434c30b76",
+      "size": 2287
+    },
+    {
+      "git_blob": "31bca7f78d0078c0ec8634e89f4dda51f51abe77",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/dto/PlanDto.cs",
+      "sha256": "11dc3914fb5ddb3de27f69561e42c2586e8799d601db4cfcf33fd1025fa29b08",
+      "size": 1130
+    },
+    {
+      "git_blob": "677872ca69d7208f3938ea76e7a64c1b198cff9a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/dto/ProjectDto.cs",
+      "sha256": "f5a68cbcb7865a4b44543334ca15800fc13699e29ca78554ff9d8d9347b9ceec",
+      "size": 2217
+    },
+    {
+      "git_blob": "3b924ff4b90f6cfbf52e6700f038583c00e43ab2",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/dto/README.md",
+      "sha256": "53ed08c66899b66ab815ae60d58b95705b3930a41ba07fed8ec48d7ea34bc93a",
+      "size": 3244
+    },
+    {
+      "git_blob": "23ea821332689b04e854c795ac56253289827c97",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/dto/TaskDto.cs",
+      "sha256": "b50a397f123d8c7ec9e4308630a80ba3bfa9abf9069fc0586d28b31d8de550ab",
+      "size": 4431
+    },
+    {
+      "git_blob": "f37006fddf42da9bd081870e951ba9fb6bb25617",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/README.md",
+      "sha256": "4980eee3aad090a3cb4fdbf28476ab5299656a4cb22a021ca230b50f16f1cf34",
+      "size": 1186
+    },
+    {
+      "git_blob": "dd4a0c8c4945aa549a706d35ae978483a5566e8f",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/base-test-classes.md",
+      "sha256": "f1d4fec4dbaa11b636e14afaa112e6ef31461ef159a1c17f921901377ca9b3bb",
+      "size": 2151
+    },
+    {
+      "git_blob": "6d6d3f255f18968f1b37abe42bd0cf70b00d9bbe",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/complex-aggregate-spec.md",
+      "sha256": "55a1b93a3be8068f2037032395fea9a66b7c8825c42f7685ebce0462928beb5f",
+      "size": 2303
+    },
+    {
+      "git_blob": "427c6a6531a17b7db29623c2358381e7d3031b1a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/local-utils.md",
+      "sha256": "fadd6df3930ae206e2d66662cb6c327e17fce6b325d31979ddc3fb52a1a7f7fe",
+      "size": 1824
+    },
+    {
+      "git_blob": "4062c2924fcb1e830e3caefe8fba73e570ae7690",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/reactor-full.md",
+      "sha256": "bebb873d4e3e31a0de6ab1a9a02500a0a9ae7cf8c3ed689d63481427af4a3973",
+      "size": 2794
+    },
+    {
+      "git_blob": "e4acdb0a08d5494ed64884d1847fd9bd9cd59aed",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/test-case-full.md",
+      "sha256": "264d602f1f6d8dcc8bb71898d9a37711c98589aefb74106a638615eae2113b92",
+      "size": 1720
+    },
+    {
+      "git_blob": "bba9470c81fb4e76e9a11f87b9dba68e2657412c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/generation-templates/test-suites.md",
+      "sha256": "56f7d10ad4c01eceaf9eb758e1cd39bf724472652c6ac4f7e59791414a0aa70e",
+      "size": 968
+    },
+    {
+      "git_blob": "3c2de4794a0d2a14d33d3ed51dddeb31d5fdf117",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs",
+      "sha256": "e0b5fad8c330250be58dce5de388207e4d8ce83a8df7d2fa0c5fa3f870fb73b4",
+      "size": 1083
+    },
+    {
+      "git_blob": "96214e54303d240f238e8217f0b82aee92c57d31",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/EfUserArchive.cs",
+      "sha256": "c1dc7d559f4d2810ad8852ad0572a36c6cb2c9b48c5f4e7316b35819622868ea",
+      "size": 634
+    },
+    {
+      "git_blob": "42d653c76affed669f9c552e4a6d73b13e611264",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs",
+      "sha256": "90812dc094b2f7b8a29e62c73a3d4ee15b76f190d1c0f0518302cff7cc2d2324",
+      "size": 2978
+    },
+    {
+      "git_blob": "4f66f101f158c253748a204087736256917c82fe",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/FindCardsByTagIdInquiry.cs",
+      "sha256": "b1cfe3047154471c9ccf81e58c61199cd572ee5fca5b49f1fa9f229987e7cb3f",
+      "size": 222
+    },
+    {
+      "git_blob": "d79d9f159e4dd9cfb5e371a384638f8dfef181bd",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/InquiryContracts.cs",
+      "sha256": "50426ae182d7aba37def8baf4d9aea47c98f5c562602e78aa66b878ad2b7cf14",
+      "size": 351
+    },
+    {
+      "git_blob": "1d9b338584f0bf8526ad9c78130e118907f3676a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/README.md",
+      "sha256": "8064c11f325ae847c4983691d84b9d8eb6c6689e7088e8bbdb2e7026f7d5a73c",
+      "size": 2768
+    },
+    {
+      "git_blob": "336582d50a57c7ef59fe9ffd99598b493953ec4b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md",
+      "sha256": "f5c5791164704b09b43c141e4c6f27df67c63ac8aa14683e34699e58c4686e6b",
+      "size": 3148
+    },
+    {
+      "git_blob": "d802cb3daf5aca7563cda74110c50036f1ac6c9c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/UserArchive.cs",
+      "sha256": "f0b57aa8dfdd2463ce387bce43349fda8d2d684b121ec68acfee49e145934ada",
+      "size": 320
+    },
+    {
+      "git_blob": "127b639a7cc46981830107dd4e180f698dedcf89",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/inquiry-archive/UserDbContext.cs",
+      "sha256": "c1d136b992a8d97cc197a45e3d3637a158aae75006e5b0def8a65821dde5bf7a",
+      "size": 227
+    },
+    {
+      "git_blob": "88691762251215114571f814ac44caad3eac64c1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/mapper/PlanMapper.cs",
+      "sha256": "e2ca70fdbd21d8334ffaf68482d40b66ea1370f206550a0d4ef27067aa0f88e4",
+      "size": 9357
+    },
+    {
+      "git_blob": "c8bf66f178c41847e67430c189ce306efacdbb66",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/mapper/README.md",
+      "sha256": "204a304a0af3cdc9199abecae2204d0c47645c03c69da9e9026fe62d4ec106a7",
+      "size": 2050
+    },
+    {
+      "git_blob": "6cb46ac9faf1447b43e65abc3cde3368e0a18e36",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/mapper/TaskMapper.cs",
+      "sha256": "54f053ccd695dcea44f4b15a077beef5ad5f99ff42c1d429c7d9e6c5c949ed41",
+      "size": 2051
+    },
+    {
+      "git_blob": "4a344dad6cda5a2323c41c88ec2ae1be42340e28",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/nuget/Directory.Packages.props",
+      "sha256": "3085fea576d10f97fe3140079c97e797a45b9934e8d72266eb9add0239d068e8",
+      "size": 2473
+    },
+    {
+      "git_blob": "0918384c886799fd8f3d632976f4a34f2a8c5fe6",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/BootstrapConfig.cs",
+      "sha256": "f734384895486795fa919e83be33d3f7b32fdfb9d8cf64ea1dcc79fe70d02624",
+      "size": 1375
+    },
+    {
+      "git_blob": "2ab7df73a19e98bf9d569adec0f7beb76788a530",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/DataSourceConfig.cs",
+      "sha256": "9abdf2f1c29c885e278c6b32946b706f2441e37b3d703b3b6970ed76f610d4c5",
+      "size": 619
+    },
+    {
+      "git_blob": "a60330cfce89f291bc44b0033db6f2902e919cdd",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md",
+      "sha256": "0e891b3cd6a8209b31bc0316b078ea4bf7649d786e15eddbbb3166503b711e5e",
+      "size": 1861
+    },
+    {
+      "git_blob": "c31769861114561d2363a3a48469cceac99dc7ef",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/OutboxContracts.cs",
+      "sha256": "d1a7574eee3f58832ea2906b852a130caaab867fd158e713bdee91bf8a90c539",
+      "size": 374
+    },
+    {
+      "git_blob": "aa894e481a0e6ba3cd0858aa6a5e410356ab8abb",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/PlanData.cs",
+      "sha256": "75d5a7b62d30e4ad6c1243ead5bad709b4460c1486aa5504a48bc372c5d695c5",
+      "size": 1359
+    },
+    {
+      "git_blob": "fb6bd892c670bf9a8953b1e3c48d6d8a81c5d49e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/PlanDbContext.cs",
+      "sha256": "0f319cacfe06a47627787c977dc2bfc9079174e6c4e70d7922caa71f8d2e81dd",
+      "size": 1173
+    },
+    {
+      "git_blob": "20498b1a7cb9f2d26a5ed99623b376bb9c093446",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/PlanOutboxMapper.cs",
+      "sha256": "2c8d33ebd62e047389800f29b6f61ac2987ec26cd7a5f559898036ac3c33c6af",
+      "size": 4423
+    },
+    {
+      "git_blob": "9a23d948dd98321c7c3bb53fe86f70269d9416f2",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/ProjectData.cs",
+      "sha256": "c1744ead5e0f55f1734aab8068dff7c7a4750aea1e899f8385980d3688b6866e",
+      "size": 732
+    },
+    {
+      "git_blob": "c94f1b1e64e8ec368b6c40de33049e2ba880361d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/ProjectOutboxMapper.cs",
+      "sha256": "c07dc74dcbe29dde9858635831758fa596dd69019d402389ffea00371c2cdc60",
+      "size": 1652
+    },
+    {
+      "git_blob": "d75ce2355607d39bcf8132c6e47948e9f71665ae",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/README.md",
+      "sha256": "e0ecace6a6cf3dc2fc96f750aeecc81a9054e186933d1320c2e92bf4801806b9",
+      "size": 3062
+    },
+    {
+      "git_blob": "3b22de8368f5bea15cfa161b1dd7e3581d2bf8e4",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/RepositoryConfig.cs",
+      "sha256": "6a9a75033ef91ae434ff4b16bb1c9ff903c957b94d2449df7b9fd7a07e319632",
+      "size": 1783
+    },
+    {
+      "git_blob": "150bcfd917df509172c07e9c64db16a07d472ce7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/TaskData.cs",
+      "sha256": "602aa3d1945ec93fc88d3b81e5e000717f8645e14871c09de7e2cf2e5b23bba1",
+      "size": 1058
+    },
+    {
+      "git_blob": "307f605c334fc3ff2c860d8a4a51998ebec03530",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/outbox/TaskOutboxMapper.cs",
+      "sha256": "20119b0c91025ee00424fc437d146e742be58bf4f2311cfe7dc00099a0e746ea",
+      "size": 1943
+    },
+    {
+      "git_blob": "1bdc4c5073be65f3b94079b2599fd4460a886c87",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/profile-configs/event-architecture-reference.md",
+      "sha256": "04af407a83d5d4d48a05ffdb78ecb766db942aec67b8679f9781cad2ed3d418c",
+      "size": 1505
+    },
+    {
+      "git_blob": "0c9ebc8edd4dfcbfe1b5b699991387d27b672df1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/profile-configs/inmemory-profile-config.md",
+      "sha256": "1d497b7112642453554bda06489bde48ee50520a5ed36f4bdeff37b32ae801ba",
+      "size": 953
+    },
+    {
+      "git_blob": "006aae9545aab60f504ecf8445b4c72f94fcd051",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/profile-configs/outbox-profile-config.md",
+      "sha256": "5ffca30e286c4aaf85c5cdc99489fd8b433c41f174ab73cddcc88a40e415e773",
+      "size": 1225
+    },
+    {
+      "git_blob": "709e2db0c64e671b7162a9b7ede1fbb02a6f2b7d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/AllTagsProjection.cs",
+      "sha256": "907d26a098215703e3690ebe27656b3348105ae3c717c0ebfd8d6f94e23e9ca7",
+      "size": 342
+    },
+    {
+      "git_blob": "a23ade5c1da29fa6031e6fffbc1275c2e8025b53",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/EfAllTagsProjection.cs",
+      "sha256": "ba6dfb5e6244002c4818034b1d0bf2cab9b02ab55bcb00f3cda6f0f337da9131",
+      "size": 665
+    },
+    {
+      "git_blob": "41e7f4a855ea7be9fc43bcfe172f5b5d65653913",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/EfPlanDtosProjection.cs",
+      "sha256": "df528b4e6301b151aaff8811e79e907b31b12b523c3a43525fc6a6ed95e624a8",
+      "size": 1223
+    },
+    {
+      "git_blob": "52b788211563a7aa946a4d9d909ecf4c2e9567f1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/EfTasksByDateProjection.cs",
+      "sha256": "922bc6a605eb277962213135b647b03b07041d18f78fd055856d7e771aaac1a7",
+      "size": 1075
+    },
+    {
+      "git_blob": "1d639e06b0974502609a67c4858ac8b4d91f04a0",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/EfTasksDueTodayProjection.cs",
+      "sha256": "932c9bdfd16cf6bad0e36969d406570521cfbecad0bd2343d034fc4c5f45d4da",
+      "size": 1065
+    },
+    {
+      "git_blob": "73a30c12f9ac3b12096e43d6e57a0d8a4adf4e17",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/PlanDtosProjection.cs",
+      "sha256": "d66d9c409726ed110030b0f5afb06ef39a1ec7783ea942fc74332264d824a4fc",
+      "size": 552
+    },
+    {
+      "git_blob": "2488cbf8c3e26aeaeaa71b49efd1ed56e79d6d1a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/ProjectionDtos.cs",
+      "sha256": "263da975ff45931a9b93482cfa43b3e1e2c5794c1f486553716b95d297cd66f4",
+      "size": 317
+    },
+    {
+      "git_blob": "1aa68ef104f537a33fa96514934a380201ad4afa",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/ProjectionModels.cs",
+      "sha256": "5f809dbe0f37e631e49ab33b6470c35755f269f20464d7044f6d217b322c47b2",
+      "size": 2608
+    },
+    {
+      "git_blob": "a175ed0e08e88b85237bd83f25c1a184f7765f8b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/README.md",
+      "sha256": "673b6a135e664e29dc07ea14cd744bf388abb7edad00bac2f29a233cf74e25c2",
+      "size": 1835
+    },
+    {
+      "git_blob": "78901ce3e61cf8ed7509668998a2c85dea6f0ee8",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/ReadModelDbContext.cs",
+      "sha256": "68f628338d04d8e07632922702eeb7483e867ac51193d681839280b0abdf5fa2",
+      "size": 317
+    },
+    {
+      "git_blob": "1d18c081448d4917739872dcccdb5f0095086f71",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/TasksByDateProjection.cs",
+      "sha256": "860d3751e7f756fb2ec33836342b5feca346597e30066c690dcec950ab58c466",
+      "size": 476
+    },
+    {
+      "git_blob": "4e87d2c0ece661ed1631bcf7912af9d5cce9a36c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/TasksDueTodayProjection.cs",
+      "sha256": "5ed324ae5c98a9e0cf0477ef43e7466b422837b626938dba5dd9ab45e2731fb9",
+      "size": 376
+    },
+    {
+      "git_blob": "979a2c5089e04ef9d2d2abfdad61c863d4261a5c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/projection/TasksSortedByDeadlineProjection.cs",
+      "sha256": "408157a006f1923f6e9910077a543c2f9a6f266a1d1bfc490fc43e796a36bb23",
+      "size": 494
+    },
+    {
+      "git_blob": "433b2fe25ad6ee7bd5f67fccbc2438330e99d5ca",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/reference/README.md",
+      "sha256": "b6247e7a9d3dd9908380b063fa4b3764b4250f49b63ff549facc2fe0028618df",
+      "size": 959
+    },
+    {
+      "git_blob": "d6b9b83511c4350747ef0571e55959f62e163501",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/reference/bdd-gwt-test-template.md",
+      "sha256": "6b463009d6056810fe89e403e57ea05ec5302d90672e4d1a6497832ae6406a84",
+      "size": 2640
+    },
+    {
+      "git_blob": "52aef98184d4af88693f01f182cce5215168b738",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/reference/nuget-dependencies.md",
+      "sha256": "1001db5a77849ca4a5c07596cccc9d35f1b610df7b0ddb0081f09f417b6eed2f",
+      "size": 1706
+    },
+    {
+      "git_blob": "93a52e9184978f6f22cf87a5d056b248c7375132",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/reference/reactor-pattern-guide.md",
+      "sha256": "62cd639d6565647f194f0b9c43e47664f2e851041fe070ab08c9bfdb8d29fc28",
+      "size": 3031
+    },
+    {
+      "git_blob": "42e87a7f97003a7237533b6f62dbff836dcb37e7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/use-case-injection/README.md",
+      "sha256": "44aaf7385d2491fb2d0606828a2b299cb3b03e0ce22ce389d8aa50ac469c05e5",
+      "size": 1879
+    },
+    {
+      "git_blob": "cee4d6ee748ec6edcf5c4122afeeb559b0cea307",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/AssignTagUseCase.cs",
+      "sha256": "239fdc4f86d0ee74d4b2cbde9a619678b105b58865fe4054d0ccb406a9b236f2",
+      "size": 2864
+    },
+    {
+      "git_blob": "a69c44c7eeab2b00044ebaad862f44e6c2640e76",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/AssignTagUseCaseContract.cs",
+      "sha256": "cfb670fc1344ba4e698302e2def25422fbf869e64eb1def34fa44eafe1372ed0",
+      "size": 573
+    },
+    {
+      "git_blob": "f14ae8c4ecbe4c16d2f0c74eb1f90c03adeefb05",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/CreatePlanUseCase.cs",
+      "sha256": "a372f386f4240e7a1a85f466f4aaa8e0460448fdd4f53f088641fee6e2cceda7",
+      "size": 1792
+    },
+    {
+      "git_blob": "0d2f8093a978cb5f93b9fa341f09cb9540b503b7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/CreatePlanUseCaseContract.cs",
+      "sha256": "d36668252f0f796599c56b882326e4304129f075e735a8182b6ca3f8a52ee874",
+      "size": 527
+    },
+    {
+      "git_blob": "e437470b98c8a69c15168fe11d437bee22b966d3",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/CreateTaskUseCase.cs",
+      "sha256": "510660a0b8803eef8e98ec35ddaff0464644cc18964ef74dc1a72b7b15f2a03d",
+      "size": 1804
+    },
+    {
+      "git_blob": "6b80a8cb34498080c8355b8e4229b36d781a2307",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/CreateTaskUseCaseContract.cs",
+      "sha256": "6c1ffba8fbddae24304990d4252a4526c3faed01099106e3bd9c1bd3de46f659",
+      "size": 573
+    },
+    {
+      "git_blob": "261b4e2780414926b57382ea2bf1af9d279c0566",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/DeleteTaskUseCase.cs",
+      "sha256": "f303c70ea638b0c9a4147ab105c6f285ca3f59152acf65bec6c40017345af0a1",
+      "size": 1583
+    },
+    {
+      "git_blob": "b275ed791f1bdcbb9162c7b453a800132ee47528",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/DeleteTaskUseCaseContract.cs",
+      "sha256": "48c4fc5350d522014a7b705ad4902739c78a320059988a8166c0cf3c86108256",
+      "size": 484
+    },
+    {
+      "git_blob": "0372982d5f5dde13af91dca6f60c0ea058d1819d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/GetPlanUseCase.cs",
+      "sha256": "117cea990cfb8959c786919650f979d806b9d10563524f60b9001b767fd08e9b",
+      "size": 1001
+    },
+    {
+      "git_blob": "aa377cc4a2df0490b9aef77f5017e466ba934567",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/GetPlanUseCaseContract.cs",
+      "sha256": "8fd2707e141c01735cc627a29cac28f2c1d111615fda12fa1f4a5d0730d12779",
+      "size": 480
+    },
+    {
+      "git_blob": "2fe35120b57252878c2a68bd4b0202d8ad8391df",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/GetPlansUseCase.cs",
+      "sha256": "db60efa81d13534d79d090707cd2981a0e88418de2f7c45e3993967b25fd8b0b",
+      "size": 1129
+    },
+    {
+      "git_blob": "7e8cbdbb85ad435463ba99c74aa42576632ef2aa",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/GetPlansUseCaseContract.cs",
+      "sha256": "d83ba62f4b1b3224091e5a42a6c196dfdf69b9aa284fa7589dd7f16dca8b7a81",
+      "size": 937
+    },
+    {
+      "git_blob": "fa94d01abffa2a2fe6beff1295f76aa5b65c9981",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/GetTasksByDateUseCase.cs",
+      "sha256": "3c9345790522ccbff54fe3fc6fffc76b9daa8b6d69640da5453c5a51713e8dc6",
+      "size": 1425
+    },
+    {
+      "git_blob": "8d8627e0922e455199645072dbd61fb0173202b5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/GetTasksByDateUseCaseContract.cs",
+      "sha256": "804e9076e737589449b6f6657bcbd201df42a9fa052fdc9556401459073aca00",
+      "size": 951
+    },
+    {
+      "git_blob": "6c67e601f5bd6bbacf19560967458984cd7efa6e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/README.md",
+      "sha256": "07289a49698ef33faf0e52e6c825cc6db2a9817a197da39b33e4493d8e12d0a8",
+      "size": 3138
+    },
+    {
+      "git_blob": "ce6177ce90dd90c3d2362521b00a598dcf7239c7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCase.cs",
+      "sha256": "8b68ecc62ba4dfe42f0a7609092f060c77cb19fcf733a9b9445d062951c0e634",
+      "size": 1787
+    },
+    {
+      "git_blob": "54a8fd4b68a1e8f27e6424c2b93276c685ab1554",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs",
+      "sha256": "6cea1075a0c5a907811e93e8cb4d0b10dd58ad24f996f318c7583e7f1abfbc70",
+      "size": 589
+    },
+    {
+      "git_blob": "430b85b2754000c82bf49deeb305ea18579f6a58",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/examples/usecase/UseCaseContracts.cs",
+      "sha256": "d576812f420b57a45f5a898e3d0fe53712e2bcbfedf0a266d331f3cb8271a6df",
+      "size": 1848
+    },
+    {
+      "git_blob": "255d85c0d6e2391a78773dce90807d315aaffc0e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "sha256": "765259d41ce057b6251409c0d277b3a7aa7d035c13396b1f2d1f8fe2f3d91f2f",
+      "size": 1316
+    },
+    {
+      "git_blob": "3fa9ba473cf7fbd04a391d582f2f35c43a344336",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/guides/DOTNET-DI-TEST-GUIDE.md",
+      "sha256": "82bd064f098fb71068a814fb44b107e280e0eaa6a655891cef52385dd2be07db",
+      "size": 5418
+    },
+    {
+      "git_blob": "16bc0c5c974c3a261113c468b0febc918d6a96f3",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "sha256": "e8b79b4120ad70ce89029ddfca9938cf24ce223de26ff6fd3ce7924fe958627d",
+      "size": 7873
+    },
+    {
+      "git_blob": "fdb6edc955bba6de63265aac50bd4500f0a1e9fb",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "sha256": "3cc23e8dc0e1dd0bbb83b837a459b9dfcdffc8f06fda74e9932404cc26f51d72",
+      "size": 4932
+    },
+    {
+      "git_blob": "dced96d47684f7e1f223eba1feac29c64ebdf440",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "sha256": "93ae0121a09327079c371acee2e3edcc94f8b433cf43dd7fc003586ee8dce1f4",
+      "size": 7678
+    },
+    {
+      "git_blob": "920a4aaa3a777a21ac5c15d054874900b418ba02",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/guides/TEMPLATE-USAGE-GUIDE.md",
+      "sha256": "b68554f5fdf334edbdcbc58975381efb5ae0bfaa9193c0a1ec3e0cb7a9355195",
+      "size": 1537
+    },
+    {
+      "git_blob": "e7e0b7346d4a1531aaf3cb3708bdc12f38d1fbfb",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "sha256": "e450dd7ddac0d56449fdaf0890fb1c805b19fd5bbab3bffe3568d4523b4cefb5",
+      "size": 1408
+    },
+    {
+      "git_blob": "0ab208f6a870c35bd911ae2d4fb387090a2b23f7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+      "sha256": "f432840886eb39fb4fe86df239c752a8434726b85f30ab6fbae37bb8ecef169c",
+      "size": 619
+    },
+    {
+      "git_blob": "2173fd48b4e9a4ea07549ad835e281ebba8d06d1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "sha256": "caddc91c15e1dd8894b21f18fc4b2991b87a0805be3baf6d528fed39db842994",
+      "size": 1317
+    },
+    {
+      "git_blob": "06d2ad08a940fdf76e7630cbc36ed3fb22386483",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "sha256": "06e6dc4323cb6f80b27a4c7b109cb5bae455e8ce0f490c3a97fa3e71907a9fd1",
+      "size": 1557
+    },
+    {
+      "git_blob": "1ed96bc1a6c35db2e3e0292b333afde9e6af5663",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+      "sha256": "8d171fcfd12f54e810a08c3725f4a1bc4fbb5bca305e83478899b00e21dd1e8a",
+      "size": 1032
+    },
+    {
+      "git_blob": "15a7f53dd407a09462a8d25e9e89b513b58dc7b5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "sha256": "4a51fd519acace935de2971a2bdd33fccb9c42c1a9a90fcc4a8fe7b4098060fc",
+      "size": 1315
+    },
+    {
+      "git_blob": "e9b93fb49cb6ad22bf996dc36b9131b0cfe0cdc1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "sha256": "1780650abaccd4b92e3befba7f85e0c0bf2e07737dbe682eb35dae7448bceaba",
+      "size": 1174
+    },
+    {
+      "git_blob": "4c4d6e4a14a21ee7f9dead4df0842fd9906b31d2",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+      "sha256": "cb84ea311e1dfb1709eccb89a353ca4337cb93815f9bcfb4c328c7b778bbc478",
+      "size": 621
+    },
+    {
+      "git_blob": "b240f8ffba3e6e9284129a34d6e9d1a823edb23b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "sha256": "7c07082613d2140d11dd8ea4ca1274ff32b61dd78af41006a24e8c3d0d50e223",
+      "size": 1241
+    },
+    {
+      "git_blob": "e91b8b910564a17ab6154d9e7125d8ff8e5101ce",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "sha256": "6b3c1a1e89323e41ecc0f5a153fc8f275f97538f1aee81e8cde9ffac79167b4a",
+      "size": 1242
+    },
+    {
+      "git_blob": "67bd90b4ec134c0a94264d792efd2ea0efe65d70",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+      "sha256": "2d3bbed937430779526a16b6686d19f56e3fe3c02dc2151b721b1ec2352d2e7c",
+      "size": 615
+    },
+    {
+      "git_blob": "e0c4925d5d81b360e32b090f09a324530665859f",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "sha256": "e008295436abb7b0c3f73b2041a8587c987018bd9214ec79b28e4004c9b4714a",
+      "size": 1281
+    },
+    {
+      "git_blob": "a2082366f1f0462ca0a5e1eb823dfd45a45f6553",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "sha256": "11ea4e5494078825c204d7e82a836bc2c5105f50d4f106b164bc9a9b244d13f5",
+      "size": 1021
+    },
+    {
+      "git_blob": "227bbba0c48feeda8f45b3837de3f88252df2cb1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "sha256": "79a94637fd2f3dbb82199dce3e7c834e4e015592f21b56e5dd3b566b1f9a7b14",
+      "size": 1079
+    },
+    {
+      "git_blob": "7da9226c8a011bfb41c4ff404b7865e5e7804e9c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "sha256": "22a27241f8f3d545565049859432e8c955f3d96c8f156f6761411a596c9a250c",
+      "size": 1420
+    },
+    {
+      "git_blob": "02476fc0f202ec812a7edb13f5f26b8814dfd2b3",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "sha256": "30e0953bdca609c58771a80c8f9d7132e46b576fca680b6aeb138e5fd9b82c09",
+      "size": 905
+    },
+    {
+      "git_blob": "f945d1269ab229684f306f238052aa6c7ea8e237",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "sha256": "aac355ba9f4f7e335ebb35e53f362e5c624a7c5c43e630a3da7720b22ca9d9a0",
+      "size": 1041
+    },
+    {
+      "git_blob": "a965cf5930a7a0e2464c7f340e292f4b3796e57d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "sha256": "2f58fe67e182806aa3ba6404b4d08294d191f2dbaf3d52d080856fb6de04b6f5",
+      "size": 1428
+    },
+    {
+      "git_blob": "35cdbde942e6bb072fb4e323cf2bf9da20528bba",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "sha256": "7bbfd1ef6314e03ffff505d0efb64387a6a9e979fa0db8e15be46b6019af9749",
+      "size": 1322
+    },
+    {
+      "git_blob": "d9bf032d8ec5e387cf7f1a5aa790e6c51959c054",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "sha256": "a8fca8a097322db6d5e0553f2394e572d1ea8672e466e2919c7df9ca5faf91f0",
+      "size": 1145
+    },
+    {
+      "git_blob": "f2dc8f51518778eba9311a085ee59efd0c97f29b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "sha256": "0344487a0b735cb49eca57ed1125309fab85aaf4de37cc92d17349c628a147f2",
+      "size": 906
+    },
+    {
+      "git_blob": "cfdc1082dc35ba68f3c3efaa3b61d2288a2d366a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "sha256": "a5e0892f54108fd7749f5589aac9474b4f77ab9a68461d4eb79b0c232352d839",
+      "size": 939
+    },
+    {
+      "git_blob": "7dc5ac802a9c0fc2362d29c8a83012096f2e1f66",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "sha256": "078d0bb70ede653bedf148b86ffd0c192a4b9a684d5e37e4495592edc325f633",
+      "size": 1110
+    },
+    {
+      "git_blob": "318cdda059a52a034209c135f4750b9c1208b7b1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "sha256": "7776015edc5958ee8d9960d6b3877ad8dd4daf35cd20e43f9de5ee0e40483a99",
+      "size": 761
+    },
+    {
+      "git_blob": "d5c032840a180fd1af85ad92da30a31c76f71eca",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "sha256": "00eb507efa0bff8d002f653a212f92652a2f59717b33ec5221383db3c09702db",
+      "size": 898
+    },
+    {
+      "git_blob": "4ccbdc375e0a8dd51f6b459671b493519e48487b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+      "sha256": "64eead654c484a14b34f7d8ec5d2e77522c67fcce857ed1f48311fb289005a21",
+      "size": 595
+    },
+    {
+      "git_blob": "cc0bb2fcf6ebc05e68a3474898116d945de9b231",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "sha256": "bbf498327eba3c5cdc87993e81324b3b50721d25ba151afff7f37aa1b16be735",
+      "size": 748
+    },
+    {
+      "git_blob": "3bb62917913234b63a528eaabe3406f1bafcfb45",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "sha256": "3d0f262a42e75b78c7a3876a76cf3438398272e6dafda069cc42d9348cb4503a",
+      "size": 1799
+    },
+    {
+      "git_blob": "c2319c34bf7117c9894f26de70a3c42401f26ea2",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "sha256": "ded38baf9e4f3e91e5688e33cbb5799f1fb3c28fbb1d4fc14a46864efcbdaa0e",
+      "size": 1003
+    },
+    {
+      "git_blob": "9f677d4d761b744a32f3dfd8ea68452c492e9186",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "sha256": "3edc21534b18eb9dccab6936dca8f7da99c320a8bf04269f28b5ffc6ca976183",
+      "size": 879
+    },
+    {
+      "git_blob": "380052e255066769cf956e87986cdd8b92e7c10b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "sha256": "9d780370a06a4600624aaf764dcc85c3c28b77fa12f1858c06f424f953f7bfcd",
+      "size": 941
+    },
+    {
+      "git_blob": "f08b493f44aaaabbdd431e5907d030924695a5f1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "sha256": "d72cf448dc3a1e89af2ce2eaf5157c524078d0e0dfc9d44936d7b7e2127facbd",
+      "size": 1613
+    },
+    {
+      "git_blob": "f39e06f4a75f89f3b9629e8072edb0e395b6ea98",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "sha256": "40788b700b01635f3ab34aecd54239dbc52190c7fd2604451e953820319678e4",
+      "size": 981
+    },
+    {
+      "git_blob": "66dfcef7d6817bdc5a10be661dd78ccce348ec6a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "sha256": "b60a9ba33e601a93aee97ff388dc4455ac181236640174fce70e3e91bd2d9a01",
+      "size": 1172
+    },
+    {
+      "git_blob": "e42ce47f6d61fd00b59df155c1ba342e5074c3e2",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+      "sha256": "97b0724121f84d973c906e4911a815e424f8c566cb88094d34537900970db91e",
+      "size": 4465
+    },
+    {
+      "git_blob": "b9ba0791a66fc9181c8ad784292f62bf208b6f76",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+      "sha256": "7ba85e99256a0a2a212b61442c54fb89752807e98192db140c0d4e291c2caa4b",
+      "size": 3170
+    },
+    {
+      "git_blob": "67d2be99cc54869c651be355b3f0f55b25182e9d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+      "sha256": "06c3c3c2acfffef735a8a03cb0f9fe54460f6a759f4b75d392f061a820de8cd0",
+      "size": 4874
+    },
+    {
+      "git_blob": "a260b83f2c0aeb81349df79b561803a6e26093e6",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "sha256": "88be1caf5c10ef42231df90918bde78c9a9f411ba8f8f7d915820324042ab1e6",
+      "size": 3935
+    },
+    {
+      "git_blob": "dc7e1d76c74079f050dafaf5e3d61c329237bc00",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/CODE-TEMPLATES.MD",
+      "sha256": "977eb0e536de0b22dd8d1cd16aa0b8fa5dff21351a15901fa938532b9acb9c1f",
+      "size": 6544
+    },
+    {
+      "git_blob": "6e926880025331f8df79970daccd4abb2c37dca6",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "sha256": "056b096decab9bf5366e59cda208457fc27b633ae902463d8267b2a36399d804",
+      "size": 4068
+    },
+    {
+      "git_blob": "cd94fbf34e6a766536e36e2d18f43ba42834a799",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD",
+      "sha256": "e322f024f5421707df6d0d86c438d3d75afca2a4ce7303fec1f6ae7c697196eb",
+      "size": 1986
+    },
+    {
+      "git_blob": "5a2d390b1292f35058ed81ba45cf3ef901909652",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/FAILURE-CASES.MD",
+      "sha256": "3d326bec348f88c546acf2356a01dcc2b387e121c4564e70feecc50376b79e59",
+      "size": 4193
+    },
+    {
+      "git_blob": "9f4f4e9f27e19cbdaeca0f088180fd988e2fdaa0",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/rationale/generic-repository-only-rationale.MD",
+      "sha256": "f4ae59627c7e402350fc25a654c25607becb43933d7eb10fbac61dfefe01c383",
+      "size": 2790
+    },
+    {
+      "git_blob": "436fff2db82b770eaeeb087a21575db473edcef6",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/rationale/profile-based-testing-rationale.MD",
+      "sha256": "d317fc6609ecaad6422659259e8d33af95eb759a1a8320697f33519ff7ea2b24",
+      "size": 1338
+    },
+    {
+      "git_blob": "93f874239a704fe7b7e8e62fff2070f47f6e1d41",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD",
+      "sha256": "0960a8fa3ad2be9124332d956fe4a99883cf3af12e6037a67a320952ff386b60",
+      "size": 2161
+    },
+    {
+      "git_blob": "9ac3411d6d5c59588558c39c040d682728c2ba23",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD",
+      "sha256": "883e1b86468ebd59b1ef4bbaa67bbb1deca614e5dde37ea5793cc2f0389b4c74",
+      "size": 1520
+    },
+    {
+      "git_blob": "f22ee252c28da16d3e01930b52b9746c5a09e907",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/review/review-routing.yaml",
+      "sha256": "5ec2fa9fb94a21fa6b81b056bd57d0e397a8ee011d912e6716fad2ec101ad738",
+      "size": 10399
+    },
+    {
+      "git_blob": "c67f69e341f79af438c8979b51adb868192ca13b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/review/test-scenario-review.md",
+      "sha256": "c2497dc0ef97252a5d2a68c1adb62030f28e89077f32de4938439832edf703f3",
+      "size": 2495
+    },
+    {
+      "git_blob": "772cda370ec87e7eb1e0a1bbfe5ad7763e37970c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/shared/architecture-config.md",
+      "sha256": "c23bab7c5d3b700f5facc9d4feb3521354ac41846886853f63691f0babd2c977",
+      "size": 1669
+    },
+    {
+      "git_blob": "1721f1a9e379bf39bdc6c2db087f8f51c81672d2",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/shared/common-rules.md",
+      "sha256": "c07384c0366113e9cb1a2d3462fccf26945ec85a095d80a5bca600a54c42b5f3",
+      "size": 6765
+    },
+    {
+      "git_blob": "3408e3f024d697e8ec8db76110600adff03b4fba",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/shared/domain-rules.md",
+      "sha256": "19200ce5c2fcfa668e3c27a24aa60fddad6ec1893cb1963b6f29a94de40a6794",
+      "size": 1695
+    },
+    {
+      "git_blob": "57ba429438cf5b11a8817e2075003f916aae8286",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/shared/dto-conventions.md",
+      "sha256": "fdc995404c4d66018cca10d097933bfddb957783c8c34f273ada9d69e726b456",
+      "size": 452
+    },
+    {
+      "git_blob": "77c6c3c6c15ef7e0798d1aa58d4baf03717dfff8",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/shared/testing-strategy.md",
+      "sha256": "57d24a72f8a45a71f11f7643b3ab99f8b7dfa33c8b15da4352106c46e1380f01",
+      "size": 8821
+    },
+    {
+      "git_blob": "4cd83fc3a68868a46107b2ba8e1173f491e4d7a3",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/source-includes/domain/EsAggregateRoot.cs",
+      "sha256": "ad779486b03504e2e8da0f3413743c24d83355d31b6a0739008188f68bb33a63",
+      "size": 2672
+    },
+    {
+      "git_blob": "6ed7ac508336a9bf57e86786e3be472ab5e9983e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/source-includes/domain/IAggregateRoot.cs",
+      "sha256": "c4ec794ff1bd21a8dcf66ceab4d23ad1da0e361fdfd8a2c4b77af901c0a15fe3",
+      "size": 213
+    },
+    {
+      "git_blob": "d362f4ddffa42808d13a3dd21b6c3ddbc7aa6f7e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/source-includes/domain/IDomainEntity.cs",
+      "sha256": "76b7e4ca435965258e0251fae9a9f44713a126283d303301b931579154f4571b",
+      "size": 211
+    },
+    {
+      "git_blob": "b0e71deebe26f05b5cf717a538bed1a8a417b7c7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/source-includes/domain/IDomainEvent.cs",
+      "sha256": "eb0457de7543c1aa98a5d4b57f3a49d79d682476d2e4447fe06a53b86e512cbd",
+      "size": 235
+    },
+    {
+      "git_blob": "6e631be6a1fbf2d38d1d004f3d01f429fc33cde6",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/source-includes/domain/README.md",
+      "sha256": "55eedb4e7198a7b52e56c52c411ed4fe315db85a91109824f022119e49f74105",
+      "size": 1092
+    },
+    {
+      "git_blob": "49ea5aa3695836b760fdd73bbae14f0f24263df5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "sha256": "2e4b0d969f72c0296b83114fc6f6536e58245ed1f5e09a60cfc304bc1eeecb60",
+      "size": 2170
+    },
+    {
+      "git_blob": "8bd8347ecadec18b4a9d30d5d1ff061da2b192e5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "sha256": "2379f5f0ba261f0aebd03dfe302e16436a7b23d4d4e02407cbdfe63a350556ed",
+      "size": 7288
+    },
+    {
+      "git_blob": "efdda8b77d5945c253d1300a6b1b2dafe8395714",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/DESIGN-BY-CONTRACT.md",
+      "sha256": "3ab132dc92cf0120a488358f23abdbb90731a98556e71cff34a85cae4425eabc",
+      "size": 2006
+    },
+    {
+      "git_blob": "b9979fa5f32a1e3087cc7af8b7a1373c4016b9ca",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "sha256": "12a263b623c280d16dea2b2b6b58d55470e6ce84ea9d206de79f6b67376806e1",
+      "size": 9174
+    },
+    {
+      "git_blob": "28b3f51cdfe7697bdc24b5a09895273a0fe4c9a3",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/anti-patterns.md",
+      "sha256": "0ac00a99cf47cd4afd732a9ca00193684adf3608dc1fa12cca93d9ac57f7aae7",
+      "size": 8738
+    },
+    {
+      "git_blob": "f49278762ff1de77d2c36ef6b24643ab4a3f7156",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/best-practices.md",
+      "sha256": "fd5a97c1b8077e90b3782bdfdd0f0bcd48670589664dcff1a204f7ee2972dd20",
+      "size": 6523
+    },
+    {
+      "git_blob": "6ada7ff92b7e1834d581f4430a2609f0798cede3",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-guide.md",
+      "sha256": "4032c5f7fac59e613f4149d5259a67c09a6dc96e8fabacbd0ee0db7333d1fd83",
+      "size": 3517
+    },
+    {
+      "git_blob": "df1225fcb24159ca2807c26ae0d459c95be04539",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards.md",
+      "sha256": "b068ddabf04f8841a54df2f0311ea8f574621545c9dfbe92362946f34529905e",
+      "size": 8888
+    },
+    {
+      "git_blob": "6021276b4a9daa8bf1fc375e5d05577b2ca2938b",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "sha256": "e95668a82496e7db2ab3ddbd59932bb949ff1b986d597f964d73f3ea0c6a3f44",
+      "size": 16588
+    },
+    {
+      "git_blob": "7226d4987ec58b855b9eff3b824eea0ebe83852a",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "sha256": "5dcc29b86f92510582e41a5707be3e5e92f8f6c83b58e5b31384626bb94a5a6d",
+      "size": 8991
+    },
+    {
+      "git_blob": "3d7683da6d711ee99f1563b8d5f5543ff4a1c648",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "sha256": "c016ed5583f134df6d420223a459a8ed52ebcc53a2be952d51de6332cbb604f3",
+      "size": 8828
+    },
+    {
+      "git_blob": "54b8b2931253e942bd923d6ef6bd3772836f7f65",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "sha256": "efe5d0fa1d7a45daac413652b79511863e0d4139c8039e4bd4edb80465ebb4ef",
+      "size": 11975
+    },
+    {
+      "git_blob": "9eeb4df17e3bd435fd5d3890e5b4e9e44a5b3be1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "sha256": "8e6a90489f18c305bd99518c098edd694039856b026ae2266592bf6e08938729",
+      "size": 5489
+    },
+    {
+      "git_blob": "a8bcc352c2ff7243a1e4b04c99ea86080eb31362",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "sha256": "e7016eba7ae63efa4c279f2e4288f12aa26f2d7a377bcd13a9c4a93f62a3d907",
+      "size": 6193
+    },
+    {
+      "git_blob": "dd3157d83348341562ffb9c002ac6a2b81a42244",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "sha256": "7bba57e86370fe76a653906013d297142900244d3ed7f0f65f78c93da3047988",
+      "size": 4114
+    },
+    {
+      "git_blob": "d7cc7193cceb22ddb5cb76943a9981d941bf6bcc",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "sha256": "e728b64ed10658622b66463f1d1f85e38542e6bf9c19c455c83965813a94184b",
+      "size": 12707
+    },
+    {
+      "git_blob": "aef2d3400a929f5d6e514fd109ae99646e5da457",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/test-standards.md",
+      "sha256": "8d561277128dbf95d98c7400999aa57e9798b98b988e294dbbe2c24e03ce9fea",
+      "size": 17630
+    },
+    {
+      "git_blob": "8736e6972cd0f57473ce3e31574fa6aef8b5ea14",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "sha256": "2596901c1a7bc94f3f28db00eff2c3d75fb6a27cf0a210d8f6852fd430b1baa7",
+      "size": 5249
+    },
+    {
+      "git_blob": "13016df585fd1329160d3ed424611f20b9c6e280",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "sha256": "3f69354497aa9c2e875b43788dc1d8c9d418c98122bf1276c9d069bdea1b4030",
+      "size": 10830
+    },
+    {
+      "git_blob": "1a9e55db66bdac34935fae1386df80fcf5dc9df1",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/standards/project-structure.md",
+      "sha256": "f3db3f4f2a454c7d2e7b4cea97f7c8319307c73a10fb743de595fdf1696068e1",
+      "size": 16830
+    },
+    {
+      "git_blob": "e46e33819f796386cadd93dcf90888c57b54ce4e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/templates/application-properties-templates.md",
+      "sha256": "f07d1ea6791f78f521f0494a4a116c6c12e58013dc849fecec0c331e61f014be",
+      "size": 2928
+    },
+    {
+      "git_blob": "0e6c6fee5031dc81bece811634ee6981d0497227",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/templates/profile-isolated-configurations.md",
+      "sha256": "301d5618cc2e882e3bc7988b7aab81c45409e73e69dc859f4ef5ffa5a354aa21",
+      "size": 3019
+    },
+    {
+      "git_blob": "eb34fb3f1d697423222e378cd1e1024a6f9a228e",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "sha256": "ef1c1e90c36d986ec52e3e40883066912789b601c0168c62b09194865bbc7d5d",
+      "size": 5970
+    },
+    {
+      "git_blob": "7b19512ecf308b894f929169441e0f458225f7d9",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+      "sha256": "f84acfb6278f58914b7f26f19d9c3769877c310b729528fa3373b364ba0d7733",
+      "size": 5083
+    },
+    {
+      "git_blob": "0a2fc48e3d52797e50a4db54f76252029ffa578c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+      "sha256": "277aefae6565ff6bbac1aa56aa880dab4ec786db5acee91ef5c52a080c5b11fe",
+      "size": 10807
+    },
+    {
+      "git_blob": "81dbb99a0c6d0bf7f4b42d747bca0e921301d368",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml",
+      "sha256": "27408ac751823a082022862c445d936b22c9e9303ec8000bcd21dfbd802f001f",
+      "size": 5241
+    },
+    {
+      "git_blob": "a1041d423f5defb2da874f9161e9af7f00bc872c",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipe-manifest.yaml",
+      "sha256": "25f93b327f1a73071c5157130ba1d5a990737a3554fa54a874bc5d80e4380cfe",
+      "size": 3027
+    },
+    {
+      "git_blob": "c3618e07d65894fd988bdf05ee9609e521048f1d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "sha256": "d9cd7bfaca40cfab086562e8efb742b892359bc801daa876a2fac181a801a7c4",
+      "size": 2715
+    },
+    {
+      "git_blob": "8696742c65fc3605f96c2cae6ae6e428c7d0cf2d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+      "sha256": "624cff247ceddb96960419383102430262accb47b19138bd090385238a861be7",
+      "size": 968
+    },
+    {
+      "git_blob": "a43d3e636d72e148acca7176ba4dd9e6a2698efa",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+      "sha256": "6f8c8244b94e87199988bb91f12277e394cbe05b4d1a59f32f6b580ad20df3fd",
+      "size": 1024
+    },
+    {
+      "git_blob": "0d246c0898f97afc04ca9c26c2be5d25f27eb0f7",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+      "sha256": "844d7c155087c148de68883822b47cfb55c59db8fdcac9df87406ecfb58fa458",
+      "size": 1315
+    },
+    {
+      "git_blob": "063bfaa1cd5b988c56c9723628c9abc5941da4a5",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+      "sha256": "70671118b0b7c5eef781888a2d7a1afb7b4d028563003ab720855eaba2a72cbd",
+      "size": 1119
+    },
+    {
+      "git_blob": "424d49f84e40f7db77e54c410e340e868f6ecbc9",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+      "sha256": "3924fd3c2b81c568f63476ec3425a5adcc9faebcd9555763c7fa99bb164db4c3",
+      "size": 1423
+    },
+    {
+      "git_blob": "93c80fad29d784afa8beb1f86c68670b053d655d",
+      "mode": "100644",
+      "path": "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+      "sha256": "4a4b644912cf498c738869ab8e25ecf4ad82b8ab55f5603cffac19738413ba14",
+      "size": 1512
+    },
+    {
+      "git_blob": "1eff500495925aaab41c3c1107cea7d4419ebb85",
+      "mode": "100644",
+      "path": "src/knowledge/engineering-common/README.md",
+      "sha256": "1edb5367f794968c9e3e8e7f41c046a50bcdcfacc02a7bc3158090b831881aa0",
+      "size": 1974
+    },
+    {
+      "git_blob": "8f6d4ae73cc723a40fc7d57ac4f3ab63d45089c1",
+      "mode": "100644",
+      "path": "src/knowledge/engineering-common/content-package.yaml",
+      "sha256": "f802262d5ab6df9ead68470974a87286b556e75d111b9c92dbfd93743cfca380",
+      "size": 4759
+    },
+    {
+      "git_blob": "3876fd02cc6a2c0b8e793a7b668b988f705279be",
+      "mode": "100644",
+      "path": "src/knowledge/engineering-common/engineering-rule-catalog.yaml",
+      "sha256": "bb7a9fa703e336f7b4d693264f89d4f8ed91bb69517a2f509f5529e98ad6bb17",
+      "size": 13404
+    },
+    {
+      "git_blob": "9d34635b0d485957fdd28c970edd1db23ceda3bf",
+      "mode": "100644",
+      "path": "src/knowledge/engineering-common/references/ENGINEERING-IDENTITY-CONTRACT.md",
+      "sha256": "7293eda5f64410ce212dc856f2a86bb7919636c4f42f8f9365b00a528a150562",
+      "size": 2809
+    },
+    {
+      "git_blob": "002671ffedcb1e361ff4daf5fd5d059afc1e9c9c",
+      "mode": "100644",
+      "path": "src/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md",
+      "sha256": "a1a07886ef436eacdc7cfa4e5e41c5e186313fccb13af53eb7ebac27381c00db",
+      "size": 4249
+    },
+    {
+      "git_blob": "bc94780ef5f39ed19863ebcdc1459df8180d2190",
+      "mode": "100644",
+      "path": "src/knowledge/engineering-common/references/PROMPT-PORTABILITY-RULES.md",
+      "sha256": "00686dfb22c1c0e22df09758104e46748b855d5eb01f9328c927388267258f61",
+      "size": 1721
+    },
+    {
+      "git_blob": "90b6e16bf3f769460e8adeb341f222cc591f737d",
+      "mode": "100644",
+      "path": "src/profiles/collaboration.yaml",
+      "sha256": "8f618bdf1726bd2fa2db5fb0521515a4642eb559941b30e87b18d4e5cebddda5",
+      "size": 402
+    },
+    {
+      "git_blob": "53c5fef12799726fb6ca1efc9efe3f0cd0bf10ee",
+      "mode": "100644",
+      "path": "src/profiles/complete.yaml",
+      "sha256": "d84bbad573bcedd622aafaa5e03f2e902cc7542396dba57e3254266ee9c4a0d3",
+      "size": 442
+    },
+    {
+      "git_blob": "adce813b4cb865b93b004af0e665f226842dc4ee",
+      "mode": "100644",
+      "path": "src/profiles/context-maintenance.yaml",
+      "sha256": "50deef7669bf5899143341dae0e35163ef530cdf1d079a8ba6bfcef64b5c25cd",
+      "size": 142
+    },
+    {
+      "git_blob": "76645811e18eb15c1f3c59e4c0abecfaa95ef933",
+      "mode": "100644",
+      "path": "src/profiles/engineering.yaml",
+      "sha256": "e18c908a7c76c3b5a2cf0198ee2c7aab08801b4a7e9c73d03522f54ab2a6c10b",
+      "size": 306
+    },
+    {
+      "git_blob": "1de5278c1d234322da2edcba63b4e97c14710105",
+      "mode": "100644",
+      "path": "src/profiles/knowledge.yaml",
+      "sha256": "82b894984a2de8581615e1100557e63cb11e8a5a82439fa9543986c875b90606",
+      "size": 124
+    },
+    {
+      "git_blob": "7716a1cf435e8b76c1c17ea359b7dedcd32717ee",
+      "mode": "100644",
+      "path": "src/profiles/lesson-minimal.yaml",
+      "sha256": "5e94c9c30785e6e453c4c4e44d28c5d16ed82a3d25378e114fc415e3682f1548",
+      "size": 101
+    },
+    {
+      "git_blob": "9e283f7ee8bf8130d3c650abf0ddaa30c99477b2",
+      "mode": "100644",
+      "path": "src/profiles/source-repository.yaml",
+      "sha256": "065adde816dd28397a53e05a1a61a2c1ffa15798869c0ee2c18f6b54e343a74f",
+      "size": 390
+    },
+    {
+      "git_blob": "f9035876bcc6d4625170fc49f0682d5a86b15cff",
+      "mode": "100644",
+      "path": "src/profiles/work-management.yaml",
+      "sha256": "d83c7bffaca55292e8adc66bef76cc83b2bb226fd9dc29803f86a7d6f8b5349f",
+      "size": 150
+    },
+    {
+      "git_blob": "0a90397f3b9a91cd18f46702420b94ee355beb2e",
+      "mode": "100644",
+      "path": "src/skills/adr/SKILL.md",
+      "sha256": "8f1fb571daff003691dac269a3b93c9d295f2ab45d90b2fa28aafe27e1d6774d",
+      "size": 1776
+    },
+    {
+      "git_blob": "8bd0916c1a239d85f531b1206e85a12ed7aa0760",
+      "mode": "100644",
+      "path": "src/skills/adr/references/configuration.md",
+      "sha256": "a683f4a8a5d31bbe870b3fce8021fc27bbdffc142091f6a11705740c7dc067c3",
+      "size": 5779
+    },
+    {
+      "git_blob": "bda838601e10f69d9a45bea7f62dc323393a97bf",
+      "mode": "100644",
+      "path": "src/skills/adr/references/example.md",
+      "sha256": "0f41bddbc40183742dc47cdee14a210ed80a4b5845578e56b22000eee4eb2119",
+      "size": 5231
+    },
+    {
+      "git_blob": "b6986be6402caed409a4dac1672eed586ce2d9fc",
+      "mode": "100644",
+      "path": "src/skills/adr/references/operations.md",
+      "sha256": "7cf60de7bc560c7be7fefc1dc399fb557882846818eca710a78f8a4375b73ee7",
+      "size": 10590
+    },
+    {
+      "git_blob": "a04631d81fac04fa2377e2d26605cf0dae248bb0",
+      "mode": "100644",
+      "path": "src/skills/adr/schemas/adr-record.schema.json",
+      "sha256": "8d3e024b738f086e9fa77ac2f4667e5e8ac73e158d80bf250e37dc2060a59d21",
+      "size": 11260
+    },
+    {
+      "git_blob": "eb4dd01988287abad437245822a4a8768cec1530",
+      "mode": "100644",
+      "path": "src/skills/adr/scripts/adr.py",
+      "sha256": "4e99f42c3e77c960810d51222c214ebc3bada5433d9736cab4f5b6aaece6b9c6",
+      "size": 81342
+    },
+    {
+      "git_blob": "97dca5f4e1a3daecadae496b7fbd6405c520efa9",
+      "mode": "100644",
+      "path": "src/skills/adr/skill-package.yaml",
+      "sha256": "af95402ce8fb7fe1f613bfaa09f3d6b2fc688d8ac73a5734d4f8232b202584ab",
+      "size": 5985
+    },
+    {
+      "git_blob": "8a353033ce750682a44005e102d06eb2a963c05e",
+      "mode": "100644",
+      "path": "src/skills/adr/templates/adr.md",
+      "sha256": "148436823ea23a885c1f2529b1c63bdda3b1e4090fe60eafcb29b099152a7594",
+      "size": 512
+    },
+    {
+      "git_blob": "2aa0ce2e3d000b8ab75d898026eff25d8894b2e1",
+      "mode": "100644",
+      "path": "src/skills/ai-context-auditor/SKILL.md",
+      "sha256": "7d5eda3148ac3b0d792d1c36630b08a0ca17e7ef3f35559c7ca1631688369580",
+      "size": 1155
+    },
+    {
+      "git_blob": "9e12ba7273482de9ab45f8d9595fd8782dabe5fd",
+      "mode": "100644",
+      "path": "src/skills/ai-context-auditor/references/audit.md",
+      "sha256": "dde1896506adf1b2c8d8dec2be362ac42fefbd5837a535de060085df77532e4d",
+      "size": 7132
+    },
+    {
+      "git_blob": "78dfe7aeaa717dfdafc8636ef51fbef99470dffc",
+      "mode": "100644",
+      "path": "src/skills/ai-context-auditor/skill-package.yaml",
+      "sha256": "c88eff6a3e286b180b150357d71889bcf0a1ff3fe65aa6ededd6334c954395f6",
+      "size": 1459
+    },
+    {
+      "git_blob": "7c82beb61b00baa9ca197f7ad94bbd96a35b32e4",
+      "mode": "100644",
+      "path": "src/skills/ai-context-governance/SKILL.md",
+      "sha256": "c0aad70a26e6395964d9f996971b0bbdda24a54cda487d76378217d35743d68e",
+      "size": 1312
+    },
+    {
+      "git_blob": "0498c6b52ed56708c787c08aa8547e06142c4d94",
+      "mode": "100644",
+      "path": "src/skills/ai-context-governance/references/maintenance.md",
+      "sha256": "d7a883c88ffca483e9669e3e748be27d9e0648112d77391d632d32b975d8804a",
+      "size": 11292
+    },
+    {
+      "git_blob": "02c7ee665ca1367db062a172b60bd17d601d554e",
+      "mode": "100644",
+      "path": "src/skills/ai-context-governance/skill-package.yaml",
+      "sha256": "3189089591f3f2db743dd271882f91c164432ce679cdea3e91fc2a91249fac2a",
+      "size": 1450
+    },
+    {
+      "git_blob": "2dd8f905e0ec9b65ca32e29f1062c7b2614e6108",
+      "mode": "100644",
+      "path": "src/skills/bdd-gwt-test-designer/SKILL.md",
+      "sha256": "408f4333b9716f373f1341793ebaa121451e1fb861e0858b44619f687a047dca",
+      "size": 1584
+    },
+    {
+      "git_blob": "41cbf482ad4d1b612cb1236597cd1fbbec6aa5df",
+      "mode": "100644",
+      "path": "src/skills/bdd-gwt-test-designer/references/design.md",
+      "sha256": "6e1818ec85603d790103d62736ef10aed99c925e97f40ec02ecd5ddf9b338958",
+      "size": 9369
+    },
+    {
+      "git_blob": "5aa02943cb09adf5fb540b1042524885816849a3",
+      "mode": "100644",
+      "path": "src/skills/bdd-gwt-test-designer/references/review.md",
+      "sha256": "07862be20d7f4d3c9a640705d2452d882acdce4a32440a26090f0de6f54f5828",
+      "size": 7261
+    },
+    {
+      "git_blob": "49acefdd7a6a136a84103fc5b60682f48d99a578",
+      "mode": "100644",
+      "path": "src/skills/bdd-gwt-test-designer/skill-package.yaml",
+      "sha256": "d0f2326724037c1598689f1c4132fd60fe8124b2f5c807a0f6bec2c897190055",
+      "size": 2009
+    },
+    {
+      "git_blob": "98ee1df26bf488a3a77589436b5bcb02311ae127",
+      "mode": "100644",
+      "path": "src/skills/code-reviewer/SKILL.md",
+      "sha256": "a48c9efa36cf893c0bc5fed93ce84598b7e75149b4e87858b7b99620f9dbcfd0",
+      "size": 1649
+    },
+    {
+      "git_blob": "ba48290f7df75faaf22b865394b005c883db378e",
+      "mode": "100644",
+      "path": "src/skills/code-reviewer/references/review.md",
+      "sha256": "9e791c7352ac15d4caea48aec6d5f1c582b754b2886eb57ac0455a84ff245a59",
+      "size": 11495
+    },
+    {
+      "git_blob": "9a035a811a81de6e324c8b08e3f19f1e48c1347d",
+      "mode": "100644",
+      "path": "src/skills/code-reviewer/skill-package.yaml",
+      "sha256": "d78418616c5ea276f895824c1e27057894ef5148cb931a43c00ab8fa05b88e47",
+      "size": 1582
+    },
+    {
+      "git_blob": "56412b6048769ec0799c0fdf7cb2a79546befb85",
+      "mode": "100644",
+      "path": "src/skills/ddd-ca-hex-architect/SKILL.md",
+      "sha256": "7f38475d8356604ee42657c61150630f23829670120221962858b06bb8fb48fe",
+      "size": 1442
+    },
+    {
+      "git_blob": "4832bf93989736c32896c4cea8509301a5a4ea9d",
+      "mode": "100644",
+      "path": "src/skills/ddd-ca-hex-architect/references/design.md",
+      "sha256": "3e0baee2446b9ba2c1b1969a240daf519b9b99f1052f5cf011c6d13c97674dfa",
+      "size": 8333
+    },
+    {
+      "git_blob": "9cbda9cfc457decc4cfff6132c3f136915e83495",
+      "mode": "100644",
+      "path": "src/skills/ddd-ca-hex-architect/references/review.md",
+      "sha256": "5755c7055b7860eb4a0e8682013c9386f780061340e8bcaf81edbc81f55eaf91",
+      "size": 7402
+    },
+    {
+      "git_blob": "96072b04c1408278e00cfd9dd2af0ad7cfd8e721",
+      "mode": "100644",
+      "path": "src/skills/ddd-ca-hex-architect/skill-package.yaml",
+      "sha256": "450a044c9b30419963b8e0530bb8f45870fb285a77aad93bf81481c1ff380a5d",
+      "size": 2265
+    },
+    {
+      "git_blob": "db665e63540a79af3c5e5ab91e9d9d309b2e7997",
+      "mode": "100644",
+      "path": "src/skills/diagnostic-analyst/SKILL.md",
+      "sha256": "41ea28386a84941cb58f8a79e0965a1f6197233548b18e4fee53faf7b2cae2aa",
+      "size": 1017
+    },
+    {
+      "git_blob": "d833c3a86aced1dd36a04d120956cdbec00a52a7",
+      "mode": "100644",
+      "path": "src/skills/diagnostic-analyst/references/diagnose.md",
+      "sha256": "b421aa9ae69b2dd0644da9633c342f1c40d0da74871423b1a08ab6519adcf488",
+      "size": 5845
+    },
+    {
+      "git_blob": "cfb65189ff0785531fb3976df0ae7c9aea5162b6",
+      "mode": "100644",
+      "path": "src/skills/diagnostic-analyst/skill-package.yaml",
+      "sha256": "4e96a9c31d6fa83bb1f95ec6c9b830d292e0323450f40a0bd94463626d946462",
+      "size": 1075
+    },
+    {
+      "git_blob": "6357bff3fc23fda32fc5f08fc60ae07e30df5b55",
+      "mode": "100644",
+      "path": "src/skills/lesson/SKILL.md",
+      "sha256": "f5e5e605f36f015fdbec12a2cd7cfadc4aef229f4c3c58e10cbfd2d99bcdfd16",
+      "size": 1706
+    },
+    {
+      "git_blob": "a1fd0ce5d7d63d6b09cb9303205fe6b6c99a8feb",
+      "mode": "100644",
+      "path": "src/skills/lesson/references/configuration.md",
+      "sha256": "34ae11375dac1b88a4feea3554168ce8bd342f6c3720002b556031051539e320",
+      "size": 6117
+    },
+    {
+      "git_blob": "f8580fa729c614e244f4b32c27219fea0ec415d7",
+      "mode": "100644",
+      "path": "src/skills/lesson/references/example.md",
+      "sha256": "727a19521f91c695bc102c58d4432736a74b72643893c9f7deaf7606e1500b3b",
+      "size": 5014
+    },
+    {
+      "git_blob": "2fbe961898a72bb8c753b02b4035a8095a067675",
+      "mode": "100644",
+      "path": "src/skills/lesson/references/operations.md",
+      "sha256": "702d953102db772a7dca631e3f05eefab3b7c47c5c303e3040fe32de0171997d",
+      "size": 10852
+    },
+    {
+      "git_blob": "7763615e0a654825e6936a7dfebad3163a657f6a",
+      "mode": "100644",
+      "path": "src/skills/lesson/schemas/lesson-record-v2.schema.json",
+      "sha256": "307e0cc3c255d8517d3fe788b8ce8d7fda606aa3af757d6a79eeed4af797c623",
+      "size": 10420
+    },
+    {
+      "git_blob": "8bced2d86584c87d34f8ca2927aab95b7802a3ac",
+      "mode": "100644",
+      "path": "src/skills/lesson/schemas/lesson-record.schema.json",
+      "sha256": "5470074d586fce16703822f65fa469b9fb648a28652f4b32d8c3acf17533348e",
+      "size": 2596
+    },
+    {
+      "git_blob": "c100eeefc22e5f2a80516e2b887f2b719129ad05",
+      "mode": "100644",
+      "path": "src/skills/lesson/scripts/lesson.py",
+      "sha256": "485c6decdd44588ec6559c48afede59b4f7d8931ccf919def767352da40a5996",
+      "size": 81052
+    },
+    {
+      "git_blob": "aa2c069ca6d1e7ccff83eb4fdecb7dec279214b4",
+      "mode": "100644",
+      "path": "src/skills/lesson/skill-package.yaml",
+      "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a",
+      "size": 6336
+    },
+    {
+      "git_blob": "d1b7d7f0e496672aec8da30e862cecb464a6b4ce",
+      "mode": "100644",
+      "path": "src/skills/lesson/templates/lesson.md",
+      "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
+      "size": 508
+    },
+    {
+      "git_blob": "06b01bd221b418b6b73eef48f97537718f104cc6",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/SKILL.md",
+      "sha256": "052e4db046710899a30aaef9f65c0138303ae6664159e3d7b218bdad9c133637",
+      "size": 1558
+    },
+    {
+      "git_blob": "3bbca977c83c901312c46d86a94658620ec000e8",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/references/configuration.md",
+      "sha256": "b9bf9ad19813fd841a9ffb9dbf0df6247313b77db277c5b7f6891cd8a6c74530",
+      "size": 4272
+    },
+    {
+      "git_blob": "a03b0653189f27b0e2dc0b51f19bf2f6d8059c4b",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/references/example.md",
+      "sha256": "eddf6af8c6514b4099c5285ebb5db938c2b59c898e0ee7aef3e7b0a7585ffe49",
+      "size": 1088
+    },
+    {
+      "git_blob": "3afb328d250401393ca1d29c5a32a75d5f2c2689",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/references/operations.md",
+      "sha256": "53052a7a31366eab7ffea22c053cedf8dfc0b6c4165096f1f9fec9efe5efcbb8",
+      "size": 4818
+    },
+    {
+      "git_blob": "9c508ebe914f4dc954e1a5754749796fb31e1a83",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/schemas/local-backlog-record.schema.json",
+      "sha256": "0342c853227183386b70426390fc6e7798acd81dae542804c1cdd585b2291ea2",
+      "size": 4269
+    },
+    {
+      "git_blob": "2750072578fad79a68352824471e7c0ed8a68217",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/scripts/local_backlog.py",
+      "sha256": "6a2b251aee90ae4226e589ef03417ec655fb61cf97ceb6f7b192181fd1378c32",
+      "size": 55385
+    },
+    {
+      "git_blob": "58bd679c9d5a0d31f61883013ad69839cf4c93ae",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/skill-package.yaml",
+      "sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d",
+      "size": 4488
+    },
+    {
+      "git_blob": "b5ba16c33a3271c106f470fa6b1956061d8af941",
+      "mode": "100644",
+      "path": "src/skills/local-backlog/templates/work-item.md",
+      "sha256": "2c7a10b53791cd63f327bb5e7b545c270201729a1f90a81a7935b9e253d7a60c",
+      "size": 204
+    },
+    {
+      "git_blob": "ebdd9cd9aadbd0adffda6f6a81883080f00342e4",
+      "mode": "100644",
+      "path": "src/skills/local-change-implementer/SKILL.md",
+      "sha256": "d26f17b90239157fa6d231f64d6f753a40e1b239cbab30156cb96599aaad0445",
+      "size": 1404
+    },
+    {
+      "git_blob": "f4b1b3a9c01db83b8abe87744a5133d499fa8310",
+      "mode": "100644",
+      "path": "src/skills/local-change-implementer/references/implement.md",
+      "sha256": "780ca40d00d251cdbea73a513a5d975295b7a4124d1874082d51b41195cf6630",
+      "size": 8223
+    },
+    {
+      "git_blob": "ee0c56f7f9012d1b3964fcf2aea7ec2c30787b7a",
+      "mode": "100644",
+      "path": "src/skills/local-change-implementer/skill-package.yaml",
+      "sha256": "ffb44108af56051b60255f18442f9b7e77702c2d3d332c4a38721937adc76a32",
+      "size": 1864
+    },
+    {
+      "git_blob": "d79168c56dc312ad37c51a4d4df085cec5285c1d",
+      "mode": "100644",
+      "path": "src/skills/pr/SKILL.md",
+      "sha256": "648b3e8026323157a468e1d1af7de3b190e98a9ee735299fc7d164193125f6bd",
+      "size": 1623
+    },
+    {
+      "git_blob": "5ddbd3837282d6f4d21d30121ccae1cd376a2122",
+      "mode": "100644",
+      "path": "src/skills/pr/references/configuration.md",
+      "sha256": "360ece3f3ca9d2d1487a707effcd5694abbdd5dcf133c0124c9afecf54696054",
+      "size": 4223
+    },
+    {
+      "git_blob": "a9a094096d7f63327bf9ebb61d1a864684b7f38d",
+      "mode": "100644",
+      "path": "src/skills/pr/references/example.md",
+      "sha256": "beca6c54de115a780762e208f554972c830f33576f9d249bdd75b8a03adcbfa5",
+      "size": 1392
+    },
+    {
+      "git_blob": "d6cc80010635e060141c8385fd8ea1aaf9920b93",
+      "mode": "100644",
+      "path": "src/skills/pr/references/github.md",
+      "sha256": "5cb6aaff62b0f7752860b2b07bd35eb1766830ee55ce64d95019814f606510e5",
+      "size": 6128
+    },
+    {
+      "git_blob": "808d4a9db4fd2919eddec006dcb6dbbef389940c",
+      "mode": "100644",
+      "path": "src/skills/pr/references/operations.md",
+      "sha256": "75686bc5818d13a3a22d565e68ce934f3c8b67b3f94aafbba38501626325e935",
+      "size": 7225
+    },
+    {
+      "git_blob": "be81c28ea7417891cda69ded54a430ff5bb1b105",
+      "mode": "100644",
+      "path": "src/skills/pr/schemas/pr-record.schema.json",
+      "sha256": "63023e31d3de42eec5602c0511c11514387db93453d01b917e066afc7def2c88",
+      "size": 9171
+    },
+    {
+      "git_blob": "fd190b04ee79e9dcb120b9a9c18e228b4454cfe2",
+      "mode": "100644",
+      "path": "src/skills/pr/scripts/github.py",
+      "sha256": "2b9c6901485e9d71d103e2bd305077994f3f772f137441ee25804d1cdedcf48a",
+      "size": 26584
+    },
+    {
+      "git_blob": "e574c6b0d782950308c7c445aed8f879f9f74434",
+      "mode": "100644",
+      "path": "src/skills/pr/scripts/pr.py",
+      "sha256": "e1e70c584894ec075946891795c76585957e419f527395b412bfef671bb2fc16",
+      "size": 65931
+    },
+    {
+      "git_blob": "918fb3067d2ef49f3bced42747c47713db501e35",
+      "mode": "100644",
+      "path": "src/skills/pr/skill-package.yaml",
+      "sha256": "e85987a6d2fc7f3c0276d99284c6612b1e314a729f4d4e8a8d90fc93d2153a86",
+      "size": 5387
+    },
+    {
+      "git_blob": "8f465423946e8750df38d7063f8eaa6022e3ae67",
+      "mode": "100644",
+      "path": "src/skills/pr/templates/pr.md",
+      "sha256": "1fe4e8221258bb2dde5ffdee6d8122380b5d65338ad84b67cdcae4a2725261ca",
+      "size": 162
+    },
+    {
+      "git_blob": "f750615d89f134e91165beecefcca77fe6783c47",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/SKILL.md",
+      "sha256": "afb8692260f704506a7067ae8d9c1acde629adc4dcd83da95032cc2227c19fd1",
+      "size": 2021
+    },
+    {
+      "git_blob": "807b45ee70044aade36d735f20b1fa030df9cd08",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/references/authoring.md",
+      "sha256": "3dd7e302b8862fcb9a7531603734875f62a982081352b9d016fe08ac6909ba5f",
+      "size": 5052
+    },
+    {
+      "git_blob": "f416f724708788b2eebd8199972637fec05eed27",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/references/configuration.md",
+      "sha256": "fe7491c4cd969de89db0ad4a2320cb98a10692e35d37cc9a96aab39d112efba9",
+      "size": 4528
+    },
+    {
+      "git_blob": "c5213f789747adb5a79887f8d5f9f52c87f1daec",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/references/example.md",
+      "sha256": "7993f32b27290489b0a59dc49ca2802f86bd0f16a8400fb46f23823ed259ea38",
+      "size": 6290
+    },
+    {
+      "git_blob": "157be22bc392ba3af98e2661f70bb6ef7c9ef65a",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/references/format.md",
+      "sha256": "7107cd91a9e219e195b1a5f41dca229e0185ff69dce0b2525fb6cbc25f138cba",
+      "size": 4825
+    },
+    {
+      "git_blob": "270d41ae39fd8422ad293efcb0748c5add0e7a66",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/references/operations.md",
+      "sha256": "db527a2933302bc87c9bd32dbff6b06cd3acdc6682d4b68454622ba3a2d668de",
+      "size": 6914
+    },
+    {
+      "git_blob": "4b7f234a110f471f9ddc6477a2468cb90b80115a",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/schemas/cbf-record-v1.schema.json",
+      "sha256": "dc9ff4a16e2ef1361553d1d59abd28530be061b62f9545a9da1eaea6714196b8",
+      "size": 9716
+    },
+    {
+      "git_blob": "c4780389af49c61d9ff6357d73818e8b83e21124",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/scripts/problem_frame.py",
+      "sha256": "c52f3692b6a22e587f67f4bdf0b1e0ac180468e01d2927cb9b1e571c9a6e1ae4",
+      "size": 50841
+    },
+    {
+      "git_blob": "42f404b4e0885a40c2e3a42f5eb4d649fa07d733",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/skill-package.yaml",
+      "sha256": "5705a4c55371ae26e949a8dbf605d3610797948b45464901d29956abb68b44af",
+      "size": 5268
+    },
+    {
+      "git_blob": "cafccb37764b6e2869503f69bbaf136b7a57ef77",
+      "mode": "100644",
+      "path": "src/skills/problem-frame-author/templates/cbf.md",
+      "sha256": "5e2a9b3a5bd309663626b0f16d174f78c87056c041ddc5111af541e5d3f1a7ce",
+      "size": 168
+    },
+    {
+      "git_blob": "a50714e88b5cb26a6c2bd31a7dc0e933f732f547",
+      "mode": "100644",
+      "path": "src/skills/requirement-author/SKILL.md",
+      "sha256": "4bf1496cdf400e6c93967e13e1fdc4192253ff3f07129331f749a4473c7a6642",
+      "size": 1526
+    },
+    {
+      "git_blob": "e7a5529b70d18392e034178def2c3d6be03a51af",
+      "mode": "100644",
+      "path": "src/skills/requirement-author/references/authoring.md",
+      "sha256": "c75fdb5ddc59e87cdcd7c5ccb1465af2a44576e6b6a6b74e2fe67de81d1e1924",
+      "size": 6436
+    },
+    {
+      "git_blob": "3745b7f99dedd9f3f4b855eb76e20cd2bbacb49c",
+      "mode": "100644",
+      "path": "src/skills/requirement-author/references/requirement-template.md",
+      "sha256": "a98f93847d8ce5b9f679f6e9de6a1031f411c827993355a44224b4f4072c9b10",
+      "size": 2761
+    },
+    {
+      "git_blob": "94c65266444b48af86490f29694caf5cbeacf8fd",
+      "mode": "100644",
+      "path": "src/skills/requirement-author/skill-package.yaml",
+      "sha256": "2127968b5f6d9776da7e36b7972d0d651b36b396a455f5a8fcbe3511c4ed35d9",
+      "size": 1484
+    },
+    {
+      "git_blob": "a68baa161d8db9ef340f8ca18a15158a3323225a",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/SKILL.md",
+      "sha256": "7fb7542531e36732eea61fb73871c826e4e3a11878dc17afe171c5ec5df26b9c",
+      "size": 1647
+    },
+    {
+      "git_blob": "396bf271c8f0ec3d51c859976b1071ae12c829b5",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/implement.md",
+      "sha256": "08ba36b4571651cd79cc2ff1f5b76ac50a72ab35a04414f3974438e675bc89a6",
+      "size": 9695
+    },
+    {
+      "git_blob": "c49ab4ae17b24f9b7d102e91b89fc6422f95d0ad",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/modes/command.md",
+      "sha256": "84ac15d6c632f1047dc6854446b8b817544c63f6bada6d2b278185e579ab1c69",
+      "size": 1914
+    },
+    {
+      "git_blob": "d6b8953e688dc96f8c534c1aa30c07cb3a887183",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/modes/generic.md",
+      "sha256": "9e6dee258a57075c55caa5b476013d668c51ef30b49567809ec2a8f07d1514a2",
+      "size": 1735
+    },
+    {
+      "git_blob": "40108cd72294279e7571c4a5a073930800ea1690",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/modes/query.md",
+      "sha256": "ee68d214075c667029bd4e754bb4ba0d4f56176c5b02ea2da439f2521455d251",
+      "size": 1713
+    },
+    {
+      "git_blob": "b8a0df82b203185658afb3ca08eb5cfafa894023",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/modes/reactor.md",
+      "sha256": "5b9eced03f03a950a8782c34581c87acaf980b4d12fc8343e60d669a73c39d68",
+      "size": 1834
+    },
+    {
+      "git_blob": "9acba6069e22dfba5e3dc8e20d6586de6dd7e742",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/remediation.md",
+      "sha256": "de891b07adc4fb4aebe856bbe9ccd5410eab5651fcaf007ade9555496e73a277",
+      "size": 2093
+    },
+    {
+      "git_blob": "98b4e3e42bff44f79453ae7c99ef18ecea0c136a",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/references/test-handoff.md",
+      "sha256": "93f6b031afaa28ad8e11358df0e5247afe062a0a13a8237466bcc219583ef395",
+      "size": 2844
+    },
+    {
+      "git_blob": "89fb016c3d0253590d7f6f26ae1267a09ffc8210",
+      "mode": "100644",
+      "path": "src/skills/slice-implementer/skill-package.yaml",
+      "sha256": "6842c837b4359fc5f219eb449ed8d8aa239fd6702c091096e7453f01f5d2c9e5",
+      "size": 2431
+    },
+    {
+      "git_blob": "3f08ec0fbdf7502f1232c76ddb885d19b2c90d75",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/SKILL.md",
+      "sha256": "61da4fdcc2f0331725bb34a5ced261566f45bc423e3102b112c9c215cf032ddd",
+      "size": 2339
+    },
+    {
+      "git_blob": "a68705d44ceecda7c6e6af1fcfc886cc0ed37bc7",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/references/composition.md",
+      "sha256": "fa1d9a9aa5f40aeddf4e7374801c499c3dac39c81252ccbe0ace62370436d3f2",
+      "size": 3503
+    },
+    {
+      "git_blob": "e427b9ba22c1864b6a1b173bfbf4331cdd958f01",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/references/configuration.md",
+      "sha256": "13f6975331b1bf5d77fa8bfb26c44ee7a992dc413b9c21427ed67c45eb89d41d",
+      "size": 4648
+    },
+    {
+      "git_blob": "8df91c85305a2f403e6a74b1a9b7a449120f3aa1",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/references/example.md",
+      "sha256": "5a6a85f63fb2b7a7f2762b3d5ebc223d817151146d2ca4e953652c849198030c",
+      "size": 5118
+    },
+    {
+      "git_blob": "37846a094c3fe8dec822063c532c3e8517af539a",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/references/operations.md",
+      "sha256": "66c8c22e936f5d01cc17e7c0ff06fee2ce64117810153f51c3d696fd83ee6b1f",
+      "size": 16476
+    },
+    {
+      "git_blob": "eb79e882e8a1821a65e6005519fdd463e5e7076c",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/references/retention.md",
+      "sha256": "3a149bc8825d29d6e86669938ab1127e64dba3cef8726a63664e9583a8e5008c",
+      "size": 3315
+    },
+    {
+      "git_blob": "2411a8dff1cc4041611544e703166c848a45a377",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/schemas/workflow-record.schema.json",
+      "sha256": "6f3e4672852150d6572565c11c3e984d882ade727cb1c9401214d1420b9e0154",
+      "size": 18945
+    },
+    {
+      "git_blob": "63998067476ff48bc3ff1c82502fcae651a54fa0",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/scripts/workflow.py",
+      "sha256": "7947654676ae802424366e696c22d3c7933a632543a120d1a5168fd14900b53e",
+      "size": 85612
+    },
+    {
+      "git_blob": "46ce2bd6eb765bf8df41a747f6c13b29a7994edc",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/skill-package.yaml",
+      "sha256": "69f4b4f63f1a6a1bd816354a3dc62026b4b7402fc9fc5f0b10e2aeeb22de9a87",
+      "size": 8395
+    },
+    {
+      "git_blob": "c16f731a5ce5d60e602d1123c103a85d3c35ae79",
+      "mode": "100644",
+      "path": "src/skills/software-development-orchestrator/templates/workflow.md",
+      "sha256": "536dc6a4e0264a6a29262cbcfb65bc994323406668f581972b0ac075af31802a",
+      "size": 330
+    },
+    {
+      "git_blob": "149bc17765024273db3a159aa4d3e7e667f82a50",
+      "mode": "100644",
+      "path": "src/skills/spec-author/SKILL.md",
+      "sha256": "c98c96719505f2d8c7c4a66cbd661cd6a570d565701d8c5b936710afd4e28c08",
+      "size": 1672
+    },
+    {
+      "git_blob": "ce669c851d6535dad4946b89fb42a1cc021beb60",
+      "mode": "100644",
+      "path": "src/skills/spec-author/references/adapter-template.md",
+      "sha256": "0c2dccdc61a306553e06c637a5d1fcb6cafd28aac92eef406940ee2150503ba9",
+      "size": 1922
+    },
+    {
+      "git_blob": "4b3a9cc5538cc90a9509bfc60f1d90f39e8ec925",
+      "mode": "100644",
+      "path": "src/skills/spec-author/references/authoring.md",
+      "sha256": "521cd217af6eeb31a2095ef3b5945d93af99129f7209e729b975f3189a559510",
+      "size": 7996
+    },
+    {
+      "git_blob": "8c2e38dfe097cadfd4fc6992d8d1789041a1a0de",
+      "mode": "100644",
+      "path": "src/skills/spec-author/references/entity-template.md",
+      "sha256": "425f67efc291daf5755f61d1963ec2b3f9848d7c3cc80e0f0f339e27483ccaf0",
+      "size": 1901
+    },
+    {
+      "git_blob": "9c0abdd96b773184dd62a54b1b6c0ee0e1a4e596",
+      "mode": "100644",
+      "path": "src/skills/spec-author/references/formal-test-template.md",
+      "sha256": "77e554da50aec47d6db41796527eb78e7e0edf0d7874cd0123bb0c0ece542fa5",
+      "size": 2484
+    },
+    {
+      "git_blob": "9e1a416f48c36968b2384fc45aa5e6b3ab7164d9",
+      "mode": "100644",
+      "path": "src/skills/spec-author/references/production-template.md",
+      "sha256": "d9fddc3d14844aaa692fc33533046c0c5a320e74efd1163599d6be50961079d5",
+      "size": 2175
+    },
+    {
+      "git_blob": "120abfe9d14acfe57c2e87c84aa9e3bfe164fee1",
+      "mode": "100644",
+      "path": "src/skills/spec-author/skill-package.yaml",
+      "sha256": "0cb829b12b78e48799dae1e81f5655bd4d2457a6239e0ae9c71f874055e56ff9",
+      "size": 1626
+    },
+    {
+      "git_blob": "78da54328dd7cc4c85ff6314f634b7768e72f22d",
+      "mode": "100644",
+      "path": "src/skills/spec-compliance-validator/SKILL.md",
+      "sha256": "06a009d4913f3a540ce5005283e003c009ecf30503c5fd5abad9ea4c69c32637",
+      "size": 1789
+    },
+    {
+      "git_blob": "703761c43bdad0af917e1adb98c70a3ab37833fb",
+      "mode": "100644",
+      "path": "src/skills/spec-compliance-validator/profiles/dotnet.md",
+      "sha256": "55355bc97ed921879e9f05ed4f4875289c98da992951047d0a8d8d477f6f7c13",
+      "size": 2731
+    },
+    {
+      "git_blob": "b85a1904a96befb7eb5fef7dd498b2a82d4ab961",
+      "mode": "100644",
+      "path": "src/skills/spec-compliance-validator/references/compliance.md",
+      "sha256": "c242d81d83f24a074ea3561709326445fa5cd5bbda2c8e8e29b492a6932d3f74",
+      "size": 9124
+    },
+    {
+      "git_blob": "c0431d9536b2c579524b5e4963b728f9c75a6327",
+      "mode": "100644",
+      "path": "src/skills/spec-compliance-validator/references/legacy-intake.md",
+      "sha256": "3be1c0b4d5bb7c3439c9135c499330c0bbb99f00343d78050750aa6b1e9741c7",
+      "size": 2516
+    },
+    {
+      "git_blob": "4150528e5ffc1052b0eabbb94b0c93bddf34c4d6",
+      "mode": "100644",
+      "path": "src/skills/spec-compliance-validator/references/report-template.md",
+      "sha256": "be3080a7a26c2a952b8edfc7eb5facc64d73a63b6635d2ccf683ab76e697ca41",
+      "size": 3017
+    },
+    {
+      "git_blob": "30ba18cb4f4cba3b7829c4387c32226005b1c6ec",
+      "mode": "100644",
+      "path": "src/skills/spec-compliance-validator/skill-package.yaml",
+      "sha256": "aedc751c6543dd905b84c40ef1f4f0aeaa58e40e75f723756e3929f6ba477410",
+      "size": 1749
+    },
+    {
+      "git_blob": "b381f540642129075428699b8df5709989bd8b09",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/SKILL.md",
+      "sha256": "9e619bec2a060eafe30a6d4f654963e14633b0462e55365ce2e992debf55055b",
+      "size": 1978
+    },
+    {
+      "git_blob": "b46bdeeb44092f66ec01149f5e3bcb45422931c8",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/references/authority.md",
+      "sha256": "3df9b1f1ddfdc6aaf1df05d6b027b47144faa362e718e02a8e3218dc2d132792",
+      "size": 5354
+    },
+    {
+      "git_blob": "3e38aee6d9284861b01a3458b24e4cf1b48846ba",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/references/configuration.md",
+      "sha256": "78aca34372afa57475f18b7df6ea062f0234e675c96b97589d6f83d8dc3cb28c",
+      "size": 6073
+    },
+    {
+      "git_blob": "de7366b1f1e2618e8f793de4a2a41f472454105b",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/references/example.md",
+      "sha256": "8cc3b24b18431e17ea3c7ae1fc3941c2f04fb06701f7ad5ac8a788c995679a2d",
+      "size": 6032
+    },
+    {
+      "git_blob": "daff1533f65e26b17e420e9e68524c89000b2f4e",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/references/operations.md",
+      "sha256": "6e22b7519af5edb7972e5c7c66a009b669977973c8b235a216fc755bd5cd629f",
+      "size": 11605
+    },
+    {
+      "git_blob": "c6810bdbd7e726d7db192dad42c5d49ba26970c4",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/schemas/promotion-record.schema.json",
+      "sha256": "0002b9d91dfd4cfea7a74d51567dd0d93bc03e7f3c6ad3ad974707996eb58b46",
+      "size": 11955
+    },
+    {
+      "git_blob": "4f74a00457110a75d6aa506ee36d529402da514f",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/scripts/standards_promotion.py",
+      "sha256": "acccbc01d5a99d32cfa599243ab9359944ec5a6f1feee3a73b72e52379f80b4d",
+      "size": 90862
+    },
+    {
+      "git_blob": "a84f1ae525b5c86ce7cf4a20acbfbb54d0d2d7b5",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/skill-package.yaml",
+      "sha256": "4727f91052636305e0651114f3a66e0bcb2f0d76e9cc8b6c73f63a2d19abd2e3",
+      "size": 6181
+    },
+    {
+      "git_blob": "230c9dbe8fd8be791a4e17a9fbc20a462a51167f",
+      "mode": "100644",
+      "path": "src/skills/standards-promotion/templates/promotion.md",
+      "sha256": "953e3da7d7029e4bb9560e1454a6c1dbfb6f1f3cf9c22b6f9f7c7b74af992ea5",
+      "size": 413
+    },
+    {
+      "git_blob": "eb36573159a81ef5901e57329877660964650025",
+      "mode": "100644",
+      "path": "src/tools/maintain_framework.py",
+      "sha256": "8214418240cf8048f05f0958b9a8d4dbfc04e5d94457d8c2996162cdf5608156",
+      "size": 14554
+    },
+    {
+      "git_blob": "7c3821e42196a19556fcd4a64927a933f109e9e3",
+      "mode": "100644",
+      "path": "tools/build-catalog.py",
+      "sha256": "0c15bfc93f914c3d7d24fd143c9d2e595f48346920b0b55bd6883e0dfcd86c46",
+      "size": 4103
+    },
+    {
+      "git_blob": "7de2b4f0f8d773c3b5052e4bc4351f4e1451e128",
+      "mode": "100644",
+      "path": "tools/derive-subset.py",
+      "sha256": "082aa4ee14e55eafadabcf270dc1f64b46d88da4f34146f2e180577cdf69a0b4",
+      "size": 4714
+    }
+  ],
+  "inventory_version": 1,
+  "kind": "direct-input-inventory-not-a-build-receipt",
+  "source_checkpoint": "f5f64d1bcdf4b777c9ee9cb53a734f09dc9052de",
+  "source_tree": "2606c26c6918d2b8f008021760317b8ba8cd50ce"
+}

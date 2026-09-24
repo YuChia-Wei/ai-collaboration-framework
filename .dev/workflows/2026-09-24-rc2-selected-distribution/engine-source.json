@@ -1,0 +1,99 @@
+{
+  "checkout_use": "Reobserve checkout HEAD and every file before creating a separately selected current Engine pin. This inventory is not an approval token.",
+  "engine_id": "framework-managed-installation",
+  "engine_version": "2.0.0",
+  "files": [
+    {
+      "path": "src/adapters/claude/skill-entry-v2.md.template",
+      "sha256": "11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d921d032e"
+    },
+    {
+      "path": "src/adapters/codex/skill-entry-v2.md.template",
+      "sha256": "68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4"
+    },
+    {
+      "path": "src/adapters/codex/skill-entry.md.template",
+      "sha256": "f181a38f61472e65594f8b5b0889e8d096b68bec06036c1f53a2ad2c2536137a"
+    },
+    {
+      "path": "src/distribution/__init__.py",
+      "sha256": "6c02b38ce5adc247280b81e127867fea8d3fb98710861858ece7091d38051c25"
+    },
+    {
+      "path": "src/distribution/assembly.py",
+      "sha256": "b8a538993f2594fccdbbc5912c36a5e8f8feeb92d6a2782cb4c02700b6bf7815"
+    },
+    {
+      "path": "src/distribution/catalog.py",
+      "sha256": "df3f8c1a4bf2bdd96e40f4e9d999801e39c71f4ee9b478b2a4da80a337916c43"
+    },
+    {
+      "path": "src/distribution/claude.py",
+      "sha256": "18957246af18bf5c168186605b58506ce08329a1861a1d038ab8a7dcd77775c3"
+    },
+    {
+      "path": "src/distribution/codex.py",
+      "sha256": "c6f8224e265f6ba5e037d358638885eaab76c1adb6f4b670e091dc8a2328f8d8"
+    },
+    {
+      "path": "src/distribution/content.py",
+      "sha256": "593891c340cd92097a09839b1848a1d602cb542f6bcd64cc464fafc42a8203e6"
+    },
+    {
+      "path": "src/distribution/contracts.py",
+      "sha256": "bb5f0bbd2b5c2796534d43727f9c2565d10aada033c3c2fbe325476681280215"
+    },
+    {
+      "path": "src/distribution/data.py",
+      "sha256": "a7a60fde09abb30bb6af9772e7ed6704f0e3b74c134b94e3da44d5fd10f12a1b"
+    },
+    {
+      "path": "src/distribution/git_source.py",
+      "sha256": "37060d072caba1420faa77933d0da32fb51b794a4fa4ff29c218cadfad6fd4bb"
+    },
+    {
+      "path": "src/distribution/installation.py",
+      "sha256": "43756f975b4ff49bdabc686224a13a935144621bc242a0bbd53ed87c48a41bc5"
+    },
+    {
+      "path": "src/distribution/installation_io.py",
+      "sha256": "d84ecdd811ede66618bfc5ca5f932937cef2e4115b27f91d9abddfb840a6ac45"
+    },
+    {
+      "path": "src/distribution/installation_plan.py",
+      "sha256": "83cecdbd40589fb47bd103fc8d52d687dcbc47f03057b35f554a10c68bb5ec59"
+    },
+    {
+      "path": "src/distribution/installation_state.py",
+      "sha256": "18c1f1df6df8a3a96e0a1eedac4fce6f44230a1c6e1fffe13a4bf0a706ccca23"
+    },
+    {
+      "path": "src/distribution/maintenance_coordination.py",
+      "sha256": "dd071d335e84d31831f479f197e756f429e1101c8d5f3744a8b90f55e448b36a"
+    },
+    {
+      "path": "src/distribution/package.py",
+      "sha256": "f0677644df30f0d9f211dc669da6ecdb5ffcb27a90e996b4b9e036d2e610281c"
+    },
+    {
+      "path": "src/distribution/selection.py",
+      "sha256": "d36be253554e30bffb98f3740e35ce9909fb638c171d68435c7bfc46beaf68fc"
+    },
+    {
+      "path": "src/tools/maintain_framework.py",
+      "sha256": "8214418240cf8048f05f0958b9a8d4dbfc04e5d94457d8c2996162cdf5608156"
+    },
+    {
+      "path": "tools/build-catalog.py",
+      "sha256": "0c15bfc93f914c3d7d24fd143c9d2e595f48346920b0b55bd6883e0dfcd86c46"
+    },
+    {
+      "path": "tools/derive-subset.py",
+      "sha256": "082aa4ee14e55eafadabcf270dc1f64b46d88da4f34146f2e180577cdf69a0b4"
+    }
+  ],
+  "inventory_version": 1,
+  "kind": "direct-engine-source-inventory-not-execution-evidence",
+  "source_checkpoint": "f5f64d1bcdf4b777c9ee9cb53a734f09dc9052de",
+  "standalone_use": "Owner-selected package_engine builds engine.json plus these exact files. No bundle has been built in S3."
+}

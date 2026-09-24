@@ -1,4 +1,4 @@
-"""Closed development maintenance API 1; project readiness is never inferred.
+"""Closed development maintenance API 2; project readiness is never inferred.
 
 The source entry establishes the fixed engine bootstrap. Apply and recover hold
 native participating-writer exclusion and demand a fresh caller declaration.
@@ -36,7 +36,17 @@ class Operation:
 
     @property
     def names(self) -> set[str]:
-        return set(self.after.members) | (set(self.before.members) if self.before else set())
+        return set(self.after.members) | (set(self.before.members) if self.before else set()) | {r["intent"]["path"] for r in self.document["project_edits"]}
+
+    def descriptors(self, target):
+        rows = dict(target.members) if target else {}
+        state._check(target is self.before or target is self.after, "operation-side", "Select one exact retained operation side.")
+        side = "after" if target is self.after else "before"
+        for edit in self.document["project_edits"]:
+            if edit[side] is not None:
+                name = edit["intent"]["path"]
+                rows[name] = {**edit[side], "owner":"project/"+name, "kind":"project"}
+        return rows
 
     @property
     def scope(self) -> list[str]:
@@ -56,7 +66,7 @@ def _details(changes: Changes, managed: str) -> dict:
 
 
 def _result(operation: str, outcome: str, changes: Changes, managed: str, diagnostics: list | None = None) -> dict:
-    return {"api_version": 1, "operation": operation, "outcome": outcome, "changed": changes.changed,
+    return {"api_version": 2, "operation": operation, "outcome": outcome, "changed": changes.changed,
             "details": _details(changes, managed), "diagnostics": diagnostics or []}
 
 
@@ -94,9 +104,9 @@ def _bundle(request: dict, prepared: tuple, operation_id: str, reader: state._Re
     result, candidate, observation, roots, _ = prepared
     before = observation.lock
     installation_id = before.document["installation_id"] if before else operation_id
-    after_raw = json_bytes({"lock_version": 1, "installation_id": installation_id, "engine": request["engine"],
-                            "mode_policy": request["mode_policy"], "candidate_identity": candidate.identity,
-                            "selection": candidate.selection, "inventory": candidate.inventory})
+    from .catalog import lock_document
+    after_raw = json_bytes(lock_document(candidate, request["engine"], installation_id,
+                                        request["mode_policy"], result["plan"]["project_inputs"]))
     after = state._lock_bytes(after_raw)
     objects = {}
 
@@ -112,7 +122,18 @@ def _bundle(request: dict, prepared: tuple, operation_id: str, reader: state._Re
             retain(reader.member(roots["project"], {**row, "path": name}, request["mode_policy"]))
     for raw in (*candidate.contents.values(), *candidate.metadata_bytes.values()):
         retain(raw)
-    document = {"operation_version": 1, "operation_id": operation_id, "engine": request["engine"],
+    edits, edit_objects = planning.project_edits(reader, roots, request["project_edits"],
+                                                set(candidate.members) | (set(before.members) if before else set()),
+                                                [r["path"] for r in result["plan"]["protected_inputs"]])
+    state._check(edits == result["plan"]["project_edits"], "project-edit-drift", "Project intent preimages changed since planning.")
+    for raw in edit_objects.values(): retain(raw)
+    retain(json_bytes(result["plan"]))
+    for row in request["engine"]["files"]:
+        raw = reader.read(reader.locate(roots["engine"], row["path"]), row["path"])
+        state._check(_hash(raw) == row["sha256"], "engine-drift", "Engine changed during recovery capture.", row["path"])
+        retain(raw)
+    document = {"operation_version": 2, "journal_version": 2, "project_edits": edits,
+                "engine_objects": request["engine"]["files"], "operation_id": operation_id, "engine": request["engine"],
                 "installation_id": installation_id, "project_root": str(roots["project"]),
                 "operation_root": str(roots["recovery"] / ("i-" + operation_id)), "durability": request["durability"],
                 "maintenance": request["maintenance"], "plan_sha256": result["plan_sha256"],
@@ -144,8 +165,10 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
     doc = state._document(raw, "operation.json")
     state._shape(doc, {"operation_version", "operation_id", "engine", "installation_id", "project_root", "operation_root",
                        "durability", "maintenance", "plan_sha256", "before_lock_sha256", "after_lock_sha256",
-                       "candidate_metadata", "protected_inputs", "project_data_action"})
-    state._one(doc["operation_version"])
+                       "candidate_metadata", "protected_inputs", "project_data_action", "journal_version", "project_edits", "engine_objects"})
+    state._check(type(doc["operation_version"]) is int and doc["operation_version"] == 2
+                 and type(doc["journal_version"]) is int and doc["journal_version"] == 2,
+                 "unsupported-version", "Recover operation/journal 1 with its original pinned engine.", outcome="unsupported")
     for key in ("operation_id", "installation_id"):
         state._check(type(doc[key]) is str and re.fullmatch(r"[0-9a-f]{32}", doc[key]) is not None,
                      "operation-identity", "Operation/installation identity must be 32 lowercase hex characters.")
@@ -169,8 +192,9 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
                  "operation-lock-binding", "Durable locks differ from operation identity, engine or mode policy.")
     state._check((os.name, after.document["mode_policy"]) in {("nt", "windows-inventory-only"), ("posix", "posix-permissions")},
                  "recovery-mode-platform", "Original mode policy is unsupported on this platform.", outcome="unsupported")
-    metadata = state._shape(doc["candidate_metadata"], set(state.METADATA))
-    raw_metadata = {name: _object(reader, root, state._digest(metadata[name]), objects) for name in state.METADATA}
+    from .catalog import SUBSET_METADATA
+    metadata = state._shape(doc["candidate_metadata"], set(SUBSET_METADATA))
+    raw_metadata = {name: _object(reader, root, state._digest(metadata[name]), objects) for name in SUBSET_METADATA}
     selection, inventory, _, _, identity = state._candidate_documents(raw_metadata)
     state._check(selection == after.document["selection"] and inventory == after.document["inventory"]
                  and identity == after.document["candidate_identity"], "operation-candidate-binding", "Captured candidate metadata differs from the after lock.")
@@ -181,8 +205,29 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
                 content = _object(reader, root, row["sha256"], objects)
                 state._check(len(content) == row["size"], "object-size", "Object size differs from managed inventory.", name)
                 contents[name] = content
-            state._packages(lock.document["selection"], lock.members, contents)
+            state.verify_lock_contents(lock, contents)
+    state._check(doc["engine_objects"] == engine["files"], "recovery-engine", "Retained engine closure differs.")
+    for row in doc["engine_objects"]:
+        _object(reader, root, row["sha256"], objects)
+    plan_raw = _object(reader, root, doc["plan_sha256"], objects)
+    retained_plan = state._document(plan_raw, "plan.json")
+    state._shape(retained_plan, {"api_version", "operation", "project_root", "candidate_identity", "engine", "expected_lock_sha256", "mode_policy",
+                                 "roots", "durability", "project_data_action", "protected_inputs", "project_edits", "project_inputs", "noop",
+                                 "maintenance_scope", "delta", "preserved_unknown", "path_budget", "prerequisites"})
+    state._check(type(retained_plan["api_version"]) is int and retained_plan["api_version"] == 2
+                 and retained_plan["operation"] == "plan" and retained_plan["engine"] == engine
+                 and retained_plan["project_root"] == doc["project_root"]
+                 and retained_plan["candidate_identity"] == after.document["candidate_identity"]
+                 and retained_plan["expected_lock_sha256"] == doc["before_lock_sha256"]
+                 and retained_plan["project_edits"] == doc["project_edits"]
+                 and retained_plan["project_inputs"] == after.document["project_inputs"]
+                 and retained_plan["protected_inputs"] == doc["protected_inputs"]
+                 and retained_plan["durability"] == doc["durability"] and retained_plan["project_data_action"] == "none",
+                 "operation-plan-binding", "Retained plan and operation disagree.")
+    _edit_record(doc["project_edits"], reader, root, objects,
+                 set(after.members) | (set(before.members) if before else set()), doc["protected_inputs"])
     operation = Operation(doc, raw, before, after, objects)
+    state._check(retained_plan["maintenance_scope"] == operation.scope, "operation-plan-binding", "Retained maintenance scope differs.")
     declaration(doc["maintenance"], operation.scope)
     _protected_shape(doc["protected_inputs"], operation.names)
     return operation
@@ -216,7 +261,7 @@ def _protected(io: IO, project: Path, rows: list, managed: set[str], *, reconstr
 
 
 def _siblings(operation: Operation) -> dict[str, str]:
-    names = operation.names | {state.LOCK_PATH, state.MARKERS[0]}
+    names = operation.names | {state.LOCK_PATH, *state.MARKERS}
     siblings = {name: sibling(operation.document["operation_id"], name) for name in sorted(names)}
     state._check(len(set(siblings.values())) == len(siblings), "sibling-name-collision", "Deterministic sibling names collide.")
     state._paths(sorted(operation.names | {state.LOCK_PATH, state.GUARD_PATH, *state.MARKERS})
@@ -236,7 +281,7 @@ def _layout(io: IO, roots: dict[str, Path], operation: Operation, rows: list[dic
         for role in ("scratch", "staging", "recovery"):
             paths.append((role, roots[role], run))
             state._check(io.locate(roots[role], run) is None, "operation-collision", "Selected real operation path must be exclusively absent.", run, "conflict")
-        paths.extend(("scratch", roots["scratch"], run + "/" + name) for name in (*state.METADATA, "plan.json", state.LOCK_PATH))
+        paths.extend(("scratch", roots["scratch"], run + "/" + name) for name in (*operation.document["candidate_metadata"], "plan.json", state.LOCK_PATH))
         paths.extend(("staging", roots["staging"], run + "/" + row["destination"]) for row in rows if row["action"] in {"add", "change"})
         paths.append(("staging", roots["staging"], run + "/" + state.LOCK_PATH))
         for name in siblings.values():
@@ -285,12 +330,12 @@ def _capture(io: IO, roots: dict, prepared: tuple, operation: Operation) -> None
 
 def _current(io: IO, project: Path, operation: Operation, *, reconstruct: bool = False) -> dict:
     current = {}
-    before_members = operation.before.members if operation.before else {}
+    before_members = operation.descriptors(operation.before)
     for name in sorted(operation.names):
         raw = io.raw(project, name)
         mode = None if raw is None or io.backend.windows else ("100755" if stat.S_IMODE((project / name).lstat().st_mode) == 0o755 else
                                                                "100644" if stat.S_IMODE((project / name).lstat().st_mode) == 0o644 else "unsupported")
-        options = (before_members.get(name), operation.after.members.get(name))
+        options = (before_members.get(name), operation.descriptors(operation.after).get(name))
         matched = any((row is None and raw is None) or
                       (row is not None and raw is not None and len(raw) == row["size"] and _hash(raw) == row["sha256"]
                        and (io.backend.windows or mode == row["mode"])) for row in options)
@@ -303,7 +348,7 @@ def _current(io: IO, project: Path, operation: Operation, *, reconstruct: bool =
 
 
 def _verify_target(io: IO, project: Path, operation: Operation, target: state.InstalledLock | None) -> None:
-    members = target.members if target else {}
+    members = operation.descriptors(target)
     for name in sorted(operation.names):
         row = members.get(name)
         io.expect(project, name, operation.objects[row["sha256"]] if row else None, row["mode"] if row else None)
@@ -312,7 +357,7 @@ def _verify_target(io: IO, project: Path, operation: Operation, target: state.In
 def _matches(operation: Operation, current: dict, target: state.InstalledLock | None, lock_raw: bytes | None, windows: bool) -> bool:
     if lock_raw != (target.raw if target else None):
         return False
-    members = target.members if target else {}
+    members = operation.descriptors(target)
     for name, (raw, mode) in current.items():
         row = members.get(name)
         if raw != (operation.objects[row["sha256"]] if row else None) or (row and not windows and mode != row["mode"]):
@@ -322,7 +367,7 @@ def _matches(operation: Operation, current: dict, target: state.InstalledLock | 
 
 def _transition(io: IO, guard: WriterLock, project: Path, operation: Operation, current: dict,
                 target: state.InstalledLock | None) -> None:
-    members = target.members if target else {}
+    members = operation.descriptors(target)
     for name in sorted(operation.names):
         guard.verify()
         before, before_mode = current[name]
@@ -347,6 +392,7 @@ def _finish(io: IO, guard: WriterLock, project: Path, operation: Operation, targ
     io.changes.protected = _protected(io, project, operation.document["protected_inputs"], operation.names, reconstruct=reconstruct)
     guard.verify()
     io.expect(project, state.MARKERS[0], operation.raw)
+    io.expect(project, state.MARKERS[1], operation.raw)
     desired_lock = target.raw if target else None
     if desired_lock != current_lock:
         if desired_lock is None:
@@ -354,10 +400,14 @@ def _finish(io: IO, guard: WriterLock, project: Path, operation: Operation, targ
         else:
             io.publish(project, state.LOCK_PATH, desired_lock, current_lock, operation.document["operation_id"])
     io.expect(project, state.LOCK_PATH, desired_lock)
+    if target is operation.after:
+        for row in target.document["project_inputs"]:
+            state._check(_hash(io.raw(project, row["path"])) == row["sha256"], "project-input-drift", "Paired project input differs after transition.", row["path"], "conflict")
     io.changes.lock_sha256 = _hash(desired_lock)
     _verify_target(io, project, operation, target)
     # The marker is the final namespace removal. Failed read-back remains an
     # incomplete result even if a subsequent inspection finds matching bytes.
+    io.remove(project, state.MARKERS[1], operation.raw)
     io.remove(project, state.MARKERS[0], operation.raw)
     io.expect(project, state.LOCK_PATH, desired_lock)
     _verify_target(io, project, operation, target)
@@ -379,7 +429,7 @@ def apply(request: dict | bytes) -> dict:
         declaration(request["maintenance"], preview["plan"]["maintenance_scope"])
         changes.protected = "matches" if request["protected_inputs"] else "not-selected"
         changes.lock_sha256 = observation.lock.sha256 if observation.lock else None
-        noop = planning.is_noop(observation, candidate, request["mode_policy"])
+        noop = preview["plan"]["noop"]
         io = IO(backend, reader, changes)
         # Actual layout preflight precedes even first-install guard/parent writes.
         # No-op allocates neither ID nor directory nor content.
@@ -395,7 +445,7 @@ def apply(request: dict | bytes) -> dict:
             guard.verify()
             discharged = {"writer-guard", "fresh-input-observation", "maintenance-quiescence"}
             if noop:
-                state._check(planning.is_noop(observation, candidate, request["mode_policy"]), "noop-drift", "No-op state changed before coordination.", outcome="conflict")
+                state._check(result["plan"]["noop"], "noop-drift", "No-op state changed before coordination.", outcome="conflict")
                 _admit(result["plan"], discharged)
                 changes.counts["unchanged"] = len(candidate.members)
                 answer = _result("apply", "unchanged", changes, "managed-bytes-consistent")
@@ -411,11 +461,12 @@ def apply(request: dict | bytes) -> dict:
                 current = _current(io, roots["project"], operation)
                 state._check(_matches(operation, current, operation.before, io.raw(roots["project"], state.LOCK_PATH), backend.windows),
                              "pre-marker-drift", "All old members and lock must still match before marker admission.", outcome="conflict")
-                changes.protected = _protected(io, roots["project"], request["protected_inputs"], operation.names)
+                changes.protected = _protected(io, roots["project"], operation.document["protected_inputs"], operation.names)
                 io.expect(roots["project"], state.MARKERS[1], None)
                 guard.verify()
                 io.publish(roots["project"], state.MARKERS[0], operation.raw, None, operation_id)
                 changes.marker_admitted = True
+                io.publish(roots["project"], state.MARKERS[1], operation.raw, None, operation_id)
                 _transition(io, guard, roots["project"], operation, current, operation.after)
                 _finish(io, guard, roots["project"], operation, operation.after, operation.before.raw if operation.before else None)
                 answer = _result("apply", "applied", changes, "managed-bytes-consistent", _mode_note(result["plan"]["delta"]))
@@ -425,11 +476,13 @@ def apply(request: dict | bytes) -> dict:
 
 
 def _recovery_controls(io: IO, project: Path, operation: Operation, request: dict) -> tuple:
-    io.expect(project, state.MARKERS[1], None)
+    paired_marker = io.raw(project, state.MARKERS[1], state.LIMITS["document_bytes"])
+    state._check(paired_marker in (None, operation.raw), "unrelated-marker", "Project marker differs from retained operation.", state.MARKERS[1], "conflict")
     lock = io.raw(project, state.LOCK_PATH, state.LIMITS["document_bytes"])
     marker = io.raw(project, state.MARKERS[0], state.LIMITS["document_bytes"])
     state._check(_hash(lock) == request["expected_lock_sha256"] and _hash(marker) == request["expected_marker_sha256"],
                  "recovery-control-binding", "Current lock/marker differs from explicitly expected raw hash/absence.", outcome="conflict")
+    state._check(paired_marker is None or marker == operation.raw, "recovery-incomplete", "A project marker without its managed marker is not a known phase.")
     state._check(marker in (None, operation.raw), "unrelated-marker", "Marker is not this exact immutable operation; malformed/newer state is preserved.", state.MARKERS[0], "conflict")
     state._check(lock == operation.after.raw or lock == (operation.before.raw if operation.before else None)
                  or (request.get("reconstruct_missing_managed", False) and lock is None),
@@ -439,18 +492,18 @@ def _recovery_controls(io: IO, project: Path, operation: Operation, request: dic
 
 def _sibling_residue(io: IO, project: Path, operation: Operation, siblings: dict) -> dict:
     residue = {}
-    before_members = operation.before.members if operation.before else {}
+    before_members = operation.descriptors(operation.before)
     for destination, temporary in siblings.items():
         raw = io.raw(project, temporary)
         if raw is None:
             continue
-        if destination == state.MARKERS[0]:
+        if destination in state.MARKERS:
             options = [(operation.raw, "100644")]
         elif destination == state.LOCK_PATH:
             options = [(lock.raw, "100644") for lock in (operation.before, operation.after) if lock]
         else:
             options = [(operation.objects[row["sha256"]], row["mode"])
-                       for row in (before_members.get(destination), operation.after.members.get(destination)) if row]
+                       for row in (before_members.get(destination), operation.descriptors(operation.after).get(destination)) if row]
         state._check(any(raw == content and (io.backend.windows or stat.S_IMODE((project / temporary).lstat().st_mode)
                          == (0o755 if mode == "100755" else 0o644)) for content, mode in options),
                      "unknown-sibling", "Sibling is not a complete exact captured file; preserve partial/unknown residue for owner reconciliation.", temporary, "conflict")
@@ -468,6 +521,7 @@ def recover(request: dict | bytes) -> dict:
             state._digest(request[key], nullable=key != "operation_sha256")
         state._check(request["direction"] in {"finish", "restore"}, "recovery-direction", "Direction must be finish or restore.")
         reconstruct = request.get("reconstruct_missing_managed", False)
+        state._check(reconstruct is False, "unsupported-reconstruction", "Paired project edits require exact retained before/after state; whole-project reconstruction is not selected.", outcome="unsupported")
         state._check(type(reconstruct) is bool, "reconstruction-flag", "Reconstruction must be an exact boolean.")
         reader = state._Reader()
         project, engine, operation_root = (state._root(request[key]) for key in ("project_root", "engine_root", "operation_root"))
@@ -493,6 +547,7 @@ def recover(request: dict | bytes) -> dict:
         with WriterLock(io, project, allow_create=needs_reconstruction) as guard:
             state._engine(reader, engine, request["engine"])
             operation = _read_operation(reader, operation_root, request["operation_sha256"], request["engine"], project)
+            target = operation.after if request["direction"] == "finish" else operation.before
             declaration(request["maintenance"], operation.scope)
             lock, marker = _recovery_controls(io, project, operation, request)
             current = _current(io, project, operation, reconstruct=reconstruct)
@@ -513,11 +568,18 @@ def recover(request: dict | bytes) -> dict:
                     io.publish(project, state.MARKERS[0], operation.raw, None, operation.document["operation_id"])
                 changes.marker_admitted = True
                 guard.verify()
+                for control in state.MARKERS:
+                    temporary = siblings[control]
+                    if temporary in residue:
+                        io.remove(project, temporary, residue.pop(temporary))
+                paired_marker = io.raw(project, state.MARKERS[1], state.LIMITS["document_bytes"])
+                if paired_marker is None:
+                    io.publish(project, state.MARKERS[1], operation.raw, None, operation.document["operation_id"])
                 for name, raw in residue.items():
                     io.remove(project, name, raw)
                 _transition(io, guard, project, operation, current, target)
                 _finish(io, guard, project, operation, target, lock, reconstruct=reconstruct)
-                before_members = operation.before.members if operation.before else {}
+                before_members = operation.descriptors(operation.before)
                 mode_rows = [{"action": "mode-only"} for name, row in operation.after.members.items()
                              if name in before_members and row["sha256"] == before_members[name]["sha256"]
                              and row["mode"] != before_members[name]["mode"]]
@@ -546,3 +608,30 @@ def execute(request: dict | bytes) -> dict:
         result["details"] = {"managed_state": result["outcome"], "project_readiness": "not-assessed",
                              "owned": None, "unknown": None, "drift": None, "mode_policy": None}
         return result
+
+
+def _edit_record(rows, reader, root, objects, managed, protected):
+    state._array(rows, state.LIMITS["protected_inputs"])
+    names = []
+    for row in rows:
+        state._shape(row, {"intent", "before", "after"})
+        intent = state._shape(row["intent"], {"path", "before_sha256", "after_sha256", "after_content_ref"})
+        name = state._relative(intent["path"]); names.append(name)
+        state._check(not name.startswith((".ai/core/", ".ai/local/", ".git/")) and name not in {".ai/core", ".ai/local", ".git"},
+                     "project-edit-boundary", "Retained project edit crosses storage ownership.", name)
+        for side in ("before", "after"):
+            state._digest(intent[side + "_sha256"], nullable=True)
+            value = row[side]
+            if value is None:
+                state._check(intent[side + "_sha256"] is None, "project-edit-binding", "Absent descriptor needs explicit absent intent.", name)
+            else:
+                state._shape(value, {"sha256", "size", "mode"}); state._descriptor(value)
+                state._check(value["sha256"] == intent[side + "_sha256"], "project-edit-binding", "Intent and retained descriptor differ.", name)
+                raw = _object(reader, root, value["sha256"], objects)
+                state._check(len(raw) == value["size"], "project-edit-binding", "Retained project content size differs.", name)
+        state._check(intent["after_content_ref"] == ("objects/" + intent["after_sha256"] if intent["after_sha256"] else None),
+                     "project-edit-object", "Invalid retained after-content address.", name)
+        if row["before"] is not None and row["after"] is not None:
+            state._check(row["before"]["mode"] == row["after"]["mode"], "project-edit-mode", "An intent cannot change project mode.", name)
+    state._sorted(rows, lambda r:r["intent"]["path"])
+    state._paths(sorted(managed | {state.LOCK_PATH, state.GUARD_PATH, *state.MARKERS}) + names + [r["path"] for r in protected])

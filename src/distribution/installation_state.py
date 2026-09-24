@@ -1,7 +1,7 @@
-"""Read-only selection 1/2 / lock 1 readers and inspection (development API 1).
+"""Shared legacy/RC2 artifact readers and read-only API-2 inspection.
 
 No product entry point, filesystem mutation, Git subprocess or source fetch.
-The executing reader closure is deliberately smaller than a future writer engine.
+Historical reader pins stay distinct from the complete engine-2 source closure.
 """
 from __future__ import annotations
 
@@ -35,10 +35,8 @@ READER_ENGINE_FILES = tuple(sorted((
     "src/distribution/git_source.py", "src/distribution/package.py",
     "src/distribution/installation_state.py", "src/distribution/installation_plan.py",
 )))
-ENGINE_FILES = tuple(sorted((*READER_ENGINE_FILES,
-    "src/distribution/installation.py", "src/distribution/installation_io.py",
-    "src/distribution/maintenance_coordination.py", "src/tools/maintain_framework.py",
-)))
+ENGINE_FILES = ('src/adapters/claude/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry.md.template', 'src/distribution/__init__.py', 'src/distribution/assembly.py', 'src/distribution/catalog.py', 'src/distribution/claude.py', 'src/distribution/codex.py', 'src/distribution/content.py', 'src/distribution/contracts.py', 'src/distribution/data.py', 'src/distribution/git_source.py', 'src/distribution/installation.py', 'src/distribution/installation_io.py', 'src/distribution/installation_plan.py', 'src/distribution/installation_state.py', 'src/distribution/maintenance_coordination.py', 'src/distribution/package.py', 'src/distribution/selection.py', 'src/tools/maintain_framework.py', 'tools/build-catalog.py', 'tools/derive-subset.py')
+
 METADATA = ("metadata/selection.json", "metadata/files.json", "metadata/build.json")
 LOCK_PATH = ".ai/framework.lock"
 MARKERS = (".ai/framework.operation", ".ai/config-transition.operation")
@@ -257,7 +255,7 @@ class _Reader:
     """One call's bounded reads/listings. Caches are observations, not a lease."""
 
     def __init__(self):
-        bootstrap_bytes = getattr(sys.modules.get("__main__"), "_framework_bootstrap_bytes", 0)
+        bootstrap_bytes = getattr(sys.modules.get("_aicf_verified_bootstrap", sys.modules.get("__main__")), "_framework_bootstrap_bytes", 0)
         _check(type(bootstrap_bytes) is int and 0 <= bootstrap_bytes <= LIMITS["total_bytes"],
                "bootstrap-read-budget", "Bootstrap read accounting is invalid.")
         self.bytes = bootstrap_bytes
@@ -385,7 +383,7 @@ def _descriptor(row: dict) -> None:
 
 def _engine_shape(engine: Any) -> dict:
     _shape(engine, {"id", "version", "source_commit", "files"})
-    _check(engine["id"] == "framework-managed-installation" and engine["version"] == "1.0.0",
+    _check(engine["id"] == "framework-managed-installation" and engine["version"] in {"1.0.0", "2.0.0"},
            "unsupported-engine", "Unsupported maintenance engine identity.", outcome="unsupported")
     _oid(engine["source_commit"])
     rows = _array(engine["files"])
@@ -621,6 +619,22 @@ def _packages(selection: dict, members: dict[str, dict], contents: dict[str, byt
         except (DistributionError, UnicodeError, RecursionError):
             raise InstallationError("package-contract", "Shared package loader/reference checks rejected this package.", prefix + "skill-package.yaml") from None
         packages[owner] = package
+    from .codex import project_entry
+    for adapter in selection["adapters"]:
+        owner = adapter["package"]
+        template_path = adapter["template"]["path"]
+        captured = getattr(sys.modules.get("_aicf_verified_bootstrap", sys.modules.get("__main__")), "_framework_engine_bytes", {})
+        template = captured.get(template_path)
+        if template is None:
+            template = _Reader().read(Path(__file__).absolute().parents[2] / template_path, template_path)
+        _check(sha256(template).hexdigest() == adapter["template"]["sha256"], "legacy-template", "Legacy template identity differs.")
+        package = packages[owner]
+        destinations = {m: f".ai/core/skills/{owner}/{m}" for m in package.members}
+        blobs = {m: Blob(m, members[d]["source"]["git_blob"], members[d]["mode"], contents[d]) for m,d in destinations.items()}
+        front = check_references(package, blobs)
+        destination, rendered = project_entry(template, owner, package.version, front["description"], destinations,
+                                              configuration=package.metadata["configuration"])
+        _check(contents.get(destination) == rendered, "legacy-projection", "Legacy runtime bytes do not reconstruct.")
     for package in packages.values():
         for dep in package.metadata["dependencies"]["optional"]:
             if dep["id"] in packages:
@@ -642,6 +656,9 @@ class Candidate:
 
 def _candidate_documents(raw: dict[str, bytes]) -> tuple:
     """Shared candidate semantics for filesystem input and durable recovery objects."""
+    if "metadata/catalog.json" in raw:
+        from .catalog import subset_documents
+        return subset_documents(raw)
     _shape(raw, set(METADATA))
     docs = {name: _document(raw[name], name) for name in METADATA}
     selection, inventory, build = (docs[name] for name in METADATA)
@@ -694,6 +711,10 @@ def read_candidate(candidate_root: str, *, _reader: _Reader | None = None) -> Ca
         target = reader.locate(root, name)
         _check(target is not None, "incomplete-candidate", "Candidate metadata document is missing.", name)
         raw[name] = reader.read(target, name, LIMITS["document_bytes"])
+    probe = _document(raw[METADATA[0]], METADATA[0])
+    if type(probe.get("schema_version")) is int and probe["schema_version"] == 3:
+        from .catalog import read_subset
+        return read_subset(root, reader)
     selection, inventory, build, members, identity = _candidate_documents(raw)
     expected = set(METADATA) | {row["path"] for row in members.values()}
     directories = {"/".join(name.split("/")[:i]) for name in expected for i in range(1, len(name.split("/")))}
@@ -730,11 +751,15 @@ class InstalledLock:
 def _lock_bytes(raw: bytes) -> InstalledLock:
     """One lock parser shared by live observation and durable operations."""
     document = _document(raw, LOCK_PATH)
+    if type(document.get("lock_version")) is int and document["lock_version"] == 2:
+        from .catalog import lock_bytes
+        return lock_bytes(raw)
     _shape(document, {"lock_version", "installation_id", "engine", "mode_policy", "candidate_identity", "selection", "inventory"})
     _one(document["lock_version"])
     _check(type(document["installation_id"]) is str and re.fullmatch(r"[0-9a-f]{32}", document["installation_id"]) is not None,
            "installation-identity", "Invalid stable installation identity.", LOCK_PATH)
     _engine_shape(document["engine"])
+    _check(document["engine"]["version"] == "1.0.0", "unsupported-engine", "Legacy lock requires its original engine-1 provenance.")
     _text(document["mode_policy"])
     _check(document["mode_policy"] in MODE_POLICIES, "mode-policy", "Unsupported installed mode policy.", LOCK_PATH, "unsupported")
     members = _selection_inventory(document["selection"], document["inventory"])
@@ -744,7 +769,7 @@ def _lock_bytes(raw: bytes) -> InstalledLock:
 
 
 def read_lock(project_root: str, *, _reader: _Reader | None = None) -> InstalledLock | None:
-    """Read lock 1; absence confers no ownership. Does not establish file state."""
+    """Read lock 1/2; absence confers no ownership. Does not establish file state."""
     reader = _reader or _Reader()
     root = _root(project_root)
     target = reader.locate(root, LOCK_PATH)
@@ -768,7 +793,7 @@ def _unknown(reader: _Reader, root: Path, names: set[str], owned: set[str]) -> l
     scopes = set()
     for name in names:
         parts = name.split("/")
-        scopes.add("/".join(parts[:4] if name.startswith(".ai/core/skills/") else parts[:3]))
+        scopes.add("/".join(parts[:4] if name.startswith((".ai/core/skills/", ".ai/core/knowledge/")) else parts[:3]))
     parents = {"/".join(name.split("/")[:i]) for name in names for i in range(1, len(name.split("/")))}
     unknown = set()
     for scope in sorted(scopes):
@@ -833,7 +858,7 @@ def observe_installation(project_root: str, candidate: Candidate | None = None,
                     raise
                 drift.append({"path": name, "reason": exc.diagnostic["code"]})
         if not drift:
-            _packages(lock.document["selection"], old, contents)
+            verify_lock_contents(lock, contents)
     unknown = _unknown(reader, root, names, set(old)) if not drift else None
     return Observation(root, lock, drift, unknown, [])
 
@@ -888,14 +913,23 @@ def _engine(reader: _Reader, root: Path, pin: dict) -> None:
     _check(os.name in {"posix", "nt"}, "unsupported-platform", "Reader platform is unsupported.", outcome="unsupported")
     _check(sys.dont_write_bytecode, "bytecode-policy", "Start the host with -B before importing product/dependency modules.", outcome="unsupported")
     _engine_shape(pin)
+    _check(pin["version"] == "2.0.0", "unsupported-engine", "This implementation requires engine 2.", outcome="unsupported")
     _check(tuple(row["path"] for row in pin["files"]) == ENGINE_FILES,
            "unsupported-engine-closure", "Pin must name the complete source maintenance engine closure exactly.", outcome="unsupported")
     _check(Path(__file__).resolve().parents[2] == root, "executing-engine-root", "Explicit engine root differs from executing reader checkout.")
-    bootstrap = sys.modules.get("__main__")
+    bootstrap = sys.modules.get("_aicf_verified_bootstrap", sys.modules.get("__main__"))
     _check(getattr(bootstrap, "_framework_bootstrap", None) == (str(root), pin)
            and Path(getattr(bootstrap, "__file__", "")).resolve() == root / "src/tools/maintain_framework.py",
            "engine-bootstrap", "Use the fixed isolated source entry; caller imports alone do not establish bootstrap.", outcome="unsupported")
-    _check(_head(reader, root) == pin["source_commit"], "engine-head", "Engine checkout HEAD differs from the explicit pin.")
+    descriptor = reader.locate(root, "engine.json")
+    if descriptor is None:
+        _check(_head(reader, root) == pin["source_commit"], "engine-head", "Engine checkout HEAD differs from the explicit pin.")
+    else:
+        from .contracts import validate
+        from .catalog import exact_tree
+        bundle = validate("EngineBundle", _document(reader.read(descriptor, "engine.json", LIMITS["document_bytes"]), "engine.json"))
+        _check(bundle["engine"] == pin, "engine-pin", "Standalone engine differs from independently supplied pin.")
+        exact_tree(reader, root, set(ENGINE_FILES) | {"engine.json"})
     for row in pin["files"]:
         target = reader.locate(root, row["path"])
         _check(target is not None, "engine-file", "Pinned engine file is missing.", row["path"])
@@ -903,7 +937,7 @@ def _engine(reader: _Reader, root: Path, pin: dict) -> None:
         module_name = ("__main__" if row["path"] == "src/tools/maintain_framework.py" else
                        __package__ if row["path"].endswith("/__init__.py") else
                        __package__ + "." + Path(row["path"]).stem)
-        module = sys.modules.get(module_name)
+        module = bootstrap if row["path"] == "src/tools/maintain_framework.py" else sys.modules.get(module_name)
         if module is not None:
             _check(getattr(module, "__file__", None) is not None and Path(module.__file__).resolve() == target,
                    "engine-module-origin", "Loaded module originates outside the pinned checkout.", row["path"])
@@ -936,7 +970,8 @@ def _request(request: Any, operation: str, extra: set[str], optional: set[str] =
     _check(len(raw) <= LIMITS["document_bytes"], "request-limit", "Request exceeds byte limit.")
     request = _document(raw, "request.json")
     _shape(request, {"api_version", "operation", "project_root", "engine_root", "engine"} | extra, optional)
-    _one(request["api_version"])
+    _check(type(request["api_version"]) is int and request["api_version"] == 2,
+           "unsupported-write", "Use API 2 with engine 2; API 1 remains owned by its original pinned implementation.", outcome="unsupported")
     _check(request["operation"] == operation, "unsupported-operation", "Request operation is unsupported by this function.", outcome="unsupported")
     return request
 
@@ -944,17 +979,22 @@ def _request(request: Any, operation: str, extra: set[str], optional: set[str] =
 def _failure(operation: str, exc: Exception, details: dict | None = None) -> dict:
     if isinstance(exc, InstallationError):
         outcome, diagnostic = exc.outcome, exc.diagnostic
+    elif isinstance(exc, DistributionError):
+        outcome = exc.outcome
+        diagnostic = {"code": exc.code, "path": None,
+                      "reason": "Shared format, identity or closure verification rejected the explicit input.",
+                      "next_action": "Reconcile the selected closed contract and exact pins; no partial result is accepted."}
     else:
         outcome = "blocked"
         diagnostic = {"code": "unreadable-input", "path": None,
                       "reason": "Input is inaccessible, malformed or changed during observation.",
                       "next_action": "Reconcile explicit inputs and runtime prerequisites; no partial result was accepted."}
-    return {"api_version": 1, "operation": operation, "outcome": outcome,
+    return {"api_version": 2, "operation": operation, "outcome": outcome,
             "changed": False, "details": details, "diagnostics": [diagnostic]}
 
 
 def inspect(request: dict | bytes) -> dict:
-    """Closed API 1 inspect request/result; always read-only and not-assessed."""
+    """Closed API 2 inspect request/result; always read-only and not-assessed."""
     empty = {"managed_state": "blocked", "project_readiness": "not-assessed", "owned": None,
              "unknown": None, "drift": None, "mode_policy": None}
     try:
@@ -968,7 +1008,7 @@ def inspect(request: dict | bytes) -> dict:
         candidate = read_candidate(request["candidate_root"], _reader=reader) if "candidate" in roots else None
         observation = observe_installation(request["project_root"], candidate, _reader=reader)
         if observation.markers:
-            return {"api_version": 1, "operation": "inspect", "outcome": "inspected", "changed": False,
+            return {"api_version": 2, "operation": "inspect", "outcome": "inspected", "changed": False,
                     "details": {**empty, "managed_state": "recovery-needed"},
                     "diagnostics": [{"code": "maintenance-marker", "path": name, "reason": "Maintenance marker is present or inaccessible.",
                                      "next_action": "Keep affected capabilities inactive and use the assigned recovery owner."} for name in observation.markers]}
@@ -977,9 +1017,18 @@ def inspect(request: dict | bytes) -> dict:
                    "project_readiness": "not-assessed", "owned": lock.document["inventory"]["files"] if lock else [],
                    "unknown": observation.unknown, "drift": observation.drift,
                    "mode_policy": lock.document["mode_policy"] if lock else None}
-        return {"api_version": 1, "operation": "inspect", "outcome": "inspected", "changed": False,
+        return {"api_version": 2, "operation": "inspect", "outcome": "inspected", "changed": False,
                 "details": details, "diagnostics": []}
     except (InstallationError, OSError, UnicodeError, ValueError, TypeError, RecursionError, OverflowError) as exc:
         result = _failure("inspect", exc, empty)
         result["details"]["managed_state"] = result["outcome"]
         return result
+
+
+def verify_lock_contents(lock, contents):
+    if lock.document["lock_version"] == 2:
+        from .catalog import verify_subset_contents
+        doc = lock.document
+        verify_subset_contents(doc["catalog_document"], doc["catalog_inventory"], doc["selection"], doc["inventory"], contents)
+    else:
+        _packages(lock.document["selection"], lock.members, contents)

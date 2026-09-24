@@ -1,4 +1,4 @@
-"""Consume explicit package metadata versions 1/2/3; never resolve project settings."""
+"""Consume explicit package metadata versions 1/2/3/4; never resolve project settings."""
 
 from __future__ import annotations
 
@@ -44,16 +44,19 @@ class Package:
 
 def load_package(blob: Blob) -> Package:
     label = blob.path
-    data = mapping(yaml_object(blob.data, label), {
+    parsed = yaml_object(blob.data, label)
+    if type(parsed.get("metadata_version")) is int:
+        require(parsed["metadata_version"] in {1, 2, 3, 4}, "unsupported-version: unknown skill metadata")
+    data = mapping(parsed, {
         "metadata_version", "id", "version", "delivery_status", "entrypoint",
         "dependencies", "runtime", "configuration", "artifact_roles", "resources", "operations",
-    }, set(), label)
+    } | ({"knowledge_consumption"} if type(parsed.get("metadata_version")) is int and parsed["metadata_version"] == 4 else set()), set(), label)
     metadata_version = data["metadata_version"]
     if type(metadata_version) is int and metadata_version == 1:
         version_one(metadata_version, label)
     else:
-        require(type(metadata_version) is int and metadata_version in {2, 3},
-                f"{label}: only integer metadata versions 1, 2 and 3 are supported")
+        require(type(metadata_version) is int and metadata_version in {2, 3, 4},
+                f"{label}: only integer metadata versions 1, 2, 3 and 4 are supported")
     owner = identifier(data["id"], label)
     version(data["version"], label)
     require(data["delivery_status"] == "implemented", f"{owner}: design-only packages cannot be built as implemented candidates")
@@ -114,7 +117,7 @@ def load_package(blob: Blob) -> Package:
             require(bool(text_array(resource["operations"], label)), f"{owner}: tool needs operations")
 
     operation_fields = {"inputs", "outputs", "implementation_status"}
-    if metadata_version == 3:
+    if metadata_version in {3, 4}:
         operations = named(data["operations"], operation_fields | {"execution"},
                            {"tool", "instructions"}, label)
     else:
@@ -126,7 +129,7 @@ def load_package(blob: Blob) -> Package:
         text_array(operation["inputs"], label)
         text_array(operation["outputs"], label)
         require(operation["implementation_status"] == "implemented", f"{operation_label}: operation is not implemented")
-        if metadata_version == 3:
+        if metadata_version in {3, 4}:
             execution = string(operation["execution"], operation_label)
             require(execution in {"instruction", "tool"}, f"{operation_label}: unknown execution kind")
             arm = "instructions" if execution == "instruction" else "tool"
@@ -159,11 +162,11 @@ def load_package(blob: Blob) -> Package:
         require(type(role) is dict, f"{owner}: artifact role must be an object")
         if role.get("owner") == "project":
             role_fields = {"role", "owner", "schema", "store_binding", "identity", "filename", "read_operations", "write_operations"}
-            if metadata_version in {2, 3}:
+            if metadata_version in {2, 3, 4}:
                 role_fields.add("read_schemas")
             mapping(role, role_fields, set(), label)
             declared_schemas = {f"{item['id']}@{item['version']}" for item in schemas.values()}
-            if metadata_version in {2, 3}:
+            if metadata_version in {2, 3, 4}:
                 string(role["schema"], label)
                 readable = text_array(role["read_schemas"], label)
                 require(bool(readable) and set(readable) <= declared_schemas,
@@ -192,7 +195,7 @@ def load_package(blob: Blob) -> Package:
         require(template["input_role"] in roles and template["output_role"] in roles,
                 f"{owner}: template role binding is missing")
 
-    if metadata_version == 3 and data["configuration"] is None:
+    if metadata_version in {3, 4} and data["configuration"] is None:
         require(not roles and not schemas and not templates,
                 f"{owner}: null configuration requires empty artifact_roles, schemas and templates")
     else:
@@ -206,6 +209,18 @@ def load_package(blob: Blob) -> Package:
         template = mapping(defaults["template"], {"origin", "path"}, set(), label)
         require(template["origin"] == "package" and template["path"] in {item["path"] for item in templates.values()},
                 f"{owner}: default template must be a declared package resource")
+    if metadata_version == 4:
+        from .contracts import validate
+        rows = data["knowledge_consumption"]
+        require(type(rows) is list and len(rows) <= 128, "knowledge consumption budget")
+        keys = []
+        for row in rows:
+            validate("KnowledgeConsumption", row)
+            keys.append(row["id"])
+            require(set(row["operations"]) <= operations.keys(), "unknown consuming operation")
+            for key in ("operations", "resources"):
+                require(row[key] == sorted(set(row[key])), "knowledge consumption set order")
+        require(keys == sorted(set(keys)), "knowledge consumption ID/order")
     return Package(data, frozenset(members))
 
 
@@ -256,7 +271,7 @@ def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
         require(resolved in package.members,
                 f"{package.id}/{source_name}: reference {target!r} is outside the selected package closure")
 
-    if package.metadata["metadata_version"] == 3:
+    if package.metadata["metadata_version"] in {3, 4}:
         for operation in package.metadata["operations"]:
             if operation["execution"] == "instruction":
                 name = operation["instructions"]

@@ -803,3 +803,21 @@ S3 protocol is documented at 15bca530; actual implementation/use remains pending
 The coordinator locally integrates the accepted consumer input and returns it to
 the sole S3 manifest/catalog writer. #407 remains open until online integration;
 source/target adoption and full rc.2 completion are not implied.
+
+## Owner-selected current-work integration and cleanup (2026-09-24)
+
+The owner explicitly requested all current results integrated to main followed by
+completed branch/worktree cleanup, and noted that earlier tasks may be archived.
+The coordinator recovered S3's completed handoff without creating another task.
+S3 373c7250 is accepted after [receiving review](reports/rc2-s3-source-review.md);
+S5 b4dfe1cb was already accepted. An online PR now carries the complete current
+source implementation plus coordination records. #406/#407 may close only after
+that accepted delivery reaches main; #322 and actual adoption/S6 remain open.
+
+Cleanup is conditional on fresh main ancestry, clean status and released writers.
+Archive and byte-compare ignored custody evidence before removing rc2 worktrees.
+The old evaluation entries/messaging/release worktrees have uncommitted changes;
+the Luna trial has unmerged history. Preserve these, the existing #369/#386
+retention boundaries, baseline backups and fixture roots. No cleanup outcome is
+claimed before execution. The final local cleanup receipt will remain in ignored
+durable storage in the main checkout, avoiding a self-invalidating terminal commit.
