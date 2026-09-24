@@ -4,17 +4,18 @@
   "workflow_id": "2026-09-23-framework-redesign-control",
   "program_issue": 322,
   "created_at": "2026-09-24T18:54:56+08:00",
-  "updated_at": "2026-09-24T19:29:02+08:00",
+  "updated_at": "2026-09-24T20:34:39+08:00",
   "owner_direction": ".dev/design/framework-next/rc2-installation-selection.md",
   "authority": {
     "scope": "Owner confirmed publishing Issue #401 and continuing the selected rc.2 work.",
-    "prior_rejection": "retained in workflow-plan; resolved by this direct confirmation"
+    "prior_rejection": "retained in workflow-plan; resolved by this direct confirmation",
+    "source_integration": "Direct owner authorized current branch push, S1 PR creation/merge, #401 closure and continued S2/S4 work; PR #402 merged and #401 closed."
   },
   "units": {
     "S1": {
       "issue": 401,
       "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/401",
-      "status": "local-delivery-accepted; online-integration-pending",
+      "status": "online-integrated; Issue closed",
       "starting_commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
       "clean_at_assignment": true,
       "workflow_id": "2026-09-24-rc2-selection-contract",
@@ -35,25 +36,82 @@
       "execution_mode": "independent task under U001; local dispatch details retained outside publication",
       "delivery_commit": "32a2b59dd38f9335f60cf2edd8eac4d6d95f95cf",
       "original_delivery_commit": "e27ff21cf06c91abdf5fde4f70c1bddb632b1898",
-      "review_record": "reports/rc2-s1-contract-review.md"
+      "review_record": "reports/rc2-s1-contract-review.md",
+      "pr": 402,
+      "merged_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+      "issue_state": "CLOSED",
+      "project_status": "Done"
     },
     "S2": {
-      "status": "ready for bounded dispatch after S1 online integration",
+      "status": "local delivery accepted; online integration pending",
       "scope": "selected src/knowledge content only; exact members to S3",
       "member_counts": {
         "engineering-common": 6,
         "dotnet-backend": 229
-      }
+      },
+      "execution_mode": "independent conversation: complete 235-member migration and semantic/reference reconciliation",
+      "issue": 403,
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/403",
+      "workflow_id": "2026-09-24-rc2-engineering-knowledge",
+      "owned_roots": [
+        "src/knowledge/engineering-common/",
+        "src/knowledge/dotnet-backend/",
+        ".dev/workflows/2026-09-24-rc2-engineering-knowledge/"
+      ],
+      "contract_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+      "acceptance_ids": [
+        "S2-A1",
+        "S2-A2",
+        "S2-A3",
+        "S2-A4",
+        "S2-A5",
+        "S2-A6"
+      ],
+      "starting_commit": "9247f444eb14a86849c66078cd7fa366dc098379",
+      "clean_at_assignment": true,
+      "transport": "local commit return before first push; coordinator owns integration",
+      "project_status": "In progress",
+      "delivery_commit": "f22674e20da3448488cfd89cc0778b252e4cc685",
+      "review_record": "reports/rc2-s2-content-review.md",
+      "s3_handoff_sha256": "e52b834c154ca2974ccdce3d9336e0bef23c41c4e594fbf17e36c028905d681b"
     },
     "S3": {
-      "status": "pending accepted S2 members and S4 renderer inputs; shared integration remains single-writer",
+      "status": "exact S2/S4 inputs accepted locally; pending online integration and assigned implementation",
       "scope": "single owner for shared distribution/manifest/profile/maintenance integration"
     },
     "S4": {
-      "status": "ready for isolated adapter dispatch after S1 online integration",
+      "status": "local delivery accepted; online integration pending",
       "scope": "aicf- runtime naming and Claude adapter",
       "legacy_seam": "project_entry and skill-entry.md.template remain legacy",
-      "new_seam": "project_entry_v2 and skill-entry-v2.md.template for each runtime"
+      "new_seam": "project_entry_v2 and skill-entry-v2.md.template for each runtime",
+      "execution_mode": "bounded sub-agent: fixed two-runtime renderer/template seams; no caller or migration ownership",
+      "issue": 404,
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/404",
+      "workflow_id": "2026-09-24-rc2-runtime-adapters",
+      "owned_roots": [
+        "src/adapters/codex/",
+        "src/adapters/claude/",
+        "src/distribution/codex.py",
+        "src/distribution/claude.py",
+        "tests/framework_next/test_rc2_adapters.py",
+        ".dev/workflows/2026-09-24-rc2-runtime-adapters/"
+      ],
+      "contract_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+      "acceptance_ids": [
+        "S4-A1",
+        "S4-A2",
+        "S4-A3",
+        "S4-A4",
+        "S4-A5",
+        "S4-A6"
+      ],
+      "starting_commit": "9247f444eb14a86849c66078cd7fa366dc098379",
+      "clean_at_assignment": true,
+      "transport": "local commit return before first push; coordinator owns integration",
+      "delivery_commit": "ece36743624e9031cf47686e5ecdca9d4f3a2f4b",
+      "original_delivery_commit": "6d5c0df13ef93c55c7d2c95beaeb420e32954c40",
+      "review_record": "reports/rc2-s4-content-review.md",
+      "project_status": "In progress"
     },
     "S5": {
       "status": "pending installed knowledge consumer interfaces and S2-S4 delivery",
@@ -65,12 +123,18 @@
     }
   },
   "constraints": [
-    "No sub-agents or executor-created tasks",
+    "Short, clearly bounded work may use coordinator-dispatched sub-agents and the least expensive capable model/effort; larger or multi-stage work retains independent Astra/ultra tasks.",
     "One tracked writer per worktree; no concurrent shared distribution/manifest/profile writers",
     "U001 legacy/formal/critical/hosted/CI checks deferred-by-owner; program #322/P7 owns later selection",
     "No new tag/Release, stable publication, dormant policy or #369 native expansion",
     "Preserve R1-R8 and exact rc.1 baseline identities"
   ],
   "completion_delivery": "coordinator event wait; no executor callback requested",
-  "publication_boundary": "Public record contains scope, acceptance and integration state. New runtime task identifiers, local paths and execution provenance remain in ignored local coordination evidence after the rejected metadata comment."
+  "publication_boundary": "Public record contains scope, acceptance and integration state. New runtime task identifiers, local paths and execution provenance remain in ignored local coordination evidence after the rejected metadata comment.",
+  "execution_amendment": {
+    "date": "2026-09-24",
+    "authority": "direct user instruction in current coordinator task",
+    "scope": "execution surface and model sizing for short, clearly bounded work",
+    "retained": "one tracked writer per worktree; U001 verification deferrals and external-write boundaries"
+  }
 }

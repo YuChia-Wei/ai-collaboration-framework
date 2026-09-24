@@ -217,10 +217,12 @@ Historical rules, transactions and records are not mass-converted or erased.
 | S5 installed consumption | Skills actually load selected knowledge; source installs no engineering pack; mq lab retains rules/customizations and selects .NET | Skill-consumer updates first, then separately owned source/target adoption. No direct edit to generated core. |
 | S6 RC verification | Focused checks, two runtime discovery probes, source dogfood and mq lab update/recovery with exact candidate/engine identities | Select necessary new-contract checks; keep fixture, actual-target and runtime results distinct. |
 
-This plan does not create implementation Issues/tasks or dispatch work. Keep U001:
-one independently assigned Astra/ultra task per implementation Issue, RAM worktree,
-local handoff before coordinator integration, no source sub-agents. Shared owners
-serialize changes. #369 native driver/caller expansion stays deferred-by-owner;
+This plan alone does not dispatch work; the execution-start decision below does.
+Apply current U001 including the owner's 2026-09-24 amendment: short, clearly
+bounded work may use coordinator-dispatched sub-agents with a capable lower-cost
+profile; larger or multi-stage work retains independent Astra/ultra tasks. Keep
+assigned RAM worktrees, one writer and local handoff before coordinator
+integration. Shared owners serialize changes. #369 native driver/caller expansion stays deferred-by-owner;
 this plan does not enable CI or adopt the dormant source policy.
 
 ## RC completion criteria and remaining stable work

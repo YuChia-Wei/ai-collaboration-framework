@@ -302,7 +302,7 @@ provider integration, CI adoption, stable upgrade and publication remain distinc
 
 ## Authority and completion
 
-U001 is the current owner-selected execution boundary. Follow repository skills, work-item/branch/workflow/commit discipline and online PR integration. Do not run or recreate legacy validators, test matrices, critical gates or hosted PR checks during early development. Final verification is deferred to P7; no waived/deferred check becomes passed. No sub-agents or child-created tasks. All implementation tasks use independent gpt-6-astra / ultra conversations.
+U001 is the current owner-selected execution boundary. Follow repository skills, work-item/branch/workflow/commit discipline and online PR integration. Do not run or recreate legacy validators, test matrices, critical gates or hosted PR checks during early development. Final verification is deferred to P7; no waived/deferred check becomes passed. The owner's 2026-09-24 amendment permits short, clearly bounded work through coordinator-dispatched sub-agents with capable lower-cost profiles; larger or multi-stage work retains independent gpt-6-astra / ultra conversations. Executors do not create further tasks or delegate without a coordinator assignment.
 
 This coordinator owns dependencies, task/branch/PR mapping and integration. Issue workers own only their assigned files and issue workflow. The root index is coordinator-owned to avoid parallel edits. Every PR declares which Issue is complete versus still waiting for later delivery or verification.
 
@@ -701,3 +701,51 @@ owns only its adapter roots plus the reserved Codex/Claude renderer files. Their
 work can proceed independently. S3 starts shared distribution/manifest/profile
 integration after their exact inputs are accepted, avoiding simultaneous shared
 writers. S5 consumer/adoption and S6 actual verification remain pending.
+
+## S1 online integration and bounded execution amendment (2026-09-24)
+
+The owner explicitly authorized the prepared branch push, S1 PR/merge, #401
+closure and continuation of S2/S4. The earlier push approval-review rejection
+remains historical; the new direct authorization resolved it. PR #402 merged at
+`173b2523767aece5004bc57c6e0cbba12898039a`; provider read-back confirmed #401
+CLOSED / Project Done and #322 OPEN / In progress. Hosted checks were absent and
+remain deferred-by-owner under U001/P7, not passed.
+
+The owner then changed execution sizing: short, clearly bounded work may use
+sub-agents and need not use Astra or a new task conversation. This source-only
+amendment is effective for current dispatch and recorded in U001 plus both root
+entries. It changes neither acceptance nor source/target/external-write authority.
+S2 remains a substantial independent migration over 235 members; S4 has fixed
+renderer/template seams and uses one bounded sub-agent with an appropriate
+lower-cost profile. Each assigned worktree has one tracked writer; shared S3
+callers/manifest/selection/ownership transitions remain reserved.
+
+S2 Issue #403 and S4 Issue #404 were created and their complete acceptance and
+ownership text read back. Dispatch starts from this coordinator checkpoint; the
+accepted S1 contract remains bound to PR #402. S4 owns only the additional
+`tests/framework_next/test_rc2_adapters.py` case module, not the shared runner.
+
+Both assignments were dispatched from `9247f444eb14a86849c66078cd7fa366dc098379`.
+S2 uses the retained independent-task route; S4 uses one bounded sub-agent.
+Invocation references and selected runtime profiles are retained in ignored local
+coordination evidence. Implementation, behavioral verification and integration
+remain pending; dispatch is not delivery evidence.
+
+## S4 bounded local delivery accepted (2026-09-24)
+
+Issue #404 returned source 6d5c0df1 and acceptance-ID correction ece36743.
+[Coordinator content review](reports/rc2-s4-content-review.md) accepts the bounded
+implementation and exact S3 handoff. The correction did not change any reviewed
+code/template/test/handoff blob. S2 remains in progress; S3 shared integration
+waits for both accepted inputs. Existing #403/#404 Project Status was updated to
+In progress and read back, without adding items or changing other fields.
+
+## S2 bounded local content accepted (2026-09-24)
+
+Issue #403 returned f22674e2 with all 235 members and exact S3 rows.
+[Receiving review](reports/rc2-s2-content-review.md) records direct source/member/
+metadata comparisons, the bounded semantic review and incomplete helper attempts.
+The parent completed the remaining mechanical checks using a corrected independent
+Git-blob comparison; no failed helper result was upgraded to success. S2 and S4
+are ready for online integration. S3 remains the sole shared implementation owner
+and starts only after that integrated input checkpoint.

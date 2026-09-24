@@ -8,10 +8,13 @@ This file is the canonical English root collaboration guide. `AGENTS.zh-TW.md` i
 
 For source-repository work explicitly assigned to program #322, read
 [the temporary execution override](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
-before applying the rules below. U001 requires one independent
-`gpt-6-astra` / `ultra` conversation per implementation Issue, no sub-agents or
-executor-created conversations, the assigned RAM-disk worktree, and local commit
-handoff to the coordinator before first push. CI and legacy verification remain
+before applying the rules below. Under the owner's 2026-09-24 U001 amendment,
+short, clearly bounded work may use coordinator-dispatched sub-agents with the
+least expensive capable model/effort; a new conversation or Astra is not required.
+Larger or multi-stage implementation Issues retain independent `gpt-6-astra` /
+`ultra` conversations. Use the assigned RAM-disk worktree and return local commits
+to the coordinator before first push; executors do not create further tasks or
+delegate without a coordinator assignment. CI and legacy verification remain
 `deferred-by-owner` until the P7 restoration decision. This exception is
 source-only; unrelated security, ownership, credential and publication boundaries
 remain in force.

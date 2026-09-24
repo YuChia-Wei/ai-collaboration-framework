@@ -1,0 +1,605 @@
+{
+  "rules": [
+    {
+      "rule_id": "AICTX-EVIDENCE-001",
+      "package": "engineering-common",
+      "semantic_member": "engineering-rule-catalog.yaml",
+      "source_text_sha256": "659101967c605eb6e1216fa5e49767ebc8fc7ef534af293310c708c4f09980b4",
+      "installed_text_sha256": "f25723c579f796cfd97f34a4622d3f775d573fdd56f506366db3f2224808a2fb",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [
+        {
+          "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+          "before": ".ai/scripts/validate-ai-context.py",
+          "after": "target-authority:ai-scripts-validate-ai-context.py",
+          "kind": "target-parameter"
+        },
+        {
+          "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+          "before": "Run `python target-authority:ai-scripts-validate-ai-context.py` for registered context contracts",
+          "after": "Run the target-selected AI-context validation command for registered context contracts",
+          "kind": "target-parameter"
+        }
+      ],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "invariant",
+        "scope": "universal",
+        "applicability": {
+          "text": "AI context or repository facts are discovered with optional external tooling",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "forbidden"
+      }
+    },
+    {
+      "rule_id": "ASSESSMENT-ARTIFACT-001",
+      "package": "engineering-common",
+      "semantic_member": "engineering-rule-catalog.yaml",
+      "source_text_sha256": "cb7c812fb432bc3ccf3058ed7cba810373da5ebee1834a7f878d6a08a1a81d86",
+      "installed_text_sha256": "cb7c812fb432bc3ccf3058ed7cba810373da5ebee1834a7f878d6a08a1a81d86",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "invariant",
+        "scope": "universal",
+        "applicability": {
+          "text": "an audit, large code review, architecture assessment, or technical-debt inventory is persisted",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "forbidden"
+      }
+    },
+    {
+      "rule_id": "TECH-SELECT-001",
+      "package": "engineering-common",
+      "semantic_member": "engineering-rule-catalog.yaml",
+      "source_text_sha256": "efc4cbc1e80c87926adf01295b444eec42895db9f2b0789ef18c6a9a7c2964c0",
+      "installed_text_sha256": "a515bd5f33f11ed561476c2973fa1a9ea464c47a7995a3a998c4169fc23de189",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [
+        {
+          "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+          "before": ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml",
+          "after": "target-authority:ai-assets-skills-ai-context-init-templates-technology-selection.schema.yaml",
+          "kind": "target-parameter"
+        },
+        {
+          "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+          "before": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+          "after": "target-authority:dev-requirement-TECH-STACK-REQUIREMENTS.MD",
+          "kind": "target-parameter"
+        }
+      ],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "invariant",
+        "scope": "universal",
+        "applicability": {
+          "text": "a target records or overrides a framework technology choice",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "forbidden"
+      }
+    },
+    {
+      "rule_id": "AGGREGATE-ES-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_text_sha256": "262144bbec5431033e252c4c128025a5563f13f2d6c5610e86d51f7c19b4e4a3",
+      "installed_text_sha256": "42e47fde0f22044a6667751e0f00397c30715a614fe853f35d2ef546d0d64804",
+      "link_rewrites": [
+        {
+          "source": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+          "before": "[`source-includes/domain/`](../source-includes/domain/)",
+          "after": "[`source-includes/domain/`](../source-includes/domain/README.md)",
+          "kind": "markdown-reference"
+        }
+      ],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "conditional",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "target Aggregate selects Event Sourcing",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "not-applicable"
+      }
+    },
+    {
+      "rule_id": "ARCH-UOW-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/usecase-standards.md",
+      "source_text_sha256": "0bc2ba0f84e5a4faed68487721b1ac9b501a68e8ad714225da143ef6abaa6ee8",
+      "installed_text_sha256": "0bc2ba0f84e5a4faed68487721b1ac9b501a68e8ad714225da143ef6abaa6ee8",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "profile-default",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "command use case coordinates aggregate persistence",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "explicit-target-decision"
+      }
+    },
+    {
+      "rule_id": "CONTRACT-SEMANTICS-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/DESIGN-BY-CONTRACT.md",
+      "source_text_sha256": "45292a7bbc1fc9e6d4e845aa660681efda68e0e2394cecf1c6c2c76ebf3814f7",
+      "installed_text_sha256": "45292a7bbc1fc9e6d4e845aa660681efda68e0e2394cecf1c6c2c76ebf3814f7",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "invariant",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "Domain or Application behavior declares preconditions, postconditions, or invariants",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "forbidden"
+      }
+    },
+    {
+      "rule_id": "DELETE-PURGE-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/archive-standards.md",
+      "source_text_sha256": "7d8e43950811aa96c6cfc12f811deb9c8d13739989d4611176e5d0e4754c165e",
+      "installed_text_sha256": "7d8e43950811aa96c6cfc12f811deb9c8d13739989d4611176e5d0e4754c165e",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "conditional",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "target repository adopts archive or physical-purge capability",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "not-applicable"
+      }
+    },
+    {
+      "rule_id": "DELETE-SOFT-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/aggregate-standards.md",
+      "source_text_sha256": "5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7",
+      "installed_text_sha256": "5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "profile-default",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "dotnet-backend Aggregate Repository profile is adopted unless the target explicitly opts out",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "explicit-target-decision"
+      }
+    },
+    {
+      "rule_id": "MAP-EVENTS-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/mapper-standards.md",
+      "source_text_sha256": "1a3c010a5f2e863bcf60c7ddc333a23c7d96705e8c758bb4a89fa9cae111c01c",
+      "installed_text_sha256": "1a3c010a5f2e863bcf60c7ddc333a23c7d96705e8c758bb4a89fa9cae111c01c",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "invariant",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "a mapper reconstructs an aggregate from persisted state",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "forbidden"
+      }
+    },
+    {
+      "rule_id": "MESSAGING-TX-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/transactional-messaging-standards.md",
+      "source_text_sha256": "9d6358ad89a2fadaa9ff2ebba69d2cb9728500751c921609d41a42efe5383b7a",
+      "installed_text_sha256": "9d6358ad89a2fadaa9ff2ebba69d2cb9728500751c921609d41a42efe5383b7a",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "profile-default",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "a message consumer requires atomic local business state, durable outgoing intent, and successful incoming-processing completion",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "explicit-target-decision"
+      }
+    },
+    {
+      "rule_id": "PROJECT-GRAMMAR-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/project-structure.md",
+      "source_text_sha256": "128cc7e3a4315baa4ac69fbc944e11297eaaedef745de742350ebe522130f69c",
+      "installed_text_sha256": "128cc7e3a4315baa4ac69fbc944e11297eaaedef745de742350ebe522130f69c",
+      "link_rewrites": [],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "profile-default",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "target adopts the conditional .slnx project-structure profile",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "explicit-target-decision"
+      }
+    },
+    {
+      "rule_id": "TEST-BDDFY-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/test-standards.md",
+      "source_text_sha256": "81fa3b215c6677225c3fdca9a4aca1a8237bd10558c0d7a1d6bfbc5dddedb199",
+      "installed_text_sha256": "315423f98b682f8edd3bb7110ea0db11fcc9f28935e5b9472044d888fd44e9e2",
+      "link_rewrites": [
+        {
+          "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+          "before": "[Gherkin Feature Storage Guide](../../../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+          "after": "[Gherkin Feature Storage Guide](../../guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+          "kind": "markdown-reference"
+        },
+        {
+          "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+          "before": "[GWT handoff contract](../../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+          "after": "[GWT handoff contract](../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+          "kind": "markdown-reference"
+        }
+      ],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "profile-default",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "dotnet-backend profile is adopted",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "explicit-target-decision"
+      }
+    },
+    {
+      "rule_id": "TEST-GWT-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/test-standards.md",
+      "source_text_sha256": "81fa3b215c6677225c3fdca9a4aca1a8237bd10558c0d7a1d6bfbc5dddedb199",
+      "installed_text_sha256": "315423f98b682f8edd3bb7110ea0db11fcc9f28935e5b9472044d888fd44e9e2",
+      "link_rewrites": [
+        {
+          "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+          "before": "[Gherkin Feature Storage Guide](../../../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+          "after": "[Gherkin Feature Storage Guide](../../guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+          "kind": "markdown-reference"
+        },
+        {
+          "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+          "before": "[GWT handoff contract](../../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+          "after": "[GWT handoff contract](../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+          "kind": "markdown-reference"
+        }
+      ],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "invariant",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "always",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "forbidden"
+      }
+    },
+    {
+      "rule_id": "TEST-MOCK-001",
+      "package": "dotnet-backend",
+      "semantic_member": "standards/coding-standards/test-standards.md",
+      "source_text_sha256": "8ff4679c135e2de0f7a370317da2da76ee4a5bf7ca6ef076dc85d0aaeed23503",
+      "installed_text_sha256": "1f725fb399d66c9ec81d004ac89505cefa5173e6ce059a19eb8225e52cafa0dc",
+      "link_rewrites": [
+        {
+          "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+          "before": "[Target Technology Selection Policy](../../../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md)",
+          "after": "Target Technology Selection Policy (`target-authority:dev-standards-TECHNOLOGY-SELECTION-POLICY.md`; supplied by the target owner)",
+          "kind": "markdown-reference"
+        }
+      ],
+      "target_parameter_rewrites": [],
+      "semantic_change": false,
+      "preserved_fields": {
+        "strength": "profile-default",
+        "scope": "dotnet-backend",
+        "applicability": {
+          "text": "dotnet-backend profile is adopted and tests require a mocking library",
+          "selectors": {
+            "capability": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "execution_mode": {
+              "state": "unconstrained-by-source",
+              "values": []
+            },
+            "technology_profile": {
+              "state": "fixed-profile",
+              "values": [
+                "dotnet-backend"
+              ]
+            },
+            "file_type": {
+              "state": "unconstrained-by-source",
+              "values": []
+            }
+          }
+        },
+        "override_policy": "explicit-target-decision"
+      }
+    }
+  ],
+  "meaning": "Source normative hashes are provenance; installed hashes describe actual catalog text. Link relocation and target-parameter substitution preserve meaning and target applicability.",
+  "generation": {
+    "generated_at": "2026-09-24T20:22:49+08:00",
+    "generator": "Issue #403 bounded content projection and explicit authoring",
+    "inputs": ".dev/design/framework-next/rc2-contracts/",
+    "source_revision": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+    "scope": "The two S1-assigned optional content packages; exclusions follow migration-inventory.json",
+    "verification": "python -B .dev/workflows/2026-09-24-rc2-engineering-knowledge/check-content.py"
+  }
+}

@@ -28,13 +28,19 @@ make this policy portable.
 
 - Keep the owning skill, online Issue binding, dedicated branch, issue-owned
   workflow/task artifacts, smallest coherent scope and truthful evidence.
-- Each implementation Issue uses one independent conversation explicitly
-  selected as `model=gpt-6-astra`, `reasoning_effort=ultra`. Do not silently use a
-  default or substitute another model/effort. Record declared provenance
-  honestly; a dispatch requirement is not independent runtime attestation.
-- No sub-agents, nested agents or executor-created tasks/conversations. The
-  coordinator owns task creation, dependencies, shared files and integration.
-  Return substantive cross-contract decisions to that coordinator.
+- The owner's 2026-09-24 amendment permits short, clearly bounded work to use
+  coordinator-dispatched sub-agents instead of a new task conversation. Choose
+  the least expensive capable model/effort for that work; Astra is not required.
+  Record the scope and actual invocation honestly. Do not split a connected
+  implementation merely to manufacture short tasks.
+- Larger or multi-stage implementation Issues retain the independent
+  `model=gpt-6-astra`, `reasoning_effort=ultra` conversation requirement unless
+  the owner selects otherwise. Declared dispatch provenance is not independent
+  runtime attestation.
+- The coordinator owns execution-mode selection, task/sub-agent creation,
+  dependencies, shared files and integration. Executors do not create further
+  tasks or delegate without a coordinator assignment. Return substantive
+  cross-contract decisions to that coordinator.
 - Use only the assigned `F:/framework-next/<issue-or-bounded-task>/` worktree and
   branch, with an explicit working directory for each repository command and
   absolute edit paths. One writer per worktree. A saved-project bootstrap does

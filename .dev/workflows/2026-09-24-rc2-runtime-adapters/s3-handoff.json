@@ -1,0 +1,77 @@
+{
+  "contract": "aicf.rc2-selection/1",
+  "source_contract_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+  "input_base_commit": "9247f444eb14a86849c66078cd7fa366dc098379",
+  "adapters": [
+    {
+      "adapter_id": "codex",
+      "version": "0.1.0",
+      "prefix": "aicf-",
+      "template": "skill-entry-v2.md.template",
+      "members": [
+        {
+          "path": "skill-entry-v2.md.template",
+          "sha256": "68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4",
+          "size": 1199,
+          "mode": "100644"
+        }
+      ],
+      "renderer_path": "src/distribution/codex.py",
+      "renderer_callable": "project_entry_v2",
+      "renderer_sha256": "c6f8224e265f6ba5e037d358638885eaab76c1adb6f4b670e091dc8a2328f8d8",
+      "expected_output_path_rule": ".agents/skills/aicf-<skill-id>/SKILL.md"
+    },
+    {
+      "adapter_id": "claude",
+      "version": "0.1.0",
+      "prefix": "aicf-",
+      "template": "skill-entry-v2.md.template",
+      "members": [
+        {
+          "path": "skill-entry-v2.md.template",
+          "sha256": "11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d921d032e",
+          "size": 1201,
+          "mode": "100644"
+        }
+      ],
+      "renderer_path": "src/distribution/claude.py",
+      "renderer_callable": "project_entry_v2",
+      "renderer_sha256": "18957246af18bf5c168186605b58506ce08329a1861a1d038ab8a7dcd77775c3",
+      "expected_output_path_rule": ".claude/skills/aicf-<skill-id>/SKILL.md"
+    }
+  ],
+  "legacy_codex": {
+    "renderer_path": "src/distribution/codex.py",
+    "renderer_callable": "project_entry",
+    "original_renderer_git_blob": "b6210d9e8caa65d226af017ba6c3d6f0a12f50a0",
+    "original_renderer_sha256": "506e775df87b6a1816cb3be896fd8741fd5bfc7c137c425224561314578e083e",
+    "template_path": "src/adapters/codex/skill-entry.md.template",
+    "original_template_git_blob": "a76b8be9362b062a1a4fa766e4c8f6581fe0b686",
+    "original_template_sha256": "f181a38f61472e65594f8b5b0889e8d096b68bec06036c1f53a2ad2c2536137a",
+    "output_path_rule": ".agents/skills/framework-<skill-id>/SKILL.md",
+    "branch": "legacy selection 1/2, lock 1 and supported legacy assembly"
+  },
+  "selection_inventory_expectations": {
+    "codex_only": "One Codex aicf entry per selected skill, no Claude entries; selected core shared.",
+    "claude_only": "One Claude aicf entry per selected skill, no Codex entries; selected core shared.",
+    "both": "One entry per selected skill for each runtime, with one shared selected core.",
+    "core_only": "No runtime entries; selected core remains installed. Content packages receive no runtime entry."
+  },
+  "integration_required_from_s3": [
+    "Declare only the new v2 template member in each manifest-2 adapter row and pin exact renderer/template source bytes.",
+    "Dispatch legacy selection 1/2 and lock 1 to the preserved Codex project_entry and legacy template; dispatch selection 3 to the matching v2 renderer and verified catalog template.",
+    "Update generator and isolated engine source closures for both renderer modules and verified adapter templates; retain original engine-1 pin semantics.",
+    "Derive and verify wrappers from selected skill members only; do not add knowledge links to destinations.",
+    "Own old-lock to new-name admission, safe legacy-name removal, adapter deselection and shared-core retention."
+  ],
+  "s6_actual_observations": {
+    "codex": "In an actual Codex session, discover and invoke one selected aicf entry; verify affected prefix/config route and absence of deselected entries.",
+    "claude": "Independently, in an actual Claude session, discover and invoke one selected aicf entry; verify the same selected core and Claude-specific runtime metadata.",
+    "limit": "Generated wrapper bytes and unrun unit cases prove neither runtime."
+  },
+  "verification": {
+    "direct": "AST, UTF-8, exact template keys, source hash and Git scope inspection",
+    "behavioral": "deferred-by-owner",
+    "owner": "program #322 coordinator / P7"
+  }
+}

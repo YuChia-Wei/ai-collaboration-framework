@@ -1,0 +1,46 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "S2-content-packages",
+  "workflow_id": "2026-09-24-rc2-engineering-knowledge",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-24T20:21:46+08:00",
+  "updated_at": "2026-09-24T20:24:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "scope": {
+    "target": "Issue #403 / S2-A1..A6",
+    "files": [
+      "src/knowledge/engineering-common/",
+      "src/knowledge/dotnet-backend/",
+      ".dev/workflows/2026-09-24-rc2-engineering-knowledge/"
+    ],
+    "constraints": [
+      "Exact S1 members and rule identities",
+      "No shared manifest/loader/consumer/adapter or legacy source edits",
+      "Local commit handoff before first push"
+    ],
+    "non_goals": [
+      "installation",
+      "target adoption",
+      "CI restoration",
+      "publication"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "S2-A1..A6 content delivery and direct checks completed",
+    "next_action": "Coordinator verifies containing local commit and accepts S3 integration handoff before first push",
+    "validation": [
+      "check-content.py: direct UTF-8, JSON/YAML syntax, member/hash, links and rule fields only",
+      "Full planned commit message validated; scope/diff and staged package-byte comparisons passed"
+    ]
+  },
+  "results": {
+    "summary": "Two optional packages contain all 235 declared members; S3 integration rows and reference/normative provenance prepared.",
+    "finding_status": "addressed",
+    "residual_risk": "Behavioral consumption, installation and formal validation remain deferred-by-owner; source examples are not executed.",
+    "follow_up_needed": true
+  }
+}
