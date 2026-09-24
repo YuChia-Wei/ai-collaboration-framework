@@ -1,5 +1,28 @@
 # Successor acceptance and compatibility repair selection
 
+## Latest owner direction: another RC is required
+
+The 2026-09-24 owner review rejects treating rc.1 as ready for stable 0.19.0.
+The [next-RC design proposal](../../../design/framework-next/rc2-installation-selection.md)
+records stable skill IDs, preferred `aicf-` runtime names, Claude restoration,
+reusable engineering knowledge under `src` and configurable installation.
+Source self-adoption selects no engineering knowledge; downstream .NET guidance
+is optional. This is a proposed design, not delivered implementation or adoption.
+
+**R8: selectable installation and reusable engineering knowledge productization**
+is an additional known product gap. The existing source profiles select skills
+and Codex only; they do not supply engineering-content packages or project-defined
+installation subsets. `complete` does not mean all legacy reusable content was
+migrated. Required next work includes declared content ownership, exact selection
+and dependency contracts, installed knowledge consumption, prefix migration,
+Claude runtime evidence and actual source adoption.
+
+R1-R7 below remain historical/current residual evidence as individually stated.
+The Claude portion of R6 and source-adoption R1 are now selected next-RC intent;
+other target decision adapters, publication, cross-computer admission and stable
+input evidence are not automatically resolved. #369 native work stays deferred.
+No tag, release, installed bytes, runtime routes or CI setting changed here.
+
 ## Online-main completeness and known release-scope inventory
 
 The owner will inspect online main from different computers and requires known
