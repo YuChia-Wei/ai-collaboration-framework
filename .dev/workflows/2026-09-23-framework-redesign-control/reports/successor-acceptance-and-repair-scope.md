@@ -1,5 +1,91 @@
 # Successor acceptance and compatibility repair selection
 
+## Online-main completeness and known release-scope inventory
+
+The owner will inspect online main from different computers and requires known
+product-related residuals to be disclosed before choosing 0.19.0 release contents.
+This inventory concerns integration and available evidence, not a new behavioral
+test pass or proof that future review cannot discover a defect.
+
+### Fixed online subjects and inspection entry points
+
+- Source main: d6a725ef90ffe9eb2fe735aeac7421df7c7e2f09, verified against GitHub.
+  Inspect [new product skills](https://github.com/YuChia-Wei/ai-collaboration-framework/tree/main/src/skills)
+  and [complete profile](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/main/src/profiles/complete.yaml).
+  The source root still consumes legacy collaboration entries; those are not the
+  new installed product. Source self-adoption is still an open program outcome.
+- RC tag v0.19.0-rc.1: 1ce41a4f03f61e83bf9b99de3ce196887547e922.
+  Main is newer than this immutable installation baseline. The only changed
+  path under src between these subjects is src/distribution/git_source.py,
+  containing the integrated CR-002 source-path repair. Skill payload, profiles
+  and adapter source are unchanged. Do not label current main exact tagged bytes.
+- Target main: cc0e345367a1d24f49bf8fa68e0eb668df9e5e55; inspect its
+  [.ai/core/skills](https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/tree/main/.ai/core/skills),
+  [current contract](https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/blob/main/.dev/ai-context/CURRENT-FRAMEWORK.md)
+  and [binding](https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/blob/main/.dev/ai-context/framework-binding.json).
+  All 113 core files, 18 generated Codex entries, lock, candidate metadata,
+  target configuration, retained rules/dependencies and selected gate are tracked.
+  The installed engine remains pinned to 3afb4ff4; it is not silently repinned.
+
+### Integration inventory
+
+No source PR was open and both repositories exposed only main as a remote branch
+at this observation. All 43 source commit references resolvable from the coordinator
+handoff are ancestors of source main. The 33 scoped design/implementation/review
+Issues listed in the machine-readable checkpoint were read from GitHub: 32 were
+CLOSED/COMPLETED and #369 remained OPEN. Design-only completion is not implementation
+or source-adoption completion. #322 and target #15 remain OPEN.
+
+The retained local work is not a known missing product merge:
+
+| Retained item | Deterministic observation and disposition |
+| --- | --- |
+| framework-messaging, 12 dirty files | All 12 Git-filtered blobs equal current main. It is a retained working snapshot of integrated content. |
+| framework-release, 4 dirty files | All four exact blobs occur in main history; current main has later revisions. It is not an outstanding release implementation. |
+| framework-entries, 21 dirty files | Ten equal main; seven other exact blobs occur in main history. Four old variants are reviewer YAML, its two generated wrappers and the context validator: they retain shared role paths/old generator output and omit later private-role, selector and validator changes. Main's c9e051e9/f1066e6e and later integrations own the replacements. Do not merge old variants over main. |
+| subject-digest-evidence-reuse-design, 3df455bd | Eight of ten changed files exactly equal main. The design differs only by one trailing blank line; the remaining index is historical. #270 is CLOSED; this is not an unintegrated implementation. |
+| Luna trial B, 9a239373 | Main contains the accepted integrated result a6110a34. B is the intentionally retained raw alternate experiment, including its rejected BDD wording; do not merge it wholesale. |
+| F369 / F386 / coordinator / pilot | Returned source commits and target pilot are already merged. Preservation serves explicit deferral, pinned maintenance, handoff or path-bound historical evidence; it does not mean another product code delivery is waiting to merge. |
+| v016-projection | Historical detached snapshot, already an ancestor of main; retained because its old lease is still active, not as new rc.1 implementation. |
+
+These are byte/history/record comparisons, not permission to discard the retained
+experiments. Their dirty bytes and failed evidence remain in the existing C: archive.
+
+### Known work and boundaries to resolve in the 0.19.0 release scope
+
+| ID | Current fact | Required disposition before claiming the corresponding outcome |
+| --- | --- | --- |
+| R1 source self-adoption | #361 delivered a design; source has no tracked .ai/core, framework.lock or adopted new project config. Root routes still use legacy assets. Program #322 intended genuine self-consumption. | Implement and verify a selected source adoption, or explicitly remove/defer it from the chosen stable scope. The mq lab pilot is not source self-adoption. |
+| R2 publication and delivery | The schema-2 candidate and RC tag exist; a new-format hosted release contract, admitted delivery assets and stable 0.19.0 publication do not. Existing legacy publication machinery is not automatically compatible. | Select the actual new-format delivery/support contract and perform its bounded acceptance/publication work. Do not enable the old workflow merely because a tag exists. |
+| R3 stable update and rollback | Target #15 retains a stable-update/rollback obligation. The actual successful two-file PR delta is not rc.1-to-stable update/rollback acceptance. No stable candidate exists yet. | Exercise the selected real stable input and recovery route once such input exists, or state an explicit release-scope deferral. |
+| R4 cross-computer admission and recovery | All installed product files are in target main, but original review/admission receipts and before/recovery objects are ignored local artifacts. Review subject includes the pilot absolute root. Binding remains pilot-review / pending by the freeze protocol. | Reading main is possible; a fresh clone is not automatically admitted for ordinary use or equipped for original recovery. Select evidence transport/new-root admission and portable maintenance/recovery instructions when those outcomes are required. Never fake a passed receipt or rewrite historical roots. |
+| R5 source gates and policy | #369 native driver/caller expansion is directly deferred by the owner. Selector-to-named-regression and manual-admission enforcement gaps remain recorded. U001 remains effective; CI and prospective policy are inactive. | Retain the deferral unless the owner changes it. Choose and review any future gate/policy set explicitly; no automatic native additions, old full matrix or CI restoration. |
+| R6 runtime and target decisions | New adapter support is Codex only. Target Lesson accept, ADR decide and promotion decisions require real project evidence adapters not configured by this pilot; no promotion policy target/source was selected. Legacy lifecycle duties are retained, not replaced by a complete new updater. | Treat these as explicit capability/configuration boundaries in the release assessment, not hidden passes. Claude expansion and target decision integration are not automatically selected by complete-profile installation. |
+| R7 version-specific evidence | Main includes CR-002 repair, while tagged/installed candidate and pinned engine keep their historical identities. C-001 remains an unverified concern; historical native results remain tied to their original inputs. | Bind any chosen stable engine/candidate to current scoped checks and affected review. Do not reuse historical passes as unconditional stable or cross-platform acceptance. |
+
+Older open backlog is not silently included in this selected release: #43, #45,
+#149, #153, #168, #179, #273, #274, #275, #277, #278, #305, #307, #308, #309,
+#316, #317 and #318. If any is selected for 0.19.0, name that addition explicitly;
+open status alone does not turn it into a late mandatory rc.1 deliverable.
+
+### Cross-computer handoff
+
+This section and coordinator-transfer.json latest_checkpoint are in the source
+repository and are the online handoff. The analysis repository currently has no
+configured remote; its new C: archive is local and uncommitted. A path mentioned
+in this record is not an uploaded evidence bundle. Raw recovery material is not
+ordinary product source and is not automatically published into main.
+
+Known merge backlog for the selected delivered rc.1 implementation: none found
+in this inventory. Known program/release/adoption residuals: R1-R7 above.
+Before declaring stable scope final, give each selected residual an explicit
+included/completed/deferred/out-of-scope disposition. A later newly discovered
+defect must be identified as new evidence, not misrepresented as an undisclosed
+pre-existing deliverable. No product test, native run, admission or repair was
+performed for this inventory.
+
+Observed: 2026-09-24T08:07:21.645747+08:00.
+
 ## Current checkpoint: ready for owner inspection and task archival
 
 The owner will archive the work tasks and inspect the framework and mq lab

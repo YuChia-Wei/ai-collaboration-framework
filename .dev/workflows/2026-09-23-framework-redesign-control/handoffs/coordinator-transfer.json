@@ -6,14 +6,14 @@
   "program_issue": 322,
   "hidden_context_required": false,
   "checkpoint_commit_source": "containing-commit",
-  "observed_source_commit": "4b80791c696ffad6a0b1bda30ee7bda233db21c0",
+  "observed_source_commit": "d6a725ef90ffe9eb2fe735aeac7421df7c7e2f09",
   "predecessor_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
   "successor_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
   "successor_binding": "Actual create_thread result and successor acceptance; do not infer a task ID from this record.",
   "source_root": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
   "assigned_worktree": "F:/framework-next/coordinator-next",
   "handoff_branch": "codex/2026-09-23-coordinator-handoff",
-  "receiving_branch": "codex/2026-09-24-archive-ready",
+  "receiving_branch": "codex/2026-09-24-online-main-inventory",
   "requested_model": "gpt-6-astra",
   "requested_reasoning_effort": "ultra",
   "execution_provenance": {
@@ -57,7 +57,7 @@
     "disabled_workflow_count": 9,
     "restoration_authorized": false
   },
-  "next_action": "Owner inspects tagged rc.1 source and integrated target, then explicitly opens a new 0.19.0 task. Preserve #369 native deferral, inactive CI/policy and pinned target; read external archive README and fresh Git/provider state first.",
+  "next_action": "Owner evaluates online main/new src skills and installed target main with the immutable rc.1 tag distinguished. Before stable scope is final, disposition R1-R7 in online-main inventory. No known delivered product merge backlog; do not revive old experimental variants or #369 native work.",
   "report": "coordinator-transfer.md",
   "formal_handoff_validation": "deferred-by-owner under U001; not passed",
   "successor_acceptance": {
@@ -235,9 +235,9 @@
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
   },
-  "updated_at": "2026-09-24T07:34:15.344638+08:00",
+  "updated_at": "2026-09-24T08:07:21.645747+08:00",
   "latest_checkpoint": {
-    "source_main": "4b80791c696ffad6a0b1bda30ee7bda233db21c0",
+    "source_main": "d6a725ef90ffe9eb2fe735aeac7421df7c7e2f09",
     "source_repair_pr": 388,
     "source_repair_issue": 335,
     "source_repair_delivery": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
@@ -252,8 +252,8 @@
     "review_packet": "P15-rc1-a17cc80-01",
     "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
     "report": "../reports/successor-acceptance-and-repair-scope.md",
-    "next_action": "Owner inspects tagged rc.1 source and integrated target, then explicitly opens a new 0.19.0 task. Preserve #369 native deferral, inactive CI/policy and pinned target; read external archive README and fresh Git/provider state first.",
-    "observed_at": "2026-09-24T07:34:15.344638+08:00",
+    "next_action": "Owner evaluates online main/new src skills and installed target main with the immutable rc.1 tag distinguished. Before stable scope is final, disposition R1-R7 in online-main inventory. No known delivered product merge backlog; do not revive old experimental variants or #369 native work.",
+    "observed_at": "2026-09-24T08:07:21.645747+08:00",
     "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
     "independent_review": "passed; no reportable findings",
     "selected_gate": {
@@ -499,6 +499,71 @@
       "remote_verified": true,
       "owner_authority": "Direct 2026-09-24 request to tag the just-installed baseline",
       "release_published": false
+    },
+    "online_main_inventory": {
+      "observed_at": "2026-09-24T08:07:21.645747+08:00",
+      "source_subject": "d6a725ef90ffe9eb2fe735aeac7421df7c7e2f09",
+      "target_subject": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "source_commit_references_checked": 43,
+      "source_references_outside_main": [],
+      "open_source_prs": 0,
+      "program_issue_numbers": [
+        324,
+        325,
+        326,
+        330,
+        331,
+        334,
+        335,
+        337,
+        341,
+        342,
+        345,
+        346,
+        347,
+        348,
+        351,
+        352,
+        354,
+        356,
+        357,
+        359,
+        361,
+        364,
+        365,
+        368,
+        369,
+        370,
+        371,
+        373,
+        378,
+        381,
+        382,
+        383,
+        386
+      ],
+      "closed_completed": 32,
+      "open": [
+        369
+      ],
+      "known_delivered_product_merge_backlog": [],
+      "old_experiments_disposition": "integrated byte snapshots or superseded/rejected historical variants; not selected pending product delivery",
+      "report": "../reports/successor-acceptance-and-repair-scope.md#online-main-completeness-and-known-release-scope-inventory",
+      "target_managed_files_tracked": 131,
+      "candidate_to_main_src_changes": [
+        "src/distribution/git_source.py"
+      ],
+      "release_residuals": {
+        "R1": "source self-adoption unperformed",
+        "R2": "new-format publication/delivery not completed",
+        "R3": "actual stable upgrade/rollback not accepted",
+        "R4": "cross-computer admission/recovery evidence and root portability unresolved",
+        "R5": "native expansion owner-deferred; CI/policy inactive; selector/admission gaps",
+        "R6": "Codex-only; target decision evidence adapters unconfigured; legacy lifecycle boundaries retained",
+        "R7": "stable input-specific verification, fixed historical pins and C-001 uncertainty"
+      },
+      "local_analysis_archive_online": false,
+      "new_behavioral_execution": false
     }
   },
   "checkpoint_history": [
