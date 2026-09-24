@@ -1,5 +1,19 @@
 # Framework redesign coordination
 
+## Current action: start rc.2 in a fresh coordinator task
+
+The owner directly instructed rc.2 execution on 2026-09-24 and allowed a fresh
+continuation task after preparation. The [compact transfer](handoffs/rc2-coordinator-transfer.md)
+owns current start instructions. S1 fixes shared formats and migration scope;
+S2-S6 then proceed under their exclusive owners. The selected scope does not need
+another overall approval merely because this task is transferred.
+The sender retains write ownership until receiver acceptance and explicit release.
+
+Receiving coordinator: `01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00`, requested Astra/ultra, assigned
+`F:/framework-next/rc2-coordinator`. Its first turn accepted the clean prepared
+checkpoint `2a2f1244` read-only. The sender's remaining work is online handoff
+integration and explicit exclusive-writer release; then the receiver starts S1.
+
 ## Current direction: rc.2 planning; stable is not ready
 
 On 2026-09-24 the owner selected further iteration: preserve skill IDs, prefer

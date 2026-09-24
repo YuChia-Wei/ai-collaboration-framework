@@ -1,0 +1,149 @@
+{
+  "record_kind": "framework-rc2-coordinator-handoff",
+  "record_version": 1,
+  "workflow_id": "2026-09-23-framework-redesign-control",
+  "program_issue": 322,
+  "hidden_context_required": false,
+  "checkpoint_commit_source": "containing-commit",
+  "created_at": "2026-09-24T14:41:08+08:00",
+  "owner_start_instruction": {
+    "source": "direct-user-message",
+    "task_id": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+    "quote": "開始處理 rc2 的部分，如果你認為現在這個對話已經累積過多內容，一樣將必要資料準備好後重開對話進行作業。",
+    "meaning": "Start the rc.2 work; prepare necessary records and create a fresh continuation task when this task is too large."
+  },
+  "status": "receiver-accepted; awaiting-online-integration-and-exclusive-writer-release",
+  "predecessor_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
+  "source": {
+    "repository": "YuChia-Wei/ai-collaboration-framework",
+    "main_root": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
+    "observed_main": "b667e0a35ba2d17175036c526512ffd2c8f462de",
+    "dirty": false,
+    "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "transport_worktree": "F:/framework-next/coordinator-next",
+    "transport_branch": "codex/2026-09-24-rc2-handoff"
+  },
+  "receiver": {
+    "worktree": "F:/framework-next/rc2-coordinator",
+    "branch": "codex/2026-09-24-rc2-coordinator",
+    "model": "gpt-6-astra",
+    "reasoning_effort": "ultra",
+    "provenance": "Actual create_thread returned this taskId/hostId after explicit model=gpt-6-astra, thinking=ultra request; not independent runtime attestation.",
+    "host_id": "local",
+    "acceptance": {
+      "observed_at": "2026-09-24T14:45:05+08:00",
+      "source": "Codex wait_threads completed receiving turn 01a0d226-d4cc-7df0-a588-2065b6d0bb35",
+      "worktree": "F:/framework-next/rc2-coordinator",
+      "branch": "codex/2026-09-24-rc2-coordinator",
+      "head": "2a2f124450a29d5ed315608df16edee812436468",
+      "clean": true,
+      "json_yaml": "parsed and handoff fields consistent",
+      "program_issue": "OPEN read-back",
+      "scope": "S1-S6; S1 first; preserve R1-R8 and fixed rc.1 identities",
+      "writes_or_dispatch": "none during acceptance",
+      "remaining": "online transport merge SHA and explicit exclusive-writer release"
+    }
+  },
+  "design": ".dev/design/framework-next/rc2-installation-selection.md",
+  "approved_start": {
+    "target_version": "0.19.0-rc.2",
+    "stable_readiness": "not-ready-by-owner",
+    "directions": [
+      "Preserve public skill IDs; use aicf- as the selected working prefix.",
+      "Restore Claude alongside Codex from one installed skill source.",
+      "Move reusable engineering knowledge into optional src/knowledge packages.",
+      "Allow project-owned selection of skills, knowledge and runtime adapters.",
+      "Source self-adoption excludes unnecessary engineering knowledge; mq lab selects .NET and preserves its rules/customizations."
+    ],
+    "contract_detail_status": "Coordinator may resolve routine format/ownership details within this direction; a conflicting or expanded owner-sensitive choice remains a checkpoint.",
+    "execution": "Start S1 now after exclusive ownership release, then advance S2-S6 in dependency order; do not ask the owner to approve the same start again solely because of task transfer."
+  },
+  "first_work_unit": {
+    "id": "S1",
+    "outcome": "Exact selection/content-package/catalog/lock contract and complete reusable-content migration inventory, with runnable-format versions selected before dependent implementation.",
+    "next_actions": [
+      "Read the bounded entry files and live Issue #322.",
+      "Create the bounded S1 Issue and required independent Astra/ultra task under U001, with assigned F: worktree, own design/workflow, exact file ownership and return criteria.",
+      "Resolve package/rule applicability and rc.1 reader compatibility; record exact schema versions and fixture/actual acceptance boundaries.",
+      "Integrate S1 before shared distribution changes. S2 content and S4 isolated adapter work may proceed only after their interfaces and ownership are fixed."
+    ],
+    "shared_writer_rule": "One tracked writer per worktree; S3 owns shared distribution/manifest/profile files. Other units return exact members/call-site needs. No source sub-agents."
+  },
+  "baseline": {
+    "tag": "v0.19.0-rc.1",
+    "tagged_source": "1ce41a4f03f61e83bf9b99de3ce196887547e922",
+    "tag_object": "40e41e7b4f33cb07ca84d789b768e40bcbe6f13f",
+    "candidate_identity": "versioned:0.19.0-rc.1:1ce41a4f03f61e83bf9b99de3ce196887547e922:286088361638d65f741c0fd5c39b210b0bd868c2a08d1e235a3d5613d40bcdbb",
+    "engine_pin": "3afb4ff4207acb3e12e3953018736305a439ed21",
+    "lock_sha256": "a04e2df01f5f6df6889b7c09daa1b9ae1c78e6b503aac852d5aa2b325c56a0e8",
+    "target_repository": "YuChia-Wei/dotnet-distributed-architecture-lab",
+    "target_main": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+    "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
+    "target_roots": [
+      "C:/Github/YuChia/dotnet-mq-arch-lab",
+      "C:/Github/YuChia/dotnet-mq-arch-lab-rc1-pilot"
+    ],
+    "note": "Historical fixed identities, not new rc.2 execution or fresh provider admission. Verify mutable live facts before acting."
+  },
+  "authorization_and_boundaries": {
+    "source_integration": "Existing #322 authorization covers coherent commits, push, PR and online merge; never direct main push.",
+    "issue_updates": "Authorized; close implementation Issues only after their acceptance, review and online merge. Keep #322 open until program completion.",
+    "project": "Existing authorization is Status-only. Do not infer permission for new Project items or other fields from the specific old #386 exception. Do not block source implementation on optional Project additions.",
+    "target": "Carry forward full framework integration intent and target push/PR/merge authorization. Preserve 14 rules, four customizations and selected target gate. Reconcile any new target semantic change before applying.",
+    "tests": "Select narrow affected new-contract checks and RC trials under S6; legacy full/critical matrices, audit machinery and hosted contexts remain deferred-by-owner under U001/P7.",
+    "preserve": [
+      "rc.1 immutable tag and historical evidence",
+      "F:/framework-next/369",
+      "F:/framework-next/386",
+      "F:/ai-context-tests",
+      "F:/framework-next/p7-runs",
+      "all dirty old experimental worktrees and C: backups",
+      "old target pilot root needed by historical evidence"
+    ],
+    "not_activated": [
+      "#369 native driver/caller expansion",
+      "CI/Actions restoration",
+      "dormant source development policy",
+      "stable 0.19.0 publication",
+      "rc.2 tag or hosted Release publication"
+    ],
+    "cleanup": "Use prior conditional completion cleanup only after merged ancestry, clean worktree and durable failed/untracked evidence preservation."
+  },
+  "residuals": {
+    "R1": "source self-adoption, selected for rc.2",
+    "R2": "new-format publication/delivery, not automatically completed by candidate assembly",
+    "R3": "actual stable-input update/rollback later; rc.1-to-rc.2 is not a substitute",
+    "R4": "cross-computer admission/recovery portability; main contains product bytes, local receipts are not transported",
+    "R5": "owner-deferred native/CI/policy and existing selector/admission gaps",
+    "R6": "Claude selected for rc.2; other target decision evidence adapters and legacy lifecycle duties remain explicit",
+    "R7": "input-specific candidate/engine verification and C-001 uncertainty",
+    "R8": "selectable installation and reusable engineering knowledge productization"
+  },
+  "evidence_storage": {
+    "durable_product_decisions": "Tracked design/workflow and online main",
+    "external_analysis": "C:/Github/YuChia/ai-collaboration-framework-analysis/codex",
+    "rc1_archive": "C:/Github/YuChia/ai-collaboration-framework-analysis/codex/framework-rc1-closeout-20260924",
+    "archive_online": false,
+    "volatile_fixture_root": "F:/framework-next/p7-runs",
+    "note": "Preserve failures. Copy necessary raw evidence durably before deleting a completed worktree. Analysis repo has no configured remote at prior inspection; recheck before any publication."
+  },
+  "handoff_checks": {
+    "source_and_provider_preflight": "clean b667e0a3; GitHub main matched; no open PR and no rc2-titled open Issue at preparation",
+    "direct_document_checks": {
+      "outcome": "passed",
+      "json_documents": 2,
+      "yaml_documents": 1,
+      "local_links": 11,
+      "scope": "readability, parsing, link existence and handoff consistency; not schema/behavior/formal validation"
+    },
+    "legacy_formal_handoff": "deferred-by-owner under U001, owner #322 coordinator/P7; no critical or handoff-validator pass claimed"
+  },
+  "release_protocol": [
+    "Receiver first verifies the prepared checkpoint in read-only mode and reports acceptance.",
+    "Sender records the actual receiving task ID and updates the override current-coordinator pointer, then integrates the transport via online PR.",
+    "Sender sends the merged SHA and explicit exclusive-writer release; receiver fast-forwards its assigned worktree and starts S1. Sender then performs no further source mutation."
+  ],
+  "updated_at": "2026-09-24T14:45:05+08:00",
+  "next_action": "After this transport is merged online, sender sends the merge SHA and exclusive-writer release. Receiver fast-forwards, verifies this ID in the override, then begins S1 without another overall scope question."
+}

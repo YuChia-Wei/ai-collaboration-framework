@@ -6,21 +6,22 @@
   "program_issue": 322,
   "hidden_context_required": false,
   "checkpoint_commit_source": "containing-commit",
-  "observed_source_commit": "e12cf63df3c0a2102e2846ceb8d4b3171ffbfc5f",
-  "predecessor_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
-  "successor_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "observed_source_commit": "b667e0a35ba2d17175036c526512ffd2c8f462de",
+  "predecessor_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+  "successor_thread": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
   "successor_binding": "Actual create_thread result and successor acceptance; do not infer a task ID from this record.",
   "source_root": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend",
-  "assigned_worktree": "F:/framework-next/coordinator-next",
-  "handoff_branch": "codex/2026-09-23-coordinator-handoff",
-  "receiving_branch": "codex/2026-09-24-rc2-installation-plan",
+  "assigned_worktree": "F:/framework-next/rc2-coordinator",
+  "handoff_branch": "codex/2026-09-24-rc2-handoff",
+  "receiving_branch": "codex/2026-09-24-rc2-coordinator",
   "requested_model": "gpt-6-astra",
   "requested_reasoning_effort": "ultra",
   "execution_provenance": {
-    "predecessor_model": "gpt-6-astra",
-    "predecessor_reasoning_effort": "ultra",
-    "source": "runtime-reported",
-    "evidence": "Read-only state_5.sqlite threads row for predecessor task on 2026-09-23; no successor runtime attestation yet."
+    "requested_model": "gpt-6-astra",
+    "requested_reasoning_effort": "ultra",
+    "task_id": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
+    "host_id": "local",
+    "source": "actual create_thread result plus explicit requested settings; not independent runtime attestation"
   },
   "owner_sequence": [
     "rc2-selection-and-knowledge-design",
@@ -58,29 +59,21 @@
     "disabled_workflow_count": 9,
     "restoration_authorized": false
   },
-  "next_action": "Review the rc.2 installation-selection proposal, then assign bounded implementation units. Stable 0.19.0 is not ready by direct owner decision. Preserve rc.1/tag/target identities, R1-R8 and the owner deferral of #369 native/CI work; no automatic implementation dispatch.",
+  "next_action": "After this transport is merged online, sender sends the merge SHA and exclusive-writer release. Receiver fast-forwards, verifies this ID in the override, then begins S1 without another overall scope question.",
   "report": "coordinator-transfer.md",
   "formal_handoff_validation": "deferred-by-owner under U001; not passed",
   "successor_acceptance": {
-    "observed_at": "2026-09-23T21:38:42+08:00",
-    "worktree": "F:/framework-next/coordinator-next",
-    "branch": "codex/2026-09-23-redesign-continuation",
-    "head": "9338a85d9d34924450043a06cc3c331144f29f1f",
+    "observed_at": "2026-09-24T14:45:05+08:00",
+    "source": "Codex wait_threads completed receiving turn 01a0d226-d4cc-7df0-a588-2065b6d0bb35",
+    "worktree": "F:/framework-next/rc2-coordinator",
+    "branch": "codex/2026-09-24-rc2-coordinator",
+    "head": "2a2f124450a29d5ed315608df16edee812436468",
     "clean": true,
-    "runtime_model": "gpt-6-astra",
-    "runtime_reasoning_effort": "ultra",
-    "runtime_evidence": "Read-only state_5.sqlite current task row",
-    "next_issue": 378,
-    "repair_dispatch": {
-      "issue": 378,
-      "thread_id": "01a0ce7e-5a76-70a2-88a6-a31c5cfe0000",
-      "worktree": "F:/framework-next/378",
-      "branch": "codex/2026-09-23-windows-path-compatibility",
-      "starting_commit": "70cff755bad2c2bc55bb10f7259af3871009bb03",
-      "first_repository_command": "exec-f900be6d-71f9-465c-9953-c7ae80a3a760",
-      "observed_at": "2026-09-23T21:41:05+08:00",
-      "state": "active; no completion inferred"
-    }
+    "json_yaml": "parsed and handoff fields consistent",
+    "program_issue": "OPEN read-back",
+    "scope": "S1-S6; S1 first; preserve R1-R8 and fixed rc.1 identities",
+    "writes_or_dispatch": "none during acceptance",
+    "remaining": "online transport merge SHA and explicit exclusive-writer release"
   },
   "continuation_checkpoint": {
     "observed_at": "2026-09-23T23:00:58+08:00",
@@ -236,7 +229,7 @@
     "review": "no actionable finding; 10 raw evidence and 10 engine hashes verified",
     "next_action": "online source integration then new target pin/plan/apply"
   },
-  "updated_at": "2026-09-24T11:02:20+08:00",
+  "updated_at": "2026-09-24T14:45:05+08:00",
   "latest_checkpoint": {
     "source_main": "d6a725ef90ffe9eb2fe735aeac7421df7c7e2f09",
     "source_repair_pr": 388,
@@ -253,7 +246,7 @@
     "review_packet": "P15-rc1-a17cc80-01",
     "content_subject": "eb9b599369c9492024d33b5a2cc8327a7d0316ccc2655d46ee7fc650c080f621",
     "report": "../reports/successor-acceptance-and-repair-scope.md",
-    "next_action": "Review the rc.2 installation-selection proposal, then assign bounded implementation units. Stable 0.19.0 is not ready by direct owner decision. Preserve rc.1/tag/target identities, R1-R8 and the owner deferral of #369 native/CI work; no automatic implementation dispatch.",
+    "next_action": "After this transport is merged online, sender sends the merge SHA and exclusive-writer release. Receiver fast-forwards, verifies this ID in the override, then begins S1 without another overall scope question.",
     "observed_at": "2026-09-24T08:07:21.645747+08:00",
     "target_tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
     "independent_review": "passed; no reportable findings",
@@ -592,6 +585,14 @@
       "ci_restored": false,
       "release_or_tag_created": false,
       "native_369": "deferred-by-owner"
+    },
+    "rc2_execution_start": {
+      "at": "2026-09-24T14:41:08+08:00",
+      "owner_instruction": "開始處理 rc2 的部分，如果你認為現在這個對話已經累積過多內容，一樣將必要資料準備好後重開對話進行作業。",
+      "handoff": "handoffs/rc2-coordinator-transfer.json",
+      "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
+      "state": "receiver-accepted; awaiting-online-integration-and-exclusive-writer-release",
+      "acceptance_head": "2a2f124450a29d5ed315608df16edee812436468"
     }
   },
   "checkpoint_history": [
@@ -936,6 +937,46 @@
         "0.19.0-stable-release-and-target-update"
       ],
       "observed_source_commit": "d6a725ef90ffe9eb2fe735aeac7421df7c7e2f09"
+    },
+    {
+      "kind": "superseded-rc2-planning-navigation",
+      "superseded_at": "2026-09-24T14:41:08+08:00",
+      "next_action": "Review the rc.2 installation-selection proposal, then assign bounded implementation units. Stable 0.19.0 is not ready by direct owner decision. Preserve rc.1/tag/target identities, R1-R8 and the owner deferral of #369 native/CI work; no automatic implementation dispatch.",
+      "receiving_branch": "codex/2026-09-24-rc2-installation-plan"
+    },
+    {
+      "kind": "superseded-rc1-successor-binding",
+      "superseded_at": "2026-09-24T14:45:05+08:00",
+      "predecessor_thread": "01a0c9d9-3b00-7b70-ad85-daff590e7ecd",
+      "successor_thread": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
+      "assigned_worktree": "F:/framework-next/coordinator-next",
+      "execution_provenance": {
+        "predecessor_model": "gpt-6-astra",
+        "predecessor_reasoning_effort": "ultra",
+        "source": "runtime-reported",
+        "evidence": "Read-only state_5.sqlite threads row for predecessor task on 2026-09-23; no successor runtime attestation yet."
+      },
+      "successor_acceptance": {
+        "observed_at": "2026-09-23T21:38:42+08:00",
+        "worktree": "F:/framework-next/coordinator-next",
+        "branch": "codex/2026-09-23-redesign-continuation",
+        "head": "9338a85d9d34924450043a06cc3c331144f29f1f",
+        "clean": true,
+        "runtime_model": "gpt-6-astra",
+        "runtime_reasoning_effort": "ultra",
+        "runtime_evidence": "Read-only state_5.sqlite current task row",
+        "next_issue": 378,
+        "repair_dispatch": {
+          "issue": 378,
+          "thread_id": "01a0ce7e-5a76-70a2-88a6-a31c5cfe0000",
+          "worktree": "F:/framework-next/378",
+          "branch": "codex/2026-09-23-windows-path-compatibility",
+          "starting_commit": "70cff755bad2c2bc55bb10f7259af3871009bb03",
+          "first_repository_command": "exec-f900be6d-71f9-465c-9953-c7ae80a3a760",
+          "observed_at": "2026-09-23T21:41:05+08:00",
+          "state": "active; no completion inferred"
+        }
+      }
     }
   ],
   "record_navigation": "latest_checkpoint and current top-level navigation are current; named earlier checkpoints and checkpoint_history retain historical observations",

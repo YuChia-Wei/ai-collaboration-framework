@@ -1,5 +1,20 @@
 # Successor acceptance and compatibility repair selection
 
+## RC.2 execution start and coordinator transfer
+
+On 2026-09-24 the owner directly requested starting rc.2 and preparing a fresh task
+if this task's accumulated history is excessive. The design is now the selected
+work direction; exact contract details are the first S1 deliverable. The
+[compact handoff](../handoffs/rc2-coordinator-transfer.md) preserves baseline,
+authority, file ownership, residuals and the two-phase receiving protocol.
+This checkpoint starts coordination; it does not claim product implementation,
+new runtime success or rc.2 installation. Stable readiness remains not-ready-by-owner.
+
+Receiving coordinator: `01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00`, requested Astra/ultra, assigned
+`F:/framework-next/rc2-coordinator`. Its first turn accepted the clean prepared
+checkpoint `2a2f1244` read-only. The sender's remaining work is online handoff
+integration and explicit exclusive-writer release; then the receiver starts S1.
+
 ## Latest owner direction: another RC is required
 
 The 2026-09-24 owner review rejects treating rc.1 as ready for stable 0.19.0.

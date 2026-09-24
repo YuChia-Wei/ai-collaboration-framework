@@ -93,9 +93,11 @@ Before first push, each executor returns coherent local commits, exact HEAD,
 branch/worktree, changed paths, actual/deferred checks, unresolved decisions and
 any shared index row to the coordinator. Do not edit coordinator-owned indexes
 or records without a handoff. Coordinator task:
-`01a0ce78-db26-74e1-a615-2bd0599f7d0c`.
-Predecessor: `01a0c9d9-3b00-7b70-ad85-daff590e7ecd`; retained
-[handoff](../workflows/2026-09-23-framework-redesign-control/handoffs/coordinator-transfer.md).
+`01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00`.
+Predecessor: `01a0ce78-db26-74e1-a615-2bd0599f7d0c`; retained
+[rc.2 handoff](../workflows/2026-09-23-framework-redesign-control/handoffs/rc2-coordinator-transfer.md).
+The receiver accepted the prepared checkpoint read-only; exclusive write ownership
+starts after online handoff integration and the sender's explicit release.
 
 The coordinator arranges commit organization and the authorized remote branch
 -> GitHub PR -> online merge sequence. Preserve referenced analysis checkpoints,

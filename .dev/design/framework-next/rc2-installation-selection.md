@@ -5,6 +5,17 @@ Owner direction: 2026-09-24. Inspected source: `e12cf63df3c0a2102e2846ceb8d4b317
 This document records the requested next iteration; it does not implement, install,
 allocate a release, change a tag, restore CI or activate a source policy.
 
+## Execution start: 2026-09-24
+
+After this proposal was merged through PR #399, the owner directly instructed the
+coordinator to start rc.2 and prepare a fresh task if needed. The direction and
+S1-S6 sequence are now authorized to proceed. S1 fixes concrete format details
+before dependent implementation; routine choices within the selected scope are
+coordinator-owned. `aicf-` is the working prefix. Earlier statements that this
+planning checkpoint did not dispatch work remain historical, not a current stop.
+See the [continuation checkpoint](../../workflows/2026-09-23-framework-redesign-control/handoffs/rc2-coordinator-transfer.md).
+Stable publication, new tags, CI and #369 native expansion remain unselected.
+
 ## Owner direction and proposal boundary
 
 The owner considers rc.1 insufficient for stable 0.19.0 and requests further work:
