@@ -676,3 +676,7 @@ S2-S6 remain undispatched pending their inputs. The coordinator will review
 S1's complete contract and inventory before integration or dependent shared
 distribution work. This dispatch is not implementation, behavioral verification
 or rc.2 completion. Stable readiness and R1-R8 remain unchanged.
+
+The [rc.2 acceptance status](reports/rc2-acceptance-status.md) maps the seven
+selected completion criteria and R1-R8 to pending delivery/consumption evidence.
+It is a progress projection, not a new approval or verification pipeline.
