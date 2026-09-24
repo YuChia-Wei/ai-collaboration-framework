@@ -1,0 +1,53 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "task_id": "S5C-consumers",
+  "workflow_id": "2026-09-24-rc2-knowledge-consumers",
+  "owner_skill": "local-change-implementer",
+  "status": "completed",
+  "created_at": "2026-09-24T20:53:28+08:00",
+  "updated_at": "2026-09-24T20:58:01+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-6-sol",
+  "reasoning_effort": "high",
+  "acceptance_ids": [
+    "S5C-A1",
+    "S5C-A2",
+    "S5C-A3",
+    "S5C-A4",
+    "S5C-A5",
+    "S5C-A6"
+  ],
+  "scope": {
+    "goal": "Five optional installed-knowledge instruction consumers under Issue #407",
+    "owned_roots": [
+      "src/skills/ddd-ca-hex-architect/",
+      "src/skills/code-reviewer/",
+      "src/skills/bdd-gwt-test-designer/",
+      "src/skills/slice-implementer/",
+      "src/skills/local-change-implementer/",
+      ".dev/workflows/2026-09-24-rc2-knowledge-consumers/"
+    ],
+    "constraints": [
+      "S3 owns shared distribution",
+      "No source or target adoption",
+      "Stop before first push"
+    ]
+  },
+  "results": {
+    "summary": "Five metadata-4 optional consumers and operation protocols delivered against the fixed S3 reader interface; implementation and actual use remain pending.",
+    "acceptance": {
+      "S5C-A1": "source-delivered",
+      "S5C-A2": "fixed-S3-interface-bound; reader-implementation-deferred-by-owner",
+      "S5C-A3": "instruction-delivered; actual-target-authority-use-deferred-by-owner",
+      "S5C-A4": "transient-result-instruction-delivered; actual-use-deferred-by-owner",
+      "S5C-A5": "exact-member-and-seam-handoff-delivered",
+      "S5C-A6": "direct-checks-recorded; actual-use-deferred-by-owner"
+    },
+    "behavioral_verification": "deferred-by-owner",
+    "deferred_owner": "program #322 coordinator / selected S6/P7",
+    "provider_integration": "not-performed",
+    "next_action": "Coordinator integrates this local commit with S3's eventual implementation; selected S6/P7 owners execute actual resource loading, target and hosted checks.",
+    "resolved_contract_defect": "Parent fixed-commit comparison found typed knowledge dependencies in raw metadata-3 skill dependency fields at 8f2f16dc; all five restored empty raw fields and S3 handoff distinguishes derived typed dependencies."
+  }
+}

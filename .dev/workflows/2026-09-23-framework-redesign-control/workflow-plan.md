@@ -764,3 +764,42 @@ The full online body equals the prepared local draft. S3 is a substantial connec
 distribution/maintenance change and uses an independent task; a short read-only
 S5 consumer/retained-duty preparation uses a bounded sub-agent concurrently.
 S3 must publish the exact operation/journal contract before any S5/S6 adoption use.
+
+S3 was dispatched from clean `238f58bede46a8466699b5f9cd2307acb7155ac0`.
+Its existing Project item was updated to In progress and read back. Actual
+invocation provenance is retained in ignored coordination evidence. A bounded
+read-only S5 analysis at 81c9603 identified the five direct consumers; S3 received
+the precise verified-resource/binding interface requirement.
+
+S5 consumer Issue #407 now has the accepted instruction-only scope S5C-A1 through
+S5C-A6 and exact body read-back. Its five skill roots are disjoint from S3. Final
+consumer instructions must bind to S3's concrete reading seam before acceptance;
+the coordinator will serially return changed component rows to S3. This is separate
+from source and mq-lab adoption and does not retire any retained legacy owner.
+
+## S5 consumer dispatch and adoption preparation (2026-09-24)
+
+The bounded consumer sub-agent started from clean 50adb657b388074e072c8a7ed15a93368a7ba149;
+#407's existing Project item was changed to In progress and read back. No new item
+was created. [Adoption preparation](reports/rc2-adoption-preparation.md) records
+the fixed source operation map, mixed legacy duties, minimal paired edit-intent
+set and fresh target baseline comparison. These are inputs, not adoption evidence.
+
+S3's attempted outgoing coordinator callback was rejected by automatic approval
+review for destination-sharing authority. No callback was sent; the speculative
+regex discrepancy in that attempt was independently resolved by the producer's
+direct code-point inspection. No schema correction is selected. S3 was instructed
+not to retry or publish the refused callback. The coordinator can receive its
+ordinary final response/local handoff through the parent event wait, so this does
+not block authorized implementation or require an alternate outbound route.
+
+## S5 consumer local delivery accepted (2026-09-24)
+
+The bounded consumer writer returned provisional 8f2f16d and final b4dfe1cb,
+clean and stopped before push. [Receiving review](reports/rc2-s5-consumer-review.md)
+records the 21-path scope, exact 17-member/34-resource comparison, preserved seven
+method bodies, independent semantic delta review and repaired failures. Its fixed
+S3 protocol is documented at 15bca530; actual implementation/use remains pending.
+The coordinator locally integrates the accepted consumer input and returns it to
+the sole S3 manifest/catalog writer. #407 remains open until online integration;
+source/target adoption and full rc.2 completion are not implied.
