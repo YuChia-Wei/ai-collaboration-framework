@@ -1,0 +1,66 @@
+{
+  "record_version": 1,
+  "finding_id": "S1-R1",
+  "recorded_at": "2026-09-24T19:25:30+08:00",
+  "baseline_commit": "e27ff21cf06c91abdf5fde4f70c1bddb632b1898",
+  "disposition": "contract-corrected",
+  "scope": "A2/A5 compatibility clarification plus lifecycle phase alignment",
+  "changes": [
+    "Preserve legacy Codex project_entry and original skill-entry.md.template semantics/bytes.",
+    "Use separate Codex/Claude project_entry_v2 callables and skill-entry-v2.md.template paths for rc.2.",
+    "S3 owns explicit format/API callers, manifests and engine closures; old verification never dispatches to v2 by adapter ID alone.",
+    "Original pinned implementations retain behavior; new legacy mode rejects rc.2-only source shapes or metadata-4 output as unsupported-write.",
+    "Workflow status/current_phase are completed/completed; integration and first push remain pending separately."
+  ],
+  "actual_checks": [
+    {
+      "command": "python -B .dev/ai-context/local/s1-r1-check.py",
+      "outcome": "passed",
+      "scope": "Only eight changed files; no source inventory rebuild",
+      "utf8_files": 8,
+      "markdown_files": 5,
+      "json_files": 2,
+      "yaml_files": 1,
+      "local_links": 21,
+      "heading_anchors": 2,
+      "lifecycle_observation": "completed/completed; direct field observation, not formal validator evidence",
+      "original_checks_bytes": "unchanged against baseline Git blob",
+      "schemas_examples_inventories": "unchanged; not rebuilt or rescanned"
+    },
+    {
+      "command": "git diff --check",
+      "outcome": "passed"
+    },
+    {
+      "command": "git diff -- affected contracts and workflow.yaml",
+      "outcome": "inspected",
+      "scope": "Legacy/v2 seam, exact paths, dispatch, unsupported-write and lifecycle phase"
+    },
+    {
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/401-s1-r1.txt --workflow-id 2026-09-24-rc2-selection-contract",
+      "outcome": "passed",
+      "message_sha256": "ce71a3e5ea926a233da4abb47d3985b66c0d1a478b9e729a3f279ec7b6403c82",
+      "result": "Git commit validation passed for planned message."
+    }
+  ],
+  "original_evidence": {
+    "path": "checks.json",
+    "commit": "e27ff21cf06c91abdf5fde4f70c1bddb632b1898",
+    "treatment": "Preserved exact bytes; original 40-file counts are not asserted as a new run."
+  },
+  "deferred": {
+    "outcome": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7",
+    "scope": [
+      "implementation and runtime behavior",
+      "legacy/framework suites",
+      "formal validation/audit/handoff",
+      "native/hosted/CI"
+    ],
+    "next_action": "S3/S4 implement separated seams, then owner selects required verification."
+  },
+  "remaining_owner_decisions": [],
+  "provider_mutation": "not-performed",
+  "first_push": "coordinator-owned"
+}

@@ -181,6 +181,14 @@ preset files. Adapter roots are `src/adapters/<id>` with explicit version, templ
 and members; only Codex/Claude are supported. Unknown roots/adapter types fail closed.
 S3 is the sole writer of this shared manifest and all source profiles.
 
+These new shapes do not extend the legacy writer's accepted inputs. The original
+pinned source/engine keeps API 1 and old builder behavior. A new implementation's
+legacy mode accepts only supported manifest 1, profile 1 and skill metadata 1/2/3;
+rc.2-only shapes or requested metadata-4 output return `unsupported` /
+`unsupported-write` before output allocation. Do not strip fields or reinterpret
+`--profile` as a catalog/subset. Manifest 2 does not need to succeed with an old
+writer merely because legacy entry points remain available.
+
 A catalog is a distribution artifact, not an installation. It includes:
 
 - The three catalog metadata documents listed above.
@@ -215,6 +223,20 @@ A hash pin proves equality with supplied bytes; it does not establish publicatio
 trust or authorize an upgrade.
 
 ## Subset derivation, adapters and installed identity
+
+The `aicf-` contract below applies only to new subset projection. Preserve
+`src/distribution/codex.py::project_entry` and the original
+`src/adapters/codex/skill-entry.md.template` for legacy `framework-` output.
+rc.2 uses `src/distribution/codex.py::project_entry_v2` and
+`src/distribution/claude.py::project_entry_v2`, respectively paired with
+`src/adapters/codex/skill-entry-v2.md.template` and
+`src/adapters/claude/skill-entry-v2.md.template`. Both new callables retain the
+legacy parameter/return shape. S4 owns those renderer/template definitions;
+S3 owns explicit format/API dispatch, callers, manifests and engine closures.
+Old readers/generators must not accidentally use v2; an API-2 reader inspecting
+selection 1/2 or lock 1 still follows legacy verification semantics. The exact
+[branch/seam table](implementation-handoff.md#s4-adapter-owner-and-s3-integration-seam)
+is the integration contract. This changes no disk schema or example shape.
 
 Selection 3 embeds the parsed desired selection and its canonical SHA-256, exact
 parent pin, parent source/version, exact selected component/adapter descriptors,

@@ -30,6 +30,30 @@ restores the retained exact old lock/core/runtime/project states through its
 recorded engine and journal contract; an unrelated install of old files is not
 recovery evidence. Unknown journal versions or incomplete closure fail closed.
 
+## Legacy invocation and renderer separation (S1-R1)
+
+The original pinned source/engine retains its API 1 and old builder behavior.
+In a new implementation, legacy `assembly.assemble` / `assemble_versioned` modes
+accept only the supported manifest 1, profile 1 and skill metadata 1/2/3 inputs.
+New manifest 2, preset 1, other rc.2-only shapes or required metadata-4 output are
+`unsupported` / `unsupported-write` before output allocation. No stripping new
+fields, translating `--profile` into a catalog/subset, or claim that a new manifest
+must build successfully with an old writer is permitted.
+
+Legacy generation and projection verification preserve
+`src/distribution/codex.py::project_entry` with unchanged
+`src/adapters/codex/skill-entry.md.template`, yielding `framework-` entries.
+rc.2 Codex instead uses `src/distribution/codex.py::project_entry_v2` with new
+`src/adapters/codex/skill-entry-v2.md.template`; rc.2 Claude uses
+`src/distribution/claude.py::project_entry_v2` with new
+`src/adapters/claude/skill-entry-v2.md.template`. Both new seams have the legacy
+parameter/return shape and yield `aicf-` entries. There is no legacy Claude writer.
+S4 preserves/defines renderer and template semantics; S3 dispatches by explicit
+format/API branch and owns all caller/manifest/engine-closure changes. Adapter ID
+alone is insufficient, and API-2 inspection of an old candidate/lock must retain
+legacy verification rather than choosing v2. Mismatched branch/template inputs
+fail closed. See the [exact seam table](implementation-handoff.md#s4-adapter-owner-and-s3-integration-seam).
+
 ## rc.1 to rc.2 plan and apply sequence
 
 1. Select one immutable new catalog, explicit desired selection, separately pinned

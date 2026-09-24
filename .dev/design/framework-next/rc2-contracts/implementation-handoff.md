@@ -74,11 +74,19 @@ Required interfaces (new contracts, names reserved here for S3):
 
 Existing call sites to update serially: `selection.select` currently accepts a
 source profile and `assembly._assemble` invokes it; `assembly.assemble` and
-`assemble_versioned` retain legacy behavior. `tools/build-candidate.py` calls the
-latter with `--profile`; it must not reinterpret that old argument as an arbitrary
-new selection. Introduce explicit catalog build/derivation entry points or explicit
-new mode discrimination, preserving old invocation outcomes. The graph trace did
-not enumerate these callers reliably; tracked source call sites were read directly.
+`assemble_versioned` remain legacy entry points. `tools/build-development.py`
+and `tools/build-candidate.py` keep their legacy invocation meanings; in particular,
+`--profile` never becomes an implicit catalog/subset selection.
+
+Preserving old invocation outcomes means the original pinned source/engine and
+API 1/old builders retain their original behavior. A new implementation's legacy
+mode accepts only the already supported manifest 1, profile 1 and skill metadata
+1/2/3 shapes. A rc.2-only source shape, manifest 2, preset 1 or request requiring
+metadata-4 output returns `unsupported` / `unsupported-write` before output
+allocation. It must not strip new fields or reinterpret the request. There is no
+promise that a newly adopted manifest 2 can still produce rc.1 through an old
+writer. Explicit catalog/derivation entry points select the new branch. The graph
+trace did not enumerate these callers reliably; tracked call sites were read directly.
 
 `installation_state._selection_inventory`, `_candidate_documents`, `_packages`,
 `read_candidate`, `_lock_bytes` and `_engine_shape` are the current shared semantic
@@ -121,31 +129,55 @@ profile/closure changes in all other distribution files. The coordinator seriali
 handoff; S4 must not edit S3 shared files in parallel. If a shared helper is needed,
 S4 returns its exact proposed bytes/path and S3 integrates it.
 
-Both renderer modules expose the same pure interface as the existing Codex seam:
+S1-R1 separates the legacy seam from the new rc.2 seam. S4 preserves the existing
+`src/distribution/codex.py::project_entry` output semantics and the exact bytes of
+`src/adapters/codex/skill-entry.md.template`. Neither becomes an alias or a forwarder
+to v2. Add `project_entry_v2` in both renderer modules with the same parameter and
+return shape:
 
 ```text
-project_entry(template_bytes: bytes, package_id: str, package_version: str,
-              description: str, destinations: dict[str,str],
-              *, configuration: dict | None) -> tuple[str,bytes]
+project_entry_v2(template_bytes: bytes, package_id: str, package_version: str,
+                 description: str, destinations: dict[str,str],
+                 *, configuration: dict | None) -> tuple[str,bytes]
 ```
+
+| Explicit branch | Renderer source and callable | Exact template source | Runtime output |
+| --- | --- | --- | --- |
+| Legacy selection 1/2, lock 1 and supported legacy assembly | `src/distribution/codex.py::project_entry` | `src/adapters/codex/skill-entry.md.template` (preserved) | `.agents/skills/framework-<id>/SKILL.md` |
+| rc.2 subset selection 3, Codex | `src/distribution/codex.py::project_entry_v2` | `src/adapters/codex/skill-entry-v2.md.template` (new) | `.agents/skills/aicf-<id>/SKILL.md` |
+| rc.2 subset selection 3, Claude | `src/distribution/claude.py::project_entry_v2` | `src/adapters/claude/skill-entry-v2.md.template` (new) | `.claude/skills/aicf-<id>/SKILL.md` |
+
+S3 owns explicit format/API dispatch at callers, manifests and engine-closure
+boundaries. Adapter ID alone cannot choose a renderer: an API-2 reader checking a
+legacy candidate/lock still selects legacy verification semantics, not v2. Legacy
+generation and any projection reconstruction/verification use the preserved
+legacy seam/template; catalog/subset derivation and new projection verification
+use v2 with that catalog's verified new template. There is no legacy Claude branch.
+Reject a mismatched renderer/template/format combination; do not fall back or
+select a branch from a filename prefix. New manifest-2 adapter rows name the new
+package-relative template `skill-entry-v2.md.template`; old branch mappings keep
+`skill-entry.md.template`. S3 updates exact generator/engine closures and callers
+without treating a changed module hash as the historical pin.
 
 `destinations` contains only that selected skill's actual installed declared
 members. Knowledge is accessed through the skill/selection binding, never by adding
-unselected content links to this dict. Renderers use the fixed `aicf-` prefix and
-respective runtime root. Both templates use exactly the existing seven substitution
-keys: `runtime_name`, `description`, `package_identity`, `installed_entrypoint`,
-`installed_metadata`, `configuration_guidance`, `resources`. No arbitrary template
-execution, provider calls or capability activation. Description is escaped as a
-scalar; links resolve relative to the emitted entry. Metadata 4 instructions must
-explain optional knowledge availability without an unconditional legacy reference.
+unselected content links to this dict. Only the two v2 renderers use fixed `aicf-`
+and their respective runtime roots. The new templates use exactly the existing
+seven substitution keys: `runtime_name`, `description`, `package_identity`,
+`installed_entrypoint`, `installed_metadata`, `configuration_guidance`, `resources`.
+New instructions belong in the new templates; the legacy template remains unchanged.
+No arbitrary template execution, provider calls or capability activation. Description
+is escaped as a scalar; links resolve relative to the emitted entry. Metadata 4
+instructions explain optional knowledge availability without a legacy dependency.
 
 S4 returns `{adapter_id, version: 0.1.0, prefix: aicf-, template,
- members:[{path,sha256,size,mode}], renderer_path, renderer_sha256,
- expected_output_path_rule}` to S3. It defines exact Codex/Claude runtime metadata
-and returns isolated projection examples. S3 derives wrappers and verifies their
-bytes through this seam, with complete pinned renderer/template inputs. S3 owns
-old lock/new-name migration admission; S4 does not remove old runtime directories.
-Actual Codex and Claude discovery/routing are distinct S6 evidence.
+ members:[{path,sha256,size,mode}], renderer_path, renderer_callable: project_entry_v2,
+ renderer_sha256, expected_output_path_rule}` for each new adapter to S3, plus the
+retained legacy callable/template mapping and original source identities. It defines
+exact runtime metadata and returns isolated projection examples. S3 derives and verifies new wrappers through
+v2, with complete pinned renderer/template inputs, while preserving old branch
+semantics. S3 owns old lock/new-name migration admission; S4 does not remove old
+runtime directories. Actual Codex and Claude discovery/routing remain distinct S6 evidence.
 
 ## S5 consumer and adoption split
 
@@ -180,7 +212,7 @@ S6 must choose the actual immutable candidate/engine and record each evidence ki
 
 | Case | Narrow observation | Evidence category |
 | --- | --- | --- |
-| S6-01 strict dispatch | Each new discriminator, one missing/extra field, bool/float version, duplicate ID/key and unsupported old writer | Focused fixture; not target adoption |
+| S6-01 strict dispatch | Each new discriminator, one missing/extra field, bool/float version, duplicate ID/key; legacy versus v2 renderer/template selection; unsupported-write for rc.2-only input to a legacy builder | Focused fixture; not target adoption |
 | S6-02 identity/subset | Same parent, source knowledge-empty vs mq-lab .NET selections; exact absent unselected bytes; tampered parent/subset/member denied | Focused fixture plus actual catalog read |
 | S6-03 closure/binding | One required omission, optional unavailable, cycle/reference miss, stale target authority and unresolved specialist coverage | Focused fixture; real target semantics separate |
 | S6-04 names/ownership | One unchanged framework-to-aicf transition, edited old entry, unowned new collision, case alias/hardlink/reparse refusal | Focused fixture/native where selected |

@@ -70,3 +70,23 @@ R1–R8 retain their original meaning. rc.1 tag/source, maintenance engine, cand
 lock and mq-lab target identities are preserved in the contract. #369 native,
 Actions/CI, dormant policy adoption, stable and new rc.2 tag/Release remain unselected.
 The optional coordinator index row is in delivery.md; this task edits no shared index.
+
+## S1-R1 contract correction
+
+The coordinator identified a conflict in the original S4 seam at fixed commit
+`e27ff21cf06c91abdf5fde4f70c1bddb632b1898` and selected a correction within A2/A5.
+The original commit and checks.json remain preserved. Legacy Codex project_entry
+and its old template keep their output semantics; new Codex/Claude project_entry_v2
+seams use explicitly separate v2 templates. S3 owns format/API dispatch and rejects
+rc.2-only source shapes through a legacy writer as unsupported-write.
+
+Only the three affected contracts and this workflow's correction/delivery records
+change. Disk schemas, examples and the 272-file inventory are unaffected and are
+not rebuilt. [S1-R1 checks](s1-r1-checks.json) records direct changed-document checks.
+Behavior, legacy/framework suites and formal/hosted/CI verification remain
+`deferred-by-owner` under U001, owner program #322 coordinator/P7.
+
+The same correction aligns lifecycle_contract 1.0: workflow status and current_phase
+are both completed for this bounded document delivery. Existing integration,
+completion_scope and task next_action retain the pending first-push/provider work.
+This alignment uses direct artifact reading, not formal lifecycle validation.

@@ -5,11 +5,11 @@ workflow_kind: ai-context-maintenance
 title: RC2 S1 selectable installation contracts and complete migration inventory
 owner_skill: ai-context-governance
 status: completed
-current_phase: local-handoff
+current_phase: completed
 artifact_root: .dev/workflows/2026-09-24-rc2-selection-contract
 entrypoint: workflow-plan.md
 created_at: '2026-09-24T19:12:18+08:00'
-updated_at: '2026-09-24T19:17:12+08:00'
+updated_at: '2026-09-24T19:24:25+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 branch: codex/2026-09-24-rc2-selection-contract
@@ -43,3 +43,10 @@ u001:
 integration: local-handoff-before-first-push; coordinator-owned
 completion_scope: Bounded S1 document delivery only under U001; provider integration
   and deferred verification remain separate.
+corrections:
+- finding_id: S1-R1
+  baseline_commit: e27ff21cf06c91abdf5fde4f70c1bddb632b1898
+  scope: Legacy/v2 adapter seam and legacy-source write compatibility; lifecycle phase
+    alignment
+  disposition: contract-corrected
+  evidence: s1-r1-checks.json

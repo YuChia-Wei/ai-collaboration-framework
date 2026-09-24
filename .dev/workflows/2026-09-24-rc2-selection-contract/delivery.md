@@ -37,3 +37,26 @@ Actual direct checks: 40 UTF-8 files, 30 JSON, 2 YAML, 36 local Markdown links,
 planned package members, owned-only staged scope and clean diff whitespace.
 This is document evidence; no JSON Schema compliance, product behavior or runtime
 discovery was executed. The final local handoff supplies HEAD and clean status.
+
+## S1-R1 follow-up
+
+Disposition: corrected in the contracts; implementation/behavior remains deferred.
+Original delivery commit `e27ff21cf06c91abdf5fde4f70c1bddb632b1898` and its
+[original checks](checks.json) are retained unchanged. The original 40-file check
+counts above belong to that commit; they are not a rerun claim for this correction.
+
+The correction separates preserved legacy Codex project_entry/skill-entry.md.template
+from new Codex and Claude project_entry_v2/skill-entry-v2.md.template. S4 owns
+renderers/templates; S3 owns exact format/API dispatch, callers, manifests and engine
+closure. New legacy mode returns unsupported-write for rc.2-only shapes or requested
+metadata-4 output; --profile keeps its old meaning. Original pinned implementations
+retain their behavior. Schemas/examples/inventories are unchanged.
+
+See [the correction checks](s1-r1-checks.json) for narrow actual evidence. The next
+local handoff supplies the new full HEAD and clean status. No new owner decision;
+first push and provider integration remain coordinator-owned.
+
+The same correction aligns lifecycle_contract 1.0: workflow status and current_phase
+are both completed for this bounded document delivery. Existing integration,
+completion_scope and task next_action retain the pending first-push/provider work.
+This alignment uses direct artifact reading, not formal lifecycle validation.
