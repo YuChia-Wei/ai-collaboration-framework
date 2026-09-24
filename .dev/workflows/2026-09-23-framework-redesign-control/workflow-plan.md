@@ -650,3 +650,29 @@ Legacy/formal/critical verification, CI, #369 native expansion, dormant policy
 adoption and new tag/Release publication retain their prior dispositions.
 Direct JSON/YAML/content/Git and exact-message checks are separate from all
 U001-deferred verification.
+
+## RC.2 S1 dispatched after direct confirmation
+
+The owner directly replied in receiving task
+01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00: "同意開立 issue 並接續工作".
+The unchanged S1 draft was then successfully published as
+[Issue #401](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/401).
+The earlier automatic approval-review rejection remains historical evidence;
+it is no longer the current dispatch blocker. No alternate publication route
+was used and no Project item was added.
+
+S1 was assigned an independent task under U001 from clean integrated main
+6f5a13046f1978ba4b8701e4ae772faecde2c2ff. The task owns rc2-contracts
+design and its 2026-09-24-rc2-selection-contract workflow only. It returns
+local commits before first push. Exact runtime task/worktree/provenance
+details remain in ignored local coordination evidence: a proposed Issue
+comment containing those new details was rejected by automatic approval
+review. The replacement public update contains product scope and progress
+only; rejected details are not published via another route.
+
+[evidence/rc2-task-dispatch.json](evidence/rc2-task-dispatch.json) records exact
+ownership, acceptance IDs, dependencies and outstanding units. S1 is running;
+S2-S6 remain undispatched pending their inputs. The coordinator will review
+S1's complete contract and inventory before integration or dependent shared
+distribution work. This dispatch is not implementation, behavioral verification
+or rc.2 completion. Stable readiness and R1-R8 remain unchanged.

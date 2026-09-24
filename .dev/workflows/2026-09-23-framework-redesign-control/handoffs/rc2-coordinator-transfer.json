@@ -12,7 +12,7 @@
     "quote": "開始處理 rc2 的部分，如果你認為現在這個對話已經累積過多內容，一樣將必要資料準備好後重開對話進行作業。",
     "meaning": "Start the rc.2 work; prepare necessary records and create a fresh continuation task when this task is too large."
   },
-  "status": "exclusive-writer-release-received; S1-Issue-creation-rejected-by-approval-review",
+  "status": "exclusive-writer-release-received; S1-dispatched",
   "predecessor_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
   "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
   "source": {
@@ -144,8 +144,8 @@
     "Sender records the actual receiving task ID and updates the override current-coordinator pointer, then integrates the transport via online PR.",
     "Sender sends the merged SHA and explicit exclusive-writer release; receiver fast-forwards its assigned worktree and starts S1. Sender then performs no further source mutation."
   ],
-  "updated_at": "2026-09-24T14:51:49+08:00",
-  "next_action": "Obtain direct confirmation requested after the actual automatic approval-review rejection of S1 Issue publication; then create the bounded Issue and assigned independent task. Existing rc.2 scope is unchanged.",
+  "updated_at": "2026-09-24T18:54:56+08:00",
+  "next_action": "Receive and review Issue #401 local contract/inventory handoff, integrate accepted S1 via authorized online PR, then dispatch dependent S2-S6 with fixed interfaces and single shared-file ownership.",
   "exclusive_writer_release": {
     "sender_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
@@ -156,5 +156,19 @@
     "receiver_clean_before_progress_record": true,
     "coordinator_bindings": "handoff JSON, workflow YAML and U001 all match receiver task",
     "sender_write_ownership": "released"
+  },
+  "rc2_dispatch": {
+    "record": "evidence/rc2-task-dispatch.json",
+    "active_issue": 401,
+    "active_unit": "S1"
+  },
+  "approval_review_resolution": {
+    "historical_result": "S1 Issue creation rejected by automatic approval review",
+    "direct_user_quote": "同意開立 issue 並接續工作",
+    "source_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
+    "approved_payload_sha256": "12c086e03741c49c570ce2ff0fe70850e68c894f346a4cb73942e5673b47a4b8",
+    "destination": "YuChia-Wei/ai-collaboration-framework",
+    "result": "Issue #401 successfully created after direct confirmation",
+    "recorded_at": "2026-09-24T18:54:56+08:00"
   }
 }
