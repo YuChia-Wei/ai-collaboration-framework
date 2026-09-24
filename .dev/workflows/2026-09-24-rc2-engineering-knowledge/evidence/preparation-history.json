@@ -1,0 +1,48 @@
+{
+  "meaning": "Actual preparation/check failures retained beside later direct success; none was a behavioral execution or hosted result.",
+  "observed_date": "2026-09-24",
+  "attempts": [
+    {
+      "phase": "provider-read",
+      "result": "blocked-by-environment",
+      "fingerprint": "sandbox proxy connection refused",
+      "resolution": "Read-only GitHub Issue read succeeded with scoped network escalation."
+    },
+    {
+      "phase": "migration-helper-preparation",
+      "result": "failed",
+      "fingerprint": "non-content successor lookup",
+      "resolution": "Restricted obsolete successor mapping to the accepted content successors."
+    },
+    {
+      "phase": "edge-reconciliation-preparation",
+      "result": "failed",
+      "fingerprint": "excluded historical edge has no package member",
+      "resolution": "All 17 edges from excluded source rows retain original disposition and explicitly have no installed consumer."
+    },
+    {
+      "phase": "metadata-size-comparison",
+      "result": "failed",
+      "fingerprint": "dotnet metadata 301175 bytes exceeds 262144-byte cap",
+      "resolution": "Removed redundant newly generated full-member README navigation; kept all member/resource declarations and original required closure. Final metadata is 247347 bytes."
+    },
+    {
+      "phase": "direct-content-comparison",
+      "result": "failed",
+      "fingerprint": "duplicate README resource",
+      "resolution": "Retained the existing S1 .NET README resource instead of appending a duplicate."
+    },
+    {
+      "phase": "direct-content-comparison",
+      "result": "failed",
+      "fingerprint": "unregistered guidance hash computed before final leaf edit",
+      "resolution": "Recomputed installed file/catalog digests after the final content edits; direct comparison passed."
+    },
+    {
+      "phase": "staged-diff-check",
+      "result": "failed",
+      "fingerprint": "inherited Markdown trailing whitespace",
+      "resolution": "Removed whitespace-only code lines and retained Markdown hard breaks with explicit backslashes; catalog text and source identities preserved; final diff checks passed."
+    }
+  ]
+}

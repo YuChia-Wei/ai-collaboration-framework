@@ -1,0 +1,77 @@
+{
+  "checks": [
+    {
+      "command": "python -B .dev/workflows/2026-09-24-rc2-engineering-knowledge/check-content.py",
+      "exit_code": 0,
+      "output": {
+        "check_kind": "direct-static-content-comparison",
+        "schema_compliance_claim": false,
+        "behavioral_execution": "deferred-by-owner",
+        "source_identities": 272,
+        "members": {
+          "engineering-common": 6,
+          "dotnet-backend": 229
+        },
+        "profile_dispositions": {
+          "portable-dotnet-knowledge": 185,
+          "historical-example": 5,
+          "obsolete": 4
+        },
+        "source_edges": 381,
+        "declared_references": {
+          "engineering-common": 6,
+          "dotnet-backend": 356
+        },
+        "markdown_links": 154,
+        "parsed_files": {
+          "utf8": 235,
+          "yaml": 24,
+          "json": 5
+        },
+        "registered_rules": 14,
+        "unregistered_guidance": 11,
+        "result": "passed"
+      },
+      "observed_at": "2026-09-24T20:23:24+08:00"
+    },
+    {
+      "command": "git diff --cached --check",
+      "exit_code": 0,
+      "output": "",
+      "observed_at": "2026-09-24T20:23:24+08:00"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "output": "",
+      "observed_at": "2026-09-24T20:23:24+08:00"
+    },
+    {
+      "command": "staged owned-path comparison and package-index byte comparison",
+      "exit_code": 0,
+      "changed_paths": 245,
+      "package_members": 235,
+      "observed_at": "2026-09-24T20:23:24+08:00"
+    },
+    {
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/s2-content.txt --workflow-id 2026-09-24-rc2-engineering-knowledge",
+      "exit_code": 0,
+      "output": "Git commit validation passed for planned message.",
+      "message_sha256": "2beae9d03aae2f9f67d7c43cc9c13fdd963077745e602d93092a9fa33e10dcc1",
+      "observed_at": "2026-09-24T20:24:33+08:00"
+    }
+  ],
+  "meaning": "Direct syntax/content/scope evidence only; no schema compliance, independent review or behavioral/hosted pass.",
+  "deferred": {
+    "status": "deferred-by-owner",
+    "authority": "U001",
+    "owner": "program #322 coordinator / P7; selected S5/S6",
+    "checks": [
+      "legacy/formal/critical/full",
+      "behavioral consumption and installation",
+      "upgrade/compatibility",
+      "hosted/CI"
+    ],
+    "next_action": "S3 integration; S5/S6 target reconciliation and actual consumption; P7 selects redesigned verification."
+  }
+}

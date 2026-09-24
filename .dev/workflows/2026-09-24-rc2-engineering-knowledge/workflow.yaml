@@ -1,0 +1,22 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-24-rc2-engineering-knowledge
+workflow_kind: ai-context-maintenance
+title: RC2 S2 optional engineering knowledge packages
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-09-24-rc2-engineering-knowledge
+entrypoint: workflow-plan.md
+created_at: '2026-09-24T20:21:46+08:00'
+updated_at: '2026-09-24T20:24:33+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+branch: codex/2026-09-24-rc2-engineering-knowledge
+base_branch: main
+issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/403
+program: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+source_baseline: 9247f444eb14a86849c66078cd7fa366dc098379
+contract_commit: 173b2523767aece5004bc57c6e0cbba12898039a
+execution_adaptation: U001 direct checks only; formal and behavioral verification
+  deferred-by-owner; coordinator owns integration and provider state.
