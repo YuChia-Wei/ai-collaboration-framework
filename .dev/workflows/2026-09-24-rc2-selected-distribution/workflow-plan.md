@@ -4,9 +4,9 @@ Issue #406 / program #322. Assigned baseline 238f58bede46a8466699b5f9cd2307acb71
 Owner: slice-implementer, generic mode; sole writer of the assigned S3 worktree.
 Scope: distribution excluding S4 renderers; presets; maintenance bootstrap; selected builder entrypoints; two RC2 tests and direct engine-source test; this workflow only.
 
-Implementation is in progress. Acceptance is S3-A1 through S3-A10 from Issue #406.
+Bounded source implementation is complete. Acceptance mapping is S3-A1 through S3-A10 in task.json; behavioral verification remains deferred-by-owner.
 S1 contracts and accepted S2/S4 handoffs remain read-only authority.
-No source adoption, target mutation, push, PR, merge, publication or CI restoration.
+No source adoption, target mutation, push, PR, online merge, publication or CI restoration. The assigned local accepted-input merge is recorded below.
 
 U001: direct UTF-8, JSON/YAML, AST, link/member/hash, Git/scope/diff and exact commit-message checks only. Parser, builder, installation, recovery, runtime and test execution remain deferred-by-owner to the program coordinator / S6 / P7.
 
@@ -72,3 +72,7 @@ The original raw-text scan exposed six C# example false links; the corrected act
 prose inspection resolves all 154. Source inspection is not parser/runtime evidence.
 All authored tests, actual artifact building, maintenance and consumer/runtime use
 remain deferred-by-owner. Final source/input inventories and local handoff follow.
+
+## Final local handoff
+
+Source checkpoint f5f64d1bcdf4b777c9ee9cb53a734f09dc9052de is complete. See handoff.md, task.json, direct-checks.json, source-inputs.json, engine-source.json and request-examples.json. Final documentation commit and clean-HEAD read-back follow; writer ownership is released at that terminal handoff. All U001 behavioral/native/provider deferrals remain assigned to the coordinator / S6 / P7.

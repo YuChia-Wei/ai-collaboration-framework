@@ -1,0 +1,155 @@
+{
+  "acceptance": [
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Closed format parsing",
+      "direct_evidence": "Exact embedded S1 definitions, UTF-8/AST and direct source YAML/JSON; unknown/bool/duplicate cases authored.",
+      "id": "S3-A1",
+      "implementation": "complete",
+      "source": "src/distribution/contracts.py; data.py; content.py; package.py; manifest.yaml; src/profiles/"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Immutable parent catalog",
+      "direct_evidence": "379 raw Git input identities; 235 S2, 17 S5 and 5 S4 member/renderer/template matches.",
+      "id": "S3-A2",
+      "implementation": "complete",
+      "source": "src/distribution/catalog.py; git_source.py; manifest.yaml"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Explicit selection and presets",
+      "direct_evidence": "Eight exact prior skill/adapter lists preserved; knowledge empty; complete remains 18; no implicit save path.",
+      "id": "S3-A3",
+      "implementation": "complete",
+      "source": "src/distribution/content.py; catalog.py; src/profiles/"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Source-free selected subset",
+      "direct_evidence": "Direct identity/owner/renderer dispatch inspection; synthetic empty/missing-selection cases authored; source-free execution not performed.",
+      "id": "S3-A4",
+      "implementation": "complete",
+      "source": "src/distribution/catalog.py::derive_subset/read_subset/subset_documents"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Legacy read and unsupported write boundaries",
+      "direct_evidence": "Historical pins/constants and legacy renderer preserved; current legacy generator declares added bounded-data dependencies; no legacy execution.",
+      "id": "S3-A5",
+      "implementation": "complete",
+      "source": "src/distribution/selection.py; assembly.py; installation_state.py; tools/build-development.py; tools/build-candidate.py"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Independent verified engine 2/API 2",
+      "direct_evidence": "22-file closure agreement, direct global-symbol inspection and source inventory; isolated loading tests authored only.",
+      "id": "S3-A6",
+      "implementation": "complete",
+      "source": "src/tools/maintain_framework.py; catalog.py; installation_state.py"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Bounded plan/apply/deselection",
+      "direct_evidence": "Direct ownership, old/new prefix, unknown sibling, protected and native boundary inspection; no actual plan/apply/deselect.",
+      "id": "S3-A7",
+      "implementation": "complete",
+      "source": "src/distribution/installation_plan.py; installation.py; installation_io.py"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Paired journal and recovery",
+      "direct_evidence": "Exact API/journal/phase contract; raw preimages/objects and distinct before/after sides; authored project-intent cases, no interruption/recovery execution.",
+      "id": "S3-A8",
+      "implementation": "complete",
+      "source": "src/distribution/installation.py; installation_plan.py; api2-maintenance.md"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Project-owned intent boundary",
+      "direct_evidence": "No implicit save CLI; project_data_action none; exact staged object intents only; no target writes.",
+      "id": "S3-A9",
+      "implementation": "complete",
+      "source": "src/distribution/installation_plan.py; tools/derive-subset.py; s5-interface.md"
+    },
+    {
+      "behavioral_verification": "deferred-by-owner",
+      "criterion": "Focused cases and truthful handoff",
+      "direct_evidence": "Direct AST/Git/hash/link/message checks performed; all tests, builders, native/runtime/formal/hosted/CI remain deferred-by-owner.",
+      "id": "S3-A10",
+      "implementation": "complete",
+      "source": "tests/framework_next/test_rc2_distribution.py; test_rc2_maintenance.py; test_engine_source.py; this workflow"
+    }
+  ],
+  "accepted_s5_input": "2ea6884701b92760266a610c1caede0ebf13201e",
+  "accepted_s5_merge": "0f573325a123419a27ddea2f17385b7d55de8139",
+  "base_commit": "238f58bede46a8466699b5f9cd2307acb7155ac0",
+  "branch": "codex/2026-09-24-rc2-selected-distribution",
+  "completed_at": "2026-09-24T21:27:45.781775+08:00",
+  "completion_scope": "bounded local source implementation; behavioral admission, online integration and adoption remain separate",
+  "deferral": {
+    "authority": "U001",
+    "next_action": "Select and execute the focused artifact, paired-transition, consumer and runtime checks against a freshly pinned integrated source; retain actual failures and provider/native limits.",
+    "owner": "program #322 coordinator / selected S6 / P7"
+  },
+  "external_actions": {
+    "issue_close": "not-performed",
+    "online_merge": "not-performed",
+    "pr": "not-created",
+    "push": "not-performed",
+    "release": "not-performed",
+    "target_adoption": "not-performed"
+  },
+  "final_head_binding": "Read the final same-task terminal report or ignored final-handoff.json; tracked source content is exactly bound by source-inputs.json.",
+  "issue": 406,
+  "mode": "generic",
+  "owned_change_paths": [
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/api2-maintenance.md",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/direct-checks.json",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/engine-source.json",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/handoff.md",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/request-examples.json",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/s5-interface.md",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/source-inputs.json",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/task.json",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/workflow-plan.md",
+    ".dev/workflows/2026-09-24-rc2-selected-distribution/workflow.yaml",
+    "src/distribution/assembly.py",
+    "src/distribution/catalog.py",
+    "src/distribution/content.py",
+    "src/distribution/contracts.py",
+    "src/distribution/data.py",
+    "src/distribution/git_source.py",
+    "src/distribution/installation.py",
+    "src/distribution/installation_io.py",
+    "src/distribution/installation_plan.py",
+    "src/distribution/installation_state.py",
+    "src/distribution/manifest.yaml",
+    "src/distribution/package.py",
+    "src/distribution/selection.py",
+    "src/profiles/collaboration.yaml",
+    "src/profiles/complete.yaml",
+    "src/profiles/context-maintenance.yaml",
+    "src/profiles/engineering.yaml",
+    "src/profiles/knowledge.yaml",
+    "src/profiles/lesson-minimal.yaml",
+    "src/profiles/source-repository.yaml",
+    "src/profiles/work-management.yaml",
+    "src/tools/maintain_framework.py",
+    "tests/framework_next/test_engine_source.py",
+    "tests/framework_next/test_rc2_distribution.py",
+    "tests/framework_next/test_rc2_maintenance.py",
+    "tools/build-candidate.py",
+    "tools/build-catalog.py",
+    "tools/build-development.py",
+    "tools/derive-subset.py"
+  ],
+  "owning_skill": "slice-implementer",
+  "program": 322,
+  "source_checkpoint": "f5f64d1bcdf4b777c9ee9cb53a734f09dc9052de",
+  "status": "completed",
+  "task_version": 1,
+  "workflow_id": "2026-09-24-rc2-selected-distribution",
+  "worktree": "F:/framework-next/406",
+  "writer_handoff": "Release exclusive writer ownership with final clean-HEAD report. No subsequent mutation without new assignment."
+}
