@@ -5,13 +5,13 @@ workflow_kind: ai-context-maintenance
 title: Coordinate the portable-framework redesign
 owner_skill: ai-context-governance
 status: in_progress
-current_phase: rc2-S1-ready-in-successor
+current_phase: rc2-S1-dispatch-awaiting-approval-review-confirmation
 branch: codex/2026-09-24-rc2-coordinator
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-framework-redesign-control
 entrypoint: workflow-plan.md
 created_at: '2026-09-23T01:03:26+08:00'
-updated_at: '2026-09-24T14:45:05+08:00'
+updated_at: '2026-09-24T14:51:49+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 issue_refs:
@@ -27,4 +27,4 @@ next_rc_proposal: 0.19.0-rc.2
 stable_readiness: not-ready-by-owner
 next_rc_design: .dev/design/framework-next/rc2-installation-selection.md
 rc2_resume: handoffs/rc2-coordinator-transfer.md
-handoff_write_owner: sender-until-explicit-release
+handoff_write_owner: 01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00
