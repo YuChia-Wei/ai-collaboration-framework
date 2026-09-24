@@ -558,7 +558,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/bdd-gwt-test-designer/skill-package.yaml
   kind: skill
-  version: 0.1.0
+  version: 0.2.0
 - id: code-reviewer
   source: src/skills/code-reviewer
   metadata: skill-package.yaml
@@ -570,7 +570,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.1.0
+  version: 0.2.0
 - id: ddd-ca-hex-architect
   source: src/skills/ddd-ca-hex-architect
   metadata: skill-package.yaml
@@ -584,7 +584,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/ddd-ca-hex-architect/skill-package.yaml
   kind: skill
-  version: 0.1.0
+  version: 0.2.0
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -654,7 +654,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.1.0
+  version: 0.2.0
 - id: pr
   source: src/skills/pr
   metadata: skill-package.yaml
@@ -744,7 +744,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.1.0
+  version: 0.2.0
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml

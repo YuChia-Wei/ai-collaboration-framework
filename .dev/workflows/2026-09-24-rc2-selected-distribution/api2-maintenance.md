@@ -88,6 +88,11 @@ The immutable operation is the journal; there is no mutable phase field to trust
 Before locks preserve their original raw bytes and engine pin. After lock 2 embeds
 the parent documents and subset/inventory plus independently selected writer pin.
 Both candidate and retained recovery objects call the same semantic readers.
+Before/after sides remain distinct even when lock hashes are equal. Restore uses
+the exact captured project preimages, including an explicitly admitted preexisting
+project edit; it never rewrites those bytes to recreate an older project-input pin.
+Finish verifies all new lock project-input hashes. Project readiness and any stale
+restored project-input bindings remain separately observable by the consumer reader.
 Recovery recomputes all identities, validates both lock/content closures, reconstructs
 runtime bytes with the proper legacy/v2 seam, checks exact engine objects and retained
 plan binding, and rejects malformed or mismatched objects before any mutation.

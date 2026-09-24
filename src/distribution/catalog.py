@@ -88,6 +88,10 @@ def parent_documents(raw):
     expected=set(GENERATOR_FILES)|{'src/distribution/manifest.yaml'}
     for preset in doc['presets']:
         for key in ('skills','knowledge','adapters'): ordered(preset[key])
+        selected={('skill',i) for i in preset['skills']}|{('knowledge',i) for i in preset['knowledge']}
+        components=[c for c in doc['components'] if dependency_key(c) in selected]
+        require({dependency_key(c) for c in components}==selected and set(preset['adapters'])<={a['id'] for a in doc['adapters']},'selection-unavailable: preset')
+        closure(components)
         expected.add(f"src/profiles/{preset['id']}.yaml")
     members={}
     for component in doc['components']:
@@ -181,9 +185,7 @@ def resolve_selection(catalog,desired):
     adapters=[r for r in catalog.document['adapters'] if r['id'] in desired['adapters']]
     require([r['id'] for r in adapters]==desired['adapters'],'selection-unavailable: adapter')
     closure(components)
-    if 'expanded_from' in desired:
-        trace=desired['expanded_from']; preset=next((p for p in catalog.document['presets'] if p['id']==trace['id'] and p['version']==trace['version']),None)
-        require(preset is not None and trace['catalog_identity']==catalog.pin['identity'] and trace['preset_sha256']==digest(json_bytes(preset)),'preset provenance mismatch')
+    preset_trace(catalog.document,desired,catalog.pin)
     packages={k:p for k,p in catalog.packages.items() if k in keys}
     require(set(packages)==keys,'selected metadata unavailable')
     observations=resource_bindings(packages,desired)
@@ -192,6 +194,12 @@ def resolve_selection(catalog,desired):
     unavailable=selected_references(packages,payload)
     return {'desired':desired,'desired_sha256':digest(json_bytes(desired)),'components':components,'adapters':adapters,
             'binding_observations':observations,'unavailable':unavailable}
+
+
+def preset_trace(doc,desired,pin):
+    if 'expanded_from' in desired:
+        trace=desired['expanded_from']; preset=next((p for p in doc['presets'] if p['id']==trace['id'] and p['version']==trace['version']),None)
+        require(preset is not None and trace['catalog_identity']==pin['identity'] and trace['preset_sha256']==digest(json_bytes(preset)),'preset provenance mismatch')
 
 
 def expand_preset(catalog,id,version):
@@ -254,6 +262,7 @@ def subset_documents(raw, *, completed=True):
     require(selection['catalog']==selection['desired']['catalog']==pin and selection['source']==doc['source']
             and selection['release_version']==doc['release_version'],'subset parent binding')
     require(selection['desired_sha256']==digest(json_bytes(selection['desired'])),'desired identity mismatch')
+    preset_trace(doc,selection['desired'],pin)
     desired=selection['desired']; keys={('skill',i) for i in desired['skills']}|{('knowledge',i) for i in desired['knowledge']}
     require(selection['components']==[c for c in doc['components'] if dependency_key(c) in keys]
             and {dependency_key(c) for c in selection['components']}==keys,'subset component selection mismatch')
@@ -351,11 +360,13 @@ def read_installed_resources(project_root,expected_lock_sha256,authorities):
         validate('Authority',row); portable([row['path']])
         key=(row['path'],row['selector']); require(key not in supplied,'duplicate authority')
         supplied[key]=row
+    for row in lock.document['project_inputs']:
+        require(digest(read_raw(reader,root,row['path'],state.LIMITS['file_bytes']))==row['sha256'],'installed project-input drift')
     selected=lock.document['selection']; observed=[]
     required={ (r['path'],r['selector']):r for b in selected['desired']['bindings'] for r in b['authorities'] }
     require(supplied==required,'binding authority allowlist mismatch')
     for row in required.values():
-        raw=read_raw(reader,root,row['path'])
+        raw=read_raw(reader,root,row['path'],state.LIMITS['file_bytes'])
         require(digest(raw)==row['sha256'],'binding authority drift')
         observed.append({**row,'status':'raw-hash-matched','semantic_applicability':'target-owned'})
     resources=[]
@@ -369,6 +380,9 @@ def read_installed_resources(project_root,expected_lock_sha256,authorities):
             member=prefix+resource['path']; bound=lock.members[member]
             resources.append({'package':component['id'],'version':component['version'],'resource_id':resource['id'],
                               'member':member,'sha256':bound['sha256'],'resource':resource})
+    reader.listings.clear()
+    require(all(reader.locate(root,n) is None for n in state.MARKERS),'installed resources changed: maintenance marker')
+    require(digest(read_raw(reader,root,state.LOCK_PATH))==lock.sha256,'installed resources changed: lock drift')
     return {'lock_sha256':lock.sha256,'candidate_identity':lock.document['candidate_identity'],
             'desired_sha256':selected['desired_sha256'],'resources':resources,'bindings':selected['desired']['bindings'],
             'authorities':observed,'semantic_applicability':'target-owned'}

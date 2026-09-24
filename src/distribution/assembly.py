@@ -20,6 +20,8 @@ from .selection import select
 IMPLEMENTATION_MEMBERS = (
     "src/distribution/__init__.py",
     "src/distribution/data.py",
+    "src/distribution/installation_state.py",  # shared bounded-data reader used by data
+    "src/distribution/contracts.py",  # metadata-4 rejection path, before allocation
     "src/distribution/git_source.py",
     "src/distribution/package.py",
     "src/distribution/selection.py",

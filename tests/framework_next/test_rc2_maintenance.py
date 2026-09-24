@@ -5,6 +5,7 @@ python -I -B tests/framework_next/test_rc2_maintenance.py --output-root EXPLICIT
 """
 from hashlib import sha256
 from pathlib import Path
+from types import SimpleNamespace
 import argparse
 import json
 import os
@@ -73,6 +74,27 @@ class Rc2MaintenanceTests(unittest.TestCase):
         installation._edit_record(rows,state._Reader(),roots['staging'],dict(objects),set(),[])
         rows[0]['after']={'sha256':'1'*64,'size':1,'mode':'100644'}
         with self.assertRaises(ValueError): installation._edit_record(rows,state._Reader(),roots['staging'],dict(objects),set(),[])
+
+    def test_equal_lock_hashes_do_not_collapse_project_before_and_after(self):
+        before=state.InstalledLock({},b'{}','1'*64,{})
+        after=state.InstalledLock({},b'{}','1'*64,{})
+        old={'sha256':'2'*64,'size':3,'mode':'100644'}
+        new={'sha256':'3'*64,'size':3,'mode':'100644'}
+        operation=installation.Operation({'project_edits':[{'intent':{'path':'ROOT.md'},'before':old,'after':new}]},b'',before,after,{})
+        self.assertEqual(operation.descriptors(before)['ROOT.md']['sha256'],old['sha256'])
+        self.assertEqual(operation.descriptors(after)['ROOT.md']['sha256'],new['sha256'])
+        foreign=state.InstalledLock({},b'{}','1'*64,{})
+        with self.assertRaises(ValueError): operation.descriptors(foreign)
+
+    def test_saved_selection_uses_exact_types_before_semantic_comparison(self):
+        roots=self.roots('saved-selection-types')
+        desired={'selection_version':1,'catalog':{'identity':'catalog:1:0.19.0-rc.2:'+'1'*40+':'+'2'*64,
+                  'catalog_sha256':'3'*64,'files_sha256':'4'*64},'skills':[],'knowledge':[],'adapters':[],'bindings':[]}
+        saved={**desired,'selection_version':True}
+        intent=self.intent(roots,'.ai/custom/installation.json',None,json_bytes(saved))
+        rows,objects=planning.project_edits(state._Reader(),roots,[intent],set(),[])
+        candidate=SimpleNamespace(selection={'desired':desired})
+        with self.assertRaises(ValueError): planning.project_bindings(state._Reader(),roots['project'],candidate,[],rows,objects)
 
     def test_api1_cannot_acquire_new_writer_semantics(self):
         request={'api_version':1,'operation':'inspect','project_root':'unused','engine_root':'unused','engine':{}}

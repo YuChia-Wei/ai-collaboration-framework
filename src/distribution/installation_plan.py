@@ -236,8 +236,11 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
     withdrawn = {row["destination"].rpartition("/")[0] for row in delta if row["action"] == "remove"
                  and row["destination"].startswith(".agents/skills/framework-")}
     for name in observation.unknown or []:
-        state._check(not any(name.startswith(prefix + "/") and (name.endswith("/") or name.endswith("/SKILL.md")) for prefix in withdrawn),
-                     "legacy-discovery-collision", "Unknown old runtime discovery subtree blocks withdrawal.", name, "conflict")
+        if any(name.startswith(prefix + "/") for prefix in withdrawn):
+            unknown = roots["project"] / name.rstrip("/")
+            info = unknown.lstat()
+            could_discover = name.endswith(("/", "/SKILL.md")) or stat.S_ISLNK(info.st_mode) or bool(getattr(info,"st_file_attributes",0)&0x400)
+            state._check(not could_discover, "legacy-discovery-collision", "Unknown old runtime discovery subtree blocks withdrawal.", name, "conflict")
     for row in delta:
         if row["action"] == "add":
             target = reader.locate(roots["project"], row["destination"])
@@ -300,7 +303,7 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
 
 
 def plan(request: dict | bytes) -> dict:
-    """Closed API 1 preview with no allocation, lock acquisition or writes."""
+    """Closed API 2 preview with no allocation, lock acquisition or writes."""
     try:
         request = state._request(request, "plan", PLAN_FIELDS)
         return _prepare(request, state._Reader())[0]
@@ -354,6 +357,7 @@ def project_edits(reader, roots, intents, managed, protected):
 def project_bindings(reader, project, candidate, protected, edits, objects):
     """Pin raw after-state inputs; authority meaning stays with the target owner."""
     from .catalog import digest
+    from .content import desired_shape
     desired = candidate.selection["desired"]
     after = {r["intent"]["path"]:r["after"] for r in edits}
     before = {r["path"]:r["sha256"] for r in protected}
@@ -378,10 +382,10 @@ def project_bindings(reader, project, candidate, protected, edits, objects):
     selection_path = ".ai/custom/installation.json"
     if selection_path in after and after[selection_path] is not None:
         raw = objects[after[selection_path]["sha256"]]
-        saved = state._document(raw, selection_path, canonical=False)
+        saved = desired_shape(state._document(raw, selection_path, canonical=False))
         state._check(saved == desired, "saved-selection-binding", "Explicit saved installation must equal this desired selection.", selection_path)
     elif selection_path in before and before[selection_path] is not None:
-        saved = state._document(reader.read(_protected_path(project, selection_path), selection_path), selection_path, canonical=False)
+        saved = desired_shape(state._document(reader.read(_protected_path(project, selection_path), selection_path), selection_path, canonical=False))
         state._check(saved == desired, "saved-selection-binding", "Selected saved installation differs from desired selection.", selection_path)
     state._check(len(bound) <= state.LIMITS["protected_inputs"], "project-input-limit", "Too many project input bindings.")
     return [{"path":name,"sha256":bound[name]} for name in sorted(bound)]

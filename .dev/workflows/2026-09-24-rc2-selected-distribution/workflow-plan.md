@@ -45,3 +45,30 @@ producer b4dfe1cbc60193f3cb84b3ee8b427e871b063fdc; coordinator receiving commit
 Receiving that exact source/workflow commit is explicitly assigned by the coordinator;
 S3 authors no consumer or shared coordinator files. Only owned manifest rows are
 updated afterward. Final source/consumer closure and checks remain pending.
+
+## Accepted input and static correction checkpoint
+
+The first core checkpoint is 9c3270d4c0e00524345231936fb2c7a66f3ac6a9.
+S5 coordinator commit 2ea6884701b92760266a610c1caede0ebf13201e was received by
+no-fast-forward merge 0f573325a123419a27ddea2f17385b7d55de8139 after a clean-tree
+check and exact message validation. No conflicts occurred. Its handoff hash matched;
+all 17 changed S5 members matched raw SHA-256 and size. Five manifest versions
+now follow accepted metadata 4 / component 0.2.0; skill source remains unchanged.
+
+Static inspection found and repaired these implementation defects before delivery:
+missing engine ENGINE_FILES assignment while restoring historical READER_ENGINE_FILES;
+equal lock hashes collapsing distinct project before/after preimages; boolean saved
+selection equality; eager consumer cleanup touching a rejected existing session;
+code-fence examples incorrectly counted as active Markdown references; incomplete
+optional-resource and authority hash consistency checks. Read-only resource access
+now checks project-input pins and fresh final controls. Legacy assembly's declared
+implementation inputs include the shared bounded-data dependencies introduced here.
+No failed behavioral run is claimed: these were direct source/link findings.
+
+Latest direct inspection: 24 Python ASTs; no unresolved global symbol references in
+the inspected production closure; 22-file engine list agreement; exact embedded S1
+schema definitions; 154 active content Markdown links and 7 declared heading anchors.
+The original raw-text scan exposed six C# example false links; the corrected active
+prose inspection resolves all 154. Source inspection is not parser/runtime evidence.
+All authored tests, actual artifact building, maintenance and consumer/runtime use
+remain deferred-by-owner. Final source/input inventories and local handoff follow.

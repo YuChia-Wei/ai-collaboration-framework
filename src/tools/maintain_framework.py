@@ -159,13 +159,16 @@ def _load_engine(request, request_size=0):
             raise ValueError("engine file binding")
         target = root / expected
         _direct(target)
-        before = target.stat()
+        before = target.lstat()
         with target.open("rb") as stream:
+            opened = os.fstat(stream.fileno())
             content = stream.read(FILE_LIMIT + 1)
-        after = target.stat()
+            observed = os.fstat(stream.fileno())
+        after = target.lstat()
+        _direct(target)
         total += len(content)
-        signature = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns)
-        if len(content) > FILE_LIMIT or total > TOTAL_LIMIT or signature(before) != signature(after) or hashlib.sha256(content).hexdigest() != row["sha256"]:
+        signature = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns, item.st_mode, item.st_nlink)
+        if len(content) > FILE_LIMIT or total > TOTAL_LIMIT or not signature(before) == signature(opened) == signature(observed) == signature(after) or hashlib.sha256(content).hexdigest() != row["sha256"]:
             raise ValueError("engine bytes")
         _framework_engine_bytes[expected] = content
         if expected.startswith("src/distribution/"):
@@ -219,11 +222,12 @@ def verified_engine(engine_root, pin):
         state._engine(state._Reader(), state._root(engine_root), pin)
         yield
     finally:
-        if finder in sys.meta_path: sys.meta_path.remove(finder)
-        sys.modules.pop("_aicf_verified_bootstrap", None)
-        for name in list(sys.modules):
-            if name == "distribution" or name.startswith("distribution."):
-                del sys.modules[name]
+        if finder is not None:
+            if finder in sys.meta_path: sys.meta_path.remove(finder)
+            sys.modules.pop("_aicf_verified_bootstrap", None)
+            for name in list(sys.modules):
+                if name == "distribution" or name.startswith("distribution."):
+                    del sys.modules[name]
 
 
 def main() -> int:
@@ -246,7 +250,7 @@ def main() -> int:
     except (OSError, ValueError, TypeError, KeyError, ImportError, UnicodeError, RecursionError, OverflowError):
         if finder is not None:
             sys.meta_path.remove(finder)
-        sys.modules.pop("_aicf_verified_bootstrap", None)
+            sys.modules.pop("_aicf_verified_bootstrap", None)
         details = None
         if operation in {"apply", "recover"}:
             details = {"managed_state": "unsupported", "project_readiness": "not-assessed", "lock_sha256": None,

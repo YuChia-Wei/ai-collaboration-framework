@@ -1,4 +1,4 @@
-"""Closed development maintenance API 1; project readiness is never inferred.
+"""Closed development maintenance API 2; project readiness is never inferred.
 
 The source entry establishes the fixed engine bootstrap. Apply and recover hold
 native participating-writer exclusion and demand a fresh caller declaration.
@@ -40,7 +40,8 @@ class Operation:
 
     def descriptors(self, target):
         rows = dict(target.members) if target else {}
-        side = "after" if target is not None and target.sha256 == self.after.sha256 else "before"
+        state._check(target is self.before or target is self.after, "operation-side", "Select one exact retained operation side.")
+        side = "after" if target is self.after else "before"
         for edit in self.document["project_edits"]:
             if edit[side] is not None:
                 name = edit["intent"]["path"]
@@ -399,7 +400,7 @@ def _finish(io: IO, guard: WriterLock, project: Path, operation: Operation, targ
         else:
             io.publish(project, state.LOCK_PATH, desired_lock, current_lock, operation.document["operation_id"])
     io.expect(project, state.LOCK_PATH, desired_lock)
-    if target and target.document["lock_version"] == 2:
+    if target is operation.after:
         for row in target.document["project_inputs"]:
             state._check(_hash(io.raw(project, row["path"])) == row["sha256"], "project-input-drift", "Paired project input differs after transition.", row["path"], "conflict")
     io.changes.lock_sha256 = _hash(desired_lock)
@@ -546,6 +547,7 @@ def recover(request: dict | bytes) -> dict:
         with WriterLock(io, project, allow_create=needs_reconstruction) as guard:
             state._engine(reader, engine, request["engine"])
             operation = _read_operation(reader, operation_root, request["operation_sha256"], request["engine"], project)
+            target = operation.after if request["direction"] == "finish" else operation.before
             declaration(request["maintenance"], operation.scope)
             lock, marker = _recovery_controls(io, project, operation, request)
             current = _current(io, project, operation, reconstruct=reconstruct)

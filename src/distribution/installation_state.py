@@ -1,7 +1,7 @@
-"""Read-only selection 1/2 / lock 1 readers and inspection (development API 1).
+"""Shared legacy/RC2 artifact readers and read-only API-2 inspection.
 
 No product entry point, filesystem mutation, Git subprocess or source fetch.
-The executing reader closure is deliberately smaller than a future writer engine.
+Historical reader pins stay distinct from the complete engine-2 source closure.
 """
 from __future__ import annotations
 
@@ -30,7 +30,12 @@ LIMITS = {"document_bytes": 4 * 1024 * 1024, "file_bytes": 16 * 1024 * 1024,
           "entries": 20000, "nodes": 100000, "depth": 48,
           "yaml_bytes": 256 * 1024, "protected_inputs": 128,
           "path_utf16": 240, "segment_utf16": 255}
-READER_ENGINE_FILES = ('src/adapters/claude/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry.md.template', 'src/distribution/__init__.py', 'src/distribution/assembly.py', 'src/distribution/catalog.py', 'src/distribution/claude.py', 'src/distribution/codex.py', 'src/distribution/content.py', 'src/distribution/contracts.py', 'src/distribution/data.py', 'src/distribution/git_source.py', 'src/distribution/installation.py', 'src/distribution/installation_io.py', 'src/distribution/installation_plan.py', 'src/distribution/installation_state.py', 'src/distribution/maintenance_coordination.py', 'src/distribution/package.py', 'src/distribution/selection.py', 'src/tools/maintain_framework.py', 'tools/build-catalog.py', 'tools/derive-subset.py')
+READER_ENGINE_FILES = tuple(sorted((
+    "src/distribution/__init__.py", "src/distribution/data.py",
+    "src/distribution/git_source.py", "src/distribution/package.py",
+    "src/distribution/installation_state.py", "src/distribution/installation_plan.py",
+)))
+ENGINE_FILES = ('src/adapters/claude/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry.md.template', 'src/distribution/__init__.py', 'src/distribution/assembly.py', 'src/distribution/catalog.py', 'src/distribution/claude.py', 'src/distribution/codex.py', 'src/distribution/content.py', 'src/distribution/contracts.py', 'src/distribution/data.py', 'src/distribution/git_source.py', 'src/distribution/installation.py', 'src/distribution/installation_io.py', 'src/distribution/installation_plan.py', 'src/distribution/installation_state.py', 'src/distribution/maintenance_coordination.py', 'src/distribution/package.py', 'src/distribution/selection.py', 'src/tools/maintain_framework.py', 'tools/build-catalog.py', 'tools/derive-subset.py')
 
 METADATA = ("metadata/selection.json", "metadata/files.json", "metadata/build.json")
 LOCK_PATH = ".ai/framework.lock"
@@ -764,7 +769,7 @@ def _lock_bytes(raw: bytes) -> InstalledLock:
 
 
 def read_lock(project_root: str, *, _reader: _Reader | None = None) -> InstalledLock | None:
-    """Read lock 1; absence confers no ownership. Does not establish file state."""
+    """Read lock 1/2; absence confers no ownership. Does not establish file state."""
     reader = _reader or _Reader()
     root = _root(project_root)
     target = reader.locate(root, LOCK_PATH)
@@ -989,7 +994,7 @@ def _failure(operation: str, exc: Exception, details: dict | None = None) -> dic
 
 
 def inspect(request: dict | bytes) -> dict:
-    """Closed API 1 inspect request/result; always read-only and not-assessed."""
+    """Closed API 2 inspect request/result; always read-only and not-assessed."""
     empty = {"managed_state": "blocked", "project_readiness": "not-assessed", "owned": None,
              "unknown": None, "drift": None, "mode_policy": None}
     try:

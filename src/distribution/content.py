@@ -59,7 +59,8 @@ def load_content_package(blob):
         portable([r['target']['path']])
         target=r['target']['package']
         if target != data['id']:
-            dep=next((d for d in deps[r['requirement'] if r['requirement']=='required' else 'optional'] if d['id']==target),None)
+            candidates=deps['required'] if r['requirement']=='required' else deps['required']+deps['optional']
+            dep=next((d for d in candidates if d['id']==target),None)
             require(dep is not None,'cross-package reference requires matching dependency')
     return Package(data,frozenset(kinds))
 
@@ -122,6 +123,7 @@ def desired_shape(data):
     for key in ('skills','knowledge','adapters'): ordered(data[key])
     require(len(data['skills'])+len(data['knowledge'])<=128 and len(data['bindings'])<=128,'selection budget')
     ordered(data['bindings'],lambda r:r['id'])
+    authority_hashes={}
     for row in data['bindings']:
         for key in ('resources','required_rule_ids'): ordered(row[key])
         selector=row['selector']
@@ -129,7 +131,10 @@ def desired_shape(data):
         for name in selector['path_prefixes']:
             if name!='.': portable([name])
         ordered(row['authorities'],lambda r:(r['path'],r['selector']))
-        for authority in row['authorities']: portable([authority['path']])
+        for authority in row['authorities']:
+            portable([authority['path']])
+            previous=authority_hashes.setdefault(authority['path'],authority['sha256'])
+            require(previous==authority['sha256'],'binding-unresolved: conflicting authority hashes')
         require((row['use_as']=='normative-rule' and bool(row['required_rule_ids']) and bool(row['authorities']))
                 or (row['use_as']!='normative-rule' and not row['required_rule_ids']), 'binding-unresolved: normative authority/rules')
     return data
@@ -157,11 +162,29 @@ def resource_bindings(packages, desired):
     return observations
 
 
+def markdown_prose(text):
+    """Exclude fenced examples/comments; they do not allocate active references."""
+    rows=[]; fence=None; width=0
+    for line in text.splitlines(keepends=True):
+        marker=re.match(r'^ {0,3}(`{3,}|~{3,})(.*)$',line.rstrip('\r\n'))
+        if fence is not None:
+            if marker and marker[1][0]==fence and len(marker[1])>=width and not marker[2].strip(): fence=None
+            rows.append('\n'); continue
+        if marker and (marker[1][0]=='~' or '`' not in marker[2]):
+            fence=marker[1][0]; width=len(marker[1]); rows.append('\n'); continue
+        rows.append(line)
+    return re.sub(r'<!--[\s\S]*?-->', '', ''.join(rows))
+
+
 def selected_references(packages, contents):
     unavailable=[]
     rule_owners={}
     for (kind,pid),package in packages.items():
         if kind=='skill':
+            for dep in package.metadata['dependencies']['optional']:
+                other=packages.get(('skill',dep['id']))
+                if other is not None:
+                    require(set(dep['operations'])<={r['id'] for r in other.metadata['operations']},'reference-closure: optional skill operation missing')
             for row in package.metadata.get('knowledge_consumption',[]):
                 target=packages.get(('knowledge',row['package']))
                 available={r['id'] for r in target.metadata['resources']} if target else set()
@@ -177,15 +200,14 @@ def selected_references(packages, contents):
         declared=set()
         for ref in package.metadata['references']:
             target=ref['target']; other=packages.get(('knowledge',target['package']))
-            if other is None:
-                require(ref['requirement']=='optional','reference-closure: required package missing')
+            resource=next((r for r in other.metadata['resources'] if r['id']==ref['resource_id']),None) if other else None
+            if other is None or target['path'] not in other.members or resource is None:
+                require(ref['requirement']=='optional','reference-closure: required resource missing')
                 unavailable.append({'package':pid,'resource_id':ref['resource_id'],'status':'unavailable'})
                 continue
-            require(target['path'] in other.members,'reference-closure: target member missing')
-            resource=next((r for r in other.metadata['resources'] if r['id']==ref['resource_id']),None)
-            require(resource is not None and resource['path']==target['path'],'reference-closure: resource target mismatch')
+            require(resource['path']==target['path'],'reference-closure: resource target mismatch')
             if target['anchor'] is not None:
-                text=contents[('knowledge',target['package'],target['path'])].decode('utf-8')
+                text=markdown_prose(contents[('knowledge',target['package'],target['path'])].decode('utf-8'))
                 anchors=set(re.findall(r'<a\s+(?:id|name)=["\']([^"\']+)',text))
                 seen={}
                 for heading in re.findall(r'^ {0,3}#{1,6}\s+(.+?)\s*#*$',text,re.M):
@@ -196,7 +218,8 @@ def selected_references(packages, contents):
             declared.add((ref['from'],target['package'],target['path'],target['anchor']))
         for member in package.members:
             if not member.lower().endswith('.md'): continue
-            text=contents[(kind,pid,member)].decode('utf-8')
+            text=markdown_prose(contents[(kind,pid,member)].decode('utf-8'))
+            text=re.sub(r'(?<!`)(`+)(?!`)[\s\S]*?(?<!`)\1(?!`)', '', text)
             links=re.findall(r'!?\[[^\]\n]*\]\(\s*(<[^>]+>|[^\s)]+)(?:\s+[^)]*)?\)',text)
             links+=re.findall(r'^\s{0,3}\[[^\]\n]+\]:\s*(<[^>]+>|\S+)',text,re.M)
             for link in links:

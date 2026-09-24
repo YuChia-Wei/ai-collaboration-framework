@@ -277,7 +277,7 @@ def public_entry_attempt():
     root, request = fixture('public-entry', actual=True)
     # An isolated tiny source checkout; no project or installed root exists here.
     support.git('-c', 'init.templateDir=', 'init', '--quiet', cwd=root)
-    support.git('-c', 'core.autocrlf=false', 'add', '--', 'src', cwd=root)
+    support.git('-c', 'core.autocrlf=false', 'add', '--', 'src', 'tools', cwd=root)
     support.git('-c', 'user.name=Engine Source Fixture', '-c', 'user.email=fixture@example.invalid',
                 '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=' + str(root / '.git/no-hooks'),
                 'commit', '--quiet', '-m', 'fixture: exact source pin', cwd=root)

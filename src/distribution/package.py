@@ -1,4 +1,4 @@
-"""Consume explicit package metadata versions 1/2/3; never resolve project settings."""
+"""Consume explicit package metadata versions 1/2/3/4; never resolve project settings."""
 
 from __future__ import annotations
 
@@ -45,6 +45,8 @@ class Package:
 def load_package(blob: Blob) -> Package:
     label = blob.path
     parsed = yaml_object(blob.data, label)
+    if type(parsed.get("metadata_version")) is int:
+        require(parsed["metadata_version"] in {1, 2, 3, 4}, "unsupported-version: unknown skill metadata")
     data = mapping(parsed, {
         "metadata_version", "id", "version", "delivery_status", "entrypoint",
         "dependencies", "runtime", "configuration", "artifact_roles", "resources", "operations",

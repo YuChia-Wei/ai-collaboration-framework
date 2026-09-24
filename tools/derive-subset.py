@@ -67,12 +67,13 @@ def main():
             if args.selection:
                 parent=state._root(str(args.selection.parent)); name=state._relative(args.selection.name)
                 reader=state._Reader(); target=reader.locate(parent,name)
+                state._check(target is not None,'selection-unavailable','Explicit selection file is missing.',name)
                 desired=state._document(reader.read(target,name,state.LIMITS['document_bytes']),name,canonical=False)
             else: desired=expand_preset(catalog,args.preset,args.preset_version)
             result=derive_subset(catalog,desired,args.output_root,args.scratch_root)
             result['desired']=desired
-    except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError):
-        print(json.dumps({'outcome':'blocked','code':'subset-input','reason':'Pinned catalog, explicit selection or bounded output was rejected; preserve any partial output.'}))
+    except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
+        print(json.dumps({'outcome':getattr(exc,'outcome','blocked'),'code':getattr(exc,'code',getattr(exc,'diagnostic',{}).get('code','subset-input')),'reason':'Pinned catalog, explicit selection or bounded output was rejected; preserve any partial output.'}))
         return 1
     print(json.dumps(result,indent=2,ensure_ascii=False))
     return 0

@@ -1,7 +1,7 @@
 # S5 verified resource interface, version 1
 
-Issue #406. This protocol is fixed for S5 integration; implementation is in progress
-on this S3 branch. Source presence and direct AST checks are not behavioral evidence.
+Issue #406. This protocol is fixed for S5 integration and implemented on this S3
+branch; selected S6 execution remains deferred-by-owner. Source presence and direct AST checks are not behavioral evidence.
 
 ## Entry and ownership
 
@@ -23,8 +23,9 @@ Arguments:
 
 The reader rejects incomplete markers, absent/legacy lock, stale lock identity,
 managed drift, unknown formats, path aliases/links/hardlinks, undeclared authorities
-or authority drift. It verifies the complete installed lock-2 identity/member closure
-before returning any index. Failures raise the shared bounded `InstallationError`
+or authority/project-input drift. It verifies the complete installed lock-2
+identity/member closure, all saved project-input pins and a fresh final marker/lock
+observation before returning any index. Failures raise the shared bounded `InstallationError`
 or `DistributionError`; no partial resource result is returned.
 
 Exact successful return keys:

@@ -63,8 +63,8 @@ def main():
             from distribution.catalog import build_catalog,package_engine
             result=build_catalog(args.repository,args.commit,args.release_version,args.output_root,args.scratch_root)
             if args.engine_output_root is not None: result['engine_bundle']=package_engine(args.repository,args.commit,args.engine_output_root)
-    except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError):
-        print(json.dumps({'outcome':'blocked','code':'catalog-input','reason':'Exact committed inputs, roots or bounded catalog closure were rejected; preserve any partial output.'}))
+    except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
+        print(json.dumps({'outcome':getattr(exc,'outcome','blocked'),'code':getattr(exc,'code',getattr(exc,'diagnostic',{}).get('code','catalog-input')),'reason':'Exact committed inputs, roots or bounded catalog closure were rejected; preserve any partial output.'}))
         return 1
     print(json.dumps(result,indent=2,ensure_ascii=False))
     return 0
