@@ -1,5 +1,31 @@
 # Framework redesign coordination
 
+## Online-main completeness and known release-scope inventory
+
+The owner evaluates online main across computers before choosing stable contents.
+Read the [complete current inventory](reports/successor-acceptance-and-repair-scope.md#online-main-completeness-and-known-release-scope-inventory)
+and coordinator-transfer.json latest_checkpoint.online_main_inventory.
+
+At source d6a725ef / target cc0e3453, no delivered product merge backlog was found:
+43 source commit ancestors, 33 scoped Issue states, retained experimental blobs,
+the RC-to-main source delta and target tracked installation were checked.
+Old experimental snapshots must not be merged over their accepted successors.
+
+Before stable scope is final, explicitly disposition source self-adoption, actual
+new-format publication/delivery, stable update/rollback, cross-computer admission
+and recovery, the owner's deferred native/CI/policy work, runtime/target decision
+configuration boundaries, and input-specific stable verification (R1-R7).
+The main product is newer than the immutable installed RC baseline by the CR-002
+GitSource repair. Source root routing remains legacy; inspect src/skills for the
+new source and target .ai/core/skills for the installed product.
+
+The C: analysis archive is local/uncommitted with no configured remote; online
+Git does not include its raw admission/recovery evidence. This online inventory
+is the portable handoff, not a new test pass, adoption or authorization to expand
+#369. Known existing residuals must not be presented later as newly discovered work.
+
+Observed: 2026-09-24T08:07:21.645747+08:00.
+
 ## Current checkpoint: ready for owner inspection and task archival
 
 The owner will archive the work tasks and inspect the framework and mq lab
