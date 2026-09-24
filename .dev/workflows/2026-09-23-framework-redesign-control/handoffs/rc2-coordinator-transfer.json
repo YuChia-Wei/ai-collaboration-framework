@@ -12,7 +12,7 @@
     "quote": "開始處理 rc2 的部分，如果你認為現在這個對話已經累積過多內容，一樣將必要資料準備好後重開對話進行作業。",
     "meaning": "Start the rc.2 work; prepare necessary records and create a fresh continuation task when this task is too large."
   },
-  "status": "S1-local-contract-delivery-accepted; online-integration-pending",
+  "status": "S1-online-integrated; S2-S4-dispatch-preparation",
   "predecessor_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
   "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
   "source": {
@@ -26,7 +26,7 @@
   },
   "receiver": {
     "worktree": "F:/framework-next/rc2-coordinator",
-    "branch": "codex/2026-09-24-rc2-coordinator",
+    "branch": "codex/2026-09-24-rc2-s2-s4-coordination",
     "model": "gpt-6-astra",
     "reasoning_effort": "ultra",
     "provenance": "Actual create_thread returned this taskId/hostId after explicit model=gpt-6-astra, thinking=ultra request; not independent runtime attestation.",
@@ -68,7 +68,7 @@
       "Resolve package/rule applicability and rc.1 reader compatibility; record exact schema versions and fixture/actual acceptance boundaries.",
       "Integrate S1 before shared distribution changes. S2 content and S4 isolated adapter work may proceed only after their interfaces and ownership are fixed."
     ],
-    "shared_writer_rule": "One tracked writer per worktree; S3 owns shared distribution/manifest/profile files. Other units return exact members/call-site needs. No source sub-agents."
+    "shared_writer_rule": "One tracked writer per worktree; S3 owns shared distribution/manifest/profile files. Apply the 2026-09-24 owner amendment for short bounded sub-agent work."
   },
   "baseline": {
     "tag": "v0.19.0-rc.1",
@@ -144,8 +144,8 @@
     "Sender records the actual receiving task ID and updates the override current-coordinator pointer, then integrates the transport via online PR.",
     "Sender sends the merged SHA and explicit exclusive-writer release; receiver fast-forwards its assigned worktree and starts S1. Sender then performs no further source mutation."
   ],
-  "updated_at": "2026-09-24T19:29:02+08:00",
-  "next_action": "Integrate accepted S1 contract through online PR, read back Issue closure/main, then dispatch isolated S2 content and S4 adapters. S3 shared distribution integration follows their accepted exact inputs; continue S5/S6 thereafter.",
+  "updated_at": "2026-09-24T20:07:19+08:00",
+  "next_action": "Dispatch S2 content in an independent task and bounded S4 adapter work through a sub-agent; inspect local delivery before shared S3 integration.",
   "exclusive_writer_release": {
     "sender_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
@@ -159,9 +159,19 @@
   },
   "rc2_dispatch": {
     "record": "evidence/rc2-task-dispatch.json",
-    "active_issue": 401,
-    "active_unit": "S1",
-    "accepted_local_commit": "32a2b59dd38f9335f60cf2edd8eac4d6d95f95cf"
+    "active_unit": "S2/S4 preparation",
+    "accepted_local_commit": "32a2b59dd38f9335f60cf2edd8eac4d6d95f95cf",
+    "s1_pr": 402,
+    "s1_merged_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+    "s1_issue_state": "CLOSED",
+    "active_units": [
+      "S2",
+      "S4"
+    ],
+    "active_issues": [
+      403,
+      404
+    ]
   },
   "approval_review_resolution": {
     "historical_result": "S1 Issue creation rejected by automatic approval review",
@@ -171,5 +181,10 @@
     "destination": "YuChia-Wei/ai-collaboration-framework",
     "result": "Issue #401 successfully created after direct confirmation",
     "recorded_at": "2026-09-24T18:54:56+08:00"
+  },
+  "execution_amendment": {
+    "date": "2026-09-24",
+    "authority": "direct user instruction",
+    "rule": "Short, clearly bounded work uses coordinator-dispatched sub-agents with a capable lower-cost profile; new task conversations and Astra are not mandatory. Larger or multi-stage work retains prior requirements."
   }
 }

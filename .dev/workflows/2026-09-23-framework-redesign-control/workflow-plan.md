@@ -701,3 +701,26 @@ owns only its adapter roots plus the reserved Codex/Claude renderer files. Their
 work can proceed independently. S3 starts shared distribution/manifest/profile
 integration after their exact inputs are accepted, avoiding simultaneous shared
 writers. S5 consumer/adoption and S6 actual verification remain pending.
+
+## S1 online integration and bounded execution amendment (2026-09-24)
+
+The owner explicitly authorized the prepared branch push, S1 PR/merge, #401
+closure and continuation of S2/S4. The earlier push approval-review rejection
+remains historical; the new direct authorization resolved it. PR #402 merged at
+`173b2523767aece5004bc57c6e0cbba12898039a`; provider read-back confirmed #401
+CLOSED / Project Done and #322 OPEN / In progress. Hosted checks were absent and
+remain deferred-by-owner under U001/P7, not passed.
+
+The owner then changed execution sizing: short, clearly bounded work may use
+sub-agents and need not use Astra or a new task conversation. This source-only
+amendment is effective for current dispatch and recorded in U001 plus both root
+entries. It changes neither acceptance nor source/target/external-write authority.
+S2 remains a substantial independent migration over 235 members; S4 has fixed
+renderer/template seams and uses one bounded sub-agent with an appropriate
+lower-cost profile. Each assigned worktree has one tracked writer; shared S3
+callers/manifest/selection/ownership transitions remain reserved.
+
+S2 Issue #403 and S4 Issue #404 were created and their complete acceptance and
+ownership text read back. Dispatch starts from this coordinator checkpoint; the
+accepted S1 contract remains bound to PR #402. S4 owns only the additional
+`tests/framework_next/test_rc2_adapters.py` case module, not the shared runner.

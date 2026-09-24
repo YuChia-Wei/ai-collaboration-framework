@@ -8,8 +8,11 @@ mandatory approval, evidence tool or CI gate. Program #322 remains open.
 ## Current checkpoint
 
 Issue #401 (S1) delivered exact contracts and the complete engineering-content
-inventory; coordinator content review accepted correction 32a2b59d for online
-integration. S2/S4 are ready for isolated dispatch after that integration.
+inventory; coordinator content review accepted correction 32a2b59d. PR #402
+merged at 173b2523 and provider read-back confirmed #401 CLOSED / Project Done.
+S2 #403 and S4 #404 are open and ready for assigned implementation. The owner's
+2026-09-24 execution amendment permits short bounded sub-agent work: S4 uses
+that route; S2 retains a substantial independent task.
 S3 shared integration and S5/S6 await their declared inputs.
 The direct owner confirmation resolved the initial Issue-publication rejection.
 A later proposed metadata comment was refused; the accepted public replacement
