@@ -792,3 +792,14 @@ direct code-point inspection. No schema correction is selected. S3 was instructe
 not to retry or publish the refused callback. The coordinator can receive its
 ordinary final response/local handoff through the parent event wait, so this does
 not block authorized implementation or require an alternate outbound route.
+
+## S5 consumer local delivery accepted (2026-09-24)
+
+The bounded consumer writer returned provisional 8f2f16d and final b4dfe1cb,
+clean and stopped before push. [Receiving review](reports/rc2-s5-consumer-review.md)
+records the 21-path scope, exact 17-member/34-resource comparison, preserved seven
+method bodies, independent semantic delta review and repaired failures. Its fixed
+S3 protocol is documented at 15bca530; actual implementation/use remains pending.
+The coordinator locally integrates the accepted consumer input and returns it to
+the sole S3 manifest/catalog writer. #407 remains open until online integration;
+source/target adoption and full rc.2 completion are not implied.

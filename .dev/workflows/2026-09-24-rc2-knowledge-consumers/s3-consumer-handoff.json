@@ -1,0 +1,594 @@
+{
+  "handoff_version": 1,
+  "issue": 407,
+  "workflow_id": "2026-09-24-rc2-knowledge-consumers",
+  "base_commit": "50adb657b388074e072c8a7ed15a93368a7ba149",
+  "s1_contract_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
+  "accepted_s2_commit": "f22674e20da3448488cfd89cc0778b252e4cc685",
+  "components": [
+    {
+      "id": "ddd-ca-hex-architect",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7f38475d8356604ee42657c61150630f23829670120221962858b06bb8fb48fe",
+          "size": 1442,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "450a044c9b30419963b8e0530bb8f45870fb285a77aad93bf81481c1ff380a5d",
+          "size": 2265,
+          "mode": "100644"
+        },
+        {
+          "path": "references/design.md",
+          "sha256": "3e0baee2446b9ba2c1b1969a240daf519b9b99f1052f5cf011c6d13c97674dfa",
+          "size": 8333,
+          "mode": "100644"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "5755c7055b7860eb4a0e8682013c9386f780061340e8bcaf81edbc81f55eaf91",
+          "size": 7402,
+          "mode": "100644"
+        }
+      ],
+      "operations": [
+        {
+          "id": "design",
+          "execution": "instruction",
+          "inputs": [
+            "Bounded design goal, requirements, acceptance and quality constraints",
+            "Target architecture decisions, selected technology guidance and compatibility constraints",
+            "Existing authorization and any caller-selected output destination"
+          ],
+          "outputs": [
+            "Architecture proposal with language, invariants, boundaries, alternatives and tradeoffs",
+            "Observable acceptance, risks, unresolved decisions and optional implementation or ADR handoff"
+          ],
+          "instructions": "references/design.md",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Fixed architecture artifact identity and permitted evidence",
+            "Requirements, target decisions, selected rules and requested review coverage"
+          ],
+          "outputs": [
+            "Read-only findings with criterion, location, impact, evidence and uncertainty",
+            "Review classification, coverage, valid alternatives and bounded handoff"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-architecture",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-architecture",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/transactional-messaging-standards.md",
+            "member:standards/coding-standards/usecase-standards.md",
+            "member:standards/project-structure.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
+    },
+    {
+      "id": "code-reviewer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "a48c9efa36cf893c0bc5fed93ce84598b7e75149b4e87858b7b99620f9dbcfd0",
+          "size": 1649,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "d78418616c5ea276f895824c1e27057894ef5148cb931a43c00ab8fa05b88e47",
+          "size": 1582,
+          "mode": "100644"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "9e791c7352ac15d4caea48aec6d5f1c582b754b2886eb57ac0455a84ff245a59",
+          "size": 11495,
+          "mode": "100644"
+        }
+      ],
+      "operations": [
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Explicit review subject, scope and intended behavior",
+            "Applicable target-owned rules, requested coverage and permitted evidence"
+          ],
+          "outputs": [
+            "Prose findings with location, trigger, impact, evidence and uncertainty",
+            "Reviewed coverage, unavailable checks and remaining acceptance limitations"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-review",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-review",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
+    },
+    {
+      "id": "bdd-gwt-test-designer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "408f4333b9716f373f1341793ebaa121451e1fb861e0858b44619f687a047dca",
+          "size": 1584,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "d0f2326724037c1598689f1c4132fd60fe8124b2f5c807a0f6bec2c897190055",
+          "size": 2009,
+          "mode": "100644"
+        },
+        {
+          "path": "references/design.md",
+          "sha256": "6e1818ec85603d790103d62736ef10aed99c925e97f40ec02ecd5ddf9b338958",
+          "size": 9369,
+          "mode": "100644"
+        },
+        {
+          "path": "references/review.md",
+          "sha256": "07862be20d7f4d3c9a640705d2452d882acdce4a32440a26090f0de6f54f5828",
+          "size": 7261,
+          "mode": "100644"
+        }
+      ],
+      "operations": [
+        {
+          "id": "design",
+          "execution": "instruction",
+          "inputs": [
+            "Requirements, specifications, acceptance or explicitly labeled observed behavior",
+            "Bounded behavior, selected testing conventions and existing authoring authority",
+            "Optional caller-selected scenario format and output destination"
+          ],
+          "outputs": [
+            "Traceable GWT scenarios with concrete data, observable assertions and test levels",
+            "Setup notes, expected-value sources, gaps and bounded implementation handoff"
+          ],
+          "instructions": "references/design.md",
+          "implementation_status": "implemented"
+        },
+        {
+          "id": "review",
+          "execution": "instruction",
+          "inputs": [
+            "Fixed scenario artifact identity, source behavior and acceptance",
+            "Applicable target rules, selected testing conventions and requested coverage"
+          ],
+          "outputs": [
+            "Read-only findings with evidence, impact, uncertainty and suggested corrections",
+            "Review classification, acceptance coverage and implementation handoff limits"
+          ],
+          "instructions": "references/review.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-test-design",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:references/GWT-TEST-HANDOFF-CONTRACT.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-test-design",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/coding-standards/test-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
+    },
+    {
+      "id": "slice-implementer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "7fb7542531e36732eea61fb73871c826e4e3a11878dc17afe171c5ec5df26b9c",
+          "size": 1647,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "6842c837b4359fc5f219eb449ed8d8aa239fd6702c091096e7453f01f5d2c9e5",
+          "size": 2431,
+          "mode": "100644"
+        },
+        {
+          "path": "references/implement.md",
+          "sha256": "08ba36b4571651cd79cc2ff1f5b76ac50a72ab35a04414f3974438e675bc89a6",
+          "size": 9695,
+          "mode": "100644"
+        }
+      ],
+      "operations": [
+        {
+          "id": "implement",
+          "execution": "instruction",
+          "inputs": [
+            "One bounded goal, intent, acceptance, non-goals and exactly one command, query, reactor or generic mode",
+            "Existing authorization, target normative sources and optional finding evidence kept separately",
+            "Accepted architecture, selected technology guidance, permitted paths and target validation commands",
+            "Scenario input when concrete tests are in scope and optional remediation overlay"
+          ],
+          "outputs": [
+            "Bounded implementation, actual touched files and compatibility notes",
+            "Actual validation outcomes, deferred work and scenario-to-assertion mapping when applicable",
+            "Finding dispositions when selected and any concrete missing-decision handoff"
+          ],
+          "instructions": "references/implement.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-implementation",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:references/GWT-TEST-HANDOFF-CONTRACT.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-implementation",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/transactional-messaging-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
+    },
+    {
+      "id": "local-change-implementer",
+      "old_version": "0.1.0",
+      "version": "0.2.0",
+      "metadata_version": 4,
+      "configuration": null,
+      "members_changed": [
+        {
+          "path": "SKILL.md",
+          "sha256": "d26f17b90239157fa6d231f64d6f753a40e1b239cbab30156cb96599aaad0445",
+          "size": 1404,
+          "mode": "100644"
+        },
+        {
+          "path": "skill-package.yaml",
+          "sha256": "ffb44108af56051b60255f18442f9b7e77702c2d3d332c4a38721937adc76a32",
+          "size": 1864,
+          "mode": "100644"
+        },
+        {
+          "path": "references/implement.md",
+          "sha256": "780ca40d00d251cdbea73a513a5d975295b7a4124d1874082d51b41195cf6630",
+          "size": 8223,
+          "mode": "100644"
+        }
+      ],
+      "operations": [
+        {
+          "id": "implement",
+          "execution": "instruction",
+          "inputs": [
+            "One primary technical target, local operation and allowed dependency radius",
+            "Existing authorization, accepted behavior and applicable target rules",
+            "Selected technology, authorized edit destinations and target validation commands"
+          ],
+          "outputs": [
+            "Bounded code change and actual touched radius",
+            "Compatibility notes, actual check outcomes and explicit skipped or blocked checks",
+            "Remaining uncertainty or a concrete out-of-scope decision handoff"
+          ],
+          "instructions": "references/implement.md",
+          "implementation_status": "implemented"
+        }
+      ],
+      "knowledge_consumption": [
+        {
+          "id": "common-local-change",
+          "package": "engineering-common",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        },
+        {
+          "id": "dotnet-local-change",
+          "package": "dotnet-backend",
+          "version": "0.1.0",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
+    }
+  ],
+  "shared_s3_changes_requested": [
+    "Integrate the five metadata-4 skill components at version 0.2.0 using these exact raw member rows, metadata, operation and optional-dependency declarations.",
+    "Do not auto-select engineering-common or dotnet-backend, or mutate source/target desired selections, profiles or presets for this consumer change.",
+    "Supply a verified selected installed-resource index and binding/authority observations with exact member identity and selected package/resource IDs. Consumer instructions perform task-scoped filtering and target-owned normative interpretation; no alternate parser is added."
+  ],
+  "verified_reader_seam": {
+    "status": "published-interface-aligned; implementation-in-progress",
+    "published_commit": "15bca530ea9eb3cc429cd7be37acf0ba45031507",
+    "published_path": ".dev/workflows/2026-09-24-rc2-selected-distribution/s5-interface.md",
+    "callable": "distribution.catalog.read_installed_resources",
+    "arguments": [
+      "project_root",
+      "expected_lock_sha256",
+      "authorities"
+    ],
+    "authority_input": "Exact deduplicated closed {path,sha256,selector} allowlist from selected bindings; raw hash matched by the reader",
+    "return_keys": [
+      "lock_sha256",
+      "candidate_identity",
+      "desired_sha256",
+      "resources",
+      "bindings",
+      "authorities",
+      "semantic_applicability"
+    ],
+    "resource_row": [
+      "package",
+      "version",
+      "resource_id",
+      "member",
+      "sha256",
+      "resource"
+    ],
+    "ownership": "Reader verifies complete lock-2/member/authority raw identity; S5 filters index and bindings, bounded-reads only needed members with re-observation, and consults target owner for semantic rule applicability.",
+    "failure": "InstallationError or DistributionError; no partial index",
+    "remaining": "S3 code implementation and S6 actual use are pending; this handoff records the fixed interface only."
+  },
+  "scope": "Five instruction-only skill roots; shared manifest/catalog and target adoption remain S3/coordinator-owned.",
+  "verification": {
+    "direct": "UTF-8/YAML/resource-ID/local-link/JSON/Git/diff and exact message checks; static binding to published S3 interface",
+    "behavioral": "deferred-by-owner",
+    "owner": "program #322 coordinator / selected S6/P7",
+    "resolved_contract_defect": "Provisional 8f2f16dc raw skill optional dependencies incorrectly used typed knowledge rows; restored unchanged metadata-3 skill dependency shape and kept optional knowledge in knowledge_consumption."
+  }
+}
