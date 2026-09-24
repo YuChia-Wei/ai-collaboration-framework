@@ -5,13 +5,13 @@ workflow_kind: ai-context-maintenance
 title: Coordinate the portable-framework redesign
 owner_skill: ai-context-governance
 status: in_progress
-current_phase: online-main-inspection-with-explicit-release-residuals
-branch: codex/2026-09-24-online-main-inventory
+current_phase: rc2-installation-selection-planning
+branch: codex/2026-09-24-rc2-installation-plan
 base_branch: main
 artifact_root: .dev/workflows/2026-09-23-framework-redesign-control
 entrypoint: workflow-plan.md
 created_at: '2026-09-23T01:03:26+08:00'
-updated_at: '2026-09-24T08:07:21.645747+08:00'
+updated_at: '2026-09-24T11:02:20+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 issue_refs:
@@ -23,3 +23,6 @@ predecessor_coordinator_thread: 01a0c9d9-3b00-7b70-ad85-daff590e7ecd
 verification_state: selected-P7-execution-partial; remaining-obligations-deferred-by-owner
 archive_handoff: handoffs/coordinator-transfer.json
 external_analysis_root: C:/Github/YuChia/ai-collaboration-framework-analysis/codex/framework-rc1-closeout-20260924
+next_rc_proposal: 0.19.0-rc.2
+stable_readiness: not-ready-by-owner
+next_rc_design: .dev/design/framework-next/rc2-installation-selection.md

@@ -1,5 +1,22 @@
 # Framework redesign coordination
 
+## Current direction: rc.2 planning; stable is not ready
+
+On 2026-09-24 the owner selected further iteration: preserve skill IDs, prefer
+`aicf-` generated entry names, restore Claude, move reusable engineering knowledge
+into `src`, and make installation selective. Source self-adoption must not force
+engineering knowledge/.NET installation. These directions supersede the earlier
+inspection-only sequencing below, while preserving historical results.
+
+Read the [concrete rc.2 proposal](../../design/framework-next/rc2-installation-selection.md)
+and `latest_checkpoint.rc2_planning` in the machine handoff. The proposed layout,
+selection format and six implementation units are for review; no implementation
+task is dispatched and no product/target files are changed by this checkpoint.
+R1-R7 remain explicit, with R8 added for selectable installation and engineering
+knowledge productization. Stable readiness is `not-ready-by-owner`.
+#369 native expansion remains deferred-by-owner; U001, CI suspension and the
+separate publication/adoption boundaries remain in force.
+
 ## Online-main completeness and known release-scope inventory
 
 The owner evaluates online main across computers before choosing stable contents.
