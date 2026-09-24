@@ -1,0 +1,30 @@
+---
+name: $runtime_name
+description: $description
+---
+
+# $runtime_name
+
+Codex runtime entry for `$package_identity`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Codex adapter.
+
+Read [the installed skill]($installed_entrypoint) for its declared operations.
+Resolve [the installed metadata]($installed_metadata) with the installed skill
+directory as the explicit `package_root`.
+
+$configuration_guidance
+
+Selected installed skill members:
+
+$resources
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

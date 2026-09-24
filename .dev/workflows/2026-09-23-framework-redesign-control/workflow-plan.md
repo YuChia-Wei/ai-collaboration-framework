@@ -730,3 +730,12 @@ S2 uses the retained independent-task route; S4 uses one bounded sub-agent.
 Invocation references and selected runtime profiles are retained in ignored local
 coordination evidence. Implementation, behavioral verification and integration
 remain pending; dispatch is not delivery evidence.
+
+## S4 bounded local delivery accepted (2026-09-24)
+
+Issue #404 returned source 6d5c0df1 and acceptance-ID correction ece36743.
+[Coordinator content review](reports/rc2-s4-content-review.md) accepts the bounded
+implementation and exact S3 handoff. The correction did not change any reviewed
+code/template/test/handoff blob. S2 remains in progress; S3 shared integration
+waits for both accepted inputs. Existing #403/#404 Project Status was updated to
+In progress and read back, without adding items or changing other fields.

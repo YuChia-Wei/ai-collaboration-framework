@@ -10,7 +10,9 @@ mandatory approval, evidence tool or CI gate. Program #322 remains open.
 Issue #401 (S1) delivered exact contracts and the complete engineering-content
 inventory; coordinator content review accepted correction 32a2b59d. PR #402
 merged at 173b2523 and provider read-back confirmed #401 CLOSED / Project Done.
-S2 #403 and S4 #404 are open and dispatched for assigned implementation. The owner's
+S2 #403 is finishing content delivery; S4 #404 local adapter delivery is accepted
+at ece36743 and awaits online integration. Both existing Project items were read
+back In progress. The owner's
 2026-09-24 execution amendment permits short bounded sub-agent work: S4 uses
 that route; S2 retains a substantial independent task.
 S3 shared integration and S5/S6 await their declared inputs.
