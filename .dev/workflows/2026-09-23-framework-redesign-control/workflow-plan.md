@@ -1,5 +1,14 @@
 # Framework redesign coordination
 
+## Current action: start rc.2 in a fresh coordinator task
+
+The owner directly instructed rc.2 execution on 2026-09-24 and allowed a fresh
+continuation task after preparation. The [compact transfer](handoffs/rc2-coordinator-transfer.md)
+owns current start instructions. S1 fixes shared formats and migration scope;
+S2-S6 then proceed under their exclusive owners. The selected scope does not need
+another overall approval merely because this task is transferred.
+The sender retains write ownership until receiver acceptance and explicit release.
+
 ## Current direction: rc.2 planning; stable is not ready
 
 On 2026-09-24 the owner selected further iteration: preserve skill IDs, prefer
