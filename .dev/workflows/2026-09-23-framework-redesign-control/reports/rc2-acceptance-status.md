@@ -11,11 +11,13 @@ Issue #401 (S1) delivered exact contracts and the complete engineering-content
 inventory; coordinator content review accepted correction 32a2b59d. PR #402
 merged at 173b2523 and provider read-back confirmed #401 CLOSED / Project Done.
 S2 #403 content delivery at f22674e2 and S4 #404 adapter delivery at ece36743
-are accepted locally and await online integration. Both existing Project items were read
-back In progress. The owner's
+were integrated through PR #405 at 81c9603b. Fresh provider read-back confirmed
+both Issues CLOSED / Project Done and #322 OPEN / In progress. The owner's
 2026-09-24 execution amendment permits short bounded sub-agent work: S4 uses
 that route; S2 retains a substantial independent task.
-S3 shared integration and S5/S6 await their declared inputs.
+S3 Issue #406 is created with exact input pins and ownership; its independent
+implementation task is being prepared. S5 consumer preparation is bounded and
+read-only; actual adoption and S6 execution await their declared inputs.
 The direct owner confirmation resolved the initial Issue-publication rejection.
 A later proposed metadata comment was refused; the accepted public replacement
 contains scope/progress only. New runtime task IDs, absolute worktree paths and

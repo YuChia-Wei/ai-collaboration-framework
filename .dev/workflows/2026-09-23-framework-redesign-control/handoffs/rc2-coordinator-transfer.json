@@ -12,7 +12,7 @@
     "quote": "開始處理 rc2 的部分，如果你認為現在這個對話已經累積過多內容，一樣將必要資料準備好後重開對話進行作業。",
     "meaning": "Start the rc.2 work; prepare necessary records and create a fresh continuation task when this task is too large."
   },
-  "status": "S2-S4-local-deliveries-accepted; online-integration-pending",
+  "status": "S2-S4-online-integrated; S3-assignment-preparation",
   "predecessor_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
   "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
   "source": {
@@ -26,7 +26,7 @@
   },
   "receiver": {
     "worktree": "F:/framework-next/rc2-coordinator",
-    "branch": "codex/2026-09-24-rc2-s2-s4-coordination",
+    "branch": "codex/2026-09-24-rc2-s3-coordination",
     "model": "gpt-6-astra",
     "reasoning_effort": "ultra",
     "provenance": "Actual create_thread returned this taskId/hostId after explicit model=gpt-6-astra, thinking=ultra request; not independent runtime attestation.",
@@ -144,8 +144,8 @@
     "Sender records the actual receiving task ID and updates the override current-coordinator pointer, then integrates the transport via online PR.",
     "Sender sends the merged SHA and explicit exclusive-writer release; receiver fast-forwards its assigned worktree and starts S1. Sender then performs no further source mutation."
   ],
-  "updated_at": "2026-09-24T20:34:39+08:00",
-  "next_action": "Integrate accepted S2/S4 and the owner execution amendment through an online PR, read back provider states, then assign sole S3 shared distribution/maintenance implementation.",
+  "updated_at": "2026-09-24T20:43:22+08:00",
+  "next_action": "Dispatch Issue #406 from the integrated S2/S4 input and this coordinator checkpoint; prepare S5 consumers without writing shared S3 files.",
   "exclusive_writer_release": {
     "sender_task": "01a0ce78-db26-74e1-a615-2bd0599f7d0c",
     "receiving_task": "01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00",
@@ -159,21 +159,22 @@
   },
   "rc2_dispatch": {
     "record": "evidence/rc2-task-dispatch.json",
-    "active_unit": "S2/S4 implementation",
+    "active_unit": "S3 distribution and maintenance",
     "accepted_local_commit": "32a2b59dd38f9335f60cf2edd8eac4d6d95f95cf",
     "s1_pr": 402,
     "s1_merged_commit": "173b2523767aece5004bc57c6e0cbba12898039a",
     "s1_issue_state": "CLOSED",
     "active_units": [
-      "S2",
-      "S4"
+      "S3"
     ],
     "active_issues": [
-      403,
-      404
+      406
     ],
     "s4_accepted_commit": "ece36743624e9031cf47686e5ecdca9d4f3a2f4b",
-    "s2_accepted_commit": "f22674e20da3448488cfd89cc0778b252e4cc685"
+    "s2_accepted_commit": "f22674e20da3448488cfd89cc0778b252e4cc685",
+    "s2_s4_pr": 405,
+    "s2_s4_merged_commit": "81c9603b6b5ceae7b0e33a541bc12e28118bc6be",
+    "s2_s4_issue_states": "CLOSED / Project Done"
   },
   "approval_review_resolution": {
     "historical_result": "S1 Issue creation rejected by automatic approval review",

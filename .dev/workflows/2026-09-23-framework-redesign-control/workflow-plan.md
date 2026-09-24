@@ -749,3 +749,18 @@ The parent completed the remaining mechanical checks using a corrected independe
 Git-blob comparison; no failed helper result was upgraded to success. S2 and S4
 are ready for online integration. S3 remains the sole shared implementation owner
 and starts only after that integrated input checkpoint.
+
+## S2/S4 online integration and S3 preparation (2026-09-24)
+
+PR #405 merged at `81c9603b6b5ceae7b0e33a541bc12e28118bc6be`. The pushed
+head was read back and all 267 provider changed paths matched the local diff.
+Fresh provider read-back confirmed #403 and #404 CLOSED / Project Done, with
+#322 OPEN / In progress. The owner execution-sizing amendment is now online.
+No hosted or behavioral pass is inferred; U001 deferrals remain.
+
+S3 Issue #406 was created with S3-A1 through S3-A10, exact S2/S4 input pins,
+sole shared implementation ownership and the before-first-push return boundary.
+The full online body equals the prepared local draft. S3 is a substantial connected
+distribution/maintenance change and uses an independent task; a short read-only
+S5 consumer/retained-duty preparation uses a bounded sub-agent concurrently.
+S3 must publish the exact operation/journal contract before any S5/S6 adoption use.
