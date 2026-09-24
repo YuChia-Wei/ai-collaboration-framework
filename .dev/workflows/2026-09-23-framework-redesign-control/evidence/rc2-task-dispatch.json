@@ -4,7 +4,7 @@
   "workflow_id": "2026-09-23-framework-redesign-control",
   "program_issue": 322,
   "created_at": "2026-09-24T18:54:56+08:00",
-  "updated_at": "2026-09-24T20:43:22+08:00",
+  "updated_at": "2026-09-24T20:47:24+08:00",
   "owner_direction": ".dev/design/framework-next/rc2-installation-selection.md",
   "authority": {
     "scope": "Owner confirmed publishing Issue #401 and continuing the selected rc.2 work.",
@@ -79,7 +79,7 @@
       "issue_state": "CLOSED"
     },
     "S3": {
-      "status": "Issue created and exact body read back; assigned worktree/task preparation",
+      "status": "independent implementation task dispatched",
       "scope": "single owner for shared distribution/manifest/profile/maintenance integration",
       "issue": 406,
       "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/406",
@@ -112,7 +112,9 @@
         ".dev/workflows/2026-09-24-rc2-selected-distribution/"
       ],
       "transport": "local coherent commits before first push; coordinator owns shared review and online integration",
-      "project_status": "Inbox"
+      "project_status": "In progress",
+      "starting_commit": "238f58bede46a8466699b5f9cd2307acb7155ac0",
+      "clean_at_assignment": true
     },
     "S4": {
       "status": "online-integrated; Issue closed",
@@ -152,8 +154,29 @@
       "issue_state": "CLOSED"
     },
     "S5": {
-      "status": "consumer and retained-duty preparation; adoption awaits exact S3 operation contract",
-      "scope": "skill consumers, separately owned source/target adoption preserving target truth"
+      "status": "bounded consumer Issue created; separate adoption pending S3 interfaces",
+      "scope": "skill consumers, separately owned source/target adoption preserving target truth",
+      "consumer_issue": 407,
+      "consumer_issue_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/407",
+      "consumer_workflow_id": "2026-09-24-rc2-knowledge-consumers",
+      "consumer_owned_roots": [
+        "src/skills/ddd-ca-hex-architect/",
+        "src/skills/code-reviewer/",
+        "src/skills/bdd-gwt-test-designer/",
+        "src/skills/slice-implementer/",
+        "src/skills/local-change-implementer/",
+        ".dev/workflows/2026-09-24-rc2-knowledge-consumers/"
+      ],
+      "consumer_acceptance_ids": [
+        "S5C-A1",
+        "S5C-A2",
+        "S5C-A3",
+        "S5C-A4",
+        "S5C-A5",
+        "S5C-A6"
+      ],
+      "consumer_execution_mode": "bounded sub-agent: fixed instruction and metadata protocol; no shared distribution or adoption writes",
+      "integration_dependency": "S3 publishes exact verified selected-resource/index and binding observations; no parallel reader"
     },
     "S6": {
       "status": "pending selected implementation and exact candidate/engine",

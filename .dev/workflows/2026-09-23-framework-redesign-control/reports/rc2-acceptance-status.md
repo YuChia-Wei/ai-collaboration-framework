@@ -15,9 +15,10 @@ were integrated through PR #405 at 81c9603b. Fresh provider read-back confirmed
 both Issues CLOSED / Project Done and #322 OPEN / In progress. The owner's
 2026-09-24 execution amendment permits short bounded sub-agent work: S4 uses
 that route; S2 retains a substantial independent task.
-S3 Issue #406 is created with exact input pins and ownership; its independent
-implementation task is being prepared. S5 consumer preparation is bounded and
-read-only; actual adoption and S6 execution await their declared inputs.
+S3 Issue #406 is running with exact input pins and sole shared implementation
+ownership. S5 consumer Issue #407 covers five fixed instruction/metadata packages
+through a bounded sub-agent assignment; actual adoption and S6 execution await
+their declared inputs.
 The direct owner confirmation resolved the initial Issue-publication rejection.
 A later proposed metadata comment was refused; the accepted public replacement
 contains scope/progress only. New runtime task IDs, absolute worktree paths and

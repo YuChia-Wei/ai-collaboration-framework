@@ -764,3 +764,15 @@ The full online body equals the prepared local draft. S3 is a substantial connec
 distribution/maintenance change and uses an independent task; a short read-only
 S5 consumer/retained-duty preparation uses a bounded sub-agent concurrently.
 S3 must publish the exact operation/journal contract before any S5/S6 adoption use.
+
+S3 was dispatched from clean `238f58bede46a8466699b5f9cd2307acb7155ac0`.
+Its existing Project item was updated to In progress and read back. Actual
+invocation provenance is retained in ignored coordination evidence. A bounded
+read-only S5 analysis at 81c9603 identified the five direct consumers; S3 received
+the precise verified-resource/binding interface requirement.
+
+S5 consumer Issue #407 now has the accepted instruction-only scope S5C-A1 through
+S5C-A6 and exact body read-back. Its five skill roots are disjoint from S3. Final
+consumer instructions must bind to S3's concrete reading seam before acceptance;
+the coordinator will serially return changed component rows to S3. This is separate
+from source and mq-lab adoption and does not retire any retained legacy owner.
