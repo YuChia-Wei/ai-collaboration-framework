@@ -1,0 +1,1891 @@
+{
+  "source_commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+  "rewrites": [
+    {
+      "source": ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md",
+      "before": "[AI Context Rule Ownership](../../../../.dev/standards/AI-CONTEXT-OWNERSHIP.md)",
+      "after": "AI Context Rule Ownership (`target-authority:dev-standards-AI-CONTEXT-OWNERSHIP.md`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/README.MD",
+      "before": "[Code Reviewer file-type and finding routing](../../skills/code-reviewer/references/review-routing.yaml)",
+      "after": "Code Reviewer file-type and finding routing (`target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "after": "../standards/coding-standards/transactional-messaging-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "after": "../standards/coding-standards/test-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md",
+      "after": "architecture-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "after": "source-map.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "after": "../legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "after": "../standards/coding-standards/profile-configuration-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD",
+      "after": "../references/rationale/query-side-layering-rationale.MD",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "after": "../legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "after": "../standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "after": "../standards/coding-standards/usecase-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md",
+      "after": "../legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md",
+      "after": "../legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "after": "../standards/project-structure.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "after": "../standards/coding-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "after": "../guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "after": "../shared/dto-conventions.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "after": "../shared/domain-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "after": "../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "after": "target-authority:dev-requirement-TECH-STACK-REQUIREMENTS.MD",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".dev/standards/README.md",
+      "after": "target-authority:dev-standards-README.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".dev/standards/INDEX.MD",
+      "after": "target-authority:dev-standards-INDEX.MD",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".ai/SUB-AGENT-SYSTEM.MD",
+      "after": "target-authority:ai-SUB-AGENT-SYSTEM.MD",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "before": ".dev/ARCHITECTURE.md",
+      "after": "target-authority:dev-ARCHITECTURE.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "before": "[GWT handoff contract](../../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "after": "[GWT handoff contract](../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "before": ".ai/scripts/check-dockerfile-csproj-copy-sync.ps1",
+      "after": "target-authority:ai-scripts-check-dockerfile-csproj-copy-sync.ps1",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
+      "before": ".ai/scripts/check-test-di-compliance.sh",
+      "after": "target-authority:ai-scripts-check-test-di-compliance.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "after": "../standards/coding-standards/repository-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "after": "../standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "after": "../standards/coding-standards/mapper-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "after": "../legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/Program.cs",
+      "after": "../examples/aspnet-core/Program.cs",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "after": "../standards/coding-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md",
+      "after": "../examples/outbox/README.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md",
+      "before": "[範本選擇決策樹](#-範本選擇決策樹)",
+      "after": "[範本選擇決策樹](TEMPLATE-USAGE-GUIDE.md#-範本選擇決策樹)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md",
+      "before": "[按任務類型選擇範本](#-按任務類型選擇範本)",
+      "after": "[按任務類型選擇範本](TEMPLATE-USAGE-GUIDE.md#-按任務類型選擇範本)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md",
+      "before": "[範本依賴關係](#-範本依賴關係)",
+      "after": "[範本依賴關係](TEMPLATE-USAGE-GUIDE.md#-範本依賴關係)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "before": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "after": "references/review-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+      "after": "references/review-prompt.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "before": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "after": "references/review-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+      "after": "references/review-prompt.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "before": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "after": "references/review-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+      "after": "references/review-prompt.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "before": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "after": "references/review-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+      "after": "references/review-prompt.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "after": "../../../../../shared/dto-conventions.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "after": "../../../../../shared/domain-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "after": "references/implementation-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "after": "../../../../shared/dto-conventions.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "after": "../../../../shared/domain-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "after": "../sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "after": "../../../../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-bdd-gwt-test-designer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "after": "references/test-generation-guidance.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "after": "references/test-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-bdd-gwt-test-designer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "after": "references/implementation-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "after": "../../../../../shared/dto-conventions.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "after": "../sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-bdd-gwt-test-designer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "after": "references/test-generation-guidance.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "after": "references/test-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-bdd-gwt-test-designer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "after": "references/implementation-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+      "after": "references/implementation-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "after": "../../../../../shared/domain-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "after": "references/implementation-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "after": "../../../../shared/domain-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "after": "references/implementation-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "after": "../../../../shared/architecture-config.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "after": "../sub-agent.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "before": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "after": "../../../../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "before": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-bdd-gwt-test-designer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "before": "runtime role declaration",
+      "after": "reference-only technical projection",
+      "kind": "role-projection"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "after": "references/test-generation-guidance.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "after": "references/test-playbook.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "after": "../../../../shared/testing-strategy.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "after": "../../../../shared/common-rules.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "before": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "after": "target-authority:ai-assets-skills-bdd-gwt-test-designer-skill.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "before": ".ai/scripts/check-spec-compliance.sh",
+      "after": "target-authority:ai-scripts-check-spec-compliance.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "before": ".ai/scripts/check-all.sh",
+      "after": "target-authority:ai-scripts-check-all.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD",
+      "before": "[AI Context Rule Ownership](../../../../../.dev/standards/AI-CONTEXT-OWNERSHIP.md)",
+      "after": "AI Context Rule Ownership (`target-authority:dev-standards-AI-CONTEXT-OWNERSHIP.md`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "after": "../standards/coding-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD",
+      "after": "CODE-TEMPLATES.MD",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "before": ".ai/scripts/check-all.sh",
+      "after": "target-authority:ai-scripts-check-all.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "after": "../standards/coding-standards/transactional-messaging-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "after": "../standards/coding-standards/repository-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "after": "../standards/coding-standards/controller-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "after": "../standards/coding-standards/projection-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "after": "../standards/coding-standards/aggregate-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "after": "../standards/coding-standards/usecase-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "after": "../standards/coding-standards/reactor-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "after": "../standards/coding-standards/mapper-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "after": "../standards/coding-standards/test-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md",
+      "after": "review-routing.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
+      "after": "review-routing.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md",
+      "after": "review-routing.yaml",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md",
+      "after": "test-scenario-review.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "after": "../standards/coding-standards.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/checklist-reference.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-checklist-reference.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/output-contract.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-output-contract.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "before": ".ai/assets/skills/code-reviewer/references/role-execution.md",
+      "after": "target-authority:ai-assets-skills-code-reviewer-references-role-execution.md",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md",
+      "before": "[handoff contract](../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "after": "[handoff contract](../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "before": "[AI Context Rule Ownership](../../../../../.dev/standards/AI-CONTEXT-OWNERSHIP.md)",
+      "after": "AI Context Rule Ownership (`target-authority:dev-standards-AI-CONTEXT-OWNERSHIP.md`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "before": ".ai/assets/shared/PROMPT-PORTABILITY-RULES.md",
+      "after": "../../engineering-common/references/PROMPT-PORTABILITY-RULES.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "before": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "after": "../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md",
+      "before": "[`../evidence-manifest.yaml`](../evidence-manifest.yaml)",
+      "after": "`../evidence-manifest.yaml` (historical source provenance only)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "before": "[`source-includes/domain/`](../source-includes/domain/)",
+      "after": "[`source-includes/domain/`](../source-includes/domain/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md",
+      "before": "[`coding-standards/`](coding-standards/)",
+      "after": "[`coding-standards/`](coding-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md",
+      "before": "[`coding-standards/`](coding-standards/)",
+      "after": "[`coding-standards/`](coding-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md",
+      "before": ".dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md",
+      "after": "../guides/TEMPLATE-USAGE-GUIDE.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Aggregate Standards](./coding-standards/aggregate-standards.md)",
+      "after": "[Aggregate Standards](coding-standards/aggregate-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[UseCase Standards](./coding-standards/usecase-standards.md)",
+      "after": "[UseCase Standards](coding-standards/usecase-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Controller Standards](./coding-standards/controller-standards.md)",
+      "after": "[Controller Standards](coding-standards/controller-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Repository Standards](./coding-standards/repository-standards.md)",
+      "after": "[Repository Standards](coding-standards/repository-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Test Standards](./coding-standards/test-standards.md)",
+      "after": "[Test Standards](coding-standards/test-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Projection Standards](./coding-standards/projection-standards.md)",
+      "after": "[Projection Standards](coding-standards/projection-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Mapper Standards](./coding-standards/mapper-standards.md)",
+      "after": "[Mapper Standards](coding-standards/mapper-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Archive Standards](./coding-standards/archive-standards.md)",
+      "after": "[Archive Standards](coding-standards/archive-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Reactor Standards](./coding-standards/reactor-standards.md)",
+      "after": "[Reactor Standards](coding-standards/reactor-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Transactional Messaging Standards](./coding-standards/transactional-messaging-standards.md)",
+      "after": "[Transactional Messaging Standards](coding-standards/transactional-messaging-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Profile / Environment Configuration Standards](./coding-standards/profile-configuration-standards.md)",
+      "after": "[Profile / Environment Configuration Standards](coding-standards/profile-configuration-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Repository Standards](./coding-standards/repository-standards.md)",
+      "after": "[Repository Standards](coding-standards/repository-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Projection Standards](./coding-standards/projection-standards.md)",
+      "after": "[Projection Standards](coding-standards/projection-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Profile / Environment Configuration Standards](./coding-standards/profile-configuration-standards.md)",
+      "after": "[Profile / Environment Configuration Standards](coding-standards/profile-configuration-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Transactional Messaging Standards](./coding-standards/transactional-messaging-standards.md)",
+      "after": "[Transactional Messaging Standards](coding-standards/transactional-messaging-standards.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Best Practices](./best-practices.md)",
+      "after": "[Best Practices](best-practices.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Anti-Patterns](./anti-patterns.md)",
+      "after": "[Anti-Patterns](anti-patterns.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Legacy Todo/Wolverine profile example](./coding-guide.md)",
+      "after": "[Legacy Todo/Wolverine profile example](coding-guide.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": "[Code Reviewer file-type and finding routing](../../../skills/code-reviewer/references/review-routing.yaml)",
+      "after": "Code Reviewer file-type and finding routing (`target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": ".ai/scripts/check-mutation-coverage.sh",
+      "after": "target-authority:ai-scripts-check-mutation-coverage.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": ".ai/scripts/check-spec-compliance.sh",
+      "after": "target-authority:ai-scripts-check-spec-compliance.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "before": ".ai/scripts/check-all.sh",
+      "after": "target-authority:ai-scripts-check-all.sh",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "before": "[../../examples/aggregate/](../../examples/aggregate/)",
+      "after": "[../../examples/aggregate/](../../examples/aggregate/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "before": "[../../examples/inquiry-archive/](../../examples/inquiry-archive/)",
+      "after": "[../../examples/inquiry-archive/](../../examples/inquiry-archive/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "before": "[../../examples/controller/](../../examples/controller/)",
+      "after": "[../../examples/controller/](../../examples/controller/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "before": "[../../examples/aspnet-core/](../../examples/aspnet-core/)",
+      "after": "[../../examples/aspnet-core/](../../examples/aspnet-core/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "before": "[../../examples/dto/](../../examples/dto/)",
+      "after": "[../../examples/dto/](../../examples/dto/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "before": "[../../examples/mapper/](../../examples/mapper/)",
+      "after": "[../../examples/mapper/](../../examples/mapper/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "before": "[../../examples/dto/](../../examples/dto/)",
+      "after": "[../../examples/dto/](../../examples/dto/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "before": "[../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)",
+      "after": "[../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "before": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "after": "../../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "before": "[../../../../../../.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md](../../../../../../.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md)",
+      "after": "[../../../../../../.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md](../../guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "before": "[../../../../../../.dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md](../../../../../../.dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md)",
+      "after": "[../../../../../../.dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md](../../guides/DOTNET-DI-TEST-GUIDE.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "before": ".dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "after": "../../guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "before": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
+      "after": "../../guides/DOTNET-DI-TEST-GUIDE.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "before": "[../../../../../../.dev/operations/runbooks/README.MD](../../../../../../.dev/operations/runbooks/README.MD)",
+      "after": "../../../../../../.dev/operations/runbooks/README.MD (`target-authority:dev-operations-runbooks-README.MD`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "before": ".dev/operations/runbooks/README.MD",
+      "after": "target-authority:dev-operations-runbooks-README.MD",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[Target Technology Selection Policy](../../../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md)",
+      "after": "Target Technology Selection Policy (`target-authority:dev-standards-TECHNOLOGY-SELECTION-POLICY.md`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[Gherkin Feature Storage Guide](../../../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+      "after": "[Gherkin Feature Storage Guide](../../guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[GWT handoff contract](../../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "after": "[GWT handoff contract](../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[Target Technology Selection Policy](../../../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md)",
+      "after": "Target Technology Selection Policy (`target-authority:dev-standards-TECHNOLOGY-SELECTION-POLICY.md`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[../../examples/bdd-gherkin-example/](../../examples/bdd-gherkin-example/)",
+      "after": "[../../examples/bdd-gherkin-example/](../../examples/bdd-gherkin-example/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[../../examples/bdd-given-when-then-example/](../../examples/bdd-given-when-then-example/)",
+      "after": "[../../examples/bdd-given-when-then-example/](../../examples/bdd-given-when-then-example/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)",
+      "after": "[../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "after": "../../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "kind": "member-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "before": "[`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](./USECASE-COMMAND-HANDLER-RELATIONSHIP.MD)",
+      "after": "[`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](USECASE-COMMAND-HANDLER-RELATIONSHIP.MD)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "f9180d70c4a47ace69fac529c8708aa2f2aee8f4f7f584e843545275d11eb035",
+      "after_sha256": "7293eda5f64410ce212dc856f2a86bb7919636c4f42f8f9365b00a528a150562",
+      "diff": "--- source-text\n+++ installed-text\n@@ -13,3 +13,3 @@\n An action consumes the freshness-validated, task-scoped effective rule packet\n-selected by the shared resolver. It does not scan every `.dev/` or `.ai/`\n+selected by the target-owned resolver or explicit consumption binding. It does not scan every `.dev/` or `.ai/`\n document and it does not replace missing target-effective state with remembered\n@@ -24,3 +24,3 @@\n For registered universal rules, the portable baseline is\n-`engineering-rule-catalog.yaml` in this directory. It preserves the full\n+`../engineering-rule-catalog.yaml` in this directory. It preserves the full\n anchored source statement and source-governance provenance. For profile rules,\n@@ -48,9 +48,7 @@\n \n-Cross-technology baseline semantics belong under `.ai/assets/shared/`.\n-Profile-only baseline defaults, rules, constraints, technology bindings, and\n-bundled tooling belong under `.ai/assets/tech-stacks/<profile>/`. The source\n-registry and governance remain under `.dev/standards/`; target-effective truth\n-belongs under `.dev/ai-context/` and is shared by humans and agents. A\n-current record with a legacy `.dev/standards/` `canonical_path` is\n-`transitional-unmigrated` until the migration matrix reclassifies it, but no\n-other consumer may create a second owner while it is migrated.\n+Cross-technology semantics belong in engineering-common; profile-specific\n+semantics belong in an explicitly selected knowledge package. Installed content\n+is optional. The target-owned authority retains applicability, customization,\n+rule resolution and governance; installation does not adopt a rule or create a\n+second semantic owner. Source-governance history is inert provenance. Retained\n+target owners stay effective until explicit binding reconciliation.\n"
+    },
+    {
+      "source": ".ai/assets/shared/PROMPT-PORTABILITY-RULES.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "40635616b2a21e97e96a82c7b97ead08e9eeaf2e593503ab512269bf150f678b",
+      "after_sha256": "00686dfb22c1c0e22df09758104e46748b855d5eb01f9328c927388267258f61",
+      "diff": "--- source-text\n+++ installed-text\n@@ -29,3 +29,3 @@\n - Searches for repository-specific decision IDs inside portable prompt assets should return no results.\n-- `rg -n \"ProjectNameA|ProjectNameB|DomainTermA|DomainTermB\" .ai/assets/shared` returns no results.\n+- `rg -n \"ProjectNameA|ProjectNameB|DomainTermA|DomainTermB\" <selected-common-resource-root>` returns no results.\n - Example code uses neutral names and can be copied without domain rewrite.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/README.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "8e4286944790120673f40b19f078510286b286532866dbb8e19de9a434ec5175",
+      "after_sha256": "44d198d76ed7703778804123fee6260475c685c67efc8af6fbb8f093e4d1c612",
+      "diff": "--- source-text\n+++ installed-text\n@@ -26,3 +26,3 @@\n ```text\n-.ai/assets/tech-stacks/dotnet-backend/\n+README.md\n   engineering-rule-catalog.yaml\n@@ -42,5 +42,5 @@\n - Code Reviewer file-type and finding routing (`target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml`; supplied by the target owner)\n-- `references/CODE-REVIEW-INDEX.MD` - `v0.13.x` compatibility entry only\n+- `review/review-routing.yaml` - `v0.13.x` compatibility entry only\n - `examples/` - canonical .NET backend profile example landing path\n-- `source-includes/domain/` - optional interface-first Domain contracts and the\n+- `source-includes/domain/README.md` - optional interface-first Domain contracts and the\n   reference-only `EsAggregateRoot<TId>` source include; adopting targets own compilation and behavior evidence\n@@ -55,3 +55,3 @@\n - `shared/architecture-config.md`\n-- `shared/code-review-checklist.md` (`v0.13.x` compatibility entry only)\n+- `review/review-routing.yaml` (`v0.13.x` compatibility entry only)\n - `shared/common-rules.md`\n@@ -59,3 +59,3 @@\n - `shared/dto-conventions.md`\n-- `shared/testing-strategy.md` (active projection; `shared/testing-standards.md` is a compatibility entry)\n+- `shared/testing-strategy.md` (active projection; `shared/testing-strategy.md` is a compatibility entry)\n \n@@ -73,2 +73,2 @@\n \n-If a rule can be reused outside .NET backend repositories, keep it under `.ai/assets/shared/`. If it depends on .NET backend architecture, packages, testing tools, or host conventions, keep it under this profile.\n+If a rule can be reused outside .NET backend repositories, keep it under `the engineering-common package`. If it depends on .NET backend architecture, packages, testing tools, or host conventions, keep it under this profile.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "36e20349e866714a30b06a4e0a1d5bafce6b071561cd836940674883980ade55",
+      "after_sha256": "a717edbd540ddd135d34d675b968ebb1cc7e1fca3496e5d2c5cb5d1f3b324b69",
+      "diff": "--- source-text\n+++ installed-text\n@@ -88,2 +88,2 @@\n - Prefer shared prompt fragments for stable rules and specialized prompts for task mechanics.\n-- If the user asks to create a reusable architect prompt or skill, treat `.ai/assets/shared/*.md` plus these decision/rule hotspots as the canonical design input.\n+- If the user asks to create a reusable architect prompt or skill, treat `selected engineering-common resources` plus these decision/rule hotspots as the canonical design input.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/README.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "58aff7b0167f7dfa57020d7934b98d859c7ed7c2105affddd6eabf24e03d70d0",
+      "after_sha256": "250064e67a3a7d59b540e3f14c613c5e2984f3b0b1fbc86b9f3ac10601b668df",
+      "diff": "--- source-text\n+++ installed-text\n@@ -178,6 +178,6 @@\n - `../usecase/` - Use case patterns\n-- `../controller/` - API controllers\n+- `../controller/README.md` - API controllers\n - `../projection/` - CQRS projections\n-- `../dto/` - DTO templates\n-- `../mapper/` - Mapping patterns\n+- `../dto/README.md` - DTO templates\n+- `../mapper/README.md` - Mapping patterns\n - `../test/` - Testing patterns\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/controller/README.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "fb331b93b93fdaf9c9294a6d0251d2a769ea23d2adb9867d819dd9895b6df66d",
+      "after_sha256": "b73ac5f9848101f22320761427db41de12ca4810da98f6305d7ad48434c30b76",
+      "diff": "--- source-text\n+++ installed-text\n@@ -86,2 +86,2 @@\n - `../usecase/`\n-- `../dto/`\n+- `../dto/README.md`\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/README.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "eb99789c60da0023dbd9d9057c3a80711246848747a9ab5423d4c7ff8176dd06",
+      "after_sha256": "005cb92165364901dc84436ed4df0d3cbc4a874e6ec6b317d3d5038206246708",
+      "diff": "--- source-text\n+++ installed-text\n@@ -99,4 +99,4 @@\n ## Related Resources\n-- `../aggregate/` (domain)\n+- `../aggregate/README.md` (domain)\n - `../projection/` (queries)\n-- `../controller/` (HTTP adapters)\n+- `../controller/README.md` (HTTP adapters)\n"
+    },
+    {
+      "source": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "fdecab0da2cad9437280edf8d151ced98e2b3bc02e3ee2b19c0c7237028ac27a",
+      "after_sha256": "765259d41ce057b6251409c0d277b3a7aa7d035c13396b1f2d1f8fe2f3d91f2f",
+      "diff": "--- source-text\n+++ installed-text\n@@ -50,2 +50,2 @@\n - `target-authority:ai-scripts-check-dockerfile-csproj-copy-sync.ps1` as a transitional PowerShell helper. This may later move to a dotnet repo validation tool or CI validation task.\n-- `./TEMPLATE-USAGE-GUIDE.md`\n+- `TEMPLATE-USAGE-GUIDE.md`\n"
+    },
+    {
+      "source": ".dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "497252c4361a3fb7951b523983c69093317ad01d3bd78f36aceddd7ccf61a7b6",
+      "after_sha256": "3cc23e8dc0e1dd0bbb83b837a459b9dfcdffc8f06fda74e9932404cc26f51d72",
+      "diff": "--- source-text\n+++ installed-text\n@@ -40,3 +40,3 @@\n - `.dev/specs/tests/`\n-- `.dev/standards/examples/`\n+- `../README.md`\n - Any domain source-project directory\n@@ -155,3 +155,3 @@\n \n-Files under `.dev/standards/examples/**/.feature` are examples only and are not an official storage location.\n+Files under `../README.md**/.feature` are examples only and are not an official storage location.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "aab6ccfa25fbcde5678bca54d93c35fc920fb5eceec44aed43f90fc274cb5144",
+      "after_sha256": "e450dd7ddac0d56449fdaf0890fb1c805b19fd5bbab3bffe3568d4523b4cefb5",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this role when the target adopts aggregates or event sourcing for the\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Consult this technical guidance when the target adopts aggregates or event sourcing for the\n reviewed scope, or when domain invariants need a bounded review.\n@@ -17,3 +20,3 @@\n \n-The role follows `target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md`\n+The review method is supplied through `target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md`\n and does not own a duplicate set of technology rules.\n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "02c5eca6903299b8b92014adb5a45ec0510d48296a29117ae1cdd564bd069366",
+      "after_sha256": "f432840886eb39fb4fe86df239c752a8434726b85f30ab6fbae37bb8ecef169c",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Aggregate Code Review Sub-Agent Prompt\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "d2325e298d978002b6b64dfc18f5dacd6f7bef5a9adb53e5291ad86947e8ded5",
+      "after_sha256": "06e6dc4323cb6f80b27a4c7b109cb5bae455e8ce0f490c3a97fa3e71907a9fd1",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Code Review Sub-Agent Playbook\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "8befcdb71b366096d23e591ab872eea05294747f24c0608c6a4c8bf0c1cb2b41",
+      "after_sha256": "8d171fcfd12f54e810a08c3725f4a1bc4fbb5bca305e83478899b00e21dd1e8a",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Code Review Sub-Agent Prompt\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "cefd71c996ddad11a45c6b471a4880e4b9faae22b1ac659b64d511f9f2ce1c3d",
+      "after_sha256": "1780650abaccd4b92e3befba7f85e0c0bf2e07737dbe682eb35dae7448bceaba",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Controller Code Review Sub-Agent Playbook\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n@@ -14,3 +17,3 @@\n \n-The role follows `target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md`\n+The review method is supplied through `target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md`\n and does not own a duplicate set of technology rules.\n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "1d3513dd9352b8e84b0d17b1fa40c5fc90c383644fc0d4a06de3cbaf0c426673",
+      "after_sha256": "cb84ea311e1dfb1709eccb89a353ca4337cb93815f9bcfb4c328c7b778bbc478",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Controller Code Review Sub-Agent Prompt\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "c866c19bfaf6606933f2daaaeacce685fc915f31230cd121d4e6bd8c43d522f3",
+      "after_sha256": "6b3c1a1e89323e41ecc0f5a153fc8f275f97538f1aee81e8cde9ffac79167b4a",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Reactor Code Review Sub-Agent Playbook\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n@@ -15,3 +18,3 @@\n \n-The role follows `target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md`\n+The review method is supplied through `target-authority:ai-assets-skills-code-reviewer-references-core-review-playbook.md`\n and does not own a duplicate set of technology rules.\n"
+    },
+    {
+      "source": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "b7109c84abfbeb8cd6ee06a58965a749731099fd716b997ed90e95f6ffa9d326",
+      "after_sha256": "2d3bbed937430779526a16b6686d19f56e3fe3c02dc2151b721b1ec2352d2e7c",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Reactor Code Review Sub-Agent Prompt\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "2fb6d220423ec87f59201cd6230d07d3a010f7a776c6f86c4884a50b6e317bdd",
+      "after_sha256": "11ea4e5494078825c204d7e82a836bc2c5105f50d4f106b164bc9a9b244d13f5",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated sub-agent role when the main agent needs a worker focused on DDD aggregate implementation.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for DDD aggregate implementation. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "6205176bd1ba8a6b755f47a673da0ab93095e9eedbae63addc0d4223ab75d81e",
+      "after_sha256": "22a27241f8f3d545565049859432e8c955f3d96c8f156f6761411a596c9a250c",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Aggregate Test Generation Prompt (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "b35f3f7af7b3fee26ae162eae5d662562104c8f639c3dec0d9fd2b6b38e666e5",
+      "after_sha256": "b860d2db6c0ec4f726ef58fc15397bc4f74ac6c9aa0705cd9ae00dcdd6f70b3f",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Aggregate Test Sub-Agent Playbook\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "dfdea2ded07fac77f166aa4dc4524a7f4044fdb7ef05e5bab366a0ae7c3aef42",
+      "after_sha256": "2f58fe67e182806aa3ba6404b4d08294d191f2dbaf3d52d080856fb6de04b6f5",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated sub-agent role when the main agent needs a worker focused on command-side use case implementation.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for command-side use case implementation. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "7ca683c57c50ff9a5233d5f48d414905cd4653c7bad536e4af08519f96724926",
+      "after_sha256": "a8fca8a097322db6d5e0553f2394e572d1ea8672e466e2919c7df9ca5faf91f0",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Controller Code Generation Prompt (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "e8f86b2b9ec6a5919cfb9b694c98c47fcf544d7c0848f374a6893ce794d0b20b",
+      "after_sha256": "0344487a0b735cb49eca57ed1125309fab85aaf4de37cc92d17349c628a147f2",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Controller Test Generation Prompt (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "4bda7d5ad565299ee9d55e85510511e8a1baa489782553b72fb9e81a491bc61f",
+      "after_sha256": "a5e0892f54108fd7749f5589aac9474b4f77ab9a68461d4eb79b0c232352d839",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated worker role when the main agent needs concrete controller or API-boundary tests for one bounded HTTP surface.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for controller or API-boundary tests for one bounded HTTP surface. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "93bac7c27405ad37865cd8c3b4bd786371e522b320565f4c43486fbe082bfe0e",
+      "after_sha256": "7776015edc5958ee8d9960d6b3877ad8dd4daf35cd20e43f9de5ee0e40483a99",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated sub-agent role when the main agent needs a worker focused on Outbox Pattern implementation.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for Outbox Pattern implementation. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "7061b0ce165574ec7fa5829cbdb4600e89f442210ea2abc4f487ecca3e76d285",
+      "after_sha256": "64eead654c484a14b34f7d8ec5d2e77522c67fcce857ed1f48311fb289005a21",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated sub-agent role when the main agent needs a worker focused on environment profile configuration.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for environment profile configuration. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "210b1d4a2b6bd0e1143c067cd7468a21a699c279c9f1d2200b408ef38fb4fb7f",
+      "after_sha256": "3d0f262a42e75b78c7a3876a76cf3438398272e6dafda069cc42d9348cb4503a",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated sub-agent role when the main agent needs a worker focused on query-side use case implementation.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for query-side use case implementation. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "9e711ff81f08a702fbe8580eacadb42a723306c1d4a39133955b7a03aa0d5efb",
+      "after_sha256": "3edc21534b18eb9dccab6936dca8f7da99c320a8bf04269f28b5ffc6ca976183",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated sub-agent role when the main agent needs a worker focused on reactor implementation for cross-aggregate consistency.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for reactor implementation for cross-aggregate consistency. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "ca70baaab6f29f570ce392464169a5966deb7e8ddb9536b3fc5ca6b24b786eb9",
+      "after_sha256": "d72cf448dc3a1e89af2ce2eaf5157c524078d0e0dfc9d44936d7b7e2127facbd",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Use Case Test Generation Prompt (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "8232e36601855bb2c14bdbfb08b266458956b9cdd1f7089984f624b413ef29ec",
+      "after_sha256": "40788b700b01635f3ab34aecd54239dbc52190c7fd2604451e953820319678e4",
+      "diff": "--- source-text\n+++ installed-text\n@@ -2,3 +2,6 @@\n \n-Use this delegated worker role when the main agent needs concrete test implementation for one bounded use case.\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n+\n+Technical reference for test implementation for one bounded use case. Loading this material does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "009a7b82a12d2ed8b9e9f704379c61a58b0445a87779100e8fb416d64d726b5e",
+      "after_sha256": "97b0724121f84d973c906e4911a815e424f8c566cb88094d34537900970db91e",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Spec Compliance Rules (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "da1e547d75d26cf1f1bd5d83f69e821d723bc477bca5e7500eee9b017f63ac30",
+      "after_sha256": "7ba85e99256a0a2a212b61442c54fb89752807e98192db140c0d4e291c2caa4b",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Test Validation Steps (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "8fb4dee6695a97a949bee374fd7de5177a27e45a72958dd26e3d5e9c67a1b81a",
+      "after_sha256": "03245067a719666de9892f058b9f92169efd9e849ffda591b9a3f443f5170bd6",
+      "diff": "--- source-text\n+++ installed-text\n@@ -1,2 +1,5 @@\n # Validation Commands & Report Template (Dotnet)\n+\n+Reference-only technical guidance. Apply the target-selected architecture and technology;\n+this projection neither activates a runtime role nor creates an additional normative owner.\n \n@@ -11,3 +14,3 @@\n executable projects. The framework source gate itself is SDK-free. Shell\n-commands under `.ai/scripts` are orchestration helpers and do not establish C#\n+commands under `<target-selected-validation-tools>` are orchestration helpers and do not establish C#\n semantic compliance without target execution evidence.\n@@ -40,3 +43,3 @@\n create and wire its own project using the\n-`.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/`\n+`../../../README.mdtooling/on-demand-mechanical-validation/`\n recipe. `DBA1001` is a preserved enforcement label, not a supplied analyzer.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "76ca108bd92337e302a69d7dde77ee9c5168750191b6f77db42ea0394341fe12",
+      "after_sha256": "0185a3a33ed6f86a18d03eb249a63bdb4b70feef000a904c154583119ed6533b",
+      "diff": "--- source-text\n+++ installed-text\n@@ -122,3 +122,3 @@\n 1. Use the Sub-agent Workflow.\n-2. Refer to `.dev/standards/examples/`.\n+2. Refer to `../README.md`.\n 3. Run `target-authority:ai-scripts-check-all.sh` as the transitional local orchestrator.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "8e2ad11bff89eda9995d75a499ca9da523cf3ee77bd123385967c3665818a0f8",
+      "after_sha256": "c3699a3f0b0ed8a2a803ba1881721687e27b7a1d517228415756a7320c4b35fd",
+      "diff": "--- source-text\n+++ installed-text\n@@ -151,3 +151,3 @@\n \n-1. Use `.ai/assets/` prompts\n+1. Use `selected installed knowledge resources` prompts\n 2. Follow `CODE-TEMPLATES.MD`\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "70cee369023ed7cca745864474234c1da66941ace9711d5ec654f1881c482936",
+      "after_sha256": "0ac00a99cf47cd4afd732a9ca00193684adf3608dc1fa12cca93d9ac57f7aae7",
+      "diff": "--- source-text\n+++ installed-text\n@@ -7,3 +7,3 @@\n When this learning-oriented summary conflicts with\n-[`coding-standards/`](coding-standards.md) or\n+[`coding-standards.md`](coding-standards.md) or\n [`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](USECASE-COMMAND-HANDLER-RELATIONSHIP.MD),\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "3aa987896eb5e7458b15b0098f083ad19614c43b52abbadc68cc736205d478da",
+      "after_sha256": "fd5a97c1b8077e90b3782bdfdd0f0bcd48670589664dcff1a204f7ee2972dd20",
+      "diff": "--- source-text\n+++ installed-text\n@@ -7,3 +7,3 @@\n When this learning-oriented summary conflicts with\n-[`coding-standards/`](coding-standards.md) or\n+[`coding-standards.md`](coding-standards.md) or\n [`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](USECASE-COMMAND-HANDLER-RELATIONSHIP.MD),\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "5854f5ccd98f040620c96bdd3114d791aafe52f0cda1f8940474ae42f25b4d65",
+      "after_sha256": "4032c5f7fac59e613f4149d5259a67c09a6dc96e8fabacbd0ee0db7333d1fd83",
+      "diff": "--- source-text\n+++ installed-text\n@@ -8,3 +8,3 @@\n > facts with `ai-context-init`, then follow the generated repository context\n-> and the applicable `.ai/assets/tech-stacks/dotnet-backend/` references.\n+> and the applicable `../README.md` references.\n > Architecture and package choices require target-repository evidence or an\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "582ee600c529c674fc2849451860e003d31a55fcefb1f0f80f3877cf4bd1275e",
+      "after_sha256": "53150e14ead8eb6ad83a312e4767cc3fa598233c106742b88e88544220b5d824",
+      "diff": "--- source-text\n+++ installed-text\n@@ -198,3 +198,3 @@\n \n-> `.ai/scripts` is currently a transitional AI workflow/orchestration area. C# semantic rules should gradually move to Roslyn Analyzers, `.editorconfig`, `dotnet format`, architecture tests, dotnet tests, or dotnet tools.\n+> `<target-selected-validation-tools>` is currently a transitional AI workflow/orchestration area. C# semantic rules should gradually move to Roslyn Analyzers, `.editorconfig`, `dotnet format`, architecture tests, dotnet tests, or dotnet tools.\n \n"
+    },
+    {
+      "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "before": ".ai/scripts/validate-ai-context.py",
+      "after": "target-authority:ai-scripts-validate-ai-context.py",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "before": "Run `python target-authority:ai-scripts-validate-ai-context.py` for registered context contracts",
+      "after": "Run the target-selected AI-context validation command for registered context contracts",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "before": ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml",
+      "after": "target-authority:ai-assets-skills-ai-context-init-templates-technology-selection.schema.yaml",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "before": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "after": "target-authority:dev-requirement-TECH-STACK-REQUIREMENTS.MD",
+      "kind": "target-parameter"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "before": "[`source-includes/domain/`](../source-includes/domain/)",
+      "after": "[`source-includes/domain/`](../source-includes/domain/README.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[Gherkin Feature Storage Guide](../../../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+      "after": "[Gherkin Feature Storage Guide](../../guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[GWT handoff contract](../../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "after": "[GWT handoff contract](../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[Gherkin Feature Storage Guide](../../../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+      "after": "[Gherkin Feature Storage Guide](../../guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[GWT handoff contract](../../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "after": "[GWT handoff contract](../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "before": "[Target Technology Selection Policy](../../../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md)",
+      "after": "Target Technology Selection Policy (`target-authority:dev-standards-TECHNOLOGY-SELECTION-POLICY.md`; supplied by the target owner)",
+      "kind": "markdown-reference"
+    },
+    {
+      "source": "new:engineering-common/README.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "8e8f525db6c7006c405edd40f6774aebf53f90c95ac290ad68cd8bf9267ef8c3",
+      "after_sha256": "1edb5367f794968c9e3e8e7f41c046a50bcdcfacc02a7bc3158090b831881aa0",
+      "diff": "--- source-text\n+++ installed-text\n@@ -30,3 +30,3 @@\n \n-- [Content metadata](content-package.yaml)\n+- Content metadata: `content-package.yaml`\n - [engineering-rule-catalog.yaml](engineering-rule-catalog.yaml)\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/README.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "e364e90055cbd1138829634c896549c4d219e806b43351034a6828194e4e5f97",
+      "after_sha256": "b06ec5687a06f90dc2a6f2d7846488b90e84ffc7f55c48637b61165f6678320f",
+      "diff": "--- source-text\n+++ installed-text\n@@ -55,3 +55,3 @@\n \n-- [Content metadata](content-package.yaml)\n+- Content metadata: `content-package.yaml`\n - [design/architecture-playbook.md](design/architecture-playbook.md)\n"
+    },
+    {
+      "source": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "b860d2db6c0ec4f726ef58fc15397bc4f74ac6c9aa0705cd9ae00dcdd6f70b3f",
+      "after_sha256": "30e0953bdca609c58771a80c8f9d7132e46b576fca680b6aeb138e5fd9b82c09",
+      "diff": "--- source-text\n+++ installed-text\n@@ -5,3 +5,3 @@\n \n-Use this delegated worker role when the main agent needs aggregate-focused tests for invariants, event sourcing, and domain-event expectations.\n+Technical reference for aggregate-focused tests of invariants, event sourcing and domain events. Loading it does not dispatch a worker.\n \n"
+    },
+    {
+      "source": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "03245067a719666de9892f058b9f92169efd9e849ffda591b9a3f443f5170bd6",
+      "after_sha256": "06c3c3c2acfffef735a8a03cb0f9fe54460f6a759f4b75d392f061a820de8cd0",
+      "diff": "--- source-text\n+++ installed-text\n@@ -13,4 +13,3 @@\n Prefer target-owned .NET validation when the target has selected an SDK and\n-executable projects. The framework source gate itself is SDK-free. Shell\n-commands under `<target-selected-validation-tools>` are orchestration helpers and do not establish C#\n+executable projects. Target-owned orchestration helpers do not establish C#\n semantic compliance without target execution evidence.\n@@ -26,5 +25,5 @@\n \n-Transitional helper:\n+Target-selected helper parameter (not an executable command):\n \n-```\n+```text\n # read specs + generate compliance checklist + validate tests\n@@ -43,3 +42,3 @@\n create and wire its own project using the\n-`../../../README.mdtooling/on-demand-mechanical-validation/`\n+[mechanical-validation recipes](../../../tooling/on-demand-mechanical-validation/README.md)\n recipe. `DBA1001` is a preserved enforcement label, not a supplied analyzer.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "0185a3a33ed6f86a18d03eb249a63bdb4b70feef000a904c154583119ed6533b",
+      "after_sha256": "056b096decab9bf5366e59cda208457fc27b633ae902463d8267b2a36399d804",
+      "diff": "--- source-text\n+++ installed-text\n@@ -123,3 +123,3 @@\n 2. Refer to `../README.md`.\n-3. Run `target-authority:ai-scripts-check-all.sh` as the transitional local orchestrator.\n+3. Run the target-selected local validation command (parameter `target-authority:ai-scripts-check-all.sh`).\n 4. Select the applicable route in `target-authority:ai-assets-skills-code-reviewer-references-review-routing.yaml`.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "c3699a3f0b0ed8a2a803ba1881721687e27b7a1d517228415756a7320c4b35fd",
+      "after_sha256": "3d326bec348f88c546acf2356a01dcc2b387e121c4564e70feecc50376b79e59",
+      "diff": "--- source-text\n+++ installed-text\n@@ -154,2 +154,2 @@\n 3. Read `../standards/coding-standards.md`\n-4. Run `target-authority:ai-scripts-check-all.sh`\n+4. Run the target-selected validation command (parameter `target-authority:ai-scripts-check-all.sh`)\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "53150e14ead8eb6ad83a312e4767cc3fa598233c106742b88e88544220b5d824",
+      "after_sha256": "b068ddabf04f8841a54df2f0311ea8f574621545c9dfbe92362946f34529905e",
+      "diff": "--- source-text\n+++ installed-text\n@@ -187,3 +187,6 @@\n \n-```bash\n+The following are descriptive target-owner parameters, not executable commands.\n+Resolve the existing target validation commands before use.\n+\n+```text\n # Transitional local orchestrator\n@@ -198,3 +201,3 @@\n \n-> `<target-selected-validation-tools>` is currently a transitional AI workflow/orchestration area. C# semantic rules should gradually move to Roslyn Analyzers, `.editorconfig`, `dotnet format`, architecture tests, dotnet tests, or dotnet tools.\n+> Target-selected workflow/orchestration helpers retain their target owner. C# semantic rules should gradually move to Roslyn Analyzers, `.editorconfig`, `dotnet format`, architecture tests, dotnet tests, or dotnet tools.\n \n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "a186d7dd25fb53a800fab7cee3994a1e2a87b94f2a98ace9620f3e2da7829732",
+      "after_sha256": "0e891b3cd6a8209b31bc0316b078ea4bf7649d786e15eddbbb3166503b711e5e",
+      "diff": "--- source-text\n+++ installed-text\n@@ -40,9 +40,9 @@\n \n-1. **Persist data**  \n+1. **Persist data**\\\n    Verify all fields are saved, including JSON columns.\n-2. **Retrieve data**  \n+2. **Retrieve data**\\\n    Verify rehydration is complete and correct.\n-3. **Soft delete**  \n+3. **Soft delete**\\\n    Use `Save()` to mark `IsDeleted = true`, not hard delete.\n-4. **Version control**  \n+4. **Version control**\\\n    Verify optimistic locking version increments.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/use-case-injection/README.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "14c1d74fae3d899852e4637c6313c04f429fc8155c30e6401bda525098acec4d",
+      "after_sha256": "44aaf7385d2491fb2d0606828a2b299cb3b03e0ce22ce389d8aa50ac469c05e5",
+      "diff": "--- source-text\n+++ installed-text\n@@ -8,4 +8,4 @@\n \n-1. **Profile-based repository selection**  \n-   - InMemory for fast tests  \n+1. **Profile-based repository selection**\\\n+   - InMemory for fast tests\\\n    - Outbox (PostgreSQL) for integration\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/README.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "005cb92165364901dc84436ed4df0d3cbc4a874e6ec6b317d3d5038206246708",
+      "after_sha256": "07289a49698ef33faf0e52e6c825cc6db2a9817a197da39b33e4493d8e12d0a8",
+      "diff": "--- source-text\n+++ installed-text\n@@ -79,9 +79,9 @@\n \n-1. **Single Responsibility**  \n+1. **Single Responsibility**\\\n    One Use Case = one business action.\n-2. **Dependency Inversion**  \n+2. **Dependency Inversion**\\\n    Depend on repository/projection abstractions.\n-3. **Error Handling**  \n+3. **Error Handling**\\\n    Use `CqrsOutput` with clear failure messages.\n-4. **Transactional Boundary**  \n+4. **Transactional Boundary**\\\n    One Use Case = one transaction boundary.\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "a3987cdcdd589fbbb296fc72240a05a3c079248d6f33e99a3d3708591b8a08bf",
+      "after_sha256": "e95668a82496e7db2ab3ddbd59932bb949ff1b986d597f964d73f3ea0c6a3f44",
+      "diff": "--- source-text\n+++ installed-text\n@@ -65,3 +65,3 @@\n     private readonly List<TeamMember> _members;\n-    \n+\n     public DeliveryTeam(IEnumerable<IDomainEvent> domainEvents)\n@@ -77,3 +77,3 @@\n     private readonly List<TeamMember> _members = new();  // Correct initialization timing\n-    \n+\n     public DeliveryTeam(IEnumerable<IDomainEvent> domainEvents)\n@@ -110,3 +110,3 @@\n     public bool IsDeleted { get; private set; }  // Required soft-delete marker\n-    \n+\n     // Set IsDeleted = true when handling the deletion event\n@@ -140,9 +140,9 @@\n     ArgumentException.ThrowIfNullOrEmpty(name);\n-    \n+\n     // Apply domain event\n     Apply(new TaskCreated(Id, taskId, name, estimatedHours, creatorId, DateProvider.Now()));\n-    \n+\n     // Postconditions: verify business state\n     var createdTask = _tasks.FirstOrDefault(t => t.Id.Equals(taskId));\n-    \n+\n     Contract.Ensure(createdTask is not null, \"Task must be created\");\n@@ -151,3 +151,3 @@\n     Contract.Ensure(createdTask.State == TaskState.Todo, \"Task initial state must be TODO\");\n-    \n+\n     // Postconditions: verify Domain Event correctness\n@@ -155,4 +155,4 @@\n     Contract.Ensure(\n-        lastEvent is TaskCreated created && \n-        created.TaskId.Equals(taskId) && \n+        lastEvent is TaskCreated created &&\n+        created.TaskId.Equals(taskId) &&\n         created.Name == name,\n@@ -215,3 +215,3 @@\n     private readonly List<Task> _tasks = new();  // Initialize at field declaration\n-    \n+\n     // Constructor for Event Sourcing reconstruction\n@@ -221,3 +221,3 @@\n     }\n-    \n+\n     // Public constructor for creating a new instance\n@@ -228,5 +228,5 @@\n         ArgumentException.ThrowIfNullOrEmpty(creatorId);\n-        \n+\n         Apply(new ProductCreated(id, name, creatorId, DateProvider.Now()));\n-        \n+\n         // Postconditions\n@@ -252,3 +252,3 @@\n     Contract.Require(!IsDeleted, \"Cannot rename deleted product\");\n-    \n+\n     // 2. Avoid unnecessary events (optional)\n@@ -256,6 +256,6 @@\n         return;  // No update and no event\n-    \n+\n     // 3. Apply the event\n     Apply(new ProductRenamed(Id, newName, DateProvider.Now()));\n-    \n+\n     // 4. Postconditions\n@@ -280,6 +280,6 @@\n     public ProductId() : this(Guid.NewGuid().ToString()) { }\n-    \n+\n     public static ProductId Create() => new();\n     public static ProductId From(string value) => new(value);\n-    \n+\n     // Validate in the constructor\n@@ -440,3 +440,3 @@\n             break;\n-            \n+\n         case ProductRenamed e:\n@@ -444,3 +444,3 @@\n             break;\n-            \n+\n         case ProductDeleted e:\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "20186efb8f6e20532b27c94ec24bece47d2a6278151aa387a51b2da319ac668c",
+      "after_sha256": "5dcc29b86f92510582e41a5707be3e5e92f8f6c83b58e5b31384626bb94a5a6d",
+      "diff": "--- source-text\n+++ installed-text\n@@ -148,3 +148,3 @@\n         ArgumentNullException.ThrowIfNull(userId);\n-        \n+\n         return await _context.Users\n@@ -157,6 +157,6 @@\n         ArgumentNullException.ThrowIfNull(userData);\n-        \n+\n         var existing = await _context.Users\n             .FirstOrDefaultAsync(x => x.Id == userData.Id, ct);\n-        \n+\n         if (existing is null)\n@@ -189,3 +189,3 @@\n         // Other Archive registrations...\n-        \n+\n         return services;\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "6bfa0fc13652cc2ee397525253645c23ae55cd30d96f9f094b241d009712a2b6",
+      "after_sha256": "c016ed5583f134df6d420223a459a8ed52ebcc53a2be952d51de6332cbb604f3",
+      "diff": "--- source-text\n+++ installed-text\n@@ -152,3 +152,3 @@\n     private readonly ICreateResourceUseCase createResourceUseCase;\n-    \n+\n     public ResourcesController(ICreateResourceUseCase createResourceUseCase)\n@@ -197,6 +197,6 @@\n if (!result.IsSuccess)\n-    return BadRequest(new ProblemDetails \n-    { \n+    return BadRequest(new ProblemDetails\n+    {\n         Detail = result.Error,\n-        Status = 400 \n+        Status = 400\n     });\n@@ -226,3 +226,3 @@\n     Instance = HttpContext.Request.Path,\n-    Extensions = \n+    Extensions =\n     {\n@@ -250,6 +250,6 @@\n             .MaximumLength(100).WithMessage(\"Resource name must not exceed 100 characters\");\n-            \n+\n         RuleFor(x => x.UserId)\n             .NotEmpty().WithMessage(\"User ID is required\");\n-            \n+\n         RuleFor(x => x.Price)\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "46b0f166e8dd63ef82cc4083f20c53bc9c2703e5d8435a15c85125fb70eee4ff",
+      "after_sha256": "efe5d0fa1d7a45daac413652b79511863e0d4139c8039e4bd4edb80465ebb4ef",
+      "diff": "--- source-text\n+++ installed-text\n@@ -44,3 +44,3 @@\n         ArgumentNullException.ThrowIfNull(aggregate);\n-        \n+\n         return new ProductData\n@@ -55,3 +55,3 @@\n     }\n-    \n+\n     public static Product ToDomain(ProductData data)\n@@ -59,3 +59,3 @@\n         ArgumentNullException.ThrowIfNull(data);\n-        \n+\n         // Rebuild from Event Sourcing\n@@ -66,3 +66,3 @@\n                 .ToList();\n-            \n+\n             var product = new Product(events);\n@@ -71,3 +71,3 @@\n         }\n-        \n+\n         // Rebuild from current state. Constructor behavior is unknown here,\n@@ -118,3 +118,3 @@\n         };\n-        \n+\n         // Serialize a complex object\n@@ -125,3 +125,3 @@\n         }\n-        \n+\n         return data;\n@@ -136,3 +136,3 @@\n         );\n-        \n+\n         // Deserialize a complex object\n@@ -144,3 +144,3 @@\n         }\n-        \n+\n         return product;\n@@ -184,3 +184,3 @@\n     );\n-    \n+\n     // MANDATORY: restore IsDeleted state\n@@ -190,3 +190,3 @@\n     }\n-    \n+\n     return product;\n@@ -302,3 +302,3 @@\n     var product = new Product(...);\n-    \n+\n     if (!string.IsNullOrEmpty(data.DefinitionOfDoneJson))\n@@ -315,3 +315,3 @@\n             // _logger.LogWarning(ex, \"Failed to deserialize DefinitionOfDone\");\n-            \n+\n             // Degrade gracefully: continue without terminating the flow\n@@ -319,3 +319,3 @@\n     }\n-    \n+\n     return product;\n@@ -354,3 +354,3 @@\n     private readonly List<CommittedSprint> _committedSprints = new();  // New field\n-    \n+\n     public void CommitSprint(SprintId sprintId)\n"
+    },
+    {
+      "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "kind": "presentation-and-target-parameterization",
+      "before_sha256": "ea44d47616abc773e6d9cafb027f16092dd90b272885e3e9401353969f93ac0d",
+      "after_sha256": "8d561277128dbf95d98c7400999aa57e9798b98b988e294dbbe2c24e03ce9fea",
+      "diff": "--- source-text\n+++ installed-text\n@@ -76,3 +76,3 @@\n     private readonly CreateProductUseCase _useCase;\n-    \n+\n     public CreateProductUseCaseTests()\n@@ -217,3 +217,3 @@\n         var product = CreateProductWithState(ProductState.Active);\n-        \n+\n         // When / Then\n@@ -221,3 +221,3 @@\n     }\n-    \n+\n     [Fact]\n@@ -227,3 +227,3 @@\n         var product = CreateProductWithState(ProductState.Deleted);\n-        \n+\n         // When / Then\n@@ -233,3 +233,3 @@\n     }\n-    \n+\n     private static Product CreateProductWithState(ProductState state)\n"
+    }
+  ],
+  "generation": {
+    "generated_at": "2026-09-24T20:22:49+08:00",
+    "generator": "Issue #403 bounded content projection and explicit authoring",
+    "inputs": ".dev/design/framework-next/rc2-contracts/",
+    "source_revision": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+    "scope": "The two S1-assigned optional content packages; exclusions follow migration-inventory.json",
+    "verification": "python -B .dev/workflows/2026-09-24-rc2-engineering-knowledge/check-content.py"
+  }
+}
