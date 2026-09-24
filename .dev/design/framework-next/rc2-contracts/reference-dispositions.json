@@ -1,0 +1,2673 @@
+{
+  "source_commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+  "extraction": "Markdown links outside fenced code and exact tracked repository-path literals. Catalog embedded normative Markdown resolves relative to its semantic owner and is covered through the owner rows; directory links explicitly map to declared index members. Textual rule IDs use rule records. No empty-search absence claim.",
+  "edges": [
+    {
+      "from": ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md",
+      "to": ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md",
+      "to": ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/engineering-rule-catalog.yaml"
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-auditor/references/audit-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-auditor/references/output-contract.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-governance/references/audit-remediation-lifecycle.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-governance/references/context-boundary-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-init/references/document-targets.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-init/references/scan-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/output-contract.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".ai/scripts/validate-ai-context.py",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".dev/standards/AI-CONTEXT-BOUNDARY.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "to": ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "to": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "to": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "to": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "to": ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md"
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/code-reviewer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/domain-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/dto-conventions.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/domain-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/dto-conventions.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/dto-conventions.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/domain-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/domain-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "to": ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "to": ".ai/scripts/check-spec-compliance.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/README.MD",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/README.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/design/architecture-playbook.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/design/source-map.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/SUB-AGENT-SYSTEM.MD",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/test-validation-steps.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/validation-command-templates.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/domain-rules.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/dto-conventions.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/project-structure.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".dev/ARCHITECTURE.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/DOCKER-RESTORE-CACHE-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".dev/standards/INDEX.MD",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
+      "to": ".dev/standards/README.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/engineering-rule-catalog.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/review/review-routing.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/common-rules.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/anti-patterns.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/best-practices.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-guide.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/archive-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/reactor-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/project-structure.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "to": ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "to": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/scenarios.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/scenarios.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-manifest.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-manifest.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-manifest.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/CODE-TEMPLATES.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/examples/reference/bdd-gwt-test-template.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/EsAggregateRoot.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/source-includes/domain/EsAggregateRoot.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IAggregateRoot.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/source-includes/domain/IAggregateRoot.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEntity.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/source-includes/domain/IDomainEntity.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEvent.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/source-includes/domain/IDomainEvent.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD",
+      "to": ".ai/scripts/check-all.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD",
+      "to": ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD",
+      "to": ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/CODE-TEMPLATES.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD",
+      "to": ".ai/scripts/check-all.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing-fixtures.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/checklist-reference.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/output-contract.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/skills/code-reviewer/references/role-execution.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-successor",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/review/review-routing.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/review/test-scenario-review.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-successor",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/review/review-routing.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-successor",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/review/review-routing.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/reactor-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md",
+      "to": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "to": ".ai/assets/shared/PROMPT-PORTABILITY-RULES.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/PROMPT-PORTABILITY-RULES.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "to": ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+      "to": ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/testing-strategy.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "to": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/source-includes/domain/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md",
+      "to": ".dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/TEMPLATE-USAGE-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/skills/code-reviewer/references/review-routing.yaml",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/generic-repository-only-rationale.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/generic-repository-only-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/anti-patterns.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/best-practices.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-guide.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/archive-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/reactor-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/scripts/check-all.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/scripts/check-mutation-coverage.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "to": ".ai/scripts/check-spec-compliance.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/aggregate/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanEvents.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/aggregate/PlanEvents.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanId.cs",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/aggregate/PlanId.cs"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/inquiry-archive/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/aspnet-core/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/controller",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/controller/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/dto",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/dto/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/dto",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/dto/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/mapper",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/mapper/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "to": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "to": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/DOTNET-DI-TEST-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "to": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/DOTNET-DI-TEST-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "to": ".dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "to": ".dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/shared/architecture-config.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/archive-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "to": ".dev/operations/runbooks/README.MD",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md",
+      "to": ".dev/operations/runbooks/README.MD",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/generic-repository-only-rationale.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/generic-repository-only-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example",
+      "source_form": "markdown-directory-link",
+      "disposition": "rewrite-to-declared-index-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/README.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md",
+      "source_form": "markdown-link",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "to": ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/project-structure.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template"
+    },
+    {
+      "from": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+      "source_form": "markdown-link",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/Program.cs",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/aspnet-core/Program.cs"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/examples/outbox/README.md"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards.md"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md"
+    },
+    {
+      "from": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "to": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md",
+      "source_form": "repository-path",
+      "disposition": "rewrite-to-installed-member",
+      "installed_target": ".ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md"
+    },
+    {
+      "from": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "to": ".ai/scripts/check-dockerfile-csproj-copy-sync.ps1",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    },
+    {
+      "from": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
+      "to": ".ai/scripts/check-test-di-compliance.sh",
+      "source_form": "repository-path",
+      "disposition": "target-authority-or-inert-provenance",
+      "installed_target": null
+    }
+  ]
+}

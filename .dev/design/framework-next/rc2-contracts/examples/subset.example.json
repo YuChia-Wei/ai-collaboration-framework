@@ -1,0 +1,58 @@
+{
+  "adapters": [],
+  "catalog": {
+    "catalog_sha256": "d36fdccaede267efcb568016295b41509d4493605aa79f49c76b23b3fade78dc",
+    "files_sha256": "475feb1c47d20f3bd6ed6ab7ba9d6dc45a0ea357c32610ef8a256a6e283bfd01",
+    "identity": "catalog:1:0.19.0-rc.2:0000000000000000000000000000000000000000:0b146f6e6b83bdeaedd3568ab20918af158eb1b7faaba1d7cb083985f0848929"
+  },
+  "components": [
+    {
+      "id": "example-knowledge",
+      "kind": "knowledge",
+      "members": [
+        "README.md",
+        "content-package.yaml",
+        "guidance.md"
+      ],
+      "metadata": "content-package.yaml",
+      "metadata_version": 1,
+      "optional_dependencies": [],
+      "required_dependencies": [],
+      "version": "0.1.0"
+    }
+  ],
+  "desired": {
+    "adapters": [],
+    "bindings": [],
+    "catalog": {
+      "catalog_sha256": "d36fdccaede267efcb568016295b41509d4493605aa79f49c76b23b3fade78dc",
+      "files_sha256": "475feb1c47d20f3bd6ed6ab7ba9d6dc45a0ea357c32610ef8a256a6e283bfd01",
+      "identity": "catalog:1:0.19.0-rc.2:0000000000000000000000000000000000000000:0b146f6e6b83bdeaedd3568ab20918af158eb1b7faaba1d7cb083985f0848929"
+    },
+    "knowledge": [
+      "example-knowledge"
+    ],
+    "selection_version": 1,
+    "skills": []
+  },
+  "desired_sha256": "25f0f573c314381d045abfd0dd5a24c4322790be3ca6dfd22e95c57cef5dbfeb",
+  "generator": {
+    "id": "aicf-subset-derivation",
+    "implementation": [
+      {
+        "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+        "mode": "100644",
+        "path": "src/distribution/example_generator.py",
+        "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+        "size": 45
+      }
+    ]
+  },
+  "mode": "catalog-subset",
+  "release_version": "0.19.0-rc.2",
+  "schema_version": 3,
+  "source": {
+    "commit": "0000000000000000000000000000000000000000",
+    "tree": "0000000000000000000000000000000000000000"
+  }
+}

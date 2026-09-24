@@ -1,0 +1,155 @@
+{
+  "record_version": 1,
+  "evidence_kind": "direct-document-inspection-only",
+  "recorded_at": "2026-09-24T19:17:12+08:00",
+  "source_baseline": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+  "delivery_subject": "containing-commit; no independent audit or behavioral acceptance claimed",
+  "checks": [
+    {
+      "id": "utf8-json-yaml",
+      "outcome": "passed",
+      "command": "python -B .dev/ai-context/local/s1-check-documents.py",
+      "scope": "Only the two S1 owned roots; ignored authoring reader, not a product validator",
+      "counts": {
+        "utf8_files": 40,
+        "json_files": 30,
+        "yaml_files": 2,
+        "markdown_files": 8
+      }
+    },
+    {
+      "id": "local-document-references",
+      "outcome": "passed",
+      "markdown_links": 36,
+      "schema_document_refs": 52,
+      "meaning": "Referenced documents and JSON pointer targets exist; no JSON Schema compliance execution."
+    },
+    {
+      "id": "complete-bounded-inventory",
+      "outcome": "passed",
+      "command": "git ls-tree -r --name-only 6f5a13046f1978ba4b8701e4ae772faecde2c2ff .ai/assets/tech-stacks/dotnet-backend; direct comparison with inventory",
+      "profile_files": 194,
+      "total_source_files": 272,
+      "registered_rules": 14,
+      "planned_package_members": 235,
+      "source_capability_union": 21,
+      "casefold_member_collisions": 0
+    },
+    {
+      "id": "target-authority-read",
+      "outcome": "observed",
+      "target_commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "tracked_authorities_equal_fixed_blob": 12,
+      "rules": 14,
+      "customizations": 4,
+      "route_selectors": 20,
+      "gate_execution": "not-performed"
+    },
+    {
+      "id": "git-identity-and-scope",
+      "outcome": "passed",
+      "commands": [
+        "git rev-parse --show-toplevel",
+        "git branch --show-current",
+        "git rev-parse HEAD",
+        "git status --short --branch",
+        "git diff --cached --name-only"
+      ],
+      "branch": "codex/2026-09-24-rc2-selection-contract",
+      "owned_file_count": 40,
+      "scope": "Only .dev/design/framework-next/rc2-contracts/ and .dev/workflows/2026-09-24-rc2-selection-contract/"
+    },
+    {
+      "id": "staged-diff",
+      "outcome": "passed",
+      "command": "git diff --cached --check",
+      "inspection": "Staged added paths and diff/stat inspected; no product, test, root, wrapper, shared-index or target changes."
+    },
+    {
+      "id": "exact-planned-message",
+      "outcome": "passed",
+      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/401-s1.txt --workflow-id 2026-09-24-rc2-selection-contract",
+      "message_sha256": "d60930b078a21c2b7e6933bbe563b22b7220bf9302cdcf27261ef8c1f01fc908",
+      "result": "Git commit validation passed for planned message."
+    }
+  ],
+  "preserved_failures": [
+    {
+      "kind": "provider-read",
+      "attempt": "gh issue view",
+      "outcome": "blocked-by-environment",
+      "reason": "Sandbox proxy connection refused",
+      "subsequent": "GitHub connector successfully read Issue #401; no credential changes."
+    },
+    {
+      "kind": "discovery",
+      "outcome": "preparation-error",
+      "reason": "Initial architecture request lacked project; suggested list-projects tool unavailable",
+      "subsequent": "Indexed assigned tree without persistence; unavailable index SHA and excluded src/tools caused explicit tracked-file fallback."
+    },
+    {
+      "kind": "document-generation",
+      "outcome": "failed",
+      "reason": "Shared catalog normative hash is nested; first script expected flat field",
+      "subsequent": "Corrected extraction; completed inventory retained actual source identities."
+    },
+    {
+      "kind": "document-generation",
+      "outcome": "failed",
+      "reason": "Legacy skill metadata uses asset_id; first script expected id",
+      "subsequent": "Corrected extraction; 16 legacy plus 18 source packages produce 21 IDs."
+    }
+  ],
+  "limitations": [
+    "Target untracked status had unreadable ignored fixture directories; selected tracked authority bytes were compared individually.",
+    "Eleven unregistered catalog file hashes differ from current fixed source blobs; preserved as migration input discrepancy, not repaired here.",
+    "Git warned about CRLF normalization during first staging; all 40 owned documents were explicitly normalized to LF before final staging.",
+    "Fictional model examples include zero identities and sample execution-shaped fields; not actual receipts or admissible inputs."
+  ],
+  "deferred": [
+    {
+      "scope": "schema compliance and product behavior",
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "Select actual redesigned verification after dependent implementation; target gates require their own authority."
+    },
+    {
+      "scope": "legacy/critical/full validators and history matrices",
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "Select actual redesigned verification after dependent implementation; target gates require their own authority."
+    },
+    {
+      "scope": "package/compatibility/install/update/recovery trials",
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "Select actual redesigned verification after dependent implementation; target gates require their own authority."
+    },
+    {
+      "scope": "formal independent audit/handoff/review-subject/lease/acceptance-ledger tooling",
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "Select actual redesigned verification after dependent implementation; target gates require their own authority."
+    },
+    {
+      "scope": "native/hosted/CI checks",
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "Select actual redesigned verification after dependent implementation; target gates require their own authority."
+    },
+    {
+      "scope": "actual source/target adoption and separate Codex/Claude discovery",
+      "outcome": "deferred-by-owner",
+      "authority": "U001",
+      "owner": "program #322 coordinator / P7",
+      "next_action": "Select actual redesigned verification after dependent implementation; target gates require their own authority."
+    }
+  ],
+  "provider_mutation": "not-performed",
+  "first_push": "coordinator-owned"
+}

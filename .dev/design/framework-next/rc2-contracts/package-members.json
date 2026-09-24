@@ -1,0 +1,2713 @@
+{
+  "handoff_version": 1,
+  "source_commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+  "packages": [
+    {
+      "id": "engineering-common",
+      "version": "0.1.0",
+      "content_package_version": 1,
+      "entrypoint": "README.md",
+      "owner": "S2",
+      "shared_manifest_owner": "S3",
+      "members": [
+        {
+          "path": "README.md",
+          "kind": "index",
+          "source_ref": null
+        },
+        {
+          "path": "content-package.yaml",
+          "kind": "metadata",
+          "source_ref": null
+        },
+        {
+          "path": "engineering-rule-catalog.yaml",
+          "kind": "rule-catalog",
+          "source_ref": ".ai/assets/shared/governance/engineering-rule-catalog.yaml"
+        },
+        {
+          "path": "references/ENGINEERING-IDENTITY-CONTRACT.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md"
+        },
+        {
+          "path": "references/GWT-TEST-HANDOFF-CONTRACT.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md"
+        },
+        {
+          "path": "references/PROMPT-PORTABILITY-RULES.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/shared/PROMPT-PORTABILITY-RULES.md"
+        }
+      ],
+      "resource_proposals": [
+        {
+          "id": "engineering-rule-catalog",
+          "path": "engineering-rule-catalog.yaml",
+          "kind": "rule-catalog",
+          "rule_ids": [
+            "AICTX-EVIDENCE-001",
+            "ASSESSMENT-ARTIFACT-001",
+            "TECH-SELECT-001"
+          ]
+        },
+        {
+          "id": "member:references/ENGINEERING-IDENTITY-CONTRACT.md",
+          "path": "references/ENGINEERING-IDENTITY-CONTRACT.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/GWT-TEST-HANDOFF-CONTRACT.md",
+          "path": "references/GWT-TEST-HANDOFF-CONTRACT.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/PROMPT-PORTABILITY-RULES.md",
+          "path": "references/PROMPT-PORTABILITY-RULES.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        }
+      ],
+      "dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "reference_dispositions": "reference-dispositions.json",
+      "meaning": "Exact planned member set; source_ref resolves full commit/blob/raw hash in migration-inventory.json. Resource proposal defaults expand into each resource for content metadata; this is a handoff document, not emitted metadata. S2 fills references after rewriting and returns actual new hashes to S3.",
+      "resource_proposal_defaults": {
+        "capabilities": [
+          "architecture",
+          "compliance-validation",
+          "context-audit",
+          "context-maintenance",
+          "implementation",
+          "local-change",
+          "problem-framing",
+          "requirements",
+          "review",
+          "specification",
+          "test-design"
+        ],
+        "operations": [
+          "apply",
+          "assess-runtime",
+          "audit",
+          "compare",
+          "design",
+          "draft",
+          "implement",
+          "normalize",
+          "plan-validation",
+          "propose",
+          "review",
+          "review-draft",
+          "review-semantics"
+        ],
+        "technology_profile": null
+      },
+      "source_identity_inventory": "migration-inventory.json#files (exact source.path lookup)"
+    },
+    {
+      "id": "dotnet-backend",
+      "version": "0.1.0",
+      "content_package_version": 1,
+      "entrypoint": "README.md",
+      "owner": "S2",
+      "shared_manifest_owner": "S3",
+      "members": [
+        {
+          "path": "README.md",
+          "kind": "index",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/README.MD"
+        },
+        {
+          "path": "content-package.yaml",
+          "kind": "metadata",
+          "source_ref": null
+        },
+        {
+          "path": "design/architecture-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md"
+        },
+        {
+          "path": "design/design-routing.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml"
+        },
+        {
+          "path": "design/source-map.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md"
+        },
+        {
+          "path": "engineering-rule-catalog.yaml",
+          "kind": "rule-catalog",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml"
+        },
+        {
+          "path": "examples/aggregate/Plan.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/Plan.cs"
+        },
+        {
+          "path": "examples/aggregate/PlanEvents.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanEvents.cs"
+        },
+        {
+          "path": "examples/aggregate/PlanId.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanId.cs"
+        },
+        {
+          "path": "examples/aggregate/Project.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/Project.cs"
+        },
+        {
+          "path": "examples/aggregate/ProjectId.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/ProjectId.cs"
+        },
+        {
+          "path": "examples/aggregate/ProjectName.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/ProjectName.cs"
+        },
+        {
+          "path": "examples/aggregate/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/README.md"
+        },
+        {
+          "path": "examples/aggregate/TagEvents.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TagEvents.cs"
+        },
+        {
+          "path": "examples/aggregate/TagId.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TagId.cs"
+        },
+        {
+          "path": "examples/aggregate/TaskId.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TaskId.cs"
+        },
+        {
+          "path": "examples/aspnet-core/InMemoryRepositoryConfig.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/InMemoryRepositoryConfig.cs"
+        },
+        {
+          "path": "examples/aspnet-core/OutboxRepositoryConfig.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/OutboxRepositoryConfig.cs"
+        },
+        {
+          "path": "examples/aspnet-core/Program.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/Program.cs"
+        },
+        {
+          "path": "examples/aspnet-core/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/README.md"
+        },
+        {
+          "path": "examples/aspnet-core/UseCaseConfiguration.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/UseCaseConfiguration.cs"
+        },
+        {
+          "path": "examples/aspnet-core/appsettings.InMemory.json",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.InMemory.json"
+        },
+        {
+          "path": "examples/aspnet-core/appsettings.Outbox.json",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.Outbox.json"
+        },
+        {
+          "path": "examples/aspnet-core/appsettings.TestInMemory.json",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.TestInMemory.json"
+        },
+        {
+          "path": "examples/aspnet-core/appsettings.TestOutbox.json",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.TestOutbox.json"
+        },
+        {
+          "path": "examples/aspnet-core/appsettings.json",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.json"
+        },
+        {
+          "path": "examples/bdd-gherkin-example/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/README.md"
+        },
+        {
+          "path": "examples/bdd-gherkin-example/aggregate-outbox-repository.feature",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/aggregate-outbox-repository.feature"
+        },
+        {
+          "path": "examples/bdd-gherkin-example/complete-usecase-with-rules.feature",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/complete-usecase-with-rules.feature"
+        },
+        {
+          "path": "examples/bdd-gherkin-example/create-task-usecase.feature",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/create-task-usecase.feature"
+        },
+        {
+          "path": "examples/bdd-gherkin-example/rule-design-before-after.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/rule-design-before-after.md"
+        },
+        {
+          "path": "examples/bdd-gherkin-example/rule-migration-guide.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/rule-migration-guide.md"
+        },
+        {
+          "path": "examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs"
+        },
+        {
+          "path": "examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs"
+        },
+        {
+          "path": "examples/bdd-given-when-then-example/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/README.md"
+        },
+        {
+          "path": "examples/bdd-given-when-then-example/rule-design-before-after.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/rule-design-before-after.md"
+        },
+        {
+          "path": "examples/bdd-given-when-then-example/rule-migration-guide.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/rule-migration-guide.md"
+        },
+        {
+          "path": "examples/bdd-step-methods/BudgetQuery.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs"
+        },
+        {
+          "path": "examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs"
+        },
+        {
+          "path": "examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj"
+        },
+        {
+          "path": "examples/bdd-step-methods/Directory.Build.props",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/Directory.Build.props"
+        },
+        {
+          "path": "examples/bdd-step-methods/NuGet.Config",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/NuGet.Config"
+        },
+        {
+          "path": "examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs"
+        },
+        {
+          "path": "examples/bdd-step-methods/PlainXunit/PlainXunit.csproj",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj"
+        },
+        {
+          "path": "examples/bdd-step-methods/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md"
+        },
+        {
+          "path": "examples/bdd-step-methods/scenarios.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/scenarios.md"
+        },
+        {
+          "path": "examples/contract/CONTRACT-GUIDE.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/contract/CONTRACT-GUIDE.md"
+        },
+        {
+          "path": "examples/contract/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/contract/README.md"
+        },
+        {
+          "path": "examples/contract/aggregate-contract-example.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/contract/aggregate-contract-example.md"
+        },
+        {
+          "path": "examples/contract/usecase-contract-example.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/contract/usecase-contract-example.md"
+        },
+        {
+          "path": "examples/contract/value-object-contract-example.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/contract/value-object-contract-example.md"
+        },
+        {
+          "path": "examples/controller/CreateTaskController.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskController.cs"
+        },
+        {
+          "path": "examples/controller/CreateTaskRequest.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskRequest.cs"
+        },
+        {
+          "path": "examples/controller/CreateTaskResponse.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskResponse.cs"
+        },
+        {
+          "path": "examples/controller/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/controller/README.md"
+        },
+        {
+          "path": "examples/dto/PlanDto.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/dto/PlanDto.cs"
+        },
+        {
+          "path": "examples/dto/ProjectDto.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/dto/ProjectDto.cs"
+        },
+        {
+          "path": "examples/dto/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/dto/README.md"
+        },
+        {
+          "path": "examples/dto/TaskDto.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/dto/TaskDto.cs"
+        },
+        {
+          "path": "examples/generation-templates/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/README.md"
+        },
+        {
+          "path": "examples/generation-templates/base-test-classes.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/base-test-classes.md"
+        },
+        {
+          "path": "examples/generation-templates/complex-aggregate-spec.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/complex-aggregate-spec.md"
+        },
+        {
+          "path": "examples/generation-templates/local-utils.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/local-utils.md"
+        },
+        {
+          "path": "examples/generation-templates/reactor-full.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/reactor-full.md"
+        },
+        {
+          "path": "examples/generation-templates/test-case-full.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/test-case-full.md"
+        },
+        {
+          "path": "examples/generation-templates/test-suites.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/test-suites.md"
+        },
+        {
+          "path": "examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs"
+        },
+        {
+          "path": "examples/inquiry-archive/EfUserArchive.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EfUserArchive.cs"
+        },
+        {
+          "path": "examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs"
+        },
+        {
+          "path": "examples/inquiry-archive/FindCardsByTagIdInquiry.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/FindCardsByTagIdInquiry.cs"
+        },
+        {
+          "path": "examples/inquiry-archive/InquiryContracts.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/InquiryContracts.cs"
+        },
+        {
+          "path": "examples/inquiry-archive/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/README.md"
+        },
+        {
+          "path": "examples/inquiry-archive/USAGE-GUIDE.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md"
+        },
+        {
+          "path": "examples/inquiry-archive/UserArchive.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/UserArchive.cs"
+        },
+        {
+          "path": "examples/inquiry-archive/UserDbContext.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/UserDbContext.cs"
+        },
+        {
+          "path": "examples/mapper/PlanMapper.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/mapper/PlanMapper.cs"
+        },
+        {
+          "path": "examples/mapper/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/mapper/README.md"
+        },
+        {
+          "path": "examples/mapper/TaskMapper.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/mapper/TaskMapper.cs"
+        },
+        {
+          "path": "examples/nuget/Directory.Packages.props",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/nuget/Directory.Packages.props"
+        },
+        {
+          "path": "examples/outbox/BootstrapConfig.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/BootstrapConfig.cs"
+        },
+        {
+          "path": "examples/outbox/DataSourceConfig.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/DataSourceConfig.cs"
+        },
+        {
+          "path": "examples/outbox/OUTBOX-TEST-CONFIGURATION.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md"
+        },
+        {
+          "path": "examples/outbox/OutboxContracts.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/OutboxContracts.cs"
+        },
+        {
+          "path": "examples/outbox/PlanData.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanData.cs"
+        },
+        {
+          "path": "examples/outbox/PlanDbContext.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanDbContext.cs"
+        },
+        {
+          "path": "examples/outbox/PlanOutboxMapper.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanOutboxMapper.cs"
+        },
+        {
+          "path": "examples/outbox/ProjectData.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/ProjectData.cs"
+        },
+        {
+          "path": "examples/outbox/ProjectOutboxMapper.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/ProjectOutboxMapper.cs"
+        },
+        {
+          "path": "examples/outbox/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md"
+        },
+        {
+          "path": "examples/outbox/RepositoryConfig.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/RepositoryConfig.cs"
+        },
+        {
+          "path": "examples/outbox/TaskData.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/TaskData.cs"
+        },
+        {
+          "path": "examples/outbox/TaskOutboxMapper.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/outbox/TaskOutboxMapper.cs"
+        },
+        {
+          "path": "examples/profile-configs/event-architecture-reference.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/event-architecture-reference.md"
+        },
+        {
+          "path": "examples/profile-configs/inmemory-profile-config.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/inmemory-profile-config.md"
+        },
+        {
+          "path": "examples/profile-configs/outbox-profile-config.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/outbox-profile-config.md"
+        },
+        {
+          "path": "examples/projection/AllTagsProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/AllTagsProjection.cs"
+        },
+        {
+          "path": "examples/projection/EfAllTagsProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfAllTagsProjection.cs"
+        },
+        {
+          "path": "examples/projection/EfPlanDtosProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfPlanDtosProjection.cs"
+        },
+        {
+          "path": "examples/projection/EfTasksByDateProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfTasksByDateProjection.cs"
+        },
+        {
+          "path": "examples/projection/EfTasksDueTodayProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfTasksDueTodayProjection.cs"
+        },
+        {
+          "path": "examples/projection/PlanDtosProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/PlanDtosProjection.cs"
+        },
+        {
+          "path": "examples/projection/ProjectionDtos.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/ProjectionDtos.cs"
+        },
+        {
+          "path": "examples/projection/ProjectionModels.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/ProjectionModels.cs"
+        },
+        {
+          "path": "examples/projection/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/README.md"
+        },
+        {
+          "path": "examples/projection/ReadModelDbContext.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/ReadModelDbContext.cs"
+        },
+        {
+          "path": "examples/projection/TasksByDateProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksByDateProjection.cs"
+        },
+        {
+          "path": "examples/projection/TasksDueTodayProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksDueTodayProjection.cs"
+        },
+        {
+          "path": "examples/projection/TasksSortedByDeadlineProjection.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksSortedByDeadlineProjection.cs"
+        },
+        {
+          "path": "examples/reference/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/reference/README.md"
+        },
+        {
+          "path": "examples/reference/bdd-gwt-test-template.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/reference/bdd-gwt-test-template.md"
+        },
+        {
+          "path": "examples/reference/nuget-dependencies.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/reference/nuget-dependencies.md"
+        },
+        {
+          "path": "examples/reference/reactor-pattern-guide.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/reference/reactor-pattern-guide.md"
+        },
+        {
+          "path": "examples/use-case-injection/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/use-case-injection/README.md"
+        },
+        {
+          "path": "examples/usecase/AssignTagUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/AssignTagUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/AssignTagUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/AssignTagUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/CreatePlanUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreatePlanUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/CreatePlanUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreatePlanUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/CreateTaskUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreateTaskUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/CreateTaskUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreateTaskUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/DeleteTaskUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/DeleteTaskUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/DeleteTaskUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/DeleteTaskUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/GetPlanUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlanUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/GetPlanUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlanUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/GetPlansUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlansUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/GetPlansUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlansUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/GetTasksByDateUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetTasksByDateUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/GetTasksByDateUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetTasksByDateUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/README.md",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/README.md"
+        },
+        {
+          "path": "examples/usecase/RenameTaskUseCase.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/RenameTaskUseCase.cs"
+        },
+        {
+          "path": "examples/usecase/RenameTaskUseCaseContract.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs"
+        },
+        {
+          "path": "examples/usecase/UseCaseContracts.cs",
+          "kind": "example",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/examples/usecase/UseCaseContracts.cs"
+        },
+        {
+          "path": "guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+          "kind": "knowledge",
+          "source_ref": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md"
+        },
+        {
+          "path": "guides/DOTNET-DI-TEST-GUIDE.md",
+          "kind": "knowledge",
+          "source_ref": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md"
+        },
+        {
+          "path": "guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+          "kind": "knowledge",
+          "source_ref": ".dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md"
+        },
+        {
+          "path": "guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+          "kind": "knowledge",
+          "source_ref": ".dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD"
+        },
+        {
+          "path": "guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+          "kind": "knowledge",
+          "source_ref": ".dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md"
+        },
+        {
+          "path": "guides/TEMPLATE-USAGE-GUIDE.md",
+          "kind": "knowledge",
+          "source_ref": ".dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md"
+        },
+        {
+          "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/query-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md"
+        },
+        {
+          "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml"
+        },
+        {
+          "path": "legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md"
+        },
+        {
+          "path": "legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md"
+        },
+        {
+          "path": "legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md"
+        },
+        {
+          "path": "references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD"
+        },
+        {
+          "path": "references/CODE-TEMPLATES.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD"
+        },
+        {
+          "path": "references/COMMON-PITFALLS.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD"
+        },
+        {
+          "path": "references/ENGINEERING-IDENTITY-BINDINGS.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD"
+        },
+        {
+          "path": "references/FAILURE-CASES.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD"
+        },
+        {
+          "path": "references/rationale/generic-repository-only-rationale.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/generic-repository-only-rationale.MD"
+        },
+        {
+          "path": "references/rationale/profile-based-testing-rationale.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/profile-based-testing-rationale.MD"
+        },
+        {
+          "path": "references/rationale/query-side-layering-rationale.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD"
+        },
+        {
+          "path": "references/rationale/rest-api-resource-path-rationale.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD"
+        },
+        {
+          "path": "review/review-routing.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml"
+        },
+        {
+          "path": "review/test-scenario-review.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md"
+        },
+        {
+          "path": "shared/architecture-config.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md"
+        },
+        {
+          "path": "shared/common-rules.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"
+        },
+        {
+          "path": "shared/domain-rules.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md"
+        },
+        {
+          "path": "shared/dto-conventions.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md"
+        },
+        {
+          "path": "shared/testing-strategy.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md"
+        },
+        {
+          "path": "source-includes/domain/EsAggregateRoot.cs",
+          "kind": "source-include",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/EsAggregateRoot.cs"
+        },
+        {
+          "path": "source-includes/domain/IAggregateRoot.cs",
+          "kind": "source-include",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IAggregateRoot.cs"
+        },
+        {
+          "path": "source-includes/domain/IDomainEntity.cs",
+          "kind": "source-include",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEntity.cs"
+        },
+        {
+          "path": "source-includes/domain/IDomainEvent.cs",
+          "kind": "source-include",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEvent.cs"
+        },
+        {
+          "path": "source-includes/domain/README.md",
+          "kind": "source-include",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md"
+        },
+        {
+          "path": "standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"
+        },
+        {
+          "path": "standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+        },
+        {
+          "path": "standards/DESIGN-BY-CONTRACT.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
+        },
+        {
+          "path": "standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+        },
+        {
+          "path": "standards/anti-patterns.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md"
+        },
+        {
+          "path": "standards/best-practices.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md"
+        },
+        {
+          "path": "standards/coding-guide.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md"
+        },
+        {
+          "path": "standards/coding-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/aggregate-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/archive-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/controller-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/mapper-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/profile-configuration-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/projection-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/reactor-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/repository-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/test-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/transactional-messaging-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md"
+        },
+        {
+          "path": "standards/coding-standards/usecase-standards.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md"
+        },
+        {
+          "path": "standards/project-structure.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md"
+        },
+        {
+          "path": "templates/application-properties-templates.md",
+          "kind": "template",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/templates/application-properties-templates.md"
+        },
+        {
+          "path": "templates/profile-isolated-configurations.md",
+          "kind": "template",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/templates/profile-isolated-configurations.md"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/README.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/provider-contract.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/recipe-manifest.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipe-manifest.yaml"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template"
+        },
+        {
+          "path": "tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+          "kind": "knowledge",
+          "source_ref": ".ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml"
+        }
+      ],
+      "resource_proposals": [
+        {
+          "id": "engineering-rule-catalog",
+          "path": "engineering-rule-catalog.yaml",
+          "kind": "rule-catalog",
+          "rule_ids": [
+            "AGGREGATE-ES-001",
+            "ARCH-UOW-001",
+            "CONTRACT-SEMANTICS-001",
+            "DELETE-PURGE-001",
+            "DELETE-SOFT-001",
+            "MAP-EVENTS-001",
+            "MESSAGING-TX-001",
+            "PROJECT-GRAMMAR-001",
+            "TEST-BDDFY-001",
+            "TEST-GWT-001",
+            "TEST-MOCK-001"
+          ]
+        },
+        {
+          "id": "member:README.md",
+          "path": "README.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:design/architecture-playbook.md",
+          "path": "design/architecture-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:design/design-routing.yaml",
+          "path": "design/design-routing.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:design/source-map.md",
+          "path": "design/source-map.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/Plan.cs",
+          "path": "examples/aggregate/Plan.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/PlanEvents.cs",
+          "path": "examples/aggregate/PlanEvents.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/PlanId.cs",
+          "path": "examples/aggregate/PlanId.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/Project.cs",
+          "path": "examples/aggregate/Project.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/ProjectId.cs",
+          "path": "examples/aggregate/ProjectId.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/ProjectName.cs",
+          "path": "examples/aggregate/ProjectName.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/README.md",
+          "path": "examples/aggregate/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/TagEvents.cs",
+          "path": "examples/aggregate/TagEvents.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/TagId.cs",
+          "path": "examples/aggregate/TagId.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aggregate/TaskId.cs",
+          "path": "examples/aggregate/TaskId.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/InMemoryRepositoryConfig.cs",
+          "path": "examples/aspnet-core/InMemoryRepositoryConfig.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/OutboxRepositoryConfig.cs",
+          "path": "examples/aspnet-core/OutboxRepositoryConfig.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/Program.cs",
+          "path": "examples/aspnet-core/Program.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/README.md",
+          "path": "examples/aspnet-core/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/UseCaseConfiguration.cs",
+          "path": "examples/aspnet-core/UseCaseConfiguration.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/appsettings.InMemory.json",
+          "path": "examples/aspnet-core/appsettings.InMemory.json",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/appsettings.Outbox.json",
+          "path": "examples/aspnet-core/appsettings.Outbox.json",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/appsettings.TestInMemory.json",
+          "path": "examples/aspnet-core/appsettings.TestInMemory.json",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/appsettings.TestOutbox.json",
+          "path": "examples/aspnet-core/appsettings.TestOutbox.json",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/aspnet-core/appsettings.json",
+          "path": "examples/aspnet-core/appsettings.json",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-gherkin-example/README.md",
+          "path": "examples/bdd-gherkin-example/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-gherkin-example/aggregate-outbox-repository.feature",
+          "path": "examples/bdd-gherkin-example/aggregate-outbox-repository.feature",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-gherkin-example/complete-usecase-with-rules.feature",
+          "path": "examples/bdd-gherkin-example/complete-usecase-with-rules.feature",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-gherkin-example/create-task-usecase.feature",
+          "path": "examples/bdd-gherkin-example/create-task-usecase.feature",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-gherkin-example/rule-design-before-after.md",
+          "path": "examples/bdd-gherkin-example/rule-design-before-after.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-gherkin-example/rule-migration-guide.md",
+          "path": "examples/bdd-gherkin-example/rule-migration-guide.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs",
+          "path": "examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs",
+          "path": "examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-given-when-then-example/README.md",
+          "path": "examples/bdd-given-when-then-example/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-given-when-then-example/rule-design-before-after.md",
+          "path": "examples/bdd-given-when-then-example/rule-design-before-after.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-given-when-then-example/rule-migration-guide.md",
+          "path": "examples/bdd-given-when-then-example/rule-migration-guide.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/BudgetQuery.cs",
+          "path": "examples/bdd-step-methods/BudgetQuery.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs",
+          "path": "examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj",
+          "path": "examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/Directory.Build.props",
+          "path": "examples/bdd-step-methods/Directory.Build.props",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/NuGet.Config",
+          "path": "examples/bdd-step-methods/NuGet.Config",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs",
+          "path": "examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/PlainXunit/PlainXunit.csproj",
+          "path": "examples/bdd-step-methods/PlainXunit/PlainXunit.csproj",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/README.md",
+          "path": "examples/bdd-step-methods/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/bdd-step-methods/scenarios.md",
+          "path": "examples/bdd-step-methods/scenarios.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/contract/CONTRACT-GUIDE.md",
+          "path": "examples/contract/CONTRACT-GUIDE.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/contract/README.md",
+          "path": "examples/contract/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/contract/aggregate-contract-example.md",
+          "path": "examples/contract/aggregate-contract-example.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/contract/usecase-contract-example.md",
+          "path": "examples/contract/usecase-contract-example.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/contract/value-object-contract-example.md",
+          "path": "examples/contract/value-object-contract-example.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/controller/CreateTaskController.cs",
+          "path": "examples/controller/CreateTaskController.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/controller/CreateTaskRequest.cs",
+          "path": "examples/controller/CreateTaskRequest.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/controller/CreateTaskResponse.cs",
+          "path": "examples/controller/CreateTaskResponse.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/controller/README.md",
+          "path": "examples/controller/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/dto/PlanDto.cs",
+          "path": "examples/dto/PlanDto.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/dto/ProjectDto.cs",
+          "path": "examples/dto/ProjectDto.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/dto/README.md",
+          "path": "examples/dto/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/dto/TaskDto.cs",
+          "path": "examples/dto/TaskDto.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/README.md",
+          "path": "examples/generation-templates/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/base-test-classes.md",
+          "path": "examples/generation-templates/base-test-classes.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/complex-aggregate-spec.md",
+          "path": "examples/generation-templates/complex-aggregate-spec.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/local-utils.md",
+          "path": "examples/generation-templates/local-utils.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/reactor-full.md",
+          "path": "examples/generation-templates/reactor-full.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/test-case-full.md",
+          "path": "examples/generation-templates/test-case-full.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/generation-templates/test-suites.md",
+          "path": "examples/generation-templates/test-suites.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs",
+          "path": "examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/EfUserArchive.cs",
+          "path": "examples/inquiry-archive/EfUserArchive.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs",
+          "path": "examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/FindCardsByTagIdInquiry.cs",
+          "path": "examples/inquiry-archive/FindCardsByTagIdInquiry.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/InquiryContracts.cs",
+          "path": "examples/inquiry-archive/InquiryContracts.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/README.md",
+          "path": "examples/inquiry-archive/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/USAGE-GUIDE.md",
+          "path": "examples/inquiry-archive/USAGE-GUIDE.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/UserArchive.cs",
+          "path": "examples/inquiry-archive/UserArchive.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/inquiry-archive/UserDbContext.cs",
+          "path": "examples/inquiry-archive/UserDbContext.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/mapper/PlanMapper.cs",
+          "path": "examples/mapper/PlanMapper.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/mapper/README.md",
+          "path": "examples/mapper/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/mapper/TaskMapper.cs",
+          "path": "examples/mapper/TaskMapper.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/nuget/Directory.Packages.props",
+          "path": "examples/nuget/Directory.Packages.props",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/BootstrapConfig.cs",
+          "path": "examples/outbox/BootstrapConfig.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/DataSourceConfig.cs",
+          "path": "examples/outbox/DataSourceConfig.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/OUTBOX-TEST-CONFIGURATION.md",
+          "path": "examples/outbox/OUTBOX-TEST-CONFIGURATION.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/OutboxContracts.cs",
+          "path": "examples/outbox/OutboxContracts.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/PlanData.cs",
+          "path": "examples/outbox/PlanData.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/PlanDbContext.cs",
+          "path": "examples/outbox/PlanDbContext.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/PlanOutboxMapper.cs",
+          "path": "examples/outbox/PlanOutboxMapper.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/ProjectData.cs",
+          "path": "examples/outbox/ProjectData.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/ProjectOutboxMapper.cs",
+          "path": "examples/outbox/ProjectOutboxMapper.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/README.md",
+          "path": "examples/outbox/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/RepositoryConfig.cs",
+          "path": "examples/outbox/RepositoryConfig.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/TaskData.cs",
+          "path": "examples/outbox/TaskData.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/outbox/TaskOutboxMapper.cs",
+          "path": "examples/outbox/TaskOutboxMapper.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/profile-configs/event-architecture-reference.md",
+          "path": "examples/profile-configs/event-architecture-reference.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/profile-configs/inmemory-profile-config.md",
+          "path": "examples/profile-configs/inmemory-profile-config.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/profile-configs/outbox-profile-config.md",
+          "path": "examples/profile-configs/outbox-profile-config.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/AllTagsProjection.cs",
+          "path": "examples/projection/AllTagsProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/EfAllTagsProjection.cs",
+          "path": "examples/projection/EfAllTagsProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/EfPlanDtosProjection.cs",
+          "path": "examples/projection/EfPlanDtosProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/EfTasksByDateProjection.cs",
+          "path": "examples/projection/EfTasksByDateProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/EfTasksDueTodayProjection.cs",
+          "path": "examples/projection/EfTasksDueTodayProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/PlanDtosProjection.cs",
+          "path": "examples/projection/PlanDtosProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/ProjectionDtos.cs",
+          "path": "examples/projection/ProjectionDtos.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/ProjectionModels.cs",
+          "path": "examples/projection/ProjectionModels.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/README.md",
+          "path": "examples/projection/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/ReadModelDbContext.cs",
+          "path": "examples/projection/ReadModelDbContext.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/TasksByDateProjection.cs",
+          "path": "examples/projection/TasksByDateProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/TasksDueTodayProjection.cs",
+          "path": "examples/projection/TasksDueTodayProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/projection/TasksSortedByDeadlineProjection.cs",
+          "path": "examples/projection/TasksSortedByDeadlineProjection.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/reference/README.md",
+          "path": "examples/reference/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/reference/bdd-gwt-test-template.md",
+          "path": "examples/reference/bdd-gwt-test-template.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/reference/nuget-dependencies.md",
+          "path": "examples/reference/nuget-dependencies.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/reference/reactor-pattern-guide.md",
+          "path": "examples/reference/reactor-pattern-guide.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/use-case-injection/README.md",
+          "path": "examples/use-case-injection/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/AssignTagUseCase.cs",
+          "path": "examples/usecase/AssignTagUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/AssignTagUseCaseContract.cs",
+          "path": "examples/usecase/AssignTagUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/CreatePlanUseCase.cs",
+          "path": "examples/usecase/CreatePlanUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/CreatePlanUseCaseContract.cs",
+          "path": "examples/usecase/CreatePlanUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/CreateTaskUseCase.cs",
+          "path": "examples/usecase/CreateTaskUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/CreateTaskUseCaseContract.cs",
+          "path": "examples/usecase/CreateTaskUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/DeleteTaskUseCase.cs",
+          "path": "examples/usecase/DeleteTaskUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/DeleteTaskUseCaseContract.cs",
+          "path": "examples/usecase/DeleteTaskUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/GetPlanUseCase.cs",
+          "path": "examples/usecase/GetPlanUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/GetPlanUseCaseContract.cs",
+          "path": "examples/usecase/GetPlanUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/GetPlansUseCase.cs",
+          "path": "examples/usecase/GetPlansUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/GetPlansUseCaseContract.cs",
+          "path": "examples/usecase/GetPlansUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/GetTasksByDateUseCase.cs",
+          "path": "examples/usecase/GetTasksByDateUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/GetTasksByDateUseCaseContract.cs",
+          "path": "examples/usecase/GetTasksByDateUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/README.md",
+          "path": "examples/usecase/README.md",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/RenameTaskUseCase.cs",
+          "path": "examples/usecase/RenameTaskUseCase.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/RenameTaskUseCaseContract.cs",
+          "path": "examples/usecase/RenameTaskUseCaseContract.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:examples/usecase/UseCaseContracts.cs",
+          "path": "examples/usecase/UseCaseContracts.cs",
+          "kind": "example",
+          "rule_ids": []
+        },
+        {
+          "id": "member:guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+          "path": "guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:guides/DOTNET-DI-TEST-GUIDE.md",
+          "path": "guides/DOTNET-DI-TEST-GUIDE.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+          "path": "guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+          "path": "guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+          "path": "guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:guides/TEMPLATE-USAGE-GUIDE.md",
+          "path": "guides/TEMPLATE-USAGE-GUIDE.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+          "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+          "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+          "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+          "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+          "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+          "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+          "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+          "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+          "path": "legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+          "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+          "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+          "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+          "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+          "path": "legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+          "path": "legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+          "path": "legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+          "path": "references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/CODE-TEMPLATES.MD",
+          "path": "references/CODE-TEMPLATES.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/COMMON-PITFALLS.MD",
+          "path": "references/COMMON-PITFALLS.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/ENGINEERING-IDENTITY-BINDINGS.MD",
+          "path": "references/ENGINEERING-IDENTITY-BINDINGS.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/FAILURE-CASES.MD",
+          "path": "references/FAILURE-CASES.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/rationale/generic-repository-only-rationale.MD",
+          "path": "references/rationale/generic-repository-only-rationale.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/rationale/profile-based-testing-rationale.MD",
+          "path": "references/rationale/profile-based-testing-rationale.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/rationale/query-side-layering-rationale.MD",
+          "path": "references/rationale/query-side-layering-rationale.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:references/rationale/rest-api-resource-path-rationale.MD",
+          "path": "references/rationale/rest-api-resource-path-rationale.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:review/review-routing.yaml",
+          "path": "review/review-routing.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:review/test-scenario-review.md",
+          "path": "review/test-scenario-review.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:shared/architecture-config.md",
+          "path": "shared/architecture-config.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:shared/common-rules.md",
+          "path": "shared/common-rules.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:shared/domain-rules.md",
+          "path": "shared/domain-rules.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:shared/dto-conventions.md",
+          "path": "shared/dto-conventions.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:shared/testing-strategy.md",
+          "path": "shared/testing-strategy.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:source-includes/domain/EsAggregateRoot.cs",
+          "path": "source-includes/domain/EsAggregateRoot.cs",
+          "kind": "source-include",
+          "rule_ids": []
+        },
+        {
+          "id": "member:source-includes/domain/IAggregateRoot.cs",
+          "path": "source-includes/domain/IAggregateRoot.cs",
+          "kind": "source-include",
+          "rule_ids": []
+        },
+        {
+          "id": "member:source-includes/domain/IDomainEntity.cs",
+          "path": "source-includes/domain/IDomainEntity.cs",
+          "kind": "source-include",
+          "rule_ids": []
+        },
+        {
+          "id": "member:source-includes/domain/IDomainEvent.cs",
+          "path": "source-includes/domain/IDomainEvent.cs",
+          "kind": "source-include",
+          "rule_ids": []
+        },
+        {
+          "id": "member:source-includes/domain/README.md",
+          "path": "source-includes/domain/README.md",
+          "kind": "source-include",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+          "path": "standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+          "path": "standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "AGGREGATE-ES-001"
+          ]
+        },
+        {
+          "id": "member:standards/DESIGN-BY-CONTRACT.md",
+          "path": "standards/DESIGN-BY-CONTRACT.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "CONTRACT-SEMANTICS-001"
+          ]
+        },
+        {
+          "id": "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+          "path": "standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/anti-patterns.md",
+          "path": "standards/anti-patterns.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/best-practices.md",
+          "path": "standards/best-practices.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-guide.md",
+          "path": "standards/coding-guide.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards.md",
+          "path": "standards/coding-standards.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards/aggregate-standards.md",
+          "path": "standards/coding-standards/aggregate-standards.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "DELETE-SOFT-001"
+          ]
+        },
+        {
+          "id": "member:standards/coding-standards/archive-standards.md",
+          "path": "standards/coding-standards/archive-standards.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "DELETE-PURGE-001"
+          ]
+        },
+        {
+          "id": "member:standards/coding-standards/controller-standards.md",
+          "path": "standards/coding-standards/controller-standards.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards/mapper-standards.md",
+          "path": "standards/coding-standards/mapper-standards.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "MAP-EVENTS-001"
+          ]
+        },
+        {
+          "id": "member:standards/coding-standards/profile-configuration-standards.md",
+          "path": "standards/coding-standards/profile-configuration-standards.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards/projection-standards.md",
+          "path": "standards/coding-standards/projection-standards.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards/reactor-standards.md",
+          "path": "standards/coding-standards/reactor-standards.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards/repository-standards.md",
+          "path": "standards/coding-standards/repository-standards.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:standards/coding-standards/test-standards.md",
+          "path": "standards/coding-standards/test-standards.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "TEST-BDDFY-001",
+            "TEST-GWT-001",
+            "TEST-MOCK-001"
+          ]
+        },
+        {
+          "id": "member:standards/coding-standards/transactional-messaging-standards.md",
+          "path": "standards/coding-standards/transactional-messaging-standards.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "MESSAGING-TX-001"
+          ]
+        },
+        {
+          "id": "member:standards/coding-standards/usecase-standards.md",
+          "path": "standards/coding-standards/usecase-standards.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "ARCH-UOW-001"
+          ]
+        },
+        {
+          "id": "member:standards/project-structure.md",
+          "path": "standards/project-structure.md",
+          "kind": "knowledge",
+          "rule_ids": [
+            "PROJECT-GRAMMAR-001"
+          ]
+        },
+        {
+          "id": "member:templates/application-properties-templates.md",
+          "path": "templates/application-properties-templates.md",
+          "kind": "template",
+          "rule_ids": []
+        },
+        {
+          "id": "member:templates/profile-isolated-configurations.md",
+          "path": "templates/profile-isolated-configurations.md",
+          "kind": "template",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/README.md",
+          "path": "tooling/on-demand-mechanical-validation/README.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+          "path": "tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+          "path": "tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/provider-contract.yaml",
+          "path": "tooling/on-demand-mechanical-validation/provider-contract.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/recipe-manifest.yaml",
+          "path": "tooling/on-demand-mechanical-validation/recipe-manifest.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+          "path": "tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+          "path": "tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+          "path": "tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+          "path": "tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+          "path": "tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+          "path": "tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+          "kind": "knowledge",
+          "rule_ids": []
+        },
+        {
+          "id": "member:tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+          "path": "tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+          "kind": "knowledge",
+          "rule_ids": []
+        }
+      ],
+      "dependencies": {
+        "required": [
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0"
+          }
+        ],
+        "optional": []
+      },
+      "reference_dispositions": "reference-dispositions.json",
+      "meaning": "Exact planned member set; source_ref resolves full commit/blob/raw hash in migration-inventory.json. Resource proposal defaults expand into each resource for content metadata; this is a handoff document, not emitted metadata. S2 fills references after rewriting and returns actual new hashes to S3.",
+      "resource_proposal_defaults": {
+        "capabilities": [
+          "architecture",
+          "compliance-validation",
+          "implementation",
+          "local-change",
+          "problem-framing",
+          "requirements",
+          "review",
+          "specification",
+          "test-design"
+        ],
+        "operations": [
+          "apply",
+          "assess-runtime",
+          "audit",
+          "compare",
+          "design",
+          "draft",
+          "implement",
+          "normalize",
+          "plan-validation",
+          "propose",
+          "review",
+          "review-draft",
+          "review-semantics"
+        ],
+        "technology_profile": "dotnet-backend"
+      },
+      "source_identity_inventory": "migration-inventory.json#files (exact source.path lookup)"
+    }
+  ]
+}

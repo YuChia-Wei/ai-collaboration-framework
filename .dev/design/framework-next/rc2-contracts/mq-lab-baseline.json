@@ -1,0 +1,508 @@
+{
+  "record_version": 1,
+  "repository": "YuChia-Wei/dotnet-distributed-architecture-lab",
+  "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+  "tree": "1f1bac4fcc564657ae8eddb4ee1c704cc85c7284",
+  "evidence_kind": "read-only-fixed-target-documents-no-validator-execution",
+  "authorities": [
+    {
+      "path": ".dev/ai-context/effective-rules.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "6b62edae99fc8f334ab853d38b62f3bfaddc949c",
+      "mode": "100644",
+      "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+      "size": 26262,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ai-context/customizations.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "af01271731763b77a606b06154873c112190a51f",
+      "mode": "100644",
+      "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+      "size": 14901,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ai-context/framework-binding.json",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "c3a089bd1ea17be743b378e113b49c49afc086e6",
+      "mode": "100644",
+      "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+      "size": 24535,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ai-context/tooling/validate-current-framework.py",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "67991500fba8df0172c60cfe9e200ac69dfec9f7",
+      "mode": "100644",
+      "sha256": "383d1e7b30b9915267c2db2b1842e1cdd8523029f585f64a660855625bb63504",
+      "size": 19462,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ai-context/tooling/target-gate-manifest.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "af7424f18cf4b6b9692964e1af0fb4c0c684a0c6",
+      "mode": "100644",
+      "sha256": "88a465befa1418587f8ee2023967f2949e275a5b488bb6cc18df1d0c95a70951",
+      "size": 11525,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ai-context/tooling/target-validation-policy.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "4c1f1006b6e1d697ae548b9c18053975f215a8c2",
+      "mode": "100644",
+      "sha256": "1cc3d187a6679ec760d42faa59e591b845b45aaf6a7c589ecfc15936508fe0a9",
+      "size": 888,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ai-context/CURRENT-FRAMEWORK.md",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "dc390075e08ebe51ed2660f9723d0f4779a8ce20",
+      "mode": "100644",
+      "sha256": "5cd901f6bf1060baa58e2c9c3c55c4b39bf23b1b9efeb1525eb5010ef3d6d809",
+      "size": 9420,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/project-config.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "5ebd1c901c1cfb6881fcb845b9ac854754fe7ade",
+      "mode": "100644",
+      "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+      "size": 13514,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".dev/ARCHITECTURE.md",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "64b5bee35edda66468e9815a90cad319da1ed013",
+      "mode": "100644",
+      "sha256": "fade19a6898c7108b7002cd7371e0ebe71039ce3c36365e8053873222eeac4ae",
+      "size": 8234,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".ai/framework.lock",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "a12baecc4fe3e1c650a95c5b34e46f504a1d2640",
+      "mode": "100644",
+      "sha256": "a04e2df01f5f6df6889b7c09daa1b9ae1c78e6b503aac852d5aa2b325c56a0e8",
+      "size": 151844,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "6fcd3f324baa924190c39c09be14c1a32bf2482f",
+      "mode": "100644",
+      "sha256": "9ec5c0cf7f95fd5a57ed1415c96c88175610d80d811c224b60ee39e2222d3c39",
+      "size": 11562,
+      "working_bytes_equal_blob": true
+    },
+    {
+      "path": ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
+      "git_blob": "a153141cbfc852feeaef6758afbde688c1a024dd",
+      "mode": "100644",
+      "sha256": "e26dffe17074ccdf33a925d865cf2b24216db1d3d8afb25f678fa828aadc2ef4",
+      "size": 49682,
+      "working_bytes_equal_blob": true
+    }
+  ],
+  "rule_dispositions": [
+    {
+      "applicability": "Orders adopts event sourcing and reconstructs Order by replaying persisted domain events through EsAggregateRoot behavior.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "AGGREGATE-ES-001"
+    },
+    {
+      "applicability": "AI-context initialization, upgrade, audit, and development must rely on repository-backed evidence and disclose optional external discovery.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "AICTX-EVIDENCE-001"
+    },
+    {
+      "applicability": "Command use cases persist aggregates, use explicit local transactions for aggregate/outbox consistency, and message across bounded contexts.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "ARCH-UOW-001"
+    },
+    {
+      "applicability": "AI-context audits, code reviews, and architecture assessments are persisted as governed assessment artifacts.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "ASSESSMENT-ARTIFACT-001"
+    },
+    {
+      "applicability": "Domain behavior declares and enforces preconditions and invariants for products, orders, and inventory.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "CONTRACT-SEMANTICS-001"
+    },
+    {
+      "applicability": "Inventory persistence contains an executable physical-delete implementation, so purge/archive governance cannot be globally excluded.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "DELETE-PURGE-001"
+    },
+    {
+      "applicability": "Products persists an isdeleted marker and filters deleted records from aggregate and query repositories.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "DELETE-SOFT-001"
+    },
+    {
+      "applicability": "Order reconstruction replays persisted events without creating pending events, and tests verify clean rehydration behavior.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "MAP-EVENTS-001"
+    },
+    {
+      "rule_id": "MESSAGING-TX-001",
+      "effective_disposition": "baseline-effective",
+      "applicability": "a message consumer requires atomic local business state, durable outgoing intent, and successful incoming-processing completion"
+    },
+    {
+      "applicability": "The target adopts the conditional slnx navigation profile with bounded context DomainCore and Presentation solution folders.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "PROJECT-GRAMMAR-001"
+    },
+    {
+      "applicability": "Testing, persistence, messaging, and observability choices are explicit, evidence-backed, and recorded in target configuration.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "TECH-SELECT-001"
+    },
+    {
+      "applicability": "The dotnet-backend profile applies and the target explicitly selects the baseline-permitted plain-xUnit branch with mandatory GWT semantics.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "TEST-BDDFY-001"
+    },
+    {
+      "applicability": "New and modified tests use recognizable Given-When-Then semantics regardless of the selected runner.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "TEST-GWT-001"
+    },
+    {
+      "applicability": "Test projects use the explicitly recorded per-project Moq and NSubstitute selection.",
+      "effective_disposition": "baseline-effective",
+      "rule_id": "TEST-MOCK-001"
+    }
+  ],
+  "customizations": [
+    {
+      "id": "CUST-DOTNET-MQ-GOVERNANCE",
+      "subject": {
+        "kind": "rule",
+        "id": "downstream-ai-context-governance-projection"
+      },
+      "relationship": "extends",
+      "reason": "Merge the byte-exact v0.13 framework evolution while retaining target Issue-first authorization, repository governance and skill routing, directory-scoped .codex/agents tracking, the repository LF policy, and inactive profile/reuse/recipe boundaries. Adopt compact code-review routing without allowing package examples to replace target truth.",
+      "paths": [
+        ".gitignore",
+        ".gitattributes",
+        ".github/pull_request_template.md",
+        "AGENTS.md",
+        "AGENTS.zh-TW.md",
+        ".dev/project-config.yaml",
+        ".dev/ai-context/tooling/README.md"
+      ],
+      "disposition": "merge"
+    },
+    {
+      "id": "CUST-DOTNET-MQ-VALIDATION",
+      "subject": {
+        "kind": "contract",
+        "id": "downstream-validation-runtime"
+      },
+      "relationship": "deviates",
+      "reason": "AICU-V010-PROJECTION-001, AICU-V011-SELECTION-001, AICU-V012-PROFILE-REGISTRY-PROJECTION-001, AICU-V012-COMMIT-CUTOVER-001, AICU-V012-COMMIT-DOC-001, AICU-V013-ROUTING-PROJECTION-001, AICU-V013-COMPONENT-OWNERSHIP-001, and AICU-V013-PREACTION-PACKET-BOOTSTRAP-001 require the SHA-pinned downstream-applicable target gate and prospective target policy. Do not claim stock profiles, changed-path execution, reuse, or source-only tests passed.",
+      "paths": [
+        ".dev/ai-context/tooling/README.md",
+        ".dev/ai-context/tooling/git-commit-policy/validate-target-git-commits.py",
+        ".dev/ai-context/tooling/target-gate-manifest.yaml",
+        ".dev/ai-context/tooling/target-validation-policy.yaml",
+        ".dev/ai-context/tooling/tests/test_downstream_package_projection.py",
+        ".dev/ai-context/tooling/tests/test_effective_rule_decisions.py",
+        ".dev/ai-context/tooling/tests/test_target_git_commit_policy.py",
+        ".dev/ai-context/tooling/validate-target-ai-context.py",
+        ".dev/ai-context/tooling/tests/test_target_gate_candidate_diagnostics.py",
+        ".dev/ai-context/tooling/tests/test_code_reviewer_routing_projection.py"
+      ],
+      "disposition": "merge"
+    },
+    {
+      "id": "CUST-DOTNET-MQ-REPO-TRUTH",
+      "subject": {
+        "kind": "contract",
+        "id": "target-repository-truth-boundary"
+      },
+      "relationship": "target-only",
+      "reason": "Preserve repository identity, .NET SDK and product truth, target catalogs and workflow authorities, complete analyzer/tools retirement, and inactive recipe boundaries while adopting v0.13 exact framework paths and removal of the bundled provider payload.",
+      "paths": [
+        ".dev/ARCHITECTURE.md",
+        ".dev/INDEX.md",
+        ".dev/README.MD",
+        ".dev/adr/INDEX.md",
+        ".dev/backlog/INDEX.MD",
+        ".dev/problem-frames/INDEX.md",
+        ".dev/project-config.yaml",
+        ".dev/specs/INDEX.MD",
+        ".dev/workflows/INDEX.MD",
+        ".editorconfig",
+        ".gitattributes",
+        ".gitignore",
+        "AGENTS.md",
+        "AGENTS.zh-TW.md",
+        "CLAUDE.md",
+        "README.md",
+        "README.en.md",
+        "global.json",
+        "MQArchLab.slnx"
+      ],
+      "disposition": "retain"
+    },
+    {
+      "id": "CUST-DOTNET-MQ-EXECUTION-PROVENANCE-ADOPTION",
+      "subject": {
+        "kind": "rule",
+        "id": "target-execution-provenance-adoption-boundary"
+      },
+      "relationship": "deviates",
+      "reason": "Adopt AI execution provenance prospectively from 2026-08-12T22:08:09+08:00 and commit-subject grammar from 2026-08-13T11:05:12+08:00 without history rewrite. Preserve only the exact ad194beb3fb61a18b6870093b704264746c1516b / ASM-20260812-002 / missing-matching-trailer waiver in the target-owned fail-closed overlay while canonical v0.13 framework bytes remain exact.",
+      "paths": [
+        ".dev/ai-context/tooling/README.md",
+        ".dev/ai-context/tooling/target-validation-policy.yaml",
+        ".dev/ai-context/tooling/validate-target-ai-context.py",
+        ".dev/ai-context/tooling/git-commit-policy/validate-target-git-commits.py",
+        ".dev/ai-context/tooling/tests/test_target_git_commit_policy.py",
+        "AGENTS.md",
+        "AGENTS.zh-TW.md"
+      ],
+      "disposition": "merge"
+    }
+  ],
+  "route_bindings": [
+    {
+      "package": "slice-implementer",
+      "route_id": "ROUTE-0060755BB97DCDEAC34944FA27E473EC92B448A74107DA66CB5D9D7E51EED46B",
+      "selector": {
+        "capability": "implementation",
+        "execution_mode": "command",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-production"
+      }
+    },
+    {
+      "package": "spec-author",
+      "route_id": "ROUTE-0CB791EB64099FC942CC9EF435809DB1E757848F558735D7D1417D83E22CAD3A",
+      "selector": {
+        "capability": "specification",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "specification-markdown"
+      }
+    },
+    {
+      "package": "local-change-implementer",
+      "route_id": "ROUTE-1FDA4CA0244ECF7DBB006600D53ED431A940DF857859E9EB143D2EA3BF59FA2C",
+      "selector": {
+        "capability": "local-change",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-production"
+      }
+    },
+    {
+      "package": "slice-implementer",
+      "route_id": "ROUTE-3EE85C82323D6A52F24B406E8F1271F5ED88DDE38EAC1044F0BF971061FFE0C4",
+      "selector": {
+        "capability": "implementation",
+        "execution_mode": "generic",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-production"
+      }
+    },
+    {
+      "package": "code-reviewer",
+      "route_id": "ROUTE-44441057FC3C725F5861E2149944CFB7EFDD0C5F890831C4208291A5B2371222",
+      "selector": {
+        "capability": "review",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "dotnet-mixed-review"
+      }
+    },
+    {
+      "package": "local-change-implementer",
+      "route_id": "ROUTE-510496FD8627821F6F011990789DAD56E50CD189EC64045D5D4444FE6AB89EE7",
+      "selector": {
+        "capability": "local-change",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-test"
+      }
+    },
+    {
+      "package": "problem-frame-author",
+      "route_id": "ROUTE-5376A2F088F0C2FB915830EEC987D1391E96AFDDE1208E4E68B362FE4D3A612E",
+      "selector": {
+        "capability": "problem-framing",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "problem-frame-yaml"
+      }
+    },
+    {
+      "package": "bdd-gwt-test-designer",
+      "route_id": "ROUTE-595016B570726DB08342680D2195648944D898511253100E88AEA1B9E66957D5",
+      "selector": {
+        "capability": "test-design",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "gherkin-feature"
+      }
+    },
+    {
+      "package": "code-reviewer",
+      "route_id": "ROUTE-5FD9FBA84BFD386D5D5F3C8AC8B16EF6332DEA1D48EC5DBF6AA6B096D0828604",
+      "selector": {
+        "capability": "review",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-review"
+      }
+    },
+    {
+      "package": "ddd-ca-hex-architect",
+      "route_id": "ROUTE-6793F2C32C4BF62763380BCF5CD83D284C40AB2401A5BB42904823E7F28BE96C",
+      "selector": {
+        "capability": "architecture",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "architecture-decision"
+      }
+    },
+    {
+      "package": "local-change-implementer",
+      "route_id": "ROUTE-69320ED2F30633AA22DD3E91C72210D14A955614F1B4269844ED8EAC0274491C",
+      "selector": {
+        "capability": "local-change",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "project-file"
+      }
+    },
+    {
+      "package": "requirement-author",
+      "route_id": "ROUTE-7C1C8C42DEAF9D889A157FA97FA2E5390CDCD0FD5509103DA4DA1A65CB2A85BE",
+      "selector": {
+        "capability": "requirements",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "requirement-markdown"
+      }
+    },
+    {
+      "package": "bdd-gwt-test-designer",
+      "route_id": "ROUTE-8691EB94D951D12620A830D430E1934E0E228CE6B1342F65673ADBD57C484333",
+      "selector": {
+        "capability": "test-design",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-test"
+      }
+    },
+    {
+      "package": "spec-compliance-validator",
+      "route_id": "ROUTE-86B49603D837372BA200420228174C1CF61333171CE8D96FCFF63ABD07BB796D",
+      "selector": {
+        "capability": "compliance-validation",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "problem-frame-and-dotnet"
+      }
+    },
+    {
+      "package": "local-change-implementer",
+      "route_id": "ROUTE-88F8297799ABD7C258348FA6072DFE56306800798EACEB7529FAC1509F304A15",
+      "selector": {
+        "capability": "local-change",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "sql"
+      }
+    },
+    {
+      "package": "local-change-implementer",
+      "route_id": "ROUTE-93389630E2EAEBD1C926310D5932AA0DB31893A1FC0108457AE8E9B63B44E356",
+      "selector": {
+        "capability": "local-change",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "yaml-config"
+      }
+    },
+    {
+      "package": "slice-implementer",
+      "route_id": "ROUTE-DF0E762322A527898C635F453332C4FD4607EFC0A01AE6AFFA49D799E70BAB18",
+      "selector": {
+        "capability": "implementation",
+        "execution_mode": "generic",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-test"
+      }
+    },
+    {
+      "package": "slice-implementer",
+      "route_id": "ROUTE-E3B4869DC90073EEDA02B8105FB8EE99866C4CF93C5E3FC852258480BEDE8566",
+      "selector": {
+        "capability": "implementation",
+        "execution_mode": "reactor",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-production"
+      }
+    },
+    {
+      "package": "slice-implementer",
+      "route_id": "ROUTE-EFD78BECD2CAFD2890638E78C79E0ABCA47CB5E0C70EC9B3D602EC12FF762AFE",
+      "selector": {
+        "capability": "implementation",
+        "execution_mode": "query",
+        "technology_profile": "dotnet-backend",
+        "file_type": "csharp-production"
+      }
+    },
+    {
+      "package": "spec-author",
+      "route_id": "ROUTE-FAD108B11C0B4A274C0B640D117F2D7EE22FA006DDA09A442DD9BF0E2DC6C0EF",
+      "selector": {
+        "capability": "specification",
+        "execution_mode": "direct",
+        "technology_profile": "dotnet-backend",
+        "file_type": "specification-json"
+      }
+    }
+  ],
+  "project_scope_packages": [
+    "adr",
+    "ai-context-auditor",
+    "ai-context-governance",
+    "diagnostic-analyst",
+    "lesson",
+    "local-backlog",
+    "pr",
+    "software-development-orchestrator",
+    "standards-promotion"
+  ],
+  "gate": {
+    "command": "python -I -B .dev/ai-context/tooling/validate-current-framework.py --binding-sha256 <accepted-digest> --git-range <accepted-base>..HEAD",
+    "execution": "not-run",
+    "retained_legacy_gate": "validate-target-ai-context.py remains v0.18/legacy support; no relabeling as rc.2 admission",
+    "reconciliation": "S5 target owner updates pins/routes only under target adoption authority; independent target review remains separate."
+  },
+  "technology": {
+    "Inventory": "EF Core / Npgsql with capability-specific stock and reservation outbox transaction owners; existing SQL schema/migrations authoritative",
+    "Products": "Dapper / Npgsql",
+    "Orders": "Dapper plus explicitly selected event sourcing; no framework-wide ORM substitution",
+    "tests": "plain xUnit v3 with mandatory GWT; BDDfy opt-out; Moq/NSubstitute per target test project"
+  },
+  "warning": "Git status reported unreadable ignored prerequisite-fixture directories; no claim about full untracked target cleanliness. Selected tracked authority working bytes compared individually."
+}

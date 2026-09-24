@@ -1,0 +1,68 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "S1-selection-contract",
+  "workflow_id": "2026-09-24-rc2-selection-contract",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-24T19:12:18+08:00",
+  "updated_at": "2026-09-24T19:17:12+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "acceptance_ids": [
+    "S1-A1",
+    "S1-A2",
+    "S1-A3",
+    "S1-A4",
+    "S1-A5",
+    "S1-A6"
+  ],
+  "scope": {
+    "target": "Issue #401 contract documents and migration inventory",
+    "owned_roots": [
+      ".dev/design/framework-next/rc2-contracts/",
+      ".dev/workflows/2026-09-24-rc2-selection-contract/"
+    ],
+    "constraints": [
+      "one writer",
+      "no shared files",
+      "no product/target edits",
+      "stop before first push"
+    ],
+    "non_goals": [
+      "product implementation",
+      "runtime discovery",
+      "target adoption",
+      "CI restoration",
+      "policy adoption",
+      "release/publication"
+    ]
+  },
+  "execution": {
+    "last_completed_step": "Direct document checks and exact planned-message validation",
+    "next_action": "Coordinator consumes the containing local commit and exact local handoff; first push and integration remain coordinator-owned."
+  },
+  "results": {
+    "summary": "A1-A6 document delivery complete; 272-file inventory, 14 rules, 235 members, 21 capabilities.",
+    "behavioral_verification": "deferred-by-owner",
+    "deferred_owner": "program #322 coordinator / P7",
+    "integration": "not-performed",
+    "follow_up_needed": true,
+    "acceptance": {
+      "S1-A1": "document-delivered",
+      "S1-A2": "document-delivered",
+      "S1-A3": "document-delivered",
+      "S1-A4": "document-delivered",
+      "S1-A5": "document-delivered",
+      "S1-A6": "document-delivered"
+    },
+    "actual_checks": "checks.json",
+    "files_changed": [
+      ".dev/design/framework-next/rc2-contracts/",
+      ".dev/workflows/2026-09-24-rc2-selection-contract/"
+    ],
+    "remaining_owner_decisions": []
+  }
+}
