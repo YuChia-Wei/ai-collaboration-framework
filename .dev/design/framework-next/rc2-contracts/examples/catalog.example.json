@@ -1,0 +1,75 @@
+{
+  "adapters": [],
+  "build_inputs": [
+    {
+      "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+      "mode": "100644",
+      "path": "src/distribution/example_generator.py",
+      "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+      "size": 45
+    },
+    {
+      "git_blob": "a9334c2fd44a9e479272ab48cb18322403776e59",
+      "mode": "100644",
+      "path": "src/distribution/manifest.yaml",
+      "sha256": "0d89a1c891e28c949ec7bbe55cadff07b1b73dae72ac48f425a7f4b9abb4a7bb",
+      "size": 58
+    },
+    {
+      "git_blob": "a32c70fa3039d92b817a2c712a9f76bc7103ba25",
+      "mode": "100644",
+      "path": "src/knowledge/example-knowledge/README.md",
+      "sha256": "53e894ca504ba3fd02103c60411f99934af2068481fdc98d262c57500e2410b3",
+      "size": 48
+    },
+    {
+      "git_blob": "040b1d5410437d96ee98483b2426f41c47b1db17",
+      "mode": "100644",
+      "path": "src/knowledge/example-knowledge/content-package.yaml",
+      "sha256": "9412cae7f640aacf8cbf3bb3f3692227c381a19bc1eadc553f1375b9332b803b",
+      "size": 613
+    },
+    {
+      "git_blob": "ef0293a6391a6dc687f1f0a6d6513a79a27adcdd",
+      "mode": "100644",
+      "path": "src/knowledge/example-knowledge/guidance.md",
+      "sha256": "1effac4d0bbf0cd62bfd6c9a0b132b6aa32af7661a4bf164c1ea4807fb5cb0bf",
+      "size": 58
+    }
+  ],
+  "catalog_version": 1,
+  "components": [
+    {
+      "id": "example-knowledge",
+      "kind": "knowledge",
+      "members": [
+        "README.md",
+        "content-package.yaml",
+        "guidance.md"
+      ],
+      "metadata": "content-package.yaml",
+      "metadata_version": 1,
+      "optional_dependencies": [],
+      "required_dependencies": [],
+      "version": "0.1.0"
+    }
+  ],
+  "generator": {
+    "id": "aicf-catalog-assembly",
+    "implementation": [
+      {
+        "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+        "mode": "100644",
+        "path": "src/distribution/example_generator.py",
+        "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+        "size": 45
+      }
+    ]
+  },
+  "presets": [],
+  "release_version": "0.19.0-rc.2",
+  "source": {
+    "commit": "0000000000000000000000000000000000000000",
+    "tree": "0000000000000000000000000000000000000000"
+  }
+}

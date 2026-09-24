@@ -1,0 +1,251 @@
+{
+  "candidate_identity": "subset:3:0.19.0-rc.2:0000000000000000000000000000000000000000:629f76d0c421f310c0a3af5acdfbacc29e9a2c2808ef37693619288c0cc20fdf",
+  "catalog_document": {
+    "adapters": [],
+    "build_inputs": [
+      {
+        "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+        "mode": "100644",
+        "path": "src/distribution/example_generator.py",
+        "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+        "size": 45
+      },
+      {
+        "git_blob": "a9334c2fd44a9e479272ab48cb18322403776e59",
+        "mode": "100644",
+        "path": "src/distribution/manifest.yaml",
+        "sha256": "0d89a1c891e28c949ec7bbe55cadff07b1b73dae72ac48f425a7f4b9abb4a7bb",
+        "size": 58
+      },
+      {
+        "git_blob": "a32c70fa3039d92b817a2c712a9f76bc7103ba25",
+        "mode": "100644",
+        "path": "src/knowledge/example-knowledge/README.md",
+        "sha256": "53e894ca504ba3fd02103c60411f99934af2068481fdc98d262c57500e2410b3",
+        "size": 48
+      },
+      {
+        "git_blob": "040b1d5410437d96ee98483b2426f41c47b1db17",
+        "mode": "100644",
+        "path": "src/knowledge/example-knowledge/content-package.yaml",
+        "sha256": "9412cae7f640aacf8cbf3bb3f3692227c381a19bc1eadc553f1375b9332b803b",
+        "size": 613
+      },
+      {
+        "git_blob": "ef0293a6391a6dc687f1f0a6d6513a79a27adcdd",
+        "mode": "100644",
+        "path": "src/knowledge/example-knowledge/guidance.md",
+        "sha256": "1effac4d0bbf0cd62bfd6c9a0b132b6aa32af7661a4bf164c1ea4807fb5cb0bf",
+        "size": 58
+      }
+    ],
+    "catalog_version": 1,
+    "components": [
+      {
+        "id": "example-knowledge",
+        "kind": "knowledge",
+        "members": [
+          "README.md",
+          "content-package.yaml",
+          "guidance.md"
+        ],
+        "metadata": "content-package.yaml",
+        "metadata_version": 1,
+        "optional_dependencies": [],
+        "required_dependencies": [],
+        "version": "0.1.0"
+      }
+    ],
+    "generator": {
+      "id": "aicf-catalog-assembly",
+      "implementation": [
+        {
+          "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+          "mode": "100644",
+          "path": "src/distribution/example_generator.py",
+          "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+          "size": 45
+        }
+      ]
+    },
+    "presets": [],
+    "release_version": "0.19.0-rc.2",
+    "source": {
+      "commit": "0000000000000000000000000000000000000000",
+      "tree": "0000000000000000000000000000000000000000"
+    }
+  },
+  "catalog_inventory": {
+    "catalog_files_version": 1,
+    "files": [
+      {
+        "kind": "knowledge",
+        "member": "README.md",
+        "owner": "example-knowledge",
+        "path": "packages/knowledge/example-knowledge/README.md",
+        "source": {
+          "git_blob": "a32c70fa3039d92b817a2c712a9f76bc7103ba25",
+          "mode": "100644",
+          "path": "src/knowledge/example-knowledge/README.md",
+          "sha256": "53e894ca504ba3fd02103c60411f99934af2068481fdc98d262c57500e2410b3",
+          "size": 48
+        }
+      },
+      {
+        "kind": "knowledge",
+        "member": "content-package.yaml",
+        "owner": "example-knowledge",
+        "path": "packages/knowledge/example-knowledge/content-package.yaml",
+        "source": {
+          "git_blob": "040b1d5410437d96ee98483b2426f41c47b1db17",
+          "mode": "100644",
+          "path": "src/knowledge/example-knowledge/content-package.yaml",
+          "sha256": "9412cae7f640aacf8cbf3bb3f3692227c381a19bc1eadc553f1375b9332b803b",
+          "size": 613
+        }
+      },
+      {
+        "kind": "knowledge",
+        "member": "guidance.md",
+        "owner": "example-knowledge",
+        "path": "packages/knowledge/example-knowledge/guidance.md",
+        "source": {
+          "git_blob": "ef0293a6391a6dc687f1f0a6d6513a79a27adcdd",
+          "mode": "100644",
+          "path": "src/knowledge/example-knowledge/guidance.md",
+          "sha256": "1effac4d0bbf0cd62bfd6c9a0b132b6aa32af7661a4bf164c1ea4807fb5cb0bf",
+          "size": 58
+        }
+      }
+    ]
+  },
+  "engine": {
+    "files": [
+      {
+        "path": "src/distribution/example_generator.py",
+        "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82"
+      }
+    ],
+    "id": "framework-managed-installation",
+    "source_commit": "0000000000000000000000000000000000000000",
+    "version": "2.0.0"
+  },
+  "installation_id": "00000000000000000000000000000000",
+  "inventory": {
+    "files": [
+      {
+        "binding": null,
+        "destination": ".ai/core/knowledge/example-knowledge/README.md",
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "knowledge/example-knowledge",
+        "path": "payload/.ai/core/knowledge/example-knowledge/README.md",
+        "sha256": "53e894ca504ba3fd02103c60411f99934af2068481fdc98d262c57500e2410b3",
+        "size": 48,
+        "source": {
+          "git_blob": "a32c70fa3039d92b817a2c712a9f76bc7103ba25",
+          "mode": "100644",
+          "path": "src/knowledge/example-knowledge/README.md",
+          "sha256": "53e894ca504ba3fd02103c60411f99934af2068481fdc98d262c57500e2410b3",
+          "size": 48
+        }
+      },
+      {
+        "binding": null,
+        "destination": ".ai/core/knowledge/example-knowledge/content-package.yaml",
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "knowledge/example-knowledge",
+        "path": "payload/.ai/core/knowledge/example-knowledge/content-package.yaml",
+        "sha256": "9412cae7f640aacf8cbf3bb3f3692227c381a19bc1eadc553f1375b9332b803b",
+        "size": 613,
+        "source": {
+          "git_blob": "040b1d5410437d96ee98483b2426f41c47b1db17",
+          "mode": "100644",
+          "path": "src/knowledge/example-knowledge/content-package.yaml",
+          "sha256": "9412cae7f640aacf8cbf3bb3f3692227c381a19bc1eadc553f1375b9332b803b",
+          "size": 613
+        }
+      },
+      {
+        "binding": null,
+        "destination": ".ai/core/knowledge/example-knowledge/guidance.md",
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "knowledge/example-knowledge",
+        "path": "payload/.ai/core/knowledge/example-knowledge/guidance.md",
+        "sha256": "1effac4d0bbf0cd62bfd6c9a0b132b6aa32af7661a4bf164c1ea4807fb5cb0bf",
+        "size": 58,
+        "source": {
+          "git_blob": "ef0293a6391a6dc687f1f0a6d6513a79a27adcdd",
+          "mode": "100644",
+          "path": "src/knowledge/example-knowledge/guidance.md",
+          "sha256": "1effac4d0bbf0cd62bfd6c9a0b132b6aa32af7661a4bf164c1ea4807fb5cb0bf",
+          "size": 58
+        }
+      }
+    ],
+    "schema_version": 2
+  },
+  "lock_version": 2,
+  "mode_policy": "windows-inventory-only",
+  "project_inputs": [],
+  "selection": {
+    "adapters": [],
+    "catalog": {
+      "catalog_sha256": "d36fdccaede267efcb568016295b41509d4493605aa79f49c76b23b3fade78dc",
+      "files_sha256": "475feb1c47d20f3bd6ed6ab7ba9d6dc45a0ea357c32610ef8a256a6e283bfd01",
+      "identity": "catalog:1:0.19.0-rc.2:0000000000000000000000000000000000000000:0b146f6e6b83bdeaedd3568ab20918af158eb1b7faaba1d7cb083985f0848929"
+    },
+    "components": [
+      {
+        "id": "example-knowledge",
+        "kind": "knowledge",
+        "members": [
+          "README.md",
+          "content-package.yaml",
+          "guidance.md"
+        ],
+        "metadata": "content-package.yaml",
+        "metadata_version": 1,
+        "optional_dependencies": [],
+        "required_dependencies": [],
+        "version": "0.1.0"
+      }
+    ],
+    "desired": {
+      "adapters": [],
+      "bindings": [],
+      "catalog": {
+        "catalog_sha256": "d36fdccaede267efcb568016295b41509d4493605aa79f49c76b23b3fade78dc",
+        "files_sha256": "475feb1c47d20f3bd6ed6ab7ba9d6dc45a0ea357c32610ef8a256a6e283bfd01",
+        "identity": "catalog:1:0.19.0-rc.2:0000000000000000000000000000000000000000:0b146f6e6b83bdeaedd3568ab20918af158eb1b7faaba1d7cb083985f0848929"
+      },
+      "knowledge": [
+        "example-knowledge"
+      ],
+      "selection_version": 1,
+      "skills": []
+    },
+    "desired_sha256": "25f0f573c314381d045abfd0dd5a24c4322790be3ca6dfd22e95c57cef5dbfeb",
+    "generator": {
+      "id": "aicf-subset-derivation",
+      "implementation": [
+        {
+          "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+          "mode": "100644",
+          "path": "src/distribution/example_generator.py",
+          "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+          "size": 45
+        }
+      ]
+    },
+    "mode": "catalog-subset",
+    "release_version": "0.19.0-rc.2",
+    "schema_version": 3,
+    "source": {
+      "commit": "0000000000000000000000000000000000000000",
+      "tree": "0000000000000000000000000000000000000000"
+    }
+  }
+}

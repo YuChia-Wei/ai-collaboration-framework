@@ -616,3 +616,88 @@ inactive. Any later blocking gate set needs a concrete owner adoption decision.
 The selector/regression and manual-admission gaps stay recorded without a new
 implementation selection. No approval question remains pending for this
 deferred expansion. Decision: Issue369 comment 5804473245.
+
+## RC.2 exclusive coordinator release and S1 dispatch preparation
+
+The predecessor released exclusive source/Issue coordinator ownership after
+online PR #400 merged at 6f5a13046f1978ba4b8701e4ae772faecde2c2ff. The receiving
+task 01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00 fast-forwarded its assigned
+F:/framework-next/rc2-coordinator, confirmed clean Git state and matching
+current-coordinator bindings in U001, workflow.yaml and the rc.2 handoff JSON.
+Live GitHub main matched and #322 remained OPEN. The handoff is accepted and
+write ownership is now with the receiver; this is not rc.2 completion.
+
+S1 is prepared as a bounded contract and migration-inventory Issue with six
+acceptance criteria. Its executor will own only
+.dev/design/framework-next/rc2-contracts/ and
+.dev/workflows/2026-09-24-rc2-selection-contract/. Shared distribution, manifest
+and profile implementation remains S3-owned after S1 integration.
+
+The actual gh issue create attempt was rejected by automatic approval review.
+The stated reason was absence of trusted direct authorization for publishing
+the exact payload, including task identifiers/design details, to the specified
+GitHub repository. The target was YuChia-Wei/ai-collaboration-framework; the
+5036-byte prepared body has SHA-256
+12c086e03741c49c570ce2ff0fe70850e68c894f346a4cb73942e5673b47a4b8.
+No Issue was created and no implementation task/worktree was dispatched.
+The receiver requested concrete direct confirmation and did not retry or use
+an alternate publishing route. The prepared body remains an ignored local
+artifact until that decision; this progress record does not publish it.
+
+Next: after confirmation, create S1, assign its F: worktree and independent
+Astra/ultra task, then continue S1-S6. Preserve R1-R8 and fixed rc.1 identities.
+Legacy/formal/critical verification, CI, #369 native expansion, dormant policy
+adoption and new tag/Release publication retain their prior dispositions.
+Direct JSON/YAML/content/Git and exact-message checks are separate from all
+U001-deferred verification.
+
+## RC.2 S1 dispatched after direct confirmation
+
+The owner directly replied in receiving task
+01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00: "同意開立 issue 並接續工作".
+The unchanged S1 draft was then successfully published as
+[Issue #401](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/401).
+The earlier automatic approval-review rejection remains historical evidence;
+it is no longer the current dispatch blocker. No alternate publication route
+was used and no Project item was added.
+
+S1 was assigned an independent task under U001 from clean integrated main
+6f5a13046f1978ba4b8701e4ae772faecde2c2ff. The task owns rc2-contracts
+design and its 2026-09-24-rc2-selection-contract workflow only. It returns
+local commits before first push. Exact runtime task/worktree/provenance
+details remain in ignored local coordination evidence: a proposed Issue
+comment containing those new details was rejected by automatic approval
+review. The replacement public update contains product scope and progress
+only; rejected details are not published via another route.
+
+[evidence/rc2-task-dispatch.json](evidence/rc2-task-dispatch.json) records exact
+ownership, acceptance IDs, dependencies and outstanding units. S1 is running;
+S2-S6 remain undispatched pending their inputs. The coordinator will review
+S1's complete contract and inventory before integration or dependent shared
+distribution work. This dispatch is not implementation, behavioral verification
+or rc.2 completion. Stable readiness and R1-R8 remain unchanged.
+
+The [rc.2 acceptance status](reports/rc2-acceptance-status.md) maps the seven
+selected completion criteria and R1-R8 to pending delivery/consumption evidence.
+It is a progress projection, not a new approval or verification pipeline.
+
+## S1 contract accepted for online integration
+
+Issue #401 returned original document commit e27ff21cf06c91abdf5fde4f70c1bddb632b1898
+and correction 32a2b59dd38f9335f60cf2edd8eac4d6d95f95cf. The coordinator reviewed
+the fixed content and accepted the bounded S1 contract/inventory delivery after
+separating legacy Codex projection from the new v2 adapter seam and correcting
+the completed workflow phase. See [content review](reports/rc2-s1-contract-review.md).
+
+The local integration retains both implementation commits and coordinator
+checkpoints as a resumable branch boundary; online merge-commit PR integration
+is selected. #401 is intended terminal-close after this accepted document
+delivery reaches main; #322 is deferred/open for S2-S6 and the retained residuals.
+No Project item is selected or created. Required legacy/formal/hosted machinery
+remains deferred-by-owner under U001; no CI success is inferred.
+
+After online integration, S2 owns exactly the two content package roots and S4
+owns only its adapter roots plus the reserved Codex/Claude renderer files. Their
+work can proceed independently. S3 starts shared distribution/manifest/profile
+integration after their exact inputs are accepted, avoiding simultaneous shared
+writers. S5 consumer/adoption and S6 actual verification remain pending.

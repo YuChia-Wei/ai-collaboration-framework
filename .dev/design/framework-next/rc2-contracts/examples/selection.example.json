@@ -1,0 +1,14 @@
+{
+  "adapters": [],
+  "bindings": [],
+  "catalog": {
+    "catalog_sha256": "d36fdccaede267efcb568016295b41509d4493605aa79f49c76b23b3fade78dc",
+    "files_sha256": "475feb1c47d20f3bd6ed6ab7ba9d6dc45a0ea357c32610ef8a256a6e283bfd01",
+    "identity": "catalog:1:0.19.0-rc.2:0000000000000000000000000000000000000000:0b146f6e6b83bdeaedd3568ab20918af158eb1b7faaba1d7cb083985f0848929"
+  },
+  "knowledge": [
+    "example-knowledge"
+  ],
+  "selection_version": 1,
+  "skills": []
+}

@@ -1,0 +1,33 @@
+content_package_version: 1
+id: example-knowledge
+version: 0.1.0
+entrypoint: README.md
+members:
+- path: README.md
+  kind: index
+- path: content-package.yaml
+  kind: metadata
+- path: guidance.md
+  kind: knowledge
+resources:
+- id: example-guidance
+  path: guidance.md
+  kind: knowledge
+  rule_ids: []
+  capabilities:
+  - review
+  operations:
+  - review
+  technology_profile: null
+dependencies:
+  required: []
+  optional: []
+references:
+- from: README.md
+  resource_id: example-guidance
+  target:
+    package: example-knowledge
+    path: guidance.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
