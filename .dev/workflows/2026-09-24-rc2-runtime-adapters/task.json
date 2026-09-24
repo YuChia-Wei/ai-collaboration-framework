@@ -6,7 +6,7 @@
   "owner_skill": "local-change-implementer",
   "status": "completed",
   "created_at": "2026-09-24T20:14:12+08:00",
-  "updated_at": "2026-09-24T20:14:37+08:00",
+  "updated_at": "2026-09-24T20:20:17+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-6-sol",
   "reasoning_effort": "high",
@@ -39,14 +39,15 @@
     "acceptance": {
       "S4-A1": "source-retained",
       "S4-A2": "source-delivered",
-      "S4-A3": "source-delivered",
-      "S4-A4": "test-cases-authored-unexecuted",
-      "S4-A5": "handoff-delivered",
+      "S4-A3": "thin-adapters-delivered; S3-dispatch-and-migration-pending",
+      "S4-A4": "exact-adapter-and-legacy-handoff-delivered",
+      "S4-A5": "tests-authored-unexecuted; direct-checks-recorded; behavior-deferred-by-owner",
       "S4-A6": "distinct-observations-defined-deferred-by-owner"
     },
     "behavioral_verification": "deferred-by-owner",
     "deferred_owner": "program #322 coordinator / P7",
     "next_action": "Coordinator reviews local commit and passes exact descriptors to S3; S6/P7 selects actual runtime and behavioral checks.",
-    "provider_integration": "not-performed"
+    "provider_integration": "not-performed",
+    "acceptance_id_correction": "Coordinator-requested A3-A5 mapping correction after fixed-commit review of 6d5c0df13ef93c55c7d2c95beaeb420e32954c40; no new behavioral verification"
   }
 }
