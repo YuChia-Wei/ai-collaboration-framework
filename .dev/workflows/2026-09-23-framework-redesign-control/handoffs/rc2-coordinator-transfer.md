@@ -20,6 +20,15 @@ The assigned receiving worktree is `F:/framework-next/rc2-coordinator`, branch
 all source commands and writes must explicitly use the assigned F: worktree.
 Do not edit main or create a second unassigned worktree as a workaround.
 
+## Receiving task and observed acceptance
+
+Task `01a0d226-d1f7-7d43-ad20-8b7b9f8e0e00` was created on host `local` with explicitly requested
+`gpt-6-astra` / `ultra`. Its first turn completed read-only acceptance at clean
+HEAD `2a2f124450a29d5ed315608df16edee812436468`, verified the assigned branch,
+parsed the JSON/YAML and read Issue #322 as OPEN. Creation settings are not
+independent runtime attestation. No product edit or implementation dispatch was
+performed during acceptance. Online integration and sender release are next.
+
 ## First concrete work
 
 S1 fixes the selection, content-package, catalog and lock contracts and enumerates
