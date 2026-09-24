@@ -38,9 +38,12 @@ source-without-knowledge and mq-lab-with-dotnet. Then hand off exact interfaces 
 members to S2 content, S3 distribution and S4 runtime owners. S5 consumes installed
 knowledge and performs source/target adoption; S6 verifies the actual RC.
 
-Use the existing #322 execution pattern: bounded online Issues, independent
-Astra/ultra tasks, assigned RAM worktrees, one writer, local handoff followed by
-coordinator push/PR/online merge. Do not spawn source sub-agents or revive #369.
+Use bounded online Issues, assigned RAM worktrees, one writer and local handoff
+followed by coordinator push/PR/online merge. The owner's 2026-09-24 U001 amendment
+allows short, clearly bounded work to use coordinator-dispatched sub-agents with
+a capable lower-cost profile; larger or multi-stage work retains independent
+Astra/ultra tasks. Executors do not create further tasks or delegate without a
+coordinator assignment. #369 expansion remains deferred.
 Routine implementation choices inside the approved direction need no repeated
 owner confirmation; preserve actual approval-review rejections if any occur and
 report the exact blocked action instead of bypassing them.

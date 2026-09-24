@@ -302,7 +302,7 @@ provider integration, CI adoption, stable upgrade and publication remain distinc
 
 ## Authority and completion
 
-U001 is the current owner-selected execution boundary. Follow repository skills, work-item/branch/workflow/commit discipline and online PR integration. Do not run or recreate legacy validators, test matrices, critical gates or hosted PR checks during early development. Final verification is deferred to P7; no waived/deferred check becomes passed. No sub-agents or child-created tasks. All implementation tasks use independent gpt-6-astra / ultra conversations.
+U001 is the current owner-selected execution boundary. Follow repository skills, work-item/branch/workflow/commit discipline and online PR integration. Do not run or recreate legacy validators, test matrices, critical gates or hosted PR checks during early development. Final verification is deferred to P7; no waived/deferred check becomes passed. The owner's 2026-09-24 amendment permits short, clearly bounded work through coordinator-dispatched sub-agents with capable lower-cost profiles; larger or multi-stage work retains independent gpt-6-astra / ultra conversations. Executors do not create further tasks or delegate without a coordinator assignment.
 
 This coordinator owns dependencies, task/branch/PR mapping and integration. Issue workers own only their assigned files and issue workflow. The root index is coordinator-owned to avoid parallel edits. Every PR declares which Issue is complete versus still waiting for later delivery or verification.
 
@@ -724,3 +724,9 @@ S2 Issue #403 and S4 Issue #404 were created and their complete acceptance and
 ownership text read back. Dispatch starts from this coordinator checkpoint; the
 accepted S1 contract remains bound to PR #402. S4 owns only the additional
 `tests/framework_next/test_rc2_adapters.py` case module, not the shared runner.
+
+Both assignments were dispatched from `9247f444eb14a86849c66078cd7fa366dc098379`.
+S2 uses the retained independent-task route; S4 uses one bounded sub-agent.
+Invocation references and selected runtime profiles are retained in ignored local
+coordination evidence. Implementation, behavioral verification and integration
+remain pending; dispatch is not delivery evidence.
