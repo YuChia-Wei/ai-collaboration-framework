@@ -1,0 +1,2376 @@
+{
+  "selection_version": 1,
+  "catalog": {
+    "identity": "catalog:1:0.19.0-rc.2:6f5a13046f1978ba4b8701e4ae772faecde2c2ff:0000000000000000000000000000000000000000000000000000000000000000",
+    "catalog_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "files_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "skills": [
+    "adr",
+    "ai-context-auditor",
+    "ai-context-governance",
+    "bdd-gwt-test-designer",
+    "code-reviewer",
+    "ddd-ca-hex-architect",
+    "diagnostic-analyst",
+    "lesson",
+    "local-backlog",
+    "local-change-implementer",
+    "pr",
+    "problem-frame-author",
+    "requirement-author",
+    "slice-implementer",
+    "software-development-orchestrator",
+    "spec-author",
+    "spec-compliance-validator",
+    "standards-promotion"
+  ],
+  "knowledge": [
+    "dotnet-backend",
+    "engineering-common"
+  ],
+  "adapters": [
+    "claude",
+    "codex"
+  ],
+  "bindings": [
+    {
+      "id": "mq-route-01-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "command"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-0060755BB97DCDEAC34944FA27E473EC92B448A74107DA66CB5D9D7E51EED46B]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-01-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "command"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-0060755BB97DCDEAC34944FA27E473EC92B448A74107DA66CB5D9D7E51EED46B]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-02-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "specification"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "specification-markdown"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-0CB791EB64099FC942CC9EF435809DB1E757848F558735D7D1417D83E22CAD3A]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-02-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "specification"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "specification-markdown"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-0CB791EB64099FC942CC9EF435809DB1E757848F558735D7D1417D83E22CAD3A]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-03-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-1FDA4CA0244ECF7DBB006600D53ED431A940DF857859E9EB143D2EA3BF59FA2C]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-03-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-1FDA4CA0244ECF7DBB006600D53ED431A940DF857859E9EB143D2EA3BF59FA2C]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-04-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "generic"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-3EE85C82323D6A52F24B406E8F1271F5ED88DDE38EAC1044F0BF971061FFE0C4]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-04-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "generic"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-3EE85C82323D6A52F24B406E8F1271F5ED88DDE38EAC1044F0BF971061FFE0C4]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-05-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "review"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "dotnet-mixed-review"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-44441057FC3C725F5861E2149944CFB7EFDD0C5F890831C4208291A5B2371222]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-05-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "review"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "dotnet-mixed-review"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-44441057FC3C725F5861E2149944CFB7EFDD0C5F890831C4208291A5B2371222]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-06-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-test"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-510496FD8627821F6F011990789DAD56E50CD189EC64045D5D4444FE6AB89EE7]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-06-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-test"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-510496FD8627821F6F011990789DAD56E50CD189EC64045D5D4444FE6AB89EE7]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-07-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "problem-framing"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "review-draft"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "problem-frame-yaml"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-5376A2F088F0C2FB915830EEC987D1391E96AFDDE1208E4E68B362FE4D3A612E]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-07-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "problem-framing"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "review-draft"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "problem-frame-yaml"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-5376A2F088F0C2FB915830EEC987D1391E96AFDDE1208E4E68B362FE4D3A612E]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-08-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "test-design"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "design",
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "gherkin-feature"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-595016B570726DB08342680D2195648944D898511253100E88AEA1B9E66957D5]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-08-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "test-design"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "design",
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "gherkin-feature"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-595016B570726DB08342680D2195648944D898511253100E88AEA1B9E66957D5]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-09-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "review"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-review"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-5FD9FBA84BFD386D5D5F3C8AC8B16EF6332DEA1D48EC5DBF6AA6B096D0828604]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-09-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "review"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-review"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-5FD9FBA84BFD386D5D5F3C8AC8B16EF6332DEA1D48EC5DBF6AA6B096D0828604]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-10-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "architecture"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "design",
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "architecture-decision"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-6793F2C32C4BF62763380BCF5CD83D284C40AB2401A5BB42904823E7F28BE96C]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-10-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "architecture"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "design",
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "architecture-decision"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-6793F2C32C4BF62763380BCF5CD83D284C40AB2401A5BB42904823E7F28BE96C]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-11-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "project-file"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-69320ED2F30633AA22DD3E91C72210D14A955614F1B4269844ED8EAC0274491C]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-11-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "project-file"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-69320ED2F30633AA22DD3E91C72210D14A955614F1B4269844ED8EAC0274491C]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-12-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "requirements"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "requirement-markdown"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-7C1C8C42DEAF9D889A157FA97FA2E5390CDCD0FD5509103DA4DA1A65CB2A85BE]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-12-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "requirements"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "requirement-markdown"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-7C1C8C42DEAF9D889A157FA97FA2E5390CDCD0FD5509103DA4DA1A65CB2A85BE]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-13-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "test-design"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "design",
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-test"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-8691EB94D951D12620A830D430E1934E0E228CE6B1342F65673ADBD57C484333]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-13-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "test-design"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "design",
+          "review"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-test"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-8691EB94D951D12620A830D430E1934E0E228CE6B1342F65673ADBD57C484333]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-14-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "compliance-validation"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "assess-runtime",
+          "plan-validation",
+          "review-semantics"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "problem-frame-and-dotnet"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-86B49603D837372BA200420228174C1CF61333171CE8D96FCFF63ABD07BB796D]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-14-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "compliance-validation"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "assess-runtime",
+          "plan-validation",
+          "review-semantics"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "problem-frame-and-dotnet"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-86B49603D837372BA200420228174C1CF61333171CE8D96FCFF63ABD07BB796D]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-15-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "sql"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-88F8297799ABD7C258348FA6072DFE56306800798EACEB7529FAC1509F304A15]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-15-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "sql"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-88F8297799ABD7C258348FA6072DFE56306800798EACEB7529FAC1509F304A15]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-16-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "yaml-config"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-93389630E2EAEBD1C926310D5932AA0DB31893A1FC0108457AE8E9B63B44E356]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-16-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "local-change"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "yaml-config"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-93389630E2EAEBD1C926310D5932AA0DB31893A1FC0108457AE8E9B63B44E356]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-17-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "generic"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-test"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-DF0E762322A527898C635F453332C4FD4607EFC0A01AE6AFFA49D799E70BAB18]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-17-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "generic"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-test"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-DF0E762322A527898C635F453332C4FD4607EFC0A01AE6AFFA49D799E70BAB18]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-18-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "reactor"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-E3B4869DC90073EEDA02B8105FB8EE99866C4CF93C5E3FC852258480BEDE8566]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-18-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "reactor"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-E3B4869DC90073EEDA02B8105FB8EE99866C4CF93C5E3FC852258480BEDE8566]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-19-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "query"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-EFD78BECD2CAFD2890638E78C79E0ABCA47CB5E0C70EC9B3D602EC12FF762AFE]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-19-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "implementation"
+        ],
+        "execution_modes": [
+          "query"
+        ],
+        "operations": [
+          "implement"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "csharp-production"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-EFD78BECD2CAFD2890638E78C79E0ABCA47CB5E0C70EC9B3D602EC12FF762AFE]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-20-dotnet-backend",
+      "package": "dotnet-backend",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "specification"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "specification-json"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-FAD108B11C0B4A274C0B640D117F2D7EE22FA006DDA09A442DD9BF0E2DC6C0EF]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ],
+      "required_for_coverage": true
+    },
+    {
+      "id": "mq-route-20-engineering-common",
+      "package": "engineering-common",
+      "resources": [
+        "engineering-rule-catalog"
+      ],
+      "use_as": "normative-rule",
+      "selector": {
+        "capabilities": [
+          "specification"
+        ],
+        "execution_modes": [
+          "direct"
+        ],
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "path_prefixes": [
+          "."
+        ],
+        "technology_profile": "dotnet-backend",
+        "file_types": [
+          "specification-json"
+        ]
+      },
+      "authorities": [
+        {
+          "path": ".dev/ai-context/framework-binding.json",
+          "sha256": "617512e9c1e95b60e8098f5fb0de1b8402036315ad06acb2c8281cbcdee42344",
+          "selector": "route_bindings[route_id=ROUTE-FAD108B11C0B4A274C0B640D117F2D7EE22FA006DDA09A442DD9BF0E2DC6C0EF]"
+        },
+        {
+          "path": ".dev/ai-context/effective-rules.yaml",
+          "sha256": "6962e871b6cdd164ecbb7c8321ae0b65f13eb1613579f52c219c99cb1044a00e",
+          "selector": "rule_dispositions: preserve exact rule predicates"
+        },
+        {
+          "path": ".dev/ai-context/customizations.yaml",
+          "sha256": "8ce7e56185a9d6bd9e9291ea60d22971dd6d418de6835c12d424ec9e61d96ab5",
+          "selector": "customizations: all four retained subjects"
+        },
+        {
+          "path": ".dev/project-config.yaml",
+          "sha256": "f637b2886d02a58b1a4d52852c260b670322a4a466f785326aa6def31f23ac9b",
+          "selector": "selected technology and bounded-context choices"
+        }
+      ],
+      "required_rule_ids": [
+        "AICTX-EVIDENCE-001",
+        "ASSESSMENT-ARTIFACT-001",
+        "TECH-SELECT-001"
+      ],
+      "required_for_coverage": true
+    }
+  ]
+}

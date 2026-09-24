@@ -680,3 +680,24 @@ or rc.2 completion. Stable readiness and R1-R8 remain unchanged.
 The [rc.2 acceptance status](reports/rc2-acceptance-status.md) maps the seven
 selected completion criteria and R1-R8 to pending delivery/consumption evidence.
 It is a progress projection, not a new approval or verification pipeline.
+
+## S1 contract accepted for online integration
+
+Issue #401 returned original document commit e27ff21cf06c91abdf5fde4f70c1bddb632b1898
+and correction 32a2b59dd38f9335f60cf2edd8eac4d6d95f95cf. The coordinator reviewed
+the fixed content and accepted the bounded S1 contract/inventory delivery after
+separating legacy Codex projection from the new v2 adapter seam and correcting
+the completed workflow phase. See [content review](reports/rc2-s1-contract-review.md).
+
+The local integration retains both implementation commits and coordinator
+checkpoints as a resumable branch boundary; online merge-commit PR integration
+is selected. #401 is intended terminal-close after this accepted document
+delivery reaches main; #322 is deferred/open for S2-S6 and the retained residuals.
+No Project item is selected or created. Required legacy/formal/hosted machinery
+remains deferred-by-owner under U001; no CI success is inferred.
+
+After online integration, S2 owns exactly the two content package roots and S4
+owns only its adapter roots plus the reserved Codex/Claude renderer files. Their
+work can proceed independently. S3 starts shared distribution/manifest/profile
+integration after their exact inputs are accepted, avoiding simultaneous shared
+writers. S5 consumer/adoption and S6 actual verification remain pending.

@@ -1,0 +1,10 @@
+{
+  "parent_identity": "catalog:1:0.19.0-rc.2:0000000000000000000000000000000000000000:0b146f6e6b83bdeaedd3568ab20918af158eb1b7faaba1d7cb083985f0848929",
+  "raw_utf8_members": {
+    "README.md": "# Illustrative package\n\n[Guidance](guidance.md)\n",
+    "content-package.yaml": "content_package_version: 1\nid: example-knowledge\nversion: 0.1.0\nentrypoint: README.md\nmembers:\n- path: README.md\n  kind: index\n- path: content-package.yaml\n  kind: metadata\n- path: guidance.md\n  kind: knowledge\nresources:\n- id: example-guidance\n  path: guidance.md\n  kind: knowledge\n  rule_ids: []\n  capabilities:\n  - review\n  operations:\n  - review\n  technology_profile: null\ndependencies:\n  required: []\n  optional: []\nreferences:\n- from: README.md\n  resource_id: example-guidance\n  target:\n    package: example-knowledge\n    path: guidance.md\n    anchor: null\n  requirement: required\n  on_missing: unavailable\n",
+    "guidance.md": "# Guidance\n\nIllustrative knowledge, not a normative rule.\n"
+  },
+  "subset_identity": "subset:3:0.19.0-rc.2:0000000000000000000000000000000000000000:629f76d0c421f310c0a3af5acdfbacc29e9a2c2808ef37693619288c0cc20fdf",
+  "warning": "Documentation-only fictional model. No actual source commit, engine pin, assembly, installation or successful execution is represented. Not an admissible candidate."
+}

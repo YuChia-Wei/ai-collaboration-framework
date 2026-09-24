@@ -1,0 +1,44 @@
+{
+  "catalog_files_version": 1,
+  "files": [
+    {
+      "kind": "knowledge",
+      "member": "README.md",
+      "owner": "example-knowledge",
+      "path": "packages/knowledge/example-knowledge/README.md",
+      "source": {
+        "git_blob": "a32c70fa3039d92b817a2c712a9f76bc7103ba25",
+        "mode": "100644",
+        "path": "src/knowledge/example-knowledge/README.md",
+        "sha256": "53e894ca504ba3fd02103c60411f99934af2068481fdc98d262c57500e2410b3",
+        "size": 48
+      }
+    },
+    {
+      "kind": "knowledge",
+      "member": "content-package.yaml",
+      "owner": "example-knowledge",
+      "path": "packages/knowledge/example-knowledge/content-package.yaml",
+      "source": {
+        "git_blob": "040b1d5410437d96ee98483b2426f41c47b1db17",
+        "mode": "100644",
+        "path": "src/knowledge/example-knowledge/content-package.yaml",
+        "sha256": "9412cae7f640aacf8cbf3bb3f3692227c381a19bc1eadc553f1375b9332b803b",
+        "size": 613
+      }
+    },
+    {
+      "kind": "knowledge",
+      "member": "guidance.md",
+      "owner": "example-knowledge",
+      "path": "packages/knowledge/example-knowledge/guidance.md",
+      "source": {
+        "git_blob": "ef0293a6391a6dc687f1f0a6d6513a79a27adcdd",
+        "mode": "100644",
+        "path": "src/knowledge/example-knowledge/guidance.md",
+        "sha256": "1effac4d0bbf0cd62bfd6c9a0b132b6aa32af7661a4bf164c1ea4807fb5cb0bf",
+        "size": 58
+      }
+    }
+  ]
+}

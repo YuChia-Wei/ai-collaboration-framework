@@ -7,8 +7,10 @@ mandatory approval, evidence tool or CI gate. Program #322 remains open.
 
 ## Current checkpoint
 
-Issue #401 (S1) is dispatched for exact format contracts and the complete
-engineering-content migration inventory. S2-S6 await their declared inputs.
+Issue #401 (S1) delivered exact contracts and the complete engineering-content
+inventory; coordinator content review accepted correction 32a2b59d for online
+integration. S2/S4 are ready for isolated dispatch after that integration.
+S3 shared integration and S5/S6 await their declared inputs.
 The direct owner confirmation resolved the initial Issue-publication rejection.
 A later proposed metadata comment was refused; the accepted public replacement
 contains scope/progress only. New runtime task IDs, absolute worktree paths and
@@ -20,7 +22,7 @@ detailed execution provenance remain outside the published record.
 | --- | --- | --- | --- |
 | RC2-C1 stable skill IDs and runtime names | S1 contract; S4 adapters | IDs retain identity; both aicf- entries point to the same selected installed core; each runtime is observed separately. | Pending. Template/file presence cannot establish actual discovery. |
 | RC2-C2 project-owned selection | S1 formats; S3 distribution | Source and mq lab choose different explicit skills/knowledge/adapters from one verified immutable catalog; locks bind parent and subset; unselected managed bytes are absent. | Pending. Existing rc.1 profiles are baseline evidence only. |
-| RC2-C3 usable engineering knowledge | S1 inventory; S2 content; S5 consumers | Every scoped active portable item has a destination or explicit disposition; applicable installed references are actually consumed without changing target rule semantics. | Pending complete inventory and consumer evidence. |
+| RC2-C3 usable engineering knowledge | S1 inventory; S2 content; S5 consumers | Every scoped active portable item has a destination or explicit disposition; applicable installed references are actually consumed without changing target rule semantics. | S1 inventory accepted: 272 source files / 235 planned members; S2 content and S5 consumption remain pending. |
 | RC2-C4 adapter selections and deselection | S3 maintenance; S4 adapters | Codex-only, Claude-only, both and core-only selections behave as specified; safe deselection preserves still-selected core and project-owned data. | Pending focused checks and selected runtime observations. |
 | RC2-C5 rc.1 update and recovery | S3/S4 implementation; S5 target; S6 trial | Exact rc.1-to-rc.2 path covers renamed entries, ownership/drift/collision/dependency decisions and paired managed/project-owned recovery. | Pending actual trial against recorded candidate and engine identities. |
 | RC2-C6 source self-adoption | S5 source; S6 observation | Source installs no unnecessary engineering knowledge and exercises installed product in real source work; retained legacy/source duties are explicit. | Pending. A downstream pilot or generated inventory is insufficient. |

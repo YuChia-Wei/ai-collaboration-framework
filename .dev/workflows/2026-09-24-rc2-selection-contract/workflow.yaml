@@ -1,0 +1,52 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-24-rc2-selection-contract
+workflow_kind: ai-context-maintenance
+title: RC2 S1 selectable installation contracts and complete migration inventory
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-09-24-rc2-selection-contract
+entrypoint: workflow-plan.md
+created_at: '2026-09-24T19:12:18+08:00'
+updated_at: '2026-09-24T19:24:25+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+branch: codex/2026-09-24-rc2-selection-contract
+base_branch: main
+base_commit: 6f5a13046f1978ba4b8701e4ae772faecde2c2ff
+work_items:
+- provider: github
+  repository: YuChia-Wei/ai-collaboration-framework
+  issue: 401
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/401
+- provider: github
+  repository: YuChia-Wei/ai-collaboration-framework
+  issue: 322
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+authorization: Selected S1 scope and continuation authorized by owner; existing Issue
+  binding read live. Publication/target adoption remain separate.
+ownership:
+  tracked_roots:
+  - .dev/design/framework-next/rc2-contracts/
+  - .dev/workflows/2026-09-24-rc2-selection-contract/
+  writer: S1 document executor
+  shared_integration_owner: 'program #322 coordinator'
+  model: gpt-6-astra
+  reasoning_effort: ultra
+u001:
+  adaptation: Proportional skill templates; bounded document delivery only. No sub-agents,
+    independent audit packets or formal handoff tooling.
+  deferred_status: deferred-by-owner
+  owner: 'program #322 coordinator / P7'
+  next_action: Select and execute redesigned checks under separate P7/target authority.
+integration: local-handoff-before-first-push; coordinator-owned
+completion_scope: Bounded S1 document delivery only under U001; provider integration
+  and deferred verification remain separate.
+corrections:
+- finding_id: S1-R1
+  baseline_commit: e27ff21cf06c91abdf5fde4f70c1bddb632b1898
+  scope: Legacy/v2 adapter seam and legacy-source write compatibility; lifecycle phase
+    alignment
+  disposition: contract-corrected
+  evidence: s1-r1-checks.json

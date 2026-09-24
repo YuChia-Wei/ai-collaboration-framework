@@ -1,0 +1,33 @@
+{
+  "artifact_kind": "subset",
+  "behavioral_validation": "not-performed",
+  "completed_at": "2026-09-24T00:00:00+08:00",
+  "executing_implementation": [
+    {
+      "execution_file_sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+      "source": {
+        "git_blob": "e214c8f16a6e34f2ed28dad2daf64cb9f8a7f784",
+        "mode": "100644",
+        "path": "src/distribution/example_generator.py",
+        "sha256": "4c23294e793929e8701089096e2e3cd14406191d9b826a0671845e9742796a82",
+        "size": 45
+      }
+    }
+  ],
+  "identity": "subset:3:0.19.0-rc.2:0000000000000000000000000000000000000000:629f76d0c421f310c0a3af5acdfbacc29e9a2c2808ef37693619288c0cc20fdf",
+  "identity_inputs": {
+    "metadata/catalog-files.json": "475feb1c47d20f3bd6ed6ab7ba9d6dc45a0ea357c32610ef8a256a6e283bfd01",
+    "metadata/catalog.json": "d36fdccaede267efcb568016295b41509d4493605aa79f49c76b23b3fade78dc",
+    "metadata/files.json": "75735c9c17ad933b3d9184c7a8d6002321b5f4d7ea870ad1a3db17d94afa2d33",
+    "metadata/selection.json": "a6ff986a15b3469a47d1d9bfb53610ad7c21650e2e7b40ff9969e5e8072088fe"
+  },
+  "installation": "not-performed",
+  "mode_materialization": "inventory-only",
+  "publication": "not-performed",
+  "runtime": {
+    "os": "nt",
+    "python": "illustrative",
+    "pyyaml": "illustrative"
+  },
+  "schema_version": 2
+}

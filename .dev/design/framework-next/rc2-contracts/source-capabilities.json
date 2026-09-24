@@ -1,0 +1,675 @@
+{
+  "inventory_version": 1,
+  "source_commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+  "counts": {
+    "legacy_active": 16,
+    "src_packages": 18,
+    "capability_union": 21
+  },
+  "scope": "Every active canonical legacy skill plus every current src skill package. Partial retained duties and non-skill policies are explicit; availability is not adoption.",
+  "capabilities": [
+    {
+      "id": "adr",
+      "legacy_source": null,
+      "installed_successor": {
+        "skill_id": "adr",
+        "core_root": ".ai/core/skills/adr",
+        "codex_entry": ".agents/skills/aicf-adr/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-adr/SKILL.md",
+        "metadata": {
+          "path": "src/skills/adr/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "97dca5f4e1a3daecadae496b7fbd6405c520efa9",
+          "sha256": "af95402ce8fb7fe1f613bfaa09f3d6b2fc688d8ac73a5734d4f8232b202584ab"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "explain",
+          "create",
+          "inspect",
+          "query",
+          "validate",
+          "revise",
+          "render",
+          "derive",
+          "decide",
+          "retire",
+          "supersede"
+        ]
+      },
+      "retained_duties": [
+        "Existing Markdown/history/decision and effective-rule owners remain; new records/proposals do not import decisions or change rules."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "ai-context-auditor",
+      "legacy_source": {
+        "path": ".ai/assets/skills/ai-context-auditor/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "4cdde146e53b03815b601e78c6f80c4a83365b75",
+        "sha256": "5ac4b3d1527fcf52f49f93e77f8a84403229cf659176615036844476a86a04ba"
+      },
+      "installed_successor": {
+        "skill_id": "ai-context-auditor",
+        "core_root": ".ai/core/skills/ai-context-auditor",
+        "codex_entry": ".agents/skills/aicf-ai-context-auditor/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-ai-context-auditor/SKILL.md",
+        "metadata": {
+          "path": "src/skills/ai-context-auditor/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "78dfe7aeaa717dfdafc8636ef51fbef99470dffc",
+          "sha256": "c88eff6a3e286b180b150357d71889bcf0a1ff3fe65aa6ededd6334c954395f6"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "audit",
+          "compare"
+        ]
+      },
+      "retained_duties": [
+        "Legacy/source assessment persistence, format allocation and formal terminal duties remain current project owner."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "ai-context-governance",
+      "legacy_source": {
+        "path": ".ai/assets/skills/ai-context-governance/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "e067c5532ef8cc9f87b36686d79e52ad2578fec6",
+        "sha256": "fd10be428b4207d300cba71970544ed9c6a108774dc6666f500fb13e995e5f3f"
+      },
+      "installed_successor": {
+        "skill_id": "ai-context-governance",
+        "core_root": ".ai/core/skills/ai-context-governance",
+        "codex_entry": ".agents/skills/aicf-ai-context-governance/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-ai-context-governance/SKILL.md",
+        "metadata": {
+          "path": "src/skills/ai-context-governance/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "02c7ee665ca1367db062a172b60bd17d601d554e",
+          "sha256": "3189089591f3f2db743dd271882f91c164432ce679cdea3e91fc2a91249fac2a"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "propose",
+          "apply"
+        ]
+      },
+      "retained_duties": [
+        "Source governance/release/policy/routing/legacy customization reconciliation stay with existing canonical skill and source policies; ordinary optional maintenance can cut over separately."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "ai-context-init",
+      "legacy_source": {
+        "path": ".ai/assets/skills/ai-context-init/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "3227c6efcdbcf8bc06474460eaa5d45726c46694",
+        "sha256": "e9598a625cf15aca86ea56d2b2cec2966d2cf02202bd149b218b0ab4decfce15"
+      },
+      "installed_successor": null,
+      "retained_duties": [
+        "Published legacy target initialization/provenance/customization ledger remains existing source/legacy owner; new managed installation is S3 plus explicit project onboarding, not a replacement skill ID."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "ai-context-release-closeout",
+      "legacy_source": {
+        "path": ".ai/assets/skills/ai-context-release-closeout/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "aabec53c4b53574484171c058f05889f8bc2dea9",
+        "sha256": "1d0ac4628b295ef1ccd4326bd1075c2b193e4f832f8d04db0edc47e5728ed111"
+      },
+      "installed_successor": null,
+      "retained_duties": [
+        "Entire source-only historical/exception release role; never a portable package."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "ai-context-upgrader",
+      "legacy_source": {
+        "path": ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "f92c0fdc17a80440da97bb8e757b3458414a9435",
+        "sha256": "5b315d6012dfe41c0372418180284d6fa067df19329961d502bc2bb2aab83ad2"
+      },
+      "installed_successor": null,
+      "retained_duties": [
+        "Published legacy multi-hop upgrades and active transaction recovery stay with their original readers; new lock updates use S3 maintenance."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "bdd-gwt-test-designer",
+      "legacy_source": {
+        "path": ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "0defeadab681e3a702744c13a0db01c7fbf8a875",
+        "sha256": "72d840229afdd55c762dd5c028e090f0b029bde57b11fb2dc29fd6022bda008a"
+      },
+      "installed_successor": {
+        "skill_id": "bdd-gwt-test-designer",
+        "core_root": ".ai/core/skills/bdd-gwt-test-designer",
+        "codex_entry": ".agents/skills/aicf-bdd-gwt-test-designer/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-bdd-gwt-test-designer/SKILL.md",
+        "metadata": {
+          "path": "src/skills/bdd-gwt-test-designer/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "69c4f293a33feaf3f84d6c945e5b7d2fb41e5bbe",
+          "sha256": "fb3bb4b5650ebd3664f879d7916ac21de30327e1e7d357785b26e5255dfa9b51"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "design",
+          "review"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "code-reviewer",
+      "legacy_source": {
+        "path": ".ai/assets/skills/code-reviewer/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "64376bf9d8fe2b95c44e222a89750dfca4f12aa1",
+        "sha256": "a71c9e6942c62eecd60a784f23fa4c75b555ca67288db68d5457a8cd3801f6cf"
+      },
+      "installed_successor": {
+        "skill_id": "code-reviewer",
+        "core_root": ".ai/core/skills/code-reviewer",
+        "codex_entry": ".agents/skills/aicf-code-reviewer/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-code-reviewer/SKILL.md",
+        "metadata": {
+          "path": "src/skills/code-reviewer/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "b205b7767c850bcd8fe1e4e9aeb0c1471a1a09f7",
+          "sha256": "e148f733d0270efbd139e05ec4257d9f25bf5ab6f34ad0d4093ea7cdf2e0f453"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "review"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "ddd-ca-hex-architect",
+      "legacy_source": {
+        "path": ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "6652d13b23d2cf344939802c64cd3946b3dae750",
+        "sha256": "5f421f5658fed7c3d172ba3a76a9a653564255546c9c325fc6de1a2bd77c1e0e"
+      },
+      "installed_successor": {
+        "skill_id": "ddd-ca-hex-architect",
+        "core_root": ".ai/core/skills/ddd-ca-hex-architect",
+        "codex_entry": ".agents/skills/aicf-ddd-ca-hex-architect/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-ddd-ca-hex-architect/SKILL.md",
+        "metadata": {
+          "path": "src/skills/ddd-ca-hex-architect/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "7582046347423bbeb57e049fbc84c0e1a3a3ef47",
+          "sha256": "584e06353be2977bb91234936faa190870b3e5ca33d04de6cb3cda050a884983"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "design",
+          "review"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "diagnostic-analyst",
+      "legacy_source": {
+        "path": ".ai/assets/skills/diagnostic-analyst/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "41d6231876356dcc427e1d8fdf65fd71c7010d8b",
+        "sha256": "6c0ef9d75718e70052c9ccc3f175e3b6145d596c5cb4f6b8521eb4ec44553fd7"
+      },
+      "installed_successor": {
+        "skill_id": "diagnostic-analyst",
+        "core_root": ".ai/core/skills/diagnostic-analyst",
+        "codex_entry": ".agents/skills/aicf-diagnostic-analyst/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-diagnostic-analyst/SKILL.md",
+        "metadata": {
+          "path": "src/skills/diagnostic-analyst/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "cfb65189ff0785531fb3976df0ae7c9aea5162b6",
+          "sha256": "4e96a9c31d6fa83bb1f95ec6c9b830d292e0323450f40a0bd94463626d946462"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "diagnose"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "lesson",
+      "legacy_source": null,
+      "installed_successor": {
+        "skill_id": "lesson",
+        "core_root": ".ai/core/skills/lesson",
+        "codex_entry": ".agents/skills/aicf-lesson/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-lesson/SKILL.md",
+        "metadata": {
+          "path": "src/skills/lesson/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "aa2c069ca6d1e7ccff83eb4fdecb7dec279214b4",
+          "sha256": "a897f9dbc47f18ee75d0698d13bea41efd559ac5785fbe153fe93796a5befc0a"
+        },
+        "version": "0.2.0",
+        "operations": [
+          "explain",
+          "create",
+          "inspect",
+          "query",
+          "validate",
+          "revise",
+          "render",
+          "derive",
+          "accept",
+          "retire",
+          "supersede"
+        ]
+      },
+      "retained_duties": [
+        "Existing Markdown/history/decision and effective-rule owners remain; new records/proposals do not import decisions or change rules."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "local-backlog",
+      "legacy_source": null,
+      "installed_successor": {
+        "skill_id": "local-backlog",
+        "core_root": ".ai/core/skills/local-backlog",
+        "codex_entry": ".agents/skills/aicf-local-backlog/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-local-backlog/SKILL.md",
+        "metadata": {
+          "path": "src/skills/local-backlog/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "58bd679c9d5a0d31f61883013ad69839cf4c93ae",
+          "sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "explain",
+          "create",
+          "inspect",
+          "query",
+          "revise",
+          "transition",
+          "render"
+        ]
+      },
+      "retained_duties": [
+        "Source GitHub Issues remain authoritative; frozen legacy backlog stays frozen and tool availability does not configure a new store."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "local-change-implementer",
+      "legacy_source": {
+        "path": ".ai/assets/skills/local-change-implementer/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "41cc2f9e0a142c56c84a4165b9de7c47cbeeaae6",
+        "sha256": "e4b2cddec9c40a991eec765996e10dbad271e979854113401eb482a86fe020be"
+      },
+      "installed_successor": {
+        "skill_id": "local-change-implementer",
+        "core_root": ".ai/core/skills/local-change-implementer",
+        "codex_entry": ".agents/skills/aicf-local-change-implementer/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-local-change-implementer/SKILL.md",
+        "metadata": {
+          "path": "src/skills/local-change-implementer/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "291bd2c904bd18879587db0552440d27d0ee027e",
+          "sha256": "2847ca089fe0c092a329027dcb8f588b2c8fcc42c8c78e60d34a0b19844ab44c"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "implement"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "pr",
+      "legacy_source": null,
+      "installed_successor": {
+        "skill_id": "pr",
+        "core_root": ".ai/core/skills/pr",
+        "codex_entry": ".agents/skills/aicf-pr/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-pr/SKILL.md",
+        "metadata": {
+          "path": "src/skills/pr/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "918fb3067d2ef49f3bced42747c47713db501e35",
+          "sha256": "e85987a6d2fc7f3c0276d99284c6612b1e314a729f4d4e8a8d90fc93d2153a86"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "explain",
+          "prepare",
+          "inspect",
+          "query",
+          "revise",
+          "render",
+          "provider-read",
+          "provider-create",
+          "provider-update"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "problem-frame-author",
+      "legacy_source": {
+        "path": ".ai/assets/skills/problem-frame-author/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "1aea3573df96a23b26da808a26b2b42a27b9968e",
+        "sha256": "4b3e9bf2071d8ab7429b78d2dd1842353defc4f4890b6282ba730eb198a8f1c5"
+      },
+      "installed_successor": {
+        "skill_id": "problem-frame-author",
+        "core_root": ".ai/core/skills/problem-frame-author",
+        "codex_entry": ".agents/skills/aicf-problem-frame-author/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-problem-frame-author/SKILL.md",
+        "metadata": {
+          "path": "src/skills/problem-frame-author/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "42f404b4e0885a40c2e3a42f5eb4d649fa07d733",
+          "sha256": "5705a4c55371ae26e949a8dbf605d3610797948b45464901d29956abb68b44af"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "draft",
+          "review-draft",
+          "explain",
+          "create",
+          "inspect",
+          "validate",
+          "render"
+        ]
+      },
+      "retained_duties": [
+        "Legacy CBF/SWF semantic intake and active records remain original owner; no new SWF machine support."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "requirement-author",
+      "legacy_source": {
+        "path": ".ai/assets/skills/requirement-author/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "1be8cfea762fb1adfabee6266d64d888637dcd71",
+        "sha256": "25a3cc8d93c91d4b2b04e7e284f269bbd14542a25d1a494e6779ebb4e54d92f8"
+      },
+      "installed_successor": {
+        "skill_id": "requirement-author",
+        "core_root": ".ai/core/skills/requirement-author",
+        "codex_entry": ".agents/skills/aicf-requirement-author/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-requirement-author/SKILL.md",
+        "metadata": {
+          "path": "src/skills/requirement-author/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "94c65266444b48af86490f29694caf5cbeacf8fd",
+          "sha256": "2127968b5f6d9776da7e36b7972d0d651b36b396a455f5a8fcbe3511c4ed35d9"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "draft",
+          "normalize"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "slice-implementer",
+      "legacy_source": {
+        "path": ".ai/assets/skills/slice-implementer/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "7e4d51df61194001b5412ecee7da0a3fc552d61a",
+        "sha256": "685e1ded82d9268d0deefdfa632a03d61e5c80da107ab03c58f330c6ab684bf2"
+      },
+      "installed_successor": {
+        "skill_id": "slice-implementer",
+        "core_root": ".ai/core/skills/slice-implementer",
+        "codex_entry": ".agents/skills/aicf-slice-implementer/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-slice-implementer/SKILL.md",
+        "metadata": {
+          "path": "src/skills/slice-implementer/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "c9d1084d68c4dd4ad3548533f30ea953d8c00742",
+          "sha256": "1ee8e843a6dca577392e9c91019e1543df47d57e866f39fc78c523560dad4c5f"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "implement"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "software-development-orchestrator",
+      "legacy_source": {
+        "path": ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "d2db8aafc67eab35f06638203d4e242dd7eebc1b",
+        "sha256": "296afd37f17345f73fc5d039b912869bd03ff05a4b7dd16707982e69a61015aa"
+      },
+      "installed_successor": {
+        "skill_id": "software-development-orchestrator",
+        "core_root": ".ai/core/skills/software-development-orchestrator",
+        "codex_entry": ".agents/skills/aicf-software-development-orchestrator/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-software-development-orchestrator/SKILL.md",
+        "metadata": {
+          "path": "src/skills/software-development-orchestrator/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "46ce2bd6eb765bf8df41a747f6c13b29a7994edc",
+          "sha256": "69f4b4f63f1a6a1bd816354a3dc62026b4b7402fc9fc5f0b10e2aeeb22de9a87"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "explain",
+          "create",
+          "inspect",
+          "query",
+          "checkpoint",
+          "transition",
+          "resume",
+          "retrospect",
+          "render",
+          "retention-preview"
+        ]
+      },
+      "retained_duties": [
+        "Existing workflow locators/tasks, #322 records and source Issue-first authority remain; new record format requires a selected separate store."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "spec-author",
+      "legacy_source": {
+        "path": ".ai/assets/skills/spec-author/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "4c9f0bc7a91466481f1332de0fd219896027acc3",
+        "sha256": "7c6026b83a276819d2dc3fd61bd07a91877e52e8f71a37bd311a48c9925c55da"
+      },
+      "installed_successor": {
+        "skill_id": "spec-author",
+        "core_root": ".ai/core/skills/spec-author",
+        "codex_entry": ".agents/skills/aicf-spec-author/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-spec-author/SKILL.md",
+        "metadata": {
+          "path": "src/skills/spec-author/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "120abfe9d14acfe57c2e87c84aa9e3bfe164fee1",
+          "sha256": "0cb829b12b78e48799dae1e81f5655bd4d2457a6239e0ae9c71f874055e56ff9"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "draft",
+          "normalize"
+        ]
+      },
+      "retained_duties": [],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "spec-compliance-validator",
+      "legacy_source": {
+        "path": ".ai/assets/skills/spec-compliance-validator/skill.yaml",
+        "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+        "git_blob": "bb60b33ad069d4d3367544ea76c5ec81be207558",
+        "sha256": "5ffba449e3f55210c80b3493368536c8ebd409efd529a64b52884f4b4e962f04"
+      },
+      "installed_successor": {
+        "skill_id": "spec-compliance-validator",
+        "core_root": ".ai/core/skills/spec-compliance-validator",
+        "codex_entry": ".agents/skills/aicf-spec-compliance-validator/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-spec-compliance-validator/SKILL.md",
+        "metadata": {
+          "path": "src/skills/spec-compliance-validator/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "30ba18cb4f4cba3b7829c4387c32226005b1c6ec",
+          "sha256": "aedc751c6543dd905b84c40ef1f4f0aeaa58e40e75f723756e3929f6ba477410"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "plan-validation",
+          "review-semantics",
+          "assess-runtime"
+        ]
+      },
+      "retained_duties": [
+        "Target-selected legacy .NET 100% gate and existing rule resolver retained; new CBF structure validation cannot replace them."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    },
+    {
+      "id": "standards-promotion",
+      "legacy_source": null,
+      "installed_successor": {
+        "skill_id": "standards-promotion",
+        "core_root": ".ai/core/skills/standards-promotion",
+        "codex_entry": ".agents/skills/aicf-standards-promotion/SKILL.md",
+        "claude_entry": ".claude/skills/aicf-standards-promotion/SKILL.md",
+        "metadata": {
+          "path": "src/skills/standards-promotion/skill-package.yaml",
+          "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
+          "git_blob": "a84f1ae525b5c86ce7cf4a20acbfbb54d0d2d7b5",
+          "sha256": "4727f91052636305e0651114f3a66e0bcb2f0d76e9cc8b6c73f63a2d19abd2e3"
+        },
+        "version": "0.1.0",
+        "operations": [
+          "explain",
+          "propose",
+          "inspect",
+          "query",
+          "validate",
+          "revise",
+          "render",
+          "withdraw",
+          "supersede",
+          "reconcile"
+        ]
+      },
+      "retained_duties": [
+        "Existing Markdown/history/decision and effective-rule owners remain; new records/proposals do not import decisions or change rules."
+      ],
+      "cutover_owner": "S5 source adoption owner / coordinator",
+      "state": "planned-successor-existing-owner-retained-until-actual-cutover",
+      "condition": "One active runtime route per exact operation; resolve required specialist/target authority before retiring its old route. Archive exact old discovery bytes and preserve recovery."
+    }
+  ],
+  "retained_non_skill_owners": [
+    {
+      "subject": "source-policies-and-GitHub-work-authority",
+      "owner": ".dev/standards and current source root routes"
+    },
+    {
+      "subject": "U001-and-P7-deferrals",
+      "owner": "program #322 coordinator/P7"
+    },
+    {
+      "subject": "legacy-transaction-recovery",
+      "owner": "original version-bound reader and transaction owner"
+    },
+    {
+      "subject": "provider-runtime-role-contracts",
+      "owner": "existing source/target policy; no automatic sub-agent dispatch"
+    },
+    {
+      "subject": "release-and-publication",
+      "owner": ".dev/releases and source release policy"
+    },
+    {
+      "subject": "CI-native-gates-dormant-policy",
+      "owner": "coordinator/P7; unadopted"
+    },
+    {
+      "subject": "historical-records-and-indexes",
+      "owner": "original project format owner"
+    },
+    {
+      "subject": "product-source-authoring",
+      "owner": "src package owners; installed bytes are generated"
+    }
+  ]
+}
