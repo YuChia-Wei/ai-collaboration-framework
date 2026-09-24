@@ -57,7 +57,7 @@ def fixture(name, *, actual=False, overrides=None):
     root = run.case(name)
     (root / 'src/distribution').mkdir(parents=True)
     (root / 'src/tools').mkdir()
-    sources = {p: b"VALUE = 'source'\n" for p in LOCAL_FILES}
+    sources = {p: b"VALUE = 'source'\n" for p in bootstrap.ENGINE_FILES}
     sources['src/distribution/__init__.py'] += b'from . import data\n'
     sources['src/distribution/data.py'] += b'from . import installation_io\n'
     sources['src/distribution/installation.py'] += (
@@ -72,16 +72,17 @@ def fixture(name, *, actual=False, overrides=None):
     sources.update(overrides or {})
     for name, raw in sources.items():
         target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
         if actual:  # Source-derived copies, measured under the unchanged helper caps.
             with target.open('xb') as stream:
                 stream.write(raw)
         else:
             run.write(target, raw)
     run.measure()
-    pin = {'id': 'framework-managed-installation', 'version': '1.0.0',
+    pin = {'id': 'framework-managed-installation', 'version': '2.0.0',
            'source_commit': support.git('rev-parse', 'HEAD').decode().strip(),
            'files': [{'path': p, 'sha256': sha256(sources[p]).hexdigest()} for p in bootstrap.ENGINE_FILES]}
-    return root, {'operation': 'inspect', 'engine_root': str(root), 'engine': pin}
+    return root, {'api_version': 2, 'operation': 'inspect', 'engine_root': str(root), 'engine': pin}
 
 
 def valid_cache(target, *, timestamp=False, fail_on_import=False):
@@ -234,7 +235,7 @@ class EngineSourceTests(unittest.TestCase):
         before_meta = list(sys.meta_path)
         code, result, stderr = invoke(root, request)
         self.assertEqual((code, stderr), (0, ''))
-        self.assertEqual(result, {'outcome': 'inspected', 'absent_before': True, 'value': 'source'})
+        self.assertEqual(result, {'outcome': 'inspected', 'absent_before': False, 'value': 'source'})
         delayed = sys.modules['distribution.package']
         self.assertIsInstance(delayed.__loader__, bootstrap._VerifiedSourceFinder)
         self.assertEqual(Path(delayed.__file__), target)
@@ -260,7 +261,9 @@ class EngineSourceTests(unittest.TestCase):
                    (support.REPOSITORY / name, (support.REPOSITORY / name).read_bytes()) for name in LOCAL_FILES}
         finder = bootstrap._VerifiedSourceFinder(sources)
         sys.meta_path.insert(0, finder)
-        installation = importlib.import_module('distribution.installation')
+        for module_name in sorted(sources):
+            importlib.import_module(module_name)
+        installation = sys.modules['distribution.installation']
         loaded = {n for n in sys.modules if n == 'distribution' or n.startswith('distribution.')}
         self.assertEqual(loaded, LOCAL_NAMES)
         self.assertTrue(callable(installation.execute))

@@ -77,3 +77,55 @@ retains exact before bytes/modes and after objects, and binds all edits into the
 hash and journal 2. It never seeds target roots or writes config on ordinary inspect,
 plan or invocation. `project_data_action` remains `none`. Final operation/journal
 shape and phase transitions are published in api2-maintenance.md before S6 use.
+
+## Isolated read-only host recipe
+
+The bootstrap now exposes `verified_engine(engine_root, engine_pin)` as a host
+context manager. It is the same `_load_engine` / `_VerifiedSourceFinder` used by
+maintenance, verifies the complete Engine2 closure and checkout HEAD or standalone
+engine descriptor, and unloads its distribution modules at exit. This is not a new
+maintenance operation. A caller must authenticate the bootstrap raw bytes against
+its independently selected pin before executing them.
+
+A concrete host can reuse `verified_host(engine_root, pin_file)` from the delivered
+`tools/derive-subset.py`; that small launcher authenticates the bootstrap bytes
+before execution and never changes sys.path. The caller must authenticate that
+launcher against the same engine pin before using it. In an isolated `python -I -B`
+host, with an independently selected immutable `engine_pin` object and explicit
+absolute `engine_root`, the equivalent steps are:
+
+```python
+import hashlib, os, stat, types
+from pathlib import Path
+
+# engine_pin comes from the caller's trusted admission record, not engine.json.
+root = Path(engine_root)
+name = "src/tools/maintain_framework.py"
+expected = next(row["sha256"] for row in engine_pin["files"] if row["path"] == name)
+launch = root / name
+for item in (launch, *launch.parents):
+    info = item.lstat()
+    assert not stat.S_ISLNK(info.st_mode) and not getattr(info, "st_file_attributes", 0) & 0x400
+before = launch.lstat()
+assert stat.S_ISREG(before.st_mode) and before.st_nlink == 1 and before.st_size <= 16 * 1024 * 1024
+with launch.open("rb") as stream:
+    opened = os.fstat(stream.fileno())
+    code = stream.read(16 * 1024 * 1024 + 1)
+    after = os.fstat(stream.fileno())
+signature = lambda row: (row.st_dev, row.st_ino, row.st_size, row.st_mtime_ns, row.st_mode)
+assert signature(before) == signature(opened) == signature(after) == signature(launch.lstat())
+assert len(code) <= 16 * 1024 * 1024 and hashlib.sha256(code).hexdigest() == expected
+host = types.ModuleType("aicf_consumer_bootstrap")
+host.__file__ = str(launch)
+exec(compile(code, str(launch), "exec", dont_inherit=True), host.__dict__)
+with host.verified_engine(str(root), engine_pin):
+    from distribution.catalog import read_installed_resources
+    index = read_installed_resources(project_root, expected_lock_sha256, authorities)
+```
+
+Use ordinary explicit conditional checks instead of assertions if the host enables
+Python optimization; the prescribed invocation does not enable `-O`. The host owns
+bounded parsing of its trusted admission record and user operation arguments. S5
+must preserve the returned identity with its task-scoped interpretation. Engine2
+and the selected installed writer may be independently pinned; they are not inferred
+from a source worktree, preset, package version or current lock description.

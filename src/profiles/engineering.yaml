@@ -1,25 +1,17 @@
-profile_version: 1
+preset_version: 1
 id: engineering
+version: 0.1.0
 skills:
-  - id: code-reviewer
-    version: 0.1.0
-  - id: requirement-author
-    version: 0.1.0
-  - id: spec-author
-    version: 0.1.0
-  - id: diagnostic-analyst
-    version: 0.1.0
-  - id: ddd-ca-hex-architect
-    version: 0.1.0
-  - id: bdd-gwt-test-designer
-    version: 0.1.0
-  - id: local-change-implementer
-    version: 0.1.0
-  - id: slice-implementer
-    version: 0.1.0
-  - id: problem-frame-author
-    version: 0.1.0
-  - id: spec-compliance-validator
-    version: 0.1.0
+- bdd-gwt-test-designer
+- code-reviewer
+- ddd-ca-hex-architect
+- diagnostic-analyst
+- local-change-implementer
+- problem-frame-author
+- requirement-author
+- slice-implementer
+- spec-author
+- spec-compliance-validator
+knowledge: []
 adapters:
-  - codex
+- codex

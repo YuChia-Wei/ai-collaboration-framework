@@ -1,11 +1,10 @@
-profile_version: 1
+preset_version: 1
 id: knowledge
+version: 0.1.0
 skills:
-  - id: lesson
-    version: 0.2.0
-  - id: adr
-    version: 0.1.0
-  - id: standards-promotion
-    version: 0.1.0
+- adr
+- lesson
+- standards-promotion
+knowledge: []
 adapters:
-  - codex
+- codex

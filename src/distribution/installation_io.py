@@ -51,7 +51,8 @@ def budget(paths: list[tuple[str, Path, str]]) -> None:
 
 def sibling(operation_id: str, destination: str) -> str:
     suffix = sha256((operation_id + "\0" + destination).encode("utf-8")).hexdigest()[:12]
-    return destination.rsplit("/", 1)[0] + "/.fi-" + suffix
+    parent = destination.rpartition("/")[0]
+    return (parent + "/" if parent else "") + ".fi-" + suffix
 
 
 def _windows_handle_filesystem(directory, volume, kernel):

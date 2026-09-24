@@ -17,23 +17,13 @@ import stat
 
 # Bootstrap knows the exact local closure BEFORE importing it. The state owner
 # checks the same closed list and actual loaded origins again at dispatch.
-ENGINE_FILES = (
-    "src/distribution/__init__.py",
-    "src/distribution/data.py",
-    "src/distribution/git_source.py",
-    "src/distribution/installation.py",
-    "src/distribution/installation_io.py",
-    "src/distribution/installation_plan.py",
-    "src/distribution/installation_state.py",
-    "src/distribution/maintenance_coordination.py",
-    "src/distribution/package.py",
-    "src/tools/maintain_framework.py",
-)
+ENGINE_FILES = ('src/adapters/claude/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry.md.template', 'src/distribution/__init__.py', 'src/distribution/assembly.py', 'src/distribution/catalog.py', 'src/distribution/claude.py', 'src/distribution/codex.py', 'src/distribution/content.py', 'src/distribution/contracts.py', 'src/distribution/data.py', 'src/distribution/git_source.py', 'src/distribution/installation.py', 'src/distribution/installation_io.py', 'src/distribution/installation_plan.py', 'src/distribution/installation_state.py', 'src/distribution/maintenance_coordination.py', 'src/distribution/package.py', 'src/distribution/selection.py', 'src/tools/maintain_framework.py', 'tools/build-catalog.py', 'tools/derive-subset.py')
 DOCUMENT_LIMIT = 4 * 1024 * 1024
 FILE_LIMIT = 16 * 1024 * 1024
 TOTAL_LIMIT = 128 * 1024 * 1024
 _framework_bootstrap = None
 _framework_bootstrap_bytes = 0
+_framework_engine_bytes = {}
 
 
 def _pairs(pairs):
@@ -141,8 +131,103 @@ class _VerifiedSourceFinder:
         exec(compile(content, str(filename), "exec", dont_inherit=True), module.__dict__)
 
 
+def _load_engine(request, request_size=0):
+    global _framework_bootstrap, _framework_bootstrap_bytes, _framework_engine_bytes
+    if not sys.flags.isolated or not sys.flags.dont_write_bytecode or sys.version_info < (3, 10):
+        raise ValueError("requires isolated Python 3.10+ with -B")
+    if "_aicf_verified_bootstrap" in sys.modules:
+        raise ValueError("nested engine session")
+    _framework_engine_bytes = {}
+    pin = request.get("engine")
+    if type(pin) is not dict or set(pin) != {"id", "version", "source_commit", "files"}:
+        raise ValueError("closed engine pin")
+    if pin["id"] != "framework-managed-installation" or pin["version"] != "2.0.0" or type(pin["source_commit"]) is not str or not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", pin["source_commit"]):
+        raise ValueError("engine identity")
+    rows = pin["files"]
+    if type(rows) is not list or len(rows) != len(ENGINE_FILES):
+        raise ValueError("engine closure")
+    launch = Path(__file__).absolute()
+    _direct(launch)
+    root = launch.parents[2]
+    if type(request.get("engine_root")) is not str or Path(request["engine_root"]) != root:
+        raise ValueError("executing root")
+    _direct(root, directory=True)
+    total = request_size
+    sources = {}
+    for expected, row in zip(ENGINE_FILES, rows):
+        if type(row) is not dict or set(row) != {"path", "sha256"} or row["path"] != expected or type(row["sha256"]) is not str or not re.fullmatch(r"[0-9a-f]{64}", row["sha256"]):
+            raise ValueError("engine file binding")
+        target = root / expected
+        _direct(target)
+        before = target.stat()
+        with target.open("rb") as stream:
+            content = stream.read(FILE_LIMIT + 1)
+        after = target.stat()
+        total += len(content)
+        signature = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns)
+        if len(content) > FILE_LIMIT or total > TOTAL_LIMIT or signature(before) != signature(after) or hashlib.sha256(content).hexdigest() != row["sha256"]:
+            raise ValueError("engine bytes")
+        _framework_engine_bytes[expected] = content
+        if expected.startswith("src/distribution/"):
+            name = "distribution" if expected.endswith("/__init__.py") else "distribution." + target.stem
+            sources[name] = (target, content)
+    if any(name == "distribution" or name.startswith("distribution.") for name in sys.modules):
+        raise ValueError("preloaded product modules")
+    # -I excludes cwd/PYTHONPATH/user site. Explicit host Python/venv and
+    # PyYAML are prerequisites, outside the local source pin.
+    import yaml
+    if str(getattr(yaml, "__version__", "")).split(".")[0] != "6":
+        raise ValueError("PyYAML 6 required")
+    # Intercept package initialization and every transitive/lazy local import.
+    # Keep the checkout off sys.path so host dependencies cannot be shadowed.
+    finder = _VerifiedSourceFinder(sources)
+    sys.meta_path.insert(0, finder)
+    try:
+        import distribution
+        import importlib
+        for module_name in sorted(sources):
+            importlib.import_module(module_name)
+    except BaseException:
+        sys.meta_path.remove(finder)
+        for module_name in list(sys.modules):
+            if module_name == "distribution" or module_name.startswith("distribution."):
+                del sys.modules[module_name]
+        raise
+    _framework_bootstrap = (str(root), pin)
+    _framework_bootstrap_bytes = total
+    from types import SimpleNamespace
+    sys.modules["_aicf_verified_bootstrap"] = SimpleNamespace(
+        __file__=__file__, _framework_bootstrap=_framework_bootstrap,
+        _framework_bootstrap_bytes=total, _framework_engine_bytes=dict(_framework_engine_bytes))
+    return finder
+
+from contextlib import contextmanager
+
+
+@contextmanager
+def verified_engine(engine_root, pin):
+    """One isolated read-only consumer host; no extra maintenance API operation.
+
+    The host first authenticates this bootstrap's exact bytes against its external
+    pin. All distribution imports then use the same retained-byte source finder
+    as main(), including complete closure and standalone/checkout provenance.
+    """
+    finder = None
+    try:
+        finder = _load_engine({"engine_root":engine_root, "engine":pin})
+        from distribution import installation_state as state
+        state._engine(state._Reader(), state._root(engine_root), pin)
+        yield
+    finally:
+        if finder in sys.meta_path: sys.meta_path.remove(finder)
+        sys.modules.pop("_aicf_verified_bootstrap", None)
+        for name in list(sys.modules):
+            if name == "distribution" or name.startswith("distribution."):
+                del sys.modules[name]
+
+
 def main() -> int:
-    global _framework_bootstrap, _framework_bootstrap_bytes
+    global _framework_bootstrap, _framework_bootstrap_bytes, _framework_engine_bytes
     operation = "inspect"
     finder = None
     try:
@@ -156,56 +241,12 @@ def main() -> int:
             raise ValueError("request object")
         if request.get("operation") in {"inspect", "plan", "apply", "recover"}:
             operation = request["operation"]
-        pin = request.get("engine")
-        if type(pin) is not dict or set(pin) != {"id", "version", "source_commit", "files"}:
-            raise ValueError("closed engine pin")
-        if pin["id"] != "framework-managed-installation" or pin["version"] != "1.0.0" or type(pin["source_commit"]) is not str or not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", pin["source_commit"]):
-            raise ValueError("engine identity")
-        rows = pin["files"]
-        if type(rows) is not list or len(rows) != len(ENGINE_FILES):
-            raise ValueError("engine closure")
-        launch = Path(__file__).absolute()
-        _direct(launch)
-        root = launch.parents[2]
-        if type(request.get("engine_root")) is not str or Path(request["engine_root"]) != root:
-            raise ValueError("executing root")
-        _direct(root, directory=True)
-        total = len(raw)
-        sources = {}
-        for expected, row in zip(ENGINE_FILES, rows):
-            if type(row) is not dict or set(row) != {"path", "sha256"} or row["path"] != expected or type(row["sha256"]) is not str or not re.fullmatch(r"[0-9a-f]{64}", row["sha256"]):
-                raise ValueError("engine file binding")
-            target = root / expected
-            _direct(target)
-            before = target.stat()
-            with target.open("rb") as stream:
-                content = stream.read(FILE_LIMIT + 1)
-            after = target.stat()
-            total += len(content)
-            signature = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns)
-            if len(content) > FILE_LIMIT or total > TOTAL_LIMIT or signature(before) != signature(after) or hashlib.sha256(content).hexdigest() != row["sha256"]:
-                raise ValueError("engine bytes")
-            if expected.startswith("src/distribution/"):
-                name = "distribution" if expected.endswith("/__init__.py") else "distribution." + target.stem
-                sources[name] = (target, content)
-        if any(name == "distribution" or name.startswith("distribution.") for name in sys.modules):
-            raise ValueError("preloaded product modules")
-        # -I excludes cwd/PYTHONPATH/user site. Explicit host Python/venv and
-        # PyYAML are prerequisites, outside the local source pin.
-        import yaml
-        if str(getattr(yaml, "__version__", "")).split(".")[0] != "6":
-            raise ValueError("PyYAML 6 required")
-        # Intercept package initialization and every transitive/lazy local import.
-        # Keep the checkout off sys.path so host dependencies cannot be shadowed.
-        finder = _VerifiedSourceFinder(sources)
-        sys.meta_path.insert(0, finder)
-        import distribution
-        _framework_bootstrap = (str(root), pin)
-        _framework_bootstrap_bytes = total
+        finder = _load_engine(request, len(raw))
         from distribution.installation import execute
     except (OSError, ValueError, TypeError, KeyError, ImportError, UnicodeError, RecursionError, OverflowError):
         if finder is not None:
             sys.meta_path.remove(finder)
+        sys.modules.pop("_aicf_verified_bootstrap", None)
         details = None
         if operation in {"apply", "recover"}:
             details = {"managed_state": "unsupported", "project_readiness": "not-assessed", "lock_sha256": None,
@@ -213,7 +254,7 @@ def main() -> int:
         elif operation == "inspect":
             details = {"managed_state": "unsupported", "project_readiness": "not-assessed", "owned": None,
                        "unknown": None, "drift": None, "mode_policy": None}
-        result = {"api_version": 1, "operation": operation, "outcome": "unsupported", "changed": False, "details": details,
+        result = {"api_version": 2, "operation": operation, "outcome": "unsupported", "changed": False, "details": details,
                   "diagnostics": [{"code": "source-bootstrap", "path": None,
                                    "reason": "Fixed engine bootstrap or host prerequisites could not be established before dispatch.",
                                    "next_action": "Provide isolated Python 3.10+ with -B, existing PyYAML 6, exact external source checkout/pin and one bounded JSON request."}]}
@@ -229,6 +270,7 @@ def main() -> int:
         return 2
     finally:
         sys.meta_path.remove(finder)
+        sys.modules.pop("_aicf_verified_bootstrap", None)
 
 
 if __name__ == "__main__":

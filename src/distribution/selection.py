@@ -46,7 +46,7 @@ def select(source: GitSource, profile_id: str) -> Selection:
     manifest_path = "src/distribution/manifest.yaml"
     manifest = mapping(yaml_object(source.read(manifest_path).data, manifest_path),
                        {"manifest_version", "profiles", "components", "adapters"}, set(), manifest_path)
-    version_one(manifest["manifest_version"], manifest_path)
+    require(type(manifest["manifest_version"]) is int and manifest["manifest_version"] == 1, "unsupported-write: legacy assembly requires manifest 1")
     profiles = named(manifest["profiles"], {"path"}, set(), "manifest profiles")
     components = named(manifest["components"], {"source", "metadata", "members"}, set(), "manifest components")
     adapters = named(manifest["adapters"], {"template"}, set(), "manifest adapters")
@@ -81,7 +81,9 @@ def select(source: GitSource, profile_id: str) -> Selection:
         maps[key] = members
 
     profile_path = profiles[profile_id]["path"]
-    profile = mapping(yaml_object(source.read(profile_path).data, profile_path),
+    raw_profile = yaml_object(source.read(profile_path).data, profile_path)
+    require("preset_version" not in raw_profile, "unsupported-write: legacy assembly cannot expand a preset")
+    profile = mapping(raw_profile,
                       {"profile_version", "id", "skills", "adapters"}, set(), profile_path)
     version_one(profile["profile_version"], profile_path)
     require(profile["id"] == profile_id, "profile ID does not match its manifest binding")
@@ -97,6 +99,7 @@ def select(source: GitSource, profile_id: str) -> Selection:
         require(key in components, f"{key}: selected component missing from manifest")
         component = components[key]
         package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
+        require(package.metadata["metadata_version"] in {1, 2, 3}, "unsupported-write: legacy assembly cannot emit metadata 4")
         require(package.id == key and package.version == request["version"],
                 f"{key}: metadata identity disagrees with exact profile selection")
         manifest_members = set(maps[key])

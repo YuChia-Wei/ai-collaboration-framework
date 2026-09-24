@@ -26,7 +26,7 @@ def main() -> int:
     try:
         result = assemble(args.repository, args.commit, args.profile, args.output_root, args.scratch_root)
     except (DistributionError, OSError, UnicodeError, TypeError, RecursionError) as exc:
-        print(json.dumps({"outcome": "failed", "diagnostic": str(exc)}, ensure_ascii=False), file=sys.stderr)
+        print(json.dumps({"outcome": "unsupported" if "unsupported-write:" in str(exc) else "failed", "code": "unsupported-write" if "unsupported-write:" in str(exc) else "assembly-input", "diagnostic": str(exc)}, ensure_ascii=False), file=sys.stderr)
         return 2
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
