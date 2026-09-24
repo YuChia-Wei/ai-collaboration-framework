@@ -1,0 +1,52 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "task_id": "S4-runtime-adapters",
+  "workflow_id": "2026-09-24-rc2-runtime-adapters",
+  "owner_skill": "local-change-implementer",
+  "status": "completed",
+  "created_at": "2026-09-24T20:14:12+08:00",
+  "updated_at": "2026-09-24T20:14:37+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-6-sol",
+  "reasoning_effort": "high",
+  "acceptance_ids": [
+    "S4-A1",
+    "S4-A2",
+    "S4-A3",
+    "S4-A4",
+    "S4-A5",
+    "S4-A6"
+  ],
+  "scope": {
+    "target": "One accepted rc.2 runtime projection operation across Codex and Claude",
+    "owned_paths": [
+      "src/adapters/codex/",
+      "src/adapters/claude/",
+      "src/distribution/codex.py",
+      "src/distribution/claude.py",
+      "tests/framework_next/test_rc2_adapters.py",
+      ".dev/workflows/2026-09-24-rc2-runtime-adapters/"
+    ],
+    "constraints": [
+      "Preserve legacy seam",
+      "No shared S3 edits",
+      "Stop before first push"
+    ]
+  },
+  "results": {
+    "summary": "S4-A1 through S4-A6 source and handoff delivered with direct syntax and template inspection only.",
+    "acceptance": {
+      "S4-A1": "source-retained",
+      "S4-A2": "source-delivered",
+      "S4-A3": "source-delivered",
+      "S4-A4": "test-cases-authored-unexecuted",
+      "S4-A5": "handoff-delivered",
+      "S4-A6": "distinct-observations-defined-deferred-by-owner"
+    },
+    "behavioral_verification": "deferred-by-owner",
+    "deferred_owner": "program #322 coordinator / P7",
+    "next_action": "Coordinator reviews local commit and passes exact descriptors to S3; S6/P7 selects actual runtime and behavioral checks.",
+    "provider_integration": "not-performed"
+  }
+}
