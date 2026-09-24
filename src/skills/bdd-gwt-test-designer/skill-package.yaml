@@ -5,15 +5,7 @@ delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
   required: []
-  optional:
-  - kind: knowledge
-    id: dotnet-backend
-    version: 0.1.0
-    on_missing: unavailable
-  - kind: knowledge
-    id: engineering-common
-    version: 0.1.0
-    on_missing: unavailable
+  optional: []
 runtime:
 - id: skill-instruction-reader
   requirement: Read the selected scenario instructions and permitted caller sources

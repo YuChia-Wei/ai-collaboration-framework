@@ -21,40 +21,23 @@
         },
         {
           "path": "skill-package.yaml",
-          "sha256": "5735d7984d00b569c9e71b276d19355a3623c2a15c1f51dfc8ae83f3574e1cef",
-          "size": 2446,
+          "sha256": "450a044c9b30419963b8e0530bb8f45870fb285a77aad93bf81481c1ff380a5d",
+          "size": 2265,
           "mode": "100644"
         },
         {
           "path": "references/design.md",
-          "sha256": "036ba9ee7fa6806ad4c5a36bc6ad9511f9ce10fa5399bda635701e5642609b76",
-          "size": 6785,
+          "sha256": "3e0baee2446b9ba2c1b1969a240daf519b9b99f1052f5cf011c6d13c97674dfa",
+          "size": 8333,
           "mode": "100644"
         },
         {
           "path": "references/review.md",
-          "sha256": "3279ef7b29431fc9640c68446340ab6b199495e1aad9cca0bcd816ba780a990a",
-          "size": 5854,
+          "sha256": "5755c7055b7860eb4a0e8682013c9386f780061340e8bcaf81edbc81f55eaf91",
+          "size": 7402,
           "mode": "100644"
         }
       ],
-      "dependencies": {
-        "required": [],
-        "optional": [
-          {
-            "kind": "knowledge",
-            "id": "dotnet-backend",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          },
-          {
-            "kind": "knowledge",
-            "id": "engineering-common",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          }
-        ]
-      },
       "operations": [
         {
           "id": "design",
@@ -121,7 +104,29 @@
           "requirement": "optional",
           "on_missing": "unavailable"
         }
-      ]
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
     },
     {
       "id": "code-reviewer",
@@ -138,34 +143,17 @@
         },
         {
           "path": "skill-package.yaml",
-          "sha256": "3e904d693ab8c01ba73043fa4b6cc8cc303a9f79a48c3d3e2e2efe9f2656a32b",
-          "size": 1763,
+          "sha256": "d78418616c5ea276f895824c1e27057894ef5148cb931a43c00ab8fa05b88e47",
+          "size": 1582,
           "mode": "100644"
         },
         {
           "path": "references/review.md",
-          "sha256": "3f2fca5920deb476c85da3ce1fae11396923709788c634f730c7dfb01e58c46d",
-          "size": 9947,
+          "sha256": "9e791c7352ac15d4caea48aec6d5f1c582b754b2886eb57ac0455a84ff245a59",
+          "size": 11495,
           "mode": "100644"
         }
       ],
-      "dependencies": {
-        "required": [],
-        "optional": [
-          {
-            "kind": "knowledge",
-            "id": "dotnet-backend",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          },
-          {
-            "kind": "knowledge",
-            "id": "engineering-common",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          }
-        ]
-      },
       "operations": [
         {
           "id": "review",
@@ -214,7 +202,29 @@
           "requirement": "optional",
           "on_missing": "unavailable"
         }
-      ]
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
     },
     {
       "id": "bdd-gwt-test-designer",
@@ -231,40 +241,23 @@
         },
         {
           "path": "skill-package.yaml",
-          "sha256": "3d6a0f626e774d7e00a40ccd64bf041a37bcb5896d122d821cacd2f9aec242c2",
-          "size": 2190,
+          "sha256": "d0f2326724037c1598689f1c4132fd60fe8124b2f5c807a0f6bec2c897190055",
+          "size": 2009,
           "mode": "100644"
         },
         {
           "path": "references/design.md",
-          "sha256": "57647ccf981944ada443808704e3d8606db3a74dcf00d59a7c1bef4e16ccd1ec",
-          "size": 7821,
+          "sha256": "6e1818ec85603d790103d62736ef10aed99c925e97f40ec02ecd5ddf9b338958",
+          "size": 9369,
           "mode": "100644"
         },
         {
           "path": "references/review.md",
-          "sha256": "26a582af35e3530a0b4c583ade0894ee2d55bb0442b80e74a15acd31b9e5751b",
-          "size": 5713,
+          "sha256": "07862be20d7f4d3c9a640705d2452d882acdce4a32440a26090f0de6f54f5828",
+          "size": 7261,
           "mode": "100644"
         }
       ],
-      "dependencies": {
-        "required": [],
-        "optional": [
-          {
-            "kind": "knowledge",
-            "id": "dotnet-backend",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          },
-          {
-            "kind": "knowledge",
-            "id": "engineering-common",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          }
-        ]
-      },
       "operations": [
         {
           "id": "design",
@@ -327,7 +320,29 @@
           "requirement": "optional",
           "on_missing": "unavailable"
         }
-      ]
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
     },
     {
       "id": "slice-implementer",
@@ -344,34 +359,17 @@
         },
         {
           "path": "skill-package.yaml",
-          "sha256": "f4765da3b8d1658fda734dd33021a92601ba19005a7509ff1089ebf79daf994f",
-          "size": 2612,
+          "sha256": "6842c837b4359fc5f219eb449ed8d8aa239fd6702c091096e7453f01f5d2c9e5",
+          "size": 2431,
           "mode": "100644"
         },
         {
           "path": "references/implement.md",
-          "sha256": "81e5599181d601d5e592690551084e0f95460836a4d6a45c531cf85a407d1ae8",
-          "size": 8147,
+          "sha256": "08ba36b4571651cd79cc2ff1f5b76ac50a72ab35a04414f3974438e675bc89a6",
+          "size": 9695,
           "mode": "100644"
         }
       ],
-      "dependencies": {
-        "required": [],
-        "optional": [
-          {
-            "kind": "knowledge",
-            "id": "dotnet-backend",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          },
-          {
-            "kind": "knowledge",
-            "id": "engineering-common",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          }
-        ]
-      },
       "operations": [
         {
           "id": "implement",
@@ -425,7 +423,29 @@
           "requirement": "optional",
           "on_missing": "unavailable"
         }
-      ]
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
     },
     {
       "id": "local-change-implementer",
@@ -442,34 +462,17 @@
         },
         {
           "path": "skill-package.yaml",
-          "sha256": "6061c93f386a8f778f07906e060bc3a32df2d63f21aa9644606000c84a8b7dd0",
-          "size": 2045,
+          "sha256": "ffb44108af56051b60255f18442f9b7e77702c2d3d332c4a38721937adc76a32",
+          "size": 1864,
           "mode": "100644"
         },
         {
           "path": "references/implement.md",
-          "sha256": "04f36d1232651500eb9aeb204041dc9581b465ca630b94c531fb8d153cd9bd01",
-          "size": 6675,
+          "sha256": "780ca40d00d251cdbea73a513a5d975295b7a4124d1874082d51b41195cf6630",
+          "size": 8223,
           "mode": "100644"
         }
       ],
-      "dependencies": {
-        "required": [],
-        "optional": [
-          {
-            "kind": "knowledge",
-            "id": "dotnet-backend",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          },
-          {
-            "kind": "knowledge",
-            "id": "engineering-common",
-            "version": "0.1.0",
-            "on_missing": "unavailable"
-          }
-        ]
-      },
       "operations": [
         {
           "id": "implement",
@@ -519,7 +522,29 @@
           "requirement": "optional",
           "on_missing": "unavailable"
         }
-      ]
+      ],
+      "raw_skill_dependencies": {
+        "required": [],
+        "optional": []
+      },
+      "derived_typed_component_dependencies": {
+        "required": [],
+        "optional": [
+          {
+            "kind": "knowledge",
+            "id": "dotnet-backend",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          },
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.1.0",
+            "on_missing": "unavailable"
+          }
+        ],
+        "derivation_owner": "S3 descriptor from metadata-4 knowledge_consumption; these rows are not raw skill metadata dependencies"
+      }
     }
   ],
   "shared_s3_changes_requested": [
@@ -528,13 +553,42 @@
     "Supply a verified selected installed-resource index and binding/authority observations with exact member identity and selected package/resource IDs. Consumer instructions perform task-scoped filtering and target-owned normative interpretation; no alternate parser is added."
   ],
   "verified_reader_seam": {
-    "status": "pending-s3-published-interface",
-    "required_before_final_delivery": "S3 publishes concrete verified installed-resource lookup, selected binding observation and authority raw-hash interface; align these five operation instructions to its actual names/shapes without guessing."
+    "status": "published-interface-aligned; implementation-in-progress",
+    "published_commit": "15bca530ea9eb3cc429cd7be37acf0ba45031507",
+    "published_path": ".dev/workflows/2026-09-24-rc2-selected-distribution/s5-interface.md",
+    "callable": "distribution.catalog.read_installed_resources",
+    "arguments": [
+      "project_root",
+      "expected_lock_sha256",
+      "authorities"
+    ],
+    "authority_input": "Exact deduplicated closed {path,sha256,selector} allowlist from selected bindings; raw hash matched by the reader",
+    "return_keys": [
+      "lock_sha256",
+      "candidate_identity",
+      "desired_sha256",
+      "resources",
+      "bindings",
+      "authorities",
+      "semantic_applicability"
+    ],
+    "resource_row": [
+      "package",
+      "version",
+      "resource_id",
+      "member",
+      "sha256",
+      "resource"
+    ],
+    "ownership": "Reader verifies complete lock-2/member/authority raw identity; S5 filters index and bindings, bounded-reads only needed members with re-observation, and consults target owner for semantic rule applicability.",
+    "failure": "InstallationError or DistributionError; no partial index",
+    "remaining": "S3 code implementation and S6 actual use are pending; this handoff records the fixed interface only."
   },
   "scope": "Five instruction-only skill roots; shared manifest/catalog and target adoption remain S3/coordinator-owned.",
   "verification": {
-    "direct": "UTF-8/YAML/resource-ID/Git/diff inspection; member hashes computed from current raw bytes",
+    "direct": "UTF-8/YAML/resource-ID/local-link/JSON/Git/diff and exact message checks; static binding to published S3 interface",
     "behavioral": "deferred-by-owner",
-    "owner": "program #322 coordinator / selected S6/P7"
+    "owner": "program #322 coordinator / selected S6/P7",
+    "resolved_contract_defect": "Provisional 8f2f16dc raw skill optional dependencies incorrectly used typed knowledge rows; restored unchanged metadata-3 skill dependency shape and kept optional knowledge in knowledge_consumption."
   }
 }
