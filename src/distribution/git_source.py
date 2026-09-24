@@ -119,7 +119,7 @@ class GitSource:
 
     def read(self, source_path: str) -> Blob:
         path(source_path, "Git input")
-        require(source_path.startswith("src/"), f"build input outside src is forbidden: {source_path}")
+        require(source_path.startswith("src/") or source_path in {"tools/build-catalog.py", "tools/derive-subset.py"}, f"build input outside src is forbidden: {source_path}")
         if source_path in self.blobs:
             return self.blobs[source_path]
         rows = self._git("ls-tree", "--full-tree", "-z", self.commit, "--", source_path).split(b"\0")
@@ -133,6 +133,9 @@ class GitSource:
         mode, kind, oid = entries[0]
         require(kind == "blob" and mode in {"100644", "100755"},
                 f"{source_path}: only regular Git blobs are supported; symlinks, trees and submodules are forbidden")
+        size=int(self._git("cat-file", "-s", oid))
+        require(size <= 16 * 1024 * 1024 and sum(len(b.data) for b in self.blobs.values()) + size <= 128 * 1024 * 1024
+                and len(self.blobs) < 4096, "source input budget")
         blob = Blob(source_path, oid, mode, self._git("cat-file", "blob", oid))
         self.blobs[source_path] = blob
         return blob

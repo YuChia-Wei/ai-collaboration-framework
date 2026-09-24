@@ -10,6 +10,15 @@ from typing import Any
 
 class DistributionError(ValueError):
     """An actionable selection, input or output failure."""
+    def __init__(self, message, code=None):
+        super().__init__(message)
+        prefix = message.split(":", 1)[0]
+        known = {"unsupported-write", "unsupported-version", "unsupported-adapter", "unsupported-engine", "unsupported-generator",
+                 "selection-unavailable", "dependency-closure", "dependency-version", "dependency-cycle", "reference-closure",
+                 "binding-unresolved", "identity-mismatch"}
+        self.code = code or (prefix if prefix in known else "invalid-shape")
+        self.outcome = "unsupported" if self.code.startswith("unsupported-") else "blocked"
+
 
 
 def require(condition: bool, message: str) -> None:
@@ -27,7 +36,7 @@ def mapping(value: Any, required: set[str], optional: set[str], label: str) -> d
 
 
 def sequence(value: Any, label: str) -> list:
-    require(type(value) is list, f"{label}: expected an array")
+    require(type(value) is list and len(value) <= 4096, f"{label}: expected a bounded array")
     return value
 
 
@@ -112,8 +121,14 @@ def yaml_object(raw: bytes, label: str) -> dict:
         raise DistributionError("PyYAML >=6,<7 is required; provision it explicitly before building") from exc
     require(yaml.__version__.split(".")[0] == "6", "Only PyYAML >=6,<7 is supported")
     try:
+        require(len(raw) <= 256 * 1024 and not raw.startswith(b"\xef\xbb\xbf"), f"{label}: YAML byte budget/BOM")
         text = raw.decode("utf-8", errors="strict")
+        depth = count = 0
         for event in yaml.parse(text, Loader=yaml.SafeLoader):
+            count += 1
+            if isinstance(event, (yaml.events.MappingStartEvent, yaml.events.SequenceStartEvent)): depth += 1
+            if isinstance(event, (yaml.events.MappingEndEvent, yaml.events.SequenceEndEvent)): depth -= 1
+            require(count <= 100000 and depth <= 48, f"{label}: YAML structural budget")
             require(not isinstance(event, yaml.events.AliasEvent), f"{label}: YAML aliases are forbidden")
             require(getattr(event, "anchor", None) is None, f"{label}: YAML anchors are forbidden")
             require(getattr(event, "tag", None) is None, f"{label}: explicit YAML tags are forbidden")
@@ -144,6 +159,8 @@ def yaml_object(raw: bytes, label: str) -> dict:
         require(node is not None, f"{label}: empty YAML document")
         result = convert(node)
         require(type(result) is dict, f"{label}: expected an object")
+        from .installation_state import _bounded
+        _bounded(result, allow_floats=True)
         return result
     except (UnicodeError, yaml.YAMLError, RecursionError) as exc:
         raise DistributionError(f"{label}: invalid UTF-8 or restricted YAML") from exc
@@ -155,6 +172,7 @@ def json_bytes(value: Any) -> bytes:
 
 
 def json_object(raw: bytes, label: str) -> dict:
+    require(len(raw) <= 4 * 1024 * 1024 and not raw.startswith(b"\xef\xbb\xbf"), f"{label}: JSON byte budget/BOM")
     def pairs(items):
         result = {}
         for key, value in items:
@@ -176,4 +194,6 @@ def json_object(raw: bytes, label: str) -> dict:
     except (UnicodeError, json.JSONDecodeError, RecursionError) as exc:
         raise DistributionError(f"{label}: invalid UTF-8 JSON") from exc
     require(type(result) is dict, f"{label}: expected an object")
+    from .installation_state import _bounded
+    _bounded(result, allow_floats=True)
     return result

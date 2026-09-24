@@ -749,3 +749,75 @@ The parent completed the remaining mechanical checks using a corrected independe
 Git-blob comparison; no failed helper result was upgraded to success. S2 and S4
 are ready for online integration. S3 remains the sole shared implementation owner
 and starts only after that integrated input checkpoint.
+
+## S2/S4 online integration and S3 preparation (2026-09-24)
+
+PR #405 merged at `81c9603b6b5ceae7b0e33a541bc12e28118bc6be`. The pushed
+head was read back and all 267 provider changed paths matched the local diff.
+Fresh provider read-back confirmed #403 and #404 CLOSED / Project Done, with
+#322 OPEN / In progress. The owner execution-sizing amendment is now online.
+No hosted or behavioral pass is inferred; U001 deferrals remain.
+
+S3 Issue #406 was created with S3-A1 through S3-A10, exact S2/S4 input pins,
+sole shared implementation ownership and the before-first-push return boundary.
+The full online body equals the prepared local draft. S3 is a substantial connected
+distribution/maintenance change and uses an independent task; a short read-only
+S5 consumer/retained-duty preparation uses a bounded sub-agent concurrently.
+S3 must publish the exact operation/journal contract before any S5/S6 adoption use.
+
+S3 was dispatched from clean `238f58bede46a8466699b5f9cd2307acb7155ac0`.
+Its existing Project item was updated to In progress and read back. Actual
+invocation provenance is retained in ignored coordination evidence. A bounded
+read-only S5 analysis at 81c9603 identified the five direct consumers; S3 received
+the precise verified-resource/binding interface requirement.
+
+S5 consumer Issue #407 now has the accepted instruction-only scope S5C-A1 through
+S5C-A6 and exact body read-back. Its five skill roots are disjoint from S3. Final
+consumer instructions must bind to S3's concrete reading seam before acceptance;
+the coordinator will serially return changed component rows to S3. This is separate
+from source and mq-lab adoption and does not retire any retained legacy owner.
+
+## S5 consumer dispatch and adoption preparation (2026-09-24)
+
+The bounded consumer sub-agent started from clean 50adb657b388074e072c8a7ed15a93368a7ba149;
+#407's existing Project item was changed to In progress and read back. No new item
+was created. [Adoption preparation](reports/rc2-adoption-preparation.md) records
+the fixed source operation map, mixed legacy duties, minimal paired edit-intent
+set and fresh target baseline comparison. These are inputs, not adoption evidence.
+
+S3's attempted outgoing coordinator callback was rejected by automatic approval
+review for destination-sharing authority. No callback was sent; the speculative
+regex discrepancy in that attempt was independently resolved by the producer's
+direct code-point inspection. No schema correction is selected. S3 was instructed
+not to retry or publish the refused callback. The coordinator can receive its
+ordinary final response/local handoff through the parent event wait, so this does
+not block authorized implementation or require an alternate outbound route.
+
+## S5 consumer local delivery accepted (2026-09-24)
+
+The bounded consumer writer returned provisional 8f2f16d and final b4dfe1cb,
+clean and stopped before push. [Receiving review](reports/rc2-s5-consumer-review.md)
+records the 21-path scope, exact 17-member/34-resource comparison, preserved seven
+method bodies, independent semantic delta review and repaired failures. Its fixed
+S3 protocol is documented at 15bca530; actual implementation/use remains pending.
+The coordinator locally integrates the accepted consumer input and returns it to
+the sole S3 manifest/catalog writer. #407 remains open until online integration;
+source/target adoption and full rc.2 completion are not implied.
+
+## Owner-selected current-work integration and cleanup (2026-09-24)
+
+The owner explicitly requested all current results integrated to main followed by
+completed branch/worktree cleanup, and noted that earlier tasks may be archived.
+The coordinator recovered S3's completed handoff without creating another task.
+S3 373c7250 is accepted after [receiving review](reports/rc2-s3-source-review.md);
+S5 b4dfe1cb was already accepted. An online PR now carries the complete current
+source implementation plus coordination records. #406/#407 may close only after
+that accepted delivery reaches main; #322 and actual adoption/S6 remain open.
+
+Cleanup is conditional on fresh main ancestry, clean status and released writers.
+Archive and byte-compare ignored custody evidence before removing rc2 worktrees.
+The old evaluation entries/messaging/release worktrees have uncommitted changes;
+the Luna trial has unmerged history. Preserve these, the existing #369/#386
+retention boundaries, baseline backups and fixture roots. No cleanup outcome is
+claimed before execution. The final local cleanup receipt will remain in ignored
+durable storage in the main checkout, avoiding a self-invalidating terminal commit.

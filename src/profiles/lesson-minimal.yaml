@@ -1,7 +1,8 @@
-profile_version: 1
+preset_version: 1
 id: lesson-minimal
+version: 0.1.0
 skills:
-  - id: lesson
-    version: 0.2.0
+- lesson
+knowledge: []
 adapters:
-  - codex
+- codex

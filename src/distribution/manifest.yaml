@@ -1,320 +1,848 @@
-manifest_version: 1
+manifest_version: 2
 profiles:
-  - id: complete
-    path: src/profiles/complete.yaml
-  - id: lesson-minimal
-    path: src/profiles/lesson-minimal.yaml
-  - id: knowledge
-    path: src/profiles/knowledge.yaml
-  - id: work-management
-    path: src/profiles/work-management.yaml
-  - id: engineering
-    path: src/profiles/engineering.yaml
-  - id: collaboration
-    path: src/profiles/collaboration.yaml
-  - id: source-repository
-    path: src/profiles/source-repository.yaml
-  - id: context-maintenance
-    path: src/profiles/context-maintenance.yaml
+- id: collaboration
+  path: src/profiles/collaboration.yaml
+- id: complete
+  path: src/profiles/complete.yaml
+- id: context-maintenance
+  path: src/profiles/context-maintenance.yaml
+- id: engineering
+  path: src/profiles/engineering.yaml
+- id: knowledge
+  path: src/profiles/knowledge.yaml
+- id: lesson-minimal
+  path: src/profiles/lesson-minimal.yaml
+- id: source-repository
+  path: src/profiles/source-repository.yaml
+- id: work-management
+  path: src/profiles/work-management.yaml
 components:
-  - id: lesson
-    source: src/skills/lesson
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/lesson/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/lesson/skill-package.yaml
-      - source: references/configuration.md
-        destination: .ai/core/skills/lesson/references/configuration.md
-      - source: references/operations.md
-        destination: .ai/core/skills/lesson/references/operations.md
-      - source: references/example.md
-        destination: .ai/core/skills/lesson/references/example.md
-      - source: schemas/lesson-record.schema.json
-        destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
-      - source: schemas/lesson-record-v2.schema.json
-        destination: .ai/core/skills/lesson/schemas/lesson-record-v2.schema.json
-      - source: templates/lesson.md
-        destination: .ai/core/skills/lesson/templates/lesson.md
-      - source: scripts/lesson.py
-        destination: .ai/core/skills/lesson/scripts/lesson.py
-  - id: adr
-    source: src/skills/adr
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/adr/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/adr/skill-package.yaml
-      - source: references/configuration.md
-        destination: .ai/core/skills/adr/references/configuration.md
-      - source: references/operations.md
-        destination: .ai/core/skills/adr/references/operations.md
-      - source: references/example.md
-        destination: .ai/core/skills/adr/references/example.md
-      - source: schemas/adr-record.schema.json
-        destination: .ai/core/skills/adr/schemas/adr-record.schema.json
-      - source: templates/adr.md
-        destination: .ai/core/skills/adr/templates/adr.md
-      - source: scripts/adr.py
-        destination: .ai/core/skills/adr/scripts/adr.py
-  - id: standards-promotion
-    source: src/skills/standards-promotion
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/standards-promotion/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/standards-promotion/skill-package.yaml
-      - source: references/configuration.md
-        destination: .ai/core/skills/standards-promotion/references/configuration.md
-      - source: references/operations.md
-        destination: .ai/core/skills/standards-promotion/references/operations.md
-      - source: references/authority.md
-        destination: .ai/core/skills/standards-promotion/references/authority.md
-      - source: references/example.md
-        destination: .ai/core/skills/standards-promotion/references/example.md
-      - source: schemas/promotion-record.schema.json
-        destination: .ai/core/skills/standards-promotion/schemas/promotion-record.schema.json
-      - source: templates/promotion.md
-        destination: .ai/core/skills/standards-promotion/templates/promotion.md
-      - source: scripts/standards_promotion.py
-        destination: .ai/core/skills/standards-promotion/scripts/standards_promotion.py
-  - id: pr
-    source: src/skills/pr
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/pr/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/pr/skill-package.yaml
-      - source: references/configuration.md
-        destination: .ai/core/skills/pr/references/configuration.md
-      - source: references/operations.md
-        destination: .ai/core/skills/pr/references/operations.md
-      - source: references/github.md
-        destination: .ai/core/skills/pr/references/github.md
-      - source: references/example.md
-        destination: .ai/core/skills/pr/references/example.md
-      - source: schemas/pr-record.schema.json
-        destination: .ai/core/skills/pr/schemas/pr-record.schema.json
-      - source: templates/pr.md
-        destination: .ai/core/skills/pr/templates/pr.md
-      - source: scripts/pr.py
-        destination: .ai/core/skills/pr/scripts/pr.py
-      - source: scripts/github.py
-        destination: .ai/core/skills/pr/scripts/github.py
-  - id: local-backlog
-    source: src/skills/local-backlog
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/local-backlog/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/local-backlog/skill-package.yaml
-      - source: references/configuration.md
-        destination: .ai/core/skills/local-backlog/references/configuration.md
-      - source: references/operations.md
-        destination: .ai/core/skills/local-backlog/references/operations.md
-      - source: references/example.md
-        destination: .ai/core/skills/local-backlog/references/example.md
-      - source: schemas/local-backlog-record.schema.json
-        destination: .ai/core/skills/local-backlog/schemas/local-backlog-record.schema.json
-      - source: templates/work-item.md
-        destination: .ai/core/skills/local-backlog/templates/work-item.md
-      - source: scripts/local_backlog.py
-        destination: .ai/core/skills/local-backlog/scripts/local_backlog.py
-  - id: software-development-orchestrator
-    source: src/skills/software-development-orchestrator
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/software-development-orchestrator/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
-      - source: references/configuration.md
-        destination: .ai/core/skills/software-development-orchestrator/references/configuration.md
-      - source: references/operations.md
-        destination: .ai/core/skills/software-development-orchestrator/references/operations.md
-      - source: references/retention.md
-        destination: .ai/core/skills/software-development-orchestrator/references/retention.md
-      - source: references/composition.md
-        destination: .ai/core/skills/software-development-orchestrator/references/composition.md
-      - source: references/example.md
-        destination: .ai/core/skills/software-development-orchestrator/references/example.md
-      - source: schemas/workflow-record.schema.json
-        destination: .ai/core/skills/software-development-orchestrator/schemas/workflow-record.schema.json
-      - source: templates/workflow.md
-        destination: .ai/core/skills/software-development-orchestrator/templates/workflow.md
-      - source: scripts/workflow.py
-        destination: .ai/core/skills/software-development-orchestrator/scripts/workflow.py
-  - id: code-reviewer
-    source: src/skills/code-reviewer
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/code-reviewer/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/code-reviewer/skill-package.yaml
-      - source: references/review.md
-        destination: .ai/core/skills/code-reviewer/references/review.md
-  - id: requirement-author
-    source: src/skills/requirement-author
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/requirement-author/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/requirement-author/skill-package.yaml
-      - source: references/authoring.md
-        destination: .ai/core/skills/requirement-author/references/authoring.md
-      - source: references/requirement-template.md
-        destination: .ai/core/skills/requirement-author/references/requirement-template.md
-  - id: spec-author
-    source: src/skills/spec-author
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/spec-author/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/spec-author/skill-package.yaml
-      - source: references/authoring.md
-        destination: .ai/core/skills/spec-author/references/authoring.md
-      - source: references/production-template.md
-        destination: .ai/core/skills/spec-author/references/production-template.md
-      - source: references/entity-template.md
-        destination: .ai/core/skills/spec-author/references/entity-template.md
-      - source: references/adapter-template.md
-        destination: .ai/core/skills/spec-author/references/adapter-template.md
-      - source: references/formal-test-template.md
-        destination: .ai/core/skills/spec-author/references/formal-test-template.md
-  - id: diagnostic-analyst
-    source: src/skills/diagnostic-analyst
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/diagnostic-analyst/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/diagnostic-analyst/skill-package.yaml
-      - source: references/diagnose.md
-        destination: .ai/core/skills/diagnostic-analyst/references/diagnose.md
-  - id: ddd-ca-hex-architect
-    source: src/skills/ddd-ca-hex-architect
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/ddd-ca-hex-architect/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/ddd-ca-hex-architect/skill-package.yaml
-      - source: references/design.md
-        destination: .ai/core/skills/ddd-ca-hex-architect/references/design.md
-      - source: references/review.md
-        destination: .ai/core/skills/ddd-ca-hex-architect/references/review.md
-  - id: bdd-gwt-test-designer
-    source: src/skills/bdd-gwt-test-designer
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/bdd-gwt-test-designer/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/bdd-gwt-test-designer/skill-package.yaml
-      - source: references/design.md
-        destination: .ai/core/skills/bdd-gwt-test-designer/references/design.md
-      - source: references/review.md
-        destination: .ai/core/skills/bdd-gwt-test-designer/references/review.md
-  - id: local-change-implementer
-    source: src/skills/local-change-implementer
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/local-change-implementer/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/local-change-implementer/skill-package.yaml
-      - source: references/implement.md
-        destination: .ai/core/skills/local-change-implementer/references/implement.md
-  - id: slice-implementer
-    source: src/skills/slice-implementer
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/slice-implementer/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/slice-implementer/skill-package.yaml
-      - source: references/implement.md
-        destination: .ai/core/skills/slice-implementer/references/implement.md
-      - source: references/modes/command.md
-        destination: .ai/core/skills/slice-implementer/references/modes/command.md
-      - source: references/modes/query.md
-        destination: .ai/core/skills/slice-implementer/references/modes/query.md
-      - source: references/modes/reactor.md
-        destination: .ai/core/skills/slice-implementer/references/modes/reactor.md
-      - source: references/modes/generic.md
-        destination: .ai/core/skills/slice-implementer/references/modes/generic.md
-      - source: references/test-handoff.md
-        destination: .ai/core/skills/slice-implementer/references/test-handoff.md
-      - source: references/remediation.md
-        destination: .ai/core/skills/slice-implementer/references/remediation.md
-  - id: problem-frame-author
-    source: src/skills/problem-frame-author
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/problem-frame-author/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/problem-frame-author/skill-package.yaml
-      - source: references/authoring.md
-        destination: .ai/core/skills/problem-frame-author/references/authoring.md
-      - source: references/format.md
-        destination: .ai/core/skills/problem-frame-author/references/format.md
-      - source: references/operations.md
-        destination: .ai/core/skills/problem-frame-author/references/operations.md
-      - source: references/configuration.md
-        destination: .ai/core/skills/problem-frame-author/references/configuration.md
-      - source: references/example.md
-        destination: .ai/core/skills/problem-frame-author/references/example.md
-      - source: schemas/cbf-record-v1.schema.json
-        destination: .ai/core/skills/problem-frame-author/schemas/cbf-record-v1.schema.json
-      - source: templates/cbf.md
-        destination: .ai/core/skills/problem-frame-author/templates/cbf.md
-      - source: scripts/problem_frame.py
-        destination: .ai/core/skills/problem-frame-author/scripts/problem_frame.py
-  - id: spec-compliance-validator
-    source: src/skills/spec-compliance-validator
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/spec-compliance-validator/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/spec-compliance-validator/skill-package.yaml
-      - source: references/compliance.md
-        destination: .ai/core/skills/spec-compliance-validator/references/compliance.md
-      - source: references/report-template.md
-        destination: .ai/core/skills/spec-compliance-validator/references/report-template.md
-      - source: references/legacy-intake.md
-        destination: .ai/core/skills/spec-compliance-validator/references/legacy-intake.md
-      - source: profiles/dotnet.md
-        destination: .ai/core/skills/spec-compliance-validator/profiles/dotnet.md
-  - id: ai-context-auditor
-    source: src/skills/ai-context-auditor
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/ai-context-auditor/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/ai-context-auditor/skill-package.yaml
-      - source: references/audit.md
-        destination: .ai/core/skills/ai-context-auditor/references/audit.md
-  - id: ai-context-governance
-    source: src/skills/ai-context-governance
-    metadata: skill-package.yaml
-    members:
-      - source: SKILL.md
-        destination: .ai/core/skills/ai-context-governance/SKILL.md
-      - source: skill-package.yaml
-        destination: .ai/core/skills/ai-context-governance/skill-package.yaml
-      - source: references/maintenance.md
-        destination: .ai/core/skills/ai-context-governance/references/maintenance.md
+- kind: knowledge
+  id: dotnet-backend
+  version: 0.1.0
+  source: src/knowledge/dotnet-backend
+  metadata: content-package.yaml
+  members:
+  - source: README.md
+    destination: .ai/core/knowledge/dotnet-backend/README.md
+  - source: content-package.yaml
+    destination: .ai/core/knowledge/dotnet-backend/content-package.yaml
+  - source: design/architecture-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/design/architecture-playbook.md
+  - source: design/design-routing.yaml
+    destination: .ai/core/knowledge/dotnet-backend/design/design-routing.yaml
+  - source: design/source-map.md
+    destination: .ai/core/knowledge/dotnet-backend/design/source-map.md
+  - source: engineering-rule-catalog.yaml
+    destination: .ai/core/knowledge/dotnet-backend/engineering-rule-catalog.yaml
+  - source: examples/aggregate/Plan.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/Plan.cs
+  - source: examples/aggregate/PlanEvents.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/PlanEvents.cs
+  - source: examples/aggregate/PlanId.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/PlanId.cs
+  - source: examples/aggregate/Project.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/Project.cs
+  - source: examples/aggregate/ProjectId.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/ProjectId.cs
+  - source: examples/aggregate/ProjectName.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/ProjectName.cs
+  - source: examples/aggregate/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/README.md
+  - source: examples/aggregate/TagEvents.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/TagEvents.cs
+  - source: examples/aggregate/TagId.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/TagId.cs
+  - source: examples/aggregate/TaskId.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/TaskId.cs
+  - source: examples/aspnet-core/InMemoryRepositoryConfig.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/InMemoryRepositoryConfig.cs
+  - source: examples/aspnet-core/OutboxRepositoryConfig.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/OutboxRepositoryConfig.cs
+  - source: examples/aspnet-core/Program.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/Program.cs
+  - source: examples/aspnet-core/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/README.md
+  - source: examples/aspnet-core/UseCaseConfiguration.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/UseCaseConfiguration.cs
+  - source: examples/aspnet-core/appsettings.InMemory.json
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.InMemory.json
+  - source: examples/aspnet-core/appsettings.Outbox.json
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.Outbox.json
+  - source: examples/aspnet-core/appsettings.TestInMemory.json
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.TestInMemory.json
+  - source: examples/aspnet-core/appsettings.TestOutbox.json
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.TestOutbox.json
+  - source: examples/aspnet-core/appsettings.json
+    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.json
+  - source: examples/bdd-gherkin-example/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/README.md
+  - source: examples/bdd-gherkin-example/aggregate-outbox-repository.feature
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/aggregate-outbox-repository.feature
+  - source: examples/bdd-gherkin-example/complete-usecase-with-rules.feature
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/complete-usecase-with-rules.feature
+  - source: examples/bdd-gherkin-example/create-task-usecase.feature
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/create-task-usecase.feature
+  - source: examples/bdd-gherkin-example/rule-design-before-after.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/rule-design-before-after.md
+  - source: examples/bdd-gherkin-example/rule-migration-guide.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/rule-migration-guide.md
+  - source: examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs
+  - source: examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs
+  - source: examples/bdd-given-when-then-example/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/README.md
+  - source: examples/bdd-given-when-then-example/rule-design-before-after.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/rule-design-before-after.md
+  - source: examples/bdd-given-when-then-example/rule-migration-guide.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/rule-migration-guide.md
+  - source: examples/bdd-step-methods/BudgetQuery.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs
+  - source: examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs
+  - source: examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj
+  - source: examples/bdd-step-methods/Directory.Build.props
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/Directory.Build.props
+  - source: examples/bdd-step-methods/NuGet.Config
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/NuGet.Config
+  - source: examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs
+  - source: examples/bdd-step-methods/PlainXunit/PlainXunit.csproj
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj
+  - source: examples/bdd-step-methods/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/README.md
+  - source: examples/bdd-step-methods/scenarios.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/scenarios.md
+  - source: examples/contract/CONTRACT-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/contract/CONTRACT-GUIDE.md
+  - source: examples/contract/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/contract/README.md
+  - source: examples/contract/aggregate-contract-example.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/contract/aggregate-contract-example.md
+  - source: examples/contract/usecase-contract-example.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/contract/usecase-contract-example.md
+  - source: examples/contract/value-object-contract-example.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/contract/value-object-contract-example.md
+  - source: examples/controller/CreateTaskController.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/controller/CreateTaskController.cs
+  - source: examples/controller/CreateTaskRequest.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/controller/CreateTaskRequest.cs
+  - source: examples/controller/CreateTaskResponse.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/controller/CreateTaskResponse.cs
+  - source: examples/controller/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/controller/README.md
+  - source: examples/dto/PlanDto.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/dto/PlanDto.cs
+  - source: examples/dto/ProjectDto.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/dto/ProjectDto.cs
+  - source: examples/dto/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/dto/README.md
+  - source: examples/dto/TaskDto.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/dto/TaskDto.cs
+  - source: examples/generation-templates/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/README.md
+  - source: examples/generation-templates/base-test-classes.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/base-test-classes.md
+  - source: examples/generation-templates/complex-aggregate-spec.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/complex-aggregate-spec.md
+  - source: examples/generation-templates/local-utils.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/local-utils.md
+  - source: examples/generation-templates/reactor-full.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/reactor-full.md
+  - source: examples/generation-templates/test-case-full.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/test-case-full.md
+  - source: examples/generation-templates/test-suites.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/test-suites.md
+  - source: examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs
+  - source: examples/inquiry-archive/EfUserArchive.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/EfUserArchive.cs
+  - source: examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs
+  - source: examples/inquiry-archive/FindCardsByTagIdInquiry.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/FindCardsByTagIdInquiry.cs
+  - source: examples/inquiry-archive/InquiryContracts.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/InquiryContracts.cs
+  - source: examples/inquiry-archive/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/README.md
+  - source: examples/inquiry-archive/USAGE-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md
+  - source: examples/inquiry-archive/UserArchive.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/UserArchive.cs
+  - source: examples/inquiry-archive/UserDbContext.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/UserDbContext.cs
+  - source: examples/mapper/PlanMapper.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/PlanMapper.cs
+  - source: examples/mapper/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/README.md
+  - source: examples/mapper/TaskMapper.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/TaskMapper.cs
+  - source: examples/nuget/Directory.Packages.props
+    destination: .ai/core/knowledge/dotnet-backend/examples/nuget/Directory.Packages.props
+  - source: examples/outbox/BootstrapConfig.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/BootstrapConfig.cs
+  - source: examples/outbox/DataSourceConfig.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/DataSourceConfig.cs
+  - source: examples/outbox/OUTBOX-TEST-CONFIGURATION.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md
+  - source: examples/outbox/OutboxContracts.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/OutboxContracts.cs
+  - source: examples/outbox/PlanData.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/PlanData.cs
+  - source: examples/outbox/PlanDbContext.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/PlanDbContext.cs
+  - source: examples/outbox/PlanOutboxMapper.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/PlanOutboxMapper.cs
+  - source: examples/outbox/ProjectData.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/ProjectData.cs
+  - source: examples/outbox/ProjectOutboxMapper.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/ProjectOutboxMapper.cs
+  - source: examples/outbox/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/README.md
+  - source: examples/outbox/RepositoryConfig.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/RepositoryConfig.cs
+  - source: examples/outbox/TaskData.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/TaskData.cs
+  - source: examples/outbox/TaskOutboxMapper.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/TaskOutboxMapper.cs
+  - source: examples/profile-configs/event-architecture-reference.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/profile-configs/event-architecture-reference.md
+  - source: examples/profile-configs/inmemory-profile-config.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/profile-configs/inmemory-profile-config.md
+  - source: examples/profile-configs/outbox-profile-config.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/profile-configs/outbox-profile-config.md
+  - source: examples/projection/AllTagsProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/AllTagsProjection.cs
+  - source: examples/projection/EfAllTagsProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfAllTagsProjection.cs
+  - source: examples/projection/EfPlanDtosProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfPlanDtosProjection.cs
+  - source: examples/projection/EfTasksByDateProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfTasksByDateProjection.cs
+  - source: examples/projection/EfTasksDueTodayProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfTasksDueTodayProjection.cs
+  - source: examples/projection/PlanDtosProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/PlanDtosProjection.cs
+  - source: examples/projection/ProjectionDtos.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/ProjectionDtos.cs
+  - source: examples/projection/ProjectionModels.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/ProjectionModels.cs
+  - source: examples/projection/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/README.md
+  - source: examples/projection/ReadModelDbContext.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/ReadModelDbContext.cs
+  - source: examples/projection/TasksByDateProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/TasksByDateProjection.cs
+  - source: examples/projection/TasksDueTodayProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/TasksDueTodayProjection.cs
+  - source: examples/projection/TasksSortedByDeadlineProjection.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/projection/TasksSortedByDeadlineProjection.cs
+  - source: examples/reference/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/reference/README.md
+  - source: examples/reference/bdd-gwt-test-template.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/reference/bdd-gwt-test-template.md
+  - source: examples/reference/nuget-dependencies.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/reference/nuget-dependencies.md
+  - source: examples/reference/reactor-pattern-guide.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/reference/reactor-pattern-guide.md
+  - source: examples/use-case-injection/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/use-case-injection/README.md
+  - source: examples/usecase/AssignTagUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/AssignTagUseCase.cs
+  - source: examples/usecase/AssignTagUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/AssignTagUseCaseContract.cs
+  - source: examples/usecase/CreatePlanUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreatePlanUseCase.cs
+  - source: examples/usecase/CreatePlanUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreatePlanUseCaseContract.cs
+  - source: examples/usecase/CreateTaskUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreateTaskUseCase.cs
+  - source: examples/usecase/CreateTaskUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreateTaskUseCaseContract.cs
+  - source: examples/usecase/DeleteTaskUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/DeleteTaskUseCase.cs
+  - source: examples/usecase/DeleteTaskUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/DeleteTaskUseCaseContract.cs
+  - source: examples/usecase/GetPlanUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlanUseCase.cs
+  - source: examples/usecase/GetPlanUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlanUseCaseContract.cs
+  - source: examples/usecase/GetPlansUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlansUseCase.cs
+  - source: examples/usecase/GetPlansUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlansUseCaseContract.cs
+  - source: examples/usecase/GetTasksByDateUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetTasksByDateUseCase.cs
+  - source: examples/usecase/GetTasksByDateUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetTasksByDateUseCaseContract.cs
+  - source: examples/usecase/README.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/README.md
+  - source: examples/usecase/RenameTaskUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCase.cs
+  - source: examples/usecase/RenameTaskUseCaseContract.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs
+  - source: examples/usecase/UseCaseContracts.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/UseCaseContracts.cs
+  - source: guides/DOCKER-RESTORE-CACHE-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/DOCKER-RESTORE-CACHE-GUIDE.md
+  - source: guides/DOTNET-DI-TEST-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/DOTNET-DI-TEST-GUIDE.md
+  - source: guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
+  - source: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+    destination: .ai/core/knowledge/dotnet-backend/guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  - source: guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md
+  - source: guides/TEMPLATE-USAGE-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/TEMPLATE-USAGE-GUIDE.md
+  - source: legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md
+  - source: legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md
+  - source: legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md
+  - source: legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md
+  - source: legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md
+  - source: legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md
+  - source: legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md
+  - source: legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md
+  - source: legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md
+  - source: legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md
+  - source: legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md
+  - source: legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md
+  - source: legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md
+  - source: legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml
+  - source: legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md
+  - source: legacy-guidance/spec-compliance-validator/references/test-validation-steps.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/test-validation-steps.md
+  - source: legacy-guidance/spec-compliance-validator/references/validation-command-templates.md
+    destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/spec-compliance-validator/references/validation-command-templates.md
+  - source: references/BUILDING-BLOCKS-CLASS-INDEX.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD
+  - source: references/CODE-TEMPLATES.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/CODE-TEMPLATES.MD
+  - source: references/COMMON-PITFALLS.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/COMMON-PITFALLS.MD
+  - source: references/ENGINEERING-IDENTITY-BINDINGS.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD
+  - source: references/FAILURE-CASES.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/FAILURE-CASES.MD
+  - source: references/rationale/generic-repository-only-rationale.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/rationale/generic-repository-only-rationale.MD
+  - source: references/rationale/profile-based-testing-rationale.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/rationale/profile-based-testing-rationale.MD
+  - source: references/rationale/query-side-layering-rationale.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD
+  - source: references/rationale/rest-api-resource-path-rationale.MD
+    destination: .ai/core/knowledge/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD
+  - source: review/review-routing.yaml
+    destination: .ai/core/knowledge/dotnet-backend/review/review-routing.yaml
+  - source: review/test-scenario-review.md
+    destination: .ai/core/knowledge/dotnet-backend/review/test-scenario-review.md
+  - source: shared/architecture-config.md
+    destination: .ai/core/knowledge/dotnet-backend/shared/architecture-config.md
+  - source: shared/common-rules.md
+    destination: .ai/core/knowledge/dotnet-backend/shared/common-rules.md
+  - source: shared/domain-rules.md
+    destination: .ai/core/knowledge/dotnet-backend/shared/domain-rules.md
+  - source: shared/dto-conventions.md
+    destination: .ai/core/knowledge/dotnet-backend/shared/dto-conventions.md
+  - source: shared/testing-strategy.md
+    destination: .ai/core/knowledge/dotnet-backend/shared/testing-strategy.md
+  - source: source-includes/domain/EsAggregateRoot.cs
+    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/EsAggregateRoot.cs
+  - source: source-includes/domain/IAggregateRoot.cs
+    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/IAggregateRoot.cs
+  - source: source-includes/domain/IDomainEntity.cs
+    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/IDomainEntity.cs
+  - source: source-includes/domain/IDomainEvent.cs
+    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/IDomainEvent.cs
+  - source: source-includes/domain/README.md
+    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/README.md
+  - source: standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md
+  - source: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
+  - source: standards/DESIGN-BY-CONTRACT.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/DESIGN-BY-CONTRACT.md
+  - source: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+    destination: .ai/core/knowledge/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+  - source: standards/anti-patterns.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/anti-patterns.md
+  - source: standards/best-practices.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/best-practices.md
+  - source: standards/coding-guide.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-guide.md
+  - source: standards/coding-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards.md
+  - source: standards/coding-standards/aggregate-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/aggregate-standards.md
+  - source: standards/coding-standards/archive-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/archive-standards.md
+  - source: standards/coding-standards/controller-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md
+  - source: standards/coding-standards/mapper-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/mapper-standards.md
+  - source: standards/coding-standards/profile-configuration-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/profile-configuration-standards.md
+  - source: standards/coding-standards/projection-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/projection-standards.md
+  - source: standards/coding-standards/reactor-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/reactor-standards.md
+  - source: standards/coding-standards/repository-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/repository-standards.md
+  - source: standards/coding-standards/test-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/test-standards.md
+  - source: standards/coding-standards/transactional-messaging-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md
+  - source: standards/coding-standards/usecase-standards.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md
+  - source: standards/project-structure.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/project-structure.md
+  - source: templates/application-properties-templates.md
+    destination: .ai/core/knowledge/dotnet-backend/templates/application-properties-templates.md
+  - source: templates/profile-isolated-configurations.md
+    destination: .ai/core/knowledge/dotnet-backend/templates/profile-isolated-configurations.md
+  - source: tooling/on-demand-mechanical-validation/README.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/README.md
+  - source: tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
+  - source: tooling/on-demand-mechanical-validation/provider-contract.schema.yaml
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml
+  - source: tooling/on-demand-mechanical-validation/provider-contract.yaml
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml
+  - source: tooling/on-demand-mechanical-validation/recipe-manifest.yaml
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipe-manifest.yaml
+  - source: tooling/on-demand-mechanical-validation/recipes/analyzer-project.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md
+  - source: tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet
+  - source: tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md
+  - source: tooling/on-demand-mechanical-validation/templates/code-fix-decision.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md
+  - source: tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template
+  - source: tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template
+  - source: tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
+    destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
+- kind: knowledge
+  id: engineering-common
+  version: 0.1.0
+  source: src/knowledge/engineering-common
+  metadata: content-package.yaml
+  members:
+  - source: README.md
+    destination: .ai/core/knowledge/engineering-common/README.md
+  - source: content-package.yaml
+    destination: .ai/core/knowledge/engineering-common/content-package.yaml
+  - source: engineering-rule-catalog.yaml
+    destination: .ai/core/knowledge/engineering-common/engineering-rule-catalog.yaml
+  - source: references/ENGINEERING-IDENTITY-CONTRACT.md
+    destination: .ai/core/knowledge/engineering-common/references/ENGINEERING-IDENTITY-CONTRACT.md
+  - source: references/GWT-TEST-HANDOFF-CONTRACT.md
+    destination: .ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md
+  - source: references/PROMPT-PORTABILITY-RULES.md
+    destination: .ai/core/knowledge/engineering-common/references/PROMPT-PORTABILITY-RULES.md
+- id: adr
+  source: src/skills/adr
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/adr/SKILL.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/adr/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/adr/references/example.md
+  - source: references/operations.md
+    destination: .ai/core/skills/adr/references/operations.md
+  - source: schemas/adr-record.schema.json
+    destination: .ai/core/skills/adr/schemas/adr-record.schema.json
+  - source: scripts/adr.py
+    destination: .ai/core/skills/adr/scripts/adr.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/adr/skill-package.yaml
+  - source: templates/adr.md
+    destination: .ai/core/skills/adr/templates/adr.md
+  kind: skill
+  version: 0.1.0
+- id: ai-context-auditor
+  source: src/skills/ai-context-auditor
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/ai-context-auditor/SKILL.md
+  - source: references/audit.md
+    destination: .ai/core/skills/ai-context-auditor/references/audit.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/ai-context-auditor/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: ai-context-governance
+  source: src/skills/ai-context-governance
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/ai-context-governance/SKILL.md
+  - source: references/maintenance.md
+    destination: .ai/core/skills/ai-context-governance/references/maintenance.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/ai-context-governance/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: bdd-gwt-test-designer
+  source: src/skills/bdd-gwt-test-designer
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/bdd-gwt-test-designer/SKILL.md
+  - source: references/design.md
+    destination: .ai/core/skills/bdd-gwt-test-designer/references/design.md
+  - source: references/review.md
+    destination: .ai/core/skills/bdd-gwt-test-designer/references/review.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/bdd-gwt-test-designer/skill-package.yaml
+  kind: skill
+  version: 0.2.0
+- id: code-reviewer
+  source: src/skills/code-reviewer
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/code-reviewer/SKILL.md
+  - source: references/review.md
+    destination: .ai/core/skills/code-reviewer/references/review.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/code-reviewer/skill-package.yaml
+  kind: skill
+  version: 0.2.0
+- id: ddd-ca-hex-architect
+  source: src/skills/ddd-ca-hex-architect
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/ddd-ca-hex-architect/SKILL.md
+  - source: references/design.md
+    destination: .ai/core/skills/ddd-ca-hex-architect/references/design.md
+  - source: references/review.md
+    destination: .ai/core/skills/ddd-ca-hex-architect/references/review.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/ddd-ca-hex-architect/skill-package.yaml
+  kind: skill
+  version: 0.2.0
+- id: diagnostic-analyst
+  source: src/skills/diagnostic-analyst
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/diagnostic-analyst/SKILL.md
+  - source: references/diagnose.md
+    destination: .ai/core/skills/diagnostic-analyst/references/diagnose.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/diagnostic-analyst/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: lesson
+  source: src/skills/lesson
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/lesson/SKILL.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/lesson/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/lesson/references/example.md
+  - source: references/operations.md
+    destination: .ai/core/skills/lesson/references/operations.md
+  - source: schemas/lesson-record-v2.schema.json
+    destination: .ai/core/skills/lesson/schemas/lesson-record-v2.schema.json
+  - source: schemas/lesson-record.schema.json
+    destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
+  - source: scripts/lesson.py
+    destination: .ai/core/skills/lesson/scripts/lesson.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/lesson/skill-package.yaml
+  - source: templates/lesson.md
+    destination: .ai/core/skills/lesson/templates/lesson.md
+  kind: skill
+  version: 0.2.0
+- id: local-backlog
+  source: src/skills/local-backlog
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/local-backlog/SKILL.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/local-backlog/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/local-backlog/references/example.md
+  - source: references/operations.md
+    destination: .ai/core/skills/local-backlog/references/operations.md
+  - source: schemas/local-backlog-record.schema.json
+    destination: .ai/core/skills/local-backlog/schemas/local-backlog-record.schema.json
+  - source: scripts/local_backlog.py
+    destination: .ai/core/skills/local-backlog/scripts/local_backlog.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/local-backlog/skill-package.yaml
+  - source: templates/work-item.md
+    destination: .ai/core/skills/local-backlog/templates/work-item.md
+  kind: skill
+  version: 0.1.0
+- id: local-change-implementer
+  source: src/skills/local-change-implementer
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/local-change-implementer/SKILL.md
+  - source: references/implement.md
+    destination: .ai/core/skills/local-change-implementer/references/implement.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/local-change-implementer/skill-package.yaml
+  kind: skill
+  version: 0.2.0
+- id: pr
+  source: src/skills/pr
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/pr/SKILL.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/pr/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/pr/references/example.md
+  - source: references/github.md
+    destination: .ai/core/skills/pr/references/github.md
+  - source: references/operations.md
+    destination: .ai/core/skills/pr/references/operations.md
+  - source: schemas/pr-record.schema.json
+    destination: .ai/core/skills/pr/schemas/pr-record.schema.json
+  - source: scripts/github.py
+    destination: .ai/core/skills/pr/scripts/github.py
+  - source: scripts/pr.py
+    destination: .ai/core/skills/pr/scripts/pr.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/pr/skill-package.yaml
+  - source: templates/pr.md
+    destination: .ai/core/skills/pr/templates/pr.md
+  kind: skill
+  version: 0.1.0
+- id: problem-frame-author
+  source: src/skills/problem-frame-author
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/problem-frame-author/SKILL.md
+  - source: references/authoring.md
+    destination: .ai/core/skills/problem-frame-author/references/authoring.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/problem-frame-author/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/problem-frame-author/references/example.md
+  - source: references/format.md
+    destination: .ai/core/skills/problem-frame-author/references/format.md
+  - source: references/operations.md
+    destination: .ai/core/skills/problem-frame-author/references/operations.md
+  - source: schemas/cbf-record-v1.schema.json
+    destination: .ai/core/skills/problem-frame-author/schemas/cbf-record-v1.schema.json
+  - source: scripts/problem_frame.py
+    destination: .ai/core/skills/problem-frame-author/scripts/problem_frame.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/problem-frame-author/skill-package.yaml
+  - source: templates/cbf.md
+    destination: .ai/core/skills/problem-frame-author/templates/cbf.md
+  kind: skill
+  version: 0.1.0
+- id: requirement-author
+  source: src/skills/requirement-author
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/requirement-author/SKILL.md
+  - source: references/authoring.md
+    destination: .ai/core/skills/requirement-author/references/authoring.md
+  - source: references/requirement-template.md
+    destination: .ai/core/skills/requirement-author/references/requirement-template.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/requirement-author/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: slice-implementer
+  source: src/skills/slice-implementer
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/slice-implementer/SKILL.md
+  - source: references/implement.md
+    destination: .ai/core/skills/slice-implementer/references/implement.md
+  - source: references/modes/command.md
+    destination: .ai/core/skills/slice-implementer/references/modes/command.md
+  - source: references/modes/generic.md
+    destination: .ai/core/skills/slice-implementer/references/modes/generic.md
+  - source: references/modes/query.md
+    destination: .ai/core/skills/slice-implementer/references/modes/query.md
+  - source: references/modes/reactor.md
+    destination: .ai/core/skills/slice-implementer/references/modes/reactor.md
+  - source: references/remediation.md
+    destination: .ai/core/skills/slice-implementer/references/remediation.md
+  - source: references/test-handoff.md
+    destination: .ai/core/skills/slice-implementer/references/test-handoff.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/slice-implementer/skill-package.yaml
+  kind: skill
+  version: 0.2.0
+- id: software-development-orchestrator
+  source: src/skills/software-development-orchestrator
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/software-development-orchestrator/SKILL.md
+  - source: references/composition.md
+    destination: .ai/core/skills/software-development-orchestrator/references/composition.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/software-development-orchestrator/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/software-development-orchestrator/references/example.md
+  - source: references/operations.md
+    destination: .ai/core/skills/software-development-orchestrator/references/operations.md
+  - source: references/retention.md
+    destination: .ai/core/skills/software-development-orchestrator/references/retention.md
+  - source: schemas/workflow-record.schema.json
+    destination: .ai/core/skills/software-development-orchestrator/schemas/workflow-record.schema.json
+  - source: scripts/workflow.py
+    destination: .ai/core/skills/software-development-orchestrator/scripts/workflow.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
+  - source: templates/workflow.md
+    destination: .ai/core/skills/software-development-orchestrator/templates/workflow.md
+  kind: skill
+  version: 0.1.0
+- id: spec-author
+  source: src/skills/spec-author
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/spec-author/SKILL.md
+  - source: references/adapter-template.md
+    destination: .ai/core/skills/spec-author/references/adapter-template.md
+  - source: references/authoring.md
+    destination: .ai/core/skills/spec-author/references/authoring.md
+  - source: references/entity-template.md
+    destination: .ai/core/skills/spec-author/references/entity-template.md
+  - source: references/formal-test-template.md
+    destination: .ai/core/skills/spec-author/references/formal-test-template.md
+  - source: references/production-template.md
+    destination: .ai/core/skills/spec-author/references/production-template.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/spec-author/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: spec-compliance-validator
+  source: src/skills/spec-compliance-validator
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/spec-compliance-validator/SKILL.md
+  - source: profiles/dotnet.md
+    destination: .ai/core/skills/spec-compliance-validator/profiles/dotnet.md
+  - source: references/compliance.md
+    destination: .ai/core/skills/spec-compliance-validator/references/compliance.md
+  - source: references/legacy-intake.md
+    destination: .ai/core/skills/spec-compliance-validator/references/legacy-intake.md
+  - source: references/report-template.md
+    destination: .ai/core/skills/spec-compliance-validator/references/report-template.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/spec-compliance-validator/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: standards-promotion
+  source: src/skills/standards-promotion
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/standards-promotion/SKILL.md
+  - source: references/authority.md
+    destination: .ai/core/skills/standards-promotion/references/authority.md
+  - source: references/configuration.md
+    destination: .ai/core/skills/standards-promotion/references/configuration.md
+  - source: references/example.md
+    destination: .ai/core/skills/standards-promotion/references/example.md
+  - source: references/operations.md
+    destination: .ai/core/skills/standards-promotion/references/operations.md
+  - source: schemas/promotion-record.schema.json
+    destination: .ai/core/skills/standards-promotion/schemas/promotion-record.schema.json
+  - source: scripts/standards_promotion.py
+    destination: .ai/core/skills/standards-promotion/scripts/standards_promotion.py
+  - source: skill-package.yaml
+    destination: .ai/core/skills/standards-promotion/skill-package.yaml
+  - source: templates/promotion.md
+    destination: .ai/core/skills/standards-promotion/templates/promotion.md
+  kind: skill
+  version: 0.1.0
 adapters:
-  - id: codex
-    template: src/adapters/codex/skill-entry.md.template
+- id: claude
+  version: 0.1.0
+  source: src/adapters/claude
+  template: skill-entry-v2.md.template
+  members:
+  - skill-entry-v2.md.template
+- id: codex
+  version: 0.1.0
+  source: src/adapters/codex
+  template: skill-entry-v2.md.template
+  members:
+  - skill-entry-v2.md.template

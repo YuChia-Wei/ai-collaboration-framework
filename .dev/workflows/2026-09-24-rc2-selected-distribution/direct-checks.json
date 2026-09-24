@@ -1,0 +1,57 @@
+{
+  "behavioral_execution": "not-performed",
+  "catalog_or_subset_build": "not-performed",
+  "catalog_payload_members": 350,
+  "commands": [
+    {
+      "command": "python -I -B -",
+      "input": "Inline standard-library AST/symtable and direct YAML/JSON/hash/link inspection; no distribution import",
+      "outcome": "passed-direct-inspection-only"
+    },
+    {
+      "command": "git ls-tree -r -z SOURCE_CHECKPOINT -- src tools/build-catalog.py tools/derive-subset.py; git cat-file --batch-check; git cat-file --batch",
+      "input": "Exactly 379 manifest/generator/preset source identities, selected from f5f64d1bcdf4b777c9ee9cb53a734f09dc9052de",
+      "outcome": "all raw working bytes, Git blob identities and recorded modes matched"
+    },
+    {
+      "command": "git diff --check",
+      "input": "Each owned checkpoint and final workflow delta",
+      "outcome": "passed"
+    },
+    {
+      "command": "python -I -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/NAME.txt --workflow-id 2026-09-24-rc2-selected-distribution",
+      "input": "Each exact complete planned message before commit; final handoff result is reported at terminal read-back",
+      "outcome": "prior checkpoints passed; final message checked immediately before final commit"
+    }
+  ],
+  "complete_skill_count": 18,
+  "component_count": 20,
+  "direct_source_checks": {
+    "active_content_links": 154,
+    "declared_heading_anchors": 7,
+    "embedded_S1_definitions": "exactly-equal-to-tracked-schema-bundle",
+    "engine_file_list_agreement": 22,
+    "production_unbound_global_references": 0,
+    "python_AST_files": 24,
+    "raw_text_false_links_disposition": "six inert C# examples excluded by authored prose-only scan",
+    "source_changes_after_checkpoint": 0,
+    "workflow_links": "all relative Markdown targets exist"
+  },
+  "dotnet_metadata_bytes": 247347,
+  "engine_files": 22,
+  "evidence_kind": "direct-source-and-hash-inspection",
+  "formal_and_hosted_verification": "deferred-by-owner",
+  "knowledge_components": 2,
+  "native_execution": "not-performed",
+  "observed_at": "2026-09-24T21:24:57.029167+08:00",
+  "preserved_presets": 8,
+  "s2_members_matched": 235,
+  "s4_files_matched": 5,
+  "s5_members_matched": 17,
+  "skill_components": 18,
+  "source_checkpoint": "f5f64d1bcdf4b777c9ee9cb53a734f09dc9052de",
+  "source_input_bytes": 2318140,
+  "source_input_files": 379,
+  "source_yaml_cap": 262144,
+  "target_mutation": "not-performed"
+}
