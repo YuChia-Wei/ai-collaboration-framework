@@ -238,3 +238,13 @@ Native evidence: [Issue 382 original report](../../.dev/workflows/2026-09-23-nat
 and [resumed observations](../../.dev/workflows/2026-09-23-native-maintenance-checks/resume-report.md).
 Those results retain their exact source pins and residual dispositions; the
 current #368 contracts selection does not execute native maintenance.
+
+## Selected skill naming fixtures
+
+Run `python -I -B tests/framework_next/test_skill_naming.py --output-root <explicit-temp-parent>`
+for the bounded Issue #409 naming cases. The suite derives a tiny synthetic catalog
+selection through the real projection and artifact/lock readers, and checks both
+runtimes, saved modes, v1/rc.1 compatibility, rename plans and collision/drift refusal.
+Planner engine admission and native backend setup are mocked; manual fixture state
+changes are not installation, recovery, provenance, UI discovery or adoption evidence.
+The fixture helper enforces its file/byte caps and retains failures.

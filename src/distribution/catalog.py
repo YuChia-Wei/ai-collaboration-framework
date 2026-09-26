@@ -8,10 +8,10 @@ from pathlib import Path
 import stat
 import sys
 import uuid
-from .data import json_bytes, require, yaml_object
+from .data import json_bytes, require, runtime_skill_name, yaml_object
 from .contracts import validate
 from .content import (load_content_package, component_shape, descriptor, closure, desired_shape,
-                      dependency_key, ordered, portable, resource_bindings, selected_references)
+                      dependency_key, ordered, portable, resource_bindings, selected_references, selection_skill_naming)
 from .git_source import Blob, GitSource
 from .package import load_package, check_references
 from .codex import project_entry_v2 as codex_entry
@@ -202,10 +202,10 @@ def preset_trace(doc,desired,pin):
         require(preset is not None and trace['catalog_identity']==pin['identity'] and trace['preset_sha256']==digest(json_bytes(preset)),'preset provenance mismatch')
 
 
-def expand_preset(catalog,id,version):
+def expand_preset(catalog,id,version, *, skill_naming="original"):
     preset=next((p for p in catalog.document['presets'] if p['id']==id and p['version']==version),None)
     require(preset is not None,'selection-unavailable: preset')
-    desired={'selection_version':1,'catalog':catalog.pin,**{k:preset[k] for k in ('skills','knowledge','adapters')},'bindings':[],
+    desired={'selection_version':2,'skill_naming':skill_naming,'catalog':catalog.pin,**{k:preset[k] for k in ('skills','knowledge','adapters')},'bindings':[],
              'expanded_from':{'id':id,'version':version,'catalog_identity':catalog.pin['identity'],'preset_sha256':digest(json_bytes(preset))}}
     resolve_selection(catalog,desired)
     return desired
@@ -226,7 +226,7 @@ def template_bytes(adapter,expected,provided=None):
 
 
 def project_members(doc,files,selection,contents,templates=None):
-    selected={dependency_key(c) for c in selection['components']}
+    naming=selection_skill_naming(selection['desired'])
     rows=[]; output={}; indexed={(r['kind'],r['owner'],r['member']):r for r in files['files']}
     for c in selection['components']:
         kind,pid=dependency_key(c); destinations={m:f".ai/core/{'skills' if kind=='skill' else 'knowledge'}/{pid}/{m}" for m in c['members']}
@@ -243,10 +243,10 @@ def project_members(doc,files,selection,contents,templates=None):
             aid=adapter['id']; src=indexed[('adapter',aid,adapter['template'])]['source']
             raw_template=template_bytes(aid,src['sha256'],None if templates is None else templates[aid])
             renderer=codex_entry if aid=='codex' else claude_entry
-            dest,raw=renderer(raw_template,pid,c['version'],front['description'],destinations,configuration=package.metadata['configuration'])
+            dest,raw=renderer(raw_template,pid,c['version'],front['description'],destinations,configuration=package.metadata['configuration'],skill_naming=naming)
             rows.append({'path':'runtime/'+dest,'destination':dest,'owner':f'adapter/{aid}/skill/{pid}','kind':'runtime','mode':'100644',
                          'size':len(raw),'sha256':digest(raw),'source':None,
-                         'binding':{'adapter':aid,'skill':pid,'entry_name':'aicf-'+pid,'core_entrypoint':destinations['SKILL.md'],'template_sha256':src['sha256']}})
+                         'binding':{'adapter':aid,'skill':pid,'entry_name':runtime_skill_name(pid,naming),'core_entrypoint':destinations['SKILL.md'],'template_sha256':src['sha256']}})
             output[dest]=raw
     rows.sort(key=lambda r:r['path']); portable([r['destination'] for r in rows]); portable([r['path'] for r in rows])
     require(len(rows)<=4096 and sum(r['size'] for r in rows)<=state.LIMITS['total_bytes'],'subset materialization budget')
@@ -521,6 +521,7 @@ def subset_inventory(doc,files,selection,inventory):
     """Admit exact destinations/ownership before any installed-file read."""
     indexed={(r['kind'],r['owner'],r['member']):r['source'] for r in files['files']}
     expected={}
+    naming=selection_skill_naming(selection['desired'])
     for component in selection['components']:
         kind,pid=dependency_key(component)
         for member in component['members']:
@@ -531,10 +532,10 @@ def subset_inventory(doc,files,selection,inventory):
         if kind=='skill':
             for adapter in selection['adapters']:
                 aid=adapter['id']; runtime='.agents' if aid=='codex' else '.claude'
-                dest=f'{runtime}/skills/aicf-{pid}/SKILL.md'
+                dest=f'{runtime}/skills/{runtime_skill_name(pid,naming)}/SKILL.md'
                 expected[dest]={'path':'runtime/'+dest,'destination':dest,'owner':f'adapter/{aid}/skill/{pid}','kind':'runtime',
                                 'mode':'100644','source':None,
-                                'binding':{'adapter':aid,'skill':pid,'entry_name':'aicf-'+pid,'core_entrypoint':f'.ai/core/skills/{pid}/SKILL.md',
+                                'binding':{'adapter':aid,'skill':pid,'entry_name':runtime_skill_name(pid,naming),'core_entrypoint':f'.ai/core/skills/{pid}/SKILL.md',
                                            'template_sha256':indexed[('adapter',aid,adapter['template'])]['sha256']}}
     require({r['destination'] for r in inventory['files']}==set(expected),'subset inventory closure')
     for row in inventory['files']:

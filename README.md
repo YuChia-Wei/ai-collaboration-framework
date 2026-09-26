@@ -106,6 +106,23 @@ AI 協作知識庫與 .NET Backend Context Framework
 | 已初始化且有可信的 provenance，並且 release guide 支援該升級路徑 | 依下方「版本升級」先用 package planner，再使用 `ai-context-upgrader`。 |
 | 沒有可信的來源版本、provenance 不完整，或版本跨度不受支援 | 停止自動升級；採人工 baseline reconciliation 或乾淨安裝式導入，不能猜測舊版。 |
 
+### Catalog 安裝的 skill 名稱
+
+目前來源庫的 catalog/subset 實作可在產生新選擇時，指定 Codex 與 Claude 的 skill
+名稱。`tools/derive-subset.py --preset <id> --preset-version <version>` 預設使用
+`--skill-naming original`，例如 `code-reviewer`；指定 `--skill-naming prefixed`
+則使用 `aicf-code-reviewer`。這些選項須搭配命令原本必填的 catalog、engine pin
+與輸出路徑。此處描述來源實作；可用性請以選定 release 的指南為準。
+
+產生的 Selection v2 會記錄 `skill_naming`，安裝 lock 也會保留該選擇。之後使用
+`--selection <file>` 可保留命名模式；不能以 `--skill-naming` 覆蓋已儲存的選擇。
+歷史 Selection v1 保留原本隱含的 `aicf-` 名稱，rc.1 artifact 則保留 `framework-`
+名稱。若要主動切換既有 catalog 選擇，請將選擇另存為 Selection v2，明確設定
+`skill_naming`，重新產生 subset，再審查及套用 maintenance plan，並使用支援
+Selection v2 的 engine。Canonical skill ID 與受管理的 core 路徑維持不變；plan
+會移除舊的受管理入口並新增所選名稱。若目的地已有未受管理的同名檔案、受管理
+檔案遭修改，或舊入口含額外可被發現的 skill，切換會被阻擋，不會默默接管。
+
 ### 乾淨安裝
 
 #### 0. 先準備正確的目錄與證據

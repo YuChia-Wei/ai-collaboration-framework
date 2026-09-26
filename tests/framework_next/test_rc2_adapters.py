@@ -35,8 +35,8 @@ class Rc2AdapterCases(unittest.TestCase):
 
     def test_selected_members_and_runtime_roots(self):
         for module, template, expected in (
-            (codex, CODEX_V2, ".agents/skills/aicf-example/SKILL.md"),
-            (claude, CLAUDE_V2, ".claude/skills/aicf-example/SKILL.md"),
+            (codex, CODEX_V2, ".agents/skills/example/SKILL.md"),
+            (claude, CLAUDE_V2, ".claude/skills/example/SKILL.md"),
         ):
             with self.subTest(runtime=module.__name__):
                 destination, raw = self.render(module, template)
@@ -48,6 +48,21 @@ class Rc2AdapterCases(unittest.TestCase):
                 self.assertIn("../../../.ai/core/skills/example/references/guide.md", text)
                 self.assertIn("optional missing package or resource", text)
                 self.assertNotIn("unselected.md", text)
+
+    def test_names_frontmatter_heading_and_invalid_mode(self):
+        for module, template, root in ((codex, CODEX_V2, ".agents"), (claude, CLAUDE_V2, ".claude")):
+            for naming, name in (("original", "example"), ("prefixed", "aicf-example")):
+                with self.subTest(runtime=module.__name__, naming=naming):
+                    destination, raw = self.render(module, template, skill_naming=naming)
+                    self.assertEqual(f"{root}/skills/{name}/SKILL.md", destination)
+                    self.assertIn(f"name: {name}\n".encode(), raw)
+                    self.assertIn(f"# {name}\n".encode(), raw)
+                    if naming == "original":
+                        self.assertNotIn(b"aicf-", raw)
+                        self.assertNotIn(b"framework-example", raw)
+            for bad in (None, True, 1, [], "", "Original", "framework"):
+                with self.subTest(runtime=module.__name__, bad=bad), self.assertRaises(DistributionError):
+                    self.render(module, template, skill_naming=bad)
 
     def test_wrong_or_modified_template_rejected(self):
         for module, other in ((codex, CLAUDE_V2), (claude, CODEX_V2)):

@@ -234,13 +234,15 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
     state._paths(sorted(names))
     delta = member_delta(old, candidate)
     withdrawn = {row["destination"].rpartition("/")[0] for row in delta if row["action"] == "remove"
-                 and row["destination"].startswith(".agents/skills/framework-")}
+                 and row["before"]["kind"] == "runtime"
+                 and row["destination"].startswith((".agents/skills/", ".claude/skills/"))
+                 and row["destination"].endswith("/SKILL.md")}
     for name in observation.unknown or []:
         if any(name.startswith(prefix + "/") for prefix in withdrawn):
             unknown = roots["project"] / name.rstrip("/")
             info = unknown.lstat()
             could_discover = name.endswith(("/", "/SKILL.md")) or stat.S_ISLNK(info.st_mode) or bool(getattr(info,"st_file_attributes",0)&0x400)
-            state._check(not could_discover, "legacy-discovery-collision", "Unknown old runtime discovery subtree blocks withdrawal.", name, "conflict")
+            state._check(not could_discover, "legacy-discovery-collision", "Unknown managed runtime discovery subtree blocks withdrawal.", name, "conflict")
     for row in delta:
         if row["action"] == "add":
             target = reader.locate(roots["project"], row["destination"])

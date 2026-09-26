@@ -52,6 +52,14 @@ def identifier(value: Any, label: str) -> str:
     return value
 
 
+def runtime_skill_name(package_id: str, skill_naming: str) -> str:
+    """Resolve a runtime name without changing the canonical package identity."""
+    package_id = identifier(package_id, "package_id")
+    require(type(skill_naming) is str and skill_naming in ("original", "prefixed"),
+            "skill_naming must be original or prefixed")
+    return ("aicf-" if skill_naming == "prefixed" else "") + package_id
+
+
 def version(value: Any, label: str) -> str:
     value = string(value, label)
     require(re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", value) is not None,

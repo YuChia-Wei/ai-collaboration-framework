@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-26-skill-naming`](2026-09-26-skill-naming/workflow.yaml) | Selectable runtime skill names with original-name default | `ai-context-governance` | `in_progress` | `2026-09-26T11:12:45+08:00` | [plan](2026-09-26-skill-naming/workflow-plan.md) |
 | [`2026-09-23-public-skill-checks`](2026-09-23-public-skill-checks/workflow.yaml) | Selected public skill checks for Issue 373 | `ai-context-governance` | `in_progress` | `2026-09-23T16:24:57+08:00` | [entry](2026-09-23-public-skill-checks/workflow-plan.md) |
 | [`2026-09-23-engine-source-pin`](2026-09-23-engine-source-pin/workflow.yaml) | Issue 371 verified-source maintenance bootstrap | `ai-context-governance` | `completed` | `2026-09-23T15:56:45+08:00` | [report](2026-09-23-engine-source-pin/report.md) |
 | [`2026-09-23-source-contract-checks`](2026-09-23-source-contract-checks/workflow.yaml) | Focused source contracts and bounded fixtures | `ai-context-governance` | `in_progress` | `2026-09-23T19:20:23+08:00` | [entry](2026-09-23-source-contract-checks/workflow-plan.md) |

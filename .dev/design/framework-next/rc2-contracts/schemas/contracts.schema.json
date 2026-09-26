@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$comment": "S1 documentation only; cross-field constraints, exact lexical integer checks, duplicate-key rejection, budgets and identity algorithms are in formats.md. No current parser support or executed schema compliance is claimed.",
+  "$comment": "Closed RC2 contract definitions, extended by Issue #409 with Selection v2. Selection v1 retains its exact historical shape and implicit prefixed semantics. Cross-field checks, lexical integer checks, duplicate-key rejection, budgets and identity checks remain parser responsibilities.",
   "$defs": {
     "Source": {
       "type": "object",
@@ -364,70 +364,14 @@
       }
     },
     "Selection": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "selection_version",
-        "catalog",
-        "skills",
-        "knowledge",
-        "adapters",
-        "bindings"
-      ],
-      "properties": {
-        "selection_version": {
-          "const": 1
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SelectionV1"
         },
-        "catalog": {
-          "$ref": "#/$defs/CatalogPin"
-        },
-        "skills": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
-            "maxLength": 80
-          },
-          "minItems": 0,
-          "maxItems": 4096,
-          "uniqueItems": true
-        },
-        "knowledge": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
-            "maxLength": 80
-          },
-          "minItems": 0,
-          "maxItems": 4096,
-          "uniqueItems": true
-        },
-        "adapters": {
-          "type": "array",
-          "items": {
-            "enum": [
-              "codex",
-              "claude"
-            ]
-          },
-          "minItems": 0,
-          "maxItems": 4096,
-          "uniqueItems": true
-        },
-        "bindings": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/Binding"
-          },
-          "minItems": 0,
-          "maxItems": 4096,
-          "uniqueItems": true
-        },
-        "expanded_from": {
-          "$ref": "#/$defs/PresetTrace"
+        {
+          "$ref": "#/$defs/SelectionV2"
         }
-      }
+      ]
     },
     "ContentMember": {
       "type": "object",
@@ -1687,6 +1631,145 @@
         },
         "engine": {
           "$ref": "#/$defs/Engine"
+        }
+      }
+    },
+    "SelectionV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_version",
+        "catalog",
+        "skills",
+        "knowledge",
+        "adapters",
+        "bindings"
+      ],
+      "properties": {
+        "selection_version": {
+          "const": 1
+        },
+        "catalog": {
+          "$ref": "#/$defs/CatalogPin"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "codex",
+              "claude"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Binding"
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "expanded_from": {
+          "$ref": "#/$defs/PresetTrace"
+        }
+      }
+    },
+    "SelectionV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_version",
+        "catalog",
+        "skills",
+        "knowledge",
+        "adapters",
+        "bindings",
+        "skill_naming"
+      ],
+      "properties": {
+        "selection_version": {
+          "const": 2
+        },
+        "catalog": {
+          "$ref": "#/$defs/CatalogPin"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "codex",
+              "claude"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Binding"
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "expanded_from": {
+          "$ref": "#/$defs/PresetTrace"
+        },
+        "skill_naming": {
+          "enum": [
+            "original",
+            "prefixed"
+          ]
         }
       }
     }
