@@ -25,8 +25,10 @@ The workflow preserves staged compatibility implementation, delegated writer cus
 ## Tasks and resume
 
 - `NAMING-IMPLEMENT`: implementation and 30 focused checks completed; see [implementation report](implementation-report.md).
-- `NAMING-REVIEW`: independent read-only review of one fixed commit after review-input preflight; active preparation.
+- `NAMING-REVIEW`: independent review of implementation commit completed without actionable findings; see [review report](review-report.md).
 
-Current next action: commit the completed source and validation checkpoint, then preflight and dispatch the fixed-commit review. Parent owns workflow records, final review integration and local delivery. A delegated implementation writer, if used, owns all product edits exclusively until its return; parent remains read-only in that worktree meanwhile.
+Local implementation and review are complete. Remote integration, Issue closure, release and target adoption remain outside this authorized scope. Parent owns workflow records, final review integration and local delivery. A delegated implementation writer, if used, owns all product edits exclusively until its return; parent remains read-only in that worktree meanwhile.
 
 Updated `2026-09-26T11:12:45+08:00`: `/root/implement_naming` returned and released exclusive writer ownership. Parent owns all subsequent records and integration.
+
+Local closeout `2026-09-26T11:21:31+08:00`: both scoped tasks are completed. Full repository workflow validation remains failed on the unchanged historical record described in the implementation report; scoped metadata checks passed. The local closeout does not declare integration or publication.
