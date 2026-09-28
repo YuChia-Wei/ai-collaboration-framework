@@ -69,7 +69,7 @@ _V2_TEMPLATE_SHA256 = "68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd
 
 def project_entry_v2(template_bytes: bytes, package_id: str, package_version: str,
                      description: str, destinations: dict[str, str],
-                     *, configuration: dict | None) -> tuple[str, bytes]:
+                     *, configuration: dict | None, skill_naming: str = "original") -> tuple[str, bytes]:
     """Render only the selected skill's rc.2 Codex projection."""
     from hashlib import sha256
     from .data import identifier, path, string, version
@@ -96,7 +96,8 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
     require(len(set(destinations.values())) == len(destinations),
             "Codex v2 destinations must be unique")
 
-    runtime_name = f"aicf-{package_id}"
+    from .data import runtime_skill_name
+    runtime_name = runtime_skill_name(package_id, skill_naming)
     destination = f".agents/skills/{runtime_name}/SKILL.md"
     directory = posixpath.dirname(destination)
 

@@ -17,7 +17,7 @@ _V2_TEMPLATE_SHA256 = "11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d9
 
 def project_entry_v2(template_bytes: bytes, package_id: str, package_version: str,
                      description: str, destinations: dict[str, str],
-                     *, configuration: dict | None) -> tuple[str, bytes]:
+                     *, configuration: dict | None, skill_naming: str = "original") -> tuple[str, bytes]:
     """Render only the selected skill's rc.2 Claude projection."""
     require(type(template_bytes) is bytes
             and sha256(template_bytes).hexdigest() == _V2_TEMPLATE_SHA256,
@@ -41,7 +41,8 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
     require(len(set(destinations.values())) == len(destinations),
             "Claude v2 destinations must be unique")
 
-    runtime_name = f"aicf-{package_id}"
+    from .data import runtime_skill_name
+    runtime_name = runtime_skill_name(package_id, skill_naming)
     destination = f".claude/skills/{runtime_name}/SKILL.md"
     directory = posixpath.dirname(destination)
 

@@ -140,6 +140,12 @@ def desired_shape(data):
     return data
 
 
+def selection_skill_naming(desired):
+    """Keep historical v1 bytes intact while resolving their implicit mode."""
+    validate('Selection', desired)
+    return 'prefixed' if desired['selection_version'] == 1 else desired['skill_naming']
+
+
 def resource_bindings(packages, desired):
     observations=[]
     for binding in desired['bindings']:

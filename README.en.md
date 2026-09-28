@@ -107,6 +107,26 @@ historically correct legacy name.
 | Initialized target with credible provenance and a release-supported migration route | Use the package planner described in **Version upgrade**, then run `ai-context-upgrader`. |
 | Unknown source version, incomplete provenance, or an unsupported version gap | Stop automatic upgrade; use manual baseline reconciliation or a clean-install-style adoption. Never guess the previous version. |
 
+### Skill names for catalog-based installation
+
+The current catalog/subset implementation lets you choose Codex and Claude skill
+names when deriving a new selection. `tools/derive-subset.py --preset <id>
+--preset-version <version>` defaults to `--skill-naming original`, producing names
+such as `code-reviewer`. Use `--skill-naming prefixed` for `aicf-code-reviewer`.
+These options supplement the command's required catalog, engine pin and output paths.
+This describes the source implementation; consult the selected release's guide for availability.
+
+The resulting Selection v2 records `skill_naming`, and the installation lock retains
+that selection. Reuse it with `--selection <file>` to preserve the chosen mode;
+`--skill-naming` cannot override a saved selection. Historical Selection v1 keeps
+its implicit `aicf-` names, and rc.1 artifacts retain `framework-` names. To switch
+an existing catalog selection deliberately, save it as Selection v2 with an explicit
+`skill_naming` value, derive a new subset and review/apply its maintenance plan.
+Use an engine that supports Selection v2. Canonical skill IDs and managed core paths
+stay unchanged. The plan removes old managed entries and adds the chosen names;
+unowned destination collisions, edited managed files or extra discoverable entries
+block the switch without silently taking ownership.
+
 ### Clean installation
 
 #### 0. Prepare the correct directories and evidence

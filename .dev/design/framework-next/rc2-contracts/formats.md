@@ -5,6 +5,27 @@ Contract set: `aicf.rc2-selection/1`, selected for implementation by Issue #401
 **not** accept these new documents. JSON Schema files describe shapes; prose below
 also supplies cross-document, lexical, ownership and digest constraints.
 
+## Issue #409 extension: selectable runtime names
+
+The source implementation now accepts desired Selection v1 and v2. This extension
+supersedes only the desired-selection version and fixed runtime-name choice in the
+S1 baseline below; historical examples and released artifacts keep their identity.
+Selection v2 has the same fields as v1 plus required `skill_naming`, exactly
+`original` or `prefixed`. New preset expansion emits v2 with `original` by default.
+An explicit `prefixed` selection emits `aicf-<skill-id>`; `original` emits the
+canonical skill ID without a product prefix in the runtime directory, name or
+heading. Both Codex and Claude follow the same selection.
+
+Selection v1 remains closed and unchanged, with implicit `prefixed` semantics.
+Readers never insert a default or migrate its bytes. Saved selections control
+subsequent derivations; deliberate switching requires an explicit v2 selection.
+The unchanged subset v3 and lock v2 envelopes embed that exact desired selection
+and its digest. The catalog adapter's `prefix: aicf-` is the available product
+prefix, not an instruction to use it in `original` mode. RC1 projection remains
+`framework-`; withdrawal is based on managed inventory ownership, never prefix.
+An older engine that only supports Selection v1 cannot read/write v2. Select a
+compatible pinned engine; no format fallback or field stripping is permitted.
+
 ## Paths and version dispatch
 
 | Document | Exact path | Discriminator | Owner |

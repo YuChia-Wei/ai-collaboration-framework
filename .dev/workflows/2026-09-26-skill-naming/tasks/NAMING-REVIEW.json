@@ -1,0 +1,47 @@
+{
+  "task_id": "NAMING-REVIEW",
+  "workflow_id": "2026-09-26-skill-naming",
+  "owner_skill": "code-reviewer",
+  "status": "completed",
+  "created_at": "2026-09-26T11:02:38+08:00",
+  "updated_at": "2026-09-26T11:21:31+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #409 runtime-entry naming selection",
+    "constraints": [
+      "New selections default to original; explicit prefixed produces aicf-.",
+      "Historical selection v1 and rc.1 bytes retain their original semantics.",
+      "One tracked writer; local delivery only."
+    ],
+    "non_goals": [
+      "Provider integration or Issue closure",
+      "Release or downstream installation",
+      "Source-policy adoption or CI restoration"
+    ]
+  },
+  "execution": {
+    "validation": [],
+    "next_action": "Local delivery; remote integration requires its own authorization.",
+    "last_completed_step": "Independent bounded read-only review returned no actionable findings.",
+    "reviewed_commit": "757f11b22ac637e52719ba7140ea1825d219cc80",
+    "reviewer": "/root/review_naming",
+    "route": "common",
+    "role": "code-review-sub-agent",
+    "preflight": {
+      "tier": "bounded",
+      "subject_digest": "73547b83b84f01bba95f303c6e3fe6d4afd8283004acd4e19f50e3dd021e95f2",
+      "canonical_input_sha256": "3e3f10ee2d3399e6e6e603ecbf4bdb651c2708fb4374560a67ff430e880f461b",
+      "raw_yaml_sha256": "d79d1a564b58e8570f709a8de47b7861e1005d06fe6f7011d588d79dae1e5e42"
+    }
+  },
+  "results": {
+    "summary": "Independent common-route static review of implementation commit found no actionable defects.",
+    "finding_status": "addressed",
+    "follow_up_needed": false,
+    "residual_risk": "Static review only; native apply/recovery, UI discovery, hosted validation and target adoption remain unverified. Global workflow validator failed on an unchanged historical YAML datetime."
+  }
+}

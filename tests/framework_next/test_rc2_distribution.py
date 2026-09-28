@@ -124,7 +124,12 @@ class Rc2DistributionTests(unittest.TestCase):
         parent={'catalog_version':1,'release_version':'0.19.0-rc.2','source':{'commit':'1'*40,'tree':'3'*40},
                 'components':[],'adapters':[],'presets':[],'build_inputs':sources,
                 'generator':{'id':'aicf-catalog-assembly','implementation':implementation}}
-        raw={'metadata/catalog.json':json_bytes(parent),'metadata/catalog-files.json':json_bytes({'catalog_files_version':1,'files':[]})}
+        # The catalog itself requires a member; the selected subset may be empty.
+        member='skill-entry-v2.md.template'
+        parent['adapters']=[{'id':'codex','version':'2.0.0','prefix':'aicf-','template':member,'members':[member]}]
+        source=next(row for row in sources if row['path']=='src/adapters/codex/'+member)
+        files=[{'path':'adapters/codex/'+member,'kind':'adapter','owner':'codex','member':member,'source':source}]
+        raw={'metadata/catalog.json':json_bytes(parent),'metadata/catalog-files.json':json_bytes({'catalog_files_version':1,'files':files})}
         _,_,pin=catalog.parent_documents(raw)
         desired={'selection_version':1,'catalog':pin,'skills':[],'knowledge':[],'adapters':[],'bindings':[]}
         selection={'schema_version':3,'mode':'catalog-subset','release_version':parent['release_version'],'source':parent['source'],

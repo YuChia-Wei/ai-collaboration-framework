@@ -53,12 +53,15 @@ def main():
     source.add_argument('--selection',type=Path)
     source.add_argument('--preset')
     parser.add_argument('--preset-version')
+    parser.add_argument('--skill-naming',choices=('original','prefixed'),
+                        help='With --preset: original (default) or aicf-prefixed runtime skill names')
     parser.add_argument('--engine-pin',type=Path,required=True,help='Explicit independently selected Engine pin JSON; not an artifact self-description')
     parser.add_argument('--output-root',type=Path,required=True)
     parser.add_argument('--scratch-root',type=Path,required=True)
     args=parser.parse_args()
     if not sys.flags.isolated or not sys.flags.dont_write_bytecode: parser.error('Use python -I -B.')
     if bool(args.preset)!=bool(args.preset_version): parser.error('--preset requires an exact --preset-version.')
+    if args.selection and args.skill_naming is not None: parser.error('--skill-naming requires --preset; saved selections retain their naming mode.')
     try:
         with verified_host(Path(__file__).absolute().parents[1],args.engine_pin):
             from distribution import installation_state as state
@@ -69,7 +72,7 @@ def main():
                 reader=state._Reader(); target=reader.locate(parent,name)
                 state._check(target is not None,'selection-unavailable','Explicit selection file is missing.',name)
                 desired=state._document(reader.read(target,name,state.LIMITS['document_bytes']),name,canonical=False)
-            else: desired=expand_preset(catalog,args.preset,args.preset_version)
+            else: desired=expand_preset(catalog,args.preset,args.preset_version,skill_naming=args.skill_naming or 'original')
             result=derive_subset(catalog,desired,args.output_root,args.scratch_root)
             result['desired']=desired
     except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
