@@ -1,0 +1,23 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 410
+  head_sha: null
+  body: |-
+    Refs #409
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 409
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: This PR integrates the implementation only; Issue closure and final provider acceptance are separate owner decisions.
+    next_terminal_gate_or_owner: YuChia-Wei must authorize Issue closure after the applicable acceptance and provider gates are resolved.
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
