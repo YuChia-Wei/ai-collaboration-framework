@@ -1,27 +1,31 @@
 ---
 name: ddd-ca-hex-architect
-description: Design or review architecture artifacts using DDD, Clean Architecture and Hexagonal methods. Use for architecture decisions, boundaries, ports/adapters, tradeoffs and fixed-artifact review; concrete tooling follows target authority.
+description: "Design or review architecture artifacts using domain language, invariant ownership, dependency direction and ports/adapters; compare alternatives against explicit target requirements and decisions."
 ---
 
-# DDD CA HEX Architect
+# ddd-ca-hex-architect
 
-This is a thin Claude-compatible wrapper.
+Claude runtime entry for `ddd-ca-hex-architect@0.2.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Claude adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/ddd-ca-hex-architect/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/ddd-ca-hex-architect/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Spec: `.ai/assets/skills/ddd-ca-hex-architect/skill.yaml`
-- Human Guide: `.dev/guides/ai-collaboration-guides/DDD-CA-HEX-ARCHITECT-SKILL-GUIDE.md`
-- References:
-  - `.ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md`
-  - `.ai/assets/skills/ddd-ca-hex-architect/references/review-criteria.md`
-  - `.ai/assets/skills/ddd-ca-hex-architect/references/source-map.md`
-  - `.ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md`
-  - `.ai/assets/skills/ddd-ca-hex-architect/references/design-deliverables.md`
-  - `.ai/assets/skills/ddd-ca-hex-architect/references/prompt-templates.md`
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as a compatibility entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/ddd-ca-hex-architect/skill.yaml`.
+- [references/design.md](../../../.ai/core/skills/ddd-ca-hex-architect/references/design.md)
+- [references/review.md](../../../.ai/core/skills/ddd-ca-hex-architect/references/review.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

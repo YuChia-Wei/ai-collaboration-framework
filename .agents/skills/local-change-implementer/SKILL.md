@@ -1,69 +1,30 @@
 ---
 name: local-change-implementer
-description: Execute one local technical target and operation, including direct call
-  sites and immediate tests in the allowed radius. File count alone does not expand
-  scope; a private implementation helper type may remain local only when its semantic
-  impact stays inside the accepted target and radius.
+description: "Implement one authorized local technical target and operation, with direct call sites and immediate tests inside an explicit semantic radius; preserve accepted contracts and architecture."
 ---
 
-# Local Change Implementer
+# local-change-implementer
 
-This runtime execution entry is generated. Do not edit it by hand.
+Codex runtime entry for `local-change-implementer@0.2.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Codex adapter.
 
-## Authority and provenance
+Read [the installed skill](../../../.ai/core/skills/local-change-implementer/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/local-change-implementer/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Execution authority: `.ai/assets/skills/local-change-implementer/skill.yaml` `runtime_entry`.
-- Runtime frontmatter is discovery metadata generated from canonical `asset_id` and `purpose`; it does not add execution authority.
-- Generator: `.ai/scripts/generate-runtime-skill-entries.py`; canonical source SHA-256: `e4b2cddec9c40a991eec765996e10dbad271e979854113401eb482a86fe020be`.
-- Regenerate after canonical changes, then verify exact parity with `python .ai/scripts/generate-runtime-skill-entries.py --root <absolute-repository-root> --check`.
-- This entry does not promise zero additional reads. Load the listed canonical material only when its condition applies.
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Use this entry when
+Selected installed skill members:
 
-Use for one accepted local technical target and operation, including direct call sites and immediate tests inside its allowed radius.
+- [references/implement.md](../../../.ai/core/skills/local-change-implementer/references/implement.md)
 
-## Execute
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
 
-1. Confirm the primary target, one local operation, accepted behavior, direct call sites, immediate tests, and allowed dependency radius. Judge scope by semantic impact, not file count.
-2. Select one applicability mode declared by the effective-rule-consumption authority, then consume its freshness-verified task-scoped effective-rule packet before applying applicable catalog or profile rules. Stop if that route is unresolved.
-3. Apply the smallest coherent local change and update only its direct usage sites and immediate tests when necessary. Preserve existing authorization; do not widen it.
-4. Run the narrowest meaningful validation for the changed behavior and report compatibility, touched radius, and any prevented expansion.
-
-## Canonical capability slots
-
-- Generated from `.ai/assets/skills/local-change-implementer/skill.yaml` `capability_slots`: `local-change`.
-
-## Effective-rule preflight
-
-- Select only an applicability mode declared by this canonical payload: `framework-source`, `initialized-target`.
-- When `initialized-target`, before the resolver invocation, inspect only `.dev/ai-context/effective-rules.yaml` routing selector inventory.
-- For each task partition, select an existing exact tuple of `capability`, `execution_mode`, `technology_profile`, `file_type`; do not derive selectors from this skill ID, an action label, or a file suffix.
-- If no exact existing tuple is available, preserve canonical unresolved outcome `stop-applicable-action`; do not use aliases or default routes.
-- Use the request-authorized effective-rule resolver invocation. Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed.
-
-## Conditional expansion
-
-- When: Always before choosing the implementation owner.
-  - Read: `.ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md`
-  - Why: Classify the change by target, radius, and semantic impact.
-- When: Before an applicable catalog or profile rule is judged.
-  - Use: Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed; otherwise use the request-authorized resolver invocation.
-  - Read: `the selected freshness-verified task-scoped effective-rule packet`
-  - Why: Select the applicability mode explicitly and consume only fresh task-scoped effective-rule evidence.
-- When: The local operation, direct-call-site radius, or handoff boundary needs detail.
-  - Read: `.ai/assets/skills/local-change-implementer/references/allowed-operations.md`, `.ai/assets/skills/local-change-implementer/references/execution-rules.md`, `.ai/assets/skills/local-change-implementer/references/skill-boundaries.md`
-  - Why: Use the canonical local-operation and handoff boundaries without inventing a broader scope.
-
-## Stop or hand off
-
-- Route to `slice-implementer` when the change requires a public contract/domain type or changes responsibility, dependency direction, lifetime, transaction boundary, or coordinated behavior.
-- Route to `ddd-ca-hex-architect` when a responsibility, module/aggregate boundary, dependency direction, domain-language, compatibility, lifetime, or transaction decision is missing or changes.
-- A private implementation helper type may remain local only when it keeps the accepted target, radius, behavior, responsibility, dependency direction, lifetime, and transaction boundary unchanged.
-- Do not use a file count, a line count, or the mere existence of a new type as the handoff trigger.
-
-## Return
-
-- local change result and files affected
-- dependency radius touched and behavior compatibility notes
-- narrow validation performed or explicitly skipped
-- required handoff or remaining uncertainty
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

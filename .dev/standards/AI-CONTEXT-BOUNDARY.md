@@ -21,6 +21,18 @@ This standard defines where AI collaboration context belongs and how to separate
 | Other project truth | Requirements, domain language, specs, operations, architecture facts, workflows, and decisions that are not target-effective AI-context records. | `.dev/` |
 | Human guide | Human-facing explanations, tutorials, and prompt usage guides. | `.dev/guides/` |
 
+## Framework Source Repository Exception
+
+For this framework source repository after RC2 adoption, `src/skills/` and
+`src/knowledge/` are the editable sources for skills and engineering knowledge. The managed installer
+projects the selected source into `.ai/core/` and the original-ID runtime entries
+under `.agents/skills/` and `.claude/skills/`; those outputs are not edited here.
+Existing `.ai/assets/skills/` content remains only where active source
+compatibility, release, record-authoring, or validation tooling consumes it. It
+does not provide daily skill discovery or a second source for new reusable skill
+instructions. These paths are specific to this framework source repository;
+they do not reclassify target-owned context in consuming repositories.
+
 ## Current Tech-Stack Profile
 
 The current specialized profile is:
@@ -39,8 +51,8 @@ It explicitly excludes Razor, Blazor, MAUI, ASP.NET MVC view rendering, and othe
 - Put .NET backend-only baseline defaults, rules, constraints, bindings, and bundled tooling in `.ai/assets/tech-stacks/dotnet-backend/`.
 - Put source governance and the ownership registry in `.dev/standards/`. A current registry record with a legacy `canonical_path` under `.dev/standards/` is resolved as `transitional-unmigrated` until the migration matrix reclassifies it; `.dev/standards/` is not the blanket future owner for framework semantics.
 - Put a downstream target's effective semantic state, deltas, tuning, waivers, provenance, and reconciliation evidence in `.dev/ai-context/`. `.dev/` is shared execution truth, not a human-only tree.
-- Put canonical skill specs in `.ai/assets/skills/<skill-id>/`.
-- Put a shared bounded worker role definition in `.ai/assets/sub-agent-role-prompts/<role-id>/`, and a private role beside its owner in `.ai/assets/skills/<skill-id>/roles/<role-id>/`; either may execute direct inline or through genuine delegation, and placement alone does not prove an invocation.
+- In repositories still consuming the legacy published format, put canonical skill specs in `.ai/assets/skills/<skill-id>/`; in this framework source repository, follow the source exception above.
+- In repositories still consuming the legacy published format, put a shared bounded worker role definition in `.ai/assets/sub-agent-role-prompts/<role-id>/`, and a private role beside its owner in `.ai/assets/skills/<skill-id>/roles/<role-id>/`; either may execute direct inline or through genuine delegation, and placement alone does not prove an invocation.
 - Put Codex runtime wrappers in `.agents/skills/<skill-id>/`.
 - Put Claude-compatible wrappers in `.claude/skills/<skill-id>/`.
 - Put project requirements, domain language, specs, operations truth, workflow artifacts, and architecture facts under `.dev/`.

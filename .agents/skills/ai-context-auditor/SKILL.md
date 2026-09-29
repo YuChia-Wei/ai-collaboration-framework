@@ -1,29 +1,30 @@
 ---
 name: ai-context-auditor
-description: Analyze repository AI context structure, governance, routing, wrappers, semantic customization baselines, post-upgrade results, and validation surfaces. Return transient read-only findings unless persistence is requested; remain read-only and exclude product source/test code by default.
+description: "Audit selected AI collaboration context read-only or compare identified context subjects using project authority and evidence. Return prose by default; export or reuse a project format only when requested."
 ---
 
-# AI Context Auditor
+# ai-context-auditor
 
-This is a thin current-runtime wrapper.
+Codex runtime entry for `ai-context-auditor@0.1.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Codex adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/ai-context-auditor/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/ai-context-auditor/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Spec: `.ai/assets/skills/ai-context-auditor/skill.yaml`
-- Human Guide: `.dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md`
-- References:
-  - `.ai/assets/skills/ai-context-auditor/references/scope-and-routing.md`
-  - `.ai/assets/skills/ai-context-auditor/references/audit-playbook.md`
-  - `.ai/assets/skills/ai-context-auditor/references/output-contract.md`
-  - `.ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md`
-- Report Template: `.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md`
-- Assessment Policy: `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`
-- Assessment Locator: `.dev/assessments/templates/assessment-locator-template.yaml`
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as the current runtime entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/ai-context-auditor/skill.yaml`.
-Remain read-only with respect to audited context. Hand remediation and lifecycle closure to `ai-context-governance`.
+- [references/audit.md](../../../.ai/core/skills/ai-context-auditor/references/audit.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

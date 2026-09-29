@@ -9,6 +9,14 @@
 *.bat text eol=crlf
 *.cmd text eol=crlf
 
+# Keep API2-managed package bytes identical to their retained subset objects.
+.ai/core/** -text !eol
+.ai/framework.lock -text !eol
+.agents/skills/*/SKILL.md -text !eol
+.claude/skills/*/SKILL.md -text !eol
+.ai/custom/framework.json -text !eol whitespace=cr-at-eol
+.ai/custom/installation.json -text !eol whitespace=cr-at-eol
+
 # Preserve explicitly classified immutable external originals byte-for-byte.
 # Ordinary assessment evidence remains text-normalized and diffable.
 .dev/assessments/**/evidence/external/original/** binary

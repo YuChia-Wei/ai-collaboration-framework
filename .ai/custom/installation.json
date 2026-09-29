@@ -1,0 +1,35 @@
+{
+  "adapters": [
+    "claude",
+    "codex"
+  ],
+  "bindings": [],
+  "catalog": {
+    "catalog_sha256": "dcb27930e7b2c4bd6040b9d34fdc4876e8d10b8b6192b3a6be2fbf2f36b5155e",
+    "files_sha256": "2c094cabeb5d27d639e651a9241d1616c48ed76c310443b701ae0cfc424054ce",
+    "identity": "catalog:1:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:eb997697e9cd8b348092773176162dbdb564ded7d52bef663fde80b98c427d9b"
+  },
+  "knowledge": [],
+  "selection_version": 2,
+  "skill_naming": "original",
+  "skills": [
+    "adr",
+    "ai-context-auditor",
+    "ai-context-governance",
+    "bdd-gwt-test-designer",
+    "code-reviewer",
+    "ddd-ca-hex-architect",
+    "diagnostic-analyst",
+    "lesson",
+    "local-backlog",
+    "local-change-implementer",
+    "pr",
+    "problem-frame-author",
+    "requirement-author",
+    "slice-implementer",
+    "software-development-orchestrator",
+    "spec-author",
+    "spec-compliance-validator",
+    "standards-promotion"
+  ]
+}

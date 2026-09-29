@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "lifecycle_contract": "1.0",
+  "workflow_id": "2026-09-29-rc2-adoption",
+  "workflow_kind": "ai-context-maintenance",
+  "title": "Adopt the owner-selected RC2 in source and coordinate downstream replacement",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "current_phase": "final-installation-readback",
+  "artifact_root": ".dev/workflows/2026-09-29-rc2-adoption",
+  "entrypoint": "workflow-plan.md",
+  "created_at": "2026-09-29T10:25:58+08:00",
+  "updated_at": "2026-09-29T11:10:10+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml",
+  "template_version": "1.2.0",
+  "branch": "codex/2026-09-29-rc2-adoption",
+  "base_branch": "main",
+  "work_items": [
+    "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/411",
+    "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/409"
+  ],
+  "program": "#322",
+  "source_installation": "final-local-apply; project-readiness-not-assessed; runtime-dogfood-not-performed",
+  "interim_source_lock_sha256": "b9b74f03b3ce0e6940d738a22d148ab7167a6488ab3a68a9107512a9afae2a14",
+  "source_lock_sha256": "d2d69d0f6df72d35c258bdc7423b8168461b737c759eaf7ca9739086190e5368",
+  "source_product_commit": "aad927328c20b08c8445e8ad1792eadd8ecc3466"
+}

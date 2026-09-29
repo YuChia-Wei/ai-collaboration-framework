@@ -1,0 +1,133 @@
+{
+  "config_version": 2,
+  "skills": {
+    "lesson": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/lessons/records",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/lesson.md"
+      }
+    },
+    "adr": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/adr/records",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/adr.md"
+      }
+    },
+    "pr": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/pull-requests",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/pr.md"
+      }
+    },
+    "software-development-orchestrator": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/workflows-v2",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/workflow.md"
+      }
+    },
+    "problem-frame-author": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/problem-frames/records",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/cbf.md"
+      }
+    },
+    "standards-promotion": {
+      "store": {
+        "kind": "filesystem",
+        "root": ".dev/knowledge/promotions",
+        "tracking": "tracked"
+      },
+      "template": {
+        "origin": "package",
+        "path": "templates/promotion.md"
+      }
+    }
+  },
+  "constraints": {
+    "lesson": {
+      "write_roots": [
+        ".dev/lessons/records"
+      ],
+      "locked_fields": [
+        "store.root",
+        "store.tracking",
+        "template"
+      ]
+    },
+    "adr": {
+      "write_roots": [
+        ".dev/adr/records"
+      ],
+      "locked_fields": [
+        "store.root",
+        "store.tracking",
+        "template"
+      ]
+    },
+    "pr": {
+      "write_roots": [
+        ".dev/pull-requests"
+      ],
+      "locked_fields": [
+        "store.root",
+        "store.tracking",
+        "template"
+      ]
+    },
+    "software-development-orchestrator": {
+      "write_roots": [
+        ".dev/workflows-v2"
+      ],
+      "locked_fields": [
+        "store.root",
+        "store.tracking",
+        "template"
+      ]
+    },
+    "problem-frame-author": {
+      "write_roots": [
+        ".dev/problem-frames/records"
+      ],
+      "locked_fields": [
+        "store.root",
+        "store.tracking",
+        "template"
+      ]
+    },
+    "standards-promotion": {
+      "write_roots": [
+        ".dev/knowledge/promotions"
+      ],
+      "locked_fields": [
+        "store.root",
+        "store.tracking",
+        "template"
+      ]
+    }
+  }
+}

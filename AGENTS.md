@@ -56,21 +56,23 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrappers remain thin and are never a second authority.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. `.ai/assets/` now holds only source compatibility and tooling data, including the bounded legacy-format duties below; it is not the daily route for the 18 installed skills.
 
 | Need | Owning route |
 | --- | --- |
-| AI-context audit | `ai-context-auditor` |
-| AI-context governance, routing, translation, remediation, or source-release governance | `ai-context-governance` |
-| First target adoption or initialized-target upgrade | `ai-context-init` / `ai-context-upgrader` |
-| Historical or exceptional release verification | `ai-context-release-closeout` |
-| Multi-stage software development | `software-development-orchestrator` |
-| Architecture, GWT design, review, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `slice-implementer` / `local-change-implementer` |
-| Observed failure, performance symptom, or root-cause diagnosis | `diagnostic-analyst` |
+| AI-context audit or comparison | `ai-context-auditor` |
+| AI-context governance and reusable context maintenance | `ai-context-governance` |
+| Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
+| Decisions, lessons, local backlog, pull requests, or standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
+| Multi-stage software development and workflow records | `software-development-orchestrator` with source `.dev/` workflow and Issue authority |
+| Initialization or upgrade of a previously published legacy package format | Source compatibility procedures and their active `.ai/scripts/` tooling; this is not a portable installed skill route. |
+| Historical or exceptional source release closeout | `.dev/releases/` and source release policy; no portable installed skill route. |
+
+For source work, `.dev/standards/` continues to own source policy, GitHub work authority, release governance, U001 and the P7 deferrals. Preserve the retained source duties explicitly: source assessment persistence and terminal records; source customization and policy reconciliation; legacy CBF/SWF intake and active records; the target-selected legacy .NET 100% gate and rule resolver, only when maintaining that legacy downstream format or target (not for this framework source or its own installation); and old published-format initialization, upgrade and recovery. These duties do not restore the three removed runtime discovery entries or make their legacy files a second daily skill source.
 
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
-- For code review, load `.ai/assets/skills/code-reviewer/references/review-routing.yaml` first and only selected route and finding references.
+- For code review, load the installed `code-reviewer` entry and only its applicable route and finding references.
 - `test-execution` has no required skill; resolve target-owned commands first.
 - Direct execution remains valid. Classify delegation under `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
 
@@ -145,11 +147,11 @@ Repairable implementation, test, or CI failures inside authorized scope are not 
 
 Use indexes only when needed:
 
-- `.ai/INDEX.MD`: reusable agent-facing assets.
+- `.ai/INDEX.MD`: generated installed content and source-tooling data.
 - `.dev/INDEX.md`: project knowledge and current records.
 - `.dev/standards/INDEX.MD`: standards navigation.
 - `.dev/guides/ai-collaboration-guides/INDEX.MD`: human-facing explanations, not default execution context.
-- `.agents/skills/README.md` and `.claude/skills/README.md`: wrapper inventories.
+- `.agents/skills/README.md` and `.claude/skills/README.md`: installed skill inventories.
 
 ### Root Entry Files
 
