@@ -6,7 +6,7 @@ sandbox_mode = "read-only"
 
 developer_instructions = """
 You are a static Codex runtime projection for
-`.ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/sub-agent.yaml`.
+`.dev/agents/evidence-report-synthesizer/sub-agent.yaml`.
 
 Read that exact canonical role manifest and every mandatory reference before
 acting. The manifest, the owning skill's `role_bindings`, and the shared role

@@ -20,7 +20,7 @@
     "files": [
       ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
       ".ai/scripts/build-ai-context-package.py",
-      ".ai/scripts/measure-ai-context-load.py",
+      "tools/maintenance/measure-ai-context-load.py",
       ".ai/scripts/plan-github-backlog-migration.py",
       ".ai/scripts/prepare-ai-context-release.py",
       ".ai/scripts/render-ai-context-release-notes.py",
@@ -69,7 +69,7 @@
     "files_changed": [
       ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
       ".ai/scripts/build-ai-context-package.py",
-      ".ai/scripts/measure-ai-context-load.py",
+      "tools/maintenance/measure-ai-context-load.py",
       ".ai/scripts/plan-github-backlog-migration.py",
       ".ai/scripts/prepare-ai-context-release.py",
       ".ai/scripts/render-ai-context-release-notes.py",
@@ -80,7 +80,7 @@
       ".ai/scripts/validate-repository-config-contract.py",
       ".ai/scripts/validate-skill-transition.py",
       ".ai/scripts/validate-source-governance.py",
-      ".ai/scripts/python_prerequisites.py",
+      "tools/maintenance/python_prerequisites.py",
       ".ai/scripts/tests/test_python_source_entrypoints.py",
       ".ai/scripts/tests/test_python_prerequisites.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",

@@ -20,7 +20,7 @@ continuation:
   target_policy_refs:
     - ".dev/standards/WORKFLOW-GATE-POLICY.md"
     - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
-    - ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
+    - ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
   handoff_checkpoint: null
 created_at: "2026-08-26T12:01:52+08:00"
 updated_at: "2026-08-26T12:50:38+08:00"

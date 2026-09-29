@@ -24,7 +24,7 @@
       ".claude/skills/code-reviewer/**",
       ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
       ".ai/assets/tech-stacks/dotnet-backend/standards/**",
-      ".ai/assets/sub-agent-role-prompts/**",
+      ".dev/agents/**",
       ".ai/scripts/tests/**",
       ".ai/distribution/**"
     ],
@@ -65,7 +65,7 @@
       ".ai/assets/skills/code-reviewer/**",
       ".agents/skills/code-reviewer/SKILL.md",
       ".claude/skills/code-reviewer/SKILL.md",
-      ".ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**",
+      ".dev/agents/*code-review-sub-agent/**",
       ".ai/assets/tech-stacks/dotnet-backend/**",
       ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml",
       "AGENTS.md",

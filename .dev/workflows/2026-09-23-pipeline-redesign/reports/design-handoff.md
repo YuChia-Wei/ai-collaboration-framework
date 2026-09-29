@@ -31,7 +31,7 @@ Observed checks:
   exactly seven paths/names match the provider projection.
 - `git diff --cached --check` and staged path/status inspection at
   2026-09-23T14:40:53+08:00: passed; eight intended files in the two allowed roots.
-- `python .ai/scripts/validate-git-commits.py --message-file
+- `python tools/maintenance/validate-git-commits.py --message-file
   .dev/workflows/2026-09-23-pipeline-redesign/commit-message.tmp --workflow-id
   2026-09-23-pipeline-redesign`: exit 0, planned message passed at
   2026-09-23T14:40:29+08:00. Commit uses those unchanged bytes.

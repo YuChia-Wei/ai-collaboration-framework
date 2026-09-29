@@ -15,7 +15,7 @@
   "finding_ids": ["ASM-20260810-005#VALSNAP-001", "ASM-20260810-005#VALTIME-001", "ASM-20260813-001#VALRUN-001", "Issue-204-acceptance"],
   "scope": {
     "target": "Cross-platform complete process-tree supervision, immutable terminal admission, and sealed execution artifacts",
-    "files": [".ai/scripts/check-all.sh", ".ai/scripts/validation-evidence.py", ".ai/scripts/tests/test_fail_closed_validation.py", ".ai/scripts/tests/test_validation_evidence.py"],
+    "files": [".ai/scripts/check-all.sh", "tools/maintenance/validation-evidence.py", ".ai/scripts/tests/test_fail_closed_validation.py", ".ai/scripts/tests/test_validation_evidence.py"],
     "constraints": ["Prove descendant termination before returning", "Fail closed on pre/post identity drift", "Do not append to a sealed log", "Use deterministic child and grandchild fixtures", "Run focused validation only"],
     "non_goals": ["Issue #215 registry count redesign", "Release or nightly-full execution", "External-task delegation redesign", "Push, PR, merge, or publication"]
   },
@@ -29,8 +29,8 @@
     "summary": "The aggregate runner now admits a contained immutable bootstrap snapshot, supervises validator and evidence-control process trees, authenticates pre/post identity and terminal artifacts, fails closed on drift, cancellation, timeout, malformed preparation, or terminal mismatch, and publishes a cache-discoverable terminal manifest only after exact staged-manifest and supervisor verification.",
     "files_changed": [
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/validation_process_supervisor.py",
-      ".ai/scripts/validation-evidence.py",
+      "tools/maintenance/validation_process_supervisor.py",
+      "tools/maintenance/validation-evidence.py",
       ".ai/scripts/validation-profile-registry.sh",
       ".ai/scripts/shell-assets.yaml",
       ".ai/scripts/README.md",

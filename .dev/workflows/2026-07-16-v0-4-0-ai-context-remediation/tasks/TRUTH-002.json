@@ -17,7 +17,7 @@
     "target": "Synchronous Java-shaped controller guidance",
     "files": [
       ".dev/standards/examples/controller/**",
-      ".ai/assets/sub-agent-role-prompts/controller-sub-agent/**"
+      ".dev/agents/controller-sub-agent/**"
     ],
     "constraints": [
       "Use the current async Use Case inbound-port contract",
@@ -51,8 +51,8 @@
       ".dev/standards/examples/controller/CreateTaskResponse.cs",
       ".dev/standards/examples/controller/README.md",
       ".dev/standards/examples/evidence-manifest.yaml",
-      ".ai/assets/sub-agent-role-prompts/controller-sub-agent/sub-agent.yaml",
-      ".ai/assets/sub-agent-role-prompts/controller-sub-agent/references/implementation-guidance.md",
+      ".dev/agents/controller-sub-agent/sub-agent.yaml",
+      ".dev/agents/controller-sub-agent/references/implementation-guidance.md",
       ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/**"
     ],
     "tests_run": [

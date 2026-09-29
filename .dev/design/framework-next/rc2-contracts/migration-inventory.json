@@ -7328,7 +7328,7 @@
     },
     {
       "source": {
-        "path": ".ai/scripts/check-dockerfile-csproj-copy-sync.ps1",
+        "path": "src/tools/dotnet/check-dockerfile-csproj-copy-sync.ps1",
         "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
         "git_blob": "e3f17b29dc5e5c85ebedeb45db40edf840b6e48c",
         "mode": "100644",
@@ -7349,7 +7349,7 @@
     },
     {
       "source": {
-        "path": ".ai/scripts/check-mutation-coverage.sh",
+        "path": "src/tools/dotnet/check-mutation-coverage.sh",
         "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
         "git_blob": "d298ddfd57ca0dbf9526c2c2edc20eee420573c6",
         "mode": "100755",
@@ -7370,7 +7370,7 @@
     },
     {
       "source": {
-        "path": ".ai/scripts/check-spec-compliance.sh",
+        "path": "src/tools/dotnet/check-spec-compliance.sh",
         "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
         "git_blob": "f4bd2233b3ca8616be3ef69260c6b6b9e24e572e",
         "mode": "100755",
@@ -7391,7 +7391,7 @@
     },
     {
       "source": {
-        "path": ".ai/scripts/check-test-di-compliance.sh",
+        "path": "src/tools/dotnet/check-test-di-compliance.sh",
         "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
         "git_blob": "5be852de9cb585fb5d45b7ae7bcf698f2a0d0ef1",
         "mode": "100755",
@@ -7433,7 +7433,7 @@
     },
     {
       "source": {
-        "path": ".dev/ARCHITECTURE.md",
+        "path": "src/knowledge/dotnet-backend/design/architecture-overview.md",
         "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
         "git_blob": "17935de632d0eab0a9d96d9e9096ef4c80e2ccfa",
         "mode": "100644",
@@ -7450,7 +7450,7 @@
       "disposition": "Retain existing source/target owner. Replace active installed dependency with selected target authority or package interface; never copy source execution policy into payload.",
       "successor": null,
       "link_disposition": "retained-authority-or-inert-provenance-no-runtime-link",
-      "retained_owner": "Source repository .dev/ARCHITECTURE.md owner under ai-context-governance/coordinator; target analogue remains target-owned."
+      "retained_owner": "Source repository src/knowledge/dotnet-backend/design/architecture-overview.md owner under ai-context-governance/coordinator; target analogue remains target-owned."
     },
     {
       "source": {
@@ -7646,7 +7646,7 @@
     },
     {
       "source": {
-        "path": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+        "path": "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
         "commit": "6f5a13046f1978ba4b8701e4ae772faecde2c2ff",
         "git_blob": "6d13e727fac77041e3de7a8b1c88db1454ef5992",
         "mode": "100644",
@@ -7663,7 +7663,7 @@
       "disposition": "Retain existing source/target owner. Replace active installed dependency with selected target authority or package interface; never copy source execution policy into payload.",
       "successor": null,
       "link_disposition": "retained-authority-or-inert-provenance-no-runtime-link",
-      "retained_owner": "Source repository .dev/requirement/TECH-STACK-REQUIREMENTS.MD owner under ai-context-governance/coordinator; target analogue remains target-owned."
+      "retained_owner": "Source repository src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD owner under ai-context-governance/coordinator; target analogue remains target-owned."
     },
     {
       "source": {

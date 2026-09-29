@@ -45,9 +45,9 @@
   "inputs": {
     "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/208"],
     "specifications": [
-      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
-      ".ai/assets/shared/provider-neutral-capability-registry.yaml",
-      ".ai/assets/shared/provider-projection-registry.yaml",
+      ".dev/contracts/ROLE-EXECUTION-CONTRACT.md",
+      ".dev/contracts/provider-neutral-capability-registry.yaml",
+      ".dev/contracts/provider-projection-registry.yaml",
       ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml",
       ".ai/assets/skills/ai-context-upgrader/skill.yaml"
     ],

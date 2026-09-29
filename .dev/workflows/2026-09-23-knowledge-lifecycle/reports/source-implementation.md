@@ -77,7 +77,7 @@ AST/JSON parsing and PyYAML data reading; no product module was imported or invo
   `2026-09-23T08:54:07+08:00`: 40 readable files, 3 ASTs, 10 JSON files, 5 YAML
   files and 51 local Markdown links, with no reported syntax/reference issue.
   The exact planned message command
-  `python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/334/.dev/ai-context/local/commit-messages/334-implementation.txt --workflow-id 2026-09-23-knowledge-lifecycle`
+  `python -B tools/maintenance/validate-git-commits.py --message-file F:/framework-next/334/.dev/ai-context/local/commit-messages/334-implementation.txt --workflow-id 2026-09-23-knowledge-lifecycle`
   exited 0 with `Git commit validation passed for planned message.`
 
 Source inspection also corrected snapshot-capture digest races, input alias checks,

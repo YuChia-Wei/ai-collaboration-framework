@@ -19,7 +19,7 @@
   "historical_json_schema_count": 1,
   "schemas": [
     {
-      "path": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+      "path": ".dev/contracts/agent-execution-guardrails.schema.yaml",
       "scope_class": "named-yaml-schema",
       "git_blob": "fc00c431a3ad2a420bb09a52f76a04e25adafadd",
       "sha256": "0ffc68fb5d48acb4a15465d9083a7e9965aee761dc6c84eae5e00ccf4dc6471d",
@@ -88,7 +88,7 @@
       ]
     },
     {
-      "path": ".ai/assets/shared/cli-execution-routing.schema.yaml",
+      "path": ".dev/contracts/cli-execution-routing.schema.yaml",
       "scope_class": "named-yaml-schema",
       "git_blob": "15dbc840cd2f2305912fdc06328441d0cefdb446",
       "sha256": "e7cd8c2c5a07904f9558fe0b17b8fcf9b279ad1f8a2a280ef6ff9be2148ef926",
@@ -125,7 +125,7 @@
       ]
     },
     {
-      "path": ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml",
+      "path": ".dev/contracts/provider-neutral-capability-registry.schema.yaml",
       "scope_class": "named-yaml-schema",
       "git_blob": "0dd31db1b4ccd74aeca409408a55517904ab0d2b",
       "sha256": "ac57c3a7fc1a528e7fb3c7338b95d29e78e75e875a4a77e08c9b820773c4ef8e",
@@ -154,7 +154,7 @@
       ]
     },
     {
-      "path": ".ai/assets/shared/provider-projection-registry.schema.yaml",
+      "path": ".dev/contracts/provider-projection-registry.schema.yaml",
       "scope_class": "named-yaml-schema",
       "git_blob": "7f8a67c52bb2068489f4bd419c99fe3f353495ee",
       "sha256": "fb11843e29b6379032a56cfc3ca010e8a208fba9dee1edc3324a87f404952626",
@@ -188,7 +188,7 @@
       ]
     },
     {
-      "path": ".ai/assets/shared/validation-dependency-observation.schema.yaml",
+      "path": ".dev/contracts/validation-dependency-observation.schema.yaml",
       "scope_class": "named-yaml-schema",
       "git_blob": "f6f6e6a6bc28368f0fbcb4b159bee3fd55fb9970",
       "sha256": "d87c3e8cabd8890dbbb419fadb9868fe6f380b72aae9ee2427ff7f746dbe61e2",
@@ -223,7 +223,7 @@
       ]
     },
     {
-      "path": ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml",
+      "path": ".dev/contracts/validation-evidence-lifecycle.schema.yaml",
       "scope_class": "named-yaml-schema",
       "git_blob": "8258d986328f40b4003e3c6e877e5e76cc6ca49e",
       "sha256": "7a1e496b045252c84fe4b0d7b9f487190f29ef89f18c513867d571de50d5aa05",

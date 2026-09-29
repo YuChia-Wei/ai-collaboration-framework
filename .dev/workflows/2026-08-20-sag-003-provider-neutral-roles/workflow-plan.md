@@ -101,7 +101,7 @@ Before #207 integrates, all delegated work remains generic pre-#207 context and 
 - Deferred stages and reasons: Claude/Copilot projections require separate design/validation/authorization; Issue #208 owns delegation opt-in and Codex advisory preflight.
 - Open decisions: None; live owner decisions select Codex-only projection and sequential fallback.
 - Continuation instructions: Freeze and push the source-complete state-record head, obtain a fresh no-repair Sol High audit plus hosted checks at that exact clean head, then perform review/merge admission and post-merge provider read-back outside this completed technical workflow.
-- Target policy references: `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; `.dev/standards/WORKFLOW-GATE-POLICY.md`; `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`.
+- Target policy references: `.dev/contracts/ROLE-EXECUTION-CONTRACT.md`; `.dev/standards/WORKFLOW-GATE-POLICY.md`; `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 closed superseded PR #228 after retaining audit PASS plus hosted FAIL without rewriting its shared history; Segment 2 restarts from exact integrated main `e27540bb34721a14d097316af8f5fd708b6982b2`, records implementation `3c627d827c7908e335ad2a57e44433fd34f16f9d`, declaration `f85f62ab9567dbee036b5ef748ab381db7daf76a`, and superseded-PR closeout `943c3197299e092da217342543f502cc72f80ef9`; this final workflow-truth repair becomes the new external audit subject without self-referential SHA storage.
 

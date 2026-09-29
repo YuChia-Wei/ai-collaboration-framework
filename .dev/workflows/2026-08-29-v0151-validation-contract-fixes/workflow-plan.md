@@ -36,9 +36,9 @@ The original development-plan template metadata is retained as creation provenan
 ## Inputs
 
 - Requirements: Issue #261 acceptance IDs VAL010-A1 through VAL010-A5.
-- Specifications: `.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`, validation registry and process-supervisor contracts.
+- Specifications: `.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`, validation registry and process-supervisor contracts.
 - Architecture decisions: reuse remains input-sensitive and runtime-sensitive; exact-head/provider gates remain identity-sensitive and fresh.
-- Existing implementation or tests: `.ai/scripts/check-all.sh`, `.ai/scripts/validation-evidence.py`, `.ai/scripts/validation-profile-registry.sh`, `.ai/scripts/validation_process_supervisor.py`, their focused tests, and `.ai/distribution/templates/INSTALL.md`.
+- Existing implementation or tests: `.ai/scripts/check-all.sh`, `tools/maintenance/validation-evidence.py`, `.ai/scripts/validation-profile-registry.sh`, `tools/maintenance/validation_process_supervisor.py`, their focused tests, and `.ai/distribution/templates/INSTALL.md`.
 
 ## Workflow-Value And Delivery Cohesion
 
@@ -124,7 +124,7 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 - Evidence report: `reports/release-package-impact.md`.
 - Deterministic comparison: published `v0.15.0@5fedaceef7e18b4cdcde3cb665adcc97070db2df` versus candidate `303eee678ee2848d92b7007b0fe8a7a170ca8fe2`, both built diagnostically with the v0.15.0 package contract and the published v0.14.0 migration manifest.
 - Result: both packages contain 647 files; 10 archive members differ.
-- Direct consumer changes: `INSTALL.md`, `payload/.ai/scripts/check-all.sh`, `payload/.ai/scripts/validation-evidence.py`, and `payload/.ai/scripts/validation-profile-registry.sh`.
+- Direct consumer changes: `INSTALL.md`, `payload/.ai/scripts/check-all.sh`, `payload/tools/maintenance/validation-evidence.py`, and `payload/.ai/scripts/validation-profile-registry.sh`.
 - Derived changes: package, files, migration, selected-input, validation, and checksum metadata.
 - Decision: the patch materially changes package bytes and runtime behavior. A new immutable package version is required for package consumers to receive it; this evidence supports preparing v0.15.1 but does not establish release readiness or authorize publication.
 

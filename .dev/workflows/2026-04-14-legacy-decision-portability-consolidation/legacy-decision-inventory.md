@@ -21,7 +21,7 @@ It maps the current legacy decision set to landing buckets and primary canonical
 | Focus | Current Status | Bucket | Primary Landing Target | Notes |
 | --- | --- | --- | --- | --- |
 | Use case package and namespace structure | Landed in Standards | B | `.dev/standards/project-structure.md` | Keep as standard only; legacy source can retire after reference cleanup. |
-| ORM configuration location | Landed in Standards | C | `.dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md` | Usage/application guidance, not a top-level portable AI asset. |
+| ORM configuration location | Landed in Standards | C | `src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md` | Usage/application guidance, not a top-level portable AI asset. |
 | DI and configuration structure | Landed in Standards | B | `.dev/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md` | Historical non-.NET naming should be normalized when references are cleaned. |
 | AI task execution SOP | Landed in Standards | C | `.dev/guides/ai-collaboration-guides/AI-COLLABORATION-WORKFLOW-GUIDE.md` | Keep workflow rules in guide form; repo-entry minimum may stay in `AGENTS.md`. |
 | Command/query sub-agent separation | Landed in Standards | A | `.ai/SUB-AGENT-SYSTEM.MD` | Agent-facing routing rule. |

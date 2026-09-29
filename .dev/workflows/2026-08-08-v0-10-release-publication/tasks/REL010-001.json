@@ -15,7 +15,7 @@
   "reasoning_effort": "not-runtime-reported",
   "scope": {
     "release_id": "REL-v0.10.0",
-    "release_record": ".dev/releases/v0.10.0/release.yaml",
+    "release_record": "releases/v0.10.0/release.yaml",
     "authorized_included_work": ["#96", "#135", "#57", "#134", "#133"],
     "authorization_source": "Owner v0.10.0 Terra work package; online release coordination Issue #136; bounded tag authority Issue #137.",
     "out_of_scope": [

@@ -141,7 +141,7 @@ No active finding. `ASM-20260809-004#DEV-003` is verified as addressed at the pi
 | Aggregate profile and cache behavior | passed-source-review | `check-all.sh:498-587,676-716`; fail-closed runner fixtures GWT-012a through GWT-012e include receipt reuse, history change, release-cache bypass, missing receipt, and verifier error. |
 | Downstream boundary and package exclusion | passed | Focused downstream verifier exited `0` with `downstream-target-local` / `source-history-receipt-forbidden`; profile exclusions name helper and fixture at `dotnet-backend.yaml:409,423`, and `.ai/distribution/**` is source-only at `:451-455`. |
 | Committed selected fixture evidence | corroborated-with-environment-skip | #176 task records immutable-history fixtures as `19/19 passed` with one Windows `WinError 1314` executable-symlink skip; source GWT-019 uses a skip only when symlink creation is unavailable. |
-| Historical evidence preservation | passed | `6da4d4^..6da4d4` changed only the active #176 workflow records and `.dev/workflows/INDEX.MD` under history roots; no `.dev/assessments/**` or `.dev/releases/**` path changed. |
+| Historical evidence preservation | passed | `6da4d4^..6da4d4` changed only the active #176 workflow records and `.dev/workflows/INDEX.MD` under history roots; no `.dev/assessments/**` or `releases/**` path changed. |
 
 ### Skipped Validation
 

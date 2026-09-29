@@ -32,7 +32,7 @@
       "tools/DotnetBackendAnalyzers/README.md",
       "tools/DotnetBackendAnalyzers.Tests/MapperComplianceAnalyzerTests.cs",
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/code-review.sh",
+      "src/tools/dotnet/code-review.sh",
       ".ai/scripts/README.md",
       ".ai/scripts/check-mapper-compliance.sh",
       ".ai/scripts/generated/check-mapper.sh",

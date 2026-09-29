@@ -15,7 +15,7 @@
     "Searched active docs for stale .ai/CODE-REVIEW-INDEX references and updated non-historical references.",
     "Searched updated script and skill docs for transitional validation routing language.",
     "Ran C:\\Program Files\\Git\\bin\\bash.exe -n .ai/scripts/check-all.sh.",
-    "Ran C:\\Program Files\\Git\\bin\\bash.exe -n .ai/scripts/code-review.sh.",
+    "Ran C:\\Program Files\\Git\\bin\\bash.exe -n src/tools/dotnet/code-review.sh.",
     "Confirmed check-all.sh and code-review.sh no longer contain old JPA/Spring migration wording.",
     "Ran dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj.",
     "Ran git diff --check."

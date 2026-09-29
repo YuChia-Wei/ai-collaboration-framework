@@ -16,7 +16,7 @@
     "goal": "Prepare governed v0.11.0 candidate records and archives.",
     "target": "Issue #151",
     "files": [
-      ".dev/releases/v0.11.0/**"
+      "releases/v0.11.0/**"
     ],
     "constraints": [
       "exact source identity"
@@ -56,7 +56,7 @@
   "results": {
     "summary": "PR #154 merged the governed candidate at 05199ed0a9ed509ef1696df014fce244f8e7cffa and four assets were built from that immutable tree.",
     "files_changed": [
-      ".dev/releases/v0.11.0/"
+      "releases/v0.11.0/"
     ],
     "approval_evidence": [
       "Owner v0.11.0 R2 work package",

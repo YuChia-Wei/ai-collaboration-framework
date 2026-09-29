@@ -13,7 +13,7 @@
   "finding_ids": [],
   "scope": {
     "target": "REL-001 cold-start release controls and the owner-required PKG-003 v0.4.2 automatic-source reinforcement",
-    "files": [".dev/releases/**", ".dev/operations/**", ".ai/scripts/render-ai-context-release-notes.py", ".ai/scripts/prepare-ai-context-release.py", ".ai/scripts/validate-ai-context-release-state.py", ".github/workflows/**", ".ai/scripts/tests/**"],
+    "files": ["releases/**", ".dev/operations/**", ".ai/scripts/render-ai-context-release-notes.py", ".ai/scripts/prepare-ai-context-release.py", ".ai/scripts/validate-ai-context-release-state.py", ".github/workflows/**", ".ai/scripts/tests/**"],
     "constraints": ["No copied prior values", "Authored notes never contain rendered provenance", "Tag creation remains user-owned", "Separate local deterministic and hosted public-state evidence", "Bind v0.4.2 by its exact immutable package inventory and prove a real extracted upgrade"],
     "non_goals": ["Create or push v0.5.0 tag", "Publish GitHub Release", "Own general governance CI"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Cold-start release mechanics and the planned four-source v0.5.0 artifacts are implemented. The owner-required v0.4.2 automatic route, all four real extracted upgrades, and the complete 33/33 source critical gate pass in the working tree.",
-    "files_changed": [".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".ai/scripts/prepare-ai-context-release.py", ".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/render-ai-context-release-notes.py", ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD", ".dev/releases/release-phase-checks.yaml", ".dev/releases/v0.5.0/**", ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-rel001-working-tree.md", ".github/workflows/**"],
+    "files_changed": [".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".ai/scripts/prepare-ai-context-release.py", ".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/render-ai-context-release-notes.py", ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD", "releases/release-phase-checks.yaml", "releases/v0.5.0/**", ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-rel001-working-tree.md", ".github/workflows/**"],
     "tests_run": ["python .ai/scripts/tests/test_ai_context_release_state.py -v (15/15)", "python .ai/scripts/tests/test_prepare_ai_context_release.py -v (4/4)", "python .ai/scripts/tests/test_release_notes_renderer.py -v (3/3)", "four-source extracted-package GWT including immutable v0.4.2 (1/1)", "Git Bash ./.ai/scripts/check-all.sh --critical (33/33 passed)"],
     "finding_status": "addressed",
     "residual_risk": "V050-010 still must prove the containing validated-candidate commit through its clean-state gate, deterministic rebuild, hosted CI, and independent assessment. Tag, publication, and terminal public-state evidence remain separately owner-authorized release work.",

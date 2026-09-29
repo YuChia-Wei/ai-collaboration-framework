@@ -38,7 +38,7 @@
     "files_changed": [
       ".agents/skills/bdd-gwt-test-designer/SKILL.md",
       ".agents/skills/ddd-ca-hex-architect/SKILL.md",
-      ".ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md",
+      "src/knowledge/engineering-common/references/ARTIFACT-DESIGN-REVIEW-CONTRACT.md",
       ".ai/assets/skills/README.MD",
       ".ai/assets/skills/bdd-gwt-test-designer/references/output-contract.md",
       ".ai/assets/skills/bdd-gwt-test-designer/references/review-criteria.md",

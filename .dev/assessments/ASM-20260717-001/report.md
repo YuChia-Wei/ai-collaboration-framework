@@ -132,7 +132,7 @@ The branch must not close or be treated as the v0.4.0 release candidate until `A
 ### SVF-002 — Deferred DI Helper Retains Override-Unaware Mocking Advice
 
 - Severity: **LOW**
-- Affected path: [check-test-di-compliance.sh](../../../.ai/scripts/check-test-di-compliance.sh)
+- Affected path: [check-test-di-compliance.sh](../../../src/tools/dotnet/check-test-di-compliance.sh)
 - Repository-native evidence: the helper recommends NSubstitute and warns on Moq/FakeItEasy without resolving `testing.mocking`; the shell manifest and aggregate runner classify it as transitional/deferred and do not execute it automatically.
 - Why it matters: manual use can still imply an invariant where policy defines an overridable default, but it cannot make the release gate green incorrectly.
 - Confidence: **high**
@@ -205,12 +205,12 @@ The branch must not close or be treated as the v0.4.0 release candidate until `A
 
 ```text
 rg -n -uu <profile, routing, script, and active-reference patterns>
-python .ai/scripts/validate-git-commits.py --range ed5f8fb...26c9580 --workflow-id 2026-07-16-v0-4-0-ai-context-remediation
+python tools/maintenance/validate-git-commits.py --range ed5f8fb...26c9580 --workflow-id 2026-07-16-v0-4-0-ai-context-remediation
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-workflow-artifacts.py
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-ai-context-versions.py
-python .ai/scripts/validate-file-disposition-manifest.py --manifest <workflow-manifest>
+python tools/maintenance/validate-file-disposition-manifest.py --manifest <workflow-manifest>
 python .ai/scripts/validate-shell-assets.py
 python .ai/scripts/tests/test_profile_projection_contract.py -v
 python .ai/scripts/tests/test_document_projection_contract.py -v

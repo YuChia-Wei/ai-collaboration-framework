@@ -33,10 +33,10 @@
 
 ## Artifact Contract
 
-- Release record: `.dev/releases/v0.13.0/release.yaml`
-- Release notes: `.dev/releases/v0.13.0/release-notes.md`
-- Migration guide: `.dev/releases/v0.13.0/migration-guide.md`
-- Phase contract: `.dev/releases/v0.13.0/release-phase-checks.yaml`
+- Release record: `releases/v0.13.0/release.yaml`
+- Release notes: `releases/v0.13.0/release-notes.md`
+- Migration guide: `releases/v0.13.0/migration-guide.md`
+- Phase contract: `releases/v0.13.0/release-phase-checks.yaml`
 - Remediation report: `.dev/workflows/2026-08-12-v0-13-release-readiness/reports/remediation-report.md`
 - Tasks: `.dev/workflows/2026-08-12-v0-13-release-readiness/tasks/`
 

@@ -163,12 +163,12 @@ No source-of-truth content remediation remains from the preceding assessments. O
 rg -n -uu <profile, route, helper, and environment patterns>
 python .ai/scripts/tests/test_profile_projection_contract.py -v
 python .ai/scripts/tests/test_fail_closed_validation.py -v
-python .ai/scripts/validate-git-commits.py --range ed5f8fb...HEAD --workflow-id 2026-07-16-v0-4-0-ai-context-remediation
+python tools/maintenance/validate-git-commits.py --range ed5f8fb...HEAD --workflow-id 2026-07-16-v0-4-0-ai-context-remediation
 COMMIT_RANGE=ed5f8fb...HEAD WORKFLOW_ID=2026-07-16-v0-4-0-ai-context-remediation check-all.sh --full
 python .ai/scripts/validate-workflow-artifacts.py
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-ai-context-versions.py
-python .ai/scripts/validate-file-disposition-manifest.py --manifest <workflow-manifest>
+python tools/maintenance/validate-file-disposition-manifest.py --manifest <workflow-manifest>
 python .ai/scripts/validate-shell-assets.py
 dotnet test <three tool-owned verification projects>
 git status --short --branch

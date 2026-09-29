@@ -51,8 +51,8 @@
     "files_changed": [
       ".dev/standards/best-practices.md",
       ".dev/standards/anti-patterns.md",
-      ".dev/guides/learning-guides/LEARNING-PATH.md",
-      ".dev/specs/SPEC-GUIDE.MD",
+      "src/knowledge/dotnet-backend/guides/LEARNING-PATH.md",
+      "src/skills/spec-author/references/spec-guide.md",
       ".dev/standards/coding-standards/aggregate-standards.md",
       ".dev/standards/examples/dto/TaskDto.cs",
       ".dev/standards/examples/projection/EfTasksDueTodayProjection.cs",

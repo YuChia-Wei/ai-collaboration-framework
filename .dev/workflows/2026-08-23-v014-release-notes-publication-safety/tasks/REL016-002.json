@@ -18,10 +18,10 @@
   "scope": {
     "target": "Canonical schema-1.1/v2 route evidence for the existing published v0.14.0 package and the unchanged retained-origin set",
     "files": [
-      ".dev/releases/v0.14.0/support-matrix.yaml",
-      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
-      ".dev/releases/v0.14.0/route-assets/published-v0.14.0/",
-      ".dev/releases/v0.14.0/route-evidence/",
+      "releases/v0.14.0/support-matrix.yaml",
+      "releases/v0.14.0/route-assets/validate-direct-edge.py",
+      "releases/v0.14.0/route-assets/published-v0.14.0/",
+      "releases/v0.14.0/route-evidence/",
       ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/"
@@ -61,11 +61,11 @@
   "results": {
     "summary": "The authorized route-evidence implementation, hosted publication validation, and independent exact-head review are complete without changing the retained source set.",
     "files_changed": [
-      ".dev/releases/v0.14.0/support-matrix.yaml",
-      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
-      ".dev/releases/v0.14.0/route-assets/published-v0.14.0/",
-      ".dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/",
-      ".dev/releases/v0.14.0/route-evidence/",
+      "releases/v0.14.0/support-matrix.yaml",
+      "releases/v0.14.0/route-assets/validate-direct-edge.py",
+      "releases/v0.14.0/route-assets/published-v0.14.0/",
+      "releases/v0.14.0/route-assets/validation/published-v0.14.0/",
+      "releases/v0.14.0/route-evidence/",
       ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
       ".ai/scripts/tests/test_ai_context_release_state.py"
     ],

@@ -26,7 +26,7 @@ Prove that integrated main has the technical and governance prerequisites for a 
 - PR #255, PR #256, and PR #257 are merged, and their integrated subjects are ancestors of the verified base. PR #257's head tree is byte-identical to the merge commit tree.
 - #249, #251, and #253 are closed; #250, #252, and #254 remain open at workflow entry.
 - Prior branch-head lane and audit records are discovery inputs only. Every record is classified against this workflow's frozen subject before reuse.
-- No formal `.dev/releases/v0.15.0` record exists or will be created by this workflow. Candidate output is synthetic and confined to declared ignored validation roots.
+- No formal `releases/v0.15.0` record exists or will be created by this workflow. Candidate output is synthetic and confined to declared ignored validation roots.
 
 ## Scope And Authorization
 

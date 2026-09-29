@@ -15,7 +15,7 @@
   "reasoning_effort": "high",
   "scope": {
     "release_id": "REL-v0.7.0",
-    "release_record": ".dev/releases/v0.7.0/release.yaml",
+    "release_record": "releases/v0.7.0/release.yaml",
     "authorized_included_work": ["GOV-002", "GOV-003", "PKG-004", "REL-003"],
     "authorization_source": "Owner decisions recorded in the 2026-07-28 conversations: promote release traceability as REL-003, freeze four-item scope, declare non-breaking exact-v0.6.0 upgrade compatibility, proceed through current-main pre-tag, create and push the immutable annotated tag, and authorize release closeout after tagging.",
     "out_of_scope": [
@@ -38,9 +38,9 @@
   "results": {
     "summary": "REL-v0.7.0 passed candidate, PR integration, current-main pre-tag, owner-created annotated tag, hosted publication, and registry finalization without moving or recreating the immutable tag.",
     "files_changed": [
-      ".dev/releases/v0.7.0/release.yaml",
-      ".dev/releases/v0.7.0/release-notes.md",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.7.0/release.yaml",
+      "releases/v0.7.0/release-notes.md",
+      "releases/INDEX.MD",
       ".dev/backlog/ROADMAP.md",
       ".dev/backlog/INDEX.MD",
       ".dev/backlog/items/GOV-002.yaml",

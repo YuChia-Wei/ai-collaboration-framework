@@ -15,7 +15,7 @@
   "reasoning_effort": "high",
   "scope": {
     "release_id": "REL-v0.15.1",
-    "release_record": ".dev/releases/v0.15.1/release.yaml",
+    "release_record": "releases/v0.15.1/release.yaml",
     "out_of_scope": [
       "rewriting any v0.15.0-or-earlier tag, Release, asset, checksum, route, receipt, metadata, or published byte",
       "changing the v0.15 public package identity or profile identity",

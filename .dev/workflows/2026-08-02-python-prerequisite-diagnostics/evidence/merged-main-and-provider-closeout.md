@@ -28,4 +28,4 @@ After the merge, `origin/main` was fetched and resolved to `2070e44cff17bf3baad5
 
 ## Release Boundary
 
-`TOOL-002` is completed in the planned v0.8.0 scope but is not published. No `.dev/releases/v0.8.0/` tree, release candidate, tag, GitHub Release, package publication, or `published_in` claim was created. Any v0.8.0 release preparation still requires separate owner authorization.
+`TOOL-002` is completed in the planned v0.8.0 scope but is not published. No `releases/v0.8.0/` tree, release candidate, tag, GitHub Release, package publication, or `published_in` claim was created. Any v0.8.0 release preparation still requires separate owner authorization.

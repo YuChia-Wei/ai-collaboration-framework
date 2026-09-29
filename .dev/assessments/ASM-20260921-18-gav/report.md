@@ -275,10 +275,10 @@ Skipped：product unit／integration／E2E、full package／release／history ma
 
 ```text
 python -B .dev/assessments/ASM-20260921-18-gav/evidence/collect-inventory.py --check .dev/assessments/ASM-20260921-18-gav/evidence/source-inventory.json
-python -B .ai/scripts/validate-assessment-artifacts.py
+python -B tools/maintenance/validate-assessment-artifacts.py
 python -B .ai/scripts/validate-workflow-artifacts.py
 git diff --check
-python -B .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-09-21-schema-artifact-lifecycle
+python -B tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-09-21-schema-artifact-lifecycle
 ```
 
 ## Lifecycle Handoff

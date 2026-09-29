@@ -64,11 +64,11 @@
     ],
     "tests_run": [
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
       "python .ai/scripts/tests/test_ai_context_exact_case_paths.py",
       "python .ai/scripts/tests/test_ai_context_active_script_references.py",
-      "Git Bash .ai/scripts/check-coding-standards.sh",
+      "Git Bash src/tools/dotnet/check-coding-standards.sh",
       "JSON/YAML parse and focused stale-content scans",
       "git diff --check"
     ],

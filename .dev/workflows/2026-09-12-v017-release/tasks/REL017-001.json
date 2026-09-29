@@ -15,7 +15,7 @@
   "reasoning_effort": "ultra",
   "scope": {
     "release_id": "REL-v0.17.0",
-    "release_record": ".dev/releases/v0.17.0/release.yaml",
+    "release_record": "releases/v0.17.0/release.yaml",
     "out_of_scope": [
       "moving or replacing existing tags or published releases",
       "rerunning the seven unaffected actual cases"
@@ -31,7 +31,7 @@
   ],
   "results": {
     "preparation_commit": "8eed3960f19c57050c8e8a8e1ecedbc3004aabc2",
-    "artifact_admission": ".dev/releases/v0.17.0/artifact-admission.json",
+    "artifact_admission": "releases/v0.17.0/artifact-admission.json",
     "package_archives": "passed",
     "actual_direct_origin_cases": "Nine native passed cases on original archive remain intact; exact replacement archive is covered by owner-selected impact proof and affected tests, not new actual execution.",
     "full_release_gate": "failed critical01: 68 passed, four failed, three selected not-applicable; retained native receipt and complete logs",
@@ -43,7 +43,7 @@
     "focused_repair_validation": "Previously completed: all 18 distinct affected behavior tests and all seven evidence-binding cases passed; exact GWT-022 assertion rerun passed on native RAM. No further tests per latest owner instruction.",
     "actual_retry_authority": "Latest owner instruction selects affected-only acceptance; do not rerun the actual nine-case matrix for this exact repair.",
     "acceptance_ledger_root": "ignored:.dev/ai-context/local/2026-09-12-v017-release/acceptance",
-    "actual_evidence_set": ".dev/releases/v0.17.0/route-assets/actual/execution-set.json",
+    "actual_evidence_set": "releases/v0.17.0/route-assets/actual/execution-set.json",
     "source_acceptance": "accepted under explicit current-candidate direct-publication authority; additional tests waived, native failures preserved",
     "source_preparation_review": "accepted at 3a4cbb6f233436039e875da841db31659db10ed8",
     "terminal_candidate_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/candidate-phase.json",

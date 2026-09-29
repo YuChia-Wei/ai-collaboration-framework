@@ -29,7 +29,7 @@ This artifact classifies `.ai` and `.dev` files by portability. It applies the r
 | `.ai/assets/shared/PROMPT-PORTABILITY-RULES.md` | universal-concept | keep | Cross-repo prompt hygiene. |
 | `.ai/assets/tech-stacks/dotnet-backend/shared/` | dotnet-backend-implementation | keep | Correct home for .NET backend-only shared rules. |
 | `.ai/assets/skills/` | mixed | defer | Skill specs include universal governance skills and .NET backend-specific implementer/review skills. |
-| `.ai/assets/sub-agent-role-prompts/frontend-sub-agent/` | deferred-review | defer | Frontend role is out of the current backend-only profile; likely candidate for future full-stack template. |
+| `.dev/agents/frontend-sub-agent/` | deferred-review | defer | Frontend role is out of the current backend-only profile; likely candidate for future full-stack template. |
 
 ## `.dev` Classification
 

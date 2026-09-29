@@ -18,8 +18,8 @@
     "goal": "Instantiate and prove the governed v0.14.0 source candidate across v0.13.0, v0.9.0, and v0.6.0 retained origins, then terminal-close Issue #206.",
     "target": "v0.14.0 release record, notes, migration, phase contract, support matrix, route evidence, package identity, release validators, and UPG-003 terminal evidence",
     "files": [
-      ".dev/releases/v0.14.0/**",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.14.0/**",
+      "releases/INDEX.MD",
       ".ai/assets/skills/ai-context-governance/templates/release-publication/**",
       ".ai/scripts/validate-ai-context-release-state.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",
@@ -63,7 +63,7 @@
     ],
     "architecture_decisions": [
       "S1 owns read-only route resolution and S2 owns target-local transaction semantics; S3 supplies exact release assets and proof rather than reimplementing them.",
-      "Concrete release support matrix and route evidence remain source-only under .dev/releases/v0.14.0.",
+      "Concrete release support matrix and route evidence remain source-only under releases/v0.14.0.",
       "Candidate source validation and post-merge provider closure are separate evidence boundaries."
     ],
     "user_constraints": [
@@ -108,14 +108,14 @@
     "finding_status": "in_progress",
     "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed; all earlier checkpoints remain historical. Clean head 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0 passed 20-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider readback. Its one hosted watch is historical only: candidate, governance, and prerequisites passed, while Ubuntu profile failed from schema-2.3 package-apply fixture drift before lifecycle assertions. Current repair checkpoint d9995e5b0a7cfcc54a5037418a485408892a24d7 is committed/pushed: one fixture imports/reuses canonical TARGET_OWNED_REFERENCE_PATTERNS, with no duplicate, production, or historical change. Postfix GWT001 and real schema-2.3 GWT049, AST/diff, one-file review beginning 5fbf1da, 21-commit policy, and candidate gate passed; sandbox Temp ACL remains retained. This reconciliation advances the head; resulting clean evidence head still requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
     "files_changed": [
-      ".dev/releases/v0.14.0/release.yaml",
-      ".dev/releases/v0.14.0/release-notes.md",
-      ".dev/releases/v0.14.0/migration-guide.md",
-      ".dev/releases/v0.14.0/release-phase-checks.yaml",
-      ".dev/releases/v0.14.0/support-matrix.yaml",
-      ".dev/releases/v0.14.0/route-assets/**",
-      ".dev/releases/v0.14.0/route-evidence/**",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.14.0/release.yaml",
+      "releases/v0.14.0/release-notes.md",
+      "releases/v0.14.0/migration-guide.md",
+      "releases/v0.14.0/release-phase-checks.yaml",
+      "releases/v0.14.0/support-matrix.yaml",
+      "releases/v0.14.0/route-assets/**",
+      "releases/v0.14.0/route-evidence/**",
+      "releases/INDEX.MD",
       ".ai/assets/skills/ai-context-governance/templates/release-publication/release.yaml",
       ".ai/scripts/validate-ai-context-release-state.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",

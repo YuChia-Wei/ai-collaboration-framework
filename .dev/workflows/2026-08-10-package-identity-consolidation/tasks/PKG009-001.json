@@ -22,7 +22,7 @@
       ".ai/distribution/**",
       ".dev/assessments/ASM-20260809-003/**",
       ".dev/assessments/ASM-20260809-004/**",
-      ".dev/releases/**",
+      "releases/**",
       ".dev/assessments/ASM-20260810-003/**"
     ],
     "constraints": [
@@ -42,7 +42,7 @@
       "Create and validate ASM-20260810-003 with a machine-readable inventory and difference classification."
     ],
     "validation": [
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "focused distribution resolver and reference-integrity checks",
       "GitHub Release asset and checksum read-back"
     ],
@@ -59,7 +59,7 @@
       ".dev/assessments/INDEX.MD"
     ],
     "tests_run": [
-      "python .ai/scripts/validate-assessment-artifacts.py (passed: 44 assessments)",
+      "python tools/maintenance/validate-assessment-artifacts.py (passed: 44 assessments)",
       "validate_sidecar and validate_archive for v0.11.0 ZIP and tar.gz (passed)",
       "recorded-source payload replay and cross-format path/content/mode comparison (passed)",
       "current distribution resolution and v0.11.0 difference classification (passed)"

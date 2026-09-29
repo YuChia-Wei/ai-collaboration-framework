@@ -16,7 +16,7 @@
     "goal": "Create immutable annotated v0.11.0 tag and GitHub Release/assets.",
     "target": "Issues #151 and #152",
     "files": [
-      ".dev/releases/v0.11.0/**"
+      "releases/v0.11.0/**"
     ],
     "constraints": [
       "new exact tag only"
@@ -57,7 +57,7 @@
   "results": {
     "summary": "The public Release and four assets were accepted under an exact, non-transferable v0.11.0 Sol tag/publication exception. Failed run 31268095541 remains truthfully recorded and no tag or asset was changed.",
     "files_changed": [
-      ".dev/releases/v0.11.0/release.yaml",
+      "releases/v0.11.0/release.yaml",
       ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/"
     ],
     "approval_evidence": [

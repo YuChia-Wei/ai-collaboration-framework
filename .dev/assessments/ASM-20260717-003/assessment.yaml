@@ -30,7 +30,7 @@ scope:
     - ".ai/scripts/**"
     - ".dev/standards/**"
     - ".dev/guides/**"
-    - ".dev/releases/v0.4.0/**"
+    - "releases/v0.4.0/**"
     - ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/**"
     - ".dev/assessments/**"
     - "runtime routes, validators, manifests, tool-owned verification projects, and Git history"

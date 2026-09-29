@@ -30,7 +30,7 @@ scope:
     - ".ai/scripts package builder, planner/apply, aggregate runner, validators, registries, and focused GWT"
     - ".github/workflows/package-candidate.yml"
     - ".github/workflows/publish-release.yml"
-    - ".dev/releases/v0.4.1/**"
+    - "releases/v0.4.1/**"
     - ".dev/backlog package release decisions"
     - ".dev/workflows/2026-07-18-v0-4-1-downstream-upgrade-remediation/**"
     - "immutable v0.3.0 and v0.4.1 package inventories, archives, and extracted target gate"

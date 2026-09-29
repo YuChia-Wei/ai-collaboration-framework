@@ -36,9 +36,9 @@ context, examples, and analyzers in that order.
 - `.dev/standards/examples/usecase/`
 - `.dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md`
 - `.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md`
-- `.ai/assets/sub-agent-role-prompts/command-sub-agent/`
-- `.ai/assets/sub-agent-role-prompts/query-sub-agent/`
-- `.ai/assets/sub-agent-role-prompts/controller-sub-agent/`
+- `.dev/agents/command-sub-agent/`
+- `.dev/agents/query-sub-agent/`
+- `.dev/agents/controller-sub-agent/`
 - `.ai/assets/skills/slice-implementer/references/modes/`
 - `.ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD`
 - `tools/DotnetBackendAnalyzers/ControllerComplianceAnalyzer.cs`

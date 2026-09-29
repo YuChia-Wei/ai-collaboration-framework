@@ -42,7 +42,7 @@
 ### `CTX-H-001`
 
 - Changes: separated DDD/Clean Architecture invariants from an optional physical project-layout profile; replaced historical `Lab.*` naming and corrected `.ai`, `.agents`, and `.claude` responsibilities in active consumers.
-- Evidence: `.dev/standards/project-structure.md`, `.dev/standards/README.md`, `.dev/ARCHITECTURE.md`, and the architect source map now require repository evidence or explicit adoption for physical topology.
+- Evidence: `.dev/standards/project-structure.md`, `.dev/standards/README.md`, `src/knowledge/dotnet-backend/design/architecture-overview.md`, and the architect source map now require repository evidence or explicit adoption for physical topology.
 - Validation: targeted active-truth and fixed-name searches returned no matches; AI context and workflow validators passed.
 - Remaining risk: target repositories can still make an explicit profile choice that this framework does not validate semantically.
 

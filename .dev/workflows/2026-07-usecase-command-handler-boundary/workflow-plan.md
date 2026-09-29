@@ -293,7 +293,7 @@ Use Case.
 - Status: completed
 - Owner: `ddd-ca-hex-architect`
 - Primary scope:
-  - `.dev/ARCHITECTURE.md`;
+  - `src/knowledge/dotnet-backend/design/architecture-overview.md`;
   - `.dev/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`;
   - usecase/controller/test/project-structure standards;
   - DI and technology-profile rules.

@@ -42,7 +42,7 @@
       ".dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md",
       ".dev/guides/ai-collaboration-guides/AI-CONTEXT-GOVERNANCE-SKILL-GUIDE.md"
     ],
-    "tests_run": ["quick_validate.py for four runtime wrappers", "python .ai/scripts/validate-assessment-artifacts.py", "python .ai/scripts/validate-ai-context.py", "python .ai/scripts/validate-workflow-artifacts.py", "git diff --check"],
+    "tests_run": ["quick_validate.py for four runtime wrappers", "python tools/maintenance/validate-assessment-artifacts.py", "python .ai/scripts/validate-ai-context.py", "python .ai/scripts/validate-workflow-artifacts.py", "git diff --check"],
     "finding_status": "resolved",
     "residual_risk": "Legacy auditor workflow templates remain on disk because historical artifacts reference them; current specs and wrappers no longer route new work to them.",
     "follow_up_needed": false

@@ -117,8 +117,8 @@
 
 | ID | Severity | Finding | Evidence | Impact | Recommendation | Owner / Next Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| DEV-001 | HIGH | Current roadmap、backlog index 與 source GitHub provider contract 落後於 item、release 與 live Project state。 | `.dev/backlog/ROADMAP.md:5-9`；`.dev/backlog/INDEX.MD:8-45`；八個 v0.9 item records；`.dev/releases/INDEX.MD:26-31`；`.dev/backlog/providers/github.yaml:127-153`；live Project fields 包含 v0.11.0/v0.12.0 與 111 items。 | Agents 可能將 v0.9.0 讀作 current target 或 awaiting publication，而 Project 正規劃 v0.12.0，且 v0.11.0 已 published。 | 從 authoritative records/read-back reconcile current projections 與 provider schema。保留所有 immutable receipts 與 history。 | Issue [#175](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/175)；`ai-context-governance`。 |
-| DEV-002 | MEDIUM | 目前 `.dev` 文件含有七個指向已移至 `.ai/assets/tech-stacks/dotnet-backend/standards/` 之四項 standards 的 broken references；requirement guide 另列出四個不存在的 examples。 | `.dev/ARCHITECTURE.md:3,18,32`；`EZDDD-FRAMEWORK-REFERENCE.md:24,26-27`；`DATABASE-MIGRATION-GUIDE.md:120`；`REQUIREMENT-GUIDE.MD:78-82`。 | 即使 canonical targets 存在，目前的 source navigation 仍會誤導。 | 僅修復 active documents；讓 historical assessment/workflow/release links 保持 byte-stable。 | 與 DEV-001 相同的 #175 governance remediation。 |
+| DEV-001 | HIGH | Current roadmap、backlog index 與 source GitHub provider contract 落後於 item、release 與 live Project state。 | `.dev/backlog/ROADMAP.md:5-9`；`.dev/backlog/INDEX.MD:8-45`；八個 v0.9 item records；`releases/INDEX.MD:26-31`；`.dev/backlog/providers/github.yaml:127-153`；live Project fields 包含 v0.11.0/v0.12.0 與 111 items。 | Agents 可能將 v0.9.0 讀作 current target 或 awaiting publication，而 Project 正規劃 v0.12.0，且 v0.11.0 已 published。 | 從 authoritative records/read-back reconcile current projections 與 provider schema。保留所有 immutable receipts 與 history。 | Issue [#175](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/175)；`ai-context-governance`。 |
+| DEV-002 | MEDIUM | 目前 `.dev` 文件含有七個指向已移至 `.ai/assets/tech-stacks/dotnet-backend/standards/` 之四項 standards 的 broken references；requirement guide 另列出四個不存在的 examples。 | `src/knowledge/dotnet-backend/design/architecture-overview.md:3,18,32`；`EZDDD-FRAMEWORK-REFERENCE.md:24,26-27`；`DATABASE-MIGRATION-GUIDE.md:120`；`REQUIREMENT-GUIDE.MD:78-82`。 | 即使 canonical targets 存在，目前的 source navigation 仍會誤導。 | 僅修復 active documents；讓 historical assessment/workflow/release links 保持 byte-stable。 | 與 DEV-001 相同的 #175 governance remediation。 |
 | DEV-003 | MEDIUM | Critical validation profile 每次執行都會重新驗證全部 68 個 completed workflows 及其 task records。 | `.ai/scripts/check-all.sh:1128-1145`；`validate-workflow-artifacts.py` traversal；local timing 5.419 s（workflows）、0.347 s（39 assessments）、1.125 s（14 releases）。 | Routine cost 隨 immutable history 單調成長，而 changed current truth 沒有獲得更高優先級。 | 設計 changed-path routine validation 加上 scheduled/release full-history validation，並採用 fail-closed tamper detection，且不得削弱 coverage。 | Issue [#176](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/176)；implementation 前需要 owner decision。 |
 | DEV-004 | MEDIUM | 29 個 `.dev` paths 未被 packaged，且不符合任何明確的 exclusion rule。 | `dev-inventory.yaml`；profile resolution at `3a60570d...`。 | 目前 bytes 已安全省略，但 owner/classification/reason 無法從 profile 重現；#172 無法僅從 profile 證明 exhaustive disposition。 | 由 #172 classify 這 29 個 paths，並決定是否需要明確的 disposition registry/schema。此 assessment 不得變更 package bytes。 | Issue #172；僅在其 inventory 選定 schema change 時才 follow-up。 |
 
@@ -183,11 +183,11 @@ git ls-tree -r -l 3a60570d0e290f337f2a212d092c6797670528b4 -- .dev
 gh project field-list 3 --owner YuChia-Wei --format json
 gh project item-list 3 --owner YuChia-Wei --format json --limit 200
 python .ai/scripts/validate-ai-context.py
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-workflow-artifacts.py
 python .ai/scripts/validate-ai-context-versions.py
 python .ai/scripts/validate-source-governance.py
-python .ai/scripts/validate-file-disposition-manifest.py --manifest <v0.5.0 disposition manifest>
+python tools/maintenance/validate-file-disposition-manifest.py --manifest <v0.5.0 disposition manifest>
 ```
 
 ### 注意事項

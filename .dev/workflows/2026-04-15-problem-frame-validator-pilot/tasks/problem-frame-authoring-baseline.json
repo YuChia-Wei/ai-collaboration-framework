@@ -12,8 +12,8 @@
       ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md",
       ".ai/assets/skills/problem-frame-author/references/source-mapping.md",
       ".ai/assets/skills/problem-frame-author/references/output-contract.md",
-      ".ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml",
-      ".ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/references/authoring-playbook.md",
+      ".dev/agents/problem-frame-sub-agent/sub-agent.yaml",
+      ".dev/agents/problem-frame-sub-agent/references/authoring-playbook.md",
       ".claude/skills/problem-frame-author/SKILL.md",
       ".claude/skills/problem-frame-author/references/authoring-playbook.md",
       ".claude/skills/problem-frame-author/references/source-mapping.md",
@@ -69,7 +69,7 @@
     "files_changed": [
       ".dev/guides/ai-collaboration-guides/PROBLEM-FRAME-AUTHORING-GUIDE.md",
       ".ai/assets/skills/problem-frame-author/skill.yaml",
-      ".ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml",
+      ".dev/agents/problem-frame-sub-agent/sub-agent.yaml",
       ".claude/skills/problem-frame-author/SKILL.md",
       ".agents/skills/problem-frame-author/SKILL.md"
     ],

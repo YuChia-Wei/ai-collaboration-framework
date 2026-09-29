@@ -41,7 +41,7 @@ Actual permitted checks:
 
 The detailed file list and check observations are retained in the
 [task](../tasks/ISSUE-346.json). The complete ignored message file passed
-`python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-source.txt --workflow-id 2026-09-23-instruction-operations`.
+`python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-source.txt --workflow-id 2026-09-23-instruction-operations`.
 `git check-ignore` confirmed its ignored location. Commit uses that exact file
 with `git commit -F`; this message check is the explicit U001 exception. No product
 module, CLI/help, schema validator, test, fixture, builder, installer or migration
@@ -167,7 +167,7 @@ Actual checks: UTF-8/YAML parsing, metadata/tracked-member/destination/profile
 comparison, preserved-byte comparison and git diff --check/content inspection.
 The nine changed files passed direct UTF-8/syntax/reference readback: 5 YAML,
 1 JSON and 17 local Markdown links. The complete ignored planned message passed
-`python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-first-mapping.txt --workflow-id 2026-09-23-instruction-operations`;
+`python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-first-mapping.txt --workflow-id 2026-09-23-instruction-operations`;
 commit uses those exact message bytes. No product loader, CLI/help, import, schema validation, test/fixture,
 build/render/package/install/migration/probe, audit/lease/acceptance machinery or CI
 was executed. All remain deferred-by-owner under U001, owner program #322 coordinator
@@ -234,7 +234,7 @@ these unchanged Git blobs:
 Actual evidence includes direct UTF-8/YAML/content/member/profile/Git comparison,
 10 changed UTF-8 files, 6 YAML documents, 1 JSON document, 20 existing local Markdown
 links and git diff --check. The complete ignored planned message passed
-`python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-final-mapping.txt --workflow-id 2026-09-23-instruction-operations`;
+`python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-final-mapping.txt --workflow-id 2026-09-23-instruction-operations`;
 commit uses that exact message file.
 These are not schema, behavior, compatibility or independent-review passes.
 Product CLI/help/import, schema validation, tests/fixtures/build/render/package/

@@ -21,7 +21,7 @@
       ".ai/scripts/tests/test_fail_closed_validation.py",
       ".ai/scripts/README.md",
       ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD",
-      ".dev/releases/v0.5.0/release-notes.md",
+      "releases/v0.5.0/release-notes.md",
       ".dev/backlog/ROADMAP.md",
       ".dev/backlog/items/TOOL-001.yaml",
       ".dev/backlog/INDEX.MD"
@@ -54,7 +54,7 @@
     "validation": [
       "python .ai/scripts/tests/test_fail_closed_validation.py -v",
       "parent AI_CONTEXT_PYTHON focused suite",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.5.0",
       "bash .ai/scripts/check-all.sh --critical"
@@ -68,7 +68,7 @@
       ".ai/scripts/tests/test_fail_closed_validation.py",
       ".ai/scripts/README.md",
       ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD",
-      ".dev/releases/v0.5.0/release-notes.md",
+      "releases/v0.5.0/release-notes.md",
       ".dev/backlog/ROADMAP.md",
       ".dev/backlog/items/TOOL-001.yaml",
       ".dev/backlog/INDEX.MD"

@@ -13,7 +13,7 @@
   "finding_ids": ["ASSESSMENT-VALIDATION-001"],
   "scope": {
     "target": "Assessment directory, locator template, index, validator, and tests",
-    "files": [".dev/assessments/**", ".ai/scripts/validate-assessment-artifacts.py", ".ai/scripts/tests/test_assessment_artifacts.py", ".ai/scripts/check-all.sh"],
+    "files": [".dev/assessments/**", "tools/maintenance/validate-assessment-artifacts.py", ".ai/scripts/tests/test_assessment_artifacts.py", ".ai/scripts/check-all.sh"],
     "constraints": ["Fail closed on invalid durable assessment metadata", "Use repository-native evidence only", "Use GWT test naming and structure"],
     "non_goals": ["Validate arbitrary report prose", "Inspect product source or product tests"]
   },
@@ -28,14 +28,14 @@
       ".dev/assessments/templates/assessment-locator-template.yaml",
       ".dev/assessments/INDEX.MD",
       ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
-      ".ai/scripts/validate-assessment-artifacts.py",
+      "tools/maintenance/validate-assessment-artifacts.py",
       ".ai/scripts/tests/test_assessment_artifacts.py",
       ".ai/scripts/check-all.sh",
       ".ai/scripts/README.md"
     ],
     "tests_run": [
       "python .ai/scripts/tests/test_assessment_artifacts.py -v (9 passed)",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/validate-shell-assets.py",

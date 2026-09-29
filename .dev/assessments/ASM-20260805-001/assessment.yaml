@@ -32,7 +32,7 @@ scope:
     - "Issue #119 provider-neutral role execution and no-delegation parity"
     - ".ai/SUB-AGENT-SYSTEM.MD"
     - ".ai/assets/CANONICAL-SCHEMA.MD"
-    - ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md"
+    - ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
     - ".ai/assets/skills/** role_bindings, role_execution, BDD/test ownership, and acceptance fixtures"
     - ".ai/scripts/validate-ai-context.py and bounded role-reachability test source"
     - ".dev/standards and .dev/guides sub-agent taxonomy wording changed by the workflow"

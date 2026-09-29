@@ -50,7 +50,7 @@
       {
         "role_execution_id": "VAL011-MUTATION-001",
         "role_asset_id": "mutation-testing-sub-agent",
-        "role_path": ".ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml",
+        "role_path": ".dev/agents/mutation-testing-sub-agent/sub-agent.yaml",
         "owning_skill": "slice-implementer",
         "stage_id": "VAL011-implementation",
         "applicability": {
@@ -101,7 +101,7 @@
             "Issue #270 comment 5478024060 and read-only commit 3df455bd0ae6502b863990fd6aa104239d6f86ed"
           ],
           "mandatory_references": [
-            ".ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/references/implementation-playbook.md",
+            ".dev/agents/mutation-testing-sub-agent/references/implementation-playbook.md",
             ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
             ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md"
           ],
@@ -117,7 +117,7 @@
         "permissions": {
           "read_scope": [
             ".ai",
-            ".dev/releases/v0.14.0",
+            "releases/v0.14.0",
             ".dev/workflows/2026-09-02-validator-observation-and-fault-injection"
           ],
           "write_scope": [
@@ -246,12 +246,12 @@
         "summary": "5 of 5 critical mutants were detected; one exploratory survivor remained follow-up-required; normalized report digest b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f binds exact HEAD."
       },
       {
-        "command": "python .ai/scripts/observe-validation-dependencies.py --request .dev/ai-context/local/validation/val011-observation-request.yaml --output .dev/ai-context/local/validation/val011-dependency-observation.yaml",
+        "command": "python tools/maintenance/observe-validation-dependencies.py --request .dev/ai-context/local/validation/val011-observation-request.yaml --output .dev/ai-context/local/validation/val011-dependency-observation.yaml",
         "outcome": "failed",
         "summary": "The first VAL-012 observation truthfully failed observed-but-undeclared for 16 runtime modules; report digest b98c99cc2d345a6aa3ec80f670f09409008b37b65a8ab7f87e3d4651c260d95a was preserved."
       },
       {
-        "command": "python .ai/scripts/observe-validation-dependencies.py --request .dev/ai-context/local/validation/val011-observation-request-passed.yaml --output .dev/ai-context/local/validation/val011-dependency-observation-exact-head.yaml",
+        "command": "python tools/maintenance/observe-validation-dependencies.py --request .dev/ai-context/local/validation/val011-observation-request-passed.yaml --output .dev/ai-context/local/validation/val011-dependency-observation-exact-head.yaml",
         "outcome": "passed",
         "summary": "Partial lower-bound observation passed at exact HEAD with all five dimensions explicit, 25 of 25 manifest candidate files observed, and report digest 7289d234965474df5bec543126f86bdfab795f566ee3a5b0f57735568d1b7577."
       },

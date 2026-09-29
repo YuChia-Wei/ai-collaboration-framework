@@ -68,7 +68,7 @@ An external reviewer should start with the immutable source and this decision ta
 - `python .ai/scripts/tests/test_fail_closed_validation.py -v CheckAllRunnerGwtTests` — passed: 23 tests in 68.483 seconds.
 - `python .ai/scripts/validate-shell-assets.py` — passed.
 - `python .ai/scripts/validate-ai-context.py` — passed.
-- `python .ai/scripts/validate-git-commits.py --range main..HEAD` — passed for commit `7f6746b`.
+- `python tools/maintenance/validate-git-commits.py --range main..HEAD` — passed for commit `7f6746b`.
 - Git for Windows Bash syntax check and `git diff --check` — passed.
 
 ## Residual Risk And Next Action

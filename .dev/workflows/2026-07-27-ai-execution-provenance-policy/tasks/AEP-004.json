@@ -40,8 +40,8 @@
     ],
     "validation": [
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-assessment-artifacts.py",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy",
+      "python tools/maintenance/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy",
       "git diff --check"
     ],
     "last_completed_step": "Completed ASM-20260727-001, passed the 44-check critical gate, reconciled the verification, and finalized workflow closure evidence.",
@@ -57,10 +57,10 @@
       ".dev/workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml"
     ],
     "tests_run": [
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-workflow-handoff.py --all",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy",
+      "python tools/maintenance/validate-workflow-handoff.py --all",
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy",
       "C:\\Program Files\\Git\\bin\\bash.exe ./.ai/scripts/check-all.sh --critical (44 required passed)",
       "git diff --check"
     ],

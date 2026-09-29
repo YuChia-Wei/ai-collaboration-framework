@@ -45,7 +45,7 @@
       "python -B -: strict UTF-8 read-back of 16 owned files, JSON parse of 1 task and YAML parse of 3 documents plus 2 SKILL frontmatters",
       "python -B -: 36 local Markdown references resolved; package members match declared entrypoint/metadata/resources; instruction targets exist; no source-only dependency strings",
       "git diff --check and git diff --cached --check: no whitespace errors",
-      "python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-authoring/commit-message.cache --workflow-id 2026-09-23-portable-authoring: planned message passed"
+      "python -B tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-authoring/commit-message.cache --workflow-id 2026-09-23-portable-authoring: planned message passed"
     ],
     "last_completed_step": "Complete owned source and limited direct checks; exact planned message format checked",
     "next_action": "Read local commit HEAD and clean status, then return to coordinator before first push"

@@ -95,7 +95,7 @@ source_only_leakage:
   forbidden_patterns:
     - ".dev/workflows/20*/**"
     - ".dev/assessments/ASM-*/**"
-    - ".dev/releases/v*/**"
+    - "releases/v*/**"
     - ".dev/backlog/items/**"
 conclusion:
   artifact_integrity: passed

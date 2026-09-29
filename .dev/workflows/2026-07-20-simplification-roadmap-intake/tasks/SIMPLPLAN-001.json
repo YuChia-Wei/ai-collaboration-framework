@@ -70,7 +70,7 @@
       "python .ai/scripts/tests/test_backlog_release_contract.py -v",
       "python .ai/scripts/validate-ai-context.py",
       "python .ai/scripts/validate-ai-context-versions.py",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "YAML and JSON parse checks",
       "git diff --check",
       "Git for Windows Bash .ai/scripts/check-all.sh --quick: 21/21 required checks passed with zero failures"

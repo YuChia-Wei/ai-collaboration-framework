@@ -40,7 +40,7 @@ Traceback (most recent call last):
   File "C:\Github\YuChia\ai-collaboration-prompts-dotnet-backend\.ai\scripts\tests\test_ai_context_sub_agent_adapters.py", line 210, in assert_error
     self.assertTrue(any(fragment in error for error in errors), errors)
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: False is not true : [".ai\\assets\\skills\\example-owner\\skill.yaml: role_bindings[0].role_path must be an exact canonical shared or owning-skill role path ['.ai/assets/sub-agent-role-prompts/example-role/sub-agent.yaml', '.ai/assets/skills/example-owner/roles/example-role/sub-agent.yaml']", ".ai\\assets\\skills\\example-owner\\skill.yaml: role_bindings[0].role_path is dangling: '.ai/assets/sub-agent-role-prompts/missing-role/sub-agent.yaml'"]
+AssertionError: False is not true : [".ai\\assets\\skills\\example-owner\\skill.yaml: role_bindings[0].role_path must be an exact canonical shared or owning-skill role path ['.dev/agents/example-role/sub-agent.yaml', '.ai/assets/skills/example-owner/roles/example-role/sub-agent.yaml']", ".ai\\assets\\skills\\example-owner\\skill.yaml: role_bindings[0].role_path is dangling: '.dev/agents/missing-role/sub-agent.yaml'"]
 
 ----------------------------------------------------------------------
 Ran 31 tests in 0.470s

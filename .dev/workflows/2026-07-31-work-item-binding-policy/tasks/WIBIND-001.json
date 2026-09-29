@@ -92,7 +92,7 @@
       "dotnet test DotnetBackendValidation.Tests --no-restore: 2 passed",
       "dotnet test DotnetBackendBuildingBlocks.Tests --no-restore: 5 passed",
       "git diff --check: passed",
-      "python .ai/scripts/validate-git-commits.py --range origin/main..HEAD --workflow-id 2026-07-31-work-item-binding-policy: passed for implementation commit",
+      "python tools/maintenance/validate-git-commits.py --range origin/main..HEAD --workflow-id 2026-07-31-work-item-binding-policy: passed for implementation commit",
       "PR #73 Build and validate candidate: passed",
       "PR #73 Read-only governance contract: passed",
       "PR #73 Ubuntu quick gate: passed"

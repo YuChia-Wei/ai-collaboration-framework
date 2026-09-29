@@ -1,7 +1,0 @@
-schema_version: "1.0"
-repository_state: "existing"
-requested_capability: "initialize-ai-context"
-target_owned_files:
-  - "src/Ordering/Order.cs"
-  - ".dev/requirement/ORDERING.md"
-copied_source_truth: []

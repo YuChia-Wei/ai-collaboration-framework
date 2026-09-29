@@ -40,7 +40,7 @@
     "summary": "Four input operations plus canonical review subject implemented; focused input and compatibility results retained with failures.",
     "files_changed": [
       ".ai/scripts/execution-artifacts.py",
-      ".ai/scripts/execution_artifact_contract.py",
+      "tools/maintenance/execution_artifact_contract.py",
       ".ai/scripts/tests/test_execution_artifacts.py"
     ],
     "tests_run": [

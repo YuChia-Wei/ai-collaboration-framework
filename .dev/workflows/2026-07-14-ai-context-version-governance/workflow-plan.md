@@ -42,8 +42,8 @@
 ## Proposed Artifact Contract
 
 - Version policy: `.dev/standards/AI-CONTEXT-VERSION-POLICY.md`
-- Release discovery: `.dev/releases/INDEX.MD`
-- Per-release record: `.dev/releases/<version>/release.yaml`, `release-notes.md`, and `migration-guide.md`
+- Release discovery: `releases/INDEX.MD`
+- Per-release record: `releases/<version>/release.yaml`, `release-notes.md`, and `migration-guide.md`
 - Target provenance template: `.ai/assets/skills/ai-context-upgrader/templates/ai-context-source-template.yaml`
 - Installed target provenance: `.dev/AI-CONTEXT-SOURCE.yaml` in an initialized target repository; this framework source stores only the canonical template.
 - Upgrade skill: `.ai/assets/skills/ai-context-upgrader/`

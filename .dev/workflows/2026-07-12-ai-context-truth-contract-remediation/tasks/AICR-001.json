@@ -13,7 +13,7 @@
   "finding_ids": ["CTX-H-001"],
   "scope": {
     "target": "Reclassify fixed historical project topology and synchronize active consumers.",
-    "files": [".dev/standards/project-structure.md", ".dev/standards/README.md", ".dev/ARCHITECTURE.md", ".ai/assets/skills/ddd-ca-hex-architect/references/source-map.md", ".dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md", ".dev/standards/coding-guide.md", ".dev/standards/coding-standards/usecase-standards.md", ".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md"],
+    "files": [".dev/standards/project-structure.md", ".dev/standards/README.md", "src/knowledge/dotnet-backend/design/architecture-overview.md", ".ai/assets/skills/ddd-ca-hex-architect/references/source-map.md", "src/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md", ".dev/standards/coding-guide.md", ".dev/standards/coding-standards/usecase-standards.md", "src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md"],
     "constraints": ["Use ddd-ca-hex-architect to classify architecture semantics.", "Preserve canonical owners and current AI runtime path truth.", "Do not inspect or modify product source/tests."],
     "non_goals": ["Adopt one topology for every target repository.", "Redesign domain architecture."]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Preserved architecture invariants while reclassifying fixed physical topology and naming as a conditional target profile backed by repository evidence or explicit adoption.",
-    "files_changed": [".dev/standards/project-structure.md", ".dev/standards/README.md", ".dev/ARCHITECTURE.md", ".ai/assets/skills/ddd-ca-hex-architect/references/source-map.md", ".dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md", ".dev/standards/coding-guide.md", ".dev/standards/coding-standards/usecase-standards.md", ".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md"],
+    "files_changed": [".dev/standards/project-structure.md", ".dev/standards/README.md", "src/knowledge/dotnet-backend/design/architecture-overview.md", ".ai/assets/skills/ddd-ca-hex-architect/references/source-map.md", "src/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md", ".dev/standards/coding-guide.md", ".dev/standards/coding-standards/usecase-standards.md", "src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md"],
     "tests_run": ["targeted active-truth and fixed-name search: no matches", "python .ai/scripts/validate-ai-context.py: passed", "python .ai/scripts/validate-workflow-artifacts.py: passed", "git diff --check: passed"],
     "finding_status": "resolved",
     "residual_risk": "Independent post-remediation audit remains required; target repositories must still record explicit profile adoption.",

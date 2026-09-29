@@ -27,7 +27,7 @@ subject_ref:
 scope:
   included:
     - ".dev/backlog/**"
-    - ".dev/releases/**"
+    - "releases/**"
     - ".ai/assets/shared/governance/**"
     - ".ai/distribution/**"
     - ".ai/scripts/render-ai-context-release-notes.py"

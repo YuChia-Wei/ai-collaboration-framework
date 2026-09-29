@@ -58,7 +58,7 @@ All seven Fable 5 candidates have an explicit disposition in
 - Normalized measurement:
   `evidence/context-load-results.yaml`
 - Runner:
-  `.ai/scripts/measure-ai-context-load.py`
+  `tools/maintenance/measure-ai-context-load.py`
 - Fail-closed tests:
   `.ai/scripts/tests/test_measure_ai_context_load.py`
 - Reproduction contract:

@@ -10,7 +10,7 @@
   "template_version": "1.0.0",
   "scope": {
     "release_id": "REL-v0.6.0",
-    "release_record": ".dev/releases/v0.6.0/release.yaml",
+    "release_record": "releases/v0.6.0/release.yaml",
     "out_of_scope": [
       "creating or moving Git tags",
       "mutating an already published release"
@@ -24,9 +24,9 @@
   "results": {
     "summary": "REL-v0.6.0 passed candidate, current-main pre-tag, tag, hosted publication, and finalization evidence collection without moving or recreating the immutable tag.",
     "files_changed": [
-      ".dev/releases/v0.6.0/release.yaml",
-      ".dev/releases/v0.6.0/release-notes.md",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.6.0/release.yaml",
+      "releases/v0.6.0/release-notes.md",
+      "releases/INDEX.MD",
       ".dev/backlog/ROADMAP.md",
       ".dev/backlog/INDEX.MD",
       ".dev/backlog/items/DIST-001.yaml",

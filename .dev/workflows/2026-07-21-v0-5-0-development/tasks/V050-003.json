@@ -13,7 +13,7 @@
   "finding_ids": [],
   "scope": {
     "target": "PKG-003 multi-source migration schema, builder, planner, compatibility, and real extracted upgrades",
-    "files": [".ai/distribution/schemas/migration.schema.yaml", ".ai/scripts/ai_context_package.py", ".ai/scripts/ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_packaging.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".dev/releases/**"],
+    "files": [".ai/distribution/schemas/migration.schema.yaml", ".ai/scripts/ai_context_package.py", ".ai/scripts/ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_packaging.py", ".ai/scripts/tests/test_ai_context_package_apply.py", "releases/**"],
     "constraints": ["Schema 2.0 exact source selection", "Read schema 1.0", "Preserve target-owned truth", "Support v0.3.0, v0.4.0, and v0.4.1", "Keep clean install"],
     "non_goals": ["Publish v0.5.0", "Automatic v0.0.1 direct upgrade", "Overwrite local overrides"]
   },

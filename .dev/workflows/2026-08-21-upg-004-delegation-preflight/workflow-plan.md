@@ -84,7 +84,7 @@
 - Deferred stages and reasons: Claude/Copilot runtime projection and any Fast activation require separate Issues/authorization.
 - Open decisions: None; owner selections are fixed in this workflow.
 - Continuation instructions: Commit and push the PR #231 terminal declaration, obtain a fresh no-repair Sol High exact-head audit plus hosted checks, then perform non-mutating admission, merge only that admitted head, and read back Issue #208. Project-field restoration remains outside this workflow.
-- Target policy references: `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; `.ai/assets/skills/ai-context-upgrader/skill.yaml`; `.dev/standards/WORKFLOW-GATE-POLICY.md`.
+- Target policy references: `.dev/contracts/ROLE-EXECUTION-CONTRACT.md`; `.ai/assets/skills/ai-context-upgrader/skill.yaml`; `.dev/standards/WORKFLOW-GATE-POLICY.md`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 records the rejected original PR #230 head. Segment 2 is a no-rewrite squash reconstruction from integrated #207 main `f7591d8499ade36fb88193408e434710cbf437a0`.
 

@@ -11,7 +11,7 @@
       "AGENTS.md",
       ".dev/README.MD",
       ".ai/assets/skills/repo-structure-sync/references/migration-boundaries.md",
-      ".dev/requirement/TECH-STACK-REQUIREMENTS.MD"
+      "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD"
     ],
     "dependency_radius": "Decision archive plus repo-level entry docs that previously referenced ADRs",
     "constraints": [
@@ -60,7 +60,7 @@
       "AGENTS.md",
       ".dev/README.MD",
       ".ai/assets/skills/repo-structure-sync/references/migration-boundaries.md",
-      ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       ".dev/workflows/2026-04-14-legacy-decision-portability-consolidation/workflow-plan.md",
       ".dev/workflows/2026-04-14-legacy-decision-portability-consolidation/tasks/legacy-decision-retirement-and-index-cleanup.json"
     ],

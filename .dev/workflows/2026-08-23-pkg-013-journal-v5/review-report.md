@@ -5,7 +5,7 @@
 - Workflow: `2026-08-23-pkg-013-journal-v5`
 - Owner skill: `ai-context-governance`
 - Role-binding owner: `ai-context-upgrader`
-- Canonical role: `.ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml`
+- Canonical role: `.dev/agents/fixed-head-independent-auditor/sub-agent.yaml`
 - Gate selection: explicit high-risk fixed-head gate because journal recovery controls durable downstream target mutation after crashes.
 - Integration owner: source-task primary agent; the auditor cannot accept integration or close the workflow.
 

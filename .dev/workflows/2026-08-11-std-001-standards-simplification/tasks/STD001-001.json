@@ -47,7 +47,7 @@
       "Record stable R2 findings in ASM-20260811-003"
     ],
     "validation": [
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
       "package payload projection and direct reference resolution",
       "git diff --check"

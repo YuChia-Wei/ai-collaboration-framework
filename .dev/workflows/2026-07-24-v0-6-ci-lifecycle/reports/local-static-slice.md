@@ -28,11 +28,11 @@
 
 ## Remaining Decision And Hosted Boundary
 
-`.dev/releases/release-phase-checks.yaml` and
+`releases/release-phase-checks.yaml` and
 `validate-ai-context-release-state.py` are intentionally fixed to v0.5.0.
 Replacing the singleton with v0.6.0 would destroy historical revalidation.
 The recommended repair is
-`.dev/releases/<version>/release-phase-checks.yaml`, with a reusable
+`releases/<version>/release-phase-checks.yaml`, with a reusable
 publication template and dynamic sanctioned command construction.
 
 CI-001 also cannot close from local YAML. It requires a governed v0.6 candidate

@@ -58,7 +58,7 @@
       "git diff --check",
       "validated relative Markdown links in 51 workflow-changed Markdown files",
       "Git Bash syntax validation for check-all.sh, check-coding-standards.sh, code-review.sh, and generate-check-scripts-from-md.sh",
-      ".ai/scripts/check-coding-standards.sh (exit 0; 13 non-blocking pre-existing structural warnings)",
+      "src/tools/dotnet/check-coding-standards.sh (exit 0; 13 non-blocking pre-existing structural warnings)",
       "parse-md-rules.py AST syntax validation and repository-standards exclusion behavior check",
       "targeted searches for retired repository scripts and legacy repository method/name references"
     ],

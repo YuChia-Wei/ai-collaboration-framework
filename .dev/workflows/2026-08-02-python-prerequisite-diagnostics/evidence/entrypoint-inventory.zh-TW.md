@@ -24,7 +24,7 @@
 - 先使用 repository-native 的 `git ls-files` 建立盤點，再直接檢查每個檔案是否具有 `__main__` 執行路徑，以分類能否直接執行。
 - 依據 `.ai/distribution/profiles/dotnet-backend.yaml` 及其 source-only 排除規則分類可攜性。
 - 依據直接 import 敘述與本機模組的直接 import 鏈分類目前的先決條件。
-- 檢查根目錄入口文件、`.ai/scripts/README.md`、`.ai/distribution/templates/INSTALL.md`、skill 規格與參考資料、`.dev/standards/**`、`.dev/guides/**`、`.dev/releases/**`、`.github/workflows/**`、`.ai/scripts/check-all.sh` 及 `.ai/scripts/shell-assets.yaml` 中目前有效的指令與說明介面。
+- 檢查根目錄入口文件、`.ai/scripts/README.md`、`.ai/distribution/templates/INSTALL.md`、skill 規格與參考資料、`.dev/standards/**`、`.dev/guides/**`、`releases/**`、`.github/workflows/**`、`.ai/scripts/check-all.sh` 及 `.ai/scripts/shell-assets.yaml` 中目前有效的指令與說明介面。
 - 支援範圍分類不採用歷史 workflow 與 assessment 參照，但本次選定的 baseline finding 除外。
 - 排除產品的 `src/**` 與 `tests/**` 目錄；本 repository 在本次範圍內沒有相關的產品實作。
 
@@ -79,14 +79,14 @@ Get-Content -Raw .ai/scripts/README.md
 2. `.ai/scripts/plan-ai-context-package-apply.py`
 3. `.ai/scripts/validate-ai-context-target.py`
 4. `.ai/scripts/validate-ai-context.py`
-5. `.ai/scripts/validate-assessment-artifacts.py`
+5. `tools/maintenance/validate-assessment-artifacts.py`
 6. `.ai/scripts/validate-dependency-versions.py`
-7. `.ai/scripts/validate-file-disposition-manifest.py`
-8. `.ai/scripts/validate-git-commits.py`
+7. `tools/maintenance/validate-file-disposition-manifest.py`
+8. `tools/maintenance/validate-git-commits.py`
 9. `.ai/scripts/validate-shell-assets.py`
 10. `.ai/scripts/validate-software-development-orchestrator-acceptance.py`
 11. `.ai/scripts/validate-workflow-artifacts.py`
-12. `.ai/scripts/validate-workflow-handoff.py`
+12. `tools/maintenance/validate-workflow-handoff.py`
 
 相容進入點會委派給 skill 所擁有的 acceptance validator；因此，除非在委派前先執行先決條件檢查，否則它也會承襲該 validator 的 PyYAML import 失敗。
 
@@ -94,7 +94,7 @@ Get-Content -Raw .ai/scripts/README.md
 
 1. `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py`
 2. `.ai/scripts/build-ai-context-package.py`
-3. `.ai/scripts/measure-ai-context-load.py`
+3. `tools/maintenance/measure-ai-context-load.py`
 4. `.ai/scripts/plan-github-backlog-migration.py`
 5. `.ai/scripts/prepare-ai-context-release.py`
 6. `.ai/scripts/render-ai-context-release-notes.py`

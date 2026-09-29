@@ -63,7 +63,7 @@
       "Windows Git Bash .ai/scripts/check-all.sh --quick: 21/21 required",
       "GitHub Codespaces Ubuntu 24.04 .ai/scripts/check-all.sh --quick: 21/21 required, exit 0",
       "python .ai/scripts/tests/test_ai_context_package_apply.py -v",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
       "python .ai/scripts/validate-ai-context-versions.py",

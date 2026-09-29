@@ -67,7 +67,7 @@ must prove the deferred Issue remains open and is not projected as `Done`.
 `.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml` owns the single active
 selected provider configuration. The legacy adapter under `.dev/backlog/` is
 historical compatibility evidence and cannot configure this gate.
-`.ai/scripts/validate-terminal-issue-closure.py` validates durable disposition
+`tools/maintenance/validate-terminal-issue-closure.py` validates durable disposition
 records deterministically through three fail-closed validation stages without
 adding another closure mode:
 
@@ -156,7 +156,7 @@ blocking. This review
 mode is source-only; downstream repositories select their own target-owned
 review policy from their actual maintainer and provider requirements.
 Review overhead follows the operation classification in
-`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`, not the terminal label.
+`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`, not the terminal label.
 Both bounded and full independent reviews first validate the machine-readable
 subject, criteria and authority with `validate-agent-execution-guardrails.py
 --review-input`. Authority, evidence-custody, security, release/adoption and

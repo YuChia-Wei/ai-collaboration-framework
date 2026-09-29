@@ -21,7 +21,7 @@ Current `src/readme.md` is a tracked placeholder (one byte in this checkout), no
 | `.ai/assets/shared/` | Reusable contracts mixed with broad governance | Demonstrably necessary primitives to `src/shared/` -> `.ai/core/shared/` | No shared package by default in P2; classify remaining contracts in P5 |
 | `.ai/assets/tech-stacks/dotnet-backend/` | Stack-specific assets | Later selected profile-owned assets under `src` | P5 explicit destinations; no all-.NET common bootstrap |
 | `.ai/assets/templates/` and skill templates | Reusable template candidates | Owning skill's `templates/` | P5 actual producer/consumer classification, no universal dumping ground |
-| `.ai/assets/sub-agent-role-prompts/` | Reusable/private roles with possible governance coupling | Retained owner-local/shared selected resources in `src` | P5 review; no role selected by first Lesson |
+| `.dev/agents/` | Reusable/private roles with possible governance coupling | Retained owner-local/shared selected resources in `src` | P5 review; no role selected by first Lesson |
 | `.ai/scripts/` | Mixed skill tools, primitives, build/release/validation | Consumer tools to owning `src/skills`; justified primitives to `src/shared`; maintainer orchestration to `tools/` | P5/P6 per-operation classification; P7 validator/test redesign |
 | `.ai/distribution/profiles/dotnet-backend.yaml` | Broad source packaging policy | Narrow `src/distribution/manifest.yaml` and selection profiles | P2 first Lesson; P6 old machinery disposition; no inherited mandatory lifecycle core |
 | `.ai/distribution/identity-registry.yaml` and historical package schemas | Public/source identity and old protocol evidence | Retain until P6 defines mapping and historical read boundary | No silent identity rename or old compatibility promise |
@@ -31,7 +31,7 @@ Current `src/readme.md` is a tracked placeholder (one byte in this checkout), no
 | `.ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md` | Optional reusable initial seed | Later initializer/installer source template if selected | Seed suggestion only; root project AGENTS is never the generic template |
 | `.agents/skills/`, `.claude/skills/` | Derived runtime entries | Exact entries from `src/adapters` plus installed skill identity | P2 Codex only; later adapters explicit; preserve custom/unknown entries |
 | Root `AGENTS*`, `CLAUDE.md`, `README*` | Project entrypoints | Project-owned installed-artifact references | Coordinator's P2/P6 pointer changes; no whole-file overwrite |
-| `.dev/adr/`, `.dev/backlog/`, `.dev/workflows/`, `.dev/assessments/`, `.dev/releases/` | Decisions/tracking/history | Retain authority and references | Excluded; no mass migration/history rewrite; frozen backlog stays frozen |
+| `.dev/adr/`, `.dev/backlog/`, `.dev/workflows/`, `.dev/assessments/`, `releases/` | Decisions/tracking/history | Retain authority and references | Excluded; no mass migration/history rewrite; frozen backlog stays frozen |
 | `.dev/ai-context/` | Project customization/provenance/local state | Reconcile individually into configured bindings | P6 export/classification; unknown custom structures not auto-converted |
 | `.github/`, future `tools/`, `tests/`, `docs/` | Source operations/tests/product documentation | Source-side unless a specific reusable document is deliberately owned under `src` | No implicit shipping; P7 test/CI remains deferred |
 | Proposed root `.ai/core`, `.ai/custom`, lock, `dist` | Installed outputs/config/scratch | Not source/build inputs | P2/P6 creation; none created by P1-B |

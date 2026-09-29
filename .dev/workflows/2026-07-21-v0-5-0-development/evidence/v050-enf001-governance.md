@@ -63,7 +63,7 @@ profile they consume.
 
 `.github/workflows/governance.yml` is the read-only
 pull-request route for AI-context and portable governance surfaces. It is
-separate from package-candidate ownership and does not own `.dev/releases/**`,
+separate from package-candidate ownership and does not own `releases/**`,
 tags, or GitHub Release mutation.
 
 ## Validation

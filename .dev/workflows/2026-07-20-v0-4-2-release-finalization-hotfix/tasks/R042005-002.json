@@ -20,8 +20,8 @@
   "scope": {
     "target": "Local v0.4.2 release finalization and publication workflow evidence",
     "files": [
-      ".dev/releases/v0.4.2/**",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.4.2/**",
+      "releases/INDEX.MD",
       ".dev/workflows/2026-07-19-v0-4-2-release-publication/**",
       ".dev/workflows/INDEX.MD"
     ],
@@ -57,8 +57,8 @@
   "results": {
     "summary": "Finalized the local v0.4.2 registry at the immutable tag target, restored authored release sources, and corrected mutable historical workflow evidence while preserving the incident and Git history.",
     "files_changed": [
-      ".dev/releases/v0.4.2/**",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.4.2/**",
+      "releases/INDEX.MD",
       ".dev/workflows/2026-07-19-v0-4-2-release-publication/**",
       ".dev/workflows/INDEX.MD"
     ],

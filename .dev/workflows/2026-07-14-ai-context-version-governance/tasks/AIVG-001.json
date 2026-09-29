@@ -13,7 +13,7 @@
   "finding_ids": ["AIVG-POLICY-001"],
   "scope": {
     "target": "AI context version and release governance",
-    "files": [".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".dev/releases/**"],
+    "files": [".dev/standards/AI-CONTEXT-VERSION-POLICY.md", "releases/**"],
     "constraints": ["Preserve existing tag targets", "Use SemVer", "Declare compatibility and migration impact", "Require explicit tag authorization"],
     "non_goals": ["Create or move a tag", "Publish a release"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Framework versions now have stable REL IDs, exact tag and commit identity, compatibility declarations, migration guidance, and an explicit publication gate.",
-    "files_changed": [".gitignore", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".dev/releases/**", ".dev/README.MD", ".dev/INDEX.md", ".dev/standards/README.md"],
+    "files_changed": [".gitignore", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", "releases/**", ".dev/README.MD", ".dev/INDEX.md", ".dev/standards/README.md"],
     "tests_run": ["PyYAML parse of two release records", "Exact v0.1.0 and v0.2.0 tag target verification", "git diff --check"],
     "finding_status": "addressed",
     "residual_risk": "The records are retrospective and v0.2.0 predates automated upgrade/provenance support.",

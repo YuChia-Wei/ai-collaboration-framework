@@ -36,8 +36,8 @@
       ".ai/scripts/check-all.sh",
       ".ai/scripts/shell-assets.yaml",
       ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD",
-      ".dev/releases/v0.5.0/release-phase-checks.yaml",
-      ".dev/releases/v0.6.0/release-phase-checks.yaml",
+      "releases/v0.5.0/release-phase-checks.yaml",
+      "releases/v0.6.0/release-phase-checks.yaml",
       ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml",
       ".ai/assets/skills/ai-context-governance/templates/release-publication/release-phase-checks.yaml"
     ],

@@ -20,7 +20,7 @@
     },
     {
       "id": "assessment",
-      "command": "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "command": "python -B tools/maintenance/validate-assessment-artifacts.py",
       "exit_code": 0,
       "outcome": "passed",
       "output": "Assessment artifact validation passed for 65 assessment(s).\r\n"
@@ -55,7 +55,7 @@
       "output": "Workflow artifact validation passed for 123 post-adoption workflows, 143 indexed workflow directories, and 0 backlog items."
     },
     {
-      "command": "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "command": "python -B tools/maintenance/validate-assessment-artifacts.py",
       "outcome": "passed",
       "exit_code": 0,
       "output": "Assessment artifact validation passed for 65 assessments."
@@ -75,7 +75,7 @@
   "prior_failures": [
     {
       "stage": "bootstrap",
-      "command": "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "command": "python -B tools/maintenance/validate-assessment-artifacts.py",
       "outcome": "failed",
       "diagnostic": "workflow_refs used a locator path where an ID was expected",
       "correction": "Changed the relationship to the exact workflow ID; rerun passed."

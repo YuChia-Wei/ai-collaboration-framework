@@ -27,7 +27,7 @@
       ".ai/assets/**/INDEX*",
       ".ai/assets/**/README*",
       ".dev/guides/**",
-      ".dev/releases/**",
+      "releases/**",
       ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md"
     ],
     "constraints": [
@@ -43,7 +43,7 @@
     "non_goals": [
       "Code Reviewer progressive disclosure redesign",
       "Governance terminology redesign",
-      "Creating or guessing .dev/releases/v0.13.0/release.yaml",
+      "Creating or guessing releases/v0.13.0/release.yaml",
       "Project allocation, push, PR, merge, Issue closure, tag, Release, or publication"
     ]
   },
@@ -79,7 +79,7 @@
       ".ai/scripts/tests/test_ai_context_version_governance.py",
       ".ai/scripts/validate-ai-context-versions.py",
       ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
-      ".dev/releases/README.MD",
+      "releases/README.MD",
       ".dev/assessments/ASM-20260811-006/report.md"
     ],
     "tests_run": [

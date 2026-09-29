@@ -56,7 +56,7 @@
       "git diff --cached --check: passed for all 11 staged files; git status --short --untracked-files=all confirmed assigned scope",
       "Authored-content inspection: exactly six package members, instruction-only operation routes, null configuration and empty dependencies/roles/schemas/templates/tools",
       "rg source-only marker query: exit 1 means no matches in the six fully read package members",
-      "python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-optional-context-implementation/artifacts/357-commit.txt --workflow-id 2026-09-23-optional-context-implementation: passed"
+      "python -B tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-optional-context-implementation/artifacts/357-commit.txt --workflow-id 2026-09-23-optional-context-implementation: passed"
     ],
     "last_completed_step": "Complete source authoring and permitted direct checks, including the exact planned commit message",
     "next_action": "Preserve one coherent local commit and read back HEAD/status; coordinator owns first push and shared integration, P7 owns deferred verification"

@@ -37,7 +37,7 @@
       ".agents/skills/repo-structure-sync/SKILL.md",
       ".claude/skills/repo-structure-sync/SKILL.md",
       ".dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md",
-      ".dev/ARCHITECTURE.md",
+      "src/knowledge/dotnet-backend/design/architecture-overview.md",
       ".dev/INDEX.md",
       ".dev/project-config.yaml"
     ],

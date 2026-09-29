@@ -152,7 +152,7 @@
 | Code Reviewer path/byte inventory | passed | exact Git blob sizes and unique declared reference sets |
 | Reference-consumer inventory | passed | shared common/testing references extend beyond Code Reviewer scope |
 | Governance term inventory | passed | active roots counted with dated history excluded |
-| Exact v0.13 build attempt | failed-closed-as-expected | no `.dev/releases/v0.13.0/release.yaml`; no record invented |
+| Exact v0.13 build attempt | failed-closed-as-expected | no `releases/v0.13.0/release.yaml`; no record invented |
 | Controlled current-tree projection | passed-with-limitation | built from subject commit using v0.12 contract and verified v0.11 files manifest |
 | ZIP/tar package validation | passed | two archives deterministic/parity-valid |
 | Extracted payload user-view scan | failed | seven genuine missing local links; source-only release instructions remain visible |

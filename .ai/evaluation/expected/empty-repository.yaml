@@ -1,8 +1,0 @@
-schema_version: "1.0"
-case_id: "empty-repository"
-family: "empty"
-route: "ai-context-init"
-decision: "initialize"
-details:
-  preserve_target_owned: []
-  reject_source_truth: []

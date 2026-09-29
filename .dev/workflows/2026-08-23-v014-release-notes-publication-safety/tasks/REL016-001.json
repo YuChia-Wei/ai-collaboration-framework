@@ -22,7 +22,7 @@
   "scope": {
     "target": "v0.14.0 publication-safe release-note source, effective renderer boundary, focused tests, and one hosted body-only correction",
     "files": [
-      ".dev/releases/v0.14.0/release-notes.md",
+      "releases/v0.14.0/release-notes.md",
       ".ai/scripts/render-ai-context-release-notes.py",
       ".ai/scripts/tests/test_release_notes_renderer.py",
       ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/"
@@ -87,7 +87,7 @@
     "files_changed": [
       ".ai/scripts/render-ai-context-release-notes.py",
       ".ai/scripts/tests/test_release_notes_renderer.py",
-      ".dev/releases/v0.14.0/release-notes.md",
+      "releases/v0.14.0/release-notes.md",
       ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/evidence/REL016-001-final-rendered-body.md",
       ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/evidence/REL016-001-hosted-before.json",
       ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/evidence/REL016-001-hosted-after.json"

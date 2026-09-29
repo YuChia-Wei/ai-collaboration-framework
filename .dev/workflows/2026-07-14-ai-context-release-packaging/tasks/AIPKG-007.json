@@ -13,7 +13,7 @@
   "finding_ids": ["AIPKG-LEGACY-001", "AIPKG-RELEASE-001"],
   "scope": {
     "target": "Planned v0.3.0 package release data and future retrospective baseline extension",
-    "files": [".dev/releases/v0.3.0/**", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".ai/distribution/baselines/**"],
+    "files": ["releases/v0.3.0/**", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".ai/distribution/baselines/**"],
     "constraints": ["Do not create tags", "Do not claim unconfirmed v0.0.1 support", "Allow immutable-tag baseline manifests to be added later", "Keep v0.3.0 planned or validated only"],
     "non_goals": ["Choose between v0.0.1 and prerelease without user confirmation", "Publish a Release"]
   },
@@ -23,5 +23,5 @@
     "last_completed_step": "Extended v0.3.0 release data and added a fail-closed retrospective baseline admission policy without creating historical tags or manifests.",
     "next_action": "None."
   },
-  "results": {"summary": "Recorded v0.3.0 package/publication contracts and a future immutable-tag baseline policy while explicitly withholding unconfirmed v0.0.1 compatibility.", "files_changed": [".dev/releases/v0.3.0/release.yaml", ".dev/releases/v0.3.0/release-notes.md", ".dev/releases/v0.3.0/migration-guide.md", ".ai/distribution/baselines/README.md", ".ai/scripts/validate-ai-context-versions.py"], "tests_run": ["Version governance GWT: 12 passed", "python .ai/scripts/validate-ai-context-versions.py --no-git"], "finding_status": "resolved", "residual_risk": "The historical v0.0.1 candidate remains unresolved until the user confirms and tags an immutable commit and file selection.", "follow_up_needed": false}
+  "results": {"summary": "Recorded v0.3.0 package/publication contracts and a future immutable-tag baseline policy while explicitly withholding unconfirmed v0.0.1 compatibility.", "files_changed": ["releases/v0.3.0/release.yaml", "releases/v0.3.0/release-notes.md", "releases/v0.3.0/migration-guide.md", ".ai/distribution/baselines/README.md", ".ai/scripts/validate-ai-context-versions.py"], "tests_run": ["Version governance GWT: 12 passed", "python .ai/scripts/validate-ai-context-versions.py --no-git"], "finding_status": "resolved", "residual_risk": "The historical v0.0.1 candidate remains unresolved until the user confirms and tags an immutable commit and file selection.", "follow_up_needed": false}
 }

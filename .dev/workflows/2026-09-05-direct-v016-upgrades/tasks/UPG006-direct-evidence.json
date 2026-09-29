@@ -38,9 +38,9 @@
   "results": {
     "summary": "Each exact public origin upgrades directly to the same v0.16.0 archive. Customized ownership, required validation, provenance finalization, durable resume, rollback and rejection boundaries are retained and verified.",
     "files_changed": [
-      ".dev/releases/v0.16.0/support-matrix.yaml",
-      ".dev/releases/v0.16.0/route-assets",
-      ".dev/releases/v0.16.0/route-evidence"
+      "releases/v0.16.0/support-matrix.yaml",
+      "releases/v0.16.0/route-assets",
+      "releases/v0.16.0/route-evidence"
     ],
     "tests_run": [
       "Actual direct upgrades: 9/9 passed, 3277.546 seconds.",

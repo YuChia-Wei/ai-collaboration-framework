@@ -39,9 +39,9 @@
       "Finalize remediation report, task state, and workflow closure evidence"
     ],
     "validation": [
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-10-current-context-remediation"
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-10-current-context-remediation"
     ],
     "last_completed_step": "Finalized ASM-20260810-001 and reconciled its no-active-finding result with the remediation report",
     "next_action": "None in this workflow; await owner-authorized Git transport and review lifecycle"

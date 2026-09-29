@@ -12,7 +12,7 @@ acceptances:
     status: "passed"
     required_outcome: "Observed-but-undeclared dependencies fail within the declared representative harness boundary."
     evidence:
-      - ".ai/scripts/observe-validation-dependencies.py::observe_request maps any observed-but-undeclared dependency to decision.outcome=failed."
+      - "tools/maintenance/observe-validation-dependencies.py::observe_request maps any observed-but-undeclared dependency to decision.outcome=failed."
       - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_undeclared_file_when_observed_then_boundary_fails passed at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3."
       - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_undeclared_tool_when_observed_then_boundary_fails passed at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3."
     evidence_digest: "cdad04701077f5748385c07161f257d5e0c518a7f5ec8f6bcc6d2c491ba6f9af"
@@ -20,21 +20,21 @@ acceptances:
     status: "passed"
     required_outcome: "Declared-but-unobserved dependencies remain advisory and are never removed automatically."
     evidence:
-      - ".ai/scripts/observe-validation-dependencies.py reports declared_but_unobserved_disposition=advisory-retain with automatic_registry_edits=false and declarations_removed=false."
+      - "tools/maintenance/observe-validation-dependencies.py reports declared_but_unobserved_disposition=advisory-retain with automatic_registry_edits=false and declarations_removed=false."
       - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_untaken_branch_and_broad_input_when_observed_then_both_stay_advisory passed at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3."
     evidence_digest: "ee034347380186f286d8a14c08a16e903100d1fb215a9de73e57d9e8fabc703a"
   - acceptance_id: "VAL012-A3"
     status: "passed"
     required_outcome: "Unsupported or incomplete observation reports blocked or partial coverage, never complete closure."
     evidence:
-      - ".ai/assets/shared/validation-dependency-observation.schema.yaml permits only partial or unsupported coverage and fixes complete_transitive_closure=false."
+      - ".dev/contracts/validation-dependency-observation.schema.yaml permits only partial or unsupported coverage and fixes complete_transitive_closure=false."
       - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_unsupported_harness_when_reported_then_it_is_blocked_not_complete passed at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3."
     evidence_digest: "1232f5719b8f502a94e6a0cbf8e8f894033daba9c99e50906486254fc11bac64"
   - acceptance_id: "VAL012-A4"
     status: "passed"
     required_outcome: "File, subprocess, Git, environment, and runtime observation coverage is explicit per validator."
     evidence:
-      - ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md defines all five normalized lower-bound dimensions and their blind spots."
+      - ".dev/contracts/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md defines all five normalized lower-bound dimensions and their blind spots."
       - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_representative_harness_when_observed_then_all_dimensions_are_explicit_and_lower_bound passed on Windows and WSL at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3."
     evidence_digest: "a9c70a2fe56ef37fa9dd48683736f0fa5812dc6c56f4fd796d28a6d382128610"
   - acceptance_id: "VAL012-A5"
@@ -48,7 +48,7 @@ acceptances:
     status: "passed"
     required_outcome: "Existing identity-sensitive and provider-sensitive fresh gates remain unchanged."
     evidence:
-      - ".ai/scripts/observe-validation-dependencies.py emits the unchanged fresh-gate boundary: exact-head independent audit, hosted required contexts, live provider admission, and tag or Release binding."
+      - "tools/maintenance/observe-validation-dependencies.py emits the unchanged fresh-gate boundary: exact-head independent audit, hosted required contexts, live provider admission, and tag or Release binding."
       - ".ai/scripts/tests/test_validation_dependency_observation.py asserts that exact fresh-gate list and automatic_registry_edits=false."
       - "Commit d8105e3dc038880d70803383a8928fc017a9f2f1 adds a diagnostic gate without modifying the existing validation-evidence lifecycle or provider admission contracts."
       - "Commit f7463efa440d3bbfe1001f5e93727eb87a7ec2e3 remediates portable observation and registry projection without changing the fresh-gate list."

@@ -60,7 +60,7 @@ can pin the validated parent commit while its own containing commit is resolved
 deterministically from Git. The receiver must run:
 
 ```text
-python .ai/scripts/validate-workflow-handoff.py --checkpoint <path> --verify-repository
+python tools/maintenance/validate-workflow-handoff.py --checkpoint <path> --verify-repository
 ```
 
 Repository verification is read-only. It rejects a stale branch tip, wrong

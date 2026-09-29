@@ -83,7 +83,7 @@ signature rule is inferred from absence.
 - `.github/copilot/settings.json`;
 - any Claude attribution setting;
 - `.dev/standards/GIT-COMMIT-POLICY.md` or its machine contract;
-- `.ai/scripts/validate-git-commits.py`;
+- `tools/maintenance/validate-git-commits.py`;
 - existing Git history.
 
 Future provider-specific acceptance changes remain blocked until a real

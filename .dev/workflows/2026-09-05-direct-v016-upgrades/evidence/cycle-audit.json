@@ -45,7 +45,7 @@
       "detail": "Candidate requires validated status, retained direct route and actual terminal evidence, then current-ref asset admission."
     },
     {
-      "path": ".dev/releases/v0.16.0/release.yaml",
+      "path": "releases/v0.16.0/release.yaml",
       "lines": [
         4
       ],

@@ -31,5 +31,5 @@ or hosted actual admission for the final PR head, and it does not authorize
 merge, tag, or publication.
 
 The route ZIP and canonical receipts are under
-`.dev/releases/v0.15.1/route-assets/`; the ignored tar diagnostic remains under
+`releases/v0.15.1/route-assets/`; the ignored tar diagnostic remains under
 `.dev/ai-context/local/release/v0.15.1/cbd36d41-package/`.

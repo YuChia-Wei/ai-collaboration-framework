@@ -109,7 +109,7 @@ acceptance rule is weakened and the prior unexecuted suites remain unexecuted.
 
 ## Accepted Actual Execution And Local Readiness
 
-Attempt 5 passed all nine cases on immutable source 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a in 3277.546 seconds. The exact admitted ZIP remains d136b69e4153e7c85f892871fb0d3e6c5d8f88c7fd89d43fdb1b03ca88c5c85d, built at 4d1a5c7d039618f007784679d9968c357347272b. No intermediate package was applied. All target records are retained beneath `.dev/releases/v0.16.0/route-assets/actual/`.
+Attempt 5 passed all nine cases on immutable source 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a in 3277.546 seconds. The exact admitted ZIP remains d136b69e4153e7c85f892871fb0d3e6c5d8f88c7fd89d43fdb1b03ca88c5c85d, built at 4d1a5c7d039618f007784679d9968c357347272b. No intermediate package was applied. All target records are retained beneath `releases/v0.16.0/route-assets/actual/`.
 
 The three standalone edge validators and nine ambiguity/missing/tampered route probes passed in 57.757 seconds. Canonical resolver receipts and the complete retained actual-artifact source gate passed before tracked integration. `evidence/runtime-acceptance-ledger.yaml` preserves the validated runtime ledger as historical evidence; its original ignored references identify the execution locations. The retained source copies and their hashes are projected in `evidence/acceptance-evidence.json` for portable inspection.
 

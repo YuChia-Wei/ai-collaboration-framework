@@ -22,7 +22,7 @@ coverage:
     - ".dev/workflows/"
     - ".dev/assessments/"
     - ".dev/backlog/"
-    - ".dev/releases/"
+    - "releases/"
   rationale: "Cover every distributable framework path changed after remediation authorization while excluding source lifecycle instances and release registry artifacts."
 
 contract:
@@ -498,7 +498,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/examples/controller/CreateTaskController.cs"]
-  - path: ".ai/assets/sub-agent-role-prompts/controller-sub-agent/sub-agent.yaml"
+  - path: ".dev/agents/controller-sub-agent/sub-agent.yaml"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-010"]
@@ -506,7 +506,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/controller-standards.md"]
-  - path: ".ai/assets/sub-agent-role-prompts/controller-sub-agent/references/implementation-guidance.md"
+  - path: ".dev/agents/controller-sub-agent/references/implementation-guidance.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-010"]
@@ -732,7 +732,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/test-standards.md"]
-  - path: ".ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-generation-guidance.md"
+  - path: ".dev/agents/aggregate-test-sub-agent/references/test-generation-guidance.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-013"]
@@ -740,7 +740,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"]
-  - path: ".ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-generation-guidance.md"
+  - path: ".dev/agents/controller-test-sub-agent/references/test-generation-guidance.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-010", "ASM-20260715-002#AIC-013"]
@@ -748,7 +748,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/test-standards.md"]
-  - path: ".ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-generation-guidance.md"
+  - path: ".dev/agents/reactor-test-sub-agent/references/test-generation-guidance.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-013"]
@@ -756,7 +756,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"]
-  - path: ".ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-generation-guidance.md"
+  - path: ".dev/agents/usecase-test-sub-agent/references/test-generation-guidance.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-013"]
@@ -917,7 +917,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/examples/outbox/OUTBOX-TEST-CONFIGURATION.md"]
-  - path: ".ai/scripts/validate-file-disposition-manifest.py"
+  - path: "tools/maintenance/validate-file-disposition-manifest.py"
     disposition: "kept"
     destination: null
     finding_ids: []
@@ -934,7 +934,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     introduced_in: "v0.4.0"
-    replacement_evidence: [".ai/scripts/validate-file-disposition-manifest.py"]
+    replacement_evidence: ["tools/maintenance/validate-file-disposition-manifest.py"]
   - path: ".ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md"
     disposition: "kept"
     destination: null
@@ -942,7 +942,7 @@ entries:
     change_summary: "Consume release file dispositions as incoming intent without bypassing three-way reconciliation."
     target_migration: "three-way"
     remediation_status: "applied"
-    replacement_evidence: [".dev/releases/v0.4.0/migration-guide.md"]
+    replacement_evidence: ["releases/v0.4.0/migration-guide.md"]
   - path: ".ai/assets/skills/ai-context-upgrader/references/three-way-merge-boundaries.md"
     disposition: "kept"
     destination: null
@@ -950,7 +950,7 @@ entries:
     change_summary: "Define target-safe semantics for kept, moved, merged, and retired incoming paths."
     target_migration: "three-way"
     remediation_status: "applied"
-    replacement_evidence: [".dev/releases/v0.4.0/migration-guide.md"]
+    replacement_evidence: ["releases/v0.4.0/migration-guide.md"]
   - path: ".ai/scripts/README.md"
     disposition: "kept"
     destination: null
@@ -958,7 +958,7 @@ entries:
     change_summary: "Document disposition validation and the test-compliance helper retirement window."
     target_migration: "three-way"
     remediation_status: "applied"
-    replacement_evidence: [".ai/scripts/validate-file-disposition-manifest.py"]
+    replacement_evidence: ["tools/maintenance/validate-file-disposition-manifest.py"]
   - path: ".ai/assets/skills/ddd-ca-hex-architect/references/source-map.md"
     disposition: "kept"
     destination: null
@@ -986,7 +986,7 @@ entries:
     replacement_evidence: [".dev/standards/rationale/rest-api-resource-path-rationale.MD"]
   - path: ".dev/standards/guides/DATABASE-MIGRATION-GUIDE.md"
     disposition: "moved-to"
-    destination: ".dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md"
+    destination: "src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md"
     finding_ids: ["ASM-20260715-002#AIC-007"]
     change_summary: "Move the human-facing database migration walkthrough out of normative standards and make it target-selection aware."
     target_migration: "reconcile-move"
@@ -994,7 +994,7 @@ entries:
     replacement_evidence: [".dev/guides/INDEX.MD"]
   - path: ".dev/standards/guides/DEVELOPMENT-TOOLS-GUIDE.md"
     disposition: "moved-to"
-    destination: ".dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md"
+    destination: "src/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md"
     finding_ids: ["ASM-20260715-002#AIC-007"]
     change_summary: "Move the tool walkthrough to human guides and remove source-product command assumptions."
     target_migration: "reconcile-move"
@@ -1002,12 +1002,12 @@ entries:
     replacement_evidence: [".dev/guides/INDEX.MD"]
   - path: ".dev/standards/guides/EF-CORE-CONFIGURATION-GUIDE.md"
     disposition: "merged-into"
-    destination: ".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md"
+    destination: "src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md"
     finding_ids: ["ASM-20260715-002#AIC-007", "ASM-20260715-002#AIC-011"]
     change_summary: "Merge conditional EF Core registration and validation guidance into the existing persistence guide."
     target_migration: "reconcile-move"
     remediation_status: "applied"
-    replacement_evidence: [".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md"]
+    replacement_evidence: ["src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md"]
   - path: ".dev/standards/guides/README.md"
     disposition: "merged-into"
     destination: ".dev/guides/implementation-guides/README.MD"
@@ -1081,15 +1081,15 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/guides/design-guides/MULTI-STACK-CONTEXT-PLACEMENT-NOTES.md"]
-  - path: ".dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-007"]
     change_summary: "Retain the moved target-selection-aware migration walkthrough under human implementation guides."
     target_migration: "three-way"
     remediation_status: "applied"
-    replacement_evidence: [".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md"]
-  - path: ".dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md"
+    replacement_evidence: ["src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md"]
+  - path: "src/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-007"]
@@ -1097,7 +1097,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/guides/implementation-guides/README.MD"]
-  - path: ".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-007", "ASM-20260715-002#AIC-011"]
@@ -1209,7 +1209,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".ai/scripts/shell-assets.yaml"]
-  - path: ".ai/scripts/check-coding-standards.sh"
+  - path: "src/tools/dotnet/check-coding-standards.sh"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260715-002#AIC-008"]
@@ -1233,7 +1233,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     introduced_in: "v0.4.0"
-    replacement_evidence: [".ai/scripts/check-coding-standards.sh"]
+    replacement_evidence: ["src/tools/dotnet/check-coding-standards.sh"]
   - path: ".ai/scripts/tests/test_fail_closed_validation.py"
     disposition: "kept"
     destination: null
@@ -1250,7 +1250,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".ai/scripts/shell-assets.yaml"]
-  - path: ".ai/scripts/validate-git-commits.py"
+  - path: "tools/maintenance/validate-git-commits.py"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-006"]
@@ -1265,7 +1265,7 @@ entries:
     change_summary: "Fail closed on workflow commits while proving standalone assessment semantics and first-parent range selection."
     target_migration: "three-way"
     remediation_status: "applied"
-    replacement_evidence: [".ai/scripts/validate-git-commits.py"]
+    replacement_evidence: ["tools/maintenance/validate-git-commits.py"]
   - path: ".dev/standards/GIT-COMMIT-POLICY.md"
     disposition: "kept"
     destination: null
@@ -1273,7 +1273,7 @@ entries:
     change_summary: "Clarify standalone assessment precedence and first-parent workflow range validation."
     target_migration: "three-way"
     remediation_status: "applied"
-    replacement_evidence: [".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md", ".ai/scripts/validate-git-commits.py"]
+    replacement_evidence: [".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md", "tools/maintenance/validate-git-commits.py"]
   - path: ".ai/scripts/tests/test_profile_projection_contract.py"
     disposition: "kept"
     destination: null
@@ -1291,7 +1291,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/profile-configuration-standards.md"]
-  - path: ".dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-001"]
@@ -1307,7 +1307,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/profile-configuration-standards.md"]
-  - path: ".dev/guides/implementation-guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-001"]
@@ -1315,7 +1315,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/profile-configuration-standards.md"]
-  - path: ".dev/guides/implementation-guides/NEW-PROJECT-TEST-SETUP-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/NEW-PROJECT-TEST-SETUP-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-001"]
@@ -1323,7 +1323,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/profile-configuration-standards.md"]
-  - path: ".dev/guides/implementation-guides/PREVENT-SERVICE-REGISTRATION-MISSING.md"
+  - path: "src/knowledge/dotnet-backend/guides/PREVENT-SERVICE-REGISTRATION-MISSING.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-001"]
@@ -1339,7 +1339,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/coding-standards/profile-configuration-standards.md"]
-  - path: ".dev/guides/learning-guides/NEW-PROJECT-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/NEW-PROJECT-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-001"]
@@ -1438,7 +1438,7 @@ entries:
     target_migration: "three-way"
     remediation_status: "applied"
     replacement_evidence: [".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"]
-  - path: ".dev/guides/design-guides/TEST-DATA-PREPARATION-GUIDE.md"
+  - path: "src/knowledge/dotnet-backend/guides/TEST-DATA-PREPARATION-GUIDE.md"
     disposition: "kept"
     destination: null
     finding_ids: ["ASM-20260716-001#VFY-003"]

@@ -89,7 +89,7 @@
       {
         "check": "Complete planned-message validation",
         "result": "passed",
-        "detail": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/370/.dev/workflows/2026-09-23-installation-source-review/cr002-review-commit-message.tmp --workflow-id 2026-09-23-installation-source-review; exit 0 before commit."
+        "detail": "python -B tools/maintenance/validate-git-commits.py --message-file F:/framework-next/370/.dev/workflows/2026-09-23-installation-source-review/cr002-review-commit-message.tmp --workflow-id 2026-09-23-installation-source-review; exit 0 before commit."
       }
     ],
     "last_completed_step": "CR-002 affected review, evidence classification and direct record/message checks complete",

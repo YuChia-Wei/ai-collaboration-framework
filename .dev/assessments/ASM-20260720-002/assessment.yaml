@@ -27,8 +27,8 @@ subject_ref:
 scope:
   included:
     - ".dev/assessments/ASM-20260720-001/**"
-    - ".dev/releases/v0.4.2/**"
-    - ".dev/releases/INDEX.MD"
+    - "releases/v0.4.2/**"
+    - "releases/INDEX.MD"
     - ".dev/workflows/2026-07-19-v0-4-2-release-publication/**"
     - ".dev/workflows/2026-07-20-v0-4-2-release-finalization-hotfix/**"
     - ".dev/backlog/**"

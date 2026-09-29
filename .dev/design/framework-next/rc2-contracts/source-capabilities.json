@@ -657,7 +657,7 @@
     },
     {
       "subject": "release-and-publication",
-      "owner": ".dev/releases and source release policy"
+      "owner": "releases and source release policy"
     },
     {
       "subject": "CI-native-gates-dormant-policy",

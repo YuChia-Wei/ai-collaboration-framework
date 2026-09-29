@@ -48,7 +48,7 @@ qualification is not a machine-state rename.
 
 ## Framework Version Candidate Preparation
 
-Each governed version uses `.dev/releases/<version>/`:
+Each governed version uses `releases/<version>/`:
 
 - `release.yaml`: machine-readable source identity, source status,
   compatibility, planning, and evidence locator;
@@ -82,7 +82,7 @@ complete before the source record reaches `status: validated`.
 
 Logical `package_id` and `release_id` are labels. They never establish archive
 byte identity. A `release-asset-admission/v1` record at
-`.dev/releases/<version>/artifact-admission.json` binds the payload fingerprint,
+`releases/<version>/artifact-admission.json` binds the payload fingerprint,
 selected-input fingerprint, original build commit, and the exact name, size,
 SHA-256 and tracked path of all four ZIP/tar/checksum assets. Its
 `artifact_set_id` is the SHA-256 of the canonical ordered name/size/digest list.
@@ -121,7 +121,7 @@ Retain the preparation commit's four exact assets under the version's
 route-assets directory, then run:
 
 ```powershell
-python .ai/scripts/manage-release-asset-identity.py admit --version v0.16.0 --ref <preparation-commit> --assets-dir .dev/releases/v0.16.0/route-assets/admitted --output .dev/releases/v0.16.0/artifact-admission.json
+python .ai/scripts/manage-release-asset-identity.py admit --version v0.16.0 --ref <preparation-commit> --assets-dir releases/v0.16.0/route-assets/admitted --output releases/v0.16.0/artifact-admission.json
 ```
 
 This creates an identity record, not proof of execution or approval. Execute the

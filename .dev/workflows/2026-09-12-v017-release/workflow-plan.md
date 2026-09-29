@@ -24,7 +24,7 @@ The provider contract retains the latest released schema-1.1 Status-only require
 
 ## Acceptance And Artifacts
 
-The six REL017-AC identifiers in Issue #298 remain individually tracked in `tasks/REL017-001.json`. Source record, authored notes, migration guide and phase contract live under `.dev/releases/v0.17.0`. Incoming archive admission and three direct-origin routes must bind fresh v0.17.0 bytes. Historical releases provide immutable origin evidence only.
+The six REL017-AC identifiers in Issue #298 remain individually tracked in `tasks/REL017-001.json`. Source record, authored notes, migration guide and phase contract live under `releases/v0.17.0`. Incoming archive admission and three direct-origin routes must bind fresh v0.17.0 bytes. Historical releases provide immutable origin evidence only.
 
 ## Validation Plan
 

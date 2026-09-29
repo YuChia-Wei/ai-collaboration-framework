@@ -19,7 +19,7 @@
 This record preserves execution, validation, and audit lessons from one bounded
 implementation workflow. It does not introduce a repository-wide architecture
 boundary, dependency direction, or canonical ownership rule. Under
-`.dev/adr/WHEN-TO-CREATE-ADR.MD`, an ADR would overstate a local implementation
+`src/skills/adr/references/WHEN-TO-CREATE-ADR.MD`, an ADR would overstate a local implementation
 and validation adjustment. If the benchmark-reuse recommendations below are
 later adopted across workflows, that separate policy decision should update the
 owning standard and use an ADR only if the repository-wide tradeoff still meets

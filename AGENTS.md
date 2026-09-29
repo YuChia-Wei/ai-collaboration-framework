@@ -67,14 +67,14 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | Decisions, lessons, local backlog, pull requests, or standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
 | Multi-stage software development and workflow records | `software-development-orchestrator` with source `.dev/` workflow and Issue authority |
 | Initialization or upgrade of a previously published legacy package format | Source compatibility procedures and their active `.ai/scripts/` tooling; this is not a portable installed skill route. |
-| Historical or exceptional source release closeout | `.dev/releases/` and source release policy; no portable installed skill route. |
+| Historical or exceptional source release closeout | `releases/` and source release policy; no portable installed skill route. |
 
 For source work, `.dev/standards/` continues to own source policy, GitHub work authority, release governance, U001 and the P7 deferrals. Preserve the retained source duties explicitly: source assessment persistence and terminal records; source customization and policy reconciliation; legacy CBF/SWF intake and active records; the target-selected legacy .NET 100% gate and rule resolver, only when maintaining that legacy downstream format or target (not for this framework source or its own installation); and old published-format initialization, upgrade and recovery. These duties do not restore the three removed runtime discovery entries or make their legacy files a second daily skill source.
 
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
 - For code review, load the installed `code-reviewer` entry and only its applicable route and finding references.
 - `test-execution` has no required skill; resolve target-owned commands first.
-- Direct execution remains valid. Classify delegation under `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
+- Direct execution remains valid. Classify delegation under `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
 
 ## Workflow And Change Control
 
@@ -104,7 +104,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ### Agent Execution Guardrails
 
-- For ordinary same-runtime work, use the bounded envelope in `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; do not construct formal audit records solely for routine analysis or local edits.
+- For ordinary same-runtime work, use the bounded envelope in `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; do not construct formal audit records solely for routine analysis or local edits.
 - Classify actual risk under the guardrails contract; ordinary analysis and local edits may classify inline, while review preflight uses the validator. A terminal label alone does not require the full tier; short same-runtime independent read-only review of an isolated immutable ordinary change may use the bounded envelope. Authority, evidence-custody, security, release/adoption changes, external or long-running validation, shared mutable review or shared frozen work, and unknown risk require the full validated packet, immutable subject and machine-readable snapshot lease. One tracked writer per worktree remains mandatory in both tiers; a full lease requires explicit terminal release.
 - Preflight the machine-readable review subject, criteria and authority before behavioral dispatch in either tier. Keep preparation failures, behavioral defects, environment failures and provider reconciliation distinct; retain prior attempts and rerun only affected checks under the existing evidence-reuse and retry rules.
 - Keep formal acceptance-to-evidence ledgers where the acceptance contract requires them. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
@@ -132,7 +132,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ## CLI And Runtime Boundaries
 
-- After higher-priority policy selects cross-boundary CLI execution, load `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`.
+- After higher-priority policy selects cross-boundary CLI execution, load `.dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md`.
 - The optional binding may exist only at `.dev/ai-context/local/cli-execution-routing.yaml`; it must remain ignored, untracked, unstaged, secret-free, and outside package or provenance truth.
 - Never create or update it implicitly. Verify recovery first, then disclose the exact path, fields, `create/merge/replace` action, and secret exclusion; decline or no answer writes nothing.
 - Do not silently substitute a model, provider, execution surface, credential boundary, or permission. Static configuration does not prove current-session execution.

@@ -10,7 +10,7 @@ Goal: return main to a green, self-consistent, published state.
 1. Fix the publication `workflow.yaml` (F1/F7): correct `workflow_id`,
    `artifact_root`, `branch`, `backlog_refs`; sync `.dev/workflows/INDEX.MD`
    row. Verify `validate-workflow-artifacts.py` passes.
-2. Flip `.dev/releases/v0.4.2/release.yaml` to `status: published` with the
+2. Flip `releases/v0.4.2/release.yaml` to `status: published` with the
    confirmed values: commit `f474c3b058cb9f89f93929e0732fc1f276422dd9`, run
    `29679273269`. Remove the copied v0.4.1 run ID `29650583394` (F2, F5).
 3. Rewrite `release-notes.md` as an authored source mirroring v0.4.1's
@@ -53,7 +53,7 @@ Write `.ai/assets/skills/ai-context-governance/references/RELEASE-PUBLICATION-RU
 
 1. `prepare-release-tag` script — the only sanctioned tag creator. Preconditions
    (all must pass before it creates the annotated tag):
-   - `.dev/releases/<v>/release.yaml` present, `status: validated`,
+   - `releases/<v>/release.yaml` present, `status: validated`,
      `tag`/`commit` unset;
    - `release-notes.md` and `migration-guide.md` non-empty and free of
      automation markers;

@@ -11,7 +11,7 @@ source document task; target gates and released semantics retain their own autho
 
 | Acceptance | Deliverable |
 | --- | --- |
-| S1-A1 | [Formats, versions and digest boundaries](formats.md), [closed schema bundle](schemas/contracts.schema.json), [explicitly illustrative examples](examples/README.md) |
+| S1-A1 | [Formats, versions and digest boundaries](formats.md), [closed schema bundle](../../../../src/distribution/schemas/contracts.schema.json), [explicitly illustrative examples](examples/README.md) |
 | S1-A2 | [Read/write compatibility and paired recovery](compatibility-and-recovery.md) |
 | S1-A3 | [Complete source migration inventory](migration-inventory.json), [reference dispositions](reference-dispositions.json), [exact package members](package-members.json) |
 | S1-A4 | [Consumer/applicability binding](consumption.md), [fixed mq-lab authority observation](mq-lab-baseline.json) |

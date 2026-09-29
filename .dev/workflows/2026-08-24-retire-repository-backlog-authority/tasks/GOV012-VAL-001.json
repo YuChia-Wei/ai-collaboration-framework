@@ -50,7 +50,7 @@
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-01",
         "role_asset_id": "fixed-head-independent-auditor",
-        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
         "owning_skill": "ai-context-upgrader",
         "stage_id": "terminal-fixed-head-independent-audit",
         "applicability": {
@@ -82,9 +82,9 @@
           "non_goals": ["repair", "provider or release mutation", "integration acceptance", "assessment persistence"],
           "source_refs": ["Issue #245", ".dev/workflows/2026-08-24-retire-repository-backlog-authority/tasks/GOV012-VAL-001.json"],
           "mandatory_references": [
-            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
-            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
-            ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+            ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
+            ".dev/agents/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
+            ".dev/contracts/ROLE-EXECUTION-CONTRACT.md",
             ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"
           ],
           "constraints": ["read-only", "exact fixed clean commit", "retain all failures"],
@@ -173,7 +173,7 @@
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-02",
         "role_asset_id": "fixed-head-independent-auditor",
-        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
         "owning_skill": "ai-context-upgrader",
         "stage_id": "terminal-fixed-head-independent-audit",
         "applicability": {
@@ -205,9 +205,9 @@
           "non_goals": ["repair", "provider or release mutation", "integration acceptance", "assessment persistence"],
           "source_refs": ["Issue #245", ".dev/assessments/ASM-20260824-001/report.md", "artifacts/validation/gov012-release-801679ee/external-task-completion.yaml"],
           "mandatory_references": [
-            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
-            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
-            ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+            ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
+            ".dev/agents/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
+            ".dev/contracts/ROLE-EXECUTION-CONTRACT.md",
             ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"
           ],
           "constraints": ["read-only", "exact fixed clean commit", "retain prior failures", "do not rerun the release profile"],
@@ -275,7 +275,7 @@
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-03",
         "role_asset_id": "fixed-head-independent-auditor",
-        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
         "owning_skill": "ai-context-upgrader",
         "stage_id": "terminal-fixed-head-independent-audit",
         "applicability": {"result": "applies", "reason": "Issue #245 required a fresh audit after repairing GOV012-AUD-002."},
@@ -293,7 +293,7 @@
           "scope": ["authority, historical freeze, prospective enforcement, release compatibility, routing, packaging, and sealed evidence"],
           "non_goals": ["repair", "provider or release mutation", "integration acceptance", "assessment persistence"],
           "source_refs": ["Issue #245", "artifacts/validation/gov012-release-ba9b5277/external-task-completion.yaml"],
-          "mandatory_references": [".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml", ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
+          "mandatory_references": [".dev/agents/fixed-head-independent-auditor/sub-agent.yaml", ".dev/agents/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".dev/contracts/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
           "constraints": ["read-only", "exact fixed clean commit", "retain prior failures", "do not rerun release profile"],
           "stop_conditions": ["subject drift or dirty tracked state", "missing evidence", "cleanup failure", "repair or write request"]
         },
@@ -308,7 +308,7 @@
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-04",
         "role_asset_id": "fixed-head-independent-auditor",
-        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
         "owning_skill": "ai-context-upgrader",
         "stage_id": "terminal-fixed-head-independent-audit",
         "applicability": {"result": "applies", "reason": "Issue #245 required a fresh audit after the prior environment-blocked invocation."},
@@ -326,7 +326,7 @@
           "scope": ["authority, frozen identity, prospective enforcement, compatibility, routing, packaging, and sealed evidence"],
           "non_goals": ["repair", "provider or release mutation", "integration acceptance", "assessment persistence"],
           "source_refs": ["Issue #245", "ASM-20260824-001", "ASM-20260824-002", "artifacts/validation/gov012-release-ba9b5277/external-task-completion.yaml"],
-          "mandatory_references": [".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml", ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
+          "mandatory_references": [".dev/agents/fixed-head-independent-auditor/sub-agent.yaml", ".dev/agents/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".dev/contracts/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
           "constraints": ["read-only", "exact fixed clean commit", "retain prior failures", "no repository-temp-producing suite"],
           "stop_conditions": ["subject drift or dirty tracked state", "missing evidence", "cleanup failure", "repair or write request"]
         },
@@ -341,7 +341,7 @@
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-05",
         "role_asset_id": "fixed-head-independent-auditor",
-        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
         "owning_skill": "ai-context-upgrader",
         "stage_id": "terminal-fixed-head-independent-audit",
         "applicability": {"result": "applies", "reason": "Issue #245 explicitly selected a terminal audit after GOV012-AUD-003 repair."},
@@ -359,7 +359,7 @@
           "scope": ["authority and policy ownership", "raw Git-blob freeze and drift gates", "prospective enforcement", "release compatibility", "provider-neutral packaging", "retained failed and passing aggregate evidence"],
           "non_goals": ["repair or persistence", "provider, release, publication, or integration mutation", "full release rerun"],
           "source_refs": ["Issue #245", "ASM-20260824-001", "ASM-20260824-002", "ASM-20260824-003", "artifacts/validation/gov012-release-ba7c159a/external-task-completion.yaml", "artifacts/validation/gov012-release-ba7c159a-host/external-task-completion.yaml"],
-          "mandatory_references": [".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml", ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
+          "mandatory_references": [".dev/agents/fixed-head-independent-auditor/sub-agent.yaml", ".dev/agents/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".dev/contracts/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
           "constraints": ["read-only", "exact fixed clean commit", "retain prior failed evidence", "no temp-producing or long-running suite"],
           "stop_conditions": ["subject drift or dirty tracked state", "missing evidence or cleanup failure", "repair or write request"]
         },
@@ -376,7 +376,7 @@
   "results": {
     "summary": "Issue #245 passed focused governance, exact-subject aggregate validation, and the independent fixed-head audit; all three audit findings are closed while failed and blocked evidence remains retained.",
     "files_changed": [".dev/assessments/ASM-20260825-001/", ".dev/workflows/2026-08-24-retire-repository-backlog-authority/"],
-    "tests_run": ["python -B .ai/scripts/tests/test_source_work_management.py -v", "python -B .ai/scripts/validate-source-work-management.py", "python -B .ai/scripts/validate-source-governance.py", "python -B .ai/scripts/validate-assessment-artifacts.py", "python -B .ai/scripts/validate-workflow-artifacts.py", "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --profile release --base 4be33ff90de061dc1db221f60e57ff6130cab54a --head ba7c159a2d8fd58291ddc1e92036cb82acd23fb6", "fixed-head-independent-auditor at ba7c159a2d8fd58291ddc1e92036cb82acd23fb6"],
+    "tests_run": ["python -B .ai/scripts/tests/test_source_work_management.py -v", "python -B .ai/scripts/validate-source-work-management.py", "python -B .ai/scripts/validate-source-governance.py", "python -B tools/maintenance/validate-assessment-artifacts.py", "python -B .ai/scripts/validate-workflow-artifacts.py", "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --profile release --base 4be33ff90de061dc1db221f60e57ff6130cab54a --head ba7c159a2d8fd58291ddc1e92036cb82acd23fb6", "fixed-head-independent-auditor at ba7c159a2d8fd58291ddc1e92036cb82acd23fb6"],
     "finding_status": "addressed",
     "residual_risk": "Live provider values were not re-declared by the terminal auditor; all remote lifecycle and release actions remain separate owner decisions.",
     "follow_up_needed": false

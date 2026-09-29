@@ -27,7 +27,7 @@
   },
   "results": {
     "summary": "subject-evidence-rebind/v1 re-authenticates the current manifest, original executed evidence, original passing invocation seal, and all sealed components before allowing reuse",
-    "files_changed": [".ai/scripts/validation_subject.py", ".ai/scripts/validation-evidence.py", ".ai/scripts/check-all.sh", ".ai/scripts/tests/test_validation_subject_digest.py", ".ai/scripts/tests/fixtures/validation-subject-digest/scenarios.yaml"],
+    "files_changed": ["tools/maintenance/validation_subject.py", "tools/maintenance/validation-evidence.py", ".ai/scripts/check-all.sh", ".ai/scripts/tests/test_validation_subject_digest.py", ".ai/scripts/tests/fixtures/validation-subject-digest/scenarios.yaml"],
     "tests_run": ["11 deterministic change scenarios passed", "real temporary-Git history-only, tracked drift, tampered seal, disabled candidate, and unknown closure cases passed", "inspect-subject-rebind CLI passed"],
     "finding_status": "addressed",
     "residual_risk": "fresh hosted and mutable provider gates are requirements in the receipt but require an admitted remote head to execute",

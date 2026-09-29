@@ -26,7 +26,7 @@
       ".ai/scripts/validation-profile-registry.sh",
       ".ai/assets/tech-stacks/dotnet-backend/tooling/**",
       ".ai/distribution/**",
-      ".dev/releases/**",
+      "releases/**",
       "tools/**/*.csproj",
       "global.json"
     ],
@@ -51,7 +51,7 @@
       "Freeze findings and direct evidence before CTX009-002 starts"
     ],
     "validation": [
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
       "git diff --check"
     ],

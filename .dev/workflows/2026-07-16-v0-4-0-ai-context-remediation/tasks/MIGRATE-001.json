@@ -15,7 +15,7 @@
     "target": "v0.4.0 file-disposition and downstream upgrade contract",
     "files": [
       ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/plans/file-disposition-manifest.yaml",
-      ".dev/releases/v0.4.0/migration-guide.md",
+      "releases/v0.4.0/migration-guide.md",
       ".ai/assets/skills/ai-context-upgrader/**"
     ],
     "constraints": [
@@ -51,15 +51,15 @@
     "summary": "Completed the v0.4.0 file-disposition contract, added reusable Git-backed validation, taught ai-context-upgrader to treat dispositions as incoming intent only, and registered planned release notes and migration guidance without creating a tag or claiming publication.",
     "files_changed": [
       ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/plans/file-disposition-manifest.yaml",
-      ".ai/scripts/validate-file-disposition-manifest.py",
+      "tools/maintenance/validate-file-disposition-manifest.py",
       ".ai/scripts/tests/test_file_disposition_manifest.py",
       ".ai/scripts/README.md",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md",
       ".ai/assets/skills/ai-context-upgrader/references/three-way-merge-boundaries.md",
-      ".dev/releases/INDEX.MD",
-      ".dev/releases/v0.4.0/release.yaml",
-      ".dev/releases/v0.4.0/release-notes.md",
-      ".dev/releases/v0.4.0/migration-guide.md"
+      "releases/INDEX.MD",
+      "releases/v0.4.0/release.yaml",
+      "releases/v0.4.0/release-notes.md",
+      "releases/v0.4.0/migration-guide.md"
     ],
     "tests_run": [
       "File-disposition manifest validation passed with complete Git changed-path coverage",

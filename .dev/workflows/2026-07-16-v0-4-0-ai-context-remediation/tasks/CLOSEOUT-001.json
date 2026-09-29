@@ -13,7 +13,7 @@
   "finding_ids": ["ASM-20260716-001#VFY-005", "ASM-20260716-001#VFY-006"],
   "scope": {
     "target": "Remove stale automatic helper routing and correct standalone-assessment commit validation semantics",
-    "files": [".ai/scripts/**", ".dev/standards/GIT-COMMIT-POLICY.md", ".dev/releases/v0.4.0/**", ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/**"],
+    "files": [".ai/scripts/**", ".dev/standards/GIT-COMMIT-POLICY.md", "releases/v0.4.0/**", ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/**"],
     "constraints": ["Keep check-test-compliance.sh packaged for the v0.4.0 migration window", "Do not weaken workflow-stage validation", "Do not rewrite or force-push remote history without explicit approval"],
     "non_goals": ["Repair the retired grep helper", "Waive fourteen invalid workflow commit trailers", "Tag or publish v0.4.0"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Resolved VFY-005 and narrowed VFY-006 to fourteen first-parent workflow commits without weakening workflow-stage enforcement.",
-    "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml", ".ai/scripts/README.md", ".ai/scripts/tests/test_fail_closed_validation.py", ".ai/scripts/validate-git-commits.py", ".ai/scripts/tests/test_git_commit_policy.py", ".dev/standards/GIT-COMMIT-POLICY.md", ".dev/releases/v0.4.0/**", "plans/file-disposition-manifest.yaml"],
+    "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml", ".ai/scripts/README.md", ".ai/scripts/tests/test_fail_closed_validation.py", "tools/maintenance/validate-git-commits.py", ".ai/scripts/tests/test_git_commit_policy.py", ".dev/standards/GIT-COMMIT-POLICY.md", "releases/v0.4.0/**", "plans/file-disposition-manifest.yaml"],
     "tests_run": ["Shell registry passed with one retirement candidate", "Runner tests passed 18/18", "Commit policy tests passed 10/10", "Standalone assessment and first-parent selection contracts passed", "Full gate passed 20/20 required with zero advisory warnings", "Commit range contains fourteen trailer failures"],
     "finding_status": "resolved subject to independent successor verification",
     "residual_risk": "The rewritten first-parent range requires final validation and an independent successor assessment before release closure.",

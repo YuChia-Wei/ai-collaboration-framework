@@ -1,1 +1,0 @@
-This intentionally broad declaration is never observed by the representative path.

@@ -54,7 +54,7 @@ Use these commit types:
 
 The executable subset of this policy is declared in
 `GIT-COMMIT-POLICY.yaml` and enforced by
-`.ai/scripts/validate-git-commits.py`. The Markdown document remains the
+`tools/maintenance/validate-git-commits.py`. The Markdown document remains the
 human-facing source for intent and exceptions; keep both files synchronized.
 For source-repository history without target adoption evidence, the validator
 selects the canonical pattern prospectively and the named legacy pattern only
@@ -273,7 +273,7 @@ Write the complete planned commit message to a contained ignored message file
 and validate those exact bytes before invoking `git commit`:
 
 ```bash
-python .ai/scripts/validate-git-commits.py \
+python tools/maintenance/validate-git-commits.py \
   --message-file .dev/ai-context/local/commit-messages/<message-file>.txt \
   --workflow-id <workflow-id>
 git commit -F .dev/ai-context/local/commit-messages/<message-file>.txt
@@ -285,7 +285,7 @@ command-line fragments that can drift from the committed body.
 For workflow closeout, validate the workflow branch range explicitly:
 
 ```bash
-python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id <workflow-id>
+python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id <workflow-id>
 ```
 
 `check-all.sh` runs this check when `COMMIT_RANGE` is set. Set

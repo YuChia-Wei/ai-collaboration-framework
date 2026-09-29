@@ -51,7 +51,7 @@ files. It does not include unselected package payload. A catalog holds every
 explicitly published available component and adapter input, independently of any
 installation. No downstream operation requires a source checkout.
 
-The [schema bundle](schemas/contracts.schema.json) is authoritative for required
+The [schema bundle](../../../../src/distribution/schemas/contracts.schema.json) is authoritative for required
 fields, field types and closed objects; each adjacent named schema selects one
 root definition. All fields are required except `Selection.expanded_from` and the
 two subset-only keys of `Build.identity_inputs`. Those keys MUST both be absent
@@ -194,7 +194,7 @@ a request promising .NET coverage must still resolve the target binding.
 ## Source manifest and immutable catalog
 
 Manifest 2 uses typed components and explicit version/source/metadata/member maps;
-the [manifest schema](schemas/manifest.schema.json) fixes its exact fields. Skill
+the [manifest schema](../../../../src/distribution/schemas/manifest.schema.json) fixes its exact fields. Skill
 source roots are `src/skills/<id>`, content roots `src/knowledge/<id>`. The manifest
 member destination must equal the derived installed destination. Metadata member
 closure and manifest closure must match exactly. Profiles reference versioned

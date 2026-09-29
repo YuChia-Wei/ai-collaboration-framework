@@ -18,11 +18,11 @@
     "goal": "Deliver live Issue #207 as five reusable provider-neutral capability roles plus a Codex-only runtime projection.",
     "target": "Separate canonical role contracts, skill bindings, provider projection configuration, current-session availability, and genuine invocation evidence without duplicating upgrade-only agents.",
     "files": [
-      ".ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/**",
-      ".ai/assets/sub-agent-role-prompts/reconciliation-worker/**",
-      ".ai/assets/sub-agent-role-prompts/semantic-governance-analyst/**",
-      ".ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/**",
-      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/**",
+      ".dev/agents/mechanical-evidence-worker/**",
+      ".dev/agents/reconciliation-worker/**",
+      ".dev/agents/semantic-governance-analyst/**",
+      ".dev/agents/evidence-report-synthesizer/**",
+      ".dev/agents/fixed-head-independent-auditor/**",
       ".ai/assets/shared/provider-neutral-capability-registry*.yaml",
       ".ai/assets/shared/provider-projection-registry*.yaml",
       ".ai/assets/skills/ai-context-upgrader/**",
@@ -57,7 +57,7 @@
   "inputs": {
     "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/207"],
     "specifications": [
-      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".dev/contracts/ROLE-EXECUTION-CONTRACT.md",
       ".ai/assets/skills/ai-context-upgrader/skill.yaml"
     ],
     "architecture_decisions": [

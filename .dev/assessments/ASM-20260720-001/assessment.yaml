@@ -27,7 +27,7 @@ subject_ref:
 scope:
   included:
     - ".dev/assessments/ASM-20260720-001/evidence/fable5-v0.4.2/**"
-    - ".dev/releases/v0.4.2/**"
+    - "releases/v0.4.2/**"
     - ".dev/workflows/2026-07-19-v0-4-2-release-publication/**"
     - ".dev/backlog/**"
     - ".ai/scripts release rendering and governance validators"

@@ -191,8 +191,8 @@ git rev-parse HEAD
 git status --short
 git diff main..HEAD --stat
 python .ai/scripts/validate-workflow-artifacts.py
-python .ai/scripts/validate-workflow-handoff.py --all
-python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy
+python tools/maintenance/validate-workflow-handoff.py --all
+python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy
 python structured-file parse check for changed JSON and YAML
 C:\Program Files\Git\bin\bash.exe ./.ai/scripts/check-all.sh --critical
 ```

@@ -11,8 +11,8 @@
       ".ai/scripts/check-spring-config.sh",
       ".ai/scripts/check-test-spring-di.sh",
       ".ai/scripts/check-projection-config.sh",
-      ".ai/scripts/check-dotnet-config.sh",
-      ".ai/scripts/check-test-di-compliance.sh",
+      "src/tools/dotnet/check-dotnet-config.sh",
+      "src/tools/dotnet/check-test-di-compliance.sh",
       ".ai/scripts/README.md"
     ],
     "dependency_radius": "Script entry points plus any docs/prompts that reference the legacy names",
@@ -63,8 +63,8 @@
       ".ai/scripts/check-spring-config.sh",
       ".ai/scripts/check-test-spring-di.sh",
       ".ai/scripts/check-projection-config.sh",
-      ".ai/scripts/check-dotnet-config.sh",
-      ".ai/scripts/check-test-di-compliance.sh",
+      "src/tools/dotnet/check-dotnet-config.sh",
+      "src/tools/dotnet/check-test-di-compliance.sh",
       ".ai/scripts/README.md",
       ".gitattributes",
       ".dev/workflows/2026-04-14-legacy-script-rename/tasks/legacy-script-rename-implementation.json"
@@ -72,9 +72,9 @@
     "tests_run": [
       "bash ./.ai/scripts/check-projection-config.sh",
       "bash ./.ai/scripts/check-jpa-projection-config.sh",
-      "bash ./.ai/scripts/check-dotnet-config.sh",
+      "bash ./src/tools/dotnet/check-dotnet-config.sh",
       "bash ./.ai/scripts/check-spring-config.sh",
-      "bash ./.ai/scripts/check-test-di-compliance.sh",
+      "bash ./src/tools/dotnet/check-test-di-compliance.sh",
       "bash ./.ai/scripts/check-test-spring-di.sh",
       "rg -n \"check-jpa-projection-config\\\\.sh|check-spring-config\\\\.sh|check-test-spring-di\\\\.sh|currently delegates\" .ai .dev AGENTS.md -S"
     ],

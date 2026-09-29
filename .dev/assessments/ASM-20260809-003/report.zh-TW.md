@@ -216,7 +216,7 @@ git fetch --prune origin
 git ls-tree -r -l 3a60570d0e290f337f2a212d092c6797670528b4 -- .ai .agents .claude .codex
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-source-governance.py
-python .ai/scripts/validate-file-disposition-manifest.py --manifest <v0.5.0 disposition manifest>
+python tools/maintenance/validate-file-disposition-manifest.py --manifest <v0.5.0 disposition manifest>
 python .ai/scripts/tests/test_profile_projection_contract.py -v
 python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
 python .ai/scripts/tests/test_ai_context_sub_agent_adapters.py -v

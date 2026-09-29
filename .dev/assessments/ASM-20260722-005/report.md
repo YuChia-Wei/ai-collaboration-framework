@@ -187,7 +187,7 @@
 Get-FileHash -Algorithm SHA256 2026-07-22-dev-workflow-skill-comparison.md
 git cat-file blob HEAD:<evidence-path>
 rg -n "issue_tracking|started_at|completed_at|last_validated_at|timezone|commit_checkpoint" .ai/assets/skills/dev-workflow
-rg -n "local_overrides|v0.0.1|v0.3.0|target-owned" .ai/assets/skills/ai-context-upgrader .dev/releases/v0.5.0/migration-guide.md
+rg -n "local_overrides|v0.0.1|v0.3.0|target-owned" .ai/assets/skills/ai-context-upgrader releases/v0.5.0/migration-guide.md
 rg -n "upload-artifact|download-artifact" .github/workflows .ai/scripts/tests
 gh api .../actions/runs/29922585651/jobs
 gh api .../check-runs/<id>/annotations

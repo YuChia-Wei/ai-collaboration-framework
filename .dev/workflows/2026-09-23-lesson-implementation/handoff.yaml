@@ -57,7 +57,7 @@ actual_checks:
 - Author content inspection of strict config/parsing, query decisions, writes and cleanup
 precommit_checks:
   instructions: Stage only the two assigned roots; inspect scope and git diff --cached --check; validate complete ignored message file before committing its exact bytes
-  command: python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-lesson-implementation/artifacts/commit-message.txt --workflow-id 2026-09-23-lesson-implementation
+  command: python tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-lesson-implementation/artifacts/commit-message.txt --workflow-id 2026-09-23-lesson-implementation
   evidence: Actual output retained by task execution; committed Validation section records only completed checks
 verification:
   status: deferred-by-owner

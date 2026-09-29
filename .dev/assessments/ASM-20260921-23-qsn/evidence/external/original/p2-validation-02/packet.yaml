@@ -4,7 +4,7 @@ packet_id: P2-317-VALIDATION-02
 execution_kind: external
 owning_skill: ai-context-auditor
 role:
-  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  path: .dev/agents/fixed-head-independent-auditor/sub-agent.yaml
   applicability: applies
   reason: Governance selects final independent P2 verification on a frozen subject,
     including two bounded test suites and read-only review.

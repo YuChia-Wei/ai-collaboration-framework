@@ -18,8 +18,8 @@
     "target": "Pre-existing per-check timeout and cross-platform supervision-receipt failures that block the selected fast and critical gates",
     "files": [
       ".ai/scripts/validation-profile-registry.sh",
-      ".ai/scripts/validation_process_supervisor.py",
-      ".ai/scripts/validation-evidence.py",
+      "tools/maintenance/validation_process_supervisor.py",
+      "tools/maintenance/validation-evidence.py",
       ".ai/scripts/tests/test_validation_process_supervisor.py",
       ".ai/scripts/tests/test_validation_evidence.py",
       ".ai/scripts/tests/test_validation_profile_registry.py",
@@ -58,7 +58,7 @@
       "python .ai/scripts/validate-source-governance.py",
       "bash .ai/scripts/check-all.sh --profile fast",
       "bash .ai/scripts/check-all.sh --critical",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
       "Independent read-only exact-head governance audit"
     ],
     "last_completed_step": "Exact clean head c71f5532 passed the full 74-test aggregate-runner suite, fast attempt 2, and critical attempt 2; no third attempt was needed, and all retained non-passing attempts remain unchanged.",
@@ -68,8 +68,8 @@
     "summary": "The measured timeout and supervision defects are resolved without removing checks or changing profile membership. Exact clean head c71f5532 passed the full runner suite plus fast and critical aggregate gates within the authorized retry limit.",
     "files_changed": [
       ".ai/scripts/validation-profile-registry.sh",
-      ".ai/scripts/validation_process_supervisor.py",
-      ".ai/scripts/validation-evidence.py",
+      "tools/maintenance/validation_process_supervisor.py",
+      "tools/maintenance/validation-evidence.py",
       ".ai/scripts/tests/test_validation_process_supervisor.py",
       ".ai/scripts/tests/test_validation_evidence.py",
       ".ai/scripts/tests/test_validation_profile_registry.py",

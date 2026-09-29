@@ -4,7 +4,7 @@ packet_id: GAP-320-AUDIT-04
 execution_kind: fixed-head-audit
 owning_skill: ai-context-auditor
 role:
-  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  path: .dev/agents/fixed-head-independent-auditor/sub-agent.yaml
   applicability: applies
   reason: Explicitly selected high-risk post-remediation evidence-custody review on
     a fixed clean commit.
@@ -23,7 +23,7 @@ permissions:
 ignored_artifact_roots:
 - .dev/ai-context/local/gap-audit-04
 terminal:
-  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  schema_ref: .dev/contracts/agent-execution-guardrails.schema.yaml
   mode: callback
   destination: root
   max_terminal_messages: 1

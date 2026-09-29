@@ -59,7 +59,7 @@ make this policy portable.
 | --- | --- |
 | UTF-8/file readability, direct syntax or JSON/YAML parsing, changed-link checks and inspection of actual content | Perform the narrow checks needed by the change; record actual commands and outcomes. |
 | Git root/branch/HEAD/status, changed-path scope, diff inspection and `git diff --check` | Preserve local identity, scope and reviewable changes. |
-| Existing commit-message format check | Validate the complete planned message with `.ai/scripts/validate-git-commits.py --message-file <ignored-message-file> --workflow-id <workflow-id>` before committing those exact bytes. |
+| Existing commit-message format check | Validate the complete planned message with `tools/maintenance/validate-git-commits.py --message-file <ignored-message-file> --workflow-id <workflow-id>` before committing those exact bytes. |
 | Other legacy framework validators, `check-all`, critical/full gates and test suites | `deferred-by-owner`; do not run or redesign during P0-P6. |
 | Package, upgrade, compatibility, migration, benchmark and high-I/O trials | `deferred-by-owner`; do not run to admit development checkpoints. |
 | Validation-only independent audits, audit/receipt packets, review-subject validation, snapshot leases, effective-rule validation packets, acceptance-ledger tooling and native handoff validation | `deferred-by-owner`; do not manufacture tooling records merely to satisfy suspended gates. Preserve meaningful authority, findings and resumable evidence in bounded records. |

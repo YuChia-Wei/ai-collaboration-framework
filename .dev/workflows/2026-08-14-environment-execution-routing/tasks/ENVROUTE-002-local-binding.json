@@ -27,7 +27,7 @@
   },
   "results": {
     "summary": "Reserved one ignored per-clone YAML path and enforced that any present binding is secret-free, explicitly consented, ignored, untracked, and unstaged.",
-    "files_changed": [".gitignore", ".ai/scripts/ai_context_cli_routing.py", ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-ai-context-target.py", "AGENTS.md", "AGENTS.zh-TW.md"],
+    "files_changed": [".gitignore", "tools/maintenance/ai_context_cli_routing.py", ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-ai-context-target.py", "AGENTS.md", "AGENTS.zh-TW.md"],
     "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q", "git diff --check"],
     "finding_status": "resolved",
     "residual_risk": "The optional personal binding intentionally does not exist until a separately disclosed owner consent decision.",

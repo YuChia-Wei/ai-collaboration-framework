@@ -20,7 +20,7 @@
   "scope": {
     "target": "Portable package validation authority, edge result schema, artifact identity, and retained-origin regression fixtures",
     "files": [
-      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
+      "releases/v0.14.0/route-assets/validate-direct-edge.py",
       ".ai/scripts/ai_context_upgrade_routes.py",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
       ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
@@ -60,7 +60,7 @@
   "results": {
     "summary": "Self-inconsistent archives cannot pass edge proof; conflicting payload identity fails closed; all three retained origins and package-apply pre-mutation behavior are covered.",
     "files_changed": [
-      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
+      "releases/v0.14.0/route-assets/validate-direct-edge.py",
       ".ai/scripts/ai_context_upgrade_routes.py",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
       ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",

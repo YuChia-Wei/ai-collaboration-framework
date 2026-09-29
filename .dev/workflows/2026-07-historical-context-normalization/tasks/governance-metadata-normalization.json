@@ -33,7 +33,7 @@
       ".dev/workflows/2026-04-14-legacy-decision-portability-consolidation/workflow-plan.md",
       ".dev/workflows/2026-04-14-legacy-script-rename/workflow-plan.md",
       ".dev/requirement/SKILL-IMPLEMENTER-NAMING-REQUIREMENTS.MD",
-      ".dev/requirement/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD"
+      "src/knowledge/dotnet-backend/requirements/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD"
     ],
     "tests_run": [
       "workflow plan status scan",

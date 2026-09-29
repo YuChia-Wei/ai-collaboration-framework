@@ -73,12 +73,12 @@
       "sha256": "e7be4ae0ee5eaef3e33583cc841a10401715d87bdf5e8f1997cc15a3e64cfc8e"
     },
     {
-      "path": ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md",
+      "path": "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md",
       "git_blob": "23b3240473e5e06bde71ccf41ed4bbf3dfa85479",
       "sha256": "c16fa0ae06165e1f51d7216da670b3dff2388918e651d2b7ac088742365376d6"
     },
     {
-      "path": ".ai/scripts/check-spec-compliance.sh",
+      "path": "src/tools/dotnet/check-spec-compliance.sh",
       "git_blob": "f4bd2233b3ca8616be3ef69260c6b6b9e24e572e",
       "sha256": "77b759ec1ebc188f13963c2aced867cbab0626ad6de199a278cdf477ae174c59"
     },

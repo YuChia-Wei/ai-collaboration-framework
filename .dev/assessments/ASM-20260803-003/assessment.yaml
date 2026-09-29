@@ -27,7 +27,7 @@ subject_ref:
 scope:
   included:
     - ".dev/workflows/2026-08-03-v0-8-0-release-publication/**"
-    - ".dev/releases/v0.8.0/**"
+    - "releases/v0.8.0/**"
     - ".dev/backlog/items/REL-004.yaml"
     - ".dev/backlog/plans/rel-004-ai-context-release-closeout-discussion-context.md"
     - ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"

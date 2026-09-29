@@ -57,7 +57,7 @@
       ".dev/adr/README.md",
       ".dev/adr/INDEX.md",
       ".dev/adr/ADR-TEMPLATE.md",
-      ".dev/adr/WHEN-TO-CREATE-ADR.MD",
+      "src/skills/adr/references/WHEN-TO-CREATE-ADR.MD",
       "AGENTS.md",
       ".dev/README.MD",
       ".ai/assets/skills/repo-structure-sync/references/migration-boundaries.md",

@@ -60,7 +60,7 @@
       ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
       ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
       ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
-      ".ai/scripts/validate-git-commits.py",
+      "tools/maintenance/validate-git-commits.py",
       ".ai/scripts/validate-workflow-artifacts.py",
       ".ai/scripts/tests/test_git_commit_policy.py",
       ".ai/scripts/tests/test_workflow_lifecycle_contract.py"

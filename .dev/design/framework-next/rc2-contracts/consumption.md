@@ -9,7 +9,7 @@ and testing—read the same saved binding and existing target authorities.
 
 The `bindings` array in the project's explicit installation selection uses the
 closed `Binding`, `Selector` and `Authority` objects in
-[the schema bundle](schemas/contracts.schema.json). A binding requires:
+[the schema bundle](../../../../src/distribution/schemas/contracts.schema.json). A binding requires:
 
 - A unique binding ID, installed knowledge package and exact resource IDs.
 - `use_as: knowledge | example | normative-rule`. Knowledge explains; examples

@@ -7,7 +7,7 @@
   `8b98b5f917513f2d143f42a322050a1162bb63f9`
 - Candidate identity used only for deterministic package proof:
   `ai-context-dotnet-backend-v0.7.0`
-- Formal `.dev/releases/v0.7.0` candidate, tag, hosted release, and publication:
+- Formal `releases/v0.7.0` candidate, tag, hosted release, and publication:
   not created.
 
 ## Payload Manifest
@@ -60,7 +60,7 @@ The manifest contains no source instances matching any of these sets:
 - `.dev/assessments/ASM-*/**`
 - `.dev/backlog/items/**`
 - `.dev/backlog/ROADMAP.md`
-- `.dev/releases/**`
+- `releases/**`
 
 The target catalog paths `.dev/workflows/INDEX.MD`,
 `.dev/assessments/INDEX.MD`, and `.dev/backlog/INDEX.MD` are empty

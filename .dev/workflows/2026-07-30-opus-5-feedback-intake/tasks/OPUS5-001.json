@@ -49,7 +49,7 @@
     ],
     "tests_run": [
       "External source/copy SHA-256 parity: 2/2 matched",
-      "python .ai/scripts/validate-assessment-artifacts.py: passed for 24 assessments",
+      "python tools/maintenance/validate-assessment-artifacts.py: passed for 24 assessments",
       "python .ai/scripts/validate-workflow-artifacts.py: passed for 53 post-adoption workflows, 73 indexed workflow directories, and 42 backlog items"
     ],
     "finding_status": "addressed",

@@ -13,7 +13,7 @@
   "finding_ids": ["REL040-REGISTRY-FINALIZATION"],
   "scope": {
     "target": "Published v0.4.0 trusted registry truth",
-    "files": [".dev/releases/v0.4.0/**", ".dev/releases/INDEX.MD", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files": ["releases/v0.4.0/**", "releases/INDEX.MD", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
     "constraints": ["Backfill exact immutable tag commit", "Do not move the tag", "Use hosted publication evidence"],
     "non_goals": ["Modify tagged-tree payload", "Republish assets", "Change v0.3.0"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Reconciled the trusted registry and workflow lifecycle with the immutable published v0.4.0 identity and hosted release evidence.",
-    "files_changed": [".dev/releases/v0.4.0/release.yaml", ".dev/releases/v0.4.0/release-notes.md", ".dev/releases/v0.4.0/migration-guide.md", ".dev/releases/INDEX.MD", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files_changed": ["releases/v0.4.0/release.yaml", "releases/v0.4.0/release-notes.md", "releases/v0.4.0/migration-guide.md", "releases/INDEX.MD", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
     "tests_run": ["tag peeled-target verification", "GitHub Actions and Release API verification", "downloaded package validation", "release, context, workflow, and commit validators"],
     "finding_status": "resolved",
     "residual_risk": "Downstream v0.3.0 targets still require the documented provenance-aware reconciliation.",

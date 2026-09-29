@@ -15,7 +15,7 @@
   "finding_ids": [],
   "scope": {
     "target": "Fail-closed prospective release-note traceability from v0.7.0 onward.",
-    "files": [".dev/releases/**", ".ai/scripts/**"],
+    "files": ["releases/**", ".ai/scripts/**"],
     "constraints": ["Included Work must exactly equal backlog_refs with no duplicates.", "Renderer preserves human-authored content.", "Historical release notes are not rewritten."],
     "non_goals": ["Creating a formal v0.7.0 candidate", "Publishing a release"]
   },
@@ -27,7 +27,7 @@
   },
   "results": {
     "summary": "Candidate backlog_refs must exactly equal the canonical completed backlog set, and the renderer preserves authored notes while adding each Included Work ID once from v0.7.0 onward.",
-    "files_changed": [".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/render-ai-context-release-notes.py", ".ai/scripts/tests/test_ai_context_release_state.py", ".ai/scripts/tests/test_release_notes_renderer.py", ".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".dev/releases/README.MD", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"],
+    "files_changed": [".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/render-ai-context-release-notes.py", ".ai/scripts/tests/test_ai_context_release_state.py", ".ai/scripts/tests/test_release_notes_renderer.py", ".ai/assets/skills/ai-context-governance/templates/release-publication/**", "releases/README.MD", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"],
     "tests_run": ["python .ai/scripts/tests/test_ai_context_release_state.py (23 passed)", "python .ai/scripts/tests/test_release_notes_renderer.py (6 passed)", "python .ai/scripts/tests/test_backlog_release_contract.py (6 passed)", "python -m py_compile"],
     "finding_status": "addressed",
     "residual_risk": "No v0.7.0 candidate exists yet, so the new contract is verified through prospective fixtures rather than a formal release record.",

@@ -255,7 +255,7 @@ not a committed reference product or wholesale copy of either downstream lab.
 ### VFY-002 — Active Test Guidance Bypasses Technology Override Resolution
 
 - Severity: **MEDIUM**
-- Affected paths: [`DOTNET-DI-TEST-GUIDE.md`](../../guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md), [`NEW-PROJECT-TEST-SETUP-GUIDE.md`](../../guides/implementation-guides/NEW-PROJECT-TEST-SETUP-GUIDE.md), and routed examples under `examples/outbox`, `examples/usecase`, and `examples/reference`
+- Affected paths: [`DOTNET-DI-TEST-GUIDE.md`](../../guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md), [`NEW-PROJECT-TEST-SETUP-GUIDE.md`](../../../src/knowledge/dotnet-backend/guides/NEW-PROJECT-TEST-SETUP-GUIDE.md), and routed examples under `examples/outbox`, `examples/usecase`, and `examples/reference`
 - Repository-native evidence: ownership/schema truth correctly defines NSubstitute as a default-profile selection with a generic target override, while active guidance says “NSubstitute only” or “Use NSubstitute” without first resolving `testing.mocking`.
 - Why it matters: copied guidance can overwrite a product's valid Moq or other target-owned selection even though the canonical mechanism permits it.
 - Confidence: **high**
@@ -265,7 +265,7 @@ not a committed reference product or wholesale copy of either downstream lab.
 ### VFY-003 — Routed Documents Retain Synchronous Use-Case Vocabulary
 
 - Severity: **MEDIUM**
-- Affected paths: [`TEST-DATA-PREPARATION-GUIDE.md`](../../guides/design-guides/TEST-DATA-PREPARATION-GUIDE.md) and [`inquiry-archive/USAGE-GUIDE.md`](../../standards/examples/inquiry-archive/USAGE-GUIDE.md)
+- Affected paths: [`TEST-DATA-PREPARATION-GUIDE.md`](../../../src/knowledge/dotnet-backend/guides/TEST-DATA-PREPARATION-GUIDE.md) and [`inquiry-archive/USAGE-GUIDE.md`](../../standards/examples/inquiry-archive/USAGE-GUIDE.md)
 - Repository-native evidence: the active design guide awaits `_createProductUseCase.Execute(input)` in four snippets, and the reference-only example invokes `_useCase.Execute(...)`; current use-case/controller truth requires `ExecuteAsync` with cancellation propagation.
 - Why it matters: retrieval or copy/paste can reintroduce the pre-.NET asynchronous contract even after the main controller example was repaired.
 - Confidence: **high**
@@ -285,7 +285,7 @@ not a committed reference product or wholesale copy of either downstream lab.
 ### VFY-005 — Transitional Test Compliance Helper Is Stale And Misleading
 
 - Severity: **MEDIUM**
-- Affected paths: [`.ai/scripts/check-test-compliance.sh`](../../../.ai/scripts/check-test-compliance.sh), [`.ai/scripts/check-test-di-compliance.sh`](../../../.ai/scripts/check-test-di-compliance.sh), shell registry, and aggregate runner
+- Affected paths: [`src/tools/dotnet/check-test-compliance.sh`](../../../src/tools/dotnet/check-test-compliance.sh), [`src/tools/dotnet/check-test-di-compliance.sh`](../../../src/tools/dotnet/check-test-di-compliance.sh), shell registry, and aggregate runner
 - Repository-native evidence: full mode exits zero with one advisory because the helper resolves `BASE_DIR` outside the repository and searches `/c/Github/YuChia/src`; both helpers also flag Moq without resolving the approved technology override.
 - Why it matters: even as transitional/advisory assets, their output adds noise and communicates policy that contradicts canonical applicability.
 - Confidence: **high**
@@ -401,9 +401,9 @@ git ls-files
 rg -n -uu <targeted standards, guide, example, skill, and script patterns>
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-shell-assets.py
-python .ai/scripts/validate-file-disposition-manifest.py
+python tools/maintenance/validate-file-disposition-manifest.py
 python .ai/scripts/validate-ai-context-versions.py
-python .ai/scripts/validate-git-commits.py --range <base>..<subject> --workflow-id <workflow>
+python tools/maintenance/validate-git-commits.py --range <base>..<subject> --workflow-id <workflow>
 dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj
 C:/Program Files/Git/bin/bash.exe ./.ai/scripts/check-all.sh --full
 git diff --check

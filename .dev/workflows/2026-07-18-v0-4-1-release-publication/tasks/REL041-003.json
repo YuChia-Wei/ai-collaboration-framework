@@ -13,7 +13,7 @@
   "finding_ids": ["REL041-REGISTRY-FINALIZATION"],
   "scope": {
     "target": "Published v0.4.1 trusted registry and backlog truth",
-    "files": [".dev/releases/v0.4.1/**", ".dev/releases/INDEX.MD", ".dev/backlog/**", ".dev/workflows/2026-07-18-v0-4-1-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files": ["releases/v0.4.1/**", "releases/INDEX.MD", ".dev/backlog/**", ".dev/workflows/2026-07-18-v0-4-1-release-publication/**", ".dev/workflows/INDEX.MD"],
     "constraints": ["Backfill exact immutable tag commit and hosted evidence", "Do not move the tag", "Set published_in only after publication succeeds"],
     "non_goals": ["Modify tagged-tree payload", "Republish assets", "Activate v0.4.2 implementation"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Reconciled the trusted registry, backlog, roadmap, and workflow lifecycle with the immutable published v0.4.1 identity and hosted release evidence.",
-    "files_changed": [".dev/releases/v0.4.1/**", ".dev/releases/INDEX.MD", ".dev/backlog/ROADMAP.md", ".dev/backlog/items/PKG-001.yaml", ".dev/backlog/items/PKG-002.yaml", ".dev/workflows/2026-07-18-v0-4-1-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files_changed": ["releases/v0.4.1/**", "releases/INDEX.MD", ".dev/backlog/ROADMAP.md", ".dev/backlog/items/PKG-001.yaml", ".dev/backlog/items/PKG-002.yaml", ".dev/workflows/2026-07-18-v0-4-1-release-publication/**", ".dev/workflows/INDEX.MD"],
     "tests_run": ["tag peeled-target verification", "GitHub Actions and Release API verification", "downloaded package validation", "release, context, assessment, workflow, and commit validators"],
     "finding_status": "addressed",
     "residual_risk": "Existing v0.4.0 consumers remain intentionally outside the v0.4.1 automatic path and should wait for PKG-003 in v0.5.0 unless manually reconciled.",

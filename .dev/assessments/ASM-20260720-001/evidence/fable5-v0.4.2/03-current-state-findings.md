@@ -26,8 +26,8 @@ to fix and evidence for RC-3.
 
 Reproduce:
 ```
-grep -E '^status|^commit|^tag|^created_at' .dev/releases/v0.4.2/release.yaml
-grep '^status' .dev/releases/v0.4.1/release.yaml   # compare: published
+grep -E '^status|^commit|^tag|^created_at' releases/v0.4.2/release.yaml
+grep '^status' releases/v0.4.1/release.yaml   # compare: published
 ```
 Observed: `status: validated`, no `tag`/`commit` fields, `created_at` copied
 from v0.4.1. v0.4.1 by contrast is `published` with the commit recorded.
@@ -42,9 +42,9 @@ finalized — and the roadmap does not record this as the reason.
 
 Reproduce:
 ```
-grep -c 'ai-context-release-automation' .dev/releases/v0.4.2/release-notes.md
-grep -c 'Release provenance' .dev/releases/v0.4.2/release-notes.md
-grep '1c13d7966b937004f12be6dd70d58c8ecb5afbe7' .dev/releases/v0.4.2/release-notes.md
+grep -c 'ai-context-release-automation' releases/v0.4.2/release-notes.md
+grep -c 'Release provenance' releases/v0.4.2/release-notes.md
+grep '1c13d7966b937004f12be6dd70d58c8ecb5afbe7' releases/v0.4.2/release-notes.md
 ```
 Observed: two automation markers, two provenance sections. The file contains
 render *output*, not authored content; v0.4.1-style Status/Highlights/
@@ -66,8 +66,8 @@ corrected source is also needed to clear the public invalid provenance.
 
 Reproduce:
 ```
-wc -c .dev/releases/v0.4.2/migration-guide.md   # 0
-wc -l .dev/releases/v0.4.1/migration-guide.md    # 84
+wc -c releases/v0.4.2/migration-guide.md   # 0
+wc -l releases/v0.4.1/migration-guide.md    # 84
 ```
 Implication: the published GitHub Release body's Migration guide section was
 empty. Author real content (even if it is "no migration required; v0.3.0 is
@@ -78,7 +78,7 @@ the only automatic source; v0.4.0 targets wait for PKG-003").
 Reproduce:
 ```
 grep 29650583394 .dev/workflows/2026-07-19-v0-4-2-release-publication/tasks/REL042-002.json \
-                 .dev/releases/v0.4.1/release.yaml
+                 releases/v0.4.1/release.yaml
 git show 71c41db --stat   # body claims release.yaml updated; only notes changed
 ```
 Observed: REL042-002 records v0.4.1's run ID as v0.4.2 evidence; `71c41db`'s

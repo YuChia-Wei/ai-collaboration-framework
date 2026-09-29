@@ -13,7 +13,7 @@
   "finding_ids": ["REL042-REGISTRY-FINALIZATION"],
   "scope": {
     "target": "Published v0.4.2 trusted registry and backlog truth",
-    "files": [".dev/releases/v0.4.2/**", ".dev/releases/INDEX.MD", ".dev/backlog/**", ".dev/workflows/2026-07-19-v0-4-2-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files": ["releases/v0.4.2/**", "releases/INDEX.MD", ".dev/backlog/**", ".dev/workflows/2026-07-19-v0-4-2-release-publication/**", ".dev/workflows/INDEX.MD"],
     "constraints": ["Backfill exact immutable tag commit and hosted evidence", "Do not move the tag", "Set published_in only after publication succeeds"],
     "non_goals": ["Modify tagged-tree payload", "Republish assets", "Activate v0.4.2 implementation"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "The original finalization was incomplete and recorded false evidence. Workflow 2026-07-20-v0-4-2-release-finalization-hotfix repaired the mutable local records without rewriting Git history or moving the final tag.",
-    "files_changed": [".dev/releases/v0.4.2/**", ".dev/releases/INDEX.MD", ".dev/backlog/**", ".dev/workflows/2026-07-19-v0-4-2-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files_changed": ["releases/v0.4.2/**", "releases/INDEX.MD", ".dev/backlog/**", ".dev/workflows/2026-07-19-v0-4-2-release-publication/**", ".dev/workflows/INDEX.MD"],
     "tests_run": ["successor tag peeled-target verification", "successor release, context, assessment, workflow, and commit validators"],
     "finding_status": "partially-resolved",
     "residual_risk": "The public GitHub Release body correction is not a local artifact change and remains assigned to R042-005.",

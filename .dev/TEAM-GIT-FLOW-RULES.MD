@@ -132,7 +132,7 @@ or owner, and must remain open. A closing keyword never authorizes work.
 The required pull-request check validates only the tracked declaration against
 the live PR event and checkout head. Immediately before integration, obtain a
 fresh provider read-back and run
-`.ai/scripts/validate-terminal-issue-closure.py` with the current event snapshot
+`tools/maintenance/validate-terminal-issue-closure.py` with the current event snapshot
 and `--capture-admission-evidence`. The validator emits the verified snapshot
 to stdout and writes no repository path; trusted orchestration may retain it
 under ignored validation artifacts. A replay instead uses the untracked

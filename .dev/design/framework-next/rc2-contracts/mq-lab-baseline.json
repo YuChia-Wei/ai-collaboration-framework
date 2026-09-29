@@ -78,7 +78,7 @@
       "working_bytes_equal_blob": true
     },
     {
-      "path": ".dev/ARCHITECTURE.md",
+      "path": "src/knowledge/dotnet-backend/design/architecture-overview.md",
       "commit": "cc0e345367a1d24f49bf8fa68e0eb668df9e5e55",
       "git_blob": "64b5bee35edda66468e9815a90cad319da1ed013",
       "mode": "100644",
@@ -237,7 +237,7 @@
       "relationship": "target-only",
       "reason": "Preserve repository identity, .NET SDK and product truth, target catalogs and workflow authorities, complete analyzer/tools retirement, and inactive recipe boundaries while adopting v0.13 exact framework paths and removal of the bundled provider payload.",
       "paths": [
-        ".dev/ARCHITECTURE.md",
+        "src/knowledge/dotnet-backend/design/architecture-overview.md",
         ".dev/INDEX.md",
         ".dev/README.MD",
         ".dev/adr/INDEX.md",

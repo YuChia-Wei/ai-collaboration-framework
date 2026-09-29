@@ -17,7 +17,7 @@ exit `0`. Every selected required check completed without a required failure or
 advisory warning. This supersedes the earlier timed-out packaging attempt; that
 attempt remains recorded as not passed rather than being rewritten as success.
 
-No `.dev/releases/v0.8.0/**` artifact was created, and no release preparation,
+No `releases/v0.8.0/**` artifact was created, and no release preparation,
 tag, publication, dependency installation, or persistent host mutation was
 performed.
 
@@ -33,7 +33,7 @@ performed.
 | Entrypoint registry | `passed` | 25 production CLIs: 12 portable and 13 source-only; 23 PyYAML profiles and 2 standard-library-only profiles |
 | Shell assets | `passed` | 15 tracked shell assets; the runtime launcher is classified and executable |
 | Aggregate critical gate | `passed` | started `2026-08-03T01:55:28+08:00`; elapsed `459.5s`; exit `0` |
-| Release boundary | `passed` | `.dev/releases/v0.8.0` absent; general governance workflows contain no release mutation |
+| Release boundary | `passed` | `releases/v0.8.0` absent; general governance workflows contain no release mutation |
 
 `Selected Git Commit Messages` was `not-applicable` because `COMMIT_RANGE` was
 not set. The retained downstream integration case was also not executed without

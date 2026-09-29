@@ -23,8 +23,8 @@ template_version: "1.2.0"
 release:
   release_id: "REL-v0.15.1"
   version: "v0.15.1"
-  record: ".dev/releases/v0.15.1/release.yaml"
-  phase_contract: ".dev/releases/v0.15.1/release-phase-checks.yaml"
+  record: "releases/v0.15.1/release.yaml"
+  phase_contract: "releases/v0.15.1/release-phase-checks.yaml"
 work_items:
   - provider: "github"
     repository: "YuChia-Wei/ai-collaboration-framework"

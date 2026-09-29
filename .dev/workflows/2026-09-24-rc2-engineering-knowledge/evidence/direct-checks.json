@@ -54,7 +54,7 @@
       "observed_at": "2026-09-24T20:23:24+08:00"
     },
     {
-      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/s2-content.txt --workflow-id 2026-09-24-rc2-engineering-knowledge",
+      "command": "python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/s2-content.txt --workflow-id 2026-09-24-rc2-engineering-knowledge",
       "exit_code": 0,
       "output": "Git commit validation passed for planned message.",
       "message_sha256": "2beae9d03aae2f9f67d7c43cc9c13fdd963077745e602d93092a9fa33e10dcc1",

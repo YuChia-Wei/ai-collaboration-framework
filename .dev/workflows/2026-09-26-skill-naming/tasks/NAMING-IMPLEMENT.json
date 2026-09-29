@@ -65,7 +65,7 @@
     "follow_up_needed": false,
     "files_changed": [
       ".dev/design/framework-next/rc2-contracts/formats.md",
-      ".dev/design/framework-next/rc2-contracts/schemas/contracts.schema.json",
+      "src/distribution/schemas/contracts.schema.json",
       "README.en.md",
       "README.md",
       "src/distribution/catalog.py",

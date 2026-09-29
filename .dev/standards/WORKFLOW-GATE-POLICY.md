@@ -297,7 +297,7 @@ owner and follow-up condition; it is not implicit success.
 ## Long-Running Validation Delegation Gate
 
 Use the operation classifier in
-`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` before selecting
+`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` before selecting
 dispatch overhead. A terminal label alone does not require full packet/lease
 handling for an ordinary isolated short same-runtime read-only review. Both
 review tiers require machine-readable subject/criteria/authority preflight;
@@ -327,7 +327,7 @@ declared ignored artifact roots. Later content or governing-authority drift
 invalidates the freeze; commit-message or history-only identity drift requires
 a deterministic subject rebind. Reuse from an earlier subject
 is admissible only with the content-addressed proof required by
-`.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; current-head
+`.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; current-head
 review-subject binding, required hosted contexts, and live admission remain
 fresh gates. Independent review itself is content-addressed and is repeated
 only when that reviewed subject, criteria, or authority changes.
@@ -348,7 +348,7 @@ is automatically routed to its source.
 
 Before dispatch, validate the agent execution packet and acquire the worktree
 snapshot lease defined by
-`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. The external envelope
+`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. The external envelope
 must bind the packet reference, digest, exact subject SHA, validator argv, and
 passing outcome. A conflicting tracked writer, stale lease, unvalidated packet,
 or attempt three without new owner/workflow authorization blocks dispatch.

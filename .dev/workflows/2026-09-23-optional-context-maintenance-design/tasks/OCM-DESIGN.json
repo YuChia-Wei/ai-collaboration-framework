@@ -111,7 +111,7 @@
       "observations": "11 added files, all within the two authorized roots; no whitespace errors"
     },
     {
-      "command": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/352/.dev/workflows/2026-09-23-optional-context-maintenance-design/commit-message.tmp --workflow-id 2026-09-23-optional-context-maintenance-design",
+      "command": "python -B tools/maintenance/validate-git-commits.py --message-file F:/framework-next/352/.dev/workflows/2026-09-23-optional-context-maintenance-design/commit-message.tmp --workflow-id 2026-09-23-optional-context-maintenance-design",
       "outcome": "passed",
       "message_sha256": "3ae131349078c89218c622666bed8123604684de3cad2777e663ea8790998700",
       "observations": "Git commit validation passed for planned message."

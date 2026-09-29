@@ -107,7 +107,7 @@ No new blocking finding.
 
 ### Observed Non-Blocking Limitation
 
-`.ai/scripts/code-review.sh` remains a packaged compatibility entrypoint and contains the legacy message `Run DotnetBackendValidation tests`. The shell-asset manifest classifies the file as `lifecycle: compatibility`, `authority: advisory`, supplies a target-owned analyzer/test replacement, and does not list it under `check_all_required_commands`. Source governance binds this file to immutable v0.5 candidate bytes and currently permits only the separately authorized Issue #178 drift set. The message is therefore retained transparently rather than silently changing an unrelated authorization contract. It is not evidence of a selected project, executable provider, or required SDK gate.
+`src/tools/dotnet/code-review.sh` remains a packaged compatibility entrypoint and contains the legacy message `Run DotnetBackendValidation tests`. The shell-asset manifest classifies the file as `lifecycle: compatibility`, `authority: advisory`, supplies a target-owned analyzer/test replacement, and does not list it under `check_all_required_commands`. Source governance binds this file to immutable v0.5 candidate bytes and currently permits only the separately authorized Issue #178 drift set. The message is therefore retained transparently rather than silently changing an unrelated authorization contract. It is not evidence of a selected project, executable provider, or required SDK gate.
 
 ## Validation
 

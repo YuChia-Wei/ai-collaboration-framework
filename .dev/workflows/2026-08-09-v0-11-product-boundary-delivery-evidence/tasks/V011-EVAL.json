@@ -76,7 +76,7 @@
   "results": {
     "summary": "Truthful schema-2 validation evidence, unavailable metric semantics, workflow summaries, and durable CI artifact uploads were implemented.",
     "files_changed": [
-      ".ai/scripts/validation-evidence.py",
+      "tools/maintenance/validation-evidence.py",
       ".github/workflows/governance.yml",
       ".github/workflows/portable-gates.yml"
     ],

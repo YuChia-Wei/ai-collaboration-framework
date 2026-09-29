@@ -47,7 +47,7 @@ This is primary-author content inspection, not an independent audit or runtime a
 - Direct UTF-8 reads and Python `json.loads` / `yaml.safe_load` over the owned files succeeded. These checks establish readability only; no JSON Schema validator or Lesson operation ran.
 - Inspected all design content, declared resource paths, inputs/outputs, custom mappings and ordinary-error/unsupported dispositions. Package-owned configuration reference avoids a hidden source-layout dependency.
 - `git diff --cached --check` completed without errors after staging the owned subtrees; Git's CRLF-to-LF normalization notices were informational.
-- `python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-contracts/artifacts/commit-message.txt --workflow-id 2026-09-23-portable-contracts` returned `Git commit validation passed for planned message.` This narrow format check is explicitly permitted by U001.
+- `python tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-contracts/artifacts/commit-message.txt --workflow-id 2026-09-23-portable-contracts` returned `Git commit validation passed for planned message.` This narrow format check is explicitly permitted by U001.
 - The message file is ignored under the existing `artifacts/` rule. No hook override or shared Git configuration change was made.
 
 ## Preserved Execution Interruptions

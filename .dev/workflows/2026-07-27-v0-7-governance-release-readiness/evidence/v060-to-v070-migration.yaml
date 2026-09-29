@@ -1029,315 +1029,315 @@ clean_install:
     component_id: ai-context-lifecycle-core
   - id: clean-install-0147
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/README.MD
+    path: .dev/agents/README.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0148
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-playbook.md
+    path: .dev/agents/aggregate-code-review-sub-agent/references/review-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0149
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-prompt.md
+    path: .dev/agents/aggregate-code-review-sub-agent/references/review-prompt.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0150
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/sub-agent.yaml
+    path: .dev/agents/aggregate-code-review-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0151
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/aggregate-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0152
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/sub-agent.yaml
+    path: .dev/agents/aggregate-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0153
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-generation-guidance.md
+    path: .dev/agents/aggregate-test-sub-agent/references/test-generation-guidance.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0154
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-playbook.md
+    path: .dev/agents/aggregate-test-sub-agent/references/test-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0155
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/sub-agent.yaml
+    path: .dev/agents/aggregate-test-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0156
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-playbook.md
+    path: .dev/agents/code-review-sub-agent/references/review-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0157
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-prompt.md
+    path: .dev/agents/code-review-sub-agent/references/review-prompt.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0158
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml
+    path: .dev/agents/code-review-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0159
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/command-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/command-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0160
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/command-sub-agent/sub-agent.yaml
+    path: .dev/agents/command-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0161
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/context-translator/references/translation-playbook.md
+    path: .dev/agents/context-translator/references/translation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: ai-context-lifecycle-core
   - id: clean-install-0162
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml
+    path: .dev/agents/context-translator/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: ai-context-lifecycle-core
   - id: clean-install-0163
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-playbook.md
+    path: .dev/agents/controller-code-review-sub-agent/references/review-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0164
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-prompt.md
+    path: .dev/agents/controller-code-review-sub-agent/references/review-prompt.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0165
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/sub-agent.yaml
+    path: .dev/agents/controller-code-review-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0166
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/references/implementation-guidance.md
+    path: .dev/agents/controller-sub-agent/references/implementation-guidance.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0167
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/sub-agent.yaml
+    path: .dev/agents/controller-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0168
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-generation-guidance.md
+    path: .dev/agents/controller-test-sub-agent/references/test-generation-guidance.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0169
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-playbook.md
+    path: .dev/agents/controller-test-sub-agent/references/test-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0170
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/sub-agent.yaml
+    path: .dev/agents/controller-test-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0171
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/mutation-testing-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0172
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml
+    path: .dev/agents/mutation-testing-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0173
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/outbox-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0174
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/sub-agent.yaml
+    path: .dev/agents/outbox-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0175
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/references/authoring-playbook.md
+    path: .dev/agents/problem-frame-sub-agent/references/authoring-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0176
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml
+    path: .dev/agents/problem-frame-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0177
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/profile-config-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0178
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/sub-agent.yaml
+    path: .dev/agents/profile-config-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0179
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/query-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/query-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0180
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/query-sub-agent/sub-agent.yaml
+    path: .dev/agents/query-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0181
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-playbook.md
+    path: .dev/agents/reactor-code-review-sub-agent/references/review-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0182
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-prompt.md
+    path: .dev/agents/reactor-code-review-sub-agent/references/review-prompt.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0183
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/sub-agent.yaml
+    path: .dev/agents/reactor-code-review-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0184
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/references/implementation-playbook.md
+    path: .dev/agents/reactor-sub-agent/references/implementation-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0185
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/sub-agent.yaml
+    path: .dev/agents/reactor-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0186
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-generation-guidance.md
+    path: .dev/agents/reactor-test-sub-agent/references/test-generation-guidance.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0187
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-playbook.md
+    path: .dev/agents/reactor-test-sub-agent/references/test-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0188
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/sub-agent.yaml
+    path: .dev/agents/reactor-test-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0189
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-generation-guidance.md
+    path: .dev/agents/usecase-test-sub-agent/references/test-generation-guidance.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0190
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-playbook.md
+    path: .dev/agents/usecase-test-sub-agent/references/test-playbook.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0191
     kind: add
-    path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/sub-agent.yaml
+    path: .dev/agents/usecase-test-sub-agent/sub-agent.yaml
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -1547,49 +1547,49 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0221
     kind: add
-    path: .ai/scripts/check-coding-standards.sh
+    path: src/tools/dotnet/check-coding-standards.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0222
     kind: add
-    path: .ai/scripts/check-data-class-annotations.sh
+    path: src/tools/dotnet/check-data-class-annotations.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0223
     kind: add
-    path: .ai/scripts/check-dockerfile-csproj-copy-sync.ps1
+    path: src/tools/dotnet/check-dockerfile-csproj-copy-sync.ps1
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0224
     kind: add
-    path: .ai/scripts/check-domain-events-compliance.sh
+    path: src/tools/dotnet/check-domain-events-compliance.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0225
     kind: add
-    path: .ai/scripts/check-dotnet-config.sh
+    path: src/tools/dotnet/check-dotnet-config.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0226
     kind: add
-    path: .ai/scripts/check-framework-api-compliance.sh
+    path: src/tools/dotnet/check-framework-api-compliance.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0227
     kind: add
-    path: .ai/scripts/check-mutation-coverage.sh
+    path: src/tools/dotnet/check-mutation-coverage.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -1603,28 +1603,28 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0229
     kind: add
-    path: .ai/scripts/check-spec-compliance.sh
+    path: src/tools/dotnet/check-spec-compliance.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0230
     kind: add
-    path: .ai/scripts/check-test-compliance.sh
+    path: src/tools/dotnet/check-test-compliance.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0231
     kind: add
-    path: .ai/scripts/check-test-di-compliance.sh
+    path: src/tools/dotnet/check-test-di-compliance.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0232
     kind: add
-    path: .ai/scripts/code-review.sh
+    path: src/tools/dotnet/code-review.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -1855,7 +1855,7 @@ clean_install:
     component_id: ai-context-lifecycle-core
   - id: clean-install-0265
     kind: add
-    path: .ai/scripts/validate-assessment-artifacts.py
+    path: tools/maintenance/validate-assessment-artifacts.py
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -1869,21 +1869,21 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0267
     kind: add
-    path: .ai/scripts/validate-dual-profile-config.sh
+    path: src/tools/dotnet/validate-dual-profile-config.sh
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0268
     kind: add
-    path: .ai/scripts/validate-file-disposition-manifest.py
+    path: tools/maintenance/validate-file-disposition-manifest.py
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0269
     kind: add
-    path: .ai/scripts/validate-git-commits.py
+    path: tools/maintenance/validate-git-commits.py
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -1911,7 +1911,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0273
     kind: add
-    path: .ai/scripts/validate-workflow-handoff.py
+    path: tools/maintenance/validate-workflow-handoff.py
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2100,7 +2100,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0300
     kind: add
-    path: .dev/adr/WHEN-TO-CREATE-ADR.MD
+    path: src/skills/adr/references/WHEN-TO-CREATE-ADR.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2142,28 +2142,28 @@ clean_install:
     component_id: repo-backlog
   - id: clean-install-0306
     kind: add
-    path: .dev/domain-language/README.MD
+    path: src/knowledge/dotnet-backend/domain-language/README.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0307
     kind: add
-    path: .dev/domain-language/templates/aggregate-vocabulary-template.md
+    path: src/knowledge/dotnet-backend/domain-language/templates/aggregate-vocabulary-template.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0308
     kind: add
-    path: .dev/domain-language/templates/bounded-context-language-template.md
+    path: src/knowledge/dotnet-backend/domain-language/templates/bounded-context-language-template.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0309
     kind: add
-    path: .dev/domain-language/templates/domain-event-language-template.md
+    path: src/knowledge/dotnet-backend/domain-language/templates/domain-event-language-template.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2380,7 +2380,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0340
     kind: add
-    path: .dev/guides/design-guides/DATA-CLASS-STANDARDS.md
+    path: src/knowledge/dotnet-backend/guides/DATA-CLASS-STANDARDS.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2415,7 +2415,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0345
     kind: add
-    path: .dev/guides/design-guides/PROFILE-BASED-TESTING-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2429,42 +2429,42 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0347
     kind: add
-    path: .dev/guides/design-guides/TEST-DATA-PREPARATION-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/TEST-DATA-PREPARATION-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0348
     kind: add
-    path: .dev/guides/implementation-guides/COMMON-MISTAKES-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/COMMON-MISTAKES-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0349
     kind: add
-    path: .dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0350
     kind: add
-    path: .dev/guides/implementation-guides/CORS-SETUP.md
+    path: src/knowledge/dotnet-backend/guides/CORS-SETUP.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0351
     kind: add
-    path: .dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0352
     kind: add
-    path: .dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2485,14 +2485,14 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0355
     kind: add
-    path: .dev/guides/implementation-guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0356
     kind: add
-    path: .dev/guides/implementation-guides/FAQ.md
+    path: src/knowledge/dotnet-backend/guides/FAQ.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2506,21 +2506,21 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0358
     kind: add
-    path: .dev/guides/implementation-guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0359
     kind: add
-    path: .dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0360
     kind: add
-    path: .dev/guides/implementation-guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
+    path: src/knowledge/dotnet-backend/guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2576,14 +2576,14 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0368
     kind: add
-    path: .dev/guides/learning-guides/LEARNING-PATH.md
+    path: src/knowledge/dotnet-backend/guides/LEARNING-PATH.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0369
     kind: add
-    path: .dev/guides/learning-guides/NEW-PROJECT-GUIDE.md
+    path: src/knowledge/dotnet-backend/guides/NEW-PROJECT-GUIDE.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2597,21 +2597,21 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0371
     kind: add
-    path: .dev/operations/CONTEXT-MAP-GUIDE.MD
+    path: src/knowledge/dotnet-backend/operations/CONTEXT-MAP-GUIDE.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0372
     kind: add
-    path: .dev/operations/EVENT-CATALOG-GUIDE.MD
+    path: src/knowledge/dotnet-backend/operations/EVENT-CATALOG-GUIDE.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0373
     kind: add
-    path: .dev/operations/MQ-TOPOLOGY-GUIDE.MD
+    path: src/knowledge/dotnet-backend/operations/MQ-TOPOLOGY-GUIDE.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2625,7 +2625,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0375
     kind: add
-    path: .dev/operations/RUNBOOK-GUIDE.MD
+    path: src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2695,7 +2695,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0385
     kind: add
-    path: .dev/requirement/REQUIREMENT-GUIDE.MD
+    path: src/skills/requirement-author/references/requirement-guide.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2716,14 +2716,14 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0388
     kind: add
-    path: .dev/specs/SPEC-GUIDE.MD
+    path: src/skills/spec-author/references/spec-guide.md
     ownership: framework-managed
     preconditions:
     - destination_absent
     component_id: software-development-core
   - id: clean-install-0389
     kind: add
-    path: .dev/specs/SPEC-ORGANIZATION-GUIDE.MD
+    path: src/skills/spec-author/references/spec-organization-guide.md
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -2744,7 +2744,7 @@ clean_install:
     component_id: software-development-core
   - id: clean-install-0392
     kind: add
-    path: .dev/specs/tests/TEST-SPEC-GUIDE.MD
+    path: src/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD
     ownership: framework-managed
     preconditions:
     - destination_absent
@@ -4323,7 +4323,7 @@ sources:
     - current_sha256_equals_previous_release
   - id: migration-0011
     kind: replace
-    path: .ai/scripts/validate-git-commits.py
+    path: tools/maintenance/validate-git-commits.py
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
@@ -4337,7 +4337,7 @@ sources:
     - current_sha256_equals_previous_release
   - id: migration-0013
     kind: replace
-    path: .ai/scripts/validate-workflow-handoff.py
+    path: tools/maintenance/validate-workflow-handoff.py
     ownership: framework-managed
     component_id: software-development-core
     preconditions:

@@ -84,7 +84,7 @@ no product import or bytecode compilation. Actual result: zero reported problems
 These are direct syntax, membership/reference and content observations. No
 package loader, schema validator, test, fixture or product command was invoked.
 The complete planned message check actually passed:
-`python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/347/.dev/ai-context/local/commit-messages/issue-347.txt --workflow-id 2026-09-23-engineering-methods`.
+`python -B tools/maintenance/validate-git-commits.py --message-file F:/framework-next/347/.dev/ai-context/local/commit-messages/issue-347.txt --workflow-id 2026-09-23-engineering-methods`.
 The checked UTF-8 message file has SHA-256
 `757e45bea9784681ff63f80016f0d0d9f592e60de4d67a9c729cce6035ea8b08`;
 local commit consumes those exact bytes with `git commit -F`. The final

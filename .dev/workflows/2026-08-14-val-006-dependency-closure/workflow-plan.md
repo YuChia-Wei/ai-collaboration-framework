@@ -82,7 +82,7 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 - Focused contract tests: `.ai/scripts/tests/test_fail_closed_validation.py`, narrowed to the six selector/registry fixtures first and then the containing test module from the immutable commit.
 - Static shell check: `bash -n .ai/scripts/check-all.sh`.
 - Artifact checks: JSON parse, `.ai/scripts/validate-workflow-artifacts.py`, `git diff --check`.
-- Workflow commit range: `.ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-14-val-006-dependency-closure` after the durable commit exists.
+- Workflow commit range: `tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-14-val-006-dependency-closure` after the durable commit exists.
 - The full aggregate-runner contract module is selected because the runner itself changed and its observed duration exceeds 120 seconds. It must run once from the fixed clean implementation commit under the external-task contract; it may not repair or rerun failures.
 - A POSIX execution-path confirmation remains required by Issue #202 and must use the same immutable source state. The Windows-compatible Git Bash path has passed locally.
 - Spec compliance: not selected and therefore not applicable.

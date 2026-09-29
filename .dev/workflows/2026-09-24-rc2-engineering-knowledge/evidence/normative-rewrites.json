@@ -101,7 +101,7 @@
         },
         {
           "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
-          "before": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+          "before": "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
           "after": "target-authority:dev-requirement-TECH-STACK-REQUIREMENTS.MD",
           "kind": "target-parameter"
         }

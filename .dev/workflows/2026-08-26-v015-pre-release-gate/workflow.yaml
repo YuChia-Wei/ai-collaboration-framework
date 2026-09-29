@@ -19,9 +19,9 @@ continuation:
   current_task_id: "REL017-001"
   target_policy_refs:
     - ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md"
-    - ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"
+    - ".dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"
     - ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md"
-    - ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
+    - ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
   handoff_checkpoint: null
 created_at: "2026-08-26T22:57:15+08:00"
 updated_at: "2026-08-27T07:33:23+08:00"

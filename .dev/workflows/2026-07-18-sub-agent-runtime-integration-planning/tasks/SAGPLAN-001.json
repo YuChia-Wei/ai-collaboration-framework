@@ -18,7 +18,7 @@
   "scope": {
     "target": "Canonical sub-agent role consumption and runtime adapter coverage",
     "files": [
-      ".ai/assets/sub-agent-role-prompts/**",
+      ".dev/agents/**",
       ".ai/SUB-AGENT-SYSTEM.MD",
       ".ai/assets/CANONICAL-SCHEMA.MD",
       ".ai/scripts/validate-ai-context.py",

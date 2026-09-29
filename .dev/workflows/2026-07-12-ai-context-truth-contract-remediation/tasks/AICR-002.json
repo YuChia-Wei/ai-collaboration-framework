@@ -13,7 +13,7 @@
   "finding_ids": ["CTX-H-002"],
   "scope": {
     "target": "Parameterize active guides and remove historical source-project facts and unsafe credential defaults.",
-    "files": [".dev/guides/implementation-guides/CORS-SETUP.md", ".dev/guides/design-guides/PROFILE-BASED-TESTING-GUIDE.md", ".dev/guides/implementation-guides/VERSION-PLACEHOLDER-GUIDE.md", ".dev/guides/INDEX.MD", ".dev/guides/design-guides/README.MD", ".dev/guides/implementation-guides/README.MD"],
+    "files": ["src/knowledge/dotnet-backend/guides/CORS-SETUP.md", "src/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md", ".dev/guides/implementation-guides/VERSION-PLACEHOLDER-GUIDE.md", ".dev/guides/INDEX.MD", ".dev/guides/design-guides/README.MD", ".dev/guides/implementation-guides/README.MD"],
     "constraints": ["Preserve GWT, BDDfy default/opt-out, and optional .feature policy.", "Use target evidence and secret-source references instead of invented values.", "Do not scan product source/tests."],
     "non_goals": ["Define canonical fixed test profiles.", "Add a frontend profile.", "Modernize unrelated guides."]
   },
@@ -26,8 +26,8 @@
   "results": {
     "summary": "Resolved CTX-H-002 by parameterizing active guides and requiring target-repository evidence and secret references.",
     "files_changed": [
-      ".dev/guides/implementation-guides/CORS-SETUP.md",
-      ".dev/guides/design-guides/PROFILE-BASED-TESTING-GUIDE.md",
+      "src/knowledge/dotnet-backend/guides/CORS-SETUP.md",
+      "src/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md",
       ".dev/guides/implementation-guides/VERSION-PLACEHOLDER-GUIDE.md"
     ],
     "tests_run": [

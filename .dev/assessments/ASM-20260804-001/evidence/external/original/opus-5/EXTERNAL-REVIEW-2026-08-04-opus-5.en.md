@@ -77,7 +77,7 @@ decision: "improvement-confirmed-with-resource-allocation-concern"
 | `.dev/guides` | 7,313 | 5% | human-facing |
 | `.dev/backlog` | 4,246 | 3% | self-governance-history |
 | `tools/` (C#) | 2,887 | 2% | **portable-product** |
-| `.dev/releases` | 2,075 | 1% | self-governance-history |
+| `releases` | 2,075 | 1% | self-governance-history |
 | `.ai/assets/tech-stacks` | **1,487** | **1.0%** | **portable-product** |
 | `.claude/skills` + `.agents/skills` | 1,044 | <1% | runtime-wrappers |
 | `.dev/specs` + `.dev/adr` | 1,002 | <1% | mixed |

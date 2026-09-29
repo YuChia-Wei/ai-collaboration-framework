@@ -3,7 +3,7 @@
   "record_type": "role-execution-observation",
   "delegation_id": "P2-317-VALIDATION-01",
   "role_asset_id": "fixed-head-independent-auditor",
-  "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+  "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
   "owning_skill": "ai-context-auditor",
   "dispatch_prepared_at": "2026-09-21T22:54:25.452020+08:00",
   "worker_clock_first_observed_at": "2026-09-21T23:00:33.6219051+08:00",

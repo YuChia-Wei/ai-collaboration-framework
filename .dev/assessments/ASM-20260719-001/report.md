@@ -223,10 +223,10 @@ git grep ... 51be197 -- .dev/guides .dev/standards
 git show 51be197:<selected-path>
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-workflow-artifacts.py
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-shell-assets.py
 python .ai/scripts/tests/test_fail_closed_validation.py -v
-python .ai/scripts/validate-git-commits.py --range main..baf51d5 --workflow-id 2026-07-19-v0-4-2-remediation
+python tools/maintenance/validate-git-commits.py --range main..baf51d5 --workflow-id 2026-07-19-v0-4-2-remediation
 python .ai/scripts/tests/test_ai_context_package_apply.py -v
 & 'C:\Program Files\Git\bin\bash.exe' .ai/scripts/check-all.sh --quick
 # Owner-provided GitHub Codespaces Ubuntu 24.04 execution:

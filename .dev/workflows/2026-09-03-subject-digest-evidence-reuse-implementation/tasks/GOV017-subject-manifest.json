@@ -27,7 +27,7 @@
   },
   "results": {
     "summary": "subject-manifest/v1 binds the complete tracked closure, invocation, authority, runtime, and privacy-safe environment identity; only ignored create-only artifacts may be sealed",
-    "files_changed": [".ai/assets/shared/validation-gate-classification.yaml", ".ai/scripts/validation_subject.py", ".ai/scripts/validation-evidence.py", ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml", ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"],
+    "files_changed": [".dev/contracts/validation-gate-classification.yaml", "tools/maintenance/validation_subject.py", "tools/maintenance/validation-evidence.py", ".dev/contracts/validation-evidence-lifecycle.schema.yaml", ".dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"],
     "tests_run": ["ValidationSubjectDigestGwtTests and classification tests: 7 passed", "validation lifecycle contract: passed", "routine validation evidence contract: 4 passed"],
     "finding_status": "addressed",
     "residual_risk": "real source-repository closure projection remains HEAD-bound and is rerun after the implementation commit",

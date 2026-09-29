@@ -146,7 +146,7 @@ class SkillNamingTests(unittest.TestCase):
         self.assertEqual(len({candidate.identity for candidate in self.candidates.values()}), 3)
 
     def test_closed_selection_versions_and_schema_mirror(self):
-        schema = json.loads((ROOT / '.dev/design/framework-next/rc2-contracts/schemas/contracts.schema.json').read_text())
+        schema = json.loads((ROOT / 'src/distribution/schemas/contracts.schema.json').read_text())
         self.assertEqual(contracts.DEFINITIONS, schema['$defs'])
         for version in (True, False, 1.0, 2.0, '2', None, 0, 3):
             invalid = {**self.desired['original'], 'selection_version': version}

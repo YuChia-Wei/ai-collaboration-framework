@@ -26,10 +26,10 @@ subject_ref:
   commit: "bd63d3c3b6998484304edb982c464199980dce7e"
 scope:
   included:
-    - ".ai/scripts/python-entrypoints.json"
-    - ".ai/scripts/python_prerequisites.py"
-    - ".ai/scripts/run-python-entrypoint.sh"
-    - ".ai/scripts/run-python-entrypoint.ps1"
+    - "tools/maintenance/python-entrypoints.json"
+    - "tools/maintenance/python_prerequisites.py"
+    - "tools/maintenance/run-python-entrypoint.sh"
+    - "tools/maintenance/run-python-entrypoint.ps1"
     - ".ai/scripts/check-all.sh"
     - "25 registered production Python entrypoints"
     - ".ai/distribution/profiles/dotnet-backend.yaml"
@@ -42,7 +42,7 @@ scope:
     - "tests/** and product test implementation"
     - "product implementation trees"
     - "generated and dependency trees"
-    - "release preparation, tag, publication, and .dev/releases/v0.8.0/**"
+    - "release preparation, tag, publication, and releases/v0.8.0/**"
     - "GitHub PR, CI, merge, and merged-main closeout state"
 relations:
   supersedes: []

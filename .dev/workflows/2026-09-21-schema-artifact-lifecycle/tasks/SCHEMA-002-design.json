@@ -39,7 +39,7 @@
     ],
     "validation": [
       "python -B .ai/scripts/validate-workflow-artifacts.py",
-      "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "python -B tools/maintenance/validate-assessment-artifacts.py",
       "git diff --check"
     ],
     "last_completed_step": "Completed proposed architecture, six migration dispositions, fourteen rule dispositions, validation/test boundary mapping, phased delivery and eleven first-slice acceptance criteria. Selected analysis-first; no implementation or policy relaxation.",

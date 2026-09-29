@@ -20,7 +20,7 @@ When this framework is copied into a target repository, run `ai-context-init` be
 - Keep evidence-backed reusable learnings under `.dev/lessons/`; lessons are non-normative and retain links to their durable origin evidence.
 - Keep reusable agent-facing canonical assets under `.ai/`.
 - Keep runtime-specific skill wrappers under `.agents/skills/` and `.claude/skills/`.
-- Keep durable release identity under `.dev/releases/`, observations under
+- Keep durable release identity under `releases/`, observations under
   `.dev/assessments/`, current source work in live GitHub Issues/Project #3,
   frozen pre-cutover backlog evidence under `.dev/backlog/`, and execution
   artifacts under `.dev/workflows/`.

@@ -14,7 +14,7 @@
       ".ai/SUB-AGENT-SYSTEM.MD",
       ".ai/assets/README.MD",
       ".ai/assets/skills/README.MD",
-      ".ai/assets/sub-agent-role-prompts/README.MD"
+      ".dev/agents/README.MD"
     ],
     "dependency_radius": ".ai entry and index docs; human-facing guide links may be added under .dev/guides if needed.",
     "constraints": [
@@ -43,7 +43,7 @@
     ],
     "validation": [
       "git diff --check",
-      "rg -n -uu \"[一-龥]\" .ai/INDEX.MD .ai/README.MD .ai/DIRECTORY-RULES.MD .ai/SUB-AGENT-SYSTEM.MD .ai/assets/README.MD .ai/assets/skills/README.MD .ai/assets/sub-agent-role-prompts/README.MD"
+      "rg -n -uu \"[一-龥]\" .ai/INDEX.MD .ai/README.MD .ai/DIRECTORY-RULES.MD .ai/SUB-AGENT-SYSTEM.MD .ai/assets/README.MD .ai/assets/skills/README.MD .dev/agents/README.MD"
     ],
     "deferred_items": []
   },
@@ -56,7 +56,7 @@
       ".ai/SUB-AGENT-SYSTEM.MD",
       ".ai/assets/README.MD",
       ".ai/assets/skills/README.MD",
-      ".ai/assets/sub-agent-role-prompts/README.MD"
+      ".dev/agents/README.MD"
     ],
     "tests_run": [
       "git diff --check",

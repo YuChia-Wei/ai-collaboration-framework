@@ -142,7 +142,7 @@
         "result": "No whitespace errors; source diff and exact 12-path scope inspected"
       },
       {
-        "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-source.txt --workflow-id 2026-09-23-instruction-operations",
+        "command": "python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-source.txt --workflow-id 2026-09-23-instruction-operations",
         "result": "Passed for complete planned message; git check-ignore confirmed the message file is ignored. The same message bytes are used by git commit -F."
       }
     ]
@@ -350,7 +350,7 @@
       "Compared original five component-row bytes and lesson-minimal/knowledge bytes to checkpoint base; unchanged",
       "git diff --check and exact product diff inspection",
       "Direct syntax/reference readback of all nine changed files: 9 UTF-8, 5 YAML, 1 JSON and 17 existing local Markdown links",
-      "git check-ignore confirmed the complete planned message is ignored; python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-first-mapping.txt --workflow-id 2026-09-23-instruction-operations passed; commit uses those exact message bytes"
+      "git check-ignore confirmed the complete planned message is ignored; python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-first-mapping.txt --workflow-id 2026-09-23-instruction-operations passed; commit uses those exact message bytes"
     ],
     "deferred": {
       "state": "deferred-by-owner",
@@ -474,7 +474,7 @@
       "Raw-byte comparison of original nine component rows and three protected profiles; retained exact Git blob identities",
       "git diff --check and direct inspection of the five product files",
       "Direct changed-file readback: 10 UTF-8 files, 6 YAML documents, 1 JSON document and 20 existing local Markdown links; task/locator both completed for bounded source/mapping",
-      "git check-ignore confirmed the complete planned message location; python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-final-mapping.txt --workflow-id 2026-09-23-instruction-operations passed; git commit uses that exact file"
+      "git check-ignore confirmed the complete planned message location; python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-346-final-mapping.txt --workflow-id 2026-09-23-instruction-operations passed; git commit uses that exact file"
     ],
     "verification": {
       "state": "deferred-by-owner",

@@ -35,6 +35,6 @@ The old `ai-context-init`, `ai-context-upgrader`, and
 `ai-context-release-closeout` discovery entries are retired from this runtime.
 Source-owned maintenance of previously published formats and exceptional
 release records is routed through root `AGENTS.md`, `.dev/standards/`,
-`.dev/releases/`, and only the legacy tooling that still has an active caller.
+`releases/`, and only the legacy tooling that still has an active caller.
 `.ai/assets/skills/` is compatibility and tooling data, not the runtime skill
 registry.

@@ -31,14 +31,14 @@ The current code graph excludes `.ai/scripts` and `.ai/assets`. In accordance wi
 
 ### F-001 — High — Required catalog gate has no sensitivity classification
 
-The change adds `artifact-catalog-tests` as a `required` check for all four profiles in `.ai/scripts/validation-profile-registry.sh:389-393`. The complete `.ai/assets/shared/validation-gate-classification.yaml` authority contains `artifact-authoring-tests` at line 43 but contains no `artifact-catalog-tests` entry.
+The change adds `artifact-catalog-tests` as a `required` check for all four profiles in `.ai/scripts/validation-profile-registry.sh:389-393`. The complete `.dev/contracts/validation-gate-classification.yaml` authority contains `artifact-authoring-tests` at line 43 but contains no `artifact-catalog-tests` entry.
 
 This is a required one-to-one authority relationship:
 
-- `.ai/scripts/validation_subject.py:284-370` loads the registry and classification authority and raises `SubjectError("gate classification does not exactly cover the validation registry")` whenever their gate-ID sets differ.
-- `.ai/scripts/validate-validation-lifecycle.py:442-445` invokes that loader unconditionally before validating any lifecycle record.
+- `tools/maintenance/validation_subject.py:284-370` loads the registry and classification authority and raises `SubjectError("gate classification does not exactly cover the validation registry")` whenever their gate-ID sets differ.
+- `tools/maintenance/validate-validation-lifecycle.py:442-445` invokes that loader unconditionally before validating any lifecycle record.
 - `.ai/scripts/validation-profile-registry.sh:358-362` registers that validator as the required `validation-lifecycle-contract` check in `fast`, `pr`, `release`, and `nightly-full`.
-- `.ai/scripts/validation_subject.py:390-402` and `:608-620` also require the same authority before building a gate subject manifest.
+- `tools/maintenance/validation_subject.py:390-402` and `:608-620` also require the same authority before building a gate subject manifest.
 - `.ai/scripts/tests/test_validation_subject_digest.py:381-385` owns an exact registry/classification coverage assertion, but none of the retained focused commands or the single authorized package smoke executed that file at the fixed head.
 
 Impact: every declared profile contains a required contract check that deterministically rejects the current registry/classification pair. The new gate also cannot receive a sensitivity, reuse-eligibility, reusable-profile, or environment-contract binding, so evidence subject construction for it fails closed. This violates AC5's required-gate and profile-closure requirement and blocks integration of the current content subject.

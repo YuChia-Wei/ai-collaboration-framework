@@ -1,7 +1,7 @@
 {
   "role_execution_id": "GAP-320-fixed-head-independent-auditor",
   "role_asset_id": "fixed-head-independent-auditor",
-  "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+  "role_path": ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
   "owning_skill": "ai-context-auditor",
   "stage_id": "GAP-320-verification",
   "applicability": {
@@ -46,9 +46,9 @@
       ".dev/assessments/ASM-20260922-20-qk2/report.md"
     ],
     "mandatory_references": [
-      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
-      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
-      ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
+      ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml",
+      ".dev/contracts/ROLE-EXECUTION-CONTRACT.md",
+      ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"
     ],
     "constraints": [
       "Fixed clean subject",

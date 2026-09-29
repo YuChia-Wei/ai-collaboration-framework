@@ -56,7 +56,7 @@ entries:
     retention: "retain as current source evidence"
     disposition: "never copy as downstream truth; require target evidence"
   - id: "DEV-INV-003"
-    path: ".dev/ARCHITECTURE.md"
+    path: "src/knowledge/dotnet-backend/design/architecture-overview.md"
     tracked: { files: 1, bytes: 3542 }
     packaged_source: { files: 0, bytes: 0 }
     owner: "source repository architecture entry"
@@ -146,7 +146,7 @@ entries:
     retention: "retain"
     disposition: "exclude; target receives rewritten seed"
   - id: "DEV-INV-013"
-    path: ".dev/releases/**"
+    path: "releases/**"
     tracked: { files: 51, bytes: 138621 }
     packaged_source: { files: 0, bytes: 0 }
     owner: "each version release.yaml and immutable release record"

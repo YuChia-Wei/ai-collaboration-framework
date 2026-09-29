@@ -19,7 +19,7 @@ entrypoint: "workflow-plan.md"
 continuation:
   current_task_id: "UPG-004"
   target_policy_refs:
-    - ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md"
+    - ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
     - ".ai/assets/skills/ai-context-upgrader/skill.yaml"
     - ".dev/standards/WORKFLOW-GATE-POLICY.md"
   handoff_checkpoint: null

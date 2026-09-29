@@ -18,7 +18,7 @@ template_version: "1.0.0"
 release:
   release_id: "REL-v0.6.0"
   version: "v0.6.0"
-  record: ".dev/releases/v0.6.0/release.yaml"
-  phase_contract: ".dev/releases/v0.6.0/release-phase-checks.yaml"
+  record: "releases/v0.6.0/release.yaml"
+  phase_contract: "releases/v0.6.0/release-phase-checks.yaml"
 tasks:
   - "REL060-001"

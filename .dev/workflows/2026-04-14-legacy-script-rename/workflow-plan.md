@@ -35,8 +35,8 @@ Convert script ownership to `.NET`-first names while preserving backward compati
 - `.ai/scripts/check-spring-config.sh`
 - `.ai/scripts/check-test-spring-di.sh`
 - `.ai/scripts/check-projection-config.sh`
-- `.ai/scripts/check-dotnet-config.sh`
-- `.ai/scripts/check-test-di-compliance.sh`
+- `src/tools/dotnet/check-dotnet-config.sh`
+- `src/tools/dotnet/check-test-di-compliance.sh`
 - `.ai/scripts/README.md`
 - any repo docs or prompts that still reference the legacy script names
 

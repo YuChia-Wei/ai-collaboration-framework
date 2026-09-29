@@ -123,7 +123,7 @@
     },
     {
       "from": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
-      "to": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "to": "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -1213,7 +1213,7 @@
     },
     {
       "from": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
-      "to": ".ai/scripts/check-spec-compliance.sh",
+      "to": "src/tools/dotnet/check-spec-compliance.sh",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -1603,7 +1603,7 @@
     },
     {
       "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
-      "to": ".dev/ARCHITECTURE.md",
+      "to": "src/knowledge/dotnet-backend/design/architecture-overview.md",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -1633,7 +1633,7 @@
     },
     {
       "from": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
-      "to": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "to": "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -2833,7 +2833,7 @@
     },
     {
       "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
-      "to": ".ai/scripts/check-mutation-coverage.sh",
+      "to": "src/tools/dotnet/check-mutation-coverage.sh",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -2843,7 +2843,7 @@
     },
     {
       "from": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
-      "to": ".ai/scripts/check-spec-compliance.sh",
+      "to": "src/tools/dotnet/check-spec-compliance.sh",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -3793,7 +3793,7 @@
     },
     {
       "from": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
-      "to": ".ai/scripts/check-dockerfile-csproj-copy-sync.ps1",
+      "to": "src/tools/dotnet/check-dockerfile-csproj-copy-sync.ps1",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,
@@ -3803,7 +3803,7 @@
     },
     {
       "from": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
-      "to": ".ai/scripts/check-test-di-compliance.sh",
+      "to": "src/tools/dotnet/check-test-di-compliance.sh",
       "source_form": "repository-path",
       "disposition": "target-authority-or-inert-provenance",
       "installed_target": null,

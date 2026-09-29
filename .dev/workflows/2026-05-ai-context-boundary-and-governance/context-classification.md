@@ -23,8 +23,8 @@ This inventory classifies current documentation and AI context by audience, scop
 | `.ai/assets/shared/` | agent | universal | en | keep | Universal shared rules only after moving .NET backend-specific files to `tech-stacks/dotnet-backend`. |
 | `.ai/assets/tech-stacks/dotnet-backend/` | agent | dotnet-backend | en | keep | New home for .NET backend-only reusable AI context. |
 | `.ai/assets/skills/` | agent | mixed | en | split | Skill specs are reusable as structure, but several skills are .NET backend-specific by purpose. |
-| `.ai/assets/sub-agent-role-prompts/` | agent | mixed | en | split | Command/query/reactor/aggregate roles are .NET backend-specific; generic role rules can remain shared. |
-| `.ai/assets/sub-agent-role-prompts/frontend-sub-agent/` | agent | out-of-scope | en | defer | Frontend role exists but is not part of the .NET backend-only profile; decide later whether it belongs in a separate full-stack template. |
+| `.dev/agents/` | agent | mixed | en | split | Command/query/reactor/aggregate roles are .NET backend-specific; generic role rules can remain shared. |
+| `.dev/agents/frontend-sub-agent/` | agent | out-of-scope | en | defer | Frontend role exists but is not part of the .NET backend-only profile; decide later whether it belongs in a separate full-stack template. |
 | `.ai/assets/templates/` | agent | universal | en | keep | Template schemas can stay reusable if examples avoid backend-only assumptions. |
 | `.ai/scripts/` | agent | dotnet-backend | en | move-or-index | Most scripts validate .NET backend rules and should be grouped or indexed as tech-stack-specific. |
 | `.agents/skills/` | agent | runtime-wrapper | en | rewrite | Runtime wrappers should stay thin and English-only. |
@@ -45,7 +45,7 @@ This inventory classifies current documentation and AI context by audience, scop
 
 - `.ai/assets/tech-stacks/dotnet-backend/shared/` now owns .NET backend-specific shared rules that were previously under `.ai/assets/shared/`.
 - `.ai/assets/skills/ddd-ca-hex-architect`, command/query/reactor implementers, and spec compliance validator are strongly tied to the current .NET backend architecture.
-- `.ai/assets/sub-agent-role-prompts/frontend-sub-agent` is a real capability but does not fit the declared .NET backend-only profile.
+- `.dev/agents/frontend-sub-agent` is a real capability but does not fit the declared .NET backend-only profile.
 - `.dev/standards/` currently mixes human explanatory material, executable review standards, examples, and backend-specific rules.
 - Runtime wrappers are already thin, but their README files are zh-TW and should be English if they are treated as agent-facing runtime context.
 

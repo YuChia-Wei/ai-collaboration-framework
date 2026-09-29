@@ -63,14 +63,14 @@ Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skill
 | Decisions、lessons、local backlog、pull requests 或 standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
 | 多階段 software development 與 workflow records | `software-development-orchestrator`，並遵循 source `.dev/` workflow 與 Issue authority |
 | 初始化或升級先前發布的 legacy package format | Source compatibility procedures 與其 active `.ai/scripts/` tooling；這不是 portable installed skill route。 |
-| Historical 或 exceptional source release closeout | `.dev/releases/` 與 source release policy；沒有 portable installed skill route。 |
+| Historical 或 exceptional source release closeout | `releases/` 與 source release policy；沒有 portable installed skill route。 |
 
 Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authority、release governance、U001 與 P7 deferrals。明確保留以下 source duties：source assessment persistence 與 terminal records；source customization 與 policy reconciliation；legacy CBF/SWF intake 與 active records；target-selected legacy .NET 100% gate 與 rule resolver（僅維護該舊版下游格式或 target 時適用，不適用於本 framework source 或其自身安裝）；舊 published-format initialization、upgrade 與 recovery。這些 duties 不會恢復已移除的三個 runtime discovery entries，也不會讓 legacy files 成為第二個日常 skill source。
 
 - AI-context placement 或 language changes 只有適用時才載入 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 與 `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`。
 - Code review 載入 installed `code-reviewer` entry，並只載入其適用的 route 與 finding references。
 - `test-execution` 沒有 required skill；先解析 target-owned commands。
-- Direct execution 仍然有效。依 `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 分類 delegation；只有適用時才載入 role contract。Static profile presence 不是 invocation evidence。
+- Direct execution 仍然有效。依 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 分類 delegation；只有適用時才載入 role contract。Static profile presence 不是 invocation evidence。
 
 ## Workflow 與變更控制
 
@@ -100,7 +100,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 
 ### Agent Execution Guardrails
 
-- 一般同 runtime 工作使用 `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 的 bounded envelope；不得只為例行分析或局部修改建立正式 audit records。
+- 一般同 runtime 工作使用 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 的 bounded envelope；不得只為例行分析或局部修改建立正式 audit records。
 - 依 guardrails contract 按實際風險分類；一般分析與局部修改可直接判定，review preflight 則使用 validator。Terminal 標籤本身不要求完整層級；同一 runtime 內，對隔離且不可變的一般變更進行短程、獨立、唯讀審查，可使用 bounded envelope。Authority、evidence-custody、security、release/adoption 變更、external 或 long-running validation、共用可變 checkout 的審查、共用 frozen work，以及未知風險，都需要完整 validated packet、immutable subject 與 machine-readable snapshot lease。兩個層級都必須維持每個 worktree 只有一個 tracked writer；完整 lease 必須明確 terminal release。
 - 兩個層級都必須在 behavioral dispatch 前，預檢 machine-readable review subject、criteria 與 authority。分開記錄準備失敗、行為缺陷、環境失敗與 provider reconciliation；保留先前 attempts，依既有 evidence-reuse 與 retry 規則只重跑受影響的檢查。
 - Acceptance contract 要求時才維護正式 acceptance-to-evidence ledger。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
@@ -128,7 +128,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 
 ## CLI 與 Runtime 邊界
 
-- Higher-priority policy 選定 cross-boundary CLI execution 後，載入 `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`。
+- Higher-priority policy 選定 cross-boundary CLI execution 後，載入 `.dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md`。
 - Optional binding 只能位於 `.dev/ai-context/local/cli-execution-routing.yaml`；它必須保持 ignored、untracked、unstaged、secret-free，且不得進入 package 或 provenance truth。
 - 不得隱含建立或更新。先驗證 recovery，再揭露 exact path、fields、`create/merge/replace` action 與 secret exclusion；拒絕或未回覆時不寫入。
 - 不得靜默替換 model、provider、execution surface、credential boundary 或 permission。Static configuration 不代表 current-session execution。

@@ -8,8 +8,8 @@
   "scope": {
     "target": ".dev/specs production spec organization",
     "files": [
-      ".dev/specs/SPEC-GUIDE.MD",
-      ".dev/specs/SPEC-ORGANIZATION-GUIDE.MD",
+      "src/skills/spec-author/references/spec-guide.md",
+      "src/skills/spec-author/references/spec-organization-guide.md",
       ".dev/specs/README.MD"
     ],
     "dependency_radius": ".dev/specs only, plus .dev entry docs if they reference the settled contract.",
@@ -24,7 +24,7 @@
   },
   "inputs": {
     "review_findings": [
-      ".dev/specs/SPEC-GUIDE.MD and SPEC-ORGANIZATION-GUIDE.MD describe .dev/specs/domains/ but the subtree is absent."
+      "src/skills/spec-author/references/spec-guide.md and SPEC-ORGANIZATION-GUIDE.MD describe .dev/specs/domains/ but the subtree is absent."
     ],
     "user_constraints": []
   },
@@ -48,8 +48,8 @@
     "files_changed": [
       ".dev/specs/README.MD",
       ".dev/specs/INDEX.MD",
-      ".dev/specs/SPEC-GUIDE.MD",
-      ".dev/specs/SPEC-ORGANIZATION-GUIDE.MD",
+      "src/skills/spec-author/references/spec-guide.md",
+      "src/skills/spec-author/references/spec-organization-guide.md",
       ".dev/INDEX.md"
     ],
     "tests_run": [

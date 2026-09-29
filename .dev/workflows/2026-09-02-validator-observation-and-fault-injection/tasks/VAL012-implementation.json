@@ -56,14 +56,14 @@
   "results": {
     "summary": "Added a privacy-safe lower-bound dependency observer for one explicitly supported in-process Python harness, fail-closed undeclared-input comparison, advisory retention of unobserved declarations, representative fixtures, portable Windows/POSIX observation behavior, and registered validation coverage without enabling evidence reuse.",
     "files_changed": [
-      ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md",
-      ".ai/assets/shared/validation-dependency-observation.schema.yaml",
-      ".ai/scripts/observe-validation-dependencies.py",
+      ".dev/contracts/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md",
+      ".dev/contracts/validation-dependency-observation.schema.yaml",
+      "tools/maintenance/observe-validation-dependencies.py",
       ".ai/scripts/tests/test_validation_dependency_observation.py",
       ".ai/scripts/tests/fixtures/validation-dependency-observation",
       ".ai/scripts/check-all.sh",
       ".ai/scripts/validation-profile-registry.sh",
-      ".ai/scripts/python-entrypoints.json",
+      "tools/maintenance/python-entrypoints.json",
       ".ai/scripts/shell-assets.yaml",
       ".ai/assets/shared/README.MD",
       ".ai/scripts/tests/test_validation_profile_registry.py",

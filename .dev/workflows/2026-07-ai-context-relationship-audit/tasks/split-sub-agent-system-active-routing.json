@@ -9,7 +9,7 @@
     "target": ".ai/SUB-AGENT-SYSTEM.MD active routing boundary",
     "files": [
       ".ai/SUB-AGENT-SYSTEM.MD",
-      ".ai/assets/sub-agent-role-prompts/README.MD"
+      ".dev/agents/README.MD"
     ],
     "dependency_radius": "Sub-agent overview docs and indexes only; update dependent links if split creates a new doc.",
     "constraints": [
@@ -38,7 +38,7 @@
     ],
     "validation": [
       "git diff --check",
-      "rg -n -uu \"reconciler-sub-agent|.ai/assets/commands|deprecated|retired|TODO\" .ai/SUB-AGENT-SYSTEM.MD .ai/assets/sub-agent-role-prompts/README.MD .dev/guides/ai-collaboration-guides"
+      "rg -n -uu \"reconciler-sub-agent|.ai/assets/commands|deprecated|retired|TODO\" .ai/SUB-AGENT-SYSTEM.MD .dev/agents/README.MD .dev/guides/ai-collaboration-guides"
     ],
     "deferred_items": [
       "Actual creation of reconciler-sub-agent remains out of scope unless a separate workflow approves it."
@@ -48,7 +48,7 @@
     "summary": "Rewrote .ai/SUB-AGENT-SYSTEM.MD as active routing and artifact rules; non-existent reconciler role is explicitly non-active.",
     "files_changed": [
       ".ai/SUB-AGENT-SYSTEM.MD",
-      ".ai/assets/sub-agent-role-prompts/README.MD"
+      ".dev/agents/README.MD"
     ],
     "tests_run": [
       "git diff --check",

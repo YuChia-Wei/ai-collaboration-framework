@@ -45,7 +45,7 @@
 - Target:
   - `.ai/assets/shared/`
   - `.ai/assets/skills/`
-  - `.ai/assets/sub-agent-role-prompts/`
+  - `.dev/agents/`
   - `.ai/README.MD`, `.ai/SUB-AGENT-SYSTEM.MD`, or similar agent entry docs
 - Use when:
   - The source record defines prompt architecture, sub-agent routing, reusable generation/review rules, or cross-agent canonical asset structure.
@@ -58,7 +58,7 @@
 - Target:
   - `.dev/standards/`
   - `.dev/ARCHITECTURE.MD`
-  - `.dev/requirement/TECH-STACK-REQUIREMENTS.MD`
+  - `src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD`
   - `AGENTS.md` when the rule must remain repo-entry baseline
 - Use when:
   - The source record defines mandatory structure, naming, dependency rules, architecture constraints, or reviewable coding requirements.

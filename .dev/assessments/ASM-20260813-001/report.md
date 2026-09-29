@@ -40,7 +40,7 @@ The normalized next-version intake is seven cohesive work items, not seventeen o
 - `.ai/scripts/ai_context_package.py` and `.ai/scripts/ai_context_package_apply.py`
 - `.ai/scripts/check-all.sh`, validation registry, evidence, and fixture cleanup contracts
 - `.ai/distribution/**` payload/profile/component projections
-- `.dev/releases/v0.6.0`, `v0.9.0`, `v0.12.0`, and `v0.13.0` compatibility metadata and migration guidance
+- `releases/v0.6.0`, `v0.9.0`, `v0.12.0`, and `v0.13.0` compatibility metadata and migration guidance
 - migration source schema and repeatable package-builder inputs
 - `.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/**`
 - current GitHub Issue decisions and deduplication state
@@ -224,7 +224,7 @@ All seven are next-version candidates. UPG-003 defines v0.14.0 as the first comp
 | Current code reproduction | passed | planner/apply, changed-path, commit cutoff, source-only imports, cleanup, EOF, schedule, and analyzer-template checks reproduced |
 | Engineering Guardrails identity | passed | clean `dotnet-architecture-kit@d0d23e9`; analyzer source and diagnostic docs observed |
 | GitHub deduplication and creation | passed | live open/closed Issues inspected; #21/#149/#179 retained separately; #200 through #206 created and read back without milestone or assignee |
-| Assessment artifact validation | passed | `python .ai/scripts/validate-assessment-artifacts.py --root .` passed for 53 assessments after online Issue links and owner decisions were recorded |
+| Assessment artifact validation | passed | `python tools/maintenance/validate-assessment-artifacts.py --root .` passed for 53 assessments after online Issue links and owner decisions were recorded |
 
 ### Skipped Validation
 
@@ -261,7 +261,7 @@ git -C C:/Github/YuChia/dotnet-mq-arch-lab rev-parse HEAD
 git -C C:/Github/YuChia/dotnet-architecture-kit rev-parse HEAD
 git ls-tree -r --name-only v0.12.0
 rg -n <bounded planner, validation, package, analyzer, schedule, and cleanup patterns>
-Get-Content .dev/releases/v0.6.0|v0.9.0|v0.12.0|v0.13.0 release metadata and migration guides
+Get-Content releases/v0.6.0|v0.9.0|v0.12.0|v0.13.0 release metadata and migration guides
 codebase-memory search_graph/get_code_snippet for build_plan and apply_plan
 GitHub connector fetch/search for #21, #92, #106, #135, #144, #149, #168, #179, #187, #193, and #194; create/read-back #200 through #206
 ```

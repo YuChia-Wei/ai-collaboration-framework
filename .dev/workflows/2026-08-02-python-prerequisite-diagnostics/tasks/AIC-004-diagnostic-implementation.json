@@ -22,14 +22,14 @@
       ".ai/scripts/plan-ai-context-package-apply.py",
       ".ai/scripts/validate-ai-context-target.py",
       ".ai/scripts/validate-ai-context.py",
-      ".ai/scripts/validate-assessment-artifacts.py",
+      "tools/maintenance/validate-assessment-artifacts.py",
       ".ai/scripts/validate-dependency-versions.py",
-      ".ai/scripts/validate-file-disposition-manifest.py",
-      ".ai/scripts/validate-git-commits.py",
+      "tools/maintenance/validate-file-disposition-manifest.py",
+      "tools/maintenance/validate-git-commits.py",
       ".ai/scripts/validate-shell-assets.py",
       ".ai/scripts/validate-software-development-orchestrator-acceptance.py",
       ".ai/scripts/validate-workflow-artifacts.py",
-      ".ai/scripts/validate-workflow-handoff.py"
+      "tools/maintenance/validate-workflow-handoff.py"
     ],
     "constraints": [
       "Start only after explicit approval of the accumulated design.",
@@ -67,10 +67,10 @@
   "results": {
     "summary": "The first 12-entry portable/downstream implementation batch is complete at 3f863be. Shared fail-closed diagnostics, both launchers, direct guards, package projection, target-owned routine-validation policy, documentation, focused CI, clean-install proof, and v0.7.0 upgrade proof pass CP-2.",
     "files_changed": [
-      ".ai/scripts/python-entrypoints.json",
-      ".ai/scripts/python_prerequisites.py",
-      ".ai/scripts/run-python-entrypoint.sh",
-      ".ai/scripts/run-python-entrypoint.ps1",
+      "tools/maintenance/python-entrypoints.json",
+      "tools/maintenance/python_prerequisites.py",
+      "tools/maintenance/run-python-entrypoint.sh",
+      "tools/maintenance/run-python-entrypoint.ps1",
       ".ai/scripts/check-all.sh",
       ".ai/distribution/profiles/dotnet-backend.yaml",
       ".ai/assets/skills/software-development-orchestrator/references/validation-activation-policy.md",

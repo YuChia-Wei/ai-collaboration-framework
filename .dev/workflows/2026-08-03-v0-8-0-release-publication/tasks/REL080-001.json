@@ -15,7 +15,7 @@
   "reasoning_effort": "max",
   "scope": {
     "release_id": "REL-v0.8.0",
-    "release_record": ".dev/releases/v0.8.0/release.yaml",
+    "release_record": "releases/v0.8.0/release.yaml",
     "authorized_included_work": [
       "SKILL-002",
       "TOOL-002",
@@ -43,7 +43,7 @@
   "results": {
     "summary": "REL-v0.8.0 passed candidate validation, PR integration, the owner-created immutable annotated tag, hosted publication, merged-source published-body reconciliation, exact body-only read-back, Project publication-field reconciliation, and terminal finalization without changing the Release identity, tag, or assets.",
     "files_changed": [
-      ".dev/releases/v0.8.0/release.yaml",
+      "releases/v0.8.0/release.yaml",
       ".dev/backlog/ROADMAP.md",
       ".dev/backlog/INDEX.MD",
       ".dev/backlog/provider-mappings/github-issues-SKILL-002.yaml",

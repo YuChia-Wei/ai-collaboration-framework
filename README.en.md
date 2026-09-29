@@ -25,7 +25,7 @@ Installation selection is separate from skill operation settings. `.ai/custom/fr
 - `src/skills/` and `src/knowledge/` are the editable reusable product sources; this repository selects no engineering knowledge package.
 - `.ai/core/`, `.ai/framework.lock`, and runtime entries are installation outputs.
 - `.ai/assets/` retains only compatibility and tooling inputs with active source-tool callers. It is not the daily skill registry or a second route for ordinary execution.
-- `.dev/standards/` owns source policy, Issue authority, U001, and P7 deferrals; `.dev/releases/` owns release records and version-support boundaries.
+- `.dev/standards/` owns source policy, Issue authority, U001, and P7 deferrals; `releases/` owns release records and version-support boundaries.
 - Initialization, upgrade, and transaction recovery for previously published formats, plus historical or exceptional release closeout, remain source-owned compatibility duties rather than portable installed skills.
 
 Follow [`AGENTS.md`](AGENTS.md) and the `.dev/standards/` policies it names. Installing RC2 does not establish runtime discovery, behavioral acceptance, upgrade/recovery trials, or downstream admission; owner-selected S6/P7 work owns those checks. Stable publication and a GitHub Release are separate owner decisions.

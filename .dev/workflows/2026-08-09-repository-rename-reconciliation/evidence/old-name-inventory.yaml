@@ -86,7 +86,7 @@ classifications:
     disposition: "retain"
     occurrence_lines: 11
     files: 10
-    path_glob: ".dev/releases/**"
+    path_glob: "releases/**"
     rationale: "Release records and notes describe immutable published tags, release coordinates, and evidence as observed at publication time."
   - rule_id: "GOV007-CLASS-007"
     classification: "historical-immutable-evidence"

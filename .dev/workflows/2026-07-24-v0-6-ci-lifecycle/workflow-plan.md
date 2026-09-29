@@ -28,7 +28,7 @@
 ## Decision Boundary
 
 The owner approved version-scoped phase contracts on 2026-07-24. The canonical
-path is `.dev/releases/<version>/release-phase-checks.yaml`; the release-state
+path is `releases/<version>/release-phase-checks.yaml`; the release-state
 validator and release handoff checkpoint both resolve the selected stable
 version and fail closed on missing, mismatched, or unsanctioned contracts.
 Hosted warning-free artifact and concurrency evidence still requires a pull

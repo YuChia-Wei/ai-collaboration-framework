@@ -38,32 +38,32 @@
       "sha256": "1cb79f87b5f164218e0de06187b2bef468d62e3036cb9366116183c43c4ad772"
     },
     {
-      "path": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+      "path": ".dev/contracts/agent-execution-guardrails.schema.yaml",
       "git_blob": "fc00c431a3ad2a420bb09a52f76a04e25adafadd",
       "sha256": "0ffc68fb5d48acb4a15465d9083a7e9965aee761dc6c84eae5e00ccf4dc6471d"
     },
     {
-      "path": ".ai/assets/shared/cli-execution-routing.schema.yaml",
+      "path": ".dev/contracts/cli-execution-routing.schema.yaml",
       "git_blob": "15dbc840cd2f2305912fdc06328441d0cefdb446",
       "sha256": "e7cd8c2c5a07904f9558fe0b17b8fcf9b279ad1f8a2a280ef6ff9be2148ef926"
     },
     {
-      "path": ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml",
+      "path": ".dev/contracts/provider-neutral-capability-registry.schema.yaml",
       "git_blob": "0dd31db1b4ccd74aeca409408a55517904ab0d2b",
       "sha256": "ac57c3a7fc1a528e7fb3c7338b95d29e78e75e875a4a77e08c9b820773c4ef8e"
     },
     {
-      "path": ".ai/assets/shared/provider-projection-registry.schema.yaml",
+      "path": ".dev/contracts/provider-projection-registry.schema.yaml",
       "git_blob": "7f8a67c52bb2068489f4bd419c99fe3f353495ee",
       "sha256": "fb11843e29b6379032a56cfc3ca010e8a208fba9dee1edc3324a87f404952626"
     },
     {
-      "path": ".ai/assets/shared/validation-dependency-observation.schema.yaml",
+      "path": ".dev/contracts/validation-dependency-observation.schema.yaml",
       "git_blob": "f6f6e6a6bc28368f0fbcb4b159bee3fd55fb9970",
       "sha256": "d87c3e8cabd8890dbbb419fadb9868fe6f380b72aae9ee2427ff7f746dbe61e2"
     },
     {
-      "path": ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml",
+      "path": ".dev/contracts/validation-evidence-lifecycle.schema.yaml",
       "git_blob": "8258d986328f40b4003e3c6e877e5e76cc6ca49e",
       "sha256": "7a1e496b045252c84fe4b0d7b9f487190f29ef89f18c513867d571de50d5aa05"
     },
@@ -238,7 +238,7 @@
       "sha256": "84f01dde4504b413f56558f1bb452221c2697e53c84ac5e63c0c61ee329c0293"
     },
     {
-      "path": ".ai/scripts/python-entrypoints.json",
+      "path": "tools/maintenance/python-entrypoints.json",
       "git_blob": "70a35fb21e73360e1efb6bcb1ea88a6544630fe6",
       "sha256": "bb0cf97d600cafdebb65295bc529dcce56b1b82c0590ba615f2995ffd4ec649a"
     },
@@ -253,7 +253,7 @@
       "sha256": "21c1f04348f3a2bc316705c60004b39602df02f9da52b0fef0014f212f64b053"
     },
     {
-      "path": ".ai/scripts/validation-evidence.py",
+      "path": "tools/maintenance/validation-evidence.py",
       "git_blob": "316dd49e14ee8f114365426e7f672988bf98c2f1",
       "sha256": "7b6301d388d5694aa8e0189bce55c13c8e92bad5c67d4b20a21cc60783a05c28"
     },
@@ -268,17 +268,17 @@
       "sha256": "5b727c1f315be25a204e38956e9d7143cb92480d4a59e4b59c2fe43cee1d22bf"
     },
     {
-      "path": ".dev/requirement/REQUIREMENT-GUIDE.MD",
+      "path": "src/skills/requirement-author/references/requirement-guide.md",
       "git_blob": "7406fe4df986e5669a5e78141a432db45a9be906",
       "sha256": "6766e062ec8c76e0b43bb4cc2476ed383457d6371b84d5595e133c730004611c"
     },
     {
-      "path": ".dev/specs/SPEC-GUIDE.MD",
+      "path": "src/skills/spec-author/references/spec-guide.md",
       "git_blob": "e071093d607fb884d893d9d1cfaf92df69cbf7d4",
       "sha256": "93ab55d471163999debdc7fc23cee33e986c1f94c3e411ef78ad4394ad859722"
     },
     {
-      "path": ".dev/specs/tests/TEST-SPEC-GUIDE.MD",
+      "path": "src/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD",
       "git_blob": "859a59f2d05b43aaff25efef10023af2754fcb0b",
       "sha256": "33bc289e1940c1e4e6b398f445072923afddd328cb656cfbbad9a50798708ccb"
     },
@@ -635,15 +635,15 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "executable",
         "producers": [
           ".ai/scripts/execution-artifacts.py::build_evidence_ledger"
         ],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_evidence"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_evidence"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Current 1.0 ledger from explicit acceptance/outcome fields and existing local evidence/receipt files; derives byte digests, receipt copy, report projection and seal. Does not issue receipts or establish execution truth.",
@@ -667,13 +667,13 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::classify_execution"
+          "tools/maintenance/validate-agent-execution-guardrails.py::classify_execution"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -697,15 +697,15 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "executable",
         "producers": [
           ".ai/scripts/execution-artifacts.py::prepare"
         ],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_packet"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_packet"
         ],
         "readable": "Packet 1.0 historical, 1.1 current.",
         "writable": "Packet 1.1 through execution-artifacts prepare.",
@@ -729,13 +729,13 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_retry"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_retry"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -759,13 +759,13 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_graph"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_graph"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -789,15 +789,15 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "executable",
         "producers": [
           ".ai/scripts/execution-artifacts.py::build_review_input"
         ],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_review_input"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_review_input"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Current 1.0 review input from explicit classification, criteria, repository identity, base commit and authority paths; derives current Git trees, subject digest and authority byte digests. Requires expected clean HEAD.",
@@ -821,13 +821,13 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_evidence"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_evidence"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -851,13 +851,13 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::load_workflow_authorization"
+          "tools/maintenance/validate-agent-execution-guardrails.py::load_workflow_authorization"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -881,13 +881,13 @@
           "E01"
         ],
         "models": [
-          ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
+          ".dev/contracts/agent-execution-guardrails.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "manual-gap",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_lease"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_lease"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Lease authoring remains manual under the guardrail owner. Lock acquisition exists, but acquire/release and crash recovery require a coordinated custody operation; an input serializer alone must not claim a live or released lease.",
@@ -911,13 +911,13 @@
           "E02"
         ],
         "models": [
-          ".ai/assets/shared/cli-execution-routing.schema.yaml"
+          ".dev/contracts/cli-execution-routing.schema.yaml"
         ],
-        "owner": ".ai/scripts/ai_context_cli_routing.py",
+        "owner": "tools/maintenance/ai_context_cli_routing.py",
         "authoring": "manual-gap",
         "producers": [],
         "validators": [
-          ".ai/scripts/ai_context_cli_routing.py::validate_cli_execution_routing"
+          "tools/maintenance/ai_context_cli_routing.py::validate_cli_execution_routing"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Optional ignored local configuration remains an explicit owner persistence operation after successful recovery and disclosure of exact path, fields and create/merge/replace action. No real personal binding is selected or written by this tooling follow-up.",
@@ -941,7 +941,7 @@
           "E03"
         ],
         "models": [
-          ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml"
+          ".dev/contracts/provider-neutral-capability-registry.schema.yaml"
         ],
         "owner": ".ai/scripts/validate-ai-context.py",
         "authoring": "executable",
@@ -973,7 +973,7 @@
           "E04"
         ],
         "models": [
-          ".ai/assets/shared/provider-projection-registry.schema.yaml"
+          ".dev/contracts/provider-projection-registry.schema.yaml"
         ],
         "owner": ".ai/scripts/validate-ai-context.py",
         "authoring": "executable",
@@ -1005,16 +1005,16 @@
           "E05"
         ],
         "models": [
-          ".ai/assets/shared/validation-dependency-observation.schema.yaml"
+          ".dev/contracts/validation-dependency-observation.schema.yaml"
         ],
-        "owner": ".ai/scripts/observe-validation-dependencies.py",
+        "owner": "tools/maintenance/observe-validation-dependencies.py",
         "authoring": "executable",
         "producers": [
-          ".ai/scripts/observe-validation-dependencies.py::observe_request",
-          ".ai/scripts/observe-validation-dependencies.py::write_report"
+          "tools/maintenance/observe-validation-dependencies.py::observe_request",
+          "tools/maintenance/observe-validation-dependencies.py::write_report"
         ],
         "validators": [
-          ".ai/scripts/observe-validation-dependencies.py::observe_request"
+          "tools/maintenance/observe-validation-dependencies.py::observe_request"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
@@ -1038,15 +1038,15 @@
           "E05"
         ],
         "models": [
-          ".ai/assets/shared/validation-dependency-observation.schema.yaml"
+          ".dev/contracts/validation-dependency-observation.schema.yaml"
         ],
-        "owner": ".ai/scripts/observe-validation-dependencies.py",
+        "owner": "tools/maintenance/observe-validation-dependencies.py",
         "authoring": "executable",
         "producers": [
           ".ai/scripts/execution-artifacts.py::build_dependency_request"
         ],
         "validators": [
-          ".ai/scripts/observe-validation-dependencies.py::validate_request"
+          "tools/maintenance/observe-validation-dependencies.py::validate_request"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Current request/v1 with explicit validator, supported harness, callable, argv and five dependency dimensions; derives subject from pinned clean HEAD and validates local references. Does not import or execute the selected callable.",
@@ -1070,13 +1070,13 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "owner": "tools/maintenance/validate-validation-lifecycle.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-validation-lifecycle.py::validate_audit"
+          "tools/maintenance/validate-validation-lifecycle.py::validate_audit"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -1100,13 +1100,13 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "owner": "tools/maintenance/validate-validation-lifecycle.py",
         "authoring": "semantic-owner",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-validation-lifecycle.py::validate_required_contexts"
+          "tools/maintenance/validate-validation-lifecycle.py::validate_required_contexts"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "No bounded executable writer registered; follow the declared owner route.",
@@ -1130,16 +1130,16 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-agent-execution-guardrails.py",
+        "owner": "tools/maintenance/validate-agent-execution-guardrails.py",
         "authoring": "executable",
         "producers": [
           ".ai/scripts/execution-artifacts.py::build_review_subject"
         ],
         "validators": [
-          ".ai/scripts/validate-agent-execution-guardrails.py::validate_review_input",
-          ".ai/scripts/validate-validation-lifecycle.py::validate_audit"
+          "tools/maintenance/validate-agent-execution-guardrails.py::validate_review_input",
+          "tools/maintenance/validate-validation-lifecycle.py::validate_audit"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Canonical independent-review-subject/v1 is derived as part of review-input authoring from existing commit trees and explicit repository identity; no review or admission is inferred.",
@@ -1163,15 +1163,15 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validation_subject.py",
+        "owner": "tools/maintenance/validation_subject.py",
         "authoring": "executable",
         "producers": [
-          ".ai/scripts/validation_subject.py::build_rebind_receipt"
+          "tools/maintenance/validation_subject.py::build_rebind_receipt"
         ],
         "validators": [
-          ".ai/scripts/validation_subject.py::validate_rebind_receipt"
+          "tools/maintenance/validation_subject.py::validate_rebind_receipt"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
@@ -1195,15 +1195,15 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validation_subject.py",
+        "owner": "tools/maintenance/validation_subject.py",
         "authoring": "executable",
         "producers": [
-          ".ai/scripts/validation_subject.py::build_subject_manifest"
+          "tools/maintenance/validation_subject.py::build_subject_manifest"
         ],
         "validators": [
-          ".ai/scripts/validation_subject.py::validate_subject_manifest"
+          "tools/maintenance/validation_subject.py::validate_subject_manifest"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
@@ -1227,15 +1227,15 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validation_subject.py",
+        "owner": "tools/maintenance/validation_subject.py",
         "authoring": "executable",
         "producers": [
-          ".ai/scripts/validation_subject.py::build_subject_manifest"
+          "tools/maintenance/validation_subject.py::build_subject_manifest"
         ],
         "validators": [
-          ".ai/scripts/validation_subject.py::validate_subject_manifest"
+          "tools/maintenance/validation_subject.py::validate_subject_manifest"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
@@ -1259,13 +1259,13 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "owner": "tools/maintenance/validate-validation-lifecycle.py",
         "authoring": "manual-gap",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-validation-lifecycle.py::validate_freeze"
+          "tools/maintenance/validate-validation-lifecycle.py::validate_freeze"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Freeze sequencing and terminal release require observed mutation completion, workflow/declaration state and custody; retain the explicit owner record and validator instead of defaulting prerequisite booleans.",
@@ -1289,15 +1289,15 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validation_subject.py",
+        "owner": "tools/maintenance/validation_subject.py",
         "authoring": "executable",
         "producers": [
           ".ai/scripts/artifact_authoring.py::catalog_update"
         ],
         "validators": [
-          ".ai/scripts/validation_subject.py::load_classification_authority"
+          "tools/maintenance/validation_subject.py::load_classification_authority"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Existing group or external gate reason only through validation-gate-groups / validation-external-gates selectors. Gate identity, membership, sensitivities, reuse eligibility, profiles and environment contracts are protected.",
@@ -1321,13 +1321,13 @@
           "E06"
         ],
         "models": [
-          ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml"
+          ".dev/contracts/validation-evidence-lifecycle.schema.yaml"
         ],
-        "owner": ".ai/scripts/validate-validation-lifecycle.py",
+        "owner": "tools/maintenance/validate-validation-lifecycle.py",
         "authoring": "manual-gap",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-validation-lifecycle.py::validate_reuse_receipt"
+          "tools/maintenance/validate-validation-lifecycle.py::validate_reuse_receipt"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Reuse receipt requires complete dependency, runtime, environment, original execution and fresh-gate proof. A serializer cannot resolve those proofs; follow the existing validation lifecycle owner without expanding reuse eligibility.",
@@ -2880,7 +2880,7 @@
           ".ai/scripts/artifact_authoring.py::assessment"
         ],
         "validators": [
-          ".ai/scripts/validate-assessment-artifacts.py::validate_assessments"
+          "tools/maintenance/validate-assessment-artifacts.py::validate_assessments"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Only operations supported by the referenced producer; no arbitrary create/update claim.",
@@ -2910,7 +2910,7 @@
         "authoring": "manual-gap",
         "producers": [],
         "validators": [
-          ".ai/scripts/validate-workflow-handoff.py::main"
+          "tools/maintenance/validate-workflow-handoff.py::main"
         ],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
         "writable": "Use the owning checkpoint template and validator with captured Git, gate and attribution observations, registry registration and post-commit receiver verification. A future writer requires captured-observation replay and handoff-specific multi-file recovery; the ordinary generic create adapter is not safe for this lifecycle.",
@@ -2934,7 +2934,7 @@
           "I06"
         ],
         "models": [
-          ".dev/requirement/REQUIREMENT-GUIDE.MD"
+          "src/skills/requirement-author/references/requirement-guide.md"
         ],
         "owner": ".ai/assets/skills/requirement-author/skill.yaml",
         "authoring": "semantic-owner",
@@ -2962,7 +2962,7 @@
           "I07"
         ],
         "models": [
-          ".dev/specs/SPEC-GUIDE.MD"
+          "src/skills/spec-author/references/spec-guide.md"
         ],
         "owner": ".ai/assets/skills/spec-author/skill.yaml",
         "authoring": "semantic-owner",
@@ -2990,7 +2990,7 @@
           "I08"
         ],
         "models": [
-          ".dev/specs/tests/TEST-SPEC-GUIDE.MD"
+          "src/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD"
         ],
         "owner": ".ai/assets/skills/spec-author/skill.yaml",
         "authoring": "semantic-owner",
@@ -3231,12 +3231,12 @@
           "I14"
         ],
         "models": [
-          ".ai/scripts/validation-evidence.py"
+          "tools/maintenance/validation-evidence.py"
         ],
-        "owner": ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md",
+        "owner": ".dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md",
         "authoring": "executable",
         "producers": [
-          ".ai/scripts/validation-evidence.py::main"
+          "tools/maintenance/validation-evidence.py::main"
         ],
         "validators": [],
         "readable": "Only the versions and forms accepted by the referenced owner reader; schema-definition versions are not inferred as record versions.",
@@ -3419,7 +3419,7 @@
           "I17"
         ],
         "models": [
-          ".ai/scripts/python-entrypoints.json"
+          "tools/maintenance/python-entrypoints.json"
         ],
         "owner": ".ai/assets/skills/ai-context-governance/skill.yaml",
         "authoring": "manual-gap",

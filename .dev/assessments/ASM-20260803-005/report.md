@@ -185,12 +185,12 @@ python .ai/scripts/tests/test_governance_workflow_contract.py -v
 python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v
 python .ai/scripts/tests/test_ai_context_language_policy.py -v
 python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/tests/test_assessment_artifacts.py -v
 python .ai/scripts/validate-workflow-artifacts.py
 python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v
 python .ai/scripts/tests/test_git_commit_policy.py -v
-python .ai/scripts/validate-git-commits.py --range origin/main..HEAD --workflow-id 2026-08-03-workflow-delivery-cohesion
+python tools/maintenance/validate-git-commits.py --range origin/main..HEAD --workflow-id 2026-08-03-workflow-delivery-cohesion
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-ai-context-versions.py
 python .ai/scripts/tests/test_profile_projection_contract.py -v

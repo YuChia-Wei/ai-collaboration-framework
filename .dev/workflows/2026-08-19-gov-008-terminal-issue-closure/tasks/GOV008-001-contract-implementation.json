@@ -15,7 +15,7 @@
   "finding_ids": ["GOV-008-CLOSURE-ASYMMETRY"],
   "scope": {
     "target": "source-repository GitHub Issue closure governance",
-    "files": [".dev/backlog/providers/github.yaml", ".github/pull_request_template.md", ".ai/scripts/validate-terminal-issue-closure.py"],
+    "files": [".dev/backlog/providers/github.yaml", ".github/pull_request_template.md", "tools/maintenance/validate-terminal-issue-closure.py"],
     "constraints": ["exactly terminal-close and deferred", "PR A defers #212", "GitHub semantics remain source-only"],
     "non_goals": ["release or publication", "historical rewrite", "downstream GitHub keyword policy"]
   },

@@ -97,17 +97,17 @@ The colocation contract already enforces two canonical skill-owned production sc
 | `.ai/scripts/plan-ai-context-package-apply.py` | portable | Keep repo-common | Package apply is consumed by initialization and upgrade lifecycles and crosses skill ownership. |
 | `.ai/scripts/validate-ai-context-target.py` | portable | Keep repo-common | Target provenance/customization validation is shared by init, upgrade, governance, and audit lifecycles. |
 | `.ai/scripts/validate-ai-context.py` | portable | Keep repo-common | Repository-wide navigation, wrapper, language, registry, and routing contracts cross many skills. |
-| `.ai/scripts/validate-assessment-artifacts.py` | portable | Keep repo-common | Assessment production and remediation/verification coordination have different owners. |
+| `tools/maintenance/validate-assessment-artifacts.py` | portable | Keep repo-common | Assessment production and remediation/verification coordination have different owners. |
 | `.ai/scripts/validate-dependency-versions.py` | portable | Keep repo-common | Enforces repository, CI, package, Python, and .NET dependency contracts. |
-| `.ai/scripts/validate-file-disposition-manifest.py` | portable | Keep repo-common | Disposition evidence is shared across remediation, release, and downstream migration. |
-| `.ai/scripts/validate-git-commits.py` | portable | Keep repo-common | Git policy applies to every workflow and skill. |
+| `tools/maintenance/validate-file-disposition-manifest.py` | portable | Keep repo-common | Disposition evidence is shared across remediation, release, and downstream migration. |
+| `tools/maintenance/validate-git-commits.py` | portable | Keep repo-common | Git policy applies to every workflow and skill. |
 | `.ai/scripts/validate-shell-assets.py` | portable | Keep repo-common | Validates repository-wide shell orchestration and compatibility assets. |
 | `.ai/scripts/validate-software-development-orchestrator-acceptance.py` | portable | Keep thin compatibility path | Canonical behavior remains skill-owned; this published root route only delegates. |
 | `.ai/scripts/validate-workflow-artifacts.py` | portable | Keep repo-common | Workflow metadata and task contracts are shared across workflow-owning skills. |
-| `.ai/scripts/validate-workflow-handoff.py` | portable | Keep repo-common | Cross-runtime, cross-model, and cross-skill handoff is repository-wide. |
+| `tools/maintenance/validate-workflow-handoff.py` | portable | Keep repo-common | Cross-runtime, cross-model, and cross-skill handoff is repository-wide. |
 | `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py` | source-only | Keep skill-owned | The comparison is a single-owner upgrader capability and is already contract-tested in place. |
 | `.ai/scripts/build-ai-context-package.py` | source-only | Keep repo-common | Source release/package production crosses skill and distribution ownership. |
-| `.ai/scripts/measure-ai-context-load.py` | source-only | Keep repo-common | Measures source-wide runtime, routing, release, handoff, and development traces. |
+| `tools/maintenance/measure-ai-context-load.py` | source-only | Keep repo-common | Measures source-wide runtime, routing, release, handoff, and development traces. |
 | `.ai/scripts/plan-github-backlog-migration.py` | source-only | Keep repo-common | Provider migration crosses workflow and backlog ownership rather than one skill. |
 | `.ai/scripts/prepare-ai-context-release.py` | source-only | Keep repo-common | Coordinates release state, gates, Git state, and owner handoff. |
 | `.ai/scripts/render-ai-context-release-notes.py` | source-only | Keep repo-common | Release rendering consumes repository-wide release/package truth. |

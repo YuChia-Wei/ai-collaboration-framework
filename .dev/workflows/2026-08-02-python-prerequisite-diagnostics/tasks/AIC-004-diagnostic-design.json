@@ -24,7 +24,7 @@
       "requirements.txt",
       ".ai/distribution/**",
       ".dev/guides/**",
-      ".dev/releases/**",
+      "releases/**",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/**"
     ],
     "constraints": [

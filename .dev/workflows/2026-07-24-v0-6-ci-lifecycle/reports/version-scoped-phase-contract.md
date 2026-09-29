@@ -3,7 +3,7 @@
 ## Decision
 
 The owner approved one immutable phase contract per stable release:
-`.dev/releases/<version>/release-phase-checks.yaml`.
+`releases/<version>/release-phase-checks.yaml`.
 
 ## Implemented Boundary
 
