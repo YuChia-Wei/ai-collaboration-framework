@@ -396,9 +396,9 @@ members:
 - path: standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md
   kind: knowledge
 - path: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/DESIGN-BY-CONTRACT.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   kind: knowledge
 - path: standards/anti-patterns.md
@@ -410,13 +410,13 @@ members:
 - path: standards/coding-standards.md
   kind: knowledge
 - path: standards/coding-standards/aggregate-standards.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/coding-standards/archive-standards.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/coding-standards/controller-standards.md
   kind: knowledge
 - path: standards/coding-standards/mapper-standards.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/coding-standards/profile-configuration-standards.md
   kind: knowledge
 - path: standards/coding-standards/projection-standards.md
@@ -426,13 +426,13 @@ members:
 - path: standards/coding-standards/repository-standards.md
   kind: knowledge
 - path: standards/coding-standards/test-standards.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/coding-standards/transactional-messaging-standards.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/coding-standards/usecase-standards.md
-  kind: knowledge
+  kind: normative-rule
 - path: standards/project-structure.md
-  kind: knowledge
+  kind: normative-rule
 - path: templates/application-properties-templates.md
   kind: template
 - path: templates/profile-isolated-configurations.md
@@ -6130,7 +6130,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
   path: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - AGGREGATE-ES-001
   capabilities:
@@ -6160,7 +6160,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/DESIGN-BY-CONTRACT.md
   path: standards/DESIGN-BY-CONTRACT.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - CONTRACT-SEMANTICS-001
   capabilities:
@@ -6335,7 +6335,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/coding-standards/aggregate-standards.md
   path: standards/coding-standards/aggregate-standards.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - DELETE-SOFT-001
   capabilities:
@@ -6365,7 +6365,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/coding-standards/archive-standards.md
   path: standards/coding-standards/archive-standards.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - DELETE-PURGE-001
   capabilities:
@@ -6424,7 +6424,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/coding-standards/mapper-standards.md
   path: standards/coding-standards/mapper-standards.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - MAP-EVENTS-001
   capabilities:
@@ -6570,7 +6570,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/coding-standards/test-standards.md
   path: standards/coding-standards/test-standards.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - TEST-BDDFY-001
   - TEST-GWT-001
@@ -6602,7 +6602,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/coding-standards/transactional-messaging-standards.md
   path: standards/coding-standards/transactional-messaging-standards.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - MESSAGING-TX-001
   capabilities:
@@ -6632,7 +6632,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/coding-standards/usecase-standards.md
   path: standards/coding-standards/usecase-standards.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - ARCH-UOW-001
   capabilities:
@@ -6662,7 +6662,7 @@ resources:
   technology_profile: dotnet-backend
 - id: member:standards/project-structure.md
   path: standards/project-structure.md
-  kind: knowledge
+  kind: normative-rule
   rule_ids:
   - PROJECT-GRAMMAR-001
   capabilities:
