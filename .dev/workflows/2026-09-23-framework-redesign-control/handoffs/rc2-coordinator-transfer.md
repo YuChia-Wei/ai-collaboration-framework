@@ -2,21 +2,33 @@
 
 ## Current owner-selected checkpoint — 2026-09-29
 
-Continue from [the active adoption workflow](../../2026-09-29-rc2-adoption/workflow.yaml)
-and its plan. Source adoption is bound to Issue #411 in
-`F:/framework-next/rc2-source-adoption`, branch
-`codex/2026-09-29-rc2-adoption`; downstream adoption is separately bound to
-Issue #22. The source and target tasks are in progress. S6 runtime discovery,
-behavioral acceptance, upgrade/recovery trials and target admission are
-`deferred-by-owner` for this delivery. R5, P7, CI restoration and program #322
-remain open. The former `F:/framework-next/rc2-coordinator` receiving location
-below is historical and must not be resumed.
+Source PR #412 and tag `v0.19.0-rc.2` are read back complete: `origin/main` is
+`31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5`, and tag object
+`0f6118554f1573d835faf67aaa418dd291dd01d1` peels to product commit
+`aad927328c20b08c8445e8ad1792eadd8ecc3466`. Issue #409 is closed; direct
+GitHub reads show #411 and mq-lab #22 open, with #23 open as the future target
+admission gate. After this source checkpoint integrates, resume from source
+main; continue the remaining MQ work on draft PR #24 and head branch
+`codex/2026-09-29-framework-rc2-adoption`. If source changes become necessary,
+create a new bounded branch from the then-current main.
 
-The owner has directly instructed this task to start rc.2 and prepare a fresh task
-when accumulated context is excessive. This is that continuation, not another
-request to approve the already selected direction. Start from the compact
-[JSON checkpoint](rc2-coordinator-transfer.json) and
-[rc.2 design](../../../design/framework-next/rc2-installation-selection.md).
+Coordinator API2 evidence for MQ: the install succeeded with lock SHA-256
+`c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f`; the lock
+contains 384 managed members and the selection has 40 bindings. Read-only raw
+hash checks confirmed 384/384 members equal the selected subset manifest,
+staged Git blobs and working tree. Project readiness remains `not-assessed`;
+this does not prove reference validity or runtime behavior.
+
+Nine proposed authority URL changes in `.dev/ai-context/TARGET-ENGINEERING-RULES.md`
+remain unapplied pending owner disposition after automatic review required direct
+approval. Do not apply that diff without the owner response. Then rebuild the
+final MQ subset and perform the official API2 rebind. MQ PR #24 is read back
+OPEN/draft against `main`, with head branch
+`codex/2026-09-29-framework-rc2-adoption` at
+`aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca`; it is not merged. After approved
+disposition and rebind, continue with PR integration and main read-back. Keep
+#411/#22 open until integration is verified. S6/P7 and runtime acceptance remain
+deferred-by-owner.
 
 ## Read in this order
 

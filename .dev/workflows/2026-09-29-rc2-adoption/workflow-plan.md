@@ -6,7 +6,7 @@ On 2026-09-29 the owner selected RC2 source and mq-lab adoption, Git tag creatio
 
 This work is bound to source Issue #411, naming closeout #409 and program #322. Downstream adoption is independently bound to dotnet-distributed-architecture-lab Issue #22. Program #322 and #369 remain open for their other obligations.
 
-The first source catalog and local installation used interim source commit `3908974fe3c1e2989253459cd3488d8c29da47f9`, version `0.19.0-rc.2`. The final shared product input is source commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`, which includes the bounded recovery-object capture scan repair. The annotated tag `v0.19.0-rc.2` will identify that final immutable product input after integration; tag creation and read-back remain coordinator-owned. The earlier `3be598cb2025aaaded01df9c4c018086b5e0d1da` input was rejected during catalog preparation because nine knowledge resources carried rule IDs; the metadata repair changed 18 `kind` values to `normative-rule` without changing other resource semantics. A GitHub Release and stable publication are not selected.
+The first source catalog and local installation used interim source commit `3908974fe3c1e2989253459cd3488d8c29da47f9`, version `0.19.0-rc.2`. The final shared product input is source commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`, which includes the bounded recovery-object capture scan repair. GitHub read-back confirms source PR #412 merged at `origin/main` commit `31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5`. Remote annotated tag `v0.19.0-rc.2` has tag object `0f6118554f1573d835faf67aaa418dd291dd01d1` and peels to fixed product commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`. This records source integration and tag read-back only; it does not establish runtime acceptance or downstream completion. The earlier `3be598cb2025aaaded01df9c4c018086b5e0d1da` input was rejected during catalog preparation because nine knowledge resources carried rule IDs; the metadata repair changed 18 `kind` values to `normative-rule` without changing other resource semantics. A GitHub Release and stable publication are not selected.
 
 ## Execution and file ownership
 
@@ -29,6 +29,52 @@ U001 continues to defer legacy/formal/hosted validation and CI restoration. No d
 2. Necessary static/file checks and skipped checks are reported separately.
 3. Both changes integrate through their authorized PRs and main read-backs.
 4. The immutable product tag is pushed and read back; bounded adoption Issues and #409 close with S6 deferral visible.
+
+## Source integration and tag read-back; downstream final-integration checkpoint
+
+GitHub read-back confirms source PR #412 merged at `origin/main` commit
+`31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5`. Remote annotated tag
+`v0.19.0-rc.2` is tag object `0f6118554f1573d835faf67aaa418dd291dd01d1`
+and peels to product commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`.
+
+Issue #409 is read back `CLOSED` (`completed`) at `2026-09-29T03:30:58Z`; provider comment: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/409#issuecomment-5883082732. Direct GitHub issue read-backs show #411 and mq-lab #22 remain open, and #23 is open as the future target-admission gate.
+
+The coordinator's official MQ API2 apply returned `applied` with lock SHA-256
+`c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f`, candidate
+identity `subset:3:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:291ca4a018051a591e40018f91e6f0ef26c28854eabd746f9de0582a266f1ad2`, and
+`project_readiness: not-assessed`. The resulting lock inventory contains 384
+managed members; the selection contains 40 bindings. Read-only raw-byte checks
+matched all 384 members against the subset manifest, staged Git blobs, and
+working tree; lock, authority file, and installation selection staged/worktree
+bytes also match. This proves byte consistency for that applied candidate, not
+validity of every authority reference or runtime acceptance.
+
+The move of `.dev/ai-context/TARGET-ENGINEERING-RULES.md` left nine authority
+URLs proposed for correction. The exact nine-replacement diff remains
+`proposed-not-applied`; owner disposition is pending after automatic review
+required direct owner approval. No URL has been changed. Rebuild the final target
+subset and perform the official API2 rebind only after that disposition. GitHub
+read-back confirms mq-lab PR #24 is OPEN and draft, targets `main`, and reports
+head branch `codex/2026-09-29-framework-rc2-adoption` at
+`aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca`; `merged_at` is null. Branch search
+confirms that head branch exists, and fetching the reported commit returns the
+same SHA. PR integration and main read-back remain pending. Do not mark MQ
+adoption or the overall workflow complete.
+
+| Field | Current state |
+| --- | --- |
+| MQ Issue #22 | Open |
+| MQ API2 installation | Applied; lock `c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f`; 384/384 exact staged and worktree bytes |
+| MQ selection bindings | 40; official rebind pending corrected subset |
+| Authority URL proposal | 9 replacements; not applied; owner disposition pending |
+| MQ PR / head | PR #24 is OPEN/draft against `main`; provider reports head `codex/2026-09-29-framework-rc2-adoption` at `aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca`; not merged |
+| MQ merge / main read-back | Pending owner disposition, final subset rebuild and API2 rebind, then integration |
+| Source Issue #411 | Open |
+| Naming Issue #409 | Closed; read-back and comment linked above |
+| Future admission Issue #23 | Open |
+| Runtime / S6 / P7 | Deferred-by-owner; no acceptance pass claimed |
+
+One diagnostic invocation of `validate-workflow-artifacts.py` stopped on the unrelated legacy locator `.dev/workflows/2026-09-23-portable-authoring/workflow.yaml`: its unquoted `created_at` was parsed as a datetime, then the validator raised `TypeError` in `datetime.fromisoformat()`. This was not a selected closeout gate; no legacy workflow was changed. Focused changed-file parsing/link checks and `git diff --check` passed.
 
 ## Source local outcome
 
