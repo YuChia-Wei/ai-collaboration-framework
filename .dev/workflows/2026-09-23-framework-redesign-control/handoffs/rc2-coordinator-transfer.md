@@ -1,5 +1,17 @@
 # RC.2 coordinator continuation
 
+## Current owner-selected checkpoint — 2026-09-29
+
+Continue from [the active adoption workflow](../../2026-09-29-rc2-adoption/workflow.yaml)
+and its plan. Source adoption is bound to Issue #411 in
+`F:/framework-next/rc2-source-adoption`, branch
+`codex/2026-09-29-rc2-adoption`; downstream adoption is separately bound to
+Issue #22. The source and target tasks are in progress. S6 runtime discovery,
+behavioral acceptance, upgrade/recovery trials and target admission are
+`deferred-by-owner` for this delivery. R5, P7, CI restoration and program #322
+remain open. The former `F:/framework-next/rc2-coordinator` receiving location
+below is historical and must not be resumed.
+
 The owner has directly instructed this task to start rc.2 and prepare a fresh task
 when accumulated context is excessive. This is that continuation, not another
 request to approve the already selected direction. Start from the compact
@@ -15,10 +27,10 @@ request to approve the already selected direction. Start from the compact
 4. Current workflow.yaml and live Issue #322. The older coordinator-transfer.json
    is a detailed rc.1 evidence index; read specific fields only when needed.
 
-The assigned receiving worktree is `F:/framework-next/rc2-coordinator`, branch
-`codex/2026-09-24-rc2-coordinator`. A saved-project task location is only a bootstrap;
-all source commands and writes must explicitly use the assigned F: worktree.
-Do not edit main or create a second unassigned worktree as a workaround.
+At the time of the earlier continuation, the receiving worktree was
+`F:/framework-next/rc2-coordinator`, branch
+`codex/2026-09-24-rc2-coordinator`. That location is superseded by the current
+checkpoint above; its original acceptance observations remain historical.
 
 ## Receiving task and observed acceptance
 

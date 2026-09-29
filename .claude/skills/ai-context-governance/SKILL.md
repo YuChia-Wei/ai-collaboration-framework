@@ -1,41 +1,30 @@
 ---
 name: ai-context-governance
-description: Govern AI collaboration context boundaries, semantic customization records, skill routing, runtime wrapper sync, migrations, and assessment-to-remediation lifecycles. Use when Claude needs to organize `.ai`, `.dev`, `.agents`, or `.claude`, record or reconcile target capability/rule/contract customizations, coordinate remediation and verification assessments, or close AI context maintenance.
+description: "Propose or apply a bounded authorized change to project-owned AI context. Preserve semantic authority, custom content and protected managed files; optionally hand useful candidates to project-selected knowledge tools."
 ---
 
-# AI Context Governance
+# ai-context-governance
 
-This is a thin Claude-compatible wrapper.
+Claude runtime entry for `ai-context-governance@0.1.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Claude adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/ai-context-governance/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/ai-context-governance/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Assessment Policy: `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`
-- Handoff Policy: `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`
-- Spec: `.ai/assets/skills/ai-context-governance/skill.yaml`
-- Human Guide: `.dev/guides/ai-collaboration-guides/AI-CONTEXT-GOVERNANCE-SKILL-GUIDE.md`
-- References:
-  - `.dev/standards/AI-CONTEXT-OWNERSHIP.md`
-  - `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml`
-  - `.ai/assets/skills/ai-context-governance/references/context-boundary-playbook.md`
-  - `.ai/assets/skills/ai-context-governance/references/language-policy-playbook.md`
-  - `.ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md`
-  - `.ai/assets/skills/ai-context-governance/references/output-contract.md`
-  - `.ai/assets/skills/ai-context-governance/references/audit-remediation-lifecycle.md`
-  - `.ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md`
-  - `.ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml`
-  - `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml`
-  - `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.template.yaml`
-  - `.ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml`
-- Templates:
-  - `.ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml`
-  - `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
-  - `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json`
-  - `.ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml`
-  - `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as a compatibility entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/ai-context-governance/skill.yaml`.
+- [references/maintenance.md](../../../.ai/core/skills/ai-context-governance/references/maintenance.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

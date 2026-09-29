@@ -1,27 +1,31 @@
 ---
 name: bdd-gwt-test-designer
-description: Design or review Given-When-Then scenario artifacts, acceptance coverage, observable assertions and test levels without implementing tests; concrete testing conventions follow target authority.
+description: "Design or review Given-When-Then scenarios with source traceability, observable assertions, controlled setup and justified test levels, without implementing or executing tests."
 ---
 
-# BDD GWT Test Designer
+# bdd-gwt-test-designer
 
-This is a thin current-runtime wrapper.
+Codex runtime entry for `bdd-gwt-test-designer@0.2.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Codex adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/bdd-gwt-test-designer/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/bdd-gwt-test-designer/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Spec: `.ai/assets/skills/bdd-gwt-test-designer/skill.yaml`
-- Human Guide: `.dev/guides/ai-collaboration-guides/BDD-GWT-TEST-DESIGNER-SKILL-GUIDE.md`
-- References:
-  - `.ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md`
-  - `.ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md`
-  - `.ai/assets/skills/bdd-gwt-test-designer/references/review-criteria.md`
-  - `.ai/assets/skills/bdd-gwt-test-designer/references/scope-rules.md`
-  - `.ai/assets/skills/bdd-gwt-test-designer/references/scenario-design-playbook.md`
-  - `.ai/assets/skills/bdd-gwt-test-designer/references/output-contract.md`
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as the current runtime entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/bdd-gwt-test-designer/skill.yaml`.
+- [references/design.md](../../../.ai/core/skills/bdd-gwt-test-designer/references/design.md)
+- [references/review.md](../../../.ai/core/skills/bdd-gwt-test-designer/references/review.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

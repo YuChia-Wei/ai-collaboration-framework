@@ -1,46 +1,37 @@
 ---
 name: software-development-orchestrator
-description: Coordinate high-level multi-stage software and product development intent without requiring skill names by deciding direct versus workflow mode, routing capabilities, honoring approval pauses, and managing target-aware tests, validation, and durable commit checkpoints.
+description: "Keep authorized bounded work resumable through one project-selected workflow record, task dependencies, attributed evidence, retrospective handoff candidates and read-only retention previews."
 ---
 
-# Software Development Orchestrator
+# software-development-orchestrator
 
-This is a thin current-runtime wrapper.
+Codex runtime entry for `software-development-orchestrator@0.1.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Codex adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/software-development-orchestrator/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/software-development-orchestrator/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Spec: `.ai/assets/skills/software-development-orchestrator/skill.yaml`
-- Handoff Policy: `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`
-- Human Guide: `.dev/guides/ai-collaboration-guides/SOFTWARE-DEVELOPMENT-ORCHESTRATOR-SKILL-GUIDE.md`
-- References:
-  - `.ai/assets/skills/software-development-orchestrator/references/routing-playbook.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/skill-discovery-playbook.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/capability-profile.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml`
-  - `.ai/assets/skills/software-development-orchestrator/references/fallback-playbooks.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/role-execution-playbook.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/workflow-artifact-playbook.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/output-contract.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/validation-activation-policy.md`
-  - `.ai/assets/skills/software-development-orchestrator/references/acceptance-oracle.md`
-  - `.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`
-  - `.ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml`
-  - `.ai/assets/skills/software-development-orchestrator/templates/external-task-completion.template.yaml`
-  - `.ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py`
-  - `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`
-  - `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`
-  - `.ai/assets/shared/agent-execution-guardrails.schema.yaml`
-  - `.ai/scripts/validate-agent-execution-guardrails.py`
-- Templates:
-  - `.ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml`
-  - `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
-  - `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json`
-  - `.ai/assets/skills/software-development-orchestrator/templates/development-review-report-template.md`
+Obtain the caller's explicit `project_root`, configuration selection and operation. The project-owned `.ai/custom/framework.json` is not supplied by this entry. Pass the chosen configuration path explicitly under the installed skill's contract; do not infer it from the current working directory.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as the current runtime entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/software-development-orchestrator/skill.yaml`.
+- [references/composition.md](../../../.ai/core/skills/software-development-orchestrator/references/composition.md)
+- [references/configuration.md](../../../.ai/core/skills/software-development-orchestrator/references/configuration.md)
+- [references/example.md](../../../.ai/core/skills/software-development-orchestrator/references/example.md)
+- [references/operations.md](../../../.ai/core/skills/software-development-orchestrator/references/operations.md)
+- [references/retention.md](../../../.ai/core/skills/software-development-orchestrator/references/retention.md)
+- [schemas/workflow-record.schema.json](../../../.ai/core/skills/software-development-orchestrator/schemas/workflow-record.schema.json)
+- [scripts/workflow.py](../../../.ai/core/skills/software-development-orchestrator/scripts/workflow.py)
+- [templates/workflow.md](../../../.ai/core/skills/software-development-orchestrator/templates/workflow.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

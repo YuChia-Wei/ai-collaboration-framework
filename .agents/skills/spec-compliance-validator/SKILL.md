@@ -1,28 +1,33 @@
 ---
 name: spec-compliance-validator
-description: |
-  Validate .NET code and tests against problem frame specs with a 100% gate.
-  Supports CBF (CommandedBehaviorFrame) and SWF (SimpleWorkpieceFrame).
-  Use when: "validate spec dotnet", "check compliance dotnet", "spec-compliance-validator"
-allowed-tools: Read, Glob, Grep, Bash, TodoWrite
+description: "Plan complete criteria, review specification meaning, or assess authentic target evidence against a fixed explicit scope; distinguish structural, semantic and runtime conclusions without inventing coverage."
 ---
 
-# Spec Compliance Validator Skill (.NET)
+# spec-compliance-validator
 
-This is a thin current-runtime wrapper.
+Codex runtime entry for `spec-compliance-validator@0.1.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Codex adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/spec-compliance-validator/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/spec-compliance-validator/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Spec: `.ai/assets/skills/spec-compliance-validator/skill.yaml`
-- Human Guide: `.dev/guides/ai-collaboration-guides/AI-COLLABORATION-WORKFLOW-GUIDE.md`
-- References:
-  - `.ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md`
-  - `.ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md`
-  - `.ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md`
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as the current runtime entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/spec-compliance-validator/skill.yaml`.
+- [profiles/dotnet.md](../../../.ai/core/skills/spec-compliance-validator/profiles/dotnet.md)
+- [references/compliance.md](../../../.ai/core/skills/spec-compliance-validator/references/compliance.md)
+- [references/legacy-intake.md](../../../.ai/core/skills/spec-compliance-validator/references/legacy-intake.md)
+- [references/report-template.md](../../../.ai/core/skills/spec-compliance-validator/references/report-template.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

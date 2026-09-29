@@ -307,8 +307,8 @@ def _capture(io: IO, roots: dict, prepared: tuple, operation: Operation) -> None
         if parent not in allocated:
             allocated[parent] = io.directory(parent, run, role)
     recovery = allocated[roots["recovery"]]
-    for digest, raw in sorted(operation.objects.items()):
-        io.create(recovery, "objects/" + digest, raw, "recovery")
+    recovery_objects = io.directory(recovery, "objects", "recovery")
+    io.create_flat_objects(recovery_objects, operation.objects, "recovery")
     result, candidate, _, _, _ = prepared
     scratch, staging = allocated[roots["scratch"]], allocated[roots["staging"]]
     for name, raw in candidate.metadata_bytes.items():

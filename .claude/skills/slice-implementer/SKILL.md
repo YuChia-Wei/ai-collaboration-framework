@@ -1,31 +1,36 @@
 ---
 name: slice-implementer
-description: Implement one bounded command, query, reactor or generic slice under accepted architecture. Retain slice ownership for internal local edits and hand off only for a concrete missing decision or separable useful subtask.
+description: "Implement one authorized command, query, reactor or generic slice under accepted target architecture; retain slice ownership, scenario fidelity and truthful validation without requiring a technology role registry."
 ---
 
-# Slice Implementer
+# slice-implementer
 
-This is a thin Claude-compatible wrapper.
+Claude runtime entry for `slice-implementer@0.2.0`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified Claude adapter.
 
-## Canonical Source
+Read [the installed skill](../../../.ai/core/skills/slice-implementer/SKILL.md) for its declared operations.
+Resolve [the installed metadata](../../../.ai/core/skills/slice-implementer/skill-package.yaml) with the installed skill
+directory as the explicit `package_root`.
 
-- Registry: `.ai/assets/skills/README.MD`
-- Spec: `.ai/assets/skills/slice-implementer/skill.yaml`
-- Human Guide: `.dev/guides/ai-collaboration-guides/SLICE-IMPLEMENTER-SKILL-GUIDE.md`
-- References:
-  - `.ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md`
-  - `.ai/assets/skills/slice-implementer/references/input-contract.md`
-  - `.ai/assets/skills/slice-implementer/references/execution-playbook.md`
-  - `.ai/assets/skills/slice-implementer/references/role-execution.md`
-  - `.ai/assets/skills/slice-implementer/references/handoff-rules.md`
-  - `.ai/assets/skills/slice-implementer/references/modes/command-use-case.md`
-  - `.ai/assets/skills/slice-implementer/references/modes/query-use-case.md`
-  - `.ai/assets/skills/slice-implementer/references/modes/reactor.md`
-  - `.ai/assets/skills/slice-implementer/references/modes/generic-slice.md`
-  - `.ai/assets/skills/slice-implementer/references/overlays/remediation.md`
+This package declares `configuration: null`. It needs no framework configuration file or managed record store. Obtain only the target inputs required by the selected operation.
 
-## Wrapper Rules
+Selected installed skill members:
 
-Use this wrapper only as a compatibility entry.
-Keep runtime-specific metadata in this wrapper directory only when the runtime requires it.
-If wrapper text and canonical spec differ, follow `.ai/assets/skills/slice-implementer/skill.yaml`.
+- [references/implement.md](../../../.ai/core/skills/slice-implementer/references/implement.md)
+- [references/modes/command.md](../../../.ai/core/skills/slice-implementer/references/modes/command.md)
+- [references/modes/generic.md](../../../.ai/core/skills/slice-implementer/references/modes/generic.md)
+- [references/modes/query.md](../../../.ai/core/skills/slice-implementer/references/modes/query.md)
+- [references/modes/reactor.md](../../../.ai/core/skills/slice-implementer/references/modes/reactor.md)
+- [references/remediation.md](../../../.ai/core/skills/slice-implementer/references/remediation.md)
+- [references/test-handoff.md](../../../.ai/core/skills/slice-implementer/references/test-handoff.md)
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.

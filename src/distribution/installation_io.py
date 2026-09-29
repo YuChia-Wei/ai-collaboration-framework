@@ -267,6 +267,11 @@ class IO:
         self.parents(root, name, role)
         state._check(self.locate(root, name) is None, "exclusive-file", "Exclusive file path is occupied.", name, "conflict")
         target = root / name
+        self._write_exclusive_file(target, raw, role, name, mode)
+        state._check(self.raw(root, name) == raw, "write-readback", "Written bytes did not read back exactly.", name)
+
+    def _write_exclusive_file(self, target: Path, raw: bytes, role: str, name: str, mode: str) -> None:
+        """Create one preflighted file with the common exclusive durable write sequence."""
         self.reader.forget_listing(target.parent)
         descriptor = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0), 0o600)
         self.changes.record(role, name)
@@ -280,7 +285,50 @@ class IO:
         finally:
             os.close(descriptor)
         self.backend.flush_directory(target.parent)
-        state._check(self.raw(root, name) == raw, "write-readback", "Written bytes did not read back exactly.", name)
+
+    def create_flat_objects(self, root: Path, objects: dict[str, bytes], role: str) -> None:
+        """Capture flat digest-named objects with direct bounded readback and one final listing."""
+        expected = {}
+        for name, raw in objects.items():
+            state._check(type(name) is str and re.fullmatch(r"[0-9a-f]{64}", name) is not None,
+                         "object-name", "Flat object names must be lowercase SHA-256 digests.", name)
+            state._check(type(raw) is bytes, "object-bytes", "Flat object content must be exact bytes.", name)
+            folded = name.casefold()
+            state._check(folded not in expected, "path-alias", "Flat object names contain a case alias.", name)
+            expected[folded] = name
+
+        self.reader.forget_listing(root.parent)
+        state._check(self.locate(root.parent, root.name) == root,
+                     "object-directory", "Flat object directory identity changed.", root.name, "conflict")
+        initial_info = root.lstat()
+        state._plain(initial_info, root.name)
+        state._check(stat.S_ISDIR(initial_info.st_mode), "object-directory", "Flat object root is not a direct directory.", root.name)
+        identity = (initial_info.st_dev, initial_info.st_ino)
+        self.reader.forget_listing(root)
+        state._check(not self.reader.listing(root), "object-directory", "New flat object directory was not empty.", root.name, "conflict")
+
+        for folded, name in sorted(expected.items()):
+            current_info = root.lstat()
+            state._plain(current_info, name)
+            state._check(stat.S_ISDIR(current_info.st_mode) and (current_info.st_dev, current_info.st_ino) == identity,
+                         "object-directory", "Flat object directory identity changed during capture.", name, "conflict")
+            self.contained_volume(root, name)
+            target = root / name
+            raw = objects[name]
+            self._write_exclusive_file(target, raw, role, "objects/" + name, "100644")
+            state._check(self.reader.read(target, "objects/" + name) == raw,
+                         "write-readback", "Written object bytes did not read back exactly.", name)
+
+        current_info = root.lstat()
+        state._plain(current_info, root.name)
+        state._check(stat.S_ISDIR(current_info.st_mode) and (current_info.st_dev, current_info.st_ino) == identity,
+                     "object-directory", "Flat object directory identity changed after capture.", root.name, "conflict")
+        self.reader.forget_listing(root.parent)
+        state._check(self.locate(root.parent, root.name) == root,
+                     "object-directory", "Flat object directory identity changed after capture.", root.name, "conflict")
+        self.reader.forget_listing(root)
+        state._check(self.reader.listing(root) == expected,
+                     "capture-closure", "Flat object directory names differ from the expected digest set.", root.name)
 
     def expect(self, root: Path, name: str, raw: bytes | None, mode: str | None = None) -> None:
         state._check(self.raw(root, name) == raw, "current-drift", "Current bytes/absence differ from the admitted state.", name, "conflict")

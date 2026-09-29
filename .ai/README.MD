@@ -1,34 +1,16 @@
-# Agent-Facing AI Context
+# Installed framework and source tooling
 
-This directory contains reusable AI collaboration assets for agents. It is not the human-facing guide root and not a runtime-specific wrapper directory.
+This directory contains the source repository's installed framework selection,
+generated package payload, and local source-maintenance tooling. It is not the
+editable product source or the human-facing guide root.
 
-## Purpose
+The reusable product is authored under `../src/`. The source repository
+explicitly selects 18 skills with Codex and Claude adapters and no engineering
+knowledge package in `custom/installation.json`. The managed installer creates
+`framework.lock`, `core/skills/`, and the runtime entries. Do not edit those
+generated files directly.
 
-Use `.ai/` for portable agent-facing context that can be reused across repositories or copied into target repositories as a framework layer.
-
-## Usage
-
-Start with `.ai/INDEX.MD` when you need a file or directory catalog. Use this README only to understand the role of `.ai/` and when content belongs here.
-
-## Boundary
-
-- Canonical reusable AI assets belong under `.ai/assets/`.
-- Universal shared context belongs under `.ai/assets/shared/`.
-- Tech-stack-specific context belongs under `.ai/assets/tech-stacks/<profile>/`.
-- Registered universal engineering rules resolve through the shared catalog;
-  registered profile rules resolve through their profile catalog to the recorded
-  Markdown owner. Routine consumers use a task-scoped effective packet rather
-  than scanning all baseline documents.
-- Canonical skill specs belong under `.ai/assets/skills/`.
-- Canonical sub-agent role prompts belong under `.ai/assets/sub-agent-role-prompts/`.
-- Runtime wrappers belong under `.agents/skills/` and `.claude/skills/`.
-- Human-facing guides and workflow artifacts belong under `.dev/`.
-- Release-side deterministic evaluation fixtures and baselines belong under
-  `.ai/evaluation/`; they are source governance evidence, not downstream
-  product payload.
-
-Python CLI prerequisite behavior is agent-facing contract material under
-`.ai/scripts/`; the human recovery and target-local selection guide is
-`.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md`.
-
-Detailed file and directory descriptions belong in `.ai/INDEX.MD`.
+Use `INDEX.MD` for the file catalog. `.ai/assets/` contains only source
+compatibility and tooling data with active callers; current skill discovery
+uses original-ID entries under `.agents/skills/` and `.claude/skills/`.
+Human-facing guides, project policy, and workflow records remain under `.dev/`.

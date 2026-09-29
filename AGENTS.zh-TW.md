@@ -52,21 +52,23 @@ CI 恢復與確切政策轉換必須有已記錄的 owner 採納決策。
 
 ## 任務路由
 
-使用 `.ai/assets/skills/README.MD` 作為 canonical skill registry。Runtime wrappers 保持 thin，不得成為第二個 authority。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。`.ai/assets/` 現在只保留 source compatibility 與 tooling data，包括下方明確列出的 legacy-format duties；它不是 18 個已安裝 skills 的日常路由。
 
 | Need | Owning route |
 | --- | --- |
-| AI-context audit | `ai-context-auditor` |
-| AI-context governance、routing、translation、remediation 或 source-release governance | `ai-context-governance` |
-| 第一次 target adoption 或 initialized-target upgrade | `ai-context-init` / `ai-context-upgrader` |
-| Historical 或 exceptional release verification | `ai-context-release-closeout` |
-| 多階段 software development | `software-development-orchestrator` |
-| Architecture、GWT design、review 或 implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `slice-implementer` / `local-change-implementer` |
-| 已觀察的故障、效能症狀或根因診斷 | `diagnostic-analyst` |
+| AI-context audit 或 comparison | `ai-context-auditor` |
+| AI-context governance 與 reusable context maintenance | `ai-context-governance` |
+| Architecture、GWT design、code review、diagnosis 或 implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
+| Decisions、lessons、local backlog、pull requests 或 standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
+| 多階段 software development 與 workflow records | `software-development-orchestrator`，並遵循 source `.dev/` workflow 與 Issue authority |
+| 初始化或升級先前發布的 legacy package format | Source compatibility procedures 與其 active `.ai/scripts/` tooling；這不是 portable installed skill route。 |
+| Historical 或 exceptional source release closeout | `.dev/releases/` 與 source release policy；沒有 portable installed skill route。 |
+
+Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authority、release governance、U001 與 P7 deferrals。明確保留以下 source duties：source assessment persistence 與 terminal records；source customization 與 policy reconciliation；legacy CBF/SWF intake 與 active records；target-selected legacy .NET 100% gate 與 rule resolver（僅維護該舊版下游格式或 target 時適用，不適用於本 framework source 或其自身安裝）；舊 published-format initialization、upgrade 與 recovery。這些 duties 不會恢復已移除的三個 runtime discovery entries，也不會讓 legacy files 成為第二個日常 skill source。
 
 - AI-context placement 或 language changes 只有適用時才載入 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 與 `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`。
-- Code review 先載入 `.ai/assets/skills/code-reviewer/references/review-routing.yaml`，且只載入 selected route 與 finding references。
+- Code review 載入 installed `code-reviewer` entry，並只載入其適用的 route 與 finding references。
 - `test-execution` 沒有 required skill；先解析 target-owned commands。
 - Direct execution 仍然有效。依 `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 分類 delegation；只有適用時才載入 role contract。Static profile presence 不是 invocation evidence。
 
@@ -141,11 +143,11 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 
 需要時才使用 indexes：
 
-- `.ai/INDEX.MD`：可重用 agent-facing assets。
+- `.ai/INDEX.MD`：generated installed content 與 source-tooling data。
 - `.dev/INDEX.md`：project knowledge 與 current records。
 - `.dev/standards/INDEX.MD`：standards navigation。
 - `.dev/guides/ai-collaboration-guides/INDEX.MD`：human-facing explanations，不是 default execution context。
-- `.agents/skills/README.md` 與 `.claude/skills/README.md`：wrapper inventories。
+- `.agents/skills/README.md` 與 `.claude/skills/README.md`：installed skill inventories。
 
 ### 根目錄 Entry Files
 
