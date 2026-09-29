@@ -5,15 +5,15 @@
   "workflow_kind": "ai-context-maintenance",
   "title": "Adopt the owner-selected RC2 in source and coordinate downstream replacement",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
-  "current_phase": "mq-draft-pr-open-pending-owner-disposition-and-rebind",
+  "status": "completed",
+  "current_phase": "bounded-mechanical-adoption-complete",
   "artifact_root": ".dev/workflows/2026-09-29-rc2-adoption",
   "entrypoint": "workflow-plan.md",
   "created_at": "2026-09-29T10:25:58+08:00",
-  "updated_at": "2026-09-29T11:51:29+08:00",
+  "updated_at": "2026-09-29T13:56:24+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml",
   "template_version": "1.2.0",
-  "branch": "codex/2026-09-29-rc2-closeout",
+  "branch": "codex/2026-09-29-rc2-complete",
   "base_branch": "main",
   "work_items": [
     "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/411",
@@ -30,23 +30,29 @@
     "main_commit": "31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5",
     "tag": "v0.19.0-rc.2",
     "tag_object": "0f6118554f1573d835faf67aaa418dd291dd01d1",
-    "tag_target": "aad927328c20b08c8445e8ad1792eadd8ecc3466"
+    "tag_target": "aad927328c20b08c8445e8ad1792eadd8ecc3466",
+    "checkpoint_pull_request": 413,
+    "checkpoint_main_commit": "26e18c178b74b2db5e10aa2a9443cd7aa58325b9"
   },
   "mq_final_integration": {
     "issue": 22,
-    "issue_state": "open",
+    "issue_state": "closed",
+    "issue_closed_at": "2026-09-29T05:52:26Z",
+    "issue_state_reason": "completed",
+    "issue_closeout_comment": "https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/issues/22#issuecomment-5884545150",
     "pull_request": 24,
     "pull_request_url": "https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/pull/24",
-    "pull_request_state": "open",
-    "pull_request_is_draft": true,
+    "state": "closed",
+    "is_draft": false,
     "base_branch": "main",
     "head_branch": "codex/2026-09-29-framework-rc2-adoption",
-    "head_sha": "aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca",
-    "merged": false,
-    "merge_commit": null,
-    "main_readback": null,
-    "readback_source": "GitHub PR #24 API read-back; branch search confirms the head branch exists; commit fetch confirms the reported head SHA",
-    "awaiting": "owner disposition of the unapplied authority URL proposal, final subset rebuild and API2 rebind, then PR integration and main read-back"
+    "head_sha": "711739f651491dc90259c5647ce7ca3e12efc0a8",
+    "merged": true,
+    "merged_at": "2026-09-29T05:52:25Z",
+    "merge_commit": "179b3e12bb1e5f1c67cee3158ccd414bd9a8b6a5",
+    "main_readback": "179b3e12bb1e5f1c67cee3158ccd414bd9a8b6a5",
+    "readback_source": "GitHub PR #24 and Issue #22 API read-backs; compare main to merge SHA returned identical; local primary main is clean at the same SHA",
+    "awaiting": "no remaining MQ mechanical-adoption action; future admission gate #23 and owner-deferred S6/P7 are separate work"
   },
   "issue_409_closeout": {
     "state": "closed",
@@ -54,26 +60,45 @@
     "state_reason": "completed",
     "comment": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/409#issuecomment-5883082732"
   },
-  "issue_411_state": "open",
+  "issue_411_state": "closed",
+  "issue_411_closed_at": "2026-09-29T05:55:20Z",
+  "issue_411_state_reason": "completed",
+  "issue_411_closeout_comment": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/411#issuecomment-5884545394",
   "mq_installation": {
     "apply_outcome": "applied",
-    "candidate_identity": "subset:3:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:291ca4a018051a591e40018f91e6f0ef26c28854eabd746f9de0582a266f1ad2",
-    "lock_sha256": "c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f",
+    "plan_sha256": "572e8c2add8a7da06a7613d31671e827405b12a26f2e781d9b999d701a4a099b",
+    "candidate_identity": "subset:3:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:8e0eb8909b9a110b86398ed3f1a87d262b0691ddccdf63e7d49689a864556b71",
+    "previous_lock_sha256": "c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f",
+    "lock_sha256": "be0cba5c82425c1fc67755b65b7956c6333d8205f637f4cb3e48e6c45f907223",
+    "installation_selection_sha256": "4d74012367bd1ec4a5aedb2ed7b923880c315dd7492d32559be88f101af3a5a3",
+    "authority_sha256": "e46c6527b6cb7bf9cd9ef5c3cb19c0f9e36c38dd8ecdeda546c5c273b87d4c08",
     "managed_member_count": 384,
+    "unchanged_managed_member_count": 384,
+    "knowledge_package_count": 2,
+    "runtime_adapters": ["codex", "claude"],
     "binding_count": 40,
-    "managed_bytes": "384-of-384 match subset manifest, staged Git blobs, and worktree bytes",
+    "managed_bytes": "API2 reports managed-bytes-consistent; 384 members unchanged; final primary checkout/provider closeout reports exact subset, staged Git blob, lock, selection and authority parity",
     "project_readiness": "not-assessed",
-    "authority_url_proposal": {
+    "authority_url_rebind": {
       "path": ".dev/ai-context/TARGET-ENGINEERING-RULES.md",
       "change_count": 9,
-      "state": "proposed-not-applied",
-      "owner_disposition": "pending"
+      "state": "approved-and-applied",
+      "owner_disposition": "direct-user-approval-2026-09-29"
     },
-    "final_subset_rebuild_and_api2_rebind": "pending owner disposition of URL proposal"
+    "final_subset_rebuild_and_api2_rebind": "applied; PR integration complete; target readiness not assessed and runtime acceptance deferred"
   },
   "future_admission_gate": {
     "issue": 23,
     "state": "open",
     "scope": "future target admission"
+  },
+  "program_remaining_issues": {
+    "322": "open",
+    "369": "open"
+  },
+  "deferred_acceptance": {
+    "runtime_dogfood": "not-performed",
+    "S6": "deferred-by-owner",
+    "P7": "deferred-by-owner"
   }
 }

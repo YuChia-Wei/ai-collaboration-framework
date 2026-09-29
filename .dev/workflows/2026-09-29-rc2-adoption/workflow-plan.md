@@ -30,16 +30,16 @@ U001 continues to defer legacy/formal/hosted validation and CI restoration. No d
 3. Both changes integrate through their authorized PRs and main read-backs.
 4. The immutable product tag is pushed and read back; bounded adoption Issues and #409 close with S6 deferral visible.
 
-## Source integration and tag read-back; downstream final-integration checkpoint
+## Source and target integration read-back; bounded mechanical adoption complete
 
 GitHub read-back confirms source PR #412 merged at `origin/main` commit
 `31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5`. Remote annotated tag
 `v0.19.0-rc.2` is tag object `0f6118554f1573d835faf67aaa418dd291dd01d1`
 and peels to product commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`.
 
-Issue #409 is read back `CLOSED` (`completed`) at `2026-09-29T03:30:58Z`; provider comment: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/409#issuecomment-5883082732. Direct GitHub issue read-backs show #411 and mq-lab #22 remain open, and #23 is open as the future target-admission gate.
+Issue #409 is read back `CLOSED` (`completed`) at `2026-09-29T03:30:58Z`; provider comment: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/409#issuecomment-5883082732. At this intermediate checkpoint #411 and mq-lab #22 were still open; the final provider read-backs below record their closeouts. Future admission gate #23 remains open.
 
-The coordinator's official MQ API2 apply returned `applied` with lock SHA-256
+The initial MQ API2 apply returned `applied` with lock SHA-256
 `c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f`, candidate
 identity `subset:3:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:291ca4a018051a591e40018f91e6f0ef26c28854eabd746f9de0582a266f1ad2`, and
 `project_readiness: not-assessed`. The resulting lock inventory contains 384
@@ -49,27 +49,50 @@ working tree; lock, authority file, and installation selection staged/worktree
 bytes also match. This proves byte consistency for that applied candidate, not
 validity of every authority reference or runtime acceptance.
 
-The move of `.dev/ai-context/TARGET-ENGINEERING-RULES.md` left nine authority
-URLs proposed for correction. The exact nine-replacement diff remains
-`proposed-not-applied`; owner disposition is pending after automatic review
-required direct owner approval. No URL has been changed. Rebuild the final target
-subset and perform the official API2 rebind only after that disposition. GitHub
-read-back confirms mq-lab PR #24 is OPEN and draft, targets `main`, and reports
-head branch `codex/2026-09-29-framework-rc2-adoption` at
-`aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca`; `merged_at` is null. Branch search
-confirms that head branch exists, and fetching the reported commit returns the
-same SHA. PR integration and main read-back remain pending. Do not mark MQ
-adoption or the overall workflow complete.
+Automatic approval review initially blocked changes to the moved
+`.dev/ai-context/TARGET-ENGINEERING-RULES.md`; direct user approval on
+2026-09-29 then authorized the nine Markdown URL corrections and API2 rebind of
+the forty bindings. The corrected authority file is SHA-256
+`e46c6527b6cb7bf9cd9ef5c3cb19c0f9e36c38dd8ecdeda546c5c273b87d4c08`. The final
+subset identity is
+`subset:3:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:8e0eb8909b9a110b86398ed3f1a87d262b0691ddccdf63e7d49689a864556b71`.
+Official API2 plan `572e8c2add8a7da06a7613d31671e827405b12a26f2e781d9b999d701a4a099b`
+and apply returned `planned` and `applied`. The apply changed only
+`.ai/custom/installation.json` (SHA-256
+`4d74012367bd1ec4a5aedb2ed7b923880c315dd7492d32559be88f101af3a5a3`); all 384
+managed members were unchanged, with no additions or removals. The resulting
+lock SHA-256 is
+`be0cba5c82425c1fc67755b65b7956c6333d8205f637f4cb3e48e6c45f907223`. Direct
+target read-back matched the lock, selection and authority hashes; the selected
+configuration contains 18 skills, two knowledge packages, both runtime
+adapters, and 40 bindings. API2 reports `managed-bytes-consistent` and
+`project_readiness: not-assessed`; this establishes installation consistency,
+not runtime or target acceptance.
+
+GitHub read-back confirms mq-lab PR #24 is merged, with head
+`711739f651491dc90259c5647ce7ca3e12efc0a8`, merge commit
+`179b3e12bb1e5f1c67cee3158ccd414bd9a8b6a5`, and merged time
+`2026-09-29T05:52:25Z`. Comparing `main` to that merge commit returned
+`identical` (ahead/behind 0); the primary MQ checkout is clean on `main` at the
+same SHA. Direct provider read-back confirms MQ Issue #22 is CLOSED/completed at
+`2026-09-29T05:52:26Z` (closeout:
+https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/issues/22#issuecomment-5884545150)
+and source Issue #411 is CLOSED/completed at `2026-09-29T05:55:20Z` (closeout:
+https://github.com/YuChia-Wei/ai-collaboration-framework/issues/411#issuecomment-5884545394).
+This workflow is complete for mechanical source and target adoption. Future
+admission gate #23 remains open; program Issues #322 and #369 remain open.
+Runtime discovery/dogfood, S6 and P7 remain deferred-by-owner; no runtime,
+behavioral or admission acceptance pass is claimed.
 
 | Field | Current state |
 | --- | --- |
-| MQ Issue #22 | Open |
-| MQ API2 installation | Applied; lock `c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f`; 384/384 exact staged and worktree bytes |
-| MQ selection bindings | 40; official rebind pending corrected subset |
-| Authority URL proposal | 9 replacements; not applied; owner disposition pending |
-| MQ PR / head | PR #24 is OPEN/draft against `main`; provider reports head `codex/2026-09-29-framework-rc2-adoption` at `aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca`; not merged |
-| MQ merge / main read-back | Pending owner disposition, final subset rebuild and API2 rebind, then integration |
-| Source Issue #411 | Open |
+| MQ Issue #22 | Closed/completed at `2026-09-29T05:52:26Z`; closeout linked above |
+| MQ API2 installation | Rebind applied; lock `be0cba5c82425c1fc67755b65b7956c6333d8205f637f4cb3e48e6c45f907223`; 384 managed members unchanged |
+| MQ selection bindings | 40; updated installation selection SHA `4d74012367bd1ec4a5aedb2ed7b923880c315dd7492d32559be88f101af3a5a3` |
+| Authority URL rebind | 9 corrections directly approved and applied; authority SHA `e46c6527b6cb7bf9cd9ef5c3cb19c0f9e36c38dd8ecdeda546c5c273b87d4c08` |
+| MQ PR / head | PR #24 merged; head `711739f651491dc90259c5647ce7ca3e12efc0a8` |
+| MQ merge / main read-back | Merge and `main` are `179b3e12bb1e5f1c67cee3158ccd414bd9a8b6a5`; compare returned identical |
+| Source Issue #411 | Closed/completed at `2026-09-29T05:55:20Z`; closeout linked above |
 | Naming Issue #409 | Closed; read-back and comment linked above |
 | Future admission Issue #23 | Open |
 | Runtime / S6 / P7 | Deferred-by-owner; no acceptance pass claimed |

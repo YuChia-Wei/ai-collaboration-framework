@@ -2,33 +2,35 @@
 
 ## Current owner-selected checkpoint — 2026-09-29
 
-Source PR #412 and tag `v0.19.0-rc.2` are read back complete: `origin/main` is
-`31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5`, and tag object
-`0f6118554f1573d835faf67aaa418dd291dd01d1` peels to product commit
-`aad927328c20b08c8445e8ad1792eadd8ecc3466`. Issue #409 is closed; direct
-GitHub reads show #411 and mq-lab #22 open, with #23 open as the future target
-admission gate. After this source checkpoint integrates, resume from source
-main; continue the remaining MQ work on draft PR #24 and head branch
-`codex/2026-09-29-framework-rc2-adoption`. If source changes become necessary,
-create a new bounded branch from the then-current main.
+Source PR #412 integrated at source main `31fd8a02dcb22c9f4ddc6734d5b6ccab423211c5`;
+checkpoint PR #413 was read back integrated at source main
+`26e18c178b74b2db5e10aa2a9443cd7aa58325b9`. Annotated tag `v0.19.0-rc.2`
+remains fixed at product commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`
+(tag object `0f6118554f1573d835faf67aaa418dd291dd01d1`). Issue #409, source
+Issue #411 and mq-lab Issue #22 are CLOSED/completed. MQ PR #24 is merged at
+`179b3e12bb1e5f1c67cee3158ccd414bd9a8b6a5`; `main` matches that commit, and
+the primary checkout is clean. Closeout comments: #411
+(https://github.com/YuChia-Wei/ai-collaboration-framework/issues/411#issuecomment-5884545394),
+#22 (https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab/issues/22#issuecomment-5884545150),
+and #409
+(https://github.com/YuChia-Wei/ai-collaboration-framework/issues/409#issuecomment-5883082732).
+Future admission gate #23 remains open; program Issues #322 and #369 remain open.
 
-Coordinator API2 evidence for MQ: the install succeeded with lock SHA-256
-`c9a47c945f19fe869696c514003f7eb64ad0219b8f4a315fde4b1d7eaa7ea15f`; the lock
-contains 384 managed members and the selection has 40 bindings. Read-only raw
-hash checks confirmed 384/384 members equal the selected subset manifest,
-staged Git blobs and working tree. Project readiness remains `not-assessed`;
-this does not prove reference validity or runtime behavior.
+Direct user approval resolved the earlier automatic-review block for the nine
+authority URL corrections and forty binding rebind. Official API2 applied subset
+`subset:3:0.19.0-rc.2:aad927328c20b08c8445e8ad1792eadd8ecc3466:8e0eb8909b9a110b86398ed3f1a87d262b0691ddccdf63e7d49689a864556b71`; the new
+lock is `be0cba5c82425c1fc67755b65b7956c6333d8205f637f4cb3e48e6c45f907223`.
+API2 reported 384 managed members unchanged, one installation-selection change,
+and `managed-bytes-consistent`. Direct target raw hashes matched the lock, the
+selection (`4d74012367bd1ec4a5aedb2ed7b923880c315dd7492d32559be88f101af3a5a3`),
+and corrected authority (`e46c6527b6cb7bf9cd9ef5c3cb19c0f9e36c38dd8ecdeda546c5c273b87d4c08`). The selection has 18 skills, two knowledge packages, both
+runtime adapters and 40 bindings. Project readiness remains `not-assessed`; no
+runtime acceptance is claimed.
 
-Nine proposed authority URL changes in `.dev/ai-context/TARGET-ENGINEERING-RULES.md`
-remain unapplied pending owner disposition after automatic review required direct
-approval. Do not apply that diff without the owner response. Then rebuild the
-final MQ subset and perform the official API2 rebind. MQ PR #24 is read back
-OPEN/draft against `main`, with head branch
-`codex/2026-09-29-framework-rc2-adoption` at
-`aecf4b2ebc3ed1fc661138c06a93c6d2c03101ca`; it is not merged. After approved
-disposition and rebind, continue with PR integration and main read-back. Keep
-#411/#22 open until integration is verified. S6/P7 and runtime acceptance remain
-deferred-by-owner.
+Provider integration and bounded Issue closeouts are complete. Remaining work is
+the separate future admission gate #23 and owner-deferred S6/P7 obligations for
+#322/#369. S6/P7 are deferred, not passed; the existing `v0.19.0-rc.2` tag
+requires no further tag action.
 
 ## Read in this order
 
@@ -53,7 +55,11 @@ parsed the JSON/YAML and read Issue #322 as OPEN. Creation settings are not
 independent runtime attestation. No product edit or implementation dispatch was
 performed during acceptance. Online integration and sender release are next.
 
-## First concrete work
+## Historical initial work plan — superseded
+
+The following dispatch instructions describe the completed initial RC2 phase and
+are retained as history. They are not current next steps; use the current
+checkpoint above for remaining work.
 
 S1 fixes the selection, content-package, catalog and lock contracts and enumerates
 the reusable engineering content migration. Record exact formats, old-reader
@@ -72,7 +78,10 @@ Routine implementation choices inside the approved direction need no repeated
 owner confirmation; preserve actual approval-review rejections if any occur and
 report the exact blocked action instead of bypassing them.
 
-## Two-phase transfer
+## Historical two-phase transfer protocol
+
+This describes the earlier receiving-task handoff and does not govern the current
+checkpoint or assign a new S1 task.
 
 The first receiving turn is read-only acceptance of the prepared checkpoint. The
 sender remains the only tracked writer until the actual task ID is recorded,
@@ -84,16 +93,16 @@ The owner may archive the old task after acceptance and release. Preserve the ol
 worktree/evidence until normal safe cleanup conditions are checked; task archival
 does not imply filesystem deletion.
 
-## Completion and limits
+## Completion and remaining limits
 
-Stable 0.19.0 remains not ready. `aicf-` changes runtime entry names, not public skill
-IDs. Claude shares the installed core. Reusable knowledge lives in src and is
-optional in installed selections; an installed file alone does not prove consumer
-routing. Source self-adoption excludes engineering knowledge it does not need.
-The target's 14 rules and four customizations remain target-owned.
+Source RC2 adoption and immutable tag read-back are complete. MQ's approved URL
+and binding rebind, PR #24 integration and provider closeouts for #22/#411 are
+complete. The target's fourteen engineering rules
+and forty bindings remain target-owned; API2 reported project readiness
+`not-assessed`, so no runtime or behavioral acceptance is inferred.
 
-Carry R1-R8 and exact rc.1 identities from the JSON forward. Existing target
-receipts are local/path-bound; the C: analysis archive is not online. CI, dormant
-source policy, #369 native work, stable publication and new tag/Release creation
-are not activated by this transfer. The narrow document/JSON/YAML/Git/commit checks
-are distinct from U001-deferred formal/legacy validation.
+The outstanding future work is admission gate #23
+and owner-deferred S6/P7 under #322/#369. CI/legacy formal checks remain
+deferred-by-owner; no GitHub Release or new tag is selected. Preserve actual
+failures and deferred outcomes in the current workflow plan rather than treating
+this local checkpoint as aggregate RC2 acceptance.
