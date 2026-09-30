@@ -5,6 +5,31 @@ Prospective applicability (dormant): ordinary source development has a separate
 published-version, support or recovery contract and enables no publication flow.
 Any future release-format or applicability change needs its own scope and authority.
 
+## Current Catalog 1 / Engine 2 Draft Delivery (#418)
+
+The owner's 2026-10-01 selection under #322/R2 authorizes the bounded
+[package build and Draft Release flow](../guides/implementation-guides/FRAMEWORK-RELEASE-DRAFT-GUIDE.md)
+implemented by `package-candidate.yml` and `publish-release.yml`. Main builds
+generic snapshots; existing annotated stable/rc.N tags build their exact source
+and may create an owned draft. Workflow/tooling identity may be newer than an
+old selected tag and is bound separately. No tag creation/movement, AI runtime,
+automatic release notes or automatic public publication is part of this flow.
+
+For this current format, actual package bytes and the external build manifest
+are produced by the pipeline. Per-version tracked notes, release records,
+asset-admission files and post-tag source metadata commits are not prerequisites.
+The owner edits notes after draft readiness and separately authorizes public
+publication. Preserve exact admitted archive bytes on retries; time-bearing
+receipts make source-identical rebuilds potentially byte-different. Public
+releases and mismatching drafts/assets are never overwritten.
+
+This selected section takes precedence over the legacy source-record procedure
+below only for this new catalog/engine delivery path. Historical published
+formats (including v0.18 and earlier records) retain their contracts and evidence.
+Draft readiness, package assembly, tests, runtime acceptance, provider state,
+Issue closure and public publication remain distinct. Test workflows, ordinary
+dormant source gates and full P7 restoration remain outside this exception.
+
 ## Purpose And Distribution Boundary
 
 This source-only policy owns framework release preparation, source record

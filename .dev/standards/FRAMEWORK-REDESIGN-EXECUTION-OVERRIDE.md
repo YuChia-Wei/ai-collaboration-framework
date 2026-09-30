@@ -82,6 +82,28 @@ its verification deferral is assigned to P7. Full-framework verification,
 assessment-finding resolution, provider integration and Issue closure remain
 separate states. Do not create empty audit tasks to simulate those outcomes.
 
+## Owner-Selected Release Delivery Exception (2026-10-01 / #418)
+
+The owner selected #322/R2's connected release-build to Draft Release slice in
+[Issue #418](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/418).
+Within that work only, implement and run `package-candidate.yml` (main/manual
+snapshot) and `publish-release.yml` (existing annotated tag/manual tag to draft),
+their source-owned build/transport helpers and small focused release-tool
+fixtures. Actual clean-commit catalog/engine builds and archive verification
+are authorized for this slice. The coordinator separately owns online
+integration, repository Actions activation and enabling only those two workflows.
+
+This release-only selection narrows the conflicting CI/package deferrals solely
+for these operations. The seven other workflows stay disabled. It does not
+restore test Actions, native/product/legacy/full/history suites, #369's dormant
+source policy, ordinary admission gates or full P7. Do not create/move tags,
+change credentials, invoke AI from CI, publish a public release or infer owner
+acceptance from build success. The owner separately requests notes and final
+publication after inspecting the draft. See the
+[current source release section](AI-CONTEXT-SOURCE-RELEASE-POLICY.md#current-catalog-1--engine-2-draft-delivery-418)
+and [guide](../guides/implementation-guides/FRAMEWORK-RELEASE-DRAFT-GUIDE.md).
+All other U001 obligations and deferrals below remain effective.
+
 ## CI Suspension And Integration
 
 The coordinator already disabled repository Actions and all seven workflows.

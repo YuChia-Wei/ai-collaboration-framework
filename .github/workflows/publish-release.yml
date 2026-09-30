@@ -1,378 +1,116 @@
-name: Publish AI Context Release
-
+# Draft delivery only. No test execution, generated AI notes or public publication.
+name: Prepare framework draft
 on:
   push:
-    tags:
-      - "v*"
-
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing annotated stable or rc.N tag; use workflow from main
+        required: true
+        type: string
 permissions: {}
-
 concurrency:
-  group: ai-context-release-${{ github.ref_name }}
+  group: release-draft-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
-
 jobs:
   build:
-    name: Validate tag and stage admitted release
+    if: github.repository == 'YuChia-Wei/ai-collaboration-framework' && (github.event_name == 'push' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: read
-      issues: read
     outputs:
-      commit: ${{ steps.tag.outputs.commit }}
-      package_id: ${{ steps.release.outputs.package_id }}
-      release_id: ${{ steps.release.outputs.release_id }}
-      title: ${{ steps.release.outputs.title }}
-      version: ${{ steps.release.outputs.version }}
-      migration_source: ${{ steps.release.outputs.migration_source }}
-      migration_sources: ${{ steps.release.outputs.migration_sources }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+      tooling_commit: ${{ github.workflow_sha }}
+      build_attempt: ${{ github.run_attempt }}
+    env:
+      TOOLING_COMMIT: ${{ github.workflow_sha }}
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
     steps:
-      - name: Check out tagged tree
-        uses: actions/checkout@v6
+      - name: Checkout workflow tooling separately from selected product source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.workflow_sha }}
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
-
-      - name: Install packaging dependency
-        run: python -m pip install --disable-pip-version-check -r requirements.txt
-
-      - name: Verify user-created annotated tag
-        id: tag
+          python-version: '3.12'
+      - name: Builder dependency
+        run: python -I -m pip install --disable-pip-version-check PyYAML==6.0.3
+      - name: Build isolated exact annotated tag source
+        id: build
+        shell: bash
         run: |
-          if [[ ! "${GITHUB_REF_NAME}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Only stable vMAJOR.MINOR.PATCH tags may publish." >&2
-            exit 1
-          fi
-          if [[ "$(git cat-file -t "refs/tags/${GITHUB_REF_NAME}")" != "tag" ]]; then
-            echo "Release tag must be annotated." >&2
-            exit 1
-          fi
-          commit="$(git rev-parse "refs/tags/${GITHUB_REF_NAME}^{commit}")"
-          echo "commit=${commit}" >> "${GITHUB_OUTPUT}"
-
-      - name: Validate release registry
-        run: python .ai/scripts/validate-ai-context-versions.py
-
-      - name: Validate tagged release state
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python .ai/scripts/validate-ai-context-release-state.py \
-            --phase tag \
-            --version "${GITHUB_REF_NAME}"
-
-      - name: Validate candidate and render release body
-        id: release
-        run: |
-          python .ai/scripts/render-ai-context-release-notes.py \
-            --version "${GITHUB_REF_NAME}" \
-            --commit "${{ steps.tag.outputs.commit }}" \
-            --mode publish \
-            --output dist/release-body.md \
-            --github-output "${GITHUB_OUTPUT}"
-
-      - name: Resolve exact-byte promotion requirement
-        id: promotion
-        run: |
-          required="$(python .ai/scripts/manage-release-asset-identity.py required --version "${GITHUB_REF_NAME}")"
-          echo "required=${required}" >> "${GITHUB_OUTPUT}"
-
-      - name: Stage admitted archives without rebuilding
-        if: steps.promotion.outputs.required == 'true'
-        run: |
-          python .ai/scripts/manage-release-asset-identity.py stage \
-            --version "${GITHUB_REF_NAME}" --ref "refs/tags/${GITHUB_REF_NAME}" --assets-dir dist
-
-      - name: Build deterministic archives from legacy tag
-        if: steps.promotion.outputs.required == 'false'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          MIGRATION_SOURCES: ${{ steps.release.outputs.migration_sources }}
-        run: |
-          build_args=(
-            --ref "refs/tags/${GITHUB_REF_NAME}"
-            --version "${GITHUB_REF_NAME}"
-            --output dist
-          )
-          for migration_source in ${MIGRATION_SOURCES}; do
-            previous_version="${migration_source#v}"
-            previous_package_id="$(python .ai/scripts/resolve-ai-context-package-identity.py --version "${migration_source}")"
-            previous_output="${RUNNER_TEMP}/previous-package-${previous_version}"
-            previous_extract="${RUNNER_TEMP}/previous-extracted-${previous_version}"
-            mkdir -p "${previous_output}" "${previous_extract}"
-            gh release download "${migration_source}" \
-              --pattern "${previous_package_id}.zip" \
-              --pattern "${previous_package_id}.zip.sha256" \
-              --dir "${previous_output}"
-            python .ai/scripts/validate-ai-context-package.py \
-              "${previous_output}/${previous_package_id}.zip"
-            python -m zipfile -e \
-              "${previous_output}/${previous_package_id}.zip" \
-              "${previous_extract}"
-            build_args+=(
-              --migration-source "${migration_source}" \
-                "${previous_extract}/${previous_package_id}/metadata/files.yaml"
-            )
-          done
-          python .ai/scripts/build-ai-context-package.py "${build_args[@]}"
-
-      - name: Validate archives and parity
-        run: |
-          python .ai/scripts/validate-ai-context-package.py \
-            "dist/${{ steps.release.outputs.package_id }}.zip" \
-            "dist/${{ steps.release.outputs.package_id }}.tar.gz"
-
-      - name: Stage validated release artifact
-        uses: actions/upload-artifact@v7
+          python -I -B .github/scripts/build-release.py \
+            --repository "$GITHUB_WORKSPACE" --tag "$RELEASE_TAG" \
+            --tooling-commit "$TOOLING_COMMIT" --workflow-commit "$TOOLING_COMMIT" \
+            --workflow .github/workflows/publish-release.yml \
+            --repository-name "$GITHUB_REPOSITORY" --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --work-root "$RUNNER_TEMP/rb" --output "$RUNNER_TEMP/release-assets" --github-output "$GITHUB_OUTPUT"
+      - name: Admit exact package bytes for writer and retries
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: release-${{ steps.release.outputs.package_id }}-${{ steps.tag.outputs.commit }}
-          retention-days: 7
-          compression-level: 0
+          name: release-${{ steps.build.outputs.source_commit }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-assets/*
           if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
+      - name: Retain builder diagnostic output
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-build-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            dist/${{ steps.release.outputs.package_id }}.zip
-            dist/${{ steps.release.outputs.package_id }}.zip.sha256
-            dist/${{ steps.release.outputs.package_id }}.tar.gz
-            dist/${{ steps.release.outputs.package_id }}.tar.gz.sha256
-            dist/release-body.md
-
-  publish:
-    name: Publish verified draft
+            ${{ runner.temp }}/rb/builder.stdout
+            ${{ runner.temp }}/rb/builder.stderr
+          if-no-files-found: ignore
+          retention-days: 30
+  draft:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment: ai-context-release
+    timeout-minutes: 10
     permissions:
       contents: write
     env:
-      GH_TOKEN: ${{ github.token }}
-      PACKAGE_ID: ${{ needs.build.outputs.package_id }}
-      RELEASE_ID: ${{ needs.build.outputs.release_id }}
-      RELEASE_TITLE: ${{ needs.build.outputs.title }}
-      TAG: ${{ needs.build.outputs.version }}
-      TAG_COMMIT: ${{ needs.build.outputs.commit }}
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      TOOLING_COMMIT: ${{ needs.build.outputs.tooling_commit }}
+      BUILD_ATTEMPT: ${{ needs.build.outputs.build_attempt }}
     steps:
-      - name: Check out tagged tree again
-        uses: actions/checkout@v6
+      - name: Checkout admitted immutable writer
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0
+          ref: ${{ needs.build.outputs.tooling_commit }}
+          fetch-depth: 1
           persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
-
-      - name: Install packaging dependency
-        run: python -m pip install --disable-pip-version-check -r requirements.txt
-
-      - name: Validate provider prepublication state
+          python-version: '3.12'
+      - name: Download exact build job artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact_id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/release-assets
+      - name: Create owned draft and verify every provider asset
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PROVIDER_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
-          python .ai/scripts/reconcile-ai-context-release-provider.py \
-            --phase preflight \
-            --version "${TAG}"
-
-      - name: Download validated release artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: release-${{ needs.build.outputs.package_id }}-${{ needs.build.outputs.commit }}
-          path: dist
-
-      - name: Reverify tag and downloaded archives
-        run: |
-          if [[ "$(git cat-file -t "refs/tags/${TAG}")" != "tag" ]]; then
-            echo "Release tag is no longer annotated." >&2
-            exit 1
-          fi
-          current_commit="$(git rev-parse "refs/tags/${TAG}^{commit}")"
-          if [[ "${current_commit}" != "${TAG_COMMIT}" ]]; then
-            echo "Release tag target changed between build and publish." >&2
-            exit 1
-          fi
-          python .ai/scripts/validate-ai-context-package.py \
-            "dist/${PACKAGE_ID}.zip" \
-            "dist/${PACKAGE_ID}.tar.gz"
-          if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
-            python .ai/scripts/manage-release-asset-identity.py verify \
-              --version "${TAG}" --ref "refs/tags/${TAG}" --assets-dir dist
-          fi
-
-      - name: Create or resume owned draft
-        id: draft
-        run: |
-          marker="<!-- ai-context-release-automation: ${RELEASE_ID} -->"
-          if release_json="$(gh release view "${TAG}" --json isDraft,body,url 2>/dev/null)"; then
-            is_draft="$(jq -r '.isDraft' <<<"${release_json}")"
-            body="$(jq -r '.body' <<<"${release_json}")"
-            if [[ "${is_draft}" == "false" ]]; then
-              echo "published=true" >> "${GITHUB_OUTPUT}"
-              exit 0
-            fi
-            if ! grep -Fq "${marker}" <<<"${body}"; then
-              echo "Refusing to modify an unowned draft release." >&2
-              exit 1
-            fi
-            gh release edit "${TAG}" \
-              --verify-tag \
-              --draft \
-              --title "${RELEASE_TITLE}" \
-              --notes-file dist/release-body.md
-          else
-            gh release create "${TAG}" \
-              --verify-tag \
-              --draft \
-              --title "${RELEASE_TITLE}" \
-              --notes-file dist/release-body.md
-          fi
-          echo "published=false" >> "${GITHUB_OUTPUT}"
-
-      - name: Upload or verify release assets
-        run: |
-          assets=(
-            "dist/${PACKAGE_ID}.zip"
-            "dist/${PACKAGE_ID}.zip.sha256"
-            "dist/${PACKAGE_ID}.tar.gz"
-            "dist/${PACKAGE_ID}.tar.gz.sha256"
-          )
-          if [[ "${{ steps.draft.outputs.published }}" == "false" ]]; then
-            gh release upload "${TAG}" "${assets[@]}" --clobber
-          fi
-
-          mapfile -t expected < <(printf '%s\n' \
-            "${PACKAGE_ID}.zip" \
-            "${PACKAGE_ID}.zip.sha256" \
-            "${PACKAGE_ID}.tar.gz" \
-            "${PACKAGE_ID}.tar.gz.sha256" | sort)
-          mapfile -t actual < <(gh release view "${TAG}" --json assets --jq '.assets[].name' | sort)
-          if ! diff -u <(printf '%s\n' "${expected[@]}") <(printf '%s\n' "${actual[@]}"); then
-            echo "Release asset set differs from the governed package." >&2
-            exit 1
-          fi
-          actual_title="$(gh release view "${TAG}" --json name --jq '.name')"
-          if [[ "${actual_title}" != "${RELEASE_TITLE}" ]]; then
-            echo "GitHub Release title differs from the governed release title." >&2
-            exit 1
-          fi
-
-          verify_dir="${RUNNER_TEMP}/release-assets"
-          rm -rf "${verify_dir}"
-          mkdir -p "${verify_dir}"
-          gh release download "${TAG}" --dir "${verify_dir}" --pattern "${PACKAGE_ID}*"
-          cmp "dist/${PACKAGE_ID}.zip" "${verify_dir}/${PACKAGE_ID}.zip"
-          cmp "dist/${PACKAGE_ID}.zip.sha256" "${verify_dir}/${PACKAGE_ID}.zip.sha256"
-          cmp "dist/${PACKAGE_ID}.tar.gz" "${verify_dir}/${PACKAGE_ID}.tar.gz"
-          cmp "dist/${PACKAGE_ID}.tar.gz.sha256" "${verify_dir}/${PACKAGE_ID}.tar.gz.sha256"
-          python .ai/scripts/validate-ai-context-package.py \
-            "${verify_dir}/${PACKAGE_ID}.zip" \
-            "${verify_dir}/${PACKAGE_ID}.tar.gz"
-          if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
-            python .ai/scripts/manage-release-asset-identity.py provider \
-              --version "${TAG}" --ref "refs/tags/${TAG}" --repository "${GITHUB_REPOSITORY}" \
-              --assets-dir "${verify_dir}" --allow-draft --output "${RUNNER_TEMP}/uploaded-assets.json" \
-              --raw-provider-output "${RUNNER_TEMP}/uploaded-provider.json"
-          fi
-
-          gh release view "${TAG}" --json body --jq '.body' > "${verify_dir}/release-body.md"
-          python - "dist/release-body.md" "${verify_dir}/release-body.md" <<'PY'
-          import sys
-          from pathlib import Path
-
-          expected = Path(sys.argv[1]).read_text(encoding="utf-8").rstrip("\r\n")
-          actual = Path(sys.argv[2]).read_text(encoding="utf-8").rstrip("\r\n")
-          if expected != actual:
-              raise SystemExit("GitHub Release body differs from the governed release body")
-          PY
-
-      - name: Publish verified draft
-        if: steps.draft.outputs.published == 'false'
-        run: gh release edit "${TAG}" --verify-tag --draft=false --latest
-
-      - name: Read back published asset identity
-        run: |
-          if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
-            python .ai/scripts/manage-release-asset-identity.py provider \
-              --version "${TAG}" --ref "refs/tags/${TAG}" --repository "${GITHUB_REPOSITORY}" \
-              --assets-dir "${RUNNER_TEMP}/release-assets" --output "${RUNNER_TEMP}/published-assets.json" \
-              --raw-provider-output "${RUNNER_TEMP}/published-provider.json"
-          fi
-
-      - name: Retain asset publication read-back
+          python -I -B .github/scripts/draft-release.py \
+            --assets "$RUNNER_TEMP/release-assets" --repository "$GITHUB_REPOSITORY" \
+            --expected-tag "$RELEASE_TAG" --expected-tooling-commit "$TOOLING_COMMIT" \
+            --expected-run-id "$GITHUB_RUN_ID" --expected-build-attempt "$BUILD_ATTEMPT" \
+            --receipt "$RUNNER_TEMP/draft-receipt.json"
+      - name: Retain draft outcome including partial failure
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: asset-publication-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}-attempt-${{ github.run_attempt }}
+          name: draft-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/draft-receipt.json
+          if-no-files-found: warn
           retention-days: 30
-          compression-level: 0
-          if-no-files-found: ignore
-          path: |
-            ${{ runner.temp }}/uploaded-assets.json
-            ${{ runner.temp }}/published-assets.json
-            ${{ runner.temp }}/uploaded-provider.json
-            ${{ runner.temp }}/published-provider.json
-
-  reconcile-provider:
-    name: Reconcile release tracking
-    needs:
-      - build
-      - publish
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment: ai-context-release
-    permissions:
-      contents: read
-    env:
-      VERSION: ${{ needs.build.outputs.version }}
-    steps:
-      - name: Check out immutable tagged tree for reconciliation
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.build.outputs.version }}
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Install provider reconciliation dependency
-        run: python -m pip install --disable-pip-version-check -r requirements.txt
-
-      - name: Verify hosted publication without source closeout
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_PROVIDER_TOKEN }}
-        run: |
-          python .ai/scripts/validate-ai-context-release-state.py \
-            --phase finalization \
-            --version "${VERSION}" \
-            --hosted \
-            --workflow-run-id "${GITHUB_RUN_ID}" \
-            --allow-current-workflow-run
-
-      - name: Reconcile and read back Issues and Project
-        env:
-          GH_TOKEN: ${{ secrets.RELEASE_PROVIDER_TOKEN }}
-        run: |
-          python .ai/scripts/reconcile-ai-context-release-provider.py \
-            --phase apply \
-            --version "${VERSION}" \
-            --output "${RUNNER_TEMP}/provider-reconciliation.json"
-
-      - name: Retain provider reconciliation receipt
-        uses: actions/upload-artifact@v7
-        with:
-          name: provider-reconciliation-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}-attempt-${{ github.run_attempt }}
-          retention-days: 30
-          compression-level: 0
-          if-no-files-found: error
-          path: ${{ runner.temp }}/provider-reconciliation.json
