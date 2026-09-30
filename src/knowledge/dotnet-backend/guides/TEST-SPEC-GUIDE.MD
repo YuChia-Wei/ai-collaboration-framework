@@ -1,8 +1,18 @@
 # Test Spec Guide
 
-This guide defines how to write test specifications in this repository, especially for BDD, TDD, Given-When-Then, and scenario-first development.
+## Applicability
 
-All test designs and C# tests must use Given-When-Then and must not substitute 3A. BDDfy is the default tool. If the target team decides not to introduce BDDfy, plain xUnit tests must still preserve an explicit Given, When, and Then structure. `.feature` files are optional; see [GHERKIN-FEATURE-STORAGE-GUIDE.MD](../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD) for enablement conditions and official storage conventions.
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
+This optional guide describes a target-selected formal-test specification. Use the
+target's requested artifact, adopted GWT rules, template and configurable document
+root. Example `.dev/specs` paths are conventions, not required storage bindings.
+
+When the target adopts this GWT profile, preserve Given-When-Then in test designs and C# tests rather than silently substituting 3A. BDDfy is the default tool. If the target team decides not to introduce BDDfy, plain xUnit tests must still preserve an explicit Given, When, and Then structure. `.feature` files are optional; see [GHERKIN-FEATURE-STORAGE-GUIDE.MD](GHERKIN-FEATURE-STORAGE-GUIDE.MD) for enablement conditions and official storage conventions.
 
 ## 1. When to Create a Test Spec
 
@@ -15,7 +25,8 @@ Create a test spec when:
 
 ## 2. Order Relative to Production Specs
 
-Default order:
+One possible order for an explicitly requested multi-artifact task (not a required
+authoring pipeline):
 
 1. `.dev/requirement/`
 2. `.dev/specs/domains/`
@@ -127,7 +138,7 @@ When a use case involves cross-bounded-context or MQ behavior, also record:
 
 ## 8. Relationship to Skills and Workflows
 
-- `.dev/specs/tests/` is the official documentation area for test intent.
+- The target-selected test-spec root is the documentation owner for test intent; `.dev/specs/tests/` is an example.
 - `bdd-gwt-test-designer` can convert requirements or specs into scenarios in this area.
 - `bdd-gwt-test-designer` should also return a recommended storage category such as `use-cases/`, `integration/`, or `cross-domain/`.
 - Subsequent test generation or implementation creates a `.feature` file only when an enablement condition applies, and places it under `tests/Features/` rather than `.dev/specs/tests/`.
@@ -137,7 +148,7 @@ When a use case involves cross-bounded-context or MQ behavior, also record:
 
 A test spec must at least:
 
-- Refer to an existing production spec.
+- Refer to the actual behavior authority: a requirement, accepted contract or production spec when available; retain missing sources as unresolved.
 - Include at least one happy path.
 - Include at least one failure path or edge case.
 - Identify the primary verification level.

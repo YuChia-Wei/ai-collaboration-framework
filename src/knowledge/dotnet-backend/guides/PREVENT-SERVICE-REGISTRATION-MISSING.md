@@ -1,5 +1,13 @@
 # Prevent DI Startup Failures Guide (Dotnet)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 ## Problem Description
 When initializing a new project, two fatal errors appear frequently:
 
@@ -40,7 +48,7 @@ CreateProductUseCase
 3. Multi-layer outbox dependency registration
 
 ### Solution reference
-- `.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md`
+- `PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md`
 
 ## Protection Mechanisms
 
@@ -142,6 +150,6 @@ DON'T
 5. Add Outbox profile (optional)
 
 ## References
-- `.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md`
-- `.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md`
-- `.ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD`
+- `PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md`
+- `FRAMEWORK-API-INTEGRATION-GUIDE.md`
+- `../references/COMMON-PITFALLS.MD`

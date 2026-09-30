@@ -1,50 +1,39 @@
-# Architecture
+# .NET backend architecture overview
 
-This document provides the entry point for reusable .NET backend architecture context. See [TECH-STACK-REQUIREMENTS.MD](../requirements/TECH-STACK-REQUIREMENTS.MD) for detailed technology choices and the conditional [project-structure profile](../.ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md) for one target layout that must be confirmed by repository evidence or explicit adoption.
+This optional profile describes DDD, Clean Architecture, CQRS and ports/adapters.
+Read the target's adopted decisions before applying it. Supported technologies and
+versions are described by the [technology profile](../requirements/TECH-STACK-REQUIREMENTS.MD);
+[project structure](../standards/project-structure.md) is a conditional layout.
+Installation does not adopt either document or describe the target's actual system.
 
-## Architecture Overview
+## Responsibilities
 
-### Core Architecture
-- **Style**: Clean Architecture + DDD + CQRS
-- **Patterns**: Outbox / InMemory / Event Sourcing (configured per aggregate)
-- **Use Case Categories**: Command / Query / Reactor
+- Domain: aggregates, entities, value objects and domain invariants.
+- Application: command/query/reactor behavior and application-facing ports.
+- Infrastructure: selected persistence, messaging and integration adapters.
+- Inbound adapters: API/message delivery, mapping and invocation of a use case.
 
-### Code Organization (Conceptual Layers)
-- **Domain**: Aggregates, Entities, Value Objects, Domain Events
-- **Application**: Use Cases (Command/Query/Reactor ports)
-- **Infrastructure**: Persistence adapters / ORM or direct SQL / Messaging / Integration
-- **Adapter**: REST API Controllers, DTOs
+The [use-case/handler relationship](../standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD)
+keeps a dispatch adapter separate from the behavior it invokes. Naming and physical
+layout remain subject to accepted target boundaries; do not create a handler for a
+use case that has no dispatch entry.
 
-For a conditional physical layout and naming example, see [project-structure.md](../.ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md). Do not infer that profile as this framework repository's current structure or as a universal target requirement.
+## Persistence and integration
 
-### Persistence Port Model
+An aggregate persistence port owns aggregate-root storage; child entities do not
+acquire independent application-injected repositories. Read-model ports stay
+read-only. Purge, outbox, projection and import writers have explicit capabilities.
+Confirm transaction, concurrency and delivery semantics for each bounded context.
 
-- `IAggregateRepository<TAggregate, TId>`: The canonical Aggregate Root persistence port.
-- `IDomainRepository<TAggregate, TId>`: A compatibility port for existing products that inherits from `IAggregateRepository`.
-- `IQueryRepository`: A pure query port marker.
-- Writes such as physical purge, Outbox, Projection, and Import use capability-specific ports.
-- A child Entity must not own a Repository that can be injected independently by the Application layer.
-- The target repository determines the database, ORM, event store, and packages.
-- Batch Aggregate persistence is a target-specific opt-in capability, not part of the portable default contract.
+EF Core, Dapper/direct SQL, event stores and in-memory adapters are alternatives
+selected per domain. Event Sourcing, outbox and batch persistence apply only where
+the target accepts their contracts. Preserve existing mixed persistence choices.
+An application use case depends on project-owned outbound ports; broker-specific
+handlers and registration stay at the actual adapter/composition boundary.
 
-Terminology and responsibility boundaries:
+## Evidence before configuration
 
-- See [USECASE-COMMAND-HANDLER-RELATIONSHIP.MD](../.ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD) for the relationships among `Use Case`, `Command`, `Query`, and `Handler`.
-
-### Application Inbound Port Model
-
-- `I<Operation>UseCase` is an Application inbound port.
-- `<Operation>UseCase` implements application orchestration through `ExecuteAsync`.
-- By default, an HTTP Controller depends directly on a Use Case interface.
-- Only explicitly approved pure-query endpoints may connect directly to a read-only Query Repository/Service as an exception.
-- A Command/message Handler exists only at an actual dispatch entry and calls one Use Case after mapping; a Handler must not become the Use Case implementation.
-- A Use Case depends on a project-owned outbound event publisher port and does not depend directly on Wolverine `IMessageBus`.
-- Wolverine/MediatR/MQ-specific Handlers belong at the inbound adapter/composition boundary; only package-neutral convention Handlers may remain in the Application layer.
-
-### Target Repository Configuration
-
-This framework repository does not retain a product-specific `.dev/project-config.yaml`.
-
-When the framework is introduced into a target repository, first use `ai-context-init` to scan repository evidence, then generate `.dev/project-config.yaml` from `.ai/assets/skills/ai-context-init/templates/project-config.template.yaml`. Unconfirmed architecture, database, messaging, frontend, or deployment facts must remain blank.
-
-The EF Core, Dapper, Npgsql, WolverineFx, RabbitMQ, and Kafka documents in this framework are conditional/reference guidance and must not automatically become mandatory truth for a target repository.
+Read target project files, dependencies, deployment configuration and accepted
+architecture decisions. Summaries may refer to that evidence but cannot override
+it or fill unknown technology choices with defaults. This package does not invoke
+an initialization skill, generate project-config, or require a fixed `.dev` path.

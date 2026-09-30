@@ -1,5 +1,13 @@
 # Data Class Standards Guide (Dotnet)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 ## Overview
 When a target selects an Outbox persistence profile, data classes may serve as
 DTOs for persisted aggregate state and pending-event metadata. In an EF Core
@@ -156,5 +164,5 @@ TODO: replace `src/tools/dotnet/check-data-class-annotations.sh` with a Roslyn a
 
 ## Related Documents
 - `FRAMEWORK-API-INTEGRATION-GUIDE.md`
-- `.ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md`
-- `.ai/assets/tech-stacks/dotnet-backend/examples/dto/README.md`
+- `../shared/dto-conventions.md`
+- `../examples/dto/README.md`

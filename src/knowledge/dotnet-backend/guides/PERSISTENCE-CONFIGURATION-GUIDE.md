@@ -1,5 +1,13 @@
 # Persistence Configuration Guide
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 本文件定義 ORM / persistence configuration 在 repo 中的建議落點與責任邊界。
 
 ## 核心規則
@@ -79,7 +87,7 @@ database.
 
 When the target selects EF projection registration validation, it creates and
 runs its own configuration test. The
-[reference-only recipe](../../../.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md)
+[reference-only recipe](../tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md)
 uses a target-owned `IProjectionReadModel` marker and compares its concrete
 implementations with the assembled EF Core model. The framework supplies no
 runtime-validation project, SDK, package versions, or activation claim.

@@ -1,5 +1,13 @@
 # New Project Test Setup Guide (Dotnet)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 ## Purpose
 Set up the testing infrastructure for a new .NET project to support multi-profile testing (`TestInMemory` and `TestOutbox`).
 
@@ -174,5 +182,5 @@ Do:
 
 ## Related Documents
 - `src/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md`
-- `.ai/assets/skills/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml`
-- `.ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md`
+- `../legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml`
+- `../shared/testing-strategy.md`
