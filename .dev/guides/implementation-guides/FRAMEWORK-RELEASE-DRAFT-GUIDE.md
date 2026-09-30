@@ -11,6 +11,8 @@ This does not adopt #369's dormant source gates or exit P7.
 | Push an existing annotated `vMAJOR.MINOR.PATCH` or `vMAJOR.MINOR.PATCH-rc.N` tag | Exact tagged source package and owned GitHub Draft Release |
 | Manual **Prepare framework draft** from `main`, input an existing annotated tag | Current immutable workflow tooling builds the old tagged product source, then prepares its draft |
 
+New draft titles contain only the version. RC display titles use `v0.19.0-rc3` while the canonical tag and package identity retain `v0.19.0-rc.3`. Existing human-edited titles remain preserved on retries.
+
 No tags are created or moved. For an older tag such as `v0.19.0-rc.3`, select
 `main` as workflow ref and that tag as the `tag` input. The original tag object
 and peeled source commit remain unchanged. Product code executes in a separate

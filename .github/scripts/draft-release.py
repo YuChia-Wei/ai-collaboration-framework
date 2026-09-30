@@ -152,7 +152,7 @@ def deliver(api, directory, manifest, receipt, checkpoint=lambda: None):
         release = write_operation(api, receipt, checkpoint,
             {"operation": "create-draft", "tag": source["tag"], "manifest_sha256": sha(manifest_raw)},
             "/releases", {
-                "tag_name": source["tag"], "name": f"AI Collaboration Framework {source['tag']}",
+                "tag_name": source["tag"], "name": source["tag"].replace("-rc.", "-rc"),
                 "body": generic_body(manifest, manifest_raw), "draft": True,
                 "prerelease": "-" in manifest["version"].split("+")[0], "generate_release_notes": False},
             validate_created)
