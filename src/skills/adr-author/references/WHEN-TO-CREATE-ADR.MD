@@ -1,6 +1,8 @@
 # When To Create ADR
 
-Create an ADR only when a change represents a structural decision.
+Use an ADR when the caller requests a decision record or the target's adopted
+process requires one. Otherwise the following considerations help identify a
+useful structural decision; file count alone creates no record mandate.
 
 ## Create An ADR When
 
@@ -30,10 +32,7 @@ A decision usually merits an ADR when both of the following are true:
 
 ## Default Preference
 
-When only adding or correcting a rule:
-
-- Update `.dev/standards/` first.
-- Alternatively, update `.dev/guides/`.
-- Alternatively, update `.ai/`.
-
-Do not place a rule that belongs in canonical documentation into an ADR and then leave it unresolved there.
+When only adding or correcting a rule, use the target's actual canonical rule
+owner and authorized process. Do not assume `.dev/standards`, `.dev/guides` or
+`.ai` is writable or authoritative merely because a directory exists. An ADR
+records a decision; it does not itself update a rule or prove implementation.

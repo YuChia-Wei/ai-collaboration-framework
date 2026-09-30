@@ -9,6 +9,9 @@ Record architectural alternatives, capture a mapped owner decision, and preserve
 [skill-package.yaml](skill-package.yaml). Source delivery does not claim execution,
 installation or publication. This package is independently selectable.
 
+Consider [when an ADR is useful](references/WHEN-TO-CREATE-ADR.MD) before creating a
+new record; the target's requested decision and adopted process take precedence.
+
 1. Bind the caller's explicit project/package/config paths and read
    [configuration](references/configuration.md); keep actual task authority separate.
 2. Select one [operation](references/operations.md). Query related records before

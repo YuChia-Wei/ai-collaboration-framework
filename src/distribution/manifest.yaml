@@ -27,6 +27,8 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/README.md
   - source: content-package.yaml
     destination: .ai/core/knowledge/dotnet-backend/content-package.yaml
+  - source: design/architecture-overview.md
+    destination: .ai/core/knowledge/dotnet-backend/design/architecture-overview.md
   - source: design/architecture-playbook.md
     destination: .ai/core/knowledge/dotnet-backend/design/architecture-playbook.md
   - source: design/design-routing.yaml
@@ -285,18 +287,48 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs
   - source: examples/usecase/UseCaseContracts.cs
     destination: .ai/core/knowledge/dotnet-backend/examples/usecase/UseCaseContracts.cs
+  - source: guides/COMMON-MISTAKES-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/COMMON-MISTAKES-GUIDE.md
+  - source: guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+  - source: guides/CORS-SETUP.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/CORS-SETUP.md
+  - source: guides/DATA-CLASS-STANDARDS.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/DATA-CLASS-STANDARDS.md
+  - source: guides/DATABASE-MIGRATION-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md
+  - source: guides/DEVELOPMENT-TOOLS-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md
   - source: guides/DOCKER-RESTORE-CACHE-GUIDE.md
     destination: .ai/core/knowledge/dotnet-backend/guides/DOCKER-RESTORE-CACHE-GUIDE.md
   - source: guides/DOTNET-DI-TEST-GUIDE.md
     destination: .ai/core/knowledge/dotnet-backend/guides/DOTNET-DI-TEST-GUIDE.md
+  - source: guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
+  - source: guides/FAQ.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/FAQ.md
   - source: guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
     destination: .ai/core/knowledge/dotnet-backend/guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
   - source: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
     destination: .ai/core/knowledge/dotnet-backend/guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  - source: guides/LEARNING-PATH.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/LEARNING-PATH.md
+  - source: guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
+  - source: guides/PERSISTENCE-CONFIGURATION-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md
+  - source: guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
+  - source: guides/PROFILE-BASED-TESTING-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md
   - source: guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md
     destination: .ai/core/knowledge/dotnet-backend/guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md
   - source: guides/TEMPLATE-USAGE-GUIDE.md
     destination: .ai/core/knowledge/dotnet-backend/guides/TEMPLATE-USAGE-GUIDE.md
+  - source: guides/TEST-DATA-PREPARATION-GUIDE.md
+    destination: .ai/core/knowledge/dotnet-backend/guides/TEST-DATA-PREPARATION-GUIDE.md
+  - source: guides/TEST-SPEC-GUIDE.MD
+    destination: .ai/core/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD
   - source: legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md
     destination: .ai/core/knowledge/dotnet-backend/legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md
   - source: legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md
@@ -389,6 +421,8 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/references/rationale/query-side-layering-rationale.MD
   - source: references/rationale/rest-api-resource-path-rationale.MD
     destination: .ai/core/knowledge/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD
+  - source: requirements/TECH-STACK-REQUIREMENTS.MD
+    destination: .ai/core/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD
   - source: review/review-routing.yaml
     destination: .ai/core/knowledge/dotnet-backend/review/review-routing.yaml
   - source: review/test-scenario-review.md
@@ -491,12 +525,34 @@ components:
     destination: .ai/core/knowledge/engineering-common/README.md
   - source: content-package.yaml
     destination: .ai/core/knowledge/engineering-common/content-package.yaml
+  - source: domain-language/README.MD
+    destination: .ai/core/knowledge/engineering-common/domain-language/README.MD
+  - source: domain-language/templates/aggregate-vocabulary-template.md
+    destination: .ai/core/knowledge/engineering-common/domain-language/templates/aggregate-vocabulary-template.md
+  - source: domain-language/templates/bounded-context-language-template.md
+    destination: .ai/core/knowledge/engineering-common/domain-language/templates/bounded-context-language-template.md
+  - source: domain-language/templates/domain-event-language-template.md
+    destination: .ai/core/knowledge/engineering-common/domain-language/templates/domain-event-language-template.md
   - source: engineering-rule-catalog.yaml
     destination: .ai/core/knowledge/engineering-common/engineering-rule-catalog.yaml
+  - source: operations/CONTEXT-MAP-GUIDE.MD
+    destination: .ai/core/knowledge/engineering-common/operations/CONTEXT-MAP-GUIDE.MD
+  - source: operations/EVENT-CATALOG-GUIDE.MD
+    destination: .ai/core/knowledge/engineering-common/operations/EVENT-CATALOG-GUIDE.MD
+  - source: operations/MQ-TOPOLOGY-GUIDE.MD
+    destination: .ai/core/knowledge/engineering-common/operations/MQ-TOPOLOGY-GUIDE.MD
+  - source: operations/RUNBOOK-GUIDE.MD
+    destination: .ai/core/knowledge/engineering-common/operations/RUNBOOK-GUIDE.MD
+  - source: references/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+    destination: .ai/core/knowledge/engineering-common/references/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+  - source: references/AUTHORING-BOUNDARY-CONTRACT.md
+    destination: .ai/core/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md
   - source: references/ENGINEERING-IDENTITY-CONTRACT.md
     destination: .ai/core/knowledge/engineering-common/references/ENGINEERING-IDENTITY-CONTRACT.md
   - source: references/GWT-TEST-HANDOFF-CONTRACT.md
     destination: .ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md
+  - source: references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md
+    destination: .ai/core/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md
   - source: references/PROMPT-PORTABILITY-RULES.md
     destination: .ai/core/knowledge/engineering-common/references/PROMPT-PORTABILITY-RULES.md
 - id: adr-author
@@ -505,6 +561,8 @@ components:
   members:
   - source: SKILL.md
     destination: .ai/core/skills/adr-author/SKILL.md
+  - source: references/WHEN-TO-CREATE-ADR.MD
+    destination: .ai/core/skills/adr-author/references/WHEN-TO-CREATE-ADR.MD
   - source: references/configuration.md
     destination: .ai/core/skills/adr-author/references/configuration.md
   - source: references/example.md
@@ -715,6 +773,8 @@ components:
     destination: .ai/core/skills/requirement-author/SKILL.md
   - source: references/authoring.md
     destination: .ai/core/skills/requirement-author/references/authoring.md
+  - source: references/requirement-guide.md
+    destination: .ai/core/skills/requirement-author/references/requirement-guide.md
   - source: references/requirement-template.md
     destination: .ai/core/skills/requirement-author/references/requirement-template.md
   - source: skill-package.yaml
@@ -761,6 +821,10 @@ components:
     destination: .ai/core/skills/spec-author/references/formal-test-template.md
   - source: references/production-template.md
     destination: .ai/core/skills/spec-author/references/production-template.md
+  - source: references/spec-guide.md
+    destination: .ai/core/skills/spec-author/references/spec-guide.md
+  - source: references/spec-organization-guide.md
+    destination: .ai/core/skills/spec-author/references/spec-organization-guide.md
   - source: skill-package.yaml
     destination: .ai/core/skills/spec-author/skill-package.yaml
   kind: skill

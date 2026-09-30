@@ -1,5 +1,9 @@
 # MQ Topology Guide
 
+This is optional, technology-neutral authoring guidance. Select the target project's
+document location, adopted template and real operational evidence; illustrative
+`.dev/operations` paths do not provision a store or establish runtime facts.
+
 本指南定義 `mq-topology.md` 類文件的最小內容。它是 template / authoring guidance，不表示 `.dev/operations/mq-topology.md` 已存在。
 
 ## 目的

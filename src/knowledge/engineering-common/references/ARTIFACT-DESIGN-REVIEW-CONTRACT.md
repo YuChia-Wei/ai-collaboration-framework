@@ -28,14 +28,13 @@ broker, ORM, DI API, or test runner. Use each skill's source selection route;
 load a technology supplement only when the target explicitly selects it and
 its installation and applicability are proven. A file suffix is insufficient.
 
-Consume applicable effective-rule packets using the skill's existing exact
-request and freshness contract. `design`/`review` does not authorize a new
-resolver route, an alternate packet, or a profile default. Missing/stale
-applicable authority stops those judgments; a common-method observation must
-never be presented as a substitute or a passed required gate. When no catalog
-rule applies, explain that boundary and ground observations in supplied
-requirements and the skill's method criteria. Report unavailable specialist
-coverage and keep any required specialist acceptance blocked.
+Read the target's applicable requirements, decisions and adopted rules through its
+selected authority. A project-required evidence or freshness contract still applies;
+this optional reference creates no packet, resolver or approval prerequisite.
+Missing applicable authority stops the affected judgment. Common-method observations
+cannot substitute for missing specialist acceptance. When no adopted catalog rule
+applies, ground observations in supplied requirements and the selected skill's method
+criteria, and report unavailable specialist coverage.
 
 ## Review Output
 

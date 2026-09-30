@@ -1,191 +1,44 @@
-# Spec Guide
+# Specification presentation guide
 
-This document defines the format and authoring conventions for specifications under `.dev/specs/` and incorporates the organization rules from `SPEC-ORGANIZATION-GUIDE.md`.
+The [authoring method](authoring.md) owns artifact selection, source binding and
+uncertainty. Use the caller's target contract, schema and format when supplied;
+the four packaged prose templates remain the defaults. This reference offers
+optional presentation examples, not a JSON schema or an additional required stage.
+See [organization guidance](spec-organization-guide.md) for configurable locations.
 
-In this framework repository, `.dev/specs/` currently retains only:
+## Describe the behavior before implementation names
 
-- `README.MD`
-  - folder purpose, scope, and usage
-- `SPEC-GUIDE.MD`
-- `SPEC-ORGANIZATION-GUIDE.MD`
-- `tests/`
-  - BDD/TDD-oriented test specs and scenario design artifacts
+Use the business operation as the subject. A command/query is its input model;
+a dispatch handler, when actually selected, maps the inbound delivery and invokes
+the behavior. Do not invent an aggregate, event, repository or handler to fill a
+format. Technology-specific terminology requires the target-selected supplement;
+this independent skill has no dependency on a framework source checkout.
 
-Production/domain specs are target-repository outputs created by `repo-structure-sync` or a later workflow when source requirements exist; they are not an active subtree in this framework repository.
+## Optional JSON examples
 
-## 0) Terminology Boundary
+When a target chooses JSON without supplying a closed schema, discuss the shape
+before writing it. The following illustrates a production behavior; include only
+fields supported by real sources and leave unknown contracts explicit:
 
-- `use case`
-  - the primary name of production behavior, such as `CreateProduct`
-- `command` / `query`
-  - the request model for that use case
-- `handler`
-  - an optional inbound adapter for a real dispatch/message entry; it maps the
-    delivery contract and invokes one use case
-
-Specs should primarily describe:
-
-- the use case the system must complete
-- the corresponding aggregate/domain event/repository/output
-
-They should not begin with implementation types such as:
-
-- `CreateProductCommandHandler`
-- `CreateProductUseCaseService`
-
-In other words:
-
-- `use case` is the subject of the spec
-- `command`/`query` and an optional `handler` are implementation mappings and do not need to become the primary spec filename
-
-When the .NET backend component is selected, see the complete terminology rules in
-[`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](../../.ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD).
-
-## 1) Directory & Naming Rules
-First follow:
-- `SPEC-ORGANIZATION-GUIDE.MD`
-- Aggregate as the smallest boundary
-
-In a target repository, production specs conventionally live under:
-
-- `.dev/specs/domains/<domain>/<entity|usecase|adapter>/...`
-
-In this framework repository, however, `.dev/specs/domains/` is not used as a ready-made source-of-truth directory.
-
-Test specs should live under:
-
-- `.dev/specs/tests/<domain>/aggregate/<aggregate-name>.test-spec.md`
-- `.dev/specs/tests/<domain>/use-cases/<use-case>.test-spec.md`
-- `.dev/specs/tests/<domain>/integration/<target-name>.test-spec.md`
-- Add when needed: `.dev/specs/tests/<domain>/app-services/` and `.dev/specs/tests/<domain>/domain-services/`
-- Cross-domain flows: `.dev/specs/tests/cross-domain/<flow-name>.test-spec.md`
-- End-to-end journeys: `.dev/specs/tests/e2e/<journey-name>.test-spec.md`
-
-### Use Case Spec
-- Filename format: `[action]-[aggregate].json`
-- Examples: `create-product.json`, `estimate-pbi.json`
-
-### Entity / Value Object Spec
-- Filename format: `[aggregate]-spec.md` or `*-spec.json`
-
-### Adapter / Controller Spec
-- Filename format: `[action]-[aggregate]-controller.json`
-
-## 2) Use Case Spec (JSON)
-### Required Keys
-- `useCase`
-- `behavior`
-- `input`
-- `aggregate`
-- `aggregateId`
-- `method`
-- `domainEvent`
-- `repository`
-- `output`
-
-### Interpretation Rules
-
-- `useCase`
-  - the business operation name, not a class name
-- `input`
-  - the data shape of the corresponding command/query request model
-- `method`
-  - an aggregate constructor, aggregate method, or other primary domain entry point
-- `repository`
-  - command-side aggregate persistence or the primary query-side data-access collaborator
-- `output`
-  - the result DTO or output model returned when the handler/use case completes
-
-### Optional / Recommended Keys
-- `domainModelNotes`
-- `constructorPreconditions`
-- `constructorPostconditions`
-- `aggregates`
-- `domainEvents`
-- `entities`
-- `valueObjects`
-- `enums`
-
-### Example (minimal)
 ```json
 {
   "useCase": "CreateProduct",
-  "behavior": "Create a new product",
-  "input": [{ "name": "productId", "type": "String" }],
-  "aggregate": "Product",
-  "aggregateId": "ProductId",
-  "method": "Product constructor",
-  "domainEvent": "ProductEvents.ProductCreated",
-  "repository": "ProductRepository",
-  "output": "CqrsOutput with productId"
+  "behavior": "Create a product under the accepted naming rule",
+  "input": [{ "name": "name", "type": "string" }],
+  "output": { "productId": "target-selected identifier" }
 }
 ```
 
-## 3) Adapter / Controller Spec (JSON)
-### Required Keys
-- `useCase`
-- `behavior`
-- `spec.basePath`
-- `spec.endpoints`
+An adapter example may describe direction, protocol, endpoints and error mapping;
+entity/value-object examples may describe identity, attributes, equality and
+invariants. Their accepted owners and schema determine required fields. Examples
+must not override a closed format or adopt a route, package, ORM or event model.
 
-### Recommended
-- `spec.errorMapping`
-- `contracts.dtos`
-- `policies.validation`
-- `policies.idempotency`
-- `policies.observability`
+## Review and test-spec boundary
 
-### Example (minimal)
-```json
-{
-  "useCase": "CreateProductController",
-  "behavior": "Create a new product",
-  "spec": {
-    "basePath": "/v1/api/products",
-    "endpoints": [
-      { "method": "POST", "path": "", "summary": "Create Product" }
-    ]
-  }
-}
-```
-
-## 4) Entity / Value Object Spec (JSON)
-### Required Keys
-- `entity`
-- `type`
-- `package`
-- `description`
-- `attributes`
-
-### Example (from Hours)
-```json
-{
-  "entity": "Hours",
-  "type": "ValueObject",
-  "package": "tw.teddysoft.aiscrum.common.entity",
-  "description": "A value object representing hours with decimal calculations",
-  "attributes": [
-    { "name": "value", "type": "BigDecimal", "constraint": "nullable, >= 0, <= 99999" }
-  ]
-}
-```
-
-## 5) Cross References
-Every spec must reference:
-- the corresponding Aggregate
-- related Domain Events
-- related Use Cases/Controllers
-
-## 6) Review Checklist
-- Is the file in the correct Aggregate directory?
-- Do the Use Case/Adapter/Entity structures conform to the JSON format?
-- Are all required fields present?
-- Does it map to actual code naming?
-
-## 7) Boundary with Test Specs
-
-- Production/domain specs (when created in a target repository) answer "What should the system do?"
-- `.dev/specs/tests/` answers "How do I verify that it actually does so?"
-- Test specs must not replace production specs.
-- Test specs should primarily be classified by test target instead of placing every scenario directly under `<domain>/`.
-- This framework repository retains only rules, templates, and test-spec materials; it does not retain an active production/domain spec subtree.
+Check accepted behavior, inputs/outputs, invariants, failures, source IDs and open
+choices against the selected contract. Reference related artifacts only when they
+exist and matter. A production specification states expected behavior; a formal-test
+specification states scenarios, setup, observable assertions and verification level.
+One does not replace the other, and no mandatory requirement-to-spec-to-test pipeline
+is implied. Authoring does not implement or execute tests.

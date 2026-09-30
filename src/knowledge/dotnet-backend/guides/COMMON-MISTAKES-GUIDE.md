@@ -1,5 +1,13 @@
 # 常見錯誤與解決方案指南 (.NET)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 > 本指南收集在 .NET DDD + WolverineFx + EF Core 開發中常見錯誤及其解決方案。
 
 ## 📋 目錄
@@ -69,7 +77,7 @@ dotnet ef database update
 ## 🔔 事件處理錯誤
 
 ### 1. Event 未被處理
-**原因**：未註冊 WolverineFx handlers。
+**可能原因（已選 Wolverine 時）**：handler discovery 或註冊遺漏；需以目前啟動與訊息證據確認，不能由現象直接判定根因。
 
 **解決方案**：
 - 檢查 Wolverine 配置與 handler discovery
@@ -78,7 +86,7 @@ dotnet ef database update
 ## 🧩 Domain 模型錯誤
 
 ### 1. Aggregate 直接修改狀態
-**解決方案**：改用 Apply/When 事件模式。
+**解決方案**：先確認 invariant 是否被繞過；只有採用 Event Sourcing 的 aggregate 才套用其 Apply/When 事件模式，其他 persistence 模式依 accepted domain contract 修正。
 
 ### 2. 未使用 DateProvider
 **解決方案**：以 TimeProvider/DateProvider 取代 DateTime.UtcNow。

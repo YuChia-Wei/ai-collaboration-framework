@@ -1,5 +1,13 @@
 # Dual-Profile Configuration Guide (Dotnet)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 ## Overview
 This guide explains how to configure dual profiles in a .NET application to support InMemory and Outbox modes.
 

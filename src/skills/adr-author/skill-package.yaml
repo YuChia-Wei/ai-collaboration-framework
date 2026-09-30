@@ -67,8 +67,8 @@ runtime:
   - supersede
   on_missing: unavailable
 - id: filesystem
-  requirement: Explicit local roots, bounded reads and exclusive atomic single-record
-    writes; ignored local config in a Git project requires read-only Git
+  requirement: Explicit local roots, bounded reads and exclusive atomic single-record writes; ignored local config in a Git
+    project requires read-only Git
   for_operations:
   - explain
   - create
@@ -125,6 +125,7 @@ resources:
   - references/configuration.md
   - references/operations.md
   - references/example.md
+  - references/WHEN-TO-CREATE-ADR.MD
   schemas:
   - id: adr.record
     version: 1.0.0
