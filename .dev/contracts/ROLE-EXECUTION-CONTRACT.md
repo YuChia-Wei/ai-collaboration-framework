@@ -222,12 +222,16 @@ trigger: those are delegation gates, not prerequisites for the direct default.
 
 ## Examples
 
+These examples illustrate contract shapes. Replace placeholder role and reference
+paths with existing selected project assets before execution; the examples do
+not establish current source execution entries.
+
 ### Direct because delegation is not worthwhile
 
 ```yaml
 role_execution_id: "implementation-command-01"
 role_asset_id: "command-sub-agent"
-role_path: ".ai/assets/skills/slice-implementer/roles/command-sub-agent/sub-agent.yaml"
+role_path: "<existing-project-selected-role-asset>"
 owning_skill: "slice-implementer"
 stage_id: "implementation"
 applicability: { result: "applies", reason: "selected primary command mode" }
@@ -249,7 +253,7 @@ input_envelope:
   scope: ["src/Orders/CreateOrderUseCase.cs"]
   non_goals: ["architecture redesign"]
   source_refs: ["REQ-17", "SPEC-17"]
-  mandatory_references: [".ai/assets/skills/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md"]
+  mandatory_references: ["<existing-project-selected-implementation-reference>"]
   constraints: ["existing architecture rules"]
   stop_conditions: ["return when implementation and narrow validation are complete"]
 permissions: { read_scope: ["src/Orders"], write_scope: ["src/Orders/CreateOrderUseCase.cs"], external_actions: [], secret_handling: "no-secret-values" }

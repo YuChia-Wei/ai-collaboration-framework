@@ -56,7 +56,7 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. `.ai/assets/` now holds only source compatibility and tooling data, including the bounded legacy-format duties below; it is not the daily route for the 17 selected skills.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The RC3 source selection has 17 skills. Removed compatibility roots do not provide current executable routes; generated installation state is updated separately.
 
 | Need | Owning route |
 | --- | --- |
@@ -66,10 +66,10 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 | Decisions, lessons, local backlog, pull requests, or standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
 | Multi-stage source work and workflow records | Project-owned `.dev/` workflow records, source workflow policy and Issue authority; no portable orchestration skill |
-| Initialization or upgrade of a previously published legacy package format | Source compatibility procedures and their active `.ai/scripts/` tooling; this is not a portable installed skill route. |
+| Initialization or upgrade of a previously published legacy package format | Retained source compatibility duty with no current portable or executable route; restore a verified source-owned procedure before execution. |
 | Historical or exceptional source release closeout | `releases/` and source release policy; no portable installed skill route. |
 
-For source work, `.dev/standards/` continues to own source policy, GitHub work authority, release governance, U001 and the P7 deferrals. Preserve the retained source duties explicitly: source assessment persistence and terminal records; source customization and policy reconciliation; legacy CBF/SWF intake and active records; the target-selected legacy .NET 100% gate and rule resolver, only when maintaining that legacy downstream format or target (not for this framework source or its own installation); and old published-format initialization, upgrade and recovery. These duties do not restore the three removed runtime discovery entries or make their legacy files a second daily skill source.
+For source work, `.dev/standards/` continues to own source policy, GitHub work authority, release governance, U001 and the P7 deferrals. Preserve the retained source duties explicitly: source assessment persistence and terminal records; source customization and policy reconciliation; legacy CBF/SWF intake and active records; the target-selected legacy .NET 100% gate and rule resolver, only when maintaining that legacy downstream format or target (not for this framework source or its own installation); and old published-format initialization, upgrade and recovery. Duty retention does not establish tool availability. The removed legacy roots and validators that still depend on them are unavailable until a verified source-owned route is restored; they do not restore removed runtime discovery entries.
 
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
 - For code review, load the installed `code-reviewer` entry and only its applicable route and finding references.
@@ -123,7 +123,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ### Portable Test Fixture Acceleration
 
-- The portable baseline is zero configuration. Only tests explicitly classified in `.ai/scripts/test-fixture-classifications.json` as disposable fixture I/O may consume `AI_CONTEXT_TEST_TMP_ROOT`.
+- The portable baseline is zero configuration. The legacy `AI_CONTEXT_TEST_TMP_ROOT` acceleration route is unavailable in this source layout because its classifier and tooling were removed; do not activate it from historical instructions.
 - The setting is one explicit opt-in fixture root. Do not discover storage, change global `TEMP` or `TMP`, or route durability-storage or platform-filesystem semantics through it.
 - Re-run preflight at execution time, create one unique contained run directory, and clean up only that verified directory. Invalid, unsafe, or unwritable roots fail before material fixtures.
 - Keep diagnostics path-free. A WSL `/mnt/*` performance warning is advisory; it never changes test outcomes or silently selects another root.
