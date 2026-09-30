@@ -118,6 +118,12 @@ class BreakingReinstallTests(unittest.TestCase):
         self.assertEqual("reinstall-git-flags", result["diagnostics"][0]["code"])
         self.assertFalse(result["changed"])
 
+    def test_attribute_sentinel_driver_name_rejected_without_execution(self):
+        subprocess.run(["git", "-C", str(self.project), "config", "filter.unset.clean", "this-filter-must-not-run"], check=True)
+        result = owner.execute(self.request)
+        self.assertEqual("reinstall-git-filter", result["diagnostics"][0]["code"])
+        self.assertFalse(result["changed"])
+
     def test_unclassified_file_rejected(self):
         self.request["preserved_inputs"] = []
         result = owner.execute(self.request)

@@ -33,6 +33,21 @@ def _scope(name):
     return any(name == prefix or name.startswith(prefix + "/") for prefix in SCOPES)
 
 
+def _git_filter_boundary(root, tracked):
+    # Query keys only: configured command text may contain credentials. Git's
+    # attribute sentinels also happen to be valid string driver names.
+    configured = subprocess.run(["git", "-C", str(root), "config", "--name-only", "--get-regexp",
+                                 "^filter[.](unset|unspecified)[.]"],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    state._check(configured.returncode in {0, 1} and not configured.stdout,
+                 "reinstall-git-filter", "Ambiguous custom Git filter drivers are unsupported.")
+    if tracked:
+        attributes = _git(root, "check-attr", "-z", "--stdin", "filter",
+                          input_bytes=("\0".join(sorted(tracked)) + "\0").encode("utf-8")).decode("utf-8").split("\0")
+        state._check(all(attributes[i + 2] in {"unspecified", "unset"} for i in range(0, len(attributes) - 1, 3)),
+                     "reinstall-git-filter", "Custom Git content filters are unsupported for breaking reinstall.")
+
+
 def _scan(reader, root):
     """Complete bounded inventory, refusing links, hard links and aliases."""
     result = {}
@@ -100,9 +115,10 @@ def _prepare(request):
                  "reinstall-git-root", "Project root must be the exact Git worktree root.")
     state._check(_git(project, "rev-parse", "HEAD").decode().strip() == request["expected_head"],
                  "reinstall-head", "Git HEAD differs from the selected recovery baseline.", outcome="conflict")
-    state._check(not _git(project, "diff", "--name-only", "HEAD", "--"),
-                 "reinstall-dirty", "Commit or separately reconcile tracked edits before destructive reinstall.", outcome="conflict")
     tracked = set(_git(project, "ls-files", "-z").decode("utf-8").split("\0")) - {""}
+    _git_filter_boundary(project, tracked)  # Before any command that may run a filter.
+    state._check(not _git(project, "diff", "--no-ext-diff", "--no-textconv", "--name-only", "HEAD", "--"),
+                 "reinstall-dirty", "Commit or separately reconcile tracked edits before destructive reinstall.", outcome="conflict")
     inventory = _scan(reader, project)
     state._check(not any(reader.locate(project, name) is not None for name in state.MARKERS),
                  "maintenance-marker", "An incomplete operation must be recovered before breaking reinstall.")
@@ -131,10 +147,6 @@ def _prepare(request):
         state._check(flags.get(name) == "H" and name in tree and tree[name][0] in state.MODES and tree[name][1] == "blob",
                      "reinstall-git-flags", "Cleanup needs an ordinary tracked regular file without hidden index flags.", name)
     if ordered:
-        attributes = _git(project, "check-attr", "-z", "--stdin", "filter",
-                          input_bytes=("\0".join(ordered) + "\0").encode("utf-8")).decode("utf-8").split("\0")
-        state._check(all(attributes[i + 2] in {"unspecified", "unset"} for i in range(0, len(attributes) - 1, 3)),
-                     "reinstall-git-filter", "Custom Git content filters are unsupported for cleanup recovery.")
         actual = _git(project, "hash-object", "--stdin-paths", input_bytes=("\n".join(ordered) + "\n").encode("utf-8")).decode("ascii").splitlines()
         state._check(actual == [tree[n][2] for n in ordered], "reinstall-git-preimage",
                      "Cleanup content is not represented by the selected Git baseline.", outcome="conflict")
