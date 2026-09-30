@@ -246,6 +246,95 @@ class ReleaseContracts(unittest.TestCase):
         self.assertEqual(receipt["release_id"], 1)
         self.assertTrue(api.release["draft"])
 
+    def test_publication_during_final_downloads_refuses_ready(self):
+        api = self.api(existing=False)
+        original = api.request
+
+        def request(method, path, data=None, binary=False):
+            value = original(method, path, data, binary)
+            if binary:
+                api.release["draft"] = False
+            return value
+
+        with patch.object(api, "request", side_effect=request), self.assertRaisesRegex(ValueError, "published"):
+            self.deliver(api)
+
+    def test_tag_drift_during_final_downloads_refuses_ready(self):
+        api = self.api(existing=False)
+        original = api.request
+
+        def request(method, path, data=None, binary=False):
+            value = original(method, path, data, binary)
+            if binary:
+                api.source["tag_object"] = "d" * 40
+            return value
+
+        with patch.object(api, "request", side_effect=request), self.assertRaisesRegex(ValueError, "tag object drift"):
+            self.deliver(api)
+
+    def test_create_timeout_retains_pre_post_unknown_intent(self):
+        api = self.api(existing=False)
+        receipt, saved = {}, []
+        original = api.request
+
+        def request(method, path, data=None, binary=False):
+            if method == "POST":
+                self.assertEqual(saved[-1]["attempted_operations"][-1]["outcome"], "unknown")
+                raise TimeoutError("create response lost")
+            return original(method, path, data, binary)
+
+        with patch.object(api, "request", side_effect=request), self.assertRaises(TimeoutError):
+            draft.deliver(api, self.directory, self.manifest, receipt,
+                          lambda: saved.append(copy.deepcopy(receipt)))
+        row = receipt["attempted_operations"][0]
+        self.assertEqual((row["operation"], row["outcome"]), ("create-draft", "unknown"))
+        self.assertNotIn("provider_id", row)
+
+    def test_upload_failure_journals_asset_intent_before_post(self):
+        api = self.api()
+        api.fail_upload = True
+        receipt, saved = {}, []
+        with self.assertRaisesRegex(ValueError, "502"):
+            draft.deliver(api, self.directory, self.manifest, receipt,
+                          lambda: saved.append(copy.deepcopy(receipt)))
+        row = saved[-1]["attempted_operations"][-1]
+        self.assertEqual((row["operation"], row["asset_name"], row["outcome"]),
+                         ("upload-asset", "release-manifest.json", "unknown"))
+        self.assertEqual(row["sha256"], common.sha(self.raw))
+
+    def test_malformed_successful_create_keeps_unknown_outcome(self):
+        api = self.api(existing=False)
+        original = api.request
+        receipt = {}
+
+        def request(method, path, data=None, binary=False):
+            value = original(method, path, data, binary)
+            return {} if method == "POST" else value
+
+        with patch.object(api, "request", side_effect=request), self.assertRaisesRegex(ValueError, "acknowledgement"):
+            draft.deliver(api, self.directory, self.manifest, receipt)
+        self.assertTrue(api.release["draft"])
+        self.assertEqual(receipt["attempted_operations"][0]["outcome"], "unknown")
+
+    def test_malformed_upload_ack_keeps_unknown_asset_outcome(self):
+        api = self.api()
+        original = api.request
+        receipt = {}
+
+        def request(method, path, data=None, binary=False):
+            value = original(method, path, data, binary)
+            return dict(value, name="wrong") if method == "POST" else value
+
+        with patch.object(api, "request", side_effect=request), self.assertRaisesRegex(ValueError, "acknowledgement"):
+            draft.deliver(api, self.directory, self.manifest, receipt)
+        self.assertEqual(receipt["attempted_operations"][0]["outcome"], "unknown")
+
+    def test_success_records_acknowledged_provider_ids(self):
+        receipt = self.deliver(self.api(existing=False))
+        self.assertEqual(len(receipt["attempted_operations"]), 4)
+        self.assertTrue(all(row["outcome"] == "acknowledged" and type(row["provider_id"]) is int
+                            for row in receipt["attempted_operations"]))
+
     def test_paginated_draft_discovery(self):
         api = draft.GitHub("owner/repo", "fixture-not-a-real-token")
         rows = [{"id": i} for i in range(100)]

@@ -114,7 +114,21 @@ def generic_body(manifest, manifest_raw):
     )
 
 
-def deliver(api, directory, manifest, receipt):
+def write_operation(api, receipt, checkpoint, operation, path, data, validate):
+    # Persist intent before POST. Any transport/response failure leaves an
+    # explicit unknown outcome, including a possible successful remote write.
+    row = dict(operation, outcome="unknown", attempted_at=datetime.now(timezone.utc).isoformat())
+    receipt.setdefault("attempted_operations", []).append(row)
+    checkpoint()
+    result = api.request("POST", path, data)
+    validate(result)
+    row.update(outcome="acknowledged", provider_id=result["id"],
+               acknowledged_at=datetime.now(timezone.utc).isoformat())
+    checkpoint()
+    return result
+
+
+def deliver(api, directory, manifest, receipt, checkpoint=lambda: None):
     source = manifest["source"]
     require(source["tag"] is not None, "snapshots cannot create releases")
     require(manifest["provenance"]["workflow"] == WORKFLOW, "draft requires release workflow provenance")
@@ -130,10 +144,18 @@ def deliver(api, directory, manifest, receipt):
     else:
         remote_source(api, source)
         # Existing tag was read back. Omit target_commitish: never request tag creation.
-        release = api.request("POST", "/releases", {
-            "tag_name": source["tag"], "name": f"AI Collaboration Framework {source['tag']}",
-            "body": generic_body(manifest, manifest_raw), "draft": True,
-            "prerelease": "-" in manifest["version"].split("+")[0], "generate_release_notes": False})
+        def validate_created(value):
+            require(isinstance(value, dict) and type(value.get("id")) is int and value["id"] > 0,
+                    "create acknowledgement lacks release ID")
+            owned(value, manifest, manifest_raw)
+
+        release = write_operation(api, receipt, checkpoint,
+            {"operation": "create-draft", "tag": source["tag"], "manifest_sha256": sha(manifest_raw)},
+            "/releases", {
+                "tag_name": source["tag"], "name": f"AI Collaboration Framework {source['tag']}",
+                "body": generic_body(manifest, manifest_raw), "draft": True,
+                "prerelease": "-" in manifest["version"].split("+")[0], "generate_release_notes": False},
+            validate_created)
         receipt["created_release_id"] = release["id"]
         body = owned(release, manifest, manifest_raw)
     release_id = release["id"]
@@ -164,8 +186,14 @@ def deliver(api, directory, manifest, receipt):
         remote_source(api, source)
         read_release()
         upload = "https://uploads.github.com/repos/" + api.repository + f"/releases/{release_id}/assets?name=" + urllib.parse.quote(name, safe="")
-        asset = api.request("POST", upload, raw)
-        require(asset["name"] == name and asset["state"] == "uploaded" and asset["size"] == len(raw), "upload acknowledgement mismatch")
+        def validate_uploaded(value):
+            require(isinstance(value, dict) and type(value.get("id")) is int and value["id"] > 0
+                    and value.get("name") == name and value.get("state") == "uploaded"
+                    and value.get("size") == len(raw), "upload acknowledgement mismatch")
+
+        write_operation(api, receipt, checkpoint,
+            {"operation": "upload-asset", "release_id": release_id, "asset_name": name,
+             "size": len(raw), "sha256": sha(raw)}, upload, raw, validate_uploaded)
         receipt.setdefault("uploaded_assets", []).append(name)
     remote_source(api, source)
     final = read_release()
@@ -177,6 +205,10 @@ def deliver(api, directory, manifest, receipt):
         require(asset["state"] == "uploaded" and asset["size"] == len(files[asset["name"]])
                 and raw == files[asset["name"]], "final provider asset bytes mismatch")
         verified.append({"name": asset["name"], "id": asset["id"], "size": len(raw), "sha256": sha(raw)})
+    # Asset downloads can outlast an owner's publication/tag change. Bind the
+    # success observation to a fresh tag and draft read after those downloads.
+    remote_source(api, source)
+    final = read_release()
     receipt.update({"outcome": "draft-ready", "url": final["html_url"], "assets": sorted(verified, key=lambda r: r["name"]),
                     "body_written": not bool(matches), "existing_body_preserved": bool(matches),
                     "publication": "not-performed", "tests": "not-run"})
@@ -195,6 +227,12 @@ def main():
     args = parser.parse_args()
     receipt = {"schema": "framework-draft-delivery/1", "outcome": "failed",
                "started_at": datetime.now(timezone.utc).isoformat()}
+    def checkpoint():
+        args.receipt.parent.mkdir(parents=True, exist_ok=True)
+        temporary = args.receipt.with_name(args.receipt.name + ".pending")
+        temporary.write_bytes(encoded(receipt))
+        os.replace(temporary, args.receipt)
+
     try:
         manifest = verify_bundle(args.assets)
         require(manifest["source"]["tag"] == tag_name(args.expected_tag), "event/manifest tag mismatch")
@@ -206,18 +244,20 @@ def main():
         receipt["source"] = manifest["source"]
         receipt["manifest_sha256"] = sha((args.assets / "release-manifest.json").read_bytes())
         api = GitHub(args.repository, os.environ.get("GITHUB_TOKEN", ""))
-        deliver(api, args.assets, manifest, receipt)
+        deliver(api, args.assets, manifest, receipt, checkpoint)
         return 0
     except (ValueError, KeyError, TypeError, OSError, zipfile.BadZipFile) as exc:
         receipt["reason"] = str(exc)
+        receipt["write_outcome"] = ("unknown" if any(row["outcome"] == "unknown"
+            for row in receipt.get("attempted_operations", [])) else "acknowledged-or-not-attempted")
         receipt["next_action"] = ("Retain this receipt and the original successful build artifact. Rerun failed writer jobs with "
             "those exact bytes. A full rebuild has new receipt bytes and must not replace admitted draft assets. "
+            "For an unknown write outcome, read provider state first; do not blindly repeat POST. "
             "If an upload is partial/starter or ownership differs, owner reconciliation is required. Never broaden credentials.")
         return 1
     finally:
         receipt["completed_at"] = datetime.now(timezone.utc).isoformat()
-        args.receipt.parent.mkdir(parents=True, exist_ok=True)
-        args.receipt.write_bytes(encoded(receipt))
+        checkpoint()
         print(encoded(receipt).decode(), end="")
 
 

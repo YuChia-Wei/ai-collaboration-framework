@@ -61,6 +61,7 @@ the next observed change.
 Keep the hidden ownership/admission marker when editing notes. Reruns never
 PATCH body or title. All existing assets are downloaded and verified before any
 missing asset is added; every final asset is downloaded and compared again.
+A fresh tag/draft read follows those downloads before reporting Draft ready.
 
 After a successful build and transient writer failure, use **Re-run failed
 jobs** to reuse original artifact bytes and build-attempt identity. Retain that
@@ -68,7 +69,10 @@ artifact and `draft-receipt-<run>-<attempt>`. A full rerun rebuilds time-bearing
 metadata and deliberately fails against the old admission marker. Incomplete
 uploads, lost artifacts, differing bytes and foreign drafts need explicit owner
 reconciliation; automation never deletes or overwrites assets. HTTP failures
-retain a receipt and never broaden credentials. Draft creation omits
+retain a receipt and never broaden credentials. The writer persists each POST
+intent before sending it and records provider IDs only after a valid acknowledgement.
+A timeout, failed response or malformed acknowledgement leaves that operation's
+write outcome explicitly unknown; inspect provider state before a retry. Draft creation omits
 `target_commitish` after checking the existing tag. If GitHub still rejects a
 historical workflow change with this token, report that limitation.
 

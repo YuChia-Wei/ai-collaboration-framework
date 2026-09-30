@@ -25,7 +25,7 @@ portable template or validator is claimed.
 | Task | Acceptance | State |
 | --- | --- | --- |
 | S1/T1 | Exact-source full catalog/24-file engine, independent pre-execution pin, safe complete ZIP and manifest; separate read-only build and owned draft writer; owner notes/publication handoff | completed |
-| S2/T2 | Focused transport fixtures, direct syntax/YAML/link/diff/message checks, actual clean immutable source build and raw/extracted ZIP verification | in_progress |
+| S2/T2 | Focused transport fixtures, direct syntax/YAML/link/diff/message checks, actual clean immutable source build and raw/extracted ZIP verification | completed |
 
 ## Selected behavior and acceptance
 
@@ -64,7 +64,22 @@ Package assembly and fixtures do not establish those acceptance layers.
   upload-artifact v4.6.2 `ea165f8d65b6e75b540449e92b4886f43607fa02`;
   download-artifact v4.3.0 `d3f86a106a0bac45b974a628896c90dbdf5c8093`.
   Checkout/setup-python pins retain the source-selected verified v6 commits.
-- Actual immutable package build: pending the clean implementation commit.
+- Actual immutable package builds: both passed from clean tooling commit
+  `5858c01ca96516c974901cfd68e8c61095335ac0`. Snapshot source is that same
+  commit; RC3 source remains `269ab4e1b3d6a0af1e5c738689459f9879c655d1`.
+  Each archive has 403 entries, 19 catalog components and 24 engine files.
+  Raw Git/executing-byte pin, full ZIP entry hashes and extracted-file hashes
+  all passed. Windows 11 build 26200, Python 3.13.14, PyYAML 6.0.3.
+- Snapshot: 87.827 s, 877424 bytes, ZIP SHA-256
+  `a5bfa516b6ad5f1d7617c33a04f0931dcfc1de9c292e12de9e8a3f012d5a6e2e`.
+- RC3: 88.336 s, 877405 bytes, ZIP SHA-256
+  `c8ee8e205f797a3b9d89218e171eb13cf693557e66caa14bc328e4d6b06bc91f`.
+  Existing annotated tag object remains
+  `c6fdf28e77729bd8ae9edea791de11a8932c43dd`. Both actual build commands
+  exited 0; no package-build failure was observed.
+- Fixtures were repeated after the bounded parsing safeguards changed:
+  19 passed in 0.471 s. Focused fixture evidence is distinct from the actual
+  package builds and from deferred product/native/agent acceptance.
 - Selected spec compliance: not-applicable; this slice uses explicit assignment
   acceptance and authentic local build/transport evidence, no formal spec gate.
 - No product test suite, native test, legacy gate or full P7 outcome is claimed.
@@ -73,6 +88,46 @@ Tool-writing attempts with malformed JavaScript quoting failed before any
 filesystem mutation and were corrected. A graph request without project identity
 returned a missing-argument error; direct tracked fallback was then used. These
 are preparation failures, not package or product failures.
+
+
+### Exact build provenance
+
+| Build | Started (UTC) | Completed (UTC) | Engine pin SHA-256 |
+| --- | --- | --- | --- |
+| snapshot | 2026-09-30T22:39:19.756111+00:00 | 2026-09-30T22:40:45.336630+00:00 | ff92daa1ddac19d01a0503b2e117a7405cc303ec82c7e607e3677da8ce7a1869 |
+| unchanged RC3 | 2026-09-30T22:41:04.066236+00:00 | 2026-09-30T22:42:29.888937+00:00 | 05917fe3d3eed5971734e7d7092b1805debea5795b7125f6d6ce2f58c825ef09 |
+
+The exact commands used the clean checkout `F:/framework-next/418`:
+
+```powershell
+python -I -B .github/scripts/build-release.py --repository F:/framework-next/418 --source-commit 5858c01ca96516c974901cfd68e8c61095335ac0 --tooling-commit 5858c01ca96516c974901cfd68e8c61095335ac0 --workflow-commit 5858c01ca96516c974901cfd68e8c61095335ac0 --workflow .github/workflows/package-candidate.yml --run-id local-snapshot-418 --run-attempt 1 --work-root F:/r418s --output F:/r418so
+python -I -B .github/scripts/build-release.py --repository F:/framework-next/418 --tag v0.19.0-rc.3 --tooling-commit 5858c01ca96516c974901cfd68e8c61095335ac0 --workflow-commit 5858c01ca96516c974901cfd68e8c61095335ac0 --workflow .github/workflows/publish-release.yml --run-id local-rc3-418 --run-attempt 1 --work-root F:/r418t --output F:/r418to
+```
+
+Both tasks are locally complete. The builder, common archive verifier and
+product bytes remain identical to the actual-build checkpoint. The writer and
+its focused fixtures were subsequently repaired for the two review findings
+below; their behavior is verified separately from package assembly. External outputs are disposable runtime copies; the
+exact commands, timestamps, byte identities and outcomes above are retained here.
+No hosted or provider result is claimed or required as another tracked task.
+
+### Independent review repairs before handoff
+
+An independent read-only review of `5858c01ca96516c974901cfd68e8c61095335ac0`
+reported two P2 findings. R1: final asset downloads could outlast publication or
+tag changes; the writer now refreshes tag/draft after verification before success.
+R2: lost/malformed POST responses could hide attempted writes; the writer now
+persists intent before POST and keeps an unknown outcome until an acknowledgement
+is validated, then records provider IDs. No blind retry or asset deletion was
+introduced. Prior finding evidence is retained in `tasks/T2.json`.
+
+The revised 26 focused fixtures passed in 0.602 s (command 1.040 s), including
+two final-read race fixtures and five mutation journal/acknowledgement fixtures.
+Direct diff proved no build-tool/common-verifier/product-byte changes, so actual
+package execution evidence remains bound to its original immutable checkpoint.
+Repair verification is implementation evidence, not a claim that the executor
+independently approved its own repair. The coordinator owns final fixed-head
+review and integration.
 
 ## Handoff and lifecycle
 

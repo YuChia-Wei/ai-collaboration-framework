@@ -3,9 +3,9 @@
   "workflow_id": "2026-10-01-release-draft-pipeline",
   "owner_skill": "slice-implementer",
   "mode": "generic",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-01T06:37:51+08:00",
-  "updated_at": "2026-10-01T06:37:51+08:00",
+  "updated_at": "2026-10-01T06:45:57+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-u001",
   "model": "gpt-6-astra",
@@ -14,13 +14,29 @@
   "stage": "S2",
   "title": "Verify the local release slice and exact immutable package output",
   "adaptation": "Source-owned policy-direct records; no retired portable template or validator restored.",
-  "finding_status": "pending-local-evidence",
-  "result_summary": "19 transport fixtures and direct syntax/YAML passed; immutable actual package build remains.",
+  "finding_status": "addressed",
+  "result_summary": "26 focused fixtures and direct syntax/record/link/diff/message checks passed after two independent review findings were repaired. Actual clean immutable snapshot and unchanged RC3 builds passed; build-tool/product bytes remain identical to that checkpoint. Provider and other acceptance layers remain separate.",
   "evidence": "../workflow-plan.md",
   "verification_deferral": {
     "status": "deferred-by-owner",
     "authority": "U001 with release-only #418 selection",
     "owner": "program #322 coordinator / P7",
     "next_action": "Owner selects any broader legacy/native/product/history/full/test CI restoration."
-  }
+  },
+  "review_findings": [
+    {
+      "id": "R1",
+      "severity": "P2",
+      "subject": "5858c01ca96516c974901cfd68e8c61095335ac0",
+      "finding": "Publication or tag drift during final asset downloads could yield stale draft-ready success.",
+      "disposition": "Fresh tag and draft reads after final asset verification; two focused negative fixtures passed."
+    },
+    {
+      "id": "R2",
+      "severity": "P2",
+      "subject": "5858c01ca96516c974901cfd68e8c61095335ac0",
+      "finding": "Failed or malformed POST responses did not retain an attempted operation with unknown write outcome.",
+      "disposition": "Persist intent before POST; acknowledge provider ID only after response validation; five focused journal fixtures passed."
+    }
+  ]
 }
