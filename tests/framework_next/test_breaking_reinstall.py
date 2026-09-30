@@ -14,9 +14,16 @@ sys.dont_write_bytecode = True
 ROOT = Path(__file__).absolute().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from distribution import reinstallation as owner
+from distribution import catalog
 
 
 class BreakingReinstallTests(unittest.TestCase):
+    def test_packaged_engine_contains_the_verified_breaking_entry(self):
+        self.assertEqual(owner.state.ENGINE_FILES, catalog.ENGINE_FILES)
+        self.assertEqual(catalog.ENGINE_FILES, catalog.GENERATOR_FILES)
+        self.assertIn('src/distribution/reinstallation.py', catalog.ENGINE_FILES)
+        self.assertIn('tools/reinstall-framework.py', catalog.ENGINE_FILES)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.base = Path(self.temp.name).resolve()
