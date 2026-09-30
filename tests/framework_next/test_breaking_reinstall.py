@@ -92,6 +92,29 @@ class BreakingReinstallTests(unittest.TestCase):
         self.assertFalse((self.project / self.old).exists())
         self.assertEqual(b"actual target work\n", (self.project / self.keep).read_bytes())
 
+    def test_native_history_name_is_preserved_without_changing_cleanup_paths(self):
+        name = '.dev/assessments/歷史 調查.md'
+        (self.project / name).parent.mkdir(parents=True)
+        (self.project / name).write_bytes(b'actual historical evidence')
+        subprocess.run(['git', '-C', str(self.project), 'add', '.'], check=True)
+        subprocess.run(['git', '-C', str(self.project), '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-qm', 'history'], check=True)
+        self.request['expected_head'] = subprocess.check_output(['git', '-C', str(self.project), 'rev-parse', 'HEAD']).decode().strip()
+        self.request['preserved_inputs'] = sorted([self.pin(self.keep), self.pin(name)], key=lambda r:r['path'])
+        request = self.apply_request()
+        with patch.object(owner.installation, 'apply', return_value={'outcome':'applied'}):
+            result = owner.execute(request)
+        self.assertEqual('reinstalled', result['outcome'], result)
+        self.assertEqual(b'actual historical evidence', (self.project / name).read_bytes())
+        with self.assertRaises(ValueError):
+            owner.state._relative(name)
+
+    def test_native_preservation_still_refuses_traversal_aliases(self):
+        for name in ('../outside.md', '.dev/../outside.md', '.dev/CON.md', '.dev/file.md ', '.dev\\file.md'):
+            with self.assertRaises(ValueError):
+                owner._native_relative(name)
+        with self.assertRaises(ValueError):
+            owner._native_paths(['a', 'a-other', 'a/child'])
+
     def test_drift_between_plan_and_apply_removes_nothing(self):
         request = self.apply_request()
         (self.project / self.old).write_bytes(b"uncommitted user edit")

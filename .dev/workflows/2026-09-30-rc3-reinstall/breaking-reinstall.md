@@ -17,6 +17,11 @@ because this operation retires the old lock. `maintenance` is a fresh truthful
 quiescence declaration for the selected new component union. The caller stops
 all old framework activity as well as that new scope for the entire reset.
 
+Preservation accepts exact native Unicode or interior-space names for existing
+project history, with the same containment, alias, link and preimage checks.
+Managed package, cleanup and API 2 edit paths retain the portable ASCII contract.
+This does not rename historical files or make them writable managed members.
+
 All roots are explicit, direct and disjoint. The caller-selected external preview
 directory receives retained input fixtures, and ordinary API 2 planning must
 pass there before project cleanup. Preview writes are reported separately from

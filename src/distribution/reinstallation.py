@@ -9,6 +9,7 @@ from __future__ import annotations
 from hashlib import sha256
 from pathlib import Path
 import os
+import re
 import stat
 import subprocess
 
@@ -33,6 +34,43 @@ def _scope(name):
     return any(name == prefix or name.startswith(prefix + "/") for prefix in SCOPES)
 
 
+def _native_relative(name):
+    """Exact target preservation names; package/cleanup paths stay portable."""
+    state._text(name)
+    parts = name.split("/")
+    state._check(len(parts) <= state.LIMITS["depth"] and len(name.encode("utf-16-le")) // 2 <= state.LIMITS["path_utf16"]
+                 and all(part not in {"", ".", ".."} and not part.endswith((".", " "))
+                         and not re.search(r'[\\<>:"|?*\x00-\x1f\x7f]', part)
+                         and re.fullmatch(r'(?i)(CON|PRN|AUX|NUL|COM[0-9¹²³]|LPT[0-9¹²³])(?:\..*)?', part) is None
+                         for part in parts),
+                 "reinstall-preservation-path", "Preservation requires a bounded exact native relative path.")
+    return name
+
+
+def _native_paths(names):
+    rows = sorted((_native_relative(n).casefold() for n in names))
+    present = set(rows)
+    state._check(len(rows) == len(present) and not any('/'.join(row.split('/')[:i]) in present
+                 for row in rows for i in range(1, len(row.split('/')))),
+                 "reinstall-path-alias", "Preservation paths contain duplicate, case or prefix aliases.")
+
+
+def _locate_native(reader, root, name):
+    parts = _native_relative(name).split("/")
+    current = root
+    for index, part in enumerate(parts):
+        actual = reader.listing(current).get(part.casefold())
+        if actual is None:
+            return None
+        state._check(actual == part, "path-alias", "Existing preservation spelling differs.", name)
+        current = current / part
+        info = current.lstat()
+        state._plain(info, name)
+        state._check(index == len(parts) - 1 or stat.S_ISDIR(info.st_mode),
+                     "parent-collision", "Preservation parent is occupied by a file.", name)
+    return current
+
+
 def _git_filter_boundary(root, tracked):
     # Query keys only: configured command text may contain credentials. Git's
     # attribute sentinels also happen to be valid string driver names.
@@ -52,7 +90,7 @@ def _scan(reader, root):
     """Complete bounded inventory, refusing links, hard links and aliases."""
     result = {}
     def visit(name):
-        target = reader.locate(root, name)
+        target = _locate_native(reader, root, name)
         if target is None:
             return
         info = target.lstat()
@@ -75,16 +113,16 @@ def _scan(reader, root):
     return result
 
 
-def _pins(rows, root, reader):
+def _pins(rows, root, reader, *, preservation=False):
     state._array(rows)
     for row in rows:
         state._shape(row, {"path", "sha256"})
-        state._relative(row["path"])
+        (_native_relative if preservation else state._relative)(row["path"])
         state._digest(row["sha256"])
     state._sorted(rows, lambda r: r["path"])
-    state._paths([r["path"] for r in rows])
+    (_native_paths if preservation else state._paths)([r["path"] for r in rows])
     for row in rows:
-        target = reader.locate(root, row["path"])
+        target = _locate_native(reader, root, row["path"]) if preservation else reader.locate(root, row["path"])
         state._check(target is not None and sha256(reader.read(target, row["path"])).hexdigest() == row["sha256"],
                      "reinstall-preimage", "Explicit file preimage differs or is missing.", row["path"], "conflict")
 
@@ -123,11 +161,11 @@ def _prepare(request):
     state._check(not any(reader.locate(project, name) is not None for name in state.MARKERS),
                  "maintenance-marker", "An incomplete operation must be recovered before breaking reinstall.")
     _pins(request["cleanup"], project, reader)
-    _pins(request["preserved_inputs"], project, reader)
+    _pins(request["preserved_inputs"], project, reader, preservation=True)
     clean = {r["path"] for r in request["cleanup"]}
     keep = {r["path"] for r in request["preserved_inputs"]}
     edit = {r["path"] for r in install["project_edits"]}
-    state._paths(sorted(clean | keep | edit))
+    _native_paths(sorted(clean | keep | edit))
     state._check(not (clean & keep or clean & edit or keep & edit), "reinstall-overlap", "Cleanup, preserved files and project edits must be disjoint.")
     for name in clean:
         state._check(_scope(name) and name not in state.MARKERS and not name.startswith(".ai/local/"),
@@ -190,7 +228,7 @@ def _preview(document, roots, reader):
         found = set()
         for item in directory.iterdir():
             name = item.relative_to(roots["preview"]).as_posix()
-            state._relative(name)
+            _native_relative(name)
             info = item.lstat()
             state._plain(info, name)
             if stat.S_ISDIR(info.st_mode):
@@ -202,10 +240,10 @@ def _preview(document, roots, reader):
         return found
     state._check(preview_files(roots["preview"]) <= names, "reinstall-preview-collision", "Preview root contains unrelated files.")
     for name in sorted(names):
-        source = reader.locate(roots["project"], name)
+        source = _locate_native(reader, roots["project"], name)
         state._check(source is not None, "reinstall-preview-input", "Retained preview input is unavailable.", name)
         raw = reader.read(source, name)
-        target = reader.locate(roots["preview"], name)
+        target = _locate_native(reader, roots["preview"], name)
         if target is None:
             destination = roots["preview"] / name
             # Every existing ancestor is checked by locate before creation.
@@ -256,7 +294,7 @@ def execute(request):
             removed.append(row["path"])
             answer["changed"] = True
         reader = state._Reader()
-        _pins([r for r in document["preserved_inputs"] if r["path"] != state.GUARD_PATH], roots["project"], reader)
+        _pins([r for r in document["preserved_inputs"] if r["path"] != state.GUARD_PATH], roots["project"], reader, preservation=True)
         actual = installation.plan(document["installation"])
         state._check(actual["outcome"] == "planned", "reinstall-after-cleanup", "New installation planning failed after destructive cleanup; retain evidence and use Git recovery.")
         for field in ("candidate_identity", "engine", "expected_lock_sha256", "mode_policy", "delta",
@@ -267,7 +305,7 @@ def execute(request):
         answer["installation_result"] = result
         state._check(result["outcome"] == "applied", "reinstall-install-failed", "Destructive cleanup completed, but new installation did not complete; use its exact recovery evidence.")
         reader = state._Reader()
-        _pins([r for r in document["preserved_inputs"] if r["path"] != state.GUARD_PATH], roots["project"], reader)
+        _pins([r for r in document["preserved_inputs"] if r["path"] != state.GUARD_PATH], roots["project"], reader, preservation=True)
         state._check(all(reader.locate(roots["project"], r["path"]) is None for r in document["cleanup"]
                          if r["path"] not in candidate.members and r["path"] != state.LOCK_PATH),
                      "reinstall-remnant", "A selected obsolete file remains after installation.")
