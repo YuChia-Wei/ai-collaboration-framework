@@ -13,7 +13,7 @@
   "finding_ids": ["AIPKG-ROOT-001", "AIPKG-TRANSLATION-001"],
   "scope": {
     "target": "Public root templates and portable low-cost translation delegation",
-    "files": [".ai/assets/skills/repo-structure-sync/templates/root/**", ".ai/assets/sub-agent-role-prompts/**", ".codex/agents/**", ".claude/agents/**", ".github/agents/**", "AGENTS.zh-TW.md", "AGENTS.md"],
+    "files": [".ai/assets/skills/repo-structure-sync/templates/root/**", ".dev/agents/**", ".codex/agents/**", ".claude/agents/**", ".github/agents/**", "AGENTS.zh-TW.md", "AGENTS.md"],
     "constraints": ["English AGENTS is canonical", "Translation is derived after target rewrite", "Use low-cost model policy", "Keep runtime adapters thin", "Preserve exact-case links"],
     "non_goals": ["Package the source repo AGENTS as a public template", "Duplicate canonical translator instructions"]
   },
@@ -29,7 +29,7 @@
       "AGENTS.md",
       "AGENTS.zh-TW.md",
       ".ai/assets/skills/repo-structure-sync/**",
-      ".ai/assets/sub-agent-role-prompts/context-translator/**",
+      ".dev/agents/context-translator/**",
       ".codex/agents/context-translator.toml",
       ".claude/agents/context-translator.md",
       ".github/agents/context-translator.agent.md"

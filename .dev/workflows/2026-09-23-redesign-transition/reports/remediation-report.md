@@ -81,11 +81,11 @@ All repository commands use `F:/framework-next/324` explicitly.
 - `git status --short --branch`, `git rev-parse HEAD`, `git rev-parse --show-toplevel`: clean assigned starting worktree, branch and commit matched dispatch.
 - Read U001, coordinator handoff, sanitized CI/cleanup evidence, owning templates/policies and architecture A9. Source-only policy placement and English canonical / Traditional Chinese translation boundary inspected.
 - Bootstrap JSON/YAML direct parse and generated-file read-back succeeded. `git diff --cached --check` was clean.
-- `.ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-bootstrap.txt --workflow-id 2026-09-23-redesign-transition`: passed before commit `cfe15c40c34f4cc23936421beed57fa8c4851ab9`.
+- `tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-bootstrap.txt --workflow-id 2026-09-23-redesign-transition`: passed before commit `cfe15c40c34f4cc23936421beed57fa8c4851ab9`.
 - `git diff --check` and manual actual policy/root diff inspection succeeded after implementation. No protected coordinator/index/assessment/CI path changes appeared in the scoped diff.
 - Inline Python standard file reads plus `json.loads` / `yaml.safe_load`: 11 UTF-8 files readable, 3 YAML files and 1 JSON file parsed; 18 local Markdown file targets resolved. This is syntax/link evidence, not schema or behavior validation.
 - `git rev-parse <starting-commit>:<evidence-path>` / `git cat-file blob <blob>` plus SHA-256 and direct saved-JSON comparison: two source evidence identities/digests and all seven inventory rows matched.
-- `.ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-delivery.txt --workflow-id 2026-09-23-redesign-transition`: passed for the exact planned delivery message.
+- `tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-delivery.txt --workflow-id 2026-09-23-redesign-transition`: passed for the exact planned delivery message.
 - Before commit, re-read final status metadata and staged diff; after commit, return actual HEAD and clean-state read-back in the callback. These Git transport observations do not require another tracked evidence-sync commit.
 
 The initial sandbox GitHub command exited 1 because its local proxy endpoint
@@ -143,7 +143,7 @@ Actual checks for the correction:
   showed both the broad source selection and the exact source-only exclusion.
 - `git diff -- .ai/distribution/profiles/dotnet-backend.yaml` showed one added
   path and no other profile change; `git diff --check` was clean.
-- `.ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-exclusion.txt --workflow-id 2026-09-23-redesign-transition`
+- `tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-324-exclusion.txt --workflow-id 2026-09-23-redesign-transition`
   passed before the corrective commit.
 
 Package selection/execution, legacy validators/tests, audit and hosted checks

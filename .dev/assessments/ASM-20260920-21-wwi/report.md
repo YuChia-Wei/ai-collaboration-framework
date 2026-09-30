@@ -60,10 +60,10 @@ No additional sub-agent was used. The auditor remained read-only except for the 
 
 Evidence:
 
-- `.ai/scripts/validate-agent-execution-guardrails.py:574`
-- `.ai/scripts/validate-agent-execution-guardrails.py:600`
-- `.ai/scripts/validate-terminal-issue-closure.py:132`
-- `.ai/scripts/validate-terminal-issue-closure.py:625`
+- `tools/maintenance/validate-agent-execution-guardrails.py:574`
+- `tools/maintenance/validate-agent-execution-guardrails.py:600`
+- `tools/maintenance/validate-terminal-issue-closure.py:132`
+- `tools/maintenance/validate-terminal-issue-closure.py:625`
 - `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md:135`
 
 The review preflight computes separate criteria and authority hashes, but the v2 receipt and merge-admission comparison retain only repository/tree subject identity. With unchanged trees, a prior receipt remains structurally admissible after criteria-only or authority-selection drift.

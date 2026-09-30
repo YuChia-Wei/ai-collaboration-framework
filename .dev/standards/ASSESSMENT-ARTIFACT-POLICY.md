@@ -259,7 +259,7 @@ reviewers remain free to optimize for a genuinely different point of view.
 ## Validation And Legacy Boundary
 
 - Validate new assessments with
-  `.ai/scripts/validate-assessment-artifacts.py`.
+  `tools/maintenance/validate-assessment-artifacts.py`.
 - Structural validation does not claim that report prose, evidence quality, or
   every Markdown link is semantically correct.
 - Existing reports under `.dev/workflows/**` remain historical workflow

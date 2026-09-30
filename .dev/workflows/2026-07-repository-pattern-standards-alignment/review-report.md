@@ -31,7 +31,7 @@ The active material contradicts that intent in naming, method surface, ORM selec
 ## Evidence Used
 
 - `.dev/ARCHITECTURE.MD`
-- `.dev/requirement/TECH-STACK-REQUIREMENTS.MD`
+- `src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD`
 - `.dev/standards/coding-standards.md`
 - `.dev/standards/coding-standards/repository-standards.md`
 - `.dev/standards/coding-standards/projection-standards.md`
@@ -59,7 +59,7 @@ Severity: critical
 
 Evidence:
 
-- `.dev/requirement/TECH-STACK-REQUIREMENTS.MD` selects Dapper + Npgsql for command writes.
+- `src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD` selects Dapper + Npgsql for command writes.
 - `.ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md` repeats Dapper + Npgsql for the write side.
 - `.dev/standards/coding-standards/repository-standards.md` presents EF Core as the correct repository implementation and requires EF Core in its checklist.
 - `.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md` couples the outbox transaction explanation to EF Core.
@@ -251,7 +251,7 @@ Required resolution:
 | Material | Audience | Scope | Action |
 | --- | --- | --- | --- |
 | `.dev/standards/**` repository rules | agent/both | dotnet-backend project truth | rewrite as canonical contract |
-| `.dev/requirement/TECH-STACK-REQUIREMENTS.MD` | human/both | dotnet-backend project truth | confirm or update selected stack |
+| `src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD` | human/both | dotnet-backend project truth | confirm or update selected stack |
 | `.ai/assets/skills/ddd-ca-hex-architect/**` | agent | canonical skill context | sync only after standards decision |
 | `.ai/assets/tech-stacks/dotnet-backend/**` | agent | dotnet-backend reusable context | sync approved stable rules |
 | `.agents/**`, `.claude/**` | agent | runtime-wrapper | keep thin; update only if pointers change |

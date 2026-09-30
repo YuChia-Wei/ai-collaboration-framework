@@ -47,7 +47,7 @@ audit, behavioral acceptance and legacy validator compliance are not claimed.
   the exact ten-file engine/import-symbol closure, six own artifacts with JSON/YAML
   parsing and 14 local Markdown targets. Product pycache directories were absent.
 - Full planned-message command:
-  `python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/359.txt --workflow-id 2026-09-23-managed-installation`
+  `python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/359.txt --workflow-id 2026-09-23-managed-installation`
   returned `Git commit validation passed for planned message.` The message file
   is verified ignored; the exact bytes are used by git commit.
 - The effective Git hook location contains sample files only; no product

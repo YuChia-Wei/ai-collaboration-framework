@@ -172,7 +172,7 @@
               ],
               "rationale": "The requested artifact is a requirement document. The authoring boundary selects the artifact first, while source-truth guidance preserves the explicit stakeholder note and leaves the paid-order decision open.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
                 ".ai/assets/skills/requirement-author/skill.yaml#constraints",
                 ".ai/assets/skills/requirement-author/references/source-truth-rules.md#Prefer these sources in order"
               ]
@@ -202,7 +202,7 @@
               "unresolved_authority": [],
               "rationale": "The requested artifact is a normalized requirement. Source binding keeps the accepted R-4 rule authoritative and classifies the five-day implementation as observed current behavior.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
                 ".ai/assets/skills/requirement-author/skill.yaml#constraints",
                 ".ai/assets/skills/requirement-author/references/source-truth-rules.md#Do not"
               ]
@@ -233,7 +233,7 @@
               "unresolved_authority": [],
               "rationale": "The requested artifact is a selected production use-case specification. The source-binding boundary requires the accepted R-7 and ADR-2 identifiers and links to remain attached; implementation remains outside scope.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
                 ".ai/assets/skills/spec-author/skill.yaml#outputs",
                 ".ai/assets/skills/spec-author/references/output-contract.md#Return"
               ]
@@ -264,7 +264,7 @@
               "unresolved_authority": [],
               "rationale": "The requested artifact is a formal test specification. The current type-selection rule keeps formal test specs with spec-author even when they contain GWT wording, and the complete supplied scenarios do not justify a separate design artifact.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
                 ".ai/assets/skills/spec-author/references/type-selection.md#A formal test-spec request remains with spec-author",
                 ".ai/assets/skills/spec-author/references/output-contract.md#Return"
               ]
@@ -298,7 +298,7 @@
               ],
               "rationale": "The authoring boundary identifies scenario notes, a GWT matrix and assertion design without a formal spec as bdd-gwt-test-designer output. No formal specification or implementation stage is added.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
                 ".ai/assets/skills/spec-author/references/type-selection.md#If the requested output is only scenario notes",
                 ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md#Generic Capability Slots"
               ]
@@ -337,7 +337,7 @@
               ],
               "rationale": "The requested CBF is explicitly an observed/inferred code-and-test recovery. Current guidance allows that bounded draft, keeps normative intent unresolved, and forbids inventing requirement/spec files or a compliance result.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
                 ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md#Required Inputs",
                 ".ai/assets/skills/problem-frame-author/references/output-contract.md#Return"
               ]
@@ -368,7 +368,7 @@
               "unresolved_authority": [],
               "rationale": "The requested artifact is an SWF workpiece frame and its selected file set. The current boundary preserves R-10 and SPEC-10 source bindings and keeps the SWF branch separate from CBF and any automatic requirement/spec pipeline.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
                 ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md#Workflow",
                 ".ai/assets/skills/problem-frame-author/references/output-contract.md#Keep the selected frame schemas and file set intact"
               ]
@@ -409,8 +409,8 @@
               ],
               "rationale": "The current artifact-first boundary says to ask one focused question when the artifact or necessary authority cannot be determined. No document type or source authority is inferred from the generic word 規格.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
                 ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md#Artifact And Implementation Boundaries"
               ]
             }
@@ -448,7 +448,7 @@
               ],
               "rationale": "The current boundary maps CBF file sets to problem-frame-author but expressly requires an explicit conflict to be explained and resolved when a skill selection disagrees. With no resolution supplied, clarification is required and no silent substitution is made.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
                 ".ai/assets/skills/spec-author/skill.yaml#constraints",
                 ".ai/assets/skills/problem-frame-author/skill.yaml#constraints"
               ]
@@ -505,7 +505,7 @@
               ],
               "rationale": "The current boundary explicitly allows a multi-artifact request to sequence its selected owners. Requirement-author produces the first artifact, spec-author consumes it for the provisional spec, and no problem-frame or implementation stage is added.",
               "cited_source": [
-                ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
+                "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
                 ".ai/assets/skills/requirement-author/skill.yaml#constraints",
                 ".ai/assets/skills/spec-author/skill.yaml#constraints",
                 ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md#Artifact And Implementation Boundaries"
@@ -554,7 +554,7 @@
               "slice-implementer"
             ],
             "current_owner": "software-development-orchestrator",
-            "source": ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection"
+            "source": "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection"
           },
           {
             "case_id": "I02",
@@ -562,7 +562,7 @@
             "summary": "Multiple direct call-site files in one module remain one local change; file count does not force slice routing.",
             "baseline_owner": "local-change-implementer",
             "current_owner": "local-change-implementer",
-            "source": ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection"
+            "source": "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection"
           },
           {
             "case_id": "I04",
@@ -570,7 +570,7 @@
             "summary": "A new parser class remains outside local-change, but an accepted bounded design enters a generic slice without repeating architecture approval.",
             "baseline_owner": "slice-implementer",
             "current_owner": "slice-implementer",
-            "source": ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Class/interface extraction"
+            "source": "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Class/interface extraction"
           },
           {
             "case_id": "I05",
@@ -584,7 +584,7 @@
               "ddd-ca-hex-architect",
               "slice-implementer"
             ],
-            "source": ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection"
+            "source": "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection"
           }
         ],
         "limitations": [
@@ -680,7 +680,7 @@
                 "bytes": 1541
               },
               {
-                "path": ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md",
+                "path": "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md",
                 "bytes": 3224
               },
               {
@@ -756,7 +756,7 @@
               "unresolved_authority": [],
               "rationale": "The current implementation scope contract keeps one technical target with direct dependencies, call sites and immediate tests local when no new type, architecture boundary, public contract or domain-language change is involved.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
                 ".ai/assets/skills/local-change-implementer/references/skill-boundaries.md#Owns"
               ]
             }
@@ -785,7 +785,7 @@
               "unresolved_authority": [],
               "rationale": "The current contract explicitly permits several files when they are direct call sites within the allowed module/radius; file count alone does not force a slice.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
                 ".ai/assets/skills/local-change-implementer/references/skill-boundaries.md#Default Scope Limit"
               ]
             }
@@ -814,7 +814,7 @@
               "unresolved_authority": [],
               "rationale": "The current contract selects local-change for one technical target with its immediate assertion when no schema, transaction, public contract or architecture boundary changes.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
                 ".ai/assets/skills/local-change-implementer/references/allowed-operations.md#Preferred Operations"
               ]
             }
@@ -843,7 +843,7 @@
               "unresolved_authority": [],
               "rationale": "The current contract keeps class/interface extraction outside local-change but sends a bounded extraction with accepted architecture and compatibility directly to a generic slice; architecture is not reopened.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Class/interface extraction",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Class/interface extraction",
                 ".ai/assets/skills/slice-implementer/references/modes/generic-slice.md#Rules"
               ]
             }
@@ -897,7 +897,7 @@
               ],
               "rationale": "The current scope contract routes missing responsibility or dependency-direction decisions to ddd-ca-hex-architect and stops dependent implementation. Once accepted, the new interface is a bounded generic slice.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
                 ".ai/assets/skills/slice-implementer/references/handoff-rules.md#Hand Off To Architecture"
               ]
             }
@@ -953,8 +953,8 @@
               ],
               "rationale": "The current shared implementation scope contract explicitly routes an unbounded cross-module request to software-development-orchestrator. This request spans two services and a published event/DTO contract while semantic and compatibility decisions remain unresolved; orchestration must bound and sequence the downstream owners.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Ownership And Handoff",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Ownership And Handoff",
                 ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md#Artifact And Implementation Boundaries"
               ]
             }
@@ -983,7 +983,7 @@
               "unresolved_authority": [],
               "rationale": "The accepted command, ADR and transaction boundary define one bounded command slice; selected slice ownership includes internal local edits and does not require per-file handoffs.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Ownership And Handoff",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Ownership And Handoff",
                 ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md#Command Use Case Mode"
               ]
             }
@@ -1055,8 +1055,8 @@
               ],
               "rationale": "The current implementation scope contract says an unknown primary target, operation, affected contract or allowed radius requires a bounded scope question before owner selection.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Ownership And Handoff"
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Ownership And Handoff"
               ]
             }
           },
@@ -1098,7 +1098,7 @@
               ],
               "rationale": "The current scope contract explicitly routes an unexplained failure or performance symptom without a bounded causal finding to diagnostic-analyst; diagnosis does not grant repair authority.",
               "cited_source_path_section": [
-                ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
+                "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md#Selection",
                 ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md#Orchestration Boundaries"
               ]
             }
@@ -1145,7 +1145,7 @@
           "authoring_artifact_selection": {
             "outcome": "passed",
             "evidence": [
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md:9-20",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md:9-20",
               ".ai/assets/skills/requirement-author/skill.yaml:21-42",
               ".ai/assets/skills/spec-author/skill.yaml:21-42",
               ".ai/assets/skills/problem-frame-author/skill.yaml:16-53"
@@ -1155,7 +1155,7 @@
           "formal_test_spec_and_gwt": {
             "outcome": "passed",
             "evidence": [
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md:12-14",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md:12-14",
               ".ai/assets/skills/spec-author/references/type-selection.md:10-17",
               ".ai/assets/skills/slice-implementer/references/handoff-rules.md:28-38"
             ],
@@ -1164,7 +1164,7 @@
           "code_only_problem_frame": {
             "outcome": "passed",
             "evidence": [
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md:24-29",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md:24-29",
               ".ai/assets/skills/problem-frame-author/skill.yaml:16-31",
               ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md:10-17,21-41",
               ".ai/assets/skills/problem-frame-author/references/output-contract.md:4-19"
@@ -1174,7 +1174,7 @@
           "local_radius_and_generic_slice": {
             "outcome": "passed",
             "evidence": [
-              ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:8-26",
+              "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:8-26",
               ".ai/assets/skills/local-change-implementer/skill.yaml:18-43",
               ".ai/assets/skills/local-change-implementer/references/allowed-operations.md:28-50",
               ".ai/assets/skills/slice-implementer/skill.yaml:20-37",
@@ -1185,8 +1185,8 @@
           "architecture_authorization_and_effective_rules": {
             "outcome": "passed",
             "evidence": [
-              ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:11-20,37-43",
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md:32-50",
+              "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:11-20,37-43",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md:32-50",
               ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md:39-52",
               ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml:4-16,60-65",
               ".ai/assets/skills/{requirement-author,spec-author,problem-frame-author,local-change-implementer,slice-implementer}/skill.yaml effective_rule_consumption sections"

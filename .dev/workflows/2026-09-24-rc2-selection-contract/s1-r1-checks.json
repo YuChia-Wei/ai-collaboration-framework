@@ -37,7 +37,7 @@
       "scope": "Legacy/v2 seam, exact paths, dispatch, unsupported-write and lifecycle phase"
     },
     {
-      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/401-s1-r1.txt --workflow-id 2026-09-24-rc2-selection-contract",
+      "command": "python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/401-s1-r1.txt --workflow-id 2026-09-24-rc2-selection-contract",
       "outcome": "passed",
       "message_sha256": "ce71a3e5ea926a233da4abb47d3985b66c0d1a478b9e729a3f279ec7b6403c82",
       "result": "Git commit validation passed for planned message."

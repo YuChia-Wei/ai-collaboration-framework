@@ -13,7 +13,7 @@
   "finding_ids": [],
   "scope": {
     "target": "HANDOFF-001 machine-readable receiving checkpoint, critical gate evidence, and provider-native attribution compatibility",
-    "files": [".dev/standards/**", ".ai/scripts/validate-workflow-handoff.py", ".ai/scripts/validate-git-commits.py", ".ai/scripts/tests/**", ".ai/assets/skills/**/templates/**"],
+    "files": [".dev/standards/**", "tools/maintenance/validate-workflow-handoff.py", "tools/maintenance/validate-git-commits.py", ".ai/scripts/tests/**", ".ai/assets/skills/**/templates/**"],
     "constraints": ["Fail closed on red critical gate", "Preserve provider-native metadata", "Label provenance source", "Require real provider fixtures before provider-specific rules"],
     "non_goals": ["Normalize all providers to one trailer", "Rewrite signed history", "Invent Claude identity"]
   },
@@ -28,7 +28,7 @@
     "files_changed": [
       ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
       ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml",
-      ".ai/scripts/validate-workflow-handoff.py",
+      "tools/maintenance/validate-workflow-handoff.py",
       ".ai/scripts/tests/test_workflow_handoff.py",
       ".dev/workflows/handoff-checkpoints.yaml",
       ".dev/workflows/2026-07-21-v0-5-0-development/handoff-checkpoints/V050-008.yaml",

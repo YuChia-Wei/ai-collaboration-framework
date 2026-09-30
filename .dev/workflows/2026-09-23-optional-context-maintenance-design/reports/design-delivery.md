@@ -54,7 +54,7 @@ No acceptance criteria for #316 or program findings are declared resolved here.
   checkout hashes are compared with the pinned evidence. No product imports.
 - git diff --cached --check passed. Staged name review contains 11 additions only
   within the authorized two roots. Direct design/report diff inspected.
-- Full planned message: python -B .ai/scripts/validate-git-commits.py --message-file
+- Full planned message: python -B tools/maintenance/validate-git-commits.py --message-file
   F:/framework-next/352/.dev/workflows/2026-09-23-optional-context-maintenance-design/commit-message.tmp
   --workflow-id 2026-09-23-optional-context-maintenance-design.
   Output: Git commit validation passed for planned message.

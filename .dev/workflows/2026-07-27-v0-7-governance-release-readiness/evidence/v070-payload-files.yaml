@@ -1315,8 +1315,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: ai-context-lifecycle-core
-- path: .ai/assets/sub-agent-role-prompts/README.MD
-  source_path: .ai/assets/sub-agent-role-prompts/README.MD
+- path: .dev/agents/README.MD
+  source_path: .dev/agents/README.MD
   sha256: 6b6deca972cf1b5a2a5b876c11d15ea490391899b1305afdc20f3c2f2e5b8c09
   size: 1233
   mode: '0644'
@@ -1324,8 +1324,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-playbook.md
+- path: .dev/agents/aggregate-code-review-sub-agent/references/review-playbook.md
+  source_path: .dev/agents/aggregate-code-review-sub-agent/references/review-playbook.md
   sha256: a2cc5c08251ecc9ba9f82d929f441041db3d28143bd0c73ebc2bbe8d94e0d47a
   size: 1029
   mode: '0644'
@@ -1333,8 +1333,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-prompt.md
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-prompt.md
+- path: .dev/agents/aggregate-code-review-sub-agent/references/review-prompt.md
+  source_path: .dev/agents/aggregate-code-review-sub-agent/references/review-prompt.md
   sha256: a39d5b01a124d6b9b1d56341d8b07ef3112f393e90e6f9ddf808985ed976d527
   size: 2982
   mode: '0644'
@@ -1342,8 +1342,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/sub-agent.yaml
+- path: .dev/agents/aggregate-code-review-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/aggregate-code-review-sub-agent/sub-agent.yaml
   sha256: dc50a14267b70b03c715d64249d06b1c9b1c1bb41f2cb65f94afa9fcf9a2609f
   size: 2092
   mode: '0644'
@@ -1351,8 +1351,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/aggregate-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/aggregate-sub-agent/references/implementation-playbook.md
   sha256: d15c59f84978fd0aadb5a30bf22ae5028c3c66052292dfd6525fac9b337c6048
   size: 960
   mode: '0644'
@@ -1360,8 +1360,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/sub-agent.yaml
+- path: .dev/agents/aggregate-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/aggregate-sub-agent/sub-agent.yaml
   sha256: 0e51abb5a2b476ee206055a15b1e126f50ec7992c5a8f4d3228eefc4e2c5e716
   size: 1948
   mode: '0644'
@@ -1369,8 +1369,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-generation-guidance.md
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-generation-guidance.md
+- path: .dev/agents/aggregate-test-sub-agent/references/test-generation-guidance.md
+  source_path: .dev/agents/aggregate-test-sub-agent/references/test-generation-guidance.md
   sha256: a7b22d113108a6d22435843a73e168ca183061bce9c6337089847227f0eacfe9
   size: 923
   mode: '0644'
@@ -1378,8 +1378,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-playbook.md
+- path: .dev/agents/aggregate-test-sub-agent/references/test-playbook.md
+  source_path: .dev/agents/aggregate-test-sub-agent/references/test-playbook.md
   sha256: 9ed6aff26679c998b0ea09f1d04434e338015643700dd60eca1a3ba1db724385
   size: 761
   mode: '0644'
@@ -1387,8 +1387,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/sub-agent.yaml
+- path: .dev/agents/aggregate-test-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/aggregate-test-sub-agent/sub-agent.yaml
   sha256: 580fe7dd90495f424dd2c43e0728ce39d03289887fce9be23e94a48fd1339d3a
   size: 2005
   mode: '0644'
@@ -1396,8 +1396,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-playbook.md
+- path: .dev/agents/code-review-sub-agent/references/review-playbook.md
+  source_path: .dev/agents/code-review-sub-agent/references/review-playbook.md
   sha256: 07b502c95991cc1cc9111ddd0f227cce3b0aa0b6343968996e2e50f2b985d317
   size: 971
   mode: '0644'
@@ -1405,8 +1405,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-prompt.md
-  source_path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-prompt.md
+- path: .dev/agents/code-review-sub-agent/references/review-prompt.md
+  source_path: .dev/agents/code-review-sub-agent/references/review-prompt.md
   sha256: b6adcb7d66a8f6dcb845811439fd19424a4924f7a5b9f102d2511282a19707ec
   size: 1530
   mode: '0644'
@@ -1414,8 +1414,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml
+- path: .dev/agents/code-review-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/code-review-sub-agent/sub-agent.yaml
   sha256: e26a841e1f99963900780c4110348a9dc5fef2b9aee678a77f74434455b71168
   size: 2057
   mode: '0644'
@@ -1423,8 +1423,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/command-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/command-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/command-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/command-sub-agent/references/implementation-playbook.md
   sha256: 014e7a2b06898801deff58a9ce985b53359db1bccc7b762b55a4f8d891c77941
   size: 1321
   mode: '0644'
@@ -1432,8 +1432,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/command-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/command-sub-agent/sub-agent.yaml
+- path: .dev/agents/command-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/command-sub-agent/sub-agent.yaml
   sha256: 1f0145e6539cc86cde29b2db1f7bac089f46427102fdb4b3528f4cb9f6b945a5
   size: 2136
   mode: '0644'
@@ -1441,8 +1441,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/context-translator/references/translation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/context-translator/references/translation-playbook.md
+- path: .dev/agents/context-translator/references/translation-playbook.md
+  source_path: .dev/agents/context-translator/references/translation-playbook.md
   sha256: 3200ff92ce1aafe29894458ae0fbcfa1b57945b53434a4362c9053a2101f44aa
   size: 1669
   mode: '0644'
@@ -1450,8 +1450,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: ai-context-lifecycle-core
-- path: .ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml
+- path: .dev/agents/context-translator/sub-agent.yaml
+  source_path: .dev/agents/context-translator/sub-agent.yaml
   sha256: 558d6d2c1617b12d7b7f77b0d515dcd2996767e7b7a965fd452a33cc86822c32
   size: 2696
   mode: '0644'
@@ -1459,8 +1459,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: ai-context-lifecycle-core
-- path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-playbook.md
+- path: .dev/agents/controller-code-review-sub-agent/references/review-playbook.md
+  source_path: .dev/agents/controller-code-review-sub-agent/references/review-playbook.md
   sha256: 4805446f81c0b739858c4330d780d5d503d9aa090c6a6ac837e33020a47eef42
   size: 911
   mode: '0644'
@@ -1468,8 +1468,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-prompt.md
-  source_path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-prompt.md
+- path: .dev/agents/controller-code-review-sub-agent/references/review-prompt.md
+  source_path: .dev/agents/controller-code-review-sub-agent/references/review-prompt.md
   sha256: 59b11e02b4d9a28f845e91eff407c21893f58de52bc26f80944d0f5d63c76e0a
   size: 362
   mode: '0644'
@@ -1477,8 +1477,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/sub-agent.yaml
+- path: .dev/agents/controller-code-review-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/controller-code-review-sub-agent/sub-agent.yaml
   sha256: 541b9d4482ba9db135ab2d9814bb15612d3c6e0200c99a295a8707dabad15864
   size: 2042
   mode: '0644'
@@ -1486,8 +1486,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/references/implementation-guidance.md
-  source_path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/references/implementation-guidance.md
+- path: .dev/agents/controller-sub-agent/references/implementation-guidance.md
+  source_path: .dev/agents/controller-sub-agent/references/implementation-guidance.md
   sha256: 2b0f0812931d4fa3f9eacd83bf710d355d015ba68e5bbc04f693cd383abb3d63
   size: 1032
   mode: '0644'
@@ -1495,8 +1495,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/sub-agent.yaml
+- path: .dev/agents/controller-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/controller-sub-agent/sub-agent.yaml
   sha256: 482ba6e18c4ceedbebecca2caaf88dbd0a0f8f53d13c1fc66151c88bd0916a4f
   size: 2117
   mode: '0644'
@@ -1504,8 +1504,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-generation-guidance.md
-  source_path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-generation-guidance.md
+- path: .dev/agents/controller-test-sub-agent/references/test-generation-guidance.md
+  source_path: .dev/agents/controller-test-sub-agent/references/test-generation-guidance.md
   sha256: f0b978b783d0929b4e1b6f8ef67dc845fc5275c018ad0a08540851f34c0592fc
   size: 779
   mode: '0644'
@@ -1513,8 +1513,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-playbook.md
+- path: .dev/agents/controller-test-sub-agent/references/test-playbook.md
+  source_path: .dev/agents/controller-test-sub-agent/references/test-playbook.md
   sha256: 02596356ef3da3a96d3dc813f3836a5be55aeaf15fa7965ad80ef9215c91cedf
   size: 779
   mode: '0644'
@@ -1522,8 +1522,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/sub-agent.yaml
+- path: .dev/agents/controller-test-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/controller-test-sub-agent/sub-agent.yaml
   sha256: 9956cae3c3bee7b445c9e3938ed41323d22100432a9147767e526607a2c9a4ac
   size: 2084
   mode: '0644'
@@ -1531,8 +1531,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/mutation-testing-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/mutation-testing-sub-agent/references/implementation-playbook.md
   sha256: 9aa98d8f2dfab0829beae860ee46daa13be7dc1204c2780ff9bba6f213545f57
   size: 679
   mode: '0644'
@@ -1540,8 +1540,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml
+- path: .dev/agents/mutation-testing-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/mutation-testing-sub-agent/sub-agent.yaml
   sha256: c3bfdaae7a70fab3c0415ac64e89190b004a9497c733ecae7c33be074cb8157a
   size: 1641
   mode: '0644'
@@ -1549,8 +1549,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/outbox-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/outbox-sub-agent/references/implementation-playbook.md
   sha256: a353bfeacdf3bac23e4034971326c907604f0476c8c9cc6a5c9aacf470d0138a
   size: 631
   mode: '0644'
@@ -1558,8 +1558,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/sub-agent.yaml
+- path: .dev/agents/outbox-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/outbox-sub-agent/sub-agent.yaml
   sha256: 30aee58d22b89b48f2de45aaca79043cd6d64c941749991c037dea2b6da1e117
   size: 1687
   mode: '0644'
@@ -1567,8 +1567,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/references/authoring-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/references/authoring-playbook.md
+- path: .dev/agents/problem-frame-sub-agent/references/authoring-playbook.md
+  source_path: .dev/agents/problem-frame-sub-agent/references/authoring-playbook.md
   sha256: cc867435bf5a012f8c64d430fe161c58095579495b5f92f2b657ec2b9bd84d79
   size: 780
   mode: '0644'
@@ -1576,8 +1576,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml
+- path: .dev/agents/problem-frame-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/problem-frame-sub-agent/sub-agent.yaml
   sha256: d68287b92191936d2599ebca6d9473fc9417dc72dedb3ded8c021a7f3b4e8674
   size: 1719
   mode: '0644'
@@ -1585,8 +1585,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/profile-config-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/profile-config-sub-agent/references/implementation-playbook.md
   sha256: 7061b0ce165574ec7fa5829cbdb4600e89f442210ea2abc4f487ecca3e76d285
   size: 418
   mode: '0644'
@@ -1594,8 +1594,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/sub-agent.yaml
+- path: .dev/agents/profile-config-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/profile-config-sub-agent/sub-agent.yaml
   sha256: 15439b214e2832bbc8f07665499858c6c1116877eb08e3f660fa6b95fc7105ba
   size: 1478
   mode: '0644'
@@ -1603,8 +1603,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/query-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/query-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/query-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/query-sub-agent/references/implementation-playbook.md
   sha256: d06bc7186a84ed6c34437aea7f26df5b4a10eef3c1acae26fcf7b313c8648453
   size: 1669
   mode: '0644'
@@ -1612,8 +1612,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/query-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/query-sub-agent/sub-agent.yaml
+- path: .dev/agents/query-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/query-sub-agent/sub-agent.yaml
   sha256: b5a48e41a33e7970831cf9e4a061ee33311208c2bee8b25c16936d20ef587f9e
   size: 1748
   mode: '0644'
@@ -1621,8 +1621,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-playbook.md
+- path: .dev/agents/reactor-code-review-sub-agent/references/review-playbook.md
+  source_path: .dev/agents/reactor-code-review-sub-agent/references/review-playbook.md
   sha256: 32f74e2375bb318faaea436763524a9383053ade7b38cea35e4514f6079f55ea
   size: 971
   mode: '0644'
@@ -1630,8 +1630,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-prompt.md
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-prompt.md
+- path: .dev/agents/reactor-code-review-sub-agent/references/review-prompt.md
+  source_path: .dev/agents/reactor-code-review-sub-agent/references/review-prompt.md
   sha256: 63fa315d0142f2a34341dc5d31f10f1f415a91f39ffafb29791c68e49ef46483
   size: 381
   mode: '0644'
@@ -1639,8 +1639,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/sub-agent.yaml
+- path: .dev/agents/reactor-code-review-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/reactor-code-review-sub-agent/sub-agent.yaml
   sha256: 1aaab38a8606d40764dc8812ba3463666d477ece99bb39dc03123e84a2ec2272
   size: 2128
   mode: '0644'
@@ -1648,8 +1648,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/references/implementation-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/references/implementation-playbook.md
+- path: .dev/agents/reactor-sub-agent/references/implementation-playbook.md
+  source_path: .dev/agents/reactor-sub-agent/references/implementation-playbook.md
   sha256: fec20172bafd09f0168e58ff2b5b7d0cc3cae25ae515d8b671102b8fb0c45e11
   size: 772
   mode: '0644'
@@ -1657,8 +1657,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/sub-agent.yaml
+- path: .dev/agents/reactor-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/reactor-sub-agent/sub-agent.yaml
   sha256: ab13449157ad8df817527d99b9aa1680e834f0e89dc94baf2990b78942655ad0
   size: 1727
   mode: '0644'
@@ -1666,8 +1666,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-generation-guidance.md
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-generation-guidance.md
+- path: .dev/agents/reactor-test-sub-agent/references/test-generation-guidance.md
+  source_path: .dev/agents/reactor-test-sub-agent/references/test-generation-guidance.md
   sha256: fe62e130e9f459766082f7534cc71fbc1fed3835943ccbbf380b49bf7b795e79
   size: 923
   mode: '0644'
@@ -1675,8 +1675,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-playbook.md
+- path: .dev/agents/reactor-test-sub-agent/references/test-playbook.md
+  source_path: .dev/agents/reactor-test-sub-agent/references/test-playbook.md
   sha256: 12aa86c3423d1eda487edce6da0acf7b5b3db4a26c439d7a62a51b3fb9698935
   size: 757
   mode: '0644'
@@ -1684,8 +1684,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/sub-agent.yaml
+- path: .dev/agents/reactor-test-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/reactor-test-sub-agent/sub-agent.yaml
   sha256: cb1d9e12d8e681afe1c751a7ba48746941b6134510a0f65dc293b19eae67e74b
   size: 1979
   mode: '0644'
@@ -1693,8 +1693,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-generation-guidance.md
-  source_path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-generation-guidance.md
+- path: .dev/agents/usecase-test-sub-agent/references/test-generation-guidance.md
+  source_path: .dev/agents/usecase-test-sub-agent/references/test-generation-guidance.md
   sha256: 41992835580757a026d745ac55cb85e88ef8fdb3cdf0c0218bfd5a68cd87b1d8
   size: 1090
   mode: '0644'
@@ -1702,8 +1702,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-playbook.md
-  source_path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-playbook.md
+- path: .dev/agents/usecase-test-sub-agent/references/test-playbook.md
+  source_path: .dev/agents/usecase-test-sub-agent/references/test-playbook.md
   sha256: d15750a0127637556f0f2abaaad1898c703669785e065b2822d6a63c6373c2a6
   size: 821
   mode: '0644'
@@ -1711,8 +1711,8 @@ files:
   install_behavior: managed
   entry_id: canonical-ai-assets
   component_id: software-development-core
-- path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/sub-agent.yaml
-  source_path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/sub-agent.yaml
+- path: .dev/agents/usecase-test-sub-agent/sub-agent.yaml
+  source_path: .dev/agents/usecase-test-sub-agent/sub-agent.yaml
   sha256: 2c1308269864eab590e247330f67cf8ef420a729391e769d97f6ea9abf3c8fcc
   size: 2100
   mode: '0644'
@@ -1981,8 +1981,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-coding-standards.sh
-  source_path: .ai/scripts/check-coding-standards.sh
+- path: src/tools/dotnet/check-coding-standards.sh
+  source_path: src/tools/dotnet/check-coding-standards.sh
   sha256: 19f0544705e2bc6fd4d4ced93f6c808a22cbb901fe8b5d80cd9a5e73cc892e7e
   size: 11701
   mode: '0755'
@@ -1990,8 +1990,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-data-class-annotations.sh
-  source_path: .ai/scripts/check-data-class-annotations.sh
+- path: src/tools/dotnet/check-data-class-annotations.sh
+  source_path: src/tools/dotnet/check-data-class-annotations.sh
   sha256: 3d72bdb0b07c6d4d93f110a4b025c13cc3376a87e72f0042b43a3ff444caaca4
   size: 2765
   mode: '0755'
@@ -1999,8 +1999,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-dockerfile-csproj-copy-sync.ps1
-  source_path: .ai/scripts/check-dockerfile-csproj-copy-sync.ps1
+- path: src/tools/dotnet/check-dockerfile-csproj-copy-sync.ps1
+  source_path: src/tools/dotnet/check-dockerfile-csproj-copy-sync.ps1
   sha256: a130e758b990efb0a7d58d03a57f88ab2d0842d48bd439dce23f3f83e5e9ce28
   size: 5362
   mode: '0644'
@@ -2008,8 +2008,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-domain-events-compliance.sh
-  source_path: .ai/scripts/check-domain-events-compliance.sh
+- path: src/tools/dotnet/check-domain-events-compliance.sh
+  source_path: src/tools/dotnet/check-domain-events-compliance.sh
   sha256: 3692e87451505045333edbc93c663dda22287f887a4530429a9ae5587daa31ce
   size: 4054
   mode: '0755'
@@ -2017,8 +2017,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-dotnet-config.sh
-  source_path: .ai/scripts/check-dotnet-config.sh
+- path: src/tools/dotnet/check-dotnet-config.sh
+  source_path: src/tools/dotnet/check-dotnet-config.sh
   sha256: 4f8535c1d8501bbe8ee069cce84893fcbc88757e0a97a4c04ba3f3d01ac66bc3
   size: 3514
   mode: '0755'
@@ -2026,8 +2026,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-framework-api-compliance.sh
-  source_path: .ai/scripts/check-framework-api-compliance.sh
+- path: src/tools/dotnet/check-framework-api-compliance.sh
+  source_path: src/tools/dotnet/check-framework-api-compliance.sh
   sha256: 6406c7a1f9d02204aec68d79d1c06c18e71a486e67adfb21c1dd4f64ebe9adb0
   size: 5832
   mode: '0755'
@@ -2035,8 +2035,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-mutation-coverage.sh
-  source_path: .ai/scripts/check-mutation-coverage.sh
+- path: src/tools/dotnet/check-mutation-coverage.sh
+  source_path: src/tools/dotnet/check-mutation-coverage.sh
   sha256: c22b77d57794e977998f7ec30d405d7daec011d64ce7f7bab6f65bbebe015124
   size: 4360
   mode: '0755'
@@ -2053,8 +2053,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-spec-compliance.sh
-  source_path: .ai/scripts/check-spec-compliance.sh
+- path: src/tools/dotnet/check-spec-compliance.sh
+  source_path: src/tools/dotnet/check-spec-compliance.sh
   sha256: 77b759ec1ebc188f13963c2aced867cbab0626ad6de199a278cdf477ae174c59
   size: 1870
   mode: '0755'
@@ -2062,8 +2062,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-test-compliance.sh
-  source_path: .ai/scripts/check-test-compliance.sh
+- path: src/tools/dotnet/check-test-compliance.sh
+  source_path: src/tools/dotnet/check-test-compliance.sh
   sha256: 1d766f994c79268c6306dfaede5e32341494f12e46bdc9ac912b3c80dbe7940f
   size: 7225
   mode: '0755'
@@ -2071,8 +2071,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/check-test-di-compliance.sh
-  source_path: .ai/scripts/check-test-di-compliance.sh
+- path: src/tools/dotnet/check-test-di-compliance.sh
+  source_path: src/tools/dotnet/check-test-di-compliance.sh
   sha256: b4b7119885713dda713528a3abbb465448ca15dbea3284ba3e9860f110c74454
   size: 3995
   mode: '0755'
@@ -2080,8 +2080,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/code-review.sh
-  source_path: .ai/scripts/code-review.sh
+- path: src/tools/dotnet/code-review.sh
+  source_path: src/tools/dotnet/code-review.sh
   sha256: c5aa4377a4d92d9b30a50117f367cc8dac42580ac09a6e61cf3caef0ee4f01ae
   size: 17030
   mode: '0755'
@@ -2377,8 +2377,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: ai-context-lifecycle-core
-- path: .ai/scripts/validate-assessment-artifacts.py
-  source_path: .ai/scripts/validate-assessment-artifacts.py
+- path: tools/maintenance/validate-assessment-artifacts.py
+  source_path: tools/maintenance/validate-assessment-artifacts.py
   sha256: 4f6d9feda85d91f71e8926c5909bae851a23f885bc5b2a3585003d724853672f
   size: 14092
   mode: '0644'
@@ -2395,8 +2395,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/validate-dual-profile-config.sh
-  source_path: .ai/scripts/validate-dual-profile-config.sh
+- path: src/tools/dotnet/validate-dual-profile-config.sh
+  source_path: src/tools/dotnet/validate-dual-profile-config.sh
   sha256: c18438e26f20481db9c7b18c338c807dbead2e4ccff4f4357fb5e673c6d69b2d
   size: 3688
   mode: '0755'
@@ -2404,8 +2404,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/validate-file-disposition-manifest.py
-  source_path: .ai/scripts/validate-file-disposition-manifest.py
+- path: tools/maintenance/validate-file-disposition-manifest.py
+  source_path: tools/maintenance/validate-file-disposition-manifest.py
   sha256: 48ba78890d38997291d7b20b6ed8e6d3ea28ce14b1854ba8ce8f1d5fe0d4315b
   size: 30482
   mode: '0644'
@@ -2413,8 +2413,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/validate-git-commits.py
-  source_path: .ai/scripts/validate-git-commits.py
+- path: tools/maintenance/validate-git-commits.py
+  source_path: tools/maintenance/validate-git-commits.py
   sha256: f6c162b2cc236877061d669840bbf54ce1f5b19a398c4772c00e90a723ed65bc
   size: 6849
   mode: '0644'
@@ -2449,8 +2449,8 @@ files:
   install_behavior: managed
   entry_id: ai-runtime-scripts
   component_id: software-development-core
-- path: .ai/scripts/validate-workflow-handoff.py
-  source_path: .ai/scripts/validate-workflow-handoff.py
+- path: tools/maintenance/validate-workflow-handoff.py
+  source_path: tools/maintenance/validate-workflow-handoff.py
   sha256: 53c3d76346641aaccd323450739a045ffca8578d2f7921613825c147bc6b8086
   size: 30897
   mode: '0644'
@@ -2692,8 +2692,8 @@ files:
   install_behavior: managed
   entry_id: adr-governance
   component_id: software-development-core
-- path: .dev/adr/WHEN-TO-CREATE-ADR.MD
-  source_path: .dev/adr/WHEN-TO-CREATE-ADR.MD
+- path: src/skills/adr/references/WHEN-TO-CREATE-ADR.MD
+  source_path: src/skills/adr/references/WHEN-TO-CREATE-ADR.MD
   sha256: 20fb79e2a64fcce1e0ba269e21d44f045ee09ac1a1e99b37201c10aded5ca823
   size: 1483
   mode: '0644'
@@ -2746,8 +2746,8 @@ files:
   install_behavior: managed
   entry_id: backlog-governance
   component_id: repo-backlog
-- path: .dev/domain-language/README.MD
-  source_path: .dev/domain-language/README.MD
+- path: src/knowledge/dotnet-backend/domain-language/README.MD
+  source_path: src/knowledge/dotnet-backend/domain-language/README.MD
   sha256: b9593615d70f332fa20799e04006ed66236e5982f70f5c511bb0d364835430f7
   size: 2124
   mode: '0644'
@@ -2755,8 +2755,8 @@ files:
   install_behavior: managed
   entry_id: domain-language-templates
   component_id: software-development-core
-- path: .dev/domain-language/templates/aggregate-vocabulary-template.md
-  source_path: .dev/domain-language/templates/aggregate-vocabulary-template.md
+- path: src/knowledge/dotnet-backend/domain-language/templates/aggregate-vocabulary-template.md
+  source_path: src/knowledge/dotnet-backend/domain-language/templates/aggregate-vocabulary-template.md
   sha256: 909bba35cdd807564f9d42a785a0ef9e2777f89a8a33b3f13ff65b3e9e257945
   size: 1155
   mode: '0644'
@@ -2764,8 +2764,8 @@ files:
   install_behavior: managed
   entry_id: domain-language-templates
   component_id: software-development-core
-- path: .dev/domain-language/templates/bounded-context-language-template.md
-  source_path: .dev/domain-language/templates/bounded-context-language-template.md
+- path: src/knowledge/dotnet-backend/domain-language/templates/bounded-context-language-template.md
+  source_path: src/knowledge/dotnet-backend/domain-language/templates/bounded-context-language-template.md
   sha256: 57ebf3669925b99462f0da7b4a8d88461196a1b6f7f5ad552f0e27d75665f757
   size: 977
   mode: '0644'
@@ -2773,8 +2773,8 @@ files:
   install_behavior: managed
   entry_id: domain-language-templates
   component_id: software-development-core
-- path: .dev/domain-language/templates/domain-event-language-template.md
-  source_path: .dev/domain-language/templates/domain-event-language-template.md
+- path: src/knowledge/dotnet-backend/domain-language/templates/domain-event-language-template.md
+  source_path: src/knowledge/dotnet-backend/domain-language/templates/domain-event-language-template.md
   sha256: 69e32d14f4f4a451349a8784c447b1285e061ffa5ff7571888e279fd1b06f755
   size: 1136
   mode: '0644'
@@ -3052,8 +3052,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/design-guides/DATA-CLASS-STANDARDS.md
-  source_path: .dev/guides/design-guides/DATA-CLASS-STANDARDS.md
+- path: src/knowledge/dotnet-backend/guides/DATA-CLASS-STANDARDS.md
+  source_path: src/knowledge/dotnet-backend/guides/DATA-CLASS-STANDARDS.md
   sha256: a250f87d4d0d03aea50effd01bd0409eebe1f05914445a6373c92e88b7ed28a6
   size: 4384
   mode: '0644'
@@ -3097,8 +3097,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/design-guides/PROFILE-BASED-TESTING-GUIDE.md
-  source_path: .dev/guides/design-guides/PROFILE-BASED-TESTING-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/PROFILE-BASED-TESTING-GUIDE.md
   sha256: 6aae5b95241e91bebf3aef9166b84cceee132fea6221dbf033b726d8b3822047
   size: 5417
   mode: '0644'
@@ -3115,8 +3115,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/design-guides/TEST-DATA-PREPARATION-GUIDE.md
-  source_path: .dev/guides/design-guides/TEST-DATA-PREPARATION-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/TEST-DATA-PREPARATION-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/TEST-DATA-PREPARATION-GUIDE.md
   sha256: 1df24a534a0268f49a35ccd2d2412fc9ccea66525d2a845372f65e33e0af3529
   size: 7660
   mode: '0644'
@@ -3124,8 +3124,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/COMMON-MISTAKES-GUIDE.md
-  source_path: .dev/guides/implementation-guides/COMMON-MISTAKES-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/COMMON-MISTAKES-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/COMMON-MISTAKES-GUIDE.md
   sha256: ff57d702db75d4b273c34c55fd7038a499c35a9d2253fd2031bbd4ac0bc646df
   size: 2379
   mode: '0644'
@@ -3133,8 +3133,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
-  source_path: .dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
   sha256: e1d982efc1d74500e39f1739daac21efa1896e1fccb44ad4ac24f1ff18158361
   size: 1637
   mode: '0644'
@@ -3142,8 +3142,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/CORS-SETUP.md
-  source_path: .dev/guides/implementation-guides/CORS-SETUP.md
+- path: src/knowledge/dotnet-backend/guides/CORS-SETUP.md
+  source_path: src/knowledge/dotnet-backend/guides/CORS-SETUP.md
   sha256: 53c2a5022cc50a405ce8216a426487a72e45481e22a4a6f3e4e12115193beb7b
   size: 1948
   mode: '0644'
@@ -3151,8 +3151,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md
-  source_path: .dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md
   sha256: 89b34fed648addae4fd6787f06dccf8fd77874799c34bddc9a1539855ead133f
   size: 3860
   mode: '0644'
@@ -3160,8 +3160,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md
-  source_path: .dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md
   sha256: 18d1ff833a842ee695c8798096aeb313c7988beea467c4fabe2bf39f54556ddd
   size: 2746
   mode: '0644'
@@ -3187,8 +3187,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
-  source_path: .dev/guides/implementation-guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
   sha256: decd276f481bfae8ee2769a4ae5fe080fedf96cc417117e5676b55028ee0124a
   size: 3850
   mode: '0644'
@@ -3196,8 +3196,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/FAQ.md
-  source_path: .dev/guides/implementation-guides/FAQ.md
+- path: src/knowledge/dotnet-backend/guides/FAQ.md
+  source_path: src/knowledge/dotnet-backend/guides/FAQ.md
   sha256: 31ef46c9f80bb16393782cca5b60f3c261dba11be86c919850d55a293e5dd755
   size: 1180
   mode: '0644'
@@ -3214,8 +3214,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
-  source_path: .dev/guides/implementation-guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
   sha256: a7a6b26cb8af0a69a911a2d2949ee86ce478bab5ab166b3891a0b22063a83969
   size: 5159
   mode: '0644'
@@ -3223,8 +3223,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md
-  source_path: .dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md
   sha256: 20525f2ff9714ab88abdbb63c8175c07f07c443e8e0303236ded057ca08924bc
   size: 2862
   mode: '0644'
@@ -3232,8 +3232,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/implementation-guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
-  source_path: .dev/guides/implementation-guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
+- path: src/knowledge/dotnet-backend/guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
+  source_path: src/knowledge/dotnet-backend/guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
   sha256: a33e45c80bd459e3c28758a57b1d05175083b8f37b395003cb0face3be0dff5a
   size: 3706
   mode: '0644'
@@ -3304,8 +3304,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/learning-guides/LEARNING-PATH.md
-  source_path: .dev/guides/learning-guides/LEARNING-PATH.md
+- path: src/knowledge/dotnet-backend/guides/LEARNING-PATH.md
+  source_path: src/knowledge/dotnet-backend/guides/LEARNING-PATH.md
   sha256: b0df6196f65cb819975909c1c2156c0b1054bb5c4dcc9f377194accb0cacbf5c
   size: 8746
   mode: '0644'
@@ -3313,8 +3313,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/guides/learning-guides/NEW-PROJECT-GUIDE.md
-  source_path: .dev/guides/learning-guides/NEW-PROJECT-GUIDE.md
+- path: src/knowledge/dotnet-backend/guides/NEW-PROJECT-GUIDE.md
+  source_path: src/knowledge/dotnet-backend/guides/NEW-PROJECT-GUIDE.md
   sha256: f8b0aa75c9883fafa33d6855dfd4ff9077b29eed0a9dd4dcf131190fc7a017f5
   size: 6898
   mode: '0644'
@@ -3331,8 +3331,8 @@ files:
   install_behavior: managed
   entry_id: reusable-guides
   component_id: software-development-core
-- path: .dev/operations/CONTEXT-MAP-GUIDE.MD
-  source_path: .dev/operations/CONTEXT-MAP-GUIDE.MD
+- path: src/knowledge/dotnet-backend/operations/CONTEXT-MAP-GUIDE.MD
+  source_path: src/knowledge/dotnet-backend/operations/CONTEXT-MAP-GUIDE.MD
   sha256: 53800913a47f9c33949279ac6665562fa1eb506f5654545825031583403d0eb9
   size: 1356
   mode: '0644'
@@ -3340,8 +3340,8 @@ files:
   install_behavior: managed
   entry_id: operations-authoring-guides
   component_id: software-development-core
-- path: .dev/operations/EVENT-CATALOG-GUIDE.MD
-  source_path: .dev/operations/EVENT-CATALOG-GUIDE.MD
+- path: src/knowledge/dotnet-backend/operations/EVENT-CATALOG-GUIDE.MD
+  source_path: src/knowledge/dotnet-backend/operations/EVENT-CATALOG-GUIDE.MD
   sha256: 20c1a60bc3acbc7a2c6e09dd9802061b1fef0c1f4e2b47fbf1e3e4da9c2a92ed
   size: 1160
   mode: '0644'
@@ -3349,8 +3349,8 @@ files:
   install_behavior: managed
   entry_id: operations-authoring-guides
   component_id: software-development-core
-- path: .dev/operations/MQ-TOPOLOGY-GUIDE.MD
-  source_path: .dev/operations/MQ-TOPOLOGY-GUIDE.MD
+- path: src/knowledge/dotnet-backend/operations/MQ-TOPOLOGY-GUIDE.MD
+  source_path: src/knowledge/dotnet-backend/operations/MQ-TOPOLOGY-GUIDE.MD
   sha256: 740c436884866d78daf46d05e9c492718839d1fe916ecd8fd48478387b9e940e
   size: 1150
   mode: '0644'
@@ -3367,8 +3367,8 @@ files:
   install_behavior: managed
   entry_id: operations-authoring-guides
   component_id: software-development-core
-- path: .dev/operations/RUNBOOK-GUIDE.MD
-  source_path: .dev/operations/RUNBOOK-GUIDE.MD
+- path: src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD
+  source_path: src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD
   sha256: 6bdba8ee3de39a13e8ff7dc61f71b85ccec8f4d6d0e552b65b2d2f3872979439
   size: 1542
   mode: '0644'
@@ -3457,8 +3457,8 @@ files:
   install_behavior: managed
   entry_id: problem-frame-assets
   component_id: software-development-core
-- path: .dev/requirement/REQUIREMENT-GUIDE.MD
-  source_path: .dev/requirement/REQUIREMENT-GUIDE.MD
+- path: src/skills/requirement-author/references/requirement-guide.md
+  source_path: src/skills/requirement-author/references/requirement-guide.md
   sha256: fb196308785e956e56ef8f7dd9f9527e517337dd03d62743a72d32ba917eb460
   size: 1796
   mode: '0644'
@@ -3484,8 +3484,8 @@ files:
   install_behavior: managed
   entry_id: specification-authoring-guides
   component_id: software-development-core
-- path: .dev/specs/SPEC-GUIDE.MD
-  source_path: .dev/specs/SPEC-GUIDE.MD
+- path: src/skills/spec-author/references/spec-guide.md
+  source_path: src/skills/spec-author/references/spec-guide.md
   sha256: ca0b9edd6510da02e69c916ef8846af6b1b14841c15b0f03d469ec19ce513a1a
   size: 5726
   mode: '0644'
@@ -3493,8 +3493,8 @@ files:
   install_behavior: managed
   entry_id: specification-authoring-guides
   component_id: software-development-core
-- path: .dev/specs/SPEC-ORGANIZATION-GUIDE.MD
-  source_path: .dev/specs/SPEC-ORGANIZATION-GUIDE.MD
+- path: src/skills/spec-author/references/spec-organization-guide.md
+  source_path: src/skills/spec-author/references/spec-organization-guide.md
   sha256: 004713580e4a85c925ab2e8f90a9d29e474451e60d8537dcaeeec8f37e33d713
   size: 3231
   mode: '0644'
@@ -3520,8 +3520,8 @@ files:
   install_behavior: managed
   entry_id: specification-authoring-guides
   component_id: software-development-core
-- path: .dev/specs/tests/TEST-SPEC-GUIDE.MD
-  source_path: .dev/specs/tests/TEST-SPEC-GUIDE.MD
+- path: src/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD
+  source_path: src/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD
   sha256: 33bc289e1940c1e4e6b398f445072923afddd328cb656cfbbad9a50798708ccb
   size: 4634
   mode: '0644'

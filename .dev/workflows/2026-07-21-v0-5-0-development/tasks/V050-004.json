@@ -13,7 +13,7 @@
   "finding_ids": [],
   "scope": {
     "target": "SAG-001 dynamic/native contract, exact adapter metadata, parity validation, packaging, and 18-role dispositions",
-    "files": [".ai/assets/CANONICAL-SCHEMA.MD", ".ai/assets/sub-agent-role-prompts/**", ".codex/agents/**", ".claude/agents/**", ".github/agents/**", ".ai/scripts/validate-ai-context.py", ".ai/scripts/tests/**"],
+    "files": [".ai/assets/CANONICAL-SCHEMA.MD", ".dev/agents/**", ".codex/agents/**", ".claude/agents/**", ".github/agents/**", ".ai/scripts/validate-ai-context.py", ".ai/scripts/tests/**"],
     "constraints": ["Dynamic is default", "Only context-translator is preapproved native", "Keep adapters thin", "Verify current official runtime schemas"],
     "non_goals": ["Bulk wrapper generation", "Skill taxonomy changes", "Promote roles for symmetry"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Dynamic loading is the default for 17 roles; context-translator alone maps exact Codex, Claude, and Copilot adapters with fail-closed structural and package validation.",
-    "files_changed": [".ai/assets/CANONICAL-SCHEMA.MD", ".ai/assets/sub-agent-role-prompts/**", ".ai/SUB-AGENT-SYSTEM.MD", ".ai/scripts/validate-ai-context.py", ".ai/scripts/tests/test_ai_context_sub_agent_adapters.py", ".ai/scripts/tests/test_ai_context_packaging.py"],
+    "files_changed": [".ai/assets/CANONICAL-SCHEMA.MD", ".dev/agents/**", ".ai/SUB-AGENT-SYSTEM.MD", ".ai/scripts/validate-ai-context.py", ".ai/scripts/tests/test_ai_context_sub_agent_adapters.py", ".ai/scripts/tests/test_ai_context_packaging.py"],
     "tests_run": ["9 wrapper metadata GWT", "18 sub-agent adapter GWT", "authoritative collect_payload GWT", "AI-context validator", "ZIP/tar package parity", "packaged focused adapter gate"],
     "finding_status": "addressed",
     "residual_risk": "Actual named-agent execution was not claimed: the managed environment denied Codex CLI external invocation, Claude was not invoked, and Copilot CLI is unavailable.",

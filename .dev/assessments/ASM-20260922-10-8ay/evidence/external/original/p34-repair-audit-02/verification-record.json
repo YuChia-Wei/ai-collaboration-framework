@@ -39,7 +39,7 @@
   "repair_disposition": {
     "finding_id": "F-001",
     "status": "resolved-on-subject",
-    "authority_ref": ".ai/assets/shared/validation-gate-classification.yaml",
+    "authority_ref": ".dev/contracts/validation-gate-classification.yaml",
     "authority_sha256": "3ee4563c39157b7deab39fd01376cc62bf217401b9524643d423ae781acfdbf5",
     "classification": {
       "group_id": "input-environment-candidates",

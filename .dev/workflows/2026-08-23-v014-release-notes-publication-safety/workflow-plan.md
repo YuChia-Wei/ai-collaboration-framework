@@ -26,7 +26,7 @@
 ## Objective And Scope
 
 - Problem statement: GitHub Issue #241 records that the published v0.14.0 body and its authored source retain candidate, pending-publication, transient execution-history, and open/unmerged-state narration.
-- Authorized remediation scope: make `.dev/releases/v0.14.0/release-notes.md` consumer-facing; strengthen the effective v0.13.0+ tag-triggered renderer boundary; add focused GWT regression tests; render and validate the exact hosted body; remediate the directly related v0.14.0 retained-origin route evidence without changing the retained source set or another version's published semantics; make exactly one body-only GitHub Release update from a clean immutable reviewed commit; retain mechanical before/after parity evidence.
+- Authorized remediation scope: make `releases/v0.14.0/release-notes.md` consumer-facing; strengthen the effective v0.13.0+ tag-triggered renderer boundary; add focused GWT regression tests; render and validate the exact hosted body; remediate the directly related v0.14.0 retained-origin route evidence without changing the retained source set or another version's published semantics; make exactly one body-only GitHub Release update from a clean immutable reviewed commit; retain mechanical before/after parity evidence.
 - Exclusions after the latest owner continuation: Project mutation beyond required terminal read-back, release allocation, tag mutation, Release recreation or non-body user-controlled mutation, asset mutation, new publication, downstream mutation, package/archive rename, and ID-002 creation. Push, pull request, merge, and Issue #241 terminal close are now separately authorized when their gates pass.
 - Completion criteria: source and focused tests pass; a clean immutable commit receives independent read-only review; the hosted body is updated once from exact validated bytes; provider receipts prove every non-body Release, tag, peeled-commit, and asset field is unchanged; workflow evidence remains truthful.
 
@@ -38,7 +38,7 @@
 - `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`
 - `.dev/TEAM-GIT-FLOW-RULES.MD`
 - `.dev/standards/GIT-COMMIT-POLICY.md`
-- `.dev/releases/v0.14.0/release-phase-checks.yaml`
+- `releases/v0.14.0/release-phase-checks.yaml`
 - `.github/workflows/publish-release.yml`
 
 ## Artifact Contract

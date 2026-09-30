@@ -41,7 +41,7 @@
 ### `Issue-210-contract`
 
 - Changes: defined authority order, portable route vocabulary, readiness versus execution evidence, bounded fallback, retry, consent, and fail-closed behavior.
-- Evidence: `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md` and `.ai/assets/shared/cli-execution-routing.schema.yaml` contain no populated personal route or non-CLI selector.
+- Evidence: `.dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md` and `.dev/contracts/cli-execution-routing.schema.yaml` contain no populated personal route or non-CLI selector.
 - Validation: source AI-context validator passed; the CLI-only routing suite covers the unconfigured source state and rejects connector surface/selector input.
 - Remaining risk: owner review may adjust vocabulary or record shape before independent verification.
 

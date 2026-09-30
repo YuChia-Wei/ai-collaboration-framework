@@ -30,7 +30,7 @@ technologySelections:
     status: selected
     source: explicit-target-decision
     evidence:
-      - .dev/requirement/TECH-STACK-REQUIREMENTS.MD
+      - src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD
     reason: Existing product test stack
 ```
 

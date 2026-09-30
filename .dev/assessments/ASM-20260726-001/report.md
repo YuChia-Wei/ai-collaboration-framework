@@ -154,7 +154,7 @@ No active remediation finding remains in the audited policy scope.
 | Workflow artifacts | pass | `python .ai/scripts/validate-workflow-artifacts.py` passed for 42 post-adoption workflows, 62 indexed directories, and 35 backlog items. |
 | Policy path and reference checks | pass | Direct inspection confirmed the lifecycle, provider, authorization, PR, and closure rules in their owning policy files. |
 | Diff whitespace | pass | `git diff --check main..HEAD` passed. |
-| Assessment artifacts | pass | `python .ai/scripts/validate-assessment-artifacts.py` validates this verification locator and assessment index. |
+| Assessment artifacts | pass | `python tools/maintenance/validate-assessment-artifacts.py` validates this verification locator and assessment index. |
 
 ### Skipped Validation
 
@@ -186,7 +186,7 @@ git status --short
 rg -n -C 2 "planning word|Candidate work and unapproved plan|GitHub Issues and Projects are this repository|only when execution is authorized|pull request|local direct merge|workflow completion and pull-request" .dev/standards/WORKFLOW-GATE-POLICY.md .dev/TEAM-GIT-FLOW-RULES.MD .dev/standards/GIT-COMMIT-POLICY.md .dev/backlog/ROADMAP.md
 python .ai/scripts/validate-workflow-artifacts.py
 git diff --check main..HEAD
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 ```
 
 ### Notes

@@ -14,7 +14,7 @@ authorities:
   canonical_ai_content: ".ai/assets/**"
   package_projection: ".ai/distribution/profiles/dotnet-backend.yaml"
   package_builder: ".ai/scripts/ai_context_package.py"
-  release_history: ".dev/releases/v0.11.0/release.yaml"
+  release_history: "releases/v0.11.0/release.yaml"
   published_artifact: "GitHub Release v0.11.0"
   current_work_management: "GitHub Issues and Project #3"
   upstream_ai_inventory: "ASM-20260809-003"
@@ -166,7 +166,7 @@ identity_handoff:
     display_name: "AI Collaboration Framework"
   framework_release:
     pattern: "REL-v{version}"
-    authority: ".dev/releases/v{version}/release.yaml"
+    authority: "releases/v{version}/release.yaml"
   technology_profile:
     current_id: "dotnet-backend"
     decision: "retain; its semantics describe the selected technology profile"

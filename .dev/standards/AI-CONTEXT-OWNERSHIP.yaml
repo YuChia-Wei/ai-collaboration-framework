@@ -99,7 +99,7 @@ governance_term_routing:
       distribution: source-only
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
-        - contract: .dev/releases/<version>/release.yaml
+        - contract: releases/<version>/release.yaml
           field: status
           literals:
             - planned
@@ -155,7 +155,7 @@ governance_term_routing:
       distribution: source-only
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
-        - contract: .dev/releases/<version>/release.yaml
+        - contract: releases/<version>/release.yaml
           field: status
           literals:
             - planned
@@ -252,7 +252,7 @@ governance_term_routing:
       distribution: source-only
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
-        - contract: .dev/releases/<version>/release-phase-checks.yaml
+        - contract: releases/<version>/release-phase-checks.yaml
           field: phases
           literals:
             - candidate
@@ -271,7 +271,7 @@ governance_term_routing:
       distribution: source-only
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
-        - contract: .dev/releases/<version>/release-phase-checks.yaml
+        - contract: releases/<version>/release-phase-checks.yaml
           field: phases
           literals:
             - tag
@@ -290,7 +290,7 @@ governance_term_routing:
       distribution: source-only
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
-        - contract: .dev/releases/<version>/release-phase-checks.yaml
+        - contract: releases/<version>/release-phase-checks.yaml
           field: phases
           literals:
             - publication
@@ -309,7 +309,7 @@ governance_term_routing:
       distribution: source-only
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
-        - contract: .dev/releases/<version>/release-phase-checks.yaml
+        - contract: releases/<version>/release-phase-checks.yaml
           field: phases
           literals:
             - finalization

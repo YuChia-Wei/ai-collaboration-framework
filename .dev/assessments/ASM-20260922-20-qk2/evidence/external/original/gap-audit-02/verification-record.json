@@ -53,9 +53,9 @@
     ],
     "unchanged_conclusion_surfaces": [
       ".ai/scripts/execution-artifacts.py",
-      ".ai/scripts/execution_artifact_contract.py",
+      "tools/maintenance/execution_artifact_contract.py",
       ".ai/scripts/artifact_authoring.py",
-      ".ai/scripts/validation_subject.py",
+      "tools/maintenance/validation_subject.py",
       ".ai/assets/shared/artifact-lifecycle-registry.json",
       ".ai/scripts/validation-profile-registry.sh",
       "all review-input authority paths"

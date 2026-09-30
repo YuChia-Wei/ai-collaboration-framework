@@ -16,7 +16,7 @@
     "files": [
       ".dev/assessments/**",
       ".dev/backlog/**",
-      ".dev/releases/v0.4.1/**",
+      "releases/v0.4.1/**",
       ".dev/workflows/2026-07-18-v0-4-1-downstream-upgrade-remediation/**",
       ".dev/workflows/INDEX.MD"
     ],
@@ -53,14 +53,14 @@
     "files_changed": [
       ".dev/assessments/ASM-20260718-001/**",
       ".dev/backlog/**",
-      ".dev/releases/v0.4.1/**",
+      "releases/v0.4.1/**",
       ".dev/workflows/2026-07-18-v0-4-1-downstream-upgrade-remediation/**"
     ],
     "tests_run": [
       ".ai/scripts/check-all.sh --full (21/21 passed)",
       "two immutable candidate builds (byte-identical ZIP, tar.gz, and sidecars)",
       "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/validate-ai-context-versions.py"
     ],

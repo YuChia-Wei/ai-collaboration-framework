@@ -351,7 +351,7 @@ and make unavailable provider metrics explicit `null` rather than estimated.
 | Registry and wrapper parity | not-applicable | audited but did not modify canonical skills, wrappers, registries, or distribution profiles |
 | Path and reference checks | pass | all report and locator references resolve in the assessment subject |
 | Schema / structured file parse | pass | locator YAML and `incident-record.json` parsed successfully |
-| Assessment structural validator | pass | `.ai/scripts/validate-assessment-artifacts.py` |
+| Assessment structural validator | pass | `tools/maintenance/validate-assessment-artifacts.py` |
 | Repository context checks | pass | focused line/byte inventory and release/backlog evidence read-back completed |
 | Remote lifecycle read-back | pass | PRs #81-#83 are merged; Issue #57 / REL-004 is open with zero pre-link comments |
 
@@ -409,7 +409,7 @@ Get-Content <bounded assessment, workflow, release, backlog, and skill files>
 rg -n <timestamp-and-validation-patterns> <bounded release paths>
 PowerShell line/whitespace-chunk/UTF-8-byte inventory over 14 named context files
 GitHub connector read-back for PR #81, PR #82, PR #83, Issue #57, and Issue #57 comments
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python -m json.tool .dev/assessments/ASM-20260803-003/evidence/incident-record.json
 python -c <parse assessment locator with PyYAML>
 git diff --check

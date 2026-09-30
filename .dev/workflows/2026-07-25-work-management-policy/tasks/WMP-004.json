@@ -42,9 +42,9 @@
     ],
     "validation": [
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "git diff --check",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-25-work-management-policy"
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-25-work-management-policy"
     ],
     "last_completed_step": "Finalized ASM-20260726-001, reconciled every baseline finding, completed all configured local validation, and created the local closure checkpoint.",
     "next_action": "No local workflow action remains; request PR transport separately if desired."
@@ -59,9 +59,9 @@
     ],
     "tests_run": [
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "git diff --check",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-25-work-management-policy"
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-25-work-management-policy"
     ],
     "finding_status": "addressed",
     "residual_risk": "Hosted GitHub branch-protection and live tracker configuration were intentionally deferred as separately authorized external administration work.",

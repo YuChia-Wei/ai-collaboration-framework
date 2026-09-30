@@ -30,7 +30,7 @@
       ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md",
       ".ai/scripts/tests/test_assessment_artifacts.py",
       ".ai/scripts/tests/test_git_commit_policy.py",
-      ".ai/scripts/validate-assessment-artifacts.py",
+      "tools/maintenance/validate-assessment-artifacts.py",
       ".claude/skills/code-reviewer/SKILL.md",
       ".dev/assessments/templates/assessment-locator-template.yaml",
       ".dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md",
@@ -77,7 +77,7 @@
         "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/posix-1.log"
       },
       {
-        "command": "py -3 -B .ai/scripts/validate-assessment-artifacts.py",
+        "command": "py -3 -B tools/maintenance/validate-assessment-artifacts.py",
         "outcome": "passed",
         "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-0.log"
       },
@@ -135,7 +135,7 @@
       ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md",
       ".ai/scripts/tests/test_assessment_artifacts.py",
       ".ai/scripts/tests/test_git_commit_policy.py",
-      ".ai/scripts/validate-assessment-artifacts.py",
+      "tools/maintenance/validate-assessment-artifacts.py",
       ".claude/skills/code-reviewer/SKILL.md",
       ".dev/assessments/templates/assessment-locator-template.yaml",
       ".dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md",
@@ -166,7 +166,7 @@
         "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/posix-1.log"
       },
       {
-        "command": "py -3 -B .ai/scripts/validate-assessment-artifacts.py",
+        "command": "py -3 -B tools/maintenance/validate-assessment-artifacts.py",
         "outcome": "passed",
         "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-0.log"
       },

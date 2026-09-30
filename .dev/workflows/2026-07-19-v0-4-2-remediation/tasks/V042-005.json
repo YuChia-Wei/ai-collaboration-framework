@@ -15,7 +15,7 @@
     "target": "Existing-contract interpreter, dependency, Python-floor, and repository-root portability defects",
     "files": [
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/check-test-compliance.sh",
+      "src/tools/dotnet/check-test-compliance.sh",
       ".ai/scripts/shell-assets.yaml",
       ".ai/scripts/README.md",
       ".ai/scripts/tests/**",
@@ -54,7 +54,7 @@
     "summary": "Patch-safe portability corrections preserve the required command inventory and fail-closed behavior; Windows Git Bash and GitHub Codespaces Ubuntu 24.04 both pass the required quick gate.",
     "files_changed": [
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/check-test-compliance.sh",
+      "src/tools/dotnet/check-test-compliance.sh",
       ".ai/scripts/README.md",
       ".ai/scripts/tests/test_fail_closed_validation.py",
       ".ai/scripts/tests/test_ai_context_package_apply.py",

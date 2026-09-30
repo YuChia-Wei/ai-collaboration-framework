@@ -103,17 +103,17 @@ Colocation contract 已經強制兩個 canonical skill-owned production script�
 | `.ai/scripts/plan-ai-context-package-apply.py` | portable | 維持 repo-common | Package apply 同時供 initialization 與 upgrade lifecycle 使用，跨越單一 skill ownership。 |
 | `.ai/scripts/validate-ai-context-target.py` | portable | 維持 repo-common | Target provenance/customization validation 由 init、upgrade、governance 與 audit lifecycle 共用。 |
 | `.ai/scripts/validate-ai-context.py` | portable | 維持 repo-common | Repository-wide navigation、wrapper、language、registry 與 routing 契約跨越多個 skill。 |
-| `.ai/scripts/validate-assessment-artifacts.py` | portable | 維持 repo-common | Assessment 產出與 remediation／verification coordination 分屬不同 owner。 |
+| `tools/maintenance/validate-assessment-artifacts.py` | portable | 維持 repo-common | Assessment 產出與 remediation／verification coordination 分屬不同 owner。 |
 | `.ai/scripts/validate-dependency-versions.py` | portable | 維持 repo-common | 同時執行 repository、CI、package、Python 與 .NET dependency 契約。 |
-| `.ai/scripts/validate-file-disposition-manifest.py` | portable | 維持 repo-common | Disposition evidence 由 remediation、release 與 downstream migration 共用。 |
-| `.ai/scripts/validate-git-commits.py` | portable | 維持 repo-common | Git policy 適用於所有 workflow 與 skill。 |
+| `tools/maintenance/validate-file-disposition-manifest.py` | portable | 維持 repo-common | Disposition evidence 由 remediation、release 與 downstream migration 共用。 |
+| `tools/maintenance/validate-git-commits.py` | portable | 維持 repo-common | Git policy 適用於所有 workflow 與 skill。 |
 | `.ai/scripts/validate-shell-assets.py` | portable | 維持 repo-common | 驗證 repository-wide shell orchestration 與 compatibility assets。 |
 | `.ai/scripts/validate-software-development-orchestrator-acceptance.py` | portable | 保留 thin compatibility path | Canonical 行為仍由 skill 擁有；這個已發布的根目錄路徑只負責委派。 |
 | `.ai/scripts/validate-workflow-artifacts.py` | portable | 維持 repo-common | Workflow metadata 與 task 契約由多個 workflow-owning skill 共用。 |
-| `.ai/scripts/validate-workflow-handoff.py` | portable | 維持 repo-common | Cross-runtime、cross-model 及 cross-skill handoff 屬於 repository-wide 行為。 |
+| `tools/maintenance/validate-workflow-handoff.py` | portable | 維持 repo-common | Cross-runtime、cross-model 及 cross-skill handoff 屬於 repository-wide 行為。 |
 | `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py` | source-only | 維持 skill-owned | Comparison 是單一 owner 的 upgrader capability，而且已有固定路徑 contract test。 |
 | `.ai/scripts/build-ai-context-package.py` | source-only | 維持 repo-common | Source release/package production 跨越 skill 與 distribution ownership。 |
-| `.ai/scripts/measure-ai-context-load.py` | source-only | 維持 repo-common | 測量 source-wide runtime、routing、release、handoff 及 development traces。 |
+| `tools/maintenance/measure-ai-context-load.py` | source-only | 維持 repo-common | 測量 source-wide runtime、routing、release、handoff 及 development traces。 |
 | `.ai/scripts/plan-github-backlog-migration.py` | source-only | 維持 repo-common | Provider migration 跨越 workflow 與 backlog ownership，而非單一 skill。 |
 | `.ai/scripts/prepare-ai-context-release.py` | source-only | 維持 repo-common | 協調 release state、gates、Git state 與 owner handoff。 |
 | `.ai/scripts/render-ai-context-release-notes.py` | source-only | 維持 repo-common | Release rendering 會使用 repository-wide release/package truth。 |

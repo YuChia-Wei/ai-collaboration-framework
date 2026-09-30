@@ -63,7 +63,7 @@ user_view:
     forbidden_source_lifecycle_patterns:
     - .dev/workflows/20*/**
     - .dev/assessments/ASM-*/**
-    - .dev/releases/v*/**
+    - releases/v*/**
     - .dev/backlog/items/**
     target_owned_reference_patterns:
     - .dev/AI-CONTEXT-SOURCE.yaml
@@ -107,10 +107,10 @@ user_view:
     owner_component: dotnet-backend
     path_patterns:
     - .ai/assets/skills/code-reviewer/**
-    - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
+    - .dev/agents/*code-review-sub-agent/**
     - .agents/skills/code-reviewer/**
     - .claude/skills/code-reviewer/**
-    - .ai/scripts/code-review.sh
+    - src/tools/dotnet/code-review.sh
     availability:
       core-only: unavailable-not-selected
       dotnet-selected: available

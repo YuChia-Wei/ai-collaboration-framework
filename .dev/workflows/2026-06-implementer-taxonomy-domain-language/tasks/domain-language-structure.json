@@ -7,10 +7,10 @@
   "scope": {
     "target": "Create target-repository-safe domain ubiquitous language structure and migration boundaries.",
     "files": [
-      ".dev/domain-language/README.MD",
-      ".dev/domain-language/templates/bounded-context-language-template.md",
-      ".dev/domain-language/templates/domain-event-language-template.md",
-      ".dev/domain-language/templates/aggregate-vocabulary-template.md",
+      "src/knowledge/dotnet-backend/domain-language/README.MD",
+      "src/knowledge/dotnet-backend/domain-language/templates/bounded-context-language-template.md",
+      "src/knowledge/dotnet-backend/domain-language/templates/domain-event-language-template.md",
+      "src/knowledge/dotnet-backend/domain-language/templates/aggregate-vocabulary-template.md",
       ".ai/assets/skills/repo-structure-sync/references/migration-boundaries.md",
       ".dev/README.MD",
       ".dev/INDEX.md"
@@ -56,10 +56,10 @@
   "results": {
     "summary": "Created template-only .dev/domain-language structure and updated repo init migration boundaries so filled domain vocabulary is treated as target-repository truth.",
     "files_changed": [
-      ".dev/domain-language/README.MD",
-      ".dev/domain-language/templates/bounded-context-language-template.md",
-      ".dev/domain-language/templates/aggregate-vocabulary-template.md",
-      ".dev/domain-language/templates/domain-event-language-template.md",
+      "src/knowledge/dotnet-backend/domain-language/README.MD",
+      "src/knowledge/dotnet-backend/domain-language/templates/bounded-context-language-template.md",
+      "src/knowledge/dotnet-backend/domain-language/templates/aggregate-vocabulary-template.md",
+      "src/knowledge/dotnet-backend/domain-language/templates/domain-event-language-template.md",
       ".ai/assets/skills/repo-structure-sync/references/migration-boundaries.md",
       ".dev/README.MD",
       ".dev/INDEX.md",

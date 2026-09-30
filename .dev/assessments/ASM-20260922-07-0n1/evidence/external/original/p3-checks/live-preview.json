@@ -9,7 +9,7 @@
     "changes": {"title": "Semantic Governance Analyst Preview"}
   },
   "exit_code": 0,
-  "changed_paths_in_preview": [".ai/assets/sub-agent-role-prompts/semantic-governance-analyst/sub-agent.yaml"],
+  "changed_paths_in_preview": [".dev/agents/semantic-governance-analyst/sub-agent.yaml"],
   "preview_digest": "a531c4e0cab2815ab19237c7cc5132feac89062a79c21af1bfd7395d016abc8a",
   "applied": false,
   "observation_source": "Native exec result chunk 2b6696; actual repository context, read-only plan API."

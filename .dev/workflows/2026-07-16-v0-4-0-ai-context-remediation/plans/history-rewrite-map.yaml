@@ -71,7 +71,7 @@ verification:
     command: "git push --force-with-lease=refs/heads/codex/2026-07-16-v0-4-0-ai-context-remediation:abc1750c8f6c9f77ee75f1abb14b5a8cf8eceea2 origin codex/rewrite-candidate/2026-07-16-v0-4-0-ai-context-remediation:codex/2026-07-16-v0-4-0-ai-context-remediation"
     result: "succeeded; remote target moved from abc1750c8f6c9f77ee75f1abb14b5a8cf8eceea2 to adfbc6979c813ce19271660dd2c1210165180fd9"
   commit_range:
-    command: "python .ai/scripts/validate-git-commits.py --range ed5f8fb9e7cefe849dcd129571d21a92f31c830d..b4217fbe2245fc0848c8f0d7cbe9768003d420bc --workflow-id 2026-07-16-v0-4-0-ai-context-remediation"
+    command: "python tools/maintenance/validate-git-commits.py --range ed5f8fb9e7cefe849dcd129571d21a92f31c830d..b4217fbe2245fc0848c8f0d7cbe9768003d420bc --workflow-id 2026-07-16-v0-4-0-ai-context-remediation"
     result: "passed for 28 first-parent commits"
   full_gate:
     command: "C:/Program Files/Git/bin/bash.exe ./.ai/scripts/check-all.sh --full"

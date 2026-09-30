@@ -40,7 +40,7 @@ based on `59877b8d2f61e9a95615ea95d597fe35da2f44cf` on
 | Complete planned message validator, command below | Passed. Ignored message SHA-256: `2c96267af47924a280894d35001ad1d140d51eec514ac02ff7e1146df1c03663`. |
 
 ```text
-python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-optional-context-implementation/artifacts/357-commit.txt --workflow-id 2026-09-23-optional-context-implementation
+python -B tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-optional-context-implementation/artifacts/357-commit.txt --workflow-id 2026-09-23-optional-context-implementation
 ```
 
 The message is inside this workflow's ignored `artifacts/` directory, confirmed

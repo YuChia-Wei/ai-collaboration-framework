@@ -11,7 +11,7 @@ acceptances:
     status: "passed"
     required_outcome: "Policy fingerprint authenticates every declared input or disables reuse with an unavailable result."
     evidence:
-      - ".ai/scripts/validation-evidence.py fingerprint-files authenticates a canonical complete file set and fails without stdout for a missing input."
+      - "tools/maintenance/validation-evidence.py fingerprint-files authenticates a canonical complete file set and fails without stdout for a missing input."
       - ".ai/scripts/check-all.sh initializes the policy identity to unavailable and accepts only a successful 64-hex helper result."
       - "ValidationEvidenceCoreGwtTests: 10 passed, including GWT-005c and GWT-005f."
   - acceptance_id: "VAL010-A2"

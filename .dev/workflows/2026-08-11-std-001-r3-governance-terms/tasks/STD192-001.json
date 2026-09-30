@@ -20,7 +20,7 @@
     "files": [
       ".dev/standards/**",
       ".dev/guides/**",
-      ".dev/releases/**",
+      "releases/**",
       ".ai/assets/shared/**",
       ".ai/assets/skills/**",
       ".ai/distribution/**",
@@ -79,7 +79,7 @@
       "python .ai/scripts/validate-ai-context.py: passed with 15 qualified terms",
       "C:\\Program Files\\Git\\bin\\bash.exe .ai/scripts/check-all.sh --profile fast: passed 32/32 required checks with one duration advisory",
       "python .ai/scripts/tests/test_ai_context_package_smoke.py -v: passed 1/1 outside the filesystem sandbox",
-      "python .ai/scripts/validate-assessment-artifacts.py: passed for 50 assessments",
+      "python tools/maintenance/validate-assessment-artifacts.py: passed for 50 assessments",
       "python .ai/scripts/tests/test_assessment_artifacts.py -v: passed 9/9 outside the filesystem sandbox",
       "python .ai/scripts/validate-workflow-artifacts.py: passed"
     ],

@@ -33,7 +33,7 @@
       "tools/DotnetBackendAnalyzers/README.md",
       "tools/DotnetBackendAnalyzers.Tests/ProjectionReadOnlyAnalyzerTests.cs",
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/code-review.sh",
+      "src/tools/dotnet/code-review.sh",
       ".ai/scripts/README.md",
       ".ai/scripts/check-projection-compliance.sh",
       ".ai/scripts/check-projection-config.sh",

@@ -58,7 +58,7 @@
       "python .ai/scripts/validate-source-governance.py (passed)",
       "python .ai/scripts/validate-ai-context.py (passed)",
       "pre/post package projection comparison (passed: identical 655 files)",
-      "python .ai/scripts/validate-assessment-artifacts.py (passed: 45 assessments)",
+      "python tools/maintenance/validate-assessment-artifacts.py (passed: 45 assessments)",
       "hosted runs 31400920340, 31400920061, and 31400921081 (passed: five checks at 87aa4e4b280ce5889aa28d1798f79c4628828bed)",
       "merge commit 15b3e52bbb899afeff47844f99ebae351f6c2b44 (passed: parents 8a59080ad80c424e82099bdda7ac6bc6f951db9e and 87aa4e4b280ce5889aa28d1798f79c4628828bed)",
       "Issue #166 CLOSED / COMPLETED and Project Done; Issue #172 remained CLOSED / COMPLETED and Project Done"

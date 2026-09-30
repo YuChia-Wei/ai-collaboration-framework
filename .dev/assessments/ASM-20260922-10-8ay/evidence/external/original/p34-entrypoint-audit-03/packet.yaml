@@ -4,7 +4,7 @@ packet_id: LIFE-319-ENTRYPOINT-AUDIT-03
 execution_kind: fixed-head-audit
 owning_skill: ai-context-auditor
 role:
-  path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+  path: .dev/agents/fixed-head-independent-auditor/sub-agent.yaml
   applicability: applies
   reason: Third bounded review after the F-002 continuation repair, with fresh workflow
     authorization; no behavior rerun.
@@ -23,7 +23,7 @@ permissions:
 ignored_artifact_roots:
 - .dev/ai-context/local/p34-entrypoint-audit-03
 terminal:
-  schema_ref: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+  schema_ref: .dev/contracts/agent-execution-guardrails.schema.yaml
   mode: callback
   destination: root
   max_terminal_messages: 1

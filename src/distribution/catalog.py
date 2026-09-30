@@ -23,10 +23,9 @@ SUBSET_METADATA=(*PARENT_METADATA,'metadata/selection.json','metadata/files.json
 TEMPLATES=('src/adapters/claude/skill-entry-v2.md.template','src/adapters/codex/skill-entry-v2.md.template',
            'src/adapters/codex/skill-entry.md.template')
 MODULES=('__init__','assembly','catalog','claude','codex','content','contracts','data','git_source',
-         'installation','installation_io','installation_plan','installation_state','maintenance_coordination','package','selection')
-ENGINE_FILES=tuple(sorted([f'src/distribution/{name}.py' for name in MODULES]+['src/tools/maintain_framework.py','tools/build-catalog.py','tools/derive-subset.py']+list(TEMPLATES)))
-GENERATOR_FILES=tuple(sorted([f'src/distribution/{name}.py' for name in MODULES]+['src/tools/maintain_framework.py',
-                         'tools/build-catalog.py','tools/derive-subset.py']+list(TEMPLATES)))
+         'installation','installation_io','installation_plan','installation_state','maintenance_coordination','package','reinstallation','selection')
+ENGINE_FILES=state.ENGINE_FILES
+GENERATOR_FILES=ENGINE_FILES
 
 
 def digest(raw): return sha256(raw).hexdigest()

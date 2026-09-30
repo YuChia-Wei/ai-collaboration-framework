@@ -55,7 +55,7 @@ The IDs below are Issue acceptance criteria, not invented assessment findings.
 | Local Markdown link-target reads | Passed on links then present | Existing local documentation links resolve; P1-A future source paths are descriptions, not installed paths |
 | Actual file-content inspection | Completed design, inventory, examples and zh-TW read-back | Self-review, not independent audit |
 | `git diff --cached --check` | Passed on initial nine-file staged payload | Whitespace only; final staged payload is checked again before commit |
-| `python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-source-layout/artifacts/commit-message.txt --workflow-id 2026-09-23-source-layout` | Passed for exact planned message | Explicit U001 format-check exception; no other legacy validator invoked |
+| `python tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-source-layout/artifacts/commit-message.txt --workflow-id 2026-09-23-source-layout` | Passed for exact planned message | Explicit U001 format-check exception; no other legacy validator invoked |
 
 Preparation history: the first sandboxed GitHub read failed against a local proxy; scoped network execution succeeded. A combined long authoring command exceeded the Windows process command-line limit and did not start; bounded per-file commands succeeded. A wildcard path read was corrected to an explicit file. None was a product validation attempt or a passed runtime check.
 
@@ -90,6 +90,6 @@ The coordinator adopted tracked stable core/lock/exact runtime outputs and `.age
 - P1-A metadata/configuration read-only files matched exact commit `c3891615f97625e7c59cd871abea3c2b27b5021f`.
 - Direct member inventory comparison found exactly six distinct manifest entries equal to entrypoint, metadata and P1-A declared references/schema/template. This is document consistency, not a package build.
 - Twelve UTF-8 files were readable; two JSON and four YAML files parsed; 23 local Markdown targets resolved. Actual correction diff was inspected and `git diff --check` passed.
-- `python .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-source-layout/artifacts/cross-review-commit-message.txt --workflow-id 2026-09-23-source-layout` passed for the complete correction message.
+- `python tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-source-layout/artifacts/cross-review-commit-message.txt --workflow-id 2026-09-23-source-layout` passed for the complete correction message.
 - CR326-001 and SL326-002 are complete for local design correction. No unresolved source-layout contract discrepancy remains from the coordinator's two findings. Original commit `42601292` is preserved; final additive HEAD is read back after commit and returned to the coordinator.
 - No tool/behavior tests, legacy gates, build/install/migration/recovery trials or CI ran; their disposition remains `deferred-by-owner` under U001 to P7.

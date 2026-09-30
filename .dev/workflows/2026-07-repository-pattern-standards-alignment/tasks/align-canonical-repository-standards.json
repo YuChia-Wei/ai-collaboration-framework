@@ -8,7 +8,7 @@
     "target": "Create one canonical repository pattern execution contract",
     "files": [
       ".dev/ARCHITECTURE.MD",
-      ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       ".dev/standards/coding-standards.md",
       ".dev/standards/coding-standards/repository-standards.md",
       ".dev/standards/coding-standards/projection-standards.md",
@@ -72,7 +72,7 @@
     "summary": "Aligned canonical architecture and coding standards around a two-method Aggregate Repository, IDomainRepository compatibility, read-only IQueryRepository ports, restricted purge capability, explicit strong-consistency Unit of Work, target-specific batch extensions, and technology-neutral adapter selection.",
     "files_changed": [
       ".dev/ARCHITECTURE.MD",
-      ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       ".dev/standards/README.md",
       ".dev/standards/coding-standards.md",
       ".dev/standards/coding-standards/README.md",

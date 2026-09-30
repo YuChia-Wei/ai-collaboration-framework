@@ -91,7 +91,7 @@ entries:
     drift_or_coupling: "transition manifest mixes portable alias state with source-only activation/evaluation evidence"
     recommended_disposition: "retain; hand alias identity to #166 and transition evidence boundary to governance"
   - id: "AIA-INV-005"
-    path: ".ai/assets/sub-agent-role-prompts/**"
+    path: ".dev/agents/**"
     tracked: { files: 45, bytes: 62883 }
     packaged_source: { files: 45, bytes: 62883 }
     owner: "18 canonical role manifests"

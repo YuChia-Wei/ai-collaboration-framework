@@ -467,7 +467,7 @@ No sub-agent work is planned. Specialist skills are applied sequentially in the 
 - Goal: rewrite the normative repository, query, transaction, deletion, and persistence rules.
 - Primary targets:
   - `.dev/ARCHITECTURE.MD`
-  - `.dev/requirement/TECH-STACK-REQUIREMENTS.MD`
+  - `src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD`
   - `.dev/standards/coding-standards.md`
   - `.dev/standards/coding-standards/repository-standards.md`
   - `.dev/standards/coding-standards/projection-standards.md`

@@ -1,0 +1,22 @@
+task_id: T1
+workflow_id: 2026-09-30-rc3-reinstall
+owner_skill: ai-context-governance
+status: completed
+created_at: '2026-09-30T09:30:28+08:00'
+updated_at: '2026-09-30T10:19:09+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-u001
+model: gpt-6.1-sol
+reasoning_effort: ultra
+stage: S1
+result_summary: Retired portable orchestrator; renamed three author packages while
+  keeping record families.
+finding_status: addressed
+evidence: ../results.md
+adaptation: Policy-direct projection of the original workflow task table; retired
+  portable template/validator not restored.
+verification_deferral:
+  status: deferred-by-owner
+  authority: U001
+  owner: program 322 coordinator / P7
+  next_action: Owner selects broader legacy, behavioral and hosted restoration gates.

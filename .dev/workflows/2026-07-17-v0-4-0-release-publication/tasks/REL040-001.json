@@ -13,7 +13,7 @@
   "finding_ids": ["REL040-POST-MERGE-READINESS"],
   "scope": {
     "target": "Validated v0.4.0 tagged-tree candidate",
-    "files": [".dev/releases/v0.4.0/**", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files": ["releases/v0.4.0/**", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
     "constraints": ["Keep tag and commit null before publication", "Use immutable Git-tree package evidence", "Do not publish before final main validation"],
     "non_goals": ["Change packaged payload contracts", "Move existing tags", "Implement deferred backlog"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "The merged v0.4.0 candidate passed the full repository gate and two byte-identical package builds with validated ZIP/tar parity and checksums.",
-    "files_changed": [".dev/releases/v0.4.0/release.yaml", ".dev/releases/v0.4.0/release-notes.md", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files_changed": ["releases/v0.4.0/release.yaml", "releases/v0.4.0/release-notes.md", ".dev/workflows/2026-07-17-v0-4-0-release-publication/**", ".dev/workflows/INDEX.MD"],
     "tests_run": ["check-all.sh --full", "two deterministic package builds", "validate-ai-context-package.py for both archive pairs"],
     "finding_status": "resolved",
     "residual_risk": "Hosted tag-triggered publication and trusted-registry finalization remain pending.",

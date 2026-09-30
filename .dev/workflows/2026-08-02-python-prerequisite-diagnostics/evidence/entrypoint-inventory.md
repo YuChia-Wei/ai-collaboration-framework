@@ -16,7 +16,7 @@
 - Classified direct execution by a repository-native `git ls-files` inventory plus a direct check for each file's `__main__` path.
 - Classified portability from `.ai/distribution/profiles/dotnet-backend.yaml`, including its source-only exclusions.
 - Classified current prerequisites from direct import lines and direct local-module import chains.
-- Checked active command and explanation surfaces in root entry documents, `.ai/scripts/README.md`, `.ai/distribution/templates/INSTALL.md`, skill specs/references, `.dev/standards/**`, `.dev/guides/**`, `.dev/releases/**`, `.github/workflows/**`, `.ai/scripts/check-all.sh`, and `.ai/scripts/shell-assets.yaml`.
+- Checked active command and explanation surfaces in root entry documents, `.ai/scripts/README.md`, `.ai/distribution/templates/INSTALL.md`, skill specs/references, `.dev/standards/**`, `.dev/guides/**`, `releases/**`, `.github/workflows/**`, `.ai/scripts/check-all.sh`, and `.ai/scripts/shell-assets.yaml`.
 - Excluded historical workflow and assessment references from support classification, except for the selected baseline finding.
 - Excluded product `src/**` and `tests/**` trees; this repository has no relevant product implementation in scope.
 
@@ -71,14 +71,14 @@ Get-Content -Raw .ai/scripts/README.md
 2. `.ai/scripts/plan-ai-context-package-apply.py`
 3. `.ai/scripts/validate-ai-context-target.py`
 4. `.ai/scripts/validate-ai-context.py`
-5. `.ai/scripts/validate-assessment-artifacts.py`
+5. `tools/maintenance/validate-assessment-artifacts.py`
 6. `.ai/scripts/validate-dependency-versions.py`
-7. `.ai/scripts/validate-file-disposition-manifest.py`
-8. `.ai/scripts/validate-git-commits.py`
+7. `tools/maintenance/validate-file-disposition-manifest.py`
+8. `tools/maintenance/validate-git-commits.py`
 9. `.ai/scripts/validate-shell-assets.py`
 10. `.ai/scripts/validate-software-development-orchestrator-acceptance.py`
 11. `.ai/scripts/validate-workflow-artifacts.py`
-12. `.ai/scripts/validate-workflow-handoff.py`
+12. `tools/maintenance/validate-workflow-handoff.py`
 
 The compatibility entrypoint delegates to the skill-owned acceptance validator and therefore inherits its PyYAML import failure unless the prerequisite check runs before delegation.
 
@@ -86,7 +86,7 @@ The compatibility entrypoint delegates to the skill-owned acceptance validator a
 
 1. `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py`
 2. `.ai/scripts/build-ai-context-package.py`
-3. `.ai/scripts/measure-ai-context-load.py`
+3. `tools/maintenance/measure-ai-context-load.py`
 4. `.ai/scripts/plan-github-backlog-migration.py`
 5. `.ai/scripts/prepare-ai-context-release.py`
 6. `.ai/scripts/render-ai-context-release-notes.py`

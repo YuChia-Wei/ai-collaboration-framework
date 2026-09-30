@@ -205,7 +205,7 @@
         "evidence": "1 test passed in 61.524 seconds outside the sandbox using the same extracted planner and explicit remediation-decision contract."
       },
       {
-        "command": "py -3 -B .ai/scripts/validate-git-commits.py --range a57e484ba6456358971f86bcf3198acf04e6ac1e..71c4ec35d2e79eff192648d4a34534f6f95de12f --workflow-id 2026-08-20-upg-003-multi-hop-upgrade",
+        "command": "py -3 -B tools/maintenance/validate-git-commits.py --range a57e484ba6456358971f86bcf3198acf04e6ac1e..71c4ec35d2e79eff192648d4a34534f6f95de12f --workflow-id 2026-08-20-upg-003-multi-hop-upgrade",
         "outcome": "failed",
         "evidence": "The checkpoint used an inferred nonexistent full SHA after only a short Git identity had been read; git rev-list exited 128 before commit-policy evaluation. The actual Git read-back is 71c4ec35ff180a70934333cdd296eb4b016050f8, and the incorrect identity was not promoted."
       },

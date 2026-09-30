@@ -20,7 +20,7 @@
       ".ai/scripts/tests/test_ai_context_package_apply.py",
       ".ai/distribution/**",
       ".github/workflows/**",
-      ".dev/releases/v0.4.1/**"
+      "releases/v0.4.1/**"
     ],
     "constraints": [
       "Preserve clean-install support",

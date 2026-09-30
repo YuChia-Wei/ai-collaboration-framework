@@ -28,7 +28,7 @@
   "results": {
     "summary": "ASM-20260814-001 verified the CLI-only contract, ignored/untracked personal boundary, consent and fail-closed rules, downstream package lifecycle integration, and Windows plus Ubuntu-24.04 execution evidence.",
     "files_changed": [".dev/assessments/ASM-20260814-001/assessment.yaml", ".dev/assessments/ASM-20260814-001/report.md", ".dev/assessments/INDEX.MD"],
-    "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q (9/9 Windows)", "wsl.exe -d Ubuntu-24.04 -- bash -lc <focused CLI routing test> (9/9)", "py -3 .ai/scripts/validate-ai-context.py (passed; 4 local CLI routes)", "py -3 .ai/scripts/tests/test_ai_context_packaging.py <focused component projection> -q (1/1)", "py -3 .ai/scripts/validate-assessment-artifacts.py (54 assessments)"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q (9/9 Windows)", "wsl.exe -d Ubuntu-24.04 -- bash -lc <focused CLI routing test> (9/9)", "py -3 .ai/scripts/validate-ai-context.py (passed; 4 local CLI routes)", "py -3 .ai/scripts/tests/test_ai_context_packaging.py <focused component projection> -q (1/1)", "py -3 tools/maintenance/validate-assessment-artifacts.py (54 assessments)"],
     "finding_status": "verified",
     "residual_risk": "Hosted pull-request checks, stable-head verification, remote merge, downstream adoption, and release/publication are separate gates.",
     "follow_up_needed": false

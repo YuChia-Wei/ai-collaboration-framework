@@ -17,8 +17,8 @@ authority_model:
       - "is never an execution-pass receipt"
   local_cli_execution_routing:
     path: ".dev/ai-context/local/cli-execution-routing.yaml"
-    contract: ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md"
-    schema: ".ai/assets/shared/cli-execution-routing.schema.yaml"
+    contract: ".dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md"
+    schema: ".dev/contracts/cli-execution-routing.schema.yaml"
     requirements:
       - "is ignored and untracked before it is created or updated"
       - "is created or updated only after explicit user consent"

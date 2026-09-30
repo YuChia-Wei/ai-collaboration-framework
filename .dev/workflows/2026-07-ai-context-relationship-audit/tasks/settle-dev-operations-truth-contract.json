@@ -9,10 +9,10 @@
     "target": ".dev/operations canonical truth relationship",
     "files": [
       ".dev/operations/README.MD",
-      ".dev/operations/CONTEXT-MAP-GUIDE.MD",
-      ".dev/operations/EVENT-CATALOG-GUIDE.MD",
-      ".dev/operations/MQ-TOPOLOGY-GUIDE.MD",
-      ".dev/operations/RUNBOOK-GUIDE.MD"
+      "src/knowledge/dotnet-backend/operations/CONTEXT-MAP-GUIDE.MD",
+      "src/knowledge/dotnet-backend/operations/EVENT-CATALOG-GUIDE.MD",
+      "src/knowledge/dotnet-backend/operations/MQ-TOPOLOGY-GUIDE.MD",
+      "src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD"
     ],
     "dependency_radius": ".dev/operations only, plus .dev entry docs if links change.",
     "constraints": [
@@ -48,10 +48,10 @@
     "summary": "Reworded operations docs as authoring/template guidance instead of claims that runtime truth files already exist.",
     "files_changed": [
       ".dev/operations/README.MD",
-      ".dev/operations/CONTEXT-MAP-GUIDE.MD",
-      ".dev/operations/EVENT-CATALOG-GUIDE.MD",
-      ".dev/operations/MQ-TOPOLOGY-GUIDE.MD",
-      ".dev/operations/RUNBOOK-GUIDE.MD"
+      "src/knowledge/dotnet-backend/operations/CONTEXT-MAP-GUIDE.MD",
+      "src/knowledge/dotnet-backend/operations/EVENT-CATALOG-GUIDE.MD",
+      "src/knowledge/dotnet-backend/operations/MQ-TOPOLOGY-GUIDE.MD",
+      "src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD"
     ],
     "tests_run": [
       "git diff --check",

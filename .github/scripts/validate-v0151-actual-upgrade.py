@@ -28,7 +28,7 @@ PREVIOUS_VERSION = "0.15.0"
 CANDIDATE_PACKAGE_ID = "ai-collaboration-framework-v0.15.1"
 PREVIOUS_PACKAGE_ID = "ai-collaboration-framework-v0.15.0"
 AUDITOR_ROLE_PATH = (
-    ".ai/assets/sub-agent-role-prompts/"
+    ".dev/agents/"
     "fixed-head-independent-auditor/sub-agent.yaml"
 )
 

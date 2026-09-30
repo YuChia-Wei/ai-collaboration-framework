@@ -48,7 +48,7 @@
       "Update workflow triage and hand off selected findings to GOV007-002 and GOV007-003."
     ],
     "validation": [
-      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python tools/maintenance/validate-assessment-artifacts.py",
       "python .ai/scripts/validate-workflow-artifacts.py",
       "structured YAML and JSON parsing",
       "git diff --check"
@@ -67,7 +67,7 @@
       ".dev/workflows/2026-08-09-repository-rename-reconciliation/"
     ],
     "tests_run": [
-      "python .ai/scripts/validate-assessment-artifacts.py -> passed for 38 assessments",
+      "python tools/maintenance/validate-assessment-artifacts.py -> passed for 38 assessments",
       "python .ai/scripts/validate-workflow-artifacts.py -> passed for 68 post-adoption workflows",
       "YAML parse for inventory, provider receipt, and assessment locator -> passed",
       "inventory occurrence-line sum -> 1,010 / 1,010",

@@ -41,9 +41,9 @@
 
 | Surface | Observed State | Evidence |
 | --- | --- | --- |
-| Canonical roles | 18 active `sub-agent.yaml` manifests | `.ai/assets/sub-agent-role-prompts/*/sub-agent.yaml` |
+| Canonical roles | 18 active `sub-agent.yaml` manifests | `.dev/agents/*/sub-agent.yaml` |
 | Dynamic roles | 17 roles declare `wrapper_targets: []` and have at least one active external consumer | canonical manifests, `.ai/SUB-AGENT-SYSTEM.MD`, owning skill references, and active guides |
-| Runtime-native role | `context-translator` declares `codex`, `claude`, and `copilot` targets | `.ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml` |
+| Runtime-native role | `context-translator` declares `codex`, `claude`, and `copilot` targets | `.dev/agents/context-translator/sub-agent.yaml` |
 | Runtime adapters | one adapter exists in each declared runtime root | `.codex/agents/context-translator.toml`, `.claude/agents/context-translator.md`, `.github/agents/context-translator.agent.md` |
 | Packaging | canonical roles and all three adapter roots are framework-managed package entries | `.ai/distribution/profiles/dotnet-backend.yaml` |
 | Routing | the active routing table lists 17 roles but omits `context-translator` | `.ai/SUB-AGENT-SYSTEM.MD`; the independent post-v0.4.0 plan also records `#AIC-010` |

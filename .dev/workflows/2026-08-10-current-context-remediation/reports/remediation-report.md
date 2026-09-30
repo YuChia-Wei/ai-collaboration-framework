@@ -31,8 +31,8 @@
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260809-004#DEV-001` | medium | `verified resolved` | `.dev/backlog/**`, `.dev/requirement/REQUIREMENT-GUIDE.MD` | Live GitHub read-back; provider tests; link checks; `ASM-20260810-001` | `c240b87` | Provider receipt is a point-in-time snapshot and must be refreshed before later current-state claims. |
-| `ASM-20260809-004#DEV-002` | low | `verified resolved` | `.dev/ARCHITECTURE.md`, `.dev/guides/**`, deleted stale reference | AI-context validation; 45 changed Markdown files / 144 local links / 0 broken; `ASM-20260810-001` | `c240b87`, `725162b` | Immutable historical links remain unchanged by design. |
+| `ASM-20260809-004#DEV-001` | medium | `verified resolved` | `.dev/backlog/**`, `src/skills/requirement-author/references/requirement-guide.md` | Live GitHub read-back; provider tests; link checks; `ASM-20260810-001` | `c240b87` | Provider receipt is a point-in-time snapshot and must be refreshed before later current-state claims. |
+| `ASM-20260809-004#DEV-002` | low | `verified resolved` | `src/knowledge/dotnet-backend/design/architecture-overview.md`, `.dev/guides/**`, deleted stale reference | AI-context validation; 45 changed Markdown files / 144 local links / 0 broken; `ASM-20260810-001` | `c240b87`, `725162b` | Immutable historical links remain unchanged by design. |
 | `#178 Phase A` | owner-selected P1 | `verified resolved` | `.ai/assets/**`, selected `.ai/scripts/**`, `.dev/guides/**`, distribution test/profile | 655 payload files; zero brand hits; reference integrity; retained-provenance classification; `ASM-20260810-001` | `c240b87` | Future EngineeringGuardrails package adoption remains #179 and is not claimed ready. |
 
 ## Changes And Evidence
@@ -40,14 +40,14 @@
 ### `ASM-20260809-004#DEV-001`
 
 - Changes: Separated the 55-record local backlog subset from the 104-item live Project, added a dated read-only provider receipt, advanced the local roadmap through published v0.11.0 and planned v0.12.0, and corrected absent requirement-example links.
-- Evidence: `.dev/backlog/provider-mappings/github-project-current.yaml`, `.dev/backlog/ROADMAP.md`, `.dev/backlog/INDEX.MD`, and `.dev/requirement/REQUIREMENT-GUIDE.MD`.
+- Evidence: `.dev/backlog/provider-mappings/github-project-current.yaml`, `.dev/backlog/ROADMAP.md`, `.dev/backlog/INDEX.MD`, and `src/skills/requirement-author/references/requirement-guide.md`.
 - Validation: Read-only `gh project`/`gh release` queries outside the sandbox, GitHub Issue read-back, provider GWT tests, YAML/link checks, and AI-context validation.
 - Remaining risk: Project status, priority, item counts, and release allocation are mutable online state; refresh before relying on them later.
 
 ### `ASM-20260809-004#DEV-002`
 
 - Changes: Repaired active canonical-standard links, removed the obsolete framework reference and its index route, renamed the retained BDD/GWT template, and repaired requirement example navigation.
-- Evidence: `.dev/ARCHITECTURE.md`, `.dev/guides/design-guides/INDEX.MD`, `.dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md`, and the renamed BDD/GWT template.
+- Evidence: `src/knowledge/dotnet-backend/design/architecture-overview.md`, `.dev/guides/design-guides/INDEX.MD`, `src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md`, and the renamed BDD/GWT template.
 - Validation: AI-context validation, target-existence checks for changed links, and package reference-integrity validation after the remediation commit.
 - Remaining risk: Completed workflow and finalized assessment evidence intentionally retains historical paths and wording.
 

@@ -31,7 +31,7 @@
 
 | Feedback Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `DSFB-P0-001` source snapshot versus installable distribution | P0 | resolved | `.dev/releases/v0.1.0/**`, `.dev/releases/v0.2.0/**`, version validator/tests | 14 version GWT; three release records | `c0b3407` | Historical tags remain provenance anchors, not installable packages. |
+| `DSFB-P0-001` source snapshot versus installable distribution | P0 | resolved | `releases/v0.1.0/**`, `releases/v0.2.0/**`, version validator/tests | 14 version GWT; three release records | `c0b3407` | Historical tags remain provenance anchors, not installable packages. |
 | `DSFB-P0-002` governed builder and safe application | P0 | resolved | distribution profile and package reference-integrity gate | actual ZIP/tar build, validation, and parity | `66f3173` plus prior release workflow | Windows symlink negative fixture remains skipped without host privilege. |
 | `DSFB-P0-003` validator extension and aggregate parity | P0 | resolved | shell registry/validator, aggregate gate, lifecycle tests | 17 runner/registry GWT; set parity | `ba97e7f` | Manifest and runner remain duplicated declarations; parity detects one-sided drift but not omission from both. |
 | `DSFB-P0-004` executable commit policy | P0 | resolved as explicit gate | commit policy YAML, validator, GWT, conditional gate | 8 GWT; `main..HEAD` validation | `361977e` | Enforcement requires an explicit `COMMIT_RANGE`; authorship cannot be inferred safely. |

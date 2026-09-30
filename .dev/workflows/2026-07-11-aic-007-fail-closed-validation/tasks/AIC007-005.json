@@ -27,7 +27,7 @@
   },
   "results": {
     "summary": "Retired the markdown-to-shell generator, parser, guide, generated outputs, and the root archive grep check containing the stale HardDelete rule. The root test grep helper remains explicitly advisory and can no longer be regenerated from Markdown.",
-    "files_changed": ["removed generator/parser/guide/generated outputs", "removed check-archive-compliance.sh", ".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml", ".ai/scripts/validate-shell-assets.py", ".ai/scripts/check-test-compliance.sh", ".ai/scripts/README.md", "workflow progress artifacts"],
+    "files_changed": ["removed generator/parser/guide/generated outputs", "removed check-archive-compliance.sh", ".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml", ".ai/scripts/validate-shell-assets.py", "src/tools/dotnet/check-test-compliance.sh", ".ai/scripts/README.md", "workflow progress artifacts"],
     "validation_evidence": ["active reference search finds no executable HardDelete rule", "14 retained shell assets cover all remaining tracked shell assets", "0 retirement candidates remain", "bash -n passed for retained orchestrator/test helper", "workflow, AI context, and shell asset validators passed", "check-all.sh --quick passed 6/6 with 49/49 tooling tests", "full mode intentionally not run because the remaining advisory test grep helper may inspect product code"],
     "commits": ["d15ee29"],
     "follow_up_needed": false

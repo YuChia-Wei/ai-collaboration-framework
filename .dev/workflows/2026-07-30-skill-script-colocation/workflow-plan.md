@@ -27,7 +27,7 @@
 
 - The owner approved GitHub Issue [#65](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/65), `SKILL-002` implementation, and allocation as a required `v0.8.0` release blocker on 2026-07-30.
 - This workflow may complete `SKILL-002` and update `v0.8.0` planning truth.
-- This workflow must not create a release candidate, `.dev/releases/v0.8.0/`, a tag, a GitHub Release, or a published package.
+- This workflow must not create a release candidate, `releases/v0.8.0/`, a tag, a GitHub Release, or a published package.
 - Release preparation and publication require a later, separately authorized workflow after every `v0.8.0` blocker is resolved.
 
 ## Objective And Scope

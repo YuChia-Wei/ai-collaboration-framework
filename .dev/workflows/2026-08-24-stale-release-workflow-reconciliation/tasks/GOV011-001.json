@@ -47,7 +47,7 @@
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
       "Applicable source-governance profile selected by repository routing",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
       "Independent read-only exact-head governance audit"
     ],
     "last_completed_step": "The registered blocked checkpoint pins audited clean parent b385a69d8f2e1d8db5a98832de3d41a2f262243f, retains the complete aggregate-attempt history and failed critical gate, and resolves its current containing commit through Git repository verification rather than hard-coded resume text.",

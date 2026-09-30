@@ -121,7 +121,7 @@ release-readiness.
 
 ## Strengths
 
-1. `.dev/releases/v0.5.0/release.yaml` declares v0.3.0, v0.4.0, v0.4.1,
+1. `releases/v0.5.0/release.yaml` declares v0.3.0, v0.4.0, v0.4.1,
    and v0.4.2 in both reconciliation and automatic-upgrade source lists.
 2. The migration guide gives v0.4.2 an exact `metadata/files.yaml` plus
    `--previous-version 0.4.2` route and rejects cross-version provenance.
@@ -143,7 +143,7 @@ release-readiness.
 
 | ID | Severity | Finding | Evidence | Impact | Recommendation | Owner / Next Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| AIC-001 | HIGH | Active release discovery contradicts the validated four-source contract. | `.dev/releases/INDEX.MD:18` calls v0.5.0 planned, lists only v0.3.0/v0.4.0/v0.4.1, and leaves v0.4.2 manual; `.ai/distribution/README.md:33` repeats the three-source set, while `.dev/releases/v0.5.0/release.yaml:28-38` and `migration-guide.md:52-56` make v0.4.2 exact and automatic. | A fresh receiver can choose manual reconciliation or reject the owner-approved v0.4.2 path. | Reconcile both discovery surfaces to the validated four-source candidate while retaining unpublished status. | `ai-context-governance` |
+| AIC-001 | HIGH | Active release discovery contradicts the validated four-source contract. | `releases/INDEX.MD:18` calls v0.5.0 planned, lists only v0.3.0/v0.4.0/v0.4.1, and leaves v0.4.2 manual; `.ai/distribution/README.md:33` repeats the three-source set, while `releases/v0.5.0/release.yaml:28-38` and `migration-guide.md:52-56` make v0.4.2 exact and automatic. | A fresh receiver can choose manual reconciliation or reject the owner-approved v0.4.2 path. | Reconcile both discovery surfaces to the validated four-source candidate while retaining unpublished status. | `ai-context-governance` |
 | AIC-002 | HIGH | The active resume block and only registered handoff checkpoint predate the current candidate. | `workflow-plan.md:125-140` still instructs committing work already committed; `handoff-checkpoints/V050-008.yaml:2-16,54` pins V050-008 and is not a release handoff. Repository verification rejects it at current HEAD. | A fresh session or lower-cost model can duplicate work, resume from the wrong base, or miss the candidate phase gate. | Refresh the plan and add a V050-010 release-candidate checkpoint pinned through its containing commit, with exact candidate and hosted evidence plus one next action. | `ai-context-governance` |
 | AIC-003 | MEDIUM | PKG-003 and REL-001 are marked resolved before their stated V050-010 release-gate evidence is closed. | `PKG-003.yaml:5`, `REL-001.yaml:5,29`, and `tasks/V050-010.json:21-25`. | Backlog consumers can conflate implementation-complete with release-gate-complete even though workflow and release records still fail closed. | Keep them active until V050-010 closes, or explicitly distinguish implementation resolution from release-gate resolution. | `ai-context-governance` |
 | AIC-004 | LOW | macOS and one Windows symlink-privilege path remain unverified. | v0.5.0 release notes retain the platform limitation; package-apply suite reports one environment skip. | Portability evidence is strong for Windows Git Bash and hosted Ubuntu but not universal. | Preserve the limitation as an explicit non-blocking residual; do not infer macOS coverage. | future portability work |
@@ -209,7 +209,7 @@ release-readiness.
 ## Recommended Action Order
 
 1. Commit this assessment without changing audited context.
-2. Reconcile `.dev/releases/INDEX.MD` and `.ai/distribution/README.md` to the
+2. Reconcile `releases/INDEX.MD` and `.ai/distribution/README.md` to the
    exact four-source candidate.
 3. Refresh the active workflow resume block and create a V050-010
    release-candidate handoff checkpoint with current validation evidence.
@@ -240,7 +240,7 @@ git rev-parse 'v0.4.2^{}'
 python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.5.0 --commit <subject> --branch codex/2026-07-21-v0-5-0-development
 python .ai/scripts/validate-ai-context-versions.py
 python .ai/scripts/validate-workflow-artifacts.py --workflow-id 2026-07-21-v0-5-0-development
-python .ai/scripts/validate-workflow-handoff.py --checkpoint .dev/workflows/2026-07-21-v0-5-0-development/handoff-checkpoints/V050-008.yaml --verify-repository
+python tools/maintenance/validate-workflow-handoff.py --checkpoint .dev/workflows/2026-07-21-v0-5-0-development/handoff-checkpoints/V050-008.yaml --verify-repository
 python .ai/scripts/tests/test_ai_context_package_apply.py -v
 python .ai/scripts/tests/test_ai_context_release_state.py -v
 python .ai/scripts/tests/test_prepare_ai_context_release.py -v

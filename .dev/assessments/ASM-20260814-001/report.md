@@ -39,8 +39,8 @@
 
 ### Included AI Context Surfaces
 
-- `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md` and `.ai/assets/shared/cli-execution-routing.schema.yaml`.
-- `.ai/scripts/ai_context_cli_routing.py`, source/target validator integration, and focused context tests.
+- `.dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md` and `.dev/contracts/cli-execution-routing.schema.yaml`.
+- `tools/maintenance/ai_context_cli_routing.py`, source/target validator integration, and focused context tests.
 - `.gitignore`, root/runtime agent guidance, init/upgrader rules, package profile, and human-facing guides.
 - Workflow #210 remediation records through fixed commit `cca50f67`.
 
@@ -196,7 +196,7 @@ wsl.exe -d Ubuntu-24.04 -- bash -lc "cd /mnt/c/Github/YuChia/ai-collaboration-pr
 py -3 .ai/scripts/validate-ai-context.py
 py -3 .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000a_given_real_component_matrix_when_payload_is_projected_then_both_mandatory_cores_keep_their_capabilities -q
 rg -n "local/cli-execution-routing|local_cli|CLI_EXECUTION|non-CLI|connector" .ai/scripts/tests/test_cli_execution_routing.py .ai/scripts/tests/test_ai_context_packaging.py
-rg -n "symlink|gitignore|consent|forbidden|surface|selector|tracked|staged" .ai/scripts/ai_context_cli_routing.py
+rg -n "symlink|gitignore|consent|forbidden|surface|selector|tracked|staged" tools/maintenance/ai_context_cli_routing.py
 rg -n "CLI-EXECUTION-ROUTING|cli-execution-routing|ai_context_cli_routing|.dev/ai-context/local" .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/tests/test_ai_context_packaging.py .ai/assets/skills/ai-context-init .ai/assets/skills/ai-context-upgrader
 ```
 

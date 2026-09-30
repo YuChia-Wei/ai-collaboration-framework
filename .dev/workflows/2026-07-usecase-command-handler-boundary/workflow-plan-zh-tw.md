@@ -266,7 +266,7 @@ Wolverine 仍是 messaging、outbox、consumer 與刻意選用 dispatch 的有�
 - 狀態：completed
 - Owner：`ddd-ca-hex-architect`
 - 主要範圍：
-  - `.dev/ARCHITECTURE.md`；
+  - `src/knowledge/dotnet-backend/design/architecture-overview.md`；
   - `.dev/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`；
   - usecase/controller/test/project-structure standards；
   - DI and technology-profile rules。

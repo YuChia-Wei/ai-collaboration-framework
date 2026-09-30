@@ -71,7 +71,7 @@
       ".ai/INDEX.MD",
       ".ai/assets/README.MD",
       ".ai/assets/skills/README.MD",
-      ".ai/assets/sub-agent-role-prompts/README.MD"
+      ".dev/agents/README.MD"
     ],
     "tests_run": [
       "git diff --check",

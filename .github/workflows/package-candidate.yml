@@ -9,7 +9,7 @@ on:
       - ".agents/**"
       - ".claude/**"
       - ".dev/guides/**"
-      - ".dev/releases/**"
+      - "releases/**"
       - ".dev/workflows/**"
       - ".github/scripts/**"
       - ".github/workflows/package-candidate.yml"

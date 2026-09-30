@@ -16,7 +16,7 @@
   "scope": {
     "target": "Provider fixtures, validation coverage, and runtime guidance",
     "files": [
-      ".ai/scripts/validate-git-commits.py",
+      "tools/maintenance/validate-git-commits.py",
       ".ai/scripts/tests/**",
       ".dev/guides/**"
     ],
@@ -54,7 +54,7 @@
       ".dev/workflows/2026-07-27-ai-execution-provenance-policy/evidence/provider-attribution-fixtures.md",
       ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
       ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml",
-      ".ai/scripts/validate-workflow-handoff.py",
+      "tools/maintenance/validate-workflow-handoff.py",
       ".ai/scripts/tests/test_workflow_handoff.py"
     ],
     "tests_run": [

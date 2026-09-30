@@ -8,7 +8,7 @@
   "scope": {
     "target": "sub-agent manifest guide relationship",
     "files": [
-      ".ai/assets/sub-agent-role-prompts/**/sub-agent.yaml",
+      ".dev/agents/**/sub-agent.yaml",
       ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md"
     ],
     "dependency_radius": "Sub-agent manifests and existing human-facing sub-agent taxonomy guide only.",
@@ -46,7 +46,7 @@
   "results": {
     "summary": "Repointed all sub-agent manifest human_guide fields to the human-facing taxonomy guide.",
     "files_changed": [
-      ".ai/assets/sub-agent-role-prompts/**/sub-agent.yaml",
+      ".dev/agents/**/sub-agent.yaml",
       ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md"
     ],
     "tests_run": [

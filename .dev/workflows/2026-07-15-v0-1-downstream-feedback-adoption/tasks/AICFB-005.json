@@ -50,7 +50,7 @@
     "files_changed": [
       ".dev/standards/GIT-COMMIT-POLICY.md",
       ".dev/standards/GIT-COMMIT-POLICY.yaml",
-      ".ai/scripts/validate-git-commits.py",
+      "tools/maintenance/validate-git-commits.py",
       ".ai/scripts/tests/test_git_commit_policy.py",
       ".ai/scripts/check-all.sh",
       ".ai/scripts/README.md",
@@ -58,7 +58,7 @@
     ],
     "tests_run": [
       "python .ai/scripts/tests/test_git_commit_policy.py -v (8 passed)",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-15-v0-1-downstream-feedback-adoption (5 passed)",
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-15-v0-1-downstream-feedback-adoption (5 passed)",
       "COMMIT_RANGE=main..HEAD WORKFLOW_ID=2026-07-15-v0-1-downstream-feedback-adoption check-all.sh --quick (passed)"
     ],
     "finding_status": "resolved",

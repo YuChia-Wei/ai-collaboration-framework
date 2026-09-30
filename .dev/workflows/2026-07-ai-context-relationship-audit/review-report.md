@@ -50,7 +50,7 @@ High impact relationship problems are concentrated in `.dev` entry and guide doc
 
 - `.dev/README.MD` advertises `lessons/`, but the directory is absent.
 - `.dev/INDEX.md` points to absent paths such as `requirement/README-UML.md`, `requirement/requirement.md`, `lessons/`, `lessons/dotnet/`, and `legacy/ask/`.
-- `.dev/specs/SPEC-GUIDE.MD` and `.dev/specs/SPEC-ORGANIZATION-GUIDE.MD` describe `.dev/specs/domains/` as the production-spec root, but that subtree is absent.
+- `src/skills/spec-author/references/spec-guide.md` and `src/skills/spec-author/references/spec-organization-guide.md` describe `.dev/specs/domains/` as the production-spec root, but that subtree is absent.
 - `.dev/operations/*-GUIDE.MD` names canonical operation truth files such as `.dev/operations/context-map.md`, `.dev/operations/event-catalog.md`, and `.dev/operations/mq-topology.md`, but those files do not exist.
 
 Action: `index-sync`, then either create explicit templates or rewrite these docs as guide-only placeholders.
@@ -65,7 +65,7 @@ The `.ai` layer is structurally coherent, but several agent-facing canonical doc
 - `.ai/SUB-AGENT-SYSTEM.MD`
 - `.ai/assets/README.MD`
 - `.ai/assets/skills/README.MD`
-- `.ai/assets/sub-agent-role-prompts/README.MD`
+- `.dev/agents/README.MD`
 
 This conflicts with `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`, which sets `.ai/**` default language to English.
 
@@ -77,9 +77,9 @@ The `.ai` sub-agent manifests use `human_guide: ".ai/SUB-AGENT-SYSTEM.MD"` acros
 
 Examples reported by the `.ai` audit:
 
-- `.ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/sub-agent.yaml`
-- `.ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml`
-- `.ai/assets/sub-agent-role-prompts/controller-test-sub-agent/sub-agent.yaml`
+- `.dev/agents/aggregate-code-review-sub-agent/sub-agent.yaml`
+- `.dev/agents/problem-frame-sub-agent/sub-agent.yaml`
+- `.dev/agents/controller-test-sub-agent/sub-agent.yaml`
 
 Action: `rewrite` the field semantics or repoint to `.dev/guides/ai-collaboration-guides/**`.
 

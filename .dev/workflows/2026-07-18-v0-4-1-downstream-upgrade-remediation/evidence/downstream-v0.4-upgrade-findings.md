@@ -86,8 +86,8 @@ release boundary this is HIGH/P0 because every package inherits the mismatch.
 
 ## Source-Side Reproduction Anchors
 
-- `.dev/releases/v0.4.0/migration-guide.md`
-- `.dev/releases/v0.4.0/release.yaml`
+- `releases/v0.4.0/migration-guide.md`
+- `releases/v0.4.0/release.yaml`
 - `.ai/scripts/ai_context_package.py`
 - `.ai/scripts/ai_context_package_apply.py`
 - `.ai/distribution/profiles/dotnet-backend.yaml`

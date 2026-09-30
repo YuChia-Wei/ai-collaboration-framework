@@ -22,12 +22,12 @@ record families make the number of artifact kinds larger than 33.
 
 | ID | Schema path | Observed model / versions | Current capability and enforcement | Proposed lifecycle handling |
 | --- | --- | --- | --- | --- |
-| E01 | `.ai/assets/shared/agent-execution-guardrails.schema.yaml` | Definition 1.0; packet 1.0/1.1 models; lease, evidence ledger, retry, graph, classification, review-input contracts | `execution-artifacts.py prepare` writes selected current packet; `validate-agent-execution-guardrails.py` checks structure and live/authority semantics. No general writer for all nested kinds established. | Adapt existing packet producer; dedicated operations for leases/retries/evidence; do not auto-convert authority records. |
-| E02 | `.ai/assets/shared/cli-execution-routing.schema.yaml` | 1.0 local routing | `ai_context_cli_routing.py` reads/validates; a programmatic writer was not established. Missing file is valid unconfigured state. | Explicit opt-in authoring only; preserve ignored, secret-free local ownership. |
-| E03 | `.ai/assets/shared/provider-neutral-capability-registry.schema.yaml` | 1.0 registry | `validate-ai-context.py` validates capability registry relationships; current standalone producer unknown. | Authoring adapter with cross-reference validation. |
-| E04 | `.ai/assets/shared/provider-projection-registry.schema.yaml` | 1.0 registry/projections | Context validator and registered profile gates; standalone producer unknown. | Authoring adapter; preserve provider-neutral versus provider projection ownership. |
-| E05 | `.ai/assets/shared/validation-dependency-observation.schema.yaml` | Definition 1.0; versioned request/report | `observe-validation-dependencies.py` produces observations; partial/unsupported coverage remains explicit. | Author requests; produce reports from observation, never from desired coverage. |
-| E06 | `.ai/assets/shared/validation-evidence-lifecycle.schema.yaml` | Definition 1.0; classification, subject manifest, rebind, audit, reuse receipt, freeze | `validation_subject.py`, `validation-evidence.py`, `validate-validation-lifecycle.py` | Preserve existing producers; content rebind/proven reuse is a semantic operation, not format migration. |
+| E01 | `.dev/contracts/agent-execution-guardrails.schema.yaml` | Definition 1.0; packet 1.0/1.1 models; lease, evidence ledger, retry, graph, classification, review-input contracts | `execution-artifacts.py prepare` writes selected current packet; `validate-agent-execution-guardrails.py` checks structure and live/authority semantics. No general writer for all nested kinds established. | Adapt existing packet producer; dedicated operations for leases/retries/evidence; do not auto-convert authority records. |
+| E02 | `.dev/contracts/cli-execution-routing.schema.yaml` | 1.0 local routing | `ai_context_cli_routing.py` reads/validates; a programmatic writer was not established. Missing file is valid unconfigured state. | Explicit opt-in authoring only; preserve ignored, secret-free local ownership. |
+| E03 | `.dev/contracts/provider-neutral-capability-registry.schema.yaml` | 1.0 registry | `validate-ai-context.py` validates capability registry relationships; current standalone producer unknown. | Authoring adapter with cross-reference validation. |
+| E04 | `.dev/contracts/provider-projection-registry.schema.yaml` | 1.0 registry/projections | Context validator and registered profile gates; standalone producer unknown. | Authoring adapter; preserve provider-neutral versus provider projection ownership. |
+| E05 | `.dev/contracts/validation-dependency-observation.schema.yaml` | Definition 1.0; versioned request/report | `observe-validation-dependencies.py` produces observations; partial/unsupported coverage remains explicit. | Author requests; produce reports from observation, never from desired coverage. |
+| E06 | `.dev/contracts/validation-evidence-lifecycle.schema.yaml` | Definition 1.0; classification, subject manifest, rebind, audit, reuse receipt, freeze | `validation_subject.py`, `validation-evidence.py`, `validate-validation-lifecycle.py` | Preserve existing producers; content rebind/proven reuse is a semantic operation, not format migration. |
 | E07 | `.ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml` | 1.0 customization ledger | Init/upgrade/effective-rule lifecycle and target validation; ledger decisions require source evidence. | Author/reconcile with owner decisions; legacy overrides become unresolved reconciliation inputs where required. |
 | E08 | `.ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml` | 1.0 packet; route/layout contracts | `resolve-effective-rule-packet.py` and effective-rule implementation produce candidate projections; complete legacy layout is readable. | Regenerate from adopted authority; a candidate output does not adopt new target truth. |
 | E09 | `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml` | 1.0 state; current compact and legacy layout rules | Effective-rule/provenance implementation; legacy layout reading has explicit constraints. | Rebuild/adopt through owning lifecycle; preserve target semantic customizations. |
@@ -74,9 +74,9 @@ outside those path selectors.
 | I03 | Workflow locator/task/plan/report; workflow policy + owning skill templates | Skill-directed authoring; shared workflow validator; orchestrator-specific validation | Operate on the linked locator, tasks, controlled plan metadata and exact index row; retain skill-specific prose/semantics. |
 | I04 | Assessment locator/report; assessment policy + report-owning skill | Skill-directed authoring; assessment validator | Create locator/report/index together; immutable IDs/created_at; final report conclusions frozen; workflow relations use IDs. |
 | I05 | Workflow handoff checkpoint; `.dev/standards/WORKFLOW-HANDOFF-POLICY.yaml` | Governance handoff template and validator | Bind receiving environment, authority and resume state; a valid shape does not execute a handoff. |
-| I06 | Requirement Markdown; `.dev/requirement/REQUIREMENT-GUIDE.MD` | `requirement-author`, embedded copy/fill template | Preserve stakeholder meaning, source references and acceptance IDs; schema cannot author missing requirements. |
-| I07 | Production/entity/adapter specs; `.dev/specs/SPEC-GUIDE.MD` | `spec-author`, embedded field shapes/examples | Semantic revision; no supported document version is inferred from a guide's date. |
-| I08 | Formal test specs; `.dev/specs/tests/TEST-SPEC-GUIDE.MD` | `spec-author` | Preserve scenario/source linkage; don't derive the expected result from the implementation being checked. |
+| I06 | Requirement Markdown; `src/skills/requirement-author/references/requirement-guide.md` | `requirement-author`, embedded copy/fill template | Preserve stakeholder meaning, source references and acceptance IDs; schema cannot author missing requirements. |
+| I07 | Production/entity/adapter specs; `src/skills/spec-author/references/spec-guide.md` | `spec-author`, embedded field shapes/examples | Semantic revision; no supported document version is inferred from a guide's date. |
+| I08 | Formal test specs; `src/knowledge/dotnet-backend/guides/TEST-SPEC-GUIDE.MD` | `spec-author` | Preserve scenario/source linkage; don't derive the expected result from the implementation being checked. |
 | I09 | CBF/SWF problem frames; problem-frame author playbook and CBF template set | `problem-frame-author`; separate compliance capability | CBF has five tracked YAML templates; SWF layout is described, not proved to have a template directory. |
 | I10 | Init project configuration; `project-config.template.yaml` | Init skill and repository-config contract checks | File contains JSON-compatible content despite .yaml suffix; `schemaVersion` and artifact semantics need explicit binding. |
 | I11 | Target provenance / source template; upgrader provenance contract | `ai_context_target_provenance.py` initialize/finalize APIs, target validator | Provenance schema 2.0 versus template 2.1.0; never synthesize trusted source history. |
@@ -85,7 +85,7 @@ outside those path selectors.
 | I14 | Validation evidence / cache / sidecars | `validation-evidence.py`, process supervisor, validation subject APIs | Evidence/cache 2.0.0 differ from their independent sidecar versions; old cache discard is not historical evidence migration. |
 | I15 | Release record / phase checks / notes / migration guide | Governance release templates, version and release-state validators, notes renderer | `prepare-ai-context-release.py` is read-only. Release template top-level version is a placeholder; phase checks 1.0 and provider reconciliation 1.0/1.1 are separate contracts. |
 | I16 | Canonical routing, rule and ownership catalogs | Shared/profile rule catalogs, routing YAML, `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml` | Primarily authoring plus cross-file validators; no uniform executable writer established. Preserve one semantic owner. |
-| I17 | Tooling registries | `.ai/scripts/python-entrypoints.json`, `shell-assets.yaml`, `test-fixture-classifications.json` and profile registry | Maintainer-authored plus dedicated contract checks; adding a CLI changes dependency/profile registration too. |
+| I17 | Tooling registries | `tools/maintenance/python-entrypoints.json`, `shell-assets.yaml`, `test-fixture-classifications.json` and profile registry | Maintainer-authored plus dedicated contract checks; adding a CLI changes dependency/profile registration too. |
 | I18 | Source policy configuration | Git commit, source work-management and GitHub policy YAML | Schema-bearing executable policy; tool construction cannot supply owner authorization to weaken policy. |
 | I19 | Provider/runtime-native configuration | `.github/workflows/*.yml`, issue forms, runtime TOML, public-root editor/git configuration | Register external ownership/delegated validation where relevant; do not build competing schemas for standards owned by those tools. Personal local values excluded. |
 
@@ -111,14 +111,14 @@ outside those path selectors.
 
 - `.ai/scripts/README.md:18`, `:49`, `:63`, `:215`, `:248`, `:312`.
 - `.ai/scripts/execution-artifacts.py:91`, `:174`, `:227`, `:283`, `:316`.
-- `.ai/scripts/execution_artifact_contract.py:44`, `:88`, `:126`, `:172`.
+- `tools/maintenance/execution_artifact_contract.py:44`, `:88`, `:126`, `:172`.
 - `.ai/assets/CANONICAL-SCHEMA.MD:8`, `:24`.
 - `.ai/distribution/schemas/selected-inputs.schema.yaml:1` and `:9`.
 - `.ai/assets/skills/ai-context-upgrader/references/provenance-contract.md:60` and `:89`.
 - `.ai/scripts/ai_context_package_apply.py:80`.
 - `.ai/scripts/validate-workflow-artifacts.py:362` and `:393`.
-- `.ai/scripts/validate-assessment-artifacts.py:259` and `:304`.
+- `tools/maintenance/validate-assessment-artifacts.py:259` and `:304`.
 - `.ai/scripts/validate-ai-context-versions.py:278`.
-- `.dev/requirement/REQUIREMENT-GUIDE.MD:51`.
-- `.dev/specs/SPEC-GUIDE.MD:74`.
+- `src/skills/requirement-author/references/requirement-guide.md:51`.
+- `src/skills/spec-author/references/spec-guide.md:74`.
 - `.ai/assets/skills/problem-frame-author/references/authoring-playbook.md:35`.

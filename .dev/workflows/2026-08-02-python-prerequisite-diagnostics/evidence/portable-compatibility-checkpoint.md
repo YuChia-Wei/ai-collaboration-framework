@@ -51,7 +51,7 @@ claim a blocked outcome as passed.
 | Clean install and v0.7.0-to-candidate upgrade proof | `passed` with the real package planner and governed provenance |
 | AI-context validation | `passed`: 24 indexes, 16 canonical skills, 2 runtime roots, 345 language-policy files, 13 rules, 34 manifests, 10 mappings |
 | Root bilingual structural parity | `passed` |
-| `.dev/releases/v0.8.0` existence check | `false` |
+| `releases/v0.8.0` existence check | `false` |
 | `git diff --check` | `passed` before commit |
 
 The complete `test_ai_context_packaging.py -v` invocation exceeded the first

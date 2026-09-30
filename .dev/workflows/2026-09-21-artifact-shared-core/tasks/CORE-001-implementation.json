@@ -20,7 +20,7 @@
     "target": "P2 shared artifact primitives, existing producer integration and syntax-aware comment protection",
     "files": [
       ".ai/scripts/",
-      ".ai/assets/shared/validation-gate-classification.yaml"
+      ".dev/contracts/validation-gate-classification.yaml"
     ],
     "constraints": [
       "Preserve CLI and family semantics",
@@ -52,7 +52,7 @@
     "files_changed": [
       ".ai/scripts/artifact_core.py",
       ".ai/scripts/artifact_authoring.py",
-      ".ai/scripts/execution_artifact_contract.py",
+      "tools/maintenance/execution_artifact_contract.py",
       ".ai/scripts/tests/",
       ".ai/scripts/validation-profile-registry.sh",
       ".ai/scripts/README.md"

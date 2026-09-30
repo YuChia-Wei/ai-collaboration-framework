@@ -19,7 +19,7 @@ entrypoint: "workflow-plan.md"
 continuation:
   current_task_id: "SAG-003"
   target_policy_refs:
-    - ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md"
+    - ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
     - ".dev/standards/WORKFLOW-GATE-POLICY.md"
     - ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md"
   handoff_checkpoint: null

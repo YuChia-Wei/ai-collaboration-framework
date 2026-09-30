@@ -45,10 +45,10 @@
       ".ai/assets/skills/ai-context-governance/references/language-policy-playbook.md",
       ".dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md",
       ".dev/standards/coding-guide.md",
-      ".dev/guides/learning-guides/NEW-PROJECT-GUIDE.md",
-      ".dev/guides/learning-guides/LEARNING-PATH.md",
+      "src/knowledge/dotnet-backend/guides/NEW-PROJECT-GUIDE.md",
+      "src/knowledge/dotnet-backend/guides/LEARNING-PATH.md",
       ".dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md",
-      ".dev/requirement/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD",
+      "src/knowledge/dotnet-backend/requirements/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD",
       ".dev/requirement/SKILL-IMPLEMENTER-NAMING-REQUIREMENTS.MD"
     ],
     "tests_run": [

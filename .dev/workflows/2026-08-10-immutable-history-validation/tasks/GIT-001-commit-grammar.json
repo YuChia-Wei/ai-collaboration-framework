@@ -18,7 +18,7 @@
     "files": [
       ".dev/standards/GIT-COMMIT-POLICY.md",
       ".dev/standards/GIT-COMMIT-POLICY.yaml",
-      ".ai/scripts/validate-git-commits.py",
+      "tools/maintenance/validate-git-commits.py",
       "tests/",
       ".ai/assets/",
       ".agents/",
@@ -53,7 +53,7 @@
     "files_changed": [
       ".dev/standards/GIT-COMMIT-POLICY.md",
       ".dev/standards/GIT-COMMIT-POLICY.yaml",
-      ".ai/scripts/validate-git-commits.py",
+      "tools/maintenance/validate-git-commits.py",
       ".ai/scripts/tests/test_git_commit_policy.py",
       "AGENTS.md",
       "AGENTS.zh-TW.md",
@@ -61,7 +61,7 @@
     ],
     "tests_run": [
       "python .ai/scripts/tests/test_git_commit_policy.py -v: passed (19 tests)",
-      "python .ai/scripts/validate-git-commits.py --commit 5258e7c: passed",
+      "python tools/maintenance/validate-git-commits.py --commit 5258e7c: passed",
       "python .ai/scripts/validate-ai-context.py: passed",
       "python .ai/scripts/tests/test_ai_context_language_policy.py -v: passed outside sandbox after sandbox temporary-fixture permission block",
       "git diff --check: passed"

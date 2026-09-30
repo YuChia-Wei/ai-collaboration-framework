@@ -225,7 +225,7 @@
     },
     {
       "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
-      "before": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "before": "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       "after": "target-authority:dev-requirement-TECH-STACK-REQUIREMENTS.MD",
       "kind": "target-parameter"
     },
@@ -249,7 +249,7 @@
     },
     {
       "source": ".ai/assets/tech-stacks/dotnet-backend/design/source-map.md",
-      "before": ".dev/ARCHITECTURE.md",
+      "before": "src/knowledge/dotnet-backend/design/architecture-overview.md",
       "after": "target-authority:dev-ARCHITECTURE.md",
       "kind": "target-parameter"
     },
@@ -261,13 +261,13 @@
     },
     {
       "source": ".dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md",
-      "before": ".ai/scripts/check-dockerfile-csproj-copy-sync.ps1",
+      "before": "src/tools/dotnet/check-dockerfile-csproj-copy-sync.ps1",
       "after": "target-authority:ai-scripts-check-dockerfile-csproj-copy-sync.ps1",
       "kind": "target-parameter"
     },
     {
       "source": ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md",
-      "before": ".ai/scripts/check-test-di-compliance.sh",
+      "before": "src/tools/dotnet/check-test-di-compliance.sh",
       "after": "target-authority:ai-scripts-check-test-di-compliance.sh",
       "kind": "target-parameter"
     },
@@ -963,7 +963,7 @@
     },
     {
       "source": ".ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md",
-      "before": ".ai/scripts/check-spec-compliance.sh",
+      "before": "src/tools/dotnet/check-spec-compliance.sh",
       "after": "target-authority:ai-scripts-check-spec-compliance.sh",
       "kind": "target-parameter"
     },
@@ -1281,13 +1281,13 @@
     },
     {
       "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
-      "before": ".ai/scripts/check-mutation-coverage.sh",
+      "before": "src/tools/dotnet/check-mutation-coverage.sh",
       "after": "target-authority:ai-scripts-check-mutation-coverage.sh",
       "kind": "target-parameter"
     },
     {
       "source": ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md",
-      "before": ".ai/scripts/check-spec-compliance.sh",
+      "before": "src/tools/dotnet/check-spec-compliance.sh",
       "after": "target-authority:ai-scripts-check-spec-compliance.sh",
       "kind": "target-parameter"
     },
@@ -1734,7 +1734,7 @@
     },
     {
       "source": ".ai/assets/shared/governance/engineering-rule-catalog.yaml",
-      "before": ".dev/requirement/TECH-STACK-REQUIREMENTS.MD",
+      "before": "src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD",
       "after": "target-authority:dev-requirement-TECH-STACK-REQUIREMENTS.MD",
       "kind": "target-parameter"
     },

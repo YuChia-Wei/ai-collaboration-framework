@@ -13,7 +13,7 @@
   "finding_ids": ["REL041-TAGGED-TREE-READINESS"],
   "scope": {
     "target": "Validated v0.4.1 tagged-tree candidate",
-    "files": [".dev/releases/v0.4.1/**", ".dev/workflows/2026-07-18-v0-4-1-release-publication/**", ".dev/workflows/INDEX.MD"],
+    "files": ["releases/v0.4.1/**", ".dev/workflows/2026-07-18-v0-4-1-release-publication/**", ".dev/workflows/INDEX.MD"],
     "constraints": ["Keep tag and commit null before publication", "Use immutable Git-tree package evidence", "Bind the exact published v0.3.0 files manifest", "Do not publish before final main validation"],
     "non_goals": ["Change packaged payload contracts", "Add a v0.4.0 automatic source", "Move existing tags", "Implement deferred backlog"]
   },

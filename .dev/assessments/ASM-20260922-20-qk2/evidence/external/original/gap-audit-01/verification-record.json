@@ -104,7 +104,7 @@
       "severity": "HIGH",
       "title": "Dynamic module state prevents the combined input-authoring suite from running",
       "evidence_refs": [
-        ".ai/scripts/execution_artifact_contract.py:72",
+        "tools/maintenance/execution_artifact_contract.py:72",
         ".ai/scripts/execution-artifacts.py:13",
         ".ai/scripts/tests/test_execution_artifacts.py:177",
         ".ai/scripts/tests/test_execution_artifacts.py:458",

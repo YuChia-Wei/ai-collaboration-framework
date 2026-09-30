@@ -57,7 +57,7 @@
 ## Validation Policy
 
 - Routine source gate: `bash .ai/scripts/check-all.sh --critical` through Git for Windows Bash on this host; WSL is not a valid runtime on the current machine.
-- Candidate and later release phases must use `.dev/releases/v0.9.0/release-phase-checks.yaml` verbatim.
+- Candidate and later release phases must use `releases/v0.9.0/release-phase-checks.yaml` verbatim.
 - Unit/integration coverage: provider evaluator suites, analyzer/runtime/building-blocks .NET tests, package/apply/release-state tests, and clean-install plus supported-upgrade fixtures.
 - Independent verification: `ai-context-auditor` post-remediation assessment on the release workflow branch before integration.
 - Spec compliance: not selected; `not-applicable`.

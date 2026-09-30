@@ -173,7 +173,7 @@ bounded post-remediation verification.
 | Packaging GWT | passed with conditional exclusion | 28 passed; 1 retained downstream integration skipped and not counted as passed |
 | Complete critical gate | passed | exit `0`, elapsed `459.5s`, committed checkpoint at `bd63d3c` |
 | AI context and workflow artifacts | passed | navigation/wrapper parity and workflow metadata validators passed |
-| Release boundary | passed | `.dev/releases/v0.8.0/**` absent; no release mutation performed |
+| Release boundary | passed | `releases/v0.8.0/**` absent; no release mutation performed |
 | Independent finding read-back | passed | no critical, must-fix, or should-fix findings; AIC-004 disposition `resolved` |
 
 ### Skipped Validation

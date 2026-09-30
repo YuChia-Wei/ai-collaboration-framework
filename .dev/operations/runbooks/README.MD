@@ -12,4 +12,4 @@
 - duplicate stock decrease handling
 - dead-letter backlog growth
 
-撰寫格式請遵守 [`RUNBOOK-GUIDE.MD`](../RUNBOOK-GUIDE.MD)。
+撰寫格式請遵守 [`RUNBOOK-GUIDE.MD`](../../../src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD)。

@@ -47,7 +47,7 @@ also excluded from the candidate package-fixture gate.
 
 | ID | Severity | Finding | Evidence | Disposition |
 | --- | --- | --- | --- | --- |
-| `VFY-001` | none | The release set is exactly `GOV-002`, `GOV-003`, `PKG-004`, and `REL-003`; notes disclose limitations and no provider adoption. | `.dev/releases/v0.7.0/release.yaml`; `release-notes.md`; `migration-guide.md` | passed |
+| `VFY-001` | none | The release set is exactly `GOV-002`, `GOV-003`, `PKG-004`, and `REL-003`; notes disclose limitations and no provider adoption. | `releases/v0.7.0/release.yaml`; `release-notes.md`; `migration-guide.md` | passed |
 | `VFY-002` | resolved-high | The first archive contradicted release compatibility. Commit `b474730` replaced hard-coded metadata with the version-owned release contract and exact migration-source validation. | `.ai/scripts/ai_context_package.py`; `.ai/scripts/tests/test_ai_context_packaging.py`; rebuilt `metadata/package.yaml` | resolved and passed |
 | `VFY-003` | none | The 606-path payload excludes source workflow, assessment, backlog-item, roadmap, and release-history instances and projects portable policy assets. | `candidate-package-validation.md`; generated `metadata/files.yaml` | passed |
 | `VFY-004` | none | Corrected clean-install and exact v0.6.0 upgrade plans applied without reconciliation while keeping `repo-backlog` disabled. | actual plans and apply receipts summarized in `candidate-package-validation.md` | passed |

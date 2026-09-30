@@ -220,8 +220,8 @@
             ],
             "rationale": "The requested artifact is a requirement document. It can be completed with the paid-order policy preserved as an open question, so no future owner decision is a required handoff for this output.",
             "source_citations": [
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
               ".ai/assets/skills/requirement-author/references/source-truth-rules.md#Do not"
             ]
           },
@@ -249,8 +249,8 @@
             ],
             "rationale": "The requested artifact is explicitly an observed/inferred CBF and the current playbook permits bounded code/test recovery without normative documents. Missing authority limits only normative claims; it does not require a future-only handoff before the observed draft can be produced.",
             "source_citations": [
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
-              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
+              "src/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
               ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md#Required Inputs",
               ".ai/assets/skills/problem-frame-author/references/output-contract.md#Return"
             ]
@@ -295,7 +295,7 @@
         "context_reads": [
           ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/implementation_recheck/cases.json",
           ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/implementation_recheck/current-context.json",
-          ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md",
+          "src/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md",
           ".ai/assets/skills/local-change-implementer/skill.yaml",
           ".ai/assets/skills/local-change-implementer/references/allowed-operations.md",
           ".ai/assets/skills/local-change-implementer/references/skill-boundaries.md",

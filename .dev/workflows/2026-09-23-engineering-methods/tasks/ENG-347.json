@@ -105,7 +105,7 @@
     "commit_message": {
       "result": "passed",
       "sha256": "757e45bea9784681ff63f80016f0d0d9f592e60de4d67a9c729cce6035ea8b08",
-      "command": "python -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/347/.dev/ai-context/local/commit-messages/issue-347.txt --workflow-id 2026-09-23-engineering-methods"
+      "command": "python -B tools/maintenance/validate-git-commits.py --message-file F:/framework-next/347/.dev/ai-context/local/commit-messages/issue-347.txt --workflow-id 2026-09-23-engineering-methods"
     },
     "staged_diff": "Initial report EOF warning corrected; subsequent git diff --cached --check exited 0"
   }

@@ -136,7 +136,7 @@ preparation, but this assessment does not authorize a tag or publication.
 
 | Baseline Finding | Result | Evidence |
 | --- | --- | --- |
-| `ASM-20260722-001#AIC-001` | resolved | `.dev/releases/INDEX.MD`, `.ai/distribution/README.md`, `release.yaml`, and `migration-guide.md` agree on four exact automatic sources including v0.4.2 |
+| `ASM-20260722-001#AIC-001` | resolved | `releases/INDEX.MD`, `.ai/distribution/README.md`, `release.yaml`, and `migration-guide.md` agree on four exact automatic sources including v0.4.2 |
 | `ASM-20260722-001#AIC-002` | resolved | V050-010 checkpoint repository verification passes; plan, task, and checkpoint expose one current successor-verification action |
 | `ASM-20260722-001#AIC-003` | resolved | PKG-003 and REL-001 describe implementation resolution without claiming V050-010 closure or publication; both retain `published_in: null` |
 | `ASM-20260722-001#AIC-004` | accepted residual | macOS and unavailable provider-native fixtures remain explicit and do not broaden the support claim |
@@ -224,8 +224,8 @@ git rev-parse HEAD
 python .ai/scripts/validate-ai-context-versions.py
 python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.5.0
 python .ai/scripts/validate-workflow-artifacts.py --workflow-id 2026-07-21-v0-5-0-development
-python .ai/scripts/validate-workflow-handoff.py --checkpoint .dev/workflows/2026-07-21-v0-5-0-development/handoff-checkpoints/V050-010.yaml --verify-repository
-python .ai/scripts/validate-workflow-handoff.py --all
+python tools/maintenance/validate-workflow-handoff.py --checkpoint .dev/workflows/2026-07-21-v0-5-0-development/handoff-checkpoints/V050-010.yaml --verify-repository
+python tools/maintenance/validate-workflow-handoff.py --all
 python .ai/scripts/tests/test_ai_context_release_state.py -v
 python .ai/scripts/tests/test_workflow_handoff.py -v
 python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v

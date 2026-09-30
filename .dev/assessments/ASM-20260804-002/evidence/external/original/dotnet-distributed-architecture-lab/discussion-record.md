@@ -300,7 +300,7 @@ This discussion does not itself modify canonical AI Context, implement or packag
 ### DEC-033 — Evaluate Existing Canonical Roles Before External Orchestration
 
 - Do not introduce or pilot `kevintsengtw/dotnet-testing-agent-orchestration-codex` at this stage.
-- AI Context already owns canonical delegated-role definitions under `.ai/assets/sub-agent-role-prompts/`; the immediate question is whether those existing roles are operationally reachable and actually used by their owning skills and supported runtimes.
+- AI Context already owns canonical delegated-role definitions under `.dev/agents/`; the immediate question is whether those existing roles are operationally reachable and actually used by their owning skills and supported runtimes.
 - The external repository remains comparative evidence for orchestration techniques only. It is not a registered provider, dependency, copied asset, or planned adapter under the current discussion.
 
 ### DEC-034 — Sub-Agent Reachability Is A Separate Issue Topic
@@ -500,7 +500,7 @@ This extension was raised after the external-skill tiers were confirmed. The evi
 
 ### Current Operational Reachability
 
-- `.ai/SUB-AGENT-SYSTEM.MD` declares eighteen active role routes and states that seventeen roles use dynamic canonical loading. This is a governance and routing contract, not an executable dispatcher; placing a role under `.ai/assets/sub-agent-role-prompts/` does not by itself cause a runtime to discover or invoke it.
+- `.ai/SUB-AGENT-SYSTEM.MD` declares eighteen active role routes and states that seventeen roles use dynamic canonical loading. This is a governance and routing contract, not an executable dispatcher; placing a role under `.dev/agents/` does not by itself cause a runtime to discover or invoke it.
 - All non-translator manifests have empty `wrapper_targets` and `adapter_metadata`. They can be used only when an owning skill or main agent explicitly reads the canonical role and delegates it through an available generic worker. If no caller loads the routing table or manifest, the role is inert.
 - `slice-implementer` has the strongest current connection. Its command, query, and reactor mode references make the corresponding role manifests and playbooks mandatory inputs. Their guidance therefore applies when those modes are followed, but the skill does not require a separate worker to be spawned; execution may remain inline in the main agent.
 - Aggregate, controller, outbox, and profile-config implementation roles are listed under `slice-implementer` in the central routing table, but the current skill exposes only command, query, reactor, and generic execution modes. The additional roles are discoverable through the central table or architecture source map, not through an explicit implementation-mode route.

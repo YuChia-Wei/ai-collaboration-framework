@@ -1,6 +1,6 @@
 {
   "schema_version": "historical-published-asset-backfill/v1",
-  "source_matrix": ".dev/releases/v0.15.1/support-matrix.yaml",
+  "source_matrix": "releases/v0.15.1/support-matrix.yaml",
   "source_matrix_sha256": "83f984b38036975664ba85cce30524f829a597f3fbb4d009cc73049bc80a1fc4",
   "historical_mutation": false,
   "assets": [
@@ -13,7 +13,7 @@
         "state": "historical-candidate",
         "archive_id": "sha256:d3d6e27154df567fef025990ef4c367a1cc98ec1316980a76eed6e2d1005fe11",
         "build_commit": "8a03b4eda3a7697751bb3b8eac0ae3cd51f84e94",
-        "evidence_source": ".dev/releases/v0.15.1/route-assets/v0.15.0/ai-collaboration-framework-v0.15.0.zip"
+        "evidence_source": "releases/v0.15.1/route-assets/v0.15.0/ai-collaboration-framework-v0.15.0.zip"
       },
       "published": {
         "state": "published",
@@ -42,7 +42,7 @@
         "state": "historical-candidate",
         "archive_id": "sha256:3b5c0483cbf7d8076d3bf9cdd2cfd6f1bac290726e5904a7fa3b29bbc4424c3e",
         "build_commit": "cbd36d41be44e12fbc6031ec5c87b23ee5fccbc3",
-        "evidence_source": ".dev/releases/v0.15.1/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip"
+        "evidence_source": "releases/v0.15.1/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip"
       },
       "published": {
         "state": "published",

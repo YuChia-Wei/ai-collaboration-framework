@@ -27,7 +27,7 @@ subject_ref:
 scope:
   included:
     - ".dev/assessments/ASM-20260722-001/**"
-    - ".dev/releases/INDEX.MD and .dev/releases/v0.5.0/**"
+    - "releases/INDEX.MD and releases/v0.5.0/**"
     - ".ai/distribution/README.md and directly related package contracts"
     - ".dev/backlog/items/PKG-003.yaml and REL-001.yaml"
     - ".dev/workflows/2026-07-21-v0-5-0-development/**"

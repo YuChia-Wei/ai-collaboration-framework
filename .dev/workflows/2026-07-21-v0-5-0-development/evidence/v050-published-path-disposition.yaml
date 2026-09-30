@@ -36,17 +36,17 @@ coverage:
     - ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-task-template.json"
     - ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-workflow-plan-template.md"
     - ".ai/assets/skills/ai-context-auditor/templates/workflow-locator-template.yaml"
-    - ".ai/scripts/check-data-class-annotations.sh"
-    - ".ai/scripts/check-domain-events-compliance.sh"
-    - ".ai/scripts/check-dotnet-config.sh"
-    - ".ai/scripts/check-framework-api-compliance.sh"
-    - ".ai/scripts/check-mutation-coverage.sh"
-    - ".ai/scripts/check-spec-compliance.sh"
-    - ".ai/scripts/check-test-compliance.sh"
-    - ".ai/scripts/check-test-di-compliance.sh"
-    - ".ai/scripts/code-review.sh"
+    - "src/tools/dotnet/check-data-class-annotations.sh"
+    - "src/tools/dotnet/check-domain-events-compliance.sh"
+    - "src/tools/dotnet/check-dotnet-config.sh"
+    - "src/tools/dotnet/check-framework-api-compliance.sh"
+    - "src/tools/dotnet/check-mutation-coverage.sh"
+    - "src/tools/dotnet/check-spec-compliance.sh"
+    - "src/tools/dotnet/check-test-compliance.sh"
+    - "src/tools/dotnet/check-test-di-compliance.sh"
+    - "src/tools/dotnet/code-review.sh"
     - ".ai/scripts/test-profile-startup.sh"
-    - ".ai/scripts/validate-dual-profile-config.sh"
+    - "src/tools/dotnet/validate-dual-profile-config.sh"
 
 entries:
   - path: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-task-template.json"
@@ -62,7 +62,7 @@ entries:
     consumer_refs:
       - ".ai/distribution/profiles/dotnet-backend.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-decision-matrix.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
@@ -80,7 +80,7 @@ entries:
     consumer_refs:
       - ".ai/distribution/profiles/dotnet-backend.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-decision-matrix.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
@@ -98,12 +98,12 @@ entries:
     consumer_refs:
       - ".ai/distribution/profiles/dotnet-backend.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-decision-matrix.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/code-review.sh"
+  - path: "src/tools/dotnet/code-review.sh"
     lifecycle_before: "compatibility"
     decision: "retain"
     lifecycle_after: "compatibility"
@@ -117,12 +117,12 @@ entries:
       - ".ai/scripts/README.md"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-tool001-val001-portability.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-spec-compliance.sh"
+  - path: "src/tools/dotnet/check-spec-compliance.sh"
     lifecycle_before: "compatibility"
     decision: "retain"
     lifecycle_after: "compatibility"
@@ -136,12 +136,12 @@ entries:
       - ".ai/scripts/check-all.sh"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-tool001-val001-portability.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-mutation-coverage.sh"
+  - path: "src/tools/dotnet/check-mutation-coverage.sh"
     lifecycle_before: "compatibility"
     decision: "retain"
     lifecycle_after: "compatibility"
@@ -155,7 +155,7 @@ entries:
       - ".ai/scripts/README.md"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-tool001-val001-portability.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
@@ -174,12 +174,12 @@ entries:
       - ".ai/scripts/README.md"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-tool001-val001-portability.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-data-class-annotations.sh"
+  - path: "src/tools/dotnet/check-data-class-annotations.sh"
     lifecycle_before: "transitional"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -193,12 +193,12 @@ entries:
       - ".ai/scripts/README.md"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/guides/design-guides/DATA-CLASS-STANDARDS.md"
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "src/knowledge/dotnet-backend/guides/DATA-CLASS-STANDARDS.md"
+      - "releases/v0.4.2/release.yaml"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-domain-events-compliance.sh"
+  - path: "src/tools/dotnet/check-domain-events-compliance.sh"
     lifecycle_before: "transitional"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -212,12 +212,12 @@ entries:
       - ".ai/scripts/README.md"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
       - ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-tool001-val001-portability.md"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-dotnet-config.sh"
+  - path: "src/tools/dotnet/check-dotnet-config.sh"
     lifecycle_before: "transitional"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -232,11 +232,11 @@ entries:
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
       - ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-framework-api-compliance.sh"
+  - path: "src/tools/dotnet/check-framework-api-compliance.sh"
     lifecycle_before: "transitional"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -251,11 +251,11 @@ entries:
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
       - ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-test-compliance.sh"
+  - path: "src/tools/dotnet/check-test-compliance.sh"
     lifecycle_before: "retirement-candidate"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -269,12 +269,12 @@ entries:
       - ".ai/scripts/README.md"
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
-      - ".dev/releases/v0.4.0/migration-guide.md"
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.0/migration-guide.md"
+      - "releases/v0.4.2/release.yaml"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/check-test-di-compliance.sh"
+  - path: "src/tools/dotnet/check-test-di-compliance.sh"
     lifecycle_before: "transitional"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -289,11 +289,11 @@ entries:
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
       - ".dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md"
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"
 
-  - path: ".ai/scripts/validate-dual-profile-config.sh"
+  - path: "src/tools/dotnet/validate-dual-profile-config.sh"
     lifecycle_before: "transitional"
     decision: "deprecate"
     lifecycle_after: "deprecated"
@@ -308,6 +308,6 @@ entries:
       - ".ai/scripts/shell-assets.yaml"
     evidence_refs:
       - ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"
-      - ".dev/releases/v0.4.2/release.yaml"
+      - "releases/v0.4.2/release.yaml"
     downstream_evidence: []
     decision_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-enf001-governance.md"

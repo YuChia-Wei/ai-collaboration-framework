@@ -16,7 +16,7 @@
     "goal": "Reconcile v0.10 terminal source projection and define v0.11 terminal records.",
     "target": "Issue #148",
     "files": [
-      ".dev/releases/v0.10.0/**",
+      "releases/v0.10.0/**",
       ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/**"
     ],
     "constraints": [
@@ -75,8 +75,8 @@
   "results": {
     "summary": "v0.10.0 package schema, post-merge status, publication text, and terminal workflow projection were reconciled without changing immutable bytes.",
     "files_changed": [
-      ".dev/releases/v0.10.0/release.yaml",
-      ".dev/releases/v0.10.0/release-notes.md"
+      "releases/v0.10.0/release.yaml",
+      "releases/v0.10.0/release-notes.md"
     ],
     "approval_evidence": [
       "Owner v0.11.0 R2 work package",

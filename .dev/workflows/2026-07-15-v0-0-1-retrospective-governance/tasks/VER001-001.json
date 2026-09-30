@@ -13,7 +13,7 @@
   "finding_ids": ["VER001-RETROSPECTIVE-IDENTITY", "VER001-V030-UPGRADE-PATH"],
   "scope": {
     "target": "Retrospective v0.0.1 release identity and manual v0.3.0 reconciliation path",
-    "files": [".dev/releases/v0.0.1/**", ".dev/releases/v0.3.0/**", ".dev/releases/INDEX.MD"],
+    "files": ["releases/v0.0.1/**", "releases/v0.3.0/**", "releases/INDEX.MD"],
     "constraints": ["Historical tag is immutable", "v0.0.1 is source-snapshot-only", "Do not infer installed file selection", "Do not publish v0.3.0"],
     "non_goals": ["Automatic v0.0.1 upgrade", "Target repository mutation", "v0.3.0 release publication"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Recorded v0.0.1 as a retrospective non-installable source snapshot, constrained v0.3.0 upgrades to provenance-aware manual reconciliation, and published the immutable historical tag.",
-    "files_changed": [".dev/releases/v0.0.1/**", ".dev/releases/v0.3.0/**", ".dev/releases/INDEX.MD", ".ai/scripts/tests/test_ai_context_version_governance.py"],
+    "files_changed": ["releases/v0.0.1/**", "releases/v0.3.0/**", "releases/INDEX.MD", ".ai/scripts/tests/test_ai_context_version_governance.py"],
     "tests_run": ["check-all.sh --quick", "test_ai_context_version_governance.py -v", "validate-ai-context-versions.py", "remote annotated tag peeled-target verification"],
     "finding_status": "addressed",
     "residual_risk": "The exact file selection installed by historical v0.0.1 consumers is unknown; each target still requires provenance and semantic reconciliation before upgrade.",

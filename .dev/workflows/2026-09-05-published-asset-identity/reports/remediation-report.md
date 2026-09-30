@@ -119,7 +119,7 @@ publication coordination gate. The two real edges were re-executed on immutable
 `a37df391c4369fd2d0a6728c91f649925a3e072d` to produce a schema-valid measured command
 receipt; both outputs exactly matched the retained byte-bound outputs. Combined
 duration was 17.930s. The local acceptance ledger and human projection passed
-`.ai/scripts/validate-agent-execution-guardrails.py --evidence-ledger`.
+`tools/maintenance/validate-agent-execution-guardrails.py --evidence-ledger`.
 
 Ignored Issue 280 artifacts retain `review-result-01.json`,
 `correction-review.json`, `actual-edges-receipt.json`, `actual-edges-output.json`,

@@ -38,7 +38,7 @@
     "tests_run": [
       "Post-#251 focused suite: lifecycle reuse validator, graph freshness, guardrails, profile registry, external delegation, commit policy/range, workflow, source governance, AI context, and unknown-closure fail-closed checks (all passed; summary sha256 89f19d233263b3d8f7c6c9250d73d34a6bffaee9fa5cd52bd94864e3d6013ff5)",
       "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --profile fast (passed outside sandbox in 494.287 seconds; selected=47 executed=46 reused=0 failed=0 blocked=0 warnings=1 deferred=0 not-applicable=1; completion sha256 9836cbf1e4d372f7efb23bacfac24e6463293204cbdd5e9671af1fe11ff3c9c7)",
-      "python .ai/scripts/validate-agent-execution-guardrails.py --evidence-ledger .dev/ai-context/local/validation/issue-249-253/post-251/acceptance-ledger.yaml (passed with 20 distinct #249/#253 entries)"
+      "python tools/maintenance/validate-agent-execution-guardrails.py --evidence-ledger .dev/ai-context/local/validation/issue-249-253/post-251/acceptance-ledger.yaml (passed with 20 distinct #249/#253 entries)"
     ],
     "finding_status": "addressed",
     "residual_risk": "A fresh identity-sensitive exact-head audit is still required on the frozen closeout; provider checks and admission remain unexecuted and unauthorized.",

@@ -583,7 +583,7 @@ Store as data rather than hard-coding in shell:
 # .ai/scripts/check-input-paths.yaml
 checks:
   - description: "Assessment Artifact Metadata"
-    command: "python .ai/scripts/validate-assessment-artifacts.py"
+    command: "python tools/maintenance/validate-assessment-artifacts.py"
     input_paths:
       - ".dev/assessments/**"
       - ".ai/assets/skills/ai-context-auditor/templates/**"

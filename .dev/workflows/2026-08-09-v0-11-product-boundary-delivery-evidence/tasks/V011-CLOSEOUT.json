@@ -16,7 +16,7 @@
     "goal": "Converge terminal source/provider/Issue/workflow state without rebuilding package bytes.",
     "target": "Issues #148 and #151",
     "files": [
-      ".dev/releases/v0.11.0/**",
+      "releases/v0.11.0/**",
       ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/**"
     ],
     "constraints": [
@@ -64,7 +64,7 @@
   "results": {
     "summary": "Terminal source-only closeout passed under the exact non-transferable v0.11.0 exception. Hosted fix PRs #158 through #161 passed, remote main is pinned at 29a36934f172fa61bd3a2abf1d9d96dad2479f40, and independent Windows/WSL release profiles, published-asset upgrade, and ten-case changed-path evidence are complete. The immutable tag, Release assets, and failed publication run remain unchanged; #148 then #151 are the authorized post-merge provider receipt.",
     "files_changed": [
-      ".dev/releases/v0.11.0/release.yaml",
+      "releases/v0.11.0/release.yaml",
       ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/"
     ],
     "approval_evidence": [

@@ -32,7 +32,7 @@
 | AIC-006 | HIGH | `resolved` | Workflow/commit policies and auditor contracts now distinguish transient conversational analysis, durable report-only audit, and governance remediation. | Request independent verification of authorization and persistence boundaries. | Governance completed; auditor verifies. |
 | AIC-007 | HIGH | `deferred` | Required shell checks remain mode `100644`; `check-all.sh` can exit zero after required checks are skipped as warnings. | Create tooling/validation workflow for fail-closed gates and executable-mode enforcement. | Tooling workflow; outside this documentation-governance batch. |
 | AIC-008 | MEDIUM | `resolved` | Current catalogs list Agents/Codex and Claude; Gemini paths, targets, branch prefixes, and descriptions were removed; Copilot alone remains planned/optional. | Request independent runtime-truth verification. | Governance completed; auditor verifies. |
-| AIC-009 | MEDIUM | `resolved` | Translation waves 1-5 corrected 46 agent-facing documents including `.dev/ARCHITECTURE.md`; policy-aware lint now checks tracked and untracked context, exact language exceptions, active paths/runtime/wrapper parity, and root bilingual structural parity. | Request independent verification; do not interpret structural parity as semantic translation equivalence. | Governance completed; auditor verifies. |
+| AIC-009 | MEDIUM | `resolved` | Translation waves 1-5 corrected 46 agent-facing documents including `src/knowledge/dotnet-backend/design/architecture-overview.md`; policy-aware lint now checks tracked and untracked context, exact language exceptions, active paths/runtime/wrapper parity, and root bilingual structural parity. | Request independent verification; do not interpret structural parity as semantic translation equivalence. | Governance completed; auditor verifies. |
 
 ## Remediation Batches
 
@@ -67,7 +67,7 @@
 ### AIC-003
 
 - Changes: downgraded `coding-guide.md` and `NEW-PROJECT-GUIDE.md` to legacy/retired examples; made fixed stack choices conditional; routed current initialization to `repo-structure-sync`; repaired root-entry references and indexes.
-- Evidence: `.dev/standards/coding-guide.md`, `.dev/guides/learning-guides/NEW-PROJECT-GUIDE.md`, `.dev/guides/learning-guides/LEARNING-PATH.md`, their README/INDEX owners.
+- Evidence: `.dev/standards/coding-guide.md`, `src/knowledge/dotnet-backend/guides/NEW-PROJECT-GUIDE.md`, `src/knowledge/dotnet-backend/guides/LEARNING-PATH.md`, their README/INDEX owners.
 - Validation: targeted searches found no stale `CLAUDE.md` link or active Todo application identity in the corrected entries; repository diff check passed.
 - Remaining risk: architecture-specific examples must not be promoted back to target truth without explicit adoption.
 
@@ -152,7 +152,7 @@
 - Markdown documentation under `.ai/scripts` is checked; script source lexical scanning remains deferred because comments, output, and rule patterns may carry execution semantics.
 - Root bilingual entries are checked for reciprocal links, ownership markers, heading-level shape, ordered backtick table paths, and the required root catalog rows.
 - The validator reports structural parity only and explicitly does not claim semantic translation equivalence.
-- `.dev/ARCHITECTURE.md` was translated to English and added as an explicit language-policy surface.
+- `src/knowledge/dotnet-backend/design/architecture-overview.md` was translated to English and added as an explicit language-policy surface.
 - Negative probes confirmed that an untracked Han Markdown file fails before staging and that exact allowlist lines do not permit unrelated Han prose.
 
 ## Architecture Semantic Reconciliation

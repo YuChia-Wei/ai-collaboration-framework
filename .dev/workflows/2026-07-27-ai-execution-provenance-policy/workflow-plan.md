@@ -144,7 +144,7 @@
   change.
 - Run focused commit-policy and handoff validator tests introduced or affected
   by remediation.
-- Run `.ai/scripts/validate-git-commits.py` against the workflow commit range.
+- Run `tools/maintenance/validate-git-commits.py` against the workflow commit range.
 - Run `git diff --check`.
 - Require an independent `ai-context-auditor` post-remediation assessment before
   closure.

@@ -23,6 +23,6 @@ fields, not execution observations. Only JSON/YAML/UTF-8 readability and local l
 are applicable S1 evidence. A future fixture must use its own actual execution
 record. A real target or runtime result must remain separately identified.
 
-Normative shapes are in [the schema bundle](../schemas/contracts.schema.json);
+Normative shapes are in [the schema bundle](../../../../../src/distribution/schemas/contracts.schema.json);
 cross-document, lexical, safety and digest requirements are in
 [formats.md](../formats.md). Do not treat JSON Schema alone as a full validator.

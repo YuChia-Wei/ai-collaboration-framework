@@ -57,7 +57,7 @@ pull_request:
 
     - no Issue closure or Project terminal mutation
     - no v0.15 option allocation, tag, GitHub Release, asset upload, publication, CLI/registry/installer, or external-repository work
-    - no formal `.dev/releases/v0.15.0` publication record; all v0.15 candidates remain ignored synthetic validation output
+    - no formal `releases/v0.15.0` publication record; all v0.15 candidates remain ignored synthetic validation output
 
     ## Checklist
 

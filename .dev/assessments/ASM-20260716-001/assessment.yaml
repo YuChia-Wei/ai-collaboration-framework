@@ -35,7 +35,7 @@ scope:
     - ".claude/skills/**"
     - "AGENTS.md"
     - "CLAUDE.md"
-    - ".dev/releases/v0.4.0/**"
+    - "releases/v0.4.0/**"
     - ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/**"
     - "standards-related validators, indexes, manifests, and Git history"
   excluded:

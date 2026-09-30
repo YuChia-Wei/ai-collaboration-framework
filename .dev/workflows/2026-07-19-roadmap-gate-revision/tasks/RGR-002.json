@@ -42,7 +42,7 @@
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/tests/test_backlog_release_contract.py",
       "bash .ai/scripts/validate-ai-context.sh",
-      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-19-roadmap-gate-revision",
+      "python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-19-roadmap-gate-revision",
       "git diff --check"
     ],
     "last_completed_step": "Committed the roadmap revision and validated both workflow commits in main..HEAD.",

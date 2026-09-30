@@ -6,7 +6,7 @@ The first exact v0.13 attempt was intentionally fail-closed:
 
 ```text
 python .ai/scripts/build-ai-context-package.py --ref df7012b6... --version v0.13.0 ...
-AI context package build failed: missing required Git-tree file: .dev/releases/v0.13.0/release.yaml
+AI context package build failed: missing required Git-tree file: releases/v0.13.0/release.yaml
 ```
 
 No v0.13 release record was invented because #61 does not authorize release-candidate truth, tag, or publication. To inspect the exact current payload bytes, a controlled projection used the existing v0.12.0 release contract plus the verified published v0.11.0 `metadata/files.yaml`, while pinning source ref to `df7012b6bf6ac360cfb47e2c79813384880665f8`.
@@ -50,10 +50,10 @@ The current default package happens to select the dotnet profile, so the path re
 
 `INSTALL.md` correctly says the package is not a whole-repository overwrite and that source-only release publication is not part of target installation. The payload then exposes contradictory navigation:
 
-- `.dev/standards/AI-CONTEXT-VERSION-POLICY.md` tells a target user to create `.dev/releases/<version>/`, use source release records, run publication gates, and reconcile source Issue/Project state;
-- `.dev/releases/**`, release-publication templates, the release validator, the publication runbook, and the closeout skill/guide are intentionally excluded;
+- `.dev/standards/AI-CONTEXT-VERSION-POLICY.md` tells a target user to create `releases/<version>/`, use source release records, run publication gates, and reconcile source Issue/Project state;
+- `releases/**`, release-publication templates, the release validator, the publication runbook, and the closeout skill/guide are intentionally excluded;
 - `.ai/scripts/README.md` lists and explains the excluded release validator;
-- `.dev/operations/RUNBOOK-GUIDE.MD` and `.dev/operations/runbooks/README.MD` link to the excluded publication runbook;
+- `src/knowledge/dotnet-backend/operations/RUNBOOK-GUIDE.MD` and `.dev/operations/runbooks/README.MD` link to the excluded publication runbook;
 - the human guide index names the excluded closeout guide.
 
 A filtered Markdown-link scan checked 204 local links and found seven genuine missing targets across five payload files after excluding six code-example false positives:

@@ -8,7 +8,7 @@
     "target": "Draft requirements for implementation skill naming and domain ubiquitous language management.",
     "files": [
       ".dev/requirement/SKILL-IMPLEMENTER-NAMING-REQUIREMENTS.MD",
-      ".dev/requirement/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD",
+      "src/knowledge/dotnet-backend/requirements/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD",
       ".dev/workflows/2026-06-requirements-skill-naming-domain-language/workflow-plan.md",
       ".dev/workflows/2026-06-requirements-skill-naming-domain-language/tasks/requirement-drafting.json"
     ],
@@ -66,7 +66,7 @@
     "summary": "Created and updated requirement documents that capture scope-first implementer taxonomy decisions, test skill deferral, and domain ubiquitous language needs, including required user decisions and recommended approaches.",
     "files_changed": [
       ".dev/requirement/SKILL-IMPLEMENTER-NAMING-REQUIREMENTS.MD",
-      ".dev/requirement/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD",
+      "src/knowledge/dotnet-backend/requirements/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD",
       ".dev/workflows/2026-06-requirements-skill-naming-domain-language/workflow-plan.md",
       ".dev/workflows/2026-06-requirements-skill-naming-domain-language/tasks/requirement-drafting.json"
     ],

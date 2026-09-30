@@ -59,7 +59,7 @@ evidence 時委派給 worker；它不是預設必定 delegated 的 runtime 宣�
 適用的 role 必須明確記錄 `direct`、`delegated`、`unavailable` 或
 `not-applicable`。只有 genuine child invocation 才能記錄為 `delegated`；
 完整的 disposition、execution evidence、retry 與 fallback 規則見
-[Provider-Neutral Role Execution Contract](../../../.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md)。
+[Provider-Neutral Role Execution Contract](../../contracts/ROLE-EXECUTION-CONTRACT.md)。
 
 例：
 
@@ -73,7 +73,7 @@ evidence 時委派給 worker；它不是預設必定 delegated 的 runtime 宣�
 
 canonical source：
 
-- shared role：`.ai/assets/sub-agent-role-prompts/<sub-agent-id>/`
+- shared role：`.dev/agents/<sub-agent-id>/`
 - private role：`.ai/assets/skills/<skill-id>/roles/<sub-agent-id>/`
 
 ## 3. Shared / Supporting Material
@@ -146,7 +146,7 @@ shared rules 沒有獨立輸入輸出 contract，不應假裝成 worker role。
 - taxonomy 與 asset 放置策略：
   - `AI-ASSET-LOCATION-STRATEGY.md`
 - role execution 與 implementer skill 的互動：
-  - [Provider-Neutral Role Execution Contract](../../../.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md)
+  - [Provider-Neutral Role Execution Contract](../../contracts/ROLE-EXECUTION-CONTRACT.md)
   - `.ai/SUB-AGENT-SYSTEM.MD`（derived binding / routing view）
   - `AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md`
 - sub-agent role manifests 的 `human_guide` 應指向本文件，作為 human-facing taxonomy 參考。

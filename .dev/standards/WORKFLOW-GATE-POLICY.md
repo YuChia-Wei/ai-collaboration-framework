@@ -92,7 +92,8 @@ to create and bind an online Issue before material work begins.
 For software-development work, activation is intent-based. A high-level request
 that spans planning, requirements, design, implementation, testing, review, or
 closeout may activate the repository's development orchestration without the
-user naming `software-development-orchestrator` or any downstream skill. Determine stages from the
+user naming an orchestration skill. This source project owns the workflow and its
+records; no portable orchestration skill is selected. Determine stages from the
 requested outcome, current artifacts, repository policy, and approval state,
 not from skill names alone.
 
@@ -297,7 +298,7 @@ owner and follow-up condition; it is not implicit success.
 ## Long-Running Validation Delegation Gate
 
 Use the operation classifier in
-`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` before selecting
+`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` before selecting
 dispatch overhead. A terminal label alone does not require full packet/lease
 handling for an ordinary isolated short same-runtime read-only review. Both
 review tiers require machine-readable subject/criteria/authority preflight;
@@ -327,7 +328,7 @@ declared ignored artifact roots. Later content or governing-authority drift
 invalidates the freeze; commit-message or history-only identity drift requires
 a deterministic subject rebind. Reuse from an earlier subject
 is admissible only with the content-addressed proof required by
-`.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; current-head
+`.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; current-head
 review-subject binding, required hosted contexts, and live admission remain
 fresh gates. Independent review itself is content-addressed and is repeated
 only when that reviewed subject, criteria, or authority changes.
@@ -337,9 +338,12 @@ execution profile that can faithfully execute and report the bounded command.
 Its scope is read-only except for ignored validation logs or artifacts. It must
 not repair, commit, push, mutate Issues or Projects, or broaden the command.
 
-The external-task prompt must contain exactly one marked dispatch envelope
-conforming to
-`.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`.
+The legacy schema-bound external-task dispatch route is unavailable after its
+compatibility schema and tooling were removed. Existing U001 and P7 deferrals
+remain in force. Restore and verify a source-owned schema and executable route
+before dispatching under this long-running gate. Once restored, the external-task
+prompt must contain exactly one marked dispatch envelope conforming to that
+selected schema.
 The envelope binds the source-task identity, final integration owner, immutable
 subject, exact argument vector, permission boundary, stop conditions, and one
 completion-delivery route. The source identity may be explicit or supplied by
@@ -348,7 +352,7 @@ is automatically routed to its source.
 
 Before dispatch, validate the agent execution packet and acquire the worktree
 snapshot lease defined by
-`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. The external envelope
+`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. The external envelope
 must bind the packet reference, digest, exact subject SHA, validator argv, and
 passing outcome. A conflicting tracked writer, stale lease, unvalidated packet,
 or attempt three without new owner/workflow authorization blocks dispatch.

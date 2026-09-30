@@ -3,7 +3,7 @@
   "subject_sha": "5be64ebb5bf3e7cd8e1ae28a3d2e118088061095",
   "outcome": "failed",
   "local_command": ["python", ".ai/scripts/validate-ai-context-release-state.py", "--phase", "candidate", "--version", "v0.16.0"],
-  "source": ".dev/releases/v0.16.0/release-notes.md",
+  "source": "releases/v0.16.0/release-notes.md",
   "reason": "The first heading used the version without the required REL- release identity prefix.",
   "hosted_evidence": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33967332004/job/101309640455",
   "hosted_outcome": "failure",

@@ -161,7 +161,7 @@ entries:
   subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
   outcome: passed
   evidence_refs:
-  - tracked:.dev/releases/v0.16.0/migration-guide.md
+  - tracked:releases/v0.16.0/migration-guide.md
   - tracked:.dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md
   evidence_sha256: aad49d592ab7306641566f47259c6003014e4f7b285c8c4202874f49ffc16fc2
   execution_receipt_ref: null

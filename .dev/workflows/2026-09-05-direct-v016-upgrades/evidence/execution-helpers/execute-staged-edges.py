@@ -57,7 +57,7 @@ try:
     terminal['matrix_sha256']=sha(matrix_bytes)
     terminal['route_evidence']=[]
     for route in matrix['routes']:
-        resolution=resolve_upgrade_route(matrix,origin=route['origin'],target='v0.16.0',matrix_bytes=matrix_bytes,asset_root=staging,matrix_reference='.dev/releases/v0.16.0/support-matrix.yaml')
+        resolution=resolve_upgrade_route(matrix,origin=route['origin'],target='v0.16.0',matrix_bytes=matrix_bytes,asset_root=staging,matrix_reference='releases/v0.16.0/support-matrix.yaml')
         assert resolution['route_kind']=='direct' and len(resolution['selected_route']['edges'])==1
         doc(staging/f"route-evidence/{route['origin']}-to-v0.16.0.json",resolution)
         route_path=f"route-evidence/{route['origin']}-to-v0.16.0.json"

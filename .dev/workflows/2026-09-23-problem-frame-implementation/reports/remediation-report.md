@@ -59,7 +59,7 @@ not populated with simulated evidence. This is source completion only.
   residue, and disabled the optional Git fsmonitor helper. No behavior claim.
 - Existing Git hook directory contains sample hooks only; no hooksPath override
   was configured. No settings or hooks changed.
-- `python -B .ai/scripts/validate-git-commits.py --message-file
+- `python -B tools/maintenance/validate-git-commits.py --message-file
   F:/framework-next/356/.dev/workflows/2026-09-23-problem-frame-implementation/.tmp/commit-message.txt
   --workflow-id 2026-09-23-problem-frame-implementation` returned exit 0:
   `Git commit validation passed for planned message.`

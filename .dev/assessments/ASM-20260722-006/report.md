@@ -136,7 +136,7 @@ for the next release until a Node.js 24-native hosted run is proven warning-free
 ### Commands Run
 
 ```text
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-workflow-artifacts.py
 python .ai/scripts/tests/test_backlog_release_contract.py
 python .ai/scripts/validate-ai-context.py

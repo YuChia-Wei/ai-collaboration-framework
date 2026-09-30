@@ -21,7 +21,7 @@
 ## Requirement Inputs
 
 - `.dev/requirement/SKILL-IMPLEMENTER-NAMING-REQUIREMENTS.MD`
-- `.dev/requirement/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD`
+- `src/knowledge/dotnet-backend/requirements/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD`
 
 ## Target Direction
 

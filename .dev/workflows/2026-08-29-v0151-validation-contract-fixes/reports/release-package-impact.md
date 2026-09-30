@@ -23,7 +23,7 @@ This is a release-allocation recommendation, not release readiness, tag, Release
 | --- | --- | --- |
 | `INSTALL.md` | `c7f12212f0dbc5be1f0b6e9aee4984d52959c4d625ffc3bbc55d1c2b4a9c7403` | `439fce297a8a875ee065e6080cfca15004b1c2466de5587bd4d5a9a24ba714d7` |
 | `payload/.ai/scripts/check-all.sh` | `84c536ded79b5a4bbfc5ef02255ff98c22bce5f7afd1529f9a0f23f17e33871d` | `5733f1048829198a23c58d64c81ddf2265000d39347b79a9685cc3adac1f988f` |
-| `payload/.ai/scripts/validation-evidence.py` | `2999d9b919b15666bccee4c4d44f0250e093709ca68eb97fc969054e0b71f198` | `58be9ef73e2646b413605b35e567b75e673df2ed8e22db90a86fe0113e40d290` |
+| `payload/tools/maintenance/validation-evidence.py` | `2999d9b919b15666bccee4c4d44f0250e093709ca68eb97fc969054e0b71f198` | `58be9ef73e2646b413605b35e567b75e673df2ed8e22db90a86fe0113e40d290` |
 | `payload/.ai/scripts/validation-profile-registry.sh` | `ff63036e3498c20384244bfbf1bc174404cf1051ae414821c617a2b8d157f9d0` | `e1b934dd12389811ab566137e886dcf92fdb1eeaea28b1e1aa09d90d4b319409` |
 
 The package payload fingerprint changed from `6c2bd24ef993c4ac122bce0c6bdd528c39e559fd47b0ec8b76ead80e4d8dc0e3` to `34242a7f7cbf9a7d7ff3cacae38bd55db1e28a742bb1acd10ee9d852699b9d71`.

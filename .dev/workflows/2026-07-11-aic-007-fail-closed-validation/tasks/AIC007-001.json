@@ -13,7 +13,7 @@
   "scope": {
     "goal": "Establish file-backed AIC-007 evidence and the enforcement contract before implementation.",
     "target": ".ai/scripts gate semantics, Git index modes, and transition guidance",
-    "files": [".ai/scripts/check-all.sh", ".ai/scripts/check-coding-standards.sh", ".ai/scripts/README.md"],
+    "files": [".ai/scripts/check-all.sh", "src/tools/dotnet/check-coding-standards.sh", ".ai/scripts/README.md"],
     "constraints": ["Exclude product source/tests", "Do not edit implementation during analysis"],
     "non_goals": ["Resolve AIC-007 in this task"]
   },

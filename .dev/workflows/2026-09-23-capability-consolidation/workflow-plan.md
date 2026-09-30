@@ -25,7 +25,7 @@ Stages are inventory -> design -> permitted static inspection -> local commit ->
 
 ## Verification and limits
 
-UTF-8/JSON/YAML parsing, AST without imports/pycache, exact identity/reference/member inspection and git diff --check are allowed. Exact planned message check is .ai/scripts/validate-git-commits.py --message-file <owned ignored message file> --workflow-id 2026-09-23-capability-consolidation. No product --help/CLI, schema validator, tests/fixture/build/package/install/migration/compatibility, audit/lease/effective-rule packet or CI. All are deferred-by-owner under U001, owner program #322 coordinator / P7, next action select redesigned checks after implementation.
+UTF-8/JSON/YAML parsing, AST without imports/pycache, exact identity/reference/member inspection and git diff --check are allowed. Exact planned message check is tools/maintenance/validate-git-commits.py --message-file <owned ignored message file> --workflow-id 2026-09-23-capability-consolidation. No product --help/CLI, schema validator, tests/fixture/build/package/install/migration/compatibility, audit/lease/effective-rule packet or CI. All are deferred-by-owner under U001, owner program #322 coordinator / P7, next action select redesigned checks after implementation.
 
 ## Resume
 

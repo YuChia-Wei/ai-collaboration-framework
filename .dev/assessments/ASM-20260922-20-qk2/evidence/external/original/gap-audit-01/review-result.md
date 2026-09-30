@@ -21,7 +21,7 @@ The implementation is not admissible at this subject. Two required exact-head ch
 
 The exact-head hosted `execution-artifacts-tests` result therefore runs 26 earlier tests and then errors in `InputAuthoringTests.setUpClass` before any of the 11 new input-authoring tests execute. Six selected input cases pass when run in isolation, which narrows the defect to combined-process module isolation and does not cure the required-gate failure.
 
-- Evidence: `.ai/scripts/execution_artifact_contract.py:72`, `.ai/scripts/execution-artifacts.py:13`, `.ai/scripts/tests/test_execution_artifacts.py:177`, `.ai/scripts/tests/test_execution_artifacts.py:458`
+- Evidence: `tools/maintenance/execution_artifact_contract.py:72`, `.ai/scripts/execution-artifacts.py:13`, `.ai/scripts/tests/test_execution_artifacts.py:177`, `.ai/scripts/tests/test_execution_artifacts.py:458`
 - Exact-head receipt: `.dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/execution-artifacts-tests.result.json`
 - Sealed log: `.dev/ai-context/local/gap-ci-initial-artifacts/20260922T062615Z-2203/execution-artifacts-tests.log` (`4505550876d536de08d169e67ffdb0415c4cdba8b2fde26253e7e736610fb468`)
 - Impact: a required gate fails and the combined validation path omits every new input-authoring assertion, so isolated passes cannot support admission.

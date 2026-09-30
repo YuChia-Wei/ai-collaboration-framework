@@ -47,7 +47,7 @@ slices, explicit native interruption gap and legacy Issue dispositions.
   Markdown file links passed direct parsing/existence checks. Final edited metadata
   and staged whitespace/scope are read again before commit; source stays unchanged.
 - Complete planned-message validator passed (exit 0):
-  `python -I -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-verification-design/planned-message.tmp --workflow-id 2026-09-23-verification-design`.
+  `python -I -B tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-verification-design/planned-message.tmp --workflow-id 2026-09-23-verification-design`.
   Exact message SHA-256: `27b4be70a0eb02985f9d97139a0e50a4a9383b7adf4dc60cb496735c4e2ed898`. Ignored temporary message is inside
   owned workflow scope; commit uses these same bytes. Tests run: none.
 

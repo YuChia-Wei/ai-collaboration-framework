@@ -68,7 +68,7 @@ not permission to invent a Claude identity.
 
 `.dev/standards/GIT-COMMIT-POLICY.md`,
 `.dev/standards/GIT-COMMIT-POLICY.yaml`, and
-`.ai/scripts/validate-git-commits.py` currently require the final non-empty line
+`tools/maintenance/validate-git-commits.py` currently require the final non-empty line
 of every selected AI-assisted commit to be a valid AI `Co-Authored-By` trailer.
 That is compatible with one local co-author shape, but it cannot represent the
 documented Copilot cloud-agent shape without rewriting the native commit.

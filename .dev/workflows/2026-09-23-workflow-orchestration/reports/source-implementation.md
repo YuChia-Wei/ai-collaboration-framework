@@ -90,7 +90,7 @@ can be unsupported when meaningful content exceeds the chosen budget.
 - The first staged git diff --cached --check returned exit 2 for one extra blank
   line at workflow.py EOF. The extra blank line was removed; the same check then
   returned exit 0. No source behavior or gate was weakened.
-- python -B .ai/scripts/validate-git-commits.py --message-file
+- python -B tools/maintenance/validate-git-commits.py --message-file
   .dev/workflows/2026-09-23-workflow-orchestration/source-commit-message.tmp
   --workflow-id 2026-09-23-workflow-orchestration returned exit 0:
   Git commit validation passed for planned message. The exact ignored message

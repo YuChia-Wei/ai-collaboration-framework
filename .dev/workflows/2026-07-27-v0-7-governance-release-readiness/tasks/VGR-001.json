@@ -15,7 +15,7 @@
   "finding_ids": ["ASM-20260727-001#VFY-001", "ASM-20260727-001#VFY-002"],
   "scope": {
     "target": "Create GOV-003 and bind completed provenance work to the v0.7.0 awaiting-publication set.",
-    "files": [".dev/backlog/**", ".dev/releases/release.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/**"],
+    "files": [".dev/backlog/**", "releases/release.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/**"],
     "constraints": ["GOV-003 is resolved with completed_in v0.7.0 and published_in null.", "UPG-001 and INIT-001 remain unchanged."],
     "non_goals": ["v0.7.0 publication", "GitHub tracker resource creation"]
   },

@@ -15,9 +15,9 @@
       ".dev/INDEX.md",
       ".dev/guides/**/README.MD",
       ".dev/guides/**/INDEX.MD",
-      ".dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md",
-      ".dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md",
-      ".dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md",
+      "src/knowledge/dotnet-backend/guides/DATABASE-MIGRATION-GUIDE.md",
+      "src/knowledge/dotnet-backend/guides/DEVELOPMENT-TOOLS-GUIDE.md",
+      "src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md",
       ".dev/standards/README.md",
       ".dev/standards/INDEX.MD",
       ".dev/standards/coding-standards/README.md",
@@ -26,7 +26,7 @@
       ".dev/standards/rationale/INDEX.MD",
       ".dev/standards/templates/README.md",
       ".dev/standards/templates/INDEX.MD",
-      ".dev/releases/v0.4.0/migration-guide.md"
+      "releases/v0.4.0/migration-guide.md"
     ],
     "tests_run": [
       "File-disposition manifest validation passed",

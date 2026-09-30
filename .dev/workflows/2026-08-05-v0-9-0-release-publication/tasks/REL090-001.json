@@ -15,7 +15,7 @@
   "reasoning_effort": "xhigh",
   "scope": {
     "release_id": "REL-v0.9.0",
-    "release_record": ".dev/releases/v0.9.0/release.yaml",
+    "release_record": "releases/v0.9.0/release.yaml",
     "authorized_included_work": [
       "GOV-004",
       "PKG-005",
@@ -80,7 +80,7 @@
       ".dev/backlog/items/VAL-003.yaml",
       ".dev/backlog/items/SAG-002.yaml",
       ".dev/backlog/ROADMAP.md",
-      ".dev/releases/v0.9.0/**",
+      "releases/v0.9.0/**",
       ".dev/workflows/2026-08-05-v0-9-0-release-publication/**"
     ],
     "tests_run": [

@@ -118,7 +118,7 @@ v0.2 guide 也應補充相同警告。它雖然已要求 inventory target truth�
 
 以下五個 target 檔案與 source `v0.1.0` blob-identical，內容描述的是來源 framework 自身的治理、validator/skill migration lifecycle，不是 `dotnet-mq-arch-lab` 的 active requirements：
 
-- `.dev/requirement/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD`
+- `src/knowledge/dotnet-backend/requirements/DOMAIN-UBIQUITOUS-LANGUAGE-REQUIREMENTS.MD`
 - `.dev/requirement/DOTNET-VALIDATOR-PHASE-2-REQUIREMENTS.MD`
 - `.dev/requirement/DOTNET-VALIDATOR-PHASE-3-REQUIREMENTS.MD`
 - `.dev/requirement/HISTORICAL-CONTEXT-NORMALIZATION-REQUIREMENTS.MD`
@@ -132,7 +132,7 @@ v0.2 guide 也應補充相同警告。它雖然已要求 inventory target truth�
 
 ## P1：補 target-truth 與 exact-case validation
 
-Git 實際追蹤 `.dev/ARCHITECTURE.md`，但 active context 曾有 20 個 `.dev/ARCHITECTURE.MD` references，分布於 canonical skill references、guides、standards、template 與 target requirement。Windows `Path.exists()` 不分大小寫，因此既有 validator 全部通過。
+Git 實際追蹤 `src/knowledge/dotnet-backend/design/architecture-overview.md`，但 active context 曾有 20 個 `.dev/ARCHITECTURE.MD` references，分布於 canonical skill references、guides、standards、template 與 target requirement。Windows `Path.exists()` 不分大小寫，因此既有 validator 全部通過。
 
 validator 應以 `git ls-files` 的原始 path 建立 exact set 與 `casefold -> canonical` map，再檢查 active Markdown/backtick/link references：
 
@@ -199,7 +199,7 @@ README 應解釋 purpose/scope/usage，INDEX 擁有 catalog；generated inventor
 4. 驗證 `REQUIREMENT-GUIDE.MD` 與 backlog governance README 可保留。
 5. 驗證 `TECH-STACK-REQUIREMENTS.MD` 被分類為 target-owned/reconcile。
 6. 驗證 package 內不存在指向 excluded paths 的 backlinks。
-7. 在 Windows/core.ignorecase=true 情境驗證 `.dev/ARCHITECTURE.MD` 對 `.dev/ARCHITECTURE.md` 仍 fail closed。
+7. 在 Windows/core.ignorecase=true 情境驗證 `.dev/ARCHITECTURE.MD` 對 `src/knowledge/dotnet-backend/design/architecture-overview.md` 仍 fail closed。
 8. 驗證 dirty target 與 hash mismatch 時 installer 不覆蓋、不刪除並輸出 conflict。
 
 ## 本次下游 remediation
@@ -208,7 +208,7 @@ README 應解釋 purpose/scope/usage，INDEX 擁有 catalog；generated inventor
 
 - 移除五個 source lifecycle requirement leaks。
 - 移除 `.ai/scripts/README.md` 的 source workflow 斷鏈。
-- 修正 20 個 active `.dev/ARCHITECTURE.MD` references 為 Git exact case `.dev/ARCHITECTURE.md`。
+- 修正 20 個 active `.dev/ARCHITECTURE.MD` references 為 Git exact case `src/knowledge/dotnet-backend/design/architecture-overview.md`。
 - 新 validator 首次執行後另外找出並修正 11 個 requirement/spec guide exact-case mismatches。
 - 為 `validate-ai-context.py` 增加 exact-case reference gate 與 regression tests。
 

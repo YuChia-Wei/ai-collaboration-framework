@@ -18,8 +18,8 @@ python .ai/scripts/validate-ai-context.py --help
 需要由 shell 尋找可用直譯器時，改用對應 launcher：
 
 ```text
-sh .ai/scripts/run-python-entrypoint.sh .ai/scripts/validate-ai-context.py --help
-pwsh -File .ai/scripts/run-python-entrypoint.ps1 .ai/scripts/validate-ai-context.py --help
+sh tools/maintenance/run-python-entrypoint.sh .ai/scripts/validate-ai-context.py --help
+pwsh -File tools/maintenance/run-python-entrypoint.ps1 .ai/scripts/validate-ai-context.py --help
 ```
 
 請只傳入 registry 所列的 CLI 路徑。source-only CLI 不會隨目標 package 發送，
@@ -33,7 +33,7 @@ publication 亦不屬於本指南的執行範圍。
 
 ```text
 python .ai/scripts/validate-ai-context.py --diagnostic-format=json
-sh .ai/scripts/run-python-entrypoint.sh .ai/scripts/validate-ai-context.py --diagnostic-format=json
+sh tools/maintenance/run-python-entrypoint.sh .ai/scripts/validate-ai-context.py --diagnostic-format=json
 ```
 
 blocked 結果的 `outcome` 是 `blocked-by-environment`。human 與 JSON 都會說明

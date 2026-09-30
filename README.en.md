@@ -7,7 +7,7 @@ This repository is the source for a reusable AI collaboration framework. It main
 | Purpose | Path |
 | --- | --- |
 | Agent collaboration rules and current routes | [`AGENTS.md`](AGENTS.md) |
-| Human guides and operating instructions | [`.dev/guides/`](.dev/guides/README.MD) |
+| Source operating policies | [`.dev/standards/`](.dev/standards/INDEX.MD) |
 | Editable reusable framework source | [`src/`](src/) |
 | Generated package installed here | [`.ai/core/`](.ai/core/) |
 | Codex skill entries | [`.agents/skills/README.md`](.agents/skills/README.md) |
@@ -16,16 +16,18 @@ This repository is the source for a reusable AI collaboration framework. It main
 
 ## This repository's installation selection
 
-The repository selects all 18 delivered skills with Codex and Claude adapters, and no engineering knowledge packages. Skill IDs use their original names. The RC2 product identity is version `0.19.0-rc.2` at source commit `aad927328c20b08c8445e8ad1792eadd8ecc3466`, with annotated tag name `v0.19.0-rc.2`. `.ai/custom/installation.json` records the project-owned selection; the managed installer generates `.ai/framework.lock`, `.ai/core/`, and both runtime entry sets. Do not edit generated content directly. Edit product sources under `src/` and update the installation through the source workflow.
+The RC3 source selection contains 17 portable skills with Codex and Claude adapters, and no engineering knowledge packages. The authoring package IDs are `adr-author`, `lesson-author` and `pr-author`; portable workflow orchestration has been retired. The generated installation identity remains recorded by its lock and is updated separately from this source selection. `.ai/custom/installation.json` records the project-owned selection; the managed installer generates `.ai/framework.lock`, `.ai/core/`, and both runtime entry sets. Do not edit generated content directly. Edit product sources under `src/` and update the installation through the source workflow.
 
-Installation selection is separate from skill operation settings. `.ai/custom/framework.json` binds Lesson, ADR, PR, workflow, CBF, and standards-promotion skills to six project-owned filesystem roots with exact write_roots and package templates, using tracked intent. No records or evidence have been created, and no ADR decision, promotion target/source adapters, or local-backlog provider are configured. These are path selections, not proof of authorization, store availability, or runtime capability.
+Installation selection is separate from skill operation settings. `.ai/custom/framework.json` binds Lesson, ADR, PR, CBF, and standards-promotion skills to five project-owned filesystem roots with exact write_roots and package templates, using tracked intent. No records or evidence have been created, and no ADR decision, promotion target/source adapters, or local-backlog provider are configured. These are path selections, not proof of authorization, store availability, or runtime capability.
+
+RC3 provides an explicit Git-backed breaking reinstall through the pinned engine's `tools/reinstall-framework.py`. It requires exact cleanup and preservation lists, preflights the new installation in an external preview, and verifies retained bytes after installation. Cleanup is non-atomic: the committed Git baseline owns obsolete-file recovery, and the pinned API 2 journal owns the new installation. Read the [reinstall contract](.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md) and [actual source/MQ trial results](.dev/workflows/2026-09-30-rc3-reinstall/results.md).
 
 ## Source and compatibility boundaries
 
 - `src/skills/` and `src/knowledge/` are the editable reusable product sources; this repository selects no engineering knowledge package.
 - `.ai/core/`, `.ai/framework.lock`, and runtime entries are installation outputs.
-- `.ai/assets/` retains only compatibility and tooling inputs with active source-tool callers. It is not the daily skill registry or a second route for ordinary execution.
-- `.dev/standards/` owns source policy, Issue authority, U001, and P7 deferrals; `.dev/releases/` owns release records and version-support boundaries.
-- Initialization, upgrade, and transaction recovery for previously published formats, plus historical or exceptional release closeout, remain source-owned compatibility duties rather than portable installed skills.
+- Legacy compatibility roots have been removed from this source layout. Historical references do not establish current executable tooling.
+- `.dev/standards/` owns source policy, Issue authority, U001, and P7 deferrals; `releases/` owns release records and version-support boundaries.
+- Initialization, upgrade, and transaction recovery for previously published formats remain source-owned compatibility duties with no current portable or executable legacy route. Historical or exceptional release closeout remains governed by source release policy.
 
-Follow [`AGENTS.md`](AGENTS.md) and the `.dev/standards/` policies it names. Installing RC2 does not establish runtime discovery, behavioral acceptance, upgrade/recovery trials, or downstream admission; owner-selected S6/P7 work owns those checks. Stable publication and a GitHub Release are separate owner decisions.
+Follow [`AGENTS.md`](AGENTS.md) and the `.dev/standards/` policies it names. The RC3 report records the actual packaging, reinstall and read-back scope. Runtime discovery, application behavior, failure recovery and hosted admission retain their specific S6/P7 verification status. Stable publication and a GitHub Release are separate owner decisions.

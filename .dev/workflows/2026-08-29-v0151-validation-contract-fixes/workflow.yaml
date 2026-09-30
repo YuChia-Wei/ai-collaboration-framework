@@ -21,7 +21,7 @@ continuation:
   target_policy_refs:
     - ".dev/standards/WORKFLOW-GATE-POLICY.md"
     - ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
-    - ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"
+    - ".dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"
   handoff_checkpoint: null
 work_items:
   - provider: "github"

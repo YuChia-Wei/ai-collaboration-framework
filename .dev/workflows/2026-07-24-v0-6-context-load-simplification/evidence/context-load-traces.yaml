@@ -82,7 +82,7 @@ traces:
         bytes: 19140
         whitespace_words: 2344
       - event_kind: "full-file"
-        path: ".dev/releases/INDEX.MD"
+        path: "releases/INDEX.MD"
         git_blob: "0d283ec3f33dad8ef25635d90e345b4651f60b53"
         bytes: 2901
         whitespace_words: 259
@@ -92,7 +92,7 @@ traces:
         bytes: 6633
         whitespace_words: 913
       - event_kind: "full-file"
-        path: ".dev/releases/release-phase-checks.yaml"
+        path: "releases/release-phase-checks.yaml"
         git_blob: "6ca6a0f8d741f4a4d50f8abf21cac304ea9280a6"
         bytes: 961
         whitespace_words: 87

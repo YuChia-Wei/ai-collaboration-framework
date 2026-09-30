@@ -12,7 +12,7 @@ acceptances:
     status: "passed"
     required_outcome: "An authoritative decision table identifies subject-digest behavioral reuse, content-addressed independent review, and gates that remain live or current-head-bound."
     evidence:
-      - ".ai/assets/shared/validation-gate-classification.yaml covers all 76 registry gates exactly once and enables only multi-hop-upgrade-transaction."
+      - ".dev/contracts/validation-gate-classification.yaml covers all 76 registry gates exactly once and enables only multi-hop-upgrade-transaction."
       - "current-head-review-binding replaces exact-head independent re-execution; hosted, provider, mutable-state, actual-upgrade, and tag/release gates remain fresh and non-replaceable."
     evidence_digest: "4bc8216551aff89f0c7a78440da44c5462d4eb3737645b1ab2c062376fcf0f7f"
   - acceptance_id: "GOV017-A2"

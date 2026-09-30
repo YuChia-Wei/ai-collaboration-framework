@@ -35,7 +35,7 @@
 ### Included AI Context Surfaces
 
 - `ASM-20260809-003` and `ASM-20260809-004` outcomes relevant to this workflow.
-- `.dev/backlog/**`, `.dev/requirement/REQUIREMENT-GUIDE.MD`, active `.dev/guides/**`, and `.dev/ARCHITECTURE.md` changed by the remediation.
+- `.dev/backlog/**`, `src/skills/requirement-author/references/requirement-guide.md`, active `.dev/guides/**`, and `src/knowledge/dotnet-backend/design/architecture-overview.md` changed by the remediation.
 - `.ai/assets/tech-stacks/dotnet-backend/**`, `.ai/distribution/profiles/dotnet-backend.yaml`, and relevant `.ai/scripts/**` governance tooling.
 - `.dev/workflows/2026-08-10-current-context-remediation/**` and the immutable v0.5.0 disposition evidence needed to validate the narrow authorization.
 
@@ -174,7 +174,7 @@ python .ai/scripts/tests/test_github_backlog_provider.py -v
 python .ai/scripts/tests/test_backlog_release_contract.py -v
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-workflow-artifacts.py
-python .ai/scripts/validate-git-commits.py --range main..725162b679a9aea85e50417ee4b35c9a95cdae7c --workflow-id 2026-08-10-current-context-remediation
+python tools/maintenance/validate-git-commits.py --range main..725162b679a9aea85e50417ee4b35c9a95cdae7c --workflow-id 2026-08-10-current-context-remediation
 Direct Python Git-tree package resolver, payload brand scan, payload reference-integrity check, and payload digest calculation
 Git-tree retained-provenance scan for ez-series/uContract terms
 Changed-active Markdown local-link resolver

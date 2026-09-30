@@ -19,7 +19,7 @@
       "outcome": "passed"
     },
     {
-      "command": "python -I -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/NAME.txt --workflow-id 2026-09-24-rc2-selected-distribution",
+      "command": "python -I -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/NAME.txt --workflow-id 2026-09-24-rc2-selected-distribution",
       "input": "Each exact complete planned message before commit; final handoff result is reported at terminal read-back",
       "outcome": "prior checkpoints passed; final message checked immediately before final commit"
     }

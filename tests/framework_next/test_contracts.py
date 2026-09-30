@@ -25,18 +25,18 @@ from distribution.package import check_references, load_package
 from distribution.selection import select
 import support
 
-KNOWLEDGE = {'lesson', 'adr', 'standards-promotion'}
-WORK = {'pr', 'local-backlog', 'software-development-orchestrator'}
+KNOWLEDGE = {'lesson-author', 'adr-author', 'standards-promotion'}
+WORK = {'pr-author', 'local-backlog'}
 ENGINEERING = {'code-reviewer', 'requirement-author', 'spec-author', 'diagnostic-analyst',
                'ddd-ca-hex-architect', 'bdd-gwt-test-designer', 'local-change-implementer',
                'slice-implementer', 'problem-frame-author', 'spec-compliance-validator'}
 MAINTENANCE = {'ai-context-auditor', 'ai-context-governance'}
-PROFILES = {'lesson-minimal': ({'lesson'}, 9), 'knowledge': (KNOWLEDGE, 26),
-            'work-management': (WORK, 28), 'engineering': (ENGINEERING, 53),
-            'collaboration': (KNOWLEDGE | WORK | ENGINEERING, 107),
-            'source-repository': ((KNOWLEDGE | WORK | ENGINEERING) - {'local-backlog'}, 99),
+PROFILES = {'lesson-minimal': ({'lesson-author'}, 9), 'knowledge': (KNOWLEDGE, 26),
+            'work-management': (WORK, 18), 'engineering': (ENGINEERING, 53),
+            'collaboration': (KNOWLEDGE | WORK | ENGINEERING, 97),
+            'source-repository': ((KNOWLEDGE | WORK | ENGINEERING) - {'local-backlog'}, 89),
             'context-maintenance': (MAINTENANCE, 6),
-            'complete': (KNOWLEDGE | WORK | ENGINEERING | MAINTENANCE, 113)}
+            'complete': (KNOWLEDGE | WORK | ENGINEERING | MAINTENANCE, 103)}
 
 
 def blob(name, value):
@@ -117,16 +117,16 @@ class SourceClosureTests(unittest.TestCase):
         commit, manifest, source = actual_source()
         owners = KNOWLEDGE | WORK | ENGINEERING | MAINTENANCE
         self.assertEqual({c['id'] for c in manifest['components']}, owners)
-        self.assertEqual(len(manifest['components']), 18)
+        self.assertEqual(len(manifest['components']), 17)
         self.assertEqual({p['id'] for p in manifest['profiles']}, set(PROFILES))
-        self.assertEqual(sum(len(c['members']) for c in manifest['components']), 113)
+        self.assertEqual(sum(len(c['members']) for c in manifest['components']), 103)
         components = {c['id']: c for c in manifest['components']}
         expected = {}
         for owner, component in components.items():
             with self.subTest(package=owner):
                 package = load_package(source.read(f"{component['source']}/{component['metadata']}"))
                 self.assertEqual(package.id, owner)
-                self.assertEqual(package.version, '0.2.0' if owner == 'lesson' else '0.1.0')
+                self.assertEqual(package.version, '0.2.0' if owner == 'lesson-author' else '0.1.0')
                 mapping = {m['source']: m['destination'] for m in component['members']}
                 self.assertEqual(set(mapping), package.members)
                 self.assertEqual(len(mapping), len(component['members']))
@@ -164,12 +164,12 @@ class SourceClosureTests(unittest.TestCase):
                     owner = entry.owner.removeprefix('codex/')
                     self.assertEqual(set(targets), {d for d, (p, _) in wanted.items() if p == owner})
                     self.assertNotRegex(text, r'src/|\.ai/assets/|\.dev/|[A-Za-z]:[\\/]')
-        print(json.dumps({'C1': {'source_commit': commit, 'packages': 18, 'payload_members': 113,
+        print(json.dumps({'C1': {'source_commit': commit, 'packages': 17, 'payload_members': 103,
                                 'profiles': 8, 'physical_assembly_scope': 'separate C5; this observation is declarations only'}}))
 
     def test_c2_actual_v2_v3_union_and_null_config_projection(self):
         _, _, source = actual_source()
-        lesson = load_package(source.read('src/skills/lesson/skill-package.yaml'))
+        lesson = load_package(source.read('src/skills/lesson-author/skill-package.yaml'))
         record = next(r for r in lesson.metadata['artifact_roles'] if r['owner'] == 'project')
         self.assertEqual(lesson.metadata['metadata_version'], 2)
         self.assertEqual(record['read_schemas'], ['lesson.record@1.0.0', 'lesson.record@2.0.0'])
@@ -230,11 +230,11 @@ class MetadataTests(unittest.TestCase):
     def test_c2_reject_version_types_and_duplicate_schema(self):
         for version in (True, 1.0, 2.0, 3.0, 4):
             with self.subTest(version=repr(version)):
-                data = metadata('lesson')
+                data = metadata('lesson-author')
                 data['metadata_version'] = version
                 with self.assertRaisesRegex(DistributionError, 'integer metadata versions'):
                     load_synthetic(data)
-        data = metadata('lesson')
+        data = metadata('lesson-author')
         data['resources']['schemas'].append(deepcopy(data['resources']['schemas'][0]))
         with self.assertRaisesRegex(DistributionError, 'duplicate schema identity'):
             load_synthetic(data)
@@ -242,7 +242,7 @@ class MetadataTests(unittest.TestCase):
     def test_c2_reject_owner_and_undeclared_tool_or_reference(self):
         for defect in ('owner', 'tool', 'reference'):
             with self.subTest(defect=defect):
-                data = metadata('lesson')
+                data = metadata('lesson-author')
                 if defect == 'owner':
                     data['resources']['schemas'][0]['owner'] = 'foreign'
                     pattern = 'resource owner mismatch'
@@ -574,7 +574,7 @@ class CandidateTests(unittest.TestCase):
                 self.assertEqual(descriptor['mode'], member.mode)
                 self.assertEqual(descriptor['size'], len(member.data))
                 self.assertEqual(descriptor['sha256'], sha256(member.data).hexdigest())
-        payload = a / 'payload/.ai/core/skills/lesson/SKILL.md'
+        payload = a / 'payload/.ai/core/skills/lesson-author/SKILL.md'
         completion = a / 'metadata/build.json'
         inventory = a / 'metadata/files.json'
 
@@ -793,7 +793,7 @@ class FixtureSupportTests(unittest.TestCase):
             stdout, stderr = io.StringIO(), io.StringIO()
             argv = ['--layer', layer, '--output-root', str(case)]
             argv += (['--case', 'FixtureSupportTests.test_readonly_git_object_cleanup'] if layer == 'contracts'
-                     else ['--family', 'pr', '--public-read-only'])
+                     else ['--family', 'pr-author', '--public-read-only'])
             # Both dispatch branches are synthetic report plumbing only: no suite,
             # public entry, Git fixture, provider or product operation runs here.
             with patch.object(support, 'FixtureRun', return_value=child), \
@@ -874,7 +874,7 @@ class FixtureSupportTests(unittest.TestCase):
         native_path = str(support.active_run().root / 'parse-only-native-root')
         examples = [[], ['--layer', 'unknown'],
                     ['--layer', 'public', '--family', 'unknown'], ['--layer', 'native-windows'],
-                    ['--layer', 'contracts', '--family', 'lesson'],
+                    ['--layer', 'contracts', '--family', 'lesson-author'],
                     ['--layer', 'contracts', '--native-root', native_path],
                     ['--layer', 'public', '--native-root', native_path],
                     ['--layer', 'public', '--case', 'MetadataTests.test_c2_minimal_synthetic_v1'],
@@ -889,9 +889,9 @@ class FixtureSupportTests(unittest.TestCase):
         # Parse only: accepted arguments do not dispatch a public/native caller,
         # allocate a native root or establish filesystem admission of this path.
         accepted = [(['--layer', 'public'], 'public', None, None, False),
-                    (['--layer', 'public', '--family', 'lesson'], 'public', 'lesson', None, False),
-                    (['--layer', 'public', '--family', 'lesson', '--public-read-only'],
-                     'public', 'lesson', None, True),
+                    (['--layer', 'public', '--family', 'lesson-author'], 'public', 'lesson-author', None, False),
+                    (['--layer', 'public', '--family', 'lesson-author', '--public-read-only'],
+                     'public', 'lesson-author', None, True),
                     (['--layer', 'native-windows', '--native-root', native_path],
                      'native-windows', None, Path(native_path), False)]
         for argv, layer, family, native_root, read_only in accepted:

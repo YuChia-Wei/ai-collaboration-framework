@@ -12,11 +12,11 @@ authorization_ref: "https://github.com/YuChia-Wei/ai-collaboration-framework/iss
 workflow_ref: ".dev/workflows/2026-08-10-current-context-remediation/workflow.yaml"
 task_ref: ".dev/workflows/2026-08-10-current-context-remediation/tasks/CTX007-001.json"
 entries:
-  - path: ".ai/scripts/check-mutation-coverage.sh"
+  - path: "src/tools/dotnet/check-mutation-coverage.sh"
     subject_blob: "cc74d5c217986fc8fdd30b37b33df76723ab4a19"
     authorized_blob: "d298ddfd57ca0dbf9526c2c2edc20eee420573c6"
     reason: "Issue #178 authorizes the current .NET-specific mutation guidance while preserving the v0.5.0 disposition manifest as immutable evidence."
-  - path: ".ai/scripts/check-domain-events-compliance.sh"
+  - path: "src/tools/dotnet/check-domain-events-compliance.sh"
     subject_blob: "5affcca2598e5f245910906a7f47c28fe089b783"
     authorized_blob: "238e01b9af88cb5d5fd5fc61feb684406e80c791"
     reason: "Issue #178 authorizes the current .NET-specific domain-event guidance while preserving the v0.5.0 disposition manifest as immutable evidence."

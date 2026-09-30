@@ -16,8 +16,8 @@
   "scope": {
     "target": "Historical v0.1.0 and v0.2.0 source-snapshot and installability semantics",
     "files": [
-      ".dev/releases/v0.1.0/**",
-      ".dev/releases/v0.2.0/**",
+      "releases/v0.1.0/**",
+      "releases/v0.2.0/**",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py"
     ],
@@ -49,10 +49,10 @@
   "results": {
     "summary": "Historical tags are now explicit non-installable source/provenance anchors; new installations are directed to a published governed package and raw tag-tree overlays are prohibited.",
     "files_changed": [
-      ".dev/releases/v0.1.0/**",
-      ".dev/releases/v0.2.0/**",
-      ".dev/releases/v0.3.0/release.yaml",
-      ".dev/releases/v0.3.0/release-notes.md",
+      "releases/v0.1.0/**",
+      "releases/v0.2.0/**",
+      "releases/v0.3.0/release.yaml",
+      "releases/v0.3.0/release-notes.md",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py"
     ],

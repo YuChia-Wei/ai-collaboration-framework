@@ -26,9 +26,9 @@ subject_ref:
   commit: "cbe1553f0fc30a856a35e85ec17ecd8cd91838d2"
 scope:
   included:
-    - ".dev/releases/v0.7.0/release.yaml"
-    - ".dev/releases/v0.7.0/release-notes.md"
-    - ".dev/releases/v0.7.0/release-phase-checks.yaml"
+    - "releases/v0.7.0/release.yaml"
+    - "releases/v0.7.0/release-notes.md"
+    - "releases/v0.7.0/release-phase-checks.yaml"
     - ".github/workflows/publish-release.yml"
     - ".ai/scripts/render-ai-context-release-notes.py"
     - ".ai/scripts/validate-ai-context-release-state.py"

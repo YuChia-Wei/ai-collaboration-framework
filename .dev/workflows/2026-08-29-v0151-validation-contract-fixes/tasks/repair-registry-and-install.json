@@ -19,7 +19,7 @@
     "target": "VAL010-A3 and VAL010-A4",
     "files": [
       ".ai/scripts/validation-profile-registry.sh",
-      ".ai/scripts/validation_process_supervisor.py",
+      "tools/maintenance/validation_process_supervisor.py",
       ".ai/distribution/templates/INSTALL.md",
       "focused adjacent tests resolved by graph and tracked-file inventory"
     ],

@@ -14,7 +14,7 @@
     {"command": "python .ai/scripts/validate-workflow-artifacts.py", "outcome": "passed", "post_adoption_workflows": 111, "indexed_workflows": 131}
   ],
   "retained_failures": [
-    {"kind": "test-fixture-boundary", "test": "test_built_archive_rebinds_after_source_acceptance_without_rebuilding", "outcome": "failed", "reason": "Synthetic profile packaged release.yaml as payload; changed bytes correctly invalidated identity.", "diagnosis": "Only differing payload path was .dev/releases/v0.16.0/release.yaml.", "material_correction": "This test now uses the governed source-only release exclusion before the initial build; no production exclusion was loosened."},
+    {"kind": "test-fixture-boundary", "test": "test_built_archive_rebinds_after_source_acceptance_without_rebuilding", "outcome": "failed", "reason": "Synthetic profile packaged release.yaml as payload; changed bytes correctly invalidated identity.", "diagnosis": "Only differing payload path was releases/v0.16.0/release.yaml.", "material_correction": "This test now uses the governed source-only release exclusion before the initial build; no production exclusion was loosened."},
     {"kind": "environment", "scope": "two ignored draft gate tests in original workspace", "outcome": "blocked-by-environment", "reason": "Default sandbox denied temporary fixture creation and cleanup.", "followup": "Same bounded tests passed under require_escalated; the two exact leftover temporary directories were verified and cleaned."}
   ],
   "limitations": [

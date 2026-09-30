@@ -26,7 +26,7 @@ subject_ref:
   commit: "773b96cb742f09fd2744ae63b85d982ee3d61822"
 scope:
   included:
-    - ".dev/releases/v0.9.0/** and the exact eight canonical backlog records"
+    - "releases/v0.9.0/** and the exact eight canonical backlog records"
     - ".dev/workflows/2026-08-05-v0-9-0-release-publication/**"
     - ".ai distribution, package, package-apply, release-state, and validation surfaces required by the candidate"
     - "The rewritten candidate archives, immutable source identity, clean-install and exact v0.8.0-upgrade evidence"

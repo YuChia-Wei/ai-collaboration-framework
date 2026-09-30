@@ -60,7 +60,7 @@ Only direct content, syntax, references and Git inspection were used.
 | `Get-Content` and staged diff inspection | Artifact selection, method, default templates, target inputs and source/approval boundaries retained; 16 added paths within the four owned roots |
 | `git diff --check` and `git diff --cached --check` | No whitespace errors |
 | `git check-ignore -v .dev/workflows/2026-09-23-portable-authoring/commit-message.cache` | Existing ignore rule confirmed before message write |
-| `python -B .ai/scripts/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-authoring/commit-message.cache --workflow-id 2026-09-23-portable-authoring` | Git commit validation passed for the complete planned message |
+| `python -B tools/maintenance/validate-git-commits.py --message-file .dev/workflows/2026-09-23-portable-authoring/commit-message.cache --workflow-id 2026-09-23-portable-authoring` | Git commit validation passed for the complete planned message |
 
 The planned-message SHA-256 is
 `ce3711a03424b381ec8891053e8fae8308109265dd964ebeadc810e225b46010`.

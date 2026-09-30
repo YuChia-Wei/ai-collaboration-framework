@@ -13,7 +13,7 @@
   "finding_ids": ["SIMPL-001"],
   "scope": {
     "target": "Representative repository-load measurement and seven-candidate disposition",
-    "files": [".ai/evaluation/context-load/**", ".ai/scripts/measure-ai-context-load.py", ".dev/workflows/2026-07-24-v0-6-context-load-simplification/**", "AGENTS.md", "AGENTS.zh-TW.md"],
+    "files": [".ai/evaluation/context-load/**", "tools/maintenance/measure-ai-context-load.py", ".dev/workflows/2026-07-24-v0-6-context-load-simplification/**", "AGENTS.md", "AGENTS.zh-TW.md"],
     "constraints": ["Never equate corpus words with total prompt tokens", "Preserve stable historical paths", "Keep standards owned by STD-001"],
     "non_goals": ["Archive or delete workflow/assessment history", "Collapse capability skills", "Retire bilingual root entries", "Rewrite standards"]
   },
@@ -27,7 +27,7 @@
     "summary": "Measured five representative repository-load families at a clean pinned commit, dispositioned all seven candidates, and safely trimmed duplicate root directory inventories without archiving history.",
     "files_changed": [
       ".ai/evaluation/context-load/README.md",
-      ".ai/scripts/measure-ai-context-load.py",
+      "tools/maintenance/measure-ai-context-load.py",
       ".ai/scripts/tests/test_ai_context_load_measurement.py",
       "AGENTS.md",
       "AGENTS.zh-TW.md",

@@ -234,7 +234,7 @@ No conclusion about actual AI reading is made. Repository evidence can show a pl
 
 - [`rest-api-resource-path-rationale.MD`](../../standards/rationale/rest-api-resource-path-rationale.MD): coherent content, no active inbound filename reference;
 - [`MULTI-STACK-CONTEXT-PLACEMENT-NOTES.md`](../../guides/design-guides/MULTI-STACK-CONTEXT-PLACEMENT-NOTES.md): exploration content omitted from local guide catalog;
-- [`PERSISTENCE-CONFIGURATION-GUIDE.md`](../../guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md): no active inbound route found;
+- [`PERSISTENCE-CONFIGURATION-GUIDE.md`](../../../src/knowledge/dotnet-backend/guides/PERSISTENCE-CONFIGURATION-GUIDE.md): no active inbound route found;
 - selected example subfolders that depend only on local README/index navigation.
 
 These are decision candidates, not automatic deletion candidates.
@@ -330,7 +330,7 @@ The folder should not be judged by file count. A smaller, tiered surface with ex
 ### AIC-008 — Coding Standards Validator Overstates Its Coverage
 
 - Severity: **MEDIUM**
-- Affected paths: `.ai/scripts/check-coding-standards.sh`, `.ai/scripts/check-all.sh`, `.ai/scripts/README.md`
+- Affected paths: `src/tools/dotnet/check-coding-standards.sh`, `.ai/scripts/check-all.sh`, `.ai/scripts/README.md`
 - Repository-native evidence: the required script checks the main file plus eight focused standards for existence, headings, links, size, and syntax; it omits examples and the profile/reactor standards, yet reports “complete and well-organized.”
 - Why it matters: a green gate can be mistaken for semantic completeness and hide contradictions such as AIC-001 and AIC-002.
 - Confidence: **high**
@@ -441,7 +441,7 @@ git grep -n -F <candidate paths>
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/validate-shell-assets.py
 python .ai/scripts/validate-workflow-artifacts.py
-C:/Program Files/Git/bin/bash.exe ./.ai/scripts/check-coding-standards.sh
+C:/Program Files/Git/bin/bash.exe ./src/tools/dotnet/check-coding-standards.sh
 ```
 
 ## Appendix B — Lifecycle Handoff

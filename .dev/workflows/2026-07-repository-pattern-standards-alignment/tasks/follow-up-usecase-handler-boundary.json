@@ -11,9 +11,9 @@
       ".dev/standards/coding-standards/usecase-standards.md",
       ".dev/standards/coding-standards/controller-standards.md",
       ".dev/standards/project-structure.md",
-      ".ai/assets/sub-agent-role-prompts/controller-sub-agent/",
-      ".ai/assets/sub-agent-role-prompts/command-sub-agent/",
-      ".ai/assets/sub-agent-role-prompts/query-sub-agent/",
+      ".dev/agents/controller-sub-agent/",
+      ".dev/agents/command-sub-agent/",
+      ".dev/agents/query-sub-agent/",
       ".ai/assets/skills/slice-implementer/references/modes/",
       ".dev/standards/examples/controller/",
       "tools/DotnetBackendAnalyzers/"

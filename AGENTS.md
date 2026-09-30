@@ -56,7 +56,7 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. `.ai/assets/` now holds only source compatibility and tooling data, including the bounded legacy-format duties below; it is not the daily route for the 18 installed skills.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The RC3 source selection has 17 skills. Removed compatibility roots do not provide current executable routes; generated installation state is updated separately.
 
 | Need | Owning route |
 | --- | --- |
@@ -64,17 +64,17 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | AI-context governance and reusable context maintenance | `ai-context-governance` |
 | Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
-| Decisions, lessons, local backlog, pull requests, or standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
-| Multi-stage software development and workflow records | `software-development-orchestrator` with source `.dev/` workflow and Issue authority |
-| Initialization or upgrade of a previously published legacy package format | Source compatibility procedures and their active `.ai/scripts/` tooling; this is not a portable installed skill route. |
-| Historical or exceptional source release closeout | `.dev/releases/` and source release policy; no portable installed skill route. |
+| Decisions, lessons, local backlog, pull requests, or standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
+| Multi-stage source work and workflow records | Project-owned `.dev/` workflow records, source workflow policy and Issue authority; no portable orchestration skill |
+| Initialization or upgrade of a previously published legacy package format | Retained source compatibility duty with no current portable or executable route; restore a verified source-owned procedure before execution. |
+| Historical or exceptional source release closeout | `releases/` and source release policy; no portable installed skill route. |
 
-For source work, `.dev/standards/` continues to own source policy, GitHub work authority, release governance, U001 and the P7 deferrals. Preserve the retained source duties explicitly: source assessment persistence and terminal records; source customization and policy reconciliation; legacy CBF/SWF intake and active records; the target-selected legacy .NET 100% gate and rule resolver, only when maintaining that legacy downstream format or target (not for this framework source or its own installation); and old published-format initialization, upgrade and recovery. These duties do not restore the three removed runtime discovery entries or make their legacy files a second daily skill source.
+For source work, `.dev/standards/` continues to own source policy, GitHub work authority, release governance, U001 and the P7 deferrals. Preserve the retained source duties explicitly: source assessment persistence and terminal records; source customization and policy reconciliation; legacy CBF/SWF intake and active records; the target-selected legacy .NET 100% gate and rule resolver, only when maintaining that legacy downstream format or target (not for this framework source or its own installation); and old published-format initialization, upgrade and recovery. Duty retention does not establish tool availability. The removed legacy roots and validators that still depend on them are unavailable until a verified source-owned route is restored; they do not restore removed runtime discovery entries.
 
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
 - For code review, load the installed `code-reviewer` entry and only its applicable route and finding references.
 - `test-execution` has no required skill; resolve target-owned commands first.
-- Direct execution remains valid. Classify delegation under `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
+- Direct execution remains valid. Classify delegation under `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
 
 ## Workflow And Change Control
 
@@ -104,7 +104,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ### Agent Execution Guardrails
 
-- For ordinary same-runtime work, use the bounded envelope in `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; do not construct formal audit records solely for routine analysis or local edits.
+- For ordinary same-runtime work, use the bounded envelope in `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; do not construct formal audit records solely for routine analysis or local edits.
 - Classify actual risk under the guardrails contract; ordinary analysis and local edits may classify inline, while review preflight uses the validator. A terminal label alone does not require the full tier; short same-runtime independent read-only review of an isolated immutable ordinary change may use the bounded envelope. Authority, evidence-custody, security, release/adoption changes, external or long-running validation, shared mutable review or shared frozen work, and unknown risk require the full validated packet, immutable subject and machine-readable snapshot lease. One tracked writer per worktree remains mandatory in both tiers; a full lease requires explicit terminal release.
 - Preflight the machine-readable review subject, criteria and authority before behavioral dispatch in either tier. Keep preparation failures, behavioral defects, environment failures and provider reconciliation distinct; retain prior attempts and rerun only affected checks under the existing evidence-reuse and retry rules.
 - Keep formal acceptance-to-evidence ledgers where the acceptance contract requires them. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
@@ -123,7 +123,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ### Portable Test Fixture Acceleration
 
-- The portable baseline is zero configuration. Only tests explicitly classified in `.ai/scripts/test-fixture-classifications.json` as disposable fixture I/O may consume `AI_CONTEXT_TEST_TMP_ROOT`.
+- The portable baseline is zero configuration. The legacy `AI_CONTEXT_TEST_TMP_ROOT` acceleration route is unavailable in this source layout because its classifier and tooling were removed; do not activate it from historical instructions.
 - The setting is one explicit opt-in fixture root. Do not discover storage, change global `TEMP` or `TMP`, or route durability-storage or platform-filesystem semantics through it.
 - Re-run preflight at execution time, create one unique contained run directory, and clean up only that verified directory. Invalid, unsafe, or unwritable roots fail before material fixtures.
 - Keep diagnostics path-free. A WSL `/mnt/*` performance warning is advisory; it never changes test outcomes or silently selects another root.
@@ -132,7 +132,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ## CLI And Runtime Boundaries
 
-- After higher-priority policy selects cross-boundary CLI execution, load `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`.
+- After higher-priority policy selects cross-boundary CLI execution, load `.dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md`.
 - The optional binding may exist only at `.dev/ai-context/local/cli-execution-routing.yaml`; it must remain ignored, untracked, unstaged, secret-free, and outside package or provenance truth.
 - Never create or update it implicitly. Verify recovery first, then disclose the exact path, fields, `create/merge/replace` action, and secret exclusion; decline or no answer writes nothing.
 - Do not silently substitute a model, provider, execution surface, credential boundary, or permission. Static configuration does not prove current-session execution.

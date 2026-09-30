@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Version governance, provenance, safe upgrades, planned release artifacts, indexes, runtime routes, and required validation are complete.",
-    "files_changed": [".dev/releases/v0.3.0/release.yaml", ".dev/workflows/2026-07-14-ai-context-version-governance/**", ".dev/workflows/INDEX.MD"],
+    "files_changed": ["releases/v0.3.0/release.yaml", ".dev/workflows/2026-07-14-ai-context-version-governance/**", ".dev/workflows/INDEX.MD"],
     "tests_run": ["check-all.sh --quick: 11/11 required checks", "10/10 version-governance GWT tests", "9/9 assessment GWT tests", "7/7 workflow implementation GWT tests", "47 analyzer tests", "2 configuration tests", "Codex and Claude wrapper validations", "workflow, AI-context, release, shell, YAML/JSON, and whitespace validation"],
     "finding_status": "addressed",
     "residual_risk": "REL-v0.3.0 remains planned until merge, post-merge validation, explicit tag authorization, and registry finalization. Unversioned targets require manual baseline reconciliation. Dependency/version validation remains deferred.",

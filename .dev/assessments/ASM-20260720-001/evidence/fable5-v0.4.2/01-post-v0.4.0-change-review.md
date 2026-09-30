@@ -2,7 +2,7 @@
 
 Scope: `v0.4.0` (tag) → `main@71c41db` (2026-07-20). Purpose: background context
 for the findings in `02`/`03`. Sources: git history, `.dev/backlog/`,
-`.dev/releases/`, `.dev/workflows/`.
+`releases/`, `.dev/workflows/`.
 
 ## v0.4.1 (2026-07-18, tag `v0.4.1` = `3daefce`)
 

@@ -39,8 +39,8 @@
   "results": {
     "summary": "Local release-readiness evaluation is complete. The exact admitted archive, all retained direct target and route evidence, byte preservation and acceptance projection passed independent integration review. Release remains planned pending provider delivery and source-candidate admission.",
     "files_changed": [
-      ".dev/releases/v0.16.0/artifact-admission.json",
-      ".dev/releases/v0.16.0/support-matrix.yaml",
+      "releases/v0.16.0/artifact-admission.json",
+      "releases/v0.16.0/support-matrix.yaml",
       ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/acceptance-evidence.json",
       ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/integration-audit-1.json"
     ],

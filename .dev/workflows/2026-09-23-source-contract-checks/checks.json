@@ -14,7 +14,7 @@
     "path": ".dev/ai-context/local/commit-messages/issue-368.txt",
     "ignored": true,
     "sha256": "421bc57d381acaefddfc962b78668a0c7bcd55ec430227518f0515d375dd7be4",
-    "command": "python -I -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-368.txt --workflow-id 2026-09-23-source-contract-checks",
+    "command": "python -I -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-368.txt --workflow-id 2026-09-23-source-contract-checks",
     "exit": 0
   },
   "selected_contracts": {

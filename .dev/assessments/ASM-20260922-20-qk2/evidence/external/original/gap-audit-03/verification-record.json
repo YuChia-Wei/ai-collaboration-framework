@@ -68,7 +68,7 @@
       "blob": "461a575962b058cbaa8917a37c0d084641134180"
     },
     {
-      "path": ".ai/scripts/execution_artifact_contract.py",
+      "path": "tools/maintenance/execution_artifact_contract.py",
       "blob": "b3cbdf9c83ddb763e64893fa1e84f8bdb11cb37f"
     },
     {
@@ -84,7 +84,7 @@
       "blob": "925b8597de2e0c3bec0d29acf1245a554947dd52"
     },
     {
-      "path": ".ai/scripts/validation_subject.py",
+      "path": "tools/maintenance/validation_subject.py",
       "blob": "fc876df3494c8487cc71ac5e9e89a100aec62f90"
     },
     {

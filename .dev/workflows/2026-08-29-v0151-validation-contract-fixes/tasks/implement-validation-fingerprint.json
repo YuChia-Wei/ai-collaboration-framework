@@ -19,7 +19,7 @@
     "target": "VAL010-A1 and VAL010-A2",
     "files": [
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/validation-evidence.py",
+      "tools/maintenance/validation-evidence.py",
       "focused adjacent tests resolved by graph and tracked-file inventory"
     ],
     "constraints": [
@@ -37,7 +37,7 @@
   },
   "inputs": {
     "requirements": ["Issue #261 VAL010-A1", "Issue #261 VAL010-A2"],
-    "specifications": [".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"],
+    "specifications": [".dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"],
     "architecture_decisions": ["identity-sensitive exact-head gates remain fresh; behavioral reuse remains content/runtime sensitive"],
     "user_constraints": ["local implementation and tests authorized; no push, PR, merge, terminal provider mutation, tag, Release, or publication"]
   },
@@ -54,7 +54,7 @@
       "execution_mode": "generic",
       "overlays": ["remediation"],
       "authorization_source": ["GitHub Issue #261", "workflow task implement-validation-fingerprint"],
-      "normative_truth": [".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md", ".dev/standards/WORKFLOW-GATE-POLICY.md"],
+      "normative_truth": [".dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md", ".dev/standards/WORKFLOW-GATE-POLICY.md"],
       "finding_evidence": ["Issue #261#VAL010-A1", "Issue #261#VAL010-A2"],
       "subject_revision": "5fedaceef7e18b4cdcde3cb665adcc97070db2df",
       "acceptance_criteria": [
@@ -85,7 +85,7 @@
     "summary": "Replaced the fail-open shell hash pipeline with a complete-set Python fingerprint, added deterministic Python ABI and PyYAML runtime identity, disabled reuse for incomplete identity, and advanced the cache schema with safe legacy invalidation.",
     "files_changed": [
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/validation-evidence.py",
+      "tools/maintenance/validation-evidence.py",
       ".ai/scripts/tests/test_validation_evidence.py",
       ".ai/scripts/tests/test_fail_closed_validation.py"
     ],
@@ -97,12 +97,12 @@
         "summary": "10 passed in 18.951s outside the sandbox after the initial sandbox attempt failed in fixture setup with WinError 5."
       },
       {
-        "command": "python .ai/scripts/validation-evidence.py runtime-fingerprint",
+        "command": "python tools/maintenance/validation-evidence.py runtime-fingerprint",
         "outcome": "passed",
         "summary": "Produced one 64-hex runtime fingerprint."
       },
       {
-        "command": "python .ai/scripts/validation-evidence.py fingerprint-files <declared policy inputs>",
+        "command": "python tools/maintenance/validation-evidence.py fingerprint-files <declared policy inputs>",
         "outcome": "passed",
         "summary": "Produced one 64-hex complete-set policy fingerprint."
       },

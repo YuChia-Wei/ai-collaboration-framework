@@ -217,7 +217,7 @@ and read back successfully.
 ### Commands Run
 
 ```text
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-workflow-artifacts.py
 python .ai/scripts/validate-ai-context-versions.py
 python .ai/scripts/validate-ai-context.py

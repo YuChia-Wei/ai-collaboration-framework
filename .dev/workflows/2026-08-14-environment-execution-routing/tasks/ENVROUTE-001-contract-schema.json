@@ -27,7 +27,7 @@
   },
   "results": {
     "summary": "Added a provider-neutral CLI execution-routing contract and machine-readable schema without populated host defaults or non-CLI routing fields.",
-    "files_changed": [".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md", ".ai/assets/shared/cli-execution-routing.schema.yaml", ".ai/assets/shared/README.MD", ".ai/INDEX.MD"],
+    "files_changed": [".dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md", ".dev/contracts/cli-execution-routing.schema.yaml", ".ai/assets/shared/README.MD", ".ai/INDEX.MD"],
     "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q", "py -3 .ai/scripts/validate-ai-context.py"],
     "finding_status": "resolved",
     "residual_risk": "Future incompatible schema revisions will require an explicit versioned migration decision.",

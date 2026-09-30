@@ -13,7 +13,7 @@
       "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
       "retained_evidence": [
         {
-          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "path": "releases/v0.16.0/route-assets/actual/terminal.json",
           "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
         }
       ]
@@ -27,7 +27,7 @@
       "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
       "retained_evidence": [
         {
-          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "path": "releases/v0.16.0/route-assets/actual/terminal.json",
           "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
         }
       ]
@@ -41,7 +41,7 @@
       "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
       "retained_evidence": [
         {
-          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "path": "releases/v0.16.0/route-assets/actual/terminal.json",
           "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
         }
       ]
@@ -55,7 +55,7 @@
       "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
       "retained_evidence": [
         {
-          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "path": "releases/v0.16.0/route-assets/actual/terminal.json",
           "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
         }
       ]
@@ -97,7 +97,7 @@
       "runtime_evidence_sha256": "aad49d592ab7306641566f47259c6003014e4f7b285c8c4202874f49ffc16fc2",
       "retained_evidence": [
         {
-          "path": ".dev/releases/v0.16.0/migration-guide.md",
+          "path": "releases/v0.16.0/migration-guide.md",
           "sha256": "f585c456ca867b01a7e35b10e7ff4aa256d7eb1e193c829227890858cd856ca2"
         },
         {
@@ -115,7 +115,7 @@
       "runtime_evidence_sha256": "b0fa37085191311b17eaf3f6cf7100f77496b748f5ca6b54bb201ae7100384e2",
       "retained_evidence": [
         {
-          "path": ".dev/releases/v0.16.0/artifact-admission.json",
+          "path": "releases/v0.16.0/artifact-admission.json",
           "sha256": "65681161934de0c235c936c0e596f6c7fa609e10c53de6bfceacdd5e277bb81a"
         }
       ]
@@ -128,7 +128,7 @@
         "outcome": "passed",
         "retained_evidence": [
           {
-            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "path": "releases/v0.16.0/route-assets/actual/terminal.json",
             "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
           }
         ]
@@ -138,7 +138,7 @@
         "outcome": "passed",
         "retained_evidence": [
           {
-            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "path": "releases/v0.16.0/route-assets/actual/terminal.json",
             "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
           }
         ]
@@ -148,7 +148,7 @@
         "outcome": "passed",
         "retained_evidence": [
           {
-            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "path": "releases/v0.16.0/route-assets/actual/terminal.json",
             "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
           }
         ]
@@ -158,7 +158,7 @@
         "outcome": "passed",
         "retained_evidence": [
           {
-            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "path": "releases/v0.16.0/route-assets/actual/terminal.json",
             "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
           }
         ]
@@ -188,7 +188,7 @@
         "outcome": "passed",
         "retained_evidence": [
           {
-            "path": ".dev/releases/v0.16.0/migration-guide.md",
+            "path": "releases/v0.16.0/migration-guide.md",
             "sha256": "f585c456ca867b01a7e35b10e7ff4aa256d7eb1e193c829227890858cd856ca2"
           },
           {
@@ -202,7 +202,7 @@
         "outcome": "deferred",
         "retained_evidence": [
           {
-            "path": ".dev/releases/v0.16.0/artifact-admission.json",
+            "path": "releases/v0.16.0/artifact-admission.json",
             "sha256": "65681161934de0c235c936c0e596f6c7fa609e10c53de6bfceacdd5e277bb81a"
           }
         ]

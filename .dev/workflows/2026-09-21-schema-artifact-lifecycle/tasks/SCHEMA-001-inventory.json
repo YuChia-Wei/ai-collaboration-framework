@@ -39,7 +39,7 @@
     ],
     "validation": [
       "python -B .ai/scripts/validate-workflow-artifacts.py",
-      "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "python -B tools/maintenance/validate-assessment-artifacts.py",
       "git diff --check"
     ],
     "last_completed_step": "Completed fixed-source 33 YAML plus 1 historical JSON schema inventory, 47 selected template paths, 19 implicit/external contract groups, recent Issue read-back and four selected test-method inventories. Parent reconciled discovery limitations.",

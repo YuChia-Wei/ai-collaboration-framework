@@ -62,7 +62,7 @@ recorded policy adoption and CI restoration. This is not independent review.
 commit policy is empty. Existing policy edits are additive only.
 
 The exact planned message passed
-`python -I -B .ai/scripts/validate-git-commits.py --message-file F:/framework-next/369/.dev/ai-context/local/commit-messages/issue-369-dormant-policy.txt --workflow-id 2026-09-23-source-gates-implementation`.
+`python -I -B tools/maintenance/validate-git-commits.py --message-file F:/framework-next/369/.dev/ai-context/local/commit-messages/issue-369-dormant-policy.txt --workflow-id 2026-09-23-source-gates-implementation`.
 This is message validation only; no history or aggregate profile was invoked.
 
 The earlier 24/28/37 source-test results are retained in their original reports;

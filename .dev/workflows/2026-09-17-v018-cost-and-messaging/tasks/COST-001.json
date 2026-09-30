@@ -41,7 +41,7 @@
       ".ai/assets/skills/slice-implementer/roles/",
       ".ai/assets/skills/problem-frame-author/roles/",
       ".ai/scripts/validate-ai-context.py",
-      ".ai/scripts/validate-agent-execution-guardrails.py"
+      "tools/maintenance/validate-agent-execution-guardrails.py"
     ],
     "tests_run": [
       "PASS validate-ai-context: 39 canonical manifests",

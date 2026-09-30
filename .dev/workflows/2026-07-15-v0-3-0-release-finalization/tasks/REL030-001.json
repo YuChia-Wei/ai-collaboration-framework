@@ -13,7 +13,7 @@
   "finding_ids": ["REL030-REGISTRY-DRIFT"],
   "scope": {
     "target": "Published v0.3.0 release registry truth",
-    "files": [".dev/releases/v0.3.0/**", ".dev/releases/INDEX.MD"],
+    "files": ["releases/v0.3.0/**", "releases/INDEX.MD"],
     "constraints": ["Keep v0.3.0 immutable", "Use exact 40-character tagged commit", "Preserve package compatibility contract"],
     "non_goals": ["Move or recreate tag", "Modify release package payload", "Start v0.4.0 standards work"]
   },
@@ -25,7 +25,7 @@
   },
   "results": {
     "summary": "Reconciled the trusted registry with the immutable v0.3.0 tag and user-confirmed successful hosted publication.",
-    "files_changed": [".dev/releases/v0.3.0/release.yaml", ".dev/releases/v0.3.0/release-notes.md", ".dev/releases/v0.3.0/migration-guide.md", ".dev/releases/INDEX.MD"],
+    "files_changed": ["releases/v0.3.0/release.yaml", "releases/v0.3.0/release-notes.md", "releases/v0.3.0/migration-guide.md", "releases/INDEX.MD"],
     "tests_run": ["remote tag peeled-target verification", "repository connectivity check", "release, context, and workflow validators"],
     "finding_status": "addressed",
     "residual_risk": "Target repositories from v0.0.1 through v0.2.0 still require the documented provenance-aware reconciliation.",

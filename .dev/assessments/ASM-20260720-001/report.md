@@ -130,7 +130,7 @@ finding IDs; it does not copy the external report into normative policy.
 | AIC-001 | CRITICAL | The required workflow validator fails on `main`. | `validate-workflow-artifacts.py` reports a directory/ID mismatch, missing artifact root, and stale index row for the v0.4.2 publication workflow. | The repository's critical gate is red after release finalization. | Correct the locator, task identities, plan/checkpoint state, and workflow index without rewriting Git history. | `ai-context-governance` |
 | AIC-002 | CRITICAL | `REL-v0.4.2` remains `validated` instead of `published`. | `release.yaml` lacks `tag`/`commit`; candidate discovery therefore retains v0.4.2 as an open candidate. | The next governed release candidate cannot be uniquely discovered. | Record the immutable tag target and truthful hosted publication evidence, then mark the registry published. | `ai-context-governance` |
 | AIC-003 | HIGH | The local authored notes source is duplicated render output and the public body includes a non-object SHA. | Two automation markers and provenance sections exist; `git cat-file` rejects `1c13d7966b937004f12be6dd70d58c8ecb5afbe7`. | Local source is not safely re-renderable and public provenance is misleading. | Rewrite the local authored source now; regenerate the public body only after explicit authorization. | `ai-context-governance` plus repository maintainer |
-| AIC-004 | HIGH | The v0.4.2 migration guide is empty. | `.dev/releases/v0.4.2/migration-guide.md` is zero bytes. | Consumers receive no compatibility or upgrade-path guidance. | Author the patch-compatible migration and source-version boundaries. | `ai-context-governance` |
+| AIC-004 | HIGH | The v0.4.2 migration guide is empty. | `releases/v0.4.2/migration-guide.md` is zero bytes. | Consumers receive no compatibility or upgrade-path guidance. | Author the patch-compatible migration and source-version boundaries. | `ai-context-governance` |
 | AIC-005 | HIGH | Publication workflow evidence contains copied or false values. | `REL042-002` uses v0.4.1 run `29650583394`; task timestamps and workflow IDs were copied; commit prose claims changes absent from its diff. | Future agents cannot trust the durable handoff record. | Correct mutable workflow artifacts, preserve the failed and successful run facts, and never rewrite the historical commits. | `ai-context-governance` |
 | AIC-006 | MEDIUM | Roadmap and backlog remain at pre-publication state. | v0.4.2 is `ready_for_publication`; R042 items have `published_in: null`; Next Action points to already completed remediation. | Planning truth can reopen completed work and conceal the real v0.5.0 activation dependency. | Reconcile v0.4.2 publication and advance the current target only after local finalization passes. | `ai-context-governance` |
 | AIC-007 | HIGH | Release publication and cross-model handoff rely on context continuity rather than cold-start-safe contracts. | No executable publication runbook, previous instances were copied, the only effective tag check ran after push, and validation claims did not require command output. | A fresh or lower-cost executor can repeat the same incident while producing policy-shaped prose. | Add a release runbook, instance templates, stale-value checks, pre-tag and terminal-state gates, PR CI, and a receiving-agent state-alignment gate. | `ai-context-governance` via v0.5.0 backlog |
@@ -214,9 +214,9 @@ finding IDs; it does not copy the external report into normative policy.
 python .ai/scripts/validate-workflow-artifacts.py
 git cat-file -t 1c13d7966b937004f12be6dd70d58c8ecb5afbe7
 git rev-parse 'v0.4.2^{}'
-Select-String .dev/releases/v0.4.2/release.yaml
-Select-String .dev/releases/v0.4.2/release-notes.md
-Get-Item .dev/releases/v0.4.2/migration-guide.md
+Select-String releases/v0.4.2/release.yaml
+Select-String releases/v0.4.2/release-notes.md
+Get-Item releases/v0.4.2/migration-guide.md
 git log --oneline --decorate -12
 git show-ref --dereference --tags
 ```

@@ -1,7 +1,7 @@
 Issue #361 complete planned commit-message validation
 Observed at: 2026-09-23T11:20:36.6133085+08:00
 Working directory: F:/framework-next/361
-Command: python -B F:/framework-next/361/.ai/scripts/validate-git-commits.py --message-file F:/framework-next/361/.dev/workflows/2026-09-23-source-adoption-design/evidence/commit-message.tmp --workflow-id 2026-09-23-source-adoption-design
+Command: python -B F:/framework-next/361/tools/maintenance/validate-git-commits.py --message-file F:/framework-next/361/.dev/workflows/2026-09-23-source-adoption-design/evidence/commit-message.tmp --workflow-id 2026-09-23-source-adoption-design
 Message SHA-256: db8724239030b9a731e4f04b2bdb6c1e2a2a53108a046e17138e50a871e8621b
 Exit code: 0
 

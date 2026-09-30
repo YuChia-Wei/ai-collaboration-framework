@@ -68,7 +68,7 @@
     {
       "id": "exact-planned-message",
       "outcome": "passed",
-      "command": "python -B .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/401-s1.txt --workflow-id 2026-09-24-rc2-selection-contract",
+      "command": "python -B tools/maintenance/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/401-s1.txt --workflow-id 2026-09-24-rc2-selection-contract",
       "message_sha256": "d60930b078a21c2b7e6933bbe563b22b7220bf9302cdcf27261ef8c1f01fc908",
       "result": "Git commit validation passed for planned message."
     }

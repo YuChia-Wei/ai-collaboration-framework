@@ -109,8 +109,8 @@ The exhaustive machine-readable matrix is in [`evidence/dev-inventory.yaml`](evi
 
 | ID | Severity | Finding | Evidence | Impact | Recommendation | Owner / Next Skill |
 | --- | --- | --- | --- | --- | --- | --- |
-| DEV-001 | HIGH | Current roadmap, backlog index, and source GitHub provider contract lag item, release, and live Project state. | `.dev/backlog/ROADMAP.md:5-9`; `.dev/backlog/INDEX.MD:8-45`; eight v0.9 item records; `.dev/releases/INDEX.MD:26-31`; `.dev/backlog/providers/github.yaml:127-153`; live Project fields include v0.11.0/v0.12.0 and 111 items. | Agents can read v0.9.0 as the current target or awaiting publication, while the Project is planning v0.12.0 and v0.11.0 is published. | Reconcile current projections and provider schema from authoritative records/read-back. Preserve all immutable receipts and history. | Issue [#175](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/175); `ai-context-governance`. |
-| DEV-002 | MEDIUM | Active `.dev` documents contain seven broken references to four standards moved under `.ai/assets/tech-stacks/dotnet-backend/standards/`; the requirement guide also names four absent examples. | `.dev/ARCHITECTURE.md:3,18,32`; `EZDDD-FRAMEWORK-REFERENCE.md:24,26-27`; `DATABASE-MIGRATION-GUIDE.md:120`; `REQUIREMENT-GUIDE.MD:78-82`. | Current source navigation is misleading even though canonical targets exist. | Repair active documents only; leave historical assessment/workflow/release links byte-stable. | Same #175 governance remediation as DEV-001. |
+| DEV-001 | HIGH | Current roadmap, backlog index, and source GitHub provider contract lag item, release, and live Project state. | `.dev/backlog/ROADMAP.md:5-9`; `.dev/backlog/INDEX.MD:8-45`; eight v0.9 item records; `releases/INDEX.MD:26-31`; `.dev/backlog/providers/github.yaml:127-153`; live Project fields include v0.11.0/v0.12.0 and 111 items. | Agents can read v0.9.0 as the current target or awaiting publication, while the Project is planning v0.12.0 and v0.11.0 is published. | Reconcile current projections and provider schema from authoritative records/read-back. Preserve all immutable receipts and history. | Issue [#175](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/175); `ai-context-governance`. |
+| DEV-002 | MEDIUM | Active `.dev` documents contain seven broken references to four standards moved under `.ai/assets/tech-stacks/dotnet-backend/standards/`; the requirement guide also names four absent examples. | `src/knowledge/dotnet-backend/design/architecture-overview.md:3,18,32`; `EZDDD-FRAMEWORK-REFERENCE.md:24,26-27`; `DATABASE-MIGRATION-GUIDE.md:120`; `REQUIREMENT-GUIDE.MD:78-82`. | Current source navigation is misleading even though canonical targets exist. | Repair active documents only; leave historical assessment/workflow/release links byte-stable. | Same #175 governance remediation as DEV-001. |
 | DEV-003 | MEDIUM | The critical validation profile revalidates all 68 completed workflows and their task records on every run. | `.ai/scripts/check-all.sh:1128-1145`; `validate-workflow-artifacts.py` traversal; local timing 5.419 s for workflows, 0.347 s for 39 assessments, 1.125 s for 14 releases. | Routine cost grows monotonically with immutable history, while changed current truth receives no stronger priority. | Design changed-path routine validation plus scheduled/release full-history validation, with fail-closed tamper detection and no coverage weakening. | Issue [#176](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/176); owner decision before implementation. |
 | DEV-004 | MEDIUM | Twenty-nine `.dev` paths are not packaged but also match no explicit exclusion rule. | `dev-inventory.yaml`; profile resolution at `3a60570d...`. | Current bytes are safely omitted, but owner/classification/reason cannot be reproduced from the profile; #172 cannot prove exhaustive disposition from profile alone. | Have #172 classify the 29 paths and decide whether an explicit disposition registry/schema is required. Do not change package bytes in this assessment. | Issue #172; follow-up only if its inventory selects a schema change. |
 
@@ -175,11 +175,11 @@ git ls-tree -r -l 3a60570d0e290f337f2a212d092c6797670528b4 -- .dev
 gh project field-list 3 --owner YuChia-Wei --format json
 gh project item-list 3 --owner YuChia-Wei --format json --limit 200
 python .ai/scripts/validate-ai-context.py
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-workflow-artifacts.py
 python .ai/scripts/validate-ai-context-versions.py
 python .ai/scripts/validate-source-governance.py
-python .ai/scripts/validate-file-disposition-manifest.py --manifest <v0.5.0 disposition manifest>
+python tools/maintenance/validate-file-disposition-manifest.py --manifest <v0.5.0 disposition manifest>
 ```
 
 ### Notes

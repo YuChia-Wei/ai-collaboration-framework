@@ -64,7 +64,7 @@ This creates a correctness risk, not only a size concern: a shorter role prompt 
 | `shared/common-rules.md` and `shared/testing-strategy.md` | keep files; remove them from unconditional Code Reviewer role loads | They have 50 and 46 active file consumers respectively, so Round 2 must not delete or globally relocate them. Load only a finding-specific section when required. |
 | role `sub-agent.yaml` files | keep | Preserve applicability and provider-neutral role identity; replace generic references with role-specific routes. |
 | role playbook/prompt pairs | consolidate | Keep one bounded role instruction per role; remove repeated semantic checklists and point to rule IDs/file-type owners. |
-| `.ai/scripts/code-review.sh` | keep as compatibility entrypoint | It remains advisory and is not a semantic owner; do not include it in the review rule load set. |
+| `src/tools/dotnet/code-review.sh` | keep as compatibility entrypoint | It remains advisory and is not a semantic owner; do not include it in the review rule load set. |
 
 No stable public path should be deleted in the first delivery. Compatibility stubs must name the replacement route and removal horizon; shared files used by non-review roles remain outside the Round 2 deletion scope.
 

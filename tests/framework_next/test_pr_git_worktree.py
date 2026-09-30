@@ -83,8 +83,8 @@ class SelectedRun:
         self.cases = []
         self.started = datetime.now(timezone.utc).isoformat()
         self.started_clock = time.monotonic()
-        self.script = SOURCE / "src/skills/pr/scripts/pr.py"
-        self.subject_files = [self.script, SOURCE / "src/skills/pr/references/operations.md", Path(__file__).absolute()]
+        self.script = SOURCE / "src/skills/pr-author/scripts/pr.py"
+        self.subject_files = [self.script, SOURCE / "src/skills/pr-author/references/operations.md", Path(__file__).absolute()]
         self.hashes = {p.relative_to(SOURCE).as_posix(): sha256(p.read_bytes()).hexdigest() for p in self.subject_files}
         self.head = None
         self.run.measure()

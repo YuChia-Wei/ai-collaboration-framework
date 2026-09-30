@@ -9,7 +9,7 @@
     "files": [
       ".ai/assets/skills/ddd-ca-hex-architect/",
       ".ai/assets/tech-stacks/dotnet-backend/",
-      ".ai/assets/sub-agent-role-prompts/",
+      ".dev/agents/",
       ".ai/scripts/MD-SCRIPT-GENERATION-GUIDE.md",
       ".dev/guides/",
       ".dev/standards/anti-patterns.md",
@@ -64,7 +64,7 @@
     "files_changed": [
       ".ai/assets/skills/ddd-ca-hex-architect/",
       ".ai/assets/skills/slice-implementer/",
-      ".ai/assets/sub-agent-role-prompts/",
+      ".dev/agents/",
       ".ai/assets/tech-stacks/dotnet-backend/",
       ".ai/scripts/MD-SCRIPT-GENERATION-GUIDE.md",
       ".dev/guides/",

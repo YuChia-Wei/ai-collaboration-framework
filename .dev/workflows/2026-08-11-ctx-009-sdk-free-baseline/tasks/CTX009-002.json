@@ -23,7 +23,7 @@
     "target": "SDK-free framework baseline and target-selected analyzer creation contract",
     "files": [
       ".ai/**",
-      ".dev/releases/**",
+      "releases/**",
       ".dev/guides/**",
       "README.md",
       "README.en.md",

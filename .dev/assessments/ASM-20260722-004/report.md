@@ -178,10 +178,10 @@ No `CRITICAL`, `HIGH`, or `MEDIUM` release-readiness blocker remains.
 ```text
 python .ai/scripts/tests/test_fail_closed_validation.py -v
 AI_CONTEXT_PYTHON=<active-real-python> python .ai/scripts/tests/test_fail_closed_validation.py -v
-python .ai/scripts/validate-assessment-artifacts.py
+python tools/maintenance/validate-assessment-artifacts.py
 python .ai/scripts/validate-workflow-artifacts.py
 python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.5.0
-python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-22-v0-5-0-macos-portability
+python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-22-v0-5-0-macos-portability
 Git Bash .ai/scripts/check-all.sh --critical
 ```
 

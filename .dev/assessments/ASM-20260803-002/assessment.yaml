@@ -26,7 +26,7 @@ subject_ref:
   commit: "ec50df072ec59f7e59322345f005450c48be28d7"
 scope:
   included:
-    - ".dev/releases/v0.8.0/**"
+    - "releases/v0.8.0/**"
     - ".dev/backlog/items/SKILL-002.yaml"
     - ".dev/backlog/items/TOOL-002.yaml"
     - ".dev/backlog/items/WIBIND-001.yaml"

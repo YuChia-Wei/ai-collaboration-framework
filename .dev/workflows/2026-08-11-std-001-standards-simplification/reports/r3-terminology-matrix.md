@@ -23,7 +23,7 @@
 
 | Qualified term | Meaning | Current canonical owner / machine contract | Current ambiguity | Recommended placement |
 | --- | --- | --- | --- | --- |
-| framework version candidate | governed source record being prepared before tag/publication | source release policy, `.dev/releases/<version>/release.yaml`, release validator | often shortened to `candidate`, which is also used for package, skill, and migration selections | source-only release policy and validator; consumers say `framework version candidate` |
+| framework version candidate | governed source record being prepared before tag/publication | source release policy, `releases/<version>/release.yaml`, release validator | often shortened to `candidate`, which is also used for package, skill, and migration selections | source-only release policy and validator; consumers say `framework version candidate` |
 | package candidate | deterministic archive built for validation; not publication | package builder, package-candidate workflow, archive metadata | can be mistaken for a validated release record | source distribution contract; always qualify as `package candidate` |
 | migration `automatic-candidate` | unchanged framework file proposed for automatic replacement | upgrader comparison contract and migration schema | not a release lifecycle state | keep exact machine value; contextual prose links to upgrader owner |
 | skill/provider candidate | a selectable capability under evaluation | skill discovery or provider-selection owner | bare `candidate` collides with release language | qualify by subject; no shared lifecycle meaning |

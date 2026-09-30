@@ -53,10 +53,10 @@
       ".dev/standards/AI-CONTEXT-BOUNDARY.md",
       ".ai/assets/skills/ai-context-auditor/references/audit-playbook.md",
       ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md",
-      ".ai/scripts/check-test-compliance.sh"
+      "src/tools/dotnet/check-test-compliance.sh"
     ],
     "tests_run": [
-      "codebase-memory search_graph for validate_commits returned zero while Git-backed .ai/scripts/validate-git-commits.py existed",
+      "codebase-memory search_graph for validate_commits returned zero while Git-backed tools/maintenance/validate-git-commits.py existed",
       "python .ai/scripts/validate-ai-context.py (passed)",
       "python .ai/scripts/validate-shell-assets.py (passed)",
       "active AUTO-GENERATED marker scan (none remain)"

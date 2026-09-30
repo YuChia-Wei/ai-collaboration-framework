@@ -39,7 +39,7 @@
     ],
     "validation": [
       "python -B .ai/scripts/validate-workflow-artifacts.py",
-      "python -B .ai/scripts/validate-assessment-artifacts.py",
+      "python -B tools/maintenance/validate-assessment-artifacts.py",
       "git diff --check"
     ],
     "last_completed_step": "Finalized the owner-readable report with coverage, migration and rule dispositions, acceptance criteria and actual validation observations.",

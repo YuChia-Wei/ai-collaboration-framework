@@ -103,7 +103,7 @@ The two existing owner-review translations in this workflow were produced by the
 Repository evidence is explicit:
 
 - `.ai/SUB-AGENT-SYSTEM.MD` routes a derived Traditional Chinese translation after English finalization to `context-translator` under the owning main workflow.
-- `.ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml` requires a caller-verified low-cost runtime.
+- `.dev/agents/context-translator/sub-agent.yaml` requires a caller-verified low-cost runtime.
 - `.codex/agents/context-translator.toml` selects `gpt-5.6-terra` with `model_reasoning_effort = "low"`.
 
 There was no unavailable-runtime or quality-based reason to bypass this route. The primary agent read the language policy and governance references but failed to consult and apply the active sub-agent routing document before translating. This was a routing/discovery error, not a defensible design decision.

@@ -88,7 +88,7 @@ Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scri
 - Updated: 2026-09-18T22:13:09+08:00
 - Owner continuation explicitly authorizes source push, PR, merge, tag and publication, plus lab PR13 upgrade integration into its existing sample branch. The original lab checkout remains untouched.
 - The workflow-owned implementation, focused validation, isolated downstream usability and retained-origin evidence preparation are complete. Source-release status remains planned.
-- Matrix04 passed 9/9 actual cases at `1379c079ca153245721bdf709287091e05ed445c` in 4018.216 seconds. Exact candidate09 assets and native artifacts are retained under `.dev/releases/v0.18.0/route-assets/`.
+- Matrix04 passed 9/9 actual cases at `1379c079ca153245721bdf709287091e05ed445c` in 4018.216 seconds. Exact candidate09 assets and native artifacts are retained under `releases/v0.18.0/route-assets/`.
 - Candidate09's isolated lab upgrade passed 55 tests and 11 independent gates; the actual model experiment retains 6 met/2 partial quality results and bounded token measurements. None is scheduled for replay solely because the publication checkout changes.
 - Required release profile, lifecycle-sensitive checks, independent source audit, hosted checks, live admission and publication remain pending with their source-release/terminal-policy owners. The explicit stage split does not waive a gate or call it passed.
 - Run the release profile once on the clean planned-and-promoted H1. After its pass, H2 changes only release lifecycle metadata and reruns every affected check determined from canonical input closures. H1 profile execution remains H1 evidence; no H2 terminal-profile cache/reuse claim is made.

@@ -258,7 +258,7 @@
       "git diff --check",
       "git check-ignore commit-message.tmp"
     ],
-    "message_command": "python -I -B F:/framework-next/371/.ai/scripts/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
+    "message_command": "python -I -B F:/framework-next/371/tools/maintenance/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
     "message_exit_code": 0,
     "message_sha256": "c2c60f6497be32eadef45bd264697d666c3826c23f8d77d88f94e844c537939c",
     "prior_message_sha256": "954fef03cfa75d26330708245450d6ce976d66a95f33c990097ec98ab4140fa1"
@@ -321,7 +321,7 @@
       "next_action": "Later V3 must prepare a complete valid public-operation fixture after path applicability is resolved."
     },
     "graph": "Existing graph predates the newly committed test; no freshness/absence claim. Explicit tracked-file fallback read only the selected test and owning records.",
-    "message_command": "python -I -B F:/framework-next/371/.ai/scripts/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/followup-commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
+    "message_command": "python -I -B F:/framework-next/371/tools/maintenance/validate-git-commits.py --message-file F:/framework-next/371/.dev/workflows/2026-09-23-engine-source-pin/followup-commit-message.tmp --workflow-id 2026-09-23-engine-source-pin",
     "message_sha256": "62b2157c2a7b655006f9049d9d644744e3bec973f8baa089592d5e23642897c7",
     "next_owner": "Coordinator reconciles source-bound review and V3/native gap; no push or callback from this executor",
     "direct_checks": {

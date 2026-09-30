@@ -71,7 +71,7 @@ ai-context-dotnet-backend-v<version>/
 
 ### Translator Agent Portability
 
-Keep one runtime-neutral canonical role under `.ai/assets/sub-agent-role-prompts/`; runtime adapters remain thin:
+Keep one runtime-neutral canonical role under `.dev/agents/`; runtime adapters remain thin:
 
 | Runtime | Project agent location | Format | Model policy |
 | --- | --- | --- | --- |

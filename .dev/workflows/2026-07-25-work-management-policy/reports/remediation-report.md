@@ -96,8 +96,8 @@
 ## Closure Evidence
 
 - Required validations: `python .ai/scripts/validate-workflow-artifacts.py`,
-  `python .ai/scripts/validate-assessment-artifacts.py`,
-  `python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id
+  `python tools/maintenance/validate-assessment-artifacts.py`,
+  `python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id
   2026-07-25-work-management-policy`, and `git diff --check` passed at closure.
 - Commit status: local remediation checkpoint
   `a7e0c543f632e0b00fcffc0f25f87c6756cb9c27` is present; this closure report

@@ -3,20 +3,20 @@
   "task_id": "VALIDATE-001", "workflow_id": "2026-07-16-v0-4-0-ai-context-remediation", "owner_skill": "ai-context-governance", "status": "completed",
   "created_at": "2026-07-16T07:22:13+08:00", "updated_at": "2026-07-17T07:42:39+08:00", "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "finding_ids": ["ASM-20260715-002#AIC-008", "ASM-20260715-002#AIC-009"],
-  "scope": {"target": "Truthful validator coverage and shell asset lifecycle", "files": [".ai/scripts/check-coding-standards.sh", ".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml", ".ai/scripts/README.md", ".ai/scripts/tests/**"], "constraints": ["Do not claim semantic completeness from structural checks", "Distinguish packaging retention from endorsement", "Preserve active orchestrators"], "non_goals": ["Replace every shell script"]},
+  "scope": {"target": "Truthful validator coverage and shell asset lifecycle", "files": ["src/tools/dotnet/check-coding-standards.sh", ".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml", ".ai/scripts/README.md", ".ai/scripts/tests/**"], "constraints": ["Do not claim semantic completeness from structural checks", "Distinguish packaging retention from endorsement", "Preserve active orchestrators"], "non_goals": ["Replace every shell script"]},
   "execution": {"steps": ["Rename structural success claims", "Add selected relationship checks", "Classify shell lifecycle", "Add fail-closed tests"], "validation": ["Shell asset validator", "Focused GWT tests", "Quick gate"], "last_completed_step": "Replaced semantic-completeness wording with structural integrity, covered all focused standard/catalog routes, and introduced shell registry schema v2 with explicit role, lifecycle, distribution, authority, and replacement direction.", "next_action": "Start VERIFY-001 as a durable independent ai-context-auditor assessment."},
   "results": {
     "summary": "Resolved overstated validator claims and retained-only shell classification without deleting compatibility assets or promoting transitional helpers to semantic authorities.",
     "files_changed": [
       ".ai/scripts/check-all.sh",
-      ".ai/scripts/check-coding-standards.sh",
+      "src/tools/dotnet/check-coding-standards.sh",
       ".ai/scripts/shell-assets.yaml",
       ".ai/scripts/validate-shell-assets.py",
       ".ai/scripts/README.md",
       ".ai/scripts/tests/test_fail_closed_validation.py",
       ".ai/scripts/tests/test_coding_standards_integrity_contract.py",
-      ".dev/releases/v0.4.0/release-notes.md",
-      ".dev/releases/v0.4.0/migration-guide.md"
+      "releases/v0.4.0/release-notes.md",
+      "releases/v0.4.0/migration-guide.md"
     ],
     "tests_run": [
       "Shell asset schema v2 validation passed for 14 tracked assets: 3 active, 4 compatibility, 7 transitional",

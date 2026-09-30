@@ -16,10 +16,10 @@
   "finding_ids": ["#187", "#193", "#194", "#197", "#61"],
   "scope": {
     "release_id": "REL-v0.13.0",
-    "release_record": ".dev/releases/v0.13.0/release.yaml",
+    "release_record": "releases/v0.13.0/release.yaml",
     "files": [
-      ".dev/releases/v0.13.0/**",
-      ".dev/releases/INDEX.MD",
+      "releases/v0.13.0/**",
+      "releases/INDEX.MD",
       ".ai/scripts/render-ai-context-release-notes.py",
       ".ai/scripts/tests/test_release_notes_renderer.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
