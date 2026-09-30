@@ -6,10 +6,10 @@ F: RAM-disk Git worktree. Continuation starts at the owner's cleanup commits on
 
 | Task | Ownership | Acceptance | State |
 | --- | --- | --- | --- |
-| S1/T1 | source_coverage, F:/framework-next/rc3-skill-packages | Retire portable workflow v2; three author package IDs; keep record family identities | in_progress |
-| S2/T2 | original_requirements, F:/framework-next/rc3-knowledge | Every moved document has an include, consolidate or retire disposition; declared resources and live links | in_progress |
-| S3/T3 | coordinator, F:/framework-next/rc3-coordinator | Explicit breaking reinstall with Git baseline, exact cleanup preimages and preservation checks | in_progress |
-| S4/T4 | coordinator, isolated F source and MQ trials | Actual package/subset/install; obsolete files absent; preserved target content hashes match | pending |
+| S1/T1 | source_coverage, F:/framework-next/rc3-skill-packages | Retire portable workflow v2; three author package IDs; keep record family identities | completed |
+| S2/T2 | original_requirements, F:/framework-next/rc3-knowledge | Every moved document has an include, consolidate or retire disposition; declared resources and live links | completed |
+| S3/T3 | coordinator, F:/framework-next/rc3-coordinator | Explicit breaking reinstall with Git baseline, exact cleanup preimages and preservation checks | completed |
+| S4/T4 | coordinator, isolated F source and MQ trials | Actual package/subset/install; obsolete files absent; preserved target content hashes match | completed |
 
 The target inventory worker is read-only and writes external evidence only.
 One tracked writer per worktree. Workers return local commits; coordinator owns
@@ -28,5 +28,4 @@ The user separately selected these focused RC3 packaging and installation trials
 Model attribution uses configured host defaults (gpt-6.1-sol / ultra), observed
 from config.toml, where the session exposes no concrete execution attestation.
 
-Next: integrate S1/S2, commit the engine change, build one immutable candidate,
-then perform the explicit source and MQ preservation trials with real evidence.
+The four selected local tasks are complete. Read [results.md](results.md) for authentic packaging, real reinstall, preservation, failures and deferred items, and [knowledge-disposition.md](knowledge-disposition.md) for the original 18 requirements and all 34 document dispositions. Local integration and commits are complete; transport, Issue closure, release and target-primary adoption remain separately authorized states.

@@ -4,11 +4,11 @@ workflow_id: 2026-09-30-rc3-reinstall
 workflow_kind: software-development
 title: RC3 source reconciliation and breaking reinstall
 owner_skill: slice-implementer
-status: in_progress
+status: completed
 artifact_root: .dev/workflows/2026-09-30-rc3-reinstall
 entrypoint: workflow-plan.md
 created_at: '2026-09-30T09:30:28+08:00'
-updated_at: '2026-09-30T09:30:28+08:00'
+updated_at: '2026-09-30T10:19:09+08:00'
 branch: codex/2026-09-30-rc3-reinstall
 base_branch: 0.19.0-rc3
 base_commit: d9ddbc64370970b6275ce59b42508d05e0225dff
@@ -27,5 +27,7 @@ execution: Coordinator dispatches independently bounded units in separate F work
 u001:
   deferred_status: deferred-by-owner
   deferred_owner: program 322 coordinator / P7
-  next_action: Owner-selected focused RC3 packaging and installation trials are authorized; broader legacy and hosted gates remain deferred.
+  next_action: Owner-selected focused RC3 packaging and installation trials are authorized;
+    broader legacy and hosted gates remain deferred.
 integration: local-handoff-before-first-push
+current_phase: completed

@@ -7,7 +7,7 @@ This repository is the source for a reusable AI collaboration framework. It main
 | Purpose | Path |
 | --- | --- |
 | Agent collaboration rules and current routes | [`AGENTS.md`](AGENTS.md) |
-| Human guides and operating instructions | [`.dev/guides/`](.dev/guides/README.MD) |
+| Source operating policies | [`.dev/standards/`](.dev/standards/INDEX.MD) |
 | Editable reusable framework source | [`src/`](src/) |
 | Generated package installed here | [`.ai/core/`](.ai/core/) |
 | Codex skill entries | [`.agents/skills/README.md`](.agents/skills/README.md) |
@@ -20,6 +20,8 @@ The RC3 source selection contains 17 portable skills with Codex and Claude adapt
 
 Installation selection is separate from skill operation settings. `.ai/custom/framework.json` binds Lesson, ADR, PR, CBF, and standards-promotion skills to five project-owned filesystem roots with exact write_roots and package templates, using tracked intent. No records or evidence have been created, and no ADR decision, promotion target/source adapters, or local-backlog provider are configured. These are path selections, not proof of authorization, store availability, or runtime capability.
 
+RC3 provides an explicit Git-backed breaking reinstall through the pinned engine's `tools/reinstall-framework.py`. It requires exact cleanup and preservation lists, preflights the new installation in an external preview, and verifies retained bytes after installation. Cleanup is non-atomic: the committed Git baseline owns obsolete-file recovery, and the pinned API 2 journal owns the new installation. Read the [reinstall contract](.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md) and [actual source/MQ trial results](.dev/workflows/2026-09-30-rc3-reinstall/results.md).
+
 ## Source and compatibility boundaries
 
 - `src/skills/` and `src/knowledge/` are the editable reusable product sources; this repository selects no engineering knowledge package.
@@ -28,4 +30,4 @@ Installation selection is separate from skill operation settings. `.ai/custom/fr
 - `.dev/standards/` owns source policy, Issue authority, U001, and P7 deferrals; `releases/` owns release records and version-support boundaries.
 - Initialization, upgrade, and transaction recovery for previously published formats remain source-owned compatibility duties with no current portable or executable legacy route. Historical or exceptional release closeout remains governed by source release policy.
 
-Follow [`AGENTS.md`](AGENTS.md) and the `.dev/standards/` policies it names. Installing RC2 does not establish runtime discovery, behavioral acceptance, upgrade/recovery trials, or downstream admission; owner-selected S6/P7 work owns those checks. Stable publication and a GitHub Release are separate owner decisions.
+Follow [`AGENTS.md`](AGENTS.md) and the `.dev/standards/` policies it names. The RC3 report records the actual packaging, reinstall and read-back scope. Runtime discovery, application behavior, failure recovery and hosted admission retain their specific S6/P7 verification status. Stable publication and a GitHub Release are separate owner decisions.
