@@ -1,40 +1,22 @@
 # Installed Codex skills
 
-Codex discovers the selected RC2 skills by their original IDs under
-`.agents/skills/<skill-id>/`. Each entry is generated from the installed package
-in `.ai/core/skills/<skill-id>/` and the editable product source in
-`src/skills/<skill-id>/`.
+Generated runtime entries use the original canonical skill IDs from the saved selection.
+Regenerate through the pinned catalog subset and installation owner.
 
-The source repository selects all 18 delivered skills and the Codex and Claude
-adapters in `.ai/custom/installation.json`. No engineering knowledge package is
-selected. The installer owns `.ai/core/` and `.ai/framework.lock`; do not edit
-those generated files directly. The same core is shared by both runtimes.
-
-The selected skill IDs are:
-
-- `adr`
-- `ai-context-auditor`
-- `ai-context-governance`
-- `bdd-gwt-test-designer`
-- `code-reviewer`
-- `ddd-ca-hex-architect`
-- `diagnostic-analyst`
-- `lesson`
-- `local-backlog`
-- `local-change-implementer`
-- `pr`
-- `problem-frame-author`
-- `requirement-author`
-- `slice-implementer`
-- `software-development-orchestrator`
-- `spec-author`
-- `spec-compliance-validator`
-- `standards-promotion`
-
-The old `ai-context-init`, `ai-context-upgrader`, and
-`ai-context-release-closeout` discovery entries are retired from this runtime.
-Source-owned maintenance of previously published formats and exceptional
-release records is routed through root `AGENTS.md`, `.dev/standards/`,
-`releases/`, and only the legacy tooling that still has an active caller.
-`.ai/assets/skills/` is compatibility and tooling data, not the runtime skill
-registry.
+- [`adr-author`](adr-author/SKILL.md)
+- [`ai-context-auditor`](ai-context-auditor/SKILL.md)
+- [`ai-context-governance`](ai-context-governance/SKILL.md)
+- [`bdd-gwt-test-designer`](bdd-gwt-test-designer/SKILL.md)
+- [`code-reviewer`](code-reviewer/SKILL.md)
+- [`ddd-ca-hex-architect`](ddd-ca-hex-architect/SKILL.md)
+- [`diagnostic-analyst`](diagnostic-analyst/SKILL.md)
+- [`lesson-author`](lesson-author/SKILL.md)
+- [`local-backlog`](local-backlog/SKILL.md)
+- [`local-change-implementer`](local-change-implementer/SKILL.md)
+- [`pr-author`](pr-author/SKILL.md)
+- [`problem-frame-author`](problem-frame-author/SKILL.md)
+- [`requirement-author`](requirement-author/SKILL.md)
+- [`slice-implementer`](slice-implementer/SKILL.md)
+- [`spec-author`](spec-author/SKILL.md)
+- [`spec-compliance-validator`](spec-compliance-validator/SKILL.md)
+- [`standards-promotion`](standards-promotion/SKILL.md)
