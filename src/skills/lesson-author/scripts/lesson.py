@@ -692,7 +692,7 @@ def config(binding, path, local=False):
         if type(namespace_map) is not dict:
             fail("namespace-envelope", "Namespace maps must be objects.")
         for key, child in namespace_map.items():
-            if not NAMESPACE.fullmatch(key) or type(child) is not dict or (version == 1 and key != "lesson"):
+            if not NAMESPACE.fullmatch(key) or type(child) is not dict or (version == 1 and key != OWNER):
                 fail("namespace-envelope", "Invalid or unsupported namespace envelope.")
             if key != OWNER:
                 ignored.add(key)
