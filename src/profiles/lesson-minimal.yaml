@@ -2,7 +2,7 @@ preset_version: 1
 id: lesson-minimal
 version: 0.1.0
 skills:
-- lesson
+- lesson-author
 knowledge: []
 adapters:
 - codex

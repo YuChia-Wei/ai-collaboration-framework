@@ -3,8 +3,7 @@ id: work-management
 version: 0.1.0
 skills:
 - local-backlog
-- pr
-- software-development-orchestrator
+- pr-author
 knowledge: []
 adapters:
 - codex

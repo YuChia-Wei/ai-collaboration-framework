@@ -15,8 +15,8 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parents[1] / 'src'))
 import support
 
-FAMILIES = ('lesson', 'adr', 'standards-promotion', 'pr', 'local-backlog',
-            'software-development-orchestrator', 'problem-frame-author')
+FAMILIES = ('lesson-author', 'adr-author', 'standards-promotion', 'pr-author',
+            'local-backlog', 'problem-frame-author')
 
 
 def arguments(argv=None):
@@ -87,12 +87,11 @@ def main(argv=None):
 def public_main(args):
     """Public-only dispatch; contracts and reserved native behavior stay separate."""
     selected = (args.family,) if args.family else FAMILIES
-    modules = {'lesson': ('test_knowledge', 'LessonTests'),
-               'adr': ('test_knowledge', 'AdrTests'),
+    modules = {'lesson-author': ('test_knowledge', 'LessonTests'),
+               'adr-author': ('test_knowledge', 'AdrTests'),
                'standards-promotion': ('test_knowledge', 'PromotionTests'),
-               'pr': ('test_work', 'PrTests'),
+               'pr-author': ('test_work', 'PrTests'),
                'local-backlog': ('test_work', 'BacklogTests'),
-               'software-development-orchestrator': ('test_work', 'WorkflowTests'),
                'problem-frame-author': ('test_cbf', 'CbfTests')}
     outcomes = []
     public_used = process_bound_used = 0

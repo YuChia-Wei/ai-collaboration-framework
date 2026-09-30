@@ -28,9 +28,9 @@ import support
 from distribution import assembly, installation_state as state, installation_io as io
 
 SCRIPTS = {
-    'lesson': 'lesson', 'adr': 'adr', 'standards-promotion': 'standards_promotion',
-    'pr': 'pr', 'local-backlog': 'local_backlog',
-    'software-development-orchestrator': 'workflow', 'problem-frame-author': 'problem_frame',
+    'lesson-author': 'lesson', 'adr-author': 'adr', 'standards-promotion': 'standards_promotion',
+    'pr-author': 'pr', 'local-backlog': 'local_backlog',
+    'problem-frame-author': 'problem_frame',
 }
 MODULES = {}
 for family, script in SCRIPTS.items():
@@ -223,7 +223,7 @@ class SimulatedWindowsPaths(unittest.TestCase):
             close.assert_not_called()
 
     def test_three_backend_dispatches_preserve_filesystems_and_error_filter(self):
-        for family in ('lesson', 'problem-frame-author', 'distribution'):
+        for family in ('lesson-author', 'problem-frame-author', 'distribution'):
             def invoke():
                 if family == 'distribution':
                     backend = io.Backend.__new__(io.Backend)
@@ -237,7 +237,7 @@ class SimulatedWindowsPaths(unittest.TestCase):
                     self.assertEqual(kernel.GetVolumeInformationByHandleW.call_count, int(error == 144))
             for error, filesystem, kind in ((5, 'NTFS', 3), (1, 'NTFS', 3), (144, 'FAT32', 3), (144, 'NTFS', 4), (144, 'NTFS', 0)):
                 with self.subTest(family=family, error=error, fs=filesystem, kind=kind), simulated(Kernel(error=error, filesystem=filesystem, kind=kind)) as (kernel, _, _):
-                    with self.assertRaises((OSError, ValueError, MODULES['lesson'].Fault, MODULES['problem-frame-author'].Fault)):
+                    with self.assertRaises((OSError, ValueError, MODULES['lesson-author'].Fault, MODULES['problem-frame-author'].Fault)):
                         invoke()
                     if error != 144:
                         kernel.GetVolumeInformationByHandleW.assert_not_called()
@@ -245,7 +245,7 @@ class SimulatedWindowsPaths(unittest.TestCase):
                 if family == 'distribution':
                     self.assertTrue(invoke())
                 else:
-                    with self.assertRaises((MODULES['lesson'].Fault, MODULES['problem-frame-author'].Fault)):
+                    with self.assertRaises((MODULES['lesson-author'].Fault, MODULES['problem-frame-author'].Fault)):
                         invoke()
 
     def test_distribution_recovery_failure_domain_is_still_enforced(self):
@@ -407,17 +407,17 @@ def actual_reader(run):
 def actual_lesson(run):
     from test_knowledge import lesson_content
     project = run.case('lesson-project')
-    explained = public(run, 'lesson', project, 'explain')
+    explained = public(run, 'lesson-author', project, 'explain')
     store = project / explained['settings']['store']['root']
     store.mkdir(parents=True)
-    query = public(run, 'lesson', project, 'query', text='selected fixture')
+    query = public(run, 'lesson-author', project, 'query', text='selected fixture')
     support.check(not query['partial'], 'partial query')
-    created = public(run, 'lesson', project, 'create', text='selected fixture', content=lesson_content(), decision={
+    created = public(run, 'lesson-author', project, 'create', text='selected fixture', content=lesson_content(), decision={
         'action': 'new', 'query_sha256': query['query_sha256'], 'acknowledge_partial': False,
         'reason': 'Bounded Issue 378 synthetic record after actual query.'})
     path = store / (created['reference']['id'] + '.lesson.json')
     before = path.read_bytes()
-    inspected = public(run, 'lesson', project, 'inspect', reference=created['reference'])
+    inspected = public(run, 'lesson-author', project, 'inspect', reference=created['reference'])
     support.check(inspected['sha256'] == sha256(before).hexdigest() and path.read_bytes() == before, 'read changed published record')
     support.check(not list(store.glob('.*')), 'unexpected writer residue')
     print(json.dumps({'actual_lesson': 'passed', 'record_bytes': len(before), 'fixture': 'direct source package, synthetic content, actual public CLI'}), flush=True)

@@ -2,8 +2,8 @@ preset_version: 1
 id: knowledge
 version: 0.1.0
 skills:
-- adr
-- lesson
+- adr-author
+- lesson-author
 - standards-promotion
 knowledge: []
 adapters:

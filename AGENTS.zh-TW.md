@@ -60,8 +60,8 @@ Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skill
 | AI-context governance 與 reusable context maintenance | `ai-context-governance` |
 | Architecture、GWT design、code review、diagnosis 或 implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
-| Decisions、lessons、local backlog、pull requests 或 standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
-| 多階段 software development 與 workflow records | `software-development-orchestrator`，並遵循 source `.dev/` workflow 與 Issue authority |
+| Decisions、lessons、local backlog、pull requests 或 standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
+| 多階段 source work 與 workflow records | Project-owned `.dev/` workflow records、source workflow policy 與 Issue authority；不提供 portable orchestration skill |
 | 初始化或升級先前發布的 legacy package format | Source compatibility procedures 與其 active `.ai/scripts/` tooling；這不是 portable installed skill route。 |
 | Historical 或 exceptional source release closeout | `releases/` 與 source release policy；沒有 portable installed skill route。 |
 

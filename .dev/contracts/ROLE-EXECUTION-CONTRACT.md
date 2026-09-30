@@ -18,7 +18,7 @@ configuration, or effective-state semantics.
   `role_execution` record.
 - The role contract at `role_path` and its mandatory references remain the
   executable role source. The record proves which same contract was loaded.
-- `software-development-orchestrator` aggregates complete records by
+- The source workflow owner aggregates complete records by
   `stage_id`, checks this contract's evidence boundaries, and coordinates
   integration. It does not take domain ownership or replace an owning skill's
   output. It retains or surfaces `final_integration_owner.decision` and may
