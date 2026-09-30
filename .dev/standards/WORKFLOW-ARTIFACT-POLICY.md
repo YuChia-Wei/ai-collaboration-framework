@@ -36,7 +36,7 @@ artifact_root: ".dev/workflows/YYYY-MM-DD-topic"
 entrypoint: "workflow-plan.md"
 created_at: "2026-07-10T18:17:55+08:00"
 updated_at: "2026-07-10T18:17:55+08:00"
-template_source: ".ai/assets/skills/<owner-skill>/templates/workflow-locator-template.yaml"
+template_source: "<existing-project-selected-template-path>"
 template_version: "1.0.0"
 branch: "<runtime-prefix>/YYYY-MM-DD-topic"
 base_branch: "main"
@@ -234,5 +234,5 @@ later provider state into an already completed implementation workflow.
 - New workflows dated 2026-07-10 or later must satisfy this policy.
 - Historical workflows may retain month-only IDs and older layouts.
 - When a historical workflow remains active, add a new locator or migration note instead of silently rewriting its identity.
-- Validate new locators, timestamps, artifact roots, entrypoints, task identity, and task timestamps with `.ai/scripts/validate-workflow-artifacts.py`.
+- Validate new locators, timestamps, artifact roots, entrypoints, task identity, and task timestamps with an existing project-selected validator. The removed legacy validator has no current executable route; restoration belongs to the source workflow and P7 decision.
 - Validate `branch` and `base_branch` for workflows dated 2026-07-11 or later.

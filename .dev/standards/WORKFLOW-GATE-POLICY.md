@@ -338,9 +338,12 @@ execution profile that can faithfully execute and report the bounded command.
 Its scope is read-only except for ignored validation logs or artifacts. It must
 not repair, commit, push, mutate Issues or Projects, or broaden the command.
 
-The external-task prompt must contain exactly one marked dispatch envelope
-conforming to
-`.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`.
+The legacy schema-bound external-task dispatch route is unavailable after its
+compatibility schema and tooling were removed. Existing U001 and P7 deferrals
+remain in force. Restore and verify a source-owned schema and executable route
+before dispatching under this long-running gate. Once restored, the external-task
+prompt must contain exactly one marked dispatch envelope conforming to that
+selected schema.
 The envelope binds the source-task identity, final integration owner, immutable
 subject, exact argument vector, permission boundary, stop conditions, and one
 completion-delivery route. The source identity may be explicit or supplied by

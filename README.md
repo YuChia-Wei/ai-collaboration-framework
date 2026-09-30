@@ -24,8 +24,8 @@ Installation selection 與 skill operation settings 分開管理。`.ai/custom/f
 
 - `src/skills/` 與 `src/knowledge/` 是 reusable product 的可編輯來源；本庫不選取 engineering knowledge package。
 - `.ai/core/`、`.ai/framework.lock` 與 runtime entries 是安裝產物。
-- `.ai/assets/` 只保留仍有 active source tooling caller 的 compatibility 與工具輸入，不是日常 skill registry，也不是一般執行的第二條路由。
+- Legacy compatibility roots 已從目前 source layout 移除；歷史 references 不代表目前有可執行 tooling。
 - `.dev/standards/` 擁有 source policy、Issue authority、U001 與 P7 deferrals；`releases/` 擁有發布記錄與版本支援邊界。
-- 舊 published-format 初始化、upgrade、transaction recovery 及歷史／exception release closeout 是 source-owned compatibility duties，不是 portable installed skills。
+- 舊 published-format 初始化、upgrade 與 transaction recovery 保留為 source-owned compatibility duties，目前沒有 portable 或可執行的 legacy 路由。歷史／exception release closeout 仍受 source release policy 管理。
 
 遵循 [`AGENTS.md`](AGENTS.md) 與其指出的 `.dev/standards/`。RC2 安裝不代表 runtime discovery、behavioral acceptance、upgrade/recovery trials 或下游 admission 已驗收；這些項目由 owner 指定的 S6/P7 work 負責。穩定版發布與 GitHub Release 是另外的 owner 決策。
