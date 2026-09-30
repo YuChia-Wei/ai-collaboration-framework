@@ -18,7 +18,8 @@ from .data import json_bytes
 
 SCOPES = (".ai", ".dev", ".agents/skills", ".claude/skills")
 FIELDS = {"reinstall_version", "operation", "project_root", "expected_head",
-          "cleanup", "preserved_inputs", "preview_root", "installation", "maintenance"}
+          "cleanup", "preserved_inputs", "preview_root", "installation", "maintenance",
+          "all_framework_activity_stopped"}
 
 
 def _git(root, *args):
@@ -78,6 +79,8 @@ def _prepare(request):
     state._check(type(request["reinstall_version"]) is int and request["reinstall_version"] == 1,
                  "reinstall-version", "Unsupported breaking reinstall version.")
     state._check(request["operation"] in {"plan", "apply"}, "reinstall-operation", "Choose plan or apply.")
+    state._check(request["all_framework_activity_stopped"] is True, "reinstall-quiescence",
+                 "Explicitly stop all old and new framework activity for the complete non-atomic reset.")
     reader = state._Reader()
     project = state._root(request["project_root"])
     preview = state._root(request["preview_root"])
@@ -139,6 +142,7 @@ def _prepare(request):
                 "candidate_identity": candidate.identity, "cleanup": request["cleanup"],
                 "preserved_inputs": request["preserved_inputs"], "scoped_inventory": [inventory[n] for n in sorted(inventory)],
                 "coordination_reset": state.GUARD_PATH if guard else None,
+                "all_framework_activity_stopped": True,
                 "installation": install, "maintenance": request["maintenance"], "preview_root": str(preview),
                 "atomic": False, "recovery": "Git baseline for committed cleanup; pinned API 2 journal for new installation."}
     return document, roots, reader, candidate

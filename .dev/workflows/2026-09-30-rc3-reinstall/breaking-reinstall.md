@@ -6,7 +6,8 @@ keeps its existing no-destructive-cleanup contract.
 
 The closed request contains `reinstall_version: 1`, `operation: plan|apply`,
 `project_root`, `expected_head`, sorted `cleanup` and `preserved_inputs` arrays
-of `{path, sha256}`, `preview_root`, `installation` and `maintenance`. Apply also
+of `{path, sha256}`, `preview_root`, `installation`, `maintenance` and the exact
+boolean `all_framework_activity_stopped: true`. Apply also
 requires the exact returned `expected_plan_sha256`.
 
 `installation` is the ordinary API 2 plan request, using the selected catalog

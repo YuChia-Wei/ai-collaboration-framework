@@ -45,6 +45,7 @@ class BreakingReinstallTests(unittest.TestCase):
         install.update({role + "_root": str(self.base / role) for role in ("engine", "scratch", "staging", "recovery")})
         self.request = dict(reinstall_version=1, operation="plan", project_root=str(self.project), expected_head=head,
                             cleanup=[self.pin(self.old)], preserved_inputs=[self.pin(self.keep)],
+                            all_framework_activity_stopped=True,
                             preview_root=str(self.base / "preview"), installation=install, maintenance=maintenance)
         self.candidate = types.SimpleNamespace(identity="fixture", members={}, selection={"components": []})
         self.patches = [patch.object(owner.state, "_engine"), patch.object(owner.state, "read_candidate", return_value=self.candidate),
@@ -104,6 +105,19 @@ class BreakingReinstallTests(unittest.TestCase):
         self.request["preserved_inputs"] = []
         result = owner.execute(self.request)
         self.assertEqual("reinstall-unclassified", result["diagnostics"][0]["code"])
+
+    def test_all_old_framework_activity_must_be_stopped(self):
+        self.request["all_framework_activity_stopped"] = False
+        result = owner.execute(self.request)
+        self.assertEqual("reinstall-quiescence", result["diagnostics"][0]["code"])
+        self.assertFalse(result["changed"])
+
+    def test_hardlinked_cleanup_rejected(self):
+        name = ".ai/hardlinked.md"
+        os.link(self.project / self.old, self.project / name)
+        result = owner.execute(self.request)
+        self.assertEqual("reinstall-file-type", result["diagnostics"][0]["code"])
+        self.assertFalse(result["changed"])
 
     def test_failed_install_reports_destructive_partial_state(self):
         request = self.apply_request()
