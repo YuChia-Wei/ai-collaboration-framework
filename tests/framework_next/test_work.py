@@ -12,7 +12,7 @@ import support
 
 class PrTests(PublicCase):
     def test_selected(self):
-        self.prepare('pr', 'pr.py', ['C4-config', 'C6-binding', 'T4-git-round-trip', 'T4-synthetic-provider'])
+        self.prepare('pr-author', 'pr.py', ['C4-config', 'C6-binding', 'T4-git-round-trip', 'T4-synthetic-provider'])
         self.phase('C4-config')
         self.config_checks()
         self.phase('C6-binding')
@@ -43,11 +43,13 @@ class PrTests(PublicCase):
         prepared = self.invoke('prepare', repository_root=str(repository), base_commit=base, head_commit=head, content=content)
         ref = prepared['reference']
         inspected = self.invoke('inspect', reference=ref)
+        self.assertEqual((ref['role'], inspected['record']['kind']), ('pr.record', 'pr'))
         self.assertEqual(inspected['record']['validation'], [])
         subject = inspected['record']['subject']
         content['validation'] = [{'id': 'V1', 'command': 'not executed', 'disposition': 'deferred',
                                   'subject_head': subject['head_commit'], 'subject_diff_sha256': subject['diff_sha256'],
                                   'evidence': [], 'reason': 'Synthetic attribution; owner fixture; next action separate actual check.'}]
+        self.family_lock_blocks_revision('pr', ref, self.record_path(ref, '.pr.json').read_bytes(), content)
         revised = self.invoke('revise', reference=ref, expected_sha256=inspected['sha256'], content=content)
         self.invoke('revise', reference=ref, expected_sha256=inspected['sha256'], content=content, expect='conflict')
         path = self.record_path(ref, '.pr.json')
@@ -157,75 +159,4 @@ class BacklogTests(PublicCase):
                                 reason='Caller-attributed fixture completion.', completion_evidence=[{'source': 'synthetic:observation', 'note': 'Attribution only.'}])
         self.invoke('revise', reference=ref, expected_sha256=completed['sha256'], content=content, expect='unsupported')
         self.read_preserves(ref, '.work-item.json', ('inspect', 'render'))
-        self.finish()
-
-
-class WorkflowTests(PublicCase):
-    def test_selected(self):
-        self.prepare('software-development-orchestrator', 'workflow.py', ['C4-config', 'C6-binding', 'T6-round-trip', 'T6-with-deferrals'])
-        self.phase('C4-config')
-        self.config_checks()
-        self.phase('C6-binding')
-        self.binding_negative()
-        self.require_write_roundtrip()
-        self.phase('T6-round-trip')
-        minimal = {'title': 'selected fixture workflow', 'intent': 'Retain truthful outcomes.',
-                   'scope': {'included': ['fixture'], 'excluded': ['real work']}, 'acceptance': [{'id': 'A1', 'criterion': 'Fixture observation.'}],
-                   'first_action': {'action': 'Inspect fixture', 'completion_condition': 'Record observation', 'owner': 'synthetic-owner'}}
-        created = self.invoke('create', content=minimal)
-        ref = created['reference']
-        inspected = self.invoke('inspect', reference=ref)
-        current = self.invoke('transition', reference=ref, expected_sha256=inspected['sha256'], expected_state='planned',
-                              target_state='active', reason='Fixture active; no permission inferred.')
-        content = self.invoke('inspect', reference=ref)['record']['content']
-        content['tasks'][0]['state'] = 'active'
-        current = self.invoke('checkpoint', reference=ref, expected_sha256=current['sha256'], content=content, reason='Start fixture task.')
-        content['references'] = [{'id': 'R1', 'kind': 'opaque', 'target': 'synthetic:failure', 'schema': None, 'sha256': None,
-                                  'resolution': 'unverified', 'blocking': False, 'evidence_value': 'unknown', 'note': 'Synthetic attribution.'}]
-        content['evidence'] = [{'id': 'E1', 'task_id': 'T001', 'summary': 'Synthetic failed observation.', 'disposition': 'failed',
-                                'subject': 'fixture only', 'source_refs': ['R1'], 'reported_by': 'synthetic-owner',
-                                'observed_at': inspected['record']['created_at'], 'basis': 'caller-supplied'}]
-        content['tasks'][0].update(state='failed', reason='Fixture failure.', result='Not passed.', evidence_ids=['E1'])
-        content['acceptance'][0].update(disposition='failed', evidence_ids=['E1'], reason='Fixture failure.')
-        content['decisions'] = [{'id': 'D1', 'question': 'Who handles the fixture failure?', 'state': 'open', 'owner': 'synthetic-owner',
-                                 'resolution': None, 'source_refs': [], 'next_action': 'Owner disposition.'}]
-        current = self.invoke('checkpoint', reference=ref, expected_sha256=current['sha256'], content=content, reason='Retain fixture failure.')
-        self.invoke('transition', reference=ref, expected_sha256=current['sha256'], expected_state='active', target_state='completed',
-                    reason='Unresolved decision and failed acceptance.', expect='blocked')
-        resumed = self.invoke('resume', reference=ref)
-        self.assertIn('Synthetic failed observation.', json.dumps(resumed['continuation']))
-        self.invoke('resume', reference=ref, overrides={'resume_budget_chars': 2000}, expect='unsupported')
-        retrospective = {'outcome': 'no-new-knowledge', 'reflection': {'actual_outcome': 'Failed fixture.',
-                         'observations': 'Caller-attributed failure remains.', 'limitations': 'No actual project execution.'},
-                         'rationale': 'No general knowledge from synthetic input.', 'candidates': []}
-        current = self.invoke('retrospect', reference=ref, expected_sha256=current['sha256'], retrospective=retrospective)
-        record = self.invoke('inspect', reference=ref)['record']
-        basis = copy.deepcopy(record['content'])
-        basis['next_action'] = None
-        self.assertEqual(record['retrospective']['content_sha256'], digest(encoded(basis)))
-        content['intent'] = 'Retain failure and clear stale retrospective.'
-        current = self.invoke('checkpoint', reference=ref, expected_sha256=current['sha256'], content=content, reason='Changed content.')
-        record = self.invoke('inspect', reference=ref)['record']
-        self.assertIsNone(record['retrospective'])
-        self.assertTrue(any(row['previous_state']['retrospective'] for row in record['history']))
-        before = self.record_path(ref, '.workflow.json').read_bytes()
-        self.invoke('retention-preview', mode='purge', selection=[ref['id']])
-        self.assertEqual(self.record_path(ref, '.workflow.json').read_bytes(), before)
-        self.phase('T6-with-deferrals')
-        deferred = self.invoke('create', content={**minimal, 'title': 'Separate with-deferrals fixture'})
-        ref = deferred['reference']
-        current = self.invoke('transition', reference=ref, expected_sha256=deferred['sha256'], expected_state='planned',
-                              target_state='active', reason='Prepare explicit deferral.')
-        content = self.invoke('inspect', reference=ref)['record']['content']
-        deferral = {'reason': 'Synthetic owner deferral.', 'owner': 'synthetic-owner', 'trigger': 'Separate actual work',
-                    'next_action': 'Owner decides later.', 'authority_ref': 'synthetic:authority-only'}
-        content['tasks'][0].update(state='deferred', reason=deferral['reason'],
-                                   result='Not executed; deferred in synthetic fixture.', deferral=deferral)
-        content['acceptance'][0].update(disposition='deferred', reason=deferral['reason'], deferral=deferral)
-        current = self.invoke('checkpoint', reference=ref, expected_sha256=current['sha256'], content=content, reason='Attributed deferral.')
-        current = self.invoke('retrospect', reference=ref, expected_sha256=current['sha256'], retrospective=retrospective)
-        self.invoke('transition', reference=ref, expected_sha256=current['sha256'], expected_state='active', target_state='completed', reason='With deferrals, not aggregate pass.')
-        resumed = self.invoke('resume', reference=ref)
-        self.assertEqual(resumed['continuation']['completion_disposition'], 'with-deferrals')
-        self.assertIn('synthetic:authority-only', json.dumps(resumed['continuation']))
         self.finish()

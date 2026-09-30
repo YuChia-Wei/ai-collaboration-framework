@@ -2,19 +2,18 @@ preset_version: 1
 id: collaboration
 version: 0.1.0
 skills:
-- adr
+- adr-author
 - bdd-gwt-test-designer
 - code-reviewer
 - ddd-ca-hex-architect
 - diagnostic-analyst
-- lesson
+- lesson-author
 - local-backlog
 - local-change-implementer
-- pr
+- pr-author
 - problem-frame-author
 - requirement-author
 - slice-implementer
-- software-development-orchestrator
 - spec-author
 - spec-compliance-validator
 - standards-promotion

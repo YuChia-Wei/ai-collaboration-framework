@@ -12,7 +12,7 @@ This policy defines the repository-wide discovery and metadata contract for dura
 - Every skill that can create a workflow owns the templates and domain-specific layout it creates.
 - A skill may define its workflow topic, task IDs, report set, and artifact root.
 - The repository owns only the minimum discovery, identity, time, relationship, and lifecycle contract in this document.
-- `software-development-orchestrator` owns software-development workflow templates. It does not own templates for AI context maintenance, repository initialization, or every other workflow kind.
+- This source project owns its software-development workflow records and selected templates. Portable capability skills do not require or supply a workflow record store. Other workflow kinds retain their project-selected owners.
 
 ## Workflow Discovery Locator
 

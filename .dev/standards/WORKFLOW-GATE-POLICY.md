@@ -92,7 +92,8 @@ to create and bind an online Issue before material work begins.
 For software-development work, activation is intent-based. A high-level request
 that spans planning, requirements, design, implementation, testing, review, or
 closeout may activate the repository's development orchestration without the
-user naming `software-development-orchestrator` or any downstream skill. Determine stages from the
+user naming an orchestration skill. This source project owns the workflow and its
+records; no portable orchestration skill is selected. Determine stages from the
 requested outcome, current artifacts, repository policy, and approval state,
 not from skill names alone.
 

@@ -56,7 +56,7 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. `.ai/assets/` now holds only source compatibility and tooling data, including the bounded legacy-format duties below; it is not the daily route for the 18 installed skills.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. `.ai/assets/` now holds only source compatibility and tooling data, including the bounded legacy-format duties below; it is not the daily route for the 17 selected skills.
 
 | Need | Owning route |
 | --- | --- |
@@ -64,8 +64,8 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | AI-context governance and reusable context maintenance | `ai-context-governance` |
 | Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
-| Decisions, lessons, local backlog, pull requests, or standards promotion | `adr` / `lesson` / `local-backlog` / `pr` / `standards-promotion` |
-| Multi-stage software development and workflow records | `software-development-orchestrator` with source `.dev/` workflow and Issue authority |
+| Decisions, lessons, local backlog, pull requests, or standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
+| Multi-stage source work and workflow records | Project-owned `.dev/` workflow records, source workflow policy and Issue authority; no portable orchestration skill |
 | Initialization or upgrade of a previously published legacy package format | Source compatibility procedures and their active `.ai/scripts/` tooling; this is not a portable installed skill route. |
 | Historical or exceptional source release closeout | `releases/` and source release policy; no portable installed skill route. |
 

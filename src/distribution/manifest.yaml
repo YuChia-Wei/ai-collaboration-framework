@@ -499,26 +499,26 @@ components:
     destination: .ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md
   - source: references/PROMPT-PORTABILITY-RULES.md
     destination: .ai/core/knowledge/engineering-common/references/PROMPT-PORTABILITY-RULES.md
-- id: adr
-  source: src/skills/adr
+- id: adr-author
+  source: src/skills/adr-author
   metadata: skill-package.yaml
   members:
   - source: SKILL.md
-    destination: .ai/core/skills/adr/SKILL.md
+    destination: .ai/core/skills/adr-author/SKILL.md
   - source: references/configuration.md
-    destination: .ai/core/skills/adr/references/configuration.md
+    destination: .ai/core/skills/adr-author/references/configuration.md
   - source: references/example.md
-    destination: .ai/core/skills/adr/references/example.md
+    destination: .ai/core/skills/adr-author/references/example.md
   - source: references/operations.md
-    destination: .ai/core/skills/adr/references/operations.md
+    destination: .ai/core/skills/adr-author/references/operations.md
   - source: schemas/adr-record.schema.json
-    destination: .ai/core/skills/adr/schemas/adr-record.schema.json
+    destination: .ai/core/skills/adr-author/schemas/adr-record.schema.json
   - source: scripts/adr.py
-    destination: .ai/core/skills/adr/scripts/adr.py
+    destination: .ai/core/skills/adr-author/scripts/adr.py
   - source: skill-package.yaml
-    destination: .ai/core/skills/adr/skill-package.yaml
+    destination: .ai/core/skills/adr-author/skill-package.yaml
   - source: templates/adr.md
-    destination: .ai/core/skills/adr/templates/adr.md
+    destination: .ai/core/skills/adr-author/templates/adr.md
   kind: skill
   version: 0.1.0
 - id: ai-context-auditor
@@ -597,28 +597,28 @@ components:
     destination: .ai/core/skills/diagnostic-analyst/skill-package.yaml
   kind: skill
   version: 0.1.0
-- id: lesson
-  source: src/skills/lesson
+- id: lesson-author
+  source: src/skills/lesson-author
   metadata: skill-package.yaml
   members:
   - source: SKILL.md
-    destination: .ai/core/skills/lesson/SKILL.md
+    destination: .ai/core/skills/lesson-author/SKILL.md
   - source: references/configuration.md
-    destination: .ai/core/skills/lesson/references/configuration.md
+    destination: .ai/core/skills/lesson-author/references/configuration.md
   - source: references/example.md
-    destination: .ai/core/skills/lesson/references/example.md
+    destination: .ai/core/skills/lesson-author/references/example.md
   - source: references/operations.md
-    destination: .ai/core/skills/lesson/references/operations.md
+    destination: .ai/core/skills/lesson-author/references/operations.md
   - source: schemas/lesson-record-v2.schema.json
-    destination: .ai/core/skills/lesson/schemas/lesson-record-v2.schema.json
+    destination: .ai/core/skills/lesson-author/schemas/lesson-record-v2.schema.json
   - source: schemas/lesson-record.schema.json
-    destination: .ai/core/skills/lesson/schemas/lesson-record.schema.json
+    destination: .ai/core/skills/lesson-author/schemas/lesson-record.schema.json
   - source: scripts/lesson.py
-    destination: .ai/core/skills/lesson/scripts/lesson.py
+    destination: .ai/core/skills/lesson-author/scripts/lesson.py
   - source: skill-package.yaml
-    destination: .ai/core/skills/lesson/skill-package.yaml
+    destination: .ai/core/skills/lesson-author/skill-package.yaml
   - source: templates/lesson.md
-    destination: .ai/core/skills/lesson/templates/lesson.md
+    destination: .ai/core/skills/lesson-author/templates/lesson.md
   kind: skill
   version: 0.2.0
 - id: local-backlog
@@ -655,30 +655,30 @@ components:
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
   version: 0.2.0
-- id: pr
-  source: src/skills/pr
+- id: pr-author
+  source: src/skills/pr-author
   metadata: skill-package.yaml
   members:
   - source: SKILL.md
-    destination: .ai/core/skills/pr/SKILL.md
+    destination: .ai/core/skills/pr-author/SKILL.md
   - source: references/configuration.md
-    destination: .ai/core/skills/pr/references/configuration.md
+    destination: .ai/core/skills/pr-author/references/configuration.md
   - source: references/example.md
-    destination: .ai/core/skills/pr/references/example.md
+    destination: .ai/core/skills/pr-author/references/example.md
   - source: references/github.md
-    destination: .ai/core/skills/pr/references/github.md
+    destination: .ai/core/skills/pr-author/references/github.md
   - source: references/operations.md
-    destination: .ai/core/skills/pr/references/operations.md
+    destination: .ai/core/skills/pr-author/references/operations.md
   - source: schemas/pr-record.schema.json
-    destination: .ai/core/skills/pr/schemas/pr-record.schema.json
+    destination: .ai/core/skills/pr-author/schemas/pr-record.schema.json
   - source: scripts/github.py
-    destination: .ai/core/skills/pr/scripts/github.py
+    destination: .ai/core/skills/pr-author/scripts/github.py
   - source: scripts/pr.py
-    destination: .ai/core/skills/pr/scripts/pr.py
+    destination: .ai/core/skills/pr-author/scripts/pr.py
   - source: skill-package.yaml
-    destination: .ai/core/skills/pr/skill-package.yaml
+    destination: .ai/core/skills/pr-author/skill-package.yaml
   - source: templates/pr.md
-    destination: .ai/core/skills/pr/templates/pr.md
+    destination: .ai/core/skills/pr-author/templates/pr.md
   kind: skill
   version: 0.1.0
 - id: problem-frame-author
@@ -745,32 +745,6 @@ components:
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
   version: 0.2.0
-- id: software-development-orchestrator
-  source: src/skills/software-development-orchestrator
-  metadata: skill-package.yaml
-  members:
-  - source: SKILL.md
-    destination: .ai/core/skills/software-development-orchestrator/SKILL.md
-  - source: references/composition.md
-    destination: .ai/core/skills/software-development-orchestrator/references/composition.md
-  - source: references/configuration.md
-    destination: .ai/core/skills/software-development-orchestrator/references/configuration.md
-  - source: references/example.md
-    destination: .ai/core/skills/software-development-orchestrator/references/example.md
-  - source: references/operations.md
-    destination: .ai/core/skills/software-development-orchestrator/references/operations.md
-  - source: references/retention.md
-    destination: .ai/core/skills/software-development-orchestrator/references/retention.md
-  - source: schemas/workflow-record.schema.json
-    destination: .ai/core/skills/software-development-orchestrator/schemas/workflow-record.schema.json
-  - source: scripts/workflow.py
-    destination: .ai/core/skills/software-development-orchestrator/scripts/workflow.py
-  - source: skill-package.yaml
-    destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
-  - source: templates/workflow.md
-    destination: .ai/core/skills/software-development-orchestrator/templates/workflow.md
-  kind: skill
-  version: 0.1.0
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml
