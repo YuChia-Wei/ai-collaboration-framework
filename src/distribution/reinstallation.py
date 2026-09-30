@@ -226,11 +226,14 @@ def _preview(document, roots, reader):
     names.update(r["path"] for r in document["installation"]["project_edits"] if r["before_sha256"] is not None)
     def preview_files(directory):
         found = set()
-        for item in directory.iterdir():
+        for spelling in reader.listing(directory).values():
+            item = directory / spelling
             name = item.relative_to(roots["preview"]).as_posix()
             _native_relative(name)
             info = item.lstat()
             state._plain(info, name)
+            state._check(info.st_dev == roots["preview"].stat().st_dev and not os.path.ismount(item),
+                         "reinstall-preview-volume", "Preview cannot cross a mount or volume boundary.", name)
             if stat.S_ISDIR(info.st_mode):
                 found.update(preview_files(item))
             else:
@@ -239,21 +242,38 @@ def _preview(document, roots, reader):
                 found.add(name)
         return found
     state._check(preview_files(roots["preview"]) <= names, "reinstall-preview-collision", "Preview root contains unrelated files.")
+    retained = {}
+    missing = []
+    # Observe the complete stable destination before our namespace mutations.
+    # Re-listing a growing sibling directory for every write is quadratic and
+    # would consume the unchanged entry bound for ordinary historical data.
     for name in sorted(names):
         source = _locate_native(reader, roots["project"], name)
         state._check(source is not None, "reinstall-preview-input", "Retained preview input is unavailable.", name)
         raw = reader.read(source, name)
+        retained[name] = raw
         target = _locate_native(reader, roots["preview"], name)
         if target is None:
-            destination = roots["preview"] / name
-            # Every existing ancestor is checked by locate before creation.
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            with destination.open("xb") as stream:
-                stream.write(raw)
-            if os.name != "nt":
-                os.chmod(destination, stat.S_IMODE(source.lstat().st_mode))
+            missing.append(name)
         else:
             state._check(reader.read(target, name) == raw, "reinstall-preview-drift", "Retained preview differs; choose another empty preview root.", name)
+    for name in missing:
+        destination = roots["preview"] / name
+        # Existing spellings were checked above under declared quiescence.
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        state._no_links(destination.parent)
+        with destination.open("xb") as stream:
+            stream.write(retained[name])
+        if os.name != "nt":
+            os.chmod(destination, stat.S_IMODE((roots["project"] / name).lstat().st_mode))
+    # Own writes invalidate the old observations. A fresh, independently bounded
+    # complete snapshot verifies exact closure, paths and bytes before cleanup.
+    reader = state._Reader()
+    state._check(preview_files(roots["preview"]) == names, "reinstall-preview-collision", "Preview closure changed during materialization.")
+    for name, raw in retained.items():
+        target = _locate_native(reader, roots["preview"], name)
+        state._check(target is not None and reader.read(target, name) == raw,
+                     "reinstall-preview-drift", "Retained preview changed during materialization.", name)
     request = {**document["installation"], "project_root": str(roots["preview"])}
     result = installation.plan(request)
     state._check(result["outcome"] == "planned", "reinstall-install-preflight", "New installation preview was rejected; target cleanup has not started.")

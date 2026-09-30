@@ -123,6 +123,23 @@ class BreakingReinstallTests(unittest.TestCase):
         self.assertEqual("reinstall-dirty", result["diagnostics"][0]["code"])
         self.assertTrue((self.project / self.old).exists())
 
+    def test_dense_history_preview_keeps_bounded_complete_snapshots(self):
+        names = []
+        for index in range(120):
+            name = f'.dev/assessments/history/evidence-{index:03}.md'
+            target = self.project / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(f'actual historical work {index}\n'.encode())
+            names.append(name)
+        self.request['preserved_inputs'] = sorted([self.pin(self.keep), *(self.pin(n) for n in names)], key=lambda r:r['path'])
+        with patch.dict(owner.state.LIMITS, entries=500):
+            result = owner.execute(self.request)
+        self.assertEqual('planned', result['outcome'], result)
+        self.assertFalse(result['changed'])
+        self.assertTrue((self.project / self.old).exists())
+        for name in names:
+            self.assertEqual((self.project / name).read_bytes(), (self.base / 'preview' / name).read_bytes())
+
     def test_untracked_cleanup_rejected(self):
         name = ".ai/untracked.md"
         (self.project / name).write_bytes(b"user data")

@@ -57,3 +57,10 @@ retry. Neither an incomplete old operation nor new operation is bypassed.
 Successful `reinstalled` means selected new managed bytes/lock read back, selected
 obsolete files are absent and preserved file hashes match. Project/runtime
 readiness, application tests, Git integration and publication remain separate.
+# Dense preservation previews
+
+The external preview observes its existing namespace completely before writing,
+then verifies a fresh bounded snapshot of the complete materialized closure and
+retained bytes. This avoids repeatedly scanning growing sibling directories.
+The entry and byte limits remain unchanged; cleanup starts only after preview
+verification and the ordinary installer plan both pass.
