@@ -1,256 +1,61 @@
-name: Package AI Context Candidate
-
+# Owner-selected #418 release delivery only; test workflows remain disabled.
+name: Build framework snapshot
 on:
-  pull_request:
-    paths:
-      - ".ai/distribution/**"
-      - ".ai/assets/**"
-      - ".ai/scripts/**"
-      - ".agents/**"
-      - ".claude/**"
-      - ".dev/guides/**"
-      - "releases/**"
-      - ".dev/workflows/**"
-      - ".github/scripts/**"
-      - ".github/workflows/package-candidate.yml"
-      - ".github/workflows/publish-release.yml"
+  push:
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Governed candidate version in vMAJOR.MINOR.PATCH form"
-        required: true
-        type: string
-
 permissions: {}
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
-
+  group: release-snapshot-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  package:
-    name: Build and validate candidate
+  build:
+    if: github.repository == 'YuChia-Wei/ai-collaboration-framework' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-    env:
-      CANDIDATE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+    timeout-minutes: 15
     permissions:
       contents: read
-      issues: read
+    env:
+      TOOLING_COMMIT: ${{ github.workflow_sha }}
+      SOURCE_COMMIT: ${{ github.sha }}
     steps:
-      - name: Check out candidate commit
-        uses: actions/checkout@v6
+      - name: Checkout immutable workflow tooling without persisted credentials
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ env.CANDIDATE_COMMIT }}
+          ref: ${{ github.workflow_sha }}
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
-
-      - name: Install packaging dependency
-        run: python -m pip install --disable-pip-version-check -r requirements.txt
-
-      - name: Resolve candidate and render release body
-        id: release
-        env:
-          REQUESTED_VERSION: ${{ inputs.version }}
-          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          python-version: '3.12'
+      - name: Builder dependency
+        run: python -I -m pip install --disable-pip-version-check PyYAML==6.0.3
+      - name: Build and verify exact source snapshot
+        id: build
+        shell: bash
         run: |
-          set +e
-          args=(
-            --commit "${CANDIDATE_COMMIT}"
-            --mode candidate
-            --output "${RUNNER_TEMP}/release-body.md"
-            --github-output "${GITHUB_OUTPUT}"
-          )
-          if [[ -n "${REQUESTED_VERSION}" ]]; then
-            args+=(--version "${REQUESTED_VERSION}")
-          else
-            args+=(--base-commit "${PR_BASE_SHA}" --head-commit "${PR_HEAD_SHA}")
-          fi
-          render_output="$(python .ai/scripts/render-ai-context-release-notes.py "${args[@]}" 2>&1)"
-          render_status=$?
-          set -e
-          if [[ ${render_status} -ne 0 ]]; then
-            if [[ ${render_status} -eq 3 \
-              && "${GITHUB_EVENT_NAME}" == "pull_request" \
-              && -z "${REQUESTED_VERSION}" ]]; then
-              echo "available=false" >> "${GITHUB_OUTPUT}"
-              printf '%s\n' "${render_output}"
-              echo "::notice::No eligible governed release record changed; candidate packaging is not applicable to this pull request."
-              exit 0
-            fi
-            printf '%s\n' "${render_output}" >&2
-            exit "${render_status}"
-          fi
-          printf '%s\n' "${render_output}"
-          echo "available=true" >> "${GITHUB_OUTPUT}"
-
-      - name: Validate release registry
-        if: steps.release.outputs.available == 'true'
-        run: python .ai/scripts/validate-ai-context-versions.py --no-git
-
-      - name: Validate exact candidate state
-        if: steps.release.outputs.available == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python .ai/scripts/validate-ai-context-release-state.py \
-            --phase candidate \
-            --version "${{ steps.release.outputs.version }}" \
-            --commit "${CANDIDATE_COMMIT}" \
-            --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-
-      - name: Validate provider reconciliation contract
-        if: steps.release.outputs.available == 'true'
-        run: |
-          python .ai/scripts/reconcile-ai-context-release-provider.py \
-            --phase contract \
-            --version "${{ steps.release.outputs.version }}"
-
-      - name: Resolve exact-byte promotion requirement
-        if: steps.release.outputs.available == 'true'
-        id: promotion
-        run: |
-          required="$(python .ai/scripts/manage-release-asset-identity.py required --version "${{ steps.release.outputs.version }}")"
-          echo "required=${required}" >> "${GITHUB_OUTPUT}"
-
-      - name: Stage admitted candidate archives
-        if: steps.release.outputs.available == 'true'
-        run: |
-          if [[ "${{ steps.promotion.outputs.required }}" == "true" ]]; then
-            python .ai/scripts/manage-release-asset-identity.py stage \
-              --version "${{ steps.release.outputs.version }}" --ref "${CANDIDATE_COMMIT}" --assets-dir "${RUNNER_TEMP}/candidate-assets"
-          fi
-
-      - name: Build deterministic archives
-        if: steps.release.outputs.available == 'true' && steps.promotion.outputs.required == 'false'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          MIGRATION_SOURCES: ${{ steps.release.outputs.migration_sources }}
-        run: |
-          build_args=(
-            --ref "${CANDIDATE_COMMIT}"
-            --version "${{ steps.release.outputs.version }}"
-            --output "${RUNNER_TEMP}/candidate-assets"
-          )
-          for migration_source in ${MIGRATION_SOURCES}; do
-            previous_version="${migration_source#v}"
-            previous_package_id="$(python .ai/scripts/resolve-ai-context-package-identity.py --version "${migration_source}")"
-            previous_output="${RUNNER_TEMP}/previous-package-${previous_version}"
-            previous_extract="${RUNNER_TEMP}/previous-extracted-${previous_version}"
-            mkdir -p "${previous_output}" "${previous_extract}"
-            gh release download "${migration_source}" \
-              --pattern "${previous_package_id}.zip" \
-              --pattern "${previous_package_id}.zip.sha256" \
-              --dir "${previous_output}"
-            python .ai/scripts/validate-ai-context-package.py \
-              "${previous_output}/${previous_package_id}.zip"
-            python -m zipfile -e \
-              "${previous_output}/${previous_package_id}.zip" \
-              "${previous_extract}"
-            build_args+=(
-              --migration-source "${migration_source}" \
-                "${previous_extract}/${previous_package_id}/metadata/files.yaml"
-            )
-          done
-          python .ai/scripts/build-ai-context-package.py "${build_args[@]}"
-
-      - name: Validate archives and parity
-        if: steps.release.outputs.available == 'true'
-        run: |
-          python .ai/scripts/validate-ai-context-package.py \
-            "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.zip" \
-            "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.tar.gz"
-
-      - name: Validate freshly extracted incoming candidate
-        if: steps.release.outputs.available == 'true'
-        run: |
-          candidate_extract="${RUNNER_TEMP}/incoming-candidate"
-          mkdir -p "${candidate_extract}"
-          python -m zipfile -e \
-            "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.zip" \
-            "${candidate_extract}"
-          cd "${candidate_extract}/${{ steps.release.outputs.package_id }}"
-          python -m venv "${RUNNER_TEMP}/incoming-candidate-venv"
-          "${RUNNER_TEMP}/incoming-candidate-venv/bin/python" -m pip install --disable-pip-version-check -r requirements.txt
-          "${RUNNER_TEMP}/incoming-candidate-venv/bin/python" \
-            payload/.ai/scripts/validate-ai-context-payload.py \
-            --package-root .
-
-      - name: Validate v0.15.1 actual clean install and v0.15.0 upgrade
-        if: steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.15.1'
-        run: |
-          python .github/scripts/validate-v0151-actual-upgrade.py \
-            --candidate-archive "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.zip" \
-            --previous-archive "${RUNNER_TEMP}/previous-package-0.15.0/ai-collaboration-framework-v0.15.0.zip" \
-            --subject-sha "${CANDIDATE_COMMIT}" \
-            --output "${RUNNER_TEMP}/v0151-actual-admission"
-
-      - name: Validate v0.16.0 actual retained direct upgrades
-        if: steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.16.0'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          args=(
-            --candidate-archive "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.zip"
-            --subject-sha "${CANDIDATE_COMMIT}"
-            --output "${RUNNER_TEMP}/v016-actual-admission"
-          )
-          for origin in v0.6.0 v0.9.0 v0.15.1; do
-            package_id="$(python .ai/scripts/resolve-ai-context-package-identity.py --version "${origin}")"
-            origin_dir="${RUNNER_TEMP}/v016-origin-${origin}"
-            mkdir -p "${origin_dir}"
-            gh release download "${origin}" --pattern "${package_id}.zip" --pattern "${package_id}.zip.sha256" --dir "${origin_dir}"
-            args+=(--origin-archive "${origin_dir}/${package_id}.zip")
-          done
-          python .github/scripts/validate-v016-direct-upgrades.py "${args[@]}"
-
-      - name: Validate v0.17.0 retained seven-plus-two execution set
-        if: steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.17.0'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p "${RUNNER_TEMP}/v017-actual-admission"
-          python .ai/scripts/validate-ai-context-release-state.py \
-            --phase candidate --version v0.17.0 \
-            --commit "${CANDIDATE_COMMIT}" \
-            --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}" \
-            > "${RUNNER_TEMP}/v017-actual-admission/retained-evidence-validation.log"
-          cat "${RUNNER_TEMP}/v017-actual-admission/retained-evidence-validation.log"
-
-      - name: Render source disposition read-back
-        if: steps.release.outputs.available == 'true'
-        run: |
-          python .ai/scripts/validate-source-dispositions.py \
-            --ref "${CANDIDATE_COMMIT}" \
-            --format json \
-            --output "${RUNNER_TEMP}/source-dispositions.json"
-          python .ai/scripts/validate-source-dispositions.py \
-            --ref "${CANDIDATE_COMMIT}" \
-            --format markdown \
-            --output "${RUNNER_TEMP}/source-dispositions.md"
-
-      - name: Upload candidate artifact
-        if: always() && steps.release.outputs.available == 'true'
-        uses: actions/upload-artifact@v7
+          python -I -B .github/scripts/build-release.py \
+            --repository "$GITHUB_WORKSPACE" --source-commit "$SOURCE_COMMIT" \
+            --tooling-commit "$TOOLING_COMMIT" --workflow-commit "$TOOLING_COMMIT" \
+            --workflow .github/workflows/package-candidate.yml \
+            --repository-name "$GITHUB_REPOSITORY" --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --work-root "$RUNNER_TEMP/rb" --output "$RUNNER_TEMP/release-assets" --github-output "$GITHUB_OUTPUT"
+      - name: Retain complete snapshot package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ${{ steps.release.outputs.package_id }}-${{ env.CANDIDATE_COMMIT }}
-          retention-days: 14
-          compression-level: 0
+          name: snapshot-${{ steps.build.outputs.source_commit }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-assets/*
           if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+      - name: Retain builder diagnostic output
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: snapshot-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            ${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.zip
-            ${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.zip.sha256
-            ${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.tar.gz
-            ${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.tar.gz.sha256
-            ${{ runner.temp }}/release-body.md
-            ${{ runner.temp }}/source-dispositions.json
-            ${{ runner.temp }}/source-dispositions.md
-            ${{ runner.temp }}/v0151-actual-admission/**
-            ${{ runner.temp }}/v016-actual-admission/**
-            ${{ runner.temp }}/v017-actual-admission/**
+            ${{ runner.temp }}/rb/builder.stdout
+            ${{ runner.temp }}/rb/builder.stderr
+          if-no-files-found: ignore
+          retention-days: 14

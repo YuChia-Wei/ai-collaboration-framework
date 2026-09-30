@@ -1,0 +1,26 @@
+schema_version: "1.0"
+lifecycle_contract: "1.0"
+workflow_id: 2026-10-01-release-draft-pipeline
+workflow_kind: software-development
+title: Build source packages and deliver an owned Draft Release
+owner_skill: slice-implementer
+status: completed
+artifact_root: .dev/workflows/2026-10-01-release-draft-pipeline
+entrypoint: workflow-plan.md
+created_at: "2026-10-01T06:37:51+08:00"
+updated_at: "2026-10-01T06:45:57+08:00"
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-u001
+branch: codex/2026-10-01-release-draft-pipeline
+base_branch: main
+base_commit: 269ab4e1b3d6a0af1e5c738689459f9879c655d1
+current_phase: completed
+work_items:
+  - provider: github
+    issue: 418
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/418
+  - provider: github
+    issue: 322
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+authority: Owner selected the connected release-build to draft slice on 2026-10-01; coordinator dispatch binds exact paths and operation.
+execution: One tracked writer in F:/framework-next/418; coordinator owns provider operations and integration.
