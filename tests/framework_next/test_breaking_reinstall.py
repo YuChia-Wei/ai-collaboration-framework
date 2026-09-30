@@ -23,6 +23,11 @@ class BreakingReinstallTests(unittest.TestCase):
         self.assertEqual(catalog.ENGINE_FILES, catalog.GENERATOR_FILES)
         self.assertIn('src/distribution/reinstallation.py', catalog.ENGINE_FILES)
         self.assertIn('tools/reinstall-framework.py', catalog.ENGINE_FILES)
+        head = subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD']).decode().strip()
+        source = catalog.GitSource(ROOT, head)
+        self.assertTrue(source.read('tools/reinstall-framework.py').data)
+        with self.assertRaises(ValueError):
+            source.read('tools/maintenance/validate-git-commits.py')
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
