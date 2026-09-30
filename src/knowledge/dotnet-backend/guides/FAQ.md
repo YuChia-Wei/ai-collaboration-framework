@@ -1,38 +1,44 @@
-# .NET CA + WolverineFx 常見問題 (FAQ)
+# .NET backend FAQ
 
-## 架構設計問題
+## Applicability
 
-### 為什麼要使用 Event Sourcing？
-- 完整審計軌跡
-- 可回放狀態
-- 支援 CQRS
-- 易於實作撤銷/重做
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
 
-### Command 和 Query 的區別是什麼？
-- **Command**: 改變狀態，回傳 `CqrsOutput`
-- **Query**: 讀取資料，回傳 DTO
+This optional guide explains profile examples. Apply only the target's adopted
+rules and selected technologies; the package does not introduce universal choices.
 
-```csharp
-// Command 範例
-public sealed record CreatePlanCommand(string Name);
+## Does CQRS require Event Sourcing?
 
-// Query 範例
-public sealed record GetPlanQuery(string PlanId);
-```
+No. CQRS separates state-changing behavior from reads. Event Sourcing can provide
+an event history and replay when the domain accepts the operational, versioning
+and consistency costs. EF Core, direct SQL, event stores and mixed per-domain
+persistence remain valid target choices.
 
-### 什麼時候使用 Reactor/Handler？
-當跨 Aggregate 的副作用需要處理時使用（通知、同步、快取等）。
+## What differs between a use case and a handler?
 
-### 為什麼 UseCase Input/Output 要保持簡單？
-Input/Output 是資料傳輸物件，應避免包含業務邏輯，保持序列化友好。
+A use case owns the application behavior; a handler maps a real dispatch/message
+entry and invokes it. A reactor handles an accepted integration effect. Read the
+[terminology contract](../standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD) under
+its adopted applicability before choosing the target's names and responsibilities.
 
-## 開發實作問題
+## Does every repository have exactly three methods?
 
-### 為什麼 Repository 只有三個方法？
-為了強制 CQRS 分離與保持 Domain 純粹性。查詢應該透過 Projection/Inquiry。
+No. Separate aggregate-root persistence from read-only queries and explicit
+capability writers. The target's port contract determines its methods. Do not
+copy an example's method count as a new requirement.
 
-### 為什麼 Domain Event 必須對應 spec？
-避免過度設計與規格偏離，確保事件模型與需求一致。
+## Must every event or change create a specification?
 
-### 為什麼不能直接使用 DateTime.UtcNow？
-不可測試且不一致，必須使用 DateProvider/TimeProvider 以利測試控制。
+Use the target's actual requested artifact and accepted traceability obligations.
+Capture relevant event semantics and business sources when needed; do not create
+an empty specification merely because an event type exists.
+
+## Why use a controlled clock?
+
+When behavior depends on time, an injected target-selected clock makes boundary
+conditions reproducible. It does not mean every diagnostic timestamp requires a
+new abstraction or that one DateProvider package is mandatory.

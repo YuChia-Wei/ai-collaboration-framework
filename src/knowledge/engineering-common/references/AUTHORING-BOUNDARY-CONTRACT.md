@@ -53,5 +53,5 @@ next owner only when its distinct output or decision is needed. A complete
 requested artifact can end with no next skill. Explicit multi-artifact requests
 may sequence the selected owners; do not add unrequested authoring stages.
 Authoring approval never silently becomes implementation, independent review,
-test execution or specification-compliance evidence. Existing per-skill schemas,
-role bindings, target rules and effective-rule gates remain authoritative.
+test execution or specification-compliance evidence. Existing per-skill schemas, role bindings and adopted target rules remain
+authoritative; this guidance creates no new packet or validation gate.

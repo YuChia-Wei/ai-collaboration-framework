@@ -1,5 +1,13 @@
 # Database Migration Guide (.NET)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 ## 📋 Overview
 This guide describes database migration strategies and best practices for .NET, with stability, safety, and rollback capability as its goals.
 
@@ -116,5 +124,5 @@ public sealed class MigrationHealthCheck : IHealthCheck
 ## Related
 
 - [Persistence configuration](PERSISTENCE-CONFIGURATION-GUIDE.md)
-- [Technology selection policy](../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md)
-- [Project structure](../../../.ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md)
+- Target-owned technology selection and database deployment policy (caller-supplied authority).
+- [Project structure](../standards/project-structure.md)

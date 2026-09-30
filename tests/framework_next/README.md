@@ -32,8 +32,10 @@ The bounded Issue 382 native selection uses its exact provisioned roots:
 python -I -B tests/framework_next/run.py --layer native-windows --native-root F:/framework-next/p7-runs/native-w01/382
 ```
 
-The seven public family IDs are `lesson`, `adr`, `standards-promotion`, `pr`,
-`local-backlog`, `software-development-orchestrator`, `problem-frame-author`.
+The six current public package IDs are `lesson-author`, `adr-author`,
+`standards-promotion`, `pr-author`, `local-backlog`, `problem-frame-author`.
+Portable workflow orchestration is retired; its historical results below remain
+bound to their original source commits.
 Unknown layers/families fail. `--family` belongs only to public; `--native-root`
 belongs only to native-windows and is mandatory there. No disposable setting
 selects a native root. Registration/presence cannot count as execution.
@@ -41,12 +43,12 @@ selects a native root. Registration/presence cannot count as execution.
 ## Public caller interface
 
 ```text
-python -I -B tests/framework_next/run.py --layer public --family lesson --output-root F:/framework-next/p7-runs/373-public
-python -I -B tests/framework_next/run.py --layer public --family lesson --public-read-only --output-root F:/framework-next/p7-runs/373-public
+python -I -B tests/framework_next/run.py --layer public --family lesson-author --output-root F:/framework-next/p7-runs/373-public
+python -I -B tests/framework_next/run.py --layer public --family lesson-author --public-read-only --output-root F:/framework-next/p7-runs/373-public
 ```
 
 Select one family during development. Omitted `--family` explicitly selects all
-seven, sequentially, with a separate verified child per family and shared public/
+six, sequentially, with a separate verified child per family and shared public/
 process ceilings. Aggregate stops on the first non-pass and names the remaining
 unexecuted families; it may stop at a cap. `--case` remains
 contracts-only. The public arm loads only its named family and shared public

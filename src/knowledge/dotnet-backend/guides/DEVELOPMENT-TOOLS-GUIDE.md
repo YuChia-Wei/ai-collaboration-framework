@@ -1,5 +1,13 @@
 # Development Tools and Common Commands Guide (.NET)
 
+## Applicability
+
+This optional .NET reference applies only to the target-selected architecture,
+providers and adopted test rules. Examples do not install packages, select an ORM,
+broker or Event Sourcing, create fixed project paths, or prove execution. Preserve
+per-domain persistence decisions and the target-selected GWT contract; BDDfy and
+mocking packages remain separately selected.
+
 ## 📋 Overview
 
 Provides a reference for common tools and commands used in .NET projects.
@@ -34,29 +42,16 @@ dotnet add package <SelectedPackage>
 dotnet restore
 ```
 
-## 🔍 Git Commands
+## Git and change authority
 
-```bash
-git status
-git switch main
-git switch -c codex/<workflow-id>
-git add -A
-git commit -m "feat: Add new feature"
-git push -u origin codex/<workflow-id>
-git switch main
-git merge --ff-only codex/<workflow-id>   # selected linear topology
-git merge --no-ff codex/<workflow-id>    # selected grouped-boundary topology
-git push origin main
-```
+Use the target project's actual commit grammar, branch/PR topology and authorized
+integration operations. `git status`, `git diff` and `git log` help inspect state;
+a command example does not authorize staging, pushing, merging or changing main.
+For cross-machine continuation, preserve a durable checkpoint under the target's
+selected workflow and provider rules. This package has no source Git-policy path
+or mandatory workflow branch convention.
 
-When an incomplete workflow needs a cross-machine handoff, prefer pushing the
-workflow branch. If the user explicitly requests interim integration, select
-topology under `.dev/TEAM-GIT-FLOW-RULES.MD`; a handoff normally retains a
-merge commit because its branch boundary carries resume evidence. Record the
-checkpoint, then create a new continuation branch from updated `main` when work
-resumes.
-
-### Commit Conventions
+## Commit Conventions
 ```
 feat: Add a feature
 fix: Fix a defect
@@ -119,8 +114,8 @@ dotnet-trace collect --process-id <pid>
 
 ## 🔗 Related Resources
 
-- [Git flow rules](../../../../.dev/TEAM-GIT-FLOW-RULES.MD)
-- [Git commit policy](../../../../.dev/standards/GIT-COMMIT-POLICY.md)
+- Target-owned Git flow and commit policy (caller-supplied authority).
+- Target-owned Git flow and commit policy (caller-supplied authority).
 - [Database migration guide](DATABASE-MIGRATION-GUIDE.md)
 - [Microsoft .NET documentation](https://learn.microsoft.com/dotnet)
 - [Microsoft EF Core documentation](https://learn.microsoft.com/ef/core)

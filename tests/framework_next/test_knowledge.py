@@ -58,6 +58,8 @@ class PublicCase(unittest.TestCase):
             'not_established': ['candidate assembly', 'installation', 'native acceptance'],
             'members': self.resources}))
         explained = self.invoke('explain')
+        if family in ('adr-author', 'lesson-author', 'pr-author'):
+            self.assertEqual(explained['namespace'], family)
         self.defaults = (explained['result'] if family == 'problem-frame-author' else explained)['settings']
         self.store = self.project / self.defaults['store']['root']
         self.assertFalse(self.store.exists(), 'explain must not provision a store')
@@ -120,7 +122,7 @@ class PublicCase(unittest.TestCase):
         # Source-bounded reservations, NOT observed process counts. No retries or
         # opaque provider driver is launched here. PR git_subject has <32 calls;
         # local ignored-state checks have <=3. Stop before the combined ceiling.
-        reservation = (3 if 'local_config' in request else 0) + (32 if self.family == 'pr' and 'repository_root' in request else 0)
+        reservation = (3 if 'local_config' in request else 0) + (32 if self.family == 'pr-author' and 'repository_root' in request else 0)
         support.check(getattr(self.run, 'prior_process_bound', 0) + sum(self.run.processes.values()) + self.nested_bound + reservation + 1 <= 256,
                       'helper plus nested launch bound exceeded')
         self.nested_bound += reservation
@@ -203,8 +205,8 @@ class PublicCase(unittest.TestCase):
         self.invoke('explain', overrides={'store': {'root': str(outside)}}, write_roots=[str(outside)], expect='blocked')
         self.invoke('explain', overrides={'template': {'origin': 'package', 'path': 'templates/undeclared.md'}}, expect='invalid-input')
         self.invoke('explain', overrides={'store': {'root': '../escape'}}, expect=('invalid-input', 'blocked'))
-        if self.family == 'lesson':
-            self.replace_fixture(config, {'config_version': 1, 'skills': {'lesson': {}}})
+        if self.family == 'lesson-author':
+            self.replace_fixture(config, {'config_version': 1, 'skills': {'lesson-author': {}}})
             self.assertEqual(self.invoke('explain', project_config=str(config))['config_version'], 1)
             self.replace_fixture(local, {'config_version': 2})
             self.invoke('explain', project_config=str(config), local_config=str(local), expect='invalid-input')
@@ -257,6 +259,20 @@ class PublicCase(unittest.TestCase):
             self.assertEqual(path.read_bytes(), before)
         return json.loads(before), before
 
+    def family_lock_blocks_revision(self, family, reference, raw, content, **values):
+        """Renamed package routes must still respect locks used by existing project writers."""
+        lock = self.store / ('.' + family + '-write.lock')
+        before = self.record_path(reference, '.' + family + '.json').read_bytes()
+        self.assertEqual(before, raw)
+        self.run.write(lock, b'synthetic existing writer\n')
+        try:
+            self.invoke('revise', reference=reference, expected_sha256=digest(raw), content=content,
+                        expect='conflict', **values)
+            self.assertEqual(lock.read_bytes(), b'synthetic existing writer\n')
+            self.assertEqual(self.record_path(reference, '.' + family + '.json').read_bytes(), before)
+        finally:
+            lock.unlink()
+
 
 def lesson_content():
     return {'title': 'selected fixture lesson', 'observation': 'One bounded observation.', 'evidence': [],
@@ -266,7 +282,7 @@ def lesson_content():
 
 class LessonTests(PublicCase):
     def test_selected(self):
-        self.prepare('lesson', 'lesson.py', ['C4-config', 'C6-binding', 'T1-round-trip', 'C6-query-and-legacy', 'T1-decision-successor', 'C6-input-boundary'])
+        self.prepare('lesson-author', 'lesson.py', ['C4-config', 'C6-binding', 'T1-round-trip', 'C6-query-and-legacy', 'T1-decision-successor', 'C6-input-boundary'])
         self.phase('C4-config')
         self.config_checks()
         self.phase('C6-binding')
@@ -277,7 +293,9 @@ class LessonTests(PublicCase):
         created = self.new_identity('create', content=content)
         ref = created['reference']
         record, original = self.read_preserves(ref, '.lesson.json')
+        self.assertEqual((ref['role'], record['kind']), ('lesson.record', 'lesson'))
         content['conclusion'] = 'Revised fixture conclusion.'
+        self.family_lock_blocks_revision('lesson', ref, original, content, reason='Existing writer.')
         revised = self.invoke('revise', reference=ref, expected_sha256=digest(original), content=content, reason='One revision.')
         self.invoke('revise', reference=ref, expected_sha256=digest(original), content=content, reason='Stale digest.', expect='conflict')
         unchanged = self.invoke('revise', reference=ref, expected_sha256=revised['sha256'], content=content, reason='Identical content.')
@@ -351,7 +369,7 @@ def decision(case, reference, sha, operation, option=None, negative=None):
 
 class AdrTests(PublicCase):
     def test_selected(self):
-        self.prepare('adr', 'adr.py', ['C4-config', 'C6-binding', 'T2-round-trip', 'T2-decision-derive'])
+        self.prepare('adr-author', 'adr.py', ['C4-config', 'C6-binding', 'T2-round-trip', 'T2-decision-derive'])
         self.phase('C4-config')
         self.config_checks()
         self.phase('C6-binding')
@@ -363,8 +381,10 @@ class AdrTests(PublicCase):
                    'consequences': [], 'evidence': [], 'applies_when': ['Synthetic only'], 'does_not_apply_when': []}
         created = self.new_identity('create', content=content)
         ref = created['reference']
-        _, original = self.read_preserves(ref, '.adr.json', ('inspect',))
+        record, original = self.read_preserves(ref, '.adr.json', ('inspect',))
+        self.assertEqual((ref['role'], record['kind']), ('adr.record', 'adr'))
         content['context'] = 'Revised fixture decision.'
+        self.family_lock_blocks_revision('adr', ref, original, content, reason='Existing writer.')
         revised = self.invoke('revise', reference=ref, expected_sha256=digest(original), content=content, reason='One revision.')
         self.invoke('revise', reference=ref, expected_sha256=digest(original), content=content, reason='Stale.', expect='conflict')
         self.read_preserves(ref, '.adr.json', ('render',))

@@ -1,7 +1,7 @@
 {
   "config_version": 2,
   "skills": {
-    "lesson": {
+    "lesson-author": {
       "store": {
         "kind": "filesystem",
         "root": ".dev/lessons/records",
@@ -12,7 +12,7 @@
         "path": "templates/lesson.md"
       }
     },
-    "adr": {
+    "adr-author": {
       "store": {
         "kind": "filesystem",
         "root": ".dev/adr/records",
@@ -23,7 +23,7 @@
         "path": "templates/adr.md"
       }
     },
-    "pr": {
+    "pr-author": {
       "store": {
         "kind": "filesystem",
         "root": ".dev/pull-requests",
@@ -32,17 +32,6 @@
       "template": {
         "origin": "package",
         "path": "templates/pr.md"
-      }
-    },
-    "software-development-orchestrator": {
-      "store": {
-        "kind": "filesystem",
-        "root": ".dev/workflows-v2",
-        "tracking": "tracked"
-      },
-      "template": {
-        "origin": "package",
-        "path": "templates/workflow.md"
       }
     },
     "problem-frame-author": {
@@ -69,7 +58,7 @@
     }
   },
   "constraints": {
-    "lesson": {
+    "lesson-author": {
       "write_roots": [
         ".dev/lessons/records"
       ],
@@ -79,7 +68,7 @@
         "template"
       ]
     },
-    "adr": {
+    "adr-author": {
       "write_roots": [
         ".dev/adr/records"
       ],
@@ -89,19 +78,9 @@
         "template"
       ]
     },
-    "pr": {
+    "pr-author": {
       "write_roots": [
         ".dev/pull-requests"
-      ],
-      "locked_fields": [
-        "store.root",
-        "store.tracking",
-        "template"
-      ]
-    },
-    "software-development-orchestrator": {
-      "write_roots": [
-        ".dev/workflows-v2"
       ],
       "locked_fields": [
         "store.root",

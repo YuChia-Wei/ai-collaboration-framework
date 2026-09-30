@@ -1,0 +1,33 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-30-rc3-reinstall
+workflow_kind: software-development
+title: RC3 source reconciliation and breaking reinstall
+owner_skill: slice-implementer
+status: completed
+artifact_root: .dev/workflows/2026-09-30-rc3-reinstall
+entrypoint: workflow-plan.md
+created_at: '2026-09-30T09:30:28+08:00'
+updated_at: '2026-09-30T10:19:09+08:00'
+branch: codex/2026-09-30-rc3-reinstall
+base_branch: 0.19.0-rc3
+base_commit: d9ddbc64370970b6275ce59b42508d05e0225dff
+work_items:
+- provider: github
+  issue: 417
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/417
+- provider: github
+  issue: 415
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/415
+- provider: github
+  issue: 322
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+authority: Owner approved the four work items in this conversation on 2026-09-30.
+execution: Coordinator dispatches independently bounded units in separate F worktrees.
+u001:
+  deferred_status: deferred-by-owner
+  deferred_owner: program 322 coordinator / P7
+  next_action: Owner-selected focused RC3 packaging and installation trials are authorized;
+    broader legacy and hosted gates remain deferred.
+integration: local-handoff-before-first-push
+current_phase: completed

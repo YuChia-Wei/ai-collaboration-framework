@@ -4,7 +4,7 @@ Reusable product code is developed here. A component becomes canonical here at
 its bounded cutover; existing project/root governance remains active until its
 separate transition. Installed core is generated, never another hand-edited source.
 
-- [Lesson](skills/lesson/SKILL.md): candidate-only knowledge capture and filesystem operations.
+- [Lesson](skills/lesson-author/SKILL.md): candidate-only knowledge capture and filesystem operations.
 - [Distribution](distribution/manifest.yaml): exact selected product members.
 - [Minimal Lesson profile](profiles/lesson-minimal.yaml): first explicit selection.
 - [Codex projection template](adapters/codex/skill-entry.md.template): generated installed-resource entry.

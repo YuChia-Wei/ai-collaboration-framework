@@ -31,8 +31,8 @@ from distribution.git_source import Blob, GitSource
 from distribution.selection import select
 
 COMPONENTS = {
-    'lesson': '0.2.0', 'adr': '0.1.0', 'standards-promotion': '0.1.0',
-    'pr': '0.1.0', 'local-backlog': '0.1.0', 'software-development-orchestrator': '0.1.0',
+    'lesson-author': '0.2.0', 'adr-author': '0.1.0', 'standards-promotion': '0.1.0',
+    'pr-author': '0.1.0', 'local-backlog': '0.1.0',
     'code-reviewer': '0.1.0', 'requirement-author': '0.1.0', 'spec-author': '0.1.0',
     'diagnostic-analyst': '0.1.0', 'ddd-ca-hex-architect': '0.1.0',
     'bdd-gwt-test-designer': '0.1.0', 'local-change-implementer': '0.1.0',
