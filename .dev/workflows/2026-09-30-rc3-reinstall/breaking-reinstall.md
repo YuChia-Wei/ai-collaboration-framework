@@ -28,7 +28,9 @@ completely within bounded limits. Every existing scoped file must be explicitly
 classified as cleanup, preservation or an API 2 project edit. Cleanup is limited
 to currently Git-tracked framework resource files in a clean worktree at the
 exact selected commit. Untracked/ignored data, links, hard links, aliases,
-mount/volume crossings and workflow-record cleanup are refused. A current
+mount/volume crossings, hidden Git index flags, custom Git content filters and
+workflow-record cleanup (including the v2 store) are refused. Cleanup content
+must hash to its selected Git blob under Git's normal text conversion. A current
 maintenance marker blocks the reset. Root wrappers can be reconciled using
 explicit project edits; this grants no whole-repository cleanup authority.
 

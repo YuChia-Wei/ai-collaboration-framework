@@ -22,9 +22,9 @@ FIELDS = {"reinstall_version", "operation", "project_root", "expected_head",
           "all_framework_activity_stopped"}
 
 
-def _git(root, *args):
+def _git(root, *args, input_bytes=None):
     result = subprocess.run(["git", "-C", str(root), *args], stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE, check=False)
+                            stderr=subprocess.PIPE, input=input_bytes, check=False)
     state._check(result.returncode == 0, "reinstall-git", "Selected Git baseline is unavailable.")
     return result.stdout
 
@@ -116,9 +116,29 @@ def _prepare(request):
     for name in clean:
         state._check(_scope(name) and name not in state.MARKERS and not name.startswith(".ai/local/"),
                      "reinstall-boundary", "Cleanup must select framework resource files, excluding coordination storage.", name)
-        state._check(not name.startswith(".dev/workflows/"), "reinstall-workflow",
+        state._check(not name.startswith((".dev/workflows/", ".dev/workflows-v2/")), "reinstall-workflow",
                      "Source and project workflow records cannot be cleanup resources.", name)
         state._check(name in tracked, "reinstall-untracked", "Untracked or ignored files cannot be destructively removed.", name)
+    flags = {row[2:]: row[:1] for row in _git(project, "ls-files", "-v", "-z").decode("utf-8").split("\0") if row}
+    tree = {}
+    for row in _git(project, "ls-tree", "-r", "-z", "HEAD").decode("utf-8").split("\0"):
+        if row:
+            descriptor, name = row.split("\t", 1)
+            mode, kind, oid = descriptor.split(" ")
+            tree[name] = (mode, kind, oid)
+    ordered = sorted(clean)
+    for name in ordered:
+        state._check(flags.get(name) == "H" and name in tree and tree[name][0] in state.MODES and tree[name][1] == "blob",
+                     "reinstall-git-flags", "Cleanup needs an ordinary tracked regular file without hidden index flags.", name)
+    if ordered:
+        attributes = _git(project, "check-attr", "-z", "--stdin", "filter",
+                          input_bytes=("\0".join(ordered) + "\0").encode("utf-8")).decode("utf-8").split("\0")
+        state._check(all(attributes[i + 2] in {"unspecified", "unset"} for i in range(0, len(attributes) - 1, 3)),
+                     "reinstall-git-filter", "Custom Git content filters are unsupported for cleanup recovery.")
+        actual = _git(project, "hash-object", "--stdin-paths", input_bytes=("\n".join(ordered) + "\n").encode("utf-8")).decode("ascii").splitlines()
+        state._check(actual == [tree[n][2] for n in ordered], "reinstall-git-preimage",
+                     "Cleanup content is not represented by the selected Git baseline.", outcome="conflict")
+        _pins(request["cleanup"], project, reader)
     state._check(state.LOCK_PATH not in inventory or state.LOCK_PATH in clean,
                  "reinstall-old-lock", "The exact old framework lock must be selected for retirement.")
     state._check(set(inventory) <= clean | keep | edit,
@@ -207,6 +227,7 @@ def execute(request):
         repeated, _, _, _ = _prepare(request)
         state._check(repeated == {k: v for k, v in document.items() if k != "installation_preview"},
                      "reinstall-input-drift", "Breaking reinstall inputs changed before cleanup.")
+        reader = state._Reader()  # Cleanup has its own complete bounded read budget.
         if document["coordination_reset"]:
             from .installation_io import Backend, IO, Changes
             from .maintenance_coordination import WriterLock

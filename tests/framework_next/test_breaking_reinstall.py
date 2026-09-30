@@ -22,7 +22,8 @@ class BreakingReinstallTests(unittest.TestCase):
         self.base = Path(self.temp.name).resolve()
         self.project = self.base / "project"
         self.project.mkdir()
-        subprocess.run(["git", "init", "-q", str(self.project)], check=True)
+        subprocess.run(["git", "-c", "init.defaultBranch=main", "init", "-q", str(self.project)], check=True)
+        subprocess.run(["git", "-C", str(self.project), "config", "core.autocrlf", "false"], check=True)
         self.old = ".ai/obsolete.md"
         self.keep = ".dev/workflows/current/workflow.yaml"
         for name, raw in ((self.old, b"old framework\n"), (self.keep, b"actual target work\n")):
@@ -100,6 +101,22 @@ class BreakingReinstallTests(unittest.TestCase):
         self.request["preserved_inputs"] = []
         result = owner.execute(self.request)
         self.assertEqual("reinstall-workflow", result["diagnostics"][0]["code"])
+
+    def test_skip_worktree_cannot_hide_uncommitted_cleanup(self):
+        subprocess.run(["git", "-C", str(self.project), "update-index", "--skip-worktree", self.old], check=True)
+        (self.project / self.old).write_bytes(b"hidden user edit")
+        self.request["cleanup"] = [self.pin(self.old)]
+        result = owner.execute(self.request)
+        self.assertEqual("reinstall-git-flags", result["diagnostics"][0]["code"])
+        self.assertFalse(result["changed"])
+
+    def test_assume_unchanged_cannot_hide_uncommitted_cleanup(self):
+        subprocess.run(["git", "-C", str(self.project), "update-index", "--assume-unchanged", self.old], check=True)
+        (self.project / self.old).write_bytes(b"hidden user edit")
+        self.request["cleanup"] = [self.pin(self.old)]
+        result = owner.execute(self.request)
+        self.assertEqual("reinstall-git-flags", result["diagnostics"][0]["code"])
+        self.assertFalse(result["changed"])
 
     def test_unclassified_file_rejected(self):
         self.request["preserved_inputs"] = []
