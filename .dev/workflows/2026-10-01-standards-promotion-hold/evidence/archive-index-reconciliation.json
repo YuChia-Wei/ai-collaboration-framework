@@ -1,0 +1,12 @@
+{
+  "apply_response_sha256": "346154311f7671266286bfafd9bdf48e85188cd9fe089b42f01c4f31c7e4e9ce",
+  "drift": [],
+  "index_sha256": "0c3e89f14b6f93e1559b0fcbf4b3028d4902d0ec361aff5f6b7ed6576c2a15f1",
+  "inspect_response_sha256": "7b6cf19221c299de1980fdc73928e740450bcea7db0ca28b52250f04735a95a3",
+  "managed_members": 135,
+  "managed_state": "managed-bytes-consistent",
+  "outcome": "applied",
+  "plan_response_sha256": "acb766b59eb2f3432bb2b8255d3c0eecf04947ef4c4fb3ba1e263c20ec60d8df",
+  "plan_sha256": "56f0009d8c800c5013af1a3cb25b84e657ad7b956b509d7a7499cab24bf9af47",
+  "updated_at": "2026-10-01T10:00:04+08:00"
+}

@@ -20,4 +20,5 @@ Regenerate through the pinned catalog subset and installation owner.
 - [`software-development-orchestrator`](software-development-orchestrator/SKILL.md)
 - [`spec-author`](spec-author/SKILL.md)
 - [`spec-compliance-validator`](spec-compliance-validator/SKILL.md)
-- [`standards-promotion`](standards-promotion/SKILL.md)
+
+standards-promotion@0.1.1-alpha.1 is retained in source for independent experiments and excluded from the selected distributed installation.

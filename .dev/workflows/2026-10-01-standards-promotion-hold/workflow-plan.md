@@ -11,7 +11,7 @@ source evidence against baseline b5b70caf.
 | Task | Owned outcome | State |
 | --- | --- | --- |
 | T1 | Prerelease source identity, distribution exclusion and clear restored/retired/new/changed tables. | completed |
-| T2 | Supported managed removal, authentic artifact closure and installation read-back; MQ independent copy is a separate target outcome. | in_progress |
+| T2 | Supported managed removal, authentic artifact closure and installation read-back; MQ independent copy is a separate target outcome. | completed |
 
 Acceptance: `0.1.1-alpha.1` agrees across metadata, entry, operations and tool;
 record schema remains 1.0.0. No standards-promotion component or preset member
