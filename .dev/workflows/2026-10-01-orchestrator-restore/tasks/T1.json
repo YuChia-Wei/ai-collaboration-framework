@@ -1,0 +1,19 @@
+{
+  "created_at": "2026-10-01T08:28:59+08:00",
+  "evidence": [
+    "../../guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md",
+    "results.md"
+  ],
+  "finding_status": "addressed",
+  "model": "gpt-6.1-sol",
+  "owner_skill": "ai-context-governance",
+  "reasoning_effort": "ultra",
+  "record_origin": "Materialized from the existing source-owned plan table after actual local results; earlier checkpoint history remains in Git.",
+  "result_summary": "Portable stage orchestration source package, Manifest 2 presets/routes and complete responsibility inventory restored.",
+  "status": "completed",
+  "task_id": "T1",
+  "template_source": ".dev/workflows/2026-10-01-orchestrator-restore/workflow-plan.md",
+  "template_version": "1.0.0",
+  "updated_at": "2026-10-01T08:28:59+08:00",
+  "workflow_id": "2026-10-01-orchestrator-restore"
+}

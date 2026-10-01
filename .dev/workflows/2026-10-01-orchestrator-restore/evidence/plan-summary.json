@@ -1,0 +1,238 @@
+{
+  "api_version": 2,
+  "candidate_identity": "subset:3:0.19.0-rc.3:16f3f0c072bd22c3945fce8aca8295bf2b88f330:d2b05d5c3200fbd5beb36ed2e83f5cb002cb04378c19654cfcb020f4774633e6",
+  "changed": null,
+  "changed_managed_members": [
+    {
+      "action": "add",
+      "after": {
+        "kind": "runtime",
+        "mode": "100644",
+        "owner": "adapter/codex/skill/software-development-orchestrator",
+        "sha256": "2200b6234ea3a1110d4d94ed7081d83375427a501eba1c39b5fa70d92239a2a3",
+        "size": 1900
+      },
+      "before": null,
+      "destination": ".agents/skills/software-development-orchestrator/SKILL.md"
+    },
+    {
+      "action": "add",
+      "after": {
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "skill/software-development-orchestrator",
+        "sha256": "92e98a9fd810843736d4e0d8cec6362a70e9f3bc753b7745845353c3c8d6abd7",
+        "size": 1645
+      },
+      "before": null,
+      "destination": ".ai/core/skills/software-development-orchestrator/SKILL.md"
+    },
+    {
+      "action": "add",
+      "after": {
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "skill/software-development-orchestrator",
+        "sha256": "6f17bd9fbc1bcba894773a35917c8986f992487ccd6f4255447fb2a60ff2821d",
+        "size": 7282
+      },
+      "before": null,
+      "destination": ".ai/core/skills/software-development-orchestrator/references/orchestrate.md"
+    },
+    {
+      "action": "add",
+      "after": {
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "skill/software-development-orchestrator",
+        "sha256": "5cdae28a35f051fa4d8fee2ca1d5eb1139207df86ab6291cf1c2221bc9a0989a",
+        "size": 1677
+      },
+      "before": null,
+      "destination": ".ai/core/skills/software-development-orchestrator/skill-package.yaml"
+    },
+    {
+      "action": "add",
+      "after": {
+        "kind": "runtime",
+        "mode": "100644",
+        "owner": "adapter/claude/skill/software-development-orchestrator",
+        "sha256": "9ca0de2305aeceb35c8c424ae5adf1266bbc5343cce6cdcdb819238b46e71442",
+        "size": 1902
+      },
+      "before": null,
+      "destination": ".claude/skills/software-development-orchestrator/SKILL.md"
+    }
+  ],
+  "delta_counts": {
+    "add": 5,
+    "unchanged": 141
+  },
+  "diagnostics": [],
+  "exclusions": [
+    "unchanged managed members and repeated engine/input manifests; framework.lock and engine-pin preserve these identities"
+  ],
+  "generator": "Issue421 coordinator deterministic JSON projection",
+  "maintenance_scope": [
+    "adr-author",
+    "ai-context-auditor",
+    "ai-context-governance",
+    "bdd-gwt-test-designer",
+    "code-reviewer",
+    "ddd-ca-hex-architect",
+    "diagnostic-analyst",
+    "lesson-author",
+    "local-backlog",
+    "local-change-implementer",
+    "pr-author",
+    "problem-frame-author",
+    "requirement-author",
+    "slice-implementer",
+    "software-development-orchestrator",
+    "spec-author",
+    "spec-compliance-validator",
+    "standards-promotion"
+  ],
+  "observed_at": "2026-10-01T08:28:59+08:00",
+  "operation": "plan",
+  "outcome": "planned",
+  "path_budget": {
+    "backend_certification": "not-assessed",
+    "checked_paths": 446,
+    "full_path_utf16_limit": 240,
+    "maximum_full_path_utf16": 167,
+    "maximum_segment_utf16": 64,
+    "policy": "conservative-windows-v1",
+    "segment_utf16_limit": 255
+  },
+  "plan_sha256": "b08ad97a681e1d1197bfa38e0888472685c815a22a000ff724838cf9ccceb1d6",
+  "prerequisites": [
+    {
+      "id": "candidate-provenance",
+      "next_action": "Available bytes/bindings match; provenance approval and source authenticity remain with caller.",
+      "owner": "caller",
+      "status": "satisfied"
+    },
+    {
+      "id": "durability-declaration",
+      "next_action": "Native filesystem/domain combination is supported; recovery survival is a caller assertion, not measured durability.",
+      "owner": "caller",
+      "status": "satisfied"
+    },
+    {
+      "id": "exclusive-operation-allocation",
+      "next_action": "Preflight actual unique paths and exclusively allocate the selected operation before managed mutation.",
+      "owner": "maintenance-writer",
+      "status": "pending"
+    },
+    {
+      "id": "fresh-input-observation",
+      "next_action": "Recompute this exact plan under a held native writer lock.",
+      "owner": "maintenance-writer",
+      "status": "pending"
+    },
+    {
+      "id": "lock-publication",
+      "next_action": "Next lock fits the closed reader and selected backend; publication remains a postcondition after full member read-back.",
+      "owner": "maintenance-writer",
+      "status": "satisfied"
+    },
+    {
+      "id": "maintenance-quiescence",
+      "next_action": "Supply a fresh exact-scope declaration; the engine cannot attest stopped activity.",
+      "owner": "caller",
+      "status": "pending"
+    },
+    {
+      "id": "mode-materialization",
+      "next_action": "Windows inventory-only; no ACL/executable enforcement.",
+      "owner": "maintenance-writer",
+      "status": "not-applicable"
+    },
+    {
+      "id": "native-writer-backend",
+      "next_action": "Selected native primitives and filesystem/domain checks are available; this is not platform certification.",
+      "owner": "maintenance-writer",
+      "status": "satisfied"
+    },
+    {
+      "id": "writer-engine-closure",
+      "next_action": "Fixed bootstrap, executing origins, exact source closure and observed checkout HEAD match the caller pin.",
+      "owner": "maintenance-writer",
+      "status": "satisfied"
+    },
+    {
+      "id": "writer-guard",
+      "next_action": "Acquire the inert guard with a native OS lock; no-op cannot create a missing guard.",
+      "owner": "maintenance-writer",
+      "status": "pending"
+    }
+  ],
+  "preserved_unknown": [],
+  "project_data_action": "none",
+  "project_edits": [
+    {
+      "after": {
+        "mode": "100644",
+        "sha256": "cd9445e70bf4eed0f3c896fbd6e74f2dac112e0cf7cffca274c8e5cd84e48a8a",
+        "size": 1155
+      },
+      "before": {
+        "mode": "100644",
+        "sha256": "f232643fd90aa6c729ee2f6b4af242c32b5a322c2af18ad5f3bb5a98a7fc44e2",
+        "size": 1071
+      },
+      "intent": {
+        "after_content_ref": "objects/cd9445e70bf4eed0f3c896fbd6e74f2dac112e0cf7cffca274c8e5cd84e48a8a",
+        "after_sha256": "cd9445e70bf4eed0f3c896fbd6e74f2dac112e0cf7cffca274c8e5cd84e48a8a",
+        "before_sha256": "f232643fd90aa6c729ee2f6b4af242c32b5a322c2af18ad5f3bb5a98a7fc44e2",
+        "path": ".agents/skills/README.md"
+      }
+    },
+    {
+      "after": {
+        "mode": "100644",
+        "sha256": "20bdc3f5f61482a56fab2d532e59ca91434ff26c88b87b1be5f67ecde3a61a1d",
+        "size": 972
+      },
+      "before": {
+        "mode": "100644",
+        "sha256": "081cb435e4d0e17e6ec8240446941092f169ccecca97bf69ea99eb3d11136e85",
+        "size": 931
+      },
+      "intent": {
+        "after_content_ref": "objects/20bdc3f5f61482a56fab2d532e59ca91434ff26c88b87b1be5f67ecde3a61a1d",
+        "after_sha256": "20bdc3f5f61482a56fab2d532e59ca91434ff26c88b87b1be5f67ecde3a61a1d",
+        "before_sha256": "081cb435e4d0e17e6ec8240446941092f169ccecca97bf69ea99eb3d11136e85",
+        "path": ".ai/custom/installation.json"
+      }
+    },
+    {
+      "after": {
+        "mode": "100644",
+        "sha256": "c9523f6c799fff34c49e6af99321292654dcd0382307b74067c2fe370f91a905",
+        "size": 1156
+      },
+      "before": {
+        "mode": "100644",
+        "sha256": "6d717ee1e2e8a67f6c207369965307fe1faf9435dca998248f78699779d1af3e",
+        "size": 1072
+      },
+      "intent": {
+        "after_content_ref": "objects/c9523f6c799fff34c49e6af99321292654dcd0382307b74067c2fe370f91a905",
+        "after_sha256": "c9523f6c799fff34c49e6af99321292654dcd0382307b74067c2fe370f91a905",
+        "before_sha256": "6d717ee1e2e8a67f6c207369965307fe1faf9435dca998248f78699779d1af3e",
+        "path": ".claude/skills/README.md"
+      }
+    }
+  ],
+  "projection_version": 1,
+  "protected_inputs": [
+    {
+      "path": ".ai/custom/framework.json",
+      "sha256": "f4809c0cea9c5190f7e66806c56799712939223c15d6842646276c0db291c537"
+    }
+  ],
+  "raw_response_sha256": "8fe284aa58e791139bef5fcda7cb7c312b9be99bc20977725012e779160300c0",
+  "source_commit": "16f3f0c072bd22c3945fce8aca8295bf2b88f330"
+}

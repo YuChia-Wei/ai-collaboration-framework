@@ -50,7 +50,7 @@ RC1 同時存在新舊來源目錄，不可相加成 34 個 skills。RC1→RC2 �
 | `local-backlog` | RC1 新增 | local-file work items、acceptance、conflict-aware state；GitHub links 只作引用，不做 remote sync，不擁有 remote tracker authority。 |
 | `standards-promotion` | RC1 新增 | evidence-bound rule proposal，另行觀察 owner adoption、實際 rule bytes 和 effect。沒有 apply operation；不直接改規則或自行產生採納證據。 |
 
-在這五個新 standalone skills 中，ADR、Lesson 和 PR 的紀錄能力有既有需求與文件前身；
+在這五個新 standalone skills 中，ADR 與 Lesson 有已核實的既有文件治理前身；
 「新增 skill」不等於所有能力從零發明。三個 author 改名是零淨增減，也不是三個新功能。
 
 ## Orchestrator 修復範圍
