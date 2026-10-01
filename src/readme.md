@@ -6,6 +6,7 @@ separate transition. Installed core is generated, never another hand-edited sour
 
 - [Lesson](skills/lesson-author/SKILL.md): candidate-only knowledge capture and filesystem operations.
 - [Distribution](distribution/manifest.yaml): exact selected product members.
+- [Development orchestration](skills/software-development-orchestrator/SKILL.md): portable stage selection, specialist handoffs and resumable closeout; project-owned workflow storage.
 - [Minimal Lesson profile](profiles/lesson-minimal.yaml): first explicit selection.
 - [Codex projection template](adapters/codex/skill-entry.md.template): generated installed-resource entry.
 - [Assembly interface and limits](../.dev/design/framework-next/distribution-implementation/README.md): source-maintainer usage and the current development boundary.
