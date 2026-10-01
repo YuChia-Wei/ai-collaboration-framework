@@ -805,6 +805,18 @@ components:
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
   version: 0.2.0
+- id: software-development-orchestrator
+  source: src/skills/software-development-orchestrator
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/software-development-orchestrator/SKILL.md
+  - source: references/orchestrate.md
+    destination: .ai/core/skills/software-development-orchestrator/references/orchestrate.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
+  kind: skill
+  version: 0.2.0
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml

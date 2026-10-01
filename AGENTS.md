@@ -56,7 +56,7 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The RC3 source selection has 17 skills. Removed compatibility roots do not provide current executable routes; generated installation state is updated separately.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The corrected RC3 source catalog has 18 skills, including the restored development orchestrator; generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
 
 | Need | Owning route |
 | --- | --- |
@@ -65,7 +65,7 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 | Decisions, lessons, local backlog, pull requests, or standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
-| Multi-stage source work and workflow records | Project-owned `.dev/` workflow records, source workflow policy and Issue authority; no portable orchestration skill |
+| Multi-stage software development | `software-development-orchestrator` for stage selection and specialist handoffs; source `.dev/` policy and Issue authority own workflow records and integration |
 | Initialization or upgrade of a previously published legacy package format | Retained source compatibility duty with no current portable or executable route; restore a verified source-owned procedure before execution. |
 | Historical or exceptional source release closeout | `releases/` and source release policy; no portable installed skill route. |
 

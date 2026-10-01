@@ -1,0 +1,12 @@
+{
+  "generator": "Issue421 coordinator validator outcome record",
+  "observed_at": "2026-10-01T08:33:19+08:00",
+  "validator": "tools/maintenance/validate-git-commits.py at the source worktree",
+  "message_file": "planned-commit-message.txt",
+  "message_sha256": "f0827f8c3a132f18ffb8ed555912d1c1b55a13f49fc8b1fb1491be2b55bb414d",
+  "workflow_id": "2026-10-01-orchestrator-restore",
+  "policy_sha256": "a933d39f4f2f082c1bffc43bb8ec8f8b6d7686ef9bd9597f7c90937d8f1c60ea",
+  "exit_code": 0,
+  "output": "Git commit validation passed for planned message.",
+  "scope": "This exact planned message only; source and target policy bytes match. No target history or runtime validation."
+}

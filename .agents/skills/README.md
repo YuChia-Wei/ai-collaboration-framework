@@ -17,6 +17,7 @@ Regenerate through the pinned catalog subset and installation owner.
 - [`problem-frame-author`](problem-frame-author/SKILL.md)
 - [`requirement-author`](requirement-author/SKILL.md)
 - [`slice-implementer`](slice-implementer/SKILL.md)
+- [`software-development-orchestrator`](software-development-orchestrator/SKILL.md)
 - [`spec-author`](spec-author/SKILL.md)
 - [`spec-compliance-validator`](spec-compliance-validator/SKILL.md)
 - [`standards-promotion`](standards-promotion/SKILL.md)

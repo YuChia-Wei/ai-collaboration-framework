@@ -16,7 +16,9 @@
 
 ## 本庫的安裝選擇
 
-RC3 source selection 包含 17 個 portable skills、Codex 與 Claude adapters，不安裝 engineering knowledge packages。Authoring package IDs 為 `adr-author`、`lesson-author` 與 `pr-author`；portable workflow orchestration 已退休。Generated installation identity 仍由其 lock 記錄，與 source selection 分開更新。`.ai/custom/installation.json` 保存 project-owned selection；managed installer 產生 `.ai/framework.lock`、`.ai/core/` 與兩種 runtime entries。Generated content 不可直接編輯；要改產品請編輯 `src/`，再依 source workflow 更新安裝。
+修正後的 RC3 source catalog 包含 18 個 portable skills 與 Codex、Claude adapters。`software-development-orchestrator` 已恢復跨階段開發編排；workflow 紀錄格式與存放位置仍由專案選擇。Authoring package IDs 為 `adr-author`、`lesson-author` 與 `pr-author`。本來源專案的安裝選擇不包含 engineering knowledge packages。Generated installation identity 由 lock 記錄，與 source catalog 分開更新。`.ai/custom/installation.json` 保存 project-owned selection；managed installer 產生 `.ai/framework.lock`、`.ai/core/` 與兩種 runtime entries。Generated content 不可直接編輯；要改產品請編輯 `src/`，再依 source workflow 更新安裝。
+
+完整的增減、改名與職責變化見 [Skill 職責變遷](.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)。
 
 Installation selection 與 skill operation settings 分開管理。`.ai/custom/framework.json` 為 Lesson、ADR、PR、CBF 與 standards-promotion skills 設定了五個 project-owned filesystem roots 及精確 write_roots，採用套件模板與 tracked-intent；目前沒有建立記錄或 evidence，也沒有配置 ADR decision、promotion target/source adapters 或 local-backlog provider。這是 path selection，不是執行權限、store availability 或 runtime capability 證明。
 

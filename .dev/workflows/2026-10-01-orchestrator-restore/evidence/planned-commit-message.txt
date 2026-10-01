@@ -1,0 +1,24 @@
+chore(#421): install and record restored development orchestration
+
+Why:
+- Make the restored source package available through the supported distribution path and preserve skill responsibility evidence.
+
+What:
+- Install the fixed source candidate with generated core, Codex and Claude entries and an installer-owned selection and lock.
+- Retain actual source and MQ plan, apply, inspect and preservation receipts and completed local workflow records.
+- Refine the complete skill inventory using fixed Git evidence without reviving retired record tools.
+
+Validation:
+- Catalog 1 and both Subset 3 candidates assembled from immutable source commit 16f3f0c072bd22c3945fce8aca8295bf2b88f330.
+- Both actual API2 additive installs returned applied and managed-bytes-consistent without drift; eighteen entries per adapter.
+- Existing managed bytes, project settings, MQ knowledge and forty bindings preserved; MQ index finalization inspected without drift.
+- Changed UTF-8, JSON/YAML, added local links, task/profile relationships, source member hashes and git diff --check passed.
+- Legacy/full/native/hosted and independent admission remain deferred-by-owner under U001 to program 322 coordinator/P7.
+- No push, main integration, publication or product/runtime acceptance is claimed.
+
+Workflow:
+- 2026-10-01-orchestrator-restore
+- Stage: S2
+- Task: T2
+
+Co-Authored-By: OpenAI Codex (gpt-6.1-sol, ultra) <noreply@openai.com>
