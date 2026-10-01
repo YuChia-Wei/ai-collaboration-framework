@@ -52,7 +52,7 @@ CI 恢復與確切政策轉換必須有已記錄的 owner 採納決策。
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。修正後的 RC3 source catalog 有 18 個 skills，包含恢復的開發編排 skill；generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 17 個 skills，包含恢復的開發編排 skill。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
@@ -60,7 +60,7 @@ Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skill
 | AI-context governance 與 reusable context maintenance | `ai-context-governance` |
 | Architecture、GWT design、code review、diagnosis 或 implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
-| Decisions、lessons、local backlog、pull requests 或 standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
+| Decisions、lessons、local backlog 或 pull requests | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` |
 | 多階段軟體開發 | `software-development-orchestrator` 負責階段選擇與專業 skill 交接；source `.dev/` policy 與 Issue authority 擁有 workflow records 與整合權限 |
 | 初始化或升級先前發布的 legacy package format | 保留 source compatibility duty，目前沒有 portable 或可執行路由；執行前須恢復已驗證的 source-owned procedure。 |
 | Historical 或 exceptional source release closeout | `releases/` 與 source release policy；沒有 portable installed skill route。 |
