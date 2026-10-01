@@ -78,3 +78,10 @@ checkouts remain unchanged. No push, PR/main integration, Issue closure, tag,
 release/publication or target-rule adoption occurred. Continue integration from
 the retained local branches after reconciling current primary state and the
 separately applicable delivery authorization.
+
+## Authorized main delivery (2026-10-01T08:54:23+08:00)
+
+The owner now authorizes main integration and push of both repositories.
+The earlier local-only integration statements describe the original checkpoint.
+Preserve its source/installation receipts; delivery uses live PR/main/remote
+read-back. Existing product/runtime and independent-admission limits remain.

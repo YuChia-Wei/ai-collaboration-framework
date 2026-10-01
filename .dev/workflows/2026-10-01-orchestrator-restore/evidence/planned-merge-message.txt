@@ -1,0 +1,20 @@
+merge(#421): restore development orchestration and skill responsibility history
+
+Why:
+- The owner authorizes main integration and push of the reusable source restoration.
+
+What:
+- Integrate the source package, generated installation and complete skill difference inventory as one retained checkpoint boundary.
+
+Validation:
+- Source metadata, links, profile/task relationships, member hashes and actual additive installation read-back passed.
+- Source and MQ select eighteen skills; target settings, knowledge and forty bindings preserved.
+- U001 test and independent admission gates remain deferred-by-owner to program 322 coordinator/P7.
+- Issue closure and release publication remain separate from this integration.
+
+Workflow:
+- 2026-10-01-orchestrator-restore
+- Stage: Integration
+- Task: T2
+
+Co-Authored-By: OpenAI Codex (gpt-6.1-sol, ultra) <noreply@openai.com>

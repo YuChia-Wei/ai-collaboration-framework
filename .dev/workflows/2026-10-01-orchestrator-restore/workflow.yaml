@@ -8,7 +8,7 @@ status: completed
 artifact_root: .dev/workflows/2026-10-01-orchestrator-restore
 entrypoint: workflow-plan.md
 created_at: '2026-10-01T08:11:55+08:00'
-updated_at: '2026-10-01T08:28:59+08:00'
+updated_at: '2026-10-01T08:58:20+08:00'
 branch: codex/2026-10-01-orchestrator-restore
 base_branch: main
 base_commit: a2ed2e3ebbba2acaae2f9574b52302379e01fc48
@@ -29,7 +29,14 @@ u001:
   deferred_status: deferred-by-owner
   deferred_owner: program 322 coordinator / P7
   next_action: Select remaining behavioral, native, legacy and hosted validation separately.
-integration: local commits; no push, PR, main integration, tag or release authorized
+integration: 'Owner authorized on 2026-10-01: push both branches, merge to main through
+  PRs and synchronize both primary checkouts; provider outcome requires live read-back.'
 current_phase: completed
 template_source: .dev/workflows/2026-10-01-orchestrator-restore/workflow-plan.md
 template_version: 1.0.0
+integration_authorization:
+  owner_request: 都幫我合併回 main 然後推送
+  observed_at: '2026-10-01T08:54:23+08:00'
+  topology: merge-commit
+  reason: Retain immutable source-package and cross-repository installation checkpoints
+    as one reviewable rollback boundary.

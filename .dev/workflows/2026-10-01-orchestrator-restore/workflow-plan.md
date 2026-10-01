@@ -53,3 +53,15 @@ orchestrator-restoration-source-record`, `template_version: 1.0.0`,
 `created_at: 2026-10-01T08:11:55+08:00`, `updated_at: 2026-10-01T08:28:59+08:00`. The locator and
 `tasks/T1.json` / `tasks/T2.json` identify this actual layout rather than an
 unavailable legacy template. Primary executor: `gpt-6.1-sol` / `ultra`.
+
+## Authorized integration continuation (2026-10-01T08:54:23+08:00)
+
+The owner explicitly requested merging both repositories to `main` and pushing,
+and requested a complete skill difference table including the reasons for every
+addition, retirement and behavior change. The earlier local-only boundary is
+historical; this authorization extends delivery to branch push, online PR merge
+and primary-checkout synchronization. Use merge commits to preserve the fixed
+source-package and installation checkpoints as a coherent rollback unit.
+Issue closure, Project mutation, tags/releases and policy/CI changes are not
+part of this delivery. Keep existing validation deferrals and report live
+PR/main/remote outcomes separately from local workflow completion.

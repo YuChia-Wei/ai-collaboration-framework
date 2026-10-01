@@ -1,0 +1,22 @@
+docs(#421): explain skill change reasons and authorize main delivery
+
+Why:
+- The owner requests both main integrations and the complete reasons for skill retirements, additions and behavior changes.
+
+What:
+- Expand the twenty-one-row inventory with before/after behavior, recorded reasons, immutable evidence and explicitly unknown rename motives.
+- Preserve source and target installation checkpoints while recording authorized PR integration and merge-commit topology.
+- Record live provider configuration without changing CI or release settings.
+
+Validation:
+- Changed UTF-8, JSON/YAML, local links, package/profile/task relationships and git diff --check passed.
+- Eighteen source/runtime skills, exact fixed source members, twenty-four unchanged engine members and forty preserved MQ bindings confirmed.
+- Existing U001 legacy/full/native/hosted test and independent admission deferrals remain with program 322 coordinator/P7.
+- Existing enabled main snapshot packaging is separate from those test gates.
+
+Workflow:
+- 2026-10-01-orchestrator-restore
+- Stage: S3
+- Task: T1
+
+Co-Authored-By: OpenAI Codex (gpt-6.1-sol, ultra) <noreply@openai.com>
