@@ -859,30 +859,6 @@ components:
     destination: .ai/core/skills/spec-compliance-validator/skill-package.yaml
   kind: skill
   version: 0.1.0
-- id: standards-promotion
-  source: src/skills/standards-promotion
-  metadata: skill-package.yaml
-  members:
-  - source: SKILL.md
-    destination: .ai/core/skills/standards-promotion/SKILL.md
-  - source: references/authority.md
-    destination: .ai/core/skills/standards-promotion/references/authority.md
-  - source: references/configuration.md
-    destination: .ai/core/skills/standards-promotion/references/configuration.md
-  - source: references/example.md
-    destination: .ai/core/skills/standards-promotion/references/example.md
-  - source: references/operations.md
-    destination: .ai/core/skills/standards-promotion/references/operations.md
-  - source: schemas/promotion-record.schema.json
-    destination: .ai/core/skills/standards-promotion/schemas/promotion-record.schema.json
-  - source: scripts/standards_promotion.py
-    destination: .ai/core/skills/standards-promotion/scripts/standards_promotion.py
-  - source: skill-package.yaml
-    destination: .ai/core/skills/standards-promotion/skill-package.yaml
-  - source: templates/promotion.md
-    destination: .ai/core/skills/standards-promotion/templates/promotion.md
-  kind: skill
-  version: 0.1.0
 adapters:
 - id: claude
   version: 0.1.0

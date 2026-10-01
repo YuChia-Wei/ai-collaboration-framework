@@ -1,0 +1,61 @@
+{
+  "candidate_identity": "subset:3:0.19.0-rc.3:5ed50d1b59115a2677711dbb91fcb8cc12dc2148:b62b0ba30893277c89cdbe735c6393661fe584e8a17848ef52977930aa71619e",
+  "changed_managed_members": [],
+  "diagnostics": [],
+  "exclusions": [
+    "Unchanged member inventory remains in official lock; repeated engine/input entries remain pinned."
+  ],
+  "generator": "Issue423 coordinator deterministic projection",
+  "maintenance_scope": [
+    "adr-author",
+    "ai-context-auditor",
+    "ai-context-governance",
+    "bdd-gwt-test-designer",
+    "code-reviewer",
+    "ddd-ca-hex-architect",
+    "diagnostic-analyst",
+    "lesson-author",
+    "local-backlog",
+    "local-change-implementer",
+    "pr-author",
+    "problem-frame-author",
+    "requirement-author",
+    "slice-implementer",
+    "software-development-orchestrator",
+    "spec-author",
+    "spec-compliance-validator"
+  ],
+  "observed_at": "2026-10-01T09:55:37+08:00",
+  "outcome": "planned",
+  "plan_sha256": "b1722d6f4b780ce3ca3e2d2aca8f690478d203a4f26fa613dc0e6431a80ae719",
+  "project_data_action": "none",
+  "project_edits": [
+    {
+      "after": {
+        "mode": "100644",
+        "sha256": "aa4680418948c9491ec2d74093662150796e9b4d8e4bdd71ba3bdd30d2682b02",
+        "size": 49691
+      },
+      "before": {
+        "mode": "100644",
+        "sha256": "2da784dab29f829b6d91b079123bb7ceec4cfd3019aed40aedf28d48b1b52c09",
+        "size": 49693
+      },
+      "intent": {
+        "after_content_ref": "objects/aa4680418948c9491ec2d74093662150796e9b4d8e4bdd71ba3bdd30d2682b02",
+        "after_sha256": "aa4680418948c9491ec2d74093662150796e9b4d8e4bdd71ba3bdd30d2682b02",
+        "before_sha256": "2da784dab29f829b6d91b079123bb7ceec4cfd3019aed40aedf28d48b1b52c09",
+        "path": ".dev/workflows/INDEX.MD"
+      }
+    }
+  ],
+  "projection_version": 1,
+  "protected_inputs": [
+    {
+      "path": ".ai/custom/framework.json",
+      "sha256": "f4809c0cea9c5190f7e66806c56799712939223c15d6842646276c0db291c537"
+    }
+  ],
+  "raw_response_sha256": "4434252cdb28443d467363f7aa281dcd23849afc65f621cf2f97028677eaf7f6",
+  "unchanged_managed_count": 135
+}

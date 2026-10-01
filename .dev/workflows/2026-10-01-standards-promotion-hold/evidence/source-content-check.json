@@ -1,0 +1,25 @@
+{
+  "behavioral_validation": "not-run; owner-selected future validation",
+  "changed_ids": 12,
+  "evidence_layer": "content-and-closure",
+  "historical_added": 5,
+  "independent_full_native": "deferred-by-owner; U001 program 322/P7",
+  "outcome": "passed",
+  "prerelease": "0.1.1-alpha.1",
+  "production_skills": 17,
+  "profiles": {
+    "collaboration": "promotion-excluded",
+    "complete": "promotion-excluded",
+    "context-maintenance": "promotion-excluded",
+    "engineering": "promotion-excluded",
+    "knowledge": "promotion-excluded",
+    "lesson-minimal": "promotion-excluded",
+    "source-repository": "promotion-excluded",
+    "work-management": "promotion-excluded"
+  },
+  "record_schema": "1.0.0",
+  "restored": 1,
+  "retained_source_skills": 18,
+  "retired": 3,
+  "schema_sha256": "0002b9d91dfd4cfea7a74d51567dd0d93bc03e7f3c6ad3ad974707996eb58b46"
+}

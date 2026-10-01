@@ -16,11 +16,11 @@
 
 ## 本庫的安裝選擇
 
-修正後的 RC3 source catalog 包含 18 個 portable skills 與 Codex、Claude adapters。`software-development-orchestrator` 已恢復跨階段開發編排；workflow 紀錄格式與存放位置仍由專案選擇。Authoring package IDs 為 `adr-author`、`lesson-author` 與 `pr-author`。本來源專案的安裝選擇不包含 engineering knowledge packages。Generated installation identity 由 lock 記錄，與 source catalog 分開更新。`.ai/custom/installation.json` 保存 project-owned selection；managed installer 產生 `.ai/framework.lock`、`.ai/core/` 與兩種 runtime entries。Generated content 不可直接編輯；要改產品請編輯 `src/`，再依 source workflow 更新安裝。
+目前 distribution catalog 包含 17 個 portable skills 與 Codex、Claude adapters。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/` 供獨立試驗，在用途與行為另行驗證前不隨 framework 成品發布或安裝。`software-development-orchestrator` 已恢復跨階段開發編排；workflow 紀錄格式與存放位置仍由專案選擇。Authoring package IDs 為 `adr-author`、`lesson-author` 與 `pr-author`。本來源專案的安裝選擇不包含 engineering knowledge packages。Generated installation identity 由 lock 記錄，與 source catalog 分開更新。`.ai/custom/installation.json` 保存 project-owned selection；managed installer 產生 `.ai/framework.lock`、`.ai/core/` 與兩種 runtime entries。Generated content 不可直接編輯；要改產品請編輯 `src/`，再依 source workflow 更新安裝。
 
 完整的增減、改名與職責變化見 [Skill 職責變遷](.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)。
 
-Installation selection 與 skill operation settings 分開管理。`.ai/custom/framework.json` 為 Lesson、ADR、PR、CBF 與 standards-promotion skills 設定了五個 project-owned filesystem roots 及精確 write_roots，採用套件模板與 tracked-intent；目前沒有建立記錄或 evidence，也沒有配置 ADR decision、promotion target/source adapters 或 local-backlog provider。這是 path selection，不是執行權限、store availability 或 runtime capability 證明。
+Installation selection 與 skill operation settings 分開管理。`.ai/custom/framework.json` 為 Lesson、ADR、PR、CBF 與 standards-promotion skills 設定了五個 project-owned filesystem roots 及精確 write_roots，採用套件模板與 tracked-intent；目前沒有建立記錄或 evidence，也沒有配置 ADR decision、promotion target/source adapters 或 local-backlog provider。standards-promotion namespace 設定保留，但目前不安裝該 skill。這是 path selection，不是執行權限、store availability 或 runtime capability 證明。
 
 RC3 透過固定 engine 的 `tools/reinstall-framework.py` 提供明確選用的 Git-backed 破壞性重裝。呼叫者指定精確清理與保留清單，工具先在外部 preview 預檢新安裝，並在安裝後核對保留內容。清理不是原子操作：已提交的 Git baseline 負責過時檔案還原，固定 API 2 journal 負責新安裝。請參閱[重裝契約](.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)與[來源／MQ 實測結果](.dev/workflows/2026-09-30-rc3-reinstall/results.md)。
 

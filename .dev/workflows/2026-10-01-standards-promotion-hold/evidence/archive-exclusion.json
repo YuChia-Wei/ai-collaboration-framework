@@ -1,0 +1,21 @@
+{
+  "archive_name": "ai-collaboration-framework-snapshot-5ed50d1b59115a2677711dbb91fcb8cc12dc2148.zip",
+  "archive_sha256": "b36341aae1fe515ef863611c4993066dd9dd38bd4d0ad1d6bd09eb526946be19",
+  "archive_size": 839953,
+  "crc_check": "passed",
+  "evidence_layer": "actual local framework ZIP construction and read-back",
+  "historical_artifacts": "not modified",
+  "knowledge_count": 2,
+  "orchestrator_present": true,
+  "outcome": "passed",
+  "promotion_component": false,
+  "promotion_payload": false,
+  "promotion_preset": false,
+  "publication": "not performed",
+  "release_manifest_sha256": "84467457b165b3f69c879c594aed5cc07d0f7a900985f2474338ce9fb961bd23",
+  "run_identity": "local-issue423; not a hosted run",
+  "skill_count": 17,
+  "source_commit": "5ed50d1b59115a2677711dbb91fcb8cc12dc2148",
+  "tooling_commit": "b5b70cafb5f67bea28796d32da42f8f8e756edab",
+  "zip_entry_count": 397
+}

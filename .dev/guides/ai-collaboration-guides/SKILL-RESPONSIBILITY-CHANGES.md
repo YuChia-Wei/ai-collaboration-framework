@@ -21,19 +21,42 @@
 | 本次修復來源 | package commit `16f3f0c072bd22c3945fce8aca8295bf2b88f330`；後續文件／整合由 Git 與 PR 識別 | 18 個，恢復 orchestrator | core／Codex／Claude 各 18 個；來源與 MQ installer 已實際回讀 |
 
 計算為 **舊 16 − 退休 3 + 新增 5 = RC2 18；RC3 再移除 1 = 17；本次恢復 1 = 18**。
+這是恢復當時的歷史計算。本次 owner 另將 standards-promotion 改列未發布試驗：
+可編輯 source 仍有 18 個，distribution catalog 與 managed installation 改為 17 個；
+MQ lab 另有 1 個獨立 experimental route，不能算成第 18 個 managed skill。
 若只算 portable，起點是 15，退休 portable 2，再新增 5，同樣得到 18。
 RC1 同時存在新舊來源目錄，不可相加成 34 個 skills。RC1→RC2 沒有 ID 增減，
 主要是安裝採用與知識消費契約改變。`engineering-common`、`dotnet-backend`
 是 knowledge packages，不列入 skill 數量；來源專案未選知識，不代表 mq lab 也未選。
 
-## 完整對照
+## 本次恢復（1 個）
 
-| Skill／歷史名稱 | 增減／時點 | 職責／行為：之前 → 現在 | 退役／新增／改變原因與承接狀態 |
+| Skill／歷史名稱 | 增減／時點 | 職責／行為：之前 → 現在 | 原因與承接狀態 |
 | --- | --- | --- | --- |
 | `software-development-orchestrator` | 同名契約改變 → RC3 退役 → 本次恢復 | 舊版高階意圖、階段排序、專業路由、核准、測試、審查、交接／收尾 → RC1/RC2 主要是十個 workflow record tools → 現在 `orchestrate`／`resume` 恢復開發編排，紀錄由專案擁有。 | #415 記錄 owner 覺得 workflow-v2 與預期不符、和既有 workflow 太相似，因此要求移除整個新套件；#417 落實。該選擇仍要求保留 legacy 編排 duty。比對顯示 duty 沒有完整 portable successor；本次依直接 owner 要求補回 stage coordinator。**編排缺口是分析結果，不是 owner 當時要求刪除舊編排。**（O） |
+
+## 退役（3 個，目前仍退役）
+
+| Skill／歷史名稱 | 增減／時點 | 職責／行為：之前 → 現在 | 原因與承接狀態 |
+| --- | --- | --- | --- |
 | `ai-context-init` | RC2 runtime 退役；RC3 清除舊來源 | repo discovery／architecture docs／project-config／provenance 初始化 → P6 installer 僅管理新格式 components。沒有 current portable init。 | D342-03 選擇把機械 installation/update 交 P6；提案理由是安裝單一 skill 不應被 public-root、project-config、translator 等整套 repo 初始化前置綁住。**沒有證明 installer 等價承接舊 repo 初始化或 published-format duty；舊 duty 保留，但 route 未恢復。**（P5） |
 | `ai-context-upgrader` | RC2 runtime 退役；RC3 清除舊來源 | 舊發布格式三方比較／客製化／multi-hop upgrade／recovery → 新格式 maintenance/reinstall；舊格式執行路由目前不可用。 | D342-03 分離 P6 機械更新，舊 upgrade scripts、route matrix、role registry 不預設進入新 package；已記錄需求摘要要求減少大量歷史升級 I/O 與自我測試干擾。**沒有選擇放棄 active legacy recovery；舊 owner/duty 留存。**（P5、N） |
 | `ai-context-release-closeout` | RC2 source runtime 退役；RC3 清除舊來源 | source-only post-tag read-back／例外 records-only recovery → source release policy、`releases/` 和治理程序。 | D342-03 明確把 source release/history duties 留在來源 repo；不把 Git/provider/handoff history 出貨為 portable skill。它原本 never packaged，因此這不是 portable skill 的新增缺口；目前沒有 installed successor。（P5） |
+
+## 歷史新增與改名（5 個）
+
+| Skill／歷史名稱 | 增減／時點 | 職責／行為：之前 → 現在 | 原因與承接狀態 |
+| --- | --- | --- | --- |
+| `adr` → `adr-author` | RC1 新增；RC3 改名 | 舊 `.dev/adr` 文件治理 → standalone alternatives、mapped owner decision、revision/supersession history；RC3 保留 schema/record IDs/filenames/locks。 | 已記錄需求 1-4 要求 ADR 撰寫／讀取標準化為 skill；P3 把 decision/history owner 與 project-rule owner 分開。RC3 owner 明確指定 author 名稱；**未找到更深入的命名動機紀錄**，不能把名稱語意推論寫成決策理由。（N、L、R） |
+| `lesson` → `lesson-author` | RC1 新增；P3 lifecycle 擴充；RC3 改名 | 手動 lessons → evidence-qualified observations／mapped acceptance／history；candidate-only v1 唯讀，explicit derive 新 v2 identity。 | 需求 1-4／1-6 要標準化 Lesson 並將回顧轉成 lessons；v1 固定 candidate，不能表達 acceptance/history，所以新增 v2 而不強制 migration。RC3 owner 指定 rename，保留 record family；**未另載命名動機**。Accepted lesson 不等於 adopted rule。（N、L、R） |
+| `pr` → `pr-author` | RC1 新增；RC3 改名 | PR 文件需求 → standalone actual Git comparison/content-bound record＋另外授權的 GitHub read/create/update。 | 需求 1-5 要 PR 標準化成 skill；P3 不要求先有 workflow/ADR/Lesson，並拆開 credential、approval、expected state、post-read/result。RC3 owner 指定 rename、保留 identities；**未另載命名動機**，沒有新增 merge／Issue／release 權限。（N、W、R） |
+| `local-backlog` | RC1 新增 | project-local work-item 需求 → stable IDs、acceptance、conflict-aware local state；GitHub links reference-only。 | 需求 1-11 要 local-file backlog 標準化；P3 選唯一 local writer，把本地紀錄與 remote tracker authority 分開，避免 implicit sync 或復活 source frozen backlog。（N、W） |
+| `standards-promotion` | RC1 新增 | ADR/Lesson 轉規範的需求 → evidence-bound proposal，分別觀察 owner adoption、實際 rule bytes 與 effect；沒有 `apply`。 | 需求 1-7 要從 ADR/Lesson 形成 standards；P3 刻意拆開 proposal、actual adoption、rule bytes、effect，避免工具自行改規則或產生自己的核准證據。規則寫入／採用仍由 project owner 決定。（N、L） |
+
+## 保留 ID 的行為與職責變化（12 個）
+
+| Skill／歷史名稱 | 增減／時點 | 職責／行為：之前 → 現在 | 原因與承接狀態 |
+| --- | --- | --- | --- |
 | `ai-context-auditor` | 同 ID；audit 範圍與輸出收斂 | 強制 independent baseline＋repository pass、source ASM lifecycle → scoped `audit`／`compare`、prose 預設、caller 選 export/project format。 | D352-01/02 要求維護能力獨立可選，單一 scoped question 不強制兩次獨立執行或 automatic pre-task gate；新 machine assessment family 沒有被選定的 consumer。舊 source ASM owner 保留；普通 audit 不代表獨立審查。（M） |
 | `ai-context-governance` | 同 ID；authority 拆分 | boundary/routing/wrapper/migration/customization ledger 與完整 remediation lifecycle → bounded project-owned `propose`／`apply`。 | D352-03/04/05 分離 target edit、source duty、P6 install/recovery，避免第二 customization ledger 或 universal resolver 形成歧義權威。Managed core／lock／projection／catalog／release／active recovery 各自保留 owner；沒有撤銷既有 adopted contract。（M） |
 | `problem-frame-author` | 同 ID；machine 格式換約 | legacy 多檔、未獨立版本化的 CBF/SWF YAML → semantic draft/review＋單檔 `problem-frame.cbf@1.0.0` JSON snapshot。 | 設計比較指出 CBF 有 concrete 五檔模板、SWF 在該 scoped subtree 沒有 concrete template；多檔更新／recovery 較複雜。選 bounded typed-ID snapshot，避免沒有 demonstrated need 的 generic CBF+SWF engine。**不是 legacy compatibility；不自動轉換舊 records，也不取消 SWF semantic duty。**（F） |
@@ -46,14 +69,20 @@ RC1 同時存在新舊來源目錄，不可相加成 34 個 skills。RC1→RC2 �
 | `code-reviewer` | 同 ID；先 common-only，RC2 optional knowledge | common＋optional tech routing、source assessment/role/packet dependencies → common instruction review，.NET specialist 不內建。 | P5 選擇真實三-member common package，避免假 executable/store/Python runtime；tech extension 另行選擇。RC2 reader 只取 verified allowlist resources，required specialist gap 必須明示，不能把 common review 算成 specialist coverage。（P5、K） |
 | `local-change-implementer` | 核心保留；RC2 optional knowledge | 一個 target/operation、直接半徑與 immediate tests → explicit target rules/commands，可涵蓋數個 direct-call-site 檔案。 | Semantic impact 比 file count 適合界定 local/slice；standalone local work 不應被 source ceremony 或反覆跳回 orchestrator 阻擋。RC2 optional knowledge 保留 target authority；public-contract 變更仍需要已接受的 scope。（E、K） |
 | `slice-implementer` | 核心保留；RC2 optional knowledge | command/query/reactor/generic/remediation、accepted architecture/GWT、internal edits/tests → explicit target inputs，無 mandatory technology role registry。 | Generic slice 要能在沒有 .NET/private-role tree 的 target 使用，移除 hidden/unselected prerequisites，保留 slice 內部 edits/tests owner，避免 per-method handoff。Legacy「no new type」改為 shared private-helper semantic rule，沒有任意新增 public type 的授權。（E、K） |
-| `adr` → `adr-author` | RC1 新增；RC3 改名 | 舊 `.dev/adr` 文件治理 → standalone alternatives、mapped owner decision、revision/supersession history；RC3 保留 schema/record IDs/filenames/locks。 | 已記錄需求 1-4 要求 ADR 撰寫／讀取標準化為 skill；P3 把 decision/history owner 與 project-rule owner 分開。RC3 owner 明確指定 author 名稱；**未找到更深入的命名動機紀錄**，不能把名稱語意推論寫成決策理由。（N、L、R） |
-| `lesson` → `lesson-author` | RC1 新增；P3 lifecycle 擴充；RC3 改名 | 手動 lessons → evidence-qualified observations／mapped acceptance／history；candidate-only v1 唯讀，explicit derive 新 v2 identity。 | 需求 1-4／1-6 要標準化 Lesson 並將回顧轉成 lessons；v1 固定 candidate，不能表達 acceptance/history，所以新增 v2 而不強制 migration。RC3 owner 指定 rename，保留 record family；**未另載命名動機**。Accepted lesson 不等於 adopted rule。（N、L、R） |
-| `pr` → `pr-author` | RC1 新增；RC3 改名 | PR 文件需求 → standalone actual Git comparison/content-bound record＋另外授權的 GitHub read/create/update。 | 需求 1-5 要 PR 標準化成 skill；P3 不要求先有 workflow/ADR/Lesson，並拆開 credential、approval、expected state、post-read/result。RC3 owner 指定 rename、保留 identities；**未另載命名動機**，沒有新增 merge／Issue／release 權限。（N、W、R） |
-| `local-backlog` | RC1 新增 | project-local work-item 需求 → stable IDs、acceptance、conflict-aware local state；GitHub links reference-only。 | 需求 1-11 要 local-file backlog 標準化；P3 選唯一 local writer，把本地紀錄與 remote tracker authority 分開，避免 implicit sync 或復活 source frozen backlog。（N、W） |
-| `standards-promotion` | RC1 新增 | ADR/Lesson 轉規範的需求 → evidence-bound proposal，分別觀察 owner adoption、實際 rule bytes 與 effect；沒有 `apply`。 | 需求 1-7 要從 ADR/Lesson 形成 standards；P3 刻意拆開 proposal、actual adoption、rule bytes、effect，避免工具自行改規則或產生自己的核准證據。規則寫入／採用仍由 project owner 決定。（N、L） |
 
 在這五個新 standalone skills 中，ADR 與 Lesson 有已核實的既有文件治理前身；
 「新增 skill」不等於所有能力從零發明。三個 author 改名是零淨增減，也不是三個新功能。
+
+## 預發布暫停出貨（1 個；不是退役）
+
+| Skill | 現況 | 原因與驗證責任 |
+| --- | --- | --- |
+| `standards-promotion` | `0.1.1-alpha.1`；保留 `src`，移出 distribution manifest 與四個 presets；MQ lab 使用獨立複製的 `standards-promotion-experimental`。 | Owner 要先另外驗證用途與行為，才判斷能否發布。Framework 成品及正常安裝不包含此 package；release readiness 尚未成立。Record schema、config namespace 與歷史仍保留。 |
+
+此選擇由 [#423](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/423)
+及[本次 workflow](../../workflows/2026-10-01-standards-promotion-hold/workflow.yaml)追蹤。
+新的 framework catalog/engine 成品以 manifest closure 排除它；可編輯 Git source 與
+既有 immutable tags/release artifacts 保留各自原始內容。重新發布仍需 owner 另行選擇。
 
 ## 原因證據與可重現定位
 

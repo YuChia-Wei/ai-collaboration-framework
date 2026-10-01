@@ -1,0 +1,20 @@
+{
+  "api_version": 2,
+  "changed": true,
+  "details": {
+    "counts": {
+      "added": 0,
+      "changed": 3,
+      "removed": 11,
+      "unchanged": 135
+    },
+    "lock_sha256": "f65914c033f9918df8cc96add9f88a1b256fa87641da624817a89901d78b31fe",
+    "managed_state": "managed-bytes-consistent",
+    "operation_root": "F:\\standards-promotion-423-20261001\\source\\recovery\\i-31a2fbf8acfe4ec7b83ca93a4bb4d9e4",
+    "project_readiness": "not-assessed",
+    "protected_input_state": "matches"
+  },
+  "diagnostics": [],
+  "operation": "apply",
+  "outcome": "applied"
+}

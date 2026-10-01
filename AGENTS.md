@@ -56,7 +56,7 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The corrected RC3 source catalog has 18 skills, including the restored development orchestrator; generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 17 skills, including the restored development orchestrator. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
 
 | Need | Owning route |
 | --- | --- |
@@ -64,7 +64,7 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | AI-context governance and reusable context maintenance | `ai-context-governance` |
 | Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
-| Decisions, lessons, local backlog, pull requests, or standards promotion | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` / `standards-promotion` |
+| Decisions, lessons, local backlog, or pull requests | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` |
 | Multi-stage software development | `software-development-orchestrator` for stage selection and specialist handoffs; source `.dev/` policy and Issue authority own workflow records and integration |
 | Initialization or upgrade of a previously published legacy package format | Retained source compatibility duty with no current portable or executable route; restore a verified source-owned procedure before execution. |
 | Historical or exceptional source release closeout | `releases/` and source release policy; no portable installed skill route. |

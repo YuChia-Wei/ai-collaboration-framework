@@ -1,0 +1,18 @@
+merge(#423): hold promotion outside framework release products
+
+Why:
+- Owner selects a prerelease hold and separately copied MQ experiment pending purpose validation.
+
+What:
+- Integrate prerelease source, manifest/preset exclusion, separated skill tables and supported managed removal.
+
+Validation:
+- Content/closure and actual installer read-back passed; seventeen managed selections are retained.
+- Purpose/behavior acceptance remains future owner-selected work; U001 program 322/P7 test admission remains deferred-by-owner.
+
+Workflow:
+- 2026-10-01-standards-promotion-hold
+- Stage: integration
+- Task: T2
+
+Co-Authored-By: OpenAI Codex (gpt-6.1-sol, ultra) <noreply@openai.com>

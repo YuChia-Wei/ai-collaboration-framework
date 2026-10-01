@@ -1,0 +1,20 @@
+chore(#423): hold promotion outside the source installation
+
+Why:
+- Owner requires separate purpose validation and independent MQ experimentation before distribution.
+
+What:
+- Remove promotion from managed selection through official maintenance while preserving other skills, knowledge, settings and records.
+- Retain prerelease source and separated state tables, with actual catalog/engine exclusion evidence.
+
+Validation:
+- Official plan/apply/inspect, member preservation, metadata/link/frontmatter and diff checks passed.
+- MQ read-only metadata/config explain succeeded without mutation; purpose/behavior acceptance is not run.
+- Legacy/full/native/independent and hosted test admission remain deferred-by-owner under U001 program 322/P7.
+
+Workflow:
+- 2026-10-01-standards-promotion-hold
+- Stage: managed-removal
+- Task: T2
+
+Co-Authored-By: OpenAI Codex (gpt-6.1-sol, ultra) <noreply@openai.com>

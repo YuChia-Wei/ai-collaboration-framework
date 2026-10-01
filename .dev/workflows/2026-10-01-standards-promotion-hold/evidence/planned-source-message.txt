@@ -1,0 +1,19 @@
+chore(#423): hold standards promotion outside framework distribution
+
+Why:
+- Owner requires separate purpose validation before publishing this skill and clear restored versus retired tables.
+
+What:
+- Retain standards-promotion source as 0.1.1-alpha.1 and preserve record schema and configuration identities.
+- Remove it from the complete production manifest and four presets; separate current skill state tables and routes.
+
+Validation:
+- Focused source parsing, version agreement, unchanged schema, manifest/profile closure, local links and git diff --check passed.
+- Behavioral acceptance is not run; legacy/full/native/independent and hosted test admission remain deferred-by-owner under U001 program 322/P7.
+
+Workflow:
+- 2026-10-01-standards-promotion-hold
+- Stage: source-hold
+- Task: T1
+
+Co-Authored-By: OpenAI Codex (gpt-6.1-sol, ultra) <noreply@openai.com>
