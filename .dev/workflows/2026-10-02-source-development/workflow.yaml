@@ -4,17 +4,17 @@ workflow_id: 2026-10-02-source-development
 workflow_kind: software-development
 title: Reconcile source admission and deliver optional project initialization
 owner_skill: software-development-orchestrator
-status: in_progress
+status: completed
 artifact_root: .dev/workflows/2026-10-02-source-development
 entrypoint: workflow-plan.md
 created_at: '2026-10-02T13:00:01+08:00'
-updated_at: '2026-10-02T14:13:50+08:00'
+updated_at: '2026-10-02T14:20:28+08:00'
 template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
 template_version: policy-direct-1.0
 branch: codex/2026-10-02-source-delivery-fix
 base_branch: main
 base_commit: 4f231fe7f08eaa9ae296ec243be524658f8d3849
-current_phase: snapshot-regression
+current_phase: completed
 work_items:
 - provider: github
   issue: 369
@@ -36,8 +36,9 @@ authority: Direct owner decision on 2026-10-02 authorizes CI implementation and 
   online checks before merge, and associated provider integration/closeout.
 execution: Root is the sole tracked writer; earlier bounded inventories were read-only.
   No new delegation for initialization.
-integration_status: PR 428 merged as cb1e0479; post-merge snapshot failed; narrow
-  manifest/test correction in progress
-result_summary: Prior T1-T3/T5 source delivery integrated; T6 reopens snapshot delivery
-  after authentic hosted regression.
+integration_status: PR428 integrated; correction implementation complete. PR429 owns
+  current-head CI, integration and post-merge snapshot; Issue427 stays open until
+  actual snapshot evidence.
+result_summary: T1-T3/T5/T6 implementation complete; provider-only operations remain
+  separate and do not imply hosted or snapshot success.
 continuation_base: cb1e04792d935269780de5bd7eb7077d6b6a438f

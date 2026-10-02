@@ -55,3 +55,26 @@ subject for merge admission; final provider evidence belongs to PR #429 and #427
 
 After the preset repair, all 36 distribution checks passed in 2.460 s, with
 zero errors, failures or skips.
+
+## Implementation completion
+
+On immutable `9853babc99c7cd5a5da11a3eae95e1259a6f7dfa`, the affected source gate
+passed 42 schemas and 36 distribution tests plus content/whitespace checks in
+20.533 s, with no failures, errors or skips. Independent reviewer
+`source_cutover_review` inspected the new four-file delta and its production
+consumers read-only and returned no supported actionable findings; tree was
+`d9d5c262e5491f123cf48c46b2cf0403d13708c0`, clean at entry and exit.
+
+The actual committed-input `build_catalog` path then passed through all catalog
+validation and preset expansion before a capture boundary substituted for physical
+emission: 20 components (18 skills, 2 knowledge), 9 presets, 378 payload files,
+66.384 s. This is not a physical assembly, installation or hosted snapshot result.
+
+T6's code/test correction is complete. Under WORKFLOW-ARTIFACT-POLICY's Workflow
+Completion rule, the remaining hosted checks, merge and post-merge snapshot
+read-back are provider operations, tracked in PR #429 and Issue #427. They do not
+keep the implementation workflow open or justify a later evidence-sync commit.
+Root must review this final record-only delta, require current-head Source change
+gate success before merge, then read actual main snapshot success/artifact before
+administratively closing #427 and setting Project Done. A new observed source
+defect reopens implementation; failed provider evidence never becomes passed.

@@ -74,3 +74,10 @@ Final evidence-only closeout still needs affected review and current-head hosted
 success before PR #428 merges. #369/#427 close only through actual reviewed
 integration and separate Issue/Project read-back. No workflow completion state
 waives those conditions. Actual general agent scenarios remain outside scope.
+
+## T6 implementation completion
+
+Ordering repairs, regression coverage, fixed-subject review and committed catalog
+pre-emission validation are complete; see [snapshot continuation](snapshot-followup.md).
+Provider-only final CI, merge, snapshot and Issue/Project read-back remain owned by
+PR #429 and #427, without a tracked evidence-sync commit.
