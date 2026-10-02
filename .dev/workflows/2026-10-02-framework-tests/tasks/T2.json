@@ -2,9 +2,9 @@
   "task_id": "T2",
   "workflow_id": "2026-10-02-framework-tests",
   "owner_skill": "software-development-orchestrator",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-02T08:09:49+08:00",
-  "updated_at": "2026-10-02T08:32:54+08:00",
+  "updated_at": "2026-10-02T08:37:27+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-1.0",
   "model": "gpt-6-astra",
@@ -14,6 +14,6 @@
     "A7",
     "A8"
   ],
-  "result_summary": "Run integrated suites on the clean immutable implementation commit, reconcile results and finish local delivery.",
-  "finding_status": "pending"
+  "result_summary": "Selected local verification complete: default 178 and optional 36 methods passed; final affected source suite 38 passed after real R095 parser repair. Unchanged test/source bytes rebound; combined dormant gate remains blocked on three workflow ownership paths and no admission is claimed.",
+  "finding_status": "addressed"
 }

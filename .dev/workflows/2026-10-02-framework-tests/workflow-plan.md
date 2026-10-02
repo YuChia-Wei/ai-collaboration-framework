@@ -15,7 +15,7 @@ program assignment. Existing CI suspension and publication boundaries remain.
 | Task | Scope | State |
 | --- | --- | --- |
 | T1 | Schema, tool-output, layout/runner refocus and current-reference repairs | completed |
-| T2 | Integrated bounded execution, diff review and acceptance reconciliation | in_progress |
+| T2 | Integrated bounded execution, diff review and acceptance reconciliation | completed |
 
 Root owns the integration branch, shared runner, obsolete-driver removal,
 active documentation, selector integration and these records. Delegated units
@@ -80,12 +80,20 @@ from native, hosted, downstream, framework-methodology and agent acceptance.
 2026-10-02: Reviewed live open Issues; #369 owns dormant CI restoration while
 #274/#275 concern historical fixture/performance evaluation, so created #425.
 Created an isolated integration branch. Main checkout remains unchanged.
-Integrated schema and tool units plus test relocation. Added the explicit local
-runner and retired high-I/O install/public/candidate drivers. Distribution,
-loader and platform checks passed 71 methods; tools plus release passed 63
-methods before adding a passing legacy-render regression. Selector integration passed 37 methods (33 selector and 4 runner checks).
-Final integrated verification on the clean implementation commit remains. See [validation record](validation.md)
-for first failures, corrections and the final acceptance disposition.
+Completed the accepted local delivery. The default suite passed 178 methods;
+optional loader/platform suites passed 36. Actual fixed-head selector execution
+exposed a padded Git rename-score parser defect, which was fixed with a new
+regression; the final affected source suite passed 38 methods. Unchanged suites
+retain their verified source bytes. Both the Lesson rendering fix and rename
+parser correction stay within the immediate tested behavior.
+
+The combined dormant gate still blocks on this new workflow's three JSON/YAML
+ownership paths and retains independent scoped review. This is recorded as
+blocked/unexecuted gate evidence, not a local-suite failure or a passed admission.
+See [validation record](validation.md) for exact commits, commands, durations,
+first failures, corrections and acceptance A1-A8. All workflow-owned tasks are
+complete. Any provider admission, integration or CI restoration remains a
+separately selected operation.
 
 No Git transport or terminal Issue operation is requested. The prospective
 integration preference is one coherent reviewable delivery; choose actual merge
