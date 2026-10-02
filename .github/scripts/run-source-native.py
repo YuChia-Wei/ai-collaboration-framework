@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dormant Windows native entry. V3 command binding is deliberately unresolved."""
+"""Retained non-passing entry for owner-retired native trials; not an active route."""
 import argparse
 import json
 import os
@@ -14,7 +14,7 @@ def decision(subject, system, event_name=None, ref=None):
         return "unsupported-platform:Windows-only"
     if event_name is not None and (event_name != "workflow_dispatch" or ref != "refs/heads/main"):
         return "requires-manual-main-workflow"
-    return "native-binding-pending:coordinator-must-supply-fixed-V3-interface-and-selected-cases"
+    return "native-trials-retired:owner-must-select-an-actual-consumer-scenario"
 
 
 def main(argv=None):
@@ -28,8 +28,8 @@ def main(argv=None):
                       "subject_sha": args.subject if re.fullmatch(r"[0-9a-f]{40}", args.subject) else None,
                       "subject_fetched": False, "native_executed": False,
                       "runner_revision": os.environ.get("GITHUB_SHA") if hosted else None,
-                      "continuation": "Bind actual V3 native-windows argv, explicit native/recovery roots, "
-                                      "fixed runner/subject verification and process-termination result before enablement."},
+                      "continuation": "Select a real consumer scenario and its supported runner, "
+                                      "fixed source and actual evidence before proposing a new native route."},
                      sort_keys=True))
     return 1
 

@@ -12,16 +12,19 @@
 sub-agents，選擇足以勝任且成本最低的 model／effort；不強制另開對話或使用 Astra。
 較大型或多階段的實作 Issue 仍使用獨立的 `gpt-6-astra` / `ultra` 對話。
 使用指定的 RAM-disk worktree，並在首次 push 前將本機 commits 交回統籌；
-執行者未經統籌指派，不自行建立更多任務或再委派。CI 與舊驗證在 P7 恢復決策前維持
-`deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
+執行者未經統籌指派，不自行建立更多任務或再委派。已採納 source 範圍之外尚未恢復的
+legacy／native／release 驗證，在另行選定的恢復決策前維持 `deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
 與 publication 邊界繼續有效。
 
-## 前瞻 Source 規則
+## Source 開發規則
 
-[前瞻 source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md) 尚未啟用。
-它描述僅在明確採納後，才適用於 source 工作的選定檢查、限縮範圍審查與精簡交接。
-此指標不啟用規則、不取代下方現行條文、不變更 skill routes，也不終止 U001。
-CI 恢復與確切政策轉換必須有已記錄的 owner 採納決策。
+讀取 [source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)，確認其明確
+owner 於 2026-10-02 採納的轉換與一般 source 工作的確切範圍。
+八項規則取代下方與一般 source 工作衝突的 aggregate、receipt、packet、
+lease 與交接要求；條件式 independent review 與選定檢查仍然適用。
+暫時例外與舊機制僅保留於明確選定的 legacy／native／release 義務。
+Release、支援、credentials、protection 與 downstream adoption 維持原有 owner。
+Merge 或日期都不能證明 CI 成功。
 
 ## 適用範圍與 Authority
 
@@ -52,7 +55,7 @@ CI 恢復與確切政策轉換必須有已記錄的 owner 採納決策。
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 17 個 skills，包含恢復的開發編排 skill。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 18 個 skills，包含恢復的開發編排 skill 與可選的 `ai-context-init@0.1.0`。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |

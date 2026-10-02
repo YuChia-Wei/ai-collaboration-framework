@@ -1,5 +1,12 @@
 # Provider-Neutral Role Execution Contract
 
+Source applicability: the owner's 2026-10-02 adoption of
+[SOURCE-DEVELOPMENT-POLICY](../standards/SOURCE-DEVELOPMENT-POLICY.md) selects its
+bounded delegation and conditional independent review for new source development.
+The legacy full packet/preflight/lease machinery below applies only to separately
+selected legacy or release work. Preserve permissions, one tracked writer,
+immutable review inputs and truthful evidence.
+
 This contract records how an applicable canonical sub-agent role was executed
 without making a runtime, adapter, model, or provider the source of truth. It
 does not define role applicability, role bindings, `loaded_rule_ids`, provider

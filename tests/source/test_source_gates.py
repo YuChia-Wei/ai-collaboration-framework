@@ -1,4 +1,4 @@
-"""Dormant selector contracts using in-memory source and process-result fixtures.
+"""Source selector contracts using in-memory source and process-result fixtures.
 
 No Git repositories, package builds, installations or provider calls are created.
 """
@@ -241,18 +241,28 @@ class SelectionTests(unittest.TestCase):
                          {"content", "whitespace", "distribution", "loader", "platform"})
 
     def test_runner_and_source_governance_keep_scoped_review_requirement(self):
-        for path in (gate.RUNNER, ".gitignore", ".github/workflows/source-checks.yml", ".dev/standards/SOURCE-DEVELOPMENT-POLICY.md"):
+        for path in (".gitignore", ".github/workflows/source-checks.yml", ".dev/standards/SOURCE-DEVELOPMENT-POLICY.md",
+                     ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"):
             with self.subTest(path=path):
                 result = self.selected(SyntheticTree({path: "# source"}), path)
                 self.assertFalse(result.errors)
                 self.assertEqual(result.checks, {"content", "whitespace", "source"})
                 self.assertEqual(result.requirements, {"independent-scoped-review"})
 
+    def test_shared_runner_and_dependencies_select_all_supported_suites(self):
+        for path in (gate.RUNNER, "requirements.txt", "tests/requirements.txt"):
+            result = self.selected(SyntheticTree({path: "# runtime"}), path)
+            self.assertFalse(result.errors)
+            self.assertEqual(result.checks, {"content", "whitespace", *gate.SUITES})
+        result = self.selected(SyntheticTree({gate.RUNNER: "# runtime"}), gate.RUNNER)
+        self.assertEqual(result.requirements, {"independent-scoped-review"})
+
     def test_release_tools_select_only_offline_release_tests(self):
         for path in gate.RELEASE_FILES:
             result = self.selected(SyntheticTree({path: "# release"}), path)
             self.assertFalse(result.errors)
             self.assertEqual(result.checks, {"content", "whitespace", "release"})
+            self.assertEqual(result.requirements, {"independent-scoped-review"})
 
     def test_retired_names_are_accepted_only_when_removed(self):
         for path in gate.RETIRED_TESTS:
@@ -272,14 +282,13 @@ class SelectionTests(unittest.TestCase):
 
     def test_prose_stays_content_only_and_unknown_ownership_fails(self):
         for path in ("README.md", "tests/readme.md", "tests/framework_next/README.md",
-                     ".dev/guides/implementation-guides/FRAMEWORK-RELEASE-DRAFT-GUIDE.md",
-                     ".dev/workflows/2026-10-02-framework-tests/README.md"):
+                     ".dev/guides/implementation-guides/FRAMEWORK-RELEASE-DRAFT-GUIDE.md"):
             result = self.selected(SyntheticTree({path: "# prose"}), path)
             self.assertFalse(result.errors)
             self.assertEqual(result.checks, {"content", "whitespace"})
         for path in ("unknown.md", "src/new/unknown.py", "tests/framework_next/test_future.py",
                      ".github/workflows/governance.yml", ".ai/scripts/old.py", ".dev/backlog/frozen.md",
-                     ".dev/workflows/2026-10-02-framework-tests/tasks.json"):
+                     ".dev/workflows/2026-10-02-framework-tests/tasks.json", ".dev/contracts/unknown.py"):
             result = self.selected(SyntheticTree({path: "# unknown"}), path)
             self.assertTrue(result.errors)
             self.assertEqual(result.checks, {"content", "whitespace"})
@@ -294,6 +303,77 @@ class SelectionTests(unittest.TestCase):
         ownership.prove_dependencies()
         self.assertEqual(ownership.manifest()["manifest_version"], 2)
         self.assertTrue(any(component["kind"] == "knowledge" for component in manifest["components"]))
+
+
+class WorkflowOwnershipTests(unittest.TestCase):
+    def fixture(self, workflow_id="2026-10-02-example"):
+        root = ".dev/workflows/" + workflow_id
+        locator = {"schema_version": "1.0", "workflow_id": workflow_id, "workflow_kind": "software-development",
+                   "title": "Fixture workflow", "owner_skill": "software-development-orchestrator",
+                   "status": "in_progress", "artifact_root": root, "entrypoint": "workflow-plan.md",
+                   "created_at": "2026-10-02T13:00:00+08:00", "updated_at": "2026-10-02T13:00:00+08:00",
+                   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md", "template_version": "policy-direct-1.0",
+                   "branch": "codex/" + workflow_id, "base_branch": "main", "work_items": [{"provider": "github",
+                    "issue": 369, "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369"}]}
+        task = {key: locator[key] for key in ("workflow_id", "owner_skill", "status", "created_at", "updated_at", "template_source", "template_version")}
+        task.update(task_id="T1", model="fixture-model", reasoning_effort="fixture-effort")
+        files = {root + "/workflow.yaml": json.dumps(locator), root + "/workflow-plan.md": "# bounded plan",
+                 root + "/tasks/T1.json": json.dumps(task),
+                 "src/skills/software-development-orchestrator/skill-package.yaml": "id: software-development-orchestrator\n"}
+        return root, locator, task, SyntheticTree(files)
+
+    def test_add_modify_delete_and_cross_workflow_rename_use_each_pinned_locator(self):
+        root, _, _, before = self.fixture()
+        other, _, _, after = self.fixture("2026-10-02-other")
+        for relative in ("workflow.yaml", "workflow-plan.md", "tasks/T1.json"):
+            old, new = root + "/" + relative, other + "/" + relative
+            for change, left, right in ((gate.Change(old, old), before, before),
+                    (gate.Change(None, new), SyntheticTree({}), after),
+                    (gate.Change(old, None), before, SyntheticTree({})),
+                    (gate.Change(old, new), before, after)):
+                with self.subTest(change=change):
+                    result = gate.select([change], left, right)
+                    self.assertFalse(result.errors)
+                    self.assertEqual(result.checks, {"content", "whitespace"})
+                    self.assertTrue(all(owner.startswith("source-workflow:") for owner in result.owners))
+
+    def test_missing_mismatched_unsafe_or_unbound_locator_fails_closed(self):
+        for changes in ({"workflow_id": "wrong"}, {"artifact_root": "elsewhere"}, {"entrypoint": "../outside.md"},
+                        {"schema_version": 1}, {"branch": "main"}, {"work_items": []}, {"owner_skill": "../other"},
+                        {"created_at": "2026-10-02T13:00:00"}, {"work_items": [{"provider": "github", "issue": True}]}):
+            root, locator, _, snapshot = self.fixture()
+            snapshot.files[root + "/workflow.yaml"] = json.dumps({**locator, **changes}).encode()
+            with self.subTest(changes=changes):
+                self.assertTrue(gate.select([gate.Change(None, root + "/tasks/T1.json")], SyntheticTree({}), snapshot).errors)
+        root, _, _, snapshot = self.fixture()
+        del snapshot.files[root + "/workflow.yaml"]
+        self.assertTrue(gate.select([gate.Change(None, root + "/workflow-plan.md")], SyntheticTree({}), snapshot).errors)
+
+    def test_task_identity_terminal_result_and_unknown_formats_fail_closed(self):
+        for changes in ({"workflow_id": "wrong"}, {"task_id": "T2"}, {"model": ""}, {"status": "completed"},
+                        {"updated_at": False}, {"owner_skill": "missing-skill"}):
+            root, _, task, snapshot = self.fixture()
+            path = root + "/tasks/T1.json"
+            snapshot.files[path] = json.dumps({**task, **changes}).encode()
+            with self.subTest(changes=changes):
+                self.assertTrue(gate.select([gate.Change(None, path)], SyntheticTree({}), snapshot).errors)
+        root, _, task, snapshot = self.fixture()
+        for relative in ("tasks.json", "run.py", "other.yaml", "tasks/T1.yaml"):
+            path = root + "/" + relative
+            snapshot.files[path] = b"{}"
+            self.assertTrue(gate.select([gate.Change(None, path)], SyntheticTree({}), snapshot).errors)
+        path = root + "/tasks/T1.json"
+        task.update(status="completed", result_summary="Bounded outcome recorded", finding_status="addressed")
+        snapshot.files[path] = json.dumps(task).encode()
+        self.assertFalse(gate.select([gate.Change(None, path)], SyntheticTree({}), snapshot).errors)
+
+    def test_retained_issue_refs_spelling_does_not_require_historical_issue_whitelist(self):
+        root, locator, _, snapshot = self.fixture()
+        del locator["work_items"]
+        locator["issue_refs"] = ["#427"]
+        path = root + "/workflow.yaml"
+        snapshot.files[path] = json.dumps(locator).encode()
+        self.assertFalse(gate.select([gate.Change(path, path)], snapshot, snapshot).errors)
 
 
 class SafetyTests(unittest.TestCase):
@@ -477,15 +557,15 @@ class EventAndCheckoutTests(unittest.TestCase):
             launch.assert_not_called()
             self.assertEqual(json.loads(output.getvalue())["status"], "failed")
 
-    def test_workflow_stays_dormant_and_credential_free(self):
+    def test_workflow_has_selected_windows_environment_and_stays_credential_free(self):
         raw = (ROOT / ".github/workflows/source-checks.yml").read_bytes()
-        self.assertIn(b"Dormant", raw)
         document = gate.strict_yaml(raw)
         events = document.get("on", document.get(True))
         self.assertEqual(set(events), {"pull_request"})
         self.assertFalse({"paths", "paths-ignore"} & events["pull_request"].keys())
         self.assertEqual(document["permissions"], {})
         job = document["jobs"]["source-change"]
+        self.assertEqual(job["runs-on"], "windows-latest")
         self.assertEqual(job["permissions"], {"contents": "read"})
         self.assertNotIn("if", job)
         self.assertEqual(job["steps"][-1]["if"], "always()")
@@ -495,6 +575,22 @@ class EventAndCheckoutTests(unittest.TestCase):
                 self.assertIs(step["with"]["persist-credentials"], False)
             if "run" in step:
                 self.assertNotIn("secrets.", step["run"])
+        self.assertTrue(job["steps"][0]["uses"].startswith("actions/setup-python@"))
+        self.assertEqual(job["steps"][0]["with"]["python-version"], "3.13")
+        self.assertIn(b"tests/requirements.txt", raw)
+
+    def test_source_check_report_never_claims_merge_admission(self):
+        snapshot = SyntheticTree({})
+        snapshot.git = lambda *args, **kwargs: (HEAD + "\n").encode() if args[0] == "rev-parse" else b""
+        output = io.StringIO()
+        selected = gate.Selection(requirements={"independent-scoped-review"})
+        with patch.object(gate, "GitTree", return_value=snapshot), patch.object(gate, "select", return_value=selected), \
+                patch.dict(os.environ, {"GITHUB_ACTIONS": "false"}), redirect_stdout(output):
+            self.assertEqual(gate.main(["--base", BASE, "--head", HEAD]), 0)
+        document = json.loads(output.getvalue())
+        self.assertEqual(document["status"], "passed")
+        self.assertEqual(document["admission_status"], "not-evaluated")
+        self.assertEqual(document["admission_requirements"], ["independent-scoped-review"])
 
 
 if __name__ == "__main__":

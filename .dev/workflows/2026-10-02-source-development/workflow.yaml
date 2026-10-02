@@ -1,0 +1,43 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-02-source-development
+workflow_kind: software-development
+title: Reconcile source admission and deliver optional project initialization
+owner_skill: software-development-orchestrator
+status: completed
+artifact_root: .dev/workflows/2026-10-02-source-development
+entrypoint: workflow-plan.md
+created_at: '2026-10-02T13:00:01+08:00'
+updated_at: '2026-10-02T14:04:58+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-02-source-development
+base_branch: main
+base_commit: 4f231fe7f08eaa9ae296ec243be524658f8d3849
+current_phase: completed
+work_items:
+- provider: github
+  issue: 369
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369
+- provider: github
+  issue: 274
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/274
+- provider: github
+  issue: 275
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/275
+- provider: github
+  issue: 425
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/425
+- provider: github
+  issue: 427
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/427
+authority: Direct owner decision on 2026-10-02 authorizes CI implementation and fixes,
+  adoption of the proposed source/CI rules, the prior three operations, restored initialization,
+  online checks before merge, and associated provider integration/closeout.
+execution: Root is the sole tracked writer; earlier bounded inventories were read-only.
+  No new delegation for initialization.
+integration_status: not-yet-merged; final-head independent review and actual hosted
+  success required before PR 428 integration
+result_summary: T1/T2/T3/T5 outputs complete with local/hosted evidence and prior
+  backlog read-back; final integration and Issue 369/427 read-back remain separate
+  conditions.

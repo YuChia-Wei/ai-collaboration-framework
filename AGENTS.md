@@ -14,18 +14,20 @@ least expensive capable model/effort; a new conversation or Astra is not require
 Larger or multi-stage implementation Issues retain independent `gpt-6-astra` /
 `ultra` conversations. Use the assigned RAM-disk worktree and return local commits
 to the coordinator before first push; executors do not create further tasks or
-delegate without a coordinator assignment. CI and legacy verification remain
-`deferred-by-owner` until the P7 restoration decision. This exception is
+delegate without a coordinator assignment. Unrestored legacy/native/release verification outside the adopted source scope
+remains `deferred-by-owner` until its separately selected restoration decision. This exception is
 source-only; unrelated security, ownership, credential and publication boundaries
 remain in force.
 
-## Prospective Source Rules
+## Source Development Rules
 
-[The prospective source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
-is dormant. It describes selected checks, scoped review and concise handoff for
-source work only after explicit adoption. This pointer does not activate rules,
-replace the effective sections below, change skill routes or retire U001.
-CI restoration and the exact policy transition require recorded owner adoption.
+Read [the source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
+for the owner-adopted 2026-10-02 cutover and exact ordinary-source scope. Its eight
+rules replace conflicting ordinary-source aggregate, receipt, packet, lease and handoff
+requirements below; conditional independent review and selected checks remain.
+The temporary override and old mechanisms remain only for explicitly retained
+legacy/native/release obligations. Release, support, credentials, protection and
+downstream adoption retain their owners. No merge or date proves CI success.
 
 ## Scope And Authority
 
@@ -56,7 +58,7 @@ CI restoration and the exact policy transition require recorded owner adoption.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 17 skills, including the restored development orchestrator. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 18 skills, including the restored development orchestrator and optional `ai-context-init@0.1.0`. The `project-initialization` preset selects initialization separately; existing presets and this source project's 17-skill installation are unchanged. Installing the package supplies authoring resources, not initialized root documents. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
 
 | Need | Owning route |
 | --- | --- |

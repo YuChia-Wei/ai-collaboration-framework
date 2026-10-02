@@ -12,11 +12,43 @@ profiles:
   path: src/profiles/knowledge.yaml
 - id: lesson-minimal
   path: src/profiles/lesson-minimal.yaml
+- id: project-initialization
+  path: src/profiles/project-initialization.yaml
 - id: source-repository
   path: src/profiles/source-repository.yaml
 - id: work-management
   path: src/profiles/work-management.yaml
 components:
+- kind: skill
+  id: ai-context-init
+  version: 0.1.0
+  source: src/skills/ai-context-init
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/ai-context-init/SKILL.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/ai-context-init/skill-package.yaml
+  - source: references/initialize.md
+    destination: .ai/core/skills/ai-context-init/references/initialize.md
+  - source: references/project-structure.md
+    destination: .ai/core/skills/ai-context-init/references/project-structure.md
+  - source: templates/public-root/AGENTS.md
+    destination: .ai/core/skills/ai-context-init/templates/public-root/AGENTS.md
+  - source: templates/public-root/CLAUDE.md
+    destination: .ai/core/skills/ai-context-init/templates/public-root/CLAUDE.md
+  - source: templates/public-root/README.md
+    destination: .ai/core/skills/ai-context-init/templates/public-root/README.md
+  - source: templates/public-catalogs/dev/README.MD
+    destination: .ai/core/skills/ai-context-init/templates/public-catalogs/dev/README.MD
+  - source: templates/public-catalogs/dev/INDEX.md
+    destination: .ai/core/skills/ai-context-init/templates/public-catalogs/dev/INDEX.md
+  - source: templates/project-config.template.yaml
+    destination: .ai/core/skills/ai-context-init/templates/project-config.template.yaml
+  - source: templates/architecture.md
+    destination: .ai/core/skills/ai-context-init/templates/architecture.md
+  - source: templates/technology-requirements.md
+    destination: .ai/core/skills/ai-context-init/templates/technology-requirements.md
 - kind: knowledge
   id: dotnet-backend
   version: 0.1.0

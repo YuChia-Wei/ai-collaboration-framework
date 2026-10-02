@@ -1,9 +1,11 @@
 # Git Commit Policy
 
-Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-retains grammar, exact planned-message validation, applicable workflow identity and
-truthful AI attribution. Its future removal of ordinary full-history/aggregate
-gates requires adoption; no executable field in `GIT-COMMIT-POLICY.yaml` changes.
+Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+takes precedence over conflicting ordinary-source gates below, under the owner's
+2026-10-02 decision. Existing release/support/recovery contracts and explicitly
+selected active legacy records retain their owners; their historical machinery
+is not silently migrated to the new source format. Unrestored U001 obligations
+outside the adopted source scope remain deferred or blocked, never passed.
 
 This policy defines commit title format, commit body structure, and commit timing for agent-assisted work.
 

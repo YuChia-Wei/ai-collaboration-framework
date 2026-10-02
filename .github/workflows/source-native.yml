@@ -1,10 +1,10 @@
-# Dormant and intentionally non-passing until the real V3 interface is integrated.
+# Retired trial placeholder; keep disabled. A real consumer scenario needs new selection.
 name: Source native checks
 on:
   workflow_dispatch:
     inputs:
       subject_sha:
-        description: Full source commit SHA; V3 binding must be delivered before execution
+        description: Retired route; do not dispatch without a newly selected actual native scenario
         required: true
         type: string
 permissions: {}
@@ -51,7 +51,7 @@ jobs:
           @'
           ## Source native trial
 
-          V3 binding is pending. No native case or subject checkout is implemented in this checkpoint.
-          This job cannot pass. Coordinator must bind and test the delivered Windows-only runner,
-          fixed subject and explicit native/recovery roots before proposing enablement.
+          The historical V3 installation trials were retired by owner selection in #425.
+          This retained placeholder cannot pass and remains disabled. A real consumer
+          installation/recovery need requires new scope and actual evidence before enablement.
           '@ | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding utf8

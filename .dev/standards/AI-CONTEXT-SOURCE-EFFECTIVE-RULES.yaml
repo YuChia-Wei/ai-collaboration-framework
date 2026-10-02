@@ -1,50 +1,29 @@
-# Dormant source proposal: SOURCE-DEVELOPMENT-POLICY.md; not adopted or effective.
-# Comment-only pointer: all effective fields and applicable U001 remain unchanged.
-schema_version: "1.0"
-document: "framework-source effective-rule applicability"
-applicability_mode: "framework-source"
-repository:
-  id: "YuChia-Wei/ai-collaboration-framework"
-  accepted_origin_urls:
-    - "git@github.com:YuChia-Wei/ai-collaboration-framework.git"
-    - "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
-  identity_commands:
-    root: ["git", "rev-parse", "--show-toplevel"]
-    commit: ["git", "rev-parse", "HEAD"]
-    origin: ["git", "config", "--get", "remote.origin.url"]
-    status: ["git", "status", "--porcelain=v1", "--untracked-files=all"]
-catalogs:
-  shared:
-    path: ".ai/assets/shared/governance/engineering-rule-catalog.yaml"
-  technology_profiles:
-    dotnet-backend:
-      path: ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml"
-execution:
-  required_head_bound_paths:
-    - ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml"
-    - ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml"
-    - ".ai/scripts/ai_context_effective_rules.py"
-    - ".ai/scripts/resolve-effective-rule-packet.py"
-    - ".ai/assets/shared/governance/engineering-rule-catalog.yaml"
-    - ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml"
-  read_contract: "Read every required policy, resolver, schema, and catalog byte sequence from Git HEAD and require the corresponding working-tree file to be a regular non-symlink file with identical bytes."
-  evidence_schema: ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml"
+# Source-only version 2. Legacy resolver/evidence schemas must not consume this format.
+schema_version: '2.0'
+document: framework-source named policy applicability
+status: active
+applicability_mode: framework-source
+repository: YuChia-Wei/ai-collaboration-framework
+policy_owner: .dev/standards/SOURCE-DEVELOPMENT-POLICY.md
+adoption_record: .dev/workflows/2026-10-02-source-development/adoption.md
 selection:
-  rule_ids: "explicit-required"
-  selection_evidence: "explicit-required"
-  ordering: "ascending unique rule IDs; ascending unique repository-relative evidence references"
-  inference: "forbidden"
-diagnostics:
-  source_applicability: "The explicit framework-source mode or source policy is missing or invalid."
-  source_repository: "The repository root, origin, HEAD, or fixed source identity is unresolved."
-  source_execution_digest: "A required policy, schema, resolver, or catalog working-tree byte sequence differs from the exact HEAD blob."
-  source_rule_selection: "Rule IDs or selection evidence are missing, duplicated, unsorted, unknown, unsafe, or ambiguous."
-  downstream_provenance_missing: "Initialized-target mode lacks its required target provenance authority."
-  downstream_state_stale: "Initialized-target authority, state, catalog, route, packet, or digest evidence is stale."
-  downstream_semantics_unresolved: "Initialized-target rule disposition, route, reconciliation, or semantic identity is unresolved."
-prohibitions:
-  - "Do not infer applicability mode from repository contents, remembered state, or a missing downstream provenance file."
-  - "Do not scan Markdown, standards directories, or alternate skills to discover source rule semantics."
-  - "Do not infer a rule set from capability, execution mode, technology profile, or file type selectors."
-  - "Do not write source execution evidence into .dev/ai-context, target provenance, target effective state, or target packets."
-  - "Do not package this policy, its evidence schema, or a source execution evidence instance into a downstream payload."
+  method: read-explicit-owning-policies
+  paths:
+  - AGENTS.md
+  - .dev/standards/SOURCE-DEVELOPMENT-POLICY.md
+  - .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml
+  - .dev/standards/GIT-COMMIT-POLICY.md
+  - .dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md
+  conditional_paths:
+    workflow: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+    release: .dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md
+    context-placement: .dev/standards/AI-CONTEXT-BOUNDARY.md
+  unknown_owner: blocked
+legacy:
+  mode: explicitly-selected-compatible-revision-only
+  ordinary_source_invocation: false
+  missing_tools: unavailable-not-passed
+boundaries:
+  downstream_adoption: target-owned
+  installed_projections: managed-no-direct-edits
+  package_distribution: source-only-excluded
