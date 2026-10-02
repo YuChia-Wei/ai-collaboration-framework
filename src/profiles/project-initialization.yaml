@@ -1,0 +1,9 @@
+preset_version: 1
+id: project-initialization
+version: 0.1.0
+skills:
+- ai-context-init
+knowledge: []
+adapters:
+- codex
+- claude

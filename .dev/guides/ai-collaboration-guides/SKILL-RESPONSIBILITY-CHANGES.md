@@ -11,6 +11,13 @@
 
 ## 固定比較基準與數量
 
+2026-10-02 後續來源變更：[#427](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/427)
+新增可選的 `ai-context-init@0.1.0` 與獨立 `project-initialization` preset，
+把 AGENTS 與專案文件初始化恢復為 authoring 指引。Catalog 因此為 18 個；
+既有 presets 與來源專案的 17-skill installation 不變。它不恢復舊版安裝流程，
+安裝套件也不會自動產生根目錄文件。詳見[來源交付紀錄](../../workflows/2026-10-02-source-development/initialization.md)。
+以下固定比較表保留各歷史時點；舊 `ai-context-init` 的退役不代表本次尚未存在。
+
 | 階段 | 固定 Git subject | Source／catalog | 來源專案 runtime |
 | --- | --- | --- | --- |
 | 重構前，2026-09-22 | `c2e7071335d02d9b8d40ab4dcaf437e690791741` | 16 個 canonical skills；其中 release-closeout 不發布，所以 portable 是 15 個 | 舊 16 個 |
