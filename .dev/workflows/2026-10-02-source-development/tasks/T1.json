@@ -3,14 +3,13 @@
   "workflow_id": "2026-10-02-source-development",
   "owner_skill": "ai-context-governance",
   "title": "Reconcile source policy and gate ownership",
-  "status": "deferred",
+  "status": "in_progress",
   "created_at": "2026-10-02T13:00:01+08:00",
-  "updated_at": "2026-10-02T13:38:14+08:00",
+  "updated_at": "2026-10-02T13:50:26+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-1.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "high",
   "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed.",
-  "reason": "Concrete source-policy adoption and bootstrap review authority await owner decision.",
-  "handoff_condition": "Owner selects the concrete adoption proposal; rebind current subject and perform selected independent review."
+  "owner_decision": "Concrete source/CI adoption approved; fixed-subject independent review and hosted checks required before merge."
 }

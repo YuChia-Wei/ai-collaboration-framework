@@ -1,4 +1,4 @@
-# Source cutover candidate; provider enablement requires the recorded owner decision.
+# Source checks selected by the owner on 2026-10-02; actual runs remain provider evidence.
 name: Source checks
 on:
   pull_request:

@@ -14,17 +14,16 @@ least expensive capable model/effort; a new conversation or Astra is not require
 Larger or multi-stage implementation Issues retain independent `gpt-6-astra` /
 `ultra` conversations. Use the assigned RAM-disk worktree and return local commits
 to the coordinator before first push; executors do not create further tasks or
-delegate without a coordinator assignment. CI and legacy verification remain
-`deferred-by-owner` until the P7 restoration decision. This exception is
+delegate without a coordinator assignment. Unrestored legacy/native/release verification outside the adopted source scope
+remains `deferred-by-owner` until its separately selected restoration decision. This exception is
 source-only; unrelated security, ownership, credential and publication boundaries
 remain in force.
 
 ## Source Development Rules
 
 Read [the source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
-for its explicit adoption status and exact ordinary-source scope. The prepared
-cutover is not effective until the owner adopts it. Once adopted, its eight rules
-replace conflicting ordinary-source aggregate, receipt, packet, lease and handoff
+for the owner-adopted 2026-10-02 cutover and exact ordinary-source scope. Its eight
+rules replace conflicting ordinary-source aggregate, receipt, packet, lease and handoff
 requirements below; conditional independent review and selected checks remain.
 The temporary override and old mechanisms remain only for explicitly retained
 legacy/native/release obligations. Release, support, credentials, protection and

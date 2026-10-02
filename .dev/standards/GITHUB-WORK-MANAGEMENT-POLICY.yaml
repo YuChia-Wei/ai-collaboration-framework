@@ -1,7 +1,7 @@
-# Version 2 is a source cutover candidate, pending the exact owner adoption.
+# Version 2 adopted by direct owner decision on 2026-10-02; see adoption record.
 schema_version: '2.0'
 policy_id: source-github-work-management
-status: pending-adoption
+status: active
 provider: github
 repository: YuChia-Wei/ai-collaboration-framework
 owner: YuChia-Wei

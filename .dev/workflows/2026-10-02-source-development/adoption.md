@@ -1,9 +1,18 @@
-# Exact source adoption proposal
+# Source adoption decision
 
-Status: pending owner decision. This document records a concrete proposal, not
-approval, independent review, CI success or downstream adoption.
+Status: adopted by direct owner decision on 2026-10-02. The owner requested this
+merge to (1) complete required CI code, (2) adopt the new CI rules, (3) complete
+the previously selected three operations, and (4) restore/improve initialization.
+The owner explicitly requires necessary code/test repairs and successful actual
+online checks before merge. This accepts the previously presented concrete
+source cutover, bootstrap scoped review and activation boundary below.
 
-## Requested boundary
+The authorized transition may use these rules now; integration makes the adopted
+source files available on main. Independent review, provider activation, hosted
+success, merge and Issue/Project closeout remain separately observed outcomes.
+No earlier single-merge waiver is reused.
+
+## Adopted boundary
 
 Adopt SOURCE-DEVELOPMENT-POLICY for newly authorized ordinary source development,
 including conditional independent review for authority/security/publication/
@@ -14,8 +23,9 @@ release/support/recovery and active legacy obligations. No support code deletion
 For this cutover only, authorize an independent read-only review of the exact
 policy/root/YAML/template/selector/workflow diff without the unavailable legacy
 preflight packet. Record immutable source, reviewer, findings and disposition.
-The cutover cannot approve its own lower standard; this explicit owner bootstrap
-decision is needed before treating that review as adoption evidence.
+The cutover cannot approve its own lower standard; the direct owner decision
+above supplies this one-time bootstrap authority. It does not predetermine the
+review outcome or waive any actionable finding or actual hosted check.
 
 After that review and focused checks, enable only Source checks (workflow ID
 364914272). Use Windows, Python 3.13 and tests/requirements.txt. Retain the two
@@ -24,9 +34,8 @@ repository permissions, credentials, environments, protection and rulesets as
 observed. Push/PR transport needed to observe this exact hosted head is included
 in the proposed activation; merge still requires its actual checks and review.
 
-The effective scope/date and owner response will be recorded here before the
-candidate policy/configurations are called adopted. First hosted result and
-integration are later read-backs, never inferred from that decision.
+Effective scope/date and owner response are recorded above. First hosted result
+and integration are later read-backs, never inferred from that decision.
 
 ## Concrete effect
 

@@ -16,15 +16,19 @@ structure, using former init/MQ lab and evolving the old internal AGENTS templat
 This independent extension is T5/#427; see [its source and acceptance record](initialization.md).
 
 This authorizes preparation and implementation of the selected outcomes. The concrete
-policy adoption and CI restoration boundary must be recorded explicitly under
-the existing source policy; PR #426's single-merge exception is not reused.
+policy adoption and CI restoration boundary was subsequently approved explicitly
+by the owner on 2026-10-02, including required fixes and actual online success
+before merge. [The adoption decision](adoption.md) records its exact scope;
+PR #426's single-merge exception is not reused.
 No tag, public release, credential change, branch protection/ruleset change,
 downstream installation, old support deletion or branch deletion is selected.
 
 Base: `4f231fe7f08eaa9ae296ec243be524658f8d3849`. One workflow owns T1-T3 and T5.
 Root integrates; read-only inventory agents are not independent reviewers.
-The current source graph excludes `.github/scripts`, `tools` and tool packages;
-explicit Git-tracked file reads supplement that partial index.
+The initial main-checkout graph omitted several executable roots. The integration
+worktree index was refreshed at `7e48f656`; it includes the current selector and
+tests, excluding `.claude` and ignored local evidence. Material conclusions still
+use current tracked source; subsequent edited bytes require reindex or direct reads.
 
 ## Ordered tasks and observable acceptance
 
@@ -55,12 +59,10 @@ explicit Git-tracked file reads supplement that partial index.
 
 ## Current state
 
-T1 is deferred pending the concrete owner adoption/bootstrap decision in
-[adoption.md](adoption.md); T2-T3 remain pending in their original order. T5
-source delivery is completed under the later explicit initialization request;
-see [source validation and its limits](validation.md). The workflow is deferred
-until the owner adoption decision. Reuse
-the prepared source-policy candidate after the decision, rebind any changed
-subject and perform the selected independent review before activation/integration.
-No provider enablement, push, PR, merge or backlog closure has occurred in this
-continuation. Actual agent scenarios remain outside scope.
+T1 resumed after the owner adopted the concrete source/CI proposal. T5 source
+delivery is complete; see [source validation and its limits](validation.md).
+Next: freeze the adopted candidate, perform independent scoped review, repair any
+findings, then enable Source checks and observe the actual PR head before merge.
+T2-T3 retain their ordered dependencies. Reconcile #274/#275 as cancelled obsolete
+scope and #425 as accepted prior delivery; close #369/#427 only after their actual
+reviewed integration. Actual general agent scenarios remain outside scope.

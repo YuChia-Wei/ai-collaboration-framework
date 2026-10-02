@@ -1,11 +1,11 @@
 # GitHub Terminal Issue Closure Policy
 
-Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-defines the proposed cutover and its explicit adoption status. After adoption,
-it takes precedence over conflicting ordinary-source gates below. Until then,
-the prior effective rules and applicable U001 remain. Existing release/support/
-recovery contracts and selected active legacy records retain their owners;
-their historical machinery is not silently migrated to the new source format.
+Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+takes precedence over conflicting ordinary-source gates below, under the owner's
+2026-10-02 decision. Existing release/support/recovery contracts and explicitly
+selected active legacy records retain their owners; their historical machinery
+is not silently migrated to the new source format. Unrestored U001 obligations
+outside the adopted source scope remain deferred or blocked, never passed.
 
 This source-repository-only policy governs how a pull request references and
 closes named GitHub Issues. It is not portable target guidance, and a closing

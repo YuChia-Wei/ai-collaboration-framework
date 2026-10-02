@@ -1,5 +1,5 @@
-<!-- This form is part of the proposed source cutover. Adoption status:
-.dev/standards/SOURCE-DEVELOPMENT-POLICY.md. A branch-only form does not adopt rules. -->
+<!-- Source policy adopted by the owner on 2026-10-02:
+.dev/standards/SOURCE-DEVELOPMENT-POLICY.md. Checks and integration remain separately verified. -->
 
 ## Change and authority
 

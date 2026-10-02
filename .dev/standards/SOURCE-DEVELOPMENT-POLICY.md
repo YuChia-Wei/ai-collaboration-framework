@@ -1,16 +1,16 @@
 # Source Development Policy
 
-**Status: prepared for owner adoption; not effective yet. Source repository only.**
-The owner authorized implementing the four-step continuation on 2026-10-02.
+**Status: adopted by the owner on 2026-10-02. Source repository only.**
 The [adoption record](../workflows/2026-10-02-source-development/adoption.md)
-owns the exact cutover decision, review evidence and CI subset. Until it records
-adoption, the previous effective policy at
-`4f231fe7f08eaa9ae296ec243be524658f8d3849` and applicable U001 remain in force.
-This working-branch replacement does not approve itself or enable CI.
+records the direct owner decision covering this cutover, independent scoped
+review, Source checks activation, PR integration and backlog reconciliation.
+These rules govern this authorized transition immediately; repository-wide
+integration follows the reviewed PR and successful actual current-head CI.
+Policy adoption itself is not independent review, hosted success or a merge.
 
 ## Scope and retained authority
 
-After explicit adoption, these rules govern newly authorized development in
+These adopted rules govern newly authorized development in
 this framework source repository, including skill instructions, schemas, tools,
 distribution code, tests and source governance. They supersede conflicting
 ordinary-source aggregate, receipt, packet, lease and handoff requirements.
@@ -113,13 +113,13 @@ action; historical critical/registry machinery is not an ordinary prerequisite.
 
 ## CI subset and remaining U001 obligations
 
-The first proposed source gate runs on Windows with Python 3.13 and pinned
+The selected source gate runs on Windows with Python 3.13 and pinned
 dependencies from `tests/requirements.txt`. It invokes
 `python -I -B .github/scripts/check-source-change.py --base <full-sha> --head <full-sha>`;
 that selector invokes only affected `tests/run.py --suite` commands. Optional
 platform/loader suites do not establish native installation acceptance.
 
-Enable only `source-checks.yml` after the exact owner decision. Keep the existing
+The owner authorized enabling only `source-checks.yml` for this transition. Keep the existing
 package-candidate/publish-release workflows in their independently authorized
 state, and leave the other six workflows disabled, including obsolete
 `source-native.yml`. No Actions permission, ruleset, protection, credential,

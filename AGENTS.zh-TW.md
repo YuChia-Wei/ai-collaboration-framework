@@ -12,15 +12,15 @@
 sub-agents，選擇足以勝任且成本最低的 model／effort；不強制另開對話或使用 Astra。
 較大型或多階段的實作 Issue 仍使用獨立的 `gpt-6-astra` / `ultra` 對話。
 使用指定的 RAM-disk worktree，並在首次 push 前將本機 commits 交回統籌；
-執行者未經統籌指派，不自行建立更多任務或再委派。CI 與舊驗證在 P7 恢復決策前維持
-`deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
+執行者未經統籌指派，不自行建立更多任務或再委派。已採納 source 範圍之外尚未恢復的
+legacy／native／release 驗證，在另行選定的恢復決策前維持 `deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
 與 publication 邊界繼續有效。
 
 ## Source 開發規則
 
 讀取 [source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)，確認其明確
-採納狀態與一般 source 工作的確切範圍。已備妥的轉換在 owner 採納前不生效。
-採納後，八項規則取代下方與一般 source 工作衝突的 aggregate、receipt、packet、
+owner 於 2026-10-02 採納的轉換與一般 source 工作的確切範圍。
+八項規則取代下方與一般 source 工作衝突的 aggregate、receipt、packet、
 lease 與交接要求；條件式 independent review 與選定檢查仍然適用。
 暫時例外與舊機制僅保留於明確選定的 legacy／native／release 義務。
 Release、支援、credentials、protection 與 downstream adoption 維持原有 owner。

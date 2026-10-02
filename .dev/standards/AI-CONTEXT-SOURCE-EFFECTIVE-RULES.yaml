@@ -1,7 +1,7 @@
 # Source-only version 2. Legacy resolver/evidence schemas must not consume this format.
 schema_version: '2.0'
 document: framework-source named policy applicability
-status: pending-adoption
+status: active
 applicability_mode: framework-source
 repository: YuChia-Wei/ai-collaboration-framework
 policy_owner: .dev/standards/SOURCE-DEVELOPMENT-POLICY.md

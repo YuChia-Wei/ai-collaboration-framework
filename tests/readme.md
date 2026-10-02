@@ -46,10 +46,9 @@ from native installation/apply/locking/interruption/recovery trials, which were
 removed by owner decision. These tests also do not assess skill instruction
 quality, agent outputs, downstream adoption, hosted CI or release publication.
 
-The proposed Source change gate uses Windows/Python 3.13 and affected suites.
+The adopted Source change gate uses Windows/Python 3.13 and affected suites.
 Platform/loader are selected only when their owned paths or shared runtime change.
-CI activation and its first actual hosted result remain separate owner/provider
-facts. `.github/` contains workflow callers and production release/gate helpers;
+CI activation and each actual hosted result remain separate provider facts. `.github/` contains workflow callers and production release/gate helpers;
 test implementation belongs here. A green source check does not complete the
 independent review or native/release requirements listed by the selector.
 Historical design, workflow and release reports retain their original evidence.

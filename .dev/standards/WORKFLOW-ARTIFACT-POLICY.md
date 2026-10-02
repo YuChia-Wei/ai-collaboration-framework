@@ -1,11 +1,11 @@
 # Workflow Artifact Policy
 
-Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-defines the proposed cutover and its explicit adoption status. After adoption,
-it takes precedence over conflicting ordinary-source gates below. Until then,
-the prior effective rules and applicable U001 remain. Existing release/support/
-recovery contracts and selected active legacy records retain their owners;
-their historical machinery is not silently migrated to the new source format.
+Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+takes precedence over conflicting ordinary-source gates below, under the owner's
+2026-10-02 decision. Existing release/support/recovery contracts and explicitly
+selected active legacy records retain their owners; their historical machinery
+is not silently migrated to the new source format. Unrestored U001 obligations
+outside the adopted source scope remain deferred or blocked, never passed.
 
 This policy defines the repository-wide discovery and metadata contract for durable workflows. It does not define one universal plan, task, or report shape.
 
