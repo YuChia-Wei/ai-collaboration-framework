@@ -138,7 +138,7 @@ Linux、Claude discovery、真實 agent 任務、語意規則採用、產品 run
 - 新增 selector contract 僅讓 `docs/` Markdown 取得文件 owner；安裝與知識
   指南保留 independent-scoped-review，rename/delete 維持舊側條件，
   非 Markdown／相鄰未知路徑仍拒絕。修改 selector 本身仍要求獨立審查。
-- Author content check：23 Markdown files、18 unique skill manuals，版本與所有
+- 初次 author content check（`c2337d44`）：23 Markdown files、18 unique skill manuals，版本與所有
   operation IDs、34 declared resource references 符合 manifest/metadata；
   214 個本機連結 exact-case 可解析，11 個 JSON 範例可解析。
 - PowerShell Parser 對 9 個教學 code blocks 語法檢查成功。實際安裝 API
@@ -160,17 +160,26 @@ runtime／hosted／recovery／agent 行為。操作、preset、maintenance、rec
 限制及 selector 行為與所檢來源相符。
 
 初次結果為 `needs-parent-decision`：RC4 ZIP 沒有 `docs/`，generic README
-也沒有手冊入口；另外提示相對 source links 可能隨分支漂移。Root 核對後：
+也沒有手冊入口；另外提示相對 source links 可能隨分支漂移。後續處置：
 
-- ZIP 缺少手冊入口的事實成立，列入下一版 release handoff。原文沒有要求
-  讀者從 archive 取得手冊；owner 的本次交付位置為來源庫 `docs/`，未選定
-  自包含 ZIP 文件產品。因此這不是缺少本次要求的文件，亦不擴大到修改
-  release builder、payload closure 或已發布 RC4。
-- 補明手冊是線上來源文件、RC4 ZIP 不含手冊及連結，而命令不需 checkout。
+- 原文沒有要求讀者從 archive 取得手冊；本次交付位置為來源庫 `docs/`。
+  Reviewer 在 follow-up 明確撤回原 packaging finding。
+- Root 曾將手冊入口誤列為下一版 release 待辦；owner 隨後明確重申只有
+  `src/` 內的資源才是下游發佈對象，不得擴充發佈範圍。該待辦已撤回，
+  `docs/` 維持來源庫使用文件；沒有修改 release builder、payload closure、
+  已發布 RC4 或任何 provider 設定。沒有手冊 payload 不是未完成的發布條件。
+- 補明手冊的 source-only 邊界，而安裝命令不需 checkout。
 - 安裝 schema、binding schema、breaking reinstall 契約改連 RC4 固定 tag；
   相對 skill source links 明示為查閱用，實際指令以 installed bytes 為準。
-- 文件修正後需以新的 immutable subject 再審受影響段落；原審查沒有直接
-  延伸為新內容已通過。
+- `6b24240e871b250a23fd6976c466c1fc620f3e75` 的 corrective check 通過
+  18 manuals、23 Markdown files、211 local links、11 JSON examples；三個
+  local links 改為固定 tag URL，所以 214 減為 211，另以 `git cat-file -e`
+  確認三個 RC4 tag 內目標。先前的 214 是初次檢查，並未當作本次計數。
+  Exact command `python -I -B .github/scripts/check-source-change.py --base c2337d44811371db19215c629c67e15a3bc4c1ac --head 6b24240e871b250a23fd6976c466c1fc620f3e75`
+  通過 content／whitespace，2.861 seconds，admission 未評估。
+- Follow-up review 提醒需說明 214→211 的計數變化；root 在 owner 範圍更正
+  後中止該輪，以修訂範圍記錄。該輪不是完成的最終 review；修正後對新的
+  immutable subject 再審受影響段落。
 
 ## 建議的下一版收斂方式
 
@@ -190,10 +199,7 @@ runtime／hosted／recovery／agent 行為。操作、preset、maintenance、rec
 4. 明列 stable 支援範圍：若只發來源套件，不宣稱 target rc-to-stable
    update/rollback、跨電腦 recovery、未選 target adapters 或完整 P7 已完成。
    若要宣稱上述任一能力，必須補該能力的真實驗收，不能自行改成 waived。
-5. 在下一版 Release／archive README 提供可從發行入口找到的版本固定手冊
-   連結；若改選內附文件，另明確修改 payload closure 並驗證。現有 RC4
-   archive 不含這次手冊，不能把本次來源文件完成當作 archive 入口已完成。
-6. 按 release owner 決策建立新 stable tag/build、讀回 hashes 和 provider，
+5. 按 release owner 決策建立新 stable tag/build、讀回 hashes 和 provider，
    審閱 release notes 後發布。文件完工不等於發布完成。
 
 R3/R4 是原 pilot 的 stable update／cross-computer 義務，不是所有來源套件

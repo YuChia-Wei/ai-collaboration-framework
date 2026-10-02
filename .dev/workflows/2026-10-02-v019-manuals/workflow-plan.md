@@ -6,6 +6,11 @@ The direct request authorizes local documentation and a bounded selector additio
 needed to admit the requested new `docs/` location. Publication of stable 0.19.0
 or another RC remains a later concrete owner decision.
 
+The owner's explicit follow-up keeps downstream publication limited to resources
+in `src/`. The requested `docs/` manuals are source-repository user documentation,
+not downstream payload. Do not expand the release scope, add handbook delivery to
+release acceptance, or modify release packaging for this documentation task.
+
 ## Outcome and acceptance
 
 - Reconcile original 0.19.0 goals with source, published RC4 and retained evidence;
