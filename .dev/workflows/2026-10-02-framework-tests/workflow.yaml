@@ -1,0 +1,23 @@
+schema_version: "1.0"
+lifecycle_contract: "1.0"
+workflow_id: 2026-10-02-framework-tests
+workflow_kind: software-development
+title: Refocus framework tests on schemas and tool behavior
+owner_skill: software-development-orchestrator
+status: in_progress
+artifact_root: .dev/workflows/2026-10-02-framework-tests
+entrypoint: workflow-plan.md
+created_at: "2026-10-02T08:09:49+08:00"
+updated_at: "2026-10-02T08:09:49+08:00"
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-02-framework-tests
+base_branch: main
+base_commit: 97c9c110e893ed26e4fb64d51062d07c55e794c5
+current_phase: implementation
+work_items:
+  - provider: github
+    issue: 425
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/425
+authority: Owner approved the test refocus plan and corrections on 2026-10-02 in the current conversation, including one Issue and at most one workflow.
+execution: Root integrates separate single-writer worktrees; no push, PR, merge, provider settings or downstream installation.
