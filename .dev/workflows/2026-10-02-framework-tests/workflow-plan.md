@@ -14,8 +14,8 @@ program assignment. Existing CI suspension and publication boundaries remain.
 
 | Task | Scope | State |
 | --- | --- | --- |
-| T1 | Schema, tool-output, layout/runner refocus and current-reference repairs | in_progress |
-| T2 | Integrated bounded execution, diff review and acceptance reconciliation | pending |
+| T1 | Schema, tool-output, layout/runner refocus and current-reference repairs | completed |
+| T2 | Integrated bounded execution, diff review and acceptance reconciliation | in_progress |
 
 Root owns the integration branch, shared runner, obsolete-driver removal,
 active documentation, selector integration and these records. Delegated units
@@ -35,6 +35,9 @@ or provider records. The shared baseline is `97c9c110e893ed26e4fb64d51062d07c55e
 - A4: Assert real renderer contents, required/lifecycle/provenance data, tokens,
   escaping, Unicode, stability and input preservation. Add bounded real CLI
   input/result/exit checks alongside direct production-function tests.
+  The new observation assertion exposed a direct Lesson renderer defect: its
+  authored content was overwritten by an absent top-level observation. Correct
+  that one assignment in source and verify both v2 and preserved v1 rendering.
 - A5: Replace stale component/family assumptions and historical runner pins;
   default tests require no F: paths, network, provider, install or package build.
 - A6: Reconcile current callers, README and guides. Preserve historical design,
@@ -77,8 +80,12 @@ from native, hosted, downstream, framework-methodology and agent acceptance.
 2026-10-02: Reviewed live open Issues; #369 owns dormant CI restoration while
 #274/#275 concern historical fixture/performance evaluation, so created #425.
 Created an isolated integration branch. Main checkout remains unchanged.
-Next: implement the three bounded test units, integrate retained contract cases
-and the explicit local runner, then execute selected suites and reconcile A1-A8.
+Integrated schema and tool units plus test relocation. Added the explicit local
+runner and retired high-I/O install/public/candidate drivers. Distribution,
+loader and platform checks passed 71 methods; tools plus release passed 63
+methods before adding a passing legacy-render regression. Selector integration passed 37 methods (33 selector and 4 runner checks).
+Final integrated verification on the clean implementation commit remains. See [validation record](validation.md)
+for first failures, corrections and the final acceptance disposition.
 
 No Git transport or terminal Issue operation is requested. The prospective
 integration preference is one coherent reviewable delivery; choose actual merge

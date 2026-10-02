@@ -115,9 +115,11 @@ roots. Keep earlier attempts. `$tooling` and `$source` are full immutable SHAs:
 ```powershell
 python -I -B .github/scripts/build-release.py --repository (Get-Location).Path --source-commit $source --tooling-commit $tooling --workflow-commit $tooling --workflow .github/workflows/package-candidate.yml --run-id local-snapshot --run-attempt 1 --work-root F:/r418s --output F:/r418so
 python -I -B .github/scripts/build-release.py --repository (Get-Location).Path --tag v0.19.0-rc.3 --tooling-commit $tooling --workflow-commit $tooling --workflow .github/workflows/publish-release.yml --run-id local-tag --run-attempt 1 --work-root F:/r418t --output F:/r418to
-python -I -B .github/tests/test-release-tools.py
+python -I -B tests/run.py --suite release
 ```
 
-The fixture command covers only release transport. Framework/native/legacy
-test suites remain deferred. Local outputs are not uploaded automatically.
+The fixture command covers only offline release-helper behavior; tests are owned
+under `tests/release/`. Current local schema/tool/data suites use
+[`tests/run.py`](../../../tests/readme.md). Native installation and legacy trials
+remain deferred or retired as documented there; local outputs are not uploaded automatically.
 Hosted writer execution belongs to the authorized workflow.

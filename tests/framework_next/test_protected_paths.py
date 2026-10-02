@@ -1,26 +1,15 @@
-"""Issue 383: focused path simulations and one explicitly selected real F: plan.
-
-python -I -B tests/framework_next/test_protected_paths.py --mode regressions
-python -I -B tests/framework_next/test_protected_paths.py --mode actual-plan
-Simulation results are not native acceptance. Actual mode retains every output.
-"""
+"""Protected input path simulations; no native plan or installation trial."""
 from contextlib import ExitStack, contextmanager
 from hashlib import sha256
-import argparse
-import base64
 import ctypes
-from datetime import datetime, timezone
 import io
-import json
 import os
 from pathlib import Path
 import stat
 import sys
-import time
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
-import uuid
 
 REPOSITORY = Path(__file__).absolute().parents[2]
 sys.path.insert(0, str(REPOSITORY / 'src'))
@@ -177,173 +166,5 @@ class ProtectedPaths(unittest.TestCase):
             self.assertEqual(caught.exception.diagnostic['code'], 'hardlinked-file')
 
 
-PROTECTED = [
-    {'path': '.ai/custom/framework.json', 'sha256': 'f8274586a3700171876908e948d5f54391fc40e90491c94fdab5fae25f7ca187'},
-    {'path': '.gitattributes', 'sha256': '705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da'},
-    {'path': '.gitignore', 'sha256': 'c77f5b0571f5cbbe73d7300782a8f27bf338699a3f057e0cafc8ba72655d3948'},
-    {'path': 'AGENTS.md', 'sha256': '1e847654544fb51cc0dcd736b4ca2849e06bf0f4d77e9fcb0c944c4c643f4d58'},
-    {'path': 'protected-absent.txt', 'sha256': None},
-]
-
-
-def actual_plan():
-    # Reuse only existing direct-path/process helpers, not another owner's driver.
-    sys.path.insert(0, str(REPOSITORY / 'tests/framework_next'))
-    import support
-    check = support.check
-    check(REPOSITORY == Path('F:/framework-next/383') and os.name == 'nt', 'assigned Windows worktree required')
-    parent = support.output_parent(Path('F:/framework-next/p7-runs/protected-path-383'))
-    root = parent / uuid.uuid4().hex[:8]
-    root.mkdir(mode=0o700)  # exclusive, never retry a collision or delete a prior run
-    identity = root.lstat()
-    seen, calls = {}, []
-    print(json.dumps({'retained_run': str(root)}), flush=True)
-
-    def measure():
-        current = root.lstat()
-        check(support.direct_directory(root).parent == parent and
-              (current.st_dev, current.st_ino) == (identity.st_dev, identity.st_ino), 'run identity drift')
-        files = []
-        pending = [root]
-        while pending:
-            for path in pending.pop().iterdir():
-                entry = path.lstat()
-                check(not stat.S_ISLNK(entry.st_mode) and not getattr(entry, 'st_file_attributes', 0) & 0x400,
-                      'non-direct residue retained')
-                if stat.S_ISDIR(entry.st_mode):
-                    pending.append(path)
-                else:
-                    check(stat.S_ISREG(entry.st_mode), 'nonregular residue retained')
-                    name = path.relative_to(root).as_posix()
-                    seen[name] = max(seen.get(name, 0), entry.st_size)
-                    files.append({'path': name, 'size': entry.st_size})
-                    check(len(seen) <= 96 and sum(seen.values()) <= 4 * 1024 * 1024, 'selected file/byte cap exceeded')
-        return {'files': sorted(files, key=lambda row: row['path']), 'observed_files': len(seen),
-                'observed_logical_bytes': sum(seen.values()), 'helper_launches': len(calls)}
-
-    def save(name, value):
-        raw = value if isinstance(value, bytes) else (json.dumps(value, indent=2, sort_keys=True) + '\n').encode()
-        with (root / name).open('xb') as stream:
-            stream.write(raw)
-        measure()
-
-    def call(label, argv, request=None):
-        check(len(calls) < 8, 'selected process cap exceeded')
-        started = time.monotonic()
-        record = {'label': label, 'argv': [str(x) for x in argv], 'cwd': str(REPOSITORY),
-                  'request': request, 'started_at': datetime.now(timezone.utc).isoformat()}
-        calls.append(record)
-        try:
-            result = support.run_process(argv, cwd=REPOSITORY,
-                                         input=None if request is None else json.dumps(request).encode(), timeout=60)
-            record.update(exit=result.returncode, stdout_base64=base64.b64encode(result.stdout).decode(),
-                          stderr_base64=base64.b64encode(result.stderr).decode())
-            return result
-        except Exception as exc:
-            record.update(exception_type=type(exc).__name__, outcome='interrupted-or-blocked')
-            raise
-        finally:
-            record['elapsed_seconds'] = round(time.monotonic() - started, 4)
-            with (root / 'calls.jsonl').open('a', encoding='utf-8', newline='\n') as stream:
-                stream.write(json.dumps(record, sort_keys=True) + '\n')
-            measure()
-
-    passed = False
-    try:
-        head = call('source-head', ['git', 'rev-parse', 'HEAD'])
-        branch = call('source-branch', ['git', 'branch', '--show-current'])
-        status = call('source-status', ['git', 'status', '--porcelain'])
-        check(all(r.returncode == 0 for r in (head, branch, status)) and not status.stdout, 'clean source required')
-        commit = head.stdout.decode().strip()
-        check(branch.stdout.decode().strip() == 'codex/2026-09-23-protected-path-repair', 'assigned branch required')
-        dirs = {}
-        for role in ('project', 'scratch', 'staging', 'recovery', 'c', 'b'):
-            dirs[role] = root / role
-            dirs[role].mkdir(mode=0o700)
-            support.direct_directory(dirs[role])
-        previous = Path('F:/framework-next/p7-runs/native-w01/382/63bb8cce/project')
-        for row in PROTECTED:
-            old, new = previous / row['path'], dirs['project'] / row['path']
-            if row['sha256'] is None:
-                check(not old.exists() and not new.exists(), 'protected absence changed')
-                continue
-            raw = state._Reader().read(old, row['path'])
-            check(sha256(raw).hexdigest() == row['sha256'], 'prior protected raw bytes changed')
-            new.parent.mkdir(parents=True, exist_ok=True)
-            with new.open('xb') as stream:
-                stream.write(raw)
-        pin = {'id': 'framework-managed-installation', 'version': '1.0.0', 'source_commit': commit,
-               'files': [{'path': name, 'sha256': sha256((REPOSITORY / name).read_bytes()).hexdigest()}
-                         for name in state.ENGINE_FILES]}
-        check(len(pin['files']) == 10, 'full ten-file raw engine pin required')
-        save('engine-pin.json', pin)
-        primitive = []
-        for name in ('.ai', '.ai/custom', '.ai/custom/framework.json'):
-            try:
-                resolved = (dirs['project'] / name).resolve(strict=True)
-                primitive.append({'path': name, 'strict_resolve': str(resolved)})
-            except OSError as exc:
-                primitive.append({'path': name, 'error_type': type(exc).__name__, 'winerror': getattr(exc, 'winerror', None)})
-        save('preflight.json', {'source_commit': commit, 'branch': branch.stdout.decode().strip(), 'clean': True,
-             'runtime': sys.version, 'run': str(root), 'root_identity': [identity.st_dev, identity.st_ino],
-             'caps': {'files': 96, 'logical_bytes': 4194304, 'helper_launches': 8},
-             'protected_inputs': PROTECTED, 'protected_source': str(previous), 'strict_resolve_observations': primitive,
-             'before': measure(), 'retention': 'all outputs retained, no cleanup',
-             'failure_domain': 'process-termination; no apply/recovery selected'})
-        built = call('build-lesson', [sys.executable, '-I', '-B', REPOSITORY / 'tools/build-development.py',
-                     '--repository', REPOSITORY, '--commit', commit, '--profile', 'lesson-minimal',
-                     '--output-root', dirs['c'], '--scratch-root', dirs['b']])
-        check(built.returncode == 0, 'real candidate build failed; retain raw transcript')
-        candidate = json.loads(built.stdout)
-        request = {'api_version': 1, 'operation': 'plan', 'engine_root': str(REPOSITORY), 'engine': pin,
-                   'project_root': str(dirs['project']), 'scratch_root': str(dirs['scratch']),
-                   'staging_root': str(dirs['staging']), 'recovery_root': str(dirs['recovery']),
-                   'candidate_root': candidate['candidate_root'], 'candidate_identity': candidate['candidate_identity'],
-                   'expected_lock_sha256': None, 'mode_policy': 'windows-inventory-only', 'project_data_action': 'none',
-                   'protected_inputs': PROTECTED, 'durability': {'declared_by': 'Issue 383 fixture owner',
-                   'declaration_reference': 'Issue 383 plan only', 'failure_domain': 'process-termination'}}
-        save('plan-request.json', request)
-        result = call('public-plan', [sys.executable, '-I', '-B', REPOSITORY / 'src/tools/maintain_framework.py'], request)
-        save('plan-response.json', result.stdout)
-        save('plan-stderr.txt', result.stderr)
-        response = json.loads(result.stdout)
-        check(result.returncode == 0 and response['outcome'] == 'planned', 'actual public plan failed; retain raw transcript')
-        plan = response['plan']
-        check(plan['protected_inputs'] == PROTECTED and plan['engine'] == pin and
-              plan['candidate_identity'] == candidate['candidate_identity'], 'plan bindings changed')
-        check(sha256(state.json_bytes(plan)).hexdigest() == response['plan_sha256'], 'plan hash differs')
-        prerequisites = {row['id']: row['status'] for row in plan['prerequisites']}
-        check(prerequisites['native-writer-backend'] == 'satisfied' and
-              prerequisites['writer-engine-closure'] == 'satisfied', 'plan prerequisites unresolved')
-        for row in PROTECTED:
-            path = dirs['project'] / row['path']
-            check((sha256(path.read_bytes()).hexdigest() if path.exists() else None) == row['sha256'], 'protected input mutated')
-        check(all(not (dirs['project'] / name).exists() for name in (state.LOCK_PATH, state.GUARD_PATH, *state.MARKERS)),
-              'plan created a control file')
-        check(all(not list(dirs[role].iterdir()) for role in ('scratch', 'staging', 'recovery')), 'plan allocated writer storage')
-        passed = True
-        save('result.json', {'outcome': 'passed', 'evidence_kind': 'actual F: public plan; no apply/recover',
-             'source_commit': commit, 'candidate_identity': candidate['candidate_identity'],
-             'plan_sha256': response['plan_sha256'], 'prerequisites': prerequisites, 'protected_inputs_unchanged': True})
-    finally:
-        save('inventory.json', {'outcome': 'passed' if passed else 'not-passed', 'snapshot_excludes': 'inventory.json',
-                               'observations': measure(), 'nested_product_git_launches': 'unavailable'})
-        print(json.dumps({'selected_passed': passed, 'run': str(root), 'final_counts': measure()}), flush=True)
-    return 0 if passed else 1
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--mode', required=True, choices=('regressions', 'actual-plan'))
-    args = parser.parse_args()
-    if not (os.name == 'nt' and sys.flags.isolated and sys.dont_write_bytecode):
-        parser.error('Windows with -I -B is required')
-    if args.mode == 'actual-plan':
-        return actual_plan()
-    print('Evidence: simulated Windows paths/APIs and byte streams; not native acceptance.', flush=True)
-    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ProtectedPaths))
-    return 0 if result.wasSuccessful() and not result.skipped else 1
-
-
-if __name__ == '__main__':
-    raise SystemExit(main())
+if __name__ == "__main__":
+    unittest.main()

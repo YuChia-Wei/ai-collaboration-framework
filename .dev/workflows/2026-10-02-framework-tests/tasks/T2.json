@@ -2,15 +2,18 @@
   "task_id": "T2",
   "workflow_id": "2026-10-02-framework-tests",
   "owner_skill": "software-development-orchestrator",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-10-02T08:09:49+08:00",
-  "updated_at": "2026-10-02T08:09:49+08:00",
+  "updated_at": "2026-10-02T08:32:54+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-1.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "high",
   "execution_identity_basis": "Configured defaults where the active session does not expose exact model/effort; not runtime attestation.",
-  "acceptance": ["A7", "A8"],
-  "result_summary": "Awaiting integrated implementation.",
+  "acceptance": [
+    "A7",
+    "A8"
+  ],
+  "result_summary": "Run integrated suites on the clean immutable implementation commit, reconcile results and finish local delivery.",
   "finding_status": "pending"
 }

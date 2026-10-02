@@ -2,15 +2,22 @@
   "task_id": "T1",
   "workflow_id": "2026-10-02-framework-tests",
   "owner_skill": "software-development-orchestrator",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-02T08:09:49+08:00",
-  "updated_at": "2026-10-02T08:09:49+08:00",
+  "updated_at": "2026-10-02T08:32:54+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-1.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "high",
   "execution_identity_basis": "Configured defaults where the active session does not expose exact model/effort; not runtime attestation.",
-  "acceptance": ["A1", "A2", "A3", "A4", "A5", "A6"],
-  "result_summary": "Implementation in progress.",
-  "finding_status": "pending"
+  "acceptance": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+  ],
+  "result_summary": "Integrated schemas, tool behavior, renamed/moved tests, explicit runner, retired installation trials, current references and direct Lesson renderer correction. Focused suites passed.",
+  "finding_status": "addressed"
 }

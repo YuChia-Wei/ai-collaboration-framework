@@ -1,12 +1,10 @@
 """Project-intent and paired-record contracts using small disposable fixtures.
 
-Run: python -I -B tests/framework_next/test_maintenance_contracts.py --output-root EXPLICIT_ROOT
+Run: python -I -B tests/framework_next/test_maintenance_contracts.py
 """
 from hashlib import sha256
 from pathlib import Path
 from types import SimpleNamespace
-import argparse
-import json
 import os
 import sys
 import unittest
@@ -20,7 +18,7 @@ from distribution.installation_io import sibling
 from distribution.data import json_bytes
 
 
-class MaintenanceContractTests(unittest.TestCase):
+class MaintenanceContractTests(support.FixtureTestCase):
     def roots(self,name):
         base=support.active_run().case(name)
         result={}
@@ -103,17 +101,5 @@ class MaintenanceContractTests(unittest.TestCase):
         self.assertFalse(result['changed'])
 
 
-def main():
-    parser=argparse.ArgumentParser(description=__doc__); parser.add_argument('--output-root',type=Path,required=True)
-    args=parser.parse_args()
-    support.check(sys.flags.isolated and sys.flags.dont_write_bytecode,'Use -I -B.')
-    run=support.FixtureRun(args.output_root); success=False
-    try:
-        with support.use_run(run):
-            result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(MaintenanceContractTests))
-            success=result.wasSuccessful() and not result.skipped
-            return 0 if success else 1
-    finally: print(json.dumps({'fixture_accounting':run.close(success)},sort_keys=True))
-
-
-if __name__=='__main__': raise SystemExit(main())
+if __name__ == "__main__":
+    unittest.main()
