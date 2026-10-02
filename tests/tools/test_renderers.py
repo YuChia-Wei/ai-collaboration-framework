@@ -43,6 +43,26 @@ class RendererTests(ToolCase):
             with self.subTest(text=text):
                 self.assertIn(text, output)
 
+    def test_legacy_lesson_v1_preserves_observation_and_original_record(self):
+        current = record("lesson-author")
+        legacy = {key: current[key] for key in ("kind", "owner", "id", "status", "created_at", "updated_at")}
+        legacy.update(schema_version="1.0.0", **current["content"])
+        legacy["observation"] = "舊版 observation *retained*\nSecond observation"
+        module, binding, value, path = self.persist("lesson-author", legacy)
+        original_bytes = path.read_bytes()
+        original_data = copy.deepcopy(value)
+        original_template = binding.template_path.read_bytes()
+        validated = module.validate_record(binding, value, value["id"])
+        self.assertTrue(module.is_legacy(validated))
+        output = module.render(binding, validated)
+        self.assertIn("## Observation\n\n舊版 observation \\*retained\\*\nSecond observation\n", output)
+        self.assertIn(r"Schema: 1\.0\.0 | Status: candidate", output)
+        self.assertIn(r"Legacy schema: no lifecycle history; preserved read\-only\.", output)
+        self.assertIn(r"Legacy schema: no derived provenance; preserved read\-only\.", output)
+        self.assertEqual(value, original_data)
+        self.assertEqual(path.read_bytes(), original_bytes)
+        self.assertEqual(binding.template_path.read_bytes(), original_template)
+
     def test_adr_renders_alternatives_costs_evidence_and_empty_fields(self):
         output = self.rendered("adr-author")
         for text in [r"# 選擇 \*方案\* &lt;tag&gt;", "Status: draft", "First context\nSecond context",
