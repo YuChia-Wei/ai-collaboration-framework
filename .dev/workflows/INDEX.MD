@@ -205,5 +205,5 @@ lifecycle states. Add a locator only when a legacy workflow is formally resumed.
 ## Related Discovery
 
 - [Workflow artifact policy](../standards/WORKFLOW-ARTIFACT-POLICY.md)
-- [Frozen historical backlog](../backlog/INDEX.MD)
+- Frozen historical backlog: `.dev/backlog/INDEX.MD` (historical path; unavailable in this source tree)
 - [Workflow README](README.MD)

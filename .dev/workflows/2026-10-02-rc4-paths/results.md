@@ -82,3 +82,35 @@ Fixed-commit affected gate, independent repair review, final hosted CI, merge
 and public prerelease read-back are pending at this initial record. Static
 path/closure checks do not establish anchors, external URLs, native runtime,
 actual agent scenarios, downstream acceptance or full P7 completion.
+
+
+## Fixed-subject validation and independent repair review
+
+`python -I -B .github/scripts/check-source-change.py --base
+158b8438f61a60eb621e3a5b43ed1a0479634f6f --head
+35c3bbe6389123e673bf983d298f90323c9aed68` passed content, whitespace and source:
+46 tests, zero failures/errors/skips, 22.765 seconds total. Admission separately
+requires independent scoped review; the gate reports admission not evaluated.
+
+Independent read-only reviewer `rc4_tool_paths` (actual `gpt-6.1-sol/high`
+invocation; no repair authorship) reviewed the full 33-file diff against source
+policy rule 6, exact path resolution, bilingual parity, preservation of legacy
+semantic authority, restricted selector ownership, product/build/managed byte
+invariance and truthful workflow/publication state. It found one P3 residue:
+`.dev/workflows/INDEX.MD` still linked to removed `.dev/backlog/INDEX.MD` in its
+current Related Discovery section. This pre-existing link is inside the touched
+navigation surface. It is now retained as an explicitly unavailable historical
+path. The finding is preserved here; affected review of the correction is next.
+The reviewer otherwise found no supported actionable defect. It checked 377
+local links across complete changed Markdown files (one missing link above), all
+58 project index rows, fixed source identities and local tag state. Tests,
+build, native execution and provider calls were not performed by the reviewer.
+Its initial unquoted PowerShell tag-peel lookup failed; the corrected Python
+subprocess succeeded. This preparation failure is not a product failure.
+
+Parent fresh provider observations: main remains the original release source;
+no ruleset and main unprotected. Source checks plus snapshot/draft workflows are
+active; the other six workflows remain disabled. No settings changed. Original
+RC4 assets were downloaded again to a fresh directory and all three provider
+sizes/digests, original local bytes and 409 manifest entries matched. Release
+401752316 remained draft=true/prerelease=true. No publication has occurred yet.
