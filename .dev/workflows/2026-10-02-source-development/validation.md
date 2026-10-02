@@ -57,7 +57,7 @@ These checks establish source/declaration/projection properties. They do not
 establish instruction quality, actual preservation by an agent, runtime client
 discovery, successful initialization in a consumer, or hosted/release acceptance.
 
-## Remaining acceptance
+## Adoption and hosted validation
 
 The owner subsequently adopted the concrete transition. On clean immutable
 `3ca6756cc088241b668378460aa827c9b24cf0f1`, the full base-to-head affected gate
@@ -80,10 +80,33 @@ than reporting a skipped or passing test result. The always-run summary complete
 The comment was restored to the previously reviewed bytes; only then is a new
 head/run warranted. The failed run remains retained and is not a hosted pass.
 
-1. Bind the affected gate to the final clean immutable candidate; preserve its
-   report separately without rewriting the frozen subject to insert its own SHA.
-2. Rebind affected review if tracked content or authority changes. Owner bootstrap
-   adoption and the first independent read-only review are complete above.
-3. Enable only Source checks and observe its exact hosted head. Local results
-   cannot satisfy that provider observation.
-4. Apply authorized backlog dispositions and read Issue/Project state separately.
+The correction was committed as `cc4b42d9070d952370abd3ffa03b6c88381fd482`.
+Actual production selector/content/whitespace preflight passed with no ownership
+errors; no local suite rerun was attributed to that preflight. Independent
+affected review confirmed the blocker removed and substantive implementation and
+policy unchanged. The reviewer identified a stale remaining-enable sentence in
+this record; it is corrected here. The retained snapshot comment is historical
+#418 wording, not the current provider-state source of truth.
+
+[Hosted run 36971496887](https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/36971496887)
+completed successfully on that exact head, base
+`4f231fe7f08eaa9ae296ec243be524658f8d3849`, on Windows/Python 3.13.15. Its actual
+selector report passed 223 tests (42 schemas, 38 tools, 35 distribution, 26
+release, 46 source, 10 loader, 26 platform), zero failures/errors/skips, plus
+content/whitespace. Gate duration: 65.022 s; hosted job: 96 s. Setup, fixed
+checkout/fetch, dependencies, gate, summary and post steps succeeded.
+
+Provider read-back showed only Source checks, Build framework snapshot and Prepare
+framework draft active; the other six workflows remained disabled. Repository
+permissions, rulesets and protection were not changed. Source adoption supplies
+maintainer admission rules, not a claim of server-enforced branch protection.
+
+## Final integration conditions
+
+All source tasks and the prior backlog disposition are complete, but that does
+not pre-approve a later head or merge. Evidence-only closeout changes receive
+affected independent review and their own current-head hosted check. Record those
+final bindings in PR #428 and provider evidence without changing a frozen commit
+to insert its own SHA. Merge only after that actual success, then read main,
+Issue and Project separately. Any new failure reopens its affected work before
+integration; no old result or single-merge waiver substitutes for the final check.

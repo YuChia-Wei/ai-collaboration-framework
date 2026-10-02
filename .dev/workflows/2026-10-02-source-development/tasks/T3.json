@@ -3,12 +3,14 @@
   "workflow_id": "2026-10-02-source-development",
   "owner_skill": "software-development-orchestrator",
   "title": "Reconcile obsolete and delivered Issues",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-10-02T13:00:01+08:00",
-  "updated_at": "2026-10-02T13:00:01+08:00",
+  "updated_at": "2026-10-02T14:04:58+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-1.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "high",
-  "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed."
+  "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed.",
+  "result_summary": "After actual source CI success, #274/#275 closed NOT_PLANNED and #425 closed COMPLETED; each Project Status independently read back Done. #369/#427 retain PR terminal intent and post-merge read-back as separate integration facts.",
+  "finding_status": "addressed"
 }

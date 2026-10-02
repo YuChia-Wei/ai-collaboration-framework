@@ -3,12 +3,14 @@
   "workflow_id": "2026-10-02-source-development",
   "owner_skill": "local-change-implementer",
   "title": "Connect bounded source checks to CI",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-02T13:00:01+08:00",
-  "updated_at": "2026-10-02T13:56:37+08:00",
+  "updated_at": "2026-10-02T14:03:26+08:00",
   "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
   "template_version": "policy-direct-1.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "high",
-  "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed."
+  "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed.",
+  "result_summary": "Source checks enabled and read back active; actual run 36971496887 passed 223 tests on cc4b42d9 after preserved failed run and repair. Any later PR head still requires its own successful hosted check before merge.",
+  "finding_status": "addressed"
 }

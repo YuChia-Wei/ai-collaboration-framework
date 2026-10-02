@@ -44,3 +44,15 @@ behavior remains unchanged and the retained #418 comment stays historical. This
 removes the incidental path from the base-to-head diff without broadening the
 selector's release authority or weakening its rejection. The repair and new
 failure records receive affected review on the next immutable head.
+
+At head `cc4b42d9070d952370abd3ffa03b6c88381fd482`, tree
+`989febaeec3e5046132990db23752a6c9bb9f396`, the reviewer confirmed the blocker
+removed: the snapshot workflow is byte-identical to the original reviewed/base
+file and absent from the net diff; selector behavior is unchanged. Its independent
+substantive review remains applicable to unchanged implementation/policy bytes,
+with an explicit new head binding rather than an assertion of equal full trees.
+One minor evidence sentence still listed enablement as pending; this closeout
+corrects it. The original snapshot comment remains a disclosed historical wording
+limit within the separately retained release workflow. It is not used to infer
+current provider state. These evidence/status updates need one final affected
+review and hosted head binding recorded on PR #428 before merge.

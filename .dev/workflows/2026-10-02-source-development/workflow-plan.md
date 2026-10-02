@@ -59,11 +59,12 @@ use current tracked source; subsequent edited bytes require reindex or direct re
 
 ## Current state
 
-T1 is complete: owner adoption, fixed-subject independent review and the full
-selected local gate are recorded in [review.md](review.md) and [validation.md](validation.md).
-T5 source delivery is complete. T2 now owns Source checks activation and actual
-PR-head hosted success before merge; T3 retains that dependency. Any new findings
-or hosted failures require repairs and affected checks/review before integration.
-Reconcile #274/#275 as cancelled obsolete
-scope and #425 as accepted prior delivery; close #369/#427 only after their actual
-reviewed integration. Actual general agent scenarios remain outside scope.
+T1, T2, T3 and T5 are complete for their selected source/CI/backlog outputs.
+Owner adoption, fixed-subject review, local checks and actual hosted success are
+recorded in [review.md](review.md) and [validation.md](validation.md).
+The prior #274/#275 cancellation and #425 accepted delivery were closed and their
+Project Status read back as Done; see [results.md](results.md).
+Final evidence-only closeout still needs affected review and current-head hosted
+success before PR #428 merges. #369/#427 close only through actual reviewed
+integration and separate Issue/Project read-back. No workflow completion state
+waives those conditions. Actual general agent scenarios remain outside scope.
