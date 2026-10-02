@@ -59,6 +59,12 @@ use current tracked source; subsequent edited bytes require reindex or direct re
 
 ## Current state
 
+Post-merge continuation: PR #428 delivered the four selected outcomes and its
+final-head source CI passed, but the main snapshot exposed an init manifest
+ordering regression. T6/#427 is active on a dedicated correction branch;
+see [snapshot-followup.md](snapshot-followup.md). The prior task outcomes below
+remain historically bound; they do not mark this new delivery check passed.
+
 T1, T2, T3 and T5 are complete for their selected source/CI/backlog outputs.
 Owner adoption, fixed-subject review, local checks and actual hosted success are
 recorded in [review.md](review.md) and [validation.md](validation.md).

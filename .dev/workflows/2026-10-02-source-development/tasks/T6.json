@@ -1,0 +1,17 @@
+{
+  "task_id": "T6",
+  "workflow_id": "2026-10-02-source-development",
+  "owner_skill": "local-change-implementer",
+  "title": "Repair initialization manifest ordering and its CI regression coverage",
+  "status": "in_progress",
+  "created_at": "2026-10-02T14:13:50+08:00",
+  "updated_at": "2026-10-02T14:13:50+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed.",
+  "issue": 427,
+  "authority": "Existing direct owner instruction requires necessary CI repairs and initialization completion; reopened online Issue 427 records this continuation.",
+  "retry_authorization": "Root authorizes focused distribution rerun after actual manifest repair. First run reproduced two errors; second helper failed before mutation and the shell repeated the same failing test. Corrected helper now applies the bounded ordering fix; no product validation weakening."
+}

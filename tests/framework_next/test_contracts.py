@@ -11,7 +11,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
-from distribution.content import closure, descriptor, load_content_package, selected_references
+from distribution.content import closure, dependency_key, descriptor, load_content_package, ordered, selected_references
 from distribution.contracts import validate
 from distribution.data import DistributionError, json_bytes, yaml_object
 from distribution.git_source import Blob
@@ -44,6 +44,21 @@ def metadata(owner):
 
 
 class SourceDeclarationTests(unittest.TestCase):
+    def test_manifest_sequences_satisfy_catalog_builder_ordering(self):
+        manifest, _, _ = source_inventory()
+        sequences = [
+            ("components", manifest["components"], dependency_key),
+            ("adapters", manifest["adapters"], lambda row: row["id"]),
+            ("profiles", manifest["profiles"], lambda row: row["id"]),
+        ]
+        sequences.extend((row["id"] + " members", row["members"], lambda member: member["source"])
+                         for row in manifest["components"])
+        for label, rows, key in sequences:
+            with self.subTest(sequence=label):
+                # The production builder requires sorted unique identities before
+                # emitting an artifact. Check actual source in place, without a build.
+                ordered(rows, key)
+
     def test_declared_members_and_metadata_agree(self):
         manifest, packages, contents = source_inventory()
         destinations = []
