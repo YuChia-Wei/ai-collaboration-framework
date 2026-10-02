@@ -59,6 +59,12 @@ use current tracked source; subsequent edited bytes require reindex or direct re
 
 ## Current state
 
+Post-merge continuation: PR #428 delivered the four selected outcomes and its
+final-head source CI passed, but the main snapshot exposed an init manifest
+ordering regression. T6/#427 is active on a dedicated correction branch;
+see [snapshot-followup.md](snapshot-followup.md). The prior task outcomes below
+remain historically bound; they do not mark this new delivery check passed.
+
 T1, T2, T3 and T5 are complete for their selected source/CI/backlog outputs.
 Owner adoption, fixed-subject review, local checks and actual hosted success are
 recorded in [review.md](review.md) and [validation.md](validation.md).
@@ -68,3 +74,10 @@ Final evidence-only closeout still needs affected review and current-head hosted
 success before PR #428 merges. #369/#427 close only through actual reviewed
 integration and separate Issue/Project read-back. No workflow completion state
 waives those conditions. Actual general agent scenarios remain outside scope.
+
+## T6 implementation completion
+
+Ordering repairs, regression coverage, fixed-subject review and committed catalog
+pre-emission validation are complete; see [snapshot continuation](snapshot-followup.md).
+Provider-only final CI, merge, snapshot and Issue/Project read-back remain owned by
+PR #429 and #427, without a tracked evidence-sync commit.
