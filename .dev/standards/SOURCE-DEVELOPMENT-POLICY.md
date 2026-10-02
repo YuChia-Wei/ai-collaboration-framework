@@ -87,10 +87,12 @@ contexts, receipt interpretations and U001 deferrals are unchanged by this file.
 ## Activation Is A Separate Decision
 
 The [implementation checkpoint](../design/framework-next/source-gates-implementation/README.md)
-records actual commands, runner bindings, failures and limits. Contracts and public
-CLI bindings exist; their local synthetic tests do not establish actual product
-acceptance. Native binding/trials, root adoption, independent scoped review and
-hosted evidence remain outstanding at this checkpoint.
+records historical commands, runner bindings, failures and limits. The current
+local selector uses the [framework-owned test runner](../../tests/readme.md), with
+schema, tool, distribution, release and source suites. Historical contracts/public
+trial commands are retired; local unit and small-fixture results do not establish
+native product acceptance. Native trial selection, root adoption, independent
+scoped review and hosted evidence remain separate from this dormant policy.
 
 Before activation, present the concrete policy/root/template/runner diff, applicable
 selected-check and trial evidence, proposed provider settings and workflow subset,

@@ -1,19 +1,12 @@
-"""Issue 371 only: actual bootstrap/loader tests and one opt-in public attempt.
-
-python -I -B tests/framework_next/test_engine_source.py --output-root EXPLICIT_F_ROOT
-Add --public-entry only for the separately selected one-shot N1 attempt.
-Synthetic bootstrap tests replace _direct only; they are not native evidence.
-"""
+"""Verified source loader behavior with tiny synthetic modules; not native installation."""
 from contextlib import contextmanager
 from hashlib import sha256
-import argparse
 import importlib
 import importlib.machinery
 import importlib.util
 import io
 import json
 import marshal
-import os
 from pathlib import Path
 import struct
 import sys
@@ -52,7 +45,7 @@ def isolated_modules():
         sys.meta_path[:] = before_meta
 
 
-def fixture(name, *, actual=False, overrides=None):
+def fixture(name, *, overrides=None):
     run = support.active_run()
     root = run.case(name)
     (root / 'src/distribution').mkdir(parents=True)
@@ -67,20 +60,14 @@ def fixture(name, *, actual=False, overrides=None):
         b"    return {'outcome': 'inspected', 'markers': {n: m.VALUE for n, m in sys.modules.items() "
         b"if n == 'distribution' or n.startswith('distribution.')}}\n")
     sources['src/tools/maintain_framework.py'] = ENTRY.read_bytes()
-    if actual:
-        sources = {p: (support.REPOSITORY / p).read_bytes() for p in bootstrap.ENGINE_FILES}
     sources.update(overrides or {})
     for name, raw in sources.items():
         target = root / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        if actual:  # Source-derived copies, measured under the unchanged helper caps.
-            with target.open('xb') as stream:
-                stream.write(raw)
-        else:
-            run.write(target, raw)
+        run.write(target, raw)
     run.measure()
     pin = {'id': 'framework-managed-installation', 'version': '2.0.0',
-           'source_commit': support.git('rev-parse', 'HEAD').decode().strip(),
+           'source_commit': '1' * 40,
            'files': [{'path': p, 'sha256': sha256(sources[p]).hexdigest()} for p in bootstrap.ENGINE_FILES]}
     return root, {'api_version': 2, 'operation': 'inspect', 'engine_root': str(root), 'engine': pin}
 
@@ -126,8 +113,9 @@ def invoke(root, request, *, direct=None):
     return code, json.loads(stdout.getvalue()) if stdout.getvalue() else None, stderr.getvalue()
 
 
-class EngineSourceTests(unittest.TestCase):
+class EngineSourceTests(support.FixtureTestCase):
     def setUp(self):
+        super().setUp()
         self.addCleanup(patch.stopall)
         self.scope = isolated_modules()
         self.scope.__enter__()
@@ -271,63 +259,5 @@ class EngineSourceTests(unittest.TestCase):
             self.assertIs(sys.modules[name].__loader__, finder)
             self.assertEqual(Path(sys.modules[name].__file__), path)
 
-
-def public_entry_attempt():
-    """One unpatched CLI, no project/installed root or operation dispatch requested."""
-    root, request = fixture('public-entry', actual=True)
-    # An isolated tiny source checkout; no project or installed root exists here.
-    support.git('-c', 'init.templateDir=', 'init', '--quiet', cwd=root)
-    support.git('-c', 'core.autocrlf=false', 'add', '--', 'src', 'tools', cwd=root)
-    support.git('-c', 'user.name=Engine Source Fixture', '-c', 'user.email=fixture@example.invalid',
-                '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=' + str(root / '.git/no-hooks'),
-                'commit', '--quiet', '-m', 'fixture: exact source pin', cwd=root)
-    request['engine']['source_commit'] = support.git('rev-parse', 'HEAD', cwd=root).decode().strip()
-    support.active_run().measure()
-    source_before = {name: (root / name).read_bytes() for name in bootstrap.ENGINE_FILES}
-    pin_before = json.dumps(request['engine'], sort_keys=True)
-    cache, cache_raw = valid_cache(root / 'src/distribution/installation_io.py', fail_on_import=True)
-    raw = json.dumps(request).encode()
-    child = support.run_process([support.PYTHON, '-I', '-B', root / 'src/tools/maintain_framework.py'],
-                                cwd=root, input=raw, timeout=30)
-    support.check({name: (root / name).read_bytes() for name in bootstrap.ENGINE_FILES} == source_before,
-                  'public source bytes changed')
-    support.check(json.dumps(request['engine'], sort_keys=True) == pin_before, 'public pin changed')
-    support.check(cache.read_bytes() == cache_raw, 'public cache changed')
-    for name, value in [('request.json', raw), ('stdout.json', child.stdout), ('stderr.txt', child.stderr)]:
-        support.active_run().write(root / name, value)
-    response = json.loads(child.stdout)
-    refused = (child.returncode == 1 and response.get('outcome') == 'unsupported'
-               and response.get('changed') is False
-               and any(d.get('code') == 'source-bootstrap' for d in response.get('diagnostics', [])))
-    print(json.dumps({'public_entry': {'exit_code': child.returncode, 'response': response,
-          'source_and_pin_unchanged': True, 'cache_control_admitted': True, 'cache_unchanged': True,
-          'status': 'blocked-before-dispatch' if refused else 'requires-owner-review',
-          'native_acceptance': 'not-established', 'retry': 'none'}}, sort_keys=True))
-    return False  # A tiny incomplete request/refusal is never native installation acceptance.
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output-root', required=True, type=Path)
-    parser.add_argument('--public-entry', action='store_true')
-    args = parser.parse_args()
-    run, success = None, False
-    try:
-        print(json.dumps({'python': sys.version.split()[0], 'isolated': sys.flags.isolated,
-                          'dont_write_bytecode': sys.flags.dont_write_bytecode}), flush=True)
-        support.check(sys.flags.isolated and sys.flags.dont_write_bytecode, 'use isolated Python -I -B')
-        run = support.FixtureRun(args.output_root)
-        with support.use_run(run):
-            if args.public_entry:
-                success = public_entry_attempt()
-                return 0 if success else 2
-            result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(EngineSourceTests))
-            success = result.wasSuccessful() and not result.skipped
-            return 0 if success else 1
-    finally:
-        if run is not None:
-            print(json.dumps({'fixture_accounting': run.close(success)}, sort_keys=True), flush=True)
-
-
-if __name__ == '__main__':
-    raise SystemExit(main())
+if __name__ == "__main__":
+    unittest.main()

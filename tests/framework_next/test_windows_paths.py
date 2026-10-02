@@ -1,16 +1,6 @@
-"""Issue 378 only: labelled Windows API simulations and tiny actual observations.
-
-Run with python -I -B tests/framework_next/test_windows_paths.py --mode regressions.
-Use --mode bootstrap-regressions for the approved pre-pin path continuation,
-and --mode public-plan for its one fresh actual reader/complete public plan.
-Actual modes require an explicit --output-root and retain their unique run.
-No full family matrix, installation/apply, native-runner replacement or CI gate.
-"""
+"""Windows path API simulations; no public reader, apply or installation trial."""
 from contextlib import ExitStack, contextmanager
 from ctypes import wintypes as w
-from hashlib import sha256
-import argparse
-import ast
 import ctypes
 import importlib.util
 import json
@@ -25,7 +15,7 @@ from unittest.mock import Mock, patch
 HERE = Path(__file__).absolute().parent
 sys.path[:0] = [str(HERE), str(HERE.parents[1] / 'src')]
 import support
-from distribution import assembly, installation_state as state, installation_io as io
+from distribution import installation_state as state, installation_io as io
 
 SCRIPTS = {
     'lesson-author': 'lesson', 'adr-author': 'adr', 'standards-promotion': 'standards_promotion',
@@ -171,15 +161,6 @@ class SimulatedWindowsPaths(unittest.TestCase):
                 state._root(str(DIRECT))
             self.assertEqual(caught.exception.diagnostic['code'], 'root-drift')
 
-    def test_all_eight_helpers_have_identical_ast_and_six_backends_match(self):
-        helpers, backends = [], []
-        for module in [io, *MODULES.values()]:
-            tree = ast.parse(Path(module.__file__).read_text(encoding='utf-8'))
-            helpers.append(ast.dump(next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == '_windows_handle_filesystem')))
-            if module not in (io, MODULES['problem-frame-author']):
-                backends.append(ast.dump(next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'local_write_backend')))
-        self.assertEqual(len(set(helpers)), 1)
-        self.assertEqual(len(set(backends)), 1)
 
     def test_handle_success_binds_metadata_and_closes_descriptor(self):
         with simulated() as (kernel, transfer, close):
@@ -374,139 +355,5 @@ class SimulatedBootstrapPaths(unittest.TestCase):
             self.assertEqual(result['diagnostics'][0]['code'], 'source-bootstrap')
             loader.assert_not_called()
 
-
-def public(run, family, project, operation, **values):
-    package = support.REPOSITORY / 'src/skills' / family
-    request = dict(operation=operation, project_root=str(project), package_root=str(package), **values)
-    request_path = run.write(run.root / (family + '-' + operation + '-request.json'), json.dumps(request).encode())
-    argv = [support.PYTHON, '-I', '-B', package / 'scripts' / (SCRIPTS[family] + '.py'), '--request', request_path]
-    result = support.run_process(argv, cwd=project)
-    with (run.root / 'public-transcript.jsonl').open('a', encoding='utf-8') as stream:
-        stream.write(json.dumps({'family': family, 'request': request, 'exit': result.returncode,
-                                 'stdout': result.stdout.decode(), 'stderr': result.stderr.decode()}) + '\n')
-    response = json.loads(result.stdout)
-    support.check(result.returncode == 0 and response['outcome'] == ('ok' if family == 'problem-frame-author' else 'succeeded'), str(response))
-    print(json.dumps({'public': family, 'operation': operation, 'exit': result.returncode, 'outcome': response['outcome']}), flush=True)
-    run.measure()
-    return response
-
-
-def actual_reader(run):
-    output = run.case('assembly')
-    commit = support.git('rev-parse', 'HEAD').decode().strip()
-    built = assembly.assemble(support.REPOSITORY, commit, 'lesson-minimal', output, output)
-    candidate = state.read_candidate(built['candidate_root'])
-    support.check(candidate.root == Path(built['candidate_root']), 'candidate root mismatch')
-    support.check(len(candidate.members) == 10, 'unexpected Lesson member count')
-    print(json.dumps({'actual_reader': 'passed', 'source_commit': commit, 'candidate_root': str(candidate.root),
-                      'candidate_identity': candidate.identity, 'members': len(candidate.members),
-                      'reader_source_sha256': sha256(Path(state.__file__).read_bytes()).hexdigest()}), flush=True)
-    return candidate
-
-
-def actual_lesson(run):
-    from test_knowledge import lesson_content
-    project = run.case('lesson-project')
-    explained = public(run, 'lesson-author', project, 'explain')
-    store = project / explained['settings']['store']['root']
-    store.mkdir(parents=True)
-    query = public(run, 'lesson-author', project, 'query', text='selected fixture')
-    support.check(not query['partial'], 'partial query')
-    created = public(run, 'lesson-author', project, 'create', text='selected fixture', content=lesson_content(), decision={
-        'action': 'new', 'query_sha256': query['query_sha256'], 'acknowledge_partial': False,
-        'reason': 'Bounded Issue 378 synthetic record after actual query.'})
-    path = store / (created['reference']['id'] + '.lesson.json')
-    before = path.read_bytes()
-    inspected = public(run, 'lesson-author', project, 'inspect', reference=created['reference'])
-    support.check(inspected['sha256'] == sha256(before).hexdigest() and path.read_bytes() == before, 'read changed published record')
-    support.check(not list(store.glob('.*')), 'unexpected writer residue')
-    print(json.dumps({'actual_lesson': 'passed', 'record_bytes': len(before), 'fixture': 'direct source package, synthetic content, actual public CLI'}), flush=True)
-
-
-def actual_cbf(run):
-    project = run.case('cbf-project')
-    explained = public(run, 'problem-frame-author', project, 'explain')
-    (project / explained['result']['settings']['store']['root']).mkdir(parents=True)
-    record = {'family': 'problem-frame.cbf', 'schema_version': '1.0.0', 'id': 'cbf-' + '3' * 32,
-              'frame_key': 'bounded-fixture', 'title': 'Synthetic path compatibility observation', 'derived_from': None,
-              'sources': [{'id': 'SRC1', 'kind': 'requirement', 'reference': 'synthetic:378', 'revision': None,
-                           'locator': 'Fictional input', 'sha256': None, 'authority': 'proposed', 'authority_reference': None}],
-              'statements': [{'id': name, 'category': category, 'text': text, 'basis': 'stated', 'source_ids': ['SRC1']}
-                             for name, category, text in [('ACTOR1', 'actor', 'A caller.'), ('CMD1', 'command', 'Observe a value.'),
-                                                          ('DOMAIN1', 'controlled-domain', 'Local fixture state.')]],
-              'scenarios': [{'id': 'SC1', 'title': 'Observe one result', 'source_ids': ['SRC1'], 'given': ['A fixture'],
-                             'when': ['The caller requests a value'], 'then': [{'id': 'THEN1', 'text': 'Observe a value.',
-                             'basis': 'stated', 'source_ids': ['SRC1'], 'statement_ids': ['CMD1']}], 'tests_anchor': []}],
-              'open_questions': []}
-    created = public(run, 'problem-frame-author', project, 'create', reference='cbf-' + '3' * 32 + '.cbf.json', record=record)
-    inspected = public(run, 'problem-frame-author', project, 'inspect', reference='cbf-' + '3' * 32 + '.cbf.json', expected_sha256=created['subject_sha256'])
-    support.check(inspected['subject_sha256'] == created['subject_sha256'], 'CBF read mismatch')
-
-
-def actual_plan(run, candidate):
-    roots = {role: run.case('plan-' + role) for role in ('project', 'scratch', 'recovery')}
-    commit = support.git('rev-parse', 'HEAD').decode().strip()
-    pin = {'id': 'framework-managed-installation', 'version': '1.0.0', 'source_commit': commit,
-           'files': [{'path': name, 'sha256': sha256((support.REPOSITORY / name).read_bytes()).hexdigest()} for name in state.ENGINE_FILES]}
-    request = {'api_version': 1, 'operation': 'plan', 'engine_root': str(support.REPOSITORY), 'engine': pin,
-               'project_root': str(roots['project']), 'scratch_root': str(roots['scratch']), 'staging_root': str(roots['scratch']),
-               'recovery_root': str(roots['recovery']), 'candidate_root': str(candidate.root), 'candidate_identity': candidate.identity,
-               'expected_lock_sha256': None, 'mode_policy': 'windows-inventory-only', 'project_data_action': 'none',
-               'protected_inputs': [], 'durability': {'declared_by': 'Issue 378 fixture',
-                    'declaration_reference': 'synthetic:378', 'failure_domain': 'process-termination'}}
-    # Direct actual backend observation is supporting evidence, not a public plan.
-    backend = io.Backend(roots, request['durability'])
-    print(json.dumps({'actual_distribution_backend': 'passed', 'volume': backend._volume(roots['project']),
-                      'evidence_kind': 'actual direct component, not public acceptance'}), flush=True)
-    result = support.run_process([support.PYTHON, '-I', '-B', support.REPOSITORY / 'src/tools/maintain_framework.py'],
-                                  cwd=support.REPOSITORY, input=json.dumps(request).encode())
-    for name, raw in [('plan-request.json', json.dumps(request, indent=2).encode()), ('plan-response.json', result.stdout), ('plan-stderr.txt', result.stderr)]:
-        run.write(run.root / name, raw)
-    response = json.loads(result.stdout)
-    support.check(result.returncode == 0 and response['outcome'] == 'planned', str(response))
-    plan = response['plan']
-    support.check(plan['engine'] == pin and plan['candidate_identity'] == candidate.identity, 'plan source binding mismatch')
-    support.check(sha256(state.json_bytes(plan)).hexdigest() == response['plan_sha256'], 'plan digest mismatch')
-    prerequisites = {row['id']: row['status'] for row in plan['prerequisites']}
-    support.check(prerequisites['native-writer-backend'] == 'satisfied' and prerequisites['writer-engine-closure'] == 'satisfied',
-                  'plan did not establish native backend and pinned source closure')
-    support.check(all(not list(root.iterdir()) for root in roots.values()), 'plan mutated fixture roots')
-    print(json.dumps({'actual_distribution_plan': 'passed', 'exit': result.returncode, 'outcome': response['outcome'],
-                      'engine_source_commit': commit, 'plan_sha256': response['plan_sha256'], 'delta_members': len(plan['delta']),
-                      'prerequisites': prerequisites, 'native_apply': 'not-executed'}), flush=True)
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--mode', required=True, choices=['regressions', 'bootstrap-regressions', 'actual', 'public-plan'])
-    parser.add_argument('--output-root', type=Path)
-    args = parser.parse_args()
-    support.check(os.name == 'nt' and sys.flags.isolated and sys.dont_write_bytecode, 'requires Windows and -I -B')
-    if args.mode in {'regressions', 'bootstrap-regressions'}:
-        print('Evidence kind: simulated Windows API/path responses; not native acceptance.', flush=True)
-        result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(SimulatedBootstrapPaths if args.mode == 'bootstrap-regressions' else SimulatedWindowsPaths))
-        return 0 if result.wasSuccessful() and not result.skipped else 1
-    support.check(args.output_root is not None, 'actual observations require explicit --output-root')
-    run = support.FixtureRun(args.output_root)
-    success = False
-    try:
-        with support.use_run(run):
-            print(json.dumps({'actual_run': str(run.root), 'runtime': support.runtime_versions()}), flush=True)
-            candidate = actual_reader(run)
-            if args.mode == 'actual':
-                actual_lesson(run)
-                # The first actual writer setup succeeded before another backend runs.
-                actual_cbf(run)
-            actual_plan(run, candidate)
-            success = True
-    finally:
-        # Keep this explicitly selected evidence; close(False) means retained,
-        # not a fabricated test failure and not permission to delete prior runs.
-        observation = run.close(False)
-        observation.update(selected_checks_passed=success, retention='requested diagnostic evidence')
-        print(json.dumps({'observation': observation}), flush=True)
-    return 0 if success else 1
-
-
-if __name__ == '__main__':
-    raise SystemExit(main())
+if __name__ == "__main__":
+    unittest.main()

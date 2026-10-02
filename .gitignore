@@ -17,6 +17,8 @@
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
+!tests/release/
+!tests/release/**
 [Rr]eleases/
 !releases/
 !releases/**

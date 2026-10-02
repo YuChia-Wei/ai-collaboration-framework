@@ -1,15 +1,18 @@
-"""Focused rc.2 adapter examples; execution remains a U001/P7 decision."""
+"""Adapter projection, naming and selected-member contracts."""
 
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 import unittest
+
+ROOT = Path(__file__).absolute().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
 
 from distribution import claude, codex
 from distribution.data import DistributionError
 
 
-ROOT = Path(__file__).resolve().parents[2]
 CODEX_V2 = ROOT / "src/adapters/codex/skill-entry-v2.md.template"
 CLAUDE_V2 = ROOT / "src/adapters/claude/skill-entry-v2.md.template"
 CODEX_LEGACY = ROOT / "src/adapters/codex/skill-entry.md.template"
@@ -20,7 +23,7 @@ MEMBERS = {
 }
 
 
-class Rc2AdapterCases(unittest.TestCase):
+class AdapterProjectionTests(unittest.TestCase):
     def render(self, module, template, **overrides):
         values = {
             "template_bytes": template.read_bytes(),
