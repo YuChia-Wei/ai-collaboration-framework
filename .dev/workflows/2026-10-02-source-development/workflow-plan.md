@@ -59,10 +59,11 @@ use current tracked source; subsequent edited bytes require reindex or direct re
 
 ## Current state
 
-T1 resumed after the owner adopted the concrete source/CI proposal. T5 source
-delivery is complete; see [source validation and its limits](validation.md).
-Next: freeze the adopted candidate, perform independent scoped review, repair any
-findings, then enable Source checks and observe the actual PR head before merge.
-T2-T3 retain their ordered dependencies. Reconcile #274/#275 as cancelled obsolete
+T1 is complete: owner adoption, fixed-subject independent review and the full
+selected local gate are recorded in [review.md](review.md) and [validation.md](validation.md).
+T5 source delivery is complete. T2 now owns Source checks activation and actual
+PR-head hosted success before merge; T3 retains that dependency. Any new findings
+or hosted failures require repairs and affected checks/review before integration.
+Reconcile #274/#275 as cancelled obsolete
 scope and #425 as accepted prior delivery; close #369/#427 only after their actual
 reviewed integration. Actual general agent scenarios remain outside scope.

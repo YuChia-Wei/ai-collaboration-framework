@@ -59,10 +59,19 @@ discovery, successful initialization in a consumer, or hosted/release acceptance
 
 ## Remaining acceptance
 
+The owner subsequently adopted the concrete transition. On clean immutable
+`3ca6756cc088241b668378460aa827c9b24cf0f1`, the full base-to-head affected gate
+passed in 83.394 s: schemas 42, tools 38, distribution 35, release 26, source 46,
+loader 10 and platform 26 (223 total, zero failures/errors/skips), plus content
+and whitespace. This is local execution. Independent scoped review of that same
+subject returned no supported actionable findings; see [review.md](review.md).
+The initial online Issue read-back differed only in trailing newline handling;
+normalized content and title matched without a duplicate write.
+
 1. Bind the affected gate to the final clean immutable candidate; preserve its
    report separately without rewriting the frozen subject to insert its own SHA.
-2. Record the explicit owner bootstrap decision for independent review without
-   unavailable legacy packet tooling; conduct that read-only fixed-diff review.
-3. Adopt only the concrete scope, enable only Source checks and observe its exact
-   hosted head. Local results cannot satisfy that provider observation.
+2. Rebind affected review if tracked content or authority changes. Owner bootstrap
+   adoption and the first independent read-only review are complete above.
+3. Enable only Source checks and observe its exact hosted head. Local results
+   cannot satisfy that provider observation.
 4. Apply authorized backlog dispositions and read Issue/Project state separately.
