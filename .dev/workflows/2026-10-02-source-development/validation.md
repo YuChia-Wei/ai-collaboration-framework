@@ -48,6 +48,11 @@ This evidence belongs to that candidate; it is not automatically a pass for T5.
   to the pre-T5 candidate; managed `.ai`, `.agents` and `.claude` had no diff.
 - `git diff --check` passed. Both the main checkout and MQ lab remained clean.
 
+The first fixed-head incremental gate at `cb1029772b86e77b6ccffd75ad8c152c56f2536c`
+failed before test dispatch in 18.643 s: completed T5 used `result` instead of
+the required `result_summary`. The record key was corrected; no gate or product
+behavior changed. A second attempt is warranted by that material input repair.
+
 These checks establish source/declaration/projection properties. They do not
 establish instruction quality, actual preservation by an agent, runtime client
 discovery, successful initialization in a consumer, or hosted/release acceptance.
