@@ -1,5 +1,12 @@
 # Portable Test Fixture Acceleration Guide
 
+Historical applicability: the legacy classifier, acceleration runner and
+fixture paths below are unavailable in this source layout. Issue #425 retired
+the previous installation trials; current source checks follow
+`SOURCE-DEVELOPMENT-POLICY.md` under `.dev/standards/`. These examples are retained
+for compatible legacy support, not current commands. Do not enable
+`AI_CONTEXT_TEST_TMP_ROOT` from this guide or infer an acceleration result.
+
 本指南說明如何在不改變測試語意的前提下，對已分類、可拋棄的高 I/O test fixtures 使用明確 opt-in 的較快儲存空間。
 
 ## Portable baseline

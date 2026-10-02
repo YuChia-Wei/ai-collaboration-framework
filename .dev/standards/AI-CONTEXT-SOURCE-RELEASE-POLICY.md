@@ -41,10 +41,11 @@ from downstream packages. A target repository consumes an already published
 framework version under the portable AI Context Version Policy; it never runs
 this source release procedure merely because the framework is installed.
 
-Published version identity and SemVer compatibility are defined by the
-portable [AI Context Version Policy projection](../../.ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md).
-This policy adds source-repository procedure and authority without redefining
-that identity.
+For legacy published-format support, version identity and SemVer compatibility
+are defined by the retained portable AI Context Version Policy projection (legacy path `.ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md`, unavailable here).
+Use the compatible historical revision when that legacy policy is selected.
+The current Catalog 1 / Engine 2 section above owns current delivery. This
+policy adds source procedure without redefining a legacy version identity.
 
 ## Source Release State And Authority
 

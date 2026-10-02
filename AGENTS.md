@@ -152,7 +152,7 @@ Use indexes only when needed:
 - `.ai/INDEX.MD`: generated installed content and source-tooling data.
 - `.dev/INDEX.md`: project knowledge and current records.
 - `.dev/standards/INDEX.MD`: standards navigation.
-- `.dev/guides/ai-collaboration-guides/INDEX.MD`: human-facing explanations, not default execution context.
+- `.dev/guides/ai-collaboration-guides/`: human-facing explanations, not default execution context.
 - `.agents/skills/README.md` and `.claude/skills/README.md`: installed skill inventories.
 
 ### Root Entry Files

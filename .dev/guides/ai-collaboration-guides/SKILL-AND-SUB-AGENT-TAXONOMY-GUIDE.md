@@ -1,5 +1,10 @@
 # Skill And Sub-Agent Taxonomy Guide
 
+目前來源庫的可編輯技能在 `src/skills/`，受管理安裝內容在 `.ai/core/`；
+根目錄 `AGENTS.md` 與 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 決定實際路徑。
+下文 `.ai/assets/` skill／private-role 配置保留為歷史分類說明，在目前來源樹
+不可用；role 文件的存在也不代表已執行委派。
+
 本文件定義 AI 協作知識庫中的三種主要資產類型：
 
 - skill
@@ -147,8 +152,8 @@ shared rules 沒有獨立輸入輸出 contract，不應假裝成 worker role。
   - `AI-ASSET-LOCATION-STRATEGY.md`
 - role execution 與 implementer skill 的互動：
   - [Provider-Neutral Role Execution Contract](../../contracts/ROLE-EXECUTION-CONTRACT.md)
-  - `.ai/SUB-AGENT-SYSTEM.MD`（derived binding / routing view）
-  - `AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md`
+  - 歷史文件 `.ai/SUB-AGENT-SYSTEM.MD`（derived binding / routing view）；目前來源樹未提供
+  - 歷史文件 `AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md`；目前來源樹未提供
 - sub-agent role manifests 的 `human_guide` 應指向本文件，作為 human-facing taxonomy 參考。
 - 模式選擇理由：
   - `../../standards/rationale/skill-sub-agent-boundary-rationale.MD`

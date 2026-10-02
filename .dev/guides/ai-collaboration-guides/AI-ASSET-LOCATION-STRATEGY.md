@@ -1,5 +1,11 @@
 # AI Asset Location Strategy
 
+目前來源庫的路徑以根目錄 `AGENTS.md` 與
+`.dev/standards/AI-CONTEXT-BOUNDARY.md` 的 source exception 為準：
+可編輯的技能／知識在 `src/skills/`、`src/knowledge/`，受管理安裝內容在
+`.ai/core/`。下文 `.ai/assets/` 配置保留為舊版格式的歷史說明，目前來源樹
+未提供這些路徑；不構成目前的導覽、執行路線或下游規則採用。
+
 本文件定義本 repo 在多 agent 協作情境下，`skill`、`prompt`、`guide`、`workflow artifact` 的放置策略。
 
 目前已提供的 runtime wrapper 支援：

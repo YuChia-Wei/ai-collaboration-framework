@@ -242,7 +242,8 @@ class SelectionTests(unittest.TestCase):
 
     def test_runner_and_source_governance_keep_scoped_review_requirement(self):
         for path in (".gitignore", ".github/workflows/source-checks.yml", ".dev/standards/SOURCE-DEVELOPMENT-POLICY.md",
-                     ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md"):
+                     ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
+                     ".dev/INDEX.md", ".dev/workflows/INDEX.MD"):
             with self.subTest(path=path):
                 result = self.selected(SyntheticTree({path: "# source"}), path)
                 self.assertFalse(result.errors)
@@ -288,7 +289,8 @@ class SelectionTests(unittest.TestCase):
             self.assertEqual(result.checks, {"content", "whitespace"})
         for path in ("unknown.md", "src/new/unknown.py", "tests/framework_next/test_future.py",
                      ".github/workflows/governance.yml", ".ai/scripts/old.py", ".dev/backlog/frozen.md",
-                     ".dev/workflows/2026-10-02-framework-tests/tasks.json", ".dev/contracts/unknown.py"):
+                     ".dev/workflows/2026-10-02-framework-tests/tasks.json", ".dev/contracts/unknown.py",
+                     ".dev/unknown.md", ".dev/workflows/unknown.md"):
             result = self.selected(SyntheticTree({path: "# unknown"}), path)
             self.assertTrue(result.errors)
             self.assertEqual(result.checks, {"content", "whitespace"})

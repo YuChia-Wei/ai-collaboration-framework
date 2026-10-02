@@ -1,0 +1,15 @@
+{
+  "task_id": "T2",
+  "workflow_id": "2026-10-02-rc4-paths",
+  "owner_skill": "ai-context-governance",
+  "title": "Repair current source navigation and verify the immutable correction",
+  "status": "in_progress",
+  "created_at": "2026-10-02T19:52:43+08:00",
+  "updated_at": "2026-10-02T19:52:43+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "execution_identity_basis": "Configured primary defaults; exact active runtime identity not exposed. Delegate invocations explicitly used gpt-6.1-sol/high.",
+  "issue": 430
+}

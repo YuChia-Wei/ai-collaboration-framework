@@ -1,5 +1,12 @@
 # AI Context Rule Ownership
 
+Current source layout: apply the [source exception](AI-CONTEXT-BOUNDARY.md#framework-source-repository-exception).
+Editable skill and knowledge sources are `src/skills/` and `src/knowledge/`;
+`.ai/core/` and runtime entries are managed projections. The `.ai/assets/`
+roots and catalogs described below are retained legacy ownership references,
+not available paths in this source tree. This qualification does not adopt or
+replace a downstream target's semantic authority.
+
 Related portable baseline contract: `ENG-IDENTITY-001`.
 
 This source-governance standard assigns canonical ownership classifications to

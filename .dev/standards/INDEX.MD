@@ -1,5 +1,11 @@
 # Source Governance Standards Index
 
+Legacy applicability: the `.ai/assets/` paths below are retained historical
+references and are absent from this source layout. They do not provide
+current navigation or an executable route. For compatible legacy support,
+select the owning historical revision; no replacement semantic authority
+is adopted by this entry.
+
 `.dev/standards/` is the source-governance location for framework ownership,
 workflow, assessment, language, version, dependency, and technology-selection
 policies. It is not the canonical owner of .NET backend semantic standards.
@@ -19,10 +25,10 @@ policies. It is not the canonical owner of .NET backend semantic standards.
 
 ## .NET Backend Profile Compatibility Navigation
 
-- [Profile standards](../../.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md)
-- [Focused coding standards](../../.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/)
-- [Profile rationale](../../.ai/assets/tech-stacks/dotnet-backend/references/rationale/)
-- [Profile templates](../../.ai/assets/tech-stacks/dotnet-backend/templates/)
+- Profile standards (legacy path `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md`, unavailable here)
+- Focused coding standards (legacy path `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards`, unavailable here)
+- Profile rationale (legacy path `.ai/assets/tech-stacks/dotnet-backend/references/rationale`, unavailable here)
+- Profile templates (legacy path `.ai/assets/tech-stacks/dotnet-backend/templates`, unavailable here)
 
 Human-facing tutorials, setup, migration, troubleshooting, and prompt-usage
 guidance remain under `.dev/guides/`.

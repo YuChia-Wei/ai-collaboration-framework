@@ -43,6 +43,7 @@ LEGACY_WORKFLOWS = frozenset({"governance.yml", "portable-gates.yml", "nightly-f
     "package-candidate.yml", "publish-release.yml", "release-provider-preflight.yml",
     "test-fixture-acceleration.yml"})
 SOURCE_FILES = frozenset({"AGENTS.md", "AGENTS.zh-TW.md", "CLAUDE.md",
+    ".dev/INDEX.md", ".dev/workflows/INDEX.MD",
     ".github/pull_request_template.md", ".github/scripts/check-source-change.py",
     ".github/scripts/run-source-native.py", ".github/workflows/source-checks.yml",
     ".github/workflows/source-native.yml"})
