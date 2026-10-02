@@ -68,6 +68,18 @@ subject returned no supported actionable findings; see [review.md](review.md).
 The initial online Issue read-back differed only in trailing newline handling;
 normalized content and title matched without a duplicate write.
 
+Source checks was enabled through the authorized workflow endpoint and read back
+as active. PR #428 was created as a draft at `c82b0c32`; its first actual
+[hosted run](https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/36971267170)
+failed on `c82b0c32188d0d1fa03699f33b33dff9615a9fec` before test dispatch.
+Windows/Python 3.13.15 setup, exact checkout/base fetch and dependency install
+passed. The gate rejected the incidental snapshot workflow comment change as
+`unselected source/legacy pipeline owner` (both diff sides), matching the
+independent follow-up finding. Gate duration was 17.473 s; the job failed rather
+than reporting a skipped or passing test result. The always-run summary completed.
+The comment was restored to the previously reviewed bytes; only then is a new
+head/run warranted. The failed run remains retained and is not a hosted pass.
+
 1. Bind the affected gate to the final clean immutable candidate; preserve its
    report separately without rewriting the frozen subject to insert its own SHA.
 2. Rebind affected review if tracked content or authority changes. Owner bootstrap

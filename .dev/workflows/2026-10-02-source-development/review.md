@@ -28,6 +28,19 @@ Local test evidence remains the coordinator's execution, not the reviewer's.
 Hosted/source activation, real consumer initialization/custom-content preservation,
 native/release acceptance and merge admission are separate evidence classes.
 
-This report binds the stated subject only. Later evidence/status-only changes and
-the snapshot workflow comment correction receive a separate affected review;
-they are not retroactively included in the immutable subject above.
+## Affected follow-up and repair
+
+The same independent reviewer inspected delta `3ca6756c..c82b0c32` at clean head
+`c82b0c32188d0d1fa03699f33b33dff9615a9fec`, tree
+`a6cb7554fcb83e71554a7dd5afc7bd5464cb92e7`. It found one blocker: the incidental
+snapshot workflow comment change makes `.github/workflows/package-candidate.yml`
+enter the diff, but this separately retained release workflow is outside the
+source selector's selected ownership and is rejected before tests. The reviewer
+confirmed the new evidence/status records otherwise represented its prior report
+and pending hosted state accurately; it did not assert equal trees.
+
+Root restored that one comment to its original reviewed bytes. Release workflow
+behavior remains unchanged and the retained #418 comment stays historical. This
+removes the incidental path from the base-to-head diff without broadening the
+selector's release authority or weakening its rejection. The repair and new
+failure records receive affected review on the next immutable head.

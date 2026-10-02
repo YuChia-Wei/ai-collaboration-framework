@@ -1,4 +1,4 @@
-# Owner-selected #418 snapshot delivery; source tests use their separately owned workflow.
+# Owner-selected #418 release delivery only; test workflows remain disabled.
 name: Build framework snapshot
 on:
   push:
