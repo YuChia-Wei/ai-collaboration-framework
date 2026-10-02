@@ -53,6 +53,8 @@ class SourceDeclarationTests(unittest.TestCase):
         ]
         sequences.extend((row["id"] + " members", row["members"], lambda member: member["source"])
                          for row in manifest["components"])
+        sequences.extend((row["id"] + " adapter members", row["members"], lambda member: member)
+                         for row in manifest["adapters"])
         for label, rows, key in sequences:
             with self.subTest(sequence=label):
                 # The production builder requires sorted unique identities before
@@ -88,6 +90,8 @@ class SourceDeclarationTests(unittest.TestCase):
         for row in manifest["profiles"]:
             preset = validate("Preset", yaml_object((ROOT / row["path"]).read_bytes(), row["path"]))
             with self.subTest(preset=row["id"]):
+                for field in ("skills", "knowledge", "adapters"):
+                    ordered(preset[field])
                 self.assertEqual(preset["id"], row["id"])
                 self.assertLessEqual(set(preset["adapters"]), adapters)
                 selected = {(kind, name) for kind, field in (("skill", "skills"), ("knowledge", "knowledge")) for name in preset[field]}

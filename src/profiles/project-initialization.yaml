@@ -5,5 +5,5 @@ skills:
 - ai-context-init
 knowledge: []
 adapters:
-- codex
 - claude
+- codex

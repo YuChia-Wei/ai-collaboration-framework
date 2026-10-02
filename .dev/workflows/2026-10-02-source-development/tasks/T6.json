@@ -13,5 +13,5 @@
   "execution_identity_basis": "Configured defaults; exact active runtime identity not exposed.",
   "issue": 427,
   "authority": "Existing direct owner instruction requires necessary CI repairs and initialization completion; reopened online Issue 427 records this continuation.",
-  "retry_authorization": "Root authorizes focused distribution rerun after actual manifest repair. First run reproduced two errors; second helper failed before mutation and the shell repeated the same failing test. Corrected helper now applies the bounded ordering fix; no product validation weakening."
+  "retry_authorization": "Root authorizes focused distribution rerun after actual manifest repair. First run reproduced two errors; second helper failed before mutation and the shell repeated the same failing test. Corrected helper now applies the bounded ordering fix; no product validation weakening. The committed-input check found a separate unsorted preset list; root authorizes its bounded ordering repair and changed-input checks, with the additional failure retained in snapshot-followup.md."
 }

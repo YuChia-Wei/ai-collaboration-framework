@@ -34,3 +34,24 @@ Independent affected review and actual final-head Source change gate are require
 before the correction PR merges. The subsequent main snapshot must be read back
 separately before #427 is closed again; keep it referenced/deferred in that PR.
 No tag, public release or downstream installation is selected.
+
+## Additional committed-input verification
+
+Independent reviewer `source_cutover_review` found no supported actionable
+findings on e6a701da2e65603d6d06b901ffedc3ffa355cff3. The affected gate on that
+commit passed 78 tests (42 schemas, 36 distribution), content and whitespace in
+18.889 s. Those results cover their stated scope only.
+
+A separate production `build_catalog` invocation with physical emission replaced
+by a capture boundary proceeded beyond the manifest checks but failed in
+`parent_documents`: the new project-initialization preset's adapter list was also
+unsorted. This was a real committed-input failure, not a physical build result.
+Extend the source test to check preset skill/knowledge/adapter ordering and adapter
+member ordering with production `ordered`. It reproduces exactly one error for
+the new preset (36 tests, 2.431 s). Reorder only that list; preserve its membership.
+Root authorizes the changed-input rerun under the same bounded repair task.
+A new immutable review, gate and catalog pre-emission check supersede the earlier
+subject for merge admission; final provider evidence belongs to PR #429 and #427.
+
+After the preset repair, all 36 distribution checks passed in 2.460 s, with
+zero errors, failures or skips.
