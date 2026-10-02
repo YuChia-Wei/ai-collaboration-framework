@@ -3,6 +3,14 @@
 ## Establish the target and authority
 
 Resolve the target root and the requested output before inspecting project files.
+Initialize fills missing foundations; refresh updates selected repository facts,
+commands and navigation in existing initialized context. A request to change
+collaboration rules, document responsibilities, precedence or adopted policy
+belongs to the target's authorized maintenance owner. Preserve the useful factual
+work and hand off the distinct rule change without requiring another skill's
+installation. Read-only assessment is a separate requested output, not a mandatory
+precondition for initialization or refresh.
+
 Read its applicable AGENTS files, current Git/worktree state when available, and
 explicitly selected requirements or decisions. A non-Git or empty directory is
 valid; do not create Git history or a remote as a side effect. Project instructions

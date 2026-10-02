@@ -1,0 +1,27 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-02-skill-routing
+workflow_kind: software-development
+title: Clarify context responsibilities and source skill routing
+owner_skill: software-development-orchestrator
+status: in_progress
+current_phase: review-and-validation
+artifact_root: .dev/workflows/2026-10-02-skill-routing
+entrypoint: workflow-plan.md
+created_at: '2026-10-02T23:22:49+08:00'
+updated_at: '2026-10-02T23:22:49+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-02-skill-routing
+base_branch: main
+base_commit: dc55bb509dc7af4a2f2380054c48c63eadfd02af
+work_items:
+- provider: github
+  issue: 432
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/432
+authority: Direct owner request on 2026-10-02 authorizes Issue creation, source routing
+  clarification, necessary fixes, PR integration and Issue closure.
+execution: Root is sole tracked writer and integration owner; three bounded read-only
+  agents audited fixed source. Independent final diff review remains separate.
+provider_continuation: Actual current-head CI, PR merge, Issue closure and Project
+  read-back remain distinct provider operations.

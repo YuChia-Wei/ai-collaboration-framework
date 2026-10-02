@@ -1,14 +1,20 @@
 ---
 name: ai-context-init
-description: Initialize project-owned collaboration context and a suitable project documentation structure, or refresh that initialized context from repository evidence. Preserve existing AGENTS rules and custom content. Does not install, upgrade or repair framework packages.
+description: Establish missing project collaboration entries and documentation structure, or refresh repository facts, commands and navigation in initialized context. Preserve existing rules and custom content; ongoing rule or responsibility changes belong to context governance. Does not install framework packages.
 ---
 
 # AI context initialization
 
-Use `initialize` for a new collaboration entry and project context, including an
-existing codebase that lacks them. Use `refresh` for a bounded update to those
-documents. For unrelated context changes, select the target's maintenance route
-when available; it is not a dependency of this package.
+Use `initialize` to establish missing collaboration entries and project context,
+including in an existing codebase. Use `refresh` for a selected update to repository
+facts, verified commands and navigation in that initialized context. Refresh does
+not redesign existing collaboration rules, document responsibilities or precedence.
+
+For ongoing project-owned context maintenance, default to the target's governance
+route when available (`ai-context-governance` is one candidate). A read-only context
+assessment or comparison belongs to an audit route (`ai-context-auditor` when
+available). Honor an explicit in-scope operation selection: a factual refresh
+remains usable independently, and neither candidate is a package prerequisite.
 
 Read [the initialization method](references/initialize.md) for either operation.
 Read [project structure guidance](references/project-structure.md) when selecting
