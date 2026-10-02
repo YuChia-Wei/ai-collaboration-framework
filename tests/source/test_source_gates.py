@@ -297,6 +297,15 @@ class SelectionTests(unittest.TestCase):
 
 
 class SafetyTests(unittest.TestCase):
+    def test_git_padded_rename_scores_preserve_before_after_and_next_record(self):
+        expected = [gate.Change("old.md", "new.md"), gate.Change("another.md", "another.md")]
+        for score in (b"000", b"001", b"095", b"099", b"100", b"0", b"95"):
+            with self.subTest(score=score):
+                self.assertEqual(gate.parse_diff(b"R" + score + b"\0old.md\0new.md\0M\0another.md\0"), expected)
+        for score in (b"101", b"999", b"0100", b"0000", b"-01", b"9a5"):
+            with self.subTest(score=score), self.assertRaisesRegex(gate.GateError, "unsupported diff status"):
+                gate.parse_diff(b"R" + score + b"\0old.md\0new.md\0")
+
     def test_diff_parse_bounds_and_path_rejection(self):
         self.assertEqual(gate.parse_diff(b"R100\0old.md\0new.md\0D\0gone.md\0A\0added.md\0"),
                          [gate.Change("old.md", "new.md"), gate.Change("gone.md", None), gate.Change(None, "added.md")])

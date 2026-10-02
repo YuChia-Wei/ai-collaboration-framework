@@ -228,7 +228,7 @@ def parse_diff(data: bytes) -> list[Change]:
     i = 0
     while i < len(fields):
         status = fields[i]
-        count = 2 if re.fullmatch(r"R(?:100|[0-9]{1,2})", status) else 1
+        count = 2 if re.fullmatch(r"R(?:100|0[0-9]{2}|[0-9]{1,2})", status) else 1
         if status not in ("A", "M", "D", "T") and count != 2:
             raise GateError("unsupported diff status: " + status[:12])
         if i + count >= len(fields):
