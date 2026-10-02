@@ -1,5 +1,10 @@
 # Python 前置需求診斷指南
 
+適用範圍：下列 `.ai/scripts/validate-ai-context.py` 範例需要相容的歷史套件
+及其實際存在的 validator；它不是目前來源庫可執行的命令。
+`tools/maintenance/` launcher 仍保留，但舊 entrypoint registry 不是目前工具
+可用性的證明。來源檢查以 `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md` 為準。
+
 本指南供維護者處理 portable Python CLI 的執行前檢查。它說明如何閱讀診斷與
 恢復環境；不會授權工具安裝套件、建立線上資源或發布 release。
 

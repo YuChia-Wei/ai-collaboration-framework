@@ -37,6 +37,11 @@ current truth.
 
 ## Historical And Legacy-Compatibility Boundary
 
+The following paths describe the frozen legacy revision. The `.dev/backlog/`
+tree is absent from the current source checkout; use the owning historical
+revision when that legacy obligation is selected. This retained description
+does not recreate those records or make a legacy validator available.
+
 The tracked `.dev/backlog/` tree is frozen historical and legacy-compatibility
 evidence. Its 55 item records, ROADMAP, planning sources, mapping receipts, and
 the renamed historical GitHub migration adapter retain their paths or explicit

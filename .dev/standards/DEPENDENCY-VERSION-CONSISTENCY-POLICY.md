@@ -1,5 +1,11 @@
 # Dependency Version Consistency Policy
 
+Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+owns current source checks. The legacy validator, distribution template and
+`check-all.sh` paths described below are unavailable here. This retained legacy
+gate applies only with its separately selected compatible revision; it is not
+a current source-admission command or a claim of restored tooling.
+
 ## Purpose
 
 This policy defines the deterministic offline dependency and runtime-version

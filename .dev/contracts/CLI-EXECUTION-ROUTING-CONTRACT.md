@@ -112,8 +112,9 @@ Report `owner-decision-required`, `blocked-by-environment`, `disallowed`, or
 - Schema: `.dev/contracts/cli-execution-routing.schema.yaml`
 - Local path: `.dev/ai-context/local/cli-execution-routing.yaml`
 - Ignore rule: `/.dev/ai-context/local/`
-- Validator: `.ai/scripts/validate-ai-context.py`
+- Retained legacy validator: `.ai/scripts/validate-ai-context.py` (unavailable in the current source layout).
 
-The validator checks the portable contract and any present local record. A
-missing local record is valid and means that no personal execution route has
+When using the compatible legacy package, the validator checks the portable
+contract and any present local record. Its path is not a current executable route.
+A missing local record is valid and means that no personal execution route has
 been preserved.

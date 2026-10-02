@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-10-02-rc4-paths`](2026-10-02-rc4-paths/workflow.yaml) | RC4 path inspection and source navigation repair | `software-development-orchestrator` | `completed` | `2026-10-02T19:59:54+08:00` | [plan](2026-10-02-rc4-paths/workflow-plan.md) |
 | [`2026-10-01-standards-promotion-hold`](2026-10-01-standards-promotion-hold/workflow.yaml) | Hold standards promotion outside distribution and separate skill states | `ai-context-governance` | `completed` | `2026-10-01T10:00:04+08:00` | [plan](2026-10-01-standards-promotion-hold/workflow-plan.md) |
 | [`2026-10-01-orchestrator-restore`](2026-10-01-orchestrator-restore/workflow.yaml) | Restore development orchestration and explain skill responsibility changes | `ai-context-governance` | `completed` | `2026-10-01T08:58:20+08:00` | [plan](2026-10-01-orchestrator-restore/workflow-plan.md) |
 | [`2026-09-26-skill-naming`](2026-09-26-skill-naming/workflow.yaml) | Selectable runtime skill names with original-name default | `ai-context-governance` | `completed` | `2026-09-26T11:21:31+08:00` | [plan](2026-09-26-skill-naming/workflow-plan.md) |
@@ -204,5 +205,5 @@ lifecycle states. Add a locator only when a legacy workflow is formally resumed.
 ## Related Discovery
 
 - [Workflow artifact policy](../standards/WORKFLOW-ARTIFACT-POLICY.md)
-- [Frozen historical backlog](../backlog/INDEX.MD)
+- Frozen historical backlog: `.dev/backlog/INDEX.MD` (historical path; unavailable in this source tree)
 - [Workflow README](README.MD)

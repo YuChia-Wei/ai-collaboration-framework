@@ -21,6 +21,10 @@ perform the next action.
 The machine-readable contract is
 `WORKFLOW-HANDOFF-POLICY.yaml`. Use the skill-owned template at
 `.ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml`.
+That template and the legacy `check-all.sh` route below are unavailable in this
+source layout. These instructions require the compatible legacy revision when
+that obligation is selected; ordinary source handoffs use the adopted source
+policy above.
 Register every durable instance in
 `.dev/workflows/handoff-checkpoints.yaml`; aggregate and hosted governance
 checks validate every registered checkpoint.

@@ -1,0 +1,17 @@
+{
+  "task_id": "T1",
+  "workflow_id": "2026-10-02-rc4-paths",
+  "owner_skill": "ai-context-auditor",
+  "title": "Audit product, current documentation and source tool paths",
+  "status": "completed",
+  "created_at": "2026-10-02T19:52:43+08:00",
+  "updated_at": "2026-10-02T19:52:43+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "execution_identity_basis": "Configured primary defaults; exact active runtime identity not exposed. Delegate invocations explicitly used gpt-6.1-sol/high.",
+  "issue": 430,
+  "result_summary": "Three fixed-source reports reviewed by root: no RC4 product path defect; source navigation corrections selected; unsupported legacy routes remain unavailable.",
+  "finding_status": "addressed"
+}

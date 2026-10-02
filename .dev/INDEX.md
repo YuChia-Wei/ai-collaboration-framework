@@ -8,7 +8,6 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | --- | --- |
 | `README.MD` | Purpose, scope, and usage of `.dev/`. |
 | `INDEX.md` | File and directory catalog for `.dev/`. |
-| `ARCHITECTURE.md` | Framework repository architecture and context model. |
 | `REPOSITORY-RENAME-COMPATIBILITY.md` | Source-repository rename migration risks, compatibility limits, and operational read-back guidance. |
 | `TEAM-GIT-FLOW-RULES.MD` | Canonical single-trunk branch and merge policy: pull-request-only `main` integration, workflow-mode branches, checkpoint continuation, and default merge commits. |
 
@@ -31,21 +30,18 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `standards/GIT-COMMIT-POLICY.yaml` | Machine-readable commit subject, workflow-section, assessment-ID, and AI-signature contract. |
 | `standards/WORKFLOW-HANDOFF-POLICY.md` | Fail-closed receiving checkpoint and provider-attribution preservation policy. |
 | `standards/WORKFLOW-HANDOFF-POLICY.yaml` | Machine-readable handoff vocabulary, output bounds, and read-only Git allowlist. |
-| `standards/coding-standards/` | .NET backend coding standards by component type. |
-| `standards/examples/` | Reusable .NET backend examples and templates. |
+| `standards/coding-standards/` | Legacy compatibility notices; old profile projections are unavailable here. |
+| `standards/examples/` | Legacy examples compatibility notices; not an executable example catalog. |
 | `standards/rationale/` | Rationale records for retained standards. |
-| `standards/templates/` | Reusable standards templates. |
+| `standards/templates/` | Legacy templates compatibility notices. |
 
 ## Guides
 
 | Path | Description |
 | --- | --- |
-| `guides/README.MD` | Purpose and usage of `.dev/guides/`. |
-| `guides/INDEX.MD` | File and directory catalog for guides. |
 | `guides/ai-collaboration-guides/` | AI collaboration, skill, prompt, workflow, and runtime wrapper guides. |
 | `guides/design-guides/` | .NET backend design and context-placement guides. |
 | `guides/implementation-guides/` | .NET backend implementation and setup guides. |
-| `guides/learning-guides/` | Learning path and new-project guidance. |
 
 ## Lessons
 
@@ -57,40 +53,26 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `lessons/environment/` | Host, shell, process-environment, and runtime-availability lessons. |
 | `lessons/validation/` | Validation scheduling, immutable-snapshot, timeout-orchestration, and evidence-integrity lessons. |
 
-## Requirements And Specs
+## Requirements And Authoring Resources
 
 | Path | Description |
 | --- | --- |
-| `requirement/` | Requirements and requirement authoring materials. |
-| `requirement/REQUIREMENT-GUIDE.MD` | Requirement authoring guide. |
-| `requirement/TECH-STACK-REQUIREMENTS.MD` | Tech stack requirements for the framework profile. |
-| `specs/` | Spec authoring and test-spec guidance for this framework. |
-| `specs/README.MD` | Purpose and usage of `.dev/specs/`. |
-| `specs/INDEX.MD` | File and directory catalog for specs. |
-| `specs/SPEC-GUIDE.MD` | Spec authoring guide. |
-| `specs/SPEC-ORGANIZATION-GUIDE.MD` | Spec organization guide. |
-| `specs/tests/` | Test-spec storage guidance and examples. |
+| `requirement/` | Retained source requirement records. |
+| `../.ai/core/skills/requirement-author/references/requirement-guide.md` | Managed requirement-authoring guide; not project requirements. |
+| `../.ai/core/skills/spec-author/references/spec-guide.md` | Managed specification-authoring guide; not project specifications. |
+| `../.ai/core/skills/spec-author/references/spec-organization-guide.md` | Managed specification-organization guide. |
 
-## Domain Language And Problem Frames
+## Problem-Frame Records
 
 | Path | Description |
 | --- | --- |
-| `domain-language/` | Domain language templates and target-repo vocabulary area. |
-| `domain-language/templates/` | Bounded context, aggregate vocabulary, and domain event language templates. |
-| `problem-frames/` | Problem-frame authoring guidance and templates. |
-| `problem-frames/INDEX.md` | File and directory catalog for problem-frame assets. |
-| `problem-frames/templates/` | Reusable CBF/SWF problem-frame templates. |
+| `problem-frames/records/` | Project-owned problem-frame record destination; currently a tracked placeholder. |
 
 ## Operations
 
 | Path | Description |
 | --- | --- |
 | `operations/` | Operations authoring guides and target-repo operations documentation area. |
-| `operations/README.MD` | Purpose and usage of `.dev/operations/`. |
-| `operations/CONTEXT-MAP-GUIDE.MD` | Context-map authoring guide. |
-| `operations/EVENT-CATALOG-GUIDE.MD` | Event-catalog authoring guide. |
-| `operations/MQ-TOPOLOGY-GUIDE.MD` | MQ topology authoring guide. |
-| `operations/RUNBOOK-GUIDE.MD` | Runbook authoring guide. |
 | `operations/runbooks/` | Runbook folder and runbook index. |
 | `operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD` | Cold-start governed AI context candidate, tag handoff, publication, and finalization procedure. |
 
@@ -108,9 +90,9 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 
 | Path | Description |
 | --- | --- |
-| `releases/` | Durable framework release identity, compatibility declarations, and migration guidance. |
-| `releases/README.MD` | Release directory purpose and boundary. |
-| `releases/INDEX.MD` | Published and planned release discovery view. |
+| `../releases/` | Durable framework release identity, compatibility declarations, and migration guidance. |
+| `../releases/README.MD` | Release directory purpose and boundary. |
+| `../releases/INDEX.MD` | Published and planned release discovery view. |
 | `standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md` | Source release preparation, tag immutability, hosted publication, and source/provider evidence gates. |
 | `standards/AI-CONTEXT-VERSION-POLICY.md` | Portable installed-version identity, target provenance, and upgrade safety. |
 
@@ -123,13 +105,11 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `assessments/INDEX.MD` | Draft, final, superseded, and withdrawn assessment catalog. |
 | `standards/ASSESSMENT-ARTIFACT-POLICY.md` | Assessment ID, locator, lifecycle, branch, commit, and handoff contract. |
 
-## Frozen Historical Backlog
+## Historical References
 
-| Path | Description |
-| --- | --- |
-| `backlog/` | Frozen pre-2026-08-24 backlog, ROADMAP, planning, provider-receipt, and legacy-release compatibility evidence. |
-| `backlog/README.MD` | Historical freeze, retained identity, and compatibility boundary. |
-| `backlog/INDEX.MD` | Frozen 55-item catalog snapshot; not current work-management truth. |
+The removed `.dev/backlog/` tree and `.ai/assets/skills/README.MD` remain
+historical references only. Retrieve their compatible historical revision when
+selected; this catalog does not imply those paths exist in the current tree.
 
 ## AI Runtime And Canonical Assets
 
@@ -140,4 +120,3 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `../.ai/core/skills/` | Generated installed skill payload shared by Codex and Claude. |
 | `../.agents/skills/README.md` | Current original-ID Codex skill inventory and source-specific duties. |
 | `../.claude/skills/README.md` | Current original-ID Claude skill inventory and source-specific duties. |
-| `../.ai/assets/skills/README.MD` | Legacy compatibility and tooling data boundary; not runtime discovery. |

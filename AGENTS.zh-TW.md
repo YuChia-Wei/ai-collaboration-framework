@@ -149,7 +149,7 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 - `.ai/INDEX.MD`：generated installed content 與 source-tooling data。
 - `.dev/INDEX.md`：project knowledge 與 current records。
 - `.dev/standards/INDEX.MD`：standards navigation。
-- `.dev/guides/ai-collaboration-guides/INDEX.MD`：human-facing explanations，不是 default execution context。
+- `.dev/guides/ai-collaboration-guides/`：human-facing explanations，不是 default execution context。
 - `.agents/skills/README.md` 與 `.claude/skills/README.md`：installed skill inventories。
 
 ### 根目錄 Entry Files

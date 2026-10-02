@@ -1,5 +1,9 @@
 # AI Skill Guide Standards
 
+目前來源庫的技能來源是 `src/skills/`，安裝內容是 `.ai/core/skills/`；
+以根目錄 `AGENTS.md` 和 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 為準。
+下文 `.ai/assets/skills/` 僅描述舊版格式，在目前來源樹不可用。
+
 本文件定義 `.dev/guides/ai-collaboration-guides/` 的通用規範，避免 AI collaboration 文件散落或與 skill 本體重疊。
 
 ## 目標
@@ -75,6 +79,6 @@
 
 1. 新增或調整 skill
 2. 決定是否需要新增或更新 human-facing guide
-3. 更新 `.dev/guides/ai-collaboration-guides/INDEX.MD`
-4. 更新 `.dev/INDEX.md` 或其他必要索引
+3. 將指南放在 `.dev/guides/ai-collaboration-guides/`；目前沒有獨立的指南索引
+4. 更新 `.dev/INDEX.md` 或其他實際存在的必要索引
 5. 確認 guide 與 skill 本體沒有雙重真相
