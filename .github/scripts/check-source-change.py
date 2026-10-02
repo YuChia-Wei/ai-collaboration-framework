@@ -20,37 +20,24 @@ from urllib.parse import unquote, urlsplit
 MAX_BLOB = 1024 * 1024
 MAX_PATHS = 256
 MANIFEST = "src/distribution/manifest.yaml"
-RUNNER = "tests/framework_next/run.py"
-RUNNER_INTERFACE_COMMIT = "e71712b71791170c3f4946e131ce867f82dade8f"
-PUBLIC_INTERFACE_COMMIT = "e71712b71791170c3f4946e131ce867f82dade8f"
-# Exact prepare(..., phases) declarations; PublicCase adds resource-setup.
-PUBLIC_PHASES = {family: ["resource-setup", "C4-config", "C6-binding", *phases]
-                for family, phases in {
-    "lesson": ["T1-round-trip", "C6-query-and-legacy", "T1-decision-successor", "C6-input-boundary"],
-    "adr": ["T2-round-trip", "T2-decision-derive"],
-    "standards-promotion": ["T3-round-trip", "T3-reconciliation-boundaries"],
-    "pr": ["T4-git-round-trip", "T4-synthetic-provider"],
-    "local-backlog": ["T5-round-trip"],
-    "software-development-orchestrator": ["T6-round-trip", "T6-with-deferrals"],
-    "problem-frame-author": ["T7-round-trip", "T7-structural-negatives"],
-}.items()}
-FAMILIES = frozenset({"lesson", "adr", "standards-promotion", "pr", "local-backlog",
-                      "software-development-orchestrator", "problem-frame-author"})
-# PublicCase in test_knowledge is shared by all seven families. These are test
-# dependencies, not permission to discover or run unrelated regression modules.
-PUBLIC_TEST_FAMILIES = {
-    "tests/framework_next/test_knowledge.py": FAMILIES,
-    "tests/framework_next/test_work.py": frozenset({"pr", "local-backlog", "software-development-orchestrator"}),
-    "tests/framework_next/test_cbf.py": frozenset({"problem-frame-author"}),
+RUNNER = "tests/run.py"
+RUNNER_INTERFACE = "framework-tests/1"
+SUITES = ("schemas", "tools", "distribution", "release", "source", "loader", "platform")
+TEST_SUITES = {
+    **{"tests/framework_next/" + name: "distribution" for name in (
+        "test_contracts.py", "test_adapters.py", "test_distribution_contracts.py",
+        "test_maintenance_contracts.py", "test_skill_naming.py", "test_distribution_versions.py")},
+    "tests/framework_next/test_engine_source.py": "loader",
+    "tests/framework_next/test_protected_paths.py": "platform",
+    "tests/framework_next/test_windows_paths.py": "platform",
+    "tests/test_runner.py": "source",
 }
-OWNER_SELECTED_TESTS = {
-    "tests/framework_next/test_engine_source.py": "engine-source-regressions:#371",
-    "tests/framework_next/test_installation_scan_budget.py": "installation-scan-budget-regressions:#386",
-    "tests/framework_next/test_pr_git_worktree.py": "pr-git-worktree-regressions:#335",
-    "tests/framework_next/test_protected_paths.py": "protected-path-regressions:#383",
-    "tests/framework_next/test_versioned_candidates.py": "versioned-candidate-regressions:#381",
-    "tests/framework_next/test_windows_paths.py": "windows-path-regressions:#378",
-}
+# Only the removed side of a deletion or rename may use these historical names.
+RETIRED_TESTS = frozenset({"tests/framework_next/" + name for name in (
+    "run.py", "test_knowledge.py", "test_work.py", "test_cbf.py", "test_native_windows.py",
+    "test_pr_git_worktree.py", "test_installation_scan_budget.py", "test_breaking_reinstall.py",
+    "test_versioned_candidates.py", "test_rc2_adapters.py", "test_rc2_distribution.py",
+    "test_rc2_maintenance.py")}) | {".github/tests/test-release-tools.py", ".github/tests/test_source_gates.py"}
 LEGACY_WORKFLOWS = frozenset({"governance.yml", "portable-gates.yml", "nightly-full-readiness.yml",
     "package-candidate.yml", "publish-release.yml", "release-provider-preflight.yml",
     "test-fixture-acceleration.yml"})
@@ -59,10 +46,14 @@ SOURCE_FILES = frozenset({"AGENTS.md", "AGENTS.zh-TW.md", "CLAUDE.md",
     ".github/scripts/run-source-native.py", ".github/workflows/source-checks.yml",
     ".github/workflows/source-native.yml"})
 DISTRIBUTION_FILES = frozenset({"src/distribution/" + name for name in (
-    "__init__.py", "data.py", "git_source.py", "package.py", "selection.py", "assembly.py", "codex.py")})
+    "__init__.py", "data.py", "git_source.py", "package.py", "selection.py", "assembly.py",
+    "catalog.py", "content.py", "contracts.py", "codex.py", "claude.py")})
 NATIVE_FILES = frozenset({"src/distribution/" + name for name in (
     "installation.py", "installation_io.py", "installation_plan.py", "installation_state.py",
-    "maintenance_coordination.py")}) | {"src/tools/maintain_framework.py"}
+    "maintenance_coordination.py", "reinstallation.py")}) | {
+        "src/tools/maintain_framework.py", "tools/reinstall-framework.py"}
+RELEASE_FILES = frozenset({".github/scripts/" + name for name in (
+    "build-release.py", "draft-release.py", "release_common.py")})
 RECORD_ROOT = ".dev/workflows/2026-09-23-source-gates-implementation/"
 
 
@@ -136,7 +127,7 @@ class Outcome:
 
 
 def bounded_run(argv, cwd, *, timeout=60, limit=65536, separate_streams=False) -> Outcome:
-    """Bound total capture; public JSONL/stdout stays separate from unittest/stderr."""
+    """Bound total capture; callers can separate JSON stdout from test diagnostics."""
     try:
         child = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL,
                                  stdout=subprocess.PIPE,
@@ -255,76 +246,176 @@ class Ownership:
     """Read declared members/roles, without importing any product code."""
     def __init__(self, tree):
         self.tree, self._manifest, self._packages = tree, None, {}
+        self._components, self._members = {}, {}
+
+    @staticmethod
+    def identifier(value):
+        if not isinstance(value, str) or not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", value):
+            raise GateError("unsafe package identifier")
+        return value
+
+    @staticmethod
+    def rows(value, name, limit=512, *, mappings=False):
+        if (not isinstance(value, list) or len(value) > limit
+                or (mappings and any(not isinstance(row, dict) for row in value))):
+            raise GateError("missing or oversized " + name)
+        return value
 
     def manifest(self):
         if self._manifest is None:
             value = strict_yaml(self.tree.read(MANIFEST))
-            if not isinstance(value, dict) or type(value.get("manifest_version")) is not int or value["manifest_version"] != 1:
+            if not isinstance(value, dict) or type(value.get("manifest_version")) is not int or value["manifest_version"] != 2:
                 raise GateError("unknown manifest ownership version")
-            if not isinstance(value.get("components"), list) or not isinstance(value.get("profiles"), list):
-                raise GateError("missing component/profile ownership")
-            if len(value["components"]) > 64 or len(value["profiles"]) > 64:
-                raise GateError("ownership table exceeds selected bounds")
+            components = self.rows(value.get("components"), "component ownership", 64, mappings=True)
+            self.rows(value.get("profiles"), "profile ownership", 64, mappings=True)
+            self.rows(value.get("adapters"), "adapter ownership", 16, mappings=True)
+            seen_paths = set()
+            for component in components:
+                kind, owner = component["kind"], self.identifier(component["id"])
+                if kind not in ("skill", "knowledge"):
+                    raise GateError("unknown component kind")
+                key = kind, owner
+                if key in self._components:
+                    raise GateError("duplicate component ownership")
+                root = safe_path(component["source"])
+                expected_root = ("src/skills/" if kind == "skill" else "src/knowledge/") + owner
+                if root != expected_root or not isinstance(component.get("version"), str) or not component["version"]:
+                    raise GateError("unknown component source or version")
+                safe_path(component["metadata"])
+                for member in self.rows(component.get("members"), "member ownership", mappings=True):
+                    relative = safe_path(member["source"])
+                    full = safe_path(root + "/" + relative)
+                    if full.casefold() in seen_paths:
+                        raise GateError("ambiguous declared member: " + full)
+                    seen_paths.add(full.casefold())
+                    self._members[full] = component, relative
+                if root + "/" + component["metadata"] not in self._members:
+                    raise GateError("metadata is not a declared member")
+                self._components[key] = component
             self._manifest = value
         return self._manifest
 
+    def metadata(self, component):
+        key = component["kind"], component["id"]
+        if key in self._packages:
+            return self._packages[key]
+        path = component["source"] + "/" + component["metadata"]
+        metadata = strict_yaml(self.tree.read(path))
+        if (not isinstance(metadata, dict) or metadata.get("id") != component["id"]
+                or metadata.get("version") != component["version"]):
+            raise GateError("package identity differs from declared ownership: " + path)
+        roles = {}
+        def role(member, kind):
+            member = safe_path(member)
+            if member in roles:
+                raise GateError("ambiguous metadata member role: " + path)
+            roles[member] = kind
+        if component["kind"] == "skill":
+            version = metadata.get("metadata_version")
+            if type(version) is not int or version not in (1, 2, 3, 4):
+                raise GateError("unknown skill metadata ownership version")
+            role(component["metadata"], "metadata")
+            role(metadata["entrypoint"], "prose")
+            resources = metadata.get("resources")
+            if not isinstance(resources, dict):
+                raise GateError("missing skill resource ownership")
+            for member in self.rows(resources.get("references"), "reference ownership"):
+                role(member, "prose")
+            for kind in ("schemas", "templates", "tools"):
+                for resource in self.rows(resources.get(kind), kind + " ownership", mappings=True):
+                    role(resource["entrypoint" if kind == "tools" else "path"], kind)
+        else:
+            if type(metadata.get("content_package_version")) is not int or metadata["content_package_version"] != 1:
+                raise GateError("unknown knowledge metadata ownership version")
+            kinds = {"index", "knowledge", "metadata", "normative-rule", "rule-catalog", "example", "source-include", "template"}
+            for member in self.rows(metadata.get("members"), "knowledge member ownership", mappings=True):
+                if member.get("kind") not in kinds:
+                    raise GateError("unknown knowledge member kind")
+                # Knowledge examples and source includes are inert content, not tools.
+                role(member["path"], "metadata" if member["kind"] == "metadata" else "prose")
+            if roles.get(component["metadata"]) != "metadata" or metadata.get("entrypoint") not in roles:
+                raise GateError("missing knowledge metadata/entrypoint ownership")
+        if set(roles) != {member["source"] for member in component["members"]}:
+            raise GateError("manifest and metadata member ownership differ: " + path)
+        result = metadata, roles
+        self._packages[key] = result
+        return result
+
     def package(self, path):
-        owners = []
-        for component in self.manifest()["components"]:
-            root = safe_path(component["source"])
-            for member in component["members"]:
-                full = safe_path(root + "/" + safe_path(member["source"]))
-                if full == path:
-                    owners.append((component, member["source"]))
-        if len(owners) != 1:
-            raise GateError("unknown or ambiguous declared member: " + path)
-        component, relative = owners[0]
-        owner = component["id"]
-        if not isinstance(owner, str) or not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", owner):
-            raise GateError("unsafe package identifier")
-        if owner not in self._packages:
-            metadata = strict_yaml(self.tree.read(component["source"] + "/" + safe_path(component["metadata"])))
-            if (not isinstance(metadata, dict) or metadata.get("id") != owner
-                    or type(metadata.get("metadata_version")) is not int
-                    or metadata["metadata_version"] not in (1, 2, 3)):
-                raise GateError("unknown package metadata ownership: " + path)
-            self._packages[owner] = metadata
-        metadata = self._packages[owner]
-        resources = metadata.get("resources", {})
-        if not isinstance(resources, dict) or not isinstance(resources.get("tools"), list):
-            raise GateError("missing tool ownership: " + owner)
-        prose = {metadata.get("entrypoint"), *resources.get("references", [])}
-        declared = {component["metadata"], *prose}
-        declared.update(item["path"] for kind in ("schemas", "templates") for item in resources.get(kind, []))
-        declared.update(item["entrypoint"] for item in resources["tools"])
-        if relative not in declared:
-            raise GateError("member has no metadata role: " + path)
-        return owner, relative in prose, bool(resources["tools"])
+        self.manifest()
+        if path not in self._members:
+            raise GateError("unknown declared member: " + path)
+        component, relative = self._members[path]
+        _, roles = self.metadata(component)
+        return component["kind"], component["id"], roles[relative], "tools" in roles.values()
 
     def prove_dependencies(self):
+        """Bind declared dependency edges to this tree; do not assume empty closure."""
+        edges = {}
         for component in self.manifest()["components"]:
-            owner, _, _ = self.package(component["source"] + "/" + component["metadata"])
-            dependencies = self._packages[owner].get("dependencies")
-            if (not isinstance(dependencies, dict) or set(dependencies) != {"required", "optional"}
-                    or dependencies["required"] != [] or dependencies["optional"] != []):
-                raise GateError("transitive dependency impact requires coordinator binding: " + owner)
-
-    def families(self):
-        self.prove_dependencies()
-        result = set()
-        for component in self.manifest()["components"]:
-            path = component["source"] + "/" + component["metadata"]
-            owner, _, tool = self.package(path)
-            if tool:
-                if owner not in FAMILIES:
-                    raise GateError("unknown public family: " + owner)
-                result.add(owner)
-        return result
+            key = component["kind"], component["id"]
+            metadata, _ = self.metadata(component)
+            dependencies = metadata.get("dependencies")
+            if not isinstance(dependencies, dict) or set(dependencies) != {"required", "optional"}:
+                raise GateError("missing dependency ownership")
+            rows = []
+            for requirement in ("required", "optional"):
+                for dependency in self.rows(dependencies[requirement], "dependencies", 64, mappings=True):
+                    rows.append((dependency.get("kind", "skill"), dependency["id"],
+                                 dependency["version"], requirement, dependency.get("on_missing")))
+            if component["kind"] == "skill" and metadata["metadata_version"] == 4:
+                consumption_ids = set()
+                for dependency in self.rows(metadata.get("knowledge_consumption"), "knowledge consumption", 64, mappings=True):
+                    identifier = self.identifier(dependency["id"])
+                    if identifier in consumption_ids:
+                        raise GateError("duplicate knowledge consumption")
+                    consumption_ids.add(identifier)
+                    for field in ("operations", "resources"):
+                        values = self.rows(dependency.get(field), "knowledge " + field)
+                        if (not values or any(not isinstance(value, str) or not value for value in values)
+                                or len(values) != len(set(values))):
+                            raise GateError("unknown knowledge consumption binding")
+                    rows.append(("knowledge", dependency["package"], dependency["version"],
+                                 dependency["requirement"], dependency.get("on_missing")))
+            edges[key] = set()
+            for kind, owner, version, requirement, missing in rows:
+                target = kind, self.identifier(owner)
+                if (kind not in ("skill", "knowledge") or requirement not in ("required", "optional")
+                        or not isinstance(version, str) or not version
+                        or (requirement == "optional" and missing != "unavailable")):
+                    raise GateError("unknown dependency binding")
+                declared = self._components.get(target)
+                if declared is None:
+                    if requirement == "required":
+                        raise GateError("missing required dependency: " + owner)
+                    continue
+                if declared["version"] != version:
+                    raise GateError("dependency version differs from declared ownership: " + owner)
+                edges[key].add(target)
+        complete, active = set(), set()
+        def visit(key):
+            if key in active:
+                raise GateError("cyclic dependency ownership")
+            if key not in complete:
+                active.add(key)
+                for target in edges[key]:
+                    visit(target)
+                active.remove(key)
+                complete.add(key)
+        for key in edges:
+            visit(key)
 
     def declared_distribution(self, path):
         manifest = self.manifest()
         paths = {safe_path(p["path"]) for p in manifest["profiles"]}
-        paths.update(safe_path(a["template"]) for a in manifest.get("adapters", []))
+        for adapter in manifest["adapters"]:
+            root = safe_path(adapter["source"])
+            if root != "src/adapters/" + self.identifier(adapter["id"]):
+                raise GateError("unknown adapter source")
+            members = self.rows(adapter.get("members"), "adapter members")
+            if adapter["template"] not in members:
+                raise GateError("undeclared adapter template")
+            paths.update(safe_path(root + "/" + safe_path(member)) for member in members)
         return path in paths
 
 
@@ -341,64 +432,69 @@ class Selection:
                 "error_count": len(self.errors)}
 
 
-def classify(path: str, ownership: Ownership, selection: Selection):
+def classify(path: str, ownership: Ownership, selection: Selection, *, removed=False):
     safe_path(path)
     ownership.tree.read(path)  # Includes deleted side mode/size safety.
+    if path in RETIRED_TESTS:
+        if not removed:
+            raise GateError("retired test path is not an executable route: " + path)
+        selection.owners.add("retired-tests")
+        return
     if path.startswith((".dev/backlog/", ".ai/", ".agents/", ".claude/", ".codex/", ".dev/ai-context/")):
         raise GateError("legacy/support owner must select exact checks: " + path)
-    if path.startswith("src/skills/"):
-        owner, prose, tool = ownership.package(path)
+    if path.startswith(("src/skills/", "src/knowledge/")):
+        kind, owner, role, tool = ownership.package(path)
         selection.owners.add(owner)
-        if not prose:
+        if role != "prose":
             ownership.prove_dependencies()
-            selection.checks.add("contracts")
+            selection.checks.add("schemas")
             if tool:
-                if owner not in FAMILIES:
-                    raise GateError("unknown public family: " + owner)
-                selection.checks.add("public:" + owner)
+                selection.checks.add("tools")
+            if role == "metadata":
+                selection.checks.add("distribution")
         return
     if path in NATIVE_FILES:
-        selection.checks.add("contracts")
-        selection.requirements.update({"native-trial-required:windows:V3-binding-pending", "independent-scoped-review"})
+        selection.checks.add("distribution")
+        if path == "src/tools/maintain_framework.py":
+            selection.checks.update({"loader", "platform"})
+        elif path in {"src/distribution/installation_state.py", "src/distribution/installation_io.py",
+                      "src/distribution/installation_plan.py"}:
+            selection.checks.add("platform")
+        selection.requirements.update({"native-acceptance-unavailable:owner-selection-required", "independent-scoped-review"})
         selection.owners.add("installation")
         return
     if (path == MANIFEST or path in DISTRIBUTION_FILES
-            or path in {"tools/build-development.py", "tools/build-candidate.py"}
+            or path.startswith("src/distribution/schemas/")
+            or path in {"tools/build-development.py", "tools/build-candidate.py", "tools/build-catalog.py", "tools/derive-subset.py"}
             or path.startswith(("src/profiles/", "src/adapters/"))):
         if path.startswith(("src/profiles/", "src/adapters/")) and not ownership.declared_distribution(path):
             raise GateError("undeclared profile/adapter: " + path)
-        selection.checks.add("contracts")
-        selection.checks.update("public:" + family for family in ownership.families())
-        selection.requirements.add("distribution-trial-required:affected-selections;contracts-build-Lesson-only")
-        if path == "tools/build-candidate.py":
-            selection.requirements.add("versioned-candidate-trial-required:affected-selections")
+        ownership.prove_dependencies()
+        selection.checks.add("distribution")
+        if path == MANIFEST or path.startswith("src/distribution/schemas/"):
+            selection.checks.add("schemas")
         selection.owners.add("distribution")
         return
-    if path in PUBLIC_TEST_FAMILIES:
-        families = PUBLIC_TEST_FAMILIES[path]
-        selection.checks.update("public:" + family for family in families)
-        selection.owners.update(families)
-        selection.owners.add("new-public-tests")
+    if path in RELEASE_FILES:
+        selection.checks.add("release")
+        selection.owners.add("release-tooling")
         return
-    if path == "tests/framework_next/test_native_windows.py":
-        selection.owners.add("native-test-driver:#382")
-        selection.requirements.update({"native-trial-required:windows:V3-binding-pending", "independent-scoped-review"})
+    if path in TEST_SUITES:
+        selection.checks.add(TEST_SUITES[path])
+        selection.owners.add("source-tests")
         return
-    if path in OWNER_SELECTED_TESTS:
-        selection.owners.add(OWNER_SELECTED_TESTS[path])
-        selection.requirements.add("owner-selected-regression-required:" + path)
+    for suite in ("schemas", "tools", "release", "source"):
+        if path.startswith("tests/" + suite + "/") and path.endswith(".py"):
+            selection.checks.add(suite)
+            selection.owners.add("source-tests")
+            return
+    if path in {"tests/framework_next/support.py", "tests/framework_next/__init__.py"}:
+        selection.checks.update({"distribution", "loader", "platform"})
+        selection.owners.add("source-test-support")
         return
-    if path in {"tests/framework_next/run.py", "tests/framework_next/support.py"}:
-        selection.checks.add("contracts")
-        selection.checks.update("public:" + family for family in ownership.families())
-        selection.owners.add("new-test-runner")
-        return
-    if path == "tests/framework_next/test_contracts.py" or path == "tests/framework_next/README.md":
-        selection.checks.add("contracts" if path.endswith(".py") else "content")
-        selection.owners.add("new-test-contracts")
-        return
-    if path in SOURCE_FILES or path.startswith(".github/tests/") or path.startswith(".dev/standards/"):
-        selection.checks.add("source-tests")
+    if (path in SOURCE_FILES or path in {RUNNER, "tests/__init__.py", ".gitignore", "tests/requirements.txt"}
+            or path.startswith(".dev/standards/")):
+        selection.checks.add("source")
         selection.requirements.add("independent-scoped-review")
         selection.owners.add("source-governance")
         return
@@ -408,11 +504,11 @@ def classify(path: str, ownership: Ownership, selection: Selection):
         selection.owners.add("issue-369-record")
         return
     if path == ".dev/TEAM-GIT-FLOW-RULES.MD":
-        selection.checks.add("source-tests")
+        selection.checks.add("source")
         selection.requirements.add("independent-scoped-review")
         selection.owners.add("source-governance")
         return
-    if (path in {"README.md", "README.en.md", "LICENSE"}
+    if (path in {"README.md", "README.en.md", "LICENSE", "tests/readme.md", "tests/framework_next/README.md"}
             or (path.startswith((".dev/design/", ".dev/guides/", ".dev/workflows/")) and path.lower().endswith(".md"))):
         selection.owners.add("source-prose")
         return
@@ -423,10 +519,11 @@ def select(changes, before, after):
     result = Selection()
     owners = Ownership(before), Ownership(after)
     for change in changes:
-        for path, ownership in zip((change.before, change.after), owners):
+        for index, (path, ownership) in enumerate(zip((change.before, change.after), owners)):
             if path:
                 try:
-                    classify(path, ownership, result)
+                    removed = index == 0 and change.before != change.after and not after.exists(path)
+                    classify(path, ownership, result, removed=removed)
                 except (GateError, KeyError, TypeError, ValueError) as exc:
                     result.errors.append(str(exc)[:600])
     return result
@@ -471,13 +568,9 @@ def content_checks(changes, before, after):
 
 
 def command_for(check):
-    if check == "source-tests":
-        return [sys.executable, "-I", "-B", ".github/tests/test_source_gates.py", "--json"]
-    if check == "contracts":
-        return [sys.executable, "-I", "-B", RUNNER, "--layer", "contracts"]
-    if check.startswith("public:") and check.removeprefix("public:") in FAMILIES:
-        return [sys.executable, "-I", "-B", RUNNER, "--layer", "public", "--family", check.removeprefix("public:")]
-    raise GateError("unknown selected command: " + check)
+    if check not in SUITES:
+        raise GateError("unknown selected suite: " + str(check))
+    return [sys.executable, "-I", "-B", RUNNER, "--suite", check]
 
 
 def run_selected(check, root, head, launch=bounded_run):
@@ -492,142 +585,42 @@ def run_selected(check, root, head, launch=bounded_run):
             raise GateError("selected entry is linked")
     if not entry.is_file() or entry.read_bytes() != expected:
         raise GateError("selected command missing or differs from pinned head: " + path)
-    if check.startswith("public:"):
-        subject = full_sha(head.revision)
-        result = launch(argv, root, timeout=120, limit=65536, separate_streams=True)
-        return command_result(check, result, subject=subject)
-    result = launch(argv, root, timeout=120, limit=65536)
-    return command_result(check, result)
+    subject = full_sha(head.revision)
+    result = launch(argv, root, timeout=120, limit=65536, separate_streams=True)
+    return {**command_result(check, result), "source_commit": subject}
 
 
-def contract_test_count(output):
-    """Read #368's real unittest + JSON observations; this is not a receipt schema.
-
-    The caller also requires exit 0, which the upstream runner guarantees only
-    after zero skips and successful cleanup. Missing/contradictory output fails
-    closed. Extra observation names are allowed; product assertions remain owned
-    by the actual runner, not reimplemented here.
-    """
-    try:
-        text = output.decode("utf-8").replace("\r\n", "\n")
-        summaries = re.findall(r"(?m)^Ran ([1-9][0-9]*) tests? in [0-9]+(?:\.[0-9]+)?s\n\nOK$", text)
-        if len(summaries) != 1 or re.search(
-                r"(?m)^(?:FAILED\b|OK \(|ERROR:|FAIL:|Traceback |usage:)| \.\.\. skipped\b", text):
-            raise GateError("contracts result missing, failed, skipped or ambiguous unittest summary")
-        observations = [strict_json(line.encode("utf-8")) for line in text.splitlines() if line.startswith("{")]
-        if any(not isinstance(item, dict) or "outcome" in item for item in observations):
-            raise GateError("contracts result contains an error or malformed observation")
-        runtimes = [item["runtime"] for item in observations if "runtime" in item]
-        accounting = [item["fixture_accounting"] for item in observations if "fixture_accounting" in item]
-        if len(runtimes) != 1 or len(accounting) != 1:
-            raise GateError("contracts result missing or duplicate runtime/cleanup observation")
-        runtime, fixture = runtimes[0], accounting[0]
-        if (not isinstance(runtime, dict) or not all(isinstance(runtime.get(key), str) and runtime[key]
-                for key in ("python", "executable", "PyYAML", "jsonschema", "referencing"))
-                or not isinstance(fixture, dict)
-                or not {"residue", "next_action", "observed_files", "process_total"} <= fixture.keys()
-                or fixture["residue"] is not None or fixture["next_action"] is not None
-                or any(type(fixture[key]) is not int or fixture[key] < 0
-                       for key in ("observed_files", "process_total"))):
-            raise GateError("contracts result malformed or cleanup incomplete")
-        return int(summaries[0])
-    except (UnicodeError, ValueError, TypeError) as exc:
-        raise GateError("contracts result has malformed observation bytes") from exc
-
-
-def public_family_result(family, subject, stdout, stderr):
-    """Validate the fixed #373 single-family completion evidence, never an RO gate."""
-    try:
-        subject = full_sha(subject)
-        if family not in PUBLIC_PHASES:
-            raise GateError("unknown public result family")
-        detail = stderr.decode("utf-8").replace("\r\n", "\n")
-        if (len(re.findall(r"(?m)^Ran 1 test in [0-9]+(?:\.[0-9]+)?s\n\nOK$", detail)) != 1
-                or re.search(r"(?m)^(?:FAILED\b|OK \(|ERROR:|FAIL:|Traceback |usage:|\{)| \.\.\. skipped\b", detail)
-                or len(re.findall(r"(?m)^Ran ", detail)) != 1):
-            raise GateError("public unittest result missing, failed, skipped or ambiguous")
-        # The actual single-family arm emits exactly runtime, public_family, selection.
-        lines = stdout.decode("utf-8").splitlines()
-        rows = [strict_json(line.encode("utf-8")) for line in lines]
-        if (len(rows) != 3 or any(not isinstance(row, dict) for row in rows)
-                or set(rows[0]) != {"runtime"} or set(rows[1]) != {"public_family"}
-                or set(rows[2]) != {"public_selection", "outcome", "exit", "unexecuted_families"}):
-            raise GateError("public JSONL missing, duplicated, reordered or malformed")
-        runtime, entry, final = rows[0]["runtime"], rows[1]["public_family"], rows[2]
-        if (not isinstance(runtime, dict) or not all(isinstance(runtime.get(key), str) and runtime[key]
-                for key in ("python", "executable", "PyYAML", "jsonschema", "referencing"))):
-            raise GateError("public runtime observation malformed")
-        if (final["public_selection"] != [family] or final["outcome"] != "passed"
-                or type(final["exit"]) is not int or final["exit"] != 0
-                or final["unexecuted_families"] != []):
-            raise GateError("public selection mismatched or incomplete")
-        fields = {"family", "outcome", "exit", "source_commit", "fixture_kind", "completed_phases",
-                  "failed_phase", "blocked_before_write", "unexecuted_phases", "public_launches", "calls",
-                  "fixture_accounting"}
-        phases = PUBLIC_PHASES[family]
-        if (not isinstance(entry, dict) or not fields <= entry.keys()
-                or {"exception_type", "diagnostic", "residue", "next_action"} & entry.keys()
-                or entry.get("current") is not None or entry["family"] != family
-                or entry["source_commit"] != subject or entry["outcome"] != "passed"
-                or type(entry["exit"]) is not int or entry["exit"] != 0
-                or entry["fixture_kind"] != "direct-committed-package-resources"
-                or entry["completed_phases"] != phases or entry["failed_phase"] is not None
-                or entry["blocked_before_write"] is not False or entry["unexecuted_phases"] != []):
-            raise GateError("public family/subject/phase completion missing or contradictory")
-        calls = entry["calls"]
-        if (not isinstance(calls, list) or type(entry["public_launches"]) is not int
-                or not 0 < entry["public_launches"] == len(calls) <= 160):
-            raise GateError("public launch count missing or inconsistent")
-        # Calls are diagnostics from the pinned test runner. Check shape/count only;
-        # expected negative operations may legitimately return nonzero child exits.
-        # PublicCase owns request/response assertions and operation/phase coverage.
-        for call in calls:
-            if (not isinstance(call, dict) or call.get("phase") not in phases
-                    or not isinstance(call.get("operation"), str) or not call["operation"]
-                    or type(call.get("exit")) is not int
-                    or not isinstance(call.get("outcome"), str) or not call["outcome"]):
-                raise GateError("public call observation incomplete or malformed")
-        fixture = entry["fixture_accounting"]
-        counters = {"observed_files", "observed_logical_bytes", "retained_files", "retained_bytes", "process_total"}
-        if (not isinstance(fixture, dict) or not counters | {"processes", "wall_seconds", "residue", "next_action"} <= fixture.keys()
-                or fixture["residue"] is not None or fixture["next_action"] is not None
-                or any(type(fixture[key]) is not int or fixture[key] < 0 for key in counters)
-                or type(fixture["wall_seconds"]) not in (int, float) or not math.isfinite(fixture["wall_seconds"])
-                or fixture["wall_seconds"] < 0 or not isinstance(fixture["processes"], dict)
-                or set(fixture["processes"]) != {"git", "python", "other"}
-                or any(type(value) is not int or value < 0 for value in fixture["processes"].values())
-                or sum(fixture["processes"].values()) != fixture["process_total"]
-                or fixture["process_total"] < len(calls)
-                or fixture["retained_files"] > fixture["observed_files"]
-                or fixture["retained_bytes"] > fixture["observed_logical_bytes"]):
-            raise GateError("public cleanup/accounting incomplete or inconsistent")
-        return {"check": "public:" + family, "status": "passed", "tests": 1, "skipped": 0,
-                "family": family, "source_commit": subject, "completed_phases": phases,
-                "public_launches": len(calls), "result_interface": "public-jsonl-and-unittest",
-                "interface_source_commit": PUBLIC_INTERFACE_COMMIT}
-    except (UnicodeError, ValueError, TypeError, KeyError, RecursionError) as exc:
-        raise GateError("public result malformed") from exc
-
-
-def command_result(check, result, *, subject=None):
-    if result.status != "passed" or result.code != 0:
+def command_result(check, result):
+    """Accept only one complete report for the exact selected suite."""
+    if check not in SUITES:
+        raise GateError("unknown selected suite: " + str(check))
+    if result.status != "passed" or type(result.code) is not int or result.code != 0:
         raise GateError("selected command non-passing: " + check + ":" + result.status + ":exit=" + str(result.code))
-    if check.startswith("public:"):
-        if type(result.code) is not int:
-            raise GateError("public process exit is not an integer")
-        return public_family_result(check.removeprefix("public:"), subject, result.output, result.stderr)
-    if check == "contracts":
-        return {"check": check, "status": "passed", "tests": contract_test_count(result.output),
-                "skipped": 0, "result_interface": "unittest-and-observations",
-                "interface_source_commit": RUNNER_INTERFACE_COMMIT}
-    if check != "source-tests":
-        raise GateError("unknown or reserved selected result: " + check)
-    receipt = strict_json(result.output)
-    if (not isinstance(receipt, dict) or receipt.get("status") != "passed"
-            or type(receipt.get("tests")) is not int or receipt["tests"] <= 0
-            or type(receipt.get("skipped")) is not int or receipt["skipped"] != 0):
-        raise GateError("selected command missing/failed/skipped result: " + check)
-    return {"check": check, "status": "passed", "tests": receipt["tests"], "skipped": 0}
+    try:
+        report = strict_json(result.output)
+    except (ValueError, RecursionError) as exc:
+        raise GateError("missing or invalid framework test report") from exc
+    fields = {"interface", "suites", "outcome", "tests", "failures", "errors", "skipped", "duration_seconds"}
+    if not isinstance(report, dict) or set(report) != {"framework_tests"}:
+        raise GateError("missing framework test report")
+    row = report["framework_tests"]
+    if not isinstance(row, dict) or set(row) != fields:
+        raise GateError("incomplete framework test report")
+    if row["interface"] != RUNNER_INTERFACE or row["suites"] != [check] or row["outcome"] != "passed":
+        raise GateError("framework test interface, selection or outcome mismatch")
+    if type(row["tests"]) is not int or row["tests"] <= 0:
+        raise GateError("framework test report has no executed tests")
+    if any(type(row[field]) is not int or row[field] != 0 for field in ("failures", "errors", "skipped")):
+        raise GateError("framework test report contains failures, errors or skips")
+    duration = row["duration_seconds"]
+    try:
+        valid_duration = type(duration) in (int, float) and math.isfinite(duration) and duration >= 0
+    except OverflowError:
+        valid_duration = False
+    if not valid_duration:
+        raise GateError("invalid framework test duration")
+    return {"check": check, "status": "passed", "tests": row["tests"], "skipped": 0,
+            "duration_seconds": duration, "result_interface": RUNNER_INTERFACE}
 
 
 def validate_event(event, event_name, base, head):
@@ -672,7 +665,7 @@ def main(argv=None):
         report["results"].append({"check": "content", "status": "passed"})
         after.git("diff", "--no-ext-diff", "--no-textconv", "--check", base, head, "--")
         report["results"].append({"check": "whitespace", "status": "passed"})
-        for check in sorted(selection.checks - {"content", "whitespace"}):
+        for check in sorted(selection.checks - {"content", "whitespace"}, key=SUITES.index):
             report["results"].append(run_selected(check, root, after))
         report["status"] = "passed"
     except (GateError, OSError, ValueError, KeyError, TypeError, SyntaxError, RecursionError) as exc:
