@@ -19,13 +19,16 @@ delegate without a coordinator assignment. CI and legacy verification remain
 source-only; unrelated security, ownership, credential and publication boundaries
 remain in force.
 
-## Prospective Source Rules
+## Source Development Rules
 
-[The prospective source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
-is dormant. It describes selected checks, scoped review and concise handoff for
-source work only after explicit adoption. This pointer does not activate rules,
-replace the effective sections below, change skill routes or retire U001.
-CI restoration and the exact policy transition require recorded owner adoption.
+Read [the source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
+for its explicit adoption status and exact ordinary-source scope. The prepared
+cutover is not effective until the owner adopts it. Once adopted, its eight rules
+replace conflicting ordinary-source aggregate, receipt, packet, lease and handoff
+requirements below; conditional independent review and selected checks remain.
+The temporary override and old mechanisms remain only for explicitly retained
+legacy/native/release obligations. Release, support, credentials, protection and
+downstream adoption retain their owners. No merge or date proves CI success.
 
 ## Scope And Authority
 

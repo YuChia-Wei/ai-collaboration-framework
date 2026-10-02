@@ -1,111 +1,132 @@
-# Prospective Source Development Policy
+# Source Development Policy
 
-**Status: dormant; not adopted; not effective. Source repository only.**
-This document records the prospective rules selected by Issue #369 from the
-[#365 source-rule design](../design/framework-next/pipeline-redesign/source-rules.md).
-The owner's approval permits writing this dormant policy and applicability
-pointers. It does not adopt these rules, narrow U001, enable CI or authorize any
-provider, release, installation or downstream change.
+**Status: prepared for owner adoption; not effective yet. Source repository only.**
+The owner authorized implementing the four-step continuation on 2026-10-02.
+The [adoption record](../workflows/2026-10-02-source-development/adoption.md)
+owns the exact cutover decision, review evidence and CI subset. Until it records
+adoption, the previous effective policy at
+`4f231fe7f08eaa9ae296ec243be524658f8d3849` and applicable U001 remain in force.
+This working-branch replacement does not approve itself or enable CI.
 
-Current effective policies and the applicable
-[U001 override](FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md) remain authoritative.
-Every replacement below describes only a future, explicitly adopted source scope.
-A date, local pass, pilot, commit or merge does not make any replacement effective.
+## Scope and retained authority
 
-## Eight Prospective Rules
+After explicit adoption, these rules govern newly authorized development in
+this framework source repository, including skill instructions, schemas, tools,
+distribution code, tests and source governance. They supersede conflicting
+ordinary-source aggregate, receipt, packet, lease and handoff requirements.
+The exact bootstrap review and first hosted check remain separately observable.
 
-1. Bind material source work to its authorized online Issue, owning capability and
+Existing released target semantics, published assets, selected release phases,
+active legacy execution/recovery records, frozen backlog and credential owners
+retain their contracts. Legacy maintenance selects its compatible source revision,
+policy/configuration and actual available tools; this transition does not make
+removed `artifact_core`, registries or resolvers available. Do not run old
+validators against the new configuration as if its schema were backward compatible.
+Do not restore old code merely to admit unrelated source work.
+
+## Eight source rules
+
+1. Bind material work to the authorized online Issue, owning capability and
    bounded acceptance. Keep Issue, Project, execution, integration, publication
-   and adoption states separate. Small single-pass instruction or documentation
-   improvements may use direct mode with a concise PR record; durable transitions
-   and work crossing owner boundaries retain a workflow.
+   and adoption states separate. Small single-pass instruction/documentation
+   changes may use direct mode and a concise PR record; durable transitions and
+   connected multi-stage work retain one source-owned workflow.
 2. Use a dedicated branch and one tracked writer per worktree; preserve unrelated
-   changes. Reusable new product belongs in `src/`; installed core/runtime entries
-   are consumed, and project configuration/data retain their owners. Select actual
-   current routes explicitly, including still-active legacy and release owners.
-3. Select the smallest affected checks from both pinned Git trees, including
-   deleted and renamed paths. Prose needs content, reference and whitespace
-   inspection; tools, schemas and distribution changes need their actual owners'
-   checks. Unknown ownership or dependency impact and missing, skipped or failed
-   selected commands block the affected admission. Do not fall back to a whole
-   history, full or nightly matrix, or require a schema for each instruction file.
+   changes. Edit reusable product in `src/`; consume managed core/runtime entries.
+   Keep project configuration/data and released support with their actual owners.
+   Select existing routes explicitly, rather than inventing unavailable tooling.
+3. Select affected checks from both pinned Git trees, including deleted and
+   renamed paths. Prose needs content/reference/whitespace inspection. Schemas,
+   tools and distribution select their actual bounded suites. Unknown ownership,
+   missing checks, errors, skips or failures block the affected check. No automatic
+   whole-history/full/nightly fallback or schema per instruction file is required.
 4. Record full source identity, exact commands, actual outcomes, retained failures,
-   limitations and the next owner. Distinguish synthetic, local, hosted and native
-   evidence, and logical selection from actual assembly coverage. A Lesson smoke
-   cannot establish every package/profile build. Never describe unavailable,
-   blocked, deferred, skipped or neutral results as success.
-5. Inspect the diff and validate the complete planned commit message before each
-   coherent commit. Retain commit grammar, the selected workflow identity and
-   truthful AI attribution. Authorized push and PR integration remain separate.
-   After adoption, ordinary source work has no whole-history or aggregate gate;
-   applicable CI message checks concern PR-added locally authored commits and do
-   not rewrite provider-native or historical commits.
-6. Ordinary changes need author diff inspection and maintainer PR acceptance.
-   Authority, security, credential, publication, installation and recovery changes
-   additionally need independent, scoped, read-only review of the fixed diff,
-   criteria and applicable source rules. Record reviewer, full commit, findings
-   and disposition in the PR/workflow; author inspection is not independent.
-   Changed content, scope or authority requires the affected review again. This
-   replacement does not mandate a new signed receipt, rebind packet, lease or
-   registry platform. Policy and selector changes cannot approve their own lower
-   review or admission requirements.
-7. After adopted CI restoration, read the live PR head/base and require actual
-   current-head **Source change gate** success, effective review conditions and
-   any selected native/release results. Missing provider facts block that claim;
-   credentials are not an ordinary local-check prerequisite. State each Issue's
-   final or deferred intent in the PR; checkpoints use `Refs` with a reason and
-   next gate/owner. Read merge, Issue and Project state separately. Closing intent
-   never authorizes work or establishes factual closure.
-8. Preserve published assets, support promises, active recovery records, frozen
-   history, credentials and external-setting ownership. A source PR never
-   implicitly publishes, installs into a target, resolves a provider defect or
-   changes protection. After adoption, legacy validators run only for explicitly
-   selected version, release or incident obligations. Retiring an ordinary gate
-   does not retire support or authorize deletion of its implementation/evidence.
+   limitations and next owner. Distinguish static, fixture, local, hosted, native
+   and actual agent evidence. Logical selection is not physical assembly or
+   installation coverage. Unavailable/deferred/neutral results are never passed.
+5. Inspect the diff and validate the complete planned commit message before
+   each coherent commit. Retain grammar, selected workflow identity and truthful
+   AI attribution. Push, PR and integration need their actual authorization.
+   Validate PR-added authored commits when applicable, without rewriting history
+   or requiring an aggregate gate. Provider-native commits retain their owner.
+6. Ordinary changes need author inspection and maintainer PR acceptance. Changes
+   to authority, security, credentials, publication, installation or recovery
+   additionally need independent scoped read-only review of an immutable diff,
+   acceptance criteria and governing source rules. Record reviewer, full commit,
+   findings and disposition. Implementation or author inspection is not independent.
+   Changed reviewed content, criteria or authority needs affected review again;
+   history-only drift may reuse review only with exact tree equivalence and fresh
+   head binding. No mandatory legacy receipt, review-input packet or lease applies
+   to this adopted source scope. Policy/selector changes cannot approve a lower
+   review or admission standard for themselves.
+7. After CI restoration, require actual current-head `Source change gate` success,
+   live PR head/base, effective review conditions and selected native/release
+   evidence before integration. Missing provider facts block that claim. Source
+   test success does not discharge separately listed admission requirements.
+   State final/deferred intent for each Issue; use `Refs` with reason and next
+   owner for checkpoints. Read merge, Issue and Project separately. Already
+   integrated delivery may be closed administratively after accepted evidence
+   and explicit owner authority; never invent a historical closing keyword.
+8. Preserve published support, recovery records, frozen history, credentials and
+   external-setting ownership. A source PR never implicitly publishes, installs,
+   changes branch protection or resolves a provider defect. Legacy validators
+   apply only to explicitly selected version/release/incident obligations. Retiring
+   an ordinary gate does not authorize deleting its implementation or evidence.
 
-## Prospective Gate Applicability
+## Execution and evidence
 
-All replacements in this table are dormant. Existing effective fields, required
-contexts, receipt interpretations and U001 deferrals are unchanged by this file.
+Bounded delegation identifies owning skill, input revision, scope, permitted
+reads/writes, non-goals, result, stop conditions and integration owner. Select
+the least expensive capable execution profile within actual authority. Preserve
+one tracked writer per worktree; reviewers remain read-only on a clean fixed
+subject. No tool/profile declaration is proof that an agent ran.
 
-| Existing surface | Treatment only within a later adopted source scope |
-| --- | --- |
-| Five ordinary required contexts | Replace with exactly `Source change gate`; retain separately selected release checks. Do not impose both ordinary mandatory sets. |
-| Audit/v3 receipt, review-input preflight, digest/rebind and live admission overlay | Replace ordinary admission with rules 6 and 7. Preserve historical receipt meaning, effective review blocks and version-owned release audits. |
-| Terminal declaration/admission/reconciliation packet | Replace the ordinary mandatory packet with per-Issue PR intent and separate live read-back. Keep legacy validators unchanged for explicitly selected legacy records; invent no hybrid receipt. |
-| `check-all` and broad legacy profiles | Replace ordinary invocation with affected checks. Preserve named legacy release/incident obligations, with no automatic full/nightly fallback. |
-| External-task, acceptance-ledger, packet/lease and custody machinery | Replace ordinary mandatory machinery. Selected lengthy trials still pin source, isolate writers, preserve logs/outcomes, use a bounded completion wait and stop on drift. U001 remains applicable until separately narrowed. |
-| Critical handoff and checkpoint registry | Replace with source/branch, scoped state, commands/outcomes, residuals and exact next action. Preserve active legacy checkpoints and release phases. |
-| Universal workflow locator/task/terminal-anchor synchronization | Use the owning package's records only after its real adoption, including the #361 collection if selected. Preserve existing history and active contracts; no date-based migration or dual-format padding. |
-| Source effective-rule packets and full guardrails | Read named owning policies directly for newly adopted source work; preserve explicitly selected legacy applicability and released target semantics. |
-| Commit checks and AI signature | Retain exact planned-message validation, grammar, applicable workflow identity and truthful attribution. Remove no executable commit rule through this document. |
-| Runtime parity and schema/registry validation | Select changed owning sources/routes and actual adopted installation. Still-active legacy entries retain their contracts; new prose does not inherit every legacy registry. |
-| Frozen backlog and work-management authority | Retain live GitHub authority and frozen evidence. Check an affected freeze boundary without scanning every historical record for every PR. |
-| Source release, admitted archives, publication, support and recovery | Retain the selected published-version and release-phase owners. #309 recovery and target journals remain separate; unknown activity prevents support deletion. |
-| Portable fixtures and benchmark obligations | Preserve actual legacy acceleration/measurement scope and #274/#275 obligations. Claim no unmeasured savings or new universal evidence-reuse implementation. |
+Selected lengthy validation still pins source, isolates writers, preserves logs,
+uses a bounded completion wait and stops on drift. No automatic external-agent
+platform, signed packet, acceptance ledger or snapshot lease is required. Keep
+failed attempts; retry only after a relevant change, and re-plan repeated failures
+instead of retrying unchanged input. Unknown evidence dependencies are not reused.
+Graph discovery needs known source identity/coverage or an explicit tracked-file
+fallback. PowerShell automatic/reserved variable names are never assigned.
 
-## Activation Is A Separate Decision
+Source workflows continue under `.dev/workflows/<id>/` with the existing locator
+and task identity fields from WORKFLOW-ARTIFACT-POLICY. This selects no new #416
+online record store and migrates no historical record. Check relationships for
+changed records, not every workflow in history. Handoffs need source/branch,
+authority, completed/pending work, exact commands/outcomes, residuals and next
+action; historical critical/registry machinery is not an ordinary prerequisite.
 
-The [implementation checkpoint](../design/framework-next/source-gates-implementation/README.md)
-records historical commands, runner bindings, failures and limits. The current
-local selector uses the [framework-owned test runner](../../tests/readme.md), with
-schema, tool, distribution, release and source suites. Historical contracts/public
-trial commands are retired; local unit and small-fixture results do not establish
-native product acceptance. Native trial selection, root adoption, independent
-scoped review and hosted evidence remain separate from this dormant policy.
+## Gate dispositions
 
-Before activation, present the concrete policy/root/template/runner diff, applicable
-selected-check and trial evidence, proposed provider settings and workflow subset,
-and the exact owner decision, adopted scope, effective date and remaining U001
-obligations. Review those surfaces together. Narrow adoption must name its limits;
-missing evidence stays blocked or deferred, not passed.
+| Surface | Adopted ordinary-source treatment | Retained boundary |
+| --- | --- | --- |
+| Five old required contexts | Exactly `Source change gate` | Separately selected release evidence; no claim of server enforcement |
+| Audit/v3, review-input packets, digest/rebind and leases | Scoped independent review under rule 6 | Historical receipt meanings and selected release audits |
+| Terminal declaration/admission/reconciliation platform | Per-Issue intent plus actual checks and live read-back | Historical validator/configuration contracts; no hybrid receipt |
+| `check-all`, full/history/nightly matrices | Affected suites via `tests/run.py` | Explicit legacy incident/release scope only |
+| `artifact_core` and old effective-rule resolver | Not a dependency of ordinary source admission | Missing routes remain unavailable until separately restored |
+| Universal handoff registry and whole-workflow scan | Bounded source workflow/handoff described above | Active legacy records and release phase requirements |
+| Runtime parity | Changed actual source/installed owners only | Managed installed projections remain protected |
+| High-I/O/installation/linked-worktree trials | Retired by #425; no automatic recreation | New real consumer need requires a selected scenario and acceptance |
+| Fixture acceleration and benchmarks | No ambient drive selection or unmeasured speed claim | #274/#275 receive explicit obsolete-scope disposition; no measured benchmark pass |
+| Release, support, credentials and protection | Unchanged | Their explicit owners and approval boundaries remain |
 
-Both effective YAML files remain unchanged except for comments. Their closed
-schemas receive no invented dormant keys or hybrid review values. A later approved
-cutover must coherently update effective fields, root applicability and the PR form
-for its selected scope, preserving historical and still-active legacy meanings.
-The commit-policy YAML needs no change for this dormant delivery.
+## CI subset and remaining U001 obligations
 
-CI enablement, current-head hosted success, root/runtime adoption, integration,
-Issue/Project disposition, releases, credentials and downstream adoption remain
-separate decisions and observations. No restoration command is authorized here.
+The first proposed source gate runs on Windows with Python 3.13 and pinned
+dependencies from `tests/requirements.txt`. It invokes
+`python -I -B .github/scripts/check-source-change.py --base <full-sha> --head <full-sha>`;
+that selector invokes only affected `tests/run.py --suite` commands. Optional
+platform/loader suites do not establish native installation acceptance.
+
+Enable only `source-checks.yml` after the exact owner decision. Keep the existing
+package-candidate/publish-release workflows in their independently authorized
+state, and leave the other six workflows disabled, including obsolete
+`source-native.yml`. No Actions permission, ruleset, protection, credential,
+release-environment or publication setting changes are selected. Maintainer
+admission is not server-side required-status enforcement.
+
+U001 remains for explicitly selected uncompleted legacy/native/release obligations
+outside this adopted ordinary-source scope. Missing native acceptance stays
+`deferred-by-owner` or blocked for its affected operation. Hosted source success,
+downstream adoption and full P7 completion are separate facts.

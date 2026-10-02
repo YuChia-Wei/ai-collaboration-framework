@@ -1,9 +1,11 @@
 # Workflow Artifact Policy
 
-Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-would use an actually adopted owning package's records for its selected source
-scope. Existing and active legacy formats remain applicable; this pointer causes
-no date-based migration, new collection, dual records or effective format change.
+Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+defines the proposed cutover and its explicit adoption status. After adoption,
+it takes precedence over conflicting ordinary-source gates below. Until then,
+the prior effective rules and applicable U001 remain. Existing release/support/
+recovery contracts and selected active legacy records retain their owners;
+their historical machinery is not silently migrated to the new source format.
 
 This policy defines the repository-wide discovery and metadata contract for durable workflows. It does not define one universal plan, task, or report shape.
 

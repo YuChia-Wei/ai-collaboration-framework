@@ -1,0 +1,4 @@
+# Tested dependency set for the bounded framework suites and source selector.
+PyYAML==6.0.3
+jsonschema==4.26.0
+referencing==0.37.0

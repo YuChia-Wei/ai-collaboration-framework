@@ -1,9 +1,11 @@
 # Workflow Handoff Policy
 
-Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-would use a concise source/branch, state, commands/outcomes, residuals and next-action
-handoff within its adopted source scope. Active legacy checkpoints and release
-phases retain their owners; current requirements and applicable U001 remain.
+Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+defines the proposed cutover and its explicit adoption status. After adoption,
+it takes precedence over conflicting ordinary-source gates below. Until then,
+the prior effective rules and applicable U001 remain. Existing release/support/
+recovery contracts and selected active legacy records retain their owners;
+their historical machinery is not silently migrated to the new source format.
 
 This policy defines the fail-closed checkpoint required when an active workflow
 is transferred across a model, runtime, host, machine, or fresh session.

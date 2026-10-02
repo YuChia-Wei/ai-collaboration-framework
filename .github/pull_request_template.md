@@ -1,45 +1,32 @@
-<!--
-Dormant source-form preview; not adopted or effective.
-See .dev/standards/SOURCE-DEVELOPMENT-POLICY.md. The current form below remains
-applicable with U001; this comment activates no replacement or CI requirement.
-A later adopted source form would ask for scope and owner authority, actual checks
-and their limitations/deferrals, conditional independent review/native evidence,
-and each Issue's final or deferred disposition with next gate/owner.
-The owner must adopt the exact replacement and applicability before changing the
-active receipt/declaration checklist. No empty evidence section is required by
-this preview, and no current checklist is removed.
--->
+<!-- This form is part of the proposed source cutover. Adoption status:
+.dev/standards/SOURCE-DEVELOPMENT-POLICY.md. A branch-only form does not adopt rules. -->
 
-## Summary
-- What change is being introduced and why?
+## Change and authority
 
-## Changes
-- Key changes (services, projects, endpoints, contracts)
+Describe the problem, resulting behavior, bounded scope and owner authorization.
 
-## Related Issues
-- Issue #:
-- Delivery disposition: `terminal-close` / `deferred`
-- Reference: `Refs #` for deferred, or one approved closing keyword for terminal-close
-- `closure_deferred_reason` (required for deferred):
-- Next terminal gate or owner (required for deferred):
-- Owner authorization or approved no-Issue exception:
+## Validation
 
-Repeat the fields above for every named Issue. Mixed dispositions are allowed.
-A closing keyword records terminal intent; it never authorizes work.
+List exact commands, source commit and actual outcomes. Retain failed attempts,
+limitations and deferred checks. Link current-head Source change gate when run.
+Local/static/fixture results do not establish hosted or native acceptance.
 
-## Delivery And Integration
-- Delivery grouping: single work item / cohesive multi-Issue delivery
-- Execution record: direct / assessment / workflow
-- Selected topology: linear / merge commit
-- Topology reason:
+## Review and admission
 
-## Screenshots / Evidence (optional)
-- e.g., Scalar UI, Kafka/RabbitMQ UI, console output
+Record author diff inspection and maintainer acceptance. For authority, security,
+credential, publication, installation or recovery changes, also record the
+independent reviewer, immutable commit, criteria, findings and disposition.
+Include selected native/release evidence only when applicable; unresolved
+admission requirements remain explicit even when Source change gate passes.
 
-## Checklist
-- [ ] Selected repository-native build and test commands pass, or `not-applicable` is explained
-- [ ] Target-owned .NET commands were run only when this repository selected a .NET SDK/project contract
-- [ ] Docs updated (README/AGENTS.md, comments)
-- [ ] No secrets committed; config via env vars
-- [ ] Every named Issue has exactly one validated delivery disposition
-- [ ] The repository's target-owned review gate is satisfied (this source repo uses a content-addressed single-maintainer audit receipt plus current-head binding)
+## Issue disposition
+
+For each Issue, state final delivery with an approved closing keyword, or `Refs`
+with the deferred reason and next owner/gate. Closing intent never authorizes work.
+Issue closure and Project state are separately read back after integration.
+
+## Integration
+
+State the selected topology and its reason, execution record (direct/workflow),
+and any remaining owner decision. No release, downstream installation or branch
+deletion follows implicitly from merging this PR.

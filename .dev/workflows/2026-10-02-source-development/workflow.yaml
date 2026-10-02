@@ -1,0 +1,32 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-02-source-development
+workflow_kind: software-development
+title: Reconcile source admission, restore bounded CI and reconcile backlog
+owner_skill: software-development-orchestrator
+status: in_progress
+artifact_root: .dev/workflows/2026-10-02-source-development
+entrypoint: workflow-plan.md
+created_at: '2026-10-02T13:00:01+08:00'
+updated_at: '2026-10-02T13:00:01+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-02-source-development
+base_branch: main
+base_commit: 4f231fe7f08eaa9ae296ec243be524658f8d3849
+current_phase: policy-and-gate
+work_items:
+- provider: github
+  issue: 369
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/369
+- provider: github
+  issue: 274
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/274
+- provider: github
+  issue: 275
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/275
+- provider: github
+  issue: 425
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/425
+authority: Owner requested on 2026-10-02 to perform the four proposed actions in order.
+execution: Root is the sole tracked writer; bounded same-runtime workers initially provide read-only inventories.

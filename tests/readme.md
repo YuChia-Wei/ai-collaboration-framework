@@ -1,7 +1,7 @@
 # Framework tests
 
-Run from the repository root with Python 3.10+ and existing PyYAML 6.x,
-jsonschema 4.x and referencing. Dependencies are explicit; the runner installs
+Run from the repository root with Python >=3.11,<4 (the tested baseline is 3.13)
+and the explicit dependencies in [requirements.txt](requirements.txt). The runner installs
 nothing. Use an ordinary writable OS temporary directory; no F: drive, fixture
 root setting, Git repository fixture, candidate build or installation is required.
 
@@ -24,7 +24,7 @@ outcome, test/failure/error/skip counts and elapsed seconds.
 | `tools` | `tools/` | Actual renderers, config/record validation, small real local record lifecycles, bounded CLI requests and offline provider transports |
 | `distribution` | `framework_next/` selected modules | Source declarations read in place; metadata, selection, adapters, versions and small maintenance records |
 | `release` | `release/` | Release-helper behavior using synthetic offline transports; production helpers stay under `.github/scripts/` |
-| `source` | `source/`, `test_runner.py` | Dormant selector safety, current ownership, runner selection and rejection of false success |
+| `source` | `source/`, `test_runner.py` | Source selector safety, current ownership, runner selection and rejection of false success |
 
 Tool lifecycle cases exercise native local storage on the current supported host;
 they are distinct from framework installation. PR render/config cases use supplied
@@ -46,6 +46,10 @@ from native installation/apply/locking/interruption/recovery trials, which were
 removed by owner decision. These tests also do not assess skill instruction
 quality, agent outputs, downstream adoption, hosted CI or release publication.
 
-CI activation remains a separate owner decision. `.github/` contains workflow
-callers and production release/gate helpers; test implementation belongs here.
+The proposed Source change gate uses Windows/Python 3.13 and affected suites.
+Platform/loader are selected only when their owned paths or shared runtime change.
+CI activation and its first actual hosted result remain separate owner/provider
+facts. `.github/` contains workflow callers and production release/gate helpers;
+test implementation belongs here. A green source check does not complete the
+independent review or native/release requirements listed by the selector.
 Historical design, workflow and release reports retain their original evidence.

@@ -1,9 +1,11 @@
 # AI Context Source Release Policy
 
-Prospective applicability (dormant): ordinary source development has a separate
-[prospective policy](SOURCE-DEVELOPMENT-POLICY.md). This pointer changes no release,
-published-version, support or recovery contract and enables no publication flow.
-Any future release-format or applicability change needs its own scope and authority.
+Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+defines the proposed cutover and its explicit adoption status. After adoption,
+it takes precedence over conflicting ordinary-source gates below. Until then,
+the prior effective rules and applicable U001 remain. Existing release/support/
+recovery contracts and selected active legacy records retain their owners;
+their historical machinery is not silently migrated to the new source format.
 
 ## Current Catalog 1 / Engine 2 Draft Delivery (#418)
 

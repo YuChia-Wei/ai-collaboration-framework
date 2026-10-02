@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Dormant source-only selector. No provider access, installs, or legacy matrices."""
+"""Source-only affected checks. No provider access, installs, or legacy matrices."""
 from __future__ import annotations
 
 import argparse
 import ast
 from dataclasses import dataclass, field
+from datetime import datetime
 import json
 import math
 import os
@@ -54,7 +55,7 @@ NATIVE_FILES = frozenset({"src/distribution/" + name for name in (
         "src/tools/maintain_framework.py", "tools/reinstall-framework.py"}
 RELEASE_FILES = frozenset({".github/scripts/" + name for name in (
     "build-release.py", "draft-release.py", "release_common.py")})
-RECORD_ROOT = ".dev/workflows/2026-09-23-source-gates-implementation/"
+WORKFLOW_ROOT = ".dev/workflows/"
 
 
 class GateError(Exception):
@@ -418,6 +419,68 @@ class Ownership:
             paths.update(safe_path(root + "/" + safe_path(member)) for member in members)
         return path in paths
 
+    def workflow(self, path):
+        """Validate only the changed record and its pinned source-owned locator."""
+        parts = path.split("/")
+        if len(parts) < 4 or not re.fullmatch(r"\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*", parts[2]):
+            raise GateError("unknown workflow identity: " + path)
+        workflow_id = parts[2]
+        root = WORKFLOW_ROOT + workflow_id
+        locator_path = root + "/workflow.yaml"
+        locator = strict_yaml(self.tree.read(locator_path))
+        if not isinstance(locator, dict):
+            raise GateError("workflow locator must be a mapping")
+        required = ("workflow_id", "workflow_kind", "title", "owner_skill", "status",
+                    "artifact_root", "entrypoint", "created_at", "updated_at",
+                    "template_source", "template_version", "branch", "base_branch")
+        if (locator.get("schema_version") != "1.0"
+                or any(not isinstance(locator.get(key), str) or not locator[key].strip() for key in required)
+                or locator["workflow_id"] != workflow_id or locator["artifact_root"] != root
+                or locator["branch"] == locator["base_branch"] or locator["branch"] == "main"):
+            raise GateError("invalid workflow locator identity or fields: " + locator_path)
+        if locator["status"] not in {"pending", "in_progress", "completed", "deferred", "cancelled"}:
+            raise GateError("unknown source workflow state")
+        for key in ("created_at", "updated_at"):
+            if datetime.fromisoformat(locator[key]).utcoffset() is None:
+                raise GateError("workflow timestamp lacks offset")
+        self.tree.read(safe_path(root + "/" + safe_path(locator["entrypoint"])))
+        owner = self.identifier(locator["owner_skill"])
+        self.tree.read("src/skills/" + owner + "/skill-package.yaml")
+        # Both retained locator spellings name online Issues; neither grants authority.
+        issues = locator.get("work_items", locator.get("issue_refs"))
+        if not isinstance(issues, list) or not issues or len(issues) > 32:
+            raise GateError("workflow needs bounded online Issue binding")
+        for issue in issues:
+            if isinstance(issue, str) and re.fullmatch(r"#[1-9][0-9]*", issue):
+                continue
+            if (not isinstance(issue, dict) or issue.get("provider") != "github"
+                    or type(issue.get("issue")) is not int or issue["issue"] <= 0
+                    or issue.get("url") != "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/" + str(issue["issue"])):
+                raise GateError("workflow has invalid online Issue binding")
+        relative = path[len(root) + 1:]
+        if relative == "workflow.yaml" or relative.lower().endswith(".md"):
+            return workflow_id
+        if re.fullmatch(r"tasks/[A-Za-z0-9][A-Za-z0-9_-]*\.json", relative):
+            record = strict_json(self.tree.read(path))
+            fields = ("task_id", "workflow_id", "owner_skill", "status", "created_at", "updated_at",
+                      "template_source", "template_version", "model", "reasoning_effort")
+            if (not isinstance(record, dict)
+                    or any(not isinstance(record.get(key), str) or not record[key].strip() for key in fields)
+                    or record["workflow_id"] != workflow_id
+                    or record["task_id"] != PurePosixPath(relative).stem
+                    or record["status"] not in {"pending", "in_progress", "completed", "deferred", "cancelled"}):
+                raise GateError("invalid workflow task relationship: " + path)
+            for key in ("created_at", "updated_at"):
+                if datetime.fromisoformat(record[key]).utcoffset() is None:
+                    raise GateError("task timestamp lacks offset")
+            self.tree.read("src/skills/" + self.identifier(record["owner_skill"]) + "/skill-package.yaml")
+            if record["status"] == "completed" and (
+                    not isinstance(record.get("result_summary"), str) or not record["result_summary"].strip()
+                    or record.get("finding_status") != "addressed"):
+                raise GateError("completed task lacks result or finding disposition")
+            return workflow_id
+        raise GateError("unknown workflow record format: " + path)
+
 
 @dataclass
 class Selection:
@@ -477,6 +540,7 @@ def classify(path: str, ownership: Ownership, selection: Selection, *, removed=F
         return
     if path in RELEASE_FILES:
         selection.checks.add("release")
+        selection.requirements.add("independent-scoped-review")
         selection.owners.add("release-tooling")
         return
     if path in TEST_SUITES:
@@ -492,16 +556,24 @@ def classify(path: str, ownership: Ownership, selection: Selection, *, removed=F
         selection.checks.update({"distribution", "loader", "platform"})
         selection.owners.add("source-test-support")
         return
-    if (path in SOURCE_FILES or path in {RUNNER, "tests/__init__.py", ".gitignore", "tests/requirements.txt"}
-            or path.startswith(".dev/standards/")):
+    if path in {RUNNER, "requirements.txt", "tests/requirements.txt"}:
+        selection.checks.update(SUITES)
+        if path == RUNNER:
+            selection.requirements.add("independent-scoped-review")
+        selection.owners.add("source-test-runtime")
+        return
+    if (path in SOURCE_FILES or path in {"tests/__init__.py", ".gitignore", ".gitattributes"}
+            or (path.startswith((".dev/standards/", ".dev/contracts/"))
+                and PurePosixPath(path).suffix.lower() in {".md", ".yaml", ".yml", ".json"})):
         selection.checks.add("source")
         selection.requirements.add("independent-scoped-review")
         selection.owners.add("source-governance")
         return
     if path.startswith(".github/"):
         raise GateError("unselected source/legacy pipeline owner: " + path)
-    if path.startswith(RECORD_ROOT) and PurePosixPath(path).suffix in {".md", ".json", ".yaml"}:
-        selection.owners.add("issue-369-record")
+    if path.startswith(WORKFLOW_ROOT):
+        workflow_id = ownership.workflow(path)
+        selection.owners.add("source-workflow:" + workflow_id)
         return
     if path == ".dev/TEAM-GIT-FLOW-RULES.MD":
         selection.checks.add("source")
@@ -509,7 +581,7 @@ def classify(path: str, ownership: Ownership, selection: Selection, *, removed=F
         selection.owners.add("source-governance")
         return
     if (path in {"README.md", "README.en.md", "LICENSE", "tests/readme.md", "tests/framework_next/README.md"}
-            or (path.startswith((".dev/design/", ".dev/guides/", ".dev/workflows/")) and path.lower().endswith(".md"))):
+            or (path.startswith((".dev/design/", ".dev/guides/")) and path.lower().endswith(".md"))):
         selection.owners.add("source-prose")
         return
     raise GateError("unknown ownership; coordinator must select checks: " + path)
@@ -640,7 +712,8 @@ def main(argv=None):
     parser.add_argument("--base", required=True)
     parser.add_argument("--head", required=True)
     args = parser.parse_args(argv)
-    report = {"context": "Source change gate", "status": "failed", "results": []}
+    report = {"context": "Source change gate", "status": "failed", "results": [],
+              "admission_status": "not-evaluated"}
     started = time.monotonic()
     try:
         base, head = full_sha(args.base), full_sha(args.head)

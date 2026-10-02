@@ -1,5 +1,12 @@
 # Agent Execution Guardrails Contract
 
+Source applicability: after the explicit adoption recorded by
+[SOURCE-DEVELOPMENT-POLICY](../standards/SOURCE-DEVELOPMENT-POLICY.md), new source
+development uses its bounded delegation and conditional independent review rules.
+The legacy full packet/preflight/lease machinery below applies only to separately
+selected legacy or release work. Until adoption, the prior rules and applicable
+U001 remain. Preserve permissions, one tracked writer and truthful evidence.
+
 ## Purpose
 
 This contract binds delegated, external, and fixed-head agent work to an exact

@@ -1,9 +1,11 @@
 # Workflow Gate Policy
 
-Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-would permit direct mode for bounded source instruction/documentation improvements
-and workflows for durable transitions. It does not change the effective gates
-below or the applicable U001 override; replacement requires recorded owner adoption.
+Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+defines the proposed cutover and its explicit adoption status. After adoption,
+it takes precedence over conflicting ordinary-source gates below. Until then,
+the prior effective rules and applicable U001 remain. Existing release/support/
+recovery contracts and selected active legacy records retain their owners;
+their historical machinery is not silently migrated to the new source format.
 
 For this source repository's explicitly assigned program #322 work, apply the
 [temporary U001 execution override](FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)

@@ -1,9 +1,11 @@
 # Source Work-Management Authority
 
-Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-would permit the selected #361 execution collection only after its actual adoption.
-No collection is created or made authoritative here; live GitHub authority,
-existing execution evidence and frozen-history boundaries remain unchanged.
+Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+defines the proposed cutover and its explicit adoption status. After adoption,
+it takes precedence over conflicting ordinary-source gates below. Until then,
+the prior effective rules and applicable U001 remain. Existing release/support/
+recovery contracts and selected active legacy records retain their owners;
+their historical machinery is not silently migrated to the new source format.
 
 Rule ID: `SOURCE-WORK-MANAGEMENT-001`
 

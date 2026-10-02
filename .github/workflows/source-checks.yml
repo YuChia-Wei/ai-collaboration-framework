@@ -1,4 +1,4 @@
-# Dormant under program #322 / U001. Merge does not adopt policy or restore Actions.
+# Source cutover candidate; provider enablement requires the recorded owner decision.
 name: Source checks
 on:
   pull_request:
@@ -11,7 +11,7 @@ concurrency:
 jobs:
   source-change:
     name: Source change gate
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     timeout-minutes: 10
     permissions:
       contents: read
@@ -19,17 +19,21 @@ jobs:
       SOURCE_BASE: ${{ github.event.pull_request.base.sha }}
       SOURCE_HEAD: ${{ github.event.pull_request.head.sha }}
     steps:
+      - name: Python for selected checks
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # verified v6, node24
+        with:
+          python-version: '3.13'
       - name: Validate fixed event identities
         id: identity
-        shell: bash
+        shell: pwsh
         run: |
-          python3 - <<'PY'
+          @'
           import os, re
           for key in ('SOURCE_BASE', 'SOURCE_HEAD'):
               value = os.environ[key]
               if not re.fullmatch(r'[0-9a-f]{40}', value) or value == '0' * 40:
                   raise SystemExit('invalid full event SHA')
-          PY
+          '@ | python -I -B -
       - name: Checkout exact event head
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # verified v6, node24
         with:
@@ -38,30 +42,25 @@ jobs:
           persist-credentials: false
       - name: Fetch only exact base
         id: base
-        shell: bash
+        shell: pwsh
         run: |
-          python3 - <<'PY'
+          @'
           import os, re, subprocess
           base = os.environ['SOURCE_BASE']
-          if not re.fullmatch(r'[0-9a-f]{40}', base):
+          if not re.fullmatch(r'[0-9a-f]{40}', base) or base == '0' * 40:
               raise SystemExit('invalid base SHA')
           subprocess.run(['git', 'fetch', '--no-tags', '--depth=1',
                           'https://github.com/YuChia-Wei/ai-collaboration-framework.git', base],
                          check=True, timeout=60)
-          PY
-      - name: Python for selected checks
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # verified v6, node24
-        with:
-          python-version: '3.12'
+          '@ | python -I -B -
       - name: Explicit selector and local test dependencies
         id: dependencies
-        shell: bash
-        # tests/run.py selects bounded framework-owned suites; no legacy matrix.
-        run: python -I -m pip install --disable-pip-version-check 'PyYAML>=6,<7' 'jsonschema>=4.18,<5' referencing
+        shell: pwsh
+        run: python -I -m pip install --disable-pip-version-check -r tests/requirements.txt
       - name: Run selected source checks
         id: gate
-        shell: bash
-        run: python -I -B .github/scripts/check-source-change.py --base "$SOURCE_BASE" --head "$SOURCE_HEAD"
+        shell: pwsh
+        run: python -I -B .github/scripts/check-source-change.py --base "$env:SOURCE_BASE" --head "$env:SOURCE_HEAD"
       - name: Source disposition even on failure
         if: always()
         env:
@@ -69,9 +68,9 @@ jobs:
           IDENTITY_OUTCOME: ${{ steps.identity.outcome }}
           BASE_OUTCOME: ${{ steps.base.outcome }}
           DEPENDENCY_OUTCOME: ${{ steps.dependencies.outcome }}
-        shell: bash
+        shell: pwsh
         run: |
-          python3 - <<'PY'
+          @'
           import json, os, re
           summary = {key: os.environ.get(key, '')[:80] for key in
                      ('GATE_OUTCOME', 'IDENTITY_OUTCOME', 'BASE_OUTCOME', 'DEPENDENCY_OUTCOME')}
@@ -80,7 +79,8 @@ jobs:
               summary[key] = value if re.fullmatch(r'[0-9a-f]{40}', value) else 'invalid'
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as stream:
               stream.write('## Source change gate\n\n' + json.dumps(summary, sort_keys=True) + '\n\n')
-              stream.write('See bounded selector JSON in the run log for selected checks and outstanding admission requirements. '
-                           'Only actual success passes; skipped, missing or failed steps do not. '
-                           'A source result does not satisfy a required native trial or scoped review.\n')
-          PY
+              stream.write('See selector JSON for affected suites and admission requirements. '
+                           'Only actual success passes; missing, skipped or failed steps do not. '
+                           'Merge admission is not evaluated by this job. The maintainer must '
+                           'resolve independent review and any native/release requirement separately.\n')
+          '@ | python -I -B -

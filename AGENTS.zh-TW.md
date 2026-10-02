@@ -16,12 +16,15 @@ sub-agents，選擇足以勝任且成本最低的 model／effort；不強制另�
 `deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
 與 publication 邊界繼續有效。
 
-## 前瞻 Source 規則
+## Source 開發規則
 
-[前瞻 source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md) 尚未啟用。
-它描述僅在明確採納後，才適用於 source 工作的選定檢查、限縮範圍審查與精簡交接。
-此指標不啟用規則、不取代下方現行條文、不變更 skill routes，也不終止 U001。
-CI 恢復與確切政策轉換必須有已記錄的 owner 採納決策。
+讀取 [source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)，確認其明確
+採納狀態與一般 source 工作的確切範圍。已備妥的轉換在 owner 採納前不生效。
+採納後，八項規則取代下方與一般 source 工作衝突的 aggregate、receipt、packet、
+lease 與交接要求；條件式 independent review 與選定檢查仍然適用。
+暫時例外與舊機制僅保留於明確選定的 legacy／native／release 義務。
+Release、支援、credentials、protection 與 downstream adoption 維持原有 owner。
+Merge 或日期都不能證明 CI 成功。
 
 ## 適用範圍與 Authority
 

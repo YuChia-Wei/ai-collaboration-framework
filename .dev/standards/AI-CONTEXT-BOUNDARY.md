@@ -1,9 +1,11 @@
 # AI Context Boundary
 
-Prospective applicability (dormant): the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-describes reusable `src/`, consumed installed entries, project-owned configuration/
-data and retained legacy ownership. It performs no current reclassification, route
-activation, downstream rewrite or automatic packet selection; adoption is separate.
+Source applicability: the [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
+defines the proposed cutover and its explicit adoption status. After adoption,
+it takes precedence over conflicting ordinary-source gates below. Until then,
+the prior effective rules and applicable U001 remain. Existing release/support/
+recovery contracts and selected active legacy records retain their owners;
+their historical machinery is not silently migrated to the new source format.
 
 This standard defines where AI collaboration context belongs and how to separate reusable context from .NET backend-specific context and repo-specific truth.
 
