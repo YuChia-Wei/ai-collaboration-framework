@@ -12,7 +12,7 @@ Those observations do not require a source commit after publication.
 | Task | State | Result / next action |
 | --- | --- | --- |
 | T1 | completed | Three read-only inventories returned; root accepted source-only findings. |
-| T2 | in_progress | Navigation and exact index ownership repaired; fixed-commit gate and independent review next. |
+| T2 | completed | Local fixed-commit gate passed; independent review finding corrected and affected review passed. |
 
 ## Release decision
 
@@ -41,3 +41,14 @@ changes are not selected. Actual skill/initialization behavior remains with
 the owner's MQ validation. Keep branches; no cleanup was authorized.
 
 See [audit and validation](results.md) for evidence, failures and residuals.
+
+
+## Local completion and provider continuation
+
+Both local tasks are complete. The substantive repair passed the fixed-subject
+gate at `35c3bbe6389123e673bf983d298f90323c9aed68`; independent review and its
+affected correction review bind `cb3bbb6b3b75ebe53d59dc0e415512de5aa00e31`.
+The subsequent commit records completion only. Its final-head Source change
+gate, read-only record review, PR admission, main read-back and publication
+remain mandatory provider operations recorded in Issue 430 / the PR, not an
+assertion that they already happened. Root retains integration ownership.

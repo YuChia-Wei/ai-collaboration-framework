@@ -4,11 +4,11 @@ workflow_id: 2026-10-02-rc4-paths
 workflow_kind: software-development
 title: Inspect RC4 paths and repair source navigation without changing release assets
 owner_skill: software-development-orchestrator
-status: in_progress
+status: completed
 artifact_root: .dev/workflows/2026-10-02-rc4-paths
 entrypoint: workflow-plan.md
 created_at: '2026-10-02T19:52:43+08:00'
-updated_at: '2026-10-02T19:52:43+08:00'
+updated_at: '2026-10-02T19:58:12+08:00'
 template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
 template_version: policy-direct-1.0
 branch: codex/2026-10-02-rc4-paths
@@ -27,3 +27,7 @@ release_subject: 158b8438f61a60eb621e3a5b43ed1a0479634f6f
 release_tag: v0.19.0-rc.4
 provider_continuation: Issue 430 owns final current-head CI, PR merge and public prerelease
   read-back; these are separate from local repair completion.
+result_summary: Source path audit and repair complete; independent review finding
+  corrected. Product/source/builder invariance preserves RC4 tag and original assets.
+  Final hosted CI, PR integration and public prerelease are separate Issue430 provider
+  operations.

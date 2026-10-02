@@ -114,3 +114,21 @@ active; the other six workflows remain disabled. No settings changed. Original
 RC4 assets were downloaded again to a fresh directory and all three provider
 sizes/digests, original local bytes and 409 manifest entries matched. Release
 401752316 remained draft=true/prerelease=true. No publication has occurred yet.
+
+
+## Corrected independent outcome and local completion
+
+The same independent reviewer checked clean immutable
+`cb3bbb6b3b75ebe53d59dc0e415512de5aa00e31`, confirmed the P3 remediation and
+reported no new supported findings. All 376 remaining local links resolve
+with exact Git case; the other 31 previously reviewed files have identical
+Git blobs. This is affected evidence reuse, not full-tree equality. Tag object
+and peeled source are unchanged. The reviewer ran no tests or provider calls.
+
+Root accepts that scoped result and completes local T1/T2. The completion
+commit changes only this workflow's records and its index status. Earlier
+failures remain above. Source/engine/catalog/managed bytes and both release
+workflow definitions are still unchanged from the RC4 source. Final current-head
+hosted Source change gate and exact PR head/base read-back remain required
+before merge; Issue 430 / the PR retains those results and subsequent publication
+state. The original RC4 archive is preserved, and publication is not yet claimed.
