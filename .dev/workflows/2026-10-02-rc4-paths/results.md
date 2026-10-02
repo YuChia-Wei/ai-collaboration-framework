@@ -132,3 +132,17 @@ workflow definitions are still unchanged from the RC4 source. Final current-head
 hosted Source change gate and exact PR head/base read-back remain required
 before merge; Issue 430 / the PR retains those results and subsequent publication
 state. The original RC4 archive is preserved, and publication is not yet claimed.
+
+
+## Final-record lifecycle correction
+
+Independent metadata review of `6b99c3a473539ca1fa31c68faab9dd8e617b9fc4`
+found a separate P3 record discrepancy: the completed locator opted into
+`lifecycle_contract: 1.0` but omitted `current_phase`. The unchanged workflow
+artifact policy requires `completed` or `closed`; the source selector does not
+validate that relationship. Root adds `current_phase: completed`, preserves
+both task results and updates the locator/index timestamp. This is a record
+repair under the existing owner instruction, not a source-gate failure or a
+lowered acceptance condition. The reviewer otherwise confirmed truthful
+provider continuation and identical blobs for the 28 non-record files. The
+corrected head requires affected review and its own hosted Source change gate.

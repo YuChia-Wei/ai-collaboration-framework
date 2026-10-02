@@ -8,7 +8,7 @@ status: completed
 artifact_root: .dev/workflows/2026-10-02-rc4-paths
 entrypoint: workflow-plan.md
 created_at: '2026-10-02T19:52:43+08:00'
-updated_at: '2026-10-02T19:58:12+08:00'
+updated_at: '2026-10-02T19:59:54+08:00'
 template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
 template_version: policy-direct-1.0
 branch: codex/2026-10-02-rc4-paths
@@ -31,3 +31,4 @@ result_summary: Source path audit and repair complete; independent review findin
   corrected. Product/source/builder invariance preserves RC4 tag and original assets.
   Final hosted CI, PR integration and public prerelease are separate Issue430 provider
   operations.
+current_phase: completed
