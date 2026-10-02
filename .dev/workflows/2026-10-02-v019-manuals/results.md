@@ -181,6 +181,27 @@ runtime／hosted／recovery／agent 行為。操作、preset、maintenance、rec
   後中止該輪，以修訂範圍記錄。該輪不是完成的最終 review；修正後對新的
   immutable subject 再審受影響段落。
 
+最終 affected review 固定於
+`8e37b2a0c14eb93849449dfcdac48e50a1b51971`，由同一獨立 reviewer 核對
+`c2337d44..8e37b2a0` 的四個文件／記錄修訂，沿用未變內容的初次審查。
+結果為 `completed`，**no actionable defect found in the owner-corrected scope**；
+確認原 packaging concern 已撤回、三個固定 RC4 目標存在，214／211 計數與
+owner 的使用說明定位均清楚，沒有增加發佈工作。
+
+Reviewer 執行
+`python -I -B .github/scripts/check-source-change.py --base c2337d44811371db19215c629c67e15a3bc4c1ac --head 8e37b2a0c14eb93849449dfcdac48e50a1b51971`：
+content／whitespace passed、zero errors、4.305 seconds，admission 未評估；
+`git diff --check c2337d44811371db19215c629c67e15a3bc4c1ac 8e37b2a0c14eb93849449dfcdac48e50a1b51971`
+及三個 `git cat-file -e` tag 目標核對皆通過。這不包含 hosted、recovery、
+runtime 或 agent 行為驗收。
+
+本次本機文件工作完成。收尾只更新此 workflow 的狀態、結果與 index，
+不再修改已審的 docs／README／selector／immediate tests 或 governing policy。
+收尾 commit 後以 `git diff --exit-code 8e37b2a0c14eb93849449dfcdac48e50a1b51971 HEAD -- docs README.md README.en.md .github/scripts/check-source-change.py tests/source/test_source_gates.py`
+重新綁定已審內容，並對 `dd1453e8..HEAD` 執行完整 affected Source gate 及
+commit-message range validation；新 head 結果保留在本次本機執行輸出。
+本機完成不關閉 #322，也不表示 push／PR／merge／正式版發佈已執行。
+
 ## 建議的下一版收斂方式
 
 優先準備 `0.19.0` stable 的單一新 candidate；只有教學／實際使用情境

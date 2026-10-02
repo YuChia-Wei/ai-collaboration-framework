@@ -59,5 +59,7 @@ silently reinstating retired high-I/O matrices.
 Local completion is separate from push, PR, merge, Issue closure and release.
 Keep #322 open and preserve its unrelated outstanding scope. A later integration
 owner must obtain actual current-head CI and PR acceptance; no branch cleanup is
-selected. Next action: complete manuals from the three evidence returns and run
-the affected checks before immutable review.
+selected. Local documentation and independent review are completed; exact
+evidence and remaining release recommendations are in `results.md`. Next owner:
+the source integration owner may select push/PR and current-head hosted checks.
+The release owner separately selects the next `src/` candidate and its acceptance.
