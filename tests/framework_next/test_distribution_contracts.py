@@ -1,6 +1,6 @@
-"""Narrow RC2 contract fixtures for S6. Authoring is not execution evidence.
+"""Distribution metadata, dependency and identity contract fixtures.
 
-Run only after owner selection: python -I -B tests/framework_next/test_rc2_distribution.py
+Run: python -I -B tests/framework_next/test_distribution_contracts.py
 These in-memory fixtures neither install a target nor prove native/runtime behavior.
 """
 from copy import deepcopy
@@ -43,7 +43,7 @@ def skill():
                                       'resources':['index'],'requirement':'optional','on_missing':'unavailable'}]}
 
 
-class Rc2DistributionTests(unittest.TestCase):
+class DistributionContractTests(unittest.TestCase):
     def test_content_and_metadata4_have_distinct_closed_shapes(self):
         package=load_content_package(blob('content-package.yaml',knowledge()))
         self.assertEqual(package.members,frozenset({'README.md','content-package.yaml'}))

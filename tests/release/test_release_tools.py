@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Focused transport fixtures only; no product, native or legacy test suite."""
+"""Offline release transport fixtures using synthetic bundles and provider replies."""
 import copy
 import importlib.util
 import json
@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 import zipfile
 
-SCRIPTS = Path(__file__).absolute().parents[1] / "scripts"
+SCRIPTS = Path(__file__).absolute().parents[2] / ".github/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import release_common as common
 
@@ -111,6 +111,10 @@ class FakeGitHub:
 
 class ReleaseContracts(unittest.TestCase):
     def setUp(self):
+        offline = patch.object(draft.urllib.request.OpenerDirector, "open",
+                               side_effect=AssertionError("release-tool tests must stay offline"))
+        offline.start()
+        self.addCleanup(offline.stop)
         self.temp = tempfile.TemporaryDirectory()
         self.directory = Path(self.temp.name)
         self.manifest = fixture(self.directory)

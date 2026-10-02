@@ -352,7 +352,7 @@ class CommandTests(unittest.TestCase):
         self.assertEqual(calls, [])
 
     def test_synthetic_subprocess_outcomes_never_fake_hosted_success(self):
-        path = '.github/tests/test_source_gates.py'
+        path = 'tests/source/test_source_gates.py'
         tree = SyntheticTree({path: (ROOT / path).read_bytes()})
         for status in ('failed', 'skipped', 'cancelled', 'timed-out', 'unavailable', 'output-limit'):
             with self.subTest(status=status), self.assertRaises(gate.GateError):
@@ -373,7 +373,7 @@ class CommandTests(unittest.TestCase):
         with self.assertRaises(gate.GateError):
             gate.run_selected('source-tests', ROOT, SyntheticTree({}), launch=lambda *a, **k: calls.append(a))
         with self.assertRaises(gate.GateError):
-            gate.run_selected('source-tests', ROOT, SyntheticTree({'.github/tests/test_source_gates.py': '# changed'}),
+            gate.run_selected('source-tests', ROOT, SyntheticTree({'tests/source/test_source_gates.py': '# changed'}),
                               launch=lambda *a, **k: calls.append(a))
         self.assertEqual(calls, [])
 
@@ -576,7 +576,7 @@ class PublicResultTests(unittest.TestCase):
         self.result(self.synthetic_rows('lesson'), family='lesson')
 
     def test_pinned_entry_and_head_are_forwarded_without_product_launch(self):
-        path = '.github/tests/test_source_gates.py'
+        path = 'tests/source/test_source_gates.py'
         tree = SyntheticTree({path: (ROOT / path).read_bytes()})
         tree.revision = self.subject
         calls = []
