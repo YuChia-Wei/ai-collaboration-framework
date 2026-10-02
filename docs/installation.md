@@ -7,6 +7,11 @@
 
 目前主線 `dd1453e8cf23bf62a5b28c70ed08f475856dda41` 位於 RC4 之後，並含 19 個 skill 說明檔的後續修訂。因此，本節每一個 RC4 安裝命令都從已發布 archive 的 `engine/` 與 `catalog/` 執行，不能混用工作樹中的工具或內容。
 
+本手冊是來源庫 `docs/` 的線上文件，未內附於 RC4 ZIP；閱讀手冊與下載
+安裝 archive 是兩個步驟。以下命令不依賴來源庫 checkout。本文的安裝
+schema／破壞性重裝契約連到 RC4 固定 tag；各 skill 手冊的相對來源連結
+供查閱本手冊基線，不能替代 archive 或實際安裝的指令。
+
 流程是 **下載與校驗 → 選 skill／知識／adapter → 組裝 subset → inspect／plan
 → apply → inspect**。目前是明確 JSON 選擇與命令列流程，沒有互動式勾選安裝器。
 也可交由 agent 依本手冊執行，但先提供實際目標、選擇與寫入範圍：
@@ -91,7 +96,7 @@ Get-Content -Raw "$PackageRoot\catalog\metadata\build.json"
 
 下列 identity／hash 只屬於 RC4；換版本時應從新 archive 的 `build.json`
 讀取，不能只改版本字串。完整結構可核對
-[selection schema](../src/distribution/schemas/selection.schema.json)。
+[RC4 selection schema](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/v0.19.0-rc.4/src/distribution/schemas/selection.schema.json)。
 
 ```json
 {
@@ -253,7 +258,7 @@ rule IDs，`authorities` 必須提供目標採納文件的相對 `path`、實際
 取得並轉成小寫；這只證明 bytes，仍須由專案 owner 決定語意是否適用。
 
 完整 closed schema 位於
-[Binding／Selector／Authority](../src/distribution/schemas/contracts.schema.json)。
+[RC4 Binding／Selector／Authority](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/v0.19.0-rc.4/src/distribution/schemas/contracts.schema.json)。
 新增、修改、撤回 binding 都需要新的 selection／candidate 和 plan；
 不要直接修改 managed lock 或 knowledge 副本。
 
@@ -392,7 +397,7 @@ RC4 沒有名為 `validate` 或 `upgrade` 的 operation。候選及安裝完整�
 上面的教學程式刻意在既有安裝時停止；不要只移除其保護判斷就拿去重裝。
 Legacy v0.18／早期 RC 的移轉、跨電腦復原、全專案清除都不是這個更新範例
 已驗證的行為。破壞性重裝必須另外閱讀
-[契約](../.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)，
+[RC4 契約](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/v0.19.0-rc.4/.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)，
 選定精確 cleanup／preservation 與 Git baseline 後才執行。
 
 ### 發生失敗時

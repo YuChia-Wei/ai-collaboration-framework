@@ -143,7 +143,34 @@ Linux、Claude discovery、真實 agent 任務、語意規則採用、產品 run
   214 個本機連結 exact-case 可解析，11 個 JSON 範例可解析。
 - PowerShell Parser 對 9 個教學 code blocks 語法檢查成功。實際安裝 API
   如上另行執行；語法檢查不宣稱逐字執行了整份 shell 教學。
-- `git diff --check` passed。Immutable affected gate 與獨立 review 待下階段補錄。
+- `git diff --check` passed。
+- Immutable author subject `c2337d44811371db19215c629c67e15a3bc4c1ac` 的
+  `python -I -B .github/scripts/check-source-change.py --base dd1453e8cf23bf62a5b28c70ed08f475856dda41 --head c2337d44811371db19215c629c67e15a3bc4c1ac`
+  passed：content／whitespace 與 source suite 47 tests，zero failures/errors/skips；
+  全命令 26.437 seconds，suite 2.271635 seconds。Admission 未由此本機檢查評估。
+
+### 獨立審查與處置
+
+Reviewer `/root/manuals_review` 以 `bounded-general-worker`
+（gpt-5.6-terra/xhigh）及 `code-reviewer` 對
+`dd1453e8cf23bf62a5b28c70ed08f475856dda41..c2337d44811371db19215c629c67e15a3bc4c1ac`
+執行獨立唯讀審查。核對安裝 archive、18 skills metadata、知識宣告、
+maintenance API、三例 apply 證據、release packaging 與 selector；未評估
+runtime／hosted／recovery／agent 行為。操作、preset、maintenance、recovery
+限制及 selector 行為與所檢來源相符。
+
+初次結果為 `needs-parent-decision`：RC4 ZIP 沒有 `docs/`，generic README
+也沒有手冊入口；另外提示相對 source links 可能隨分支漂移。Root 核對後：
+
+- ZIP 缺少手冊入口的事實成立，列入下一版 release handoff。原文沒有要求
+  讀者從 archive 取得手冊；owner 的本次交付位置為來源庫 `docs/`，未選定
+  自包含 ZIP 文件產品。因此這不是缺少本次要求的文件，亦不擴大到修改
+  release builder、payload closure 或已發布 RC4。
+- 補明手冊是線上來源文件、RC4 ZIP 不含手冊及連結，而命令不需 checkout。
+- 安裝 schema、binding schema、breaking reinstall 契約改連 RC4 固定 tag；
+  相對 skill source links 明示為查閱用，實際指令以 installed bytes 為準。
+- 文件修正後需以新的 immutable subject 再審受影響段落；原審查沒有直接
+  延伸為新內容已通過。
 
 ## 建議的下一版收斂方式
 
@@ -163,7 +190,10 @@ Linux、Claude discovery、真實 agent 任務、語意規則採用、產品 run
 4. 明列 stable 支援範圍：若只發來源套件，不宣稱 target rc-to-stable
    update/rollback、跨電腦 recovery、未選 target adapters 或完整 P7 已完成。
    若要宣稱上述任一能力，必須補該能力的真實驗收，不能自行改成 waived。
-5. 按 release owner 決策建立新 stable tag/build、讀回 hashes 和 provider，
+5. 在下一版 Release／archive README 提供可從發行入口找到的版本固定手冊
+   連結；若改選內附文件，另明確修改 payload closure 並驗證。現有 RC4
+   archive 不含這次手冊，不能把本次來源文件完成當作 archive 入口已完成。
+6. 按 release owner 決策建立新 stable tag/build、讀回 hashes 和 provider，
    審閱 release notes 後發布。文件完工不等於發布完成。
 
 R3/R4 是原 pilot 的 stable update／cross-computer 義務，不是所有來源套件
