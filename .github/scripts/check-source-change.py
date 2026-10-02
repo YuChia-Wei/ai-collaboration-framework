@@ -581,6 +581,11 @@ def classify(path: str, ownership: Ownership, selection: Selection, *, removed=F
         selection.requirements.add("independent-scoped-review")
         selection.owners.add("source-governance")
         return
+    if path.startswith("docs/") and path.lower().endswith(".md"):
+        selection.owners.add("user-documentation")
+        if path in {"docs/installation.md", "docs/knowledge-packages.md"}:
+            selection.requirements.add("independent-scoped-review")
+        return
     if (path in {"README.md", "README.en.md", "LICENSE", "tests/readme.md", "tests/framework_next/README.md"}
             or (path.startswith((".dev/design/", ".dev/guides/")) and path.lower().endswith(".md"))):
         selection.owners.add("source-prose")

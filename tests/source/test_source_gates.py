@@ -295,6 +295,28 @@ class SelectionTests(unittest.TestCase):
             self.assertTrue(result.errors)
             self.assertEqual(result.checks, {"content", "whitespace"})
 
+    def test_user_manuals_preserve_installation_review_and_reject_nonprose(self):
+        for path in ("docs/README.md", "docs/skills/code-reviewer.md",
+                     "docs/installation.md", "docs/knowledge-packages.md"):
+            snapshot = SyntheticTree({path: "# manual"})
+            for change in (gate.Change(None, path), gate.Change(path, None)):
+                with self.subTest(path=path, change=change):
+                    result = gate.select([change], snapshot, snapshot)
+                    self.assertFalse(result.errors)
+                    self.assertEqual(result.checks, {"content", "whitespace"})
+                    self.assertEqual(result.owners, {"user-documentation"})
+                    expected = {"independent-scoped-review"} if path in {
+                        "docs/installation.md", "docs/knowledge-packages.md"} else set()
+                    self.assertEqual(result.requirements, expected)
+        # Moving an installation guide cannot lose the old side's review requirement.
+        before = SyntheticTree({"docs/installation.md": "# install"})
+        after = SyntheticTree({"docs/archive/install.md": "# install"})
+        result = gate.select([gate.Change("docs/installation.md", "docs/archive/install.md")], before, after)
+        self.assertFalse(result.errors)
+        self.assertIn("independent-scoped-review", result.requirements)
+        for path in ("docs/tool.py", "docs/selection.json", "docs-policy.md"):
+            self.assertTrue(self.selected(SyntheticTree({path: "# unknown"}), path).errors)
+
     def test_current_declared_metadata_is_read_without_git_build_or_install(self):
         manifest = gate.strict_yaml((ROOT / gate.MANIFEST).read_bytes())
         files = {gate.MANIFEST: (ROOT / gate.MANIFEST).read_bytes()}

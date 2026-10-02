@@ -6,6 +6,7 @@
 
 | 目的 | 路徑 |
 | --- | --- |
+| 安裝說明、知識選配與各 skill 使用手冊 | [`docs/`](docs/README.md) |
 | Agent 協作規則與目前 routes | [`AGENTS.md`](AGENTS.md) |
 | Source 操作政策 | [`.dev/standards/`](.dev/standards/INDEX.MD) |
 | 可編輯的 reusable framework source | [`src/`](src/) |

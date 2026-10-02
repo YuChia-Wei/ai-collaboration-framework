@@ -6,6 +6,7 @@ This repository is the source for a reusable AI collaboration framework. It main
 
 | Purpose | Path |
 | --- | --- |
+| Installation, optional knowledge, and per-skill manuals (Traditional Chinese) | [`docs/`](docs/README.md) |
 | Agent collaboration rules and current routes | [`AGENTS.md`](AGENTS.md) |
 | Source operating policies | [`.dev/standards/`](.dev/standards/INDEX.MD) |
 | Editable reusable framework source | [`src/`](src/) |
