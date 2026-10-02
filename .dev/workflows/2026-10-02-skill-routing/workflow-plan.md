@@ -62,5 +62,8 @@ Current task status is owned by [the locator](workflow.yaml) and task JSON;
 evidence belongs to Issue 432 and the final PR. Terminal intent is to close only
 432 after accepted integration. Select a merge commit to retain the reviewed
 routing change and its separate review disposition as one rollback boundary.
-Do not delete the branch. Next action at this checkpoint is immutable review,
-affected validation, then final workflow state and current-head CI before merge.
+Do not delete the branch. The local source audit, clarification and independent
+review are complete; provider admission and Issue acceptance criterion 5 remain
+separately observable in Issue 432 and its PR. Next action is to check this final
+record update, bind the unchanged source instructions to the final commit, then
+obtain actual current-head CI before merge and read back Issue/Project state.
