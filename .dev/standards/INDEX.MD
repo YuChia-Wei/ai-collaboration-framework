@@ -25,6 +25,12 @@ policies. It is not the canonical owner of .NET backend semantic standards.
 
 ## .NET Backend Profile Compatibility Navigation
 
+The legacy `.dev/standards/coding-standards/`, `examples/`, `rationale/`, and
+`templates/` trees are absent from the current source checkout. Older
+requirements, catalogs, and historical records may retain those path spellings;
+they do not provide current navigation or an executable route. This index does
+not designate replacement semantic authority for the .NET backend profile.
+
 - Profile standards (legacy path `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md`, unavailable here)
 - Focused coding standards (legacy path `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards`, unavailable here)
 - Profile rationale (legacy path `.ai/assets/tech-stacks/dotnet-backend/references/rationale`, unavailable here)
