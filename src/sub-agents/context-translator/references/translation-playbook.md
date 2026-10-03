@@ -4,7 +4,7 @@
 
 The delegating agent supplies exactly one finalized source path, one output path, and the selected low-cost runtime/model. If any value is missing, or if the output path is the English source, stop without writing.
 
-For root collaboration context, translate `AGENTS.md` only after `repo-structure-sync` has completed its evidence-backed English rewrite. The derived output is `AGENTS.zh-TW.md`.
+For root collaboration context, translate `AGENTS.md` only after the owning agent has finalized its evidence-backed English source. The derived output is `AGENTS.zh-TW.md`.
 
 The translator does not edit the finalized English source. After translation, the main agent adds reciprocal language links to both files, reruns structural and semantic parity review, and records any resulting translation adjustment.
 

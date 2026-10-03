@@ -91,6 +91,33 @@ class SelectionTests(unittest.TestCase):
     def selected(self, snapshot, path):
         return gate.select([gate.Change(path, path)], snapshot, snapshot)
 
+    def test_sub_agent_metadata_runtime_and_moved_source_select_exact_checks(self):
+        root='src/sub-agents/reviewer'
+        members=['sub-agent-package.yaml','sub-agent.yaml','references/review.md','runtime/codex.toml']
+        component={'kind':'sub-agent','id':'reviewer','version':'0.1.0','source':root,
+                   'metadata':'sub-agent-package.yaml','members':[{'source':m} for m in members]}
+        metadata={'sub_agent_package_version':1,'id':'reviewer','version':'0.1.0',
+                  'entrypoint':'sub-agent.yaml','members':members,'dependencies':{'required':[],'optional':[]}}
+        snapshot=tree((component,metadata))
+        for member in members:
+            result=self.selected(snapshot,root+'/'+member)
+            self.assertFalse(result.errors)
+            self.assertEqual(result.checks,{'content','whitespace'} | (
+                {'schemas','distribution'} if member!='references/review.md' else set()))
+        before=SyntheticTree({'.dev/agents/reviewer/sub-agent.yaml':'asset_id: reviewer\n'})
+        moved=gate.select([gate.Change('.dev/agents/reviewer/sub-agent.yaml',root+'/sub-agent.yaml')],before,snapshot)
+        self.assertFalse(moved.errors)
+        self.assertIn('distribution',moved.checks)
+
+    def test_source_sub_agent_profiles_keep_conditional_independent_review(self):
+        name='.codex/agents/context-translator.toml'
+        result=self.selected(SyntheticTree({name:'name = "context-translator"\n'}),name)
+        self.assertFalse(result.errors)
+        self.assertEqual(result.checks,{'content','whitespace','source','distribution'})
+        self.assertIn('independent-scoped-review',result.requirements)
+        other='.codex/agents/unselected.toml'
+        self.assertTrue(self.selected(SyntheticTree({other:'name = "other"\n'}),other).errors)
+
     def test_current_skill_names_and_metadata_versions_keep_prose_lightweight(self):
         for owner in ("lesson-author", "adr-author", "pr-author", "software-development-orchestrator"):
             for version in (1, 2, 3, 4):

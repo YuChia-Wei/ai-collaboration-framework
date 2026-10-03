@@ -26,7 +26,7 @@ This standard defines where AI collaboration context belongs and how to separate
 ## Framework Source Repository Exception
 
 For this framework source repository after RC2 adoption, `src/skills/` and
-`src/knowledge/` are the editable sources for skills and engineering knowledge. The managed installer
+`src/knowledge/` and `src/sub-agents/` are the editable sources for skills, engineering knowledge and reusable sub-agent roles. The managed installer
 projects the selected source into `.ai/core/` and the original-ID runtime entries
 under `.agents/skills/` and `.claude/skills/`; those outputs are not edited here.
 Existing `.ai/assets/skills/` content remains only where active source

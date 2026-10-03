@@ -792,8 +792,10 @@ def _unknown(reader: _Reader, root: Path, names: set[str], owned: set[str]) -> l
     """Descend only declared parent paths inside selected managed package roots."""
     scopes = set()
     for name in names:
+        if name.startswith(('.codex/agents/', '.claude/agents/')):
+            continue
         parts = name.split("/")
-        scopes.add("/".join(parts[:4] if name.startswith((".ai/core/skills/", ".ai/core/knowledge/")) else parts[:3]))
+        scopes.add("/".join(parts[:4] if name.startswith((".ai/core/skills/", ".ai/core/knowledge/", ".ai/core/sub-agents/")) else parts[:3]))
     parents = {"/".join(name.split("/")[:i]) for name in names for i in range(1, len(name.split("/")))}
     unknown = set()
     for scope in sorted(scopes):

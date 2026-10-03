@@ -274,13 +274,13 @@ class Ownership:
             seen_paths = set()
             for component in components:
                 kind, owner = component["kind"], self.identifier(component["id"])
-                if kind not in ("skill", "knowledge"):
+                if kind not in ("skill", "knowledge", "sub-agent"):
                     raise GateError("unknown component kind")
                 key = kind, owner
                 if key in self._components:
                     raise GateError("duplicate component ownership")
                 root = safe_path(component["source"])
-                expected_root = ("src/skills/" if kind == "skill" else "src/knowledge/") + owner
+                expected_root = {'skill':'src/skills/','knowledge':'src/knowledge/','sub-agent':'src/sub-agents/'}[kind] + owner
                 if root != expected_root or not isinstance(component.get("version"), str) or not component["version"]:
                     raise GateError("unknown component source or version")
                 safe_path(component["metadata"])
@@ -326,6 +326,13 @@ class Ownership:
             for kind in ("schemas", "templates", "tools"):
                 for resource in self.rows(resources.get(kind), kind + " ownership", mappings=True):
                     role(resource["entrypoint" if kind == "tools" else "path"], kind)
+        elif component['kind'] == 'sub-agent':
+            if type(metadata.get('sub_agent_package_version')) is not int or metadata['sub_agent_package_version'] != 1:
+                raise GateError('unknown sub-agent metadata ownership version')
+            for member in self.rows(metadata.get('members'), 'sub-agent member ownership'):
+                role(member, 'metadata' if member == component['metadata'] or member.startswith('runtime/') or member == 'sub-agent.yaml' else 'prose')
+            if roles.get(component['metadata']) != 'metadata' or metadata.get('entrypoint') != 'sub-agent.yaml':
+                raise GateError('missing sub-agent metadata/entrypoint ownership')
         else:
             if type(metadata.get("content_package_version")) is not int or metadata["content_package_version"] != 1:
                 raise GateError("unknown knowledge metadata ownership version")
@@ -382,7 +389,7 @@ class Ownership:
             edges[key] = set()
             for kind, owner, version, requirement, missing in rows:
                 target = kind, self.identifier(owner)
-                if (kind not in ("skill", "knowledge") or requirement not in ("required", "optional")
+                if (kind not in ("skill", "knowledge", "sub-agent") or requirement not in ("required", "optional")
                         or not isinstance(version, str) or not version
                         or (requirement == "optional" and missing != "unavailable")):
                     raise GateError("unknown dependency binding")
@@ -499,14 +506,32 @@ class Selection:
 def classify(path: str, ownership: Ownership, selection: Selection, *, removed=False):
     safe_path(path)
     ownership.tree.read(path)  # Includes deleted side mode/size safety.
+    # These source-owned profiles consume the roles moved by #434. Other
+    # runtime/support paths retain their independently selected checks.
+    source_profiles = {'.codex/agents/' + name + '.toml' for name in (
+        'bounded-general-worker', 'bounded-routine-worker', 'context-translator',
+        'evidence-report-synthesizer', 'fixed-head-independent-auditor',
+        'reconciliation-worker', 'semantic-governance-analyst')}
+    source_profiles.update({'.claude/agents/context-translator.md',
+                            '.github/agents/context-translator.agent.md'})
+    if path in source_profiles:
+        selection.owners.add('source-sub-agent-projections')
+        selection.checks.update({'source', 'distribution'})
+        selection.requirements.add('independent-scoped-review')
+        return
     if path in RETIRED_TESTS:
         if not removed:
             raise GateError("retired test path is not an executable route: " + path)
         selection.owners.add("retired-tests")
         return
+    if removed and path.startswith('.dev/agents/'):
+        selection.owners.add('retired-sub-agent-source')
+        selection.checks.update({'source', 'distribution'})
+        selection.requirements.add('independent-scoped-review')
+        return
     if path.startswith((".dev/backlog/", ".ai/", ".agents/", ".claude/", ".codex/", ".dev/ai-context/")):
         raise GateError("legacy/support owner must select exact checks: " + path)
-    if path.startswith(("src/skills/", "src/knowledge/")):
+    if path.startswith(("src/skills/", "src/knowledge/", "src/sub-agents/")):
         kind, owner, role, tool = ownership.package(path)
         selection.owners.add(owner)
         if role != "prose":

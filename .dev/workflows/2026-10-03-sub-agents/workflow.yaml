@@ -1,0 +1,28 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-03-sub-agents
+workflow_kind: software-development
+title: Publish and install reusable sub-agent profiles
+owner_skill: software-development-orchestrator
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-10-03-sub-agents
+entrypoint: workflow-plan.md
+created_at: '2026-10-03T08:26:05+08:00'
+updated_at: '2026-10-03T11:06:53+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-03-sub-agents
+base_branch: main
+base_commit: 37a588c8c0b6f5e760079c563e71d742af8f962d
+work_items:
+- provider: github
+  issue: 434
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/434
+authority: Direct owner request on 2026-10-03 authorizes source release/installation
+  settings after manually moving six roles; owner separately authorized Issue creation
+  and one read-only sub-agent review.
+execution: Root is the only tracked writer and integration owner. Preserve the user-staged
+  moves and existing unintegrated manual/removal commits. Independent reviewer reads
+  a clean immutable commit; no provider mutation, publication, downstream installation,
+  push, PR or merge.

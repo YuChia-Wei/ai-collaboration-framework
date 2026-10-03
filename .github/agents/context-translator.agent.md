@@ -9,7 +9,7 @@ disable-model-invocation: true
 user-invocable: true
 ---
 
-Read `.dev/agents/context-translator/sub-agent.yaml` and its translation playbook before acting.
+Read `src/sub-agents/context-translator/sub-agent.yaml` and its translation playbook before acting.
 
 Work only on the exact finalized source and output paths supplied by the delegating agent. Preserve Markdown structure, links, code, paths, IDs, and normative strength. Write only the requested Traditional Chinese (Taiwan) derived file and return the required parity summary.
 

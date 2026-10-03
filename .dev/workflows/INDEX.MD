@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-10-03-sub-agents`](2026-10-03-sub-agents/workflow.yaml) | Publish and install reusable sub-agent profiles | `software-development-orchestrator` | `completed` | `2026-10-03T11:06:53+08:00` | [plan](2026-10-03-sub-agents/workflow-plan.md) |
 | [`2026-10-02-v019-manuals`](2026-10-02-v019-manuals/workflow.yaml) | Selectable installation and skill manuals for 0.19.0 | `software-development-orchestrator` | `completed` | `2026-10-03T00:28:00+08:00` | [plan](2026-10-02-v019-manuals/workflow-plan.md) |
 | [`2026-10-02-skill-routing`](2026-10-02-skill-routing/workflow.yaml) | Context responsibility and source skill routing | `software-development-orchestrator` | `completed` | `2026-10-02T23:28:50+08:00` | [plan](2026-10-02-skill-routing/workflow-plan.md) |
 | [`2026-10-02-rc4-paths`](2026-10-02-rc4-paths/workflow.yaml) | RC4 path inspection and source navigation repair | `software-development-orchestrator` | `completed` | `2026-10-02T19:59:54+08:00` | [plan](2026-10-02-rc4-paths/workflow-plan.md) |

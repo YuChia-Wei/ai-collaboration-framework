@@ -1,0 +1,18 @@
+{
+  "task_id": "T1",
+  "workflow_id": "2026-10-03-sub-agents",
+  "owner_skill": "software-development-orchestrator",
+  "title": "Implement role packages and focused contract validation",
+  "status": "completed",
+  "created_at": "2026-10-03T08:26:05+08:00",
+  "updated_at": "2026-10-03T11:06:53+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "high",
+  "execution_identity_basis": "Host configured default; exact active model/effort is not independently exposed.",
+  "issue": 434,
+  "finding_status": "addressed",
+  "prior_result_summary": "All six roles support Codex and Claude; separate Claude preset, exact model/tool validation and LF/CRLF parsing completed. Source gate 164 tests and real 36-file Claude installation passed on 51a939c5b1de1ca32b7c46a130f29532a4424ff6. Earlier Codex installation evidence remains separately pinned.",
+  "result_summary": "Canonical GPT-6/Claude candidate policies and programmatic catalog discovery/selection/profile binding completed; fixed d980df4cec53a884267cc6b323bf427d74a12b02 passed 171 local source tests and real 42-file dual-adapter installation with live Codex subset derivation; no inference/adoption/publication."
+}
