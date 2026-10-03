@@ -8,6 +8,18 @@
 先修改 `src` 與套件宣告，成品準備好後才依另行選定的安裝／升級流程
 更新 `.ai/core` 和 runtime entries。直接修改安裝副本會產生漂移。
 
+## 專案格式設定
+
+根目錄 `.editorconfig` 由各專案團隊維護，包含縮排、換行、行長、命名與
+程式碼風格等選擇。本來源庫的 `.editorconfig` 只供本專案開發使用，
+不作為 framework 預設配送或升級覆寫的檔案；使用端沿用自己的設定。
+
+若某項能力需要特定設定，framework 可在 `src` 提供最小參考片段與用途說明，
+由使用端審閱後自行採用。例如 .NET 知識包的
+[Analyzer severity 片段](../src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet)
+只提供診斷嚴重度參考，不代表已採用或啟用，也不取代團隊的完整 `.editorconfig`。
+使用端採用後的設定由使用端維護，安裝知識包本身不會寫入其根目錄設定。
+
 ## 撰寫使用說明
 
 從使用者的任務開始，說明用途、適用情境、所需輸入、操作、輸出與限制。
