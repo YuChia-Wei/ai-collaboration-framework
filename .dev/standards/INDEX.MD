@@ -1,40 +1,35 @@
 # Source Governance Standards Index
 
-Legacy applicability: the `.ai/assets/` paths below are retained historical
-references and are absent from this source layout. They do not provide
-current navigation or an executable route. For compatible legacy support,
-select the owning historical revision; no replacement semantic authority
-is adopted by this entry.
+These are this framework source project's policies. Reusable engineering
+knowledge lives in `src/knowledge`, product manuals in `docs`, and generated
+installed content in `.ai/core`. Load only the applicable policy.
 
-`.dev/standards/` is the source-governance location for framework ownership,
-workflow, assessment, language, version, dependency, and technology-selection
-policies. It is not the canonical owner of .NET backend semantic standards.
+## Ordinary Source Work
 
-## Source Governance
+- [Source development policy](SOURCE-DEVELOPMENT-POLICY.md): adopted eight rules,
+  affected checks and conditional independent review.
+- [Context boundary](AI-CONTEXT-BOUNDARY.md), [language](AI-CONTEXT-LANGUAGE-POLICY.md)
+  and [source ownership](AI-CONTEXT-OWNERSHIP.md).
+- [Source work authority](SOURCE-WORK-MANAGEMENT-AUTHORITY.md) and its
+  [configuration](SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml).
+- [GitHub work management](GITHUB-WORK-MANAGEMENT-POLICY.yaml) and
+  [Issue closure](GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md).
+- [Git commit policy](GIT-COMMIT-POLICY.md) and [configuration](GIT-COMMIT-POLICY.yaml).
+- [Assessment records](ASSESSMENT-ARTIFACT-POLICY.md),
+  [workflow locator](WORKFLOW-ARTIFACT-POLICY.md),
+  [workflow selection](WORKFLOW-GATE-POLICY.md) and
+  [handoff](WORKFLOW-HANDOFF-POLICY.md)/[configuration](WORKFLOW-HANDOFF-POLICY.yaml).
+- [Effective source rules](AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml).
 
-- [AI context boundary](AI-CONTEXT-BOUNDARY.md), [language](AI-CONTEXT-LANGUAGE-POLICY.md), and [ownership](AI-CONTEXT-OWNERSHIP.md) policies
-- [Portable AI context version, provenance, and upgrade policy](AI-CONTEXT-VERSION-POLICY.md)
-- Source work-management authority and GitHub provider configuration are
-  source-repository-only. They are intentionally absent from initialized-target
-  packages and do not act as portable work-management policy.
-- [Assessment](ASSESSMENT-ARTIFACT-POLICY.md), [workflow artifact](WORKFLOW-ARTIFACT-POLICY.md), [workflow gate](WORKFLOW-GATE-POLICY.md), and [workflow handoff](WORKFLOW-HANDOFF-POLICY.md) policies
-- [Git commit](GIT-COMMIT-POLICY.md), source-repository-only GitHub terminal
-  Issue closure (`GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`),
-  [dependency-version consistency](DEPENDENCY-VERSION-CONSISTENCY-POLICY.md),
-  and [target technology selection](TECHNOLOGY-SELECTION-POLICY.md) policies
+## Selected Legacy And Release Duties
 
-## .NET Backend Profile Compatibility Navigation
+- [Source release policy](AI-CONTEXT-SOURCE-RELEASE-POLICY.md).
+- [Temporary redesign/U001 override](FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md),
+  only for explicitly retained obligations outside adopted ordinary source scope.
+- [Legacy identity registry](AI-CONTEXT-OWNERSHIP.yaml) and
+  [legacy effective-rule evidence schema](AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml),
+  for interpreting compatible records; they are not current product configuration.
 
-The legacy `.dev/standards/coding-standards/`, `examples/`, `rationale/`, and
-`templates/` trees are absent from the current source checkout. Older
-requirements, catalogs, and historical records may retain those path spellings;
-they do not provide current navigation or an executable route. This index does
-not designate replacement semantic authority for the .NET backend profile.
-
-- Profile standards (legacy path `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md`, unavailable here)
-- Focused coding standards (legacy path `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards`, unavailable here)
-- Profile rationale (legacy path `.ai/assets/tech-stacks/dotnet-backend/references/rationale`, unavailable here)
-- Profile templates (legacy path `.ai/assets/tech-stacks/dotnet-backend/templates`, unavailable here)
-
-Human-facing tutorials, setup, migration, troubleshooting, and prompt-usage
-guidance remain under `.dev/guides/`.
+See [contracts](../contracts/README.md) for source execution boundaries. Removed
+compatibility notices and obsolete commands are not current navigation; retrieve
+an explicitly selected historical revision when needed.

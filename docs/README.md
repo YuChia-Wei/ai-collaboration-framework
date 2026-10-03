@@ -63,3 +63,6 @@ workflow-v2 紀錄操作已退場，workflow 儲存方式由專案決定。
 
 職責沿革可參考[來源庫的變遷說明](../.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)；
 它提供歷史對照，不取代下載版本的實際 metadata。
+
+產品文件維護方式見[維護產品文件](maintaining-documentation.md)。來源中的
+未發佈通用方法整理不會回填 RC4，也尚未更新本專案的安裝副本。

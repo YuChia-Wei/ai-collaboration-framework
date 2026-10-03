@@ -127,7 +127,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - 實際執行時重新 preflight、建立唯一且受 containment 驗證的 run directory，cleanup 只可刪除該 verified directory。Invalid、unsafe 或 unwritable root 必須在 material fixtures 前失敗。
 - Diagnostics 不得包含 path。WSL `/mnt/*` performance warning 只是 advisory；不得改變 test outcome，也不得靜默選擇其他 root。
 - Default 與 accelerated mode 必須在同一 commit、同一 host 使用相同 tracked test profile 比較。Median 至少使用三次執行，並明確標示 cold 或 warm condition。
-- Local 與 manual CI 用法請見 `.dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md`。
+- 目前 source tests 依 `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md` 執行；已退場的加速路由必須另行選定相容版本。
 
 ## CLI 與 Runtime 邊界
 
@@ -142,6 +142,12 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 
 已授權範圍內可修復的 implementation、test 或 CI failures 不是 owner checkpoints。
 
+## 文件所有權
+
+- 可編輯的共用資源放在 `src`；framework 能力所需的資源必須包含於其中，或宣告為 knowledge dependencies。
+- `.dev` 擁有本專案的紀錄、規範與協作；`docs` 擁有產品文件。本 repository 同時開發及使用 framework，來源與安裝副本可以共存。
+- 先整理共用資源至來源，再另行選定自我安裝／升級。移除過時且無經驗傳承價值的文件；此次整理保留 `.dev/design`、`.dev/assessments`、`.dev/requirement`、`.dev/adr` 與 `.dev/workflows` 的既有歷史。
+
 ## 導覽與語言
 
 需要時才使用 indexes：
@@ -149,7 +155,7 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 - `.ai/INDEX.MD`：generated installed content 與 source-tooling data。
 - `.dev/INDEX.md`：project knowledge 與 current records。
 - `.dev/standards/INDEX.MD`：standards navigation。
-- `.dev/guides/ai-collaboration-guides/`：human-facing explanations，不是 default execution context。
+- `docs/`：產品使用手冊；`.dev/guides/` 說明來源專案的工作與經驗。
 - `.agents/skills/README.md` 與 `.claude/skills/README.md`：installed skill inventories。
 
 ### 根目錄 Entry Files

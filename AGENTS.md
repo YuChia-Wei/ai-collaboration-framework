@@ -130,7 +130,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - Re-run preflight at execution time, create one unique contained run directory, and clean up only that verified directory. Invalid, unsafe, or unwritable roots fail before material fixtures.
 - Keep diagnostics path-free. A WSL `/mnt/*` performance warning is advisory; it never changes test outcomes or silently selects another root.
 - Compare default and accelerated modes with the same tracked test profile on one commit and host. Use at least three runs for a median and label cold or warm conditions explicitly.
-- See `.dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md` for local and manual CI usage.
+- Current source tests follow `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md`; the retired acceleration route requires a separately selected compatible revision.
 
 ## CLI And Runtime Boundaries
 
@@ -145,6 +145,12 @@ Stop before mutation when authorization is missing or contradictory, authority c
 
 Repairable implementation, test, or CI failures inside authorized scope are not owner checkpoints by themselves.
 
+## Documentation Ownership
+
+- Editable reusable resources belong in `src`; resources required by a framework capability must be included there or declared as knowledge dependencies.
+- `.dev` owns this project's records, policies and collaboration; `docs` owns product documentation. Source and installed copies may coexist because this repository develops and uses the framework.
+- Prepare reusable resources in source before separately selected self-installation/upgrade. Remove obsolete documents without experience-transfer value; preserve existing `.dev/design`, `.dev/assessments`, `.dev/requirement`, `.dev/adr` and `.dev/workflows` history in this cleanup.
+
 ## Navigation And Language
 
 Use indexes only when needed:
@@ -152,7 +158,7 @@ Use indexes only when needed:
 - `.ai/INDEX.MD`: generated installed content and source-tooling data.
 - `.dev/INDEX.md`: project knowledge and current records.
 - `.dev/standards/INDEX.MD`: standards navigation.
-- `.dev/guides/ai-collaboration-guides/`: human-facing explanations, not default execution context.
+- `docs/`: human-facing product manuals; `.dev/guides/` explains source-project work and experience.
 - `.agents/skills/README.md` and `.claude/skills/README.md`: installed skill inventories.
 
 ### Root Entry Files

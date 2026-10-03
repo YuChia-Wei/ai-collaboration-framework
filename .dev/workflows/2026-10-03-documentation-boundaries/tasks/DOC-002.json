@@ -1,0 +1,20 @@
+{
+  "task_id": "DOC-002",
+  "workflow_id": "2026-10-03-documentation-boundaries",
+  "owner_skill": "software-development-orchestrator",
+  "status": "completed",
+  "created_at": "2026-10-03T13:25:44+08:00",
+  "updated_at": "2026-10-03T13:25:44+08:00",
+  "template_source": ".dev/workflows/2026-10-03-documentation-boundaries/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "scope": "Owner-authorized author-side review, bounded repairs and local commit preparation",
+  "result_summary": "Addressed R1-R4; 146 selected tests passed; exact committed source gate follows the authorized commit.",
+  "finding_status": "addressed",
+  "pending_integration_requirements": [
+    "Independent scoped review",
+    "Maintainer acceptance",
+    "Current-head hosted Source change gate"
+  ]
+}

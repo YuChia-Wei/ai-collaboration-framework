@@ -91,6 +91,16 @@ class SelectionTests(unittest.TestCase):
     def selected(self, snapshot, path):
         return gate.select([gate.Change(path, path)], snapshot, snapshot)
 
+    def test_project_readme_selects_source_checks_and_independent_review(self):
+        path = ".dev/README.MD"
+        before = SyntheticTree({path: "# Previous project boundary\n"})
+        after = SyntheticTree({path: "# Updated project boundary\n"})
+        result = gate.select([gate.Change(path, path)], before, after)
+        self.assertFalse(result.errors)
+        self.assertEqual(result.checks, {"content", "whitespace", "source"})
+        self.assertEqual(result.owners, {"source-governance"})
+        self.assertIn("independent-scoped-review", result.requirements)
+
     def test_sub_agent_metadata_runtime_and_moved_source_select_exact_checks(self):
         root='src/sub-agents/reviewer'
         members=['sub-agent-package.yaml','sub-agent.yaml','references/review.md','runtime/codex.toml']

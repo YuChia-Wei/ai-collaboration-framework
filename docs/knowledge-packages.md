@@ -101,3 +101,11 @@ Binding 欄位與設定方式見[安裝說明](installation.md)。
   不以 source HEAD 取代已安裝版本。
 
 此表是宣告與使用契約盤點，沒有量測模型輸出品質或推論出各 skill 的效能百分比。
+
+## 尚未發佈的來源整理
+
+目前來源分支在 `engineering-common` 增加資源所有權、技術選擇、
+skill／sub-agent 分類與外部 AI 回饋方法。入口是
+[來源知識目錄](../src/knowledge/engineering-common/README.md)。
+這些變更尚未回填 RC4 ZIP，也尚未自我安裝；本節不更動上述 RC4 的
+skill consumption 數量或既有版本的能力宣告。

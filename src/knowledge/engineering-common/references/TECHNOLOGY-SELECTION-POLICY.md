@@ -2,6 +2,10 @@
 
 Rule IDs: `TECH-SELECT-001`, `TEST-MOCK-001`.
 
+This method supports the engineering-common catalog's `TECH-SELECT-001` baseline;
+its selection section is synchronized with that record. `TEST-MOCK-001` retains
+its dotnet-backend profile owner. This method creates no second rule authority.
+
 ## Purpose
 
 This policy defines one target-owned mechanism for selecting or overriding
@@ -10,7 +14,7 @@ brokers, dispatch frameworks, and runtime observability adapters.
 
 Architecture invariants and technology selections are different:
 
-- an invariant such as Given-When-Then test semantics cannot be replaced by a
+- an adopted architecture or testing invariant cannot be replaced by a
   technology selection;
 - a profile default such as NSubstitute may be replaced through an explicit
   target selection;
@@ -19,9 +23,11 @@ Architecture invariants and technology selections are different:
 
 ## Selection Record
 
-Target selections belong in generated `.dev/project-config.yaml` under
-`technologySelections`. Every record uses the schema in
-`.ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml`.
+The target owner selects the configuration destination. `technologySelections`
+in a project-owned YAML record is one supported authoring shape; installing
+knowledge does not create it. Use the record semantics below and an explicit
+target-selected schema when one is supplied. No removed initializer schema or
+source-repository policy is required.
 
 ```yaml
 technologySelections:
@@ -30,7 +36,7 @@ technologySelections:
     status: selected
     source: explicit-target-decision
     evidence:
-      - src/knowledge/dotnet-backend/requirements/TECH-STACK-REQUIREMENTS.MD
+      - requirements/testing-stack.md
     reason: Existing product test stack
 ```
 
@@ -43,8 +49,8 @@ Required semantics:
 - `evidence` contains repository-relative paths supporting the selection;
 - `reason` explains an explicit override or unresolved decision.
 
-An absent slot does not invent target truth. If the framework registers a
-profile default for that slot, the default applies until target evidence records
+An absent slot does not invent target truth. If the target adopts a
+profile default for that slot, it applies until target evidence records
 another selection. A target override changes the selected technology, not the
 architecture invariants surrounding it.
 
@@ -65,27 +71,24 @@ New slots must reuse this record shape.
 Resolve one slot in this order:
 
 1. explicit target decision recorded in `technologySelections`;
-2. repository evidence recorded by `ai-context-init`;
+2. repository evidence recorded by the target owner;
 3. the applicable framework profile default;
 4. unresolved, when no default exists.
 
 Do not infer a selection from an illustrative example or from a package-specific
 document that the target has not adopted.
 
-## Mocking Default
+## Profile-Owned Defaults And Invariants
 
-Rule `TEST-MOCK-001` defines NSubstitute as the dotnet-backend profile default for
-`testing.mocking`. A target may select Moq, FakeItEasy, or another library by
-recording one selection record with evidence.
+The selected profile owns its technology defaults and engineering invariants.
+For example, an adopted dotnet-backend profile uses `TEST-MOCK-001` for the
+`testing.mocking` default and its evidenced overrides. The .NET profile also
+owns its GWT, test independence and interaction rules. Those conventions do not
+become universal requirements merely because this common method is installed.
 
-The following remain invariant regardless of mocking library:
-
-- tests preserve Given-When-Then structure and naming;
-- tests do not inherit shared test base classes;
-- test doubles are used only at appropriate external boundaries;
-- interaction verification remains async-safe and readable;
-- one test suite does not mix mocking libraries without an explicit migration
-  decision.
+A target may change a technology selection with evidence while preserving the
+invariants it has adopted. Without an adopted profile or explicit target choice,
+keep the selection unresolved instead of importing another profile's default.
 
 Agent guidance, code review, test generation, and validation must consume the
 selected slot. They must not require edits to every downstream standard when a
@@ -93,9 +96,9 @@ target changes the mocking library.
 
 ## Ownership And Upgrade
 
-- `ai-context-init` creates or refreshes target selection records from
-  file-backed evidence and explicit user decisions.
-- `ai-context-upgrader` treats `.dev/project-config.yaml` as target-owned truth
-  and reconciles incoming defaults without overwriting selections.
+- The authorized authoring owner creates or refreshes target selection records
+  from file-backed evidence and explicit user decisions.
+- An explicitly selected upgrade procedure treats the selected configuration as
+  target-owned truth and reconciles incoming defaults without overwriting it.
 - Framework upgrades may change a profile default, but they do not silently
   replace a recorded target selection.
