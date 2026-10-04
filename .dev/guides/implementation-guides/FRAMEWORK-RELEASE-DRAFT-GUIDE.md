@@ -1,13 +1,13 @@
 # Framework package build and Draft Release
 
 Issue [#418](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/418)
-selects this source-only delivery flow for Catalog 1 / Engine 2. The owner
-activates only these two workflows; seven other workflows remain disabled.
-This does not adopt #369's dormant source gates or exit P7.
+selects this source-only delivery flow for Catalog 1 / Engine 2. The owner's
+2026-10-04 continuation retains these two packaging workflows and source checks,
+and removes obsolete automation. This does not establish full P7 acceptance.
 
 | Trigger | Result |
 | --- | --- |
-| Merge/push to `main`, or manual **Build framework snapshot** from `main` | Generic snapshot ZIP, checksum and external manifest in Actions artifacts; no Release |
+| Push to `main` changing `src/**` or `tools/**`, or manual **Build framework snapshot** from `main` | Generic snapshot ZIP, checksum and external manifest in Actions artifacts; no Release |
 | Push an existing annotated `vMAJOR.MINOR.PATCH` or `vMAJOR.MINOR.PATCH-rc.N` tag | Exact tagged source package and owned GitHub Draft Release |
 | Manual **Prepare framework draft** from `main`, input an existing annotated tag | Current immutable workflow tooling builds the old tagged product source, then prepares its draft |
 
@@ -28,12 +28,21 @@ and carry the full source SHA; this label grants no release status.
 ## Contents and identities
 
 One ZIP contains `catalog/` (complete catalog and all actual metadata),
-`engine/` (standalone 24-file Engine 2 closure and `engine.json`),
+`engine/` (standalone 23-file Engine 2 closure and `engine.json`),
 `engine-pin.json`, `README.md` and `content-hashes.json`. Before any product
 execution, the tool AST-reads both literal `ENGINE_FILES` declarations, requires
 their agreement and creates an independent pin from raw Git blobs. Executing
-checkout bytes must match. Source-only `.github/` tools are excluded from the
-downstream engine.
+checkout bytes must match. All current engine members live under `src/`;
+downstream CLIs are `src/tools/maintain_framework.py`, `src/tools/derive-subset.py`
+and `src/tools/reinstall-framework.py`. `tools/build-catalog.py` remains a
+source-checkout build command and is excluded from the engine, as are all other
+root build tools and `.github/` helpers. Shared distribution modules remain
+because the consumer derives and validates subsets with them.
+
+This layout differs from RC4's 24-file engine. Already published bytes and their
+old command paths are unchanged; rebuilding an old-format tag needs its
+compatible historical tooling. Do not combine the current source-only engine
+pin with an RC4 engine or claim that a new build replaces published assets.
 
 External `release-manifest.json` binds source/tag identities, catalog identity,
 engine pin hash, all archive entries, ZIP size/SHA-256 and immutable

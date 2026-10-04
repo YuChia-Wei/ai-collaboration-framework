@@ -1,0 +1,13 @@
+sub_agent_package_version: 1
+id: semantic-governance-analyst
+version: 0.1.0
+entrypoint: sub-agent.yaml
+members:
+- references/semantic-governance-analysis-playbook.md
+- runtime/claude.md
+- runtime/codex.toml
+- sub-agent-package.yaml
+- sub-agent.yaml
+dependencies:
+  required: []
+  optional: []

@@ -1,0 +1,30 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-04-release-boundaries
+workflow_kind: software-development
+title: Simplify source CI and separate product, installation and model ownership
+owner_skill: software-development-orchestrator
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-10-04-release-boundaries
+entrypoint: workflow-plan.md
+created_at: '2026-10-04T12:45:11+08:00'
+updated_at: '2026-10-04T13:02:04+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-03-sub-agents
+base_branch: main
+base_commit: e859d4e4cf2ce08fc2f46cd6d124cccc6a18173d
+work_items:
+- provider: github
+  issue: 322
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+- provider: github
+  issue: 434
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/434
+- provider: github
+  issue: 435
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/435
+authority: Direct owner continuation on 2026-10-04 selects native GitHub path triggers for src and tools, removal of obsolete automation and the diff selector, product-owned installation CLIs, build-tool exclusion from the engine, removal of external-AI intake from common knowledge, and inherited sub-agent model policy. Initialization and independent model-maintenance capabilities are assessed, not invented.
+execution: Root is the only tracked writer. Preserve existing commits and historical records. Local implementation and verification only; no push, PR, merge, provider settings, publication or downstream installation.
+completion_scope: Authorized local implementation, verification and capability assessment are complete. Independent scoped review and actual hosted checks remain pending for separately authorized integration; Issues and release readiness are not closed by this workflow status.

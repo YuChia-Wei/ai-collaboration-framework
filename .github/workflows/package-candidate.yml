@@ -1,8 +1,11 @@
-# Owner-selected #418 release delivery only; test workflows remain disabled.
+# Snapshot builds are selected only by product or build-tool changes.
 name: Build framework snapshot
 on:
   push:
     branches: [main]
+    paths:
+      - 'src/**'
+      - 'tools/**'
   workflow_dispatch:
 permissions: {}
 concurrency:

@@ -14,6 +14,8 @@ class SourcePolicyTests(unittest.TestCase):
         self.assertIn(policy["status"], {"pending-adoption", "active"})
         gate = policy["work_item_binding"]["merge_gate"]
         self.assertEqual(gate["required_check_contexts"], ["Source change gate"])
+        self.assertEqual(gate["required_check_paths"], ["src/**", "tools/**"])
+        self.assertEqual(gate["outside_check_paths"], "not-applicable")
         review = gate["review_gate"]
         self.assertEqual(review["mode"], "maintainer-acceptance-with-conditional-independent-review")
         self.assertEqual(set(review["independent_for"]),

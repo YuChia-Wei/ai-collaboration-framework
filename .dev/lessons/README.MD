@@ -89,7 +89,7 @@ new authority.
 | Reusable content | Promotion target | Authorization boundary |
 | --- | --- | --- |
 | Actionable human procedure | `.dev/guides/implementation-guides/` | Separately reviewed guide work. |
-| Mandatory operational procedure | `.dev/operations/runbooks/` | Separately authorized runbook work. |
+| Mandatory operational procedure | A target-project-selected runbook location; this source repository currently has no runbook directory. | Separately authorized runbook work. |
 | Normative behavior or automated enforcement | The classified policy/standard owner and, when selected, its validator | Separately authorized policy or validator work. |
 
 After promotion, retain origin evidence, set lifecycle to `promoted`, and link

@@ -22,7 +22,7 @@ SUITES = {
         "framework_next.test_skill_naming", "framework_next.test_distribution_versions",
     ),
     "release": "release",
-    "source": ("source.test_source_gates", "source.test_source_policy", "test_runner"),
+    "source": ("source.test_source_workflow", "source.test_source_policy", "test_runner"),
     "loader": ("framework_next.test_engine_source",),
     "platform": ("framework_next.test_protected_paths", "framework_next.test_windows_paths"),
 }

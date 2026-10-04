@@ -1,6 +1,8 @@
 # Source Development Policy
 
 **Status: adopted by the owner on 2026-10-02. Source repository only.**
+The owner's 2026-10-04 continuation replaces diff-based CI selection with native
+GitHub `src/**` and `tools/**` path triggers and removes obsolete automation.
 The [adoption record](../workflows/2026-10-02-source-development/adoption.md)
 records the direct owner decision covering this cutover, independent scoped
 review, Source checks activation, PR integration and backlog reconciliation.
@@ -35,11 +37,12 @@ Do not restore old code merely to admit unrelated source work.
    changes. Edit reusable product in `src/`; consume managed core/runtime entries.
    Keep project configuration/data and released support with their actual owners.
    Select existing routes explicitly, rather than inventing unavailable tooling.
-3. Select affected checks from both pinned Git trees, including deleted and
-   renamed paths. Prose needs content/reference/whitespace inspection. Schemas,
-   tools and distribution select their actual bounded suites. Unknown ownership,
-   missing checks, errors, skips or failures block the affected check. No automatic
-   whole-history/full/nightly fallback or schema per instruction file is required.
+3. GitHub workflow path filters trigger automatic source CI only for `src/**`
+   and `tools/**` changes. Run the fixed current `python -I -B tests/run.py`
+   suite set; no Git-diff classifier, path-count limit or unknown-path gate is
+   used. Other paths do not trigger CI. Authors still inspect their changes and
+   run meaningful local checks, including workflow changes. Errors, skips and
+   failures are not passed; no historical/full/nightly matrix is implied.
 4. Record full source identity, exact commands, actual outcomes, retained failures,
    limitations and next owner. Distinguish static, fixture, local, hosted, native
    and actual agent evidence. Logical selection is not physical assembly or
@@ -57,11 +60,13 @@ Do not restore old code merely to admit unrelated source work.
    Changed reviewed content, criteria or authority needs affected review again;
    history-only drift may reuse review only with exact tree equivalence and fresh
    head binding. No mandatory legacy receipt, review-input packet or lease applies
-   to this adopted source scope. Policy/selector changes cannot approve a lower
+   to this adopted source scope. Policy/automation changes cannot approve a lower
    review or admission standard for themselves.
-7. After CI restoration, require actual current-head `Source change gate` success,
-   live PR head/base, effective review conditions and selected native/release
-   evidence before integration. Missing provider facts block that claim. Source
+7. For PRs selected by the workflow's `src/**` or `tools/**` path filters, require
+   actual current-head `Source change gate` success before integration. A PR
+   outside those paths needs no source CI context; report it as not applicable,
+   never passed. Retain live PR head/base, effective review conditions and any
+   separately selected native/release evidence. Missing provider facts block that claim. Source
    test success does not discharge separately listed admission requirements.
    State final/deferred intent for each Issue; use `Refs` with reason and next
    owner for checkpoints. Read merge, Issue and Project separately. Already
@@ -71,13 +76,21 @@ Do not restore old code merely to admit unrelated source work.
    external-setting ownership. A source PR never implicitly publishes, installs,
    changes branch protection or resolves a provider defect. Legacy validators
    apply only to explicitly selected version/release/incident obligations. Retiring
-   an ordinary gate does not authorize deleting its implementation or evidence.
+   an ordinary gate alone does not authorize deleting evidence. The explicit
+   2026-10-04 cleanup removes obsolete workflow/CI implementations; historical
+   records and already published assets remain unchanged.
 
 ## Execution and evidence
 
 Bounded delegation identifies owning skill, input revision, scope, permitted
 reads/writes, non-goals, result, stop conditions and integration owner. Select
-the least expensive capable execution profile within actual authority. Preserve
+the least expensive capable execution profile within actual authority. Portable
+roles and source runtime profiles inherit user-selected runtime model/effort;
+do not pin or automatically escalate the model, reasoning depth, provider or
+cost tier because of a role name. A higher-cost/deeper analysis needs disclosed
+reasoning and explicit user authorization for a visible separate task. Check
+runtime defaults and per-invocation overrides before dispatch; configuration is
+not an enforced billing ceiling or proof of the actual execution model. Preserve
 one tracked writer per worktree; reviewers remain read-only on a clean fixed
 subject. No tool/profile declaration is proof that an agent ran.
 
@@ -100,10 +113,10 @@ action; historical critical/registry machinery is not an ordinary prerequisite.
 
 | Surface | Adopted ordinary-source treatment | Retained boundary |
 | --- | --- | --- |
-| Five old required contexts | Exactly `Source change gate` | Separately selected release evidence; no claim of server enforcement |
+| Source CI context | `Source change gate` only for PRs selected by native `src/**` / `tools/**` filters | No context required for other paths; provider protection remains separately owned |
 | Audit/v3, review-input packets, digest/rebind and leases | Scoped independent review under rule 6 | Historical receipt meanings and selected release audits |
 | Terminal declaration/admission/reconciliation platform | Per-Issue intent plus actual checks and live read-back | Historical validator/configuration contracts; no hybrid receipt |
-| `check-all`, full/history/nightly matrices | Affected suites via `tests/run.py` | Explicit legacy incident/release scope only |
+| `check-all`, full/history/nightly matrices | Fixed current default suites via `tests/run.py` | Historical matrices are not restored |
 | `artifact_core` and old effective-rule resolver | Not a dependency of ordinary source admission | Missing routes remain unavailable until separately restored |
 | Universal handoff registry and whole-workflow scan | Bounded source workflow/handoff described above | Active legacy records and release phase requirements |
 | Runtime parity | Changed actual source/installed owners only | Managed installed projections remain protected |
@@ -113,18 +126,19 @@ action; historical critical/registry machinery is not an ordinary prerequisite.
 
 ## CI subset and remaining U001 obligations
 
-The selected source gate runs on Windows with Python 3.13 and pinned
-dependencies from `tests/requirements.txt`. It invokes
-`python -I -B .github/scripts/check-source-change.py --base <full-sha> --head <full-sha>`;
-that selector invokes only affected `tests/run.py --suite` commands. Optional
-platform/loader suites do not establish native installation acceptance.
+`source-checks.yml` runs on Windows with Python 3.13 and pinned dependencies from
+`tests/requirements.txt`. Its native PR paths select only `src/**` and `tools/**`;
+the job invokes `python -I -B tests/run.py` without a diff selector. Optional
+platform/loader checks remain local selected evidence, not native installation
+acceptance. Documentation, project policy, tests-only and workflow-only changes
+do not automatically trigger this job under the owner's selected boundary.
 
-The owner authorized enabling only `source-checks.yml` for this transition. Keep the existing
-package-candidate/publish-release workflows in their independently authorized
-state, and leave the other six workflows disabled, including obsolete
-`source-native.yml`. No Actions permission, ruleset, protection, credential,
-release-environment or publication setting changes are selected. Maintainer
-admission is not server-side required-status enforcement.
+Retain only source checks, package snapshots and Draft Release delivery workflows.
+Snapshot pushes use the same two path patterns; explicit manual builds and tag
+release delivery retain their existing operation boundaries. No Actions permission,
+ruleset, protection, credential, release-environment or publication setting changes
+are selected. A provider rule requiring an absent path-filtered check must be
+reconciled by its owner; do not fabricate a success or change protection implicitly.
 
 U001 remains for explicitly selected uncompleted legacy/native/release obligations
 outside this adopted ordinary-source scope. Missing native acceptance stays

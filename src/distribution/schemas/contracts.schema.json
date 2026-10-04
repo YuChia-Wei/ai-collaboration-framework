@@ -112,7 +112,8 @@
         "kind": {
           "enum": [
             "skill",
-            "knowledge"
+            "knowledge",
+            "sub-agent"
           ]
         },
         "id": {
@@ -139,7 +140,8 @@
         "kind": {
           "enum": [
             "skill",
-            "knowledge"
+            "knowledge",
+            "sub-agent"
           ]
         },
         "id": {
@@ -370,6 +372,9 @@
         },
         {
           "$ref": "#/$defs/SelectionV2"
+        },
+        {
+          "$ref": "#/$defs/SelectionV3"
         }
       ]
     },
@@ -655,7 +660,8 @@
         "kind": {
           "enum": [
             "skill",
-            "knowledge"
+            "knowledge",
+            "sub-agent"
           ]
         },
         "id": {
@@ -811,6 +817,17 @@
           "minItems": 0,
           "maxItems": 4096,
           "uniqueItems": true
+        },
+        "sub_agents": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
         }
       }
     },
@@ -924,7 +941,8 @@
           "enum": [
             "skill",
             "knowledge",
-            "adapter"
+            "adapter",
+            "sub-agent"
           ]
         },
         "owner": {
@@ -1136,6 +1154,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/$defs/SubAgentRuntimeBinding"
             }
           ]
         }
@@ -1479,7 +1500,8 @@
         "kind": {
           "enum": [
             "skill",
-            "knowledge"
+            "knowledge",
+            "sub-agent"
           ]
         },
         "id": {
@@ -1770,6 +1792,472 @@
             "original",
             "prefixed"
           ]
+        }
+      }
+    },
+    "SelectionV3": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "selection_version",
+        "catalog",
+        "skills",
+        "knowledge",
+        "adapters",
+        "bindings",
+        "skill_naming",
+        "sub_agents"
+      ],
+      "properties": {
+        "selection_version": {
+          "const": 3
+        },
+        "catalog": {
+          "$ref": "#/$defs/CatalogPin"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "adapters": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "codex",
+              "claude"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Binding"
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "expanded_from": {
+          "$ref": "#/$defs/PresetTrace"
+        },
+        "skill_naming": {
+          "enum": [
+            "original",
+            "prefixed"
+          ]
+        },
+        "sub_agents": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+            "maxLength": 80
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "model_resolution": {
+          "$ref": "#/$defs/ModelResolution"
+        }
+      }
+    },
+    "SubAgentPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sub_agent_package_version",
+        "id",
+        "version",
+        "entrypoint",
+        "members",
+        "dependencies"
+      ],
+      "properties": {
+        "sub_agent_package_version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "entrypoint": {
+          "const": "sub-agent.yaml"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240,
+            "pattern": "^[^\\\\:]+$"
+          },
+          "minItems": 1,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "dependencies": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required",
+            "optional"
+          ],
+          "properties": {
+            "required": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Dependency"
+              },
+              "minItems": 0,
+              "maxItems": 4096,
+              "uniqueItems": true
+            },
+            "optional": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OptionalDependency"
+              },
+              "minItems": 0,
+              "maxItems": 4096,
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "SubAgentModelPolicy": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SubAgentModelPolicyV1"
+        },
+        {
+          "$ref": "#/$defs/SubAgentModelPolicyV2"
+        }
+      ]
+    },
+    "ModelObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter",
+        "source",
+        "observed_at",
+        "models"
+      ],
+      "properties": {
+        "adapter": {
+          "enum": [
+            "claude",
+            "codex"
+          ]
+        },
+        "source": {
+          "enum": [
+            "codex-app-server",
+            "anthropic-api",
+            "caller-claude-code"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "reasoning_efforts"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+                "maxLength": 100
+              },
+              "reasoning_efforts": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z]+$",
+                  "minLength": 1,
+                  "maxLength": 16
+                },
+                "minItems": 0,
+                "maxItems": 16,
+                "uniqueItems": true
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      }
+    },
+    "ModelAvailability": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ModelObservation"
+      },
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "SubAgentModelBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter",
+        "sub_agent",
+        "model",
+        "reasoning_effort"
+      ],
+      "properties": {
+        "adapter": {
+          "enum": [
+            "claude",
+            "codex"
+          ]
+        },
+        "sub_agent": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "model": {
+          "type": "string",
+          "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+          "maxLength": 100
+        },
+        "reasoning_effort": {
+          "anyOf": [
+            {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max",
+                "ultra"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "SubAgentRuntimeBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter",
+        "sub_agent",
+        "model",
+        "reasoning_effort",
+        "template_sha256"
+      ],
+      "properties": {
+        "adapter": {
+          "enum": [
+            "claude",
+            "codex"
+          ]
+        },
+        "sub_agent": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "model": {
+          "type": "string",
+          "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+          "maxLength": 100
+        },
+        "reasoning_effort": {
+          "anyOf": [
+            {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max",
+                "ultra"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "template_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "ModelResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "observations",
+        "bindings"
+      ],
+      "properties": {
+        "policy_version": {
+          "const": 1
+        },
+        "observations": {
+          "$ref": "#/$defs/ModelAvailability"
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubAgentModelBinding"
+          },
+          "minItems": 1,
+          "maxItems": 256,
+          "uniqueItems": true
+        }
+      }
+    },
+    "SubAgentModelPolicyV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "codex",
+        "claude"
+      ],
+      "properties": {
+        "policy_version": {
+          "const": 1
+        },
+        "codex": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidates",
+            "reasoning_effort"
+          ],
+          "properties": {
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+                "maxLength": 100
+              },
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true
+            },
+            "reasoning_effort": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max",
+                "ultra"
+              ]
+            }
+          }
+        },
+        "claude": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidates"
+          ],
+          "properties": {
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+                "maxLength": 100
+              },
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "SubAgentModelPolicyV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "codex",
+        "claude",
+        "escalation"
+      ],
+      "properties": {
+        "policy_version": {
+          "const": 2
+        },
+        "codex": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selection"
+          ],
+          "properties": {
+            "selection": {
+              "const": "inherit"
+            }
+          }
+        },
+        "claude": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selection"
+          ],
+          "properties": {
+            "selection": {
+              "const": "inherit"
+            }
+          }
+        },
+        "escalation": {
+          "const": "explicit-user-authorized-visible-task"
         }
       }
     }

@@ -43,6 +43,7 @@ Merge 或日期都不能證明 CI 成功。
 - Inventory、paths、hashes、schemas、Git identity、build、test 與 receipts 優先使用 deterministic tools。
 - `failed`、`blocked-by-environment`、`not-applicable` 與 `deferred-with-owner` 都不是 `passed`。
 - 適用且已允許時，優先使用 IDE MCP refactoring operation。
+- Sub-agents 沿用使用者在 runtime 選定的模型與推理深度。不得因角色名稱自動提高模型、推理深度、provider 或成本。需要升級時，先說明理由，取得使用者對可見獨立任務的明確授權；runtime 可用性不等於成本授權。
 
 ## 漸進式 Context 載入
 
@@ -55,7 +56,7 @@ Merge 或日期都不能證明 CI 成功。
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 18 個 skills，包含恢復的開發編排 skill 與可選的 `ai-context-init@0.1.0`。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 18 個 skills，包含恢復的開發編排 skill 與可選的 `ai-context-init@0.2.0`。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
@@ -98,7 +99,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 各項均符合規定的比對一致性條件（matching）時才可 reuse。
 - 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後若 tracked content 或 governing authority drift，subject 即失效；只有 history-only identity drift 時則執行 rebind。Terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
 - Unknown dependency 或 authority state 必須 fail closed。Current-head review-subject binding、required hosted contexts 與 live admission gates 一律 fresh；content digest 相等時可 reuse independent review，無須重做。
-- 每個 admitted head 都必須保留 required hosted contexts。內部可以 execution 或 proven reuse，但 path filtering 不得讓 required context 消失。
+- Hosted source CI 僅適用於來源政策以 GitHub 原生 `src/**` 與 `tools/**` 路徑篩選選中的 PR。其他 PR 不需要 source CI context；未執行不等於通過。另行選定的 release checks 保留各自的適用條件。
 - Content-addressed independent audit 對每個 gate 回報 `re-executed`、`reused-with-proof`、`blocked`、`deferred` 或 `not-applicable`；commit SHA 只保留為 provenance，不作為 validity key。
 
 ### Agent Execution Guardrails
@@ -127,7 +128,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - 實際執行時重新 preflight、建立唯一且受 containment 驗證的 run directory，cleanup 只可刪除該 verified directory。Invalid、unsafe 或 unwritable root 必須在 material fixtures 前失敗。
 - Diagnostics 不得包含 path。WSL `/mnt/*` performance warning 只是 advisory；不得改變 test outcome，也不得靜默選擇其他 root。
 - Default 與 accelerated mode 必須在同一 commit、同一 host 使用相同 tracked test profile 比較。Median 至少使用三次執行，並明確標示 cold 或 warm condition。
-- Local 與 manual CI 用法請見 `.dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md`。
+- 目前 source tests 依 `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md` 執行；已退場的加速路由必須另行選定相容版本。
 
 ## CLI 與 Runtime 邊界
 
@@ -142,6 +143,12 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 
 已授權範圍內可修復的 implementation、test 或 CI failures 不是 owner checkpoints。
 
+## 文件所有權
+
+- 可編輯的共用資源放在 `src`；framework 能力所需的資源必須包含於其中，或宣告為 knowledge dependencies。
+- `.dev` 擁有本專案的紀錄、規範與協作；`docs` 擁有產品文件。本 repository 同時開發及使用 framework，來源與安裝副本可以共存。
+- 先整理共用資源至來源，再另行選定自我安裝／升級。移除過時且無經驗傳承價值的文件；此次整理保留 `.dev/design`、`.dev/assessments`、`.dev/requirement`、`.dev/adr` 與 `.dev/workflows` 的既有歷史。
+
 ## 導覽與語言
 
 需要時才使用 indexes：
@@ -149,7 +156,7 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 - `.ai/INDEX.MD`：generated installed content 與 source-tooling data。
 - `.dev/INDEX.md`：project knowledge 與 current records。
 - `.dev/standards/INDEX.MD`：standards navigation。
-- `.dev/guides/ai-collaboration-guides/`：human-facing explanations，不是 default execution context。
+- `docs/`：產品使用手冊；`.dev/guides/` 說明來源專案的工作與經驗。
 - `.agents/skills/README.md` 與 `.claude/skills/README.md`：installed skill inventories。
 
 ### 根目錄 Entry Files

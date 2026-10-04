@@ -15,7 +15,7 @@ class DistributionError(ValueError):
         prefix = message.split(":", 1)[0]
         known = {"unsupported-write", "unsupported-version", "unsupported-adapter", "unsupported-engine", "unsupported-generator",
                  "selection-unavailable", "dependency-closure", "dependency-version", "dependency-cycle", "reference-closure",
-                 "binding-unresolved", "identity-mismatch"}
+                 "binding-unresolved", "identity-mismatch", "model-unavailable"}
         self.code = code or (prefix if prefix in known else "invalid-shape")
         self.outcome = "unsupported" if self.code.startswith("unsupported-") else "blocked"
 

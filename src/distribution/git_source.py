@@ -119,7 +119,7 @@ class GitSource:
 
     def read(self, source_path: str) -> Blob:
         path(source_path, "Git input")
-        require(source_path.startswith("src/") or source_path in {"tools/build-catalog.py", "tools/derive-subset.py", "tools/reinstall-framework.py"}, f"build input outside src is forbidden: {source_path}")
+        require(source_path.startswith("src/"), f"build input outside src is forbidden: {source_path}")
         if source_path in self.blobs:
             return self.blobs[source_path]
         rows = self._git("ls-tree", "--full-tree", "-z", self.commit, "--", source_path).split(b"\0")

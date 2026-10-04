@@ -1,0 +1,13 @@
+sub_agent_package_version: 1
+id: reconciliation-worker
+version: 0.1.0
+entrypoint: sub-agent.yaml
+members:
+- references/reconciliation-playbook.md
+- runtime/claude.md
+- runtime/codex.toml
+- sub-agent-package.yaml
+- sub-agent.yaml
+dependencies:
+  required: []
+  optional: []

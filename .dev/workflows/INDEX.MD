@@ -8,6 +8,10 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-10-04-v019-finalization`](2026-10-04-v019-finalization/workflow.yaml) | Complete onboarding and the 0.19.0 stable candidate | `software-development-orchestrator` | `completed` | `2026-10-04T19:28:10+08:00` | [plan](2026-10-04-v019-finalization/workflow-plan.md) |
+| [`2026-10-04-release-boundaries`](2026-10-04-release-boundaries/workflow.yaml) | Simplify CI and product/model ownership | `software-development-orchestrator` | `completed` | `2026-10-04T13:02:04+08:00` | [plan](2026-10-04-release-boundaries/workflow-plan.md) |
+| [`2026-10-03-sub-agents`](2026-10-03-sub-agents/workflow.yaml) | Publish and install reusable sub-agent profiles | `software-development-orchestrator` | `completed` | `2026-10-03T11:06:53+08:00` | [plan](2026-10-03-sub-agents/workflow-plan.md) |
+| [`2026-10-02-v019-manuals`](2026-10-02-v019-manuals/workflow.yaml) | Selectable installation and skill manuals for 0.19.0 | `software-development-orchestrator` | `completed` | `2026-10-03T00:28:00+08:00` | [plan](2026-10-02-v019-manuals/workflow-plan.md) |
 | [`2026-10-02-skill-routing`](2026-10-02-skill-routing/workflow.yaml) | Context responsibility and source skill routing | `software-development-orchestrator` | `completed` | `2026-10-02T23:28:50+08:00` | [plan](2026-10-02-skill-routing/workflow-plan.md) |
 | [`2026-10-02-rc4-paths`](2026-10-02-rc4-paths/workflow.yaml) | RC4 path inspection and source navigation repair | `software-development-orchestrator` | `completed` | `2026-10-02T19:59:54+08:00` | [plan](2026-10-02-rc4-paths/workflow-plan.md) |
 | [`2026-10-01-standards-promotion-hold`](2026-10-01-standards-promotion-hold/workflow.yaml) | Hold standards promotion outside distribution and separate skill states | `ai-context-governance` | `completed` | `2026-10-01T10:00:04+08:00` | [plan](2026-10-01-standards-promotion-hold/workflow-plan.md) |

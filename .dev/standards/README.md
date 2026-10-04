@@ -1,21 +1,11 @@
 # Source Governance Standards
 
-Legacy applicability: the `.ai/assets/` paths below are retained historical
-references and are absent from this source layout. They do not provide
-current navigation or an executable route. For compatible legacy support,
-select the owning historical revision; no replacement semantic authority
-is adopted by this entry.
+This folder owns policies for developing this framework source repository:
+Issue authority, execution, Git, context placement, workflow/assessment records
+and separately selected release/support duties. It does not own reusable product
+engineering methods or a consuming project's policies.
 
-This folder owns source-framework governance and registries. It does not own
-.NET backend rules, constraints, or their rationales and templates.
-
-Use [INDEX.MD](INDEX.MD) for the source-governance policy catalog. The legacy
-.NET backend baseline referenced these currently unavailable paths:
-
-- Profile standards: `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md`
-- Rationale: `.ai/assets/tech-stacks/dotnet-backend/references/rationale/`
-- Templates: `.ai/assets/tech-stacks/dotnet-backend/templates/`
-
-Project-specific and target-effective decisions belong under `.dev/ai-context/`
-in downstream repositories; they do not silently replace the portable profile
-baseline.
+Start with [INDEX.MD](INDEX.MD) only when a policy is needed. Reusable methods
+belong in `src/knowledge`; product instructions belong in `docs`; installed core
+is managed. Legacy compatibility contracts remain only where they preserve
+record interpretation or support duties. Their presence does not restore tools.

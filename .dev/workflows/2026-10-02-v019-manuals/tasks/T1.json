@@ -1,0 +1,17 @@
+{
+  "task_id": "T1",
+  "workflow_id": "2026-10-02-v019-manuals",
+  "owner_skill": "software-development-orchestrator",
+  "title": "Inventory 0.19.0 outcomes and author complete user manuals",
+  "status": "completed",
+  "created_at": "2026-10-02T23:49:48+08:00",
+  "updated_at": "2026-10-03T00:12:10+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_identity_basis": "Configured defaults read from this session host; exact active runtime identity is not exposed. Delegated profiles are recorded separately.",
+  "issue": 322,
+  "result_summary": "23 user manual Markdown files cover 18 distributed skills, optional knowledge and the RC4 installation tutorial; three isolated actual installations and source/manual checks completed.",
+  "finding_status": "addressed"
+}

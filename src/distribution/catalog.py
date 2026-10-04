@@ -11,7 +11,9 @@ import uuid
 from .data import json_bytes, require, runtime_skill_name, yaml_object
 from .contracts import validate
 from .content import (load_content_package, component_shape, descriptor, closure, desired_shape,
-                      dependency_key, ordered, portable, resource_bindings, selected_references, selection_skill_naming)
+                      dependency_key, ordered, portable, resource_bindings, selected_references, selection_skill_naming, component_root, selected_keys, load_sub_agent_package, check_sub_agent, sub_agent_entries,
+                      resolved_sub_agent_models, sub_agent_model_binding, render_sub_agent_model,
+                      sub_agent_model_policy, model_availability)
 from .git_source import Blob, GitSource
 from .package import load_package, check_references
 from .codex import project_entry_v2 as codex_entry
@@ -86,8 +88,8 @@ def parent_documents(raw):
     require(all(inputs.get(r['path'])==r for r in implementation),'generator/source binding')
     expected=set(GENERATOR_FILES)|{'src/distribution/manifest.yaml'}
     for preset in doc['presets']:
-        for key in ('skills','knowledge','adapters'): ordered(preset[key])
-        selected={('skill',i) for i in preset['skills']}|{('knowledge',i) for i in preset['knowledge']}
+        for key in ('skills','knowledge','adapters','sub_agents'): ordered(preset.get(key,[]))
+        selected=selected_keys(preset)
         components=[c for c in doc['components'] if dependency_key(c) in selected]
         require({dependency_key(c) for c in components}==selected and set(preset['adapters'])<={a['id'] for a in doc['adapters']},'selection-unavailable: preset')
         closure(components)
@@ -96,7 +98,7 @@ def parent_documents(raw):
     for component in doc['components']:
         for member in component['members']:
             kind,pid=dependency_key(component)
-            source=f"src/{'skills' if kind=='skill' else 'knowledge'}/{pid}/{member}"
+            source=f"src/{component_root(kind)}/{pid}/{member}"
             expected.add(source)
             members[f'packages/{kind}/{pid}/{member}']=(kind,pid,member,source)
     for adapter in doc['adapters']:
@@ -152,9 +154,10 @@ def packages_from(doc,files,contents,selected=None):
             payload[(*key,member)]=raw
         metadata=blobs[c['metadata']]
         state._yaml_bound(metadata.data,metadata.path)
-        package=load_package(metadata) if c['kind']=='skill' else load_content_package(metadata)
+        package={'skill':load_package,'knowledge':load_content_package,'sub-agent':load_sub_agent_package}[c['kind']](metadata)
         require(descriptor(c['kind'],package)==c,'metadata/component descriptor mismatch')
         if c['kind']=='skill': check_references(package,blobs)
+        if c['kind']=='sub-agent': check_sub_agent(package,blobs)
         packages[key]=package
     selected_references(packages,payload)
     return packages
@@ -178,7 +181,7 @@ def resolve_selection(catalog,desired):
     if type(desired) is bytes: desired=state._document(desired,'installation.json',canonical=False)
     desired=desired_shape(desired)
     require(desired['catalog']==catalog.pin,'identity-mismatch: desired parent')
-    keys={('skill',i) for i in desired['skills']}|{('knowledge',i) for i in desired['knowledge']}
+    keys=selected_keys(desired)
     components=[c for c in catalog.document['components'] if dependency_key(c) in keys]
     require({dependency_key(c) for c in components}==keys,'selection-unavailable')
     adapters=[r for r in catalog.document['adapters'] if r['id'] in desired['adapters']]
@@ -191,6 +194,11 @@ def resolve_selection(catalog,desired):
     payload={(r['kind'],r['owner'],r['member']):catalog.contents[r['path']] for r in catalog.inventory['files']
              if (r['kind'],r['owner']) in keys}
     unavailable=selected_references(packages,payload)
+    if 'model_resolution' in desired:
+        roles={pid:yaml_object(payload[('sub-agent',pid,'sub-agent.yaml')],'sub-agent.yaml') for pid in desired['sub_agents']}
+        require(desired['model_resolution']['bindings']==resolved_sub_agent_models(roles,desired,desired['model_resolution']['observations']), 'model resolution mismatch')
+    for c in components:
+        if c['kind']=='sub-agent': sub_agent_entries(c,adapters)
     return {'desired':desired,'desired_sha256':digest(json_bytes(desired)),'components':components,'adapters':adapters,
             'binding_observations':observations,'unavailable':unavailable}
 
@@ -206,8 +214,32 @@ def expand_preset(catalog,id,version, *, skill_naming="original"):
     require(preset is not None,'selection-unavailable: preset')
     desired={'selection_version':2,'skill_naming':skill_naming,'catalog':catalog.pin,**{k:preset[k] for k in ('skills','knowledge','adapters')},'bindings':[],
              'expanded_from':{'id':id,'version':version,'catalog_identity':catalog.pin['identity'],'preset_sha256':digest(json_bytes(preset))}}
+    if 'sub_agents' in preset: desired.update(selection_version=3,sub_agents=preset['sub_agents'])
     resolve_selection(catalog,desired)
     return desired
+
+
+def resolve_sub_agent_model_selection(catalog, desired, observations):
+    """Return a new explicit selection, without saving configuration or installing."""
+    from copy import deepcopy
+    result=deepcopy(desired)
+    require(result['selection_version']==3 and bool(result['sub_agents']), 'model resolution requires selected sub-agents')
+    result.pop('model_resolution',None)
+    resolve_selection(catalog,result)
+    roles={pid:yaml_object(catalog.contents[f'packages/sub-agent/{pid}/sub-agent.yaml'],'sub-agent.yaml') for pid in result['sub_agents']}
+    inherited=[sub_agent_model_policy(role)['policy_version']==2 for role in roles.values()]
+    if any(inherited):
+        require(all(inherited), 'mixed legacy fixed and inherited model policies need separate selections')
+        require('model_resolution' not in desired,
+                'inherited policy requires explicit removal of obsolete fixed model bindings')
+        model_availability(result,observations)
+        # Discovery is informative. Do not freeze the parent model, select a
+        # more expensive candidate or require runtime access during installation.
+        return result
+    result['model_resolution']={'policy_version':1,'observations':observations,
+                                'bindings':resolved_sub_agent_models(roles,result,observations)}
+    resolve_selection(catalog,result)
+    return result
 
 
 def template_bytes(adapter,expected,provided=None):
@@ -228,13 +260,23 @@ def project_members(doc,files,selection,contents,templates=None):
     naming=selection_skill_naming(selection['desired'])
     rows=[]; output={}; indexed={(r['kind'],r['owner'],r['member']):r for r in files['files']}
     for c in selection['components']:
-        kind,pid=dependency_key(c); destinations={m:f".ai/core/{'skills' if kind=='skill' else 'knowledge'}/{pid}/{m}" for m in c['members']}
+        kind,pid=dependency_key(c); destinations={m:f".ai/core/{component_root(kind)}/{pid}/{m}" for m in c['members']}
         for member,dest in destinations.items():
             src=indexed[(kind,pid,member)]['source']; raw=contents[dest]
             source_bytes(src,raw)
             row={'path':'payload/'+dest,'destination':dest,'owner':kind+'/'+pid,'kind':'payload',
                  **{k:src[k] for k in ('mode','size','sha256')},'source':src,'binding':None}
             rows.append(row); output[dest]=raw
+        if kind=='sub-agent':
+            for aid,member,dest in sub_agent_entries(c,selection['adapters']):
+                src=indexed[(kind,pid,member)]['source']; raw=contents[destinations[member]]
+                binding=sub_agent_model_binding(selection['desired'],aid,pid)
+                raw=render_sub_agent_model(raw,aid,binding)
+                rows.append({'path':'runtime/'+dest,'destination':dest,'owner':f'adapter/{aid}/sub-agent/{pid}',
+                             'kind':'runtime','mode':src['mode'],'size':len(raw),'sha256':digest(raw),
+                             'source':src if binding is None else None,
+                             'binding':None if binding is None else {**binding,'template_sha256':src['sha256']}})
+                output[dest]=raw
         if kind!='skill': continue
         blobs={m:Blob(indexed[(kind,pid,m)]['source']['path'],indexed[(kind,pid,m)]['source']['git_blob'],indexed[(kind,pid,m)]['source']['mode'],contents[d]) for m,d in destinations.items()}
         package=load_package(blobs['skill-package.yaml']); front=check_references(package,blobs)
@@ -262,7 +304,7 @@ def subset_documents(raw, *, completed=True):
             and selection['release_version']==doc['release_version'],'subset parent binding')
     require(selection['desired_sha256']==digest(json_bytes(selection['desired'])),'desired identity mismatch')
     preset_trace(doc,selection['desired'],pin)
-    desired=selection['desired']; keys={('skill',i) for i in desired['skills']}|{('knowledge',i) for i in desired['knowledge']}
+    desired=selection['desired']; keys=selected_keys(desired)
     require(selection['components']==[c for c in doc['components'] if dependency_key(c) in keys]
             and {dependency_key(c) for c in selection['components']}==keys,'subset component selection mismatch')
     require(selection['adapters']==[a for a in doc['adapters'] if a['id'] in desired['adapters']]
@@ -284,7 +326,7 @@ def verify_subset_contents(doc,files,selection,inventory,contents):
     for c in selection['components']:
         kind,pid=dependency_key(c)
         for member in c['members']:
-            dest=f".ai/core/{'skills' if kind=='skill' else 'knowledge'}/{pid}/{member}"
+            dest=f".ai/core/{component_root(kind)}/{pid}/{member}"
             require(dest in contents,'missing selected payload')
             parent_contents[f'packages/{kind}/{pid}/{member}']=contents[dest]
     packages=packages_from(doc,files,parent_contents,selected)
@@ -434,16 +476,16 @@ def build_catalog(repository,commit,release_version,output_root,scratch_root):
     implementation=execution_sources(source=source)
     components=[]; adapters=[]; presets=[]; files=[]; contents={}; paths=[]
     for row in manifest['components']:
-        kind,pid=dependency_key(row); prefix=f"src/{'skills' if kind=='skill' else 'knowledge'}/{pid}"
-        require(row['source']==prefix and row['metadata']==('content-package.yaml' if kind=='knowledge' else 'skill-package.yaml'),'manifest component root')
+        kind,pid=dependency_key(row); prefix=f"src/{component_root(kind)}/{pid}"
+        require(row['source']==prefix and row['metadata']=={'skill':'skill-package.yaml','knowledge':'content-package.yaml','sub-agent':'sub-agent-package.yaml'}[kind],'manifest component root')
         metadata=source.read(prefix+'/'+row['metadata'])
-        package=load_content_package(metadata) if kind=='knowledge' else load_package(metadata)
+        package={'skill':load_package,'knowledge':load_content_package,'sub-agent':load_sub_agent_package}[kind](metadata)
         require(package.id==pid and package.version==row['version'],'manifest package identity')
         component=descriptor(kind,package); components.append(component)
         ordered(row['members'],lambda r:r['source'])
         require({m['source'] for m in row['members']}==package.members,'manifest metadata member closure')
         for member in row['members']:
-            name=member['source']; dest=f".ai/core/{'skills' if kind=='skill' else 'knowledge'}/{pid}/{name}"
+            name=member['source']; dest=f".ai/core/{component_root(kind)}/{pid}/{name}"
             require(member['destination']==dest,'manifest destination ownership')
             paths.append(dest); blob=source.read(prefix+'/'+name)
             artifact=f'packages/{kind}/{pid}/{name}'
@@ -483,7 +525,7 @@ def derive_subset(catalog,desired,output_root,scratch_root):
                'desired_sha256':resolved['desired_sha256'],'components':resolved['components'],'adapters':resolved['adapters'],
                'generator':{**catalog.document['generator'],'id':'aicf-subset-derivation'}}
     keys={dependency_key(c) for c in selection['components']}
-    contents={f".ai/core/{'skills' if r['kind']=='skill' else 'knowledge'}/{r['owner']}/{r['member']}":catalog.contents[r['path']]
+    contents={f".ai/core/{component_root(r['kind'])}/{r['owner']}/{r['member']}":catalog.contents[r['path']]
               for r in catalog.inventory['files'] if (r['kind'],r['owner']) in keys}
     templates={r['id']:catalog.contents[f"adapters/{r['id']}/{r['template']}"] for r in selection['adapters']}
     inventory,contents=project_members(catalog.document,catalog.inventory,selection,contents,templates)
@@ -524,10 +566,18 @@ def subset_inventory(doc,files,selection,inventory):
     for component in selection['components']:
         kind,pid=dependency_key(component)
         for member in component['members']:
-            dest=f".ai/core/{'skills' if kind=='skill' else 'knowledge'}/{pid}/{member}"
+            dest=f".ai/core/{component_root(kind)}/{pid}/{member}"
             source=indexed[(kind,pid,member)]
             expected[dest]={'path':'payload/'+dest,'destination':dest,'owner':kind+'/'+pid,'kind':'payload',
                             **{k:source[k] for k in ('sha256','size','mode')},'source':source,'binding':None}
+        if kind=='sub-agent':
+            for aid,member,dest in sub_agent_entries(component,selection['adapters']):
+                source=indexed[(kind,pid,member)]
+                binding=sub_agent_model_binding(selection['desired'],aid,pid)
+                expected[dest]={'path':'runtime/'+dest,'destination':dest,'owner':f'adapter/{aid}/sub-agent/{pid}',
+                                'kind':'runtime','mode':source['mode'],'source':source if binding is None else None,
+                                'binding':None if binding is None else {**binding,'template_sha256':source['sha256']}}
+                if binding is None: expected[dest].update({k:source[k] for k in ('size','sha256')})
         if kind=='skill':
             for adapter in selection['adapters']:
                 aid=adapter['id']; runtime='.agents' if aid=='codex' else '.claude'

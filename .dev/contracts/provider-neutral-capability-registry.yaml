@@ -4,7 +4,7 @@ source_of_truth: "canonical"
 capabilities:
   - capability_id: "mechanical-evidence"
     role_asset_id: "mechanical-evidence-worker"
-    role_path: ".dev/agents/mechanical-evidence-worker/sub-agent.yaml"
+    role_path: "src/sub-agents/mechanical-evidence-worker/sub-agent.yaml"
     capability_tags:
       - "deterministic-evidence"
       - "inventory"
@@ -21,7 +21,7 @@ capabilities:
     execution_contract: ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
   - capability_id: "reconciliation"
     role_asset_id: "reconciliation-worker"
-    role_path: ".dev/agents/reconciliation-worker/sub-agent.yaml"
+    role_path: "src/sub-agents/reconciliation-worker/sub-agent.yaml"
     capability_tags:
       - "base-target-incoming"
       - "expected-actual-result"
@@ -37,7 +37,7 @@ capabilities:
     execution_contract: ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
   - capability_id: "semantic-governance-analysis"
     role_asset_id: "semantic-governance-analyst"
-    role_path: ".dev/agents/semantic-governance-analyst/sub-agent.yaml"
+    role_path: "src/sub-agents/semantic-governance-analyst/sub-agent.yaml"
     capability_tags:
       - "policy-analysis"
       - "governance-analysis"
@@ -54,7 +54,7 @@ capabilities:
     execution_contract: ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
   - capability_id: "evidence-report-synthesis"
     role_asset_id: "evidence-report-synthesizer"
-    role_path: ".dev/agents/evidence-report-synthesizer/sub-agent.yaml"
+    role_path: "src/sub-agents/evidence-report-synthesizer/sub-agent.yaml"
     capability_tags:
       - "report-synthesis"
       - "assessment-synthesis"
@@ -72,7 +72,7 @@ capabilities:
     execution_contract: ".dev/contracts/ROLE-EXECUTION-CONTRACT.md"
   - capability_id: "fixed-head-independent-audit"
     role_asset_id: "fixed-head-independent-auditor"
-    role_path: ".dev/agents/fixed-head-independent-auditor/sub-agent.yaml"
+    role_path: "src/sub-agents/fixed-head-independent-auditor/sub-agent.yaml"
     capability_tags:
       - "fixed-head"
       - "independent-audit"

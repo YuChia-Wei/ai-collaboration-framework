@@ -1,0 +1,23 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-03-documentation-boundaries
+workflow_kind: source-documentation-maintenance
+title: Separate reusable product documentation from project governance
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-10-03-documentation-boundaries
+entrypoint: workflow-plan.md
+created_at: '2026-10-03T12:59:45+08:00'
+updated_at: '2026-10-03T13:25:44+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+branch: codex/2026-10-03-sub-agents
+base_branch: main
+input_commit: b52c68d64373bb54688109b9174bd4a9cea2b577
+completion_scope: Local cleanup, author-side review, repairs and commit checkpoint;
+  integration and installation deferred by owner
+work_items:
+- provider: github
+  issue: 435
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/435

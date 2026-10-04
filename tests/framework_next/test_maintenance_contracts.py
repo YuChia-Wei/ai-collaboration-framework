@@ -100,6 +100,24 @@ class MaintenanceContractTests(support.FixtureTestCase):
         self.assertEqual(result['diagnostics'][0]['code'],'unsupported-write')
         self.assertFalse(result['changed'])
 
+    def test_flat_agent_profiles_do_not_claim_unrelated_runtime_entries(self):
+        roots=self.roots('flat-agent-profiles')
+        folder=roots['project']/'.codex/agents'; folder.mkdir(parents=True)
+        managed='.codex/agents/reviewer.toml'
+        support.active_run().write(folder/'reviewer.toml',b'managed')
+        support.active_run().write(folder/'custom.toml',b'project-owned')
+        self.assertEqual(state._unknown(state._Reader(),roots['project'],{managed},{managed}),[])
+        self.assertEqual((folder/'custom.toml').read_bytes(),b'project-owned')
+
+    def test_sub_agent_managed_bytes_report_drift(self):
+        roots=self.roots('agent-drift')
+        name='.codex/agents/reviewer.toml'; path=roots['project']/name
+        path.parent.mkdir(parents=True)
+        support.active_run().write(path,b'changed')
+        row={'path':name,'destination':name,'mode':'100644','size':8,'sha256':sha256(b'original').hexdigest()}
+        with self.assertRaises(ValueError): state._Reader().member(roots['project'],row,
+            'windows-inventory-only' if os.name=='nt' else 'posix-permissions')
+
 
 if __name__ == "__main__":
     unittest.main()

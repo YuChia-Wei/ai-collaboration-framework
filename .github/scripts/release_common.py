@@ -147,7 +147,7 @@ def verify_bundle(directory, expected_source=None):
     require(sha(pin_raw) == manifest["engine_pin_sha256"] and pin["source_commit"] == source["commit"], "engine pin/source mismatch")
     require(pin["id"] == "framework-managed-installation" and pin["version"] == "2.0.0", "engine version")
     pin_names = [r["path"] for r in pin["files"]]
-    require(len(pin_names) == 24 and pin_names == sorted(set(pin_names)), "engine pin closure")
+    require(len(pin_names) == 23 and pin_names == sorted(set(pin_names)) and all(n.startswith("src/") for n in pin_names), "engine pin closure")
     require(document(payload["engine/engine.json"]) == {"engine": pin, "engine_package_version": 1}, "engine descriptor mismatch")
     require({x[7:] for x in names if x.startswith("engine/")} == set(pin_names) | {"engine.json"}, "engine archive closure")
     for row in pin["files"]:

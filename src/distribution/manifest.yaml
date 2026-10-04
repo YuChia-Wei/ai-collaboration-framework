@@ -16,6 +16,10 @@ profiles:
   path: src/profiles/project-initialization.yaml
 - id: source-repository
   path: src/profiles/source-repository.yaml
+- id: sub-agents
+  path: src/profiles/sub-agents.yaml
+- id: sub-agents-claude
+  path: src/profiles/sub-agents-claude.yaml
 - id: work-management
   path: src/profiles/work-management.yaml
 components:
@@ -549,6 +553,8 @@ components:
     destination: .ai/core/knowledge/engineering-common/references/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
   - source: references/AUTHORING-BOUNDARY-CONTRACT.md
     destination: .ai/core/knowledge/engineering-common/references/AUTHORING-BOUNDARY-CONTRACT.md
+  - source: references/CONTEXT-RESOURCE-OWNERSHIP.md
+    destination: .ai/core/knowledge/engineering-common/references/CONTEXT-RESOURCE-OWNERSHIP.md
   - source: references/ENGINEERING-IDENTITY-CONTRACT.md
     destination: .ai/core/knowledge/engineering-common/references/ENGINEERING-IDENTITY-CONTRACT.md
   - source: references/GWT-TEST-HANDOFF-CONTRACT.md
@@ -557,6 +563,11 @@ components:
     destination: .ai/core/knowledge/engineering-common/references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md
   - source: references/PROMPT-PORTABILITY-RULES.md
     destination: .ai/core/knowledge/engineering-common/references/PROMPT-PORTABILITY-RULES.md
+  - source: references/SKILL-AND-SUB-AGENT-TAXONOMY.md
+    destination: .ai/core/knowledge/engineering-common/references/SKILL-AND-SUB-AGENT-TAXONOMY.md
+  - source: references/TECHNOLOGY-SELECTION-POLICY.md
+    destination: .ai/core/knowledge/engineering-common/references/TECHNOLOGY-SELECTION-POLICY.md
+
 - id: adr-author
   source: src/skills/adr-author
   metadata: skill-package.yaml
@@ -607,7 +618,7 @@ components:
   version: 0.1.0
 - kind: skill
   id: ai-context-init
-  version: 0.1.0
+  version: 0.2.0
   source: src/skills/ai-context-init
   metadata: skill-package.yaml
   members:
@@ -619,10 +630,16 @@ components:
     destination: .ai/core/skills/ai-context-init/references/project-structure.md
   - source: skill-package.yaml
     destination: .ai/core/skills/ai-context-init/skill-package.yaml
+  - source: templates/ai-collaboration.md
+    destination: .ai/core/skills/ai-context-init/templates/ai-collaboration.md
   - source: templates/architecture.md
     destination: .ai/core/skills/ai-context-init/templates/architecture.md
+  - source: templates/first-task.md
+    destination: .ai/core/skills/ai-context-init/templates/first-task.md
   - source: templates/project-config.template.yaml
     destination: .ai/core/skills/ai-context-init/templates/project-config.template.yaml
+  - source: templates/project-context.md
+    destination: .ai/core/skills/ai-context-init/templates/project-context.md
   - source: templates/public-catalogs/dev/INDEX.md
     destination: .ai/core/skills/ai-context-init/templates/public-catalogs/dev/INDEX.md
   - source: templates/public-catalogs/dev/README.MD
@@ -891,6 +908,102 @@ components:
     destination: .ai/core/skills/spec-compliance-validator/skill-package.yaml
   kind: skill
   version: 0.1.0
+- kind: sub-agent
+  id: context-translator
+  version: 0.1.0
+  source: src/sub-agents/context-translator
+  metadata: sub-agent-package.yaml
+  members:
+  - source: references/translation-playbook.md
+    destination: .ai/core/sub-agents/context-translator/references/translation-playbook.md
+  - source: runtime/claude.md
+    destination: .ai/core/sub-agents/context-translator/runtime/claude.md
+  - source: runtime/codex.toml
+    destination: .ai/core/sub-agents/context-translator/runtime/codex.toml
+  - source: sub-agent-package.yaml
+    destination: .ai/core/sub-agents/context-translator/sub-agent-package.yaml
+  - source: sub-agent.yaml
+    destination: .ai/core/sub-agents/context-translator/sub-agent.yaml
+- kind: sub-agent
+  id: evidence-report-synthesizer
+  version: 0.1.0
+  source: src/sub-agents/evidence-report-synthesizer
+  metadata: sub-agent-package.yaml
+  members:
+  - source: references/evidence-report-synthesis-playbook.md
+    destination: .ai/core/sub-agents/evidence-report-synthesizer/references/evidence-report-synthesis-playbook.md
+  - source: runtime/claude.md
+    destination: .ai/core/sub-agents/evidence-report-synthesizer/runtime/claude.md
+  - source: runtime/codex.toml
+    destination: .ai/core/sub-agents/evidence-report-synthesizer/runtime/codex.toml
+  - source: sub-agent-package.yaml
+    destination: .ai/core/sub-agents/evidence-report-synthesizer/sub-agent-package.yaml
+  - source: sub-agent.yaml
+    destination: .ai/core/sub-agents/evidence-report-synthesizer/sub-agent.yaml
+- kind: sub-agent
+  id: fixed-head-independent-auditor
+  version: 0.1.0
+  source: src/sub-agents/fixed-head-independent-auditor
+  metadata: sub-agent-package.yaml
+  members:
+  - source: references/fixed-head-independent-audit-playbook.md
+    destination: .ai/core/sub-agents/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md
+  - source: runtime/claude.md
+    destination: .ai/core/sub-agents/fixed-head-independent-auditor/runtime/claude.md
+  - source: runtime/codex.toml
+    destination: .ai/core/sub-agents/fixed-head-independent-auditor/runtime/codex.toml
+  - source: sub-agent-package.yaml
+    destination: .ai/core/sub-agents/fixed-head-independent-auditor/sub-agent-package.yaml
+  - source: sub-agent.yaml
+    destination: .ai/core/sub-agents/fixed-head-independent-auditor/sub-agent.yaml
+- kind: sub-agent
+  id: mechanical-evidence-worker
+  version: 0.1.0
+  source: src/sub-agents/mechanical-evidence-worker
+  metadata: sub-agent-package.yaml
+  members:
+  - source: references/mechanical-evidence-playbook.md
+    destination: .ai/core/sub-agents/mechanical-evidence-worker/references/mechanical-evidence-playbook.md
+  - source: runtime/claude.md
+    destination: .ai/core/sub-agents/mechanical-evidence-worker/runtime/claude.md
+  - source: runtime/codex.toml
+    destination: .ai/core/sub-agents/mechanical-evidence-worker/runtime/codex.toml
+  - source: sub-agent-package.yaml
+    destination: .ai/core/sub-agents/mechanical-evidence-worker/sub-agent-package.yaml
+  - source: sub-agent.yaml
+    destination: .ai/core/sub-agents/mechanical-evidence-worker/sub-agent.yaml
+- kind: sub-agent
+  id: reconciliation-worker
+  version: 0.1.0
+  source: src/sub-agents/reconciliation-worker
+  metadata: sub-agent-package.yaml
+  members:
+  - source: references/reconciliation-playbook.md
+    destination: .ai/core/sub-agents/reconciliation-worker/references/reconciliation-playbook.md
+  - source: runtime/claude.md
+    destination: .ai/core/sub-agents/reconciliation-worker/runtime/claude.md
+  - source: runtime/codex.toml
+    destination: .ai/core/sub-agents/reconciliation-worker/runtime/codex.toml
+  - source: sub-agent-package.yaml
+    destination: .ai/core/sub-agents/reconciliation-worker/sub-agent-package.yaml
+  - source: sub-agent.yaml
+    destination: .ai/core/sub-agents/reconciliation-worker/sub-agent.yaml
+- kind: sub-agent
+  id: semantic-governance-analyst
+  version: 0.1.0
+  source: src/sub-agents/semantic-governance-analyst
+  metadata: sub-agent-package.yaml
+  members:
+  - source: references/semantic-governance-analysis-playbook.md
+    destination: .ai/core/sub-agents/semantic-governance-analyst/references/semantic-governance-analysis-playbook.md
+  - source: runtime/claude.md
+    destination: .ai/core/sub-agents/semantic-governance-analyst/runtime/claude.md
+  - source: runtime/codex.toml
+    destination: .ai/core/sub-agents/semantic-governance-analyst/runtime/codex.toml
+  - source: sub-agent-package.yaml
+    destination: .ai/core/sub-agents/semantic-governance-analyst/sub-agent-package.yaml
+  - source: sub-agent.yaml
+    destination: .ai/core/sub-agents/semantic-governance-analyst/sub-agent.yaml
 adapters:
 - id: claude
   version: 0.1.0

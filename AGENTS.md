@@ -46,6 +46,7 @@ downstream adoption retain their owners. No merge or date proves CI success.
 - Prefer deterministic tools for inventories, paths, hashes, schemas, Git identity, build, test, and receipts.
 - `failed`, `blocked-by-environment`, `not-applicable`, and `deferred-with-owner` are not `passed`.
 - Prefer an applicable and permitted IDE MCP refactoring operation.
+- Sub-agents inherit the user's runtime model and reasoning effort. Do not automatically escalate model, effort, provider or cost because of a role name. Explain a needed escalation and obtain explicit user authorization for a visible separate task; runtime availability is not spending consent.
 
 ## Progressive Context Loading
 
@@ -58,7 +59,7 @@ downstream adoption retain their owners. No merge or date proves CI success.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 18 skills, including the restored development orchestrator and optional `ai-context-init@0.1.0`. The `project-initialization` preset selects initialization separately; existing presets and this source project's 17-skill installation are unchanged. Installing the package supplies authoring resources, not initialized root documents. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 18 skills, including the restored development orchestrator and optional `ai-context-init@0.2.0`. The `project-initialization` preset selects initialization separately; existing presets and this source project's 17-skill installation are unchanged. Installing the package supplies authoring resources, not initialized root documents. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
 
 | Need | Owning route |
 | --- | --- |
@@ -101,7 +102,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - Classify validation evidence as identity-, input-, environment-, or provider-sensitive before reuse. Reuse requires matching tracked bytes, transitive dependencies, command, profile, environment, runner, manifest, resolver, policy, and configuration authority.
 - Freeze only after tracked mutation and focused validation are complete. After freeze, tracked content or governing-authority drift invalidates the subject; history-only identity drift requires rebind. Terminal metadata writes only to declared ignored artifacts and does not invalidate the frozen snapshot.
 - Unknown dependency or authority state fails closed. Current-head review-subject binding, required hosted contexts, and live admission gates are always fresh; an equal content digest may reuse the independent review without repeating it.
-- Required hosted contexts remain present for every admitted head. Internal execution or proven reuse may vary, but path filtering must not make a required context disappear.
+- Hosted source CI is required only for PRs selected by the source policy's native `src/**` and `tools/**` path filters. Other PRs need no source CI context; absence is not a pass. Separately selected release checks retain their own applicability.
 - A content-addressed independent audit reports each gate as `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or `not-applicable`; commit SHAs remain provenance rather than the validity key.
 
 ### Agent Execution Guardrails
@@ -130,7 +131,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - Re-run preflight at execution time, create one unique contained run directory, and clean up only that verified directory. Invalid, unsafe, or unwritable roots fail before material fixtures.
 - Keep diagnostics path-free. A WSL `/mnt/*` performance warning is advisory; it never changes test outcomes or silently selects another root.
 - Compare default and accelerated modes with the same tracked test profile on one commit and host. Use at least three runs for a median and label cold or warm conditions explicitly.
-- See `.dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md` for local and manual CI usage.
+- Current source tests follow `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md`; the retired acceleration route requires a separately selected compatible revision.
 
 ## CLI And Runtime Boundaries
 
@@ -145,6 +146,12 @@ Stop before mutation when authorization is missing or contradictory, authority c
 
 Repairable implementation, test, or CI failures inside authorized scope are not owner checkpoints by themselves.
 
+## Documentation Ownership
+
+- Editable reusable resources belong in `src`; resources required by a framework capability must be included there or declared as knowledge dependencies.
+- `.dev` owns this project's records, policies and collaboration; `docs` owns product documentation. Source and installed copies may coexist because this repository develops and uses the framework.
+- Prepare reusable resources in source before separately selected self-installation/upgrade. Remove obsolete documents without experience-transfer value; preserve existing `.dev/design`, `.dev/assessments`, `.dev/requirement`, `.dev/adr` and `.dev/workflows` history in this cleanup.
+
 ## Navigation And Language
 
 Use indexes only when needed:
@@ -152,7 +159,7 @@ Use indexes only when needed:
 - `.ai/INDEX.MD`: generated installed content and source-tooling data.
 - `.dev/INDEX.md`: project knowledge and current records.
 - `.dev/standards/INDEX.MD`: standards navigation.
-- `.dev/guides/ai-collaboration-guides/`: human-facing explanations, not default execution context.
+- `docs/`: human-facing product manuals; `.dev/guides/` explains source-project work and experience.
 - `.agents/skills/README.md` and `.claude/skills/README.md`: installed skill inventories.
 
 ### Root Entry Files

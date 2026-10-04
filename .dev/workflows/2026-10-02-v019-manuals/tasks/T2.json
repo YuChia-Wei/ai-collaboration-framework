@@ -1,0 +1,17 @@
+{
+  "task_id": "T2",
+  "workflow_id": "2026-10-02-v019-manuals",
+  "owner_skill": "software-development-orchestrator",
+  "title": "Validate manuals and independently review the immutable diff",
+  "status": "completed",
+  "created_at": "2026-10-02T23:49:48+08:00",
+  "updated_at": "2026-10-03T00:28:00+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_identity_basis": "Configured host defaults; exact active runtime identity is not exposed.",
+  "issue": 322,
+  "result_summary": "Manual parity, JSON, links, PowerShell syntax and three actual isolated RC4 installations passed; source suite 47 passed. Independent review completed at 8e37b2a0c14eb93849449dfcdac48e50a1b51971 with no actionable defects in the owner-corrected documentation scope.",
+  "finding_status": "addressed"
+}

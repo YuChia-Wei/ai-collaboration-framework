@@ -11,7 +11,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
-from distribution.content import closure, dependency_key, descriptor, load_content_package, ordered, selected_references
+from distribution.content import closure, dependency_key, descriptor, load_content_package, ordered, selected_references, load_sub_agent_package, check_sub_agent
 from distribution.contracts import validate
 from distribution.data import DistributionError, json_bytes, yaml_object
 from distribution.git_source import Blob
@@ -25,7 +25,7 @@ def source_inventory():
     for row in manifest["components"]:
         name = row["source"] + "/" + row["metadata"]
         raw = (ROOT / name).read_bytes()
-        parser = load_package if row["kind"] == "skill" else load_content_package
+        parser = {'skill':load_package,'knowledge':load_content_package,'sub-agent':load_sub_agent_package}[row['kind']]
         package = parser(Blob(name, "0" * 40, "100644", raw))
         key = (row["kind"], row["id"])
         if key in packages:
@@ -75,6 +75,8 @@ class SourceDeclarationTests(unittest.TestCase):
                 for member in row["members"]:
                     destinations.append(member["destination"].casefold())
                     self.assertTrue(contents[(*key, member["source"])])
+                if row["kind"] == "sub-agent":
+                    check_sub_agent(package,{name:Blob(name,"0"*40,"100644",contents[(*key,name)]) for name in names})
                 if row["kind"] == "skill":
                     blobs = {name: Blob(name, "0" * 40, "100644", contents[(*key, name)]) for name in names}
                     self.assertEqual(check_references(package, blobs)["name"], row["id"])
@@ -94,7 +96,7 @@ class SourceDeclarationTests(unittest.TestCase):
                     ordered(preset[field])
                 self.assertEqual(preset["id"], row["id"])
                 self.assertLessEqual(set(preset["adapters"]), adapters)
-                selected = {(kind, name) for kind, field in (("skill", "skills"), ("knowledge", "knowledge")) for name in preset[field]}
+                selected = {(kind, name) for kind, field in (("skill", "skills"), ("knowledge", "knowledge"), ("sub-agent", "sub_agents")) for name in preset.get(field,[])}
                 self.assertLessEqual(selected, packages.keys())
                 closure(sorted((descriptor(kind, packages[(kind, name)]) for kind, name in selected), key=lambda row: (row["kind"], row["id"])))
 

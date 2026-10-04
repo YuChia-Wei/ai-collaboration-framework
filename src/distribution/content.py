@@ -65,8 +65,153 @@ def load_content_package(blob):
     return Package(data,frozenset(kinds))
 
 
+def component_root(kind):
+    require(kind in {'skill','knowledge','sub-agent'}, 'unsupported component kind')
+    return {'skill':'skills','knowledge':'knowledge','sub-agent':'sub-agents'}[kind]
+
+
+def selected_keys(desired):
+    return {(kind, pid) for kind, field in (('skill','skills'),('knowledge','knowledge'),('sub-agent','sub_agents'))
+            for pid in desired.get(field, [])}
+
+
+def load_sub_agent_package(blob):
+    data=validate('SubAgentPackage',yaml_object(blob.data,blob.path))
+    ordered(data['members']); portable(data['members'])
+    require({'sub-agent.yaml','sub-agent-package.yaml'}<=set(data['members']), 'sub-agent entry/metadata closure')
+    dependencies(data['dependencies']['required'],data['dependencies']['optional'],('sub-agent',data['id']))
+    require(not data['dependencies']['required'] and not data['dependencies']['optional'], 'sub-agent dependencies are caller-owned')
+    runtime={m for m in data['members'] if m.startswith('runtime/')}
+    require(runtime and runtime<={'runtime/codex.toml','runtime/claude.md'}, 'unsupported sub-agent runtime member')
+    return Package(data,frozenset(data['members']))
+
+
+def sub_agent_entries(component, adapters):
+    entries=[]
+    for adapter in adapters:
+        aid=adapter['id']; suffix='.toml' if aid=='codex' else '.md'
+        member='runtime/'+aid+suffix
+        require(member in component['members'], 'unsupported sub-agent adapter: '+component['id']+'/'+aid)
+        entries.append((aid,member,f'.{aid}/agents/'+component['id']+suffix))
+    return entries
+
+
+def check_sub_agent(package, blobs):
+    import tomllib
+    role=yaml_object(blobs['sub-agent.yaml'].data,'sub-agent.yaml')
+    policy=sub_agent_model_policy(role)
+    require(role.get('asset_id')==package.id and role.get('asset_type')=='sub-agent-role-prompt'
+            and role.get('status')=='active', 'sub-agent role identity')
+    refs=role.get('references'); require(type(refs) is list, 'sub-agent references')
+    ordered(refs); portable(refs)
+    require(set(refs)<=(package.members-{'sub-agent.yaml','sub-agent-package.yaml'})
+            and all(ref.startswith('references/') for ref in refs), 'sub-agent reference closure')
+    runtime={m for m in package.members if m.startswith('runtime/')}
+    require(package.members==frozenset({'sub-agent.yaml','sub-agent-package.yaml',*refs,*runtime}), 'sub-agent member closure')
+    targets=['codex'] if 'runtime/codex.toml' in runtime else []
+    if 'runtime/claude.md' in runtime: targets.append('claude')
+    require(role.get('wrapper_targets')==targets, 'sub-agent adapter declaration')
+    canonical=f'.ai/core/sub-agents/{package.id}/sub-agent.yaml'
+    for aid,member,dest in sub_agent_entries({'id':package.id,'members':package.members},[{'id':a} for a in targets]):
+        raw=blobs[member].data.decode('utf-8')
+        if aid=='codex':
+            profile=tomllib.loads(raw)
+            if policy['policy_version']==2:
+                require(not {'model','model_reasoning_effort','model_provider'} & profile.keys(),
+                        'sub-agent inherited Codex model/effort')
+            else:
+                require(profile.get('model')==policy[aid]['candidates'][0]
+                        and profile.get('model_reasoning_effort')==policy[aid]['reasoning_effort'], 'sub-agent Codex model')
+            require(profile.get('name')==package.id and canonical in profile.get('developer_instructions',''), 'sub-agent Codex binding')
+            require(type(profile.get('description')) is str and bool(profile['description'].strip()), 'sub-agent Codex description')
+            require(package.id=='context-translator' or profile.get('sandbox_mode')=='read-only', 'sub-agent read-only profile')
+        else:
+            match=re.fullmatch(r'---\n(.*?)\n---\n([\s\S]*)',raw.replace('\r\n','\n'),re.S)
+            require(match is not None, 'sub-agent Claude frontmatter')
+            profile=yaml_object(match[1].encode(),'Claude frontmatter')
+            require(profile.get('name')==package.id and canonical in match[2], 'sub-agent Claude binding')
+            if policy['policy_version']==2:
+                require(profile.get('model')=='inherit' and 'effort' not in profile,
+                        'sub-agent inherited Claude model/effort')
+            else:
+                require(profile.get('model')==policy[aid]['candidates'][0], 'sub-agent Claude model')
+            require(type(profile.get('description')) is str and bool(profile['description'].strip()), 'sub-agent Claude description')
+            tools=profile.get('tools')
+            if type(tools) is str: tools=[tool.strip() for tool in tools.split(',')]
+            require(type(tools) is list and all(type(tool) is str for tool in tools), 'sub-agent Claude tool allowlist')
+            allowed={'Read','Write','Edit'} if package.id=='context-translator' else {'Read','Grep','Glob'}
+            require(set(tools)==allowed and len(tools)==len(allowed), 'sub-agent Claude bounded tools')
+        require('.dev/agents/' not in raw and 'src/sub-agents/' not in raw, 'sub-agent nonportable runtime reference')
+        require(role.get('adapter_metadata',{}).get(aid,{}).get('adapter_path')==dest, 'sub-agent runtime destination')
+
+
+def sub_agent_model_policy(role):
+    policy=validate('SubAgentModelPolicy',role.get('model_policy'))
+    if policy['policy_version']==2: return policy
+    for aid in ('codex','claude'):
+        candidates=policy[aid]['candidates']
+        require(len(candidates)==len(set(candidates)), 'duplicate model candidate')
+        require(all(m.startswith('gpt-') if aid=='codex' else m.startswith('claude-') for m in candidates), 'model provider boundary')
+    return policy
+
+
+def model_availability(desired, observations):
+    """Validate observations without inferring user spending permission."""
+    validate('ModelAvailability', observations)
+    ordered(observations,lambda r:r['adapter'])
+    require([r['adapter'] for r in observations]==desired['adapters'], 'model observation adapter closure')
+    available={}
+    for row in observations:
+        require(row['source'] in ({'codex-app-server'} if row['adapter']=='codex' else {'anthropic-api','caller-claude-code'}), 'model observation provider boundary')
+        ordered(row['models'],lambda r:r['id'])
+        for model in row['models']:
+            require(model['id'].startswith('gpt-' if row['adapter']=='codex' else 'claude-'),
+                    'model observation provider identifier')
+            ordered(model['reasoning_efforts'])
+        available[row['adapter']]={m['id']:m for m in row['models']}
+    return available
+
+
+def resolved_sub_agent_models(packages, desired, observations):
+    """Read legacy policy-1 bindings; inherited roles cannot become fixed models."""
+    available=model_availability(desired,observations)
+    bindings=[]
+    for aid in desired['adapters']:
+        for pid in desired.get('sub_agents',[]):
+            role_policy=sub_agent_model_policy(packages[pid])
+            require(role_policy['policy_version']==1,
+                    'inherited model policy refuses fixed installation bindings')
+            policy=role_policy[aid]
+            effort=policy.get('reasoning_effort')
+            model=next((m for m in policy['candidates'] if m in available[aid]
+                        and (effort is None or effort in available[aid][m]['reasoning_efforts'])),None)
+            require(model is not None, 'model-unavailable: '+aid+'/'+pid)
+            bindings.append({'adapter':aid,'sub_agent':pid,'model':model,'reasoning_effort':effort})
+    return bindings
+
+
+def sub_agent_model_binding(desired, aid, pid):
+    return next((r for r in desired.get('model_resolution',{}).get('bindings',[])
+                 if r['adapter']==aid and r['sub_agent']==pid),None)
+
+
+def render_sub_agent_model(raw, aid, binding):
+    """Change one top-level model scalar only; preserve every other byte."""
+    if binding is None: return raw
+    text=raw.decode('utf-8')
+    pattern=r'(?m)^model = "[^"\r\n]+"(?=\r?$)' if aid=='codex' else r'(?m)^model: [^\r\n]+(?=\r?$)'
+    replacement='model = "'+binding['model']+'"' if aid=='codex' else 'model: '+binding['model']
+    text,count=re.subn(pattern,lambda _:replacement,text)
+    require(count==1, 'sub-agent model rendering ambiguity')
+    return text.encode('utf-8')
+
+
 def descriptor(kind, package):
     data=package.metadata
+    if kind=='sub-agent':
+        return {'kind':kind,'id':package.id,'version':package.version,'metadata_version':1,
+                'metadata':'sub-agent-package.yaml','members':sorted(package.members),
+                'required_dependencies':[],'optional_dependencies':[]}
     required=[]; optional=[]
     for requirement,rows in (('required',required),('optional',optional)):
         for dep in data['dependencies'][requirement]:
@@ -93,8 +238,9 @@ def component_shape(component):
     validate('Component',component)
     require(len(component['members'])<=4096,'member budget')
     ordered(component['members']); portable(component['members'])
-    expected='content-package.yaml' if component['kind']=='knowledge' else 'skill-package.yaml'
-    entry='README.md' if component['kind']=='knowledge' else 'SKILL.md'
+    expected={'skill':'skill-package.yaml','knowledge':'content-package.yaml','sub-agent':'sub-agent-package.yaml'}[component['kind']]
+    entry={'skill':'SKILL.md','knowledge':'README.md','sub-agent':'sub-agent.yaml'}[component['kind']]
+    require(component['kind']!='sub-agent' or component['metadata_version']==1,'unsupported sub-agent metadata')
     require(component['metadata']==expected and {entry,expected}<=set(component['members']),'metadata/entry closure')
     require(component['kind']!='knowledge' or component['metadata_version']==1,'unsupported content metadata')
     dependencies(component['required_dependencies'],component['optional_dependencies'],dependency_key(component))
@@ -120,9 +266,14 @@ def closure(components):
 
 def desired_shape(data):
     validate('Selection',data)
-    for key in ('skills','knowledge','adapters'): ordered(data[key])
-    require(len(data['skills'])+len(data['knowledge'])<=128 and len(data['bindings'])<=128,'selection budget')
+    for key in ('skills','knowledge','adapters','sub_agents'): ordered(data.get(key,[]))
+    require(len(selected_keys(data))<=128 and len(data['bindings'])<=128,'selection budget')
     ordered(data['bindings'],lambda r:r['id'])
+    if 'model_resolution' in data:
+        resolution=data['model_resolution']
+        ordered(resolution['bindings'],lambda r:(r['adapter'],r['sub_agent']))
+        require([(r['adapter'],r['sub_agent']) for r in resolution['bindings']]
+                ==[(aid,pid) for aid in data['adapters'] for pid in data['sub_agents']], 'model binding selection closure')
     authority_hashes={}
     for row in data['bindings']:
         for key in ('resources','required_rule_ids'): ordered(row[key])
@@ -186,6 +337,7 @@ def selected_references(packages, contents):
     unavailable=[]
     rule_owners={}
     for (kind,pid),package in packages.items():
+        if kind=='sub-agent': continue
         if kind=='skill':
             for dep in package.metadata['dependencies']['optional']:
                 other=packages.get(('skill',dep['id']))

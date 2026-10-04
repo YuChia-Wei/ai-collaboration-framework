@@ -6,6 +6,7 @@
 
 | 目的 | 路徑 |
 | --- | --- |
+| 安裝說明、知識選配與各 skill 使用手冊 | [`docs/`](docs/README.md) |
 | Agent 協作規則與目前 routes | [`AGENTS.md`](AGENTS.md) |
 | Source 操作政策 | [`.dev/standards/`](.dev/standards/INDEX.MD) |
 | 可編輯的 reusable framework source | [`src/`](src/) |
@@ -16,7 +17,7 @@
 
 ## 本庫的安裝選擇
 
-目前 distribution catalog 包含 18 個 portable skills 與 Codex、Claude adapters。可選的 [`ai-context-init@0.1.0`](src/skills/ai-context-init/SKILL.md) 透過獨立 `project-initialization` preset，提供依據專案證據建立協作文件與專案結構的指引。既有 presets 與本來源專案的 17-skill installation 維持原狀；安裝套件不會自動建立根目錄文件。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/` 供獨立試驗，在用途與行為另行驗證前不隨 framework 成品發布或安裝。`software-development-orchestrator` 已恢復跨階段開發編排；workflow 紀錄格式與存放位置仍由專案選擇。Authoring package IDs 為 `adr-author`、`lesson-author` 與 `pr-author`。本來源專案的安裝選擇不包含 engineering knowledge packages。Generated installation identity 由 lock 記錄，與 source catalog 分開更新。`.ai/custom/installation.json` 保存 project-owned selection；managed installer 產生 `.ai/framework.lock`、`.ai/core/` 與兩種 runtime entries。Generated content 不可直接編輯；要改產品請編輯 `src/`，再依 source workflow 更新安裝。
+目前 distribution catalog 包含 18 個 portable skills 與 Codex、Claude adapters。可選的 [`ai-context-init@0.2.0`](src/skills/ai-context-init/SKILL.md) 透過獨立 `project-initialization` preset，提供依據專案證據建立最小協作起點的指引，包含背景、協作基線與第一次任務範例。既有 presets 與本來源專案的 17-skill installation 維持原狀；安裝套件不會自動建立根目錄文件。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/` 供獨立試驗，在用途與行為另行驗證前不隨 framework 成品發布或安裝。`software-development-orchestrator` 已恢復跨階段開發編排；workflow 紀錄格式與存放位置仍由專案選擇。Authoring package IDs 為 `adr-author`、`lesson-author` 與 `pr-author`。本來源專案的安裝選擇不包含 engineering knowledge packages。Generated installation identity 由 lock 記錄，與 source catalog 分開更新。`.ai/custom/installation.json` 保存 project-owned selection；managed installer 產生 `.ai/framework.lock`、`.ai/core/` 與兩種 runtime entries。Generated content 不可直接編輯；要改產品請編輯 `src/`，再依 source workflow 更新安裝。
 
 完整的增減、改名與職責變化見 [Skill 職責變遷](.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)。
 

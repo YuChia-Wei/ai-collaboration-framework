@@ -58,6 +58,25 @@ class SourceSchemaInventoryTests(unittest.TestCase):
 
 
 class DistributionSchemaTests(unittest.TestCase):
+    def test_sub_agent_package_and_selection_v3_schema_runtime_parity(self):
+        package={'sub_agent_package_version':1,'id':'reviewer','version':'0.1.0',
+                 'entrypoint':'sub-agent.yaml','members':['runtime/codex.toml','sub-agent-package.yaml','sub-agent.yaml'],
+                 'dependencies':{'required':[],'optional':[]}}
+        schema=validator('src/distribution/schemas/contracts.schema.json','#/$defs/SubAgentPackage')
+        schema.validate(package); contracts.validate('SubAgentPackage',package)
+        for path,value in ((('sub_agent_package_version',),True),(('entrypoint',),'SKILL.md'),(('members',),['../escape'])):
+            bad=changed(package,path,value)
+            if path!=('members',): self.assertFalse(schema.is_valid(bad))
+            with self.assertRaises(ValueError):
+                from distribution.content import load_sub_agent_package
+                load_sub_agent_package(Blob('sub-agent-package.yaml','0'*40,'100644',json_bytes(bad)))
+        desired=selection(); desired.update(selection_version=3,sub_agents=['reviewer'])
+        distribution_validator('selection').validate(desired); desired_shape(desired)
+        for field,value in (('sub_agents',['reviewer','reviewer']),('selection_version',2)):
+            bad=changed(desired,(field,),value)
+            self.assertFalse(distribution_validator('selection').is_valid(bad))
+            with self.assertRaises(ValueError): desired_shape(bad)
+
     def test_runtime_definition_literal_matches_source_schema(self):
         self.assertEqual(contracts.DEFINITIONS, document("src/distribution/schemas/contracts.schema.json")["$defs"])
 

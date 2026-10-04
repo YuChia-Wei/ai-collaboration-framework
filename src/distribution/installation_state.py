@@ -35,7 +35,7 @@ READER_ENGINE_FILES = tuple(sorted((
     "src/distribution/git_source.py", "src/distribution/package.py",
     "src/distribution/installation_state.py", "src/distribution/installation_plan.py",
 )))
-ENGINE_FILES = ('src/adapters/claude/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry.md.template', 'src/distribution/__init__.py', 'src/distribution/assembly.py', 'src/distribution/catalog.py', 'src/distribution/claude.py', 'src/distribution/codex.py', 'src/distribution/content.py', 'src/distribution/contracts.py', 'src/distribution/data.py', 'src/distribution/git_source.py', 'src/distribution/installation.py', 'src/distribution/installation_io.py', 'src/distribution/installation_plan.py', 'src/distribution/installation_state.py', 'src/distribution/maintenance_coordination.py', 'src/distribution/package.py', 'src/distribution/reinstallation.py', 'src/distribution/selection.py', 'src/tools/maintain_framework.py', 'tools/build-catalog.py', 'tools/derive-subset.py', 'tools/reinstall-framework.py')
+ENGINE_FILES = ('src/adapters/claude/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry-v2.md.template', 'src/adapters/codex/skill-entry.md.template', 'src/distribution/__init__.py', 'src/distribution/assembly.py', 'src/distribution/catalog.py', 'src/distribution/claude.py', 'src/distribution/codex.py', 'src/distribution/content.py', 'src/distribution/contracts.py', 'src/distribution/data.py', 'src/distribution/git_source.py', 'src/distribution/installation.py', 'src/distribution/installation_io.py', 'src/distribution/installation_plan.py', 'src/distribution/installation_state.py', 'src/distribution/maintenance_coordination.py', 'src/distribution/package.py', 'src/distribution/reinstallation.py', 'src/distribution/selection.py', 'src/tools/derive-subset.py', 'src/tools/maintain_framework.py', 'src/tools/reinstall-framework.py')
 
 METADATA = ("metadata/selection.json", "metadata/files.json", "metadata/build.json")
 LOCK_PATH = ".ai/framework.lock"
@@ -792,8 +792,10 @@ def _unknown(reader: _Reader, root: Path, names: set[str], owned: set[str]) -> l
     """Descend only declared parent paths inside selected managed package roots."""
     scopes = set()
     for name in names:
+        if name.startswith(('.codex/agents/', '.claude/agents/')):
+            continue
         parts = name.split("/")
-        scopes.add("/".join(parts[:4] if name.startswith((".ai/core/skills/", ".ai/core/knowledge/")) else parts[:3]))
+        scopes.add("/".join(parts[:4] if name.startswith((".ai/core/skills/", ".ai/core/knowledge/", ".ai/core/sub-agents/")) else parts[:3]))
     parents = {"/".join(name.split("/")[:i]) for name in names for i in range(1, len(name.split("/")))}
     unknown = set()
     for scope in sorted(scopes):

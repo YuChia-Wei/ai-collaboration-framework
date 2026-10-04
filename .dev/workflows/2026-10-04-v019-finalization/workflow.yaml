@@ -1,0 +1,23 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-04-v019-finalization
+workflow_kind: software-development
+title: Complete bounded initialization onboarding and prepare the 0.19.0 stable candidate
+owner_skill: software-development-orchestrator
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-10-04-v019-finalization
+entrypoint: workflow-plan.md
+created_at: '2026-10-04T18:55:42+08:00'
+updated_at: '2026-10-04T19:28:10+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-04-v019-finalization
+base_branch: main
+base_commit: 8a59cc4670dfe741ba800c63f438640f5847c4fa
+work_items:
+- provider: github
+  issue: 322
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/322
+authority: The owner's 2026-10-04 request to begin the accepted bounded init expansion and complete the 0.19.0 stable-version content selects local implementation, necessary verification, independent review and candidate preparation. Notify the owner of material decisions or acceptance gaps. Integration, tag and publication retain their explicit owners.
+execution: Root is the only tracked writer and integration owner. Bounded read-only inventory/review and isolated task-owned acceptance targets may use inherited model settings; no automatic model/effort/provider escalation. Preserve installed projections and historical records.

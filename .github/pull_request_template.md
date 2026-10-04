@@ -8,7 +8,8 @@ Describe the problem, resulting behavior, bounded scope and owner authorization.
 ## Validation
 
 List exact commands, source commit and actual outcomes. Retain failed attempts,
-limitations and deferred checks. Link current-head Source change gate when run.
+limitations and deferred checks. Link current-head Source change gate for PRs
+changing `src/**` or `tools/**`; otherwise state that source CI is not applicable.
 Local/static/fixture results do not establish hosted or native acceptance.
 
 ## Review and admission
