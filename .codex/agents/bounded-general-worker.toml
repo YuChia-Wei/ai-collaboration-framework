@@ -1,6 +1,6 @@
 name = "bounded-general-worker"
 description = "Execute one independently bounded substantive work unit that needs strong reasoning and tool use; use only after the parent supplies exact scope, authority, outputs, stop conditions, and integration ownership."
-model = "gpt-5.6-terra"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "xhigh"
 
 developer_instructions = """
