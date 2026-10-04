@@ -77,6 +77,27 @@ operations and zero dependencies, and binds them into the catalog. Product
 manuals distinguish the new engine paths from a retained RC4 guide. The package
 and preset identities remain separate; the initialization preset is still 0.1.0.
 
-Current phase: T2 validation. Focused and default local checks passed as recorded
-in [validation](validation.md). Immutable packaging, fresh-context behavior,
-independent review, candidate readiness and publication are not yet established.
+T2 and T3 are complete for the selected local scope. The immutable snapshot was
+built from `fefb019e3337c9ce6edb0ccfc299f12e9a899d74`; actual installation,
+update/removal, two initialization targets, repeat/refresh and a fresh-context
+first task satisfy A1–A7 within their recorded limits. Independent scoped review
+covered onboarding, installation/CI/model boundaries and the retained #435
+knowledge/ownership changes. One stale manual execution claim was repaired and
+independently confirmed on `c9143d0ce440399290fbabbd68841aa7bd434adf`. Final author
+inspection also corrected init's version/summary in both human root READMEs.
+See [validation](validation.md) for source identities, actual commands, hashes,
+findings, retained failures and execution-surface limits.
+
+T4 is complete as local candidate preparation. The consumer release-note draft
+is ignored at `.dev/ai-context/local/v019-finalization/release-notes-v0.19.0.md`,
+preserving the owner's no-check-in preference. It describes the accepted product
+and breaking legacy-format boundary; publication identities remain unselected.
+
+Current disposition: local candidate content complete; no new feature work is
+planned. The finalization branch includes earlier authorized, still-unintegrated
+sub-agent, knowledge/documentation, source CI and engine-boundary changes.
+Completion here does not close #322/#434/#435 or establish integration/release.
+The integration owner next selects push/PR and merge authority, obtains actual
+current-head hosted Source change gate success and maintainer acceptance, then
+separately selects the stable annotated tag and publication steps. Preserve the
+snapshot and fixture evidence; no branch or test-root cleanup is selected.

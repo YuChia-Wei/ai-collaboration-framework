@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-10-04-v019-finalization`](2026-10-04-v019-finalization/workflow.yaml) | Complete onboarding and the 0.19.0 stable candidate | `software-development-orchestrator` | `in_progress` | `2026-10-04T19:10:04+08:00` | [plan](2026-10-04-v019-finalization/workflow-plan.md) |
+| [`2026-10-04-v019-finalization`](2026-10-04-v019-finalization/workflow.yaml) | Complete onboarding and the 0.19.0 stable candidate | `software-development-orchestrator` | `completed` | `2026-10-04T19:28:10+08:00` | [plan](2026-10-04-v019-finalization/workflow-plan.md) |
 | [`2026-10-04-release-boundaries`](2026-10-04-release-boundaries/workflow.yaml) | Simplify CI and product/model ownership | `software-development-orchestrator` | `completed` | `2026-10-04T13:02:04+08:00` | [plan](2026-10-04-release-boundaries/workflow-plan.md) |
 | [`2026-10-03-sub-agents`](2026-10-03-sub-agents/workflow.yaml) | Publish and install reusable sub-agent profiles | `software-development-orchestrator` | `completed` | `2026-10-03T11:06:53+08:00` | [plan](2026-10-03-sub-agents/workflow-plan.md) |
 | [`2026-10-02-v019-manuals`](2026-10-02-v019-manuals/workflow.yaml) | Selectable installation and skill manuals for 0.19.0 | `software-development-orchestrator` | `completed` | `2026-10-03T00:28:00+08:00` | [plan](2026-10-02-v019-manuals/workflow-plan.md) |
