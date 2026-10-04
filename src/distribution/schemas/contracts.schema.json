@@ -1953,69 +1953,14 @@
       }
     },
     "SubAgentModelPolicy": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "policy_version",
-        "codex",
-        "claude"
-      ],
-      "properties": {
-        "policy_version": {
-          "const": 1
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SubAgentModelPolicyV1"
         },
-        "codex": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "candidates",
-            "reasoning_effort"
-          ],
-          "properties": {
-            "candidates": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
-                "maxLength": 100
-              },
-              "minItems": 1,
-              "maxItems": 16,
-              "uniqueItems": true
-            },
-            "reasoning_effort": {
-              "enum": [
-                "low",
-                "medium",
-                "high",
-                "xhigh",
-                "max",
-                "ultra"
-              ]
-            }
-          }
-        },
-        "claude": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "candidates"
-          ],
-          "properties": {
-            "candidates": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
-                "maxLength": 100
-              },
-              "minItems": 1,
-              "maxItems": 16,
-              "uniqueItems": true
-            }
-          }
+        {
+          "$ref": "#/$defs/SubAgentModelPolicyV2"
         }
-      }
+      ]
     },
     "ModelObservation": {
       "type": "object",
@@ -2206,6 +2151,113 @@
           "minItems": 1,
           "maxItems": 256,
           "uniqueItems": true
+        }
+      }
+    },
+    "SubAgentModelPolicyV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "codex",
+        "claude"
+      ],
+      "properties": {
+        "policy_version": {
+          "const": 1
+        },
+        "codex": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidates",
+            "reasoning_effort"
+          ],
+          "properties": {
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+                "maxLength": 100
+              },
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true
+            },
+            "reasoning_effort": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max",
+                "ultra"
+              ]
+            }
+          }
+        },
+        "claude": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "candidates"
+          ],
+          "properties": {
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^(?:gpt-|claude-)[a-z0-9][a-z0-9.-]*$",
+                "maxLength": 100
+              },
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "SubAgentModelPolicyV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "codex",
+        "claude",
+        "escalation"
+      ],
+      "properties": {
+        "policy_version": {
+          "const": 2
+        },
+        "codex": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selection"
+          ],
+          "properties": {
+            "selection": {
+              "const": "inherit"
+            }
+          }
+        },
+        "claude": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selection"
+          ],
+          "properties": {
+            "selection": {
+              "const": "inherit"
+            }
+          }
+        },
+        "escalation": {
+          "const": "explicit-user-authorized-visible-task"
         }
       }
     }

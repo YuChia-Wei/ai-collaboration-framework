@@ -74,6 +74,10 @@ work_item_binding:
       downstream_policy: target-owned
     required_check_contexts:
     - Source change gate
+    required_check_paths:
+    - src/**
+    - tools/**
+    outside_check_paths: not-applicable
 issue_closure:
   policy: .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md
   distribution: source-repository-only

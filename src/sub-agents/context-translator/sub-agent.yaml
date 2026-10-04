@@ -30,18 +30,18 @@ outputs:
 - structural and terminology parity summary
 - unresolved wording list for main-agent review
 constraints:
-- Use a low-cost model selected by the runtime adapter; stop if the runtime cannot honor that cost profile.
+- Inherit the user's runtime model and effort; a cheaper explicit selection is optional, not a role prerequisite.
 - Never translate before the English source is finalized for the current task.
 - Preserve headings, list nesting, tables, links, anchors, code fences, inline code, paths, IDs, frontmatter,
   and normative strength.
 - Use Traditional Chinese (Taiwan); do not silently convert repository-defined English technical terms.
 - Do not edit the English source, unrelated files, canonical rules, or runtime adapters.
 - Do not declare governance, synchronization, or release completion.
-- Treat low-cost model use as a caller-verified precondition; report the resolved runtime/model but do
+- Treat the user's model/cost boundary as a caller-verified precondition; report the resolved runtime/model but do
   not claim to prove runtime billing or availability.
 workflow:
 - step: 1
-  description: Confirm the exact source, output, source finalization, and low-cost runtime selection.
+  description: Confirm the exact source, output, source finalization, and user-selected runtime model/cost boundary.
 - step: 2
   description: Read the source and relevant terminology references without scanning product source or
     tests.
@@ -55,11 +55,9 @@ references:
 examples: []
 status: active
 model_policy:
-  policy_version: 1
+  policy_version: 2
   codex:
-    candidates:
-    - gpt-6-luna
-    reasoning_effort: max
+    selection: inherit
   claude:
-    candidates:
-    - claude-haiku-4-5-20251001
+    selection: inherit
+  escalation: explicit-user-authorized-visible-task

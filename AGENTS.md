@@ -46,6 +46,7 @@ downstream adoption retain their owners. No merge or date proves CI success.
 - Prefer deterministic tools for inventories, paths, hashes, schemas, Git identity, build, test, and receipts.
 - `failed`, `blocked-by-environment`, `not-applicable`, and `deferred-with-owner` are not `passed`.
 - Prefer an applicable and permitted IDE MCP refactoring operation.
+- Sub-agents inherit the user's runtime model and reasoning effort. Do not automatically escalate model, effort, provider or cost because of a role name. Explain a needed escalation and obtain explicit user authorization for a visible separate task; runtime availability is not spending consent.
 
 ## Progressive Context Loading
 
@@ -101,7 +102,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - Classify validation evidence as identity-, input-, environment-, or provider-sensitive before reuse. Reuse requires matching tracked bytes, transitive dependencies, command, profile, environment, runner, manifest, resolver, policy, and configuration authority.
 - Freeze only after tracked mutation and focused validation are complete. After freeze, tracked content or governing-authority drift invalidates the subject; history-only identity drift requires rebind. Terminal metadata writes only to declared ignored artifacts and does not invalidate the frozen snapshot.
 - Unknown dependency or authority state fails closed. Current-head review-subject binding, required hosted contexts, and live admission gates are always fresh; an equal content digest may reuse the independent review without repeating it.
-- Required hosted contexts remain present for every admitted head. Internal execution or proven reuse may vary, but path filtering must not make a required context disappear.
+- Hosted source CI is required only for PRs selected by the source policy's native `src/**` and `tools/**` path filters. Other PRs need no source CI context; absence is not a pass. Separately selected release checks retain their own applicability.
 - A content-addressed independent audit reports each gate as `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or `not-applicable`; commit SHAs remain provenance rather than the validity key.
 
 ### Agent Execution Guardrails

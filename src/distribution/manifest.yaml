@@ -557,8 +557,6 @@ components:
     destination: .ai/core/knowledge/engineering-common/references/CONTEXT-RESOURCE-OWNERSHIP.md
   - source: references/ENGINEERING-IDENTITY-CONTRACT.md
     destination: .ai/core/knowledge/engineering-common/references/ENGINEERING-IDENTITY-CONTRACT.md
-  - source: references/EXTERNAL-AI-DISCUSSION.md
-    destination: .ai/core/knowledge/engineering-common/references/EXTERNAL-AI-DISCUSSION.md
   - source: references/GWT-TEST-HANDOFF-CONTRACT.md
     destination: .ai/core/knowledge/engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md
   - source: references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md

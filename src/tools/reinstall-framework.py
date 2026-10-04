@@ -30,7 +30,7 @@ def main():
         raise ValueError("request budget")
     request = json.loads(raw.decode("utf-8"), object_pairs_hook=pairs,
                          parse_constant=invalid, parse_float=invalid)
-    root = Path(__file__).absolute().parents[1]
+    root = Path(__file__).absolute().parents[2]
     pin = request["installation"]["engine"]
     if Path(request["installation"]["engine_root"]) != root:
         raise ValueError("executing engine root")

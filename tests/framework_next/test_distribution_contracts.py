@@ -160,7 +160,7 @@ class DistributionContractTests(unittest.TestCase):
 class SubAgentDistributionTests(unittest.TestCase):
     """Actual small role sources in a synthetic in-memory catalog; no installation."""
 
-    def role_catalog(self, role='context-translator'):
+    def role_catalog(self, role='context-translator', *, legacy=False):
         from test_skill_naming import tiny_catalog, source_blob, ROOT
         from distribution.content import load_sub_agent_package
         base=tiny_catalog()
@@ -169,7 +169,24 @@ class SubAgentDistributionTests(unittest.TestCase):
         package=load_sub_agent_package(source_blob(prefix+'/sub-agent-package.yaml',
                                                    (ROOT/prefix/'sub-agent-package.yaml').read_bytes()))
         for member in sorted(package.members):
-            src=source_blob(prefix+'/'+member,(ROOT/prefix/member).read_bytes())
+            raw=(ROOT/prefix/member).read_bytes()
+            if legacy:
+                # Synthetic policy-1 compatibility fixture; current published
+                # role sources no longer prescribe these model generations.
+                translator=role=='context-translator'
+                models=['gpt-6-luna'] if translator else ['gpt-6.1-sol','gpt-6-sol']
+                effort='max' if translator else 'medium'
+                claude='claude-haiku-4-5-20251001' if translator else 'claude-opus-5-5'
+                if member=='sub-agent.yaml':
+                    data=yaml_object(raw,member)
+                    data['model_policy']={'policy_version':1,'codex':{'candidates':models,'reasoning_effort':effort},
+                                          'claude':{'candidates':[claude]}}
+                    raw=json_bytes(data)
+                elif member=='runtime/codex.toml':
+                    raw=(f'model = "{models[0]}"\nmodel_reasoning_effort = "{effort}"\n'.encode()+raw)
+                elif member=='runtime/claude.md':
+                    raw=raw.replace(b'model: inherit',('model: '+claude).encode())
+            src=source_blob(prefix+'/'+member,raw)
             artifact=f'packages/sub-agent/{role}/{member}'
             inventory['files'].append({'path':artifact,'kind':'sub-agent','owner':role,'member':member,'source':src.identity()})
             contents[artifact]=src.data; doc['build_inputs'].append(src.identity())
@@ -191,7 +208,7 @@ class SubAgentDistributionTests(unittest.TestCase):
                  'models':[{'id':model,'reasoning_efforts':efforts} for model,efforts in sorted(models)]}]
 
     def test_model_priority_fallback_effort_and_exact_projection(self):
-        parent=self.role_catalog('mechanical-evidence-worker')
+        parent=self.role_catalog('mechanical-evidence-worker',legacy=True)
         desired=catalog.expand_preset(parent,'tiny','1.0.0')
         original=json_bytes(desired)
         observations=self.availability([('gpt-6-sol',['medium']),('gpt-6.1-sol',['medium'])])
@@ -213,7 +230,7 @@ class SubAgentDistributionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'model-unavailable'): catalog.resolve_sub_agent_model_selection(parent,desired,observations)
 
     def test_model_provider_and_candidate_boundaries_fail_closed(self):
-        parent=self.role_catalog()
+        parent=self.role_catalog(legacy=True)
         desired=catalog.expand_preset(parent,'tiny','1.0.0')
         for observations in (self.availability([('gpt-5.6-luna',['max'])]),
                              self.availability([('gpt-6-luna',['high'])]),
@@ -230,7 +247,7 @@ class SubAgentDistributionTests(unittest.TestCase):
         with self.assertRaises(ValueError): catalog.resolve_selection(parent,selected)
 
     def test_model_selection_and_inventory_drift_are_rejected(self):
-        parent=self.role_catalog('mechanical-evidence-worker'); desired=catalog.expand_preset(parent,'tiny','1.0.0')
+        parent=self.role_catalog('mechanical-evidence-worker',legacy=True); desired=catalog.expand_preset(parent,'tiny','1.0.0')
         selected=catalog.resolve_sub_agent_model_selection(parent,desired,self.availability([('gpt-6-sol',['medium'])]))
         selection,inventory,contents=self.projection(parent,selected)
         mutated=deepcopy(inventory)
@@ -250,7 +267,7 @@ class SubAgentDistributionTests(unittest.TestCase):
 
     def discovery_module(self):
         import importlib.util
-        path=Path(__file__).absolute().parents[2]/'tools/derive-subset.py'
+        path=Path(__file__).absolute().parents[2]/'src/tools/derive-subset.py'
         spec=importlib.util.spec_from_file_location('model_discovery_fixture',path)
         module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
         return module
@@ -412,16 +429,61 @@ class SubAgentDistributionTests(unittest.TestCase):
                 check_sub_agent(package,changed)
         with self.assertRaisesRegex(ValueError,'unsupported sub-agent adapter'):
             sub_agent_entries({'id':'test','members':['runtime/codex.toml']},[{'id':'claude'}])
-        for role,expected in (('mechanical-evidence-worker','claude-opus-5-5'),('context-translator','claude-haiku-4-5-20251001')):
+        for role in ('mechanical-evidence-worker','context-translator'):
             parent=self.role_catalog(role); package=parent.packages[('sub-agent',role)]
             blobs={m:source_blob(m,parent.contents[f'packages/sub-agent/{role}/'+m]) for m in package.members}
             raw=blobs['runtime/claude.md'].data.decode().replace('\r\n','\n')
-            for altered in (raw.replace('model: '+expected,'model: arbitrary-model'),
-                            raw.replace('model: '+expected+'\n',''),
-                            raw.replace('model: '+expected,'model: inherit')):
-                with self.subTest(role=role,model=altered),self.assertRaisesRegex(ValueError,'Claude model'):
+            for altered in (raw.replace('model: inherit','model: claude-fable-5-1'),
+                            raw.replace('model: inherit\n',''),
+                            raw.replace('model: inherit','model: inherit\neffort: max')):
+                with self.subTest(role=role),self.assertRaisesRegex(ValueError,'Claude model'):
                     changed=dict(blobs); changed['runtime/claude.md']=source_blob('runtime/claude.md',altered.encode())
                     check_sub_agent(package,changed)
+
+    def test_current_roles_inherit_models_without_observation_or_generation_pins(self):
+        import tomllib
+        from test_skill_naming import ROOT
+        roles=sorted(p.name for p in (ROOT/'src/sub-agents').iterdir() if (p/'sub-agent-package.yaml').is_file())
+        for role in roles:
+            with self.subTest(role=role):
+                parent=self.role_catalog(role); desired=catalog.expand_preset(parent,'tiny','1.0.0')
+                desired['adapters']=['claude','codex']; desired.pop('expanded_from')
+                _,_,contents=self.projection(parent,desired)
+                profile=tomllib.loads(contents[f'.codex/agents/{role}.toml'].decode())
+                self.assertFalse({'model','model_reasoning_effort','model_provider'} & profile.keys())
+                self.assertIn(b'\nmodel: inherit\n',contents[f'.claude/agents/{role}.md'])
+                self.assertNotIn('model_resolution',desired)
+
+    def test_discovery_does_not_pin_or_escalate_inherited_roles(self):
+        parent=self.role_catalog('fixed-head-independent-auditor')
+        desired=catalog.expand_preset(parent,'tiny','1.0.0')
+        for models in ([], [('gpt-6-astra',['max'])], [('gpt-99-future',['ultra'])]):
+            with self.subTest(models=models):
+                selected=catalog.resolve_sub_agent_model_selection(parent,desired,self.availability(models))
+                self.assertEqual(selected,desired)
+                _,_,contents=self.projection(parent,selected)
+                self.assertNotIn(b'model =',contents['.codex/agents/fixed-head-independent-auditor.toml'])
+        for observations in (self.availability([],source='anthropic-api'),self.availability([],adapter='claude'),
+                             self.availability([('claude-fable-5-1',[])])):
+            with self.assertRaises(ValueError): catalog.resolve_sub_agent_model_selection(parent,desired,observations)
+
+    def test_inherited_role_rejects_fixed_model_binding_and_profile(self):
+        from distribution.content import check_sub_agent
+        from test_skill_naming import source_blob
+        parent=self.role_catalog(); desired=catalog.expand_preset(parent,'tiny','1.0.0')
+        desired['model_resolution']={'policy_version':1,'observations':self.availability([('gpt-6-astra',['max'])]),
+            'bindings':[{'adapter':'codex','sub_agent':'context-translator','model':'gpt-6-astra','reasoning_effort':'max'}]}
+        with self.assertRaisesRegex(ValueError,'inherited model policy'):
+            catalog.resolve_selection(parent,desired)
+        with self.assertRaisesRegex(ValueError,'explicit removal'):
+            catalog.resolve_sub_agent_model_selection(parent,desired,desired['model_resolution']['observations'])
+        package=parent.packages[('sub-agent','context-translator')]
+        blobs={m:source_blob(m,parent.contents['packages/sub-agent/context-translator/'+m]) for m in package.members}
+        for line in ('model = "gpt-6-astra"','model_reasoning_effort = "max"','model_provider = "another"'):
+            changed=dict(blobs)
+            changed['runtime/codex.toml']=source_blob('runtime/codex.toml',line.encode()+b'\n'+blobs['runtime/codex.toml'].data)
+            with self.assertRaisesRegex(ValueError,'inherited Codex'):
+                check_sub_agent(package,changed)
 
     def test_runtime_tamper_and_destination_escape_are_rejected(self):
         parent=self.role_catalog()

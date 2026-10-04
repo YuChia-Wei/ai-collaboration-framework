@@ -29,7 +29,7 @@ SOURCE = {"tag": "v0.19.0-rc.3", "tag_object": "a" * 40, "commit": "b" * 40}
 
 
 def fixture(directory):
-    engine_names = [f"src/module{i:02}.py" for i in range(24)]
+    engine_names = [f"src/module{i:02}.py" for i in range(23)]
     pin = {"id": "framework-managed-installation", "version": "2.0.0", "source_commit": SOURCE["commit"],
            "files": [{"path": n, "sha256": common.sha(b"engine")} for n in engine_names]}
     pin_raw = common.encoded(pin)
@@ -172,11 +172,32 @@ class ReleaseContracts(unittest.TestCase):
             common.identity(self.directory, source_commit="d" * 40, tag=SOURCE["tag"])
 
     def test_engine_declarations_must_agree(self):
-        first = repr(tuple(f"src/a{i:02}.py" for i in range(24))).encode()
-        second = repr(tuple(f"src/b{i:02}.py" for i in range(24))).encode()
+        first = repr(tuple(f"src/a{i:02}.py" for i in range(23))).encode()
+        second = repr(tuple(f"src/b{i:02}.py" for i in range(23))).encode()
         with patch.object(builder, "git", side_effect=[b"ENGINE_FILES = " + first, b"ENGINE_FILES = " + second]):
             with self.assertRaisesRegex(ValueError, "declarations disagree"):
                 builder.engine_pin(self.directory, SOURCE["commit"])
+
+    def test_engine_rejects_root_build_tools_before_reading_payload(self):
+        members=tuple(sorted([f"src/a{i:02}.py" for i in range(22)]+['tools/build-catalog.py']))
+        with patch.object(builder, 'git', return_value=('ENGINE_FILES = '+repr(members)).encode()) as git_read:
+            with self.assertRaisesRegex(ValueError, 'product-only'):
+                builder.engine_pin(self.directory,SOURCE['commit'])
+            self.assertEqual(git_read.call_count,1)
+
+    def test_current_engine_has_relocated_consumer_entries_and_no_build_cli(self):
+        import ast
+        root=SCRIPTS.parents[1]
+        declarations=[]
+        for name in ('src/tools/maintain_framework.py','src/distribution/installation_state.py'):
+            tree=ast.parse((root/name).read_text(encoding='utf-8'))
+            node=next(n for n in tree.body if isinstance(n,ast.Assign)
+                      and any(isinstance(t,ast.Name) and t.id=='ENGINE_FILES' for t in n.targets))
+            declarations.append(ast.literal_eval(node.value))
+        self.assertEqual(declarations[0],declarations[1])
+        self.assertTrue(all(n.startswith('src/') and not Path(n).name.startswith('build-') for n in declarations[0]))
+        self.assertTrue({'src/tools/derive-subset.py','src/tools/reinstall-framework.py',
+                         'src/tools/maintain_framework.py'}<=set(declarations[0]))
 
     def test_published_release_refused_without_writes(self):
         api = self.api()

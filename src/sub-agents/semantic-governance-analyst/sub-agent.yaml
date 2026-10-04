@@ -54,11 +54,9 @@ handoff_rules:
   is requested.
 status: active
 model_policy:
-  policy_version: 1
+  policy_version: 2
   codex:
-    candidates:
-    - gpt-6-astra
-    reasoning_effort: xhigh
+    selection: inherit
   claude:
-    candidates:
-    - claude-fable-5-1
+    selection: inherit
+  escalation: explicit-user-authorized-visible-task

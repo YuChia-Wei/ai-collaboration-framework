@@ -43,6 +43,7 @@ Merge 或日期都不能證明 CI 成功。
 - Inventory、paths、hashes、schemas、Git identity、build、test 與 receipts 優先使用 deterministic tools。
 - `failed`、`blocked-by-environment`、`not-applicable` 與 `deferred-with-owner` 都不是 `passed`。
 - 適用且已允許時，優先使用 IDE MCP refactoring operation。
+- Sub-agents 沿用使用者在 runtime 選定的模型與推理深度。不得因角色名稱自動提高模型、推理深度、provider 或成本。需要升級時，先說明理由，取得使用者對可見獨立任務的明確授權；runtime 可用性不等於成本授權。
 
 ## 漸進式 Context 載入
 
@@ -98,7 +99,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 各項均符合規定的比對一致性條件（matching）時才可 reuse。
 - 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後若 tracked content 或 governing authority drift，subject 即失效；只有 history-only identity drift 時則執行 rebind。Terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
 - Unknown dependency 或 authority state 必須 fail closed。Current-head review-subject binding、required hosted contexts 與 live admission gates 一律 fresh；content digest 相等時可 reuse independent review，無須重做。
-- 每個 admitted head 都必須保留 required hosted contexts。內部可以 execution 或 proven reuse，但 path filtering 不得讓 required context 消失。
+- Hosted source CI 僅適用於來源政策以 GitHub 原生 `src/**` 與 `tools/**` 路徑篩選選中的 PR。其他 PR 不需要 source CI context；未執行不等於通過。另行選定的 release checks 保留各自的適用條件。
 - Content-addressed independent audit 對每個 gate 回報 `re-executed`、`reused-with-proof`、`blocked`、`deferred` 或 `not-applicable`；commit SHA 只保留為 provenance，不作為 validity key。
 
 ### Agent Execution Guardrails

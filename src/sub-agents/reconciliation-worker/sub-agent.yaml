@@ -52,12 +52,9 @@ handoff_rules:
   parent.
 status: active
 model_policy:
-  policy_version: 1
+  policy_version: 2
   codex:
-    candidates:
-    - gpt-6.1-sol
-    - gpt-6-sol
-    reasoning_effort: high
+    selection: inherit
   claude:
-    candidates:
-    - claude-opus-5-5
+    selection: inherit
+  escalation: explicit-user-authorized-visible-task

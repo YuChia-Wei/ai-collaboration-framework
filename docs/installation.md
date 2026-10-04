@@ -5,7 +5,14 @@
 
 本文件描述已發布的 `v0.19.0-rc.4` 封存檔，不以開發分支或目前 `main` 的檔案代替已發布內容。RC4 的來源提交為 `158b8438f61a60eb621e3a5b43ed1a0479634f6f`，catalog identity 為 `catalog:1:0.19.0-rc.4:158b8438f61a60eb621e3a5b43ed1a0479634f6f:48e492e5d98fb35b7ec7189a3d6124ed90e0817afa1dab1d59b1750b56ee41fc`，內建 engine 是 `framework-managed-installation 2.0.0`。RC4 是 prerelease；封存、子集組裝或安裝都不代表 runtime、agent 行為或下游專案驗收已完成。
 
-目前主線 `dd1453e8cf23bf62a5b28c70ed08f475856dda41` 位於 RC4 之後，並含 19 個 skill 說明檔的後續修訂。因此，本節每一個 RC4 安裝命令都從已發布 archive 的 `engine/` 與 `catalog/` 執行，不能混用工作樹中的工具或內容。
+本手冊原始基線 `dd1453e8cf23bf62a5b28c70ed08f475856dda41` 位於 RC4 之後，並含 19 個 skill 說明檔的後續修訂。因此，本節每一個 RC4 安裝命令都從已發布 archive 的 `engine/` 與 `catalog/` 執行，不能混用工作樹中的工具或內容。
+
+目前開發版的 subset 與 breaking reinstall 入口已移到
+`engine/src/tools/derive-subset.py`、`engine/src/tools/reinstall-framework.py`；
+`engine/src/tools/maintain_framework.py` 不變。新 engine 的 23 個成員全部來自
+`src/`，不含 build CLI。下文 RC4 範例仍保留該已發布 archive 的舊路徑。
+使用新 catalog（例如 [sub-agents](sub-agents.md)）時必須搭配其新 engine、pin
+及新入口，不能把兩個版本的指令或檔案混用。
 
 本手冊是來源庫 `docs/` 的使用文件，不屬於下游發佈資源；閱讀手冊與下載
 安裝 archive 是兩個步驟。以下命令不依賴來源庫 checkout。本文的安裝

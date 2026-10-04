@@ -54,6 +54,5 @@ subject; their presence does not require an extra artifact, skill or technology.
 ## Context methods
 
 - [Context Resource Ownership](references/CONTEXT-RESOURCE-OWNERSHIP.md)
-- [External Ai Discussion](references/EXTERNAL-AI-DISCUSSION.md)
 - [Skill And Sub Agent Taxonomy](references/SKILL-AND-SUB-AGENT-TAXONOMY.md)
 - [Technology Selection Policy](references/TECHNOLOGY-SELECTION-POLICY.md)

@@ -171,7 +171,7 @@ def main():
     parser.add_argument('--engine-pin',type=Path,required=True,help='Explicit independently selected Engine pin JSON; not an artifact self-description')
     parser.add_argument('--output-root',type=Path,required=True)
     parser.add_argument('--scratch-root',type=Path,required=True)
-    parser.add_argument('--model-availability',type=Path,help='Explicit normalized model/list observations; resolve selected role models')
+    parser.add_argument('--model-availability',type=Path,help='Explicit model/list observations; inherited roles keep runtime-owned model selection')
     parser.add_argument('--discover-codex-models',action='store_true',help='Read current Codex CLI model/list; no inference')
     parser.add_argument('--discover-claude-api-models',action='store_true',help='Read direct Anthropic API models with existing ANTHROPIC_API_KEY; not Claude subscription discovery')
     args=parser.parse_args()
@@ -180,7 +180,7 @@ def main():
     if args.selection and args.skill_naming is not None: parser.error('--skill-naming requires --preset; saved selections retain their naming mode.')
     if args.model_availability and (args.discover_codex_models or args.discover_claude_api_models): parser.error('Choose saved observations or live discovery.')
     try:
-        with verified_host(Path(__file__).absolute().parents[1],args.engine_pin):
+        with verified_host(Path(__file__).absolute().parents[2],args.engine_pin):
             from distribution import installation_state as state
             from distribution.catalog import read_catalog,derive_subset,expand_preset,resolve_sub_agent_model_selection
             catalog=read_catalog(args.catalog_root,args.catalog_identity)
@@ -190,6 +190,7 @@ def main():
                 state._check(target is not None,'selection-unavailable','Explicit selection file is missing.',name)
                 desired=state._document(reader.read(target,name,state.LIMITS['document_bytes']),name,canonical=False)
             else: desired=expand_preset(catalog,args.preset,args.preset_version,skill_naming=args.skill_naming or 'original')
+            observations=None
             if args.model_availability or args.discover_codex_models or args.discover_claude_api_models:
                 requested=sorted((['codex'] if args.discover_codex_models else [])+(['claude'] if args.discover_claude_api_models else []))
                 if not args.model_availability and requested!=desired['adapters']: raise ValueError('Discovery adapter scope mismatch')
@@ -207,6 +208,8 @@ def main():
                 desired=resolve_sub_agent_model_selection(catalog,desired,observations)
             result=derive_subset(catalog,desired,args.output_root,args.scratch_root)
             result['desired']=desired
+            if observations is not None:
+                result['model_observations']=observations
     except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
         reason=str(exc) if getattr(exc,'code',None)=='model-unavailable' else 'Pinned catalog, explicit selection, model observation or bounded output was rejected; preserve any partial output.'
         print(json.dumps({'outcome':getattr(exc,'outcome','blocked'),'code':getattr(exc,'code',getattr(exc,'diagnostic',{}).get('code','subset-input')),'reason':reason}))

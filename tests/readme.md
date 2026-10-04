@@ -24,7 +24,7 @@ outcome, test/failure/error/skip counts and elapsed seconds.
 | `tools` | `tools/` | Actual renderers, config/record validation, small real local record lifecycles, bounded CLI requests and offline provider transports |
 | `distribution` | `framework_next/` selected modules | Source declarations read in place; metadata, selection, adapters, versions and small maintenance records |
 | `release` | `release/` | Release-helper behavior using synthetic offline transports; production helpers stay under `.github/scripts/` |
-| `source` | `source/`, `test_runner.py` | Source selector safety, current ownership, runner selection and rejection of false success |
+| `source` | `source/`, `test_runner.py` | Workflow trigger/permission boundaries, source policy, runner selection and rejection of false success |
 
 Tool lifecycle cases exercise native local storage on the current supported host;
 they are distinct from framework installation. PR render/config cases use supplied
@@ -46,9 +46,11 @@ from native installation/apply/locking/interruption/recovery trials, which were
 removed by owner decision. These tests also do not assess skill instruction
 quality, agent outputs, downstream adoption, hosted CI or release publication.
 
-The adopted Source change gate uses Windows/Python 3.13 and affected suites.
-Platform/loader are selected only when their owned paths or shared runtime change.
-CI activation and each actual hosted result remain separate provider facts. `.github/` contains workflow callers and production release/gate helpers;
-test implementation belongs here. A green source check does not complete the
-independent review or native/release requirements listed by the selector.
+The Source change gate uses Windows/Python 3.13 and the fixed default suites.
+GitHub's native PR path filter selects only `src/**` and `tools/**`; no diff
+classifier or changed-file count is used. Platform/loader remain optional local
+checks. CI activation and each actual hosted result are separate provider facts.
+`.github/` contains workflow callers and production release helpers; test
+implementation belongs here. A green check does not complete independent review
+or separately selected native/release acceptance.
 Historical design, workflow and release reports retain their original evidence.

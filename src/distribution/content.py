@@ -116,8 +116,12 @@ def check_sub_agent(package, blobs):
         raw=blobs[member].data.decode('utf-8')
         if aid=='codex':
             profile=tomllib.loads(raw)
-            require(profile.get('model')==policy[aid]['candidates'][0]
-                    and profile.get('model_reasoning_effort')==policy[aid]['reasoning_effort'], 'sub-agent Codex model')
+            if policy['policy_version']==2:
+                require(not {'model','model_reasoning_effort','model_provider'} & profile.keys(),
+                        'sub-agent inherited Codex model/effort')
+            else:
+                require(profile.get('model')==policy[aid]['candidates'][0]
+                        and profile.get('model_reasoning_effort')==policy[aid]['reasoning_effort'], 'sub-agent Codex model')
             require(profile.get('name')==package.id and canonical in profile.get('developer_instructions',''), 'sub-agent Codex binding')
             require(type(profile.get('description')) is str and bool(profile['description'].strip()), 'sub-agent Codex description')
             require(package.id=='context-translator' or profile.get('sandbox_mode')=='read-only', 'sub-agent read-only profile')
@@ -126,7 +130,11 @@ def check_sub_agent(package, blobs):
             require(match is not None, 'sub-agent Claude frontmatter')
             profile=yaml_object(match[1].encode(),'Claude frontmatter')
             require(profile.get('name')==package.id and canonical in match[2], 'sub-agent Claude binding')
-            require(profile.get('model')==policy[aid]['candidates'][0], 'sub-agent Claude model')
+            if policy['policy_version']==2:
+                require(profile.get('model')=='inherit' and 'effort' not in profile,
+                        'sub-agent inherited Claude model/effort')
+            else:
+                require(profile.get('model')==policy[aid]['candidates'][0], 'sub-agent Claude model')
             require(type(profile.get('description')) is str and bool(profile['description'].strip()), 'sub-agent Claude description')
             tools=profile.get('tools')
             if type(tools) is str: tools=[tool.strip() for tool in tools.split(',')]
@@ -139,6 +147,7 @@ def check_sub_agent(package, blobs):
 
 def sub_agent_model_policy(role):
     policy=validate('SubAgentModelPolicy',role.get('model_policy'))
+    if policy['policy_version']==2: return policy
     for aid in ('codex','claude'):
         candidates=policy[aid]['candidates']
         require(len(candidates)==len(set(candidates)), 'duplicate model candidate')
@@ -146,8 +155,8 @@ def sub_agent_model_policy(role):
     return policy
 
 
-def resolved_sub_agent_models(packages, desired, observations):
-    """Select only role-approved candidates; catalog presence is not access proof."""
+def model_availability(desired, observations):
+    """Validate observations without inferring user spending permission."""
     validate('ModelAvailability', observations)
     ordered(observations,lambda r:r['adapter'])
     require([r['adapter'] for r in observations]==desired['adapters'], 'model observation adapter closure')
@@ -155,12 +164,24 @@ def resolved_sub_agent_models(packages, desired, observations):
     for row in observations:
         require(row['source'] in ({'codex-app-server'} if row['adapter']=='codex' else {'anthropic-api','caller-claude-code'}), 'model observation provider boundary')
         ordered(row['models'],lambda r:r['id'])
-        for model in row['models']: ordered(model['reasoning_efforts'])
+        for model in row['models']:
+            require(model['id'].startswith('gpt-' if row['adapter']=='codex' else 'claude-'),
+                    'model observation provider identifier')
+            ordered(model['reasoning_efforts'])
         available[row['adapter']]={m['id']:m for m in row['models']}
+    return available
+
+
+def resolved_sub_agent_models(packages, desired, observations):
+    """Read legacy policy-1 bindings; inherited roles cannot become fixed models."""
+    available=model_availability(desired,observations)
     bindings=[]
     for aid in desired['adapters']:
         for pid in desired.get('sub_agents',[]):
-            policy=sub_agent_model_policy(packages[pid])[aid]
+            role_policy=sub_agent_model_policy(packages[pid])
+            require(role_policy['policy_version']==1,
+                    'inherited model policy refuses fixed installation bindings')
+            policy=role_policy[aid]
             effort=policy.get('reasoning_effort')
             model=next((m for m in policy['candidates'] if m in available[aid]
                         and (effort is None or effort in available[aid][m]['reasoning_efforts'])),None)

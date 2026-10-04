@@ -2,7 +2,7 @@
 
 ## Required Handoff
 
-The delegating agent supplies exactly one finalized source path, one output path, and the selected low-cost runtime/model. If any value is missing, or if the output path is the English source, stop without writing.
+The delegating agent supplies exactly one finalized source path, one output path, and the inherited or explicitly user-selected runtime/model boundary. A lower-cost model is optional; do not silently change model or effort. If the source/output or the permitted runtime boundary is missing, or if the output path is the English source, stop without writing.
 
 For root collaboration context, translate `AGENTS.md` only after the owning agent has finalized its evidence-backed English source. The derived output is `AGENTS.zh-TW.md`.
 

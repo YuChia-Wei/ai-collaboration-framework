@@ -12,7 +12,8 @@ from .data import json_bytes, require, runtime_skill_name, yaml_object
 from .contracts import validate
 from .content import (load_content_package, component_shape, descriptor, closure, desired_shape,
                       dependency_key, ordered, portable, resource_bindings, selected_references, selection_skill_naming, component_root, selected_keys, load_sub_agent_package, check_sub_agent, sub_agent_entries,
-                      resolved_sub_agent_models, sub_agent_model_binding, render_sub_agent_model)
+                      resolved_sub_agent_models, sub_agent_model_binding, render_sub_agent_model,
+                      sub_agent_model_policy, model_availability)
 from .git_source import Blob, GitSource
 from .package import load_package, check_references
 from .codex import project_entry_v2 as codex_entry
@@ -226,6 +227,15 @@ def resolve_sub_agent_model_selection(catalog, desired, observations):
     result.pop('model_resolution',None)
     resolve_selection(catalog,result)
     roles={pid:yaml_object(catalog.contents[f'packages/sub-agent/{pid}/sub-agent.yaml'],'sub-agent.yaml') for pid in result['sub_agents']}
+    inherited=[sub_agent_model_policy(role)['policy_version']==2 for role in roles.values()]
+    if any(inherited):
+        require(all(inherited), 'mixed legacy fixed and inherited model policies need separate selections')
+        require('model_resolution' not in desired,
+                'inherited policy requires explicit removal of obsolete fixed model bindings')
+        model_availability(result,observations)
+        # Discovery is informative. Do not freeze the parent model, select a
+        # more expensive candidate or require runtime access during installation.
+        return result
     result['model_resolution']={'policy_version':1,'observations':observations,
                                 'bindings':resolved_sub_agent_models(roles,result,observations)}
     resolve_selection(catalog,result)

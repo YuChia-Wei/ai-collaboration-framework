@@ -26,8 +26,8 @@ def engine_pin(repository, source):
                   and any(isinstance(t, ast.Name) and t.id == "ENGINE_FILES" for t in node.targets)]
         require(len(values) == 1 and isinstance(values[0], ast.Tuple), "literal ENGINE_FILES tuple required")
         value = ast.literal_eval(values[0])
-        require(len(value) == 24 and all(type(n) is str for n in value) and tuple(sorted(set(value))) == value,
-                "expected sorted 24-file Engine 2 closure")
+        require(len(value) == 23 and all(type(n) is str and n.startswith("src/") for n in value) and tuple(sorted(set(value))) == value,
+                "expected sorted 23-file product-only Engine 2 closure")
         lists.append(value)
     require(lists[0] == lists[1], "ENGINE_FILES declarations disagree")
     rows = []
@@ -109,13 +109,13 @@ def build(args):
 Source commit: {source['commit']}
 Catalog identity: {receipt['identity']}
 Distribution label: {release_version}
-Engine: framework-managed-installation 2.0.0 (24 pinned files).
+Engine: framework-managed-installation 2.0.0 (23 pinned product-source files).
 
 This generic package includes the full catalog, standalone engine, independently
 selected engine pin and raw content hashes. Catalog metadata includes the actual
 build receipt. It contains no project-bound selection or installed target state.
 
-Use engine/tools/derive-subset.py with an explicitly selected preset/selection,
+Use engine/src/tools/derive-subset.py with an explicitly selected preset/selection,
 the included catalog and its identity, and engine-pin.json. Run Python with -I -B;
 provide PyYAML 6.x and explicit disjoint output/scratch roots.
 Distribution and engine identity must be reviewed before target installation.
