@@ -23,8 +23,45 @@ Legacy policy 1 remains readable; it is not the policy of these six roles.
 Current declarations contain 26 components and 409 members (18 skills, two
 knowledge packages, six roles). All 23 standalone engine members are under
 `src/`; the three consumer CLIs are under `src/tools`. Root build tools are not
-members. Actual immutable catalog/archive and CLI execution remain the next
-check; declaration/unit results are not claimed as that execution.
+members.
+
+## Immutable archive and consumer CLI execution
+
+Implementation and tooling subject:
+`02dde10854c2a2c3f626a41c1c974a4937b2b288`. The checkout was clean before and
+after execution. The final local closeout changes only workflow records and the
+workflow index, with no product, tool, test or runtime-profile byte changes.
+
+The actual local command was:
+
+```powershell
+python -I -B .github/scripts/build-release.py --repository C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend --source-commit 02dde10854c2a2c3f626a41c1c974a4937b2b288 --tooling-commit 02dde10854c2a2c3f626a41c1c974a4937b2b288 --workflow-commit 02dde10854c2a2c3f626a41c1c974a4937b2b288 --workflow .github/workflows/package-candidate.yml --repository-name YuChia-Wei/ai-collaboration-framework --run-id local-validation --run-attempt 1 --work-root C:/aicf-b-02dde/w --output C:/aicf-b-02dde/o
+```
+
+Result: `built`; builder interval 2026-10-04T04:58:49.978647Z through
+05:00:29.450503Z (99.471856 seconds). `local-validation` explicitly labels
+local provenance; it is not a GitHub run. The snapshot's numeric RC-shaped
+catalog label is an existing builder requirement, not a new release candidate.
+
+- Archive: `ai-collaboration-framework-snapshot-02dde10854c2a2c3f626a41c1c974a4937b2b288.zip`,
+  909116 bytes; SHA-256
+  `2b449e159e60f2a441594eaa342b20c482a761c43e56acddb1ff72a766d60c1b`.
+- Builder verified raw archive hashes and extracted bytes. Additional archive
+  inspection confirmed all 23 pinned members under `engine/src/`, no
+  `engine/tools/`, no source-owned `docs/` or `.dev/` payload, and no removed
+  `EXTERNAL-AI-DISCUSSION` resource.
+- Retained evidence: `C:/aicf-b-02dde/o/release-manifest.json`,
+  `w/builder.stdout`, `w/builder.stderr`, and `cli-validation.json` under the
+  same task-owned root. Prior attempts and these scratch artifacts remain.
+
+The extracted `w/x/engine/src/tools/derive-subset.py` then ran with `-I -B`,
+the extracted catalog and independently selected pin, and each exact preset
+`sub-agents@0.1.0` / `sub-agents-claude@0.1.0`. Explicit disjoint output/scratch
+roots were `dc`/`tc` and `da`/`ta` under that root. Both returned `assembled`:
+six roles each, 4.997 and 5.291 seconds respectively. Neither desired selection
+contains `model_resolution`. Their full stdout/stderr remain in the task root.
+These are real physical subset builds; no target installation, breaking
+reinstall, runtime discovery or agent/model inference occurred in this check.
 
 ## Retained boundaries
 
@@ -35,6 +72,12 @@ No Actions, branch protection, credential, provider or publication settings
 were changed. Actual current-head hosted success and scoped independent review
 remain pending before separately authorized integration. Historical #435
 dispositions and the five protected history roots are preserved.
+
+Read-only GitHub checks on 2026-10-04 found `branches/main/protection` returning
+404 `Branch not protected`, and `rules/branches/main` returning `[]`. At that
+observation there was no active provider required-check rule conflicting with
+the selected path filters. This is not a future-state guarantee or a provider
+mutation.
 
 See [capability assessment](capability-assessment.md) for current initialization
 and model-maintenance coverage. The fuller first-team starter kit is a concrete

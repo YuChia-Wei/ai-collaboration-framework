@@ -36,8 +36,14 @@ No model inference, external write or new task is part of this continuation.
 
 ## Progress
 
-Implementation and local focused/default checks are recorded in
-[validation](validation.md); immutable package execution is next. The
+Authorized local work is complete. Implementation, local focused/default checks,
+the immutable archive build and both physical role subsets are recorded in
+[validation](validation.md). The
 [capability assessment](capability-assessment.md) identifies existing init and
-project-config ownership and the starter-kit gap. No independent review,
-hosted, publication or target-adoption pass is claimed.
+project-config ownership and the starter-kit gap. Product changes are committed
+at `02dde10854c2a2c3f626a41c1c974a4937b2b288`; local closeout changes only these
+workflow records and the workflow index. No independent review, hosted,
+publication or target-adoption pass is claimed. Before integration, the next
+authorized owner must arrange the required scoped independent review and actual
+hosted checks. Any starter-kit implementation needs its selected product scope;
+the assessment does not silently add it to this completed local task.
