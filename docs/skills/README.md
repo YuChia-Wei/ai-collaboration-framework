@@ -3,7 +3,8 @@
 [回手冊首頁](../README.md) · [安裝說明](../installation.md) ·
 [知識選配](../knowledge-packages.md) · [工具型 skills 設定](../tool-skills.md)
 
-目前發行 catalog 有 18 個 skills。先依要交付的成果選擇；不必為了使用其中
+本來源 catalog 有 18 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
+先依要交付的成果選擇；不必為了使用其中
 一個就跑完整開發流程。明確指定的 skill 若在其契約範圍內，應沿用你的選擇。
 
 | Skill | 版本 | 何時使用 | 操作形式 |
@@ -11,7 +12,7 @@
 | [adr-author](adr-author.md) | 0.1.0 | 記錄架構替代方案與 owner 決策 | Python record 工具 |
 | [ai-context-auditor](ai-context-auditor.md) | 0.1.0 | 只讀稽核或比較 AI context | 指令 |
 | [ai-context-governance](ai-context-governance.md) | 0.1.0 | 提案或維護已有的專案 context | 指令 |
-| [ai-context-init](ai-context-init.md) | 0.1.0 | 建立缺少的 context，或更新事實／指令／導覽 | 指令 |
+| [ai-context-init](ai-context-init.md) | 0.2.0 | 建立最小協作起點，或更新事實／指令／導覽 | 指令 |
 | [bdd-gwt-test-designer](bdd-gwt-test-designer.md) | 0.2.0 | 設計或審查 GWT 情境 | 指令；可選知識 |
 | [code-reviewer](code-reviewer.md) | 0.2.0 | 審查程式或實作指引中的缺陷 | 指令；可選知識 |
 | [ddd-ca-hex-architect](ddd-ca-hex-architect.md) | 0.2.0 | 設計或審查領域、架構與依賴邊界 | 指令；可選知識 |

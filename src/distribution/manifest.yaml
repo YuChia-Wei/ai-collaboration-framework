@@ -618,7 +618,7 @@ components:
   version: 0.1.0
 - kind: skill
   id: ai-context-init
-  version: 0.1.0
+  version: 0.2.0
   source: src/skills/ai-context-init
   metadata: skill-package.yaml
   members:
@@ -630,10 +630,16 @@ components:
     destination: .ai/core/skills/ai-context-init/references/project-structure.md
   - source: skill-package.yaml
     destination: .ai/core/skills/ai-context-init/skill-package.yaml
+  - source: templates/ai-collaboration.md
+    destination: .ai/core/skills/ai-context-init/templates/ai-collaboration.md
   - source: templates/architecture.md
     destination: .ai/core/skills/ai-context-init/templates/architecture.md
+  - source: templates/first-task.md
+    destination: .ai/core/skills/ai-context-init/templates/first-task.md
   - source: templates/project-config.template.yaml
     destination: .ai/core/skills/ai-context-init/templates/project-config.template.yaml
+  - source: templates/project-context.md
+    destination: .ai/core/skills/ai-context-init/templates/project-context.md
   - source: templates/public-catalogs/dev/INDEX.md
     destination: .ai/core/skills/ai-context-init/templates/public-catalogs/dev/INDEX.md
   - source: templates/public-catalogs/dev/README.MD

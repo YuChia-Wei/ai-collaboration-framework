@@ -1,12 +1,14 @@
 ---
 name: ai-context-init
-description: Establish missing project collaboration entries and documentation structure, or refresh repository facts, commands and navigation in initialized context. Preserve existing rules and custom content; ongoing rule or responsibility changes belong to context governance. Does not install framework packages.
+description: Establish a usable project collaboration starting point with existing facts, a minimum collaboration baseline, entry references and first-task guidance, or refresh factual context. Preserve project ownership and custom rules. Does not design product strategy, run development tasks or install framework packages.
 ---
 
 # AI context initialization
 
-Use `initialize` to establish missing collaboration entries and project context,
-including in an existing codebase. Use `refresh` for a selected update to repository
+Use `initialize` to establish missing collaboration entries and the minimum
+usable starting point, including in an existing codebase. Reuse equivalent
+product background and team rules; add selected missing authoring resources.
+Use `refresh` for a selected update to repository
 facts, verified commands and navigation in that initialized context. Refresh does
 not redesign existing collaboration rules, document responsibilities or precedence.
 
@@ -23,6 +25,14 @@ document destinations or initializing an empty repository. The
 retain its collaboration intent, resolve navigation from the actual target and
 derive repository facts from evidence. These are authoring resources, not files
 to copy indiscriminately or schema-bound records.
+
+The [product context seed](templates/project-context.md),
+[collaboration baseline](templates/ai-collaboration.md) and
+[first-task guide](templates/first-task.md) support this starting point without
+another skill or knowledge package. Supplying these resources does not make init
+the owner of product direction, full policy design or the first development task.
+End when entry points, relevant facts/references, working boundaries and the next
+bounded task are understandable, with unknowns and unverified commands explicit.
 
 The caller supplies the target, intended operation and authorized write scope.
 Infer established layout and facts from permitted sources; ask only for material

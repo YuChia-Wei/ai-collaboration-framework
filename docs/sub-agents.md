@@ -38,14 +38,15 @@ skills、knowledge 與 adapters 選取保持原樣。角色也可與 skills 一�
 角色或未知 adapter 自動替代。Version 1、2 的既有 selection 仍可使用，
 不會隱含安裝 sub-agents。
 
-使用與該 catalog 配對、已驗證的 engine 和 pin：
+使用與該 catalog 配對、已驗證的 engine 和 pin。下列變數沿用
+[安裝說明](installation.md) 第 3、5 節的實際絕對路徑、identity 與空輸出根：
 
 ```powershell
-python -I -B <engine-root>/src/tools/derive-subset.py `
-  --catalog-root <catalog-root> --catalog-identity <catalog-identity> `
+python -I -B "$EngineRoot/src/tools/derive-subset.py" `
+  --catalog-root $CatalogRoot --catalog-identity $CatalogIdentity `
   --preset sub-agents --preset-version 0.1.0 `
-  --engine-pin <engine-pin.json> `
-  --output-root <new-subset-root> --scratch-root <scratch-root>
+  --engine-pin "$PackageRoot/engine-pin.json" `
+  --output-root $OutputRoot --scratch-root $ScratchRoot
 ```
 
 逐項選取時以 `--selection <selection.json>` 取代 preset 參數。後續沿用

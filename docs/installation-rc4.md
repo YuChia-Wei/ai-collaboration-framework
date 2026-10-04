@@ -1,28 +1,36 @@
-# 安裝與選配說明
+# RC4 安裝與選配說明
+
+此頁保留已發布 RC4 的指令與實測邊界。新版目錄請見[目前安裝說明](installation.md)。
 
 [回手冊首頁](README.md) · [Skill 目錄](skills/README.md) ·
-[知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) · [RC4 舊版指令](installation-rc4.md)
+[知識效果](knowledge-packages.md) · [工具型 skills 設定](tool-skills.md)
 
-本頁適用於 0.19.0 的 Catalog 1／Engine 2 新目錄：engine 的 23 個成員全部
-來自 `src/`，三個消費端入口位於 `engine/src/tools/`；不含來源庫 build 工具。
-請使用同一封存檔的 catalog、engine 與獨立選定的 pin。RC4 使用舊目錄，
-不能混用本頁指令；其已發布位元組與[舊版說明](installation-rc4.md)維持原樣。
+本文件描述已發布的 `v0.19.0-rc.4` 封存檔，不以開發分支或目前 `main` 的檔案代替已發布內容。RC4 的來源提交為 `158b8438f61a60eb621e3a5b43ed1a0479634f6f`，catalog identity 為 `catalog:1:0.19.0-rc.4:158b8438f61a60eb621e3a5b43ed1a0479634f6f:48e492e5d98fb35b7ec7189a3d6124ed90e0817afa1dab1d59b1750b56ee41fc`，內建 engine 是 `framework-managed-installation 2.0.0`。RC4 是 prerelease；封存、子集組裝或安裝都不代表 runtime、agent 行為或下游專案驗收已完成。
 
-本手冊位於來源庫 `docs/`，不屬於安裝 payload。下載 archive 不需要 clone
-來源庫；是否已有某個正式版本，請以實際公開 Release 為準。文件出現版本
-範例不代表該 Release 已發布。以下下載範例只在所選公開 Release 存在時繼續。
+本手冊原始基線 `dd1453e8cf23bf62a5b28c70ed08f475856dda41` 位於 RC4 之後，並含 19 個 skill 說明檔的後續修訂。因此，本節每一個 RC4 安裝命令都從已發布 archive 的 `engine/` 與 `catalog/` 執行，不能混用工作樹中的工具或內容。
 
-流程是 **下載與校驗 → 選能力／知識／adapter → 組裝 subset → inspect／plan
-→ apply → inspect → 另行初始化或執行所選 skill**。目前使用明確 JSON 與 CLI，
-沒有互動式勾選安裝器。
+目前開發版的 subset 與 breaking reinstall 入口已移到
+`engine/src/tools/derive-subset.py`、`engine/src/tools/reinstall-framework.py`；
+`engine/src/tools/maintain_framework.py` 不變。新 engine 的 23 個成員全部來自
+`src/`，不含 build CLI。下文 RC4 範例仍保留該已發布 archive 的舊路徑。
+使用新 catalog（例如 [sub-agents](sub-agents.md)）時必須搭配其新 engine、pin
+及新入口，不能把兩個版本的指令或檔案混用。
+
+本手冊是來源庫 `docs/` 的使用文件，不屬於下游發佈資源；閱讀手冊與下載
+安裝 archive 是兩個步驟。以下命令不依賴來源庫 checkout。本文的安裝
+schema／破壞性重裝契約連到 RC4 固定 tag；各 skill 手冊的相對來源連結
+供查閱本手冊基線，不能替代 archive 或實際安裝的指令。
+
+流程是 **下載與校驗 → 選 skill／知識／adapter → 組裝 subset → inspect／plan
+→ apply → inspect**。目前是明確 JSON 選擇與命令列流程，沒有互動式勾選安裝器。
+也可交由 agent 依本手冊執行，但先提供實際目標、選擇與寫入範圍：
 
 ```text
-請依本手冊安裝我指定且已公開的 framework 版本。
+請依 docs/installation.md 安裝已公開的 v0.19.0-rc.4。
 目標專案是 <絕對路徑>；skills 選 <ID 清單>；adapters 選 <codex/claude>；
 knowledge 選 <空清單、engineering-common 或兩包>，名稱用 original。
-先驗證所選版本的實際位元組，產生 plan 並列出增刪與衝突。
-沿用已給的安裝授權；需要尚未決定的清理或規則採用時，提出精確變更。
-安裝完成不代表已授權執行初始化、開發、提交或發布。
+請先驗證 release bytes 並產生具體 plan，列出新增、修改、移除及衝突。
+沿用我已給的安裝授權；需要尚未決定的清理或規則採用時，先提出精確變更。
 ```
 
 ## 1. 先取得並驗證已發布封存檔
@@ -32,7 +40,7 @@ knowledge 選 <空清單、engineering-common 或兩包>，名稱用 original。
 下面完整範例使用 PowerShell 7（Windows）、Python 3.13 與短路徑；不需要 .NET SDK、
 Docker 或本來源庫 checkout。要執行 record 型 skill 工具時，另依其手冊安裝
 `jsonschema` 等 runtime 相依。`gh` 只用來下載公開 asset，也可從
-[公開 Release 頁面](https://github.com/YuChia-Wei/ai-collaboration-framework/releases)
+[RC4 Release 頁面](https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.19.0-rc.4)
 手動下載相同檔案。
 
 可使用現有相容 Python；若另外建立 venv，先選擇尚未存在、可寫的目錄：
@@ -50,91 +58,70 @@ if ($LASTEXITCODE -ne 0) { throw '隔離 Python 無法載入依賴' }
 以下凡是 `python -I -B`，若使用此 venv，請寫成 `& $PythonExe -I -B`。
 不用啟用 venv 或修改 PowerShell execution policy。
 
-以下以 GitHub CLI 下載已選公開版本的 manifest，再下載其精確檔名。使用新的
-短路徑保留這次產物，不覆蓋舊下載。先確認 Release 的來源、tag 與發布者符合
-你的選擇；checksum 比對證明位元組一致，不代表 target 或 agent 驗收。
+以下範例以 GitHub CLI 下載 RC4，並比對同一 release 的 SHA-256 檔。`$PackageRoot` 是解壓縮後目錄；它必須是直接目錄，不能是 symbolic link、junction 或 UNC 路徑。
 
 ```powershell
-$ReleaseTag = 'v0.19.0' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
-$ReleaseRoot = 'C:\aicf\v019'
-$ReleaseText = gh release view $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework --json tagName,isDraft
-if ($LASTEXITCODE -ne 0) { throw '所選公開 Release 尚不可用；停止下載與安裝' }
-$Release = $ReleaseText | ConvertFrom-Json
-if ($Release.isDraft -or $Release.tagName -ne $ReleaseTag) { throw 'Release identity 不符' }
-New-Item -ItemType Directory -Path $ReleaseRoot -ErrorAction Stop | Out-Null
-gh release download $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework --pattern 'release-manifest.json' --dir $ReleaseRoot
-if ($LASTEXITCODE -ne 0) { throw 'Manifest 下載失敗；保留本次目錄' }
-$Manifest = Get-Content -LiteralPath "$ReleaseRoot\release-manifest.json" -Raw | ConvertFrom-Json
-$ArchiveName = [string] $Manifest.archive.name
-$NamePattern = '^ai-collaboration-framework-' + [regex]::Escape($ReleaseTag) + '-[0-9a-f]{40}\.zip$'
-if ($Manifest.source.tag -ne $ReleaseTag -or $ArchiveName -notmatch $NamePattern) { throw 'Manifest identity 不符' }
-gh release download $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework `
-  --pattern $ArchiveName --pattern "$ArchiveName.sha256" --dir $ReleaseRoot
-if ($LASTEXITCODE -ne 0) { throw 'Archive 下載失敗；保留本次目錄' }
-$ArchivePath = Join-Path $ReleaseRoot $ArchiveName
-$ExpectedArchiveHash = ((Get-Content -LiteralPath "$ArchivePath.sha256" -Raw).Trim() -split '\s+')[0]
+$ReleaseRoot = 'C:\aicf\rc4'
+New-Item -ItemType Directory -Path $ReleaseRoot
+gh release download v0.19.0-rc.4 --repo YuChia-Wei/ai-collaboration-framework `
+  --pattern 'ai-collaboration-framework-v0.19.0-rc.4-158b8438f61a60eb621e3a5b43ed1a0479634f6f.zip' `
+  --pattern 'ai-collaboration-framework-v0.19.0-rc.4-158b8438f61a60eb621e3a5b43ed1a0479634f6f.zip.sha256' `
+  --dir $ReleaseRoot
+if ($LASTEXITCODE -ne 0) { throw '下載失敗，請保留輸出並檢查' }
+Get-FileHash -Algorithm SHA256 "$ReleaseRoot\ai-collaboration-framework-v0.19.0-rc.4-158b8438f61a60eb621e3a5b43ed1a0479634f6f.zip"
+Get-Content -Raw "$ReleaseRoot\ai-collaboration-framework-v0.19.0-rc.4-158b8438f61a60eb621e3a5b43ed1a0479634f6f.zip.sha256"
+$ArchivePath = "$ReleaseRoot\ai-collaboration-framework-v0.19.0-rc.4-158b8438f61a60eb621e3a5b43ed1a0479634f6f.zip"
+$ExpectedArchiveHash = ((Get-Content -Raw "$ArchivePath.sha256").Trim() -split '\s+')[0]
 if ($ExpectedArchiveHash -notmatch '^[0-9a-fA-F]{64}$' -or
-    $Manifest.archive.sha256 -ne $ExpectedArchiveHash -or
     (Get-FileHash -Algorithm SHA256 $ArchivePath).Hash -ne $ExpectedArchiveHash) {
   throw 'ZIP checksum 不符；停止解壓縮與執行'
 }
-$PackageRoot = Join-Path $ReleaseRoot 'package'
-Expand-Archive -LiteralPath $ArchivePath -DestinationPath $PackageRoot
-if ((Get-FileHash -Algorithm SHA256 "$PackageRoot\engine-pin.json").Hash -ne $Manifest.engine_pin_sha256) {
-  throw '獨立 manifest 與 engine pin 不符'
-}
+Expand-Archive "$ReleaseRoot\ai-collaboration-framework-v0.19.0-rc.4-158b8438f61a60eb621e3a5b43ed1a0479634f6f.zip" -DestinationPath "$ReleaseRoot\package"
+$PackageRoot = "$ReleaseRoot\package"
 ```
 
-解壓後應有 `catalog/`、`engine/`、`engine-pin.json`、`content-hashes.json` 與
-`README.md`。外部 manifest 保留 source/tag、archive hash 與 build provenance。
-Local snapshot 的來源 SHA、版本標籤與證據另行核對，不會因本頁範例而成為
-正式 Release；已驗證的本機候選可從其實際 `$PackageRoot` 接續第 2 節。
+RC4 實際 archive SHA-256 是 `db505854a2f355632e71a356ae8c4b85778880be4caee409e6557eca07ed5c4c`。解壓縮後應有 `catalog/`、`engine/`、`engine-pin.json`、`content-hashes.json` 與 `README.md`。archive 不含特定專案的 selection、已安裝狀態或 activation 結果。
 
 ## 2. 目錄與工作目錄規則
 
 所有 CLI 路徑都必須使用既有的絕對直接目錄，且 `project`、`engine`、`candidate`、`scratch`、`staging`、`recovery` 彼此不能重疊或互為父子。`scratch` 與 `staging` 唯一可共用同一個目錄。不可將 output/scratch 放回來源工作樹或 catalog 下。
 
-Windows 會以保守的 240 UTF-16 字元完整路徑限制拒絕操作。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v019`，而不是使用很深的使用者暫存資料夾。這是輸入路徑預檢，不是內容相依性錯誤。
+Windows 會以保守的 240 UTF-16 字元完整路徑限制拒絕操作。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\rc4`，而不是使用很深的使用者暫存資料夾。這是輸入路徑預檢，不是內容相依性錯誤。
 
 所有可攜 CLI 都從其檔案位置解析引擎或 bootstrap；以絕對 script 路徑呼叫時，呼叫端的目前工作目錄不影響封存內容選取。`maintain_framework.py` 的 `engine_root` 必須剛好等於該 script 所在封存的 `engine` 根目錄。
 
 ## 3. 檢視 catalog 與選擇規格
 
-目前沒有一個「列出 catalog」的互動式 CLI。請讀取 `catalog/metadata/catalog.json` 檢視 components 與 presets，並讀取 `catalog/metadata/build.json` 取得 catalog identity 與兩個 digest。此版 catalog 有 18 個 skill、兩個知識包、六個 sub-agent 角色及 Codex/Claude adapters。知識與角色都是明確選配，不能由 preset 名稱推定。
+RC4 沒有一個「列出 catalog」的互動式 CLI。請讀取 `catalog/metadata/catalog.json` 檢視 components 與 presets，並讀取 `catalog/metadata/build.json` 取得 catalog identity 與兩個 digest。catalog 有 18 個 skill、兩個知識包及 Codex/Claude adapters。所有公開 presets 在 RC4 都只選 skill 與 adapter，沒有自動帶入知識包。
 
 ```powershell
 $Catalog = Get-Content -Raw "$PackageRoot\catalog\metadata\catalog.json" | ConvertFrom-Json
 $Catalog.components | Select-Object kind,id,version
-$Catalog.presets | Select-Object id,version,skills,knowledge,sub_agents,adapters
+$Catalog.presets | Select-Object id,version,skills,knowledge,adapters
 Get-Content -Raw "$PackageRoot\catalog\metadata\build.json"
 ```
 
 手動選擇檔的副檔名可以自行命名，但內容必須是 JSON；YAML 會被 `derive-subset.py` 以 `invalid-json` 拒絕。selection 必須含下列封閉欄位，陣列須依字典序排列：
 
-從該 archive 的實際 raw bytes 建立 pin，不沿用舊版 hash 或只替換版本字串。
-以下產生一份只選 init、不選知識的有效 JSON；請按需求修改已排序的 ID 清單。
+下列 identity／hash 只屬於 RC4；換版本時應從新 archive 的 `build.json`
+讀取，不能只改版本字串。完整結構可核對
+[RC4 selection schema](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/v0.19.0-rc.4/src/distribution/schemas/selection.schema.json)。
 
-```powershell
-$CatalogBuild = Get-Content -LiteralPath "$PackageRoot\catalog\metadata\build.json" -Raw | ConvertFrom-Json
-$CatalogIdentity = [string] $CatalogBuild.identity
-$Desired = [ordered]@{
-  selection_version = 2
-  catalog = [ordered]@{
-    identity = $CatalogIdentity
-    catalog_sha256 = (Get-FileHash -Algorithm SHA256 "$PackageRoot\catalog\metadata\catalog.json").Hash.ToLowerInvariant()
-    files_sha256 = (Get-FileHash -Algorithm SHA256 "$PackageRoot\catalog\metadata\catalog-files.json").Hash.ToLowerInvariant()
-  }
-  skills = @('ai-context-init'); knowledge = @(); adapters = @('claude','codex')
-  bindings = @(); skill_naming = 'original'
+```json
+{
+  "selection_version": 2,
+  "catalog": {
+    "catalog_sha256": "37d14bd869260b3a089bb4e75cefd451f74912e3b23ad0bf966684e0882423a2",
+    "files_sha256": "2263735f0aafaa844c075e09f58e153d77d48f10cf76fd3190b900c905b58cda",
+    "identity": "catalog:1:0.19.0-rc.4:158b8438f61a60eb621e3a5b43ed1a0479634f6f:48e492e5d98fb35b7ec7189a3d6124ed90e0817afa1dab1d59b1750b56ee41fc"
+  },
+  "skills": ["code-reviewer"],
+  "knowledge": ["dotnet-backend", "engineering-common"],
+  "adapters": ["codex"],
+  "bindings": [],
+  "skill_naming": "original"
 }
-$Selection = 'C:\aicf\v019\selection.json'
-[IO.File]::WriteAllText($Selection, ($Desired | ConvertTo-Json -Depth 100), [Text.UTF8Encoding]::new($false))
 ```
-
-選 sub-agents 時改用 selection version 3 並明列已排序的 `sub_agents`，見
-[角色安裝說明](sub-agents.md)。Version 2 不會隱含安裝角色。來源中的
-[selection schema](../src/distribution/schemas/selection.schema.json)供核對；實際
-catalog 與配對 engine 的閉包才是這次操作的依據。
 
 `skill_naming` 是 `original` 或 `prefixed`。`original` 讓 runtime entry 使用原始 skill ID；`prefixed` 會使用 `aicf-` 前綴。使用 `--preset` 時預設 `original`，可用 `--skill-naming` 覆寫；使用已儲存的 `--selection` 時，名稱模式只能由 selection 本身決定。
 
@@ -143,9 +130,9 @@ catalog 與配對 engine 的閉包才是這次操作的依據。
 `["claude", "codex"]`；這裡是 JSON 欄位內容，不是 YAML selection 範例。
 只裝一個 skill 並不需要先裝 orchestrator 或其他 skills。
 
-十一個 preset 的目前內容如下；preset 版本皆 `0.1.0`，knowledge 皆為空：
+九個 preset 的目前內容如下；版本皆 `0.1.0`，knowledge 皆為空：
 
-| Preset | 能力範圍 | Adapter |
+| Preset | Skill 範圍 | Adapter |
 | --- | --- | --- |
 | `lesson-minimal` | 只有 lesson-author（1） | Codex |
 | `knowledge` | adr-author、lesson-author（2）；名稱不代表知識套件 | Codex |
@@ -156,8 +143,6 @@ catalog 與配對 engine 的閉包才是這次操作的依據。
 | `source-repository` | collaboration 除 local-backlog（14） | Codex |
 | `collaboration` | 工程與記錄／編排 skills，無 context 三項（15） | Codex |
 | `complete` | collaboration 加 auditor、governance；不含 init（17） | Codex |
-| `sub-agents` | 六個角色，不含 skills | Codex |
-| `sub-agents-claude` | 六個角色，不含 skills | Claude |
 
 Preset 的精確 ID 陣列以下載 catalog 為準；若要基於 preset 增減 skill、
 knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測內容。
@@ -201,7 +186,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | `local-change-implementer` | `implement` 的 common rule catalog 不可用 | `implement` 的 .NET aggregate、repository、test、use-case standards 不可用 |
 | `slice-implementer` | `implement` 的 common engineering/GWT handoff 資源不可用 | `implement` 的 .NET design、aggregate、repository、test、messaging、use-case standards 不可用 |
 
-其餘 13 個 skill 未在 package metadata 宣告任何知識 consumption：`adr-author`、`ai-context-auditor`、`ai-context-governance`、`ai-context-init`、`diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、`problem-frame-author`、`requirement-author`、`software-development-orchestrator`、`spec-author`、`spec-compliance-validator`。這只表示此版沒有宣告該兩包的必要資源；它不替目標專案補足自己的領域、政策或產品事實。
+其餘 13 個 RC4 skill 未在 package metadata 宣告任何知識 consumption：`adr-author`、`ai-context-auditor`、`ai-context-governance`、`ai-context-init`、`diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、`problem-frame-author`、`requirement-author`、`software-development-orchestrator`、`spec-author`、`spec-compliance-validator`。這只表示 RC4 沒有宣告該兩包的必要資源；它不替目標專案補足自己的領域、政策或產品事實。
 
 ## 5. 僅組裝候選子集
 
@@ -210,13 +195,13 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 ```powershell
 $CatalogRoot = "$PackageRoot\catalog"
 $EngineRoot = "$PackageRoot\engine"
-$Selection = 'C:\aicf\v019\selection.json'
-$OutputRoot = 'C:\aicf\v019\candidate-output'
-$ScratchRoot = 'C:\aicf\v019\candidate-scratch'
+$Selection = 'C:\aicf\rc4\selection.json'
+$OutputRoot = 'C:\aicf\rc4\candidate-output'
+$ScratchRoot = 'C:\aicf\rc4\candidate-scratch'
 New-Item -ItemType Directory -Path $OutputRoot, $ScratchRoot -ErrorAction Stop
-python -I -B "$EngineRoot\src\tools\derive-subset.py" `
+python -I -B "$EngineRoot\tools\derive-subset.py" `
   --catalog-root $CatalogRoot `
-  --catalog-identity $CatalogIdentity `
+  --catalog-identity 'catalog:1:0.19.0-rc.4:158b8438f61a60eb621e3a5b43ed1a0479634f6f:48e492e5d98fb35b7ec7189a3d6124ed90e0817afa1dab1d59b1750b56ee41fc' `
   --selection $Selection `
   --engine-pin "$PackageRoot\engine-pin.json" `
   --output-root $OutputRoot `
@@ -228,15 +213,14 @@ python -I -B "$EngineRoot\src\tools\derive-subset.py" `
 兩種命令擇一。每次新組裝使用新的空 output/scratch 根，保留前次結果供比對。
 
 ```powershell
-python -I -B "$EngineRoot\src\tools\derive-subset.py" `
-  --catalog-root $CatalogRoot --catalog-identity $CatalogIdentity `
-  --preset project-initialization --preset-version 0.1.0 --skill-naming original `
+python -I -B "$EngineRoot\tools\derive-subset.py" `
+  --catalog-root $CatalogRoot --catalog-identity '<catalog identity>' `
+  --preset engineering --preset-version 0.1.0 --skill-naming original `
   --engine-pin "$PackageRoot\engine-pin.json" `
   --output-root $OutputRoot --scratch-root $ScratchRoot
 ```
 
-組裝成功只表示所選資源已實體產生；`installation` 與 `behavioral_validation`
-仍是 `not-performed`。實際安裝與操作需接續執行並保留各自結果。
+實體 RC4 測試結果：只選 `code-reviewer` 產生 4 個檔案、16,400 bytes；再加 `engineering-common` 產生 21 個檔案、77,932 bytes；再加 `dotnet-backend` 與其必要的 `engineering-common` 產生 267 個檔案、1,050,749 bytes。三個結果的 completion metadata 都是 `installation: not-performed` 與 `behavioral_validation: not-performed`。這證明選擇是實際 materialization，沒有證明目標專案已安裝或 skill 已被執行。
 
 ## 6. 知識的採納與 bindings
 
@@ -283,7 +267,7 @@ rule IDs，`authorities` 必須提供目標採納文件的相對 `path`、實際
 取得並轉成小寫；這只證明 bytes，仍須由專案 owner 決定語意是否適用。
 
 完整 closed schema 位於
-[Binding／Selector／Authority](../src/distribution/schemas/contracts.schema.json)。
+[RC4 Binding／Selector／Authority](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/v0.19.0-rc.4/src/distribution/schemas/contracts.schema.json)。
 新增、修改、撤回 binding 都需要新的 selection／candidate 和 plan；
 不要直接修改 managed lock 或 knowledge 副本。
 
@@ -292,7 +276,7 @@ rule IDs，`authorities` 必須提供目標採納文件的相對 `path`、實際
 `engine/src/tools/maintain_framework.py` 是固定的 JSON stdin API：沒有命令列選項，只有 `inspect`、`plan`、`apply`、`recover` 四個 operation。呼叫形式如下；request 必須含 `api_version: 2`、`operation`、`project_root`、`engine_root` 與完整 `engine` pin（`engine-pin.json` 的內容）。
 
 ```powershell
-Get-Content -Raw C:\aicf\v019\request.json |
+Get-Content -Raw C:\aicf\rc4\request.json |
   python -I -B "$PackageRoot\engine\src\tools\maintain_framework.py"
 ```
 
@@ -301,9 +285,9 @@ Get-Content -Raw C:\aicf\v019\request.json |
 ```powershell
 # 此範例故意使用一個新的空目錄；不要把它指向既有 consumer 專案。
 $TutorialRoot = "C:\aicf\t-" + [guid]::NewGuid().ToString('N').Substring(0,8)
-$PackageRoot = 'C:\aicf\v019\package'                 # 已驗證 SHA-256 的對應 archive 解壓目錄
+$PackageRoot = 'C:\aicf\rc4\package'                 # 已驗證 SHA-256 的 RC4 解壓目錄
 $EngineRoot = Join-Path $PackageRoot 'engine'
-$CandidateOutputRoot = 'C:\aicf\v019\candidate-output'              # derive-subset 的輸出根目錄
+$CandidateOutputRoot = 'C:\aicf\rc4\candidate-output'              # derive-subset 的輸出根目錄
 $ProjectRoot = Join-Path $TutorialRoot 'project'
 $ScratchRoot = Join-Path $TutorialRoot 'scratch'
 $StagingRoot = Join-Path $TutorialRoot 'staging'
@@ -391,7 +375,7 @@ $After.details.owned          # Installed files and hashes.
 - `apply` 是實際寫入。它以相同 plan 欄位加上 `expected_plan_sha256` 與新鮮 `maintenance` 宣告，並在 writer lock 下重新計算 plan。maintenance 的 `affected_capabilities` 必須與 plan 的排序 scope 完全相同，且 `sessions_stopped`、`tools_stopped`、`external_writers_stopped` 都必須確實為 `true`。套用前應先由專案擁有者審閱 plan、衝突、protected inputs 與候選來源。
 - `recover` 只處理一份精確保留的 operation，需提供原 `operation_root`、`operation_sha256`、`direction`（`finish` 或 `restore`）、當前 lock/marker hashes 及新鮮 maintenance 宣告。它不是一般性修復或 cleanup 工具。
 
-此 API 沒有名為 `validate` 或 `upgrade` 的 operation。候選及安裝完整性分別由 `derive-subset`、`inspect` 與 plan/apply 讀回檢查；它們不能代替下游的建置、測試、runtime 或 agent acceptance。升級是「組裝新的 selection/candidate → inspect 既有 lock → plan 差異 → 經授權 apply」的程序，不是單一命令。
+RC4 沒有名為 `validate` 或 `upgrade` 的 operation。候選及安裝完整性分別由 `derive-subset`、`inspect` 與 plan/apply 讀回保證；它們不能代替下游的建置、測試、runtime 或 agent acceptance。升級是「組裝新的 selection/candidate → inspect 既有 lock → plan 差異 → 經授權 apply」的程序，不是單一命令。
 
 取消選擇或卸載某個 skill/knowledge 同樣沒有單獨 `uninstall` 命令：建立不含該 component 的新 selection，再用 plan 審閱 `remove` delta。若要撤除 runtime skill entry，任何未知的 discovery 子樹、未受舊 inventory 擁有的檔案或漂移都會造成 conflict，不應以手動遞迴刪除繞過它。`reinstall-framework.py` 是另一條 Git-backed breaking reinstall 路徑，要求完整 quiescence、乾淨 Git baseline、明確 cleanup/preservation pins 與可恢復的 content；它不是一般 upgrade 或 deselect 的替代方案。
 
@@ -422,7 +406,7 @@ $After.details.owned          # Installed files and hashes.
 上面的教學程式刻意在既有安裝時停止；不要只移除其保護判斷就拿去重裝。
 Legacy v0.18／早期 RC 的移轉、跨電腦復原、全專案清除都不是這個更新範例
 已驗證的行為。破壞性重裝必須另外閱讀
-[breaking reinstall 契約](../.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)（歷史紀錄中的舊 CLI 路徑需對照本版 `engine/src/tools/` 入口），
+[RC4 契約](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/v0.19.0-rc.4/.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)，
 選定精確 cleanup／preservation 與 Git baseline 後才執行。
 
 ### 發生失敗時
@@ -472,15 +456,8 @@ POSIX 可將同一 JSON request 透過 stdin 交給
 並使用該平台的絕對本機路徑。本次只執行 Windows 教學情境，未驗證 Linux／
 macOS 安裝、檔案系統 durability 或跨平台還原。
 
-## 9. 驗收範圍與限制
+## 9. RC4 實測範圍與限制
 
-以實際所選 source、catalog、engine、candidate、lock 與保留的操作結果判定
-這次安裝。舊版或不同 candidate 的測試不能自動證明本次成功。先以隔離目標
-驗證所選情境，再依授權操作實際專案。
+已在 Windows/Python 3.13/PyYAML 6 的隔離目錄完成：下載後 SHA-256 比對、封存解壓、三種 `code-reviewer` 知識組合的實體 subset 組裝、遺漏 `engineering-common` 的 `dependency-closure` 拒絕，以及三個全新空專案的 `inspect → plan → apply → inspect`。它們分別安裝並逐檔 SHA-256 讀回 4（只含 `code-reviewer`）、21（加 `engineering-common`）和 267（加 `dotnet-backend`）個 managed files；每個 post-apply inspect 都回報 `managed-bytes-consistent`，markers 均不存在，lock SHA-256 與保留 operation 的 after-lock binding 相符。過程記錄在 task-owned local evidence，且未量測個別操作 duration。
 
-檔案完整、初始化文件、新對話中的 skill 行為、recover、breaking reinstall、
-知識語意採納及 hosted／產品執行是不同證據。只執行了其中一項就只回報那一項；
-未執行、受環境限制或需要其他 owner 決策的部分保持明確。
-
-安裝 init 後，請依 [init 手冊](skills/ai-context-init.md) 另行建立協作起點；
-初始化產出的專案文件不歸 managed skill 所有，更新／移除套件不重設團隊規則。
+上述只驗證 RC4 engine 對空白、隔離目錄的安裝流程與 managed bytes。沒有執行 `recover`、breaking reinstall、目標專案 activation、knowledge 的語意採納、agent task、下游 runtime 測試或 hosted acceptance；這些狀態仍須由其各自擁有者選擇與驗證。

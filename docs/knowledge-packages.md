@@ -9,10 +9,13 @@
 skill 自動失效，但會減少 5 個 skills 的套件專業覆蓋。** 如果任務明確要求
 該覆蓋，就要補齊依賴或把該部分列為 unavailable／blocked，不能說完整完成。
 
-目前九個 presets 都明確設定 `knowledge: []`。包含 `complete`、
+目前十一個 presets 都明確設定 `knowledge: []`。包含 `complete`、
 `engineering`，甚至名為 `knowledge` 的 preset，都不會自動安裝工程知識。
 `knowledge` preset 選的是 ADR／Lesson 撰寫能力。要知識套件，請另外編輯
 安裝 selection 的 `knowledge` 清單，依[安裝說明](installation.md)重新產生 subset。
+
+基本協作入門資源由 `ai-context-init` 提供；只選此 skill 也能建立入口、
+缺少的協作基線與第一個任務指引。這不會自動採用工程知識中的專業規範。
 
 ## 兩個套件分別提供什麼
 
