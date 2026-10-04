@@ -469,8 +469,8 @@ Windows 使用 `mode_policy: windows-inventory-only`。POSIX 引擎要求
 materialization 與該平台相符，不能直接把 Windows subset 當成 Linux 安裝驗收。
 POSIX 可將同一 JSON request 透過 stdin 交給
 `python -I -B /absolute/engine/src/tools/maintain_framework.py < request.json`，
-並使用該平台的絕對本機路徑。本次只執行 Windows 教學情境，未驗證 Linux／
-macOS 安裝、檔案系統 durability 或跨平台還原。
+並使用該平台的絕對本機路徑。Windows 教學範例本身不構成 Linux／macOS
+安裝、檔案系統 durability 或跨平台還原的驗收證據；各平台須另行驗證。
 
 ## 9. 驗收範圍與限制
 
