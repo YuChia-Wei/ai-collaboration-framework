@@ -180,12 +180,14 @@ class PlanConflict(state.InstallationError):
                              "next_action": "Reconcile owned state without overwriting drift, then plan again."} for row in drift]
 
 
-def _prerequisites(noop: bool, windows: bool, mode_only: bool) -> list[dict]:
+def _prerequisites(noop: bool, windows: bool, mode_only: bool, *, reduced_macos: bool = False) -> list[dict]:
     # Stable across acquisition/first-install guard creation. Runtime observations
     # are discharged privately by apply, never smuggled into a reusable plan hash.
     rows = [
         ("candidate-provenance", "satisfied", "caller", "Available bytes/bindings match; provenance approval and source authenticity remain with caller."),
-        ("durability-declaration", "satisfied", "caller", "Native filesystem/domain combination is supported; recovery survival is a caller assertion, not measured durability."),
+        ("durability-declaration", "satisfied", "caller",
+         "macOS process-termination recovery is best effort; filesystem type and directory durability are not qualified." if reduced_macos else
+         "Native filesystem/domain combination is supported; recovery survival is a caller assertion, not measured durability."),
         ("exclusive-operation-allocation", "not-required" if noop else "pending", "maintenance-writer", "Preflight actual unique paths and exclusively allocate the selected operation before managed mutation."),
         ("fresh-input-observation", "pending", "maintenance-writer", "Recompute this exact plan under a held native writer lock."),
         ("lock-publication", "not-required" if noop else "satisfied", "maintenance-writer", "Next lock fits the closed reader and selected backend; publication remains a postcondition after full member read-back."),
@@ -193,7 +195,9 @@ def _prerequisites(noop: bool, windows: bool, mode_only: bool) -> list[dict]:
         ("mode-materialization", "not-applicable" if windows else "satisfied", "maintenance-writer",
          "mode-not-materialized: Windows inventory-only; mode-only changes do not rewrite bytes." if windows and mode_only else
          "Windows inventory-only; no ACL/executable enforcement." if windows else "Native exact 0644/0755 support; mode-only changes avoid byte replacement."),
-        ("native-writer-backend", "satisfied", "maintenance-writer", "Selected native primitives and filesystem/domain checks are available; this is not platform certification."),
+        ("native-writer-backend", "satisfied", "maintenance-writer",
+         "Temporary macOS standard-library backend: no atomic create-if-absent publication or directory flush guarantee; stop external writers." if reduced_macos else
+         "Selected native primitives and filesystem/domain checks are available; this is not platform certification."),
         ("writer-engine-closure", "satisfied", "maintenance-writer", "Fixed bootstrap, executing origins, exact source closure and observed checkout HEAD match the caller pin."),
         ("writer-guard", "pending", "maintenance-writer", "Acquire the inert guard with a native OS lock; no-op cannot create a missing guard."),
     ]
@@ -293,7 +297,8 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
                 "project_edits": edits, "project_inputs": project_inputs, "noop": noop,
                 "maintenance_scope": sorted(capabilities), "delta": delta,
                 "preserved_unknown": observation.unknown, "path_budget": budget,
-                "prerequisites": _prerequisites(noop, os.name == "nt", any(row["action"] == "mode-only" for row in delta))}
+                "prerequisites": _prerequisites(noop, os.name == "nt", any(row["action"] == "mode-only" for row in delta),
+                                                reduced_macos=backend.macos)}
     # Snapshot caller-owned containers; later caller mutations cannot silently
     # change the returned plan without changing its advertised hash.
     raw = json_bytes(document)
@@ -301,6 +306,9 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
     document = state._document(raw, "plan.json")
     result = {"api_version": 2, "operation": "plan", "outcome": "planned", "plan": document,
               "plan_sha256": sha256(raw).hexdigest()}
+    from .installation_io import platform_diagnostics
+    if notes := platform_diagnostics():
+        result["diagnostics"] = notes
     return result, candidate, observation, roots, backend
 
 
@@ -313,6 +321,8 @@ def plan(request: dict | bytes) -> dict:
         result = state._failure("plan", exc)
         if isinstance(exc, PlanConflict):
             result["diagnostics"] = exc.diagnostics
+        from .installation_io import platform_diagnostics
+        result["diagnostics"].extend(platform_diagnostics())
         return result
 
 

@@ -17,7 +17,7 @@ import stat
 from .data import json_bytes
 from . import installation_state as state
 from . import installation_plan as planning
-from .installation_io import Backend, Changes, IO, budget, sibling
+from .installation_io import Backend, Changes, IO, budget, sibling, platform_diagnostics
 from .maintenance_coordination import WriterLock, declaration
 
 __all__ = ["inspect", "plan", "apply", "recover", "execute"]
@@ -67,7 +67,7 @@ def _details(changes: Changes, managed: str) -> dict:
 
 def _result(operation: str, outcome: str, changes: Changes, managed: str, diagnostics: list | None = None) -> dict:
     return {"api_version": 2, "operation": operation, "outcome": outcome, "changed": changes.changed,
-            "details": _details(changes, managed), "diagnostics": diagnostics or []}
+            "details": _details(changes, managed), "diagnostics": list(diagnostics or []) + platform_diagnostics()}
 
 
 def _failed(operation: str, exc: Exception, changes: Changes) -> dict:

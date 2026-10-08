@@ -25,6 +25,10 @@ RC4 的舊目錄、固定版本連結與實測邊界保留於 [RC4 安裝說明]
    可採用的協作基線與第一次任務指引。
 6. [Sub-agents](sub-agents.md)：六個可選角色、安裝位置、模型繼承與成本邊界。
 
+遇到中斷時使用[精確復原指南](recovery.md)；舊布局需要清除重裝時，另讀
+[破壞性重裝指南](breaking-reinstall.md)。開始操作前，先核對
+[平台與檔案系統支援](installation.md#8-平台與常見問題)。
+
 這些是使用者文件。可重用 skill 的權威指令仍是所安裝套件的 `SKILL.md`、
 operation reference 與 `skill-package.yaml`。本來源庫的 `.dev/` 政策、
 GitHub Issue 流程及執行紀錄，不會因為使用此 framework 就變成使用者專案的規則。
@@ -69,5 +73,6 @@ workflow-v2 紀錄操作已退場，workflow 儲存方式由專案決定。
 職責沿革可參考[來源庫的變遷說明](../.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)；
 它提供歷史對照，不取代下載版本的實際 metadata。
 
-產品文件維護方式見[維護產品文件](maintaining-documentation.md)。來源中的
-未發佈通用方法整理不會回填 RC4，也尚未更新本專案的安裝副本。
+產品文件維護方式見[維護產品文件](maintaining-documentation.md)。共通知識中的
+資源所有權、技術選擇與 skill／角色分類方法已包含於 v0.19.0；RC4 ZIP 保持
+原樣。本來源專案未安裝知識包，不能由來源文件存在推論本專案已採用其規則。
