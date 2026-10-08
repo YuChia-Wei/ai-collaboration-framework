@@ -9,6 +9,9 @@
 請使用同一封存檔的 catalog、engine 與獨立選定的 pin。RC4 使用舊目錄，
 不能混用本頁指令；其已發布位元組與[舊版說明](installation-rc4.md)維持原樣。
 
+0.20.0 開發中的暫時 macOS 安裝路徑見[平台說明](#8-平台與常見問題)。
+它尚未發布，不能用本頁下載的 v0.19.0 ZIP 執行該新行為。
+
 本手冊位於來源庫 `docs/`，不屬於安裝 payload。下載 archive 不需要 clone
 來源庫；是否已有某個正式版本，請以實際公開 Release 為準。文件出現版本
 範例不代表該 Release 已發布。以下下載範例只在所選公開 Release 存在時繼續。
@@ -461,15 +464,39 @@ project config 依[共通設定](tool-skills.md)準備。此框架不替你的�
 
 ## 8. 平台與常見問題
 
-以下是 v0.19.0 Engine 2 的實作範圍；平台列為支援不代表你的檔案系統、
-candidate 或 runtime 已完成驗收。
+以下矩陣區分 v0.19.0 已發布行為與 0.20.0 開發中的暫時 macOS 路徑；
+平台列為支援不代表你的檔案系統、candidate 或 runtime 已完成驗收。
 
 | 操作 | Windows | 64-bit Linux | macOS |
 | --- | --- | --- | --- |
 | `derive-subset` | 可組裝；依本機 mode materialization | 可組裝；依本機 mode materialization | Fable 回報可組裝；不代表可原生套用 |
 | `inspect` | 唯讀檢查 | 唯讀檢查 | 可走唯讀檢查；不評估 runtime readiness |
-| `plan`／`apply`／`recover` | 原生 backend；本機 NTFS／ReFS | 原生 backend；需 `renameat2` 與允許的檔案系統 | 以 `native-platform` 拒絕；修改 request 無法啟用 |
-| breaking reinstall | 同樣受原生 backend 與 Git 前置條件限制 | 同樣受原生 backend 與 Git 前置條件限制 | 無原生維護支援 |
+| `plan`／`apply`／`recover` | 原生 backend；本機 NTFS／ReFS | 原生 backend；需 `renameat2` 與允許的檔案系統 | v0.19.0 拒絕；0.20.0 開發版接受 64-bit macOS，保證較弱，見下文 |
+| breaking reinstall | 同樣受原生 backend 與 Git 前置條件限制 | 同樣受原生 backend 與 Git 前置條件限制 | 開發版使用同一暫時後端，並保留 Git 前置條件 |
+
+### 0.20.0 開發中的暫時 macOS 路徑
+
+依 2026-10-08 的 owner 決定，64-bit macOS 暫時使用 Python 標準函式庫後端。
+使用對應的新 engine 與完整 pin，重新 derive POSIX candidate，並設定
+`mode_policy: "posix-permissions"`、`failure_domain: "process-termination"`。
+維護 request 的欄位沒有新增開關；此路徑會自動選用，plan、apply、recover
+及 breaking reinstall 的結果會帶有 `macos-reduced-guarantees` 診斷。
+
+仍保留 candidate／engine pins、檔案雜湊、link／路徑邊界、明確 project edits、
+maintenance 宣告及參與 writer 的鎖定。既有目的檔案在未指定 replacement 時
+仍會被拒絕，但「確認不存在 → rename」之間可能被其他 writer 插入變動；
+這不提供原生的 atomic create-if-absent 保證。
+
+檔案內容仍 flush、fsync 並讀回；目錄 flush 與檔案系統類型資格檢查則省略。
+`process-termination` 在此只代表保留 journal 的盡力復原，不代表和 Windows／Linux
+原生後端相同的保證。`project-volume-loss`、斷電與硬體故障不受支援。
+使用時須實際停止所有受影響 session／tool／external writer；中斷或競爭寫入
+可能需要人工核對。這個診斷不是互動式確認，也不等於 macOS 實機驗收通過。
+
+目前此變更只在開發來源；已發布 v0.19.0 的 engine 與 pin 不會被修改。
+實機安裝／復原證明依 owner 決定延後統一檢核。
+
+### Windows／Linux 原生後端與既有回饋
 
 Windows backend 接受本機 fixed／RAM volume 的 NTFS／ReFS。Linux backend
 檢查 ext-family（`0xef53`）、XFS、Btrfs、tmpfs、ramfs 的檔案系統識別，
@@ -484,12 +511,15 @@ Fable 在 macOS 主機搭配 Linux VM 的回饋，包含 XFS volume 上的操作
 Git clone 的跨平台攜帶、runtime 自動 discovery 和各工具型 skill 的平台
 支援都須分別驗證，不能由 `managed-bytes-consistent` 推論全部可用。
 
+### 常見問題
+
 | 情況 | 處理方式 |
 | --- | --- |
 | `invalid-json` | selection/request 使用 UTF-8 JSON；不傳 YAML、重複 key 或未知欄位 |
 | `dependency-closure` | 依下載 catalog 補齊必要依賴；`.NET` 要明列 common |
 | `path-budget` | 選短的全新外部根路徑；保留原失敗；不放寬 240 UTF-16 限制 |
-| `native-platform` | 原生維護改用支援的 Windows／64-bit Linux；macOS 可先 inspect，不能靠重試 request 啟用維護 |
+| `native-platform` | 核對 engine 版本與平台；v0.19.0 的 macOS 維護仍不支援，開發版需 64-bit macOS |
+| `macos-reduced-guarantees` | 開發版的暫時 macOS 路徑；先停止所有 writer，保留復原紀錄並依上文解讀較弱保證 |
 | 不支援的 filesystem／volume | 核對每個 root 的實際掛載與檔案系統；保留證據後選支援的本機位置 |
 | managed drift／conflict | 比較原 lock 擁有的 bytes 和目前客製變動，再由 owner 決定保留方式 |
 | recovery-needed | 保留 marker 與 operation，走精確復原流程，先停止受影響能力 |
@@ -497,10 +527,10 @@ Git clone 的跨平台攜帶、runtime 自動 discovery 和各工具型 skill �
 | 找不到 `ai-context-init` | 舊 `complete` 不含它；另選該 skill／initialization preset |
 | 工具讀不到 Python 套件 | 確認 `-I` 使用的同一個 interpreter/venv；user site 或 PYTHONPATH 不會補依賴 |
 
-Windows 使用 `mode_policy: windows-inventory-only`。Linux 原生引擎要求
+Windows 使用 `mode_policy: windows-inventory-only`。Linux 與開發版 macOS 要求
 `posix-permissions`；需在目標平台重新 derive candidate，使 build 的 mode
 materialization 與該平台相符，不能直接把 Windows subset 當成 Linux 安裝驗收。
-Linux 可將同一 JSON request 透過 stdin 交給
+Linux／macOS 可將相應版本的 JSON request 透過 stdin 交給
 `python -I -B /absolute/engine/src/tools/maintain_framework.py < request.json`，
 並使用該平台的絕對本機路徑。Windows 教學範例本身不構成 Linux／macOS
 安裝、檔案系統 durability 或跨平台還原的驗收證據；各平台須另行驗證。

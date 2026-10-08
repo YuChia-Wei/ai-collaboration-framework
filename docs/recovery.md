@@ -115,7 +115,9 @@ if ($RecoveryExitCode -ne 0) { throw "Recovery failed; retained exit code: $Reco
 
 接著重新 `inspect`，核對結果符合選定方向及 marker 狀態。若涉及 project edits，
 也須核對 root 文件等內容的 before／after；這與 runtime discovery、工具可執行性
-及業務程式驗收分開。macOS 原生 recover 目前不可用，見[平台矩陣](installation.md#8-平台與常見問題)。
+及業務程式驗收分開。v0.19.0 的 macOS recover 不可用；0.20.0 開發中的
+暫時後端接受 recover，但只提供盡力復原，仍需相同 engine pin、原路徑與
+完整操作紀錄，見[平台矩陣](installation.md#8-平台與常見問題)。
 
 ## 需要人工判定的情況
 

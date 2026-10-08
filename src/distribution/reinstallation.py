@@ -16,6 +16,7 @@ import subprocess
 from . import installation_state as state
 from . import installation
 from .data import json_bytes
+from .installation_io import platform_diagnostics
 
 SCOPES = (".ai", ".dev", ".agents/skills", ".claude/skills")
 FIELDS = {"reinstall_version", "operation", "project_root", "expected_head",
@@ -283,6 +284,8 @@ def _preview(document, roots, reader):
 def execute(request):
     removed = []
     answer = {"reinstall_version": 1, "operation": request.get("operation"), "changed": False}
+    if notes := platform_diagnostics():
+        answer["diagnostics"] = notes
     try:
         document, roots, reader, candidate = _prepare(request)
         preview = _preview(document, roots, reader)
@@ -335,4 +338,4 @@ def execute(request):
         return {**answer, "outcome": "cleanup-incomplete" if answer["changed"] else getattr(exc, "outcome", "blocked"),
                 "removed": removed, "diagnostics": [getattr(exc, "diagnostic", {
                     "code": "reinstall-input", "path": None, "reason": "Breaking reinstall was rejected or interrupted.",
-                    "next_action": "Preserve the result; Git baseline owns cleanup recovery, API 2 owns any new operation recovery."})]}
+                    "next_action": "Preserve the result; Git baseline owns cleanup recovery, API 2 owns any new operation recovery."})] + platform_diagnostics()}

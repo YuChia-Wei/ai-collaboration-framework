@@ -1,8 +1,9 @@
 """Native, bounded file operations for quiescent managed maintenance.
 
-Only single-file publication is atomic. File/namespace flushes are ordered;
+Native backends provide single-file publication and ordered file/namespace flushes;
 power loss, hardware failure, remote filesystems and external writers are outside
 this backend's selected failure domains. No cleanup or path discovery service.
+The temporary macOS standard-library backend provides reduced guarantees only.
 """
 from __future__ import annotations
 
@@ -16,6 +17,18 @@ import stat
 import sys
 
 from . import installation_state as state
+
+
+def platform_diagnostics() -> list[dict]:
+    """Disclose the temporary macOS route, including rejected and no-op requests."""
+    if os.name != "posix" or sys.platform != "darwin":
+        return []
+    return [{"code": "macos-reduced-guarantees", "path": None,
+             "reason": "64-bit macOS uses a temporary standard-library backend: no atomic create-if-absent "
+                       "publication, directory flush or filesystem-type qualification. Journal recovery is best effort.",
+             "next_action": "Keep all affected sessions, tools and external writers stopped. Preserve operation "
+                            "records; interrupted or racing writes may require manual reconciliation. "
+                            "Platform acceptance remains separate from this result."}]
 
 
 @dataclass
@@ -129,7 +142,7 @@ def _windows_handle_filesystem(directory, volume, kernel):
 
 
 class Backend:
-    """Windows NTFS/ReFS or Linux selected local filesystems."""
+    """Native Windows/Linux, with a temporary reduced-guarantee macOS route."""
 
     def __init__(self, roots: dict[str, Path], durability: dict):
         state._shape(durability, {"declared_by", "declaration_reference", "failure_domain"})
@@ -139,8 +152,18 @@ class Backend:
         state._check(domain in {"process-termination", "project-volume-loss"}, "failure-domain",
                      "Supported domains are process-termination and project-volume-loss with surviving recovery storage; power loss is unsupported.", outcome="unsupported")
         self.windows = os.name == "nt"
-        state._check(self.windows or (os.name == "posix" and sys.platform == "linux" and ctypes.sizeof(ctypes.c_void_p) == 8),
-                     "native-platform", "Only Windows and 64-bit Linux native maintenance are supported.", outcome="unsupported")
+        self.macos = os.name == "posix" and sys.platform == "darwin" and ctypes.sizeof(ctypes.c_void_p) == 8
+        if not (self.windows or self.macos or (os.name == "posix" and sys.platform == "linux" and ctypes.sizeof(ctypes.c_void_p) == 8)):
+            raise state.InstallationError(
+                "native-platform", "Maintenance supports Windows, 64-bit Linux or the 64-bit macOS temporary backend.",
+                outcome="unsupported",
+                next_action="Run plan/apply/recover on Windows or 64-bit Linux using supported local filesystems, "
+                            "or 64-bit macOS with its disclosed reduced guarantees. "
+                            "Use inspect to assess an existing installation; this does not verify runtime readiness.")
+        if self.macos:
+            state._check(domain == "process-termination", "macos-failure-domain",
+                         "The temporary macOS backend admits only best-effort process-termination recovery, "
+                         "not project-volume-loss or power-loss guarantees.", outcome="unsupported")
         if self.windows:
             from ctypes import wintypes as w
             self.native = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -153,7 +176,7 @@ class Backend:
             self.native.GetVolumeInformationW.argtypes = [w.LPCWSTR, w.LPWSTR, w.DWORD, ctypes.POINTER(w.DWORD),
                                                           ctypes.POINTER(w.DWORD), ctypes.POINTER(w.DWORD), w.LPWSTR, w.DWORD]
             self.native.GetVolumeInformationW.restype = w.BOOL
-        else:
+        elif not self.macos:
             self.native = ctypes.CDLL(None, use_errno=True)
             state._check(hasattr(self.native, "renameat2"), "native-primitive",
                          "Linux libc renameat2 is required for non-replacing publication.", outcome="unsupported")
@@ -167,6 +190,9 @@ class Backend:
                          "recovery-failure-domain", "Project-volume loss needs a distinct non-RAM recovery volume; survival remains the caller's assertion.", outcome="unsupported")
 
     def _volume(self, root: Path) -> tuple:
+        if self.macos:
+            # Device identity still supports containment; filesystem/RAM type is unqualified.
+            return (root.stat().st_dev, None)
         if self.windows:
             from ctypes import wintypes as w
             volume, filesystem = ctypes.create_unicode_buffer(260), ctypes.create_unicode_buffer(64)
@@ -192,6 +218,8 @@ class Backend:
 
     def flush_directory(self, directory: Path) -> None:
         state._no_links(directory)
+        if self.macos:
+            return  # No directory durability promise in the temporary route.
         if not self.windows:
             descriptor = os.open(directory, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
             try:
@@ -206,6 +234,14 @@ class Backend:
         if self.windows:
             if not self.native.MoveFileExW(str(source), str(target), 8 | (1 if replace else 0)):
                 raise OSError("native publication failed")
+        elif self.macos:
+            if replace:
+                os.replace(source, target)
+            else:
+                # Caller quiescence is essential: an external writer can race this check.
+                if os.path.lexists(target):
+                    raise FileExistsError("temporary macOS publication target already exists")
+                os.rename(source, target)
         else:
             if self.native.renameat2(-100, os.fsencode(source), -100, os.fsencode(target), 0 if replace else 1) != 0:
                 raise OSError("native publication failed")

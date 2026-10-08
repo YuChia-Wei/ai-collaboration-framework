@@ -8,6 +8,10 @@
 一般更新、取消選配仍使用 `maintain_framework.py`；不要為了避開 drift 或衝突
 就改走重裝。此頁不提供自動 cleanup 分類，也不宣稱舊版內容可無損遷移。
 
+0.20.0 開發中的 macOS 路徑使用同一暫時後端，保證較弱；其 plan／apply
+也會回報 `macos-reduced-guarantees`。需使用相應的新 engine 與 pin，
+已發布的 v0.19.0 不會因文件修訂而取得支援，見[平台說明](installation.md#8-平台與常見問題)。
+
 ## 選定 baseline 與檔案處置
 
 專案必須是精確 Git worktree root，具有固定的完整 HEAD SHA 和乾淨的 tracked
