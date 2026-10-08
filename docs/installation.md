@@ -100,6 +100,13 @@ Local snapshot 的來源 SHA、版本標籤與證據另行核對，不會因本�
 
 Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路徑上限，並檢查操作時的暫存與復原路徑；這不只適用於 Windows。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v019`，而不是使用很深的使用者暫存資料夾。可從 plan 的 `path_budget` 讀回估算；這是輸入路徑預檢，不是內容相依性錯誤。
 
+具體例子：Fable 的 v0.19.0 全選測量中，含 `.NET` 知識的最長 payload 相對
+路徑為 138 個 ASCII 字元。derive 會加上 `\subset-<32 hex>\payload\`，共 49 個
+字元，因此沒有結尾分隔符的 output root 最多約 `240 - 49 - 138 = 53`
+個 UTF-16 code units。這是該版本與選擇的路徑估算，不是所有 candidate 的固定
+上限或安裝證明；非 BMP 字元需計為兩個 code units，scratch、project、staging
+及 recovery 的實際路徑也要各自通過預檢。選更短的根目錄可保留餘裕。
+
 所有可攜 CLI 都從其檔案位置解析引擎或 bootstrap；以絕對 script 路徑呼叫時，呼叫端的目前工作目錄不影響封存內容選取。`maintain_framework.py` 的 `engine_root` 必須剛好等於該 script 所在封存的 `engine` 根目錄。
 
 ## 3. 檢視 catalog 與選擇規格
