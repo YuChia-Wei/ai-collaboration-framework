@@ -105,10 +105,12 @@ Binding 欄位與設定方式見[安裝說明](installation.md)。
 
 此表是宣告與使用契約盤點，沒有量測模型輸出品質或推論出各 skill 的效能百分比。
 
-## 尚未發佈的來源整理
+## v0.19.0 的共通方法與版本邊界
 
-目前來源分支在 `engineering-common` 增加資源所有權、技術選擇、
+v0.19.0 的 `engineering-common` 已包含資源所有權、技術選擇、
 skill／sub-agent 分類與外部 AI 回饋方法。入口是
 [來源知識目錄](../src/knowledge/engineering-common/README.md)。
-這些變更尚未回填 RC4 ZIP，也尚未自我安裝；本節不更動上述 RC4 的
-skill consumption 數量或既有版本的能力宣告。
+這些資源已列入 v0.19.0 的 Release manifest；沒有回填 RC4 ZIP。
+本來源專案沒有自我安裝知識包，來源可讀、成品可用與專案採用是三件事。
+新增的共通方法不會自動改變各 skill 的 consumption 宣告或目標專案的規則採用；
+仍以所選版本的 metadata、installation lock 與專案 bindings 為準。

@@ -1,7 +1,8 @@
 # 安裝與選配說明
 
 [回手冊首頁](README.md) · [Skill 目錄](skills/README.md) ·
-[知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) · [RC4 舊版指令](installation-rc4.md)
+[知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) ·
+[復原](recovery.md) · [Breaking reinstall](breaking-reinstall.md) · [RC4 舊版指令](installation-rc4.md)
 
 本頁適用於 0.19.0 的 Catalog 1／Engine 2 新目錄：engine 的 23 個成員全部
 來自 `src/`，三個消費端入口位於 `engine/src/tools/`；不含來源庫 build 工具。
@@ -94,7 +95,7 @@ Local snapshot 的來源 SHA、版本標籤與證據另行核對，不會因本�
 
 所有 CLI 路徑都必須使用既有的絕對直接目錄，且 `project`、`engine`、`candidate`、`scratch`、`staging`、`recovery` 彼此不能重疊或互為父子。`scratch` 與 `staging` 唯一可共用同一個目錄。不可將 output/scratch 放回來源工作樹或 catalog 下。
 
-Windows 會以保守的 240 UTF-16 字元完整路徑限制拒絕操作。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v019`，而不是使用很深的使用者暫存資料夾。這是輸入路徑預檢，不是內容相依性錯誤。
+Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路徑上限，並檢查操作時的暫存與復原路徑；這不只適用於 Windows。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v019`，而不是使用很深的使用者暫存資料夾。可從 plan 的 `path_budget` 讀回估算；這是輸入路徑預檢，不是內容相依性錯誤。
 
 所有可攜 CLI 都從其檔案位置解析引擎或 bootstrap；以絕對 script 路徑呼叫時，呼叫端的目前工作目錄不影響封存內容選取。`maintain_framework.py` 的 `engine_root` 必須剛好等於該 script 所在封存的 `engine` 根目錄。
 
@@ -137,6 +138,10 @@ $Selection = 'C:\aicf\v019\selection.json'
 catalog 與配對 engine 的閉包才是這次操作的依據。
 
 `skill_naming` 是 `original` 或 `prefixed`。`original` 讓 runtime entry 使用原始 skill ID；`prefixed` 會使用 `aicf-` 前綴。使用 `--preset` 時預設 `original`，可用 `--skill-naming` 覆寫；使用已儲存的 `--selection` 時，名稱模式只能由 selection 本身決定。
+
+lock 中 adapter metadata 的 `prefix: "aicf-"` 表示可用的前綴設定；
+只有 `skill_naming: "prefixed"` 才套用。選 `original` 時仍可能看到這份
+metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 prefix 欄位。
 
 修改 `skills` 為你要的 canonical IDs；[18 個 skill 目錄](skills/README.md)
 可逐一挑選。只用 Claude 時填 `"adapters": ["claude"]`，兩者都用填
@@ -422,7 +427,7 @@ $After.details.owned          # Installed files and hashes.
 上面的教學程式刻意在既有安裝時停止；不要只移除其保護判斷就拿去重裝。
 Legacy v0.18／早期 RC 的移轉、跨電腦復原、全專案清除都不是這個更新範例
 已驗證的行為。破壞性重裝必須另外閱讀
-[breaking reinstall 契約](../.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)（歷史紀錄中的舊 CLI 路徑需對照本版 `engine/src/tools/` 入口），
+[本版 breaking reinstall 手冊](breaking-reinstall.md)，
 選定精確 cleanup／preservation 與 Git baseline 後才執行。
 
 ### 發生失敗時
@@ -439,6 +444,9 @@ maintenance 宣告。雜湊必須來自保留輸出或實際 raw bytes，不能�
 若 operation 資料遺失、內容漂移或仍有其他 writer，先交回復原 owner；
 本手冊沒有以成功安裝推論 recovery 測試也成功。
 
+完整欄位、`operation.json` raw hash 的取得方式及請求產生範例，見
+[復原手冊](recovery.md)。
+
 ### 安裝後的使用驗收
 
 確認 `.ai/core/skills/<id>/`、所選 knowledge、Codex 的 `.agents/skills/`
@@ -453,24 +461,54 @@ project config 依[共通設定](tool-skills.md)準備。此框架不替你的�
 
 ## 8. 平台與常見問題
 
+以下是 v0.19.0 Engine 2 的實作範圍；平台列為支援不代表你的檔案系統、
+candidate 或 runtime 已完成驗收。
+
+| 操作 | Windows | 64-bit Linux | macOS |
+| --- | --- | --- | --- |
+| `derive-subset` | 可組裝；依本機 mode materialization | 可組裝；依本機 mode materialization | Fable 回報可組裝；不代表可原生套用 |
+| `inspect` | 唯讀檢查 | 唯讀檢查 | 可走唯讀檢查；不評估 runtime readiness |
+| `plan`／`apply`／`recover` | 原生 backend；本機 NTFS／ReFS | 原生 backend；需 `renameat2` 與允許的檔案系統 | 以 `native-platform` 拒絕；修改 request 無法啟用 |
+| breaking reinstall | 同樣受原生 backend 與 Git 前置條件限制 | 同樣受原生 backend 與 Git 前置條件限制 | 無原生維護支援 |
+
+Windows backend 接受本機 fixed／RAM volume 的 NTFS／ReFS。Linux backend
+檢查 ext-family（`0xef53`）、XFS、Btrfs、tmpfs、ramfs 的檔案系統識別，
+並需要 `renameat2`；路徑、mode、掛載／link 與 durability 宣告仍須通過檢查。
+網路分享、FUSE、overlayfs 不在這個允許集合。容器內的 project、candidate、
+engine、scratch、staging、recovery 都須核對；named volume 的底層檔案系統
+不一定符合條件。`process-termination` 宣告也不是斷電或 VM 消失後的保證。
+
+Fable 在 macOS 主機搭配 Linux VM 的回饋，包含 XFS volume 上的操作及
+將 Linux materialized files 複製回 macOS 後的 inspect；這是外部回饋，
+本頁修訂沒有重跑原生安裝。複製時若改變 mode bits，可能造成 drift。
+Git clone 的跨平台攜帶、runtime 自動 discovery 和各工具型 skill 的平台
+支援都須分別驗證，不能由 `managed-bytes-consistent` 推論全部可用。
+
 | 情況 | 處理方式 |
 | --- | --- |
 | `invalid-json` | selection/request 使用 UTF-8 JSON；不傳 YAML、重複 key 或未知欄位 |
 | `dependency-closure` | 依下載 catalog 補齊必要依賴；`.NET` 要明列 common |
 | `path-budget` | 選短的全新外部根路徑；保留原失敗；不放寬 240 UTF-16 限制 |
+| `native-platform` | 原生維護改用支援的 Windows／64-bit Linux；macOS 可先 inspect，不能靠重試 request 啟用維護 |
+| 不支援的 filesystem／volume | 核對每個 root 的實際掛載與檔案系統；保留證據後選支援的本機位置 |
 | managed drift／conflict | 比較原 lock 擁有的 bytes 和目前客製變動，再由 owner 決定保留方式 |
 | recovery-needed | 保留 marker 與 operation，走精確復原流程，先停止受影響能力 |
 | 已裝知識但沒有專門規範覆蓋 | 核對 resource、bindings、authority hash 與 task selector；存在不等於採用 |
 | 找不到 `ai-context-init` | 舊 `complete` 不含它；另選該 skill／initialization preset |
 | 工具讀不到 Python 套件 | 確認 `-I` 使用的同一個 interpreter/venv；user site 或 PYTHONPATH 不會補依賴 |
 
-Windows 使用 `mode_policy: windows-inventory-only`。POSIX 引擎要求
+Windows 使用 `mode_policy: windows-inventory-only`。Linux 原生引擎要求
 `posix-permissions`；需在目標平台重新 derive candidate，使 build 的 mode
 materialization 與該平台相符，不能直接把 Windows subset 當成 Linux 安裝驗收。
-POSIX 可將同一 JSON request 透過 stdin 交給
+Linux 可將同一 JSON request 透過 stdin 交給
 `python -I -B /absolute/engine/src/tools/maintain_framework.py < request.json`，
 並使用該平台的絕對本機路徑。Windows 教學範例本身不構成 Linux／macOS
 安裝、檔案系統 durability 或跨平台還原的驗收證據；各平台須另行驗證。
+
+診斷中的 `Keep affected capabilities inactive` 是要求保持受影響能力停止，
+不是 runtime 已停用的探測結果。`original`／`prefixed` 則只控制 runtime
+skill 名稱是否加 `aicf-` 前綴，不控制能力啟用與否；是否真正停止活動或
+成功呼叫 skill，仍需實際核對。
 
 ## 9. 驗收範圍與限制
 
