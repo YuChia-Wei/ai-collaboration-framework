@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .contracts import (VERSION, MAX_OUTPUT, RecordError, WorkflowRef, encoded,
-                        identifier, integer, require)
+                        identifier, integer, require, validate_unicode)
 from .git_store import GitStore, relative_path
 
 DEFAULT_CONFIG = {
@@ -73,6 +73,7 @@ class WorkflowRecords:
         operation = request.get("operation") if isinstance(request, dict) else None
         try:
             require(isinstance(request, dict), "invalid_input", "Request must be an object.")
+            validate_unicode(request, "invalid_input")
             require(request.get("contract_version") == VERSION, "unsupported_version", "Unsupported request contract.")
             require(isinstance(operation, str) and len(operation) <= 32,
                     "invalid_input", "Operation must be a bounded string.")
@@ -131,7 +132,7 @@ class WorkflowRecords:
 
 
 def failure(operation, error, mutation="none"):
-    if not isinstance(operation, str) or len(operation) > 32:
+    if not isinstance(operation, str) or len(operation) > 32 or not operation.isascii():
         operation = None
     return {"contract_version": VERSION, "operation": operation, "status": "unavailable"
             if error.code == "provider_unavailable" else "error", "mutation_state": mutation,

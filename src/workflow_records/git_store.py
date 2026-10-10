@@ -18,7 +18,7 @@ import yaml
 
 from .contracts import (VERSION, MAX_FILE, MAX_OPERATIONS, MAX_TASKS, RecordError,
                         WorkflowRef, decode_json, digest, encoded, identifier,
-                        require, timestamp)
+                        require, timestamp, validate_unicode)
 
 
 class RecordLoader(yaml.SafeLoader):
@@ -44,6 +44,7 @@ def mapping(raw, suffix):
     except (yaml.YAMLError, UnicodeError, RecursionError, TypeError) as exc:
         raise RecordError("malformed_record", "Invalid UTF-8 record mapping.") from exc
     require(isinstance(value, dict), "malformed_record", "Record must be a mapping.")
+    validate_unicode(value)
     return value
 
 

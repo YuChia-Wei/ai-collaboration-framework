@@ -90,7 +90,7 @@ class WorkflowRecordTests(unittest.TestCase):
 
     def launch(self, request, name="request.json"):
         path = Path(self.temporary.name) / name
-        path.write_bytes(encoded(request))
+        path.write_bytes(request if isinstance(request, bytes) else encoded(request))
         completed = subprocess.run([sys.executable, "-I", "-B", str(CLI), "--root", str(self.project),
                                     "--request", str(path)], capture_output=True, timeout=20)
         self.assertEqual(completed.stderr, b"")
@@ -329,6 +329,41 @@ class WorkflowRecordTests(unittest.TestCase):
         value["created_at"] = "2026-10-10T11:46+08:00"
         task.write_bytes(encoded(value))
         self.assert_error(self.run_operation("validate"), "malformed_record")
+        self.assertFalse((self.artifact / ".workflow-records").exists())
+
+    def test_real_cli_rejects_escaped_surrogates_without_tracebacks_or_writes(self):
+        requests = [self.request("\ud800"), self.request("\udfff")]
+        checkpoint = self.checkpoint_request()
+        checkpoint["checkpoint"]["summary"] = "invalid \ud800 text"
+        requests.append(checkpoint)
+        requests.append({"contract_version": VERSION, "operation": "capabilities", "\ud800": []})
+        for request in requests:
+            with self.subTest(request=request):
+                raw = json.dumps(request, ensure_ascii=True).encode("ascii")
+                code, response = self.launch(raw)
+                self.assertEqual(code, 1)
+                self.assert_error(response, "malformed_record")
+                self.assertEqual(response["mutation_state"], "none")
+                self.assertLess(len(encoded(response)), 2048)
+                direct = self.service.execute(request)
+                self.assert_error(direct, "invalid_input")
+                self.assertEqual(direct["mutation_state"], "none")
+                self.assertLess(len(encoded(direct)), 2048)
+        self.assertFalse((self.artifact / ".workflow-records").exists())
+        self.assert_original_preserved()
+        valid = self.checkpoint_request()
+        valid["checkpoint"]["summary"] = "Valid Unicode \U0001f600"
+        code, response = self.launch(json.dumps(valid, ensure_ascii=True).encode("ascii"))
+        self.assertEqual(code, 0, response)
+        self.assertEqual(self.run_operation("resume")["result"]["checkpoint"]["summary"]["text"],
+                         valid["checkpoint"]["summary"])
+
+    def test_escaped_surrogate_in_yaml_record_is_malformed(self):
+        locator = self.artifact / "workflow.yaml"
+        value = yaml.safe_load(locator.read_bytes())
+        value["title"] = "\ud800"
+        locator.write_text(yaml.safe_dump(value, allow_unicode=False), encoding="utf-8")
+        self.assert_error(self.run_operation("context"), "malformed_record")
         self.assertFalse((self.artifact / ".workflow-records").exists())
 
     def test_configuration_rejects_ambiguous_roots(self):

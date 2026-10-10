@@ -57,13 +57,31 @@ def unique_object(pairs):
     return value
 
 
+def validate_unicode(value, code="malformed_record"):
+    """Reject escaped lone surrogates in JSON keys and nested values."""
+    if isinstance(value, str):
+        try:
+            value.encode("utf-8")
+        except UnicodeError as exc:
+            raise RecordError(code, "Text contains invalid Unicode scalar values.") from exc
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            validate_unicode(key, code)
+            validate_unicode(item, code)
+    elif isinstance(value, list):
+        for item in value:
+            validate_unicode(item, code)
+
+
 def decode_json(raw):
     require(len(raw) <= MAX_FILE, "limit_exceeded", "JSON input exceeds the byte limit.")
     try:
         def reject_constant(_):
             raise ValueError("Non-finite numbers are not JSON records.")
-        return json.loads(raw.decode("utf-8"), object_pairs_hook=unique_object,
-                          parse_constant=reject_constant)
+        value = json.loads(raw.decode("utf-8"), object_pairs_hook=unique_object,
+                           parse_constant=reject_constant)
+        validate_unicode(value)
+        return value
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise RecordError("malformed_record", "Invalid UTF-8 JSON.") from exc
 

@@ -66,6 +66,10 @@ Checkpoint 請求必須帶上剛讀到的 revision／source，以及本次操作
 `operation_id` 查詢。相同 ID／相同原始請求可安全取得保留結果；不同內容重用
 同一 ID 會被拒絕。查不到結果是 unknown，不能視為已確認失敗。
 
+查詢 operation 與重試仍要求目前 locator、task、plan 可正常解析。如果核心紀錄
+損壞，先保留 checkpoint journal，依專案授權修復紀錄後再核對；查詢失敗不代表
+原本的 checkpoint 沒有成功寫入。
+
 ## 相容性與寫入範圍
 
 新增內容只寫入該 artifact root 下的 `.workflow-records/checkpoint.json`。

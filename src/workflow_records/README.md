@@ -177,6 +177,10 @@ fetch, checkout or push is performed.
 - History is bounded by 128 operations and the 256 KiB file limit. At capacity,
   refuse new writes; do not compact history or evict idempotency information.
 - An absent receipt means unknown. Recovery must not infer failure from absence.
+- Operation lookup and replay require a valid current locator/task/plan snapshot.
+  If that snapshot is damaged, preserve the journal and repair the selected
+  records under project authority before retrying; a failed lookup is not proof
+  that the checkpoint was not applied.
 - A crash may retain the lock or a temporary file. No stale lock is stolen.
   Stop writers, inspect the journal/operation and the lock owner's liveness, then
   let the project owner remove only the confirmed stale lock/temp file. Preserve
@@ -188,7 +192,9 @@ Stable errors include `invalid_input`, `not_found`, `malformed_record`,
 `unsupported_version`, `unsupported_format`, `unsupported_capability`,
 `unsafe_path`, `binding_mismatch`, `revision_conflict`, `source_conflict`,
 `writer_busy`, `operation_id_conflict`, `limit_exceeded`, `provider_unavailable`,
-`io_error`. Errors omit absolute paths and raw filesystem exception text.
+`io_error`. Errors omit absolute paths and raw filesystem exception text. JSON
+and YAML reject escaped lone surrogates, including nested values and keys, before
+mutation; valid Unicode scalar values remain supported.
 
 Remote unavailability example: an explicit remote ref yields
 `status: unavailable`, `mutation_state: none`, error `provider_unavailable` and

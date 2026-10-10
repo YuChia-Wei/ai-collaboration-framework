@@ -27,6 +27,16 @@ Python 3.13.14, PyYAML 6.0.3. No provider writes, installation or release run.
    shape, with one additional regression. Focused current source: 21 tests passed,
    7.862 seconds on F. Unchanged suites retain their result; a final immutable
    default run is planned with independent review.
+7. Immutable `9c5cde522a3ad7ffa4cab9ce3461dea01293a873`:
+   `python -I -B tests/run.py`, 200 tests passed, no failures/errors/skips,
+   42.619383 seconds with native temp. Log: `immutable-9c5cde52.txt`.
+8. Independent review found R1: an escaped lone surrogate in request `operation`
+   caused a CLI encoding traceback instead of structured JSON. Reject invalid
+   Unicode in parsed JSON/YAML and direct service requests before mutation;
+   sanitize failure-operation echo. Added actual CLI tests for surrogate
+   operations, nested payload/key values, valid emoji round-trip, and YAML input.
+   Focused repair run: 23 tests passed on F, 9.120 seconds, `r1-focused.txt`.
+   This repair changes the reviewed subject; independent re-review is pending.
 
 Focused invocation (the created contained F root is test-only):
 
@@ -86,7 +96,16 @@ versus deferred intent using these explicit limitations.
 
 ## Independent review
 
-Pending an immutable implementation commit and a fresh read-only reviewer.
-The reviewer must inspect binding/authority, rejection before mutation, failure
-and replay behavior, original-format compatibility, consumer wiring, output
-bounds and truthful source-only delivery against the contract and source policy.
+`workflow_review` independently reviewed clean immutable
+`9c5cde522a3ad7ffa4cab9ce3461dea01293a873` against
+`42b99e954e3d6fbf595075a079357f0ce1df057f`. It returned one P2 finding, R1,
+with a real CLI reproduction: escaped `operation: "\ud800"` caused exit 1,
+empty stdout and a `UnicodeEncodeError` traceback exposing source paths.
+No other supported actionable finding was reported in binding/authority,
+failure/replay, original-format compatibility, consumer wiring, bounds and
+source-only delivery. The original finding is retained; it is not a pass.
+
+The repaired Unicode input boundary and the added operation-recovery limitation
+will be reviewed on the next immutable commit. Native junctions, process crash,
+power loss, hostile filesystem races, complete history compatibility, packaging,
+hosted CI and local/remote execution remain unverified.
