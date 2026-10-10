@@ -141,7 +141,24 @@ def parse_index(index_path: Path, errors: list[str]) -> dict[str, tuple[str, ...
     return rows
 
 
-def validate_assessments(root: Path) -> tuple[list[str], int]:
+def workflow_reference_error(root: Path, workflow_id: str, records=None) -> str | None:
+    """Preserve existence-only legacy behavior unless a store is explicitly selected."""
+    if records is None:
+        if not (root / ".dev" / "workflows" / workflow_id / "workflow.yaml").is_file():
+            return f"workflow_refs references missing workflow {workflow_id}"
+        return None
+    from workflow_records.contracts import VERSION, RecordError
+    try:
+        response = records.execute({"contract_version": VERSION, "operation": "validate",
+                                    "workflow_ref": records.reference(workflow_id)})
+    except RecordError as exc:
+        return f"workflow_refs {workflow_id}: {exc.code}"
+    if response["status"] != "ok":
+        return f"workflow_refs {workflow_id}: {response['error']['code']}"
+    return None
+
+
+def validate_assessments(root: Path, workflow_records=None) -> tuple[list[str], int]:
     errors: list[str] = []
     assessment_root = root / ".dev" / "assessments"
     index_path = assessment_root / "INDEX.MD"
@@ -302,8 +319,9 @@ def validate_assessments(root: Path) -> tuple[list[str], int]:
             if other and assessment_id not in other[1].get("relations", {}).get("supersedes", []):
                 errors.append(f"{locator_path.relative_to(root)}: superseded_by relation to {successor} is not reciprocal")
         for workflow_id in relations.get("workflow_refs", []) if isinstance(relations.get("workflow_refs"), list) else []:
-            if not (root / ".dev" / "workflows" / workflow_id / "workflow.yaml").is_file():
-                errors.append(f"{locator_path.relative_to(root)}: workflow_refs references missing workflow {workflow_id}")
+            error = workflow_reference_error(root, workflow_id, workflow_records)
+            if error:
+                errors.append(f"{locator_path.relative_to(root)}: {error}")
         for backlog_id in relations.get("backlog_refs", []) if isinstance(relations.get("backlog_refs"), list) else []:
             if not (root / ".dev" / "backlog" / "items" / f"{backlog_id}.yaml").is_file():
                 errors.append(f"{locator_path.relative_to(root)}: backlog_refs references missing item {backlog_id}")
@@ -318,8 +336,22 @@ def validate_assessments(root: Path) -> tuple[list[str], int]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
+    parser.add_argument("--workflow-store-config", type=Path,
+                        help="Opt in to common workflow-record validation with explicit JSON configuration")
     args = parser.parse_args(argv)
-    errors, count = validate_assessments(args.root.resolve())
+    records = None
+    if args.workflow_store_config is not None:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+        from workflow_records import WorkflowRecords
+        from workflow_records.contracts import MAX_FILE, RecordError, decode_json
+        try:
+            with args.workflow_store_config.open("rb") as stream:
+                config = decode_json(stream.read(MAX_FILE + 1))
+            records = WorkflowRecords(args.root, config)
+        except (RecordError, OSError) as exc:
+            print(f"ERROR: workflow store configuration: {getattr(exc, 'code', 'io_error')}")
+            return 1
+    errors, count = validate_assessments(args.root.resolve(), records)
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
