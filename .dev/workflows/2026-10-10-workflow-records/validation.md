@@ -36,7 +36,13 @@ Python 3.13.14, PyYAML 6.0.3. No provider writes, installation or release run.
    sanitize failure-operation echo. Added actual CLI tests for surrogate
    operations, nested payload/key values, valid emoji round-trip, and YAML input.
    Focused repair run: 23 tests passed on F, 9.120 seconds, `r1-focused.txt`.
-   This repair changes the reviewed subject; independent re-review is pending.
+   This repair changes the reviewed subject; the affected re-review follows below.
+9. Immutable `315cb2dacae4c5c136995c0e4ae2c20572977a98`:
+   `python -I -B tests/run.py`, 202 tests passed, no failures/errors/skips,
+   43.083102 seconds with native temp. Log: `immutable-315cb2da.txt`.
+10. Independent reviewer ran the two new Unicode regression tests on that exact
+    clean commit in one disposable F directory: 2 passed, 1.623 seconds.
+    The reviewer reported its own fixture cleanup complete.
 
 Focused invocation (the created contained F root is test-only):
 
@@ -105,7 +111,36 @@ No other supported actionable finding was reported in binding/authority,
 failure/replay, original-format compatibility, consumer wiring, bounds and
 source-only delivery. The original finding is retained; it is not a pass.
 
-The repaired Unicode input boundary and the added operation-recovery limitation
-will be reviewed on the next immutable commit. Native junctions, process crash,
-power loss, hostile filesystem races, complete history compatibility, packaging,
-hosted CI and local/remote execution remain unverified.
+The same independent reviewer re-reviewed the seven-file repair diff at
+`315cb2dacae4c5c136995c0e4ae2c20572977a98`, confirmed **R1 addressed** and
+reported **no supported new findings**. It independently exercised malformed
+operations, nested values/keys, YAML input and valid emoji round-trip, with no
+stderr or unintended writes for rejected requests. It confirmed the documented
+receipt-query snapshot limitation. Unchanged implementation and authority bytes
+retain their prior review; both start and final checks showed a clean exact HEAD.
+
+Native junctions, process crash, power loss, hostile filesystem races, complete
+history compatibility, packaging, hosted CI and local/remote execution remain
+unverified. No local result is Issue closure, maintainer acceptance or adoption.
+
+## Closing metadata and reuse
+
+Only `workflow.yaml`, `tasks/T3.json`, `workflow-plan.md`, this report and
+`.dev/workflows/INDEX.MD` may change after the reviewed source commit. Final
+read-back checks their JSON/YAML shape, identities, terminal relationships and
+links. A deterministic Git comparison must show every other tracked path,
+including runtime, tests, input fixtures, contracts and governing rules, unchanged
+from the reviewed commit; ignored `final-rebind.json` binds that result to the
+closing HEAD. This reuses the independent review for unchanged content and the
+fixed test result for unchanged code, fixtures, configuration and runner on the
+same host. It does not assert that the entire repository tree stayed identical.
+
+## Cleanup residual
+
+The parent attempted a contained recursive removal of
+`F:\codex-workflow-records-aa9b936a7d8c4f85833c448b56dacd48` after saving the
+validation logs. Automatic approval review rejected that command before execution
+with `blocked by policy`, without a more specific reason. No alternative deletion
+was attempted. The isolated fixture directory, including failed cleanup fixtures,
+remains. This cleanup outcome is blocked and is not a test pass or a claim that
+all temporary storage was removed.

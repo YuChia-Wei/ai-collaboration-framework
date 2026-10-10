@@ -61,6 +61,26 @@ inventory, implementation and human guide are present. Focused tests pass on F;
 the ordinary-temp fixed suite passed after retaining the F strict-path cleanup
 failure. See [validation](validation.md) for actual attempts and per-Issue ACs.
 
-T3 is in progress. Next: commit the inspected implementation, run the fixed
-suite on that immutable source, obtain independent review and address supported
-findings. Current source-only packaging and provider boundaries remain explicit.
+T3 is complete. The fixed suite passed all 202 tests on immutable
+`315cb2dacae4c5c136995c0e4ae2c20572977a98`. Independent review of the first
+implementation found R1 (invalid Unicode escaping structured errors); the author
+repaired it, and the same read-only reviewer independently verified the repair
+on that commit. It reported no supported new findings. The original finding and
+failed test attempts remain in [validation](validation.md).
+
+All workflow-owned local tasks are complete. The final commit changes only these
+workflow outcome records and the index; runtime, contract, criteria and governing
+authority bytes stay identical to the reviewed subject. No push, PR, merge,
+Issue/Project mutation, installation or publication was performed.
+
+Both Issues retain checkpoint intent (`Refs`, not a closing instruction) for any
+later integration: #439 has the selected design evidence but awaits maintainer
+acceptance; #440 has the checkout Git slice but does not claim installed delivery,
+all historical layouts or local/remote execution. Next owner is the repository
+owner, selecting source PR integration and any separately scoped package/provider
+work. The optional common entry does not change this repository's workflow writer.
+
+The isolated F fixture directory remains because automatic command review denied
+the parent's recursive cleanup. Its original validation logs are preserved in
+ignored local storage. No alternate deletion was attempted; see the residual in
+the validation report.
