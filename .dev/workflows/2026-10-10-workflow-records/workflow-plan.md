@@ -112,3 +112,8 @@ test repair and source integration readiness. See [CI repair](ci-repair.md) for
 the failed run, controlled diagnosis and fixed-subject verification. Installable
 workflow CLI delivery is separately selected 0.20.0 work; #441/#442 continue as
 inventory and design. No release publication is implied.
+
+T5 is complete: 202 fixed source tests passed at `deb5df85`, and the independent
+affected review reported no supported finding. Local readiness is complete;
+current-head hosted CI and provider integration/read-back remain the authorized
+next actions, recorded by PR 447 and subsequent Issue comments.

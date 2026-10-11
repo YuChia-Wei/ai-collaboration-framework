@@ -53,8 +53,25 @@ back independently. v0.20.0 is the delivery target, not a published version.
 
 ## Current result
 
-Repair authored and focused validation passed. Full fixed-source checks and
-independent review are pending on the immutable repair commit. No merge or
-Issue closure is claimed. After those checks, only this report, T5, the plan,
-locator and index may change for local closing metadata; retain a deterministic
-comparison and current-head binding in ignored integration evidence.
+The immutable repair `deb5df85c73739dd7b4198e42ab275f187ec954c` passed
+`python -I -B tests/run.py`: 202 tests, zero failures/errors/skips; runner
+duration 46.904919 seconds on this host. The exact output is retained in ignored
+`workflow-records-integration/fixed-suites-deb5df85.txt` under the local evidence
+root above. Host permissions were selected for the previously observed Windows
+sandbox temp restriction; no runtime or dependency setting changed.
+
+The independent read-only `workflow_review` agent reviewed that exact clean
+commit against `939a5de3`. It verified the six-file diff, related unchanged runtime
+control flow, failure excerpt, probe source, AST/JSON/YAML and whitespace, and
+reported no supported actionable finding. It confirmed that both spellings
+still require `unsafe_path` and exactly one interception. It did not rerun the
+tests or claim native reparse acceptance. Start/end HEAD and tracked state were
+identical and clean; the reviewer made no edits or provider writes.
+
+T5 and local source integration readiness are complete. The closing change is
+limited to this report, T5, the plan, locator and index. Runtime, tests, criteria
+and governing source bytes remain identical to the reviewed repair; retain the
+deterministic comparison and exact final-head binding in ignored integration
+evidence. Hosted retry, merge and separate Issue/Project read-back follow this
+commit under existing owner authorization. This record does not predeclare their
+outcome; the current PR and signed provider follow-up own that later read-back.

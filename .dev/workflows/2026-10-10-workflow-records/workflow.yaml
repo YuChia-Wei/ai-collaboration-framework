@@ -4,12 +4,12 @@ workflow_id: 2026-10-10-workflow-records
 workflow_kind: software-development
 title: Define replaceable workflow records and implement the first Git slice
 owner_skill: software-development-orchestrator
-status: in_progress
-current_phase: ci-repair
+status: completed
+current_phase: completed
 artifact_root: .dev/workflows/2026-10-10-workflow-records
 entrypoint: workflow-plan.md
 created_at: '2026-10-10T11:34:21.3396384+08:00'
-updated_at: '2026-10-11T17:17:21.946002+08:00'
+updated_at: '2026-10-11T17:19:43.645001+08:00'
 template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
 template_version: policy-direct-1.0
 branch: codex/2026-10-10-workflow-records
@@ -33,9 +33,10 @@ execution: Parent is the only tracked writer and integration owner. The owner ex
 workflow_rationale: Preserve the selected contract, compatibility boundaries, implementation
   and immutable independent review across stages. A source-only CLI delivery is distinct
   from future package distribution and downstream adoption.
-result_summary: T1-T4 completed with retained evidence. PR 447 first Source change
-  gate failed one test. T5 controlled reproduction and focused repair passed; fixed
-  suites and affected review pending.
+result_summary: T1-T5 local source delivery and integration readiness complete. Fixed
+  202 tests passed on deb5df85; independent affected review reported no supported
+  finding. Prior CI failure preserved; current-head hosted retry and provider merge/read-back
+  follow under explicit owner authority.
 continuation: Owner requested continued work in this workflow on 2026-10-11. T4 completes
   worked examples, acceptance reconciliation, signed Issue progress and a reviewable
   local PR proposal; T1-T3 keep their original completed evidence.
