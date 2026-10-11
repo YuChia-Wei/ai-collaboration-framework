@@ -9,9 +9,12 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 
 root = Path.cwd().resolve()
-evidence = root / '.dev/ai-context/local/workflow-records-continuation'
+evidence = root / '.dev/ai-context/local/workflow-records-continuation/runs' / uuid.uuid4().hex
+assert evidence.resolve().is_relative_to(root), 'Evidence output must stay inside the selected repository'
+evidence.mkdir(parents=True, exist_ok=False)
 workflow_id = '2026-10-02-skill-routing'
 cli = root / 'tools/workflow-records.py'
 source = root / '.dev/workflows' / workflow_id
@@ -30,7 +33,8 @@ def digest(raw):
     return 'sha256:' + hashlib.sha256(raw).hexdigest()
 
 def save(path, value):
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    with path.open('x', encoding='utf-8') as stream:
+        stream.write(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
 
 source_head = git(root, 'rev-parse', 'HEAD')
 source_manifest = {p.relative_to(source).as_posix(): digest(p.read_bytes())
@@ -119,6 +123,8 @@ with tempfile.TemporaryDirectory(prefix='workflow-record-walkthrough-') as tempo
     assert git(root, 'rev-parse', 'HEAD') == source_head
     result = {'observed_at': datetime.now(timezone.utc).isoformat(timespec='seconds'),
               'implementation_head': source_head, 'fixture_source': '.dev/workflows/' + workflow_id,
+              'output_directory': evidence.relative_to(root).as_posix(),
+              'probe_sha256': digest(Path(__file__).read_bytes()),
               'fixture_commit': fixture_commit, 'source_manifest': source_manifest, 'cases': cases,
               'checks': {'original_fixture_bytes_preserved': True, 'source_record_bytes_preserved': True,
                          'replay_bytes_unchanged': True, 'no_fallback_write': True,

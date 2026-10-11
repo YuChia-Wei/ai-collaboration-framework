@@ -1,0 +1,73 @@
+{
+  "observed_at": "2026-10-11T06:30:08+00:00",
+  "source_head_before_repair_commit": "2d59a0dd471c66cc91f79addd32255260ebe7d6d",
+  "source_sha256": {
+    ".dev/workflows/2026-10-02-skill-routing/results.md": "sha256:181f68125aa1fb9c42a944b120b6359d9607eb412928041a76c748bb2028c033",
+    ".dev/workflows/2026-10-02-skill-routing/routing-audit.md": "sha256:cff3d2a62e9d61889909fed2853469ce402e2d57c3a65f86bf8ab1b8243f8b51",
+    ".dev/workflows/2026-10-02-skill-routing/tasks/T1.json": "sha256:9c284e37f15370490409367566687f3a637ca37455f9bb47e319b3a64fa270ff",
+    ".dev/workflows/2026-10-02-skill-routing/tasks/T2.json": "sha256:8321195ee39864e191fa3aaee30305a7446d10a547863851b0cbc6299c74970c",
+    ".dev/workflows/2026-10-02-skill-routing/workflow-plan.md": "sha256:85198aad8ce28d14ef3350f0aef1e2bf1f2d79dc28aaa118a08b87e364cc0897",
+    ".dev/workflows/2026-10-02-skill-routing/workflow.yaml": "sha256:77746407690e7865e32c3421b205ce1aba2dc68849d4ec7d55563ef5aab15018",
+    ".dev/workflows/2026-10-10-workflow-records/run-walkthrough.py": "sha256:d7d3636014a754da090dc01b2a2c05363c2bc7ba1ddad8fe0bf699447344acd1",
+    "src/workflow_records/__init__.py": "sha256:fa119e9be35d80136a5d29a66e0f0dc4a57ed0e17f2c97dcbc08da7a20b99348",
+    "src/workflow_records/contracts.py": "sha256:7f0f65cfa9adb9c23d6e5514e8b661ca3d12bdb8ea95de291566eb647aeb0ef7",
+    "src/workflow_records/git_store.py": "sha256:1e6b75008b468afadb1bb7b23ee7b0df671d1d93332460b4b0278f3763f023b8",
+    "src/workflow_records/service.py": "sha256:a5cce2993dbe3e656217f9453594cd18c95bd1170d2825b39d236e5f8ecff8aa",
+    "tools/workflow-records.py": "sha256:d2e8b46cb880d6c3381a29bbbd7e1e038428f232bb18e25be4a4c2a401c287da"
+  },
+  "verifier_sha256": "sha256:c8c7affdb57daf77667e26675edb18eb3f154edc5de60e876e01408cc45e746d",
+  "command": "python -I -B .dev/ai-context/local/workflow-records-continuation/verify-reproducer.py",
+  "execution": "host-permission; native-temp tiny Git checkout; exact selected source bytes",
+  "output_directory": ".dev/ai-context/local/workflow-records-continuation/reproducer-verification/486dea66397749e38a48a1f97226d7d8",
+  "fixture_commit": "30d326243bcfe598990559c7d5de179bc528fce2",
+  "original_transcript_sha256": "sha256:d52b69246a03e9170aa8f5b472545a6ac227ee350af2617b4298c160d0fe32ea",
+  "runs": [
+    {
+      "run": 1,
+      "output_directory": ".dev/ai-context/local/workflow-records-continuation/runs/66402b2d9e44458495efcd76e57e29cb",
+      "cases": 15,
+      "hashes": {
+        "walkthrough-transcript.json": "sha256:bc4859b7627d4dcffc5b63c74fee8b35bef3a32ae4b7b6e79aa816d4e2730873",
+        "walkthrough-summary.json": "sha256:79fa55cdbe2b92b605559b764938b308877554012e34e8c500a517e99f856ad9"
+      },
+      "checks": {
+        "original_fixture_bytes_preserved": true,
+        "source_record_bytes_preserved": true,
+        "replay_bytes_unchanged": true,
+        "no_fallback_write": true,
+        "fixture_tracked_diff_empty": true,
+        "owned_fixture_cleanup_complete": true
+      },
+      "duration_seconds": 4.107
+    },
+    {
+      "run": 2,
+      "output_directory": ".dev/ai-context/local/workflow-records-continuation/runs/103dcdebcdb447fa98b5892aede2d01d",
+      "cases": 15,
+      "hashes": {
+        "walkthrough-transcript.json": "sha256:85185f7db9bef45733775944733401293be1c4eac6310c821defa529c452775e",
+        "walkthrough-summary.json": "sha256:b00e47bb4657340ca87097628b614b54f266e99d8c0e56ab5aa2b9ceabb76c53"
+      },
+      "checks": {
+        "original_fixture_bytes_preserved": true,
+        "source_record_bytes_preserved": true,
+        "replay_bytes_unchanged": true,
+        "no_fallback_write": true,
+        "fixture_tracked_diff_empty": true,
+        "owned_fixture_cleanup_complete": true
+      },
+      "duration_seconds": 3.775
+    }
+  ],
+  "checks": {
+    "fresh_checkout_output_initially_absent": true,
+    "both_15_case_runs_passed": true,
+    "distinct_output_directories": true,
+    "first_run_bytes_preserved_after_second": true,
+    "historical_transcript_bytes_preserved": true,
+    "selected_source_bytes_preserved": true,
+    "fixture_tracked_diff_empty": true,
+    "owned_checkout_cleanup_complete": true
+  },
+  "duration_seconds": 8.716
+}

@@ -75,8 +75,11 @@ progress and finish the local PR proposal. Runtime implementation is unchanged.
    change journal bytes; unavailable operations made no fallback write; the host
    invocation's own temporary fixture was removed.
 
-The exact probe bytes are retained in [run-walkthrough.py](run-walkthrough.py);
-they match the script executed from ignored local storage. Its bounded
+The original probe bytes are retained at commit
+`2d59a0dd471c66cc91f79addd32255260ebe7d6d` in
+[run-walkthrough.py](run-walkthrough.py); they match the script executed from
+ignored local storage. The later output-handling repair below supersedes that
+reproducer while retaining the original evidence and hash. Its bounded
 [evidence summary](walkthrough-evidence.json) preserves the runtime and fixture
 identities, probe digest, transcript digest and each operation's observed status.
 The full path-free request/response transcript is retained in ignored
@@ -89,9 +92,11 @@ Reproduce from the repository root with:
 python -I -B .dev/workflows/2026-10-10-workflow-records/run-walkthrough.py
 ```
 
-This creates one small native-temp Git fixture and writes new evidence only under
-the named ignored continuation directory. It does not overwrite the tracked
-evidence summary. A sandbox temp-permission error requires a host-permission
+This creates one small native-temp Git fixture and first allocates a new unique
+directory under the ignored continuation directory's `runs/` child. That path is
+reported as `output_directory`; all files are written without replacement.
+Existing transcripts and the tracked evidence summary remain untouched. A
+sandbox temp-permission error requires a host-permission
 decision, not changing the product or silently using F. No global TEMP/TMP or
 source-project workflow store setting is changed.
 
@@ -101,6 +106,45 @@ read offset). All matched. The ten changed files passed Python/JSON/YAML parsing
 as applicable, 365 relative Markdown links resolved, and the workflow had exactly
 one active task, T4. `git diff --check` passed. Immutable guidance review and fixed
 source checks follow the content commit; no result is inferred in advance.
+
+## Independent guidance review and repair
+
+`workflow_review` reviewed clean immutable
+`2d59a0dd471c66cc91f79addd32255260ebe7d6d` against the intake commit. It
+confirmed the guide's 12 JSON blocks, original fixture digests, transcript/probe
+binding, actual-versus-designed distinctions and unchanged runtime/policy bytes.
+It found no other supported guidance issue but reported two P2 reproducer defects:
+
+- R2: a fresh checkout lacks the ignored evidence directory, so the command
+  would fail saving output after executing the scenarios.
+- R3: fixed transcript/summary filenames would overwrite earlier hash-bound
+  evidence on a rerun.
+
+These were static control-flow findings, not destructive probes. Both are
+retained. The repair allocates a fresh contained UUID output directory before
+execution and uses exclusive-create writes. Original flat transcript bytes and
+the tracked historical evidence binding remain unchanged.
+
+The focused host-permission check passed at `2026-10-11T06:30:08Z` in 8.716
+seconds. It copied the exact selected implementation, fixture and repaired probe
+bytes into one tiny native-temp Git checkout, verified the ignored output root
+was absent, then invoked the probe twice. Both 15-case runs passed, used distinct
+output directories and preserved the first run's transcript and summary bytes.
+The original flat transcript retained digest
+`sha256:d52b69246a03e9170aa8f5b472545a6ac227ee350af2617b4298c160d0fe32ea`.
+All owned temporary checkouts were removed and all selected source bytes stayed
+unchanged. [The focused result](reproducer-verification.json) records exact
+source/probe hashes, command, per-run transcript hashes and observed checks.
+The author check supports R2/R3 repair; affected independent re-review remains
+pending on the clean repair commit and is not inferred from this check.
+
+On the same immutable `2d59a0dd` source, `python -I -B tests/run.py` passed all
+202 current tests, with zero failures/errors/skips, in 49.839038 seconds (runner
+duration). Host permissions avoided the observed sandbox temp restriction.
+The saved log is `.dev/ai-context/local/workflow-records-continuation/fixed-suites.txt`.
+That suite does not cover the new reproducer's directory/history behavior; the
+focused checks above own it. Runtime implementation and its test dependencies
+are unchanged by this repair.
 
 ## Acceptance reconciliation
 
