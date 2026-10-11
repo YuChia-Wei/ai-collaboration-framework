@@ -102,6 +102,27 @@ Git today, creation stays with the existing project writer and the first selecte
 tool action is discovery. Calling `create` here returns `unsupported_capability`.
 This is an explicit first-slice limit, not a stub returning a fabricated record.
 
+### Worked scenario and evidence boundaries
+
+The [complete Git walkthrough](../../docs/workflow-records-walkthrough.md) gives
+request fields and observed response shapes for the same reference throughout:
+
+| Step | Current Git behavior | Future local/remote obligation |
+| --- | --- | --- |
+| Establish record | existing project writer; common `create` is unsupported | advertise create before offering it; return a complete bound ref |
+| Read context | capture core revision, source HEAD and document revision separately | supply the selected snapshot/revision semantics |
+| Checkpoint | condition on captured inputs with one operation ID | preserve conditional command and queryable outcome in the provider's transaction model |
+| Replay | same original request returns retained receipt without a second journal write | distinguish replay from a new accepted command |
+| Conflict | new operation with a stale core revision is refused; re-read and reconcile | return conflict without silent overwrite |
+| Read/resume | read the specified document revision and retain truncation/missing markers | preserve these meanings through adapter mapping |
+| Query outcome | applied receipt or unknown; query success is not write success | pending may describe a remote nonterminal outcome; absent never proves failure |
+| Change default/unavailable | existing Git ref remains bound; an explicit unavailable provider cannot write Git | preserve one writable authority without fallback |
+
+The current unavailable example is rejection of an unimplemented provider, not a
+network fault test. Local/remote columns and pending outcomes remain design-only.
+The worked examples do not add capabilities, change version 1, install a package,
+or adopt this store as the source project's workflow writer.
+
 ## Wire operations
 
 Every request contains `contract_version: "workflow-records/1"` and `operation`.

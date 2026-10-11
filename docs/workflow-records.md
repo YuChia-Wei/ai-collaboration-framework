@@ -3,6 +3,8 @@
 目前提供 **source checkout CLI**，需要 Python 3.11+、PyYAML 6 與 Git。
 它尚未納入 framework 安裝包；既有 installed orchestrator 不會自動取得這支工具。
 完整英文契約位於 [workflow_records](../src/workflow_records/README.md)。
+需要逐步核對 request／response、重試、衝突與 unavailable 時，請依
+[完整操作範例](workflow-records-walkthrough.md)使用同一筆 workflow ref。
 
 此切片支援目前 `workflow.yaml`、`tasks/*.json|yaml|yml` 與 UTF-8 文件格式，
 可查找、讀取、留下 checkpoint、查操作結果及整理接手資料。未選用的專案繼續

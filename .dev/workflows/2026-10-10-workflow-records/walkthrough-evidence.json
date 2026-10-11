@@ -1,0 +1,140 @@
+{
+  "observed_at": "2026-10-11T14:21:20+08:00",
+  "implementation_head": "b382e244c6ce37df8d25840c4c2e15a465b15154",
+  "fixture_source": ".dev/workflows/2026-10-02-skill-routing",
+  "fixture_commit": "42e797b38e7b2fa58ece1fb2aab7b156e0506755",
+  "checks": {
+    "original_fixture_bytes_preserved": true,
+    "source_record_bytes_preserved": true,
+    "replay_bytes_unchanged": true,
+    "no_fallback_write": true,
+    "fixture_tracked_diff_empty": true,
+    "owned_fixture_cleanup_complete": true
+  },
+  "duration_seconds": 3.728,
+  "cases": [
+    {
+      "id": "01-capabilities",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "02-create-unsupported",
+      "exit_code": 1,
+      "status": "error",
+      "mutation_state": "none",
+      "error_code": "unsupported_capability",
+      "operation_state": null
+    },
+    {
+      "id": "03-find",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "04-context",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "05-checkpoint",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "applied",
+      "error_code": null,
+      "operation_state": "applied"
+    },
+    {
+      "id": "06-replay",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "applied",
+      "error_code": null,
+      "operation_state": "applied"
+    },
+    {
+      "id": "07-stale-checkpoint",
+      "exit_code": 1,
+      "status": "error",
+      "mutation_state": "none",
+      "error_code": "revision_conflict",
+      "operation_state": null
+    },
+    {
+      "id": "08-fresh-context",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "09-read-document",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "10-operation",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": "applied"
+    },
+    {
+      "id": "11-unknown-operation",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": "unknown"
+    },
+    {
+      "id": "12-resume",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "13-unqualified-unavailable",
+      "exit_code": 1,
+      "status": "unavailable",
+      "mutation_state": "none",
+      "error_code": "provider_unavailable",
+      "operation_state": null
+    },
+    {
+      "id": "14-explicit-git-binding",
+      "exit_code": 0,
+      "status": "ok",
+      "mutation_state": "none",
+      "error_code": null,
+      "operation_state": null
+    },
+    {
+      "id": "15-remote-write-unavailable",
+      "exit_code": 1,
+      "status": "unavailable",
+      "mutation_state": "none",
+      "error_code": "provider_unavailable",
+      "operation_state": null
+    }
+  ],
+  "transcript_sha256": "sha256:d52b69246a03e9170aa8f5b472545a6ac227ee350af2617b4298c160d0fe32ea",
+  "probe_sha256": "462da8b2711884511f1dcdce7bbc3bb34aa443b019362fa8ec724978defb9c09",
+  "reproducer": ".dev/workflows/2026-10-10-workflow-records/run-walkthrough.py"
+}

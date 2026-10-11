@@ -52,7 +52,7 @@ semantics affect record authority. Reviewer receives an immutable commit,
 acceptance and governing source rules and remains read-only. Hosted CI remains
 not-run until a separately authorized PR; no local result proves hosted success.
 
-## Current checkpoint
+## First-slice checkpoint (2026-10-10)
 
 T1 and T2 are complete for the selected source slice. Read-only inventory and
 architecture advice were returned by `workflow_inventory` and `contract_advice`;
@@ -84,3 +84,13 @@ The isolated F fixture directory remains because automatic command review denied
 the parent's recursive cleanup. Its original validation logs are preserved in
 ignored local storage. No alternate deletion was attempted; see the residual in
 the validation report.
+
+## Current continuation (2026-10-11)
+
+The owner requested continued #439/#440 work in this same workflow and authorized
+Issue progress replies with the same AI signature as local commits. Preserve the
+completed T1-T3 history; T4 owns worked examples, acceptance reconciliation,
+signed provider progress and a local PR proposal. See
+[the continuation record](continuation.md) for current authority, evidence and
+next actions. The owner also confirmed the F RAM disk was cleared by reboot;
+the old cleanup residual is resolved by that report and needs no deletion.
