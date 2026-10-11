@@ -16,8 +16,8 @@
 | --- | --- | --- |
 | T1 | SQLite adapter、初始化、受控寫入與完整備份／還原 | completed (source) |
 | T2 | src-only optional package、完整模組閉包及安裝入口 | completed (source) |
-| T3 | 真正成品安裝／恢復與雙 provider 驗證 | pending |
-| T4 | 固定來源獨立審查、必要修正及逐項驗收紀錄 | pending |
+| T3 | 真正成品安裝／恢復與雙 provider 驗證 | completed（69 checks，F 合成 consumer） |
+| T4 | 固定來源獨立審查、必要修正及逐項驗收紀錄 | completed（含實際失敗修正及 evidence read-back） |
 
 ## 檢查與證據
 
@@ -25,6 +25,16 @@
 
 Package 需證明所有 payload source 位於 `src`，傳遞 import 不回指 repo `tools`，隔離執行不讀 source checkout；惡意或錯誤非 `src` 成員須在組裝前拒絕。
 
-本機 focused 結果與失敗修復見 [validation.md](validation.md)；真正 installed runtime 與 immutable review 尚待完成。起點為 `6a615e8ac19df9343835ab74a0e2436cdc974976`。圖索引對 workflow classes 無充分 coverage，使用已知 Git-tracked `src/workflow_records`／distribution 與直接 tests 的明確 fallback；不以搜尋無結果證明不存在。
+本機 focused 結果與失敗修復見 [validation.md](validation.md)。固定來源 `4ec4114dbcdffaacfada5b05a4e8d750f5304deb` 已完成 243 項 source tests、真正 installed runtime 的 69 項 checks，以及獨立 source／修復／證據審查。[逐項驗收與 v0.20.0 readiness](acceptance.md)保留 artifact identity、命令、限制與接手責任。起點為 `6a615e8ac19df9343835ab74a0e2436cdc974976`。圖索引對 workflow classes 無充分 coverage，使用已知 Git-tracked `src/workflow_records`／distribution 與直接 tests 的明確 fallback；不以搜尋無結果證明不存在。
+
+## 本次完成與下一個權限邊界
+
+本次本機實作、合成消費端安裝與驗證已完成。Owner 後續指定所有 test paths
+使用 F RAM disk，並清除 C 測試資料；已依指示保留精簡經驗紀錄，移除 C trial
+與 raw logs。F 結果不宣稱持久磁碟或斷電耐久性。
+
+來源分支尚未 push／建立 PR／merge；#441、#448 仍為 open，線上 AC 與 Project
+未改動。後續整合需要其明確授權與實際 PR head 的 Source change gate。
+本工作不處理 tag／release、真實 downstream 更新、正式資料搬遷或 #437 發布條件。
 
 任務 model／effort 取自 2026-10-11 讀回 host configured defaults `gpt-6-astra`／`ultra`；不宣稱獨立觀測 runtime 執行身分。

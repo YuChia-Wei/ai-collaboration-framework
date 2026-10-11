@@ -131,3 +131,52 @@ Original terminal SHA-256:
 `038d3bb12bb1988d9c36913657f72a240e561946227fdf624a82785bff5c2ec9`.
 Raw first-attempt fixtures and call files are no longer available; the summary
 is retained experience, not a substitute for the next actual execution.
+
+The two previous C-drive source-suite logs were also removed after their exact
+result JSON summaries were copied and hash-checked in the same F archive.
+Their raw output hashes and results remain recorded above; the raw C logs are
+no longer retained. No new test data was written to C after the owner's direction.
+
+## Repaired fixed source and actual F installation
+
+Source subject `4ec4114dbcdffaacfada5b05a4e8d750f5304deb`, tree
+`a76a26c62924f0e43dc8e5de0a42a86477386601`, was clean before and after execution.
+
+- Full fixed suite from a separate F checkout: **243 tests passed**, zero
+  failures/errors/skips, 68.19431 s. Cwd
+  `F:/fw441-448/source-4ec4114d-0d8c0eab`; TEMP/TMP/TMPDIR
+  `F:/fw441-448/suite-temp-23104c5c`. Report:
+  `F:/fw441-448/source-test-4ec4114d.json`; raw log:
+  `F:/fw441-448/full-source-4ec4114d.log`.
+- Actual installation attempt 2 ran exactly once after the schema repair and
+  F-only runner change. External executor `contract_advice` returned **passed**:
+  69 checks, 51 calls, 114.539 s, 10:43:03–10:44:57 UTC on 2026-10-11.
+  Catalog assembly used 68.625 s; no controlled benchmark or acceleration claim
+  is made. Report: `F:/fw441-448/e-af7291441785/terminal.json`.
+- Parent read back all 51 command records: every cwd and TEMP/TMP/TMPDIR is F.
+  Preservation files before/after are byte-identical; 23 installed/caller file
+  hashes and SQLite bytes are unchanged by the maintenance replay scenarios.
+- Fresh final `inspect-after` reports `managed-bytes-consistent`. The preceding
+  selected `recover-restore-refused` reports conflict and details `drift`; that
+  is the refused operation's result, not a successful restore or the final
+  independent installation observation.
+- Source suite, installed runtime and final evidence reconciliation are separate
+  evidence classes. See [acceptance.md](acceptance.md) for identities, hashes,
+  exact commands, #441/#448 AC mapping and the v0.20.0 handoff.
+
+## Independent review subjects and disposition
+
+Reviewer `workflow_review` remained read-only throughout. It did not perform the
+source suite or installation and did not count author repairs as its own work.
+
+| Fixed scope | Result |
+| --- | --- |
+| `6a615e8a` → `ac2412a0`, all 48 changed files, plus original runner blob `62b7faf6711d7bd4ac5985dd6ed70972a4faa37e` | No actionable finding in the initial immutable review; later actual installation exposed the recorded shared-Pin regression |
+| `5e9d83af` → `cd205e98f2910994a3ca77287260f70e4fb9779f`, four-file schema repair and failure record | No actionable finding; `Pin` remains src-only, caller `ProjectInput` is separate, regression tests cover both validators |
+| `cd205e98` → `4ec4114dbcdffaacfada5b05a4e8d750f5304deb`, two test-tool files | No actionable finding; F-only roots and narrow Windows error-1 fallback retain no-reparse, stable identity, native device and cleanup root checks |
+| Fixed F terminal/raw outputs/audit/preservation bound to `4ec4114d` | No contradiction or missing evidence in the selected installed scenarios; verified 36 audited consumer calls, 2 expected source denials each, 0 unexpected denials and only installed workflow module origins |
+
+The final evidence-record commit changes documentation and workflow records only.
+It must retain exact equality of the tested `src`, `tools`, `tests`, `.github`
+and governing source-policy paths to `4ec4114d`. This is a scoped content reuse
+statement, not whole-tree equivalence or hosted current-head acceptance.
