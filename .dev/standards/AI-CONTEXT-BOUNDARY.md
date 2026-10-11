@@ -31,6 +31,15 @@ Do not package source-project standards, provider bindings or execution records
 as downstream rules. A reference to target facts must identify caller-selected
 inputs; it must not require this project's private document names.
 
+The owner reaffirmed this boundary for Issues #441 and #448 on 2026-10-11:
+every downstream package member and required runtime resource must originate in
+`src`. Root `tools` serves source-project orchestration and validation, with a
+different responsibility from product source. It may invoke product entrypoints
+in `src`; a product must not import, copy or resolve runtime resources from root
+`tools`, `.dev`, `docs`, tests or other paths outside `src`. Generated identities,
+hash manifests and installation metadata describe those source members; they do
+not authorize additional product-resource inputs.
+
 Historical source identities may remain inert provenance with a revision/digest
 and an explicit historical meaning. They are not files to resolve at runtime,
 package members or current authority. Do not infer a working legacy route from

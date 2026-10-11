@@ -1,16 +1,20 @@
-# Workflow 紀錄共通入口：第一個 Git 切片
+# Workflow 紀錄共通入口：Git 使用方式
 
-目前提供 **source checkout CLI**，需要 Python 3.11+、PyYAML 6 與 Git。
-它尚未納入 framework 安裝包；既有 installed orchestrator 不會自動取得這支工具。
-完整英文契約位於 [workflow_records](../src/workflow_records/README.md)。
+目前來源提供可選的 [workflow-records 套件](skills/workflow-records.md)，需要
+Python 3.11+、PyYAML 6 與 Git。套件支援 Git 與 SQLite；本頁說明 Git provider。
+既有 installed orchestrator 不會自動取得新套件，需明確選取與安裝。
+完整英文契約位於 [operations](../src/skills/workflow-records/references/operations.md)。
 需要逐步核對 request／response、重試、衝突與 unavailable 時，請依
 [完整操作範例](workflow-records-walkthrough.md)使用同一筆 workflow ref。
 
 此切片支援目前 `workflow.yaml`、`tasks/*.json|yaml|yml` 與 UTF-8 文件格式，
 可查找、讀取、留下 checkpoint、查操作結果及整理接手資料。未選用的專案繼續
-使用原方式。local／remote 只保留契約位置，尚未實作。
+使用原方式。SQLite 的初始化、create 與備份操作見套件契約；remote 尚未實作。
 
 ## 使用方式
+
+安裝後可使用 `<project>/.ai/core/skills/workflow-records/tools/workflow-records.py`，
+參數相同，無需來源 checkout。以下保留來源開發入口範例。
 
 在 framework checkout 執行以下命令；`--root` 指向欲讀取的專案，
 `--request` 指向自行建立的 UTF-8 JSON 請求。工具不會自動儲存設定。
@@ -111,6 +115,7 @@ owner 是否仍在執行。只有確認已無存活 writer 後，由專案 owner
 stale lock／temporary file；工具不會自動搶鎖。移除前保留 checkpoint 並核對
 操作結果，再重新讀 context。歷史容量滿時工具拒絕新寫入，不會自動清除 receipt。
 
-本輪未接入：舊 handoff／terminal validators、所有歷史格式、installed runtime、
-新增 workflow 的共通 create、任意多文件修改、資料庫、board、完整搬遷及發布。
+仍未接入：舊 handoff／terminal validators、所有歷史格式、Git provider 的 create、
+任意多文件修改、board、Git-to-SQLite 搬遷及發布。SQLite 與 installed entry
+是另行選用的能力，不能把本頁 Git 情境當成它們的執行證據。
 F RAM disk 可用於暫存 fixture；其測試結果不代表斷電後的資料持久性。

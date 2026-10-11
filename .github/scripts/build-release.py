@@ -3,6 +3,7 @@
 from __future__ import annotations
 import argparse
 import ast
+import hashlib
 from datetime import datetime, timezone
 import os
 from pathlib import Path
@@ -14,8 +15,8 @@ import sys
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).absolute().parent))
-from release_common import (SCHEMA, document, encoded, entry, git, identity, oid,
-                            plain, require, safe_name, sha, verify_bundle)
+from release_common import (SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, entry, git, identity, oid,
+                            plain, render_readme, require, safe_name, sha, verify_bundle)
 
 
 def engine_pin(repository, source):
@@ -41,6 +42,20 @@ def engine_pin(repository, source):
     return {"id": "framework-managed-installation", "version": "2.0.0", "source_commit": source, "files": rows}
 
 
+def load_readme_source(repository, source_commit):
+    """Read one regular product blob from the selected source, never tooling HEAD."""
+    oid(source_commit)
+    listing = git(repository, "ls-tree", source_commit, "--", README_SOURCE_PATH).decode("ascii")
+    match = re.fullmatch(r"(?:100644|100755) blob ([0-9a-f]{40})\t" + re.escape(README_SOURCE_PATH) + r"\n", listing)
+    require(match is not None, "selected source requires a regular src README template; no fallback")
+    raw = git(repository, "show", source_commit + ":" + README_SOURCE_PATH)
+    require(len(raw) <= README_LIMIT, "README template budget")
+    blob = hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+    require(blob == match.group(1), "README source Git blob mismatch")
+    return {"path": README_SOURCE_PATH, "commit": source_commit, "git_blob": blob,
+            "sha256": sha(raw), "size": len(raw), "template_utf8": raw.decode("utf-8", errors="strict")}
+
+
 def collect(root, prefix):
     payload = {}
     for path in sorted(root.rglob("*")):
@@ -63,6 +78,7 @@ def build(args):
     for name in ("build-release.py", "release_common.py"):
         require((script_root / name).read_bytes() == git(repository, "show", tooling + ":.github/scripts/" + name), "tooling byte mismatch")
     source = identity(repository, args.source_commit, args.tag)
+    readme_source = load_readme_source(repository, source["commit"])
     # Catalog 1 currently accepts stable or rc.N only. Keep snapshot identity in its name/manifest.
     release_version = source["tag"][1:] if source["tag"] else "0.0.0-rc." + str(int(source["commit"][:12], 16) + 1)
     require(re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.[1-9][0-9]*)?", release_version),
@@ -104,28 +120,8 @@ def build(args):
     payload = collect(catalog_root, "catalog") | collect(engine_root, "engine")
     payload["engine-pin.json"] = (pin_raw, 0o644)
     label = source["tag"] or "snapshot"
-    readme = f"""# AI Collaboration Framework {label}
-
-Source commit: {source['commit']}
-Catalog identity: {receipt['identity']}
-Distribution label: {release_version}
-Engine: framework-managed-installation 2.0.0 (23 pinned product-source files).
-
-This generic package includes the full catalog, standalone engine, independently
-selected engine pin and raw content hashes. Catalog metadata includes the actual
-build receipt. It contains no project-bound selection or installed target state.
-
-Use engine/src/tools/derive-subset.py with an explicitly selected preset/selection,
-the included catalog and its identity, and engine-pin.json. Run Python with -I -B;
-provide PyYAML 6.x and explicit disjoint output/scratch roots.
-Distribution and engine identity must be reviewed before target installation.
-
-Snapshot builds are development artifacts, even though the current Catalog 1
-builder requires a numeric rc.N distribution label. The full SHA identifies them.
-Build/archive success does not establish test, runtime or native acceptance.
-Draft readiness is not publication. Release notes and publication are owner actions.
-"""
-    payload["README.md"] = (readme.encode(), 0o644)
+    readme = render_readme(readme_source["template_utf8"], source, receipt["identity"], release_version)
+    payload["README.md"] = (readme, 0o644)
     payload["content-hashes.json"] = (encoded([entry(n, b, m) for n, (b, m) in sorted(payload.items())]), 0o644)
     name = f"ai-collaboration-framework-{label}-{source['commit']}.zip"
     archive = output / name
@@ -141,12 +137,12 @@ Draft readiness is not publication. Release notes and publication are owner acti
                 "catalog_identity": receipt["identity"], "engine_pin_sha256": sha(pin_raw),
                 "archive": {"name": archive.name, "size": len(raw), "sha256": sha(raw)},
                 "entries": [entry(n, b, m) for n, (b, m) in sorted(payload.items())],
-                "provenance": {"repository": args.repository_name, "tooling_commit": tooling,
+                "provenance": {"repository": args.repository_name, "tooling_commit": tooling, "readme_source": readme_source,
                     "workflow": args.workflow, "workflow_commit": oid(args.workflow_commit),
                     "run_id": args.run_id, "run_attempt": args.run_attempt,
                     "started_at": started, "completed_at": datetime.now(timezone.utc).isoformat(),
                     "python": platform.python_version(), "platform": platform.platform()},
-                "validation": {"archive_raw_hashes": "verified", "tests": "not-run", "runtime": "not-run", "publication": "not-performed"}}
+                "validation": {"archive_raw_hashes": "verified", "readme_source": "verified", "tests": "not-run", "runtime": "not-run", "publication": "not-performed"}}
     (output / "release-manifest.json").write_bytes(encoded(manifest))
     (output / (archive.name + ".sha256")).write_text(f"{sha(raw)}  {archive.name}\n", encoding="utf-8", newline="\n")
     verify_bundle(output, source)

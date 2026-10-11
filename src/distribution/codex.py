@@ -64,7 +64,7 @@ def project_entry(template_bytes: bytes, package_id: str, package_version: str,
                 "Codex projection link must resolve to a selected installed resource")
     return destination, rendered.encode("utf-8")
 
-_V2_TEMPLATE_SHA256 = "68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4"
+_V2_TEMPLATE_SHA256 = frozenset(("68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4", "786fba6b9ed3eaba711d39d2366d39ccfbfe4a5f2a39947256ceab7ed37fd4f6"))
 
 
 def project_entry_v2(template_bytes: bytes, package_id: str, package_version: str,
@@ -75,7 +75,7 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
     from .data import identifier, path, string, version
 
     require(type(template_bytes) is bytes
-            and sha256(template_bytes).hexdigest() == _V2_TEMPLATE_SHA256,
+            and sha256(template_bytes).hexdigest() in _V2_TEMPLATE_SHA256,
             "Codex v2 renderer requires its exact v2 template")
     package_id = identifier(package_id, "package_id")
     package_version = version(package_version, "package_version")

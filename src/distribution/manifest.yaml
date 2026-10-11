@@ -908,6 +908,36 @@ components:
     destination: .ai/core/skills/spec-compliance-validator/skill-package.yaml
   kind: skill
   version: 0.1.0
+- kind: skill
+  id: workflow-records
+  version: 0.1.0
+  source: src/skills/workflow-records
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/workflow-records/SKILL.md
+  - source: references/git-format.md
+    destination: .ai/core/skills/workflow-records/references/git-format.md
+  - source: references/operations.md
+    destination: .ai/core/skills/workflow-records/references/operations.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/workflow-records/skill-package.yaml
+  - source: tools/workflow-records.py
+    destination: .ai/core/skills/workflow-records/tools/workflow-records.py
+  - source: tools/workflow_records/__init__.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/__init__.py
+  - source: tools/workflow_records/backup.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/backup.py
+  - source: tools/workflow_records/common.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/common.py
+  - source: tools/workflow_records/contracts.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/contracts.py
+  - source: tools/workflow_records/git_store.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/git_store.py
+  - source: tools/workflow_records/service.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/service.py
+  - source: tools/workflow_records/sqlite_store.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/sqlite_store.py
 - kind: sub-agent
   id: context-translator
   version: 0.1.0

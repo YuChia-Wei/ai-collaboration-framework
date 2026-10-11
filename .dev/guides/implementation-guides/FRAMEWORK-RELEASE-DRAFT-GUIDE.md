@@ -9,15 +9,17 @@ and removes obsolete automation. This does not establish full P7 acceptance.
 | --- | --- |
 | Push to `main` changing `src/**` or `tools/**`, or manual **Build framework snapshot** from `main` | Generic snapshot ZIP, checksum and external manifest in Actions artifacts; no Release |
 | Push an existing annotated `vMAJOR.MINOR.PATCH` or `vMAJOR.MINOR.PATCH-rc.N` tag | Exact tagged source package and owned GitHub Draft Release |
-| Manual **Prepare framework draft** from `main`, input an existing annotated tag | Current immutable workflow tooling builds the old tagged product source, then prepares its draft |
+| Manual **Prepare framework draft** from `main`, input an existing annotated tag | Current immutable workflow tooling builds a compatible tagged product source, then prepares its draft |
 
 New draft titles contain only the version. RC display titles use `v0.19.0-rc3` while the canonical tag and package identity retain `v0.19.0-rc.3`. Existing human-edited titles remain preserved on retries.
 
-No tags are created or moved. For an older tag such as `v0.19.0-rc.3`, select
-`main` as workflow ref and that tag as the `tag` input. The original tag object
-and peeled source commit remain unchanged. Product code executes in a separate
-clean checkout of the exact source commit. The workflow/tooling commit is
-recorded separately.
+No tags are created or moved. Current tooling requires the selected source tag
+to contain the current engine contract and the release README template described
+below. Older tags lacking either require their compatible historical tooling;
+there is no fallback to current checkout product resources. The original tag
+object and peeled source commit remain unchanged. Product code executes in a
+separate clean checkout of the exact source commit. The workflow/tooling commit
+is recorded separately.
 
 Catalog 1 accepts stable and `rc.N` versions only. Other SemVer prereleases,
 including `beta` or `dev`, fail before draft mutation. Main snapshots use
@@ -50,6 +52,30 @@ repository/workflow/tooling/run/attempt provenance. The ZIP has a checksum and n
 self-referential archive hash. The tool verifies raw ZIP entries, extracts them
 and checks raw hashes again. No MQ/project selection, `.dev` history, target
 installation, scratch files or credentials are packaged.
+
+New builds emit `framework-release-assets/2`. The reusable ZIP `README.md`
+comes from the regular UTF-8 Git blob
+`src/distribution/templates/release-readme.md` at the selected **source commit**,
+not the workflow/tooling commit. The renderer uses `string.Template` with exactly
+`label`, `source_commit`, `catalog_identity` and `release_version`; unknown,
+missing or malformed placeholders fail. A missing source template fails without
+reading a replacement from the working tree.
+
+The external manifest's mandatory `provenance.readme_source` contains the fixed
+source path, source commit, Git blob identity, raw SHA-256, byte size and original
+`template_utf8`. The offline verifier checks those byte identities, renders the
+four manifest-selected values again and requires exact agreement with ZIP README
+bytes. Version 2 also requires each catalog member's source path to be a safe
+`src/` path. The template is not an extra ZIP member, catalog build input or
+engine member; the engine remains the same 23-file closure. Generated manifests,
+pins and hashes remain source-project release orchestration.
+
+The reader retains `framework-release-assets/1` handling for existing artifacts.
+A successful version-1 read validates the legacy envelope only: its README source
+evidence is absent, and it does not establish the version-2 source-only rule.
+Published version-1 ZIPs, manifests, tags and notes are never rewritten by this
+change. Draft ownership still binds the exact existing manifest bytes, so a
+new version-2 rebuild cannot replace assets admitted with a version-1 manifest.
 
 Actual build receipts contain time/environment data; rebuilding one source
 commit can yield different ZIP bytes. A matching source or catalog label alone

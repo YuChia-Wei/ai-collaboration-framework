@@ -1,4 +1,4 @@
-"""Consume explicit package metadata versions 1/2/3/4; never resolve project settings."""
+"""Consume explicit package metadata versions 1/2/3/4/5; never resolve project settings."""
 
 from __future__ import annotations
 
@@ -46,17 +46,17 @@ def load_package(blob: Blob) -> Package:
     label = blob.path
     parsed = yaml_object(blob.data, label)
     if type(parsed.get("metadata_version")) is int:
-        require(parsed["metadata_version"] in {1, 2, 3, 4}, "unsupported-version: unknown skill metadata")
+        require(parsed["metadata_version"] in {1, 2, 3, 4, 5}, "unsupported-version: unknown skill metadata")
     data = mapping(parsed, {
         "metadata_version", "id", "version", "delivery_status", "entrypoint",
         "dependencies", "runtime", "configuration", "artifact_roles", "resources", "operations",
-    } | ({"knowledge_consumption"} if type(parsed.get("metadata_version")) is int and parsed["metadata_version"] == 4 else set()), set(), label)
+    } | ({"knowledge_consumption"} if type(parsed.get("metadata_version")) is int and parsed["metadata_version"] in {4, 5} else set()), set(), label)
     metadata_version = data["metadata_version"]
     if type(metadata_version) is int and metadata_version == 1:
         version_one(metadata_version, label)
     else:
-        require(type(metadata_version) is int and metadata_version in {2, 3, 4},
-                f"{label}: only integer metadata versions 1, 2, 3 and 4 are supported")
+        require(type(metadata_version) is int and metadata_version in {2, 3, 4, 5},
+                f"{label}: only integer metadata versions 1, 2, 3, 4 and 5 are supported")
     owner = identifier(data["id"], label)
     version(data["version"], label)
     require(data["delivery_status"] == "implemented", f"{owner}: design-only packages cannot be built as implemented candidates")
@@ -98,7 +98,10 @@ def load_package(blob: Blob) -> Package:
             require(identity not in schemas, f"{owner}: duplicate schema identity {identity[0]}@{identity[1]}")
             schemas[identity] = schema
     templates = named(resources["templates"], {"path", "input_role", "output_role", "owner"}, set(), label)
-    tools = named(resources["tools"], {"owner", "implementation_status", "entrypoint", "operation_contract", "operations"}, set(), label)
+    tool_fields = {"owner", "implementation_status", "entrypoint", "operation_contract", "operations"}
+    if metadata_version == 5:
+        tool_fields.add("support_files")
+    tools = named(resources["tools"], tool_fields, set(), label)
     resource_ids = [*{item["id"] for item in schemas.values()}, *templates, *tools]
     require(len(resource_ids) == len(set(resource_ids)), f"{owner}: duplicate resource identity")
     for schema in schemas.values():
@@ -112,12 +115,15 @@ def load_package(blob: Blob) -> Package:
             require(resource["implementation_status"] == "implemented",
                     f"{owner}: tool {resource['id']} must name its actual implemented entrypoint")
             member(resource["entrypoint"], "tool")
+            if metadata_version == 5:
+                for support in sequence(resource["support_files"], label):
+                    member(support, "tool support file")
             require(resource["operation_contract"] in resources["references"],
                     f"{owner}: operation contract must be a declared reference")
             require(bool(text_array(resource["operations"], label)), f"{owner}: tool needs operations")
 
     operation_fields = {"inputs", "outputs", "implementation_status"}
-    if metadata_version in {3, 4}:
+    if metadata_version in {3, 4, 5}:
         operations = named(data["operations"], operation_fields | {"execution"},
                            {"tool", "instructions"}, label)
     else:
@@ -129,7 +135,7 @@ def load_package(blob: Blob) -> Package:
         text_array(operation["inputs"], label)
         text_array(operation["outputs"], label)
         require(operation["implementation_status"] == "implemented", f"{operation_label}: operation is not implemented")
-        if metadata_version in {3, 4}:
+        if metadata_version in {3, 4, 5}:
             execution = string(operation["execution"], operation_label)
             require(execution in {"instruction", "tool"}, f"{operation_label}: unknown execution kind")
             arm = "instructions" if execution == "instruction" else "tool"
@@ -162,11 +168,11 @@ def load_package(blob: Blob) -> Package:
         require(type(role) is dict, f"{owner}: artifact role must be an object")
         if role.get("owner") == "project":
             role_fields = {"role", "owner", "schema", "store_binding", "identity", "filename", "read_operations", "write_operations"}
-            if metadata_version in {2, 3, 4}:
+            if metadata_version in {2, 3, 4, 5}:
                 role_fields.add("read_schemas")
             mapping(role, role_fields, set(), label)
             declared_schemas = {f"{item['id']}@{item['version']}" for item in schemas.values()}
-            if metadata_version in {2, 3, 4}:
+            if metadata_version in {2, 3, 4, 5}:
                 string(role["schema"], label)
                 readable = text_array(role["read_schemas"], label)
                 require(bool(readable) and set(readable) <= declared_schemas,
@@ -195,7 +201,7 @@ def load_package(blob: Blob) -> Package:
         require(template["input_role"] in roles and template["output_role"] in roles,
                 f"{owner}: template role binding is missing")
 
-    if metadata_version in {3, 4} and data["configuration"] is None:
+    if metadata_version in {3, 4, 5} and data["configuration"] is None:
         require(not roles and not schemas and not templates,
                 f"{owner}: null configuration requires empty artifact_roles, schemas and templates")
     else:
@@ -209,7 +215,7 @@ def load_package(blob: Blob) -> Package:
         template = mapping(defaults["template"], {"origin", "path"}, set(), label)
         require(template["origin"] == "package" and template["path"] in {item["path"] for item in templates.values()},
                 f"{owner}: default template must be a declared package resource")
-    if metadata_version == 4:
+    if metadata_version in {4, 5}:
         from .contracts import validate
         rows = data["knowledge_consumption"]
         require(type(rows) is list and len(rows) <= 128, "knowledge consumption budget")
@@ -256,6 +262,10 @@ def _same_document_schema_reference(document: dict, reference: str, label: str) 
 
 def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
     """Check portable document/schema file references without executing package tools."""
+    # Metadata 5 makes the complete tool payload explicit. A missing module is
+    # a package defect even when no Markdown link happens to reference it.
+    if package.metadata["metadata_version"] == 5:
+        require(set(blobs) == package.members, f"{package.id}: tool support member closure mismatch")
     def local_reference(source_name: str, target: str, allow_web: bool = False):
         target = unquote(target.strip("<>"))
         parsed = urlsplit(target)
@@ -271,7 +281,7 @@ def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
         require(resolved in package.members,
                 f"{package.id}/{source_name}: reference {target!r} is outside the selected package closure")
 
-    if package.metadata["metadata_version"] in {3, 4}:
+    if package.metadata["metadata_version"] in {3, 4, 5}:
         for operation in package.metadata["operations"]:
             if operation["execution"] == "instruction":
                 name = operation["instructions"]

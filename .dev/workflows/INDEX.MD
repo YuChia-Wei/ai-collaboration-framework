@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-10-11-workflow-sqlite-package`](2026-10-11-workflow-sqlite-package/workflow.yaml) | Git and SQLite workflow package | `software-development-orchestrator` | `completed` | `2026-10-11T18:49:24+08:00` | [plan](2026-10-11-workflow-sqlite-package/workflow-plan.md) |
 | [`2026-10-10-workflow-records`](2026-10-10-workflow-records/workflow.yaml) | Replaceable records and first Git slice | `software-development-orchestrator` | `completed` | `2026-10-11T17:19:43.645001+08:00` | [plan](2026-10-10-workflow-records/workflow-plan.md) |
 | [`2026-10-04-v019-finalization`](2026-10-04-v019-finalization/workflow.yaml) | Complete onboarding and the 0.19.0 stable candidate | `software-development-orchestrator` | `completed` | `2026-10-04T19:28:10+08:00` | [plan](2026-10-04-v019-finalization/workflow-plan.md) |
 | [`2026-10-04-release-boundaries`](2026-10-04-release-boundaries/workflow.yaml) | Simplify CI and product/model ownership | `software-development-orchestrator` | `completed` | `2026-10-04T13:02:04+08:00` | [plan](2026-10-04-release-boundaries/workflow-plan.md) |

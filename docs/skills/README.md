@@ -3,7 +3,7 @@
 [回手冊首頁](../README.md) · [安裝說明](../installation.md) ·
 [知識選配](../knowledge-packages.md) · [工具型 skills 設定](../tool-skills.md)
 
-本來源 catalog 有 18 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
+本來源 catalog 有 19 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
 先依要交付的成果選擇；不必為了使用其中
 一個就跑完整開發流程。明確指定的 skill 若在其契約範圍內，應沿用你的選擇。
 
@@ -27,6 +27,8 @@
 | [software-development-orchestrator](software-development-orchestrator.md) | 0.2.0 | 協調跨階段開發，或從 checkpoint 繼續 | 指令 |
 | [spec-author](spec-author.md) | 0.1.0 | 撰寫 production／entity／adapter／formal-test 規格 | 指令 |
 | [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 指令 |
+
+| [workflow-records](workflow-records.md) | 0.1.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | Python record 工具；可選 |
 
 ## 常見選擇
 

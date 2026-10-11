@@ -1,0 +1,18 @@
+{
+  "task_id": "T1",
+  "workflow_id": "2026-10-11-workflow-sqlite-package",
+  "owner_skill": "slice-implementer",
+  "status": "completed",
+  "title": "Implement SQLite records and complete export/restore",
+  "created_at": "2026-10-11T17:57:06+08:00",
+  "updated_at": "2026-10-11T18:49:24+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "acceptance": [
+    "441 AC01-AC06",
+    "Preserve Git behavior and common workflow contract"
+  ],
+  "result": "SQLite source and its full retained-history/concurrency/restore tests passed at 4ec4114d; see acceptance.md for scoped installed evidence."
+}

@@ -2,7 +2,9 @@
 
 這個範例使用 [source checkout CLI](workflow-records.md)，串起同一筆紀錄的
 建立、接手、checkpoint、指定文件讀取與操作結果查詢。Git 情境已在隔離的
-真實 Git repository 執行；local／remote 的對照僅是設計要求。
+真實 Git repository 執行。文內 local／remote 的對照保留最初設計時的義務說明；
+目前 SQLite 能力請依 [套件操作契約](../src/skills/workflow-records/references/operations.md)。
+本頁既有 Git 證據不能代替 SQLite 或 installed runtime 驗收。
 
 先由專案原有 writer 建立 `workflow.yaml`、至少一個 `tasks/*.json|yaml|yml`
 及 locator 指定的 entrypoint。目標目錄須有 Git commit；共通入口不替代這個
@@ -25,7 +27,7 @@ python -I -B tools/workflow-records.py --root C:/path/to/project --request C:/pa
 ```
 
 Git provider 會列出可用 operations，且 `create` 為 `false`。送出
-`{"contract_version":"workflow-records/1","operation":"create"}` 會以 exit 1
+`{"contract_version":"workflow-records/1","operation":"create","workflow_ref":{"provider_id":"git","store_id":"project-workflows","workflow_id":"example"}}` 會以 exit 1
 回傳 `status: error`、`mutation_state: none`、`unsupported_capability`；不會
 假裝建立空紀錄。既有 writer 建立好紀錄後，查找它：
 

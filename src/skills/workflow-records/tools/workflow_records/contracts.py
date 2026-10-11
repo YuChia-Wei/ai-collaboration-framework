@@ -125,3 +125,16 @@ class RecordPort(Protocol):
              offset: int, limit: int) -> dict: ...
     def checkpoint(self, ref: WorkflowRef, request: dict) -> dict: ...
     def operation(self, ref: WorkflowRef, operation_id: str) -> dict: ...
+    def current_revision(self, ref: WorkflowRef) -> str: ...
+
+
+@dataclass(frozen=True)
+class StoreRef:
+    provider_id: str
+    store_id: str
+
+    @classmethod
+    def parse(cls, value):
+        require(isinstance(value, dict) and set(value) == {"provider_id", "store_id"},
+                "invalid_input", "A complete explicit store_ref is required.")
+        return cls(identifier(value["provider_id"]), identifier(value["store_id"]))

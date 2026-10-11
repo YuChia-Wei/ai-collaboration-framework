@@ -17,7 +17,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 240,
-          "pattern": "^[^\\\\:]+$"
+          "pattern": "^src/[^\\\\:]+$"
         },
         "git_blob": {
           "type": "string",
@@ -51,7 +51,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 240,
-          "pattern": "^[^\\\\:]+$"
+          "pattern": "^src/[^\\\\:]+$"
         },
         "sha256": {
           "type": "string",
@@ -676,7 +676,7 @@
         "metadata_version": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 4
+          "maximum": 5
         },
         "metadata": {
           "type": "string",
@@ -1395,7 +1395,7 @@
         "project_inputs": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/Pin"
+            "$ref": "#/$defs/ProjectInput"
           },
           "minItems": 0,
           "maxItems": 4096,
@@ -1517,7 +1517,7 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 240,
-          "pattern": "^[^\\\\:]+$"
+          "pattern": "^src/[^\\\\:]+$"
         },
         "metadata": {
           "type": "string",
@@ -1568,7 +1568,7 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 240,
-                "pattern": "^[^\\\\:]+$"
+                "pattern": "^src/[^\\\\:]+$"
               }
             }
           },
@@ -1612,7 +1612,7 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 240,
-                "pattern": "^[^\\\\:]+$"
+                "pattern": "^src/[^\\\\:]+$"
               },
               "template": {
                 "type": "string",
@@ -2258,6 +2258,26 @@
         },
         "escalation": {
           "const": "explicit-user-authorized-visible-task"
+        }
+      }
+    },
+    "ProjectInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "pattern": "^[^\\\\:]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         }
       }
     }

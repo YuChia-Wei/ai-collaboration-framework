@@ -59,7 +59,7 @@ downstream adoption retain their owners. No merge or date proves CI success.
 
 ## Task Routing
 
-Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 18 skills, including the restored development orchestrator and optional `ai-context-init@0.2.0`. The `project-initialization` preset selects initialization separately; existing presets and this source project's 17-skill installation are unchanged. Installing the package supplies authoring resources, not initialized root documents. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
+Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and `.claude/skills/<skill-id>/SKILL.md` for Claude. These generated entries and `.ai/core/skills/` are installed projections of editable product sources in `src/skills/`; select them through `.ai/custom/installation.json`. Do not edit generated installed files. The current distribution catalog has 19 skills, including the restored development orchestrator, optional `ai-context-init@0.2.0` and optional `workflow-records@0.1.0`. The `project-initialization` preset selects initialization separately; existing presets and this source project's 17-skill installation are unchanged. Installing the package supplies authoring resources, not initialized root documents. `standards-promotion@0.1.1-alpha.1` remains editable in `src/skills/` for independently copied experiments and is excluded from catalogs, presets and release products pending owner-selected validation; it is not an installed source-project route. Generated installation state is updated separately. Removed compatibility roots do not provide current executable routes.
 
 | Need | Owning route |
 | --- | --- |
@@ -148,7 +148,7 @@ Repairable implementation, test, or CI failures inside authorized scope are not 
 
 ## Documentation Ownership
 
-- Editable reusable resources belong in `src`; resources required by a framework capability must be included there or declared as knowledge dependencies.
+- Editable reusable resources belong in `src`; resources required by a framework capability must be included there or declared as knowledge dependencies. Every downstream package member and required runtime resource must originate in `src`. Root `tools` serves source-project orchestration and validation; product execution must not reuse it or any resource outside `src`.
 - `.dev` owns this project's records, policies and collaboration; `docs` owns product documentation. Source and installed copies may coexist because this repository develops and uses the framework.
 - Prepare reusable resources in source before separately selected self-installation/upgrade. Remove obsolete documents without experience-transfer value; preserve existing `.dev/design`, `.dev/assessments`, `.dev/requirement`, `.dev/adr` and `.dev/workflows` history in this cleanup.
 

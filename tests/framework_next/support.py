@@ -5,6 +5,9 @@ happen; do not repeatedly scan the fixture tree or launch Git for accounting.
 """
 from contextlib import contextmanager
 from pathlib import Path
+import os
+import re
+import stat
 import shutil
 import tempfile
 import unittest
@@ -16,6 +19,48 @@ ACTIVE = None
 def check(condition, reason):
     if not condition:
         raise AssertionError(reason)
+
+
+def _fixture_root(path):
+    """Resolve one captured cleanup root; only native Windows error 1 has a fallback."""
+    check(path.is_absolute() and ".." not in path.parts, "unsafe fixture root; cleanup refused")
+    def ancestry():
+        rows = []
+        for part in (path, *path.parents):
+            info = part.lstat()
+            check(stat.S_ISDIR(info.st_mode) and not stat.S_ISLNK(info.st_mode)
+                  and not getattr(info, "st_file_attributes", 0) & 0x400,
+                  "linked fixture ancestry; cleanup refused")
+            rows.append((info.st_dev, info.st_ino))
+        return rows
+    before = ancestry()
+    try:
+        resolved = path.resolve(strict=True)
+    except OSError as exc:
+        if os.name != "nt" or getattr(exc, "winerror", None) != 1:
+            raise
+        check(re.fullmatch(r"[A-Za-z]:", path.drive) and all(device and inode for device, inode in before),
+              "native fixture identity unavailable; cleanup refused")
+        import ctypes
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel.QueryDosDeviceW.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+        kernel.QueryDosDeviceW.restype = wintypes.DWORD
+        device = ctypes.create_unicode_buffer(32768)
+        size = kernel.QueryDosDeviceW(path.drive, device, len(device))
+        check(0 < size < len(device) and re.fullmatch(r"\\Device\\[^\\]+", device.value),
+              "aliased fixture drive; cleanup refused")
+        kernel.GetDriveTypeW.argtypes = [wintypes.LPCWSTR]
+        kernel.GetDriveTypeW.restype = wintypes.UINT
+        check(kernel.GetDriveTypeW(path.anchor) in {2, 3, 5, 6}, "nonlocal fixture drive; cleanup refused")
+        kernel.GetLongPathNameW.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+        kernel.GetLongPathNameW.restype = wintypes.DWORD
+        canonical = ctypes.create_unicode_buffer(32768)
+        size = kernel.GetLongPathNameW(str(path), canonical, len(canonical))
+        check(0 < size < len(canonical), "canonical fixture name unavailable; cleanup refused")
+        resolved = Path(canonical.value)
+    check(resolved == path and ancestry() == before, "fixture ancestry changed; cleanup refused")
+    return resolved
 
 
 class FixtureRun:
@@ -47,8 +92,8 @@ class FixtureRun:
         return {"helper_written_files": self.files_written, "helper_written_bytes": self.authored_bytes}
 
     def close(self):
-        resolved = self.root.resolve(strict=True)
-        info = self.root.stat()
+        resolved = _fixture_root(self.root)
+        info = self.root.lstat()
         check(resolved == self.root and (info.st_dev, info.st_ino) == self.identity,
               "fixture root identity changed; cleanup refused")
         shutil.rmtree(resolved)
