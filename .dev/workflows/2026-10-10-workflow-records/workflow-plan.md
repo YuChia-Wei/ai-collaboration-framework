@@ -94,3 +94,12 @@ signed provider progress and a local PR proposal. See
 [the continuation record](continuation.md) for current authority, evidence and
 next actions. The owner also confirmed the F RAM disk was cleared by reboot;
 the old cleanup residual is resolved by that report and needs no deletion.
+
+T4 is complete. The worked guide's 12 JSON examples match actual CLI data;
+the repeated fresh-checkout verification passed two 15-case runs while retaining
+prior output. The independent reviewer verified R2/R3 repairs at `7e698beb`.
+Signed progress replies are published on both Issues and exactly read back.
+The installed `pr-author` tool prepared and rendered a local real-Git-bound
+proposal. All four local tasks are complete; push, PR creation, actual hosted CI
+and integration remain next-owner actions. The final record-only commit is
+followed by a new exact-HEAD local candidate and unchanged-content rebind.

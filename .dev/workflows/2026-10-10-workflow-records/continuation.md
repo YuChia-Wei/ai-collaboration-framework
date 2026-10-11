@@ -56,9 +56,10 @@ read-back. No graph live-HEAD metadata is treated as extraction-freshness proof.
 
 ## Current checkpoint
 
-T4 is in progress. The worked examples and actual CLI walkthrough are complete.
-Next: freeze the guidance/evidence, obtain affected guidance review, post signed
-progress and finish the local PR proposal. Runtime implementation is unchanged.
+T4 is complete for the authorized local continuation. Worked examples, actual
+CLI walkthrough, affected independent review, signed Issue replies with exact
+read-back and a content-bound local PR proposal are complete. Next owner action
+is selecting push and PR creation. Runtime implementation is unchanged.
 
 ## Walkthrough attempts and evidence
 
@@ -135,8 +136,15 @@ The original flat transcript retained digest
 All owned temporary checkouts were removed and all selected source bytes stayed
 unchanged. [The focused result](reproducer-verification.json) records exact
 source/probe hashes, command, per-run transcript hashes and observed checks.
-The author check supports R2/R3 repair; affected independent re-review remains
-pending on the clean repair commit and is not inferred from this check.
+The author check supports R2/R3 repair. The same independent reviewer then
+reviewed clean immutable `7e698bebcb4ff17a52e64cc06c10b9f69d52bf21`, relative
+to `2d59a0dd`, and reported **R2 and R3 addressed**, with no supported new
+finding. It verified the three-file repair, verifier control flow, all selected
+source/probe/transcript hashes and original historical bindings. It did not rerun
+the verifier or full suites: the two executions and cleanup remain author
+evidence, independently checked for correspondence. Its start/end HEAD and
+tracked state were exact and clean; no provider action or repair was performed
+by the reviewer.
 
 On the same immutable `2d59a0dd` source, `python -I -B tests/run.py` passed all
 202 current tests, with zero failures/errors/skips, in 49.839038 seconds (runner
@@ -164,6 +172,47 @@ never selected acceptance requirements for this first Git slice.
 
 ## Provider and proposal checkpoint
 
-Signed Issue replies and local PR preparation are pending the immutable guidance
-review. Both Issues retain `Refs` intent for the proposed source PR; no closing
-keyword, Issue checkbox edit, Project transition or publication is selected.
+The authorized progress replies were published and exactly read back:
+
+- [Issue 439 comment 6106273077](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/439#issuecomment-6106273077).
+- [Issue 440 comment 6106274837](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/440#issuecomment-6106274837).
+
+Each ends with `Co-Authored-By: OpenAI Codex (gpt-6-astra, high) <noreply@openai.com>`,
+matching local commit attribution. Both explicitly identify the unpushed local
+source commit, per-Issue evidence and remaining integration boundary. Fresh
+read-back found both Issues open with one comment each, unchanged body, labels
+and milestone. No Project mutation was performed. GitHub comparison again found
+`main` identical to `42b99e954e3d6fbf595075a079357f0ce1df057f`.
+
+`pr-author` prepared, revised and rendered local record
+`pr-0732e3915ed14a53a0e1b74919252442` for the real base-to-`7e698beb` comparison,
+with `subject_verified=true` and diff digest
+`bf04ce5b095603d0e2782fc70cd456f51b3953f4012146b514bc345544faa5d7`.
+It binds the 202-test reuse proof, exact probe evidence, independent review,
+Issue replies and not-executed hosted gate. The first sandbox prepare returned
+`write-io` / `mutation_state=unknown`; the attempt is retained. Directory read-back
+and the tool's read-only query then confirmed no record or residual lock; the
+same selected preparation succeeded under host permissions. This observation
+does not prove a general filesystem or product repair.
+
+The local candidate and invocation records are retained under ignored
+`.dev/ai-context/local/workflow-records-continuation/`. After this closing record
+commit, prepare a new candidate for the new exact HEAD and retain its own record,
+rendered view and rebind receipt there. Do not change the old candidate's subject.
+Both Issues retain `Refs` intent; no closing keyword, Issue checkbox edit,
+Project transition or publication is selected. Push and PR creation remain
+unperformed and require actual owner authorization. A later selected PR touches
+`src/**` and `tools/**`, so current-head hosted `Source change gate` success is
+required before any separately authorized integration.
+
+## Closing-record validation and evidence reuse
+
+Only this continuation, `workflow-plan.md`, `workflow.yaml`, `tasks/T4.json` and
+`.dev/workflows/INDEX.MD` may change after the reviewed repair commit. Parse the
+changed records, resolve their links, check all four tasks are completed and
+validate the complete commit message and branch commit range. A deterministic
+comparison must confirm every other tracked byte unchanged from `7e698beb`;
+retain the current-head binding and comparison in ignored PR/final receipts.
+This reuses the independent review for unchanged reviewed content and the 202
+tests for unchanged runtime, test inputs, runner, configuration and authority on
+the same host. It does not call record-only changes a rerun or hosted success.
