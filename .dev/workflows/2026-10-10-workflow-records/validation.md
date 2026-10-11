@@ -1,0 +1,146 @@
+# Local validation and acceptance evidence
+
+Implementation baseline: `42b99e954e3d6fbf595075a079357f0ce1df057f`; the first
+implementation commit containing this report binds the new source. Windows,
+Python 3.13.14, PyYAML 6.0.3. No provider writes, installation or release run.
+
+## Attempts retained
+
+1. Focused first run: 20 tests, 1 failure, 6.968 seconds. The new assessment
+   fixture used a list for `scope` and omitted `resume.last_completed_action`.
+   The existing validator correctly rejected it. Corrected the fixture to its
+   existing mapping contract; no product validation was weakened.
+2. Focused second run: 20 tests passed, 7.559 seconds, F fixtures.
+3. Fixed five-suite runner with process-local `tempfile.tempdir` on F: 199 tests,
+   0 assertion failures, 14 errors, 42.528587 seconds. All errors were existing
+   maintenance fixture cleanup at `tests/framework_next/support.py:50`, strict
+   `Path.resolve`, `WinError 1`. This run is **failed**, not passed.
+4. Minimal control: create a temporary directory and call
+   `Path(value).resolve(strict=True)`. F produced WinError 1; the ordinary C
+   temporary directory succeeded. The failed suite's error locations agree with
+   this storage-specific limitation. No global TEMP/TMP setting was changed.
+5. `python -I -B tests/run.py` with ordinary native temp: all 199 tests passed,
+   no failures/errors/skips, 41.260847 seconds. This is the same small current
+   suite selection, not an installation/history/durability matrix. The storage
+   change is the material state change authorizing this retry.
+6. Author inspection tightened malformed-operation output bounds and timestamp
+   shape, with one additional regression. Focused current source: 21 tests passed,
+   7.862 seconds on F. Unchanged suites retain their result; a final immutable
+   default run is planned with independent review.
+7. Immutable `9c5cde522a3ad7ffa4cab9ce3461dea01293a873`:
+   `python -I -B tests/run.py`, 200 tests passed, no failures/errors/skips,
+   42.619383 seconds with native temp. Log: `immutable-9c5cde52.txt`.
+8. Independent review found R1: an escaped lone surrogate in request `operation`
+   caused a CLI encoding traceback instead of structured JSON. Reject invalid
+   Unicode in parsed JSON/YAML and direct service requests before mutation;
+   sanitize failure-operation echo. Added actual CLI tests for surrogate
+   operations, nested payload/key values, valid emoji round-trip, and YAML input.
+   Focused repair run: 23 tests passed on F, 9.120 seconds, `r1-focused.txt`.
+   This repair changes the reviewed subject; the affected re-review follows below.
+9. Immutable `315cb2dacae4c5c136995c0e4ae2c20572977a98`:
+   `python -I -B tests/run.py`, 202 tests passed, no failures/errors/skips,
+   43.083102 seconds with native temp. Log: `immutable-315cb2da.txt`.
+10. Independent reviewer ran the two new Unicode regression tests on that exact
+    clean commit in one disposable F directory: 2 passed, 1.623 seconds.
+    The reviewer reported its own fixture cleanup complete.
+
+Focused invocation (the created contained F root is test-only):
+
+```powershell
+python -I -B -c "import sys,tempfile,unittest; tempfile.tempdir = r'F:\codex-workflow-records-aa9b936a7d8c4f85833c448b56dacd48'; sys.path.insert(0, r'C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/tests'); unittest.main(module='tools.test_workflow_records', verbosity=2)"
+```
+
+The initial fixed-suite F invocation used the same process-local temp root and
+`sys.argv = ['tests/run.py']; runpy.run_path('tests/run.py', run_name='__main__')`.
+This does not activate the retired `AI_CONTEXT_TEST_TMP_ROOT` route. Original
+logs are retained locally under ignored
+`.dev/ai-context/local/workflow-records-validation/` as `default-suites.txt`,
+`default-suites-native-temp.txt`, and `focused-final.txt`.
+
+## Actual consumer evidence
+
+- `test_real_cli_find_read_checkpoint_receipt_and_resume_preserve_existing_bytes`:
+  isolated real Git repository, actual CLI processes and current tracked workflow
+  fixture; all original artifact bytes and Git tracked diff remain unchanged.
+- `test_real_assessment_validator_opt_in_uses_common_store_and_legacy_default_is_preserved`:
+  actual assessment CLI succeeds with old/default and opt-in paths. A malformed
+  workflow stays accepted by the old existence-only check but is rejected by the
+  selected common parser. A missing locator is explicitly rejected.
+- `test_two_real_cli_writers_apply_at_most_one_checkpoint`: two real processes;
+  one succeeds and the other returns writer_busy or revision_conflict.
+- Replace failure and lost-ack tests inject the filesystem failure boundary, but
+  exercise the real file replacement/journal and operation query. They are
+  controlled fault evidence, not operating-system crash or power-loss trials.
+- Reparse rejection test uses controlled filesystem metadata. It is not a native
+  symlink/junction trial or a claim of hostile concurrent filesystem isolation.
+- A read-only CLI `resume` of the actual source
+  `2026-10-02-skill-routing` record returned its two completed tasks, correct
+  source HEAD, document digest and explicit 256-character truncation. The original
+  record was not changed. Request/result are in ignored local validation files.
+
+## Acceptance mapping
+
+| Issue AC | Evidence and disposition |
+| --- | --- |
+| 439 AC01 | `inventory.md`, tracked producer/reader/validator locations; design evidence complete for selected scope |
+| 439 AC02 | Contract three-mode matrix and full-provider scenario; Git create remains with original writer, local/remote runtime not executed |
+| 439 AC03 | unavailable contract and actual selected-remote/no-fallback test; remote transport itself not implemented |
+| 439 AC04 | complete refs, default-change test, persisted binding mismatch and overlapping-root refusal; migration unavailable |
+| 439 AC05 | bounded context/read/error tests, document revisions and explicit missing/truncated fields; no token savings claim |
+| 439 AC06 | versioned contract, inventory, compatibility scenarios, follow-up decisions; Git/local not dependent on board |
+| 440 AC01 | original fixture bytes and default validator behavior preserved; no historical migration or installed projection edit |
+| 440 AC02 | real CLI find/context/read/checkpoint/operation/resume chain on selected format |
+| 440 AC03 | missing/malformed/version/stale-source/conflict/lock/capacity cases; existing bytes preserved on rejection |
+| 440 AC04 | actual assessment CLI consumer and common resume consumer; conditional orchestrator instructions separately labeled, not actual agent acceptance |
+| 440 AC05 | `docs/workflow-records.md` plus contract use, recovery and unintegrated-consumer list |
+
+This is the selected checkout slice. Package distribution, general legacy format
+coverage, create/export/import, local/remote runtime, hosted Source change gate,
+PR acceptance, provider closure and downstream adoption remain outside these
+local pass claims. Issues remain open; later integration must choose terminal
+versus deferred intent using these explicit limitations.
+
+## Independent review
+
+`workflow_review` independently reviewed clean immutable
+`9c5cde522a3ad7ffa4cab9ce3461dea01293a873` against
+`42b99e954e3d6fbf595075a079357f0ce1df057f`. It returned one P2 finding, R1,
+with a real CLI reproduction: escaped `operation: "\ud800"` caused exit 1,
+empty stdout and a `UnicodeEncodeError` traceback exposing source paths.
+No other supported actionable finding was reported in binding/authority,
+failure/replay, original-format compatibility, consumer wiring, bounds and
+source-only delivery. The original finding is retained; it is not a pass.
+
+The same independent reviewer re-reviewed the seven-file repair diff at
+`315cb2dacae4c5c136995c0e4ae2c20572977a98`, confirmed **R1 addressed** and
+reported **no supported new findings**. It independently exercised malformed
+operations, nested values/keys, YAML input and valid emoji round-trip, with no
+stderr or unintended writes for rejected requests. It confirmed the documented
+receipt-query snapshot limitation. Unchanged implementation and authority bytes
+retain their prior review; both start and final checks showed a clean exact HEAD.
+
+Native junctions, process crash, power loss, hostile filesystem races, complete
+history compatibility, packaging, hosted CI and local/remote execution remain
+unverified. No local result is Issue closure, maintainer acceptance or adoption.
+
+## Closing metadata and reuse
+
+Only `workflow.yaml`, `tasks/T3.json`, `workflow-plan.md`, this report and
+`.dev/workflows/INDEX.MD` may change after the reviewed source commit. Final
+read-back checks their JSON/YAML shape, identities, terminal relationships and
+links. A deterministic Git comparison must show every other tracked path,
+including runtime, tests, input fixtures, contracts and governing rules, unchanged
+from the reviewed commit; ignored `final-rebind.json` binds that result to the
+closing HEAD. This reuses the independent review for unchanged content and the
+fixed test result for unchanged code, fixtures, configuration and runner on the
+same host. It does not assert that the entire repository tree stayed identical.
+
+## Cleanup residual
+
+The parent attempted a contained recursive removal of
+`F:\codex-workflow-records-aa9b936a7d8c4f85833c448b56dacd48` after saving the
+validation logs. Automatic approval review rejected that command before execution
+with `blocked by policy`, without a more specific reason. No alternative deletion
+was attempted. The isolated fixture directory, including failed cleanup fixtures,
+remains. This cleanup outcome is blocked and is not a test pass or a claim that
+all temporary storage was removed.

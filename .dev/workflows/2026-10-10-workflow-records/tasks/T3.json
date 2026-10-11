@@ -1,0 +1,23 @@
+{
+  "task_id": "T3",
+  "workflow_id": "2026-10-10-workflow-records",
+  "owner_skill": "software-development-orchestrator",
+  "status": "completed",
+  "title": "Validate the real Git entry, obtain independent review and retain acceptance evidence",
+  "created_at": "2026-10-10T11:34:21.3434899+08:00",
+  "updated_at": "2026-10-10T11:54:37.3265143+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "execution_identity_basis": "Configured host defaults observed in this session; actual runtime model/effort are not independently exposed.",
+  "acceptance": [
+    "439:AC01-AC06 design evidence",
+    "440:AC01-AC05 local integration evidence"
+  ],
+  "result_summary": "202 fixed current tests passed on immutable 315cb2dacae4c5c136995c0e4ae2c20572977a98. Independent reviewer confirmed R1 repaired with 2 passing actual regression tests and no new supported findings. Acceptance mapping and source-only limits retained in validation.md.",
+  "finding_status": "addressed",
+  "reviewed_commit": "315cb2dacae4c5c136995c0e4ae2c20572977a98",
+  "reviewer": "workflow_review",
+  "evidence": "validation.md"
+}

@@ -7,6 +7,7 @@ separate transition. Installed core is generated, never another hand-edited sour
 - [Lesson](skills/lesson-author/SKILL.md): candidate-only knowledge capture and filesystem operations.
 - [Distribution](distribution/manifest.yaml): exact selected product members.
 - [Development orchestration](skills/software-development-orchestrator/SKILL.md): portable stage selection, specialist handoffs and resumable closeout; project-owned workflow storage.
+- [Workflow records](workflow_records/README.md): optional checkout contract and Git record entry; not yet in installed distributions.
 - [Experimental standards promotion](skills/standards-promotion/SKILL.md): `0.1.1-alpha.1`, retained for independently copied experiments and excluded from distribution until owner-selected validation and release readiness.
 - [Minimal Lesson profile](profiles/lesson-minimal.yaml): first explicit selection.
 - [Codex projection template](adapters/codex/skill-entry.md.template): generated installed-resource entry.

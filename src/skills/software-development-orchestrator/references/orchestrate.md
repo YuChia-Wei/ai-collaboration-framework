@@ -17,6 +17,17 @@ format is selected, a concise plan and progress in the conversation suffice
 unless durable handoff is required. Resolve that handoff format before depending
 on persistence; do not invent a schema or claim a conversation is durable state.
 
+When the project explicitly selects a workflow-record entry, obtain bounded
+context through that entry and retain its complete provider/store/workflow
+reference. Read required documents at their returned revisions; keep missing or
+truncated context visible. Submit a checkpoint only with the expected input
+revision, source identity and a stable operation ID. Reconcile an uncertain
+write through the same provider's operation result before retrying. An unavailable
+provider never authorizes a fallback write or a new writable copy. These are
+conditional consumer instructions, not a requirement to install a store or a
+claim that this instruction package supplies one. Existing project writers and
+formats remain valid when no common entry is selected.
+
 Group work that shares one outcome, authorization, review and integration
 boundary. Sequence dependencies; parallelize only independent work with suitable
 isolation and available delegation. Keep one integration owner and comply with

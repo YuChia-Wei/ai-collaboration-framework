@@ -1,0 +1,28 @@
+{
+  "task_id": "T4",
+  "workflow_id": "2026-10-10-workflow-records",
+  "owner_skill": "software-development-orchestrator",
+  "status": "completed",
+  "title": "Complete worked contract examples, signed Issue progress and a local PR proposal",
+  "created_at": "2026-10-11T14:19:40.8956968+08:00",
+  "updated_at": "2026-10-11T14:35:05.8455934+08:00",
+  "completed_at": "2026-10-11T14:35:05.8455934+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "execution_identity_basis": "Configured host defaults re-read on 2026-10-11; actual runtime model/effort are not independently exposed.",
+  "acceptance": [
+    "439:T04 concrete query, conditional write, conflict and unavailable examples",
+    "439:AC02 three-mode scenario mapping with actual versus designed evidence distinguished",
+    "440:AC02 and AC05 complete current Git walkthrough and explicit limits",
+    "Separate signed progress replies on 439 and 440 with successful read-back",
+    "Reviewable local PR proposal bound to the selected real Git comparison"
+  ],
+  "result": "Worked guide and actual 15-case CLI walkthrough complete; fresh-checkout twice-run checks passed; R2/R3 independently verified at 7e698beb. Signed Issue replies exactly read back. Local PR record prepared and rendered with verified real Git subject. Push, PR creation, hosted CI and integration remain separate owner actions.",
+  "evidence": ["../continuation.md", "../walkthrough-evidence.json", "../reproducer-verification.json"],
+  "issue_comments": [
+    "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/439#issuecomment-6106273077",
+    "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/440#issuecomment-6106274837"
+  ]
+}

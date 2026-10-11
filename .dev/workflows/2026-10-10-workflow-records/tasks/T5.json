@@ -1,0 +1,25 @@
+{
+  "task_id": "T5",
+  "workflow_id": "2026-10-10-workflow-records",
+  "owner_skill": "local-change-implementer",
+  "status": "completed",
+  "title": "Repair the hosted reparse test and verify source integration readiness",
+  "created_at": "2026-10-11T17:17:21.946002+08:00",
+  "updated_at": "2026-10-11T17:19:43.645001+08:00",
+  "template_source": ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+  "template_version": "policy-direct-1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "execution_identity_basis": "Earlier repair attribution used the previously resolved high default; closeout re-read host default gpt-6-astra/ultra on 2026-10-11. Actual runtime model/effort are not independently exposed.",
+  "acceptance": [
+    "Resolve test injection target before observation without weakening unsafe_path rejection",
+    "Normal and aliased path cases intercept the intended metadata exactly once",
+    "Fixed source suites and affected independent review pass on the immutable repair",
+    "Retain the first CI failure, exact repair evidence and current integration authority"
+  ],
+  "result": "202 fixed source tests passed on deb5df85; independent affected review found no supported actionable finding. First CI failure preserved; source integration readiness complete. Hosted retry and provider integration follow under owner authorization.",
+  "evidence": [
+    "../ci-repair.md"
+  ],
+  "completed_at": "2026-10-11T17:19:43.645001+08:00"
+}
