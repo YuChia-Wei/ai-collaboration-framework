@@ -1,0 +1,27 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-11-workflow-sqlite-package
+workflow_kind: software-development
+title: Deliver Git and SQLite workflow records as an optional source-owned package
+owner_skill: software-development-orchestrator
+status: in_progress
+current_phase: verification
+artifact_root: .dev/workflows/2026-10-11-workflow-sqlite-package
+entrypoint: workflow-plan.md
+created_at: '2026-10-11T17:57:06+08:00'
+updated_at: '2026-10-11T17:57:06+08:00'
+template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+template_version: policy-direct-1.0
+branch: codex/2026-10-11-workflow-sqlite-package
+base_branch: main
+base_commit: 6a615e8ac19df9343835ab74a0e2436cdc974976
+work_items:
+- provider: github
+  issue: 441
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/441
+- provider: github
+  issue: 448
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/448
+authority: Owner authorized implementation, package installation and validation on 2026-10-11, adopting the previous SQLite design and Python prerequisites. All downstream package members and runtime dependencies must originate in src; tools is source-project tooling only. Dolt remains a future candidate.
+execution: Parent is the sole tracked writer and integration owner. A bounded package writer uses a separate managed worktree; read-only advisors inspect SQLite and acceptance. Independent immutable review is required for installation and recovery. Synthetic isolated consumers only; no real-data migration or publication.
+workflow_rationale: Preserve coordinated provider, package, actual installed acceptance and independent review across stages. Source implementation, installed behavior, integration and release remain separate.

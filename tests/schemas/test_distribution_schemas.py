@@ -147,11 +147,11 @@ class DistributionSchemaTests(unittest.TestCase):
 
     def test_contract_definitions_enforce_lengths_types_and_field_closure(self):
         source_validator = validator("src/distribution/schemas/contracts.schema.json", "#/$defs/Source")
-        for path in ("x", "x" * 240):
+        for path in ("src/x", "src/" + "x" * 236):
             value = {**source(), "path": path}
             source_validator.validate(value)
             contracts.validate("Source", value)
-        for field, value in [("path", ""), ("path", "x" * 241), ("path", "C:/unsafe"),
+        for field, value in [("path", ""), ("path", "src/" + "x" * 237), ("path", "C:/unsafe"), ("path", "tools/example.py"),
                              ("mode", "100600"), ("git_blob", "z" * 40), ("size", True), ("unknown", 1)]:
             bad = {**source(), field: value}
             with self.subTest(field=field, value=value):

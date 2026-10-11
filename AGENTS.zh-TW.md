@@ -56,7 +56,7 @@ Merge 或日期都不能證明 CI 成功。
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 18 個 skills，包含恢復的開發編排 skill 與可選的 `ai-context-init@0.2.0`。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 19 個 skills，包含恢復的開發編排 skill、可選的 `ai-context-init@0.2.0` 與可選的 `workflow-records@0.1.0`。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
@@ -145,7 +145,7 @@ Authorization 缺失或矛盾、authority 無法解析、write 超出 scope、ta
 
 ## 文件所有權
 
-- 可編輯的共用資源放在 `src`；framework 能力所需的資源必須包含於其中，或宣告為 knowledge dependencies。
+- 可編輯的共用資源放在 `src`；framework 能力所需的資源必須包含於其中，或宣告為 knowledge dependencies。所有下游套件成員及必要 runtime 資源都必須源自 `src`。根目錄 `tools` 負責來源專案的編排與驗證；產品執行不得復用它或任何 `src` 以外的資源。
 - `.dev` 擁有本專案的紀錄、規範與協作；`docs` 擁有產品文件。本 repository 同時開發及使用 framework，來源與安裝副本可以共存。
 - 先整理共用資源至來源，再另行選定自我安裝／升級。移除過時且無經驗傳承價值的文件；此次整理保留 `.dev/design`、`.dev/assessments`、`.dev/requirement`、`.dev/adr` 與 `.dev/workflows` 的既有歷史。
 

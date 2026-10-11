@@ -8,6 +8,7 @@ from hashlib import sha1
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 sys.dont_write_bytecode=True
 sys.path.insert(0,str(Path(__file__).absolute().parents[2]/'src'))
@@ -15,7 +16,7 @@ from distribution.content import load_content_package, descriptor, closure, desi
 from distribution.contracts import validate
 from distribution.data import DistributionError,json_bytes,json_object,yaml_object
 from distribution.git_source import Blob
-from distribution.package import load_package
+from distribution.package import load_package, check_references
 from distribution import catalog
 
 
@@ -515,3 +516,214 @@ class SubAgentDistributionTests(unittest.TestCase):
 if __name__=='__main__':
     if not sys.flags.isolated or not sys.flags.dont_write_bytecode: raise SystemExit('Use -I -B.')
     unittest.main()
+
+
+class Metadata5DistributionTests(unittest.TestCase):
+    """Explicit tool modules and source provenance; no actual installation."""
+
+    def tool_metadata(self):
+        data = skill()
+        data['metadata_version'] = 5
+        data['knowledge_consumption'] = []
+        data['resources']['tools'] = [{
+            'id': 'reviewer-cli', 'owner': 'reviewer', 'implementation_status': 'implemented',
+            'entrypoint': 'tools/run.py', 'operation_contract': 'review.md', 'operations': ['review'],
+            'support_files': ['tools/runtime/__init__.py', 'tools/runtime/store.py'],
+        }]
+        data['operations'][0].pop('instructions')
+        data['operations'][0].update(execution='tool', tool='reviewer-cli')
+        return data
+
+    def tool_blobs(self, data=None):
+        data = self.tool_metadata() if data is None else data
+        values = {
+            'skill-package.yaml': json_bytes(data),
+            'SKILL.md': b'---\nname: reviewer\ndescription: Synthetic tool fixture\n---\n[Review](review.md)\n',
+            'review.md': b'Run the selected tool.\n',
+            'tools/run.py': b'from runtime import store\n',
+            'tools/runtime/__init__.py': b'"""Fixture runtime."""\n',
+            'tools/runtime/store.py': b'VALUE = 1\n',
+        }
+        return {name: Blob(name, '0' * 40, '100644', raw) for name, raw in values.items()}
+
+    def test_v5_support_files_are_executable_members_with_closed_shape(self):
+        data = self.tool_metadata()
+        package = load_package(blob('skill-package.yaml', data))
+        self.assertEqual(package.members, set(self.tool_blobs()))
+        self.assertEqual(descriptor('skill', package)['metadata_version'], 5)
+        self.assertEqual(check_references(package, self.tool_blobs())['name'], 'reviewer')
+        # Empty support is explicit and valid for a standalone entrypoint.
+        data['resources']['tools'][0]['support_files'] = []
+        standalone = load_package(blob('skill-package.yaml', data))
+        self.assertNotIn('tools/runtime/store.py', standalone.members)
+        for defect in ('missing', 'unknown', 'scalar'):
+            bad = self.tool_metadata()
+            tool = bad['resources']['tools'][0]
+            if defect == 'missing':
+                tool.pop('support_files')
+            elif defect == 'unknown':
+                tool['source_map'] = {}
+            else:
+                tool['support_files'] = 'tools/runtime/store.py'
+            with self.subTest(defect=defect), self.assertRaises(ValueError):
+                load_package(blob('skill-package.yaml', bad))
+
+    def test_v5_support_paths_reject_duplicates_aliases_and_escape(self):
+        for names in (['../tools/shared.py'], ['/tools/shared.py'], ['C:/shared.py'],
+                      ['tools/../shared.py'], ['tools/shared.py', 'tools/shared.py'],
+                      ['tools/Shared.py', 'tools/shared.py'], ['tools/run.py'], ['review.md']):
+            data = self.tool_metadata()
+            data['resources']['tools'][0]['support_files'] = names
+            with self.subTest(names=names), self.assertRaises(ValueError):
+                load_package(blob('skill-package.yaml', data))
+
+    def test_v5_missing_or_extra_support_bytes_are_rejected(self):
+        package = load_package(blob('skill-package.yaml', self.tool_metadata()))
+        for defect in ('missing', 'extra'):
+            blobs = self.tool_blobs()
+            if defect == 'missing':
+                blobs.pop('tools/runtime/store.py')
+            else:
+                blobs['tools/runtime/unlisted.py'] = Blob('tools/runtime/unlisted.py', '0' * 40, '100644', b'VALUE = 2')
+            with self.subTest(defect=defect), self.assertRaisesRegex(ValueError, 'support member closure'):
+                check_references(package, blobs)
+
+    def test_metadata4_cannot_silently_accept_v5_tool_support(self):
+        data = self.tool_metadata()
+        data['metadata_version'] = 4
+        with self.assertRaises(ValueError):
+            load_package(blob('skill-package.yaml', data))
+        data['resources']['tools'][0].pop('support_files')
+        package = load_package(blob('skill-package.yaml', data))
+        self.assertEqual(package.metadata['metadata_version'], 4)
+        self.assertNotIn('tools/runtime/store.py', package.members)
+        # The old descriptor maximum also fails closed on a new component.
+        from distribution.contracts import DEFINITIONS
+        old = deepcopy(DEFINITIONS['Component'])
+        old['properties']['metadata_version']['maximum'] = 4
+        current = descriptor('skill', load_package(blob('skill-package.yaml', self.tool_metadata())))
+        validate('Component', current)
+        with patch.dict(DEFINITIONS, {'Component': old}), self.assertRaises(ValueError):
+            validate('Component', current)
+
+    def tool_catalog(self):
+        from test_skill_naming import tiny_catalog, source_blob
+        base = tiny_catalog()
+        document = deepcopy(base.document)
+        inventory = deepcopy(base.inventory)
+        contents = dict(base.contents)
+        blobs = self.tool_blobs()
+        package = load_package(blobs['skill-package.yaml'])
+        document['components'] = [descriptor('skill', package)]
+        inputs = {row['path']: row for row in document['build_inputs']}
+        inventory['files'] = [row for row in inventory['files'] if row['kind'] != 'skill']
+        for name, member in blobs.items():
+            source = source_blob('src/skills/reviewer/' + name, member.data)
+            inputs[source.path] = source.identity()
+            artifact = 'packages/skill/reviewer/' + name
+            inventory['files'].append({'path': artifact, 'kind': 'skill', 'owner': 'reviewer',
+                                       'member': name, 'source': source.identity()})
+            contents[artifact] = source.data
+        document['build_inputs'] = [inputs[name] for name in sorted(inputs)]
+        inventory['files'].sort(key=lambda row: row['path'])
+        raw = {catalog.PARENT_METADATA[0]: json_bytes(document), catalog.PARENT_METADATA[1]: json_bytes(inventory)}
+        document, inventory, pin = catalog.parent_documents(raw)
+        packages = catalog.packages_from(document, inventory, contents)
+        return catalog.Catalog(None, document, inventory, pin, raw, contents, packages)
+
+    def test_catalog_subset_projection_retains_exact_support_bytes_and_hashes(self):
+        parent = self.tool_catalog()
+        desired = catalog.expand_preset(parent, 'tiny', '1.0.0')
+        selected = catalog.resolve_selection(parent, desired)
+        payload = {}
+        templates = {}
+        for row in parent.inventory['files']:
+            raw = parent.contents[row['path']]
+            if row['kind'] == 'skill':
+                payload['.ai/core/skills/reviewer/' + row['member']] = raw
+            else:
+                templates[row['owner']] = raw
+        inventory, projected = catalog.project_members(parent.document, parent.inventory, selected, payload, templates)
+        catalog.subset_inventory(parent.document, parent.inventory, selected, inventory)
+        for member in self.tool_metadata()['resources']['tools'][0]['support_files']:
+            destination = '.ai/core/skills/reviewer/' + member
+            row = next(row for row in inventory['files'] if row['destination'] == destination)
+            self.assertEqual(projected[destination], parent.contents['packages/skill/reviewer/' + member])
+            self.assertEqual(row['sha256'], catalog.digest(projected[destination]))
+            self.assertEqual(row['source']['path'], 'src/skills/reviewer/' + member)
+        empty = deepcopy(desired)
+        empty['skills'] = []
+        empty['adapters'] = []
+        selected = catalog.resolve_selection(parent, empty)
+        inventory, projected = catalog.project_members(parent.document, parent.inventory, selected, {}, {})
+        self.assertEqual(inventory['files'], [])
+        self.assertEqual(projected, {})
+
+    def test_catalog_rejects_missing_or_extra_declared_module(self):
+        parent = self.tool_catalog()
+        for defect in ('missing', 'extra'):
+            document = deepcopy(parent.document)
+            members = document['components'][0]['members']
+            if defect == 'missing':
+                members.remove('tools/runtime/store.py')
+            else:
+                members.append('tools/runtime/unlisted.py')
+                members.sort()
+            raw = {catalog.PARENT_METADATA[0]: json_bytes(document),
+                   catalog.PARENT_METADATA[1]: parent.metadata_bytes[catalog.PARENT_METADATA[1]]}
+            with self.subTest(defect=defect), self.assertRaisesRegex(ValueError, 'build-input-closure'):
+                catalog.parent_documents(raw)
+
+    def test_product_source_admission_precedes_source_or_engine_reads(self):
+        from unittest.mock import Mock
+        reader = Mock()
+        for name in ('tools/run.py', '.dev/records/tool.py', 'src/../tools/run.py', 'srcx/run.py', '/src/run.py'):
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                catalog.product_blob(reader, name)
+        reader.read.assert_not_called()
+        catalog.product_blob(reader, 'src/skills/example/tools/run.py')
+        reader.read.assert_called_once_with('src/skills/example/tools/run.py')
+        with patch.object(catalog, 'GENERATOR_FILES', ('tools/outside.py',)), \
+                patch.object(catalog, 'read_raw') as read_raw, self.assertRaises(ValueError):
+            catalog.execution_sources(source=reader)
+        read_raw.assert_not_called()
+
+    def test_manifest_cannot_authorize_non_source_product_inputs(self):
+        from test_contracts import ROOT
+        manifest = yaml_object((ROOT / 'src/distribution/manifest.yaml').read_bytes(), 'manifest')
+        validate('Manifest', manifest)
+        for section, field in (('components', 'source'), ('profiles', 'path'), ('adapters', 'source')):
+            for outside in ('tools/run.py', '.dev/runtime.py', 'docs/runtime.py'):
+                bad = deepcopy(manifest)
+                bad[section][0][field] = outside
+                with self.subTest(section=section, outside=outside), self.assertRaises(ValueError):
+                    validate('Manifest', bad)
+
+    def test_source_and_engine_pins_reject_non_src_even_with_matching_bytes(self):
+        from test_skill_naming import source_blob
+        for name in ('tools/run.py', '.dev/runtime.py', 'docs/runtime.py'):
+            source = source_blob(name, b'pass\n')
+            with self.subTest(name=name), self.assertRaises(ValueError):
+                catalog.source_bytes(source.identity(), source.data)
+            with self.subTest(pin=name), self.assertRaises(ValueError):
+                validate('Pin', {'path': name, 'sha256': catalog.digest(source.data)})
+
+    def test_workflow_records_is_optional_and_manifest_matches_metadata(self):
+        from test_contracts import ROOT
+        manifest = yaml_object((ROOT / 'src/distribution/manifest.yaml').read_bytes(), 'manifest')
+        row = next(row for row in manifest['components'] if (row['kind'], row['id']) == ('skill', 'workflow-records'))
+        raw = (ROOT / row['source'] / row['metadata']).read_bytes()
+        package = load_package(Blob(row['source'] + '/' + row['metadata'], '0' * 40, '100644', raw))
+        self.assertEqual((package.id, package.version, package.metadata['metadata_version']), ('workflow-records', '0.1.0', 5))
+        self.assertEqual({member['source'] for member in row['members']}, package.members)
+        self.assertTrue(all(member['destination'] == '.ai/core/skills/workflow-records/' + member['source'] for member in row['members']))
+        for profile in manifest['profiles']:
+            preset = yaml_object((ROOT / profile['path']).read_bytes(), profile['path'])
+            with self.subTest(preset=profile['id']):
+                self.assertNotIn('workflow-records', preset['skills'])
+
+    def test_published_schema_and_runtime_schema_stay_identical(self):
+        from distribution.contracts import DEFINITIONS
+        from test_contracts import ROOT
+        schema = json_object((ROOT / 'src/distribution/schemas/contracts.schema.json').read_bytes(), 'contracts')
+        self.assertEqual(schema['$defs'], DEFINITIONS)

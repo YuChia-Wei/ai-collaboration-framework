@@ -1,0 +1,290 @@
+metadata_version: 5
+id: workflow-records
+version: 0.1.0
+delivery_status: implemented
+entrypoint: SKILL.md
+dependencies:
+  required: []
+  optional: []
+runtime:
+- id: python
+  version: '>=3.11,<4'
+  for_operations:
+  - capabilities
+  - find
+  - context
+  - read
+  - checkpoint
+  - resume
+  - validate
+  - operation
+  - init
+  - create
+  - write-document
+  - export
+  - preflight
+  - restore
+  - deactivate
+  - activate
+  on_missing: unavailable
+- id: pyyaml
+  version: '>=6,<7'
+  for_operations:
+  - capabilities
+  - find
+  - context
+  - read
+  - checkpoint
+  - resume
+  - validate
+  - operation
+  - init
+  - create
+  - write-document
+  - export
+  - preflight
+  - restore
+  - deactivate
+  - activate
+  on_missing: unavailable
+- id: git
+  requirement: Git CLI for the selected repository and source identity binding
+  for_operations:
+  - capabilities
+  - find
+  - context
+  - read
+  - checkpoint
+  - resume
+  - validate
+  - operation
+  - init
+  - create
+  - write-document
+  - export
+  - preflight
+  - restore
+  - deactivate
+  - activate
+  on_missing: unavailable
+- id: sqlite
+  requirement: Python sqlite3 module for explicitly selected local stores
+  for_operations:
+  - capabilities
+  - find
+  - context
+  - read
+  - checkpoint
+  - resume
+  - validate
+  - operation
+  - init
+  - create
+  - write-document
+  - export
+  - preflight
+  - restore
+  - deactivate
+  - activate
+  on_missing: unavailable
+configuration: null
+artifact_roles: []
+resources:
+  references:
+  - references/operations.md
+  - references/git-format.md
+  schemas: []
+  templates: []
+  tools:
+  - id: workflow-records-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/workflow-records.py
+    operation_contract: references/operations.md
+    operations:
+    - capabilities
+    - find
+    - context
+    - read
+    - checkpoint
+    - resume
+    - validate
+    - operation
+    - init
+    - create
+    - write-document
+    - export
+    - preflight
+    - restore
+    - deactivate
+    - activate
+    support_files:
+    - tools/workflow_records/__init__.py
+    - tools/workflow_records/backup.py
+    - tools/workflow_records/common.py
+    - tools/workflow_records/contracts.py
+    - tools/workflow_records/git_store.py
+    - tools/workflow_records/service.py
+    - tools/workflow_records/sqlite_store.py
+operations:
+- id: capabilities
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: find
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: context
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: read
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: checkpoint
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: resume
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: validate
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: operation
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: init
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: create
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: write-document
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: export
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: preflight
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: restore
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: deactivate
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: activate
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+knowledge_consumption: []

@@ -7,10 +7,15 @@ from pathlib import Path, PurePosixPath
 import re
 import stat
 import subprocess
+from string import Template
 import zipfile
 
 WORKFLOW = ".github/workflows/publish-release.yml"
-SCHEMA = "framework-release-assets/1"
+SCHEMA = "framework-release-assets/2"
+LEGACY_SCHEMA = "framework-release-assets/1"
+README_SOURCE_PATH = "src/distribution/templates/release-readme.md"
+README_FIELDS = frozenset({"label", "source_commit", "catalog_identity", "release_version"})
+README_LIMIT = 1024 * 1024
 LIMIT = 256 * 1024 * 1024
 
 
@@ -101,11 +106,41 @@ def entry(name, raw, mode=0o644):
     return {"path": safe_name(name), "size": len(raw), "sha256": sha(raw), "mode": mode}
 
 
+def render_readme(template_utf8, source, catalog_identity, release_version):
+    """Render only the four selected values; never evaluate template code."""
+    require(type(template_utf8) is str, "README template must be UTF-8 text")
+    raw = template_utf8.encode("utf-8", errors="strict")
+    require(len(raw) <= README_LIMIT, "README template budget")
+    template = Template(template_utf8)
+    require(template.is_valid(), "invalid README template placeholder")
+    require(set(template.get_identifiers()) == README_FIELDS, "README template fields must match fixed fields")
+    return template.substitute(label=source["tag"] or "snapshot", source_commit=source["commit"],
+                               catalog_identity=catalog_identity, release_version=release_version).encode("utf-8")
+
+
+def verify_readme_source(record, source, catalog_identity, release_version, rendered):
+    fields = {"path", "commit", "git_blob", "sha256", "size", "template_utf8"}
+    require(type(record) is dict and set(record) == fields, "README source fields")
+    require(record["path"] == README_SOURCE_PATH, "README source path")
+    require(oid(record["commit"]) == source["commit"], "README source commit")
+    require(type(record["template_utf8"]) is str, "README template must be UTF-8 text")
+    raw = record["template_utf8"].encode("utf-8", errors="strict")
+    require(len(raw) <= README_LIMIT and type(record["size"]) is int and record["size"] == len(raw), "README source size")
+    require(record["sha256"] == sha(raw), "README source hash")
+    blob = hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+    require(oid(record["git_blob"]) == blob, "README source Git blob")
+    expected = render_readme(record["template_utf8"], source, catalog_identity, release_version)
+    require(rendered == expected, "README rendered bytes differ from selected source template")
+
+
 def verify_bundle(directory, expected_source=None):
     manifest_file = directory / "release-manifest.json"
     plain(manifest_file)
     manifest = document(manifest_file.read_bytes())
-    require(manifest["schema"] == SCHEMA, "manifest schema")
+    require(manifest["schema"] in (LEGACY_SCHEMA, SCHEMA), "manifest schema")
+    current = manifest["schema"] == SCHEMA
+    # A successful /1 read proves only the retained legacy envelope. It carries
+    # no README source evidence and never establishes the /2 source-only rule.
     source = manifest["source"]
     oid(source["commit"])
     if expected_source is not None:
@@ -159,6 +194,8 @@ def verify_bundle(directory, expected_source=None):
         "catalog/metadata/catalog.json", "catalog/metadata/catalog-files.json", "catalog/metadata/build.json"}
     require({x for x in names if x.startswith("catalog/")} == expected, "catalog archive closure")
     for row in catalog_files["files"]:
+        if current:
+            require(safe_name(row["source"]["path"]).startswith("src/"), "catalog product source must originate under src/")
         data = payload["catalog/" + safe_name(row["path"])]
         require(len(data) == row["source"]["size"] and sha(data) == row["source"]["sha256"], "catalog member mismatch")
     inputs = {n: sha(payload["catalog/" + n]) for n in ("metadata/catalog.json", "metadata/catalog-files.json")}
@@ -168,6 +205,9 @@ def verify_bundle(directory, expected_source=None):
     require(ident == manifest["catalog_identity"], "catalog identity mismatch")
     build = document(payload["catalog/metadata/build.json"])
     require(build["identity"] == ident and build["identity_inputs"] == inputs and build["artifact_kind"] == "catalog", "catalog build receipt")
+    if current:
+        verify_readme_source(manifest["provenance"].get("readme_source"), source,
+                             manifest["catalog_identity"], manifest["version"], payload["README.md"])
     require(set(names) == expected | {"engine/" + n for n in pin_names} |
             {"engine/engine.json", "engine-pin.json", "README.md", "content-hashes.json"}, "release payload closure")
     hashes = document(payload["content-hashes.json"])

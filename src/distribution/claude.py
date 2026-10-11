@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 from .data import identifier, path, require, string, version
 
 
-_V2_TEMPLATE_SHA256 = "11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d921d032e"
+_V2_TEMPLATE_SHA256 = frozenset(("11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d921d032e", "4a0ef01a22ecb4511e003da9998274d8c1a4ec482b6acf03c8f4c508a9efd966"))
 
 
 def project_entry_v2(template_bytes: bytes, package_id: str, package_version: str,
@@ -20,7 +20,7 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
                      *, configuration: dict | None, skill_naming: str = "original") -> tuple[str, bytes]:
     """Render only the selected skill's rc.2 Claude projection."""
     require(type(template_bytes) is bytes
-            and sha256(template_bytes).hexdigest() == _V2_TEMPLATE_SHA256,
+            and sha256(template_bytes).hexdigest() in _V2_TEMPLATE_SHA256,
             "Claude v2 renderer requires its exact v2 template")
     package_id = identifier(package_id, "package_id")
     package_version = version(package_version, "package_version")

@@ -33,8 +33,20 @@ GENERATOR_FILES=ENGINE_FILES
 def digest(raw): return sha256(raw).hexdigest()
 
 
+def source_path(name):
+    """Admit reusable source before reading bytes; manifests cannot widen it."""
+    state._relative(name)
+    require(name.startswith('src/'), 'product source must originate under src/')
+    return name
+
+
+def product_blob(source, name):
+    return source.read(source_path(name))
+
+
 def source_bytes(source, raw):
     validate('Source',source)
+    source_path(source['path'])
     state._relative(source['path']); state._descriptor(source)
     require(len(raw)==source['size'] and digest(raw)==source['sha256'],'source byte identity mismatch')
     oid=(sha1 if len(source['git_blob'])==40 else sha256)(b'blob '+str(len(raw)).encode('ascii')+b'\0'+raw).hexdigest()
@@ -80,7 +92,7 @@ def parent_documents(raw):
     ordered(doc['build_inputs'],lambda r:r['path']); portable([r['path'] for r in doc['build_inputs']])
     inputs={r['path']:r for r in doc['build_inputs']}
     for row in inputs.values():
-        state._descriptor(row); state._relative(row['path'])
+        state._descriptor(row); source_path(row['path'])
         require(len(row['git_blob'])==len(doc['source']['commit'])==len(doc['source']['tree']),'mixed Git object formats')
     require(doc['generator']['id']=='aicf-catalog-assembly','unsupported-generator')
     implementation=doc['generator']['implementation']
@@ -435,8 +447,9 @@ def execution_sources(source=None, catalog=None):
     expected={r['path']:r for r in catalog.document['generator']['implementation']} if catalog else None
     rows=[]
     for name in GENERATOR_FILES:
+        source_path(name)
         raw=read_raw(reader,root,name,state.LIMITS['file_bytes'])
-        row=source.read(name).identity() if source else expected[name]
+        row=product_blob(source,name).identity() if source else expected[name]
         source_bytes(row,raw)
         rows.append(row)
     return rows
@@ -471,14 +484,14 @@ def build_catalog(repository,commit,release_version,output_root,scratch_root):
     from .data import distribution_version
     source=GitSource(Path(repository),commit)
     require(source.repository==state._root(str(Path(__file__).absolute().parents[2])),'executing/source root mismatch')
-    manifest=validate('Manifest',yaml_object(source.read('src/distribution/manifest.yaml').data,'manifest.yaml'))
+    manifest=validate('Manifest',yaml_object(product_blob(source,'src/distribution/manifest.yaml').data,'manifest.yaml'))
     ordered(manifest['components'],dependency_key); ordered(manifest['adapters'],lambda r:r['id']); ordered(manifest['profiles'],lambda r:r['id'])
     implementation=execution_sources(source=source)
     components=[]; adapters=[]; presets=[]; files=[]; contents={}; paths=[]
     for row in manifest['components']:
         kind,pid=dependency_key(row); prefix=f"src/{component_root(kind)}/{pid}"
         require(row['source']==prefix and row['metadata']=={'skill':'skill-package.yaml','knowledge':'content-package.yaml','sub-agent':'sub-agent-package.yaml'}[kind],'manifest component root')
-        metadata=source.read(prefix+'/'+row['metadata'])
+        metadata=product_blob(source,prefix+'/'+row['metadata'])
         package={'skill':load_package,'knowledge':load_content_package,'sub-agent':load_sub_agent_package}[kind](metadata)
         require(package.id==pid and package.version==row['version'],'manifest package identity')
         component=descriptor(kind,package); components.append(component)
@@ -487,7 +500,7 @@ def build_catalog(repository,commit,release_version,output_root,scratch_root):
         for member in row['members']:
             name=member['source']; dest=f".ai/core/{component_root(kind)}/{pid}/{name}"
             require(member['destination']==dest,'manifest destination ownership')
-            paths.append(dest); blob=source.read(prefix+'/'+name)
+            paths.append(dest); blob=product_blob(source,prefix+'/'+name)
             artifact=f'packages/{kind}/{pid}/{name}'
             files.append({'path':artifact,'kind':kind,'owner':pid,'member':name,'source':blob.identity()}); contents[artifact]=blob.data
     portable(paths)
@@ -495,11 +508,11 @@ def build_catalog(repository,commit,release_version,output_root,scratch_root):
         aid=row['id']; require(row['source']==f'src/adapters/{aid}','adapter source root')
         adapter={k:row[k] for k in ('id','version','template','members')}; adapter['prefix']='aicf-'; adapters.append(adapter)
         for name in row['members']:
-            blob=source.read(row['source']+'/'+name); artifact=f'adapters/{aid}/{name}'
+            blob=product_blob(source,row['source']+'/'+name); artifact=f'adapters/{aid}/{name}'
             files.append({'path':artifact,'kind':'adapter','owner':aid,'member':name,'source':blob.identity()}); contents[artifact]=blob.data
     for row in manifest['profiles']:
         require(row['path']==f"src/profiles/{row['id']}.yaml",'preset source root')
-        preset=validate('Preset',yaml_object(source.read(row['path']).data,row['path']))
+        preset=validate('Preset',yaml_object(product_blob(source,row['path']).data,row['path']))
         require(preset['id']==row['id'],'preset identity'); presets.append(preset)
     doc={'catalog_version':1,'release_version':distribution_version(release_version,'release_version'),
          'source':{'commit':source.commit,'tree':source.tree},'components':components,'adapters':adapters,'presets':presets,
@@ -545,7 +558,7 @@ def package_engine(repository,commit,output_root):
     source=GitSource(Path(repository),commit)
     execution_sources(source=source)
     output=state._root(str(output_root)); state._roots_disjoint({'source':source.repository,'output':output})
-    blobs={n:source.read(n) for n in ENGINE_FILES}
+    blobs={n:product_blob(source,n) for n in ENGINE_FILES}
     pin={'id':'framework-managed-installation','version':'2.0.0','source_commit':commit,
          'files':[{'path':n,'sha256':digest(blobs[n].data)} for n in ENGINE_FILES]}
     from .installation_io import budget

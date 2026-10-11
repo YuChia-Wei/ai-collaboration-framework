@@ -132,7 +132,7 @@ def distribution_examples():
     inventory = {"catalog_files_version": 1, "files": [{"path": "skills/example/SKILL.md", "kind": "skill",
                  "owner": "example", "member": "SKILL.md", "source": source()}]}
     engine = {"id": "framework-managed-installation", "version": "2.0.0", "source_commit": OID,
-              "files": [{"path": "distribution/contracts.py", "sha256": SHA}]}
+              "files": [{"path": "src/distribution/contracts.py", "sha256": SHA}]}
     desired = selection()
     subset = {"schema_version": 3, "mode": "catalog-subset", "release_version": "0.1.0-rc.1", "source": origin,
               "catalog": desired["catalog"], "desired": desired, "desired_sha256": SHA,
