@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Run a local Windows installation smoke against one committed source.
 
-Both output arguments are existing native C: parent directories. Each invocation
+Both output arguments are existing native F: RAM-disk parent directories. Each invocation
 creates fresh w-<id>/e-<id> children and retains everything, including failures.
 This is real local installation/API evidence, not publication, IDE discovery,
-installer crash recovery, native power-loss durability or target adoption.
+installer crash recovery, power-loss durability or target adoption. RAM-disk
+evidence is limited to process-termination behavior; it is not durable storage.
 Use provisioned Python 3.11+, PyYAML 6 and Git; dependencies are never added.
 """
 from __future__ import annotations
@@ -104,16 +105,20 @@ def fresh(path, raw):
         stream.write(raw)
 
 
-def native_parent(path):
-    require(os.name == "nt", "This selected native Windows smoke requires Windows.")
-    require(path.is_absolute() and path.drive.upper() == "C:" and ".." not in path.parts,
-            "Output parents must be explicit absolute native C: paths.")
-    require(path.is_dir() and len(str(path)) <= 70, "An existing short output parent (at most 70 characters) is required.")
-    for part in (path, *path.parents):
-        info = part.lstat()
-        require(stat.S_ISDIR(info.st_mode) and not stat.S_ISLNK(info.st_mode)
-                and not getattr(info, "st_file_attributes", 0) & 0x400, "Output parents must have plain directory ancestry.")
-    require(path.resolve(strict=True) == path, "Canonical output parents are required.")
+def canonical_directory(path):
+    """Keep direct ancestry checks on RAM disks whose final-name API returns error 1."""
+    require(os.name == "nt" and path.is_absolute() and re.fullmatch(r"[A-Za-z]:", path.drive)
+            and ".." not in path.parts, "An explicit absolute native Windows directory is required.")
+    require(path.is_dir(), "The selected directory must already exist.")
+    def identities():
+        rows = []
+        for part in (path, *path.parents):
+            info = part.lstat()
+            require(stat.S_ISDIR(info.st_mode) and not stat.S_ISLNK(info.st_mode)
+                    and not getattr(info, "st_file_attributes", 0) & 0x400, "Selected paths must have plain directory ancestry.")
+            rows.append((info.st_dev, info.st_ino))
+        return rows
+    before = identities()
     import ctypes
     from ctypes import wintypes
     kernel = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -122,8 +127,30 @@ def native_parent(path):
     buffer = ctypes.create_unicode_buffer(32768)
     size = kernel.QueryDosDeviceW(path.drive, buffer, len(buffer))
     require(0 < size < len(buffer) and re.fullmatch(r"\\Device\\[^\\]+", buffer.value),
-            "Output drive must be a native device, not SUBST/network storage.")
-    return path
+            "Selected drive must be a native device, not SUBST/network storage.")
+    kernel.GetDriveTypeW.argtypes = [wintypes.LPCWSTR]
+    kernel.GetDriveTypeW.restype = wintypes.UINT
+    require(kernel.GetDriveTypeW(path.anchor) in {2, 3, 5, 6}, "Selected drive must be local.")
+    try:
+        canonical = path.resolve(strict=True)
+    except OSError as exc:
+        if getattr(exc, "winerror", None) != 1:
+            raise
+        require(all(device and inode for device, inode in before), "Native path identities are unavailable.")
+        kernel.GetLongPathNameW.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+        kernel.GetLongPathNameW.restype = wintypes.DWORD
+        canonical_buffer = ctypes.create_unicode_buffer(32768)
+        size = kernel.GetLongPathNameW(str(path), canonical_buffer, len(canonical_buffer))
+        require(0 < size < len(canonical_buffer), "Canonical native directory name is unavailable.")
+        canonical = Path(canonical_buffer.value)
+    require(canonical == path and identities() == before, "Canonical stable directory identities are required.")
+    return canonical
+
+
+def native_parent(path):
+    require(path.drive.upper() == "F:", "Output parents must be explicit F: RAM-disk paths; C: output is not allowed.")
+    require(len(str(path)) <= 70, "An existing short F: output parent (at most 70 characters) is required.")
+    return canonical_directory(path)
 
 
 class Smoke:
@@ -140,7 +167,7 @@ class Smoke:
         self.environment["GIT_TERMINAL_PROMPT"] = "0"
         self.environment["GIT_CONFIG_NOSYSTEM"] = "1"
         self.environment["GIT_CONFIG_GLOBAL"] = os.devnull
-        self.environment["TMP"] = self.environment["TEMP"] = str(work)
+        self.environment["TMP"] = self.environment["TEMP"] = self.environment["TMPDIR"] = str(work)
 
     def check(self, name, condition):
         self.checks.append({"name": name, "outcome": "passed" if condition else "failed"})
@@ -163,7 +190,8 @@ class Smoke:
             actual = original
         cwd = self.project if self.project.exists() else self.work
         fresh(folder / "command.json", encoded({"argv": actual, "cwd": str(cwd), "timeout_seconds": timeout,
-                                               "consumer_audited": audited, "site_packages_disabled": no_site}))
+                                               "consumer_audited": audited, "site_packages_disabled": no_site,
+                                               "temp_roots": {key: self.environment[key] for key in ("TEMP", "TMP", "TMPDIR")}}))
         started = time.monotonic()
         row = {"label": label, "evidence": str(folder), "outcome": "started"}
         self.calls.append(row)
@@ -359,7 +387,7 @@ class Smoke:
         plan_request = {**base, "operation": "plan", "candidate_root": str(self.candidate), "candidate_identity": candidate_identity,
                         "expected_lock_sha256": None, "mode_policy": "windows-inventory-only", "scratch_root": str(self.work / "is"),
                         "staging_root": str(self.work / "it"), "recovery_root": str(self.work / "ir"),
-                        "durability": {"declared_by": "isolated-smoke-runner", "declaration_reference": "fresh-native-C-fixture",
+                        "durability": {"declared_by": "isolated-smoke-runner", "declaration_reference": "fresh-RAM-disk-fixture",
                                        "failure_domain": "process-termination"},
                         "protected_inputs": [{"path": name.replace("\\", "/"), "sha256": digest(raw)} for name, raw in sorted(self.original.items())],
                         "project_data_action": "none", "project_edits": []}
@@ -471,21 +499,26 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository", type=Path, required=True)
     parser.add_argument("--commit", required=True)
-    parser.add_argument("--workspace", type=Path, required=True, help="Existing short native C: output parent")
-    parser.add_argument("--evidence-root", type=Path, required=True, help="Existing short native C: evidence parent")
+    parser.add_argument("--workspace", type=Path, required=True, help="Existing short native F: RAM-disk output parent")
+    parser.add_argument("--evidence-root", type=Path, required=True, help="Existing short native F: RAM-disk evidence parent")
     args = parser.parse_args()
     evidence = None
     report = {"schema": "workflow-installation-smoke/1", "outcome": "failed", "source_commit": args.commit,
-              "runner_sha256": digest(Path(__file__).read_bytes()), "python": sys.version,
+              "runner_sha256": digest(Path(__file__).read_bytes()), "runner_path": str(Path(__file__).absolute()), "python": sys.version,
+              "storage_profile": "F-RAM-disk", "durability_scope": "process-termination-only",
               "started_at": datetime.now(timezone.utc).isoformat(), "checks": [], "calls": [],
               "limitations": ["synthetic isolated consumer only", "Python audit is not an OS sandbox",
-                              "installer interruption and power loss not tested", "IDE sessions and discovery not tested",
+                              "RAM-disk process-termination evidence only; no power-loss durability",
+                              "installer interruption not tested", "IDE sessions and discovery not tested",
                               "provider, publication and adoption not performed"], "artifacts_retained": True}
     started = time.monotonic()
     try:
+        entrypoint = Path(__file__).absolute()
+        require(entrypoint.drive.upper() == "F:", "Execute the selected runner entrypoint from an F: worktree.")
+        canonical_directory(entrypoint.parent)
         require(re.fullmatch(r"[0-9a-f]{40}", args.commit), "Select one full lowercase Git commit SHA.")
         require(args.repository.is_absolute() and args.repository.is_dir(), "An existing absolute repository is required.")
-        repository = args.repository.resolve(strict=True)
+        repository = canonical_directory(args.repository)
         workspace, evidence_parent = native_parent(args.workspace), native_parent(args.evidence_root)
         for path in (workspace, evidence_parent):
             require(not path.is_relative_to(repository), "Output parents must be outside the source repository.")
