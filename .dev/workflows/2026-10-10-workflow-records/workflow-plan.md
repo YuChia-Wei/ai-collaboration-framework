@@ -103,3 +103,12 @@ The installed `pr-author` tool prepared and rendered a local real-Git-bound
 proposal. All four local tasks are complete; push, PR creation, actual hosted CI
 and integration remain next-owner actions. The final record-only commit is
 followed by a new exact-HEAD local candidate and unchanged-content rebind.
+
+## Current PR integration continuation (2026-10-11)
+
+The owner subsequently authorized PR, CI, merge, #439/#440 closure and Project
+updates targeting v0.20.0. T5 reopens this same workflow for the bounded hosted
+test repair and source integration readiness. See [CI repair](ci-repair.md) for
+the failed run, controlled diagnosis and fixed-subject verification. Installable
+workflow CLI delivery is separately selected 0.20.0 work; #441/#442 continue as
+inventory and design. No release publication is implied.

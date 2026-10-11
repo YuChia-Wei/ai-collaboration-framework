@@ -272,18 +272,28 @@ class WorkflowRecordTests(unittest.TestCase):
 
     def test_reparse_detection_is_applied_to_each_existing_path_component(self):
         original_stat = Path.lstat
-        target = self.artifact / "workflow-plan.md"
 
         class ReparseStat:
             st_mode = 0o100644
             st_file_attributes = 0x400
 
-        def observed_stat(path, *args, **kwargs):
-            return ReparseStat() if path == target else original_stat(path, *args, **kwargs)
+        for artifact in (self.artifact, self.artifact / ".." / self.artifact.name):
+            with self.subTest(aliased=artifact != self.artifact):
+                # The store resolves its root, including Windows short-name aliases.
+                # Resolve the injection target before patching filesystem observations.
+                target = (artifact / "workflow-plan.md").resolve()
+                matched = []
 
-        # This is controlled metadata evidence, not an OS symlink/junction acceptance claim.
-        with patch.object(Path, "lstat", observed_stat):
-            self.assert_error(self.run_operation("context"), "unsafe_path")
+                def observed_stat(path, *args, **kwargs):
+                    if path == target:
+                        matched.append(path)
+                        return ReparseStat()
+                    return original_stat(path, *args, **kwargs)
+
+                # Controlled metadata evidence, not native symlink/junction acceptance.
+                with patch.object(Path, "lstat", observed_stat):
+                    self.assert_error(self.run_operation("context"), "unsafe_path")
+                self.assertEqual(matched, [target], "Reparse metadata must be injected once")
 
     def test_default_change_keeps_explicit_git_ref_and_remote_never_falls_back(self):
         config = copy.deepcopy(DEFAULT_CONFIG)

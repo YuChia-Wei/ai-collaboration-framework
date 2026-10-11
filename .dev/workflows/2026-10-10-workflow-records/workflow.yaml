@@ -4,12 +4,12 @@ workflow_id: 2026-10-10-workflow-records
 workflow_kind: software-development
 title: Define replaceable workflow records and implement the first Git slice
 owner_skill: software-development-orchestrator
-status: completed
-current_phase: completed
+status: in_progress
+current_phase: ci-repair
 artifact_root: .dev/workflows/2026-10-10-workflow-records
 entrypoint: workflow-plan.md
 created_at: '2026-10-10T11:34:21.3396384+08:00'
-updated_at: '2026-10-11T14:35:05.8455934+08:00'
+updated_at: '2026-10-11T17:17:21.946002+08:00'
 template_source: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
 template_version: policy-direct-1.0
 branch: codex/2026-10-10-workflow-records
@@ -22,8 +22,20 @@ work_items:
 - provider: github
   issue: 440
   url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/440
-authority: Owner approved design and development based on current workflows for compatibility with past records on 2026-10-10, following the inventory and first Git slice proposal. Use F RAM disk for high-IO work if needed.
-execution: Parent is the only tracked writer and integration owner. Bounded workers provide read-only inventory and design advice. Local design, implementation, tests, commits and scoped independent review are selected. The owner's 2026-10-11 continuation additionally authorizes progress replies on Issues 439 and 440 with the same AI signature as local commits. Push, PR creation, merge, Issue or Project state changes, publication, managed installation and data migration are not selected.
-workflow_rationale: Preserve the selected contract, compatibility boundaries, implementation and immutable independent review across stages. A source-only CLI delivery is distinct from future package distribution and downstream adoption.
-result_summary: Selected source design and first Git slice plus T4 continuation completed. 202 current tests passed at 2d59a0dd; unchanged runtime evidence retained. R1 verified at 315cb2da and walkthrough R2/R3 at 7e698beb. Concrete examples, two fresh/repeated 15-case runs, signed Issue replies with exact read-back and local content-bound PR proposal complete. Push, PR creation, hosted CI, integration, packaging and publication remain separately owned.
-continuation: Owner requested continued work in this workflow on 2026-10-11. T4 completes worked examples, acceptance reconciliation, signed Issue progress and a reviewable local PR proposal; T1-T3 keep their original completed evidence.
+authority: Owner approved design and development based on current workflows for compatibility
+  with past records on 2026-10-10, following the inventory and first Git slice proposal.
+  Use F RAM disk for high-IO work if needed.
+execution: Parent is the only tracked writer and integration owner. The owner explicitly
+  authorized PR, CI, merge, Issue 439/440 closure and Project v0.20.0 updates on 2026-10-11.
+  T5 repairs a hosted test and verifies source integration readiness. Packaging delivery
+  planning and 441/442 inventory/design are selected; release publication, real installation
+  and data migration are not claimed.
+workflow_rationale: Preserve the selected contract, compatibility boundaries, implementation
+  and immutable independent review across stages. A source-only CLI delivery is distinct
+  from future package distribution and downstream adoption.
+result_summary: T1-T4 completed with retained evidence. PR 447 first Source change
+  gate failed one test. T5 controlled reproduction and focused repair passed; fixed
+  suites and affected review pending.
+continuation: Owner requested continued work in this workflow on 2026-10-11. T4 completes
+  worked examples, acceptance reconciliation, signed Issue progress and a reviewable
+  local PR proposal; T1-T3 keep their original completed evidence.
