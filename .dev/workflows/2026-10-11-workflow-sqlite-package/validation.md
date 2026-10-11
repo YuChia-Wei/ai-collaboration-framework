@@ -80,3 +80,54 @@ immutable independent review, and per-Issue final acceptance remain pending.
 No current #441/#448 hosted CI, PR/merge, Issue closure, production data adoption,
 release publication, macOS/Linux installed execution or power-loss result is
 claimed. The source project's existing managed installation remains unchanged.
+
+## Fixed source checks and first actual installation attempt
+
+- `ac2412a064d071d403f0d4442041b228964032ae`: fixed default suite passed
+  242 tests, zero failures/errors/skips; runner 66.414335 s. Raw output SHA-256:
+  `248c3294a4de0ed122de0f0eaf513d8f87d0b6bec962337e4c5118ca3e384f4a`.
+- `5e9d83af70198f598be743acea6a410645b67418`: the reviewed installation runner
+  was integrated; the fixed default suite passed 242 tests, zero
+  failures/errors/skips; runner 67.960538 s. Raw output SHA-256:
+  `841fc318ccc5e194357942b10bc8dbdc88e1a974733fc218c8a5ddc3e72f5f2e`.
+- Independent reviewer `workflow_review` reviewed the complete base
+  `6a615e8ac19df9343835ab74a0e2436cdc974976` to `ac2412a0` implementation and
+  the runner blob `62b7faf6711d7bd4ac5985dd6ed70972a4faa37e` separately. No
+  actionable finding was reported. The integrated runner has that exact blob;
+  every other tracked path equals `ac2412a0`. This review was read-only, not an
+  installed-execution result; the later failure below invalidates any broad
+  inference that source review proves installation acceptance.
+- External validator `contract_advice` executed the actual installation runner
+  once at `5e9d83af` on 2026-10-11, 10:33:03–10:34:34 UTC. The attempt failed
+  after 91.7 s at `013-plan-first`, before apply. Catalog assembly took 73.35 s;
+  workflow subset, nonselected optional subset and initial inspect passed.
+  Thirteen checks passed before the plan returned `blocked`, `changed: false`,
+  `invalid-shape`. Installed CLI, repeat apply and recovery were not run.
+- The product regression was a shared schema definition: source-only `Pin.path`
+  also constrained `Lock.project_inputs`, rejecting all six legitimate non-src
+  caller inputs (configuration, locator, plan, task and sentinels). `declared_by`
+  was investigated and ruled out; it is a nonempty string, not a target-owner
+  enum. `ProjectInput` now keeps caller-relative paths, while `Pin` keeps the
+  strict `src/` engine source rule. The regression checks both boundaries.
+- Focused schemas on an F-drive source copy with the three repaired files:
+  44 tests passed, zero failures/errors/skips, runner 1.237839 s. The actual
+  installation attempt must be repeated against a new immutable repaired head.
+
+## Owner-selected test storage and cleanup
+
+The owner explicitly selected F RAM disk for **all subsequent test paths**:
+source copies, working directories, temporary files, package outputs, installation
+targets, SQLite, backups and evidence. TEMP/TMP/TMPDIR are process-scoped; system
+defaults are unchanged. RAM-disk results do not prove persistent-media or
+power-loss durability. The retired historical acceleration workflow is not used.
+
+The owner also explicitly rejected retaining the C-drive trial artifacts.
+After checking the exact root and its two generated children for unexpected
+contents and reparse paths, `C:/fw441-448` was removed and absence was read back.
+The retained experience is this root-cause record and the concise summary at
+`F:/workflow-validation-441-448/archive/attempt-1-5e9d83af.json` (SHA-256
+`df1e1e9444ff9f6c575f59d4f8f2a50c3ba5f6ad99e50f209d0a974da976fec6`).
+Original terminal SHA-256:
+`038d3bb12bb1988d9c36913657f72a240e561946227fdf624a82785bff5c2ec9`.
+Raw first-attempt fixtures and call files are no longer available; the summary
+is retained experience, not a substitute for the next actual execution.

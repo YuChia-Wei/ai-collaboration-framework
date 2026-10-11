@@ -80,6 +80,22 @@ class DistributionSchemaTests(unittest.TestCase):
     def test_runtime_definition_literal_matches_source_schema(self):
         self.assertEqual(contracts.DEFINITIONS, document("src/distribution/schemas/contracts.schema.json")["$defs"])
 
+    def test_engine_source_pins_do_not_constrain_caller_project_inputs(self):
+        examples = distribution_examples()
+        lock = examples["lock"]
+        lock["project_inputs"] = [
+            {"path": name, "sha256": "a" * 64}
+            for name in (".ai/custom/workflow-records.json", ".dev/workflows/example/workflow.yaml", "sentinel.txt")
+        ]
+        distribution_validator("lock").validate(lock)
+        self.assertIs(contracts.validate("Lock", lock), lock)
+        for name in ("tools/maintain_framework.py", ".ai/custom/workflow-records.json"):
+            invalid = changed(examples["engine-bundle"], ("engine", "files", 0, "path"), name)
+            with self.subTest(engine_source=name):
+                self.assertFalse(distribution_validator("engine-bundle").is_valid(invalid))
+                with self.assertRaises(DistributionError):
+                    contracts.validate("EngineBundle", invalid)
+
     def test_every_wrapper_accepts_a_representative_document_in_both_validators(self):
         examples = distribution_examples()
         self.assertEqual(set(examples), set(DISTRIBUTION) - {"contracts"})

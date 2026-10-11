@@ -1395,7 +1395,7 @@
         "project_inputs": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/Pin"
+            "$ref": "#/$defs/ProjectInput"
           },
           "minItems": 0,
           "maxItems": 4096,
@@ -2258,6 +2258,26 @@
         },
         "escalation": {
           "const": "explicit-user-authorized-visible-task"
+        }
+      }
+    },
+    "ProjectInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "pattern": "^[^\\\\:]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
         }
       }
     }
