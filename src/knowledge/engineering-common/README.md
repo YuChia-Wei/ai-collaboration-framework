@@ -28,6 +28,8 @@ target adoption; optional installation creates no new approval or artifact manda
 The metadata lists every member and resource. The following links are topic entrypoints;
 select additional resources by their declared IDs for the current task.
 
+- [BDD method: discovery, formulation and automation](references/BDD-METHOD.md)
+- [Gherkin scenario expression](references/GHERKIN-SCENARIOS.md)
 - Content metadata: `content-package.yaml`
 - [engineering-rule-catalog.yaml](engineering-rule-catalog.yaml)
 - [references/ENGINEERING-IDENTITY-CONTRACT.md](references/ENGINEERING-IDENTITY-CONTRACT.md)

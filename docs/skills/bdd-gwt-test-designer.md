@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.0`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.3.0`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,12 @@
 
 ## 知識
 
-可選兩個 binding：`engineering-common@0.1.0`（`design`,`review`，2 項資源）與 `dotnet-backend@0.1.0`（同操作，2 項資源）。缺失只會使這些專門準則不可用，通用情境設計仍可完成。
+可選兩個 binding：`engineering-common@0.2.0`（`design`,`review`，4 項資源）與 `dotnet-backend@0.1.1`（同操作，2 項資源）。缺失只會使這些專門準則不可用，通用情境設計仍可完成。
+
+需要釐清規則、例子與未決問題時，選讀 BDD 方法；明確要求 Gherkin 輸出或
+審查時，才選讀 Gherkin 表述指引。只探索需求可先交付問題與暫定例子，
+不必強制產生 `.feature`、驗收通過聲明或完整作者流程。Story／正式測試規格
+仍由對應操作負責，方法知識不授予核准需求或實作的權限。
 
 ## 開始使用
 
@@ -40,14 +45,16 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### common-test-design
 
-`engineering-common@0.1.0`；操作：`design`、`review`。
+`engineering-common@0.2.0`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
+- `member:references/BDD-METHOD.md`
+- `member:references/GHERKIN-SCENARIOS.md`
 - `member:references/GWT-TEST-HANDOFF-CONTRACT.md`
 
 ### dotnet-test-design
 
-`dotnet-backend@0.1.0`；操作：`design`、`review`。
+`dotnet-backend@0.1.1`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
 - `member:standards/coding-standards/test-standards.md`

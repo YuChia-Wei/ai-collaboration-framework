@@ -1,6 +1,6 @@
 metadata_version: 4
 id: code-reviewer
-version: 0.2.0
+version: 0.2.1
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -33,7 +33,7 @@ operations:
 knowledge_consumption:
 - id: common-review
   package: engineering-common
-  version: 0.1.0
+  version: 0.2.0
   operations: [review]
   resources:
   - engineering-rule-catalog
@@ -41,7 +41,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-review
   package: dotnet-backend
-  version: 0.1.0
+  version: 0.1.1
   operations: [review]
   resources:
   - engineering-rule-catalog

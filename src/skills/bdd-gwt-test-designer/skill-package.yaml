@@ -1,6 +1,6 @@
 metadata_version: 4
 id: bdd-gwt-test-designer
-version: 0.2.0
+version: 0.3.0
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -45,16 +45,18 @@ operations:
 knowledge_consumption:
 - id: common-test-design
   package: engineering-common
-  version: 0.1.0
+  version: 0.2.0
   operations: [design, review]
   resources:
   - engineering-rule-catalog
+  - member:references/BDD-METHOD.md
+  - member:references/GHERKIN-SCENARIOS.md
   - member:references/GWT-TEST-HANDOFF-CONTRACT.md
   requirement: optional
   on_missing: unavailable
 - id: dotnet-test-design
   package: dotnet-backend
-  version: 0.1.0
+  version: 0.1.1
   operations: [design, review]
   resources:
   - engineering-rule-catalog

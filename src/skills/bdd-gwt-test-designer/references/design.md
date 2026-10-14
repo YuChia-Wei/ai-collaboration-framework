@@ -61,6 +61,20 @@ authorizes a destination; no new record family or implicit config write.
 
 ## Establish the behavior source
 
+Within the verified task-selected allowlist, use
+`member:references/BDD-METHOD.md` when rules, examples or their status need
+clarification. Use `member:references/GHERKIN-SCENARIOS.md` when the requested
+output is Gherkin; do not load it merely because a request mentions BDD. The
+existing GWT handoff resource supports an implementation handoff when needed.
+These are resource choices within the installed protocol above, not permission
+to follow source links or load the whole package. Missing optional coverage
+does not prevent common work grounded in caller inputs.
+
+For discovery only, return the bounded rules/examples/questions and stop before
+claiming a designed scenario set. For a combined request, reuse the same source
+IDs; keep unresolved scenarios provisional rather than answering business
+questions on the owner's behalf. Do not require another author skill first.
+
 Bind bounded behavior, requirement/specification/acceptance IDs and source
 revision/status, or exact conversational source when no document exists.
 Separate approved behavior from observed code, assumptions and proposed rules.

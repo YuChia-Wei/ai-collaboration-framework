@@ -1,6 +1,6 @@
 content_package_version: 1
 id: engineering-common
-version: 0.1.0
+version: 0.2.0
 entrypoint: README.md
 members:
 - {path: README.md, kind: index}
@@ -16,8 +16,10 @@ members:
 - {path: operations/RUNBOOK-GUIDE.MD, kind: knowledge}
 - {path: references/ARTIFACT-DESIGN-REVIEW-CONTRACT.md, kind: knowledge}
 - {path: references/AUTHORING-BOUNDARY-CONTRACT.md, kind: knowledge}
+- {path: references/BDD-METHOD.md, kind: knowledge}
 - {path: references/CONTEXT-RESOURCE-OWNERSHIP.md, kind: knowledge}
 - {path: references/ENGINEERING-IDENTITY-CONTRACT.md, kind: knowledge}
+- {path: references/GHERKIN-SCENARIOS.md, kind: knowledge}
 - {path: references/GWT-TEST-HANDOFF-CONTRACT.md, kind: knowledge}
 - {path: references/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md, kind: knowledge}
 - {path: references/PROMPT-PORTABILITY-RULES.md, kind: knowledge}
@@ -112,6 +114,13 @@ resources:
   capabilities: [architecture, implementation, requirements, review, specification, test-design]
   operations: [design, draft, implement, normalize, review]
   technology_profile: null
+- id: member:references/BDD-METHOD.md
+  path: references/BDD-METHOD.md
+  kind: knowledge
+  rule_ids: []
+  capabilities: [requirements, specification, test-design]
+  operations: [design, draft, normalize, review]
+  technology_profile: null
 - id: member:references/CONTEXT-RESOURCE-OWNERSHIP.md
   path: references/CONTEXT-RESOURCE-OWNERSHIP.md
   kind: knowledge
@@ -127,6 +136,13 @@ resources:
     requirements, review, specification, test-design]
   operations: [apply, assess-runtime, audit, compare, design, draft, implement, normalize, plan-validation, propose, review,
     review-draft, review-semantics]
+  technology_profile: null
+- id: member:references/GHERKIN-SCENARIOS.md
+  path: references/GHERKIN-SCENARIOS.md
+  kind: knowledge
+  rule_ids: []
+  capabilities: [requirements, specification, test-design]
+  operations: [design, draft, normalize, review]
   technology_profile: null
 - id: member:references/GWT-TEST-HANDOFF-CONTRACT.md
   path: references/GWT-TEST-HANDOFF-CONTRACT.md
@@ -227,6 +243,11 @@ references:
   requirement: required
   on_missing: unavailable
 - from: README.md
+  resource_id: member:references/BDD-METHOD.md
+  target: {package: engineering-common, path: references/BDD-METHOD.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: README.md
   resource_id: member:references/CONTEXT-RESOURCE-OWNERSHIP.md
   target: {package: engineering-common, path: references/CONTEXT-RESOURCE-OWNERSHIP.md, anchor: null}
   requirement: required
@@ -234,6 +255,11 @@ references:
 - from: README.md
   resource_id: member:references/ENGINEERING-IDENTITY-CONTRACT.md
   target: {package: engineering-common, path: references/ENGINEERING-IDENTITY-CONTRACT.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: README.md
+  resource_id: member:references/GHERKIN-SCENARIOS.md
+  target: {package: engineering-common, path: references/GHERKIN-SCENARIOS.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: README.md

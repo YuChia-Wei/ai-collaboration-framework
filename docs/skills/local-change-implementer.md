@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.0`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.1.0`（1 項）與 `dotnet-backend@0.1.0`（5 項）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
+可選 `engineering-common@0.2.0`（1 項）與 `dotnet-backend@0.1.1`（5 項）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
 
 ## 開始使用
 
@@ -40,13 +40,13 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### common-local-change
 
-`engineering-common@0.1.0`；操作：`implement`。
+`engineering-common@0.2.0`；操作：`implement`。
 
 - `engineering-rule-catalog`
 
 ### dotnet-local-change
 
-`dotnet-backend@0.1.0`；操作：`implement`。
+`dotnet-backend@0.1.1`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:standards/coding-standards/aggregate-standards.md`

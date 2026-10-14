@@ -59,6 +59,15 @@ required specialist gaps cannot be reported as covered. Continue unaffected
 common work with that limit disclosed. Persist only when the actual task
 authorizes a destination; no new record family or implicit config write.
 
+Within the verified task-selected allowlist, use
+`member:references/BDD-METHOD.md` for rule/example/status ambiguity and
+`member:references/GHERKIN-SCENARIOS.md` for selected Gherkin syntax and behavior
+expression. Do not load every allowed resource. Separate syntax defects from
+design advice and preserve target conventions. Missing optional coverage is
+unavailable, not permission to read source resources. A discovery-only question
+does not supply a fixed scenario artifact: return the missing subject or bounded
+clarification rather than inventing a review result.
+
 Bind the artifact path/version and digest, or quote bounded inline scenarios.
 Record requirements/ACs, source revision/status, coverage and target conventions
 separately. Leave the artifact unchanged. For authorized revision, finish this
