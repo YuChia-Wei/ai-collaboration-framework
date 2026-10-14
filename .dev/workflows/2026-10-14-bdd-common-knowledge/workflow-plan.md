@@ -38,8 +38,8 @@ No unavailable generic implementation tool is inferred from those skill names.
 | --- | --- | --- |
 | T1 | Scope, topic ownership and version consequences | completed |
 | T2 | Knowledge, consumer instructions, metadata and manuals | completed |
-| T3 | Source checks, isolated package/install and fixed behavioral cases | in_progress |
-| T4 | Immutable review, supported repairs and local delivery | pending |
+| T3 | Source checks, isolated package/install and fixed behavioral cases | completed |
+| T4 | Immutable review, supported repairs and local delivery | completed |
 
 Parent is the sole tracked writer and integration owner. Three gpt-6.1-sol/low
 workers supplied read-only inventory; no discovered text is implementation approval.
@@ -76,7 +76,14 @@ inspection and agent behavior samples do not substitute for independent review.
 
 ## Evidence and pending operations
 
-Results will be retained in `validation.md`; task records report actual outcomes.
+Results and retained attempt limitations are in [validation.md](validation.md);
+task records report actual outcomes. Implementation commit is
+`c9439c1d29c21fe27f0415b62c910e9aabffe790`. The local delivery scope is complete:
+117 focused and 243 default source tests, two actual isolated installations,
+verified installed resources, B1-B4 agent samples and independent scoped review.
+The initial shared-context sample could not prove per-case resource isolation;
+separate fresh B1/B3 samples supplied that evidence without source changes.
+Raw actor reports are retained in `evidence/`. No statistical or token claim follows.
 The repository-wide graph advertised this HEAD but returned retired tests and no
 known current catalog functions. Treat that coverage as stale: tracked-file fallback
 was used for exact current test/tool paths, and distribution was reindexed separately.

@@ -1,0 +1,29 @@
+{
+  "source_commit": "c9439c1d29c21fe27f0415b62c910e9aabffe790",
+  "raw_local_trial": "C:\\b452-74060e5c",
+  "reviewer": "/root/bdd_immutable_review",
+  "review_outcome": "no-supported-actionable-findings",
+  "installed_summary_sha256": "99c11d2d53b9302508cd4754e6d104245f118a89a804c3ae2819f3b0bd1a3628",
+  "raw_actor_reports": {
+    "behavior-absent.md": "29432b031f7492f956d1ac2ca00b35c11729d29e2ee9a5bc19c63051074b2935",
+    "behavior-b1-isolated.md": "4a8a4b96685bebfe47c8ba2f4a0e89c6d020e0881beef832d22946dc34624848",
+    "behavior-b3-isolated.md": "cf29684dd734a14ad6d1c844b895ef68603d1fa87304309199e82de8ecd7f23a",
+    "behavior-common-attempt-1.md": "e3a004d1ed0b9a2cee6bb992f05897bcc0c2a4e9a17c2a4bc37a2bbc8692ffe9"
+  },
+  "unchanged_git_subjects": {
+    "src": "bfde907845ddd10605a8852a2fc3b014bd05ab53",
+    "docs": "b3e89b3b2c2712ef444c2429e9a7ff65247622b6",
+    "tests": "abd8ad40daea71c7219e280bf04c4c2f279e9ef0",
+    "tools": "ef47f90f26b1893412bb75f52544b809a2de378b",
+    ".dev/standards": "5160d901c4938e62e8e23f5f62cb242854983204",
+    ".dev/contracts": "61eddd08f57e96ea5c4096e6acae265dc5642d60",
+    "AGENTS.md": "50aba82533d9138e4aa661047b95066013c649e1"
+  },
+  "scope_limits": [
+    "local-windows",
+    "windows-inventory-only",
+    "process-termination-durability",
+    "sampled-agent-instruction-outcomes",
+    "no-hosted-ci-or-adoption-or-publication"
+  ]
+}
