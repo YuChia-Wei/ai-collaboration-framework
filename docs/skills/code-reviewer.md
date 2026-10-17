@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.3`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.2.0`（1 項）與 `dotnet-backend@0.1.1`（6 項）審查 binding；未裝時不可宣稱有那些專門覆蓋。
+可選 `engineering-common@0.3.0`（1 項）與 `dotnet-backend@0.1.3`（6 項）審查 binding；未裝時不可宣稱有那些專門覆蓋。
 
 ## 開始使用
 
@@ -36,17 +36,17 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ## 宣告的知識資源
 
-以下全部為 optional；未選、缺少或無法驗證時，不可宣稱具備對應專業覆蓋。
+以下宣告皆為 optional allowlist；不是每次必讀清單。未選、缺少或無法驗證時，揭露 coverage unavailable。
 
 ### common-review
 
-`engineering-common@0.2.0`；操作：`review`。
+`engineering-common@0.3.0`；操作：`review`。
 
 - `engineering-rule-catalog`
 
 ### dotnet-review
 
-`dotnet-backend@0.1.1`；操作：`review`。
+`dotnet-backend@0.1.3`；操作：`review`。
 
 - `engineering-rule-catalog`
 - `member:standards/DESIGN-BY-CONTRACT.md`

@@ -157,3 +157,10 @@ travels unchanged; a handoff grants none. Return the semantic handoff if another
 skill is unavailable. Do not rewrite the originating review or claim independent
 review/compliance from implementation. Push, PR, merge, publication, adoption
 and external tracker changes require their own applicable authority.
+
+## Select the needed test handoff
+
+When tests are in scope, select the general test-design handoff for non-GWT
+designs or the GWT handoff for a GWT design from the verified installed allowlist.
+Use only the needed handoff; do not require both or repeat accepted test design.
+Preserve source IDs, expected-value authority and actual execution limits.

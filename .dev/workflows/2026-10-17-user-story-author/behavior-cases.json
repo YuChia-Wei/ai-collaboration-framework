@@ -1,0 +1,61 @@
+{
+  "schema_version": "task-local/1",
+  "note": "Fixed actor prompts and parent expectations. Actors receive only their prompt, permitted installed input and handoff, never expected lists. Three bounded cases do not establish general reliability.",
+  "cases": [
+    {
+      "id": "S1",
+      "consumer": "A",
+      "skill": "user-story-author",
+      "operations": [
+        "plan",
+        "draft"
+      ],
+      "prompt": "使用 user-story-author，先 plan 下列四項工作，再依三種預設範本各 draft 一份 Story。只交付文件草稿，不寫入 provider、不實作；使用繁中。已接受的來源：R-U v1，受益者為會員，關閉電子郵件通知並儲存成功後 EmailEnabled=false，畫面顯示『已儲存』，既有 PhoneEnabled 不變；儲存失敗顯示『未儲存』且兩個偏好保持原值。R-B v2，資料匯出只有 Owner 可建立匯出工作；Editor 要求時拒絕且不建立工作；Owner 請求的其餘有效性規則尚未提供。R-T v1，CSV exporter 改為 UTF-8 無 BOM、LF 換行，保留原本 [id,title] 欄位順序、每列值與列順序；實際程式位置未提供。研究候選 Q-R：PlatformOwner 要比較排程方案 A/B 的取捨，最多兩個工作天，產物是有來源的比較與仍未決問題，停止條件為交付比較供該 owner 選擇，不要求本次做研究或採納方案。四項均為獨立可評估成果，沒有真實 Epic/Feature/Story ID。規劃說明切分、依賴與下一步，別為每個動詞建立工作項。前三項分別採使用者價值、業務規則、技術範本；研究只需規劃。每份 Story 的 Description 與 AC 可分開貼入 Azure DevOps，保留來源狀態、未知、交接第一步與目前授權。輸出結構以 plan、user_value、business_rule、technical 四個明確分段；另將 user_value 原樣獨立存為 S1-user-value.md，供下一個 agent 接手。",
+      "expected": [
+        "plan依成果不強制四層空殼或每動詞Task",
+        "三種Description結構不同且AC獨立",
+        "R-U成功/失敗/Phone保留結果完整",
+        "R-B未知不等於Owner任何請求必成功",
+        "R-T不虛構程式位置、runner或上線",
+        "研究只列學習成果、2天與停止/決策owner不假裝完成",
+        "本地標籤非外部ID；草稿不變成已接受需求；來源/未知/授權/第一步可接手"
+      ]
+    },
+    {
+      "id": "S2",
+      "consumer": "A",
+      "skill": "user-story-author",
+      "operations": [
+        "normalize",
+        "review"
+      ],
+      "prompt": "使用 user-story-author 完成三個分開輸出：1 normalize 以下既有 Story，caller-selected Description 章節必須保留『Goal / Rules / Open』；2 只 review AC-2；3 review 整份 Story。審查唯讀，只回報建議，不套用修正。Story ST-9 draft，Title『匯出權限』；Parent Feature F-2（使用者提供的真實參照，不查 provider）。Description：Goal=Owner可匯出；Rules=R-9 v1 approved，Owner可建立匯出工作，Editor被拒絕且不建立工作；Open=Q5 pending 稽核保留多久未知。AC-1 approved 原文『Given actor是Owner且請求有效 When actor建立匯出 Then 工作已建立』；AC-2 pending 原文『匯出應很快且安全完成』；AC-3 approved 原文『Editor請求被拒絕且沒有建立工作』。沒有提供時間門檻、安全定義、稽核保留期限、負責人或實作授權。normalize 保留全部 IDs/status、GWT 與原意；不能替 pending AC 補產品規則。指定 AC review 的結論只能針對 AC-2，其他內容只可作必要依據；整份 review 與單條 review 分開。不要設計測試案例或宣稱驗收通過。",
+      "expected": [
+        "custom Goal Rules Open preserved",
+        "ST9 F2 R9 AC1-3 Q5 IDs/status/GWT/meaning preserved",
+        "AC2 vagueness remains pending rather than invented thresholds",
+        "selected review onlyfindingsAC2 withsourceimpactboundedrecommendation",
+        "wholeStory review broader scoped and missingcontext not proven defect",
+        "no subject rewrite/testdesign/provider action/acceptance claim"
+      ]
+    },
+    {
+      "id": "S3",
+      "consumer": "B",
+      "skill": "test-designer",
+      "operations": [
+        "design"
+      ],
+      "prompt": "這是新 agent 接手。只依提供的 Story 交接成果與目前安裝的 test-designer，先說明受益者/目標、已接受來源、草稿或未知、最小下一步與原授權。再依本次明確授權，僅為交接中已接受的 R-U 行為產生精簡 GWT 測試設計 notes，保留成功與失敗時所有狀態與畫面觀察、來源與獨立預期值，不寫測試程式、不選 runner、不執行或寫 provider。不要查原始對話、前一 actor 的 prompt、來源庫或其他專案。Story 是草稿不代表其中提議已被接受；不足資訊如實標記。本 consumer 沒有工程知識套件，依實際安裝揭露覆蓋。",
+      "input_artifact": "S1-user-value.md actual output copied verbatim with digest; supplied after S1 completes",
+      "expected": [
+        "freshhandoff reconstructsmeaning/source/status/unknown/authority",
+        "acceptedR-U successEmailfalse savedmessagePhoneunchanged +failureunsaved bothunchanged preserved",
+        "explicit new design-only authority distinguished from earlier authoring",
+        "no mandatory requirement/spec author chain",
+        "test-designer sole test design owner no runner/execution",
+        "absentknowledge no sourcefallback"
+      ]
+    }
+  ]
+}

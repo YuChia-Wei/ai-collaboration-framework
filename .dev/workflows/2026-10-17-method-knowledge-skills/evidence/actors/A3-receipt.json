@@ -1,0 +1,81 @@
+{
+  "selected_binding": "architecture-guidance",
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "conditional_rule_ids": [],
+  "installed_resource_count": 33,
+  "case_id": "A3",
+  "authorities": [],
+  "knowledge_status": "available",
+  "lock_before": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "limitations": [
+    "Design proposal only; no implementation, tests or external validation.",
+    "No technology profile selected; no dotnet specialist coverage requested.",
+    "Business cutoff, external-refund prerequisite and failure policy remain unresolved."
+  ],
+  "loaded_files": [
+    {
+      "kind": "instruction",
+      "sha256": "63d9580275ffc65aa7fedbe380784b0cf08209ee87df9f0b67f151be4b3f3643",
+      "path": ".agents/skills/ddd-ca-hex-architect/SKILL.md"
+    },
+    {
+      "kind": "instruction",
+      "sha256": "7f38475d8356604ee42657c61150630f23829670120221962858b06bb8fb48fe",
+      "path": ".ai/core/skills/ddd-ca-hex-architect/SKILL.md"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "a5f63f4a55ccc6a96d3aa8ef766b5e7923c1f08961d8ed9049c3bb0d1bd7e731",
+      "path": ".ai/core/skills/ddd-ca-hex-architect/skill-package.yaml"
+    },
+    {
+      "kind": "instruction",
+      "sha256": "441b5e03f16ddacbfff792a9ae2c403b40107d9540711c3ee8ed8a8b627dd1ea",
+      "path": ".ai/core/skills/ddd-ca-hex-architect/references/design.md"
+    },
+    {
+      "kind": "knowledge",
+      "sha256": "206cc26c5d42e7ff6ff7e98401748b154196dd80075514bfdc0d0f928cca3e31",
+      "path": ".ai/core/knowledge/engineering-common/ddd/README.md"
+    },
+    {
+      "kind": "knowledge",
+      "sha256": "a2d4db1c6ad849c35574b0f4e5421e288b60b309ec93e1ee99801dbd03fdf924",
+      "path": ".ai/core/knowledge/engineering-common/ddd/domain-discovery.md"
+    },
+    {
+      "kind": "knowledge",
+      "sha256": "38141de602dcc569d1fa6fadb42e04d9ab7cad5aa9f7be87450ddeeefb96328d",
+      "path": ".ai/core/knowledge/engineering-common/ddd/strategic-design.md"
+    },
+    {
+      "kind": "knowledge",
+      "sha256": "be8287d3846a8fea83a3578a9f5baeeedb0c6b326f615cba91fe1cb71e694339",
+      "path": ".ai/core/knowledge/engineering-common/ddd/tactical-design.md"
+    },
+    {
+      "kind": "knowledge",
+      "sha256": "c4fb57d60de5e95d6a60cb2edaeffa717e5608000d3f911721f3780e75195696",
+      "path": ".ai/core/knowledge/engineering-common/ddd/examples/order-cancellation.md"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "path": ".ai/framework.lock"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "83c7c7f7b7ce0b0004b3b1676ff216cafd5680bff51af46cc5c9fa9f34b3c09a",
+      "path": "C:/mk-c9057655/A-actor-input.json"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "76c5da851202b747f57612b0a5e87b220ef055679680dd6749cdcf87f192f4f3",
+      "path": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/method-knowledge-skills/actor-inputs/A3.json"
+    }
+  ],
+  "lock_after": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "unavailable_coverage": [],
+  "applicable_rule_ids": [],
+  "project_root": "C:\\mk-c9057655\\A\\project"
+}

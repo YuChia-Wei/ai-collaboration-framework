@@ -1,0 +1,65 @@
+metadata_version: 3
+id: user-story-author
+version: 0.1.0
+delivery_status: implemented
+entrypoint: SKILL.md
+dependencies:
+  required: []
+  optional: []
+runtime:
+- id: skill-instruction-reader
+  requirement: Read selected Story instructions, template and permitted caller sources
+  for_operations: [plan, draft, normalize, review]
+  on_missing: unavailable
+configuration: null
+artifact_roles: []
+resources:
+  references:
+  - references/authoring.md
+  - references/examples.md
+  - references/plan.md
+  - references/review.md
+  - references/story-contract.md
+  - references/templates/business-rules.md
+  - references/templates/technical.md
+  - references/templates/user-value.md
+  schemas: []
+  templates: []
+  tools: []
+operations:
+- id: plan
+  execution: instruction
+  inputs:
+  - Bounded need or existing Story, sources and accepted decisions
+  - Selected subject, target rules, template, language and current authority
+  outputs:
+  - Proposed independent outcome slices, dependencies, reasons and open decisions
+  instructions: references/plan.md
+  implementation_status: implemented
+- id: draft
+  execution: instruction
+  inputs:
+  - Bounded need or existing Story, sources and accepted decisions
+  - Selected subject, target rules, template, language and current authority
+  outputs:
+  - Separate Title, Description and Acceptance Criteria with portable handoff context
+  instructions: references/authoring.md
+  implementation_status: implemented
+- id: normalize
+  execution: instruction
+  inputs:
+  - Bounded need or existing Story, sources and accepted decisions
+  - Selected subject, target rules, template, language and current authority
+  outputs:
+  - Source-faithful Story, actual material changes and retained ambiguities
+  instructions: references/authoring.md
+  implementation_status: implemented
+- id: review
+  execution: instruction
+  inputs:
+  - Bounded need or existing Story, sources and accepted decisions
+  - Selected subject, target rules, template, language and current authority
+  outputs:
+  - Findings only for the whole Story or selected AC subject, with evidence and limits
+  instructions: references/review.md
+  implementation_status: implemented

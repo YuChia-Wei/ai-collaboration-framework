@@ -1,0 +1,275 @@
+{
+  "source_commit": "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+  "branch": "codex/2026-10-17-method-knowledge-skills",
+  "trial": "C:\\s459-09b4b4e7",
+  "actual_argv": [
+    "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/story-459/validate-installed.py",
+    "--commit",
+    "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+    "--trial-root",
+    "C:/s459-09b4b4e7"
+  ],
+  "cases": {
+    "A": {
+      "project_root": "C:\\s459-09b4b4e7\\A\\project",
+      "lock_sha256": "a20f133264db1da7cd6cfb2b61d594b97d36819023a9fb380a0d80f7b0edff36",
+      "resource_count": 0,
+      "source_identical_payloads": 10,
+      "actor_input": "C:\\s459-09b4b4e7\\A-actor-input.json",
+      "managed_state": "managed-bytes-consistent",
+      "owned_members": 12,
+      "drift": []
+    },
+    "B": {
+      "project_root": "C:\\s459-09b4b4e7\\B\\project",
+      "lock_sha256": "194346a6bac091e7d68070913c84b31e54e61c5d40b8d93ddb8ad7de9cada2b2",
+      "resource_count": 0,
+      "source_identical_payloads": 15,
+      "actor_input": "C:\\s459-09b4b4e7\\B-actor-input.json",
+      "managed_state": "managed-bytes-consistent",
+      "owned_members": 19,
+      "drift": []
+    }
+  },
+  "steps": [
+    {
+      "name": "export-engine",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\story-459\\validate-installed.py",
+        "--commit",
+        "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+        "--internal",
+        "export"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 4.799471
+    },
+    {
+      "name": "catalog",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\tools\\build-catalog.py",
+        "--repository",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+        "--commit",
+        "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+        "--release-version",
+        "0.0.0",
+        "--engine-pin",
+        "C:\\s459-09b4b4e7\\engine-pin.json",
+        "--output-root",
+        "C:\\s459-09b4b4e7\\catalog-output",
+        "--scratch-root",
+        "C:\\s459-09b4b4e7\\catalog-scratch"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 85.972205
+    },
+    {
+      "name": "A-derive",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\derive-subset.py",
+        "--catalog-root",
+        "C:\\s459-09b4b4e7\\catalog-output\\catalog-e57cd75b247e4abea4f0b1315a8401cf",
+        "--catalog-identity",
+        "catalog:1:0.0.0:09b4b4e7372c550e6903d2957a5d7611d49ecd06:7c41f79b4b3d60cd842901452320e591888a35bb984b7b5bea097f64a5180e58",
+        "--selection",
+        "C:\\s459-09b4b4e7\\A\\selection.json",
+        "--engine-pin",
+        "C:\\s459-09b4b4e7\\A\\engine-pin.json",
+        "--output-root",
+        "C:\\s459-09b4b4e7\\A\\out",
+        "--scratch-root",
+        "C:\\s459-09b4b4e7\\A\\scratch"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 5.209809
+    },
+    {
+      "name": "A-before",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 0.81788
+    },
+    {
+      "name": "A-plan",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 1.022541
+    },
+    {
+      "name": "A-apply",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 5.030136
+    },
+    {
+      "name": "A-after",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 1.054651
+    },
+    {
+      "name": "A-read",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\story-459\\validate-installed.py",
+        "--commit",
+        "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+        "--internal",
+        "read"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 1.270281
+    },
+    {
+      "name": "B-derive",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\derive-subset.py",
+        "--catalog-root",
+        "C:\\s459-09b4b4e7\\catalog-output\\catalog-e57cd75b247e4abea4f0b1315a8401cf",
+        "--catalog-identity",
+        "catalog:1:0.0.0:09b4b4e7372c550e6903d2957a5d7611d49ecd06:7c41f79b4b3d60cd842901452320e591888a35bb984b7b5bea097f64a5180e58",
+        "--selection",
+        "C:\\s459-09b4b4e7\\B\\selection.json",
+        "--engine-pin",
+        "C:\\s459-09b4b4e7\\B\\engine-pin.json",
+        "--output-root",
+        "C:\\s459-09b4b4e7\\B\\out",
+        "--scratch-root",
+        "C:\\s459-09b4b4e7\\B\\scratch"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 5.139931
+    },
+    {
+      "name": "B-before",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 0.810354
+    },
+    {
+      "name": "B-plan",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 1.056105
+    },
+    {
+      "name": "B-apply",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 5.982091
+    },
+    {
+      "name": "B-after",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\s459-09b4b4e7\\engine-output\\engine-d50751fb7a0e41aeb2ca097cb2554790\\src\\tools\\maintain_framework.py"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 1.172769
+    },
+    {
+      "name": "B-read",
+      "argv": [
+        "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-I",
+        "-B",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\story-459\\validate-installed.py",
+        "--commit",
+        "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+        "--internal",
+        "read"
+      ],
+      "exit": 0,
+      "timed_out": false,
+      "duration_seconds": 1.357027
+    }
+  ],
+  "synthetic_version": "0.0.0",
+  "mode_policy": "windows-inventory-only",
+  "durability": "process-termination",
+  "agent_behavior": "not-assessed",
+  "publication": "not-performed",
+  "outcome": "completed-selected-installed-checks",
+  "duration_seconds": 129.196088,
+  "executor": {
+    "agent": "/root/story_source",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "low",
+    "exit_code": 0,
+    "callback_received": true,
+    "final_clean_head": "09b4b4e7372c550e6903d2957a5d7611d49ecd06"
+  },
+  "driver_sha256": "a72c9d0248998f0cbab81de865c815873414cf5c81f627adcd5fbe23f96002a4",
+  "summary_sha256": "40bb8158452c091c89a0101531f10faa0c229d6a2088d3dc57d19b4c90740ce9",
+  "limitations": [
+    "Synthetic unpublished 0.0.0 consumers",
+    "Windows inventory-only mode; process-termination durability",
+    "Both adapter projections installed; no native Claude invocation",
+    "No actual project install, hosted check or publication"
+  ]
+}

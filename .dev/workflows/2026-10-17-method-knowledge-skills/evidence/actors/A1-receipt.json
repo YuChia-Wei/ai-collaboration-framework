@@ -1,0 +1,84 @@
+{
+  "resource_count": 2,
+  "loaded_resources": [
+    {
+      "member": ".ai/core/knowledge/engineering-common/bdd/discovery.md",
+      "resource_id": "member:bdd/discovery.md",
+      "version": "0.3.0",
+      "sha256": "7c75e78ef4a487f733b46ac856a45347d2c2310b8639b41c34429e5ee06fe76c",
+      "use_as": "knowledge",
+      "package": "engineering-common"
+    },
+    {
+      "member": ".ai/core/knowledge/engineering-common/discovery/collaborative-discovery.md",
+      "resource_id": "member:discovery/collaborative-discovery.md",
+      "version": "0.3.0",
+      "sha256": "92ebe9a31572acc2e8224d0f718ab5fcc44da679788ba9bba847e362e17026f5",
+      "use_as": "knowledge",
+      "package": "engineering-common"
+    }
+  ],
+  "unavailable_coverage": [],
+  "lock_before": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "loaded_files": [
+    {
+      "path": ".ai/framework.lock",
+      "kind": "metadata",
+      "hash": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636"
+    },
+    {
+      "path": ".agents/skills/requirement-author/SKILL.md",
+      "kind": "instruction",
+      "hash": "e1674d38223c1f418c47693a386a2c8724157d9e1b8f76942c011c33f66a2e11"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/SKILL.md",
+      "kind": "instruction",
+      "hash": "3182e9668f19e7d931285c755f18a7d3d1c22bd2bd9ad543b3cb1d0148286df1"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/skill-package.yaml",
+      "kind": "metadata",
+      "hash": "91ed41550825b64432df952a15ff34b533bb80a2f918b70c6ee24bd7e85b16ee"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/references/explore.md",
+      "kind": "instruction",
+      "hash": "47a17186109711aaaaf2c65c0a4e8b20c55ed6466c3b7db7abc736d5daa783f4"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/references/knowledge.md",
+      "kind": "instruction",
+      "hash": "e76555bb7d77e9d6858d364fca2a33052b40c3da575882a9870b92668c5a0d2b"
+    },
+    {
+      "path": ".ai/core/knowledge/engineering-common/bdd/discovery.md",
+      "kind": "knowledge",
+      "hash": "7c75e78ef4a487f733b46ac856a45347d2c2310b8639b41c34429e5ee06fe76c"
+    },
+    {
+      "path": ".ai/core/knowledge/engineering-common/discovery/collaborative-discovery.md",
+      "kind": "knowledge",
+      "hash": "92ebe9a31572acc2e8224d0f718ab5fcc44da679788ba9bba847e362e17026f5"
+    },
+    {
+      "path": "..\\..\\A-actor-input.json",
+      "kind": "metadata",
+      "hash": "83c7c7f7b7ce0b0004b3b1676ff216cafd5680bff51af46cc5c9fa9f34b3c09a"
+    },
+    {
+      "path": "..\\..\\..\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\actor-inputs\\A1.json",
+      "kind": "metadata",
+      "hash": "e9056e6b448085508f5af506804901949d107ff2ec86d5c0125ed14aad6c9980"
+    }
+  ],
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "lock_after": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "project_root": "C:\\mk-c9057655\\A\\project",
+  "case_id": "A1",
+  "limitations": [
+    "Supplied trusted packaged-reader result used; reader was not rerun.",
+    "No independent marker file observed; no separate marker validation claimed.",
+    "Initial trusted input metadata tool output was truncated; selected binding and resources were inspected programmatically."
+  ]
+}

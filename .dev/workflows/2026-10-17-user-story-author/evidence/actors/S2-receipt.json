@@ -1,0 +1,60 @@
+{
+  "task": "S2",
+  "execution_profile": "bounded-general-worker",
+  "owning_skill": "installed user-story-author@0.1.0",
+  "operations": [
+    "normalize",
+    "review AC-2 only",
+    "review whole Story"
+  ],
+  "prompt_path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\story-459\\actors\\S2-prompt.txt",
+  "prompt_sha256": "d91d4c8ec771451c02cccd715ef1d3a0812999f20dfa7f58590fbae25dab2eec",
+  "trusted_input_path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\story-459\\A-actor-input.json",
+  "trusted_input_sha256": "b1b9d11b7ae7ccbac5cd88cab48c2cd882b4bdd162144dfd017f18c69c81de5e",
+  "output_path": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\story-459\\actors\\S2.md",
+  "output_sha256": "598d7f7b692989bba3a4edc76b7e361e376ede0c46a1fb9f52ba886b9347be9e",
+  "lock_path": "C:\\s459-09b4b4e7\\A\\project\\.ai\\framework.lock",
+  "lock_before_sha256": "a20f133264db1da7cd6cfb2b61d594b97d36819023a9fb380a0d80f7b0edff36",
+  "lock_after_sha256": "a20f133264db1da7cd6cfb2b61d594b97d36819023a9fb380a0d80f7b0edff36",
+  "loaded_files": [
+    {
+      "path": "C:\\s459-09b4b4e7\\A\\project\\.agents\\skills\\user-story-author\\SKILL.md",
+      "sha256": "53b638e773c112474284ac309f961abc6adabbbef217c1a4f0ace9e80b86a05c",
+      "verified_against": "owned_files"
+    },
+    {
+      "path": "C:\\s459-09b4b4e7\\A\\project\\.ai\\core\\skills\\user-story-author\\SKILL.md",
+      "sha256": "9b64cc99e9d18e546edcfc02cc8b0fcc2e7f307ba7f1239eeff3cacc46330a54",
+      "verified_against": "owned_files"
+    },
+    {
+      "path": "C:\\s459-09b4b4e7\\A\\project\\.ai\\core\\skills\\user-story-author\\skill-package.yaml",
+      "sha256": "28eed6d6858eef83ae15033d74447bf6bf02633d47e934faffbaf2aeebdfe1f6",
+      "verified_against": "owned_files"
+    },
+    {
+      "path": "C:\\s459-09b4b4e7\\A\\project\\.ai\\core\\skills\\user-story-author\\references\\story-contract.md",
+      "sha256": "e3eaa80fa78ab0b734e15ebbce35232188048e7872a8d3d1ecdd105b9e697600",
+      "verified_against": "owned_files"
+    },
+    {
+      "path": "C:\\s459-09b4b4e7\\A\\project\\.ai\\core\\skills\\user-story-author\\references\\authoring.md",
+      "sha256": "3c2218aeccc8b8a19974405e3cc76f23d2dcf7fea1cdff4bbab403ab96342211",
+      "verified_against": "owned_files"
+    },
+    {
+      "path": "C:\\s459-09b4b4e7\\A\\project\\.ai\\core\\skills\\user-story-author\\references\\review.md",
+      "sha256": "3d69ac1d9171d906277301f96e2c81d4b220b3652c1cfb6051b23b4d68ce077c",
+      "verified_against": "owned_files"
+    }
+  ],
+  "actual_loaded_knowledge": [],
+  "knowledge_basis": "metadata_version 3 declares no knowledge-consumption binding; verified_resources.resources empty",
+  "limitations": [
+    "No source checkout resources, other actor prompts or outputs, provider, network, implementation or tests consulted.",
+    "No consumer or tracked edits; only requested local output and receipt written.",
+    "Caller-selected Goal / Rules / Open used; bundled templates and examples not loaded.",
+    "No runtime acceptance or product approval asserted."
+  ],
+  "parent_integration_owner": "/root"
+}

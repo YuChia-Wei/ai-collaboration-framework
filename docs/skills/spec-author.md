@@ -2,48 +2,58 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.1.0`。操作名稱以實際安裝的 metadata 為準。
+本次來源版本草案：`0.2.0`。實際操作與版本以已安裝 metadata 為準。
 
 ## 用途與操作
 
-`draft` 或 `normalize` 已選類型的 production/use-case、entity/value-object、adapter/interface 或 formal-test specification。
+以 `draft` 或 `normalize` 撰寫 production/use-case、entity/value-object、
+adapter/interface 系統規格，依據需求與已接受的 designer 產出表達系統契約。
+已有完整設計時直接引用，不要求重新執行 designer。
 
 ## 輸入與輸出
 
-提供規格類型、有界 subject、來源需求/觀察、已採納決策與格式/目的地；輸出保留來源的規格、選型理由、覆蓋/開放決策與交付位置。
+提供有界 subject、來源需求與版本、已接受設計及其決策狀態、適用目標規則、
+選定 schema／版本、格式與目的地。輸出保留來源 identities、決策、invariants、
+可觀察驗收結果、開放問題與實際交付位置的系統規格。
 
-## 何時用／界線
+缺少設計決策時，可以依明確請求提供 provisional draft，保留未知及其影響；
+不得自行決定 aggregate ownership、技術機制或失敗政策並冒稱已接受。
+`normalize` 保留語意、IDs、例外、來源、核准狀態與未決問題，語意變更需另行指出。
 
-模板是普通 authoring guidance，不是 schema；含 GWT 的正式 test spec 仍可屬本 skill，情境矩陣本身屬 BDD route。它不實作、不跑測試、不中途核准架構。
+## 責任界線
+
+正式 test specification 及所有測試、情境、assertion 設計由 `test-designer` 負責。
+系統規格仍須保留可觀察 acceptance，並在有需要時引用已存在的測試設計與 IDs；
+責任轉移不代表刪除系統可驗證性。
+
+若使用者明確指定本 skill，卻要求測試設計等不同產物，先釐清這個有界衝突，
+不可私自換 route。沒有強制 requirement → designer → spec → test pipeline。
+模板是普通文字指引，不是 schema；目標專案選定的格式與存放位置優先。
+本 skill 不代替領域或架構決策、不實作、不跑測試，也不宣告驗收或合規通過。
 
 ## 範例請求
 
-使用 `spec-author draft`，撰寫『取消訂單』production specification，包含輸入、輸出、失敗條件和來源，但保留尚未決定的退款策略。
+使用 `spec-author draft`，依需求 R1 與已接受的取消設計 D1 撰寫取消訂單的
+production specification，保留其 ownership、invariants、輸入、輸出與可觀察
+失敗結果；引用已有測試設計 T1，未決退款政策保持未決，不重新設計 D1。
 
-## 知識
+## 知識與開始使用
 
-無套件綁定。
-
-## 開始使用
-
-先確認此 skill 已在專案的 runtime entries 中。向 agent 提供上面的操作、
-實際範圍與輸入；範例 prompt 是自然語言請求，不是 shell 指令。
-明確指定輸出位置及可寫範圍。使用 prefixed 安裝時，選單中的名稱可能是
-`aicf-spec-author`；canonical package ID 仍為 `spec-author`。
-
-此套件提供指令方法，不提供同名 CLI。Agent 依已安裝的 operation
-reference 執行；若本次任務需要編輯或測試，使用專案已有且被授權的工具。
+本 skill metadata 維持版本 3，沒有直接方法知識消費綁定。
+先確認已安裝 runtime entry，提供操作、範圍、來源及可寫目的地。
+範例是自然語言請求，不是 shell 指令；prefixed 名稱可能是 `aicf-spec-author`，
+canonical package ID 仍為 `spec-author`。本套件提供指令方法，沒有同名 CLI。
+需要工具時沿用目標專案已授權的能力。
 
 ## 權威參考
 
 - [Skill 入口](../../src/skills/spec-author/SKILL.md)
-- [版本、操作、依賴與 runtime metadata](../../src/skills/spec-author/skill-package.yaml)
-- [references/authoring.md](../../src/skills/spec-author/references/authoring.md)
-- [references/production-template.md](../../src/skills/spec-author/references/production-template.md)
-- [references/entity-template.md](../../src/skills/spec-author/references/entity-template.md)
-- [references/adapter-template.md](../../src/skills/spec-author/references/adapter-template.md)
-- [references/formal-test-template.md](../../src/skills/spec-author/references/formal-test-template.md)
-- [references/spec-guide.md](../../src/skills/spec-author/references/spec-guide.md)
-- [references/spec-organization-guide.md](../../src/skills/spec-author/references/spec-organization-guide.md)
+- [版本、操作及依賴 metadata](../../src/skills/spec-author/skill-package.yaml)
+- [Authoring method](../../src/skills/spec-author/references/authoring.md)
+- [Production template](../../src/skills/spec-author/references/production-template.md)
+- [Entity template](../../src/skills/spec-author/references/entity-template.md)
+- [Adapter template](../../src/skills/spec-author/references/adapter-template.md)
+- [Presentation guide](../../src/skills/spec-author/references/spec-guide.md)
+- [Organization guide](../../src/skills/spec-author/references/spec-organization-guide.md)
 
-上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
+連結供來源庫核對；實際操作讀取已安裝資源。正式測試模板的搬移由其工作負責者處理。

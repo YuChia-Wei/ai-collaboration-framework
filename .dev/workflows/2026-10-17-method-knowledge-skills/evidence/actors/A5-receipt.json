@@ -1,0 +1,57 @@
+{
+  "lock_after": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+  "unavailable_coverage": [
+    "engineering-common@0.3.0",
+    "member:ddd/domain-discovery.md"
+  ],
+  "lock_before": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+  "case_id": "A5",
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "installed_resource_count": 0,
+  "loaded_files": [
+    {
+      "kind": "metadata",
+      "relative_path": ".ai/framework.lock",
+      "sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".agents/skills/aicf-ddd-ca-hex-architect/SKILL.md",
+      "sha256": "1c18b8aa764d98712951b6ca9aea1d9ab9944f23ab89b22ed95e2b02b4f7b0b2"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/ddd-ca-hex-architect/SKILL.md",
+      "sha256": "7f38475d8356604ee42657c61150630f23829670120221962858b06bb8fb48fe"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": ".ai/core/skills/ddd-ca-hex-architect/skill-package.yaml",
+      "sha256": "a5f63f4a55ccc6a96d3aa8ef766b5e7923c1f08961d8ed9049c3bb0d1bd7e731"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/ddd-ca-hex-architect/references/design.md",
+      "sha256": "441b5e03f16ddacbfff792a9ae2c403b40107d9540711c3ee8ed8a8b627dd1ea"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": "../B-actor-input.json",
+      "sha256": "8c45a7f3974d35295c07c201b6982bd32c07ab47b3bc52242338e113ae0abfec",
+      "absolute_path": "C:/mk-c9057655/B-actor-input.json"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": "actor-inputs/A5.json",
+      "sha256": "9df5dc41abf80262745338d180db2677ed8c2a2b7adc14b9629b75bcf48317c9",
+      "absolute_path": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/method-knowledge-skills/actor-inputs/A5.json"
+    }
+  ],
+  "limitations": [
+    "Initial lock metadata output was oversized and truncated, exposing unrelated catalog metadata; no referenced source bodies were read.",
+    "No installed knowledge resources or bindings; specialized required coverage remains unavailable.",
+    "Case/input relative_path entries are relative to their stated locations, with absolute_path supplied for disambiguation."
+  ],
+  "project_root": "C:/mk-c9057655/B/project",
+  "installed_inventory_file_count": 22
+}

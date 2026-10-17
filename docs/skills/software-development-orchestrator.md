@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.0`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.3.1`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -41,3 +41,7 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 - [references/orchestrate.md](../../src/skills/software-development-orchestrator/references/orchestrate.md)
 
 上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
+
+按需要的成果選 owner：requirement-author 可先探索；spec-author 依需求與接受的設計形成系統規格；test-designer 統一一般測試設計與正式測試規格。BDD／DDD metadata 可用不代表每次全讀或強制全作者 pipeline。
+
+獨立 Story 規劃、撰寫、正規化或整份／指定 AC 需求審查，可在可用時選 user-story-author；PRD／Feature／一般需求仍由 requirement-author 處理，不構成必經管線。

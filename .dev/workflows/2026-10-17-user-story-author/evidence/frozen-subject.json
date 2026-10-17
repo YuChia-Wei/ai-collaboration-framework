@@ -1,0 +1,20 @@
+{
+  "source_commit": "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+  "paths": [
+    "src",
+    "docs/skills",
+    "AGENTS.md",
+    "AGENTS.zh-TW.md",
+    "tools",
+    "tests",
+    ".github/workflows/source-checks.yml",
+    ".dev/standards",
+    ".dev/contracts",
+    ".dev/workflows/2026-10-17-user-story-author/criteria.json",
+    ".dev/workflows/2026-10-17-user-story-author/behavior-cases.json",
+    ".dev/workflows/2026-10-17-user-story-author/workflow-plan.md"
+  ],
+  "method": "SHA256 of raw git ls-tree -r commit -- selected paths stdout",
+  "entries": 646,
+  "sha256": "25b220f02f85631f0ae987405b333df735aa300b0bd162dd188eb90dd1cfafd9"
+}

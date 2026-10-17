@@ -2,11 +2,11 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.1.0`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
-`draft` 或 `normalize` 一份需求文件，維持利害關係人意圖、商業規則、來源與可觀察驗收。
+`explore` 先釐清有界問題、證據、已決事項、例子與未知；已有接受輸入可直接 `draft` 或 `normalize` 一份需求文件，維持利害關係人意圖、商業規則、來源與可觀察驗收。
 
 ## 輸入與輸出
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-無套件綁定。
+metadata 4 宣告 optional `engineering-common@0.3.0`。`explore` 可選 collaborative-discovery、BDD discovery、DDD domain-discovery；`draft`／`normalize` 可選 BDD discovery/formulation 與 DDD domain-discovery。只讀任務需要的資源，依 references/knowledge.md 驗證 lock、hash、allowlist 與 authority。缺少時揭露 unavailable，不偷讀 source，也不強制先 explore。
 
 ## 開始使用
 
@@ -43,3 +43,7 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 - [references/requirement-guide.md](../../src/skills/requirement-author/references/requirement-guide.md)
 
 上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
+
+已決事項不應重問；只有新的衝突證據影響本次產出時才重新釐清。探索完成不是需求核准或實作授權。
+
+PRD／Feature／一般需求可繼續使用本技能；獨立 Story 的 plan／draft／normalize 或整份／指定 AC 審查，可在已安裝時選 [user-story-author](user-story-author.md)，不要求先經本技能。測試設計仍由 test-designer 負責。

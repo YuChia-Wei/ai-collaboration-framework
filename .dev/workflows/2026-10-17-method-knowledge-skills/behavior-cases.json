@@ -1,0 +1,168 @@
+{
+  "schema_version": "task-local/1",
+  "note": "Fixed actor inputs and parent expectations. Actors receive prompts and installed paths, never the expected-result lists. These bounded cases cannot establish general model reliability.",
+  "cases": [
+    {
+      "id": "A1",
+      "project": "common",
+      "skill": "requirement-author",
+      "operation": "explore",
+      "issues": [
+        "455/AC02",
+        "455/AC04",
+        "458/AC01",
+        "458/AC02",
+        "458/AC04"
+      ],
+      "prompt": "使用 requirement-author explore，以繁中協助探索圖書借閱續借的必要缺口。本次只要探索筆記，不要情境集或 Gherkin。已接受 R1/AC1：另一位會員預約該借閱品時應拒絕續借，並保留原到期日。詞彙 loan/reservation/due date 已由業務確認，沒有詞義衝突。案例：Ada 的 L7 到期日為 10 月 20 日，Ben 已預約；另一案例沒有預約但已逾期，逾期政策尚未提供。請先沿用既有決定，最多提一小批會影響下一步的問題；不要代替政策 owner 決定逾期規則。可按任務選讀已安裝共通知識。",
+      "expected": [
+        "保留 R1/AC1 和拒絕+到期日不變",
+        "逾期及無預約不等於獲准維持未知",
+        "不重問已接受規則/詞義",
+        "有小批必要問題及具體下一步",
+        "不產生情境集/Gherkin",
+        "實際只載入explore allowlist內必要method，沒有Gherkin/automation/DDD strategic/tactical/evolution內容"
+      ]
+    },
+    {
+      "id": "A2",
+      "project": "common",
+      "skill": "test-designer",
+      "operation": "design",
+      "issues": [
+        "457/AC01",
+        "457/AC02",
+        "457/AC04",
+        "458/AC04"
+      ],
+      "prompt": "使用 test-designer design，將下列已接受的技術測試設計整理為正式測試規格，主要使用決策表。這不是 BDD 工作，不需要 GWT 或 .feature。保留既有 case ID。被測主體是記憶體中的 Configuration 元件，不含資料庫。R1：SetTtl(0) 將 Enabled 設為 false、Ttl 為0；R2：整數 1..60 設為 Enabled=true/Ttl=該值；R3：其餘值（負數、>60、非整數）拒絕，Enabled/Ttl維持原值。已有 T-valid:初值 Enabled=true,Ttl=10，輸入30，結果 true/30；T-invalid:同初值，輸入61，拒絕且true/10。請保留語意、補必要邊界與來源/oracle/測試層級，不產生測試程式、不選runner、不宣稱執行。",
+      "expected": [
+        "test-designer直接完成formaltest不轉specauthor",
+        "決策表及0/1/60/invalid邊界源自R1-3",
+        "既有caseIDs和所有outcomes保留",
+        "oracle來源不是被測實作",
+        "設計與notexecuted區分",
+        "不載入任何BDD主題正文"
+      ]
+    },
+    {
+      "id": "A3",
+      "project": "common",
+      "skill": "ddd-ca-hex-architect",
+      "operation": "design",
+      "issues": [
+        "456/AC02",
+        "456/AC03",
+        "456/AC04",
+        "456/AC05",
+        "456/AC06"
+      ],
+      "prompt": "使用 ddd-ca-hex-architect design，以 DDD 協助比較訂單取消的模型。已接受技術限制：單體、同一 process、Ordering 與 Delivery 用同步呼叫；沒有 broker/CQRS/Event Sourcing。Ordering 的『取消』指終止訂單承諾；Delivery 的『取消』指停止出貨活動，兩者不是同一個事實。Payment 為外部服務，退款完成需其確認。已接受局部 invariant I1：已接受取消的訂單不得同時維持 locally fulfillable。尚未決定：取消截止條件、是否必須先取得外部退款結果、退款失敗處理。請比較保留同一部署內不同模型責任與合併模型兩個候選，分析語言、invariant owner、一致性及取捨。按需要讀已安裝DDD知識，保留未知，不以範例替業務採納政策。",
+      "expected": [
+        "辨識取消兩種context語意並比較合理alternatives",
+        "I1歸可控制localmutation的owner",
+        "外部退款不由localflag證明",
+        "未知截止/退款policy不invent",
+        "不強制microservice/broker/CQRS/ES",
+        "分開domainfact/integrationcontract/transport",
+        "選讀必要DDD章節不預載全部"
+      ]
+    },
+    {
+      "id": "A4",
+      "project": "absent",
+      "skill": "test-designer",
+      "operation": "design",
+      "issues": [
+        "455/AC05",
+        "457/AC03",
+        "457/AC06"
+      ],
+      "prompt": "使用已安裝的 test-designer design。本專案未選任何知識套件。請保留既有 GWT 設計，整理可直接交給實作的精簡測試設計：R1/AC1 已接受；S1 Given Ada 借 L7 到期 10/20 且 Ben 預約該品，When Ada 請求續借，Then 回應 RenewalRefused，And L7 到期日仍10/20。實作將使用目標既有framework，請不要另選工具。不得假設無預約一定成功，逾期政策尚未知。明確區分可完成的共同工作與不可用的套件覆蓋，不寫code。",
+      "expected": [
+        "零knowledge索引下commondesign可繼續",
+        "標coverageunavailable不sourcefallback",
+        "S1 R1 AC1 preserved",
+        "兩Then映射和expectedvalue來源不丟失",
+        "不重跑forceddesignpipeline，不claimexecuted"
+      ]
+    },
+    {
+      "id": "A5",
+      "project": "absent",
+      "skill": "ddd-ca-hex-architect",
+      "operation": "design",
+      "issues": [
+        "456/AC06",
+        "458/AC04"
+      ],
+      "prompt": "使用 ddd-ca-hex-architect design，本專案沒有工程知識套件。本次驗收明確要求 engineering-common DDD domain-discovery 的 installed guidance coverage。可用事實只有：Shipping 的 Cancel 指停止派車；Sales 的 Cancel 指撤銷商業承諾；兩者尚無共同截止規則。請報告哪些工作仍可基於提供事實進行、哪些要求無法滿足；不自行尋找來源庫或以記憶冒充已安裝覆蓋，不強制技術。",
+      "expected": [
+        "要求installedDDDspecificcoverage未滿足不能claim完成",
+        "可提供boundedlanguageconflict與ownerquestion",
+        "no sourcefallback/no inventedpolicy/technology"
+      ]
+    },
+    {
+      "id": "A6",
+      "project": "common",
+      "skill": "requirement-author;spec-author",
+      "operation": "draft;normalize",
+      "issues": [
+        "458/AC02",
+        "458/AC03",
+        "458/AC06"
+      ],
+      "prompt": "依序做五個有界文件用例，使用已安裝 requirement-author 或 spec-author；只回傳成果，不重做訪談或設計。已接受 R1(v1)：Manager可以停用 Account A，成功後 Enabled=false；非Manager被拒絕且狀態不變。已接受 D1(v2)：Account擁有 Enabled 狀態；Disable由 application檢查actor角色後呼叫Account.Disable；兩者同process，沒有網路。1 requirement-author draft：精簡需求與observable AC。2 requirement-author normalize：將『REQ-7 approved:R1-v1。AC-a Manager成功後false；AC-b其他角色拒絕且原值不變。Q9 pending:稽核保留多久未知』整理，保留所有ID/status/未知。3 spec-author draft production DisableAccount，追溯R1/D1。4 spec-author draft entity Account，只使用已知Enabled/Disable資料，其他設計未知保留。5 spec-author draft adapter：已接受D2(v1)，既有in-process入口輸入actorRole/accountId，回傳Disabled或Forbidden；不要猜HTTP/statuscode或新增transport。正式testspec不是這五個輸出，請不要另寫測試計畫或宣稱執行。",
+      "expected": [
+        "五種既有draft/normalize/production/entity/adapter路徑可用",
+        "未重問acceptedR1D1D2",
+        "REQ7/ACa/ACb/Q9保留status与meaning",
+        "spec源於R1D1D2不inventarchitecture",
+        "系統observableacceptance保留但不另做tests",
+        "CBF另由unchangedbytes及existingfullsuite證據覆蓋"
+      ]
+    },
+    {
+      "id": "A7",
+      "project": "absent",
+      "skill": "requirement-author",
+      "operation": "explore",
+      "issues": [
+        "458/AC04",
+        "458/AC05"
+      ],
+      "input_artifact": "A1 accepted output, copied verbatim with source digest and original authorization boundary; supplied after A1 completes",
+      "prompt": "這是跨 agent 接手。只依提供的交接成果與目前已安裝 requirement-author，說明目標、已決定內容、未知及其影響、最小下一步和目前授權。本consumer沒有工程知識套件。不要查原對話或來源repo補上下文；不足的資訊如實指出，不產生新商業決定或開始實作。",
+      "expected": [
+        "新context能重建圖書續借探索目標與R1/AC1",
+        "保留逾期/無預約未知及owner問題",
+        "說明只授權探索未實作的界線",
+        "沒有工程知識coverage誤報或sourcefallback",
+        "下一步有依據而不重做已接受的判斷"
+      ]
+    },
+    {
+      "id": "A8",
+      "project": "common",
+      "skill": "test-designer",
+      "operation": "design",
+      "issues": [
+        "455/AC02",
+        "455/AC04",
+        "455/AC06",
+        "457/AC02",
+        "457/AC03"
+      ],
+      "prompt": "使用 test-designer design，把已接受 R1/AC1 表達為 GWT scenario notes，不要 .feature：另一位會員預約借閱品時拒絕續借且到期日不變。Ada/L7到期10/20，Ben預約該品。保留R1/AC1來源，給此案例一個明示local scenario ID並帶入最小可觀察斷言與待確認測試設施。逾期政策未知，且沒預約不代表一定可續借。本次不需要重新訪談已決規則，也不選runner。可讀已安裝的BDD formulation指引，請只讀這個任務需要的資源。",
+      "expected": [
+        "受支持的GWT情境保留refusal及unchangeddate",
+        "維持R1/AC1及localcaseid",
+        "逾期與無預約unknown不invent",
+        "直接formulation不forcedrediscovery",
+        "讀取formulation和必要handoff，未讀Gherkin或完整BDD/DDD",
+        "沒有implementation/runtimeclaim"
+      ]
+    }
+  ]
+}

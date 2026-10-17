@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.3.0`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.2.0`（1 項）及 `dotnet-backend@0.1.1`（7 項）架構 binding；未裝時不具那些 .NET 專門架構規則覆蓋。
+可選 `engineering-common@0.3.0`（依當前 allowlist 按主題選讀）及 `dotnet-backend@0.1.3`（7 項）架構 binding；未裝時不具那些 .NET 專門架構規則覆蓋。
 
 ## 開始使用
 
@@ -36,17 +36,28 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ## 宣告的知識資源
 
-以下全部為 optional；未選、缺少或無法驗證時，不可宣稱具備對應專業覆蓋。
+以下宣告皆為 optional allowlist；不是每次必讀清單。未選、缺少或無法驗證時，揭露 coverage unavailable。
 
 ### common-architecture
 
-`engineering-common@0.2.0`；操作：`design`、`review`。
+`engineering-common@0.3.0`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
+- `member:ddd/README.md`
+- `member:ddd/domain-discovery.md`
+- `member:ddd/strategic-design.md`
+- `member:ddd/tactical-design.md`
+- `member:ddd/model-evolution.md`
+- `member:ddd/examples/order-cancellation.md`
+- `member:domain-language/README.MD`
+- `member:domain-language/templates/aggregate-vocabulary-template.md`
+- `member:domain-language/templates/bounded-context-language-template.md`
+- `member:domain-language/templates/domain-event-language-template.md`
+- `member:operations/CONTEXT-MAP-GUIDE.MD`
 
 ### dotnet-architecture
 
-`dotnet-backend@0.1.1`；操作：`design`、`review`。
+`dotnet-backend@0.1.3`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
 - `member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md`
@@ -64,3 +75,14 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 - [references/review.md](../../src/skills/ddd-ca-hex-architect/references/review.md)
 
 上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
+
+## DDD 主題選讀
+
+| 當前問題 | 選讀資源 |
+| --- | --- |
+| 語言或業務意義不清 | ddd/domain-discovery.md |
+| 比較 contexts 與合作邊界 | ddd/strategic-design.md |
+| 不變量及模型責任 | ddd/tactical-design.md |
+| 修訂既有模型 | ddd/model-evolution.md |
+
+README 只在需要選路時讀取；domain-language 模板與 Context Map 僅在相關成果需要時選讀。不預載全包，不強制 MQ 或分散式部署；缺少知識仍可依 caller 來源進行通用架構工作並揭露 coverage 限制。

@@ -1,0 +1,1222 @@
+{
+  "schema_version": "task-local/1",
+  "trials": [
+    {
+      "id": "final-main",
+      "raw_summary_path": "C:\\mk-c9057655\\summary.json",
+      "raw_summary_sha256": "842da4e8f0a4c858d29f1eb71e2d083a35ed7a2f1003faee136a251a8312199f",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "outcome": "completed-selected-installed-checks",
+      "duration_seconds": 204.684596,
+      "cases": {
+        "A": {
+          "project_root": "C:\\mk-c9057655\\A\\project",
+          "lock_sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+          "resource_count": 33,
+          "source_identical_payloads": 58,
+          "actor_input": "C:\\mk-c9057655\\A-actor-input.json"
+        },
+        "B": {
+          "project_root": "C:\\mk-c9057655\\B\\project",
+          "lock_sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+          "resource_count": 0,
+          "source_identical_payloads": 16,
+          "actor_input": "C:\\mk-c9057655\\B-actor-input.json"
+        },
+        "C": {
+          "expected_rejection": {
+            "outcome": "blocked",
+            "code": "selection-unavailable",
+            "reason": "Pinned catalog, explicit selection, model observation or bounded output was rejected; preserve any partial output."
+          }
+        },
+        "E": {
+          "expected_rejection": {
+            "api_version": 2,
+            "changed": false,
+            "details": null,
+            "diagnostics": [
+              {
+                "code": "owned-drift",
+                "next_action": "Reconcile owned state without overwriting drift, then plan again.",
+                "path": ".ai/core/skills/bdd-gwt-test-designer/SKILL.md",
+                "reason": "member-drift"
+              }
+            ],
+            "operation": "plan",
+            "outcome": "conflict"
+          },
+          "fixture_member": ".ai\\core\\skills\\bdd-gwt-test-designer\\SKILL.md"
+        },
+        "D": {
+          "project_root": "C:\\mk-c9057655\\D-old\\project",
+          "lock_sha256": "be0aaf783401481402ac9571196a4eac0ca154fca4661c9215b8149f19b32cc0",
+          "resource_count": 33,
+          "source_identical_payloads": 47,
+          "actor_input": "C:\\mk-c9057655\\D-actor-input.json",
+          "resource_ID_mapping": {
+            "kind": "explicit-reviewed-resource-ID-mapping",
+            "binding_id": "test-method-guidance",
+            "old_resources": [
+              "member:references/BDD-METHOD.md",
+              "member:references/GHERKIN-SCENARIOS.md"
+            ],
+            "new_resources": [
+              "member:bdd/automation.md",
+              "member:bdd/discovery.md",
+              "member:bdd/formulation.md",
+              "member:bdd/gherkin.md"
+            ],
+            "meaning": "Task-selected optional guidance availability; no forced reading or normative adoption"
+          },
+          "handoff_binding_unchanged": true,
+          "bindings_match_explicit_new_selection": true,
+          "preserved_custom_hashes": {
+            "CUSTOM.md": "6fb2cd21eb878193db099c6271f92e3a59cdac888d74ac28743eb890161c98ba",
+            ".ai/core/skills/bdd-gwt-test-designer/owner-notes.txt": "6fb2cd21eb878193db099c6271f92e3a59cdac888d74ac28743eb890161c98ba"
+          }
+        }
+      },
+      "steps": [
+        {
+          "name": "export-engine",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--internal",
+            "export"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 4.785977
+        },
+        {
+          "name": "catalog",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\tools\\build-catalog.py",
+            "--repository",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--release-version",
+            "0.0.0",
+            "--engine-pin",
+            "C:\\mk-c9057655\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\catalog-output",
+            "--scratch-root",
+            "C:\\mk-c9057655\\catalog-scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 83.6267
+        },
+        {
+          "name": "A-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-c9057655\\catalog-output\\catalog-59b4ea939a394951b3385193e76ccd88",
+            "--catalog-identity",
+            "catalog:1:0.0.0:c9057655e38d263cc6917232fc1b7a553548933d:065a436448e08b6357a696b73792b0b9cb3494dd9a6522b25fbdca64c77b71ee",
+            "--selection",
+            "C:\\mk-c9057655\\A\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\A\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\A\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\A\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 6.132691
+        },
+        {
+          "name": "A-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.311085
+        },
+        {
+          "name": "A-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.56445
+        },
+        {
+          "name": "A-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 12.978753
+        },
+        {
+          "name": "A-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 2.04802
+        },
+        {
+          "name": "A-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.971528
+        },
+        {
+          "name": "B-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-c9057655\\catalog-output\\catalog-59b4ea939a394951b3385193e76ccd88",
+            "--catalog-identity",
+            "catalog:1:0.0.0:c9057655e38d263cc6917232fc1b7a553548933d:065a436448e08b6357a696b73792b0b9cb3494dd9a6522b25fbdca64c77b71ee",
+            "--selection",
+            "C:\\mk-c9057655\\B\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\B\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\B\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\B\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.338141
+        },
+        {
+          "name": "B-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 0.914579
+        },
+        {
+          "name": "B-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.193501
+        },
+        {
+          "name": "B-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 6.615143
+        },
+        {
+          "name": "B-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.337856
+        },
+        {
+          "name": "B-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.542694
+        },
+        {
+          "name": "C-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-c9057655\\catalog-output\\catalog-59b4ea939a394951b3385193e76ccd88",
+            "--catalog-identity",
+            "catalog:1:0.0.0:c9057655e38d263cc6917232fc1b7a553548933d:065a436448e08b6357a696b73792b0b9cb3494dd9a6522b25fbdca64c77b71ee",
+            "--selection",
+            "C:\\mk-c9057655\\C\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\C\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\C\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\C\\scratch"
+          ],
+          "exit": 1,
+          "timed_out": false,
+          "duration_seconds": 4.416051
+        },
+        {
+          "name": "D-old-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "F:\\AICF-Preview-Builds\\eb248fff\\c\\catalog-80fa4d5e1bb644059bdd0f2039ab82fc",
+            "--catalog-identity",
+            "catalog:1:0.0.0:b8cfbcc12c98c71a5b2d045febde69c292ef898f:39c1c0fb6c52edc00d34a244c4d5e1ecb551e63b74dda6cd55fac59a3023750c",
+            "--selection",
+            "C:\\mk-c9057655\\D-old\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\D-old\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\D-old\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\D-old\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.448855
+        },
+        {
+          "name": "D-old-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.056635
+        },
+        {
+          "name": "D-old-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.288516
+        },
+        {
+          "name": "D-old-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 8.943115
+        },
+        {
+          "name": "D-old-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.621172
+        },
+        {
+          "name": "D-new-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-c9057655\\catalog-output\\catalog-59b4ea939a394951b3385193e76ccd88",
+            "--catalog-identity",
+            "catalog:1:0.0.0:c9057655e38d263cc6917232fc1b7a553548933d:065a436448e08b6357a696b73792b0b9cb3494dd9a6522b25fbdca64c77b71ee",
+            "--selection",
+            "C:\\mk-c9057655\\D-new\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\D-new\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\D-new\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\D-new\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.901833
+        },
+        {
+          "name": "E-drift-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 1,
+          "timed_out": false,
+          "duration_seconds": 1.519561
+        },
+        {
+          "name": "D-upgrade-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.774135
+        },
+        {
+          "name": "D-upgrade-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 2.007599
+        },
+        {
+          "name": "D-upgrade-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 13.344947
+        },
+        {
+          "name": "D-upgrade-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.893949
+        },
+        {
+          "name": "D-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.811454
+        }
+      ]
+    },
+    {
+      "id": "final-prefixed-upgrade",
+      "raw_summary_path": "C:\\mk-c9057655\\P\\summary.json",
+      "raw_summary_sha256": "725f8128c4d12fce41dfcb21c617f611bfffe313b542c6e1714f544ccaf36181",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "outcome": "completed-selected-prefixed-upgrade",
+      "duration_seconds": 63.248148,
+      "cases": {
+        "D2-old": {
+          "project_root": "C:\\mk-c9057655\\P\\D2-old\\project",
+          "lock_sha256": "2715877c6c1437c23badb31aa735647cc8bd4aeb09d19ecb37591ccd390b2ac2",
+          "resource_count": 21,
+          "source_identical_payloads": 35,
+          "actor_input": "C:\\mk-c9057655\\P\\D2-old-actor-input.json"
+        },
+        "D2": {
+          "project_root": "C:\\mk-c9057655\\P\\D2-old\\project",
+          "lock_sha256": "b43ba105e1b754007dff760229d3244fb3d9e4c3b704fc00e5fdbfc5afdd4bce",
+          "resource_count": 33,
+          "source_identical_payloads": 47,
+          "actor_input": "C:\\mk-c9057655\\P\\D2-actor-input.json",
+          "resource_ID_mapping": {
+            "kind": "explicit-reviewed-resource-ID-mapping",
+            "binding_id": "test-method-guidance",
+            "old_resources": [
+              "member:references/BDD-METHOD.md",
+              "member:references/GHERKIN-SCENARIOS.md"
+            ],
+            "new_resources": [
+              "member:bdd/automation.md",
+              "member:bdd/discovery.md",
+              "member:bdd/formulation.md",
+              "member:bdd/gherkin.md"
+            ],
+            "meaning": "Task-selected optional guidance availability; no forced reading or normative adoption"
+          },
+          "handoff_binding_unchanged": true,
+          "bindings_match_explicit_new_selection": true,
+          "preserved_custom_hashes": {
+            "CUSTOM.md": "6fb2cd21eb878193db099c6271f92e3a59cdac888d74ac28743eb890161c98ba",
+            ".ai/core/skills/bdd-gwt-test-designer/owner-notes.txt": "6fb2cd21eb878193db099c6271f92e3a59cdac888d74ac28743eb890161c98ba"
+          },
+          "runtime_entries": {
+            "codex": "aicf-test-designer",
+            "claude": "aicf-test-designer",
+            "old_entries_absent": true
+          }
+        }
+      },
+      "steps": [
+        {
+          "name": "D2-old-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "F:\\AICF-Preview-Builds\\eb248fff\\c\\catalog-80fa4d5e1bb644059bdd0f2039ab82fc",
+            "--catalog-identity",
+            "catalog:1:0.0.0:b8cfbcc12c98c71a5b2d045febde69c292ef898f:39c1c0fb6c52edc00d34a244c4d5e1ecb551e63b74dda6cd55fac59a3023750c",
+            "--selection",
+            "C:\\mk-c9057655\\P\\D2-old\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\P\\D2-old\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\P\\D2-old\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\P\\D2-old\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.516005
+        },
+        {
+          "name": "D2-old-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.179922
+        },
+        {
+          "name": "D2-old-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.407186
+        },
+        {
+          "name": "D2-old-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 9.756014
+        },
+        {
+          "name": "D2-old-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.705456
+        },
+        {
+          "name": "D2-old-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.737313
+        },
+        {
+          "name": "D2-new-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-c9057655\\catalog-output\\catalog-59b4ea939a394951b3385193e76ccd88",
+            "--catalog-identity",
+            "catalog:1:0.0.0:c9057655e38d263cc6917232fc1b7a553548933d:065a436448e08b6357a696b73792b0b9cb3494dd9a6522b25fbdca64c77b71ee",
+            "--selection",
+            "C:\\mk-c9057655\\P\\D2-new\\selection.json",
+            "--engine-pin",
+            "C:\\mk-c9057655\\P\\D2-new\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-c9057655\\P\\D2-new\\out",
+            "--scratch-root",
+            "C:\\mk-c9057655\\P\\D2-new\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 6.782797
+        },
+        {
+          "name": "D2-upgrade-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.873037
+        },
+        {
+          "name": "D2-upgrade-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 2.196327
+        },
+        {
+          "name": "D2-upgrade-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 15.215038
+        },
+        {
+          "name": "D2-upgrade-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-c9057655\\engine-output\\engine-1e73c627d0354dd89ed9282e007a3c0e\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.962129
+        },
+        {
+          "name": "D2-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "c9057655e38d263cc6917232fc1b7a553548933d",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.907366
+        }
+      ]
+    },
+    {
+      "id": "previous-main",
+      "raw_summary_path": "C:\\mk-893bcb9d\\summary.json",
+      "raw_summary_sha256": "3f6212d7a28b8240dacf42bd121c96b7f46a9c218d4da3f98d43e3872ff2199e",
+      "source_commit": "893bcb9dcf14bb11e714c84f06250e246338e986",
+      "outcome": "completed-selected-installed-checks",
+      "duration_seconds": 208.417582,
+      "cases": {
+        "A": {
+          "project_root": "C:\\mk-893bcb9d\\A\\project",
+          "lock_sha256": "6390026119b6652807d0a98fee12ae6e5af1b41ca8fe612c8a857da18bbf0aaa",
+          "resource_count": 33,
+          "source_identical_payloads": 58,
+          "actor_input": "C:\\mk-893bcb9d\\A-actor-input.json"
+        },
+        "B": {
+          "project_root": "C:\\mk-893bcb9d\\B\\project",
+          "lock_sha256": "1a278e5ed7369fc2a67c9bd1d86684654a66425d5bf2cf6038b3c771b2143bbb",
+          "resource_count": 0,
+          "source_identical_payloads": 16,
+          "actor_input": "C:\\mk-893bcb9d\\B-actor-input.json"
+        },
+        "C": {
+          "expected_rejection": {
+            "outcome": "blocked",
+            "code": "selection-unavailable",
+            "reason": "Pinned catalog, explicit selection, model observation or bounded output was rejected; preserve any partial output."
+          }
+        },
+        "E": {
+          "expected_rejection": {
+            "api_version": 2,
+            "changed": false,
+            "details": null,
+            "diagnostics": [
+              {
+                "code": "owned-drift",
+                "next_action": "Reconcile owned state without overwriting drift, then plan again.",
+                "path": ".ai/core/skills/bdd-gwt-test-designer/SKILL.md",
+                "reason": "member-drift"
+              }
+            ],
+            "operation": "plan",
+            "outcome": "conflict"
+          },
+          "fixture_member": ".ai\\core\\skills\\bdd-gwt-test-designer\\SKILL.md"
+        },
+        "D": {
+          "project_root": "C:\\mk-893bcb9d\\D-old\\project",
+          "lock_sha256": "605afdf2cee65379633a3d213e79aa98b620b4e84470cb0adf75c8c5af8f92e0",
+          "resource_count": 33,
+          "source_identical_payloads": 47,
+          "actor_input": "C:\\mk-893bcb9d\\D-actor-input.json",
+          "resource_ID_mapping": {
+            "kind": "explicit-reviewed-resource-ID-mapping",
+            "binding_id": "test-method-guidance",
+            "old_resources": [
+              "member:references/BDD-METHOD.md",
+              "member:references/GHERKIN-SCENARIOS.md"
+            ],
+            "new_resources": [
+              "member:bdd/automation.md",
+              "member:bdd/discovery.md",
+              "member:bdd/formulation.md",
+              "member:bdd/gherkin.md"
+            ],
+            "meaning": "Task-selected optional guidance availability; no forced reading or normative adoption"
+          },
+          "handoff_binding_unchanged": true,
+          "bindings_match_explicit_new_selection": true,
+          "preserved_custom_hashes": {
+            "CUSTOM.md": "6fb2cd21eb878193db099c6271f92e3a59cdac888d74ac28743eb890161c98ba",
+            ".ai/core/skills/bdd-gwt-test-designer/owner-notes.txt": "6fb2cd21eb878193db099c6271f92e3a59cdac888d74ac28743eb890161c98ba"
+          }
+        }
+      },
+      "steps": [
+        {
+          "name": "export-engine",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "893bcb9dcf14bb11e714c84f06250e246338e986",
+            "--internal",
+            "export"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 4.851668
+        },
+        {
+          "name": "catalog",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\tools\\build-catalog.py",
+            "--repository",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+            "--commit",
+            "893bcb9dcf14bb11e714c84f06250e246338e986",
+            "--release-version",
+            "0.0.0",
+            "--engine-pin",
+            "C:\\mk-893bcb9d\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-893bcb9d\\catalog-output",
+            "--scratch-root",
+            "C:\\mk-893bcb9d\\catalog-scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 87.105595
+        },
+        {
+          "name": "A-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-893bcb9d\\catalog-output\\catalog-89c878684589490f90a24463a946c8c4",
+            "--catalog-identity",
+            "catalog:1:0.0.0:893bcb9dcf14bb11e714c84f06250e246338e986:991de30af95087443d20b4923d2c2eb635266531effd5adad3be11c6e33bd462",
+            "--selection",
+            "C:\\mk-893bcb9d\\A\\selection.json",
+            "--engine-pin",
+            "C:\\mk-893bcb9d\\A\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-893bcb9d\\A\\out",
+            "--scratch-root",
+            "C:\\mk-893bcb9d\\A\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 6.361336
+        },
+        {
+          "name": "A-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.330342
+        },
+        {
+          "name": "A-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.636228
+        },
+        {
+          "name": "A-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 12.685242
+        },
+        {
+          "name": "A-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 2.068413
+        },
+        {
+          "name": "A-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "893bcb9dcf14bb11e714c84f06250e246338e986",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.979501
+        },
+        {
+          "name": "B-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-893bcb9d\\catalog-output\\catalog-89c878684589490f90a24463a946c8c4",
+            "--catalog-identity",
+            "catalog:1:0.0.0:893bcb9dcf14bb11e714c84f06250e246338e986:991de30af95087443d20b4923d2c2eb635266531effd5adad3be11c6e33bd462",
+            "--selection",
+            "C:\\mk-893bcb9d\\B\\selection.json",
+            "--engine-pin",
+            "C:\\mk-893bcb9d\\B\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-893bcb9d\\B\\out",
+            "--scratch-root",
+            "C:\\mk-893bcb9d\\B\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.441575
+        },
+        {
+          "name": "B-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 0.855003
+        },
+        {
+          "name": "B-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.21301
+        },
+        {
+          "name": "B-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 6.407356
+        },
+        {
+          "name": "B-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.311483
+        },
+        {
+          "name": "B-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "893bcb9dcf14bb11e714c84f06250e246338e986",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.435243
+        },
+        {
+          "name": "C-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-893bcb9d\\catalog-output\\catalog-89c878684589490f90a24463a946c8c4",
+            "--catalog-identity",
+            "catalog:1:0.0.0:893bcb9dcf14bb11e714c84f06250e246338e986:991de30af95087443d20b4923d2c2eb635266531effd5adad3be11c6e33bd462",
+            "--selection",
+            "C:\\mk-893bcb9d\\C\\selection.json",
+            "--engine-pin",
+            "C:\\mk-893bcb9d\\C\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-893bcb9d\\C\\out",
+            "--scratch-root",
+            "C:\\mk-893bcb9d\\C\\scratch"
+          ],
+          "exit": 1,
+          "timed_out": false,
+          "duration_seconds": 4.485838
+        },
+        {
+          "name": "D-old-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "F:\\AICF-Preview-Builds\\eb248fff\\c\\catalog-80fa4d5e1bb644059bdd0f2039ab82fc",
+            "--catalog-identity",
+            "catalog:1:0.0.0:b8cfbcc12c98c71a5b2d045febde69c292ef898f:39c1c0fb6c52edc00d34a244c4d5e1ecb551e63b74dda6cd55fac59a3023750c",
+            "--selection",
+            "C:\\mk-893bcb9d\\D-old\\selection.json",
+            "--engine-pin",
+            "C:\\mk-893bcb9d\\D-old\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-893bcb9d\\D-old\\out",
+            "--scratch-root",
+            "C:\\mk-893bcb9d\\D-old\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.770553
+        },
+        {
+          "name": "D-old-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.035729
+        },
+        {
+          "name": "D-old-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.385091
+        },
+        {
+          "name": "D-old-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 9.092813
+        },
+        {
+          "name": "D-old-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "F:\\AICF-Preview-Builds\\eb248fff\\e\\engine-45c7fdc6f57c483a9a9b815f644990bb\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.551577
+        },
+        {
+          "name": "D-new-derive",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\derive-subset.py",
+            "--catalog-root",
+            "C:\\mk-893bcb9d\\catalog-output\\catalog-89c878684589490f90a24463a946c8c4",
+            "--catalog-identity",
+            "catalog:1:0.0.0:893bcb9dcf14bb11e714c84f06250e246338e986:991de30af95087443d20b4923d2c2eb635266531effd5adad3be11c6e33bd462",
+            "--selection",
+            "C:\\mk-893bcb9d\\D-new\\selection.json",
+            "--engine-pin",
+            "C:\\mk-893bcb9d\\D-new\\engine-pin.json",
+            "--output-root",
+            "C:\\mk-893bcb9d\\D-new\\out",
+            "--scratch-root",
+            "C:\\mk-893bcb9d\\D-new\\scratch"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 5.908216
+        },
+        {
+          "name": "E-drift-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 1,
+          "timed_out": false,
+          "duration_seconds": 1.588588
+        },
+        {
+          "name": "D-upgrade-before",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.705266
+        },
+        {
+          "name": "D-upgrade-plan",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 2.006601
+        },
+        {
+          "name": "D-upgrade-apply",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 13.656425
+        },
+        {
+          "name": "D-upgrade-after",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\mk-893bcb9d\\engine-output\\engine-805d3ef440f0494aaa93c43108abd0f0\\src\\tools\\maintain_framework.py"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.789477
+        },
+        {
+          "name": "D-read",
+          "argv": [
+            "C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-I",
+            "-B",
+            "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\method-knowledge-skills\\validate-installed.py",
+            "--commit",
+            "893bcb9dcf14bb11e714c84f06250e246338e986",
+            "--internal",
+            "read"
+          ],
+          "exit": 0,
+          "timed_out": false,
+          "duration_seconds": 1.766517
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Synthetic unpublished version 0.0.0",
+    "Windows inventory-only; process-termination durability",
+    "Both adapters physically installed and updated; Claude runtime was not invoked",
+    "Only final c9057655 A/B consumers supplied actors",
+    "All earlier failed attempts remain in integration-checkpoint.md and ignored raw logs; no cleanup or F preview refresh performed"
+  ]
+}

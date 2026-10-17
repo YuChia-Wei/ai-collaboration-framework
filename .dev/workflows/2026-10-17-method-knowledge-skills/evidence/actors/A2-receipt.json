@@ -1,0 +1,72 @@
+{
+  "limitations": [
+    "No implementation or execution evidence",
+    "Rejection signaling and noninteger input boundary unspecified",
+    "No BDD knowledge bodies needed or read",
+    "No .NET specialist coverage claimed"
+  ],
+  "lock_after": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "case_id": "A2",
+  "loaded_files": [
+    {
+      "path": ".ai/framework.lock",
+      "kind": "metadata",
+      "sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636"
+    },
+    {
+      "path": ".agents/skills/test-designer/SKILL.md",
+      "kind": "instruction",
+      "sha256": "446e033467ee374e5461a14809acb420b75067ff29c5343623622b5b3121e409"
+    },
+    {
+      "path": ".ai/core/skills/test-designer/SKILL.md",
+      "kind": "instruction",
+      "sha256": "102b9d5eb910af7b65e1d3914f8dd1f3c231b22eb9207c4d8b49062c31bf32ca"
+    },
+    {
+      "path": ".ai/core/skills/test-designer/skill-package.yaml",
+      "kind": "metadata",
+      "sha256": "6dbb20c54b1a9764c35433e867a261d40638ec869fb1923c9d291c4ab078bbbf"
+    },
+    {
+      "path": ".ai/core/skills/test-designer/references/design.md",
+      "kind": "instruction",
+      "sha256": "8dc4cc9ea99ed23014e29fa1a0024b6de43d800dc38a62ab2ad19d745e506cca"
+    },
+    {
+      "path": ".ai/core/skills/test-designer/references/formal-test-template.md",
+      "kind": "instruction",
+      "sha256": "fac525f419faa7ea3425ab04b8e6c97b7e87273eee0d603e2791858d1875ff2d"
+    },
+    {
+      "path": "../../A-actor-input.json",
+      "kind": "metadata",
+      "sha256": "83c7c7f7b7ce0b0004b3b1676ff216cafd5680bff51af46cc5c9fa9f34b3c09a"
+    },
+    {
+      "path": "../../../Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/method-knowledge-skills/actor-inputs/A2.json",
+      "kind": "metadata",
+      "sha256": "087f2247a60e173520b83491356e3d079e72a558ea067da85a471beb6fac010d"
+    }
+  ],
+  "lock_before": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "knowledge_result": {
+    "status": "available",
+    "applicable_rule_ids": [],
+    "diagnostics": [],
+    "coverage": {
+      "capability": "test-design",
+      "missing": [],
+      "status": "available",
+      "technology_profile": null,
+      "operation": "design"
+    },
+    "loaded_resources": [],
+    "authorities": [],
+    "conditional_rule_ids": []
+  },
+  "resource_count": 0,
+  "unavailable_coverage": [],
+  "project_root": "C:\\mk-c9057655\\A\\project"
+}

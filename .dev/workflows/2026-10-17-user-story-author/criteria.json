@@ -1,0 +1,40 @@
+{
+  "issue": 459,
+  "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/459",
+  "updated_at": "2026-10-17T04:52:53Z",
+  "body_sha256": "f6c7dd61a3964e2775001925b2290440417b07a3179804411c4b77920329c997",
+  "criteria": [
+    {
+      "id": "AC01",
+      "text": "涵蓋受益者／價值、範圍、可觀察AC、失敗邊界、依賴、來源、未知、第一步與授權。"
+    },
+    {
+      "id": "AC02",
+      "text": "Story切分依獨立成果與依賴／交付界線，無四層空殼或每步一Issue。"
+    },
+    {
+      "id": "AC03",
+      "text": "功能、技術、研究三例與模糊過大反例，不捏造要求或上線結果。"
+    },
+    {
+      "id": "AC04",
+      "text": "新agent只讀產物即可接手；不靠作者補充。"
+    },
+    {
+      "id": "AC05",
+      "text": "所選A/B路徑沒有重複owner；既有能力回歸與真實安裝／actor證據分開。"
+    },
+    {
+      "id": "AC06",
+      "text": "可以只 review 指定的一個 AC；只回報該範圍的問題、依據、影響與建議，不自行重寫其他 Story 內容或宣稱產品驗收通過。"
+    },
+    {
+      "id": "AC07",
+      "text": "三套範本各有符合目的的輸出，且 Azure DevOps Description 與 AC 內容可分別使用；來源、已接受決策及未知不遺失。"
+    },
+    {
+      "id": "AC08",
+      "text": "既有 GWT、非 Gherkin 技術條件與 caller-selected 模板皆能保留；不複製 test-designer 的測試設計責任。"
+    }
+  ]
+}
