@@ -1,0 +1,77 @@
+{
+  "actor": "S3",
+  "execution_profile": "bounded-general-worker",
+  "operation": "test-designer/design",
+  "prompt": {
+    "sha256": "d989b4e08b8d50fd9c6359365461db983c9a3f0028472e5de220ecadd5cac05e",
+    "path": ".dev/ai-context/local/story-459/actors/S3-prompt.txt"
+  },
+  "handoff": {
+    "expected_sha256": "dd60ff872d5c1188f0562ec0070a1205c7fa0234d8869752604c36752c429ae3",
+    "verified_before_consumption": true,
+    "sha256": "dd60ff872d5c1188f0562ec0070a1205c7fa0234d8869752604c36752c429ae3",
+    "path": ".dev/ai-context/local/story-459/actors/S1-user-value.md"
+  },
+  "output": {
+    "sha256": "9bf30caea9779182c15b4d006ddd4d82d7a373a1725ef45c339f0615185336cf",
+    "path": ".dev/ai-context/local/story-459/actors/S3.md"
+  },
+  "project_root": "C:\\s459-09b4b4e7\\B\\project",
+  "lock": {
+    "path": ".ai/framework.lock",
+    "before": "194346a6bac091e7d68070913c84b31e54e61c5d40b8d93ddb8ad7de9cada2b2",
+    "expected_sha256": "194346a6bac091e7d68070913c84b31e54e61c5d40b8d93ddb8ad7de9cada2b2",
+    "drift": false,
+    "before_observed": "after runtime entry read; before core, metadata and design consumption",
+    "after": "194346a6bac091e7d68070913c84b31e54e61c5d40b8d93ddb8ad7de9cada2b2"
+  },
+  "reader_result": {
+    "authorities": [],
+    "resources": [],
+    "bindings": [],
+    "desired_sha256": "4b38e3316d9cfa8f5803948df0c1c0c988098ac913ca8fca2e81487762e5b071",
+    "reuse": "trusted caller supplied actual verified reader result",
+    "candidate_identity": "subset:3:0.0.0:09b4b4e7372c550e6903d2957a5d7611d49ecd06:2e547e1c0def2560e2e914f710ddfad618a2bb099946a66a7a5ebc2a38bfcaf6",
+    "source": ".dev/ai-context/local/story-459/B-actor-input.json#verified_resources",
+    "sha256": "6bf74212570aa4ff19e4d90eb029f498ad29f6587bb50fb26d84e85e9cc77902"
+  },
+  "loaded_files": [
+    {
+      "path": ".agents/skills/aicf-test-designer/SKILL.md",
+      "sha256": "2c06ebb6666f603a2909ae427b91562828a897251b10b80a0c7e4e9b9ec522bb",
+      "owned_file_match": true
+    },
+    {
+      "path": ".ai/core/skills/test-designer/SKILL.md",
+      "sha256": "102b9d5eb910af7b65e1d3914f8dd1f3c231b22eb9207c4d8b49062c31bf32ca",
+      "owned_file_match": true
+    },
+    {
+      "path": ".ai/core/skills/test-designer/skill-package.yaml",
+      "sha256": "6dbb20c54b1a9764c35433e867a261d40638ec869fb1923c9d291c4ab078bbbf",
+      "owned_file_match": true
+    },
+    {
+      "path": ".ai/core/skills/test-designer/references/design.md",
+      "sha256": "8dc4cc9ea99ed23014e29fa1a0024b6de43d800dc38a62ab2ad19d745e506cca",
+      "owned_file_match": true
+    }
+  ],
+  "loaded_resources": [],
+  "applicable_rule_ids": [],
+  "conditional_rule_ids": [],
+  "coverage": {
+    "dotnet_backend_0_1_3": "unavailable: not selected; no technology inferred",
+    "implementation": "none",
+    "executed_test_evidence": "none",
+    "common_source_grounded_design": "available",
+    "engineering_common_0_3_0": "unavailable: not selected; BDD topics and GWT/general handoff contracts absent"
+  },
+  "limits": [
+    "No original prompt or original actor output read beyond supplied handoff",
+    "No source fallback, knowledge resources, provider actions, network, implementation, test execution or delegation",
+    "Runtime entry was hash verified before read; first lock observation followed that entry read",
+    "Missing target entrypoint, failure arrangement, observation interfaces and fixtures remain unknown"
+  ],
+  "parent_criteria_self_grade": false
+}

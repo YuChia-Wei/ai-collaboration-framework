@@ -1,0 +1,191 @@
+{
+  "source_commit": "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+  "cases": [
+    {
+      "case": "S1",
+      "consumer": "A",
+      "actor": "/root/story_s1",
+      "dispatch_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "fork_turns": "none"
+      },
+      "loaded_files": [
+        {
+          "member": ".agents/skills/user-story-author/SKILL.md",
+          "sha256": "53b638e773c112474284ac309f961abc6adabbbef217c1a4f0ace9e80b86a05c"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/SKILL.md",
+          "sha256": "9b64cc99e9d18e546edcfc02cc8b0fcc2e7f307ba7f1239eeff3cacc46330a54"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/skill-package.yaml",
+          "sha256": "28eed6d6858eef83ae15033d74447bf6bf02633d47e934faffbaf2aeebdfe1f6"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/story-contract.md",
+          "sha256": "e3eaa80fa78ab0b734e15ebbce35232188048e7872a8d3d1ecdd105b9e697600"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/plan.md",
+          "sha256": "be5b8bf91a31663254d22f13ca6bed8752045ae8150feac57e0d52a550cfe4b2"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/authoring.md",
+          "sha256": "3c2218aeccc8b8a19974405e3cc76f23d2dcf7fea1cdff4bbab403ab96342211"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/templates/user-value.md",
+          "sha256": "bad1a6e3ff6a25c1c43faee7982ca121c9c29719b794f0d113eda7114cd08835"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/templates/business-rules.md",
+          "sha256": "7d01214280c7e550b6e750321ac6ba384d5288c1872d4de7ff92aa281b052768"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/templates/technical.md",
+          "sha256": "cb532448bcfd2912b41e7f3af057718417f0edd77ac112fdecaeafd4f2b1da22"
+        }
+      ],
+      "knowledge_bodies_read": 0,
+      "lock_sha256": "a20f133264db1da7cd6cfb2b61d594b97d36819023a9fb380a0d80f7b0edff36",
+      "prompt_sha256": "e14681596439a7c74c3a5ef08c7e68810157fce872e7b499f722f4169f070122",
+      "output_sha256": "3c95186019c41739171bb5645db26d209888632594e7e58725e775b58672a448",
+      "receipt_sha256": "1ac083b1df76903896f66273dbc30804c1af55d73da31922ec4d618feb25fc93",
+      "mechanical_result": "matches installed inventory, raw lock, prompt and output bytes",
+      "parent_judgment": "meets selected case expectations",
+      "reason": "Four outcome slices, three distinct Description structures and separate AC; all R-U observations, R-B unknown validity, R-T preservation and research boundaries retained; exact standalone handoff subsection.",
+      "archived_files": [
+        {
+          "path": "evidence/actors/S1.md",
+          "raw_sha256": "3c95186019c41739171bb5645db26d209888632594e7e58725e775b58672a448",
+          "git_normalized_sha256": "3c95186019c41739171bb5645db26d209888632594e7e58725e775b58672a448"
+        },
+        {
+          "path": "evidence/actors/S1-receipt.json",
+          "raw_sha256": "1ac083b1df76903896f66273dbc30804c1af55d73da31922ec4d618feb25fc93",
+          "git_normalized_sha256": "908518051b8247c985574d2ad84a6c68a8a69a36f53ceae5c34c58f81d7775e2"
+        }
+      ]
+    },
+    {
+      "case": "S2",
+      "consumer": "A",
+      "actor": "/root/story_s2",
+      "dispatch_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "fork_turns": "none"
+      },
+      "loaded_files": [
+        {
+          "member": ".agents/skills/user-story-author/SKILL.md",
+          "sha256": "53b638e773c112474284ac309f961abc6adabbbef217c1a4f0ace9e80b86a05c"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/SKILL.md",
+          "sha256": "9b64cc99e9d18e546edcfc02cc8b0fcc2e7f307ba7f1239eeff3cacc46330a54"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/skill-package.yaml",
+          "sha256": "28eed6d6858eef83ae15033d74447bf6bf02633d47e934faffbaf2aeebdfe1f6"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/story-contract.md",
+          "sha256": "e3eaa80fa78ab0b734e15ebbce35232188048e7872a8d3d1ecdd105b9e697600"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/authoring.md",
+          "sha256": "3c2218aeccc8b8a19974405e3cc76f23d2dcf7fea1cdff4bbab403ab96342211"
+        },
+        {
+          "member": ".ai/core/skills/user-story-author/references/review.md",
+          "sha256": "3d69ac1d9171d906277301f96e2c81d4b220b3652c1cfb6051b23b4d68ce077c"
+        }
+      ],
+      "knowledge_bodies_read": 0,
+      "lock_sha256": "a20f133264db1da7cd6cfb2b61d594b97d36819023a9fb380a0d80f7b0edff36",
+      "prompt_sha256": "d91d4c8ec771451c02cccd715ef1d3a0812999f20dfa7f58590fbae25dab2eec",
+      "output_sha256": "598d7f7b692989bba3a4edc76b7e361e376ede0c46a1fb9f52ba886b9347be9e",
+      "receipt_sha256": "3635cba79842cff3f04ee66000055c255479d70f7b30e54a16c9627c9b585f33",
+      "mechanical_result": "matches installed inventory, raw lock, prompt and output bytes",
+      "parent_judgment": "meets selected case expectations",
+      "reason": "Custom Goal/Rules/Open and exact AC wording/IDs/status preserved; AC-2-only findings remain selected; whole Story review separate; no test design or acceptance claim.",
+      "archived_files": [
+        {
+          "path": "evidence/actors/S2.md",
+          "raw_sha256": "598d7f7b692989bba3a4edc76b7e361e376ede0c46a1fb9f52ba886b9347be9e",
+          "git_normalized_sha256": "598d7f7b692989bba3a4edc76b7e361e376ede0c46a1fb9f52ba886b9347be9e"
+        },
+        {
+          "path": "evidence/actors/S2-receipt.json",
+          "raw_sha256": "3635cba79842cff3f04ee66000055c255479d70f7b30e54a16c9627c9b585f33",
+          "git_normalized_sha256": "3dd0456b545018c8a64c521097b8a35aeebc3c930e8b0af85676b358ad7a210a"
+        }
+      ]
+    },
+    {
+      "case": "S3",
+      "consumer": "B",
+      "actor": "/root/story_s3",
+      "dispatch_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "fork_turns": "none"
+      },
+      "loaded_files": [
+        {
+          "path": ".agents/skills/aicf-test-designer/SKILL.md",
+          "sha256": "2c06ebb6666f603a2909ae427b91562828a897251b10b80a0c7e4e9b9ec522bb",
+          "owned_file_match": true
+        },
+        {
+          "path": ".ai/core/skills/test-designer/SKILL.md",
+          "sha256": "102b9d5eb910af7b65e1d3914f8dd1f3c231b22eb9207c4d8b49062c31bf32ca",
+          "owned_file_match": true
+        },
+        {
+          "path": ".ai/core/skills/test-designer/skill-package.yaml",
+          "sha256": "6dbb20c54b1a9764c35433e867a261d40638ec869fb1923c9d291c4ab078bbbf",
+          "owned_file_match": true
+        },
+        {
+          "path": ".ai/core/skills/test-designer/references/design.md",
+          "sha256": "8dc4cc9ea99ed23014e29fa1a0024b6de43d800dc38a62ab2ad19d745e506cca",
+          "owned_file_match": true
+        }
+      ],
+      "knowledge_bodies_read": 0,
+      "lock_sha256": "194346a6bac091e7d68070913c84b31e54e61c5d40b8d93ddb8ad7de9cada2b2",
+      "prompt_sha256": "d989b4e08b8d50fd9c6359365461db983c9a3f0028472e5de220ecadd5cac05e",
+      "handoff_sha256": "dd60ff872d5c1188f0562ec0070a1205c7fa0234d8869752604c36752c429ae3",
+      "output_sha256": "9bf30caea9779182c15b4d006ddd4d82d7a373a1725ef45c339f0615185336cf",
+      "receipt_sha256": "ded7d6884f5a5d6a0be419f7597a91d7740a9abfb2b4952a96438538fbe7a8b9",
+      "mechanical_result": "matches installed inventory, raw lock, prompt, handoff and output bytes",
+      "parent_judgment": "meets selected behavior expectations with read-order limitation",
+      "reason": "Fresh handoff reconstructs accepted source versus draft, unknowns and authority; source-bound GWT preserves all six observations and independent oracles. Missing optional knowledge disclosed; no source fallback or execution claim.",
+      "limitations": [
+        "First lock observation followed hash-verified runtime entry read; before core/metadata/design. Not a claim of complete before-all-reads protocol compliance."
+      ],
+      "archived_files": [
+        {
+          "path": "evidence/actors/S3.md",
+          "raw_sha256": "9bf30caea9779182c15b4d006ddd4d82d7a373a1725ef45c339f0615185336cf",
+          "git_normalized_sha256": "9bf30caea9779182c15b4d006ddd4d82d7a373a1725ef45c339f0615185336cf"
+        },
+        {
+          "path": "evidence/actors/S3-receipt.json",
+          "raw_sha256": "ded7d6884f5a5d6a0be419f7597a91d7740a9abfb2b4952a96438538fbe7a8b9",
+          "git_normalized_sha256": "6292395e8a8f5fbeaaf53d680bff024c2b14d6e5c7b8266a715232117ae6e3b1"
+        }
+      ]
+    }
+  ],
+  "runtime_limit": "Dispatch explicitly selected gpt-6.1-sol/low. S1 receipt could not independently observe exact runtime labels; this record preserves the selected profile rather than claiming billing telemetry.",
+  "limits": [
+    "S1 initial inventory printed complete owned-file metadata; no extra source or knowledge bodies were consumed.",
+    "S3 read-order limitation retained; all consumed bytes authenticated against actual fixed installation.",
+    "Three bounded cases establish selected observations, not general model reliability."
+  ]
+}

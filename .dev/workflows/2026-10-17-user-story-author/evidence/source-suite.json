@@ -1,0 +1,25 @@
+{
+  "framework_tests": {
+    "duration_seconds": 69.152907,
+    "errors": 0,
+    "failures": 0,
+    "interface": "framework-tests/1",
+    "outcome": "passed",
+    "skipped": 0,
+    "suites": [
+      "schemas",
+      "tools",
+      "distribution",
+      "release",
+      "source"
+    ],
+    "tests": 243
+  },
+  "source_commit": "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+  "command": "python -I -B tests/run.py",
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "log_sha256": "d65039bb88dc452c04a53a2b9a35fbd2d1e199408dc1a908f9b57b0372951111",
+  "summary_sha256": "a5ec153856ac5ba6e9aa3dc56e9c37d13ed854cca5198ac21e963925b7696c24",
+  "limitations": "Local suite only; no hosted CI, native runtime or actor acceptance claim."
+}

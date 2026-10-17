@@ -1,0 +1,81 @@
+{
+  "prior_source": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "current_source": "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+  "method": "git ls-tree -r commit -- path, manifest excluded from src/distribution comparison",
+  "paths": [
+    {
+      "path": "src/distribution",
+      "sha256": "ee961a473b3d64b321f2a375d062182e3263c773d980ac022d91eec477a3a6d3",
+      "entries": 30,
+      "identical": true
+    },
+    {
+      "path": "src/adapters",
+      "sha256": "4398230191bb5c8fabc660108121d8c60f6a8986a6b1099f7c61a28b190bc378",
+      "entries": 3,
+      "identical": true
+    },
+    {
+      "path": "src/tools",
+      "sha256": "9ad4dea6d22f041b6c0ece550d6b1e5855fa9bca3b44152aee00f889cfee3676",
+      "entries": 15,
+      "identical": true
+    },
+    {
+      "path": "src/skills/test-designer",
+      "sha256": "d49e7332c8fb1388be76f27091ec7d488ef4dde7a70fdc22e5976b657ab7f944",
+      "entries": 5,
+      "identical": true
+    },
+    {
+      "path": "src/knowledge",
+      "sha256": "36c062e68c4216b017c85e2dff037a58fb5c549b24a75e635db8a885bf488718",
+      "entries": 280,
+      "identical": true
+    },
+    {
+      "path": "src/presets",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "entries": 1,
+      "identical": true
+    },
+    {
+      "path": "tools",
+      "sha256": "12540e747943f9346d007658fc294fd01eb1cb2d44875111206f101f1dc8fb4a",
+      "entries": 23,
+      "identical": true
+    },
+    {
+      "path": "tests",
+      "sha256": "17d41aa78f53ba0fcd76f7a9bdc2565ad1391088b1f5d4fa3c32bd0ee479db7f",
+      "entries": 37,
+      "identical": true
+    },
+    {
+      "path": ".github/workflows/source-checks.yml",
+      "sha256": "fe2a016e0354695108d533cf3afacbbf712e29c94c69bf7fe7c12eb8c5bd4271",
+      "entries": 1,
+      "identical": true
+    },
+    {
+      "path": ".dev/standards/SOURCE-DEVELOPMENT-POLICY.md",
+      "sha256": "e3ee9360e16992e1dba87c69b0aad03f3086033dd88f1d363e88781557d384e6",
+      "entries": 1,
+      "identical": true
+    },
+    {
+      "path": ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      "sha256": "eca3db04d07be9bfc767eda9d6bff654e8a434779c8f57a70602f96fde9a18ef",
+      "entries": 1,
+      "identical": true
+    },
+    {
+      "path": ".dev/standards/GIT-COMMIT-POLICY.md",
+      "sha256": "8107689264ac817c8d94d40444d543e37f9a0edfe83d56f18e9d4abdd2fe840e",
+      "entries": 1,
+      "identical": true
+    }
+  ],
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "reuse_scope": "Prior test-designer A2 and unrelated migration/drift/customization observations retain their original subject; current engine/skill/knowledge/preset/test/policy bytes identical. No claim that old catalog or changed requirement/orchestrator instruction behaviors were rerun. New catalog/Story installations and actors executed separately."
+}

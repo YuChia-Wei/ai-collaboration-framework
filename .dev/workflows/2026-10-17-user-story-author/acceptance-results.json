@@ -1,0 +1,91 @@
+{
+  "issue": 459,
+  "source_commit": "09b4b4e7372c550e6903d2957a5d7611d49ecd06",
+  "criteria_file": "criteria.json",
+  "criteria_sha256": "af01df848b46108fdcefc02d54d4fa95246210ab16eb7948604f23673ca85a73",
+  "assessor": "coordinator /root",
+  "results": [
+    {
+      "id": "AC01",
+      "criterion": "涵蓋受益者／價值、範圍、可觀察AC、失敗邊界、依賴、來源、未知、第一步與授權。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "Shared contract and actual S1 three drafts preserve outcome, scope, observable success/failure, sources, unknowns, dependencies, next step and authority.",
+      "evidence": [
+        "actors/S1.md"
+      ]
+    },
+    {
+      "id": "AC02",
+      "criterion": "Story切分依獨立成果與依賴／交付界線，無四層空殼或每步一Issue。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "Actual S1 plan uses four explicitly independent outcomes, keeps success/failure in one Story and identifies conditional delivery dependencies; no hierarchy shells/per-verb Issues.",
+      "evidence": [
+        "actors/S1.md"
+      ]
+    },
+    {
+      "id": "AC03",
+      "criterion": "功能、技術、研究三例與模糊過大反例，不捏造要求或上線結果。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "Four source fictional examples cover functional, business, technical and research outcomes; vague overlarge counterexample explains slicing. S1 executes functional/technical drafts and bounded research planning without fabricated execution.",
+      "evidence": [
+        "../../../../src/skills/user-story-author/references/examples.md",
+        "actors/S1.md"
+      ]
+    },
+    {
+      "id": "AC04",
+      "criterion": "新agent只讀產物即可接手；不靠作者補充。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "Fresh S3 consumed exact actual S1 subsection only and reconstructed source/status/unknown/authority before a separately authorized design operation.",
+      "evidence": [
+        "handoff.json",
+        "actors/S3.md"
+      ]
+    },
+    {
+      "id": "AC05",
+      "criterion": "所選A/B路徑沒有重複owner；既有能力回歸與真實安裝／actor證據分開。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "Owner boundaries independently reviewed; current default243 passes; two actual standalone/combined installs and S3 distinguish actual evidence from unchanged historical test-designer A2 baseline.",
+      "evidence": [
+        "independent-review.json",
+        "source-suite.json",
+        "installed-trials.json",
+        "reuse-proof.json",
+        "actors/S3.md"
+      ]
+    },
+    {
+      "id": "AC06",
+      "criterion": "可以只 review 指定的一個 AC；只回報該範圍的問題、依據、影響與建議，不自行重寫其他 Story 內容或宣稱產品驗收通過。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "S2 reports only AC-2 findings with source, consequence and bounded suggestions; whole-Story review is separate and no edits or acceptance claim applied.",
+      "evidence": [
+        "actors/S2.md"
+      ]
+    },
+    {
+      "id": "AC07",
+      "criterion": "三套範本各有符合目的的輸出，且 Azure DevOps Description 與 AC 內容可分別使用；來源、已接受決策及未知不遺失。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "S1 produces three distinct Description forms with separate AC fields and source/status/unknown handoff context.",
+      "evidence": [
+        "actors/S1.md"
+      ]
+    },
+    {
+      "id": "AC08",
+      "criterion": "既有 GWT、非 Gherkin 技術條件與 caller-selected 模板皆能保留；不複製 test-designer 的測試設計責任。",
+      "disposition": "satisfied-local-selected-scope",
+      "reason": "S2 preserves custom Goal/Rules/Open, exact approved GWT and pending prose; S1 preserves non-Gherkin technical criteria; actual test design belongs to test-designer in S3.",
+      "evidence": [
+        "actors/S1.md",
+        "actors/S2.md",
+        "actors/S3.md"
+      ]
+    }
+  ],
+  "limits": "Local source completion only; no hosted CI, provider closure, release, native Claude runtime or real-project adoption. S3 ordering limitation preserved in actor-verification.",
+  "evidence_root": "evidence"
+}

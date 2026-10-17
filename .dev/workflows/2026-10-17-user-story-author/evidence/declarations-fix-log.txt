@@ -1,0 +1,9 @@
+test_declared_instruction_and_tool_members_are_readable (framework_next.test_contracts.SourceDeclarationTests.test_declared_instruction_and_tool_members_are_readable) ... ok
+test_declared_members_and_metadata_agree (framework_next.test_contracts.SourceDeclarationTests.test_declared_members_and_metadata_agree) ... ok
+test_manifest_sequences_satisfy_catalog_builder_ordering (framework_next.test_contracts.SourceDeclarationTests.test_manifest_sequences_satisfy_catalog_builder_ordering) ... ok
+test_presets_select_declared_components_and_adapters (framework_next.test_contracts.SourceDeclarationTests.test_presets_select_declared_components_and_adapters) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.788s
+
+OK
