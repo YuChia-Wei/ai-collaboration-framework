@@ -846,7 +846,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/requirement-author/skill-package.yaml
   kind: skill
-  version: 0.2.0
+  version: 0.2.1
 - id: slice-implementer
   source: src/skills/slice-implementer
   metadata: skill-package.yaml
@@ -882,7 +882,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
   kind: skill
-  version: 0.3.0
+  version: 0.3.1
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml
@@ -939,6 +939,32 @@ components:
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
   version: 0.4.0
+- kind: skill
+  id: user-story-author
+  version: 0.1.0
+  source: src/skills/user-story-author
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/user-story-author/SKILL.md
+  - source: references/authoring.md
+    destination: .ai/core/skills/user-story-author/references/authoring.md
+  - source: references/examples.md
+    destination: .ai/core/skills/user-story-author/references/examples.md
+  - source: references/plan.md
+    destination: .ai/core/skills/user-story-author/references/plan.md
+  - source: references/review.md
+    destination: .ai/core/skills/user-story-author/references/review.md
+  - source: references/story-contract.md
+    destination: .ai/core/skills/user-story-author/references/story-contract.md
+  - source: references/templates/business-rules.md
+    destination: .ai/core/skills/user-story-author/references/templates/business-rules.md
+  - source: references/templates/technical.md
+    destination: .ai/core/skills/user-story-author/references/templates/technical.md
+  - source: references/templates/user-value.md
+    destination: .ai/core/skills/user-story-author/references/templates/user-value.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/user-story-author/skill-package.yaml
 - kind: skill
   id: workflow-records
   version: 0.1.0

@@ -3,7 +3,7 @@
 [回手冊首頁](../README.md) · [安裝說明](../installation.md) ·
 [知識選配](../knowledge-packages.md) · [工具型 skills 設定](../tool-skills.md)
 
-本來源 catalog 有 19 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
+本來源 catalog 有 20 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
 先依要交付的成果選擇；不必為了使用其中
 一個就跑完整開發流程。明確指定的 skill 若在其契約範圍內，應沿用你的選擇。
 
@@ -22,12 +22,12 @@
 | [local-change-implementer](local-change-implementer.md) | 0.2.3 | 一個局部技術操作與直接影響範圍 | 指令；可選知識 |
 | [pr-author](pr-author.md) | 0.1.0 | 準備 PR record，或執行另行授權的 GitHub draft 操作 | Python record／provider 工具 |
 | [problem-frame-author](problem-frame-author.md) | 0.1.0 | 撰寫／審查 problem frame；選定 CBF 時保存版本化 snapshot | 指令＋選用 Python CBF 工具 |
-| [requirement-author](requirement-author.md) | 0.2.0 | 探索、撰寫或正規化需求與可觀察驗收條件 | 指令 |
+| [requirement-author](requirement-author.md) | 0.2.1 | 探索、撰寫或正規化需求與可觀察驗收條件 | 指令 |
 | [slice-implementer](slice-implementer.md) | 0.2.3 | 實作一個 command／query／reactor／generic slice | 指令；可選知識 |
-| [software-development-orchestrator](software-development-orchestrator.md) | 0.3.0 | 協調跨階段開發，或從 checkpoint 繼續 | 指令 |
+| [software-development-orchestrator](software-development-orchestrator.md) | 0.3.1 | 協調跨階段開發，或從 checkpoint 繼續 | 指令 |
 | [spec-author](spec-author.md) | 0.2.0 | 依需求與設計撰寫 production／entity／adapter 規格 | 指令 |
 | [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 指令 |
-
+| [user-story-author](user-story-author.md) | 0.1.0 | 獨立 Story 切分、撰寫、正規化與整份／指定 AC 審查 | 指令；可選 |
 | [workflow-records](workflow-records.md) | 0.1.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | Python record 工具；可選 |
 
 ## 常見選擇
@@ -37,6 +37,7 @@
 | 「這個專案還沒有協作入口文件」 | `ai-context-init initialize` |
 | 「既有 AGENTS 的規則、責任或 precedence 要調整」 | `ai-context-governance propose/apply` |
 | 「只確認 context 哪裡有問題」 | `ai-context-auditor audit` |
+| 「撰寫一份 Story，或只審查 AC-2」 | `user-story-author draft/review`（已安裝時） |
 | 「把需求變成正式測試規格」 | `test-designer design` |
 | 「設計／審查 GWT 情境矩陣」 | `test-designer` |
 | 「實作情境的測試程式」 | 已授權的 `slice-implementer` 或符合局部範圍的實作 route |
@@ -68,3 +69,5 @@ skill。`spec-compliance-validator` 的 evidence assessment 不能用來代替
 
 `standards-promotion` 未列入發行 catalog，沒有可從 RC4 安裝的正式使用路由。
 ADR／Lesson 被接受也不表示規則已經採用；專案規範調整需走其選定的治理方式。
+
+`user-story-author` 為來源 catalog 的獨立選配套件；既有 presets 與本來源專案 17-skill 安裝維持原狀。

@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.0`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -45,3 +45,5 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
 
 已決事項不應重問；只有新的衝突證據影響本次產出時才重新釐清。探索完成不是需求核准或實作授權。
+
+PRD／Feature／一般需求可繼續使用本技能；獨立 Story 的 plan／draft／normalize 或整份／指定 AC 審查，可在已安裝時選 [user-story-author](user-story-author.md)，不要求先經本技能。測試設計仍由 test-designer 負責。

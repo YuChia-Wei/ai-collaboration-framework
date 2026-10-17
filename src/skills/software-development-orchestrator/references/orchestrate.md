@@ -48,7 +48,8 @@ bundled IDs are candidates when installed, not mandatory dependencies:
 
 | Needed capability | Bundled candidate | Boundary |
 | --- | --- | --- |
-| Requirements | `requirement-author` | Bounded exploration when needed; intent, business rules and observable acceptance. |
+| Requirements | `requirement-author` | PRD, Feature and general requirements; bounded exploration when needed. |
+| User Stories | `user-story-author` | Independent plan/draft/normalize or whole/selected-AC requirement review when available; no required upstream authoring stage. |
 | Specifications | `spec-author` | Production, entity or adapter system specifications grounded in requirements and accepted design. |
 | Problem framing | `problem-frame-author` | Commanded behavior and identified sources. |
 | Architecture | `ddd-ca-hex-architect` | Domain/dependency decisions or architecture artifact review. |

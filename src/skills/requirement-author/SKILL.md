@@ -31,3 +31,9 @@ Document facts, proposals and uncertainty faithfully. Authoring does not confer
 stakeholder approval, implementation authority, executed acceptance evidence or
 a compliance verdict. Do not add a specification, scenario-design or
 problem-frame stage unless a distinct requested output requires it.
+
+For broader PRD, Feature and general requirement documents, retain these operations.
+When a dedicated Story plan, draft, normalization or whole/selected-AC requirement
+review is requested, `user-story-author` is an independent candidate if available.
+Its use requires no prior requirement-author operation; existing operations here
+remain usable. Test design keeps its own owner; no mandatory handoff is introduced.
