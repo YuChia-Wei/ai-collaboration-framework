@@ -1,6 +1,6 @@
 content_package_version: 1
 id: dotnet-backend
-version: 0.1.1
+version: 0.1.2
 entrypoint: README.md
 members:
 - {path: README.md, kind: index}
@@ -2424,7 +2424,7 @@ resources:
   technology_profile: dotnet-backend
 dependencies:
   required:
-  - {kind: knowledge, id: engineering-common, version: 0.2.0}
+  - {kind: knowledge, id: engineering-common, version: 0.2.1}
   optional: []
 references:
 - from: README.md

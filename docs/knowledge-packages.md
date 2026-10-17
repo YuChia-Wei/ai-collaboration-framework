@@ -4,7 +4,7 @@
 
 ## 先說結論
 
-18 個發行 skills 都可以在不安裝這兩個知識套件的選擇中使用，前提是各自
+目前來源 catalog 的 19 個 skills 都可以在不安裝這兩個知識套件的選擇中使用，前提是各自
 作業需要的專案規則、輸入、工具、設定與授權齊備。**不安裝知識不會讓
 skill 自動失效，但會減少 5 個 skills 的套件專業覆蓋。** 如果任務明確要求
 該覆蓋，就要補齊依賴或把該部分列為 unavailable／blocked，不能說完整完成。
@@ -24,8 +24,8 @@ skill 自動失效，但會減少 5 個 skills 的套件專業覆蓋。** 如果
 
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
-| `engineering-common@0.2.0` | 共通工程規則 catalog、BDD 方法、Gherkin 表述、GWT 交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet-backend@0.1.1` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.2.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
+| `engineering-common@0.2.1` | 共通工程規則 catalog、BDD 方法、Gherkin 表述、GWT 交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
+| `dotnet-backend@0.1.2` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.2.1`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -35,7 +35,7 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 ## 哪些 skills 會失去完整的配套效果
 
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.2.0` 與 `dotnet-backend@0.1.1`。共 **10 個 consumption 宣告、36 次 resource ID 引用**。
+`engineering-common@0.2.1` 與 `dotnet-backend@0.1.2`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet-backend` | 仍可做的工作 |
@@ -46,11 +46,11 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 | [local-change-implementer](skills/local-change-implementer.md) `implement` | 共通工程 catalog 覆蓋不可用 | .NET catalog、aggregate／repository／test／use-case 規範覆蓋不可用 | 依接受的行為與技術，完成局部修改及直接檢查 |
 | [slice-implementer](skills/slice-implementer.md) `implement` | 共通工程 catalog 與 GWT 交接準則不可用 | .NET catalog、DbC、aggregate／repository／test／交易訊息／use-case 規範覆蓋不可用 | 依已接受架構與情境，實作一個行為 slice |
 
-其餘 13 個沒有宣告 `knowledge_consumption`：`adr-author`、
+其餘 14 個沒有宣告 `knowledge_consumption`：`adr-author`、
 `ai-context-auditor`、`ai-context-governance`、`ai-context-init`、
 `diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、
 `problem-frame-author`、`requirement-author`、`software-development-orchestrator`、
-`spec-author`、`spec-compliance-validator`。
+`spec-author`、`spec-compliance-validator`、`workflow-records`。
 
 例如 `spec-compliance-validator` 仍須有明確 criteria 和 authentic evidence；
 `pr-author` 的 provider 操作仍需正確設定與授權；orchestrator 若選到

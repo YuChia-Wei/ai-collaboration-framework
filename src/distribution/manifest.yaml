@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet-backend
-  version: 0.1.1
+  version: 0.1.2
   source: src/knowledge/dotnet-backend
   metadata: content-package.yaml
   members:
@@ -523,7 +523,7 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
 - kind: knowledge
   id: engineering-common
-  version: 0.2.0
+  version: 0.2.1
   source: src/knowledge/engineering-common
   metadata: content-package.yaml
   members:
@@ -669,7 +669,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/bdd-gwt-test-designer/skill-package.yaml
   kind: skill
-  version: 0.3.0
+  version: 0.3.1
 - id: code-reviewer
   source: src/skills/code-reviewer
   metadata: skill-package.yaml
@@ -681,7 +681,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.1
+  version: 0.2.2
 - id: ddd-ca-hex-architect
   source: src/skills/ddd-ca-hex-architect
   metadata: skill-package.yaml
@@ -695,7 +695,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/ddd-ca-hex-architect/skill-package.yaml
   kind: skill
-  version: 0.2.1
+  version: 0.2.2
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -765,7 +765,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.1
+  version: 0.2.2
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -857,7 +857,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.1
+  version: 0.2.2
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml

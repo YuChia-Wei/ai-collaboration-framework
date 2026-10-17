@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.2`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.2.0`（2 項）與 `dotnet-backend@0.1.1`（7 項）binding；未裝時 generic/common slice 仍能執行，但不能自稱 .NET 專門設計/交易/測試涵蓋。
+可選 `engineering-common@0.2.1`（2 項）與 `dotnet-backend@0.1.2`（7 項）binding；未裝時 generic/common slice 仍能執行，但不能自稱 .NET 專門設計/交易/測試涵蓋。
 
 ## 開始使用
 
@@ -40,14 +40,14 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### common-implementation
 
-`engineering-common@0.2.0`；操作：`implement`。
+`engineering-common@0.2.1`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:references/GWT-TEST-HANDOFF-CONTRACT.md`
 
 ### dotnet-implementation
 
-`dotnet-backend@0.1.1`；操作：`implement`。
+`dotnet-backend@0.1.2`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:standards/DESIGN-BY-CONTRACT.md`

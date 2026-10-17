@@ -1,0 +1,33 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-17-method-knowledge-skills
+workflow_kind: source-method-knowledge-and-skills
+title: Common engineering knowledge and capability boundaries
+owner_skill: software-development-orchestrator
+status: in_progress
+current_phase: BDD
+artifact_root: .dev/workflows/2026-10-17-method-knowledge-skills
+entrypoint: workflow-plan.md
+created_at: '2026-10-17T12:32:40+08:00'
+updated_at: '2026-10-17T12:34:53+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+branch: codex/2026-10-17-method-knowledge-skills
+base_branch: main
+input_commit: b8cfbcc12c98c71a5b2d045febde69c292ef898f
+work_items:
+- provider: github
+  issue: 454
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/454
+- provider: github
+  issue: 455
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/455
+- provider: github
+  issue: 456
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/456
+- provider: github
+  issue: 457
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/457
+- provider: github
+  issue: 458
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/458
