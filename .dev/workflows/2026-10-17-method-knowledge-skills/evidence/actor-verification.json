@@ -1,0 +1,388 @@
+{
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "scope": "Parent authenticates recorded loaded-file hashes, current installed bindings and source-bound lock; semantic judgments are separate; does not claim arbitrary unseen behavior or general model reliability.",
+  "cases": [
+    {
+      "case_id": "A1",
+      "variant": "A",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 33,
+      "inventory_file_count": 66,
+      "loaded_knowledge_count": 2,
+      "loaded_knowledge": [
+        {
+          "path": ".ai/core/knowledge/engineering-common/bdd/discovery.md",
+          "sha256": "7c75e78ef4a487f733b46ac856a45347d2c2310b8639b41c34429e5ee06fe76c",
+          "resource_id": "member:bdd/discovery.md",
+          "matching_bindings": [
+            "requirements-exploration-guidance"
+          ]
+        },
+        {
+          "path": ".ai/core/knowledge/engineering-common/discovery/collaborative-discovery.md",
+          "sha256": "92ebe9a31572acc2e8224d0f718ab5fcc44da679788ba9bba847e362e17026f5",
+          "resource_id": "member:discovery/collaborative-discovery.md",
+          "matching_bindings": [
+            "requirements-exploration-guidance"
+          ]
+        }
+      ],
+      "lock_sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "case_input_sha256": "e9056e6b448085508f5af506804901949d107ff2ec86d5c0125ed14aad6c9980",
+      "actor_output_sha256": "e9c8f16570eef4723daf8b633949d90a0f73679c39c912cd8f1883b66a3455e0",
+      "actor_receipt_sha256": "0dd07e1939efffe8ebaaae2fb86a537433e5bbfb46f099415309d5614d153f74",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "Supplied trusted packaged-reader result used; reader was not rerun.",
+        "No independent marker file observed; no separate marker validation claimed.",
+        "Initial trusted input metadata tool output was truncated; selected binding and resources were inspected programmatically."
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Preserves R1/AC1 refusal and unchanged date, leaves overdue/no-reservation outcome unknown, asks one bounded owner-policy batch, produces exploration only; reads discovery and collaborative discovery only.",
+        "knowledge_count": 2
+      },
+      "actor": "/root/actor_a1",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "c22fe17fc2c0c6d70c6df9bdf70745bafc4ae42a01da5c1ff7868d41379a0313",
+      "archived_output_newline_normalized": true,
+      "archived_output_path": "evidence/actors/A1.md",
+      "archived_receipt_git_sha256": "3456cd74dd6203b128d12d2a74c6b56944a50dbb0f562621745a1f424573e146",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A1-receipt.json"
+    },
+    {
+      "case_id": "A2",
+      "variant": "A",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 33,
+      "inventory_file_count": 66,
+      "loaded_knowledge_count": 0,
+      "loaded_knowledge": [],
+      "lock_sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "case_input_sha256": "087f2247a60e173520b83491356e3d079e72a558ea067da85a471beb6fac010d",
+      "actor_output_sha256": "57e2bbab65e37e78693c1c1506ddbbd9b5b03899d9cfd3f637465038b414de3b",
+      "actor_receipt_sha256": "4326786949dca5ecdefcae862d9d59037f037e71e1e53ca6fa6c420b655dedeb",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "No implementation or execution evidence",
+        "Rejection signaling and noninteger input boundary unspecified",
+        "No BDD knowledge bodies needed or read",
+        "No .NET specialist coverage claimed"
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Direct test-designer formal decision-table output preserves T-valid/T-invalid, covers source-derived boundaries, separates rejection signal/input-type unknowns and execution; no knowledge bodies read.",
+        "knowledge_count": 0
+      },
+      "actor": "/root/actor_a2",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "e800eebb3f8b891fcac63b01bff2aa8b0c468835439c948a53f77d1d6cf735f1",
+      "archived_output_newline_normalized": true,
+      "archived_output_path": "evidence/actors/A2.md",
+      "archived_receipt_git_sha256": "75ff44c704c6b0c0a1bcc36d85cc62c41ff9837a672bd50b30b750f2edd7546f",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A2-receipt.json"
+    },
+    {
+      "case_id": "A3",
+      "variant": "A",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 33,
+      "inventory_file_count": 66,
+      "loaded_knowledge_count": 5,
+      "loaded_knowledge": [
+        {
+          "path": ".ai/core/knowledge/engineering-common/ddd/README.md",
+          "sha256": "206cc26c5d42e7ff6ff7e98401748b154196dd80075514bfdc0d0f928cca3e31",
+          "resource_id": "member:ddd/README.md",
+          "matching_bindings": [
+            "architecture-guidance"
+          ]
+        },
+        {
+          "path": ".ai/core/knowledge/engineering-common/ddd/domain-discovery.md",
+          "sha256": "a2d4db1c6ad849c35574b0f4e5421e288b60b309ec93e1ee99801dbd03fdf924",
+          "resource_id": "member:ddd/domain-discovery.md",
+          "matching_bindings": [
+            "architecture-guidance"
+          ]
+        },
+        {
+          "path": ".ai/core/knowledge/engineering-common/ddd/strategic-design.md",
+          "sha256": "38141de602dcc569d1fa6fadb42e04d9ab7cad5aa9f7be87450ddeeefb96328d",
+          "resource_id": "member:ddd/strategic-design.md",
+          "matching_bindings": [
+            "architecture-guidance"
+          ]
+        },
+        {
+          "path": ".ai/core/knowledge/engineering-common/ddd/tactical-design.md",
+          "sha256": "be8287d3846a8fea83a3578a9f5baeeedb0c6b326f615cba91fe1cb71e694339",
+          "resource_id": "member:ddd/tactical-design.md",
+          "matching_bindings": [
+            "architecture-guidance"
+          ]
+        },
+        {
+          "path": ".ai/core/knowledge/engineering-common/ddd/examples/order-cancellation.md",
+          "sha256": "c4fb57d60de5e95d6a60cb2edaeffa717e5608000d3f911721f3780e75195696",
+          "resource_id": "member:ddd/examples/order-cancellation.md",
+          "matching_bindings": [
+            "architecture-guidance"
+          ]
+        }
+      ],
+      "lock_sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "case_input_sha256": "76c5da851202b747f57612b0a5e87b220ef055679680dd6749cdcf87f192f4f3",
+      "actor_output_sha256": "5e4f8d7174fa827b2e758cdfbf492f446ef22d10e5d903391a9e28a5500a51c8",
+      "actor_receipt_sha256": "9e12c31f4d0962bd99857f279ca697a9f0b0941b6ced024100879c304874beaf",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "Design proposal only; no implementation, tests or external validation.",
+        "No technology profile selected; no dotnet specialist coverage requested.",
+        "Business cutoff, external-refund prerequisite and failure policy remain unresolved."
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Compares separate model responsibilities and combined model in one process, binds I1 to effective local mutation control, preserves external Payment authority and policy unknowns; reads five relevant DDD resources without model-evolution/other libraries.",
+        "knowledge_count": 5
+      },
+      "actor": "/root/actor_a3",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "7d4baa2d6e17ea2b43c6fe7103eaf4864d7ab03cd46842f88c431ae38b1b76c7",
+      "archived_output_newline_normalized": true,
+      "archived_output_path": "evidence/actors/A3.md",
+      "archived_receipt_git_sha256": "036c14924325a04a17950028a1c4190533c17fdd933bf3b10734132a116a25c8",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A3-receipt.json"
+    },
+    {
+      "case_id": "A4",
+      "variant": "B",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 0,
+      "inventory_file_count": 22,
+      "loaded_knowledge_count": 0,
+      "loaded_knowledge": [],
+      "lock_sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+      "case_input_sha256": "6b498a8a6c3f54aa6086d9f8af57fd00cf3755753523066fc2ccb98fb490a9a3",
+      "actor_output_sha256": "fd18023357a973a180eedff0726a473395e9688896f812ee6f5c4aab04be4545",
+      "actor_receipt_sha256": "111ddd9bc2261ce4ef3fd13c7d98fa91cb74cba7640b4b09381279b736d55002",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "No knowledge bodies read; no implementation or executed-test evidence.",
+        "Initial lock metadata was printed in full and tool output truncated; later installed instruction reads were individually hash-verified.",
+        "Task input relative paths have explicitly different bases; installed paths are relative to project_root."
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Preserves R1/AC1/S1 with both observations and source mapping, states package coverage unavailable while completing common design, no source fallback or knowledge bodies. Receipt's installed_resource_count=22 refers to lock inventory files, not knowledge resources; authoritative reader count is zero and parent normalized result distinguishes both.",
+        "knowledge_count": 0
+      },
+      "actor": "/root/actor_a4",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "0bacfd9e79a790d4a6689bc9d4ed700e5fc70b5f50cdcabe1bcf52678d86d293",
+      "archived_output_newline_normalized": true,
+      "archived_output_path": "evidence/actors/A4.md",
+      "archived_receipt_git_sha256": "e8052d10a3df4331f2fe027bff0ab378087fc8851b075234985b568bde3881a6",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A4-receipt.json"
+    },
+    {
+      "case_id": "A5",
+      "variant": "B",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 0,
+      "inventory_file_count": 22,
+      "loaded_knowledge_count": 0,
+      "loaded_knowledge": [],
+      "lock_sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+      "case_input_sha256": "9df5dc41abf80262745338d180db2677ed8c2a2b7adc14b9629b75bcf48317c9",
+      "actor_output_sha256": "e671dec7c47186bb382ea7d922c7a5a8caad59cfcc3cdef83ac127862e18a5c2",
+      "actor_receipt_sha256": "f3f906522d47927333d5e7c5b4f74096e16464c5267a60422f05266f1c114cdd",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "Initial lock metadata output was oversized and truncated, exposing unrelated catalog metadata; no referenced source bodies were read.",
+        "No installed knowledge resources or bindings; specialized required coverage remains unavailable.",
+        "Case/input relative_path entries are relative to their stated locations, with absolute_path supplied for disambiguation."
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Explicit required installed DDD coverage remains unsatisfied/unavailable, while bounded supplied-fact language analysis continues without inventing context adoption, policies or technologies; no knowledge body read.",
+        "knowledge_count": 0
+      },
+      "actor": "/root/actor_a5",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "75d58bbf7717156620c8ed5d09c0b0c327d21c7335df1d760fd4528960a8dcb4",
+      "archived_output_newline_normalized": true,
+      "archived_output_path": "evidence/actors/A5.md",
+      "archived_receipt_git_sha256": "3b61c95e21eea8db565691664c95ad3e122c5da5309beaac9ec500a3988863cf",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A5-receipt.json"
+    },
+    {
+      "case_id": "A6",
+      "variant": "A",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 33,
+      "inventory_file_count": 66,
+      "loaded_knowledge_count": 2,
+      "loaded_knowledge": [
+        {
+          "path": ".ai/core/knowledge/engineering-common/bdd/formulation.md",
+          "sha256": "f2200d77a47e1e0924f6e2f9bccd627889135bd9c4adaf08e01f276af2ef24f8",
+          "resource_id": "member:bdd/formulation.md",
+          "matching_bindings": [
+            "requirements-authoring-guidance"
+          ]
+        },
+        {
+          "path": ".ai/core/knowledge/engineering-common/ddd/domain-discovery.md",
+          "sha256": "a2d4db1c6ad849c35574b0f4e5421e288b60b309ec93e1ee99801dbd03fdf924",
+          "resource_id": "member:ddd/domain-discovery.md",
+          "matching_bindings": [
+            "requirements-authoring-guidance"
+          ]
+        }
+      ],
+      "lock_sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "case_input_sha256": "dac78694f2a0ea49b2937cf309649168b9d414d5f73d164c02378c5f9b3a004f",
+      "actor_output_sha256": "592fcdd244185031e91af0f227599a49f3811cffef85faae72387ed2394affcd",
+      "actor_receipt_sha256": "11e8ac2e97f91ea309a953c5e4a858f1a999debfc690cb7aeee329e0c38a99b2",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "Sources R1(v1), D1(v2), D2(v1) are supplied prompt excerpts, not separately inspected documents.",
+        "No tests, implementation, acceptance, compliance, or external action performed.",
+        "spec-author metadata 3 declares no direct method-knowledge consumption.",
+        "Only two relevant optional knowledge bodies loaded; discovery interview and unrelated library bodies were not loaded."
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Five bounded outputs preserve accepted R1/D1/D2, REQ-7/AC-a/AC-b/Q9 IDs and states, retain unknowns and observable outcomes, and avoid new transport, test design or architecture decisions; only two allowed requirements guidance bodies read.",
+        "knowledge_count": 2
+      },
+      "actor": "/root/actor_a6",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "592fcdd244185031e91af0f227599a49f3811cffef85faae72387ed2394affcd",
+      "archived_output_newline_normalized": false,
+      "archived_output_path": "evidence/actors/A6.md",
+      "archived_receipt_git_sha256": "2d8e3ec16552db8166679ec0d0de0c1c5829387630153a80d77a055cfa1aa96c",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A6-receipt.json"
+    },
+    {
+      "case_id": "A7",
+      "variant": "B",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 0,
+      "inventory_file_count": 22,
+      "loaded_knowledge_count": 0,
+      "loaded_knowledge": [],
+      "lock_sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+      "case_input_sha256": "737ff6142a14e80b4069efe132e91663a41edac0c3f88e6078b7518a38f7b54e",
+      "actor_output_sha256": "f9c28070882997978889e20b903d16b080eace6a8c9e05e33fdd38c02efd8a00",
+      "actor_receipt_sha256": "d9dcd12a26c69545d0f02f4e72f50b20adf3bd3b23b057760f796d6d21c18287",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "Trusted caller-supplied packaged reader; not re-executed",
+        "No knowledge bodies read; no installed bindings",
+        "Original requirement and chats unavailable by scope",
+        "No acceptance judgment, implementation, tests, installs or external actions"
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Fresh context reconstructs goal, accepted R1/AC1, unresolved overdue/no-reservation policy, next owner action and exploration-only authority from verbatim A1 handoff; verifies handoff digest and correctly distinguishes current absent knowledge from A1's past consumption.",
+        "knowledge_count": 0
+      },
+      "actor": "/root/actor_a7",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "f9c28070882997978889e20b903d16b080eace6a8c9e05e33fdd38c02efd8a00",
+      "archived_output_newline_normalized": false,
+      "archived_output_path": "evidence/actors/A7.md",
+      "archived_receipt_git_sha256": "0057212aff10af60bddbe3d43fa961ed08d07939788833ff5c97b7c1fb2b2ae1",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A7-receipt.json"
+    },
+    {
+      "case_id": "A8",
+      "variant": "A",
+      "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+      "installed_knowledge_resource_count": 33,
+      "inventory_file_count": 66,
+      "loaded_knowledge_count": 1,
+      "loaded_knowledge": [
+        {
+          "path": ".ai/core/knowledge/engineering-common/bdd/formulation.md",
+          "sha256": "f2200d77a47e1e0924f6e2f9bccd627889135bd9c4adaf08e01f276af2ef24f8",
+          "resource_id": "member:bdd/formulation.md",
+          "matching_bindings": [
+            "test-design-guidance"
+          ]
+        }
+      ],
+      "lock_sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "case_input_sha256": "ab5fbce55631cf85781363a237e4ef7f04ec64218674a3068b20a58f17e9b67a",
+      "actor_output_sha256": "ddd92174ba68f1cb3f67a8d05beb72e1637d010d9501e7fb5dc885c0fa8ab24e",
+      "actor_receipt_sha256": "f53af8a693dc968ba9f6b814b975c2d65ac074792f8f62ec2853e4dc1585049e",
+      "mechanical_result": "matched-current-bytes-allowlists-bindings-and-lock",
+      "limitations": [
+        "Design only; target test facilities and result contract unverified",
+        "Initial trusted reader metadata was printed in full with tool truncation; no knowledge bodies preloaded",
+        "Used supplied verified reader metadata; no independent reader execution"
+      ],
+      "parent_judgment": {
+        "status": "meets-selected-expectations",
+        "reason": "Direct formulation preserves R1/AC1 with a local scenario ID, both refusal and unchanged-date oracles, facilities/unknowns and not-executed state; reads only formulation, without forced discovery or Gherkin.",
+        "knowledge_count": 1
+      },
+      "actor": "/root/actor_a8",
+      "execution_profile": {
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "low",
+        "context": "fresh; no parent turns"
+      },
+      "archived_output_git_sha256": "e8b978723837d5edb911aaa974c3a23e5a1f989d267ff01fb1abd62c19de4ed0",
+      "archived_output_newline_normalized": true,
+      "archived_output_path": "evidence/actors/A8.md",
+      "archived_receipt_git_sha256": "1787fc177c315ff2530a4edf9dfc3e744e519015702ddbd3938e60e3b0814d50",
+      "archived_receipt_newline_normalized": true,
+      "archived_receipt_path": "evidence/actors/A8-receipt.json"
+    }
+  ],
+  "normalization_notes": [
+    "A1/A2 resource_count fields denote loaded knowledge bodies, not installed inventory.",
+    "A4 raw installed_resource_count=22 denotes inventory file count. The verified reader contains zero knowledge resources; this result records both counts explicitly.",
+    "Some raw external-input relative paths have different bases; their hashes match exactly the two authorized case input and verified reader metadata files.",
+    "Large/truncated metadata outputs in A1/A4/A5/A8 remain disclosed; metadata listing is not a knowledge-body read."
+  ],
+  "archive_note": "Original raw hashes identify ignored actor files. Git applies CRLF-to-LF normalization to archived text where marked; canonical Git blob hashes bind tracked evidence. No prose or receipt values changed."
+}

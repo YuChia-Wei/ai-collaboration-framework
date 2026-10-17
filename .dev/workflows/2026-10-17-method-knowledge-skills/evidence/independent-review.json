@@ -1,0 +1,34 @@
+{
+  "reviewer": "/root/bdd_immutable_review",
+  "method": "installed code-reviewer; source policy rule 6",
+  "base_commit": "b8cfbcc12c98c71a5b2d045febde69c292ef898f",
+  "full_review_commit": "893bcb9dcf14bb11e714c84f06250e246338e986",
+  "affected_review_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "raw_reports": [
+    {
+      "path": ".dev/ai-context/local/method-knowledge-skills/independent-review-893bcb9d.md",
+      "sha256": "9ad8b3361c709564849e1b2ab3d875d2dbbf590233e7c95f99773c21f186f3ac"
+    },
+    {
+      "path": ".dev/ai-context/local/method-knowledge-skills/independent-review-c9057655.md",
+      "sha256": "5350b9347ea7271703e58df221a73b5f0bae13d413eec2480b9b27d003c69e02"
+    }
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "low",
+      "finding": "An extra EOF blank line caused immutable full-range diff check to fail; author working-tree check had omitted an untracked file.",
+      "disposition": "repaired and independently re-executed on c9057655; earlier failure retained"
+    },
+    {
+      "id": "R2",
+      "severity": "low",
+      "finding": "slice-implementer manual counted two common resources while metadata and the list contained three.",
+      "disposition": "repaired to three and independently re-executed on c9057655"
+    }
+  ],
+  "reuse_proof": "Only the two repaired source/manual files and appended integration checkpoint changed between review heads; all other 3137 Git tree entries, criteria and governing methods identical.",
+  "result": "No new supported defect in affected changes; prior scoped conclusions reused only for unchanged content.",
+  "limits": "Independent review did not execute source suite, installed trials or actors; parent owns those judgments."
+}

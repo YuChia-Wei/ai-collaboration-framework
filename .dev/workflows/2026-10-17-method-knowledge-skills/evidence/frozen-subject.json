@@ -1,0 +1,18 @@
+{
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "selected_paths": [
+    "src",
+    "docs",
+    "tools",
+    "tests",
+    "AGENTS.md",
+    ".dev/standards/SOURCE-DEVELOPMENT-POLICY.md",
+    ".dev/standards/WORKFLOW-GATE-POLICY.md",
+    ".dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
+    ".dev/workflows/2026-10-17-method-knowledge-skills/acceptance-criteria.json",
+    ".dev/workflows/2026-10-17-method-knowledge-skills/behavior-cases.json"
+  ],
+  "git_tree_entries_sha256": "d740ec1245bd34f2f2871694ce80f529c248f55ad192a2e942af46fa66708fdd",
+  "entry_count": 609,
+  "purpose": "Content equivalence for source tests, installed/actor evidence and independent-review rebind after workflow-only terminal records; not a legacy receipt or a hosted admission claim."
+}

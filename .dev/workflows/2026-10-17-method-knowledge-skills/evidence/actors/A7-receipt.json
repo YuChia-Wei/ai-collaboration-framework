@@ -1,0 +1,63 @@
+{
+  "unavailable_coverage": [
+    "engineering-common@0.3.0",
+    "member:bdd/discovery.md",
+    "member:ddd/domain-discovery.md",
+    "member:discovery/collaborative-discovery.md"
+  ],
+  "project_root": "C:/mk-c9057655/B/project",
+  "loaded_files": [
+    {
+      "path": ".agents/skills/aicf-requirement-author/SKILL.md",
+      "kind": "instruction",
+      "sha256": "d84c0cfe023c969251f9e689172d5ea2fceaafec7e62b6a57119177ac1431296"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/SKILL.md",
+      "kind": "instruction",
+      "sha256": "3182e9668f19e7d931285c755f18a7d3d1c22bd2bd9ad543b3cb1d0148286df1"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/skill-package.yaml",
+      "kind": "metadata",
+      "sha256": "91ed41550825b64432df952a15ff34b533bb80a2f918b70c6ee24bd7e85b16ee"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/references/explore.md",
+      "kind": "instruction",
+      "sha256": "47a17186109711aaaaf2c65c0a4e8b20c55ed6466c3b7db7abc736d5daa783f4"
+    },
+    {
+      "path": ".ai/core/skills/requirement-author/references/knowledge.md",
+      "kind": "instruction",
+      "sha256": "e76555bb7d77e9d6858d364fca2a33052b40c3da575882a9870b92668c5a0d2b"
+    },
+    {
+      "path": ".ai/framework.lock",
+      "kind": "metadata",
+      "sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d"
+    },
+    {
+      "path": "../../B-actor-input.json",
+      "kind": "metadata",
+      "sha256": "8c45a7f3974d35295c07c201b6982bd32c07ab47b3bc52242338e113ae0abfec"
+    },
+    {
+      "path": "../../../Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/method-knowledge-skills/actor-inputs/A7.json",
+      "kind": "metadata",
+      "sha256": "737ff6142a14e80b4069efe132e91663a41edac0c3f88e6078b7518a38f7b54e"
+    }
+  ],
+  "lock_after": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+  "limitations": [
+    "Trusted caller-supplied packaged reader; not re-executed",
+    "No knowledge bodies read; no installed bindings",
+    "Original requirement and chats unavailable by scope",
+    "No acceptance judgment, implementation, tests, installs or external actions"
+  ],
+  "lock_before": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+  "case_id": "A7",
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "installed_resource_count": 0,
+  "handoff_sha256": "e9c8f16570eef4723daf8b633949d90a0f73679c39c912cd8f1883b66a3455e0"
+}

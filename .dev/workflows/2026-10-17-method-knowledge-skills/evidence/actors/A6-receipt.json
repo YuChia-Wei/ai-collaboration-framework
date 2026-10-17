@@ -1,0 +1,174 @@
+{
+  "installed_resource_count": 33,
+  "lock_after": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "lock_before": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "knowledge_result": {
+    "status": "available",
+    "applicable_rule_ids": [],
+    "conditional_rule_ids": [],
+    "binding": "requirements-authoring-guidance",
+    "operations": [
+      "draft",
+      "normalize"
+    ],
+    "capability": "requirements",
+    "diagnostics": [],
+    "authorities": [],
+    "loaded_resources": [
+      {
+        "package": "engineering-common",
+        "version": "0.3.0",
+        "resource_id": "member:bdd/formulation.md",
+        "member": ".ai/core/knowledge/engineering-common/bdd/formulation.md",
+        "sha256": "f2200d77a47e1e0924f6e2f9bccd627889135bd9c4adaf08e01f276af2ef24f8",
+        "resource": {
+          "id": "member:bdd/formulation.md",
+          "path": "bdd/formulation.md",
+          "kind": "knowledge",
+          "rule_ids": [],
+          "capabilities": [
+            "requirements",
+            "test-design"
+          ],
+          "operations": [
+            "design",
+            "draft",
+            "explore",
+            "normalize",
+            "review"
+          ],
+          "technology_profile": null
+        }
+      },
+      {
+        "package": "engineering-common",
+        "version": "0.3.0",
+        "resource_id": "member:ddd/domain-discovery.md",
+        "member": ".ai/core/knowledge/engineering-common/ddd/domain-discovery.md",
+        "sha256": "a2d4db1c6ad849c35574b0f4e5421e288b60b309ec93e1ee99801dbd03fdf924",
+        "resource": {
+          "id": "member:ddd/domain-discovery.md",
+          "path": "ddd/domain-discovery.md",
+          "kind": "knowledge",
+          "rule_ids": [],
+          "capabilities": [
+            "architecture",
+            "requirements",
+            "specification"
+          ],
+          "operations": [
+            "design",
+            "draft",
+            "explore",
+            "normalize",
+            "review"
+          ],
+          "technology_profile": null
+        }
+      }
+    ],
+    "technology_profile": null
+  },
+  "limitations": [
+    "Sources R1(v1), D1(v2), D2(v1) are supplied prompt excerpts, not separately inspected documents.",
+    "No tests, implementation, acceptance, compliance, or external action performed.",
+    "spec-author metadata 3 declares no direct method-knowledge consumption.",
+    "Only two relevant optional knowledge bodies loaded; discovery interview and unrelated library bodies were not loaded."
+  ],
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "project_root": "C:\\mk-c9057655\\A\\project",
+  "loaded_files": [
+    {
+      "kind": "instruction",
+      "relative_path": ".agents/skills/requirement-author/SKILL.md",
+      "sha256": "e1674d38223c1f418c47693a386a2c8724157d9e1b8f76942c011c33f66a2e11"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".agents/skills/spec-author/SKILL.md",
+      "sha256": "3c7798deb70e77ae6a4beba03a63873c193f8e5271d3d443388f924ae52afd46"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/requirement-author/SKILL.md",
+      "sha256": "3182e9668f19e7d931285c755f18a7d3d1c22bd2bd9ad543b3cb1d0148286df1"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/spec-author/SKILL.md",
+      "sha256": "5723a4ddc03fdd8153d45d819f4aacd0eb47a8382c36ebafe177f80f291710d4"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": ".ai/core/skills/requirement-author/skill-package.yaml",
+      "sha256": "91ed41550825b64432df952a15ff34b533bb80a2f918b70c6ee24bd7e85b16ee"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": ".ai/core/skills/spec-author/skill-package.yaml",
+      "sha256": "7fc540812c3e7f691699b329b1d7fda4f0a38c1ccab70a117153d060b3c2cd50"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/requirement-author/references/knowledge.md",
+      "sha256": "e76555bb7d77e9d6858d364fca2a33052b40c3da575882a9870b92668c5a0d2b"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/requirement-author/references/authoring.md",
+      "sha256": "532758e05eb9813963c02b5141530260be90064b5d0d70394af1cae202a2ef0c"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/requirement-author/references/requirement-template.md",
+      "sha256": "a98f93847d8ce5b9f679f6e9de6a1031f411c827993355a44224b4f4072c9b10"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/spec-author/references/authoring.md",
+      "sha256": "2149efb19f3a1786e9228ee1493359ca729f0b84f0ab3d0446a29213006c11da"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/spec-author/references/production-template.md",
+      "sha256": "d9fddc3d14844aaa692fc33533046c0c5a320e74efd1163599d6be50961079d5"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/spec-author/references/entity-template.md",
+      "sha256": "425f67efc291daf5755f61d1963ec2b3f9848d7c3cc80e0f0f339e27483ccaf0"
+    },
+    {
+      "kind": "instruction",
+      "relative_path": ".ai/core/skills/spec-author/references/adapter-template.md",
+      "sha256": "0c2dccdc61a306553e06c637a5d1fcb6cafd28aac92eef406940ee2150503ba9"
+    },
+    {
+      "kind": "knowledge",
+      "relative_path": ".ai/core/knowledge/engineering-common/bdd/formulation.md",
+      "sha256": "f2200d77a47e1e0924f6e2f9bccd627889135bd9c4adaf08e01f276af2ef24f8"
+    },
+    {
+      "kind": "knowledge",
+      "relative_path": ".ai/core/knowledge/engineering-common/ddd/domain-discovery.md",
+      "sha256": "a2d4db1c6ad849c35574b0f4e5421e288b60b309ec93e1ee99801dbd03fdf924"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": ".ai/framework.lock",
+      "sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": "../../A-actor-input.json",
+      "sha256": "83c7c7f7b7ce0b0004b3b1676ff216cafd5680bff51af46cc5c9fa9f34b3c09a"
+    },
+    {
+      "kind": "metadata",
+      "relative_path": "../../../Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/method-knowledge-skills/actor-inputs/A6.json",
+      "sha256": "dac78694f2a0ea49b2937cf309649168b9d414d5f73d164c02378c5f9b3a004f"
+    }
+  ],
+  "case_id": "A6",
+  "unavailable_coverage": []
+}

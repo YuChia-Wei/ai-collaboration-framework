@@ -1,0 +1,81 @@
+{
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "loaded_files": [
+    {
+      "kind": "metadata",
+      "sha256": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+      "path": ".ai/framework.lock"
+    },
+    {
+      "kind": "instruction",
+      "sha256": "2c06ebb6666f603a2909ae427b91562828a897251b10b80a0c7e4e9b9ec522bb",
+      "path": ".agents/skills/aicf-test-designer/SKILL.md"
+    },
+    {
+      "kind": "instruction",
+      "sha256": "102b9d5eb910af7b65e1d3914f8dd1f3c231b22eb9207c4d8b49062c31bf32ca",
+      "path": ".ai/core/skills/test-designer/SKILL.md"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "6dbb20c54b1a9764c35433e867a261d40638ec869fb1923c9d291c4ab078bbbf",
+      "path": ".ai/core/skills/test-designer/skill-package.yaml"
+    },
+    {
+      "kind": "instruction",
+      "sha256": "8dc4cc9ea99ed23014e29fa1a0024b6de43d800dc38a62ab2ad19d745e506cca",
+      "path": ".ai/core/skills/test-designer/references/design.md"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "6b498a8a6c3f54aa6086d9f8af57fd00cf3755753523066fc2ccb98fb490a9a3",
+      "base": "task input (not installed content)",
+      "path": "actor-inputs/A4.json"
+    },
+    {
+      "kind": "metadata",
+      "sha256": "8c45a7f3974d35295c07c201b6982bd32c07ab47b3bc52242338e113ae0abfec",
+      "base": "task input (not installed content)",
+      "path": "../../B-actor-input.json"
+    }
+  ],
+  "limitations": [
+    "No knowledge bodies read; no implementation or executed-test evidence.",
+    "Initial lock metadata was printed in full and tool output truncated; later installed instruction reads were individually hash-verified.",
+    "Task input relative paths have explicitly different bases; installed paths are relative to project_root."
+  ],
+  "lock_before": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+  "lock_after": "18d0337e4903e84e6abd708de62f952ae1813db9e540a6292d5813baddfcd04d",
+  "unavailable_coverage": [
+    "engineering-common@0.3.0 common-test-design: not selected; no bindings/resources",
+    "dotnet-backend@0.1.3 dotnet-test-design: not selected; no bindings/resources"
+  ],
+  "knowledge_result": {
+    "coverage": {
+      "missing": [
+        "engineering-common@0.3.0",
+        "dotnet-backend@0.1.3"
+      ],
+      "technology_profile": null,
+      "capability": "test-design",
+      "operation": "design",
+      "status": "unavailable"
+    },
+    "authorities": [],
+    "diagnostics": [
+      {
+        "code": "OPTIONAL_KNOWLEDGE_NOT_SELECTED",
+        "reason": "Verified selection resources and bindings are empty",
+        "relative_path_or_null": null,
+        "next_action": "Continue caller-grounded common work; specialist coverage requires separately selected verified knowledge"
+      }
+    ],
+    "loaded_resources": [],
+    "conditional_rule_ids": [],
+    "applicable_rule_ids": [],
+    "status": "unavailable"
+  },
+  "installed_resource_count": 22,
+  "project_root": "C:/mk-c9057655/B/project",
+  "case_id": "A4"
+}

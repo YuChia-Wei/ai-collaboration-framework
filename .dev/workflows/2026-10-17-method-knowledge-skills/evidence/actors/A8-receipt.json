@@ -1,0 +1,58 @@
+{
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "case_id": "A8",
+  "lock_after": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "installed_resource_count": 33,
+  "limitations": [
+    "Design only; target test facilities and result contract unverified",
+    "Initial trusted reader metadata was printed in full with tool truncation; no knowledge bodies preloaded",
+    "Used supplied verified reader metadata; no independent reader execution"
+  ],
+  "loaded_files": [
+    {
+      "sha256": "446e033467ee374e5461a14809acb420b75067ff29c5343623622b5b3121e409",
+      "kind": "instruction",
+      "path": ".agents/skills/test-designer/SKILL.md"
+    },
+    {
+      "sha256": "102b9d5eb910af7b65e1d3914f8dd1f3c231b22eb9207c4d8b49062c31bf32ca",
+      "kind": "instruction",
+      "path": ".ai/core/skills/test-designer/SKILL.md"
+    },
+    {
+      "sha256": "6dbb20c54b1a9764c35433e867a261d40638ec869fb1923c9d291c4ab078bbbf",
+      "kind": "metadata",
+      "path": ".ai/core/skills/test-designer/skill-package.yaml"
+    },
+    {
+      "sha256": "8dc4cc9ea99ed23014e29fa1a0024b6de43d800dc38a62ab2ad19d745e506cca",
+      "kind": "instruction",
+      "path": ".ai/core/skills/test-designer/references/design.md"
+    },
+    {
+      "sha256": "f2200d77a47e1e0924f6e2f9bccd627889135bd9c4adaf08e01f276af2ef24f8",
+      "kind": "knowledge",
+      "path": ".ai/core/knowledge/engineering-common/bdd/formulation.md"
+    },
+    {
+      "sha256": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+      "kind": "metadata",
+      "path": ".ai/framework.lock"
+    }
+  ],
+  "input_files": [
+    {
+      "sha256": "ab5fbce55631cf85781363a237e4ef7f04ec64218674a3068b20a58f17e9b67a",
+      "path": "actor-inputs/A8.json"
+    },
+    {
+      "sha256": "83c7c7f7b7ce0b0004b3b1676ff216cafd5680bff51af46cc5c9fa9f34b3c09a",
+      "path": "C:/mk-c9057655/A-actor-input.json"
+    }
+  ],
+  "unavailable_coverage": [
+    "Unrequested dotnet-backend@0.1.3 specialist guidance absent from verified resources"
+  ],
+  "lock_before": "12b6ad5769be4271cc8e66a035e38dd38147e76ca0487b12f77c59e917e8d636",
+  "project_root": "C:\\mk-c9057655\\A\\project"
+}

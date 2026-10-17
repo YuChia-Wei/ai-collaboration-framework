@@ -1,0 +1,26 @@
+{
+  "source_commit": "c9057655e38d263cc6917232fc1b7a553548933d",
+  "command": "python -I -B tests/run.py",
+  "result": {
+    "framework_tests": {
+      "duration_seconds": 69.102321,
+      "errors": 0,
+      "failures": 0,
+      "interface": "framework-tests/1",
+      "outcome": "passed",
+      "skipped": 0,
+      "suites": [
+        "schemas",
+        "tools",
+        "distribution",
+        "release",
+        "source"
+      ],
+      "tests": 243
+    }
+  },
+  "raw_stdout_sha256": "80a05d35286822644b0998fa0d432d9d71ad0d64c2951f28e8b85e135b578e96",
+  "raw_stderr_sha256": "e6f8e6797dba136beebec6f7613b2ba556e0ed73467c8013b62bce94529e5edf",
+  "evidence_directory": ".dev/ai-context/local/method-knowledge-skills",
+  "no_test_or_loader_weakening": true
+}
