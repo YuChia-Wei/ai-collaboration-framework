@@ -19,10 +19,13 @@ skill 自動失效，但會減少 5 個 skills 的套件專業覆蓋。** 如果
 
 ## 兩個套件分別提供什麼
 
+下表是目前來源版本；下載成品與已安裝專案仍以各自 catalog／lock 為準。
+來源版本更新不代表已發布或自動升級。
+
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
-| `engineering-common@0.1.0` | 共通工程規則 catalog、GWT 交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet-backend@0.1.0` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.1.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
+| `engineering-common@0.2.0` | 共通工程規則 catalog、BDD 方法、Gherkin 表述、GWT 交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
+| `dotnet-backend@0.1.1` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.2.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -31,13 +34,13 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 
 ## 哪些 skills 會失去完整的配套效果
 
-以下是 metadata 明確宣告的 optional consumption；兩個 package 的版本都是
-`0.1.0`。共 **10 個 consumption 宣告、34 次 resource ID 引用**。
+以下是 metadata 明確宣告的 optional consumption；版本分別是
+`engineering-common@0.2.0` 與 `dotnet-backend@0.1.1`。共 **10 個 consumption 宣告、36 次 resource ID 引用**。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet-backend` | 仍可做的工作 |
 | --- | --- | --- | --- |
-| [bdd-gwt-test-designer](skills/bdd-gwt-test-designer.md) `design`／`review` | 共通工程 catalog 與 GWT 交接準則不可用 | .NET catalog 與測試規範覆蓋不可用 | 依提供的需求與專案慣例設計、審查情境 |
+| [bdd-gwt-test-designer](skills/bdd-gwt-test-designer.md) `design`／`review` | 共通工程 catalog、BDD 方法、Gherkin 表述與 GWT 交接準則不可用 | .NET catalog 與測試規範覆蓋不可用 | 依提供的需求與專案慣例設計、審查情境 |
 | [code-reviewer](skills/code-reviewer.md) `review` | 共通工程 catalog 覆蓋不可用 | .NET catalog、DbC、aggregate／repository／test／use-case 規範覆蓋不可用 | 對照預期行為與目標規則找程式缺陷 |
 | [ddd-ca-hex-architect](skills/ddd-ca-hex-architect.md) `design`／`review` | 共通工程 catalog 覆蓋不可用 | .NET catalog、building blocks、DbC、aggregate、交易訊息、use-case、project structure 覆蓋不可用 | 領域／依賴／不變量與架構替代方案分析 |
 | [local-change-implementer](skills/local-change-implementer.md) `implement` | 共通工程 catalog 覆蓋不可用 | .NET catalog、aggregate／repository／test／use-case 規範覆蓋不可用 | 依接受的行為與技術，完成局部修改及直接檢查 |

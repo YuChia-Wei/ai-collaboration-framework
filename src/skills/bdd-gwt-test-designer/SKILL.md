@@ -31,3 +31,11 @@ collaboration needs no other installed skill to finish the scenario output.
 Optional selected knowledge follows the metadata-4 allowlist and each operation's
 installed-resource protocol. Selection does not adopt target rules or prove
 specialist coverage; common work remains available when knowledge is absent.
+
+For selected BDD method coverage, use `member:references/BDD-METHOD.md` to
+distinguish rules, examples and open questions. Use
+`member:references/GHERKIN-SCENARIOS.md` only for requested Gherkin expression
+or review. Both belong to the optional engineering-common allowlist, not direct
+source links. A discovery-only request can return questions and provisional
+examples; do not force a scenario set, claim coverage or take over requirement
+approval. Story authoring and formal-test authoring retain their selected owners.

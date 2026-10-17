@@ -179,12 +179,13 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 ## 4. 選擇 skill 與選擇知識是兩個獨立決定
 
-可選知識包為：
+目前來源宣告的可選知識包如下；既有下載成品請核對其 catalog，來源版本
+不代表該成品已更新，也不授權自動升級已安裝專案。
 
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
-| `engineering-common` | `0.1.0` | 無 |
-| `dotnet-backend` | `0.1.0` | 必須同時選 `engineering-common@0.1.0` |
+| `engineering-common` | `0.2.0` | 無 |
+| `dotnet-backend` | `0.1.1` | 必須同時選 `engineering-common@0.2.0` |
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 

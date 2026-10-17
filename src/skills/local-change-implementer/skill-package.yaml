@@ -1,6 +1,6 @@
 metadata_version: 4
 id: local-change-implementer
-version: 0.2.0
+version: 0.2.1
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -39,7 +39,7 @@ operations:
 knowledge_consumption:
 - id: common-local-change
   package: engineering-common
-  version: 0.1.0
+  version: 0.2.0
   operations: [implement]
   resources:
   - engineering-rule-catalog
@@ -47,7 +47,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-local-change
   package: dotnet-backend
-  version: 0.1.0
+  version: 0.1.1
   operations: [implement]
   resources:
   - engineering-rule-catalog
