@@ -15,14 +15,13 @@
 | Task ID | Issue | Scope | State |
 | --- | --- | --- | --- |
 | docfix | #454 | Optional Context Map guidance, current documentation and exact-version closure | completed |
-| BDD | #455 | Task-selected BDD topics and explicit consumer boundaries | in_progress |
-| DDD | #456 | Optional DDD topics and model exploration | pending |
-| testdesigner | #457 | Canonical test-designer and one test-design semantic owner | pending |
-| integration | #458 | Requirements exploration and design-to-specification handoffs | pending |
-| validation-review | #454–458 | Affected checks, fixed-subject review and per-Issue evidence | pending |
+| BDD | #455 | Task-selected BDD topics and explicit consumer boundaries | completed |
+| DDD | #456 | Optional DDD topics and model exploration | completed |
+| testdesigner | #457 | Canonical test-designer and one test-design semantic owner | completed |
+| integration | #458 | Requirements exploration and design-to-specification handoffs | completed |
+| validation-review | #454–458 | Affected checks, fixed-subject review and per-Issue evidence | in_progress |
 
-Each task has its identity and timestamps under `tasks/`. Only `BDD` is active.
-Do not infer later task completion from the package versions changed for dependency closure.
+Each task has its identity and timestamps under `tasks/`. Source implementation tasks are complete after author inspection and the full default suite; `validation-review` is active. Issue acceptance remains pending installed trials, actual actor cases and independent review.
 
 ## Acceptance and verification plan
 

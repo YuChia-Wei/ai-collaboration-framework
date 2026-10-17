@@ -2,7 +2,6 @@ preset_version: 1
 id: engineering
 version: 0.1.0
 skills:
-- bdd-gwt-test-designer
 - code-reviewer
 - ddd-ca-hex-architect
 - diagnostic-analyst
@@ -12,6 +11,7 @@ skills:
 - slice-implementer
 - spec-author
 - spec-compliance-validator
+- test-designer
 knowledge: []
 adapters:
 - codex

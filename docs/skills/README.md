@@ -13,19 +13,19 @@
 | [ai-context-auditor](ai-context-auditor.md) | 0.1.0 | 只讀稽核或比較 AI context | 指令 |
 | [ai-context-governance](ai-context-governance.md) | 0.1.0 | 提案或維護已有的專案 context | 指令 |
 | [ai-context-init](ai-context-init.md) | 0.2.0 | 建立最小協作起點，或更新事實／指令／導覽 | 指令 |
-| [bdd-gwt-test-designer](bdd-gwt-test-designer.md) | 0.3.1 | 設計或審查 GWT 情境 | 指令；可選知識 |
-| [code-reviewer](code-reviewer.md) | 0.2.2 | 審查程式或實作指引中的缺陷 | 指令；可選知識 |
-| [ddd-ca-hex-architect](ddd-ca-hex-architect.md) | 0.2.2 | 設計或審查領域、架構與依賴邊界 | 指令；可選知識 |
+| [test-designer](test-designer.md) | 0.4.0 | 設計或審查一般測試與正式測試規格 | 指令；可選知識 |
+| [code-reviewer](code-reviewer.md) | 0.2.3 | 審查程式或實作指引中的缺陷 | 指令；可選知識 |
+| [ddd-ca-hex-architect](ddd-ca-hex-architect.md) | 0.3.0 | 設計或審查領域、架構與依賴邊界 | 指令；可選知識 |
 | [diagnostic-analyst](diagnostic-analyst.md) | 0.1.0 | 解釋已觀察到的故障或效能症狀 | 指令 |
 | [lesson-author](lesson-author.md) | 0.2.0 | 保存有證據的經驗與接受決定 | Python record 工具 |
 | [local-backlog](local-backlog.md) | 0.1.0 | 管理專案選定的本機 work items | Python record 工具 |
-| [local-change-implementer](local-change-implementer.md) | 0.2.2 | 一個局部技術操作與直接影響範圍 | 指令；可選知識 |
+| [local-change-implementer](local-change-implementer.md) | 0.2.3 | 一個局部技術操作與直接影響範圍 | 指令；可選知識 |
 | [pr-author](pr-author.md) | 0.1.0 | 準備 PR record，或執行另行授權的 GitHub draft 操作 | Python record／provider 工具 |
 | [problem-frame-author](problem-frame-author.md) | 0.1.0 | 撰寫／審查 problem frame；選定 CBF 時保存版本化 snapshot | 指令＋選用 Python CBF 工具 |
-| [requirement-author](requirement-author.md) | 0.1.0 | 撰寫或正規化需求與可觀察驗收條件 | 指令 |
-| [slice-implementer](slice-implementer.md) | 0.2.2 | 實作一個 command／query／reactor／generic slice | 指令；可選知識 |
-| [software-development-orchestrator](software-development-orchestrator.md) | 0.2.0 | 協調跨階段開發，或從 checkpoint 繼續 | 指令 |
-| [spec-author](spec-author.md) | 0.1.0 | 撰寫 production／entity／adapter／formal-test 規格 | 指令 |
+| [requirement-author](requirement-author.md) | 0.2.0 | 探索、撰寫或正規化需求與可觀察驗收條件 | 指令 |
+| [slice-implementer](slice-implementer.md) | 0.2.3 | 實作一個 command／query／reactor／generic slice | 指令；可選知識 |
+| [software-development-orchestrator](software-development-orchestrator.md) | 0.3.0 | 協調跨階段開發，或從 checkpoint 繼續 | 指令 |
+| [spec-author](spec-author.md) | 0.2.0 | 依需求與設計撰寫 production／entity／adapter 規格 | 指令 |
 | [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 指令 |
 
 | [workflow-records](workflow-records.md) | 0.1.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | Python record 工具；可選 |
@@ -37,8 +37,8 @@
 | 「這個專案還沒有協作入口文件」 | `ai-context-init initialize` |
 | 「既有 AGENTS 的規則、責任或 precedence 要調整」 | `ai-context-governance propose/apply` |
 | 「只確認 context 哪裡有問題」 | `ai-context-auditor audit` |
-| 「把需求變成正式測試規格」 | `spec-author` 的 formal-test 類型 |
-| 「設計／審查 GWT 情境矩陣」 | `bdd-gwt-test-designer` |
+| 「把需求變成正式測試規格」 | `test-designer design` |
+| 「設計／審查 GWT 情境矩陣」 | `test-designer` |
 | 「實作情境的測試程式」 | 已授權的 `slice-implementer` 或符合局部範圍的實作 route |
 | 「審查架構文件」 | `ddd-ca-hex-architect review` |
 | 「審查固定程式 diff」 | `code-reviewer review` |

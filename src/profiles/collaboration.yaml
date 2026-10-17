@@ -3,7 +3,6 @@ id: collaboration
 version: 0.1.0
 skills:
 - adr-author
-- bdd-gwt-test-designer
 - code-reviewer
 - ddd-ca-hex-architect
 - diagnostic-analyst
@@ -17,6 +16,7 @@ skills:
 - software-development-orchestrator
 - spec-author
 - spec-compliance-validator
+- test-designer
 knowledge: []
 adapters:
 - codex

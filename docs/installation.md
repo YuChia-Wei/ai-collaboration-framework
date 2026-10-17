@@ -184,8 +184,8 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
-| `engineering-common` | `0.2.1` | 無 |
-| `dotnet-backend` | `0.1.2` | 必須同時選 `engineering-common@0.2.1` |
+| `engineering-common` | `0.3.0` | 無 |
+| `dotnet-backend` | `0.1.3` | 必須同時選 `engineering-common@0.3.0` |
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 
@@ -211,7 +211,8 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 | Skill | `engineering-common` 缺少時 | `dotnet-backend` 缺少時 |
 | --- | --- | --- |
-| `bdd-gwt-test-designer` | `design`、`review` 的 common test design 資源不可用 | `design`、`review` 的 .NET test standards 不可用 |
+| `requirement-author` | `explore`／`draft`／`normalize` 選定方法的 coverage 不可用 | 沒有直接宣告 .NET binding |
+| `test-designer` | `design`、`review` 的 common test design 資源不可用 | `design`、`review` 的 .NET test standards 不可用 |
 | `code-reviewer` | `review` 的 engineering rule catalog 不可用 | `review` 的 .NET design-by-contract、aggregate、repository、test、use-case standards 不可用 |
 | `ddd-ca-hex-architect` | `design`、`review` 的 common architecture 規則不可用 | `design`、`review` 的 .NET architecture、messaging、project structure 資源不可用 |
 | `local-change-implementer` | `implement` 的 common rule catalog 不可用 | `implement` 的 .NET aggregate、repository、test、use-case standards 不可用 |
@@ -560,3 +561,24 @@ skill 名稱是否加 `aicf-` 前綴，不控制能力啟用與否；是否真�
 
 安裝 init 後，請依 [init 手冊](skills/ai-context-init.md) 另行建立協作起點；
 初始化產出的專案文件不歸 managed skill 所有，更新／移除套件不重設團隊規則。
+
+## 新 test-designer ID 的受控升級
+
+目前 source catalog 使用 canonical `test-designer`；新 catalog 不接受舊 `bdd-gwt-test-designer` ID，也沒有 alias engine。既有安裝不能只改名稱當作已升級。
+
+1. 明確把 selection 的舊 ID 換成 `test-designer`，並核對所選 catalog 的 knowledge resource IDs。舊 BDD 文件已拆為主題文件，不能原封不動帶入引用它們的 bindings。
+2. 依下表明確選擇替代資源；保留 binding ID、selector、authority、coverage 設定、未受影響的 bindings、其他 components 與專案 custom 內容，再依既有 derive 流程產生 subset，檢視 catalog 與選擇差異。
+3. 以既有 plan 流程確認刪除舊 managed entry／新增新 entry 的計畫；確認沒有非預期變更。
+4. 僅 apply 該精確 plan。若有 managed drift 或 custom collision，停在原本衝突處理流程；不得自動刪除或改名 custom 內容。
+
+| 舊 resource ID | 新 catalog 的選擇 |
+| --- | --- |
+| `member:references/BDD-METHOD.md` | 依原用途選 `member:bdd/discovery.md`、`member:bdd/formulation.md`、`member:bdd/automation.md`；需要導覽時另選 `member:bdd/README.md` |
+| `member:references/GHERKIN-SCENARIOS.md` | `member:bdd/gherkin.md` |
+| `member:references/GWT-TEST-HANDOFF-CONTRACT.md` | ID 保持不變；新的通用 `member:references/TEST-DESIGN-HANDOFF-CONTRACT.md` 須按需要明確選入 |
+
+這是由升級者檢視的資源對應，不是自動 alias 或隱含擴大允許讀取的範圍。只有套件宣告和 binding 同時允許、且符合本次任務的文件才可消費；不得以來源倉庫檔案補足缺少的安裝資源。
+
+Prefixed entry 為 `aicf-test-designer`，canonical package ID 仍為 `test-designer`，prefix 不建立另一個 ID。這是來源能力的升級說明，不代表已執行安裝或遷移。
+
+保留的 legacy target-authority 標記屬其選定歷史 target，不是新 catalog 的 alias 或現行 runtime route；本次未遷移 legacy authority。

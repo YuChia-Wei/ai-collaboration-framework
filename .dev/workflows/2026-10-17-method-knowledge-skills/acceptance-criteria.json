@@ -1,0 +1,162 @@
+{
+  "schema_version": "task-local/1",
+  "source": "Live GitHub issue bodies; exact retrieved UTF-8 body hashes",
+  "issues": [
+    {
+      "issue": 454,
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/454",
+      "provider_updated_at": "2026-10-17T04:25:43Z",
+      "body_sha256": "978de2146d7eead0f4d0ba3d6c87f79c0944ae6a568ec2ebb197742576293662",
+      "criteria": [
+        {
+          "id": "AC01",
+          "text": "通用 Context Map 可描述同步、非同步或無互動，不強制 MQ。"
+        },
+        {
+          "id": "AC02",
+          "text": "模型共享由明示的邊界／整合決策約束；Shared Kernel 與禁止事項不再互相矛盾。"
+        },
+        {
+          "id": "AC03",
+          "text": "契約 owner、版本與相容策略需明示，但不強制單一儲存配置。"
+        },
+        {
+          "id": "AC04",
+          "text": "目前技能索引與 source 版本一致；profile、歷史發布與下游採用語意未被改寫。"
+        },
+        {
+          "id": "AC05",
+          "text": "實際檢查結果與未執行項清楚，文件修正不冒充產品驗收。"
+        }
+      ]
+    },
+    {
+      "issue": 455,
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/455",
+      "provider_updated_at": "2026-10-17T04:25:47Z",
+      "body_sha256": "ea71480698944b81ec66096e62b65ea9011bd66d62aa8929237940427e74ba07",
+      "criteria": [
+        {
+          "id": "AC01",
+          "text": "入口可直接導向任務需要的檔案，不要求讀完整目錄。"
+        },
+        {
+          "id": "AC02",
+          "text": "探索-only 不強制 Gherkin；scenario-only 不重跑需求探索；組合工作保留同一來源與未知。"
+        },
+        {
+          "id": "AC03",
+          "text": "automation 說明實際檢查與證據限制，場景文字不冒充執行。"
+        },
+        {
+          "id": "AC04",
+          "text": "新 context 的實際 actor 讀取記錄證明僅載入所需、已宣告且已安裝的資源。"
+        },
+        {
+          "id": "AC05",
+          "text": "實際 package／consumer closure 與 optional absent 行為正確；舊 source paths 不成為隱藏依賴。"
+        },
+        {
+          "id": "AC06",
+          "text": "規則／場景／預期結果語意保留，文件搬移不改變下游採用。"
+        }
+      ]
+    },
+    {
+      "issue": 456,
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/456",
+      "provider_updated_at": "2026-10-17T04:25:51Z",
+      "body_sha256": "ef148cfb6995131d56447a34d2ea4b07e824de35c497ec74be5f57a1890dc9a5",
+      "criteria": [
+        {
+          "id": "AC01",
+          "text": "每個主題有適用條件、操作方法、具體例子與限制，並保留官方來源。"
+        },
+        {
+          "id": "AC02",
+          "text": "相同名詞在不同 context 的語意可被辨識；未決領域知識不被 AI 升格為接受的規則。"
+        },
+        {
+          "id": "AC03",
+          "text": "比較合理模型與較簡單選項，說明不變條件、責任與一致性，而非只列目錄／class。"
+        },
+        {
+          "id": "AC04",
+          "text": "單體同步案例不被強制改成 broker、microservice、CQRS 或 event sourcing。"
+        },
+        {
+          "id": "AC05",
+          "text": "既有模板有唯一來源；Domain Event／integration contract／transport 不被混為一談。"
+        },
+        {
+          "id": "AC06",
+          "text": "隔離 installed consumer 與實際 actor 能按任務選讀，缺失／衝突如實呈現。"
+        }
+      ]
+    },
+    {
+      "issue": 457,
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/457",
+      "provider_updated_at": "2026-10-17T04:25:55Z",
+      "body_sha256": "9060451f5c89622b47605aa5d0da1ad2fad461b41ecdb64f52f3639af28c484b",
+      "criteria": [
+        {
+          "id": "AC01",
+          "text": "test-designer 是測試設計核心判斷的唯一 owner；spec-author 不再維護另一套測試設計。"
+        },
+        {
+          "id": "AC02",
+          "text": "同一需求要求 notes、決策表、formal-test 時來源與oracle一致，不重跑強制作者鏈。"
+        },
+        {
+          "id": "AC03",
+          "text": "既有 GWT 的完整斷言與來源映射保留；完整輸入可直接交付實作。"
+        },
+        {
+          "id": "AC04",
+          "text": "正式測試規格既有草擬／整理需求有明確可用路徑，既有文件不被強制改寫。"
+        },
+        {
+          "id": "AC05",
+          "text": "實際新安裝與受控更新涵蓋 Codex／Claude、original／prefixed、lock、選用與使用者內容保留；舊 ID 未被默默誤解。"
+        },
+        {
+          "id": "AC06",
+          "text": "設計、實作、review、execution 證據分開；獨立 review 綁定不可變內容。"
+        }
+      ]
+    },
+    {
+      "issue": 458,
+      "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/458",
+      "provider_updated_at": "2026-10-17T04:26:03Z",
+      "body_sha256": "a8c68bd96fc33c3f666eb110fb06a8656b88ec0c54ff8d964e391c190c924782",
+      "criteria": [
+        {
+          "id": "AC01",
+          "text": "可查事實由AI先查，決策與假設明示；推薦不被當成採納。"
+        },
+        {
+          "id": "AC02",
+          "text": "完整已接受資料直接沿用；局部未知只阻擋依賴它的部分。"
+        },
+        {
+          "id": "AC03",
+          "text": "系統 spec 追溯到需求與設計，保留衝突，不重做一套測試或架構設計。"
+        },
+        {
+          "id": "AC04",
+          "text": "actor 依任務選讀；optional absent 與專案要求能力不可用的結果正確區分。"
+        },
+        {
+          "id": "AC05",
+          "text": "新 agent 只讀交接成果能說明目標、決策、未知、下一步與授權，不需原作者私聊。"
+        },
+        {
+          "id": "AC06",
+          "text": "requirement draft/normalize、spec其餘類型與CBF既有能力通過回歸。"
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,6 @@ skills:
 - adr-author
 - ai-context-auditor
 - ai-context-governance
-- bdd-gwt-test-designer
 - code-reviewer
 - ddd-ca-hex-architect
 - diagnostic-analyst
@@ -19,6 +18,7 @@ skills:
 - software-development-orchestrator
 - spec-author
 - spec-compliance-validator
+- test-designer
 knowledge: []
 adapters:
 - codex

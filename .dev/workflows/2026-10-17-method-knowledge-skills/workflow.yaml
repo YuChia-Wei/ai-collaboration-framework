@@ -5,11 +5,11 @@ workflow_kind: source-method-knowledge-and-skills
 title: Common engineering knowledge and capability boundaries
 owner_skill: software-development-orchestrator
 status: in_progress
-current_phase: BDD
+current_phase: validation-review
 artifact_root: .dev/workflows/2026-10-17-method-knowledge-skills
 entrypoint: workflow-plan.md
 created_at: '2026-10-17T12:32:40+08:00'
-updated_at: '2026-10-17T12:34:53+08:00'
+updated_at: '2026-10-17T12:51:39+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: 1.0.0
 branch: codex/2026-10-17-method-knowledge-skills

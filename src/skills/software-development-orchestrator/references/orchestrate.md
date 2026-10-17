@@ -48,11 +48,11 @@ bundled IDs are candidates when installed, not mandatory dependencies:
 
 | Needed capability | Bundled candidate | Boundary |
 | --- | --- | --- |
-| Requirements | `requirement-author` | Intent, business rules and observable acceptance. |
-| Specifications | `spec-author` | The selected production, entity, adapter or formal-test artifact. |
+| Requirements | `requirement-author` | Bounded exploration when needed; intent, business rules and observable acceptance. |
+| Specifications | `spec-author` | Production, entity or adapter system specifications grounded in requirements and accepted design. |
 | Problem framing | `problem-frame-author` | Commanded behavior and identified sources. |
 | Architecture | `ddd-ca-hex-architect` | Domain/dependency decisions or architecture artifact review. |
-| Scenario design | `bdd-gwt-test-designer` | Scenario set/matrix/artifact design or review; formal-test specifications remain with their authoring owner. |
+| Test design | `test-designer` | General test designs and formal test specifications; design/review, without implementation or execution. |
 | Slice implementation | `slice-implementer` | One accepted behavior, coordinated refactor or concrete test slice and its immediate checks. |
 | Local change | `local-change-implementer` | One technical target and operation preserving public contracts and the bounded dependency radius. |
 | Diagnosis | `diagnostic-analyst` | Causal investigation of an observed symptom and a repair proposal; grants no repair authority. |
@@ -124,3 +124,7 @@ blockers and a concrete next action. Use the project's supported record writer
 and retention policy; do not delete or compact history as a closeout side effect.
 Useful lessons, decisions, backlog items or promotion candidates may be handed
 to their selected owners. A retrospective candidate is not an adopted rule.
+
+Select knowledge by the needed output and unresolved question. BDD/DDD topic
+availability does not require reading all topics or executing every authoring
+stage. Reuse existing accepted designs, requirements and evidence.
