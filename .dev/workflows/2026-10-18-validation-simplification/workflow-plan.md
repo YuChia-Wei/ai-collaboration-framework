@@ -246,3 +246,37 @@ Actual checks:
 No new tests, schema changes, full default run, candidate assembly, native
 installation, actor trial, E2E, usability matrix or benchmark were selected.
 The upcoming combined PR will still need its actual current-head hosted gate.
+
+### #463 independent review and combined local completion
+
+The same `/root/astra_461_review` subagent, selected `gpt-6-astra` / `xhigh`,
+reviewed immutable `f33ad8cecdf10a8df06457034563e24e9f5cbfaf` against product
+base `545248eeff8f26a3c11e43005ac3a3eed76c8235`. The reviewer received the
+exact eight live-read Issue ACs and inspected all 16 changed files, four skill
+entries/metadata, slice's direct mode/test/repair references, manifest, selected
+presets and work record. No actionable findings were found. AC01–AC08 were
+supported at the reported static instruction/package/evidence boundary; no
+candidate assembly, installation or downstream agent behavior was asserted.
+Earlier #461 conclusions and the resolved F1 were reused for unchanged content.
+
+The reviewer checked the immutable Git subject, actual diff and references,
+excluded paths and `git diff --check` (passed), and ended with a clean worktree
+at the reviewed commit. Product tests and provider operations were not repeated.
+An initial reviewer lookup used a nonexistent preset directory; the actual
+`src/profiles` declarations were then read through manifest navigation. It did
+not establish absence or create a product failure. The supplied test execution
+records were checked for truthful claims, not independently re-executed.
+
+#461 source-policy changes and #463 portable instruction corrections are now
+complete locally on one branch for the owner's intended single PR. This later
+completion supersedes the earlier #463-not-implemented checkpoint; earlier
+results retain their original scope and time. The next record-only commit
+updates this plan and locator without changing any reviewed source/docs bytes.
+Final record/commit inspection is selected; no product rerun or new behavioral
+review is needed for these status-only changes.
+
+Remaining external work: push/create the one combined PR only under the
+applicable external-operation authorization, obtain its actual current-head
+hosted Source change gate, and handle merge/Issue/Project state separately.
+The earlier explicit no-push/no-PR/no-merge boundary remains in force for this
+local delivery. No provider mutation, installation, release or adoption occurred.
