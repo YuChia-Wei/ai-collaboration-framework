@@ -95,8 +95,22 @@ must not replace the specialist's evidence with the orchestrator's assertion.
 Reconcile conflicting outputs with their owner rather than silently choosing
 one or widening the change.
 
-Select meaningful validation from target acceptance, changed behavior and
-project commands. Record prerequisites, environment and actual outcomes. Unit,
+Before selecting tests, inspect the actual diff, semantics, direct dependencies
+and target-owned gates. Ordinary prose or whitespace without parsing, schema,
+output or behavior effects needs no test solely because an edit, file extension
+or path exists. Whitespace affecting those contracts needs relevant checks;
+investigate unclear impact before selecting a check. Use the affected existing
+cases and supported project commands, preserving mandatory target gates,
+security and release obligations.
+
+Large integration, E2E, usability, full installation/upgrade and high-cost AI checks
+require a clearly affected behavior/boundary or an explicit user request or accepted
+acceptance criterion. Do not expand to full model, installation, upgrade or
+E2E matrices by default. A report, handoff, changed SHA or historical example
+alone does not select a test. A concise reason in the existing result is enough;
+add no reuse receipt, ledger, complete hash inventory or classification platform.
+
+Record prerequisites, environment and actual outcomes. Unit,
 fixture or static evidence cannot satisfy a criterion requiring integration,
 native, hosted or product execution. Keep failed attempts and distinguish
 `passed`, `failed`, `blocked-by-environment`, `not-run`, `not-applicable` and

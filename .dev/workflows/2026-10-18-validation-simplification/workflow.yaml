@@ -2,14 +2,14 @@ schema_version: '1.0'
 lifecycle_contract: '1.0'
 workflow_id: 2026-10-18-validation-simplification
 workflow_kind: source-policy-maintenance
-title: Simplify source validation and replace obsolete operating rules
+title: Simplify source and portable validation and rule maintenance
 owner_skill: ai-context-governance
-status: completed
-current_phase: completed
+status: in_progress
+current_phase: product-independent-review
 artifact_root: .dev/workflows/2026-10-18-validation-simplification
 entrypoint: workflow-plan.md
 created_at: '2026-10-18T11:29:21+08:00'
-updated_at: '2026-10-18T11:39:04+08:00'
+updated_at: '2026-10-18T12:07:56+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: '1.0.0'
 branch: codex/2026-10-18-validation-simplification
@@ -19,6 +19,9 @@ work_items:
   - provider: github
     issue: 461
     url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/461
+  - provider: github
+    issue: 463
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/463
 tasks:
   - task_id: T1
     workflow_id: 2026-10-18-validation-simplification
@@ -49,3 +52,15 @@ tasks:
     result_summary: Astra xhigh reviewed initial commit and repair commit; F1 resolved; no new actionable findings in affected scope.
     findings_status: no unresolved findings; static source-policy review only
     reviewed_commit: 97e8a7277ea7e373b08b03656da03ed2afde571b
+  - task_id: T3
+    workflow_id: 2026-10-18-validation-simplification
+    owner_skill: software-development-orchestrator
+    status: in_progress
+    created_at: '2026-10-18T12:05:17+08:00'
+    updated_at: '2026-10-18T12:05:17+08:00'
+    template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+    template_version: '1.0.0'
+    model: gpt-6-astra
+    reasoning_effort: medium
+    runtime_identity_basis: configured defaults; actual primary runtime label not exposed
+    title: Deliver portable rule replacement and necessary-validation instructions for issue 463

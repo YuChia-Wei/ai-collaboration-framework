@@ -104,11 +104,22 @@ repair; a diagnostic finding does not grant implementation authority.
    edits. Do not treat a tool's success as proof the radius stayed bounded.
 4. Update immediate tests when needed to protect the changed contract and
    within authority. Avoid unrelated cleanup or implementation-mirroring tests.
-5. Run the narrowest meaningful authorized target checks. Obtain the actual
-   command, working directory, prerequisites and allowed output scope from
-   target evidence. No default product command or package is supplied here.
+5. Decide whether tests are needed from the actual diff, semantics, direct
+   dependencies and target-owned gates. Ordinary prose or whitespace with no
+   parsing, schema, output or behavior effect does not select a test by edit,
+   extension or path alone. Whitespace affecting those contracts needs the
+   relevant checks; investigate unclear impact before choosing. Run only the
+   necessary authorized checks using the target's actual command, working
+   directory, prerequisites and output scope. No default command is supplied.
 6. Inspect the diff and actual touched radius. Stop dependent edits if an
    unaccepted semantic/architecture decision or wider operation emerges.
+
+Large integration, E2E, usability, full installation/upgrade and high-cost AI checks
+need a clearly affected behavior/boundary or an explicit user request or accepted
+acceptance criterion; do not expand to a full matrix by default. Preserve
+mandatory target gates, security and release obligations. Reports, handoffs or
+SHA changes alone do not select tests. Explain an unnecessary check briefly in
+the existing result, without a new receipt, ledger or complete hash inventory.
 
 An unavailable editor blocks implementation. Missing selected specialist rules
 block the corresponding decision. Missing test tools, environment or command

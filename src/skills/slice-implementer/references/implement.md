@@ -117,11 +117,22 @@ not erased by a common-method result.
 4. Implement necessary regression protection within authority. Preserve supplied
    scenarios and assertion intent. Test design, concrete code and actual test
    execution remain separate results, even when all are already authorized.
-5. Run the narrowest meaningful authorized target checks using actual supported
-   commands. Do not invent a runner, acquire credentials or weaken a guard to
-   make validation pass. Preserve failures, interruptions and missing evidence.
+5. Decide which tests the actual diff, semantics, direct dependencies and
+   target-owned gates require. Ordinary prose or whitespace with no parsing,
+   schema, output or behavior effect needs no test merely because of its path,
+   extension or existence. Whitespace affecting those contracts needs relevant
+   checks; investigate unclear impact first. Run necessary authorized checks
+   using actual supported commands. Do not invent a runner, acquire credentials
+   or weaken a guard. Preserve failures, interruptions and missing evidence.
 6. Inspect the resulting diff, acceptance coverage and touched radius. Record
    adjacent unrelated issues without silently broadening the slice.
+
+Large integration, E2E, usability, full installation/upgrade and high-cost AI checks
+need a clearly affected behavior/boundary or an explicit user request or accepted
+acceptance criterion; do not expand to a full matrix by default. Preserve
+mandatory target gates, security and release obligations. Reports, handoffs or
+SHA changes alone do not select tests. Explain an unnecessary check briefly in
+the existing result, without a new receipt, ledger or complete hash inventory.
 
 An unavailable editor prevents implementation. Missing validation tools or
 environment leaves checks blocked/not-run; keep the implementation result and

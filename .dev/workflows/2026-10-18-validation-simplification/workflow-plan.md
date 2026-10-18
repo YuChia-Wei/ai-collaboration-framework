@@ -149,3 +149,100 @@ Handoff: branch `codex/2026-10-18-validation-simplification`, original base
 mutation, installation or publication occurred in this implementation phase.
 Any external integration remains a separately authorized next action; read
 actual provider gates then. Local completion does not close #461.
+
+## Authorized continuation — #463, one intended PR with #461
+
+On 2026-10-18, after #461 local completion, the owner requested continuation of
+`src` corrections and one PR covering both Issues. This supersedes the earlier
+#463 exclusion and the Issue's creation-only/separate-delivery text for this
+implementation and delivery grouping. The #461 results above remain historical
+local evidence. Continue on the same branch; do not repeat completed #461 work.
+Input commit: `545248eeff8f26a3c11e43005ac3a3eed76c8235` (clean).
+#463 was read live, Open, at its `2026-10-18T03:16:29Z` revision. No installation,
+release, downstream adoption or merge authority follows from this continuation.
+The earlier no-push/no-PR instruction remains the external-operation boundary;
+prepare the cohesive local delivery for one PR.
+
+T3 owner: software-development-orchestrator; product instruction edits apply
+skill-creator. Scope: ai-context-governance maintenance owner and the direct
+orchestrator, local-change and slice implementation consumers, their metadata,
+distribution manifest and directly affected human manuals. Slice has the same
+unconditional narrow-check wording and is needed to keep the coordinated
+implementation path consistent. These independently optional skills need their
+own operational decision; no new shared knowledge dependency or rule engine.
+Use patch versions for instruction corrections, preserving public operations,
+metadata shapes, member sets and dependency declarations. Update exact manifest
+versions and manual version labels. Existing presets select IDs, not versions.
+Do not edit installed projections, locks, published assets or historical docs.
+
+Before implementation, select validation: semantic review against all eight #463
+ACs and representative decisions (authorized replacement, retained history,
+nonsemantic whitespace, parsing-sensitive whitespace, affected behavior and
+mandatory target gates); existing distribution suite for actual changed package
+versions/manifest closure; skill creator frontmatter/scaffold checks and diff
+inspection. No new wording tests, schema tests for unchanged schemas, full
+installation/E2E/usability/actor matrix or benchmark. Static decisions are not
+observed downstream behavior. Independent review returns to the same Astra/xhigh
+reviewer on an immutable local commit, preserving the prior review results.
+Because this delivery now changes src, its future PR requires the retained
+current-head hosted Source change gate. #461's path-only non-applicability no
+longer describes the combined PR. No hosted result is claimed here.
+
+### #463 implementation and pre-review evidence
+
+Four instruction packages now use corrected procedures: governance `0.1.1`,
+local-change and slice `0.2.4`, orchestrator `0.3.2`. Patch increments correct
+instruction behavior without changing operation names, metadata shapes, member
+sets or dependencies. Exact versions agree with the distribution manifest and
+current manuals. Presets select IDs and need no version edit. The installed
+source-project projection deliberately remains at its earlier version; no
+installation, product publication or downstream adoption is claimed.
+
+| #463 AC | Implemented evidence and limit |
+| --- | --- |
+| AC01 | Governance Apply step 3 replaces authorized obsolete rules while preserving valid protections and unrelated content |
+| AC02 | Governance isolates necessary history, states non-trigger applicability and removes active superseded entry links; no model guarantee |
+| AC03 | Governance and three implementation/orchestration entrypoints distinguish harmless text from parsing/schema/output/behavior effects before tests |
+| AC04 | Affected behavior/boundary or explicit request/accepted criterion selects high-cost checks; required target gates remain |
+| AC05 | Existing output can state the reason; no receipt, ledger, complete hash inventory or classification platform added |
+| AC06 | Four src-owned packages, exact manifest versions and direct manuals agree; no source-specific CI/path/model/record rules exported |
+| AC07 | Validation choice was recorded before edits; static review and existing structural/unit evidence remain distinct from downstream behavior |
+| AC08 | Failure and retry below remain separate; no release, installation, adoption or guaranteed model behavior asserted |
+
+Static author inspection considered replacement versus unrelated protections,
+retained legacy text versus active navigation, prose-only edits versus YAML
+indentation/schema/output effects, affected integration versus report-only
+closeout, and unconditional target PR/security/release gates. The instructions
+support the intended distinctions. This is semantic analysis, not a trial of
+another model applying the skill. Independent review is pending.
+
+Actual checks:
+- `skill-creator/scripts/quick_validate.py` on each of the four changed packages:
+  passed frontmatter/naming/scaffold checks (not behavioral validation).
+- `python -I -B tests/run.py --suite distribution`: failed; 73 tests, 0 assertion
+  failures, 24 errors, 0 skips, reported duration 6.575357 seconds. Source
+  declaration/member/version/preset checks passed. The shown fixture errors were
+  `PermissionError / WinError 5` in sandbox temporary-directory creation and
+  cleanup, not an instruction or package mismatch. The raw error paths identify
+  ephemeral sandbox roots, not product output. Cleanup errors are retained;
+  removal of those original sandbox directories was not verified.
+- Bounded selected-module inspection found only `test_maintenance_contracts.py`
+  uses those FixtureTestCase temporary roots among the six distribution modules.
+  Under ordinary host permissions, `python -I -B
+  tests/framework_next/test_maintenance_contracts.py` passed all 15 tests in
+  0.155 seconds. No product repair, test rewrite or TEMP setting change preceded
+  the retry. This module retry does not relabel the original run as passed;
+  unaffected results keep their original run. No full-suite repeat was selected.
+- One-off read-only metadata comparison confirmed only the four version fields
+  changed; manifest/manual versions, changed-document local links and continued
+  workflow state agree. No maintained checker was added.
+- Graph search identified relevant existing metadata tests, but index freshness
+  was not established from its dynamic Git identity. Direct tracked-file reads
+  of the selected test modules/runner supplied validation applicability; no graph
+  absence claim or broad product scan was used.
+- Two early wildcard-path rg lookups were invalid on Windows and were replaced
+  with concrete paths; neither changed files or supplied absence evidence.
+
+No new tests, schema changes, full default run, candidate assembly, native
+installation, actor trial, E2E, usability matrix or benchmark were selected.
+The upcoming combined PR will still need its actual current-head hosted gate.
