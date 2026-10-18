@@ -61,12 +61,12 @@ does not trigger source CI under the retained filters.
 
 | #461 criterion | Intended local evidence / current disposition |
 | --- | --- |
-| AC01 | Source policy distinguishes actual semantics, whitespace and schema effects before tests; pending independent review |
+| AC01 | Source policy distinguishes actual semantics, whitespace and schema effects before tests; supported by independent static review |
 | AC02 | PR gate, fixed suite, path filters and CI/config bytes unchanged; optional local pre-PR run only |
 | AC03 | High-cost checks require an affected behavior/boundary or explicit accepted requirement |
 | AC04 | Affected-scope repair and concrete retry reasons; existing #459 case is referenced, not rerun |
 | AC05 | No product rerun for report/SHA/handoff alone; no ordinary reuse packet/hash inventory |
-| AC06 | Effective bodies replaced; bounded historical sections are not execution triggers; EN/zh-TW parity to review |
+| AC06 | Effective bodies replaced; bounded historical sections are not execution triggers; EN/zh-TW parity reviewed |
 | AC07 | Ordinary preflight/critical/lease/admission routes removed; retained legacy/release obligations remain explicit |
 | AC08 | Diff/record checks and independent review only; no new trial or self-verification test |
 | AC09 | Actual results/limitations retained; no new execution, cost or saving claim |
@@ -76,9 +76,9 @@ The [existing #459 validation report](../2026-10-17-user-story-author/validation
 records four affected checks after metadata repair and one final default suite;
 it is historical illustration of bounded rerun, not new #461 execution evidence.
 
-## Results and next action
+## Initial implementation results
 
-Policy edits and author inspection are complete; independent review is pending.
+The initial policy edits and author inspection completed before independent review.
 `git diff --check` passed on the policy edits. Two edit-preparation attempts
 failed before writing (unsupported combined
 delete/add patch; malformed PowerShell here-string); corrected write methods
@@ -94,10 +94,8 @@ Author inspection compared the changed EN/zh-TW meanings as well as structure.
 The same scope check confirmed product, installed, CI, machine configuration,
 runner and test-code bytes unchanged. No product tests were run.
 
-Next: create the immutable local review commit, then dispatch Astra/xhigh with
-this scope, the Issue ACs and baseline authority.
-Do not push, create a PR, merge or close #461. Review findings and dispositions
-will be recorded here, without duplicating product-test evidence.
+The initial implementation was committed and reviewed as recorded below.
+No push, PR, merge or Issue closure was authorized.
 
 ## Independent review attempt 1 and repair
 
@@ -118,6 +116,36 @@ fixed-revision historical reference. Clarify the root bilingual entry's current
 role instructions versus historical execution records. No product or schema
 change is needed. This brings the local scope to 17 files.
 
-The affected documentation is awaiting review by the same independent reviewer
-on the repair commit. Earlier findings remain recorded; author repair is not
-independent verification. Product tests remain unselected for the same reason.
+The repair was committed for review by the same independent reviewer.
+Earlier findings remain recorded; author repair is not independent verification.
+Product tests remain unselected for the same reason.
+
+## Independent review attempt 2 and local completion
+
+The same `/root/astra_461_review` reviewer, `gpt-6-astra` / `xhigh`, reviewed
+repair commit `97e8a7277ea7e373b08b03656da03ed2afde571b` against the previously
+reviewed `646da176f1630b141f350b0d2e7120700d0e4445`. F1 was resolved; no new
+actionable findings were found in the affected scope. The reviewer confirmed
+AC06/AC07, bilingual normative parity and retained ownership, permission,
+independence and truthful-evidence boundaries. Unaffected AC conclusions were
+retained from attempt 1. Five changed files and their full contents were read,
+fixed historical Git blobs checked, and repair `git diff --check` passed.
+The worktree remained clean at that exact reviewed commit.
+
+Local implementation and the requested independent review/repair are complete.
+All ten ACs have bounded static evidence within this source-policy delivery;
+this is not hosted CI, integration, downstream adoption or owner final acceptance.
+No product/schema test, installation, E2E, usability trial or benchmark ran.
+No measured time/cost savings are claimed. #463 remains unimplemented.
+
+The subsequent local completion commit changes only this plan and its locator,
+recording actual results and completed task state. The reviewed policy, root
+entries and test documentation are unchanged from the full reviewed commit.
+Inspect the final record and compare that scope; no behavioral re-review or
+product rerun is selected for this record-only completion.
+
+Handoff: branch `codex/2026-10-18-validation-simplification`, original base
+`ba28cdbc3d7001dfb101cacba5e8f71406919797`. No push, PR, merge, Issue/Project
+mutation, installation or publication occurred in this implementation phase.
+Any external integration remains a separately authorized next action; read
+actual provider gates then. Local completion does not close #461.
