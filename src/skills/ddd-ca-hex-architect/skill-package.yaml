@@ -1,6 +1,6 @@
 metadata_version: 4
 id: ddd-ca-hex-architect
-version: 0.3.0
+version: 0.3.1
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -71,7 +71,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-architecture
   package: dotnet-backend
-  version: 0.1.3
+  version: 0.1.4
   operations:
   - design
   - review

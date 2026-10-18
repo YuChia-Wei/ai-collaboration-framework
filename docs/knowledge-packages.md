@@ -25,7 +25,7 @@ skill 自動失效，但會減少 6 個 skills 的套件專業覆蓋。** 如果
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
 | `engineering-common@0.3.0` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet-backend@0.1.3` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.3.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
+| `dotnet-backend@0.1.4` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.3.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -35,7 +35,7 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 ## 哪些 skills 會失去完整的配套效果
 
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.3.0` 與 `dotnet-backend@0.1.3`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
+`engineering-common@0.3.0` 與 `dotnet-backend@0.1.4`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet-backend` | 仍可做的工作 |

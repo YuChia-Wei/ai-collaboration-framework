@@ -1,0 +1,104 @@
+# Controller knowledge binding repair
+
+Issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/465
+
+## Authority and delivery
+
+The owner authorized source repairs and new Issue creation on 2026-10-18, prioritizing knowledge indexes, ambiguous rule descriptions and incorrect path bindings. The earlier external preview analysis is attributed input; the source was independently checked at the locator input commit. One primary writer owns the worktree. No push, PR, merge, closure, release or preview installation is authorized.
+
+One cohesive delivery corrects knowledge access and decision evidence descriptions. The workflow preserves the deferred implementation examples and the independent-review boundary for resource access changes. Guidance remains unregistered; no rule ID or target adoption is created. Three consumers gain the Controller member; only code-reviewer gains routing, restricted to the controller route and with no transitive read permission.
+
+## Changes and version decisions
+
+Use exact independent component versions as required by rc2-contracts/formats.md and versioned-candidate/contract.md. No finer patch/minor allocation rule was found in those owners. Patch increments are the implementation choice for compatible guidance and metadata repairs, not a claim of a repository-wide SemVer policy.
+
+- dotnet-backend 0.1.3 -> 0.1.4
+- ai-context-init 0.2.0 -> 0.2.1
+- slice-implementer and local-change-implementer 0.2.4 -> 0.2.5
+- code-reviewer 0.2.3 -> 0.2.4
+- ddd-ca-hex-architect 0.3.0 -> 0.3.1 and test-designer 0.4.0 -> 0.4.1: exact dotnet dependency updates only; allowlists unchanged.
+
+Manifest and current human manuals follow those identities. Presets select IDs and do not need version changes. Installed projections and historical documents are preserved.
+
+Controller text now states guidance/adoption boundaries and optional target-selected FluentValidation. HTTP status, DTO Price and typed-error examples remain deferred by the owner. Direct reference checks cover coding standards index, usecase/test standards, examples and legacy controller guidance; no expansion of those implementation examples is selected.
+
+## Validation plan and execution
+
+Cwd for all commands: repository root. Python >=3.11,<4, tests/requirements.txt and writable OS temporary directory are prerequisites. Changes affect metadata/resource closure and YAML authoring but no runtime Python behavior. Run `python -I -B tests/run.py --suite distribution --suite schemas` once after edits, plus author diff, changed-file read-back, relative-link and catalog consistency checks. No new product tests are needed solely for prose or metadata comments.
+
+Hash refresh uses the existing `distribution.catalog.digest` source function with the engineering catalog's declared compact-JSON canonicalization. Only the Controller unpacketized source hash and aggregate catalog digest change; registered normative records must compare equal to the base. This is source maintenance, not execution of the historical check-content.py workflow or a new generator CLI.
+
+A first editing helper stopped on differing manifest field order; source edits already made were retained, then manifest blocks were matched by component ID. A second attempt could not find a temporary helper because sandbox temp roots differ between calls; no changes occurred in that attempt. The corrected inline operation completed. Neither helper failure is a product test result.
+
+Pending: focused suites, structural read-back, immutable scoped independent review and final author inspection. Hosted CI, full installation/lock/native actor runs are not run. The build-catalog entry requires an exact commit, release label, independent engine pin and output/scratch roots; no downstream preview execution is selected.
+
+## Deferred work and next action
+
+POST/PUT/PATCH, Price and typed error examples remain visibly outside completion. Normative Controller identity allocation is not selected. Finish local checks and scoped review; report source completion separately from integration and adoption. Any preview refresh requires explicit assembly/install authorization and fresh candidate/lock read-back.
+
+## Executed validation
+
+- `python -I -B tests/run.py --suite distribution --suite schemas`: executed-failed, 117 tests / 28 errors under sandbox. Errors included temporary-directory permission failures and the source resource-set ordering defect.
+- Same command with ordinary local permissions: executed-failed, 117 tests / 4 errors, all from `knowledge consumption set order`. All 44 schema cases passed; 69 of 73 distribution cases passed.
+- Sorted the three affected resource arrays, then `python -I -B tests/run.py --suite distribution`: executed-passed, 73 tests, zero failures/errors/skips. Schema conclusions are unaffected by resource ordering and were not rerun.
+- Bounded inline read-back using source `distribution.catalog.digest`, YAML parsing and base comparison: executed-passed, 24 changed tracked files decoded/read, 169 relative Markdown file links resolved from their containing directories, 11 registered rule records equal to base, all 11 guidance hashes and catalog digest matched. Empty technology/capability selections and all five dotnet consumer resource IDs/versions resolved. This check is task-specific inspection, not a newly configured product CLI.
+- `git diff --check`: executed-passed.
+
+Current manuals now include the new resource IDs, counts and guidance boundaries. No new Markdown link or heading-anchor reference was introduced. The metadata routing target exists. Literal direct references in coding/usecase/test standards and legacy guidance remain at the same paths; implementation-example consistency remains deferred.
+
+Independent review is pending on a fixed local commit. No full product suite, hosted CI, catalog assembly, native installation, preview lock refresh or downstream actor run was executed. No repository-configured standalone engineering-catalog refresh CLI was found; the existing digest implementation was reused with the catalog-declared canonicalization, and registered normative bytes were untouched.
+
+## Local commit and review authorization
+
+Automatic approval review initially rejected staging/commit because explicit local commit authorization was missing. No commit was created by that rejected command. The owner then explicitly answered: "允許本機 commit 與獨立審查". This authorizes local commits and scoped independent review only; push, PR, merge, closure and preview update remain outside scope.
+
+## Independent review and repair
+
+Reviewer `/root/controller_knowledge_review` independently reviewed base `4e0438c79b5c4729237ac284edd0e97429352ca6` to clean immutable head `e0b420f0dc49b2f2707e3dc5c6276095d5dae620`, using inherited runtime settings without overrides. Actual child model/effort labels were not exposed. One minor actionable finding: root README.md, README.en.md, AGENTS.md and AGENTS.zh-TW.md still advertised ai-context-init@0.2.0 while the source manifest selects 0.2.1. The reviewer independently verified Controller raw SHA, compact-JSON catalog digest and unchanged registered rules. No other supported finding was returned.
+
+Repair: change only the exact init version token in those four entry files, retaining English/Traditional Chinese structural and normative parity. Their linked target is unchanged and exists. This identity-only documentation repair does not affect the previously checked package bytes or schema cases; no product test rerun is selected. The same reviewer will inspect this bounded follow-up at its fixed commit.
+
+Related implementation-content limitations: examples/controller/README.md retains non-ProblemDetails error examples; examples/dto/README.md retains class-based patterns. These are preexisting implementation-content differences, reported only and deferred under the owner's narrowed scope.
+
+## Local completion
+
+The same independent reviewer confirmed R1 resolved on clean fixed commit `457aacb235cdb331f72215f18e5caf968792d41b`; no new actionable finding. All four root edits were independently checked as version-token-only, preserving language/authority parity. Source/package bytes are unchanged from the reviewed implementation. Parent also compared all four files byte-for-byte against the previous commit with only the selected token replacement and checked the linked init source entry exists. Commit-message and actual-commit validation passed for both implementation and repair commits.
+
+W1: guidance authority and validation-selection ambiguity corrected; implementation examples deferred by owner. W2: guidance access and Controller routing repaired, without normative promotion. W3: optional decision evidence seed and its two descriptions completed. W4: exact required dependency wording completed. No unregistered document gained a rule ID. Local workflow is complete; Issue #465 remains open, and no Project field, push, PR, merge, tag, release, installed projection or preview update was performed.
+
+This final record-only update does not alter the reviewed product/documentation subject or its criteria; no additional product test or independent code review is selected. The next owner-controlled action may be push/PR integration, followed separately by preview assembly/install if requested. Required hosted current-head CI remains not-run, not passed.
+
+## Changed file inventory
+
+Paths below are relative to the source repository root. They include package sources, required exact-version/manual references and this execution record; generated installed files are absent.
+
+- `.dev/workflows/2026-10-18-controller-knowledge-bindings/workflow-plan.md`
+- `.dev/workflows/2026-10-18-controller-knowledge-bindings/workflow.yaml`
+- `AGENTS.md`
+- `AGENTS.zh-TW.md`
+- `README.en.md`
+- `README.md`
+- `docs/README.md`
+- `docs/installation.md`
+- `docs/knowledge-packages.md`
+- `docs/skills/README.md`
+- `docs/skills/ai-context-init.md`
+- `docs/skills/code-reviewer.md`
+- `docs/skills/ddd-ca-hex-architect.md`
+- `docs/skills/local-change-implementer.md`
+- `docs/skills/slice-implementer.md`
+- `docs/skills/test-designer.md`
+- `src/distribution/manifest.yaml`
+- `src/knowledge/dotnet-backend/README.md`
+- `src/knowledge/dotnet-backend/content-package.yaml`
+- `src/knowledge/dotnet-backend/engineering-rule-catalog.yaml`
+- `src/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md`
+- `src/skills/ai-context-init/references/initialize.md`
+- `src/skills/ai-context-init/references/project-structure.md`
+- `src/skills/ai-context-init/skill-package.yaml`
+- `src/skills/ai-context-init/templates/project-config.template.yaml`
+- `src/skills/code-reviewer/skill-package.yaml`
+- `src/skills/ddd-ca-hex-architect/skill-package.yaml`
+- `src/skills/local-change-implementer/skill-package.yaml`
+- `src/skills/slice-implementer/skill-package.yaml`
+- `src/skills/test-designer/skill-package.yaml`

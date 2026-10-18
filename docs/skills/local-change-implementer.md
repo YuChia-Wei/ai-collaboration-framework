@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.4`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.5`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.3.0`（1 項）與 `dotnet-backend@0.1.3`（5 項）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
+可選 `engineering-common@0.3.0`（1 項）與 `dotnet-backend@0.1.4`（6 項）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
 
 將既有驗證計畫視為初步安排，實作期間依實際差異校正條件式檢查，執行前確認必要性。
 修改完成後確認驗收證據齊備；必要 gate 與已接受驗收不得自行取消。
@@ -54,13 +54,16 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-local-change
 
-`dotnet-backend@0.1.3`；操作：`implement`。
+`dotnet-backend@0.1.4`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:standards/coding-standards/aggregate-standards.md`
 - `member:standards/coding-standards/repository-standards.md`
 - `member:standards/coding-standards/test-standards.md`
 - `member:standards/coding-standards/usecase-standards.md`
+- `member:standards/coding-standards/controller-standards.md`
+
+Controller 文件屬於 guidance；允許讀取不代表採用正式規則。
 
 ## 權威參考
 
