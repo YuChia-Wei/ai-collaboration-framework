@@ -62,7 +62,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
 - For code review, load the installed `code-reviewer` entry and only its applicable route and finding references.
 - `test-execution` has no required skill; resolve target-owned commands first.
-- Direct execution remains valid. Scope delegation under `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
+- Direct execution remains valid. Scope delegation under `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load a selected role's current instructions only when applicable. `.dev/contracts/ROLE-EXECUTION-CONTRACT.md` describes source execution evidence; its historical formats do not select ordinary-source procedures. Static profile presence is not invocation evidence.
 
 ## Workflow And Change Control
 

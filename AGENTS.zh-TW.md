@@ -60,7 +60,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - AI-context placement 或 language changes 只有適用時才載入 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 與 `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`。
 - Code review 載入 installed `code-reviewer` entry，並只載入其適用的 route 與 finding references。
 - `test-execution` 沒有 required skill；先解析 target-owned commands。
-- Direct execution 仍然有效。依 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 界定 delegation 範圍；只有適用時才載入 role contract。Static profile presence 不是 invocation evidence。
+- Direct execution 仍然有效。依 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 界定 delegation 範圍；只有適用時才載入所選角色的現行指示。`.dev/contracts/ROLE-EXECUTION-CONTRACT.md` 說明來源專案的執行證據；其中的歷史格式不會選定一般來源作業程序。Static profile presence 不是 invocation evidence。
 
 ## Workflow 與變更控制
 

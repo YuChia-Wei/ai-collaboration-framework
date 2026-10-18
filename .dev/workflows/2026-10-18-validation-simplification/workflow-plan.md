@@ -98,3 +98,26 @@ Next: create the immutable local review commit, then dispatch Astra/xhigh with
 this scope, the Issue ACs and baseline authority.
 Do not push, create a PR, merge or close #461. Review findings and dispositions
 will be recorded here, without duplicating product-test evidence.
+
+## Independent review attempt 1 and repair
+
+Reviewer `/root/astra_461_review`, explicitly dispatched as `gpt-6-astra` /
+`xhigh`, reviewed `ba28cdbc3d7001dfb101cacba5e8f71406919797` through
+`646da176f1630b141f350b0d2e7120700d0e4445` read-only. The reviewer inspected
+all 16 changed files, baseline authority and direct entry/config dependencies;
+`git diff --check` passed and the worktree stayed clean. No product tests or
+provider operations were performed. AC01–AC05 and AC08–AC10 were supported by
+static evidence; changed EN/zh-TW rules preserved the same normative meaning.
+
+F1 (P2): the still-active ROLE-EXECUTION-CONTRACT referred to the deleted
+proportionate-execution classification, full role records and third-attempt
+authorization. The existing precedence disclaimer did not satisfy AC06/AC07's
+direct cleanup. Accepted and repaired: replace that source contract with current
+bounded execution, results and justified retries; isolate old formats behind a
+fixed-revision historical reference. Clarify the root bilingual entry's current
+role instructions versus historical execution records. No product or schema
+change is needed. This brings the local scope to 17 files.
+
+The affected documentation is awaiting review by the same independent reviewer
+on the repair commit. Earlier findings remain recorded; author repair is not
+independent verification. Product tests remain unselected for the same reason.
