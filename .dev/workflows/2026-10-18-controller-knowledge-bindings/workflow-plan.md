@@ -51,3 +51,11 @@ Independent review is pending on a fixed local commit. No full product suite, ho
 ## Local commit and review authorization
 
 Automatic approval review initially rejected staging/commit because explicit local commit authorization was missing. No commit was created by that rejected command. The owner then explicitly answered: "允許本機 commit 與獨立審查". This authorizes local commits and scoped independent review only; push, PR, merge, closure and preview update remain outside scope.
+
+## Independent review and repair
+
+Reviewer `/root/controller_knowledge_review` independently reviewed base `4e0438c79b5c4729237ac284edd0e97429352ca6` to clean immutable head `e0b420f0dc49b2f2707e3dc5c6276095d5dae620`, using inherited runtime settings without overrides. Actual child model/effort labels were not exposed. One minor actionable finding: root README.md, README.en.md, AGENTS.md and AGENTS.zh-TW.md still advertised ai-context-init@0.2.0 while the source manifest selects 0.2.1. The reviewer independently verified Controller raw SHA, compact-JSON catalog digest and unchanged registered rules. No other supported finding was returned.
+
+Repair: change only the exact init version token in those four entry files, retaining English/Traditional Chinese structural and normative parity. Their linked target is unchanged and exists. This identity-only documentation repair does not affect the previously checked package bytes or schema cases; no product test rerun is selected. The same reviewer will inspect this bounded follow-up at its fixed commit.
+
+Related implementation-content limitations: examples/controller/README.md retains non-ProblemDetails error examples; examples/dto/README.md retains class-based patterns. These are preexisting implementation-content differences, reported only and deferred under the owner's narrowed scope.

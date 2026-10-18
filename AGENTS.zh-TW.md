@@ -42,7 +42,7 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 20 個 skills，包含恢復的開發編排 skill、可選的 `ai-context-init@0.2.0`、可選的 `workflow-records@0.1.0` 與可選的 `user-story-author@0.1.0`（來源套件可用，不代表本來源專案已安裝此路由）。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 20 個 skills，包含恢復的開發編排 skill、可選的 `ai-context-init@0.2.1`、可選的 `workflow-records@0.1.0` 與可選的 `user-story-author@0.1.0`（來源套件可用，不代表本來源專案已安裝此路由）。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
