@@ -1,6 +1,6 @@
 metadata_version: 4
 id: local-change-implementer
-version: 0.2.3
+version: 0.2.4
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:

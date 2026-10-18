@@ -1,11 +1,8 @@
 # Workflow Artifact Policy
 
-Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-takes precedence over conflicting ordinary-source gates below, under the owner's
-2026-10-02 decision. Existing release/support/recovery contracts and explicitly
-selected active legacy records retain their owners; their historical machinery
-is not silently migrated to the new source format. Unrestored U001 obligations
-outside the adopted source scope remain deferred or blocked, never passed.
+The [source development policy](SOURCE-DEVELOPMENT-POLICY.md) owns validation
+and evidence selection. This policy owns source workflow identity and minimal
+records; it does not add test, receipt or admission gates.
 
 This policy defines the repository-wide discovery and metadata contract for durable workflows. It does not define one universal plan, task, or report shape.
 
@@ -146,63 +143,6 @@ Locators generated from template version `1.2.0` or later opt into
 - a completed task has a non-empty result summary and an addressed finding status;
 - legacy locators without the field remain compatible and are not silently reinterpreted.
 
-## Declared Terminal Anchor Reconciliation
-
-A workflow may opt into terminal-anchor schema `1.0` by adding the mapping
-below to its locator. This contract is relationship-driven. A
-validator must not infer an anchor or its effect from a workflow title,
-directory, date, version string, task prose, or hard-coded release list.
-
-```yaml
-terminal_anchor_contract:
-  schema_version: "1.0"
-  anchors:
-    - anchor_id: "<path-safe-stable-id>"
-      anchor_kind: "<declared-lifecycle-kind>"
-      evidence_ref: ".dev/workflows/<workflow-id>/evidence/<evidence>.yaml"
-      on_satisfied: "complete | continue"
-      continuation:                 # required only for continue
-        reason: "<why work remains after this anchor>"
-        task_ids:
-          - "<unfinished-task-id>"
-```
-
-`evidence_ref` is an exact repository-relative Git-trackable file. It has this
-machine-readable shape:
-
-```yaml
-schema_version: "1.0"
-evidence_id: "<path-safe-stable-id>"
-anchor_id: "<matching-anchor-id>"
-observed_state: "satisfied | not-satisfied | unknown"
-observed_at: "<ISO-8601-with-offset>"
-source:
-  kind: "<evidence-source-kind>"
-  references:
-    - "<source-reference>"
-facts:
-  <fact-name>: <observed-value>
-```
-
-- Capture live provider or external-system observations before committing
-  evidence that depends on them. The tracked observation is the deterministic
-  offline validation input; ordinary validation must not require ambient
-  credentials or refresh the provider.
-- `on_satisfied: complete` requires `status: completed` and terminal tasks when
-  the evidence state is `satisfied`.
-- `on_satisfied: continue` is an explicit non-terminal relationship. It
-  requires a reason and the exact unfinished task IDs; every declared task must
-  exist and, while the workflow is active, the declaration must equal the full
-  unfinished-task set.
-- `not-satisfied` and `unknown` evidence do not create a terminal claim. A
-  malformed, missing, mismatched, duplicated, or unsafe declaration fails
-  closed.
-- Adding this contract is prospective and explicit. Historical workflows
-  without it remain compatible and are not classified from naming patterns.
-
-`validate-workflow-artifacts.py` reports the workflow ID, anchor ID, task ID,
-and conflicting state for actionable stale-projection failures.
-
 ## Workflow Completion
 
 `status: completed` means workflow completion only: every workflow-owned task
@@ -224,17 +164,25 @@ later provider state into an already completed implementation workflow.
 - Correct a final artifact through an explicit reopen, corrigendum, addendum, or successor report.
 - Record canonical-versus-derived relationships for translations and generated views.
 - Preserve finding and decision IDs across remediation and verification artifacts.
-- For a workflow binding multiple work items, preserve separate acceptance IDs,
-  outcomes, and evidence digests in a machine-readable ledger and its matching
-  human report projection; one aggregate success flag is insufficient.
-- Record validation freeze, reuse receipt, agent execution packet, worktree
-  lease, graph freshness or tracked fallback, retry decision, and terminal
-  release as separate artifacts when those lifecycle states apply.
+- Preserve each work item's acceptance IDs, outcomes and relevant evidence in
+  the existing record; one aggregate success flag is insufficient. Do not create
+  a paired machine/human ledger or separate reuse, packet or lease artifacts
+  for ordinary source work.
 
 ## Validation and Legacy Boundary
 
 - New workflows dated 2026-07-10 or later must satisfy this policy.
 - Historical workflows may retain month-only IDs and older layouts.
 - When a historical workflow remains active, add a new locator or migration note instead of silently rewriting its identity.
-- Validate new locators, timestamps, artifact roots, entrypoints, task identity, and task timestamps with an existing project-selected validator. The removed legacy validator has no current executable route; restoration belongs to the source workflow and P7 decision.
+- Check changed locator/task fields, paths and status relationships directly,
+  using an existing applicable validator if available. Do not scan all history
+  or restore an unavailable validator solely to admit a new record.
 - Validate `branch` and `base_branch` for workflows dated 2026-07-11 or later.
+
+## Historical context — NOT AN EXECUTION TRIGGER
+
+Existing terminal-anchor records retain their original meaning under the
+[earlier artifact contract](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/ba28cdbc3d7001dfb101cacba5e8f71406919797/.dev/standards/WORKFLOW-ARTIFACT-POLICY.md).
+Do not add those legacy contracts to ordinary workflows or execute their
+historical validator instructions. Only an explicitly selected compatible
+legacy/release obligation uses them; missing tooling remains unavailable.

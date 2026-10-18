@@ -4,27 +4,13 @@
 
 本文件是 canonical English root collaboration guide 的繁體中文翻譯；`AGENTS.md` 是 canonical English root collaboration guide。
 
-## 暫時的 Source 重構例外
-
-明確指派給計畫 #322 的 source-repository 工作，套用下方規則前，先讀取
-[暫時執行例外](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)。
-依 owner 於 2026-09-24 對 U001 的調整，短且範圍明確的工作可由統籌派出
-sub-agents，選擇足以勝任且成本最低的 model／effort；不強制另開對話或使用 Astra。
-較大型或多階段的實作 Issue 仍使用獨立的 `gpt-6-astra` / `ultra` 對話。
-使用指定的 RAM-disk worktree，並在首次 push 前將本機 commits 交回統籌；
-執行者未經統籌指派，不自行建立更多任務或再委派。已採納 source 範圍之外尚未恢復的
-legacy／native／release 驗證，在另行選定的恢復決策前維持 `deferred-by-owner`。此例外僅適用 source；其他 security、ownership、credential
-與 publication 邊界繼續有效。
-
 ## Source 開發規則
 
-讀取 [source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)，確認其明確
-owner 於 2026-10-02 採納的轉換與一般 source 工作的確切範圍。
-八項規則取代下方與一般 source 工作衝突的 aggregate、receipt、packet、
-lease 與交接要求；條件式 independent review 與選定檢查仍然適用。
-暫時例外與舊機制僅保留於明確選定的 legacy／native／release 義務。
-Release、支援、credentials、protection 與 downstream adoption 維持原有 owner。
-Merge 或日期都不能證明 CI 成功。
+一般 source 工作讀取 [source 開發政策](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)，
+確認驗證必要性、PR 檢查、條件式獨立審查與規範維護。該政策擁有這些規則；本入口提供導覽。
+Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framework 產品變更
+需要另行取得實作授權。Release、支援、credentials、protection 與 downstream adoption
+維持原有 owner。Merge 或日期都不能證明 CI 成功。
 
 ## 適用範圍與 Authority
 
@@ -74,7 +60,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - AI-context placement 或 language changes 只有適用時才載入 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 與 `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`。
 - Code review 載入 installed `code-reviewer` entry，並只載入其適用的 route 與 finding references。
 - `test-execution` 沒有 required skill；先解析 target-owned commands。
-- Direct execution 仍然有效。依 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 分類 delegation；只有適用時才載入 role contract。Static profile presence 不是 invocation evidence。
+- Direct execution 仍然有效。依 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 界定 delegation 範圍；只有適用時才載入所選角色的現行指示。`.dev/contracts/ROLE-EXECUTION-CONTRACT.md` 說明來源專案的執行證據；其中的歷史格式不會選定一般來源作業程序。Static profile presence 不是 invocation evidence。
 
 ## Workflow 與變更控制
 
@@ -88,47 +74,23 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 
 ## 驗證與檢閱
 
-- 定義 observable acceptance criteria，並先執行最小但有意義的 validation。
-- 不得只為了讓 test 通過而弱化 fail-closed behavior。
-- Independent review 在一個 immutable commit 上執行、綁定 exact content subject、維持 read-only，且不能把自己的 repair 當成 verification。
-- Review 後若 content、criteria 或 authority drift，該 review 即失效。只有 commit SHA drift 時只需執行 deterministic current-subject rebind，不必重做 independent review。
-- 保留 failure、timeout、interruption 與 blocked evidence；後來的 pass 不會抹除它們。
+- 測試前依 source policy 對實際 diff、語意與直接相依判斷必要性。修改存在或副檔名本身不會觸發本機測試。
+- 保留 PR hosted gate 與適用的獨立審查。本機檢查、review、hosted 結果與 acceptance 各自證明不同事實。
+- 已授權的規範變更應在 owner 位置替換失效指令。保留有效保護與無關內容；不得在矛盾操作文字上持續疊加優先聲明。
+- 保留失敗與限制。不得聲稱未執行的測試通過，或只為通過檢查而弱化行為。
+- 委派工作讀取 [agent guardrails](.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md)。維持單一 tracked writer、不可變且唯讀的獨立審查，遵循使用者實際選定的 model／effort 與權限。
+- 只有解讀先前結果時才讀取 [evidence guidance](.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md)。一般工作不需另外建立 reuse receipt、hash 清冊或 acceptance ledger。
+- Discovery conclusion 前確認 code-graph index SHA 與 coverage。Stale／missing graph 應 reindex 或採明確 tracked-file fallback；search absence 不是 proof。
+- PowerShell automatic 或 reserved variables 一律不得賦值，且不分大小寫；使用用途明確的名稱。
 
-### Validation Freeze 與 Evidence Reuse
+### 歷史背景 — 不符合觸發條件，不得據此執行
 
-- Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 各項均符合規定的比對一致性條件（matching）時才可 reuse。
-- 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後若 tracked content 或 governing authority drift，subject 即失效；只有 history-only identity drift 時則執行 rebind。Terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
-- Unknown dependency 或 authority state 必須 fail closed。Current-head review-subject binding、required hosted contexts 與 live admission gates 一律 fresh；content digest 相等時可 reuse independent review，無須重做。
-- Hosted source CI 僅適用於來源政策以 GitHub 原生 `src/**` 與 `tools/**` 路徑篩選選中的 PR。其他 PR 不需要 source CI context；未執行不等於通過。另行選定的 release checks 保留各自的適用條件。
-- Content-addressed independent audit 對每個 gate 回報 `re-executed`、`reused-with-proof`、`blocked`、`deferred` 或 `not-applicable`；commit SHA 只保留為 provenance，不作為 validity key。
-
-### Agent Execution Guardrails
-
-- 新的 source development 依 `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md` 與 `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 的 source applicability override，使用 bounded delegation 與 conditional independent review。綁定 immutable diff、acceptance criteria 與 governing rules；維持每個 worktree 只有一個 tracked writer，並保留真實證據。此已採納的 source scope 不要求 legacy classifier、preflight、packet 或 lease 機制。
-- 另行選定的 legacy 或 release 義務才依 guardrails contract 按實際風險分類；一般分析與局部修改可直接判定，review preflight 則使用 validator。Terminal 標籤本身不要求完整層級；同一 runtime 內，對隔離且不可變的一般變更進行短程、獨立、唯讀審查，可使用 bounded envelope。Authority、evidence-custody、security、release/adoption 變更、external 或 long-running validation、共用可變 checkout 的審查、共用 frozen work，以及未知風險，都需要完整 validated packet、immutable subject 與 machine-readable snapshot lease。兩個層級都必須維持每個 worktree 只有一個 tracked writer；完整 lease 必須明確 terminal release。
-- 對上述另行選定的 legacy 或 release 義務，兩個層級都必須在 behavioral dispatch 前，預檢 machine-readable review subject、criteria 與 authority。分開記錄準備失敗、行為缺陷、環境失敗與 provider reconciliation；保留先前 attempts，依既有 evidence-reuse 與 retry 規則只重跑受影響的檢查。
-- Acceptance contract 要求時才維護正式 acceptance-to-evidence ledger。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
-- 只有具備 privacy-safe failure fingerprint 與 material state change 才可 retry。Attempt 三次以上需要新的 owner 或 workflow authorization。
-- Discovery conclusion 前驗證 code-graph index SHA 與 coverage。Stale 或 missing graph 必須 reindex 或使用明確 tracked-file fallback；search absence 本身不是 proof。
-- PowerShell automatic 或 reserved variables 一律不得被賦值，且不分大小寫；使用用途明確的 variable names。
-
-### 長時間驗證 Gate
-
-- Dispatch 前，若 command 的 profile 為 `release` 或 `nightly-full`、選擇 full package／compatibility／history matrix、repository evidence 預估至少 120 秒，或先前可比較的 execution 耗時至少 120 秒，則分類為 long-running。Execution contract 見 `.dev/standards/WORKFLOW-GATE-POLICY.md`。
-- 先完成 tracked mutations 與 focused validation，再把 exact command 綁定到 clean immutable commit。
-- 派送一個 read-only external task，使用足以完成工作的最低成本 profile；只寫入 ignored validation artifacts，且不得修復 subject。
-- 使用 callback 或一次 event wait。不得輪詢。
-- 只接受一份 schema-valid terminal report，綁定 exact task、commit provenance、content subject、command、duration、outcome 與 evidence。
-- Timeout、interruption、drift、缺少 evidence、cleanup failure 或 blocked execution 絕不會成為 `passed`。
-
-### 可攜式 Test Fixture 加速
-
-- Portable baseline 為零設定。Legacy `AI_CONTEXT_TEST_TMP_ROOT` 加速路由的 classifier 與 tooling 已移除，目前 source layout 不可用；不得依歷史指示啟用。
-- 此設定只接受單一、明確 opt-in 的 fixture root。不得自動探索 storage、修改全域 `TEMP` 或 `TMP`，也不得將 durability-storage 或 platform-filesystem semantics 導向該 root。
-- 實際執行時重新 preflight、建立唯一且受 containment 驗證的 run directory，cleanup 只可刪除該 verified directory。Invalid、unsafe 或 unwritable root 必須在 material fixtures 前失敗。
-- Diagnostics 不得包含 path。WSL `/mnt/*` performance warning 只是 advisory；不得改變 test outcome，也不得靜默選擇其他 root。
-- Default 與 accelerated mode 必須在同一 commit、同一 host 使用相同 tracked test profile 比較。Median 至少使用三次執行，並明確標示 cold 或 warm condition。
-- 目前 source tests 依 `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md` 執行；已退場的加速路由必須另行選定相容版本。
+早期 U001／重構與 fixture acceleration 指令不是一般 source 工作程序。
+不得只因歷史紀錄提及便載入或執行。只有另行選定的 legacy／native／release 義務
+才使用相容版本與已驗證路由；缺失工具維持 unavailable，保留的 deferred 狀態不等於通過。
+Release、支援與 recovery 義務仍由原 owner 負責。
+[暫時執行例外](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
+僅為上述明確保留義務的歷史背景。
 
 ## CLI 與 Runtime 邊界
 

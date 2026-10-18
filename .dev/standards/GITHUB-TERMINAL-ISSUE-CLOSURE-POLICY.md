@@ -1,185 +1,66 @@
 # GitHub Terminal Issue Closure Policy
 
-Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-takes precedence over conflicting ordinary-source gates below, under the owner's
-2026-10-02 decision. Existing release/support/recovery contracts and explicitly
-selected active legacy records retain their owners; their historical machinery
-is not silently migrated to the new source format. Unrestored U001 obligations
-outside the adopted source scope remain deferred or blocked, never passed.
+This source-only policy governs final versus partial delivery of GitHub Issues.
+The [source development policy](SOURCE-DEVELOPMENT-POLICY.md) owns review and
+the PR gate; [GitHub work management](GITHUB-WORK-MANAGEMENT-POLICY.yaml) owns
+provider configuration. Closing keywords and provider state never authorize work.
 
-This source-repository-only policy governs how a pull request references and
-closes named GitHub Issues. It is not portable target guidance, and a closing
-keyword never authorizes work.
+## Per-Issue delivery intent
 
-## Per-Issue Delivery Disposition
+For each Issue delivered by a PR, state one disposition in its existing body:
 
-Every Issue named by a pull request has exactly one disposition:
+- `terminal-close`: final accepted delivery, with an owner-authorized matching
+  `Closes`, `Fixes` or `Resolves` keyword.
+- `deferred`: partial/checkpoint delivery, using `Refs #<number>` with the
+  reason and next action or owner; no closing keyword for that Issue.
 
-- `terminal-close`: the pull request is the final accepted delivery for that
-  Issue and uses one approved closing keyword for that Issue.
-- `deferred`: the pull request is a checkpoint or partial delivery, uses
-  `Refs #<issue-number>`, contains no closing keyword for that Issue, and
-  records both `closure_deferred_reason` and the next terminal gate or owner.
+Do not mix dispositions for one Issue or put closing keywords in commits to
+bypass the selected PR intent. Reference-only background Issues do not become
+delivered work. No separate declaration record or machine receipt is needed.
 
-A pull request may mix the two modes for different Issues. A single Issue may
-not use both modes or both reference forms.
-The complete set of `Refs`, `Closes`, `Fixes`, and `Resolves` targets in the PR
-body must equal the record's Issue set. Qualified targets must name this
-repository; foreign-repository references fail. Commit messages in the
-base-to-head range may not contain closing keywords, so a deferred or omitted
-Issue cannot bypass the PR-body disposition gate when the commit reaches the
-default branch.
+## Before integration
 
-## Terminal-Close Gate
+Obtain fresh PR head/base, effective review state and required checks. Apply
+source policy's conditional independent review and maintainer acceptance.
+Require actual current-head `Source change gate` success for PRs selected by
+the native `src/**` or `tools/**` filters. Outside those paths it is not
+applicable, not a fabricated pass. Respect any additional actual provider
+protection; discrepancies need their owner's reconciliation, not implicit
+settings changes or invented checks.
 
-`terminal-close` is valid only after all of the following are observed for the
-named Issue:
+Confirm the selected Issue scope and applicable verification are complete for
+final delivery. Failed, blocked, cancelled, timed-out, missing or unknown
+required results do not satisfy that claim. Pending implementation keeps a
+delivery deferred. A relevant change after independent review needs affected
+review again; a new SHA alone does not require another review or local test run.
 
-- the online Issue binding and explicit owner authorization already exist;
-- the delivery is final and accepted for that Issue;
-- workflow scope, tasks, and every applicable verification are complete;
-- the source repository's review gate passed and every hosted check succeeded;
-- the admitted PR head is freshly bound to the authenticated content-addressed
-  review subject and provider read-back identifies the actual integration commit;
-- the pull-request body contains the matching approved closing keyword; and
-- post-merge read-back proves the integration commit, the Issue is closed as
-  completed, and its Project status is `Done`.
+Use live provider read-back at the integration decision. Do not introduce a
+second custom admission gate, packet, v3 receipt or snapshot-validation loop.
+Local results cannot replace hosted checks, and an author's inspection cannot
+replace required independent review.
 
-A failed, cancelled, or timed-out hosted check, review block, unbound head or
-review-subject drift, missing read-back, or mismatched Issue or Project state is
-nonterminal.
+## After integration or administrative closure
 
-Workflow completion and provider terminal admission remain separate states.
-Once every workflow-owned implementation task and locally applicable
-verification is complete, the workflow may be `completed` while review,
-hosted checks, live admission, integration, and post-merge read-back are still
-pending under this policy. That workflow status does not satisfy or bypass any
-terminal-close gate, and those later provider facts must not be copied back by
-a tracked evidence-sync commit.
+Read the actual integration commit, each delivered Issue state and its relevant
+Project fields separately. A successful merge does not prove Issue closure or
+Project completion. A deferred Issue remains open and must not be represented
+as Done. Perform provider mutations only under actual owner authorization.
 
-## Deferred Gate
+An already integrated, accepted delivery may be closed administratively with
+explicit owner approval; do not invent a historical closing keyword. Record
+the actual Issue/Project outcomes and disclose missing or mismatched read-back.
+Do not report provider closeout complete while required state is unconfirmed.
 
-`deferred` requires `Refs #<issue-number>`, forbids `Closes`, `Fixes`, and
-`Resolves` for that Issue, and requires a non-empty deferred reason plus an
-exact next terminal gate or owner. If the pull request has merged, read-back
-must prove the deferred Issue remains open and is not projected as `Done`.
+Workflow completion, integration and Issue/Project closure are separate facts.
+Later provider-only read-back need not reopen completed local implementation or
+produce a tracked evidence-sync commit. It does not trigger another product run.
+Release, installation and downstream adoption retain their own authorization.
 
-## Enforcement And Distribution
+## Historical context — NOT AN EXECUTION TRIGGER
 
-`.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml` owns the single active
-selected provider configuration. The legacy adapter under `.dev/backlog/` is
-historical compatibility evidence and cannot configure this gate.
-`tools/maintenance/validate-terminal-issue-closure.py` validates durable disposition
-records deterministically through three fail-closed validation stages without
-adding another closure mode:
-
-- `declaration` validates the per-Issue PR intent and reference syntax;
-- `merge-admission` binds the current PR number and head, the source review
-  subject, exact required-check context set, and every successful required check
-  to the same provider head; and
-- `reconciliation` separately binds the admitted PR head, actual provider
-  integration commit, selected topology, and post-merge Issue/Project read-back.
-
-On a GitHub pull-request event, including a PR-body `edited` activity, the
-required validator check selects exactly one
-`declaration` record bound to that current PR number and validates the live
-event body, event head, and checked-out head. A missing, duplicate,
-historical-only, non-declaration, or mismatched record fails. That required
-check proves declaration only; it must not be represented as merge admission.
-
-Before merge, the integrator must use `--capture-admission-evidence` with a
-fresh event snapshot to generate, validate, and emit the provider read-back
-without writing a repository path. Trusted orchestration may retain that
-stdout under ignored validation artifacts. Replaying such a snapshot requires the current event snapshot,
-`--admission-evidence <path>`, and `--verify-provider-live`. Both capture and replay
-also require `--review-input <path>`: the owning task's current accepted criteria
-and selected tracked authority, validated through the canonical independent
-review-input preflight against the clean live base/head checkout. The integrator
-supplies this expectation independently of the provider receipt; the receipt
-must never supply its own expected criteria or authority. No automatic global
-criteria/authority selection is implied. The admission snapshot uses contract
-`github-terminal-issue-closure-admission` and supplies the exact PR number,
-repository, base, head, body, source review evidence, required-check context set, and successful
-hosted checks.
-The provider configuration, not the snapshot, owns the complete required-check
-context set. Live verification re-reads GitHub with `GITHUB_TOKEN` and requires
-the snapshot's provider review/check-run identifiers, timestamps, conclusions,
-heads, PR body, repository, and base to match that fresh response exactly. The
-live PR metadata must also match the current event before its base-to-head commit range
-is accepted. A replayed snapshot without
-live verification is rejected. The validator itself never writes the capture,
-eliminating repository symlink/reparse and overwrite races. It overlays those verified volatile facts
-only onto a tracked declaration in memory and requires every fact to match the
-same event and checkout head. A later lifecycle stage cannot be downgraded by
-an admission overlay. The snapshot must remain untracked, must not be reused after head drift, and must
-not be committed to the candidate it validates. A new head may reuse the
-independent review only after its review-subject digest is rebound; the admission
-snapshot and hosted check records themselves remain current-head-specific.
-Missing admission evidence is
-a merge blocker, even when the declaration check passes. This live-verified non-mutating
-overlay avoids a self-referential commit whose evidence changes its own head.
-
-Commit identity is an execution locator, provenance fact, and provider
-association; it is not the validity key for reviewed or validated content.
-Rebase, squash, amend, or any other history rewrite before admission is allowed.
-A new provider head requires fresh hosted checks, review-subject binding, and
-admission, but not a repeated independent review when the base/head content
-subject, criteria, and authority remain equal. After admission, the same
-operations invalidate that admission rather than becoming forbidden.
-Integration may use `fast-forward`, `rebase`, `squash`, or `merge-commit`.
-Reconciliation retains `admitted_head_sha` separately from the provider-reported
-`integration_commit_sha`. Equality is required only for a true fast-forward;
-rebase, squash, and merge-commit may change commit identity. Provider and
-Issue/Project read-back complete the terminal operation without a post-merge
-source repair commit or tracked evidence-sync commit.
-
-This repository is governed as a single-maintainer source repository. GitHub
-does not allow an author to approve their own pull request, so source admission
-uses a strict `github-terminal-issue-closure-audit/v3` review receipt submitted
-by the configured maintainer after an independent audit of one immutable
-checkout. An ordinary `COMMENTED` review is never sufficient. The receipt
-records repository and pull-request identity, original base/head commit SHAs as
-provenance, base/head tree identities, the canonical
-`independent-review-subject/v1` digest, canonical `criteria_sha256` and
-`authority_sha256` from the audited review-input preflight, a passing outcome, zero blocking
-findings, and the `content-addressed-independent` audit scope.
-
-Admission recomputes the current base/head tree subject and compares both review
-digests against the current accepted input. Authority selection order alone does
-not change its digest. The whole input digest is not a reuse key because it also
-contains commit provenance. Equal content, criteria and authority are bound
-as `reviewed-current-content` or `reused-with-proof`; commit-SHA inequality by
-itself does not require re-review. Tree, criteria, authority, malformed receipt,
-or unknown-subject drift fails closed. Historical v1 and v2 receipts are interpreted
-only while validating already-retained historical records under their original
-exact-head and content-only rules, respectively. They are never eligible for current or new live admission;
-live admission accepts v3 only. Any effective `CHANGES_REQUESTED` review remains
-blocking. This review
-mode is source-only; downstream repositories select their own target-owned
-review policy from their actual maintainer and provider requirements.
-Review overhead follows the operation classification in
-`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`, not the terminal label.
-Both bounded and full independent reviews first validate the machine-readable
-subject, criteria and authority with `validate-agent-execution-guardrails.py
---review-input`. Authority, evidence-custody, security, release/adoption and
-unknown-risk changes still require full review. Preparation failures do not
-produce behavioral conclusions; preserve prior attempts and recheck only the
-affected inputs. Provider reconciliation failures require fresh provider
-read-back, not an unchanged content review. Declaration, merge admission and
-reconciliation retain their distinct factual times and authorization boundaries.
-
-The review body contains exactly one valid marked receipt and may include
-surrounding explanation. Duplicate, malformed, unsupported or conflicting
-receipt blocks and duplicate JSON keys fail closed. Prose does not override
-receipt fields or supply missing evidence:
-
-```text
-<!-- github-terminal-issue-closure-audit/v3
-{"repository":"OWNER/REPOSITORY","pull_request":123,"base_sha":"<reviewed base commit SHA>","head_sha":"<reviewed head commit SHA>","base_tree":"<reviewed base tree SHA>","head_tree":"<reviewed head tree SHA>","subject_digest":"<SHA-256 of canonical independent-review-subject/v1>","criteria_sha256":"<canonical reviewed criteria digest>","authority_sha256":"<canonical reviewed authority digest>","outcome":"passed","blocking_findings":0,"audit_scope":"content-addressed-independent"}
--->
-```
-Without an event the validator is only a static contract check. The aggregate
-source governance profile runs the declaration validator and its GWT tests.
-This policy, its validator and tests, provider
-configuration, dated evidence, and the source PR template are excluded from
-downstream packages; historical records are not rewritten.
+The [earlier closure contract](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/ba28cdbc3d7001dfb101cacba5e8f71406919797/.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md)
+documents retired declaration/admission/reconciliation receipt formats. Retained
+validators and schemas interpret selected compatible records; their existence
+does not activate them for new source PRs. Do not follow historical commands
+from this note. Explicit legacy/release work keeps its selected revision,
+evidence and verified-tool prerequisites; no support or recovery duty is waived.

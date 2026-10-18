@@ -4,30 +4,15 @@
 
 This file is the canonical English root collaboration guide. `AGENTS.zh-TW.md` is its Traditional Chinese (Taiwan) translation.
 
-## Temporary Source Redesign Override
-
-For source-repository work explicitly assigned to program #322, read
-[the temporary execution override](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
-before applying the rules below. Under the owner's 2026-09-24 U001 amendment,
-short, clearly bounded work may use coordinator-dispatched sub-agents with the
-least expensive capable model/effort; a new conversation or Astra is not required.
-Larger or multi-stage implementation Issues retain independent `gpt-6-astra` /
-`ultra` conversations. Use the assigned RAM-disk worktree and return local commits
-to the coordinator before first push; executors do not create further tasks or
-delegate without a coordinator assignment. Unrestored legacy/native/release verification outside the adopted source scope
-remains `deferred-by-owner` until its separately selected restoration decision. This exception is
-source-only; unrelated security, ownership, credential and publication boundaries
-remain in force.
-
 ## Source Development Rules
 
 Read [the source development policy](.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
-for the owner-adopted 2026-10-02 cutover and exact ordinary-source scope. Its eight
-rules replace conflicting ordinary-source aggregate, receipt, packet, lease and handoff
-requirements below; conditional independent review and selected checks remain.
-The temporary override and old mechanisms remain only for explicitly retained
-legacy/native/release obligations. Release, support, credentials, protection and
-downstream adoption retain their owners. No merge or date proves CI success.
+for ordinary source work: validation necessity, PR checks, conditional independent
+review and rule maintenance. It owns these rules; this entry supplies navigation.
+The owner's 2026-10-18 #461 decision simplifies this project's rules only;
+framework product changes under #463 require separate implementation authority.
+Release, support, credentials, protection and downstream adoption retain their
+owners. No merge or date proves CI success.
 
 ## Scope And Authority
 
@@ -77,7 +62,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
 - For code review, load the installed `code-reviewer` entry and only its applicable route and finding references.
 - `test-execution` has no required skill; resolve target-owned commands first.
-- Direct execution remains valid. Classify delegation under `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
+- Direct execution remains valid. Scope delegation under `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load a selected role's current instructions only when applicable. `.dev/contracts/ROLE-EXECUTION-CONTRACT.md` describes source execution evidence; its historical formats do not select ordinary-source procedures. Static profile presence is not invocation evidence.
 
 ## Workflow And Change Control
 
@@ -91,47 +76,25 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 
 ## Validation And Review
 
-- Define observable acceptance criteria and run the narrowest meaningful validation first.
-- Do not weaken fail-closed behavior merely to pass a test.
-- Independent review runs against one immutable commit, binds to an exact content subject, stays read-only, and cannot count its own repair as verification.
-- Content, criteria, or authority drift after review invalidates that review. Commit-SHA drift alone requires a deterministic current-subject rebind, not repeated independent review.
-- Preserve failure, timeout, interruption, and blocked evidence; a later pass does not erase it.
+- Before running tests, apply the source policy's necessity decision to the actual diff, semantics and direct dependencies. An edit or file extension alone is not a local test trigger.
+- Preserve the PR hosted gate and applicable independent review. Local checks, review, hosted results and acceptance establish different facts.
+- For authorized rule changes, replace obsolete instructions at their owner. Preserve valid protections and unrelated content; do not stack priority disclaimers over conflicting operational text.
+- Keep failures and limitations visible. Do not claim an unexecuted test passed or weaken behavior merely to make a check green.
+- For delegated work, read [agent guardrails](.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md). Keep one tracked writer and immutable, read-only independent review; follow actual user-selected model/effort and permissions.
+- Use [evidence guidance](.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md) only when interpreting an earlier result. Ordinary work needs no separate reuse receipt, hash inventory or acceptance ledger.
+- Verify code-graph index SHA and coverage before discovery claims. Reindex stale/missing graphs or use an explicit tracked-file fallback; search absence is not proof.
+- Never assign PowerShell automatic or reserved variables, case-insensitively; use purpose-specific names.
 
-### Validation Freeze And Evidence Reuse
+### Historical Context — NOT AN EXECUTION TRIGGER
 
-- Classify validation evidence as identity-, input-, environment-, or provider-sensitive before reuse. Reuse requires matching tracked bytes, transitive dependencies, command, profile, environment, runner, manifest, resolver, policy, and configuration authority.
-- Freeze only after tracked mutation and focused validation are complete. After freeze, tracked content or governing-authority drift invalidates the subject; history-only identity drift requires rebind. Terminal metadata writes only to declared ignored artifacts and does not invalidate the frozen snapshot.
-- Unknown dependency or authority state fails closed. Current-head review-subject binding, required hosted contexts, and live admission gates are always fresh; an equal content digest may reuse the independent review without repeating it.
-- Hosted source CI is required only for PRs selected by the source policy's native `src/**` and `tools/**` path filters. Other PRs need no source CI context; absence is not a pass. Separately selected release checks retain their own applicability.
-- A content-addressed independent audit reports each gate as `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or `not-applicable`; commit SHAs remain provenance rather than the validity key.
-
-### Agent Execution Guardrails
-
-- For new source development, use bounded delegation and conditional independent review under `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md` and the source applicability override in `.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. Bind the immutable diff, acceptance criteria and governing rules; preserve one tracked writer per worktree and truthful evidence. Do not require legacy classifier, preflight, packet or lease machinery for this adopted source scope.
-- For separately selected legacy or release obligations, classify actual risk under the guardrails contract; ordinary analysis and local edits may classify inline, while review preflight uses the validator. A terminal label alone does not require the full tier; short same-runtime independent read-only review of an isolated immutable ordinary change may use the bounded envelope. Authority, evidence-custody, security, release/adoption changes, external or long-running validation, shared mutable review or shared frozen work, and unknown risk require the full validated packet, immutable subject and machine-readable snapshot lease. One tracked writer per worktree remains mandatory in both tiers; a full lease requires explicit terminal release.
-- For those separately selected legacy or release obligations, preflight the machine-readable review subject, criteria and authority before behavioral dispatch in either tier. Keep preparation failures, behavioral defects, environment failures and provider reconciliation distinct; retain prior attempts and rerun only affected checks under the existing evidence-reuse and retry rules.
-- Keep formal acceptance-to-evidence ledgers where the acceptance contract requires them. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
-- Retry only after a privacy-safe failure fingerprint and material state change. Attempt three or later requires new owner or workflow authorization.
-- Verify code-graph index SHA and coverage before discovery claims. Reindex stale or missing graphs or use an explicit tracked-file fallback; search absence alone is not proof.
-- Never assign to PowerShell automatic or reserved variables, case-insensitively; use purpose-specific variable names.
-
-### Long-Running Validation Gate
-
-- Before dispatch, classify a command as long-running when its profile is `release` or `nightly-full`, it selects a full package, compatibility, or history matrix, repository evidence predicts at least 120 seconds, or a prior comparable execution took at least 120 seconds. Use `.dev/standards/WORKFLOW-GATE-POLICY.md` for the execution contract.
-- Finish tracked mutations and focused validation, then bind the exact command to a clean immutable commit.
-- Dispatch one read-only external task using the least expensive capable profile; write only ignored validation artifacts and do not repair the subject.
-- Use a callback or one parent event wait. Do not poll.
-- Require one schema-valid terminal report bound to the exact task, commit provenance, content subject, command, duration, outcome, and evidence.
-- Timeout, interruption, drift, missing evidence, cleanup failure, or blocked execution never becomes `passed`.
-
-### Portable Test Fixture Acceleration
-
-- The portable baseline is zero configuration. The legacy `AI_CONTEXT_TEST_TMP_ROOT` acceleration route is unavailable in this source layout because its classifier and tooling were removed; do not activate it from historical instructions.
-- The setting is one explicit opt-in fixture root. Do not discover storage, change global `TEMP` or `TMP`, or route durability-storage or platform-filesystem semantics through it.
-- Re-run preflight at execution time, create one unique contained run directory, and clean up only that verified directory. Invalid, unsafe, or unwritable roots fail before material fixtures.
-- Keep diagnostics path-free. A WSL `/mnt/*` performance warning is advisory; it never changes test outcomes or silently selects another root.
-- Compare default and accelerated modes with the same tracked test profile on one commit and host. Use at least three runs for a median and label cold or warm conditions explicitly.
-- Current source tests follow `.dev/standards/SOURCE-DEVELOPMENT-POLICY.md`; the retired acceleration route requires a separately selected compatible revision.
+Earlier U001/redesign and fixture-acceleration instructions are not ordinary
+source procedures. Do not load or execute them merely because they are mentioned
+in historical records. Only separately selected legacy/native/release obligations
+use their compatible revision and verified route; missing tooling remains
+unavailable and retained deferrals are not passes. Their owners retain release,
+support and recovery duties. The
+[temporary execution override](.dev/standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
+is historical context for those explicitly retained obligations only.
 
 ## CLI And Runtime Boundaries
 

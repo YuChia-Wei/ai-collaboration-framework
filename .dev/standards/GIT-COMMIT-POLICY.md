@@ -262,11 +262,13 @@ For commit-policy purposes:
 
 ## Validation Notes
 
-Before commit, run the narrowest meaningful validation:
+Before commit, decide what the actual diff needs under SOURCE-DEVELOPMENT-POLICY:
 
 - Markdown or documentation-only changes: `git diff --check` and reference search when links changed.
 - JSON task changes: parse changed JSON files.
-- Code changes: run the relevant test command or state why tests were not run.
+- Behavior/contract changes: run directly relevant checks when needed, or state
+  the limitation. Nonsemantic changes do not select product tests merely because
+  a code/schema file changed. An unchanged prior result need not be rerun for a commit.
 
 The commit body must mention skipped validation when the skipped check would normally apply.
 AI-assisted commits must also satisfy the AI model signature trailer contract above.
@@ -290,7 +292,6 @@ For workflow closeout, validate the workflow branch range explicitly:
 python tools/maintenance/validate-git-commits.py --range main..HEAD --workflow-id <workflow-id>
 ```
 
-`check-all.sh` runs this check when `COMMIT_RANGE` is set. Set
-`WORKFLOW_ID` with it for workflow-stage section and identity validation.
-Human-only commits are outside the AI-signature contract and should not be
-included in a range whose purpose is AI-assisted workflow closeout.
+Use the explicit range command for the actual closeout; do not invoke a
+retired aggregate runner. Human-only commits are outside the AI-signature
+contract and should not be included in an AI-assisted workflow closeout range.

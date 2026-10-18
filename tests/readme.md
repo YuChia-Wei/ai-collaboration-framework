@@ -12,6 +12,25 @@ python -I -B tests/run.py --suite distribution
 python -I -B tests/run.py --suite release --suite source
 ```
 
+Before selecting a command, inspect the actual diff, semantics and direct
+dependencies under the [source development policy](../.dev/standards/SOURCE-DEVELOPMENT-POLICY.md#decide-before-running-a-test).
+No-semantic-effect whitespace, ordinary prose or changes unrelated to schema
+constraints do not require product/schema tests just because a file changed.
+Whitespace affecting parsing or output is a real contract change. Use affected
+existing cases/suites when needed; a report, commit or handoff alone adds no run.
+After a failure, locate the cause and rerun its affected scope. Do not turn a
+repair into repeated full-suite execution without a concrete wider impact.
+
+Large integration, E2E, usability, full installation/upgrade and high-cost actor
+checks require a clearly affected behavior/boundary or an explicit requirement.
+They are not a default consequence of local development or closeout. Investigate
+unknown impact first; do not silently expand to a whole matrix. This decision
+needs no additional ledger, hash inventory, benchmark or trial.
+
+A local default-suite run before a PR is optional integration feedback. It is
+not required at every commit/stage and cannot replace the hosted current-head
+PR gate. Existing results retain their original source and outcome.
+
 The default selects the five suites below. Repeating `--suite` selects their
 union in the supplied order. Unknown selections, empty suites, missing imports,
 failures, errors and skips all fail. Unittest details go to stderr; stdout is one

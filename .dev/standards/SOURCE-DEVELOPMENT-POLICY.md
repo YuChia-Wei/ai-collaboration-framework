@@ -1,146 +1,200 @@
 # Source Development Policy
 
-**Status: adopted by the owner on 2026-10-02. Source repository only.**
-The owner's 2026-10-04 continuation replaces diff-based CI selection with native
-GitHub `src/**` and `tools/**` path triggers and removes obsolete automation.
-The [adoption record](../workflows/2026-10-02-source-development/adoption.md)
-records the direct owner decision covering this cutover, independent scoped
-review, Source checks activation, PR integration and backlog reconciliation.
-These rules govern this authorized transition immediately; repository-wide
-integration follows the reviewed PR and successful actual current-head CI.
-Policy adoption itself is not independent review, hosted success or a merge.
+**Source repository only.** The owner adopted the source cutover on 2026-10-02
+and native GitHub path filters on 2026-10-04. The 2026-10-18 decision in
+[#461](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/461)
+simplifies validation and replaces superseded operating instructions.
+The [original adoption record](../workflows/2026-10-02-source-development/adoption.md)
+retains its historical evidence. A policy decision is not CI success,
+independent review, integration, publication or downstream adoption.
 
 ## Scope and retained authority
 
-These adopted rules govern newly authorized development in
-this framework source repository, including skill instructions, schemas, tools,
-distribution code, tests and source governance. They supersede conflicting
-ordinary-source aggregate, receipt, packet, lease and handoff requirements.
-The exact bootstrap review and first hosted check remain separately observable.
+This policy owns ordinary development in this framework source repository,
+including skills, schemas, tools, distribution, tests and source governance.
+Product resources remain in `src`; managed installed projections are consumed,
+not hand-edited. Framework changes for downstream rule maintenance are separate
+under [#463](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/463);
+this source policy does not implement or adopt that Feature.
 
-Existing released target semantics, published assets, selected release phases,
-active legacy execution/recovery records, frozen backlog and credential owners
-retain their contracts. Legacy maintenance selects its compatible source revision,
-policy/configuration and actual available tools; this transition does not make
-removed `artifact_core`, registries or resolvers available. Do not run old
-validators against the new configuration as if its schema were backward compatible.
-Do not restore old code merely to admit unrelated source work.
+Released target semantics, published assets, selected release phases, active
+legacy execution/recovery records and credential owners retain their authority.
+Ordinary source work does not restore removed tools or migrate historical
+records. See the non-executable historical boundary below only when a retained
+obligation is explicitly selected.
 
 ## Eight source rules
 
 1. Bind material work to the authorized online Issue, owning capability and
    bounded acceptance. Keep Issue, Project, execution, integration, publication
-   and adoption states separate. Small single-pass instruction/documentation
-   changes may use direct mode and a concise PR record; durable transitions and
-   connected multi-stage work retain one source-owned workflow.
+   and adoption states separate. Small single-pass work may use direct mode;
+   durable transitions needing unique coordination state use one source workflow.
 2. Use a dedicated branch and one tracked writer per worktree; preserve unrelated
-   changes. Edit reusable product in `src/`; consume managed core/runtime entries.
-   Keep project configuration/data and released support with their actual owners.
-   Select existing routes explicitly, rather than inventing unavailable tooling.
-3. GitHub workflow path filters trigger automatic source CI only for `src/**`
-   and `tools/**` changes. Run the fixed current `python -I -B tests/run.py`
-   suite set; no Git-diff classifier, path-count limit or unknown-path gate is
-   used. Other paths do not trigger CI. Authors still inspect their changes and
-   run meaningful local checks, including workflow changes. Errors, skips and
-   failures are not passed; no historical/full/nightly matrix is implied.
-4. Record full source identity, exact commands, actual outcomes, retained failures,
-   limitations and next owner. Distinguish static, fixture, local, hosted, native
-   and actual agent evidence. Logical selection is not physical assembly or
-   installation coverage. Unavailable/deferred/neutral results are never passed.
-5. Inspect the diff and validate the complete planned commit message before
-   each coherent commit. Retain grammar, selected workflow identity and truthful
+   changes. Edit the actual source owner within authorization. Keep project
+   configuration and released support with their owners; do not invent tooling.
+3. Before running tests, inspect the actual change and select only needed local
+   checks using the rules below. The PR hosted gate remains fixed: GitHub's
+   native `src/**` and `tools/**` filters select `python -I -B tests/run.py`.
+   No Git-diff classifier, file-count gate or automatic high-cost matrix is used.
+4. Record source identity, actual commands/results, retained failures, relevant
+   limitations and next action in the existing work record. Distinguish static,
+   fixture, local, hosted, installation and actor evidence. No result establishes
+   more than it observed; failed, blocked, not-run and unknown are not passed.
+5. Inspect the diff and validate the complete planned commit message before a
+   coherent commit. Retain grammar, workflow identity when selected, and truthful
    AI attribution. Push, PR and integration need their actual authorization.
-   Validate PR-added authored commits when applicable, without rewriting history
-   or requiring an aggregate gate. Provider-native commits retain their owner.
+   Validate applicable PR-added authored commits without an aggregate gate or
+   rewriting provider-native history.
 6. Ordinary changes need author inspection and maintainer PR acceptance. Changes
    to authority, security, credentials, publication, installation or recovery
    additionally need independent scoped read-only review of an immutable diff,
-   acceptance criteria and governing source rules. Record reviewer, full commit,
-   findings and disposition. Implementation or author inspection is not independent.
-   Changed reviewed content, criteria or authority needs affected review again;
-   history-only drift may reuse review only with exact tree equivalence and fresh
-   head binding. No mandatory legacy receipt, review-input packet or lease applies
-   to this adopted source scope. Policy/automation changes cannot approve a lower
-   review or admission standard for themselves.
-7. For PRs selected by the workflow's `src/**` or `tools/**` path filters, require
-   actual current-head `Source change gate` success before integration. A PR
-   outside those paths needs no source CI context; report it as not applicable,
-   never passed. Retain live PR head/base, effective review conditions and any
-   separately selected native/release evidence. Missing provider facts block that claim. Source
-   test success does not discharge separately listed admission requirements.
-   State final/deferred intent for each Issue; use `Refs` with reason and next
-   owner for checkpoints. Read merge, Issue and Project separately. Already
-   integrated delivery may be closed administratively after accepted evidence
-   and explicit owner authority; never invent a historical closing keyword.
-8. Preserve published support, recovery records, frozen history, credentials and
-   external-setting ownership. A source PR never implicitly publishes, installs,
-   changes branch protection or resolves a provider defect. Legacy validators
-   apply only to explicitly selected version/release/incident obligations. Retiring
-   an ordinary gate alone does not authorize deleting evidence. The explicit
-   2026-10-04 cleanup removes obsolete workflow/CI implementations; historical
-   records and already published assets remain unchanged.
+   acceptance criteria and governing rules. Record reviewer, full commit,
+   findings and disposition. Author inspection is not independent review.
+   Relevant changes require affected review again; identity-only drift needs
+   comparison of the reviewed diff and rules, not another review. No legacy
+   receipt, preflight, packet or lease is required. Policy changes cannot lower
+   their own review or admission standard.
+7. For PRs selected by the native `src/**` or `tools/**` filters, require actual
+   current-head `Source change gate` success before integration. Outside those
+   paths the source CI context is not applicable, never a fabricated pass.
+   Retain fresh PR head/base, effective reviews and actual required checks.
+   Respect provider protection without implicitly changing it. Use final or
+   deferred intent for each delivered Issue; read integration, Issue and
+   Project state separately. Administrative closure of accepted integrated work
+   requires explicit owner authority, not an invented historical closing keyword.
+8. Preserve published support, recovery records, historical evidence, credentials
+   and external-setting ownership. A source PR never implicitly publishes,
+   installs, changes protection or resolves provider defects. Use only explicitly
+   selected compatible legacy/release procedures; no unavailable route is passed.
 
-## Execution and evidence
+## Decide before running a test
 
-Bounded delegation identifies owning skill, input revision, scope, permitted
-reads/writes, non-goals, result, stop conditions and integration owner. Select
-the least expensive capable execution profile within actual authority. Portable
-roles and source runtime profiles inherit user-selected runtime model/effort;
-do not pin or automatically escalate the model, reasoning depth, provider or
-cost tier because of a role name. A higher-cost/deeper analysis needs disclosed
-reasoning and explicit user authorization for a visible separate task. Check
-runtime defaults and per-invocation overrides before dispatch; configuration is
-not an enforced billing ceiling or proof of the actual execution model. Preserve
-one tracked writer per worktree; reviewers remain read-only on a clean fixed
-subject. No tool/profile declaration is proof that an agent ran.
+At task planning, identify validation purpose, expected evidence, trigger and
+execution point. Distinguish mandatory gates and accepted acceptance requirements
+from checks conditional on anticipated impact. Schedule shared checks at the
+appropriate integration point rather than once per task, unless actual changes
+or required gates justify repetition. Use the existing plan or task output.
 
-Selected lengthy validation still pins source, isolates writers, preserves logs,
-uses a bounded completion wait and stops on drift. No automatic external-agent
-platform, signed packet, acceptance ledger or snapshot lease is required. Keep
-failed attempts; retry only after a relevant change, and re-plan repeated failures
-instead of retrying unchanged input. Unknown evidence dependencies are not reused.
+During implementation, reconcile that plan with the actual diff, semantics and
+direct dependencies; confirm necessity before execution. After the change,
+confirm required acceptance evidence is complete. Bug reproduction, TDD and
+incremental checks may run before or during edits for a concrete purpose.
+A preliminary decision does not freeze the test plan. Return wider impacts to
+the coordination owner; changes to accepted requirements need their owner's
+decision. Do not silently cancel mandatory gates or accepted acceptance.
+The presence of an edit, file extension, directory, commit or workflow stage
+does not by itself select a local test.
+
+- Whitespace-only changes with no parsing, output or content-contract effect,
+  ordinary explanatory text, and changes that do not affect schema semantics
+  or constraints need no product/schema tests merely because of their location.
+  Check changed text, links or formatting when those are the actual subject.
+- Whitespace can affect YAML, code, templates or exact output. Select the checks
+  for that real effect; do not assume every whitespace edit is harmless.
+- For behavior, contract or dependency changes, use the directly affected
+  existing cases or suite. Add tests only for a real new behavior or confirmed
+  defect that lacks necessary protection, not to mirror this policy.
+- Large integration, E2E, usability, full installation/upgrade matrices and
+  high-cost AI evaluations require a clearly affected behavior/integration
+  boundary or an explicit user/accepted-acceptance requirement. Select only the
+  relevant scenarios, not every model, catalog entry or upgrade path.
+- If impact is unclear, investigate the relevant dependency first. Do not
+  silently substitute a cheaper claim for required acceptance, mark unknown
+  coverage passed, or expand uncertainty into an automatic full matrix.
+
+A brief explanation in the current work record is enough; this decision does
+not require a new classification file, tool, ledger or approval ceremony.
+
+| Stage | Validation choice |
+| --- | --- |
+| Local development | Only checks justified by the actual change; no mandatory per-edit/per-commit full suite |
+| Repair after failure | Identify the cause and rerun the affected cases; expand only for a concrete wider impact |
+| Preparing a PR | May run the same default suite once as a local integration check; not a mandatory double-run rule |
+| PR integration | Required current-head hosted gate and applicable review; local passes cannot substitute |
+| Reports, handoff and closeout | Inspect the changed record and necessary provider facts; no product rerun solely for the stage |
+
+The hosted path filters intentionally remain independent of local semantic
+selection. A new selected PR head still needs its actual hosted result, even
+when local tests were not needed.
+
+## Reuse and stop conditions
+
+Keep a passing result when no subsequent change affects its claim. Assess the
+diff, relevant inputs and dependencies, including environment where it matters.
+Do not require a complete hash inventory, transitive resolver, receipt or paired
+reports simply to avoid repeating a check. A changed SHA, report, session or
+executor is not itself a product test trigger. Attribute old results to their
+actual execution; never relabel them as a fresh run.
+
+Retain failures and their disposition. A retry needs a relevant repair, new
+information or another concrete reason; do not blindly repeat unchanged work.
+Re-plan repeated failures and honor explicitly agreed limits. Missing coverage
+stays missing; current provider facts and applicable review remain separately
+required. No automatic third-attempt artifact or cost dataset is required.
+
+Keep selected execution inputs stable. For long-running commands, finish the
+relevant changes before execution, isolate any writers, bound the command and
+timeout, preserve its result and stop on relevant drift. Choose a suitable
+direct or delegated surface within authorization; duration alone does not
+mandate an external platform, immutable commit, new schema or matrix.
+Independent review still uses the fixed commit required by rule 6.
+Use available completion events/callbacks for delegated long-running work,
+rather than repeated status polling.
+
+## Maintain the effective rule, not a stack of exceptions
+
+For an authorized rule change, delete or replace obsolete, duplicate and
+contradictory instructions at their owner. Keep one coherent effective body;
+do not leave stale operational steps beneath an added priority disclaimer.
+Preserve still-valid protections, unrelated custom content and historical records.
+
+If old experience is unnecessary in the current policy, remove it from the
+operating text. If retaining it is useful, place it in a clearly marked
+`NOT AN EXECUTION TRIGGER / historical context only` section, state its actual
+applicability and remove it from current operation navigation. A label alone is
+not execution isolation; the effective body and entry links must agree.
+Do not broaden this work into rewriting all repository history.
+
+## Delegation and work records
+
+A bounded assignment names owning skill, input revision, scope, permissions,
+non-goals, result, stop conditions and integration owner. Inherit user-selected
+model/effort unless the user explicitly selects an override. Never infer spending
+or privilege permission from a role name or available model. Configuration is
+not proof of actual runtime identity, usage or billing. Keep one tracked writer
+per worktree and a read-only reviewer on the immutable subject.
+
+Use the existing locator/task identity fields in
+[workflow artifacts](WORKFLOW-ARTIFACT-POLICY.md) when workflow mode is needed.
+Check changed records, not every historical workflow. A
+[handoff](WORKFLOW-HANDOFF-POLICY.md) records source/branch, authority, completed
+and pending work, actual results, limitations and the next action.
+No new record store or automatic historical migration is selected.
 Graph discovery needs known source identity/coverage or an explicit tracked-file
-fallback. PowerShell automatic/reserved variable names are never assigned.
+fallback. Never assign PowerShell automatic/reserved variables.
 
-Source workflows continue under `.dev/workflows/<id>/` with the existing locator
-and task identity fields from WORKFLOW-ARTIFACT-POLICY. This selects no new #416
-online record store and migrates no historical record. Check relationships for
-changed records, not every workflow in history. Handoffs need source/branch,
-authority, completed/pending work, exact commands/outcomes, residuals and next
-action; historical critical/registry machinery is not an ordinary prerequisite.
+## CI and publication boundaries
 
-## Gate dispositions
+`source-checks.yml` runs on Windows/Python 3.13 with pinned
+`tests/requirements.txt` dependencies and the fixed default suites. Optional
+loader/platform tests are local selected checks, not native installation
+acceptance. Documentation, project-policy, tests-only and workflow-only changes
+do not automatically trigger this job under the existing native path filters.
 
-| Surface | Adopted ordinary-source treatment | Retained boundary |
-| --- | --- | --- |
-| Source CI context | `Source change gate` only for PRs selected by native `src/**` / `tools/**` filters | No context required for other paths; provider protection remains separately owned |
-| Audit/v3, review-input packets, digest/rebind and leases | Scoped independent review under rule 6 | Historical receipt meanings and selected release audits |
-| Terminal declaration/admission/reconciliation platform | Per-Issue intent plus actual checks and live read-back | Historical validator/configuration contracts; no hybrid receipt |
-| `check-all`, full/history/nightly matrices | Fixed current default suites via `tests/run.py` | Historical matrices are not restored |
-| `artifact_core` and old effective-rule resolver | Not a dependency of ordinary source admission | Missing routes remain unavailable until separately restored |
-| Universal handoff registry and whole-workflow scan | Bounded source workflow/handoff described above | Active legacy records and release phase requirements |
-| Runtime parity | Changed actual source/installed owners only | Managed installed projections remain protected |
-| High-I/O/installation/linked-worktree trials | Retired by #425; no automatic recreation | New real consumer need requires a selected scenario and acceptance |
-| Fixture acceleration and benchmarks | No ambient drive selection or unmeasured speed claim | #274/#275 receive explicit obsolete-scope disposition; no measured benchmark pass |
-| Release, support, credentials and protection | Unchanged | Their explicit owners and approval boundaries remain |
+Source checks, package snapshots and Draft Release delivery retain their
+separate roles. No Actions permission, ruleset, credential, release environment
+or publication setting change follows from this policy. Reconcile a provider
+rule requiring an absent path-filtered check with its owner; never fabricate
+success or silently change protection.
 
-## CI subset and remaining U001 obligations
+## Historical context — NOT AN EXECUTION TRIGGER
 
-`source-checks.yml` runs on Windows with Python 3.13 and pinned dependencies from
-`tests/requirements.txt`. Its native PR paths select only `src/**` and `tools/**`;
-the job invokes `python -I -B tests/run.py` without a diff selector. Optional
-platform/loader checks remain local selected evidence, not native installation
-acceptance. Documentation, project policy, tests-only and workflow-only changes
-do not automatically trigger this job under the owner's selected boundary.
-
-Retain only source checks, package snapshots and Draft Release delivery workflows.
-Snapshot pushes use the same two path patterns; explicit manual builds and tag
-release delivery retain their existing operation boundaries. No Actions permission,
-ruleset, protection, credential, release-environment or publication setting changes
-are selected. A provider rule requiring an absent path-filtered check must be
-reconciled by its owner; do not fabricate a success or change protection implicitly.
-
-U001 remains for explicitly selected uncompleted legacy/native/release obligations
-outside this adopted ordinary-source scope. Missing native acceptance stays
-`deferred-by-owner` or blocked for its affected operation. Hosted source success,
-downstream adoption and full P7 completion are separate facts.
+The [pre-simplification policy](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/ba28cdbc3d7001dfb101cacba5e8f71406919797/.dev/standards/SOURCE-DEVELOPMENT-POLICY.md)
+records earlier cutover dispositions. Legacy aggregate/critical gates, packet,
+lease, receipt, closure-resolver and fixture-acceleration procedures are not
+ordinary source commands. Do not invoke or restore them from historical mentions.
+Only an explicitly selected legacy/native/release obligation chooses its own
+compatible revision, authority and verified tools. Unrestored U001/P7 obligations
+remain deferred-by-owner or blocked for that operation; this cleanup does not
+waive them or alter published assets. Hosted success and downstream adoption
+remain separate from those obligations.

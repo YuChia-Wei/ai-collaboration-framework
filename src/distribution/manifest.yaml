@@ -642,7 +642,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/ai-context-governance/skill-package.yaml
   kind: skill
-  version: 0.1.0
+  version: 0.1.1
 - kind: skill
   id: ai-context-init
   version: 0.2.0
@@ -774,7 +774,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.3
+  version: 0.2.4
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -870,7 +870,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.3
+  version: 0.2.4
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -882,7 +882,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
   kind: skill
-  version: 0.3.1
+  version: 0.3.2
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml

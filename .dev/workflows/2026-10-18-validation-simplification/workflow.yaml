@@ -1,0 +1,72 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-18-validation-simplification
+workflow_kind: source-policy-maintenance
+title: Simplify source and portable validation and rule maintenance
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-10-18-validation-simplification
+entrypoint: workflow-plan.md
+created_at: '2026-10-18T11:29:21+08:00'
+updated_at: '2026-10-18T12:38:04+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: '1.0.0'
+branch: codex/2026-10-18-validation-simplification
+base_branch: main
+input_commit: ba28cdbc3d7001dfb101cacba5e8f71406919797
+work_items:
+  - provider: github
+    issue: 461
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/461
+  - provider: github
+    issue: 463
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/463
+tasks:
+  - task_id: T1
+    workflow_id: 2026-10-18-validation-simplification
+    owner_skill: ai-context-governance
+    status: completed
+    created_at: '2026-10-18T11:29:21+08:00'
+    updated_at: '2026-10-18T11:39:04+08:00'
+    template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+    template_version: '1.0.0'
+    model: gpt-6-astra
+    reasoning_effort: medium
+    runtime_identity_basis: configured defaults; actual primary runtime label not exposed
+    title: Replace ineffective source rules and inspect the bounded diff
+    result_summary: Replaced source-only policies and navigation; focused document checks passed; product tests not selected.
+    findings_status: independently reviewed; F1 repaired and verified; no unresolved findings
+  - task_id: T2
+    workflow_id: 2026-10-18-validation-simplification
+    owner_skill: code-reviewer
+    status: completed
+    created_at: '2026-10-18T11:29:21+08:00'
+    updated_at: '2026-10-18T11:39:04+08:00'
+    template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+    template_version: '1.0.0'
+    model: gpt-6-astra
+    reasoning_effort: xhigh
+    runtime_identity_basis: owner-authorized runtime subagent /root/astra_461_review; gpt-6-astra xhigh selected
+    title: Independently review immutable delivery and return affected repairs
+    result_summary: Astra xhigh reviewed initial commit and repair commit; F1 resolved; no new actionable findings in affected scope.
+    findings_status: no unresolved findings; static source-policy review only
+    reviewed_commit: 97e8a7277ea7e373b08b03656da03ed2afde571b
+  - task_id: T3
+    workflow_id: 2026-10-18-validation-simplification
+    owner_skill: software-development-orchestrator
+    status: completed
+    created_at: '2026-10-18T12:05:17+08:00'
+    updated_at: '2026-10-18T12:38:04+08:00'
+    template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+    template_version: '1.0.0'
+    model: gpt-6-astra
+    reasoning_effort: medium
+    runtime_identity_basis: configured defaults; actual primary runtime label not exposed
+    title: Deliver portable rule replacement and necessary-validation instructions for issue 463
+    result_summary: Four portable instruction packages corrected; exact versions aligned; structural checks and affected retry recorded; Astra independent review complete.
+    findings_status: no actionable findings in portable delivery or timing refinement; prior issue 461 F1 resolved
+    reviewed_commit: a46988aa8f9e4148b77880aaf72696dca9bb9471
+    reviewer: /root/astra_461_review
+    reviewer_model: gpt-6-astra
+    reviewer_reasoning_effort: xhigh

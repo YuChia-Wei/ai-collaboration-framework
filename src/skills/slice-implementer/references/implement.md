@@ -117,11 +117,34 @@ not erased by a common-method result.
 4. Implement necessary regression protection within authority. Preserve supplied
    scenarios and assertion intent. Test design, concrete code and actual test
    execution remain separate results, even when all are already authorized.
-5. Run the narrowest meaningful authorized target checks using actual supported
-   commands. Do not invent a runner, acquire credentials or weaken a guard to
-   make validation pass. Preserve failures, interruptions and missing evidence.
+5. Confirm test necessity before execution from the actual diff, semantics,
+   direct dependencies and target-owned gates. Ordinary prose or whitespace with no parsing,
+   schema, output or behavior effect needs no test merely because of its path,
+   extension or existence. Whitespace affecting those contracts needs relevant
+   checks; investigate unclear impact first. Run necessary authorized checks
+   using actual supported commands. Do not invent a runner, acquire credentials
+   or weaken a guard. Preserve failures, interruptions and missing evidence.
 6. Inspect the resulting diff, acceptance coverage and touched radius. Record
    adjacent unrelated issues without silently broadening the slice.
+
+Use any supplied validation plan as an initial expectation, and revise
+conditional checks as actual edits reveal or remove impacts. Before execution,
+confirm which checks are necessary; after the change, confirm required
+acceptance evidence is complete. Do not silently cancel mandatory target gates
+or accepted acceptance requirements. Return newly discovered wider impacts or
+cross-task scheduling changes to the orchestration owner when one is selected;
+otherwise reconcile them through the existing task owner, without requiring an
+orchestrator installation. A change to accepted requirements needs its owner's
+decision. Bug reproduction, TDD and incremental checks may run before or during
+edits for a concrete purpose; the numbered steps do not require all testing to
+wait until implementation ends.
+
+Large integration, E2E, usability, full installation/upgrade and high-cost AI checks
+need a clearly affected behavior/boundary or an explicit user request or accepted
+acceptance criterion; do not expand to a full matrix by default. Preserve
+mandatory target gates, security and release obligations. Reports, handoffs or
+SHA changes alone do not select tests. Explain an unnecessary check briefly in
+the existing result, without a new receipt, ledger or complete hash inventory.
 
 An unavailable editor prevents implementation. Missing validation tools or
 environment leaves checks blocked/not-run; keep the implementation result and

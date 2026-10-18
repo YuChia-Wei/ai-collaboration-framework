@@ -18,10 +18,10 @@ installed content in `.ai/core`. Load only the applicable policy.
 - [Assessment records](ASSESSMENT-ARTIFACT-POLICY.md),
   [workflow locator](WORKFLOW-ARTIFACT-POLICY.md),
   [workflow selection](WORKFLOW-GATE-POLICY.md) and
-  [handoff](WORKFLOW-HANDOFF-POLICY.md)/[configuration](WORKFLOW-HANDOFF-POLICY.yaml).
+  [handoff](WORKFLOW-HANDOFF-POLICY.md).
 - [Effective source rules](AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml).
 
-## Selected Legacy And Release Duties
+## Selected Legacy And Release Duties — NOT AN ORDINARY-WORK TRIGGER
 
 - [Source release policy](AI-CONTEXT-SOURCE-RELEASE-POLICY.md).
 - [Temporary redesign/U001 override](FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md),

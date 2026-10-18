@@ -1,198 +1,55 @@
 # Workflow Handoff Policy
 
-Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-takes precedence over conflicting ordinary-source gates below, under the owner's
-2026-10-02 decision. Existing release/support/recovery contracts and explicitly
-selected active legacy records retain their owners; their historical machinery
-is not silently migrated to the new source format. Unrestored U001 obligations
-outside the adopted source scope remain deferred or blocked, never passed.
+This source-project policy governs continuation of authorized unfinished work.
+Use the [source development policy](SOURCE-DEVELOPMENT-POLICY.md) for validation
+and [branch policy](../TEAM-GIT-FLOW-RULES.MD) for Git transport. A new session,
+model, host or executor is not itself a reason to rerun product tests.
 
-This policy defines the fail-closed checkpoint required when an active workflow
-is transferred across a model, runtime, host, machine, or fresh session.
+## A usable handoff
 
-## Purpose
+Update the existing workflow entrypoint or work record with:
 
-A receiving agent must be able to continue from repository evidence alone. A
-handoff must not depend on hidden conversation history, the previous executor's
-memory, or an assumption that the next executor will infer the intended state.
-Design the checkpoint for the weakest credible executor that is authorized to
-perform the next action.
+- the Issue, accepted scope and actual authorization, including exclusions;
+- repository, branch/base and source commit, plus any uncommitted work;
+- completed and pending work, decisions, unresolved findings and next owner;
+- relevant commands/results and where their evidence can be read;
+- the next concrete action and any missing permission or environment.
 
-The machine-readable contract is
-`WORKFLOW-HANDOFF-POLICY.yaml`. Use the skill-owned template at
-`.ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml`.
-That template and the legacy `check-all.sh` route below are unavailable in this
-source layout. These instructions require the compatible legacy revision when
-that obligation is selected; ordinary source handoffs use the adopted source
-policy above.
-Register every durable instance in
-`.dev/workflows/handoff-checkpoints.yaml`; aggregate and hosted governance
-checks validate every registered checkpoint.
+The receiver must be able to continue without private conversation history.
+Keep one current entrypoint. Do not duplicate the same facts into a universal
+registry, a machine checkpoint and a second human report. A bounded sub-agent
+assignment may carry this information in its dispatch rather than creating a
+new workflow. Do not fabricate missing model/runtime or validation observations.
 
-## When A Checkpoint Is Required
+## Before continuing
 
-Create or refresh a checkpoint before:
+Read the handoff, current Issue authority, branch and working-tree changes.
+Check only the inputs needed for the next action. Resolve stale or conflicting
+state before writing; preserve other writers' work. Resume from the correct
+branch instead of restarting work already completed.
 
-- changing the model, runtime, host, or machine that owns an active workflow;
-- continuing an active workflow in a fresh session;
-- delegating continuation to a lower-cost or otherwise less-contextual
-  executor;
-- pushing or merging an incomplete workflow as a transport boundary;
-- handing off framework version candidate validation, tag validation,
-  publication validation, or hosted finalization validation work.
+Apply source policy to decide whether any new change affects existing evidence.
+Keep earlier results attributed to their actual subject. Unknown coverage stays
+unknown; a handoff does not require a critical/full gate, whole-history scan,
+hash inventory or proof that unchanged work was executed again.
 
-This checkpoint requirement does not prohibit integration of an `in_progress`
-workflow. It preserves a resumable state before the separately authorized
-push or merge; repository review, checks, permissions, and branch protection
-still decide whether integration is allowed.
+The receiving agent must honor the prior authorization boundary. A handoff is
+not permission to change the model/provider, use credentials, push, integrate,
+publish, install or close an Issue. A pending owner-sensitive decision blocks
+only the work that depends on it.
 
-The checkpoint is not workflow completion. Keep the workflow and unfinished
-task active unless their own completion contracts are satisfied.
+## Transport and completion
 
-## Repository And Resume Pins
+If transport is authorized, record whether the checkpoint was pushed or merged
+and the exact resume branch/action. After a checkpoint merge, create a
+continuation branch from the updated target before further material edits.
+Unfinished work remains unfinished; transport and local workflow completion
+are separate from PR integration, Issue/Project closure and publication.
 
-The checkpoint must record:
+## Historical context — NOT AN EXECUTION TRIGGER
 
-- repository root, branch, and the fully validated subject commit;
-- `checkpoint_commit_source: containing-commit`, which tells the receiver to
-  resolve the exact checkpoint transport commit from the latest commit that
-  contains the checkpoint file;
-- observed dirty state and the SHA-256 of `git status --porcelain=v1`;
-- workflow ID, current task ID, last completed action, and exact next action;
-- `hidden_context_required: false`.
-
-This two-commit shape avoids an impossible self-reference: the checkpoint file
-can pin the validated parent commit while its own containing commit is resolved
-deterministically from Git. The receiver must run:
-
-```text
-python tools/maintenance/validate-workflow-handoff.py --checkpoint <path> --verify-repository
-```
-
-Repository verification is read-only. It rejects a stale branch tip, wrong
-branch, missing commit, mismatched dirty state, or attribution observation that
-does not match the pinned commit.
-
-## Critical Gate
-
-Before creating the checkpoint, run the repository critical gate. Record the
-exact command, exit code, observation time, SHA-256 of normalized complete
-output, total line count, and no more than the bounded tail allowed by the
-machine policy.
-
-The portable command is:
-
-```text
-bash .ai/scripts/check-all.sh --critical
-```
-
-An environment-specific Bash executable is permitted when the recorded command
-still invokes the same repository path and `--critical` mode.
-
-A successful gate permits normal continuation. A failed gate blocks
-continuation unless all of the following are true:
-
-- continuation mode is `repair-only`;
-- the checkpoint names the current workflow task as the repair task;
-- one or more stable failure IDs are recorded;
-- the exact next action is limited to repairing those failures.
-
-The repair exception does not authorize unrelated work.
-
-## Release Handoffs
-
-Set `release_handoff: true` for source release validation-phase handoffs. The
-exact machine literals remain `candidate`, `tag`, `publication`, and
-`finalization`. They select REL-owned validation phases; they are not
-release-source statuses, provider states, or mutation authority.
-
-In addition to the critical gate, record the REL-owned phase-specific state
-command and bounded observed result. A source release phase check must pass
-before source release work continues; a failed phase check has no general
-continuation exception.
-
-HANDOFF owns this interface. REL owns the allowed phase vocabulary, the
-sanctioned command, and its release-state semantics.
-
-Every `release_handoff: true` checkpoint records
-`release_phase_check.version`. The validator resolves that stable version
-through
-`WORKFLOW-HANDOFF-POLICY.yaml:release_phase_contract_path_template`; the
-resolved contract must identify the same release and sanction the exact phase
-command. A missing version, missing version-owned contract, arbitrary command
-string, or synthetic successful result fails closed.
-
-## Validation Evidence
-
-A handoff validation claim is not free-text success prose. Each claim records a
-runnable command and its observed result. The checkpoint applies this rule to
-the aggregate critical gate, any release phase check, and validation claims
-needed by the current task or its handoff commit.
-
-The full output remains outside the repository when it contains transient
-runner detail. The checkpoint retains a normalized digest, line count, and
-bounded tail so a receiver can identify the observation without copying an
-unbounded log into AI context.
-
-## Execution Provenance
-
-Execution provenance is supplemental to Git attribution. Record `model_source`
-as exactly one of:
-
-- `runtime-reported`;
-- `provider-reported`;
-- `user-declared`;
-- `configured-default`;
-- `provider-default`;
-- `unavailable`.
-
-Resolve missing session metadata in this order: active runtime or provider
-report, effective configured default, then a documented provider default. A
-missing runtime report does not block the workflow when a credible effective
-default can be recorded. Use `unavailable` only when neither an observed value
-nor a documented effective default exists.
-
-Preserve reported, declared, configured, and provider-default model and
-reasoning labels verbatim. Never describe a fallback value as runtime-verified
-or replace one provider's vocabulary with another provider's normalized label.
-
-## Provider-Compatible Attribution
-
-Never amend, rebase, recreate, or otherwise rewrite a commit solely to
-normalize AI attribution. Preserve provider-native Author, Committer,
-cryptographic signature, trailers, human co-author, and session-log metadata.
-
-The checkpoint records one observed attribution evidence path:
-
-- `repository-created-local-ai-trailer`;
-- `provider-native-coauthor-trailer`;
-- `provider-native-authorship-or-signed-session`.
-
-This is an evidence union, not a provider identity registry. Provider-specific
-rules may be activated only after a real provider-generated commit object is
-captured verbatim as a golden fixture. Missing Copilot CLI, Copilot cloud
-agent, Claude, or Codex evidence remains `blocked` with a reason; it is not
-replaced by an invented name or email.
-
-The four path identifiers are stable fixture categories, not prescribed
-provider identities. Every checkpoint must record each category as `captured`
-or `blocked`. The selected attribution evidence must reference a captured
-fixture whose commit equals the selected and validated commit.
-
-The existing `GIT-COMMIT-POLICY` and `validate-git-commits.py` continue to
-govern repository-created local workflow commits. Do not broaden that validator
-to provider-native shapes until the required real fixtures exist. A
-provider-native commit that cannot satisfy the local validator must remain
-outside that validator's selected local-workflow range rather than be amended
-for normalization.
-
-Repository-owned Copilot, Claude, or other provider settings must not disable,
-replace, or pin native attribution behavior without explicit owner approval and
-a provider fixture proving preservation.
-
-## Security And Mutation Boundary
-
-`validate-workflow-handoff.py` is read-only. Its Git command allowlist excludes
-`commit`, `amend`, `rebase`, `reset`, `tag`, `push`, and all other
-history-writing commands. Validation proves evidence; it never repairs or
-normalizes Git history.
+The [earlier handoff contract](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/ba28cdbc3d7001dfb101cacba5e8f71406919797/.dev/standards/WORKFLOW-HANDOFF-POLICY.md)
+and retained YAML describe legacy checkpoint/critical-gate records. They do not
+select a current command or mandatory template. Do not load them for ordinary
+handoff. An explicitly selected legacy/release recovery obligation retains its
+compatible revision and evidence requirements; missing tooling stays unavailable.
