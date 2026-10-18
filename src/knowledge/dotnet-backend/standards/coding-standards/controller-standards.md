@@ -1,6 +1,11 @@
 # Controller Coding Standards (.NET)
 
-This document defines coding standards for the ASP.NET Core Controller layer, including Controller structure, Request/Response DTOs, and error handling.
+This document provides guidance for the ASP.NET Core Controller layer, including Controller structure, Request/Response DTOs, and error handling.
+
+This is unregistered guidance, not a registered normative rule. The target owns
+adoption of these conventions; reading this document or its review route does not
+establish normative coverage. The engineering rule catalog retains its
+unpacketized status until stable rule identities are explicitly allocated.
 
 ---
 
@@ -9,14 +14,15 @@ This document defines coding standards for the ASP.NET Core Controller layer, in
 Controllers are responsible only for the transport layer and input validation; they must not contain business logic.
 
 - **Execution delegation**: By default, a Controller delegates only to an explicit Use Case interface.
-- **Request validation**: Use ASP.NET Core Model Validation.
+- **Request validation**: Use ASP.NET Core Model Validation for the attribute-based examples. FluentValidation applies only when explicitly selected by the target; it is not a default dependency.
 - **Error responses**: Use the unified `ProblemDetails` format.
 
 ---
 
-## 🏷️ Pattern Markers (for Automated Checks)
+## 🏷️ Illustrative Pattern Markers
 
-The following markers are used by automated code review scripts:
+These hints describe the conventions below. They do not prove that an automated
+check is configured or executed; target-selected checks require separate evidence.
 
 ```yaml
 # Controller rules
@@ -33,7 +39,7 @@ Pattern (forbidden, i, ignore-comment): IMessageBus|IMediator|IDispatcher
 
 ---
 
-## 🔴 Mandatory Rules (MUST FOLLOW)
+## 🔴 Controller Conventions (When Adopted by the Target)
 
 ### 1. REST API Path Design Principles
 
@@ -238,7 +244,12 @@ return ValidationProblem(ModelState);
 
 ## 🎯 Request Validation
 
-### Use FluentValidation (Recommended)
+### Optional FluentValidation Example
+
+ASP.NET Core Model Validation is used by the attribute-based DTO examples above.
+Use the following alternative only when the target explicitly selects
+FluentValidation and its integration. This guidance neither installs the library
+nor makes it a default dependency. The target owns the selection and its evidence.
 
 ```csharp
 public class CreateResourceRequestValidator : AbstractValidator<CreateResourceRequest>

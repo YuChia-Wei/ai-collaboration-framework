@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-本頁對應 `ai-context-init@0.2.0`；實際操作仍以已安裝 metadata 為準。
+本頁對應 `ai-context-init@0.2.1`；實際操作仍以已安裝 metadata 為準。
 RC4 的舊資源不會因來源手冊更新就取得這次入門擴充。
 
 ## 目的與完成點

@@ -1,6 +1,6 @@
 # AI Collaboration Framework 使用手冊
 
-本手冊描述 `0.19.0` 定版來源的能力，包括 `ai-context-init@0.2.0` 入門
+本手冊描述 `0.19.0` 定版來源的能力，包括 `ai-context-init@0.2.1` 入門
 資源、可選 sub-agents 與 `engine/src/tools/` 安裝入口。是否已發布某個版本，
 請查實際公開 Release；來源文件不會自動回填到已下載的 ZIP。請以實際
 版本、catalog 與安裝 lock 判定可用能力。

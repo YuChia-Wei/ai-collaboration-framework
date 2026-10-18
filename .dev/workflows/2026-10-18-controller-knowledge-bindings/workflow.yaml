@@ -1,0 +1,36 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-18-controller-knowledge-bindings
+workflow_kind: source-knowledge-maintenance
+title: Repair Controller knowledge bindings and decision evidence guidance
+owner_skill: software-development-orchestrator
+status: in_progress
+current_phase: validation
+artifact_root: .dev/workflows/2026-10-18-controller-knowledge-bindings
+entrypoint: workflow-plan.md
+created_at: '2026-10-18T22:03:38+08:00'
+updated_at: '2026-10-18T22:03:38+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+branch: codex/2026-10-18-controller-knowledge-bindings
+base_branch: main
+input_commit: 4e0438c79b5c4729237ac284edd0e97429352ca6
+work_items:
+- provider: github
+  issue: 465
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/465
+tasks:
+- task_id: T1
+  workflow_id: 2026-10-18-controller-knowledge-bindings
+  owner_skill: ai-context-governance
+  status: in_progress
+  created_at: '2026-10-18T22:03:38+08:00'
+  updated_at: '2026-10-18T22:03:38+08:00'
+  template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+  template_version: 1.0.0
+  model: gpt-6-astra
+  reasoning_effort: medium
+  runtime_identity_basis: Configured defaults in user config.toml; actual primary
+    runtime labels not exposed
+  title: Repair knowledge guidance and exact consumption closure
+  findings_status: author inspection and independent review pending
