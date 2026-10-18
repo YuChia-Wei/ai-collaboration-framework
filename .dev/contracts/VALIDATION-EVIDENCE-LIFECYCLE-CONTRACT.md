@@ -1,154 +1,67 @@
 # Validation Evidence Lifecycle Contract
 
-This portable contract separates commit provenance and immutable execution
-pinning from evidence validity. It preserves fail-closed review and provider
-admission while allowing content-addressed reuse only when the complete
-governed subject is proven equivalent.
+This source-project contract explains how to retain and interpret validation
+results. The [source development policy](../standards/SOURCE-DEVELOPMENT-POLICY.md)
+owns test selection, independent review and the PR gate. It does not require a
+receipt platform or a separate evidence store for ordinary source work.
 
-## Evidence Taxonomy
+## Decide whether an earlier result still applies
 
-| Class | Meaning | Reuse rule |
-| --- | --- | --- |
-| `identity-sensitive` | Commit-range selection, immutable execution locator, or integration identity whose behavior depends on the selected Git relationship. | Re-resolve the identity-dependent operation; a SHA change alone does not invalidate separately content-addressed evidence. |
-| `input-sensitive` | Unit, integration, workflow, packaging, and source-governance behavior determined by tracked inputs. | Reuse only with an authenticated dependency/content receipt. |
-| `environment-sensitive` | Benchmark, durability, platform-filesystem, or reference-host behavior. | Input proof plus exact compatible environment dimensions is required. |
-| `provider-sensitive` | Hosted checks, review, PR/base/head/body, and Issue/Project state. | Live provider read-back is required; local receipts never replace it. |
+Inspect the actual diff and the check's inputs and direct dependencies. Consider
+environment or provider changes only where the conclusion depends on them.
+Record the original result and a short reason when relying on it; do not claim
+that an unexecuted check ran on the new revision.
 
-`metadata-only` is not an evidence class. A change is harmless only after the
-tracked dependency resolver proves that the changed bytes are outside the
-selected closure and that runner, manifest, resolver, policy authority,
-configuration, command, profile, and applicable environment authority are
-unchanged.
+| Relevant change | Treatment |
+| --- | --- |
+| No change to the behavior or inputs that the check establishes | Keep the original result; no repeat execution is needed |
+| Behavior, relevant input, assertion or dependency changed | Run the affected checks if needed to establish the changed claim |
+| Environment changed and the result depends on it | Reassess that environmental claim; do not invalidate unrelated results |
+| PR head, required checks, effective reviews or Issue/Project state | Read current provider facts at the operation that needs them |
+| Commit identity changed without a relevant content change | Confirm the relevant diff remains equal; a new SHA alone is not a test trigger |
 
-## Commit Identity Boundary
+Unknown impact calls for bounded investigation of the relevant dependency. Do
+not declare unknown coverage passed or automatically run an entire matrix.
+Ordinary decisions can be explained in the existing conversation, task or PR;
+they need no new hash inventory, dependency resolver, receipt or paired reports.
 
-A full commit SHA may be required as an immutable execution locator, Git-range
-selector, provider association, or provenance fact. Those uses identify where
-an operation ran or which Git/provider event is current; they do not make the
-SHA the validity key for separately content-addressed evidence.
+## Independent review and concurrent work
 
-No portable rule may invalidate behavioral, independent-review, or derived
-content evidence solely because two commit SHAs differ. It must instead prove
-the applicable content subject equal, re-resolve an inherently identity-bound
-operation, or report the subject as unknown. A history-only rewrite with equal
-content uses deterministic rebinding and preserves both commit identities as
-provenance.
+Review one immutable diff with identified criteria and governing rules. Keep the
+reviewer read-only and separate from the writer. A relevant content, criteria or
+authority change requires affected review again. For identity-only changes,
+compare the reviewed diff and applicable rules with the current subject and
+retain the original reviewer/result; no new review is implied by the SHA.
 
-The authoritative multi-axis decision table is
-`.dev/contracts/validation-gate-classification.yaml`. Every local
-registry gate occurs exactly once. Sensitivities are independent axes;
-`reuse_eligibility` is a separate owner-controlled decision. A missing,
-duplicated, or unknown gate blocks classification. The only current
-`pilot-approved` gate is `multi-hop-upgrade-transaction`; every other candidate
-remains disabled even when its legacy cache policy permits narrower reuse.
+Keep a selected test's input stable while it runs. Stop or qualify its result
+if a concurrent change affects that input. An unrelated report update does not
+invalidate product evidence. Only actual independent review or a specifically
+selected immutable execution requires a fixed commit; ordinary focused local
+checks may run against identified working-tree changes.
 
-## Canonical Subject Manifest And Rebind
+## Record the actual outcome
 
-`subject-manifest/v1` binds one gate to a `subject-identity/v1` projection made
-from authenticated classification, tracked-closure, invocation, authority,
-runtime, and applicable-environment digests. Its `subject_digest` is the
-SHA-256 of canonical UTF-8 JSON for that projection. Commit, tree, timestamp,
-artifact references, runtime repository-scope identity, and provider
-identifiers remain provenance and are not part of the subject digest.
+Use the existing work record for the command or review scope, source, result,
+relevant environment, limitations and next action. Retain failures and their
+repair disposition; later success does not erase them. Failed, blocked,
+interrupted, skipped, not-run and unknown results are not passed.
 
-The tracked-closure receipt names the authoritative
-`check-all.sh --resolve-input-closure` invocation and seals the complete sorted
-Git path, mode, type, and object identities. The invocation component comes
-from the current validation registry. Authority includes the runner, registry,
-resolver, lifecycle policy/schema, implementation, and gate-classification
-bytes. Runtime identity includes the actual Python implementation, version,
-ABI, and PyYAML identity. The pilot environment contract adds OS family, Git
-version, and a repository-filesystem case-semantic probe without recording an
-absolute path, host name, user name, or machine identity.
+Unit, fixture, installation, actor and hosted results establish different claims.
+A hash establishes content identity, not that an agent read or followed it.
+Selected runtime settings are not observed runtime identity or provider usage.
+Do not infer actual cost, general model reliability or a saving percentage from
+missing or incomparable measurements. No cost dataset is required.
 
-`subject-evidence-rebind/v1` is append-only. It accepts an original manifest
-only when an immutable passing invocation seal contains that exact manifest,
-its component receipts, and an executed passing evidence record for the same
-gate and original commit. It then builds and validates the current manifest
-freshly, requires the same approved classification and equal subject digest,
-and records both commit SHAs. The truthful outcome is `reused-with-proof`: the
-old evidence applies to the current subject but was not executed at the current
-SHA. A known component difference requires `re-executed`; unknown
-closure, authentication, runtime, environment, authority, or classification
-fails closed as `blocked`.
+Required current-head hosted checks remain fresh under source policy. Local
+results never replace the PR gate. Provider read-back and record-only closeout
+do not themselves require another product test run or evidence-sync commit.
 
-Rebind never replaces actual-upgrade evidence, current-head review-subject
-binding, required hosted contexts, live merge admission, mutable provider
-state, or tag and Release binding. The current-head review binding is a cheap
-digest comparison; it does not repeat an independent review when the reviewed
-content subject is unchanged.
+## Historical context — NOT AN EXECUTION TRIGGER
 
-## Deterministic Reuse
-
-The machine contract is `validation-evidence-lifecycle.schema.yaml`; the
-repository validator is `tools/maintenance/validate-validation-lifecycle.py`.
-Every reusable receipt binds original and current commit SHAs, exact argv and
-working-directory contract, profile, original outcome and immutable evidence,
-the canonical dependency set with original/current Git blob identities, and
-all authority digests. The resolver must also seal a complete sorted path-set
-digest, exact count, resolver argv, and an empty unknown-path set; a non-empty
-subset cannot declare itself complete. The receipt's own digest covers
-canonical JSON bytes.
-The resolver argv names the supported
-`check-all.sh --resolve-input-closure <check-id> --subject <sha>` surface. The
-validator executes that resolver for both subjects, requires the exact sorted
-path set, and reads every claimed object identity back from Git as
-`<sha>:<path>`. A nonexistent path, arbitrary subset, unsupported resolver
-flag, or self-computed path-set digest fails closed.
-
-Unknown dependencies, missing blobs, duplicate paths, unrecognized fields, or
-runner, manifest, resolver, policy, configuration, command, profile, or
-environment drift fail closed. A cache hit, filename, extension, path filter,
-or small diff is not proof. Release and `nightly-full` profiles, current-head
-review binding, hosted required contexts, and live admission cannot be replaced
-by a behavioral receipt.
-
-Environment equality applies to every reusable class because environment is
-part of reuse authority, not only to tests labelled environment-sensitive.
-Terminal workflow metadata has its own original/current digest and an explicit
-`excluded_from_dependency_fingerprint` marker: its bytes may change without
-self-invalidating behavioral evidence only when the complete resolver closure
-proves that metadata path is outside the governed inputs. This models the #246
-regression without changing any #246 historical receipt.
-
-## Validation Freeze
-
-Complete anticipated tracked implementation and governing authority before the
-final aggregate. An active freeze pins execution to one clean immutable commit
-and permits only declared ignored validation artifacts or provider overlays.
-Tracked content or governing-authority drift invalidates the frozen subject;
-commit-message or history-only identity drift instead requires deterministic
-current-subject rebinding. Terminal binding receipts remain ignored or
-provider-owned and never require an evidence-sync commit.
-
-Provider admission and post-merge reconciliation remain live, non-mutating
-overlays. They do not require a source repair commit. Historical evidence,
-including #246 receipts, retains its original subject and environment and is
-never relabeled as current-head execution.
-
-## Independent Review And Hosted Contexts
-
-An independent auditor still executes against one clean immutable commit so
-its observation cannot move during the review. Its durable result is
-`content-addressed-validation-audit` v2: base/head commit SHAs are provenance,
-while repository identity plus base/head tree identities form the canonical
-`independent-review-subject/v1` digest. Every reviewed gate is exactly one of
-`re-executed`, `reused-with-proof`, `blocked`, `deferred`, or
-`not-applicable`.
-
-Admission recomputes the current review subject and verifies unchanged review
-criteria and authority against the owning task's current accepted input. Equal
-content, criteria and authority yield
-`reviewed-current-content` or `reused-with-proof`; unequal or unknown content
-or review authority requires a new independent review. The source repository's
-GitHub terminal admission uses its configured v3 provider receipt to carry the
-criteria and authority digests in addition to the content subject. Historical
-v1 exact-head and v2 content-only provider receipts retain their original meaning
-for already-retained records; neither admits a new source GitHub merge. This
-provider receipt is distinct from the v2 content-addressed validation audit
-above. Downstream provider admission remains target-owned.
-
-Every provider-required context still appears on each admitted head and reaches
-a truthful terminal outcome because the provider attaches check runs to a
-commit. A context may internally execute or reuse eligible behavioral evidence,
-but path filtering cannot make the context disappear.
+The previous manifest/rebind/closure-resolver platform and receipt schemas are
+retained evidence formats, not an ordinary source route. Their earlier meaning
+is available in the [pre-simplification contract](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/ba28cdbc3d7001dfb101cacba5e8f71406919797/.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md).
+Do not follow its commands because this note or a historical record mentions
+them. Only an explicitly selected legacy/release obligation may use its own
+compatible revision and verified tools. Missing tools remain unavailable;
+existing support/recovery duties and their original evidence are not waived.

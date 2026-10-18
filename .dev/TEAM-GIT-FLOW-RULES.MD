@@ -1,17 +1,8 @@
 # Repository Branch And Merge Policy
 
-Source applicability: the adopted [source development policy](standards/SOURCE-DEVELOPMENT-POLICY.md)
-takes precedence over conflicting ordinary-source gates below, under the owner's
-2026-10-02 decision. Existing release/support/recovery contracts and explicitly
-selected active legacy records retain their owners; their historical machinery
-is not silently migrated to the new source format. Unrestored U001 obligations
-outside the adopted source scope remain deferred or blocked, never passed.
-
-For this source repository's explicitly assigned program #322 work, apply the
-[temporary U001 execution override](standards/FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
-before conflicting validation, handoff or integration gates below. Keep the
-Issue, ownership, dedicated-branch and PR-only integration boundaries; suspended
-verification remains `deferred-by-owner` until the P7 restoration decision.
+The [source development policy](standards/SOURCE-DEVELOPMENT-POLICY.md) owns
+validation and conditional review. This document owns Git branch and transport
+decisions; Git operations do not create additional local test requirements.
 
 This document is the canonical owner of repository branch naming, workflow
 branch lifecycle, checkpoint handoff, push continuation, and merge strategy.
@@ -69,7 +60,7 @@ Use the agent prefix when an agent performs the work.
    ```
 
 3. Make focused commits following `.dev/standards/GIT-COMMIT-POLICY.md`.
-4. Run the narrowest meaningful validation.
+4. Decide whether the actual change needs tests under source policy; run only the selected checks.
 5. Push the branch and open a pull request to `main` when transport is
    authorized. A draft pull request is optional before review or handoff.
 6. Select linear integration or a merge commit from the rules below after the
@@ -123,43 +114,20 @@ Repository integration is the reviewed Git event that enters the configured
 integration branch. It is not workflow completion, assessment finality,
 release-source validation, hosted publication, or publication finalization.
 
-For this source repository, repository integration and GitHub Issue closure
-also remain separate facts. Every named Issue in a material pull request must
-declare exactly one `terminal-close` or `deferred` disposition under
-`.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`. A terminal disposition
-requires a matching approved closing keyword and post-merge Issue/Project
-read-back; a deferred disposition uses `Refs`, records its reason and next gate
-or owner, and must remain open. A closing keyword never authorizes work.
+For each delivered Issue, declare final or deferred intent under the
+[Issue closure policy](standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md).
+Immediately before integration, read the actual PR head/base, effective review
+state and required checks. Require current-head Source change gate success
+when the native src/** or tools/** PR filters apply. Respect actual provider
+protection and the source policy's independent-review conditions. Missing
+required facts block integration; do not invent a pass or alter protection.
 
-The required pull-request check validates only the tracked declaration against
-the live PR event and checkout head. Immediately before integration, obtain a
-fresh provider read-back and run
-`tools/maintenance/validate-terminal-issue-closure.py` with the current event snapshot
-and `--capture-admission-evidence`. The validator emits the verified snapshot
-to stdout and writes no repository path; trusted orchestration may retain it
-under ignored validation artifacts. A replay instead uses the untracked
-`--admission-evidence` snapshot plus `--verify-provider-live`. Both paths require
-`--review-input <path>` with the owning task's current accepted criteria and
-tracked authority selection. Canonical preflight validates that input against
-the clean current checkout; admission compares its criteria/authority digests
-and content subject with the v3 receipt. The provider
-configuration owns the required-check
-set, and the live GitHub response must exactly match the snapshot's PR number,
-repository, base, head, body, review/check-run identities, and timestamps. Those live PR
-facts must also equal the current event snapshot; PR-body edits rerun the
-declaration workflows. That merge-admission run must bind the configured source
-review gate and the complete successful required-check set to the same provider
-head. Do not commit the volatile snapshot; any head drift invalidates that
-snapshot and requires fresh hosted read-back, current-head review-subject
-binding, and an admission run. Repeat the independent review only when the
-canonical content subject, criteria, or authority differs.
-
-The admitted PR head identifies the current provider event and locates the
-content-addressed review binding; commit SHA is not the review-validity key. It
-does not select or constrain integration topology. Fast-forward, rebase, squash,
-and merge commit remain valid. Post-merge reconciliation records the provider's actual
-integration commit separately and must not require a source repair commit merely
-to make the integration SHA equal the admitted head.
+No custom admission validator, declaration record, packet or v3 receipt is
+required for ordinary source PRs. A changed reviewed subject needs affected
+review; identity-only changes require a comparison, not repeated review or
+local tests. Record the actual integration commit separately from the PR head.
+Issue and Project closure need their own authorized action and live read-back;
+they do not require a source repair or evidence-sync commit.
 
 ### Linear Integration
 

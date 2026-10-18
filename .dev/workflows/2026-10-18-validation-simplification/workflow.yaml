@@ -1,0 +1,48 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-18-validation-simplification
+workflow_kind: source-policy-maintenance
+title: Simplify source validation and replace obsolete operating rules
+owner_skill: ai-context-governance
+status: in_progress
+current_phase: independent-review
+artifact_root: .dev/workflows/2026-10-18-validation-simplification
+entrypoint: workflow-plan.md
+created_at: '2026-10-18T11:29:21+08:00'
+updated_at: '2026-10-18T11:30:43+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: '1.0.0'
+branch: codex/2026-10-18-validation-simplification
+base_branch: main
+input_commit: ba28cdbc3d7001dfb101cacba5e8f71406919797
+work_items:
+  - provider: github
+    issue: 461
+    url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/461
+tasks:
+  - task_id: T1
+    workflow_id: 2026-10-18-validation-simplification
+    owner_skill: ai-context-governance
+    status: completed
+    created_at: '2026-10-18T11:29:21+08:00'
+    updated_at: '2026-10-18T11:30:43+08:00'
+    template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+    template_version: '1.0.0'
+    model: gpt-6-astra
+    reasoning_effort: medium
+    runtime_identity_basis: configured defaults; actual primary runtime label not exposed
+    title: Replace ineffective source rules and inspect the bounded diff
+    result_summary: Replaced source-only policies and navigation; focused document checks passed; product tests not selected.
+    findings_status: author-inspected; independent review pending
+  - task_id: T2
+    workflow_id: 2026-10-18-validation-simplification
+    owner_skill: code-reviewer
+    status: in_progress
+    created_at: '2026-10-18T11:29:21+08:00'
+    updated_at: '2026-10-18T11:30:43+08:00'
+    template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+    template_version: '1.0.0'
+    model: gpt-6-astra
+    reasoning_effort: xhigh
+    runtime_identity_basis: owner-authorized planned reviewer; not yet invoked
+    title: Independently review immutable delivery and return affected repairs

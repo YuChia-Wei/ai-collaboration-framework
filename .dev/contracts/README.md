@@ -5,16 +5,19 @@ They are project-owned and are not dependencies or policy templates for product
 packages. Reusable sub-agent roles have their own owners under `src/sub-agents`.
 
 The [source development policy](../standards/SOURCE-DEVELOPMENT-POLICY.md)
-supersedes conflicting ordinary-source packet, lease and receipt machinery.
-Load the [agent guardrails](AGENT-EXECUTION-GUARDRAILS-CONTRACT.md) for actual
-execution risk and [CLI routing](CLI-EXECUTION-ROUTING-CONTRACT.md) only for an
-explicitly selected cross-boundary operation.
+owns test selection, review and the PR gate. Use
+[agent guardrails](AGENT-EXECUTION-GUARDRAILS-CONTRACT.md) for a bounded
+assignment and [evidence guidance](VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md)
+when interpreting earlier results. Load [CLI routing](CLI-EXECUTION-ROUTING-CONTRACT.md)
+only for an explicitly selected cross-boundary operation.
 
-Retained role/packet schemas, dependency observations, validation-evidence
-lifecycle and provider registries preserve source bindings or compatibility
-interpretation. Their existence does not prove current tools, provider sessions
-or acceptance. Old validators that import removed `artifact_core` or reference
-removed registries remain unavailable. No restoration is selected by this cleanup.
+## Historical context — NOT AN EXECUTION TRIGGER
+
+Retained role/packet schemas, dependency observations and provider registries
+preserve compatible record meanings. They do not select current commands,
+prove provider access or establish acceptance. Do not invoke them for ordinary
+source work. Explicit legacy/release work must select compatible authority and
+verified tools; unavailable routes remain unavailable.
 
 Provider-neutral and provider-projection registries describe this project's
 adoption/bindings; they do not replace product role packages or actual dispatch

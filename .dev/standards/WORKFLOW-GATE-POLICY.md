@@ -1,17 +1,8 @@
 # Workflow Gate Policy
 
-Source applicability: the adopted [source development policy](SOURCE-DEVELOPMENT-POLICY.md)
-takes precedence over conflicting ordinary-source gates below, under the owner's
-2026-10-02 decision. Existing release/support/recovery contracts and explicitly
-selected active legacy records retain their owners; their historical machinery
-is not silently migrated to the new source format. Unrestored U001 obligations
-outside the adopted source scope remain deferred or blocked, never passed.
-
-For this source repository's explicitly assigned program #322 work, apply the
-[temporary U001 execution override](FRAMEWORK-REDESIGN-EXECUTION-OVERRIDE.md)
-before conflicting validation, handoff or integration gates below. Keep the
-Issue, ownership, dedicated-branch and PR-only integration boundaries; suspended
-verification remains `deferred-by-owner` until the P7 restoration decision.
+The [source development policy](SOURCE-DEVELOPMENT-POLICY.md) owns current
+validation, review and PR requirements. This document owns execution-record
+selection and continuation; selecting a workflow does not select more tests.
 
 This policy defines when an agent should create workflow artifacts proactively instead of using direct mode.
 
@@ -269,170 +260,56 @@ the next continuation branch from the updated target as defined by
 `.dev/TEAM-GIT-FLOW-RULES.MD`.
 
 When continuation also crosses a model, runtime, host, machine, or fresh
-session, follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` and create its
-machine-readable receiving checkpoint before transfer.
+session, follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` using the existing
+entrypoint or bounded assignment; no additional machine checkpoint is required.
 
-## Software-Development Approval And Validation Gate
+## Approval and validation
 
-For a software-development workflow:
+Resolve pending owner decisions before dependent implementation; carry accepted
+inputs forward without repeating authoring stages. Record actual authority in
+the existing work record. Neither a workflow nor a plan grants provider writes,
+credentials, installation or publication permission.
 
-- pause before creating or executing implementation work while a requirement,
-  design, or specification discussion is awaiting approval;
-- record the authorization source before the implementation transition;
-- resolve optional `test-execution` through target-profile commands, a
-  separately evaluated external skill, or the fallback contract, in that order;
-- use target-owned test commands, working directory, prerequisites, environment
-  boundary, credential requirements, and policy without storing secret values,
-  inventing credentials, bypassing controls, or escalating privileges
-  implicitly;
-- select unit and integration tests by default; select E2E, browser, Playwright,
-  and environment-dependent tests only when target policy, requirements, an
-  approved plan, or an owner decision requires them;
-- record each selected test level as `passed`, `failed`,
-  `blocked-by-environment`, `not-applicable`, or `deferred-with-owner`;
-  `blocked-by-environment` is blocked and never passed;
-- treat spec compliance as unselected and `not-applicable` by default. When a
-  target profile, problem-frame workflow, requirement, or owner decision
-  selects it, incomplete configuration or coverage below 100% fails closed.
+Before any test, apply the necessity and high-cost trigger rules in
+[source development policy](SOURCE-DEVELOPMENT-POLICY.md#decide-before-running-a-test).
+There is no default unit-plus-integration obligation for every edit and no
+test-execution skill or legacy target profile to load for ordinary source work.
+Use actual project commands and existing evidence. Required acceptance cannot
+be replaced by a cheaper claim; absent infrastructure remains a limitation.
 
-A mandatory selected specialized test keeps closeout open until its outcome is
-acceptable under target policy. `deferred-with-owner` requires the responsible
-owner and follow-up condition; it is not implicit success.
+## Selected long-running work
 
-## Long-Running Validation Delegation Gate
+Choose an execution surface only after establishing why the test is needed.
+Keep relevant inputs stable, isolate writers and set a bounded command/timeout.
+Use direct execution or a bounded delegate within authorization; duration does
+not create another gate, packet, lease, external platform or report schema.
+Independent review still runs against an immutable commit under source policy.
+For delegated long-running work, use the available completion callback/event
+rather than repeated polling. Retain the command, source, outcome, limitations
+and available duration in the existing record. Interrupted, timed-out, drifted
+or incomplete execution is not passed. Investigate before any affected rerun.
 
-Use the operation classifier in
-`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` before selecting
-dispatch overhead. A terminal label alone does not require full packet/lease
-handling for an ordinary isolated short same-runtime read-only review. Both
-review tiers require machine-readable subject/criteria/authority preflight;
-preparation, behavior, environment and provider reconciliation failures remain
-separate, with retained attempts and only affected checks repeated. This does
-not relax the full contract for the long-running commands below or for changes
-to authority, evidence custody, security, release or adoption.
+## Closeout
 
-This gate applies in direct and workflow mode. It changes the execution surface,
-not the selected validation, severity, or pass/fail contract.
+Review the completed diff and already available results against accepted scope.
+Record remaining work, failures and explicit deferrals; do not trigger another
+product run merely to close the workflow. Preserve each Issue's acceptance
+outcome in the existing record rather than a second machine/human ledger pair.
 
-A command is long-running when any condition is true:
+Mark local completion only when workflow-owned work and applicable verification
+are complete. Follow the commit policy for a coherent local delivery. PR checks,
+integration, Issue/Project closure and publication remain separate operations.
+Provider-only follow-up does not require an evidence-sync commit or reopening
+completed local work. An unfinished checkpoint retains its next action/owner.
 
-- its selected profile is `release` or `nightly-full`;
-- it selects a full package, compatibility, or history matrix;
-- repository evidence predicts at least 120 seconds of wall time; or
-- a prior comparable execution observed at least 120 seconds of wall time.
+## Historical context — NOT AN EXECUTION TRIGGER
 
-Before dispatch, the owning conversation must finish tracked mutations, run the
-narrow focused checks, obtain a clean worktree, and bind the exact command to a
-full immutable commit SHA as its execution locator. Pending design decisions, mutable source state, and
-unbounded credentials are dispatch blockers.
-
-That clean immutable point is the validation freeze. Record its exact tracked
-content subject and commit provenance, and keep terminal metadata beneath
-declared ignored artifact roots. Later content or governing-authority drift
-invalidates the freeze; commit-message or history-only identity drift requires
-a deterministic subject rebind. Reuse from an earlier subject
-is admissible only with the content-addressed proof required by
-`.dev/contracts/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; current-head
-review-subject binding, required hosted contexts, and live admission remain
-fresh gates. Independent review itself is content-addressed and is repeated
-only when that reviewed subject, criteria, or authority changes.
-
-Run the command in a separate external runtime task using the least expensive
-execution profile that can faithfully execute and report the bounded command.
-Its scope is read-only except for ignored validation logs or artifacts. It must
-not repair, commit, push, mutate Issues or Projects, or broaden the command.
-
-The legacy schema-bound external-task dispatch route is unavailable after its
-compatibility schema and tooling were removed. Existing U001 and P7 deferrals
-remain in force. Restore and verify a source-owned schema and executable route
-before dispatching under this long-running gate. Once restored, the external-task
-prompt must contain exactly one marked dispatch envelope conforming to that
-selected schema.
-The envelope binds the source-task identity, final integration owner, immutable
-subject, exact argument vector, permission boundary, stop conditions, and one
-completion-delivery route. The source identity may be explicit or supplied by
-the runtime's delegation wrapper; do not assume a separate task's final output
-is automatically routed to its source.
-
-Before dispatch, validate the agent execution packet and acquire the worktree
-snapshot lease defined by
-`.dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. The external envelope
-must bind the packet reference, digest, exact subject SHA, validator argv, and
-passing outcome. A conflicting tracked writer, stale lease, unvalidated packet,
-or attempt three without new owner/workflow authorization blocks dispatch.
-
-Select either a source-task callback or one parent event wait as the primary
-completion path. The callback must target the source task. The event wait
-subscribes once to the delegated task and wakes on terminal or attention state;
-it is not repeated polling. Progress callbacks into the source task, repeated
-waits, status probes, and source-side progress narration remain prohibited;
-runtime-required commentary confined to the delegated task is not a callback.
-The external task returns exactly one
-completion report conforming to the same schema and containing:
-
-- immutable commit SHA and clean-state preflight;
-- exact command and working directory;
-- start, completion, and wall-time evidence;
-- selected, executed, reused, failed, blocked, warning, deferred, and
-  not-applicable counts when the runner exposes them;
-- exit code plus log, evidence, or bounded output references; and
-- final tracked worktree state.
-
-Before delivery, the delegated task must persist the dispatch and completed
-report in its allowed ignored-artifact scope, run the canonical validator on
-that exact pair, and record the passing validator argument vector and artifact
-references inside the completion envelope. It then sends that validated record
-without post-validation edits. Missing or failed pre-send validation, record
-drift, or delivery of different bytes is non-passing.
-
-Execution timeout, interruption, missing terminal evidence, subject drift, and
-blocked execution are non-passing. The owning workflow remains open until it
-receives and accepts an allowed final outcome. A parent event-wait timeout is a
-pending transport state, not a validation result. If callback delivery fails
-after the delegated task has reached a terminal state, the owner may perform
-one terminal read-back and accept only a matching schema-valid completion
-report. This bounded recovery is not permission to poll. When the runtime has
-neither callback, event wait, nor terminal read-back support, record
-`blocked-by-environment` or create a fresh-session handoff rather than running a
-primary-conversation polling loop.
-
-Before integration, validate the acceptance-to-evidence ledger against its
-human report projection. Preserve each work item's acceptance IDs separately;
-never collapse multiple Issues into one success flag, and never relabel mock,
-fixture, synthetic, or unit evidence as actual execution.
-
-Keep canonical aggregate runners because they own profile selection,
-dependency ordering, unified evidence, and fail-closed classification. A future
-parallel runner is allowed only after independent contract coverage proves its
-dependency DAG, artifact and temporary-state isolation, bounded concurrency,
-deterministic evidence ordering, timeout propagation, and fail-closed
-cancellation. Until then, reduce interaction cost through external execution,
-not unverified parallelism or removal of the aggregate gate.
-
-## Workflow Closing Checklist
-
-Before sending a final response in workflow mode, the agent must verify all of the following:
-
-- workflow plan and task artifacts reflect the completed or deferred state;
-- approval sources for requirement/design/specification transitions are
-  recorded before implementation;
-- required validation has passed, or skipped validation is explicitly recorded with a reason;
-- each required test level has its exact target-owned command context, outcome,
-  and evidence; blocked tests are not counted as passed;
-- unselected spec compliance is recorded as `not-applicable`, while selected
-  spec compliance has complete configuration and direct evidence of 100%
-  coverage;
-- approved requirements and specs, implementation completion, required tests,
-  selected compliance, review disposition, validation evidence, task state,
-  commit evidence, and branch/handoff state were checked separately;
-- `.dev/standards/GIT-COMMIT-POLICY.md` has been checked for commit requirements;
-- when the commit policy requires a commit, the commit has been created before claiming completion;
-- when no commit is created, the final response cites the exact policy exception that applies.
-- the workflow was not marked complete merely because its branch was merged or pushed as a checkpoint;
-- workflow completion and pull-request integration were reported as separate facts; do not claim a `main` change until the pull request required by `.dev/TEAM-GIT-FLOW-RULES.MD` is merged;
-- delivery grouping was evaluated before separate workflows were created for multiple work items;
-- a workflow with fewer than three substantive tasks records the unique state that justified workflow mode without padding the task list;
-- integration gate and Git topology were selected independently under `.dev/TEAM-GIT-FLOW-RULES.MD`.
+The [earlier workflow gate](https://github.com/YuChia-Wei/ai-collaboration-framework/blob/ba28cdbc3d7001dfb101cacba5e8f71406919797/.dev/standards/WORKFLOW-GATE-POLICY.md)
+describes retired critical/full gates, universal preflight, packet/lease and
+ledger workflows. Do not execute those instructions for ordinary source work.
+Only an explicitly selected legacy/release obligation selects its compatible
+revision and verified tools. Existing support duties and U001/P7 deferrals
+remain with their owners; unavailable tooling is not restored by this note.
 
 ## Representative Decisions
 
