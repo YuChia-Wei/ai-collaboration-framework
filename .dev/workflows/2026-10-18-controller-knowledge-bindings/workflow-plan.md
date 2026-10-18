@@ -59,3 +59,46 @@ Reviewer `/root/controller_knowledge_review` independently reviewed base `4e0438
 Repair: change only the exact init version token in those four entry files, retaining English/Traditional Chinese structural and normative parity. Their linked target is unchanged and exists. This identity-only documentation repair does not affect the previously checked package bytes or schema cases; no product test rerun is selected. The same reviewer will inspect this bounded follow-up at its fixed commit.
 
 Related implementation-content limitations: examples/controller/README.md retains non-ProblemDetails error examples; examples/dto/README.md retains class-based patterns. These are preexisting implementation-content differences, reported only and deferred under the owner's narrowed scope.
+
+## Local completion
+
+The same independent reviewer confirmed R1 resolved on clean fixed commit `457aacb235cdb331f72215f18e5caf968792d41b`; no new actionable finding. All four root edits were independently checked as version-token-only, preserving language/authority parity. Source/package bytes are unchanged from the reviewed implementation. Parent also compared all four files byte-for-byte against the previous commit with only the selected token replacement and checked the linked init source entry exists. Commit-message and actual-commit validation passed for both implementation and repair commits.
+
+W1: guidance authority and validation-selection ambiguity corrected; implementation examples deferred by owner. W2: guidance access and Controller routing repaired, without normative promotion. W3: optional decision evidence seed and its two descriptions completed. W4: exact required dependency wording completed. No unregistered document gained a rule ID. Local workflow is complete; Issue #465 remains open, and no Project field, push, PR, merge, tag, release, installed projection or preview update was performed.
+
+This final record-only update does not alter the reviewed product/documentation subject or its criteria; no additional product test or independent code review is selected. The next owner-controlled action may be push/PR integration, followed separately by preview assembly/install if requested. Required hosted current-head CI remains not-run, not passed.
+
+## Changed file inventory
+
+Paths below are relative to the source repository root. They include package sources, required exact-version/manual references and this execution record; generated installed files are absent.
+
+- `.dev/workflows/2026-10-18-controller-knowledge-bindings/workflow-plan.md`
+- `.dev/workflows/2026-10-18-controller-knowledge-bindings/workflow.yaml`
+- `AGENTS.md`
+- `AGENTS.zh-TW.md`
+- `README.en.md`
+- `README.md`
+- `docs/README.md`
+- `docs/installation.md`
+- `docs/knowledge-packages.md`
+- `docs/skills/README.md`
+- `docs/skills/ai-context-init.md`
+- `docs/skills/code-reviewer.md`
+- `docs/skills/ddd-ca-hex-architect.md`
+- `docs/skills/local-change-implementer.md`
+- `docs/skills/slice-implementer.md`
+- `docs/skills/test-designer.md`
+- `src/distribution/manifest.yaml`
+- `src/knowledge/dotnet-backend/README.md`
+- `src/knowledge/dotnet-backend/content-package.yaml`
+- `src/knowledge/dotnet-backend/engineering-rule-catalog.yaml`
+- `src/knowledge/dotnet-backend/standards/coding-standards/controller-standards.md`
+- `src/skills/ai-context-init/references/initialize.md`
+- `src/skills/ai-context-init/references/project-structure.md`
+- `src/skills/ai-context-init/skill-package.yaml`
+- `src/skills/ai-context-init/templates/project-config.template.yaml`
+- `src/skills/code-reviewer/skill-package.yaml`
+- `src/skills/ddd-ca-hex-architect/skill-package.yaml`
+- `src/skills/local-change-implementer/skill-package.yaml`
+- `src/skills/slice-implementer/skill-package.yaml`
+- `src/skills/test-designer/skill-package.yaml`
