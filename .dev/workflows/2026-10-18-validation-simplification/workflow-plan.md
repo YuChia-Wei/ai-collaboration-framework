@@ -306,3 +306,22 @@ No package/metadata/runner/schema/test code changed, so previous structural
 checks retain their original scope and no distribution/product test rerun is
 needed. Static review does not establish downstream actor behavior. No new
 records, test platform, installation, provider operation or release is selected.
+
+### Timing refinement review and completion
+
+The same Astra/xhigh reviewer `/root/astra_461_review` reviewed
+`a46988aa8f9e4148b77880aaf72696dca9bb9471` against
+`ecbc5d69f308be2993ea20b9e8e7376e8f517f08`, covering all nine changed files
+and related operation/owner boundaries. No actionable findings were found.
+The review confirmed planning versus actual-impact reconciliation, conditional
+checks versus mandatory gates, purposeful pre/during-edit tests, standalone
+implementation without an orchestrator installation, and manual/source parity.
+Previous unaffected conclusions remain valid for their unchanged subjects.
+
+Author and reviewer diff checks passed. The reviewer finished read-only on the
+exact clean commit. No metadata/manifest/member/dependency, code/schema/test or
+installed projection changed; no product/structural suite was rerun. The result
+is static semantic consistency, not downstream actor or hosted CI acceptance.
+This completion update only records the actual review and closes T3; reviewed
+instruction bytes remain unchanged. Local commit is authorized; push, PR and
+merge remain unexecuted under the existing boundary.
