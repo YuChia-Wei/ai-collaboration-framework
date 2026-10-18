@@ -69,9 +69,21 @@ obligation is explicitly selected.
 
 ## Decide before running a test
 
-First inspect the diff, its semantics and direct dependencies against the claim
-that a test would establish. The presence of an edit, file extension, directory,
-commit or workflow stage does not by itself select a local test.
+At task planning, identify validation purpose, expected evidence, trigger and
+execution point. Distinguish mandatory gates and accepted acceptance requirements
+from checks conditional on anticipated impact. Schedule shared checks at the
+appropriate integration point rather than once per task, unless actual changes
+or required gates justify repetition. Use the existing plan or task output.
+
+During implementation, reconcile that plan with the actual diff, semantics and
+direct dependencies; confirm necessity before execution. After the change,
+confirm required acceptance evidence is complete. Bug reproduction, TDD and
+incremental checks may run before or during edits for a concrete purpose.
+A preliminary decision does not freeze the test plan. Return wider impacts to
+the coordination owner; changes to accepted requirements need their owner's
+decision. Do not silently cancel mandatory gates or accepted acceptance.
+The presence of an edit, file extension, directory, commit or workflow stage
+does not by itself select a local test.
 
 - Whitespace-only changes with no parsing, output or content-contract effect,
   ordinary explanatory text, and changes that do not affect schema semantics

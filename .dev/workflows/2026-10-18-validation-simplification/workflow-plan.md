@@ -280,3 +280,29 @@ applicable external-operation authorization, obtain its actual current-head
 hosted Source change gate, and handle merge/Issue/Project state separately.
 The earlier explicit no-push/no-PR/no-merge boundary remains in force for this
 local delivery. No provider mutation, installation, release or adoption occurred.
+
+## Owner-adopted validation timing refinement
+
+After reviewing #463, the owner approved: plan validation purpose/items/triggers
+and execution timing during task orchestration; reconcile conditional checks
+through actual implementation; confirm necessity before execution and required
+acceptance evidence after implementation. Reproduction, TDD and incremental
+checks may precede completion. Mandatory gates and accepted criteria cannot be
+silently cancelled. Coordinate shared checks at integration points and return
+wider impact to the selected orchestration/task owner.
+
+The owner explicitly requested adjustment and local commit. Reopen T3 for this
+bounded continuation from `ecbc5d69`; retain the prior review as historical
+coverage, with affected conclusions requiring re-review. Update only three
+source operation references, their current manuals, the source policy and this
+existing record. Governance's before-execution wording already fits and needs
+no change. Keep the existing unreleased #463 patch versions: no new publication,
+operation, member, dependency, metadata or manifest change is selected.
+
+Validation selection before edits: inspect the instruction diff and timing
+semantics, mandatory/conditional boundaries, standalone implementation behavior
+and direct manual parity; diff/record checks and the same independent reviewer.
+No package/metadata/runner/schema/test code changed, so previous structural
+checks retain their original scope and no distribution/product test rerun is
+needed. Static review does not establish downstream actor behavior. No new
+records, test platform, installation, provider operation or release is selected.

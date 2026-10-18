@@ -104,8 +104,8 @@ repair; a diagnostic finding does not grant implementation authority.
    edits. Do not treat a tool's success as proof the radius stayed bounded.
 4. Update immediate tests when needed to protect the changed contract and
    within authority. Avoid unrelated cleanup or implementation-mirroring tests.
-5. Decide whether tests are needed from the actual diff, semantics, direct
-   dependencies and target-owned gates. Ordinary prose or whitespace with no
+5. Confirm test necessity before execution from the actual diff, semantics,
+   direct dependencies and target-owned gates. Ordinary prose or whitespace with no
    parsing, schema, output or behavior effect does not select a test by edit,
    extension or path alone. Whitespace affecting those contracts needs the
    relevant checks; investigate unclear impact before choosing. Run only the
@@ -113,6 +113,18 @@ repair; a diagnostic finding does not grant implementation authority.
    directory, prerequisites and output scope. No default command is supplied.
 6. Inspect the diff and actual touched radius. Stop dependent edits if an
    unaccepted semantic/architecture decision or wider operation emerges.
+
+Use any supplied validation plan as an initial expectation, and revise
+conditional checks as actual edits reveal or remove impacts. Before execution,
+confirm which checks are necessary; after the change, confirm required
+acceptance evidence is complete. Do not silently cancel mandatory target gates
+or accepted acceptance requirements. Return newly discovered wider impacts or
+cross-task scheduling changes to the orchestration owner when one is selected;
+otherwise reconcile them through the existing task owner, without requiring an
+orchestrator installation. A change to accepted requirements needs its owner's
+decision. Bug reproduction, TDD and incremental checks may run before or during
+edits for a concrete purpose; the numbered steps do not require all testing to
+wait until implementation ends.
 
 Large integration, E2E, usability, full installation/upgrade and high-cost AI checks
 need a clearly affected behavior/boundary or an explicit user request or accepted

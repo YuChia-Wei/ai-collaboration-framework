@@ -42,6 +42,15 @@ merely to fill a pipeline. Route an unexplained failure to diagnosis before
 assuming a repair. Implementation may follow an already settled technical design
 without another architecture pass.
 
+During task planning, identify each validation's purpose, expected evidence,
+owner, trigger and execution point. Distinguish mandatory target gates and
+accepted acceptance requirements from checks conditional on an anticipated
+impact. Schedule shared cross-task validation at the appropriate integration
+point instead of repeating it for every task, unless changed inputs or required
+gates justify another run. Keep this in the existing plan, not a new test ledger.
+The plan is provisional where impact is not yet known: implementers reconcile
+it with actual changes and return wider impacts or scheduling changes here.
+
 Resolve each capability through explicit user selection, then the project's
 selected route, then available skill descriptions and operation contracts. These
 bundled IDs are candidates when installed, not mandatory dependencies:
@@ -95,8 +104,14 @@ must not replace the specialist's evidence with the orchestrator's assertion.
 Reconcile conflicting outputs with their owner rather than silently choosing
 one or widening the change.
 
-Before selecting tests, inspect the actual diff, semantics, direct dependencies
-and target-owned gates. Ordinary prose or whitespace without parsing, schema,
+During implementation, reconcile the planned checks with the actual diff,
+semantics and direct dependencies; confirm necessity before each selected test
+execution. Add or narrow conditional checks as actual impact becomes known,
+without silently dropping mandatory target gates or accepted acceptance
+requirements. Resolve a change to those requirements with their owner. After
+implementation, confirm that the required acceptance evidence is complete.
+Bug reproduction, TDD and incremental checks may run before or during edits
+when they have a concrete purpose; this is not a wait-until-the-end rule. Ordinary prose or whitespace without parsing, schema,
 output or behavior effects needs no test solely because an edit, file extension
 or path exists. Whitespace affecting those contracts needs relevant checks;
 investigate unclear impact before selecting a check. Use the affected existing

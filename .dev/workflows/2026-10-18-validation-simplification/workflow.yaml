@@ -4,12 +4,12 @@ workflow_id: 2026-10-18-validation-simplification
 workflow_kind: source-policy-maintenance
 title: Simplify source and portable validation and rule maintenance
 owner_skill: ai-context-governance
-status: completed
-current_phase: completed
+status: in_progress
+current_phase: validation-timing-review
 artifact_root: .dev/workflows/2026-10-18-validation-simplification
 entrypoint: workflow-plan.md
 created_at: '2026-10-18T11:29:21+08:00'
-updated_at: '2026-10-18T12:11:23+08:00'
+updated_at: '2026-10-18T12:36:09+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: '1.0.0'
 branch: codex/2026-10-18-validation-simplification
@@ -55,9 +55,9 @@ tasks:
   - task_id: T3
     workflow_id: 2026-10-18-validation-simplification
     owner_skill: software-development-orchestrator
-    status: completed
+    status: in_progress
     created_at: '2026-10-18T12:05:17+08:00'
-    updated_at: '2026-10-18T12:11:23+08:00'
+    updated_at: '2026-10-18T12:36:09+08:00'
     template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
     template_version: '1.0.0'
     model: gpt-6-astra
@@ -65,7 +65,7 @@ tasks:
     runtime_identity_basis: configured defaults; actual primary runtime label not exposed
     title: Deliver portable rule replacement and necessary-validation instructions for issue 463
     result_summary: Four portable instruction packages corrected; exact versions aligned; structural checks and affected retry recorded; Astra independent review complete.
-    findings_status: no actionable findings in issue 463 review; prior issue 461 F1 remains resolved
+    findings_status: prior review retained; owner-adopted timing refinement pending affected review
     reviewed_commit: f33ad8cecdf10a8df06457034563e24e9f5cbfaf
     reviewer: /root/astra_461_review
     reviewer_model: gpt-6-astra
