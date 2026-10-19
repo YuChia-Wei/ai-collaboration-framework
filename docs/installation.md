@@ -4,13 +4,13 @@
 [知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) ·
 [復原](recovery.md) · [Breaking reinstall](breaking-reinstall.md) · [RC4 舊版指令](installation-rc4.md)
 
-本頁適用於 0.19.0 的 Catalog 1／Engine 2 新目錄：engine 的 23 個成員全部
+本頁適用於 v0.20.1 Catalog 1／Engine 2：engine 的 23 個成員全部
 來自 `src/`，三個消費端入口位於 `engine/src/tools/`；不含來源庫 build 工具。
 請使用同一封存檔的 catalog、engine 與獨立選定的 pin。RC4 使用舊目錄，
 不能混用本頁指令；其已發布位元組與[舊版說明](installation-rc4.md)維持原樣。
 
-0.20.0 開發中的暫時 macOS 安裝路徑見[平台說明](#8-平台與常見問題)。
-它尚未發布，不能用本頁下載的 v0.19.0 ZIP 執行該新行為。
+自 v0.20.0 提供的暫時 macOS 安裝路徑見[平台說明](#8-平台與常見問題)。
+請下載對應版本的 ZIP；舊版封存檔不會因本頁更新而取得新行為。
 
 本手冊位於來源庫 `docs/`，不屬於安裝 payload。下載 archive 不需要 clone
 來源庫；是否已有某個正式版本，請以實際公開 Release 為準。文件出現版本
@@ -59,8 +59,8 @@ if ($LASTEXITCODE -ne 0) { throw '隔離 Python 無法載入依賴' }
 你的選擇；checksum 比對證明位元組一致，不代表 target 或 agent 驗收。
 
 ```powershell
-$ReleaseTag = 'v0.19.0' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
-$ReleaseRoot = 'C:\aicf\v019'
+$ReleaseTag = 'v0.20.1' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
+$ReleaseRoot = 'C:\aicf\v0201'
 $ReleaseText = gh release view $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework --json tagName,isDraft
 if ($LASTEXITCODE -ne 0) { throw '所選公開 Release 尚不可用；停止下載與安裝' }
 $Release = $ReleaseText | ConvertFrom-Json
@@ -98,7 +98,7 @@ Local snapshot 的來源 SHA、版本標籤與證據另行核對，不會因本�
 
 所有 CLI 路徑都必須使用既有的絕對直接目錄，且 `project`、`engine`、`candidate`、`scratch`、`staging`、`recovery` 彼此不能重疊或互為父子。`scratch` 與 `staging` 唯一可共用同一個目錄。不可將 output/scratch 放回來源工作樹或 catalog 下。
 
-Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路徑上限，並檢查操作時的暫存與復原路徑；這不只適用於 Windows。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v019`，而不是使用很深的使用者暫存資料夾。可從 plan 的 `path_budget` 讀回估算；這是輸入路徑預檢，不是內容相依性錯誤。
+Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路徑上限，並檢查操作時的暫存與復原路徑；這不只適用於 Windows。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v020`，而不是使用很深的使用者暫存資料夾。可從 plan 的 `path_budget` 讀回估算；這是輸入路徑預檢，不是內容相依性錯誤。
 
 具體例子：Fable 的 v0.19.0 全選測量中，含 `.NET` 知識的最長 payload 相對
 路徑為 138 個 ASCII 字元。derive 會加上 `\subset-<32 hex>\payload\`，共 49 個
@@ -111,7 +111,7 @@ Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路
 
 ## 3. 檢視 catalog 與選擇規格
 
-目前沒有一個「列出 catalog」的互動式 CLI。請讀取 `catalog/metadata/catalog.json` 檢視 components 與 presets，並讀取 `catalog/metadata/build.json` 取得 catalog identity 與兩個 digest。此版 catalog 有 18 個 skill、兩個知識包、六個 sub-agent 角色及 Codex/Claude adapters。知識與角色都是明確選配，不能由 preset 名稱推定。
+目前沒有一個「列出 catalog」的互動式 CLI。請讀取 `catalog/metadata/catalog.json` 檢視 components 與 presets，並讀取 `catalog/metadata/build.json` 取得 catalog identity 與兩個 digest。此版 catalog 有 20 個 skill、兩個知識包、六個 sub-agent 角色及 Codex/Claude adapters。知識與角色都是明確選配，不能由 preset 名稱推定。
 
 ```powershell
 $Catalog = Get-Content -Raw "$PackageRoot\catalog\metadata\catalog.json" | ConvertFrom-Json
@@ -138,7 +138,7 @@ $Desired = [ordered]@{
   skills = @('ai-context-init'); knowledge = @(); adapters = @('claude','codex')
   bindings = @(); skill_naming = 'original'
 }
-$Selection = 'C:\aicf\v019\selection.json'
+$Selection = 'C:\aicf\v020\selection.json'
 [IO.File]::WriteAllText($Selection, ($Desired | ConvertTo-Json -Depth 100), [Text.UTF8Encoding]::new($false))
 ```
 
@@ -153,7 +153,7 @@ lock 中 adapter metadata 的 `prefix: "aicf-"` 表示可用的前綴設定；
 只有 `skill_naming: "prefixed"` 才套用。選 `original` 時仍可能看到這份
 metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 prefix 欄位。
 
-修改 `skills` 為你要的 canonical IDs；[18 個 skill 目錄](skills/README.md)
+修改 `skills` 為你要的 canonical IDs；[20 個 skill 目錄](skills/README.md)
 可逐一挑選。只用 Claude 時填 `"adapters": ["claude"]`，兩者都用填
 `["claude", "codex"]`；這裡是 JSON 欄位內容，不是 YAML selection 範例。
 只裝一個 skill 並不需要先裝 orchestrator 或其他 skills。
@@ -170,7 +170,7 @@ metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 
 | `engineering` | 需求、規格、架構、GWT、診斷、實作與驗證（10） | Codex |
 | `source-repository` | collaboration 除 local-backlog（14） | Codex |
 | `collaboration` | 工程與記錄／編排 skills，無 context 三項（15） | Codex |
-| `complete` | collaboration 加 auditor、governance；不含 init（17） | Codex |
+| `complete` | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（17） | Codex |
 | `sub-agents` | 六個角色，不含 skills | Codex |
 | `sub-agents-claude` | 六個角色，不含 skills | Claude |
 
@@ -207,7 +207,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 ### 已宣告會受知識缺少影響的 skill
 
-下列五個 skill 的 package metadata 宣告 optional `knowledge_consumption`。若未安裝對應包，該表列出的作業無法使用該包的規則、標準或範例，應在 skill 操作結果中保留為 unavailable，而不要假設有完整技術指引。
+下列六個 skill 的 package metadata 宣告 optional `knowledge_consumption`。若未安裝對應包，該表列出的作業無法使用該包的規則、標準或範例，應在 skill 操作結果中保留為 unavailable，而不要假設有完整技術指引。
 
 | Skill | `engineering-common` 缺少時 | `dotnet-backend` 缺少時 |
 | --- | --- | --- |
@@ -218,7 +218,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | `local-change-implementer` | `implement` 的 common rule catalog 不可用 | `implement` 的 .NET aggregate、repository、test、use-case standards 不可用 |
 | `slice-implementer` | `implement` 的 common engineering/GWT handoff 資源不可用 | `implement` 的 .NET design、aggregate、repository、test、messaging、use-case standards 不可用 |
 
-其餘 13 個 skill 未在 package metadata 宣告任何知識 consumption：`adr-author`、`ai-context-auditor`、`ai-context-governance`、`ai-context-init`、`diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、`problem-frame-author`、`requirement-author`、`software-development-orchestrator`、`spec-author`、`spec-compliance-validator`。這只表示此版沒有宣告該兩包的必要資源；它不替目標專案補足自己的領域、政策或產品事實。
+其餘 14 個 skill 未在 package metadata 宣告任何知識 consumption：`adr-author`、`ai-context-auditor`、`ai-context-governance`、`ai-context-init`、`diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、`problem-frame-author`、`software-development-orchestrator`、`spec-author`、`spec-compliance-validator`、`user-story-author`、`workflow-records`。這只表示此版沒有宣告該兩包的必要資源；它不替目標專案補足自己的領域、政策或產品事實。
 
 ## 5. 僅組裝候選子集
 
@@ -227,9 +227,9 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 ```powershell
 $CatalogRoot = "$PackageRoot\catalog"
 $EngineRoot = "$PackageRoot\engine"
-$Selection = 'C:\aicf\v019\selection.json'
-$OutputRoot = 'C:\aicf\v019\candidate-output'
-$ScratchRoot = 'C:\aicf\v019\candidate-scratch'
+$Selection = 'C:\aicf\v020\selection.json'
+$OutputRoot = 'C:\aicf\v020\candidate-output'
+$ScratchRoot = 'C:\aicf\v020\candidate-scratch'
 New-Item -ItemType Directory -Path $OutputRoot, $ScratchRoot -ErrorAction Stop
 python -I -B "$EngineRoot\src\tools\derive-subset.py" `
   --catalog-root $CatalogRoot `
@@ -309,7 +309,7 @@ rule IDs，`authorities` 必須提供目標採納文件的相對 `path`、實際
 `engine/src/tools/maintain_framework.py` 是固定的 JSON stdin API：沒有命令列選項，只有 `inspect`、`plan`、`apply`、`recover` 四個 operation。呼叫形式如下；request 必須含 `api_version: 2`、`operation`、`project_root`、`engine_root` 與完整 `engine` pin（`engine-pin.json` 的內容）。
 
 ```powershell
-Get-Content -Raw C:\aicf\v019\request.json |
+Get-Content -Raw C:\aicf\v020\request.json |
   python -I -B "$PackageRoot\engine\src\tools\maintain_framework.py"
 ```
 
@@ -318,9 +318,9 @@ Get-Content -Raw C:\aicf\v019\request.json |
 ```powershell
 # 此範例故意使用一個新的空目錄；不要把它指向既有 consumer 專案。
 $TutorialRoot = "C:\aicf\t-" + [guid]::NewGuid().ToString('N').Substring(0,8)
-$PackageRoot = 'C:\aicf\v019\package'                 # 已驗證 SHA-256 的對應 archive 解壓目錄
+$PackageRoot = 'C:\aicf\v020\package'                 # 已驗證 SHA-256 的對應 archive 解壓目錄
 $EngineRoot = Join-Path $PackageRoot 'engine'
-$CandidateOutputRoot = 'C:\aicf\v019\candidate-output'              # derive-subset 的輸出根目錄
+$CandidateOutputRoot = 'C:\aicf\v020\candidate-output'              # derive-subset 的輸出根目錄
 $ProjectRoot = Join-Path $TutorialRoot 'project'
 $ScratchRoot = Join-Path $TutorialRoot 'scratch'
 $StagingRoot = Join-Path $TutorialRoot 'staging'
@@ -410,6 +410,16 @@ $After.details.owned          # Installed files and hashes.
 
 此 API 沒有名為 `validate` 或 `upgrade` 的 operation。候選及安裝完整性分別由 `derive-subset`、`inspect` 與 plan/apply 讀回檢查；它們不能代替下游的建置、測試、runtime 或 agent acceptance。升級是「組裝新的 selection/candidate → inspect 既有 lock → plan 差異 → 經授權 apply」的程序，不是單一命令。
 
+**v0.19.1 → v0.20.0 已知限制：** 2026-10-19 使用兩個正式發布 ZIP 的
+Windows 隔離實測中，v0.19.1 的 skill 安裝以原版引擎檢查正常，但 v0.20.0
+引擎在讀取舊安裝時回報 `unsupported-adapter`；Codex-only、Claude-only
+及兩者並用的最小案例皆停在 inspect／plan，未進入升級 apply。
+v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比對；
+可從 v0.19.1 或 v0.20.0 依上述 inspect／plan／apply 程序升級至 v0.20.1。
+請使用完整 v0.20.1 archive 的 engine 與 pin，保留原 lock、安裝檔案與原版 engine；
+不要改寫 hash、混用模板或刪除 lock 來繞過檢查。已發布的 v0.20.0 archive
+維持原樣，升級至 v0.20.0 的上述限制不會因文件更新而消失。
+
 取消選擇或卸載某個 skill/knowledge 同樣沒有單獨 `uninstall` 命令：建立不含該 component 的新 selection，再用 plan 審閱 `remove` delta。若要撤除 runtime skill entry，任何未知的 discovery 子樹、未受舊 inventory 擁有的檔案或漂移都會造成 conflict，不應以手動遞迴刪除繞過它。`reinstall-framework.py` 是另一條 Git-backed breaking reinstall 路徑，要求完整 quiescence、乾淨 Git baseline、明確 cleanup/preservation pins 與可恢復的 content；它不是一般 upgrade 或 deselect 的替代方案。
 
 ### 既有 managed 安裝的調整
@@ -473,17 +483,17 @@ project config 依[共通設定](tool-skills.md)準備。此框架不替你的�
 
 ## 8. 平台與常見問題
 
-以下矩陣區分 v0.19.0 已發布行為與 0.20.0 開發中的暫時 macOS 路徑；
+以下矩陣區分舊版 v0.19.0 行為與已發布 v0.20.0 的暫時 macOS 路徑；
 平台列為支援不代表你的檔案系統、candidate 或 runtime 已完成驗收。
 
 | 操作 | Windows | 64-bit Linux | macOS |
 | --- | --- | --- | --- |
 | `derive-subset` | 可組裝；依本機 mode materialization | 可組裝；依本機 mode materialization | Fable 回報可組裝；不代表可原生套用 |
 | `inspect` | 唯讀檢查 | 唯讀檢查 | 可走唯讀檢查；不評估 runtime readiness |
-| `plan`／`apply`／`recover` | 原生 backend；本機 NTFS／ReFS | 原生 backend；需 `renameat2` 與允許的檔案系統 | v0.19.0 拒絕；0.20.0 開發版接受 64-bit macOS，保證較弱，見下文 |
-| breaking reinstall | 同樣受原生 backend 與 Git 前置條件限制 | 同樣受原生 backend 與 Git 前置條件限制 | 開發版使用同一暫時後端，並保留 Git 前置條件 |
+| `plan`／`apply`／`recover` | 原生 backend；本機 NTFS／ReFS | 原生 backend；需 `renameat2` 與允許的檔案系統 | v0.19.0 拒絕；v0.20.0 接受 64-bit macOS，保證較弱，見下文 |
+| breaking reinstall | 同樣受原生 backend 與 Git 前置條件限制 | 同樣受原生 backend 與 Git 前置條件限制 | v0.20.0 使用同一暫時後端，並保留 Git 前置條件 |
 
-### 0.20.0 開發中的暫時 macOS 路徑
+### v0.20.0 的暫時 macOS 路徑
 
 依 2026-10-08 的 owner 決定，64-bit macOS 暫時使用 Python 標準函式庫後端。
 使用對應的新 engine 與完整 pin，重新 derive POSIX candidate，並設定
@@ -502,8 +512,7 @@ maintenance 宣告及參與 writer 的鎖定。既有目的檔案在未指定 re
 使用時須實際停止所有受影響 session／tool／external writer；中斷或競爭寫入
 可能需要人工核對。這個診斷不是互動式確認，也不等於 macOS 實機驗收通過。
 
-目前此變更只在開發來源；已發布 v0.19.0 的 engine 與 pin 不會被修改。
-實機安裝／復原證明依 owner 決定延後統一檢核。
+此路徑已包含在 v0.20.0 的 engine；舊版 v0.19.0 的 engine 與 pin 維持原樣。
 
 ### Windows／Linux 原生後端與既有回饋
 
@@ -527,8 +536,8 @@ Git clone 的跨平台攜帶、runtime 自動 discovery 和各工具型 skill �
 | `invalid-json` | selection/request 使用 UTF-8 JSON；不傳 YAML、重複 key 或未知欄位 |
 | `dependency-closure` | 依下載 catalog 補齊必要依賴；`.NET` 要明列 common |
 | `path-budget` | 選短的全新外部根路徑；保留原失敗；不放寬 240 UTF-16 限制 |
-| `native-platform` | 核對 engine 版本與平台；v0.19.0 的 macOS 維護仍不支援，開發版需 64-bit macOS |
-| `macos-reduced-guarantees` | 開發版的暫時 macOS 路徑；先停止所有 writer，保留復原紀錄並依上文解讀較弱保證 |
+| `native-platform` | 核對 engine 版本與平台；v0.19.0 的 macOS 維護仍不支援，v0.20.0 需 64-bit macOS |
+| `macos-reduced-guarantees` | v0.20.0 的暫時 macOS 路徑；先停止所有 writer，保留復原紀錄並依上文解讀較弱保證 |
 | 不支援的 filesystem／volume | 核對每個 root 的實際掛載與檔案系統；保留證據後選支援的本機位置 |
 | managed drift／conflict | 比較原 lock 擁有的 bytes 和目前客製變動，再由 owner 決定保留方式 |
 | recovery-needed | 保留 marker 與 operation，走精確復原流程，先停止受影響能力 |
@@ -536,7 +545,7 @@ Git clone 的跨平台攜帶、runtime 自動 discovery 和各工具型 skill �
 | 找不到 `ai-context-init` | 舊 `complete` 不含它；另選該 skill／initialization preset |
 | 工具讀不到 Python 套件 | 確認 `-I` 使用的同一個 interpreter/venv；user site 或 PYTHONPATH 不會補依賴 |
 
-Windows 使用 `mode_policy: windows-inventory-only`。Linux 與開發版 macOS 要求
+Windows 使用 `mode_policy: windows-inventory-only`。Linux 與 v0.20.0 macOS 要求
 `posix-permissions`；需在目標平台重新 derive candidate，使 build 的 mode
 materialization 與該平台相符，不能直接把 Windows subset 當成 Linux 安裝驗收。
 Linux／macOS 可將相應版本的 JSON request 透過 stdin 交給

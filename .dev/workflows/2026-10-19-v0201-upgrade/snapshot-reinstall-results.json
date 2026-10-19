@@ -1,0 +1,22 @@
+{
+  "outcome": "passed",
+  "managed_profiles_removed": 12,
+  "preserved_inputs": [
+    {
+      "path": ".ai/local/installation.guard",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".claude/agents/custom.md",
+      "sha256": "1327958ce6d2634faacb439861873a48dae12a20fa946ce1c5de6fad53bc44cb"
+    },
+    {
+      "path": ".codex/agents/custom.toml",
+      "sha256": "1261a1edaea5a64b971d2c5abb27aa0d7e64472b2fc2a7a3c4026f7aac48caf2"
+    }
+  ],
+  "classification_rejection": "reinstall-unclassified",
+  "untracked_rejection": "reinstall-untracked",
+  "post_reinstall_inspect": "managed-bytes-consistent",
+  "baseline": "0f9504f6b1ea61e92a7ac2b9ae86f60284d32336"
+}

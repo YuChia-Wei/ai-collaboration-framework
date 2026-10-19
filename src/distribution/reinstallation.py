@@ -18,7 +18,7 @@ from . import installation
 from .data import json_bytes
 from .installation_io import platform_diagnostics
 
-SCOPES = (".ai", ".dev", ".agents/skills", ".claude/skills")
+SCOPES = (".ai", ".dev", ".agents/skills", ".claude/skills", ".codex/agents", ".claude/agents")
 FIELDS = {"reinstall_version", "operation", "project_root", "expected_head",
           "cleanup", "preserved_inputs", "preview_root", "installation", "maintenance",
           "all_framework_activity_stopped"}
@@ -277,7 +277,6 @@ def _preview(document, roots, reader):
                      "reinstall-preview-drift", "Retained preview changed during materialization.", name)
     request = {**document["installation"], "project_root": str(roots["preview"])}
     result = installation.plan(request)
-    state._check(result["outcome"] == "planned", "reinstall-install-preflight", "New installation preview was rejected; target cleanup has not started.")
     return result
 
 
@@ -289,6 +288,8 @@ def execute(request):
     try:
         document, roots, reader, candidate = _prepare(request)
         preview = _preview(document, roots, reader)
+        answer["installation_preview_result"] = preview
+        state._check(preview["outcome"] == "planned", "reinstall-install-preflight", "New installation preview was rejected; target cleanup has not started.")
         document["installation_preview"] = preview["plan"]
         digest = sha256(json_bytes(document)).hexdigest()
         answer.update(plan=document, plan_sha256=digest)
@@ -319,6 +320,7 @@ def execute(request):
         reader = state._Reader()
         _pins([r for r in document["preserved_inputs"] if r["path"] != state.GUARD_PATH], roots["project"], reader, preservation=True)
         actual = installation.plan(document["installation"])
+        answer["installation_plan_result"] = actual
         state._check(actual["outcome"] == "planned", "reinstall-after-cleanup", "New installation planning failed after destructive cleanup; retain evidence and use Git recovery.")
         for field in ("candidate_identity", "engine", "expected_lock_sha256", "mode_policy", "delta",
                       "project_edits", "project_inputs", "protected_inputs", "maintenance_scope", "noop"):

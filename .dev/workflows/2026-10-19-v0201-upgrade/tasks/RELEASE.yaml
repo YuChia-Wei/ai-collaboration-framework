@@ -1,0 +1,12 @@
+task_id: RELEASE
+workflow_id: 2026-10-19-v0201-upgrade
+owner_skill: software-development-orchestrator
+status: pending
+created_at: '2026-10-19T20:36:12+08:00'
+updated_at: '2026-10-19T20:36:12+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+model: gpt-6-astra
+reasoning_effort: high
+title: Review, integrate and publish v0.20.1
+issue: 467

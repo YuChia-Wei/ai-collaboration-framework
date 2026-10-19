@@ -9,7 +9,7 @@
 
 本手冊原始基線 `dd1453e8cf23bf62a5b28c70ed08f475856dda41` 位於 RC4 之後，並含 19 個 skill 說明檔的後續修訂。因此，本節每一個 RC4 安裝命令都從已發布 archive 的 `engine/` 與 `catalog/` 執行，不能混用工作樹中的工具或內容。
 
-目前開發版的 subset 與 breaking reinstall 入口已移到
+自 v0.19.0 正式版起，subset 與 breaking reinstall 入口已移到
 `engine/src/tools/derive-subset.py`、`engine/src/tools/reinstall-framework.py`；
 `engine/src/tools/maintain_framework.py` 不變。新 engine 的 23 個成員全部來自
 `src/`，不含 build CLI。下文 RC4 範例仍保留該已發布 archive 的舊路徑。

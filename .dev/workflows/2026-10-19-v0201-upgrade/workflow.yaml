@@ -1,0 +1,17 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-19-v0201-upgrade
+workflow_kind: source-repair-release
+title: Repair public-version upgrades and publish v0.20.1
+owner_skill: software-development-orchestrator
+status: in_progress
+artifact_root: .dev/workflows/2026-10-19-v0201-upgrade
+entrypoint: workflow-plan.md
+created_at: '2026-10-19T20:36:12+08:00'
+updated_at: '2026-10-19T20:36:12+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+branch: codex/2026-10-19-v0201-upgrade
+base_branch: main
+issue: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/467
+input_commit: 867cd57a99d3e5a05bba898054328410c622f36c

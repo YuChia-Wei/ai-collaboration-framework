@@ -9,7 +9,7 @@ import unittest
 ROOT = Path(__file__).absolute().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-from distribution import claude, codex
+from distribution import catalog, claude, codex
 from distribution.data import DistributionError
 
 
@@ -24,6 +24,28 @@ MEMBERS = {
 
 
 class AdapterProjectionTests(unittest.TestCase):
+    def test_public_v019_templates_remain_readable_by_current_engine(self):
+        from hashlib import sha256
+        for aid, module, expected in (
+            ('codex', codex, '68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4'),
+            ('claude', claude, '11eeedac1452cc78e9ab7726791c5032b2379815ea15e8fb0f8fb11d921d032e'),
+        ):
+            with self.subTest(adapter=aid):
+                historical = catalog.template_bytes(aid, expected)
+                self.assertEqual(sha256(historical).hexdigest(), expected)
+                _, rendered = self.render(module, CODEX_V2, template_bytes=historical)
+                self.assertIn(b'For metadata version 4,', rendered)
+                self.assertNotIn(b'Metadata 5 also declares', rendered)
+                current = (ROOT / f'src/adapters/{aid}/skill-entry-v2.md.template').read_bytes()
+                self.assertEqual(catalog.template_bytes(aid, sha256(current).hexdigest()), current)
+                for supplied in (current, historical + b'\n'):
+                    with self.assertRaises(DistributionError):
+                        catalog.template_bytes(aid, expected, supplied)
+                with self.assertRaises(DistributionError):
+                    catalog.template_bytes(aid, '0' * 64)
+        with self.assertRaises(DistributionError):
+            catalog.template_bytes('claude', '68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ffdc56fc910cd0065af4')
+
     def render(self, module, template, **overrides):
         values = {
             "template_bytes": template.read_bytes(),

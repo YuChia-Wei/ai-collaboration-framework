@@ -3,7 +3,7 @@
 [回手冊首頁](README.md) · [安裝與平台限制](installation.md) ·
 [Breaking reinstall](breaking-reinstall.md)
 
-本頁適用於 v0.19.0 Catalog 1／Engine 2，入口為
+本頁適用於 v0.20.1 Catalog 1／Engine 2，入口為
 `engine/src/tools/maintain_framework.py` 的 JSON stdin `recover` operation。
 它只處理一份精確保留的安裝操作，不能當作一般 rollback、跨電腦搬移或清理工具。
 本頁提供來源契約與請求範例，沒有宣稱已完成你的目標環境復原驗收。
@@ -115,7 +115,7 @@ if ($RecoveryExitCode -ne 0) { throw "Recovery failed; retained exit code: $Reco
 
 接著重新 `inspect`，核對結果符合選定方向及 marker 狀態。若涉及 project edits，
 也須核對 root 文件等內容的 before／after；這與 runtime discovery、工具可執行性
-及業務程式驗收分開。v0.19.0 的 macOS recover 不可用；0.20.0 開發中的
+及業務程式驗收分開。v0.19.0 的 macOS recover 不可用；v0.20.0 的
 暫時後端接受 recover，但只提供盡力復原，仍需相同 engine pin、原路徑與
 完整操作紀錄，見[平台矩陣](installation.md#8-平台與常見問題)。
 
