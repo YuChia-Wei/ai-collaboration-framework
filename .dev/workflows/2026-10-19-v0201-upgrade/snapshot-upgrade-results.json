@@ -1,0 +1,72 @@
+[
+  {
+    "case": "c19",
+    "origin": "v0.19.1",
+    "target": "0.0.0-rc.63763832554083",
+    "outcome": "passed",
+    "managed_files": 10,
+    "sentinels_preserved": [
+      "README.md",
+      ".codex/config.toml",
+      ".claude/settings.json"
+    ],
+    "adapters": [
+      "codex"
+    ],
+    "full": false
+  },
+  {
+    "case": "h19",
+    "origin": "v0.19.1",
+    "target": "0.0.0-rc.63763832554083",
+    "outcome": "passed",
+    "managed_files": 10,
+    "sentinels_preserved": [
+      "README.md",
+      ".codex/config.toml",
+      ".claude/settings.json"
+    ],
+    "adapters": [
+      "claude"
+    ],
+    "full": false
+  },
+  {
+    "case": "f19",
+    "origin": "v0.19.1",
+    "target": "0.0.0-rc.63763832554083",
+    "outcome": "passed",
+    "managed_files": 502,
+    "sentinels_preserved": [
+      "README.md",
+      ".codex/config.toml",
+      ".claude/settings.json",
+      ".codex/agents/custom.toml",
+      ".claude/agents/custom.md"
+    ],
+    "adapters": [
+      "claude",
+      "codex"
+    ],
+    "full": true
+  },
+  {
+    "case": "f20",
+    "origin": "v0.20.0",
+    "target": "0.0.0-rc.63763832554083",
+    "outcome": "passed",
+    "managed_files": 502,
+    "sentinels_preserved": [
+      "README.md",
+      ".codex/config.toml",
+      ".claude/settings.json",
+      ".codex/agents/custom.toml",
+      ".claude/agents/custom.md"
+    ],
+    "adapters": [
+      "claude",
+      "codex"
+    ],
+    "full": true
+  }
+]

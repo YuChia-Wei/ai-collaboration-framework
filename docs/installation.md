@@ -4,12 +4,12 @@
 [知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) ·
 [復原](recovery.md) · [Breaking reinstall](breaking-reinstall.md) · [RC4 舊版指令](installation-rc4.md)
 
-本頁以已發布的 v0.20.0 Catalog 1／Engine 2 為目前安裝基準：engine 的 23 個成員全部
+本頁適用於 v0.20.1 Catalog 1／Engine 2：engine 的 23 個成員全部
 來自 `src/`，三個消費端入口位於 `engine/src/tools/`；不含來源庫 build 工具。
 請使用同一封存檔的 catalog、engine 與獨立選定的 pin。RC4 使用舊目錄，
 不能混用本頁指令；其已發布位元組與[舊版說明](installation-rc4.md)維持原樣。
 
-v0.20.0 已發布；其暫時 macOS 安裝路徑見[平台說明](#8-平台與常見問題)。
+自 v0.20.0 提供的暫時 macOS 安裝路徑見[平台說明](#8-平台與常見問題)。
 請下載對應版本的 ZIP；舊版封存檔不會因本頁更新而取得新行為。
 
 本手冊位於來源庫 `docs/`，不屬於安裝 payload。下載 archive 不需要 clone
@@ -59,8 +59,8 @@ if ($LASTEXITCODE -ne 0) { throw '隔離 Python 無法載入依賴' }
 你的選擇；checksum 比對證明位元組一致，不代表 target 或 agent 驗收。
 
 ```powershell
-$ReleaseTag = 'v0.20.0' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
-$ReleaseRoot = 'C:\aicf\v020'
+$ReleaseTag = 'v0.20.1' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
+$ReleaseRoot = 'C:\aicf\v0201'
 $ReleaseText = gh release view $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework --json tagName,isDraft
 if ($LASTEXITCODE -ne 0) { throw '所選公開 Release 尚不可用；停止下載與安裝' }
 $Release = $ReleaseText | ConvertFrom-Json
@@ -414,9 +414,11 @@ $After.details.owned          # Installed files and hashes.
 Windows 隔離實測中，v0.19.1 的 skill 安裝以原版引擎檢查正常，但 v0.20.0
 引擎在讀取舊安裝時回報 `unsupported-adapter`；Codex-only、Claude-only
 及兩者並用的最小案例皆停在 inspect／plan，未進入升級 apply。
-因此這條公開版本升級路徑目前受阻。保留原 lock、安裝檔案與原版 engine；
-不要改寫 hash、混用模板或刪除 lock 來繞過檢查。Breaking reinstall 不是
-本問題已驗證的替代方案，修正版本尚未決定。
+v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比對；
+可從 v0.19.1 或 v0.20.0 依上述 inspect／plan／apply 程序升級至 v0.20.1。
+請使用完整 v0.20.1 archive 的 engine 與 pin，保留原 lock、安裝檔案與原版 engine；
+不要改寫 hash、混用模板或刪除 lock 來繞過檢查。已發布的 v0.20.0 archive
+維持原樣，升級至 v0.20.0 的上述限制不會因文件更新而消失。
 
 取消選擇或卸載某個 skill/knowledge 同樣沒有單獨 `uninstall` 命令：建立不含該 component 的新 selection，再用 plan 審閱 `remove` delta。若要撤除 runtime skill entry，任何未知的 discovery 子樹、未受舊 inventory 擁有的檔案或漂移都會造成 conflict，不應以手動遞迴刪除繞過它。`reinstall-framework.py` 是另一條 Git-backed breaking reinstall 路徑，要求完整 quiescence、乾淨 Git baseline、明確 cleanup/preservation pins 與可恢復的 content；它不是一般 upgrade 或 deselect 的替代方案。
 

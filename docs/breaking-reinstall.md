@@ -2,7 +2,7 @@
 
 [回手冊首頁](README.md) · [一般安裝與更新](installation.md) · [操作復原](recovery.md)
 
-本頁適用於 v0.20.0 Catalog 1／Engine 2。公開入口為
+本頁適用於 v0.20.1 Catalog 1／Engine 2。公開入口為
 `engine/src/tools/reinstall-framework.py`，以 JSON stdin 接受 `plan`／`apply`。
 這是先清除明確選定的舊 framework 檔案，再安裝新 candidate 的**非原子重裝**。
 一般更新、取消選配仍使用 `maintain_framework.py`；不要為了避開 drift 或衝突
@@ -41,7 +41,7 @@ cleanup 資源。既有 `.ai/local/installation.guard` 必須明確列入 preser
 root `AGENTS.md`／`CLAUDE.md` 不在上述自動盤點範圍。Fable 回報的舊入口連結
 殘留應由 owner 審閱後，透過 `project_edits` 與重裝配對修改，或另外做 project-owned
 文件變更；installer 不會自行理解並重寫團隊規則。也須人工檢查其他 runtime
-config 是否仍引用退役資源，不能把這四個根目錄當作全專案所有歷史設定的清單。
+config 是否仍引用退役資源，不能把這六個根目錄當作全專案所有歷史設定的清單。
 
 ## 準備新安裝與 project edits
 
