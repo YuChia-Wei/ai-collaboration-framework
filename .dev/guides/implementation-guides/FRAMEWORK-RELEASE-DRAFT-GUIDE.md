@@ -115,6 +115,14 @@ historical workflow change with this token, report that limitation.
 
 ## Notes and final publication
 
+For a hotfix or installation/upgrade compatibility release, consult the
+[v0.20.1 hotfix lesson](../../lessons/records/hotfix-testing-release-20261019.md)
+when preparing the acceptance handoff. Its published-version upgrade cases and
+Draft-to-public asset comparison explain the evidence gaps that fresh-install
+or build success alone left open. Select relevant scenarios under the
+[source development policy](../../standards/SOURCE-DEVELOPMENT-POLICY.md#decide-before-running-a-test);
+the historical snapshot/formal trial pair is not a required repeat matrix.
+
 After draft readiness, the owner separately invokes Codex or ChatGPT in a
 GitHub-authenticated session with repository write capability, or edits GitHub
 directly. Supply these facts from the Actions run and manifest:

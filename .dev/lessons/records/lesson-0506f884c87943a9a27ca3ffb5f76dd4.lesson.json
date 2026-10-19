@@ -1,0 +1,113 @@
+{
+  "content": {
+    "applies_when": [
+      "此來源庫的 bounded hotfix、測試安排、安裝/升級/重裝相容性與正式資產交付；既有 gate 與已接受驗收仍成立。",
+      "評估跨 session/model 的 context discovery 與教訓承接，且目標 repo 採用目前 root entry/政策分工。",
+      "比較過程是否重複驗證時，能確認產品subject、輸入、契約及環境是否影響既有結果。"
+    ],
+    "conclusion": "可支持的結論是：這次以明確缺陷與實際升級契約選擇驗證，保留必要審查／PR gate／正式資產驗收，避免紀錄或階段變動觸發無關重測，並沿用成熟的單次打包／同位元組發布方式，使已取得完整操作授權後的交付迴圈保持精簡。\n這不是 matched before/after performance experiment；無法將速度改善量化歸因於某一政策、AI 或工具。保留真實舊版升級驗收，比用大量不相關成功結果推定 readiness 更有辨識力。\n跨聊天室或 AI 的知識延續，適合由共同根入口指向少量現行 owner，再由 owner 在具體觸發情境連到相關 lesson；完整分析留在 lesson 作為證據。根入口不宜承載整份歷史，lesson 也不應成為第二份規範。此結論是待審閱建議，尚未採納或實作。",
+    "confidence": "supported",
+    "does_not_apply_when": [
+      "安全、資料遷移、回復、平台支援或 owner 明確選定的驗收要求需要額外檢查；本 lesson 不豁免它們。",
+      "不具相同缺陷、來源版本、環境或 workload 的其他 release；不可套用24分44秒為SLA或宣稱固定加速倍數。",
+      "未知 drift、失敗原因未排除、產物被重建或 required gate 未完成；不可用重用證據之名跳過。",
+      "未採用本專案入口的其他 AI 客戶端／下游 repo；未驗證自動載入與行為遵守。",
+      "把 candidate lesson 或使用者同意留存視為 accepted decision、政策採納、產品實作或發布授權。"
+    ],
+    "evidence": [
+      {
+        "note": "範圍、失敗保留、審查、snapshot/formal 驗收、發布與行政收尾。",
+        "source": ".dev/workflows/2026-10-19-v0201-upgrade/workflow-plan.md @ 2f0c06efa594cc40be1420eb65b9d22dbcaa4080"
+      },
+      {
+        "note": "76 tests；6.36979 seconds；0 errors/failures/skips。",
+        "source": ".dev/workflows/2026-10-19-v0201-upgrade/distribution-tests.json"
+      },
+      {
+        "note": "正式 build 時間、原始來源核對及產物身分。",
+        "source": ".dev/workflows/2026-10-19-v0201-upgrade/formal-artifact-verification.json"
+      },
+      {
+        "note": "正式包四個升級案例與最終 0.20.1、一致性及自訂內容保留。",
+        "source": ".dev/workflows/2026-10-19-v0201-upgrade/formal-upgrade-results.json"
+      },
+      {
+        "note": "12 個受管 profiles 移除、範圍外內容保留及拒絕條件。",
+        "source": ".dev/workflows/2026-10-19-v0201-upgrade/formal-reinstall-results.json"
+      },
+      {
+        "note": "公開時間、release ID、asset IDs 未變及 Actions/Draft/public bytes 一致。",
+        "source": ".dev/workflows/2026-10-19-v0201-upgrade/public-release-verification.json"
+      },
+      {
+        "note": "createdAt 2026-10-19T12:35:14Z；工作及驗收範圍，非完整事件開始時間。",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/467"
+      },
+      {
+        "note": "2026-10-19 唯讀取得 job/run 起訖；歷史執行身分，非此 lesson 重新執行。",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/39253955780"
+      },
+      {
+        "note": "被取消執行；保留取消與重複 runner 時間，不能記為成功。",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/39254784232"
+      },
+      {
+        "note": "2026-10-19 唯讀取得 job/run 起訖；歷史執行身分，非此 lesson 重新執行。",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/39254819912"
+      },
+      {
+        "note": "2026-10-19 唯讀取得 job/run 起訖；歷史執行身分，非此 lesson 重新執行。",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/39255268520"
+      },
+      {
+        "note": "2026-10-19 唯讀取得 job/run 起訖；歷史執行身分，非此 lesson 重新執行。",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/39255304812"
+      },
+      {
+        "note": "在原執行主機讀回 subprocess started_utc/ended_utc。此位置不具可攜性；量測摘要已在 lesson 留存，其他主機不能假設原檔存在。",
+        "source": "F:/u201t/{c19,h19,f19,f20,ri}/*-execution.json；F:/u201d/{c19,h19,f19,f20,ri}/*-execution.json"
+      },
+      {
+        "note": "#459 局部修復與243項suite69.152907秒；不同工作負載，僅作流程比較。",
+        "source": ".dev/workflows/2026-10-17-user-story-author/validation-report.md"
+      },
+      {
+        "note": "#461/#463 已採納的簡化與適用範圍；不宣稱存在matched time/cost savings量測。",
+        "source": ".dev/workflows/2026-10-18-validation-simplification/workflow-plan.md"
+      },
+      {
+        "note": "共同入口、按需載入、現有驗證/交接/發布契約的靜態查核；未修改、未驗證跨AI執行效果。",
+        "source": "AGENTS.md；CLAUDE.md；.dev/standards/SOURCE-DEVELOPMENT-POLICY.md；.dev/standards/WORKFLOW-HANDOFF-POLICY.md；.dev/guides/implementation-guides/FRAMEWORK-RELEASE-DRAFT-GUIDE.md @ 2f0c06efa594cc40be1420eb65b9d22dbcaa4080"
+      },
+      {
+        "note": "目前JSON store設定與舊Markdown導覽的差異；新record先query，當時JSON集合空白且無partial；舊Markdown lessons另行檢視，未遷移。",
+        "source": ".ai/custom/framework.json；.dev/lessons/INDEX.MD；.dev/lessons/README.MD"
+      }
+    ],
+    "follow_up": [
+      "下次 hotfix 的改善建議（未成為新規則）：先確認缺陷與正式來源版本；用最小直接回歸證明修正，再按已接受風險選擇 snapshot 代表案例與正式包驗收，避免自動雙跑完整矩陣。",
+      "執行安排建議（未實作）：native 試驗先選已知相容權限環境；builder 前核對乾淨來源要求並直接選合適 worktree，保留使用者資料；最後內容與 PR Ready 狀態盡量先收斂，避免相同 head 的重複CI。",
+      "授權建議（未改權限）：起始時清楚列出必要 Issue/PR/merge/tag/publication 操作與既有授權；保留真正需要的核准邊界，區分等待、執行、排隊及未知耗時。",
+      "優先評估 A：在既有 SOURCE-DEVELOPMENT-POLICY.md 的驗證必要性／CI與publication段落，整合一小段『變更相容性/升級路徑時，依支援來源版本選擇真實消費者情境；fresh install/CI不能單獨證明upgrade；正式包身分須與已接受驗收對齊』的提案，連回本 lesson 與現有 release guide。這是候選文字方向，尚未寫入規範；不新增全版本矩陣或門檻。",
+      "優先評估 B：在既有 FRAMEWORK-RELEASE-DRAFT-GUIDE.md 的發布驗收交接處加入情境式 lesson 導覽與產物身分界線，保留此 guide 為發布程序 owner；不把每個 hotfix 固定為snapshot/formal兩輪完整驗收，不複製 source policy。",
+      "入口評估 C：AGENTS.md 已明示讀 source policy，優先維持這條短鏈；只有 owner 接受且現有入口不足時，才考慮在『適用政策』導覽補一行相關lesson查閱觸發。若改根入口，AGENTS.zh-TW.md需同步；CLAUDE.md維持單一@AGENTS.md引用，不複製教訓全文。任何入口調整都需另行授權。",
+      "導覽評估 D：釐清 .dev/lessons/README.MD 的舊 Markdown packet 與 .ai/custom/framework.json 的JSON v2 store分工，讓未來AI不會建立錯誤格式或忽略structured records。本次僅新增此lesson的索引與閱讀版，未遷移舊lesson、未修改README規則、未建立新registry。",
+      "不建議變更：WORKFLOW-HANDOFF-POLICY.md 已涵蓋跨session接手與避免無理由重驗，無需再堆一份同義規則；不修改 .agents/.claude/.ai/core 生成安裝投影。若要讓教訓成為可攜產品行為，需另選 src owner 與獨立授權，不能直接把 .dev 經驗包進下游。",
+      "後續檢視建議：若 owner 採納入口或規範調整，先靜態確認單一規範owner、Codex/Claude入口與連結可達、無重複重測義務；在下一個實際相關任務觀察是否被使用。這不是現在建立測試平台、validator、ledger、強制跨AI試驗或新維護機制的授權。"
+    ],
+    "observation": "## 記錄範圍與身分\n本 lesson 留存 2026-10-19 v0.20.1 hotfix 的測試／發布分析，並唯讀評估如何透過既有規範入口承接教訓。來源基準為 main commit 2f0c06efa594cc40be1420eb65b9d22dbcaa4080；產品修正 commit 39fe2c96c26264982899b58f3c8b52a4fbfb68a6；正式 release source fba2f031f1c969cd5788af924e307ffebf553422。Issue #467、PR #468 是修正交付，PR #469 整合發布後紀錄。\nNormative Authority: none。這是候選觀察與改善提案；使用者授權留存與評估，未授權新增規則、驗證機制或修改規範。不得把本 lesson 解讀為產品測試豁免、平台保證、政策採納或下游升級授權。\n\n## 實際時間與量測邊界\n下列時間均為台灣時間 UTC+08:00。wall time 是觀察窗，不等於 CPU 時間、人工工時或模型費用。案例與 CI 有並行；不同欄位不可任意累加。\n\n| 階段 | 開始／結束或時間量 | 已觀察結果與限制 |\n| --- | --- | --- |\n| Issue 建立至公開發布 | 20:35:14 → 20:59:58；24 分 44 秒 | GitHub Issue createdAt 與 Release published_at 的差。此前已完成診斷及缺陷重現，不是整個事件處理時間。 |\n| 76 項本機 distribution 回歸 | 6.369790 秒 | 成功執行，0 errors/failures/skips。首次 sandbox 的 29 個 PermissionError 保留為環境失敗，無可用耗時，不估算節省。 |\n| 第一輪 PR head CI，39253955780 | job 20:41:01 → 20:42:13；72 秒 | 對應修正 commit 39fe2c96，與 snapshot 試驗重疊。 |\n| Snapshot 四條升級 | 20:41:02.267 → 20:45:17.680；255.413 秒 | Codex-only、Claude-only、v0.19.1 完整及 v0.20.0 完整案例並行執行。 |\n| Snapshot 重裝及拒絕案例 | 20:45:33.051 → 20:46:16.764；43.713 秒 | 12 個受管 agent 移除、自訂內容保留、未分類／untracked cleanup 拒絕。 |\n| Snapshot 整體試驗觀察窗 | 20:41:02.267 → 20:46:16.764；314.497 秒 | 約 5 分 14 秒，含兩組間隔；不含前置 build。 |\n| 被 Ready 事件取消的 CI，39254784232 | job 20:47:19 → 20:48:37；78 秒 | cancelled，不是 passed；已消耗 runner 時間，但不能聲稱可直接省下 78 秒 wall time。 |\n| 最終 PR CI，39254819912 | run 20:47:33 → 20:50:05；152 秒；job 85 秒 | 約 67 秒排隊／調度；246 項測試執行約 50.537 秒，0 errors/failures/skips。 |\n| 整合後 main snapshot，39255268520 | run 23 秒；job 20 秒 | 對應 fba2f031；這是 package build，不是在 main 重跑 source tests。 |\n| 正式 Draft，39255304812 | 20:51:18 → 20:51:59；41 秒 | build job 21 秒、draft job 16 秒；build 程式本體 8.883 秒屬子區段，不可重複相加。 |\n| 正式 Draft 四條升級 | 20:53:23.745 → 20:57:53.435；269.690 秒 | 與 snapshot 相同來源組合，使用真正將發布的 0.20.1 ZIP；案例並行。 |\n| 正式 Draft 重裝及拒絕案例 | 20:58:15.362 → 20:59:00.711；45.349 秒 | 保留 README、runtime 設定、自訂 agent；最終 managed-bytes-consistent。 |\n| 正式試驗整體觀察窗 | 20:53:23.745 → 20:59:00.711；336.966 秒 | 約 5 分 37 秒，含兩組間隔；不含下載、解壓、前置 Git／hash 核對。 |\n| 正式公開 | 20:59:58 | release ID 417287964；stable、Latest；公開 ZIP／checksum／manifest 與 Actions、驗收 Draft 位元組相同。 |\n\n兩輪真實試驗觀察窗合計 651.463 秒，約 10 分 51 秒；這個和僅包含上述兩個互不重疊的觀察窗。完整案例各核對 502 個受管檔案。\n對話授權事件另外顯示：15:35:20 初次授權修正發布，15:37:20 因建立 Issue 的自動核准審查要求提出補充授權，20:35:09 收到確認；等待約 4 小時 58 分。這組時間是本次對話事件的作者觀察，未匯出私人對話；可從公開 provider 重新核對的交付窗以 Issue createdAt → Release published_at 為準。不得將等待歸為測試執行，也不得從端到端體驗中隱去。\n獨立審查、首次 sandbox 失敗、首次不乾淨目錄 build 拒絕、worktree 建立及工具操作沒有完整分段計時；不填補推測值。沒有 CPU/I/O、token 或實際扣款量測。\n\n## 這次做對的地方\n1. 範圍明確：三項缺陷為舊 adapter template 相容性、sub-agent 重裝範圍、原始失敗診斷保留；既定來源為 v0.19.1 與 v0.20.0。沒有擴大到所有技能／模型的行為矩陣。\n2. 對準使用者契約：建立真實公開舊版安裝，使用新包完成 inspect／plan／apply／inspect，核對內容與自訂檔案；新版 fresh install 成功不能替代既有安裝升級成功。\n3. 保留必要門檻：本機直接回歸、安裝變更的獨立固定 diff 審查、最終 PR-head hosted gate、正式 Draft 位元組驗收都執行；收尾文件變更只核對內容與狀態。\n4. 固定產物：正式 Draft 建立一次，驗收後公開同一組 asset IDs／bytes，公開下載再比較；沒有因 notes、報告或行政狀態改變重建 release。\n5. 有條件並行：獨立案例並行，審查／CI 與部分本機工作重疊。未據此宣稱模型費用或總成本下降。\n\n## 以前做錯的地方與本次仍可改善之處\n1. 歷史流程容易把 SHA、階段、報告或交接改變當成產品重驗觸發，造成同一事實重複證明；目前 SOURCE-DEVELOPMENT-POLICY 已改以實際影響決定。\n2. #461 的初版規劃曾想用更多指南、矩陣與示範試驗證明驗證成本降低；owner 要求先刪除／澄清造成不必要工作的原規則。這是流程維護膨脹的反例，不應再建立成本驗證平台。\n3. v0.20.0 發布前，我以 CI、安裝與選定能力證據判定可發布，卻未充分驗證上一公開版本的實際升級；後續 unsupported-adapter 重現證明這個 readiness 判斷過早。不是所有已通過測試都能回答同一發布風險。\n4. 本次在已知可能不相容的 sandbox temp 權限下先跑失敗，再於正常權限環境成功；失敗帶來的是環境資訊，沒有產品驗證收益。不能把它列為產品 regression failure。\n5. Builder 要求乾淨來源，我先用保留 untracked release records 的主工作目錄，遭拒後才選乾淨 worktree。拒絕保護有效，前置選擇可改善。\n6. 最後一次 push 與 Draft→Ready 轉換分開，造成 78 runner 秒的 CI 被取消再執行；可讓最後內容與 ready 狀態先收斂，避免觸發相同 head 的替代執行。\n7. Snapshot 與正式驗收有不同 subject 和目的，本次並非無理由重跑；但未來不宜自動把兩輪完整矩陣固定化，應選擇有辨識力的前置案例與既定正式驗收。\n\n## 歷史比較的限度\n#459 已先實踐局部修復後只重跑四項受影響檢查，最後完整 suite 為 243 項／69.152907 秒，consumer driver 129.196088 秒／14 個 child operations。#461/#463 又收斂規則，這次不是從零突然變快。\n這些任務與 hotfix 的範圍／環境不匹配，不能計算加速倍數、節省百分比或成本差。較小變更面、先行診斷、成熟打包流水線、未新增 actor 設計及 runner 排隊也是競爭解釋。\n\n## 既有讀取路徑的唯讀評估\n本次查看 AGENTS.md、CLAUDE.md、SOURCE-DEVELOPMENT-POLICY.md、WORKFLOW-HANDOFF-POLICY.md、FRAMEWORK-RELEASE-DRAFT-GUIDE.md、.dev/INDEX.md、.dev/lessons/INDEX.MD／README.MD 與 .ai/custom/framework.json。未審查所有 AI 客戶端，也未執行新 session 的行為試驗。\n- AGENTS.md 已要求一般來源工作讀 SOURCE-DEVELOPMENT-POLICY.md；CLAUDE.md 用 @AGENTS.md 引入同一 owner。因此這是目前專案約定中最直接的共同入口。\n- .dev/INDEX.md 有 Lessons 導覽，但 root 的 progressive loading 刻意讓索引按需載入；只把 lesson 放進索引，不能證明執行者在測試／發布決策時已讀到。\n- 必讀 source policy 已有影響導向驗證與證據重用原則；缺少的是把特定發布相容性風險與相關教訓接到具體決策點，而非再複製一份通用測試規則。\n- WORKFLOW-HANDOFF-POLICY.md 已要求不依賴私人聊天、保留結果、下一步與權限，也明示新 session/model 不是重測理由；這部分不需要因本 lesson 再加重複規則。\n- lesson-author 已由專案 config 指定 .dev/lessons/records 與 JSON v2；既有 lesson README／catalog 主要描述舊 Markdown LESSON-* 身分。兩種讀取方式不一致是 discovery／維護風險，不等於此工作有權遷移舊資料或修改規範。\n- 必讀約定、連結可達、實際讀取與行為遵守是不同事實。根入口能降低遺漏，但不能保證任意 AI 一定遵守；本次沒有跨 AI/session runtime 證據。",
+    "title": "v0.20.1 hotfix：測試與發布時間、有效做法及跨工作階段的教訓承接"
+  },
+  "created_at": "2026-10-19T14:27:04.369710+00:00",
+  "decision": null,
+  "history": [],
+  "id": "lesson-0506f884c87943a9a27ca3ffb5f76dd4",
+  "kind": "lesson",
+  "owner": "project",
+  "provenance": [],
+  "revision": 1,
+  "schema_version": "2.0.0",
+  "status": "candidate",
+  "successor": null,
+  "updated_at": "2026-10-19T14:27:04.369710+00:00"
+}
