@@ -1,0 +1,34 @@
+{
+  "outcome": "passed",
+  "release_id": 417287964,
+  "tag": "v0.20.1",
+  "source": {
+    "commit": "fba2f031f1c969cd5788af924e307ffebf553422",
+    "tag": "v0.20.1",
+    "tag_object": "62559e0196db7275067755fc07e4a4b85c75f3eb"
+  },
+  "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.20.1",
+  "published_at": "2026-10-19T12:59:58Z",
+  "draft": false,
+  "prerelease": false,
+  "latest": true,
+  "asset_ids_unchanged": true,
+  "actions_draft_public_equal": true,
+  "assets": [
+    {
+      "name": "release-manifest.json",
+      "sha256": "59fd719b2e8b8f87ed98ab0d35a5b6ec1bce63eff56ce8881ac0dc23b9b154ba",
+      "size": 93093
+    },
+    {
+      "name": "ai-collaboration-framework-v0.20.1-fba2f031f1c969cd5788af924e307ffebf553422.zip",
+      "sha256": "e60b53e83e89ee3742e5ff4b20b5a28037ffef3cf8b12817dcb40c869b89be80",
+      "size": 1024237
+    },
+    {
+      "name": "ai-collaboration-framework-v0.20.1-fba2f031f1c969cd5788af924e307ffebf553422.zip.sha256",
+      "sha256": "bd41115f492237af83e7b9e2c1c09512aa80111562ce2a6c216d4f04e9d60692",
+      "size": 146
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "outcome": "passed",
+  "source": {
+    "commit": "fba2f031f1c969cd5788af924e307ffebf553422",
+    "tag": "v0.20.1",
+    "tag_object": "62559e0196db7275067755fc07e4a4b85c75f3eb"
+  },
+  "archive": {
+    "name": "ai-collaboration-framework-v0.20.1-fba2f031f1c969cd5788af924e307ffebf553422.zip",
+    "sha256": "e60b53e83e89ee3742e5ff4b20b5a28037ffef3cf8b12817dcb40c869b89be80",
+    "size": 1024237
+  },
+  "engine_members": 23,
+  "catalog_source_members": 452,
+  "archive_members": 482,
+  "actions_draft_equal": true,
+  "raw_git_blobs_equal": true,
+  "extracted_raw_hashes_equal": true,
+  "provenance": {
+    "completed_at": "2026-10-19T12:51:37.394703+00:00",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.15",
+    "readme_source": {
+      "commit": "fba2f031f1c969cd5788af924e307ffebf553422",
+      "git_blob": "fcd914feafdb7a6cf2a34fdd98906dcab19ca460",
+      "path": "src/distribution/templates/release-readme.md",
+      "sha256": "6bfa17ea4dad0ffff3ec32fd9e4a27e6d1bc6bb29c602ebb551e60024bdd43e5",
+      "size": 1102,
+      "template_utf8": "# AI Collaboration Framework ${label}\n\nSource commit: ${source_commit}\nCatalog identity: ${catalog_identity}\nDistribution label: ${release_version}\nEngine: framework-managed-installation 2.0.0 (23 pinned product-source files).\n\nThis generic package includes the full catalog, standalone engine, independently\nselected engine pin and raw content hashes. Catalog metadata includes the actual\nbuild receipt. It contains no project-bound selection or installed target state.\n\nUse engine/src/tools/derive-subset.py with an explicitly selected preset/selection,\nthe included catalog and its identity, and engine-pin.json. Run Python with -I -B;\nprovide PyYAML 6.x and explicit disjoint output/scratch roots.\nDistribution and engine identity must be reviewed before target installation.\n\nSnapshot builds are development artifacts, even though the current Catalog 1\nbuilder requires a numeric rc.N distribution label. The full SHA identifies them.\nBuild/archive success does not establish test, runtime or native acceptance.\nDraft readiness is not publication. Release notes and publication are owner actions.\n"
+    },
+    "repository": "YuChia-Wei/ai-collaboration-framework",
+    "run_attempt": "1",
+    "run_id": "39255304812",
+    "started_at": "2026-10-19T12:51:28.511642+00:00",
+    "tooling_commit": "fba2f031f1c969cd5788af924e307ffebf553422",
+    "workflow": ".github/workflows/publish-release.yml",
+    "workflow_commit": "fba2f031f1c969cd5788af924e307ffebf553422"
+  }
+}

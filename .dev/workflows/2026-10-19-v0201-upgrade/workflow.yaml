@@ -4,11 +4,11 @@ workflow_id: 2026-10-19-v0201-upgrade
 workflow_kind: source-repair-release
 title: Repair public-version upgrades and publish v0.20.1
 owner_skill: software-development-orchestrator
-status: in_progress
+status: completed
 artifact_root: .dev/workflows/2026-10-19-v0201-upgrade
 entrypoint: workflow-plan.md
 created_at: '2026-10-19T20:36:12+08:00'
-updated_at: '2026-10-19T20:36:12+08:00'
+updated_at: '2026-10-19T21:07:06.4406971+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: 1.0.0
 branch: codex/2026-10-19-v0201-upgrade

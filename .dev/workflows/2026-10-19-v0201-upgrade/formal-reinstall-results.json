@@ -1,0 +1,27 @@
+{
+  "outcome": "passed",
+  "managed_profiles_removed": 12,
+  "preserved_inputs": [
+    {
+      "path": ".ai/local/installation.guard",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".claude/agents/custom.md",
+      "sha256": "1327958ce6d2634faacb439861873a48dae12a20fa946ce1c5de6fad53bc44cb"
+    },
+    {
+      "path": ".codex/agents/custom.toml",
+      "sha256": "1261a1edaea5a64b971d2c5abb27aa0d7e64472b2fc2a7a3c4026f7aac48caf2"
+    }
+  ],
+  "classification_rejection": "reinstall-unclassified",
+  "untracked_rejection": "reinstall-untracked",
+  "post_reinstall_inspect": "managed-bytes-consistent",
+  "baseline": "9fc6359c2fb60f5304859b2fc18b095df20cf5cb",
+  "outside_scope_preserved": {
+    "README.md": "70d3f25bdafacd62f267337136e697010db3410e347a2e9a194067f777978ef3",
+    ".codex/config.toml": "04674e55650e36af1910382c29ff01fdc5ef7b7b0e97299ec2e637e57b746606",
+    ".claude/settings.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+  }
+}
