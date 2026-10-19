@@ -1,0 +1,30 @@
+{
+  "pr": "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/468",
+  "pr_head": "2006d56eb31440e2fb57939b6f869db12b002159",
+  "merged_commit": "fba2f031f1c969cd5788af924e307ffebf553422",
+  "pr_gate": {
+    "run_id": 39254819912,
+    "conclusion": "success",
+    "head": "2006d56eb31440e2fb57939b6f869db12b002159"
+  },
+  "superseded_run": {
+    "run_id": 39254784232,
+    "conclusion": "cancelled",
+    "reason": "ready_for_review event replaced synchronize execution under existing concurrency"
+  },
+  "main_snapshot": {
+    "run_id": 39255268520,
+    "conclusion": "success",
+    "head": "fba2f031f1c969cd5788af924e307ffebf553422",
+    "claim": "package build; not a main-commit execution of source tests"
+  },
+  "formal_draft": {
+    "run_id": 39255304812,
+    "conclusion": "success",
+    "release_id": 417287964,
+    "tag": "v0.20.1",
+    "tag_object": "62559e0196db7275067755fc07e4a4b85c75f3eb"
+  },
+  "publication": "published-stable-latest-2026-10-19T12:59:58Z",
+  "exact_draft_acceptance": "passed-four-upgrades-and-git-backed-reinstall"
+}
