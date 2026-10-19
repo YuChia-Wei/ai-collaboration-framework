@@ -105,6 +105,12 @@ does not by itself select a local test.
 A brief explanation in the current work record is enough; this decision does
 not require a new classification file, tool, ledger or approval ceremony.
 
+When planning hotfix validation or changes to installation, upgrade or reinstall
+compatibility, consult the [v0.20.1 hotfix lesson](../lessons/records/hotfix-testing-release-20261019.md)
+for observed gaps, timing limits and scenario-selection tradeoffs. Apply the
+selection rules above; the lesson's historical trial matrix and improvement
+proposals do not define additional gates.
+
 | Stage | Validation choice |
 | --- | --- |
 | Local development | Only checks justified by the actual change; no mandatory per-edit/per-commit full suite |

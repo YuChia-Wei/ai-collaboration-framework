@@ -21,3 +21,13 @@ This index owns lesson discovery and current lifecycle state. Read
 
 Lifecycle changes update this row, the category projection, and the lesson
 packet together. Promoted and superseded lessons remain indexed as provenance.
+
+## Configured Lesson-Author Records
+
+The project configuration at `.ai/custom/framework.json` selects `records/`
+for the installed lesson-author JSON store. These records retain their own
+schema and lifecycle; they do not convert the historical Markdown lessons above.
+
+| Record | Reading view | Status | Evidence / scope |
+| --- | --- | --- | --- |
+| [lesson-0506f884c87943a9a27ca3ffb5f76dd4](records/lesson-0506f884c87943a9a27ca3ffb5f76dd4.lesson.json) | [Hotfix testing, release timing and context continuity](records/hotfix-testing-release-20261019.md) | `candidate` | v0.20.1 / Issue #467; measured timing, lessons and read-only entrypoint proposals. Non-normative; no rule adoption. |
