@@ -2,13 +2,13 @@
 
 [回手冊首頁](README.md) · [一般安裝與更新](installation.md) · [操作復原](recovery.md)
 
-本頁適用於 v0.19.0 Catalog 1／Engine 2。公開入口為
+本頁適用於 v0.20.0 Catalog 1／Engine 2。公開入口為
 `engine/src/tools/reinstall-framework.py`，以 JSON stdin 接受 `plan`／`apply`。
 這是先清除明確選定的舊 framework 檔案，再安裝新 candidate 的**非原子重裝**。
 一般更新、取消選配仍使用 `maintain_framework.py`；不要為了避開 drift 或衝突
 就改走重裝。此頁不提供自動 cleanup 分類，也不宣稱舊版內容可無損遷移。
 
-0.20.0 開發中的 macOS 路徑使用同一暫時後端，保證較弱；其 plan／apply
+v0.20.0 的 macOS 路徑使用同一暫時後端，保證較弱；其 plan／apply
 也會回報 `macos-reduced-guarantees`。需使用相應的新 engine 與 pin，
 已發布的 v0.19.0 不會因文件修訂而取得支援，見[平台說明](installation.md#8-平台與常見問題)。
 
@@ -18,7 +18,11 @@
 內容；原有編輯先由 owner 決定保存方式。不能由重裝流程代替決定 commit、丟棄
 或覆蓋使用者變動。從 plan 到 apply 完成前，所有新舊 framework 活動都須停止。
 
-工具完整盤點 `.ai/`、`.dev/`、`.agents/skills/`、`.claude/skills/` 內的檔案。
+自 v0.20.1 起，工具完整盤點 `.ai/`、`.dev/`、`.agents/skills/`、
+`.claude/skills/`、`.codex/agents/`、`.claude/agents/` 內的檔案。
+自訂 sub-agent profile 同樣必須明確分類為保留或經授權的變更，不能因位於
+這些目錄就視為 framework 擁有。`.codex/config.toml` 與
+`.claude/settings.json` 不在新增的清理範圍內。
 盤點中每個檔案都必須歸入以下一種處置；路徑不得互相重疊，hash 必須取自實際
 raw bytes，所有 pin 清單按 path 排序。未知或未分類檔案會被拒絕。
 
@@ -149,7 +153,10 @@ $ReinstallPlan.plan.installation_preview.project_edits
 連結、runtime discovery、工具與知識採用；這些是分開的驗收項目。
 
 `cleanup-incomplete` 表示可能已有檔案被移除；保留 `removed`、diagnostics、
-`installation_result` 及原請求。舊 tracked cleanup 的還原依選定 Git baseline
+`installation_result` 及原請求。v0.20.1 另保留 `installation_preview_result`
+與 `installation_plan_result`（執行至該階段時），可從其原始 `diagnostics`
+判讀預覽或清理後規劃的失敗原因。預覽失敗仍是 `changed: false`，不能與
+清理後的部分失敗混淆。舊 tracked cleanup 的還原依選定 Git baseline
 逐檔規劃；新的 installer 若已建立 operation，則依其精確 journal 走
 [API 2 復原](recovery.md)。不要直接整棵 `reset --hard`／刪目錄，也不要以
 新安裝的 `restore` 推論舊 cleanup 會自動回來。此流程沒有整體原子 rollback。

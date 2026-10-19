@@ -1,0 +1,1 @@
+{"framework_tests": {"duration_seconds": 6.36979, "errors": 0, "failures": 0, "interface": "framework-tests/1", "outcome": "passed", "skipped": 0, "suites": ["distribution"], "tests": 76}}

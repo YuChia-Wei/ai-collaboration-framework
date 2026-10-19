@@ -254,6 +254,44 @@ def resolve_sub_agent_model_selection(catalog, desired, observations):
     return result
 
 
+# Published v0.19.x templates remain source-owned within the existing engine
+# closure. Old locks bind these exact bytes; current templates cannot reproduce
+# their runtime entries. This is a closed historical reader, not arbitrary input.
+_V019_SKILL_TEMPLATE = """---
+name: $runtime_name
+description: $description
+---
+
+# $runtime_name
+
+$adapter_name runtime entry for `$package_identity`. This generated projection does not
+prove installation, operation execution, validation or runtime discovery.
+Regenerate it from the selected package and verified $adapter_name adapter.
+
+Read [the installed skill]($installed_entrypoint) for its declared operations.
+Resolve [the installed metadata]($installed_metadata) with the installed skill
+directory as the explicit `package_root`.
+
+$configuration_guidance
+
+Selected installed skill members:
+
+$resources
+
+For metadata version 4, `knowledge_consumption` declares exact knowledge package
+versions, operations and resource IDs. Follow the installed skill's selected
+binding to access knowledge. An optional missing package or resource makes the
+named coverage unavailable; do not assume it was installed or promise that
+coverage. Required dependencies must be present before the operation is used.
+
+For metadata versions 1–3, follow the declared operation and runtime contracts.
+An instruction operation means read its declared instructions; a tool operation
+uses its declared tool. This entry does not supply methods or provider calls.
+"""
+_HISTORICAL_TEMPLATES = {aid: _V019_SKILL_TEMPLATE.replace("$adapter_name", label).encode("utf-8")
+                         for aid, label in (("codex", "Codex"), ("claude", "Claude"))}
+
+
 def template_bytes(adapter,expected,provided=None):
     name=f"src/adapters/{adapter}/skill-entry-v2.md.template"
     if provided is not None: raw=provided
@@ -264,6 +302,10 @@ def template_bytes(adapter,expected,provided=None):
             # Explicit executing implementation resource, never cwd/source discovery.
             root=state._root(str(Path(__file__).absolute().parents[2]))
             raw=read_raw(state._Reader(),root,name,state.LIMITS['file_bytes'])
+    if provided is None and digest(raw) != expected:
+        historical = _HISTORICAL_TEMPLATES.get(adapter)
+        if historical is not None and digest(historical) == expected:
+            raw = historical
     require(digest(raw)==expected,'unsupported-adapter: template differs from verified implementation')
     return raw
 

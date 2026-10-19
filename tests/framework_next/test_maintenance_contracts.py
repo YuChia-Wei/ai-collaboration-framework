@@ -4,6 +4,7 @@ Run: python -I -B tests/framework_next/test_maintenance_contracts.py
 """
 from hashlib import sha256
 from contextlib import contextmanager
+from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
 import os
@@ -123,6 +124,61 @@ class MacOSFallbackTests(support.FixtureTestCase):
 
 
 class MaintenanceContractTests(support.FixtureTestCase):
+    def test_reinstall_inventory_and_preview_include_custom_agent_siblings(self):
+        base=support.active_run().case('reinstall-agent-scope')
+        roots={role:base/role for role in ('project','preview')}
+        for root in roots.values(): root.mkdir()
+        retained=[]; cleanup=[]
+        for prefix,suffix in (('.codex/agents','.toml'),('.claude/agents','.md')):
+            folder=roots['project']/prefix; folder.mkdir(parents=True)
+            for name in ('managed','custom'):
+                path=f'{prefix}/{name}{suffix}'; raw=name.encode()
+                support.active_run().write(roots['project']/path,raw)
+                row={'path':path,'sha256':sha256(raw).hexdigest()}
+                (cleanup if name=='managed' else retained).append(row)
+                self.assertTrue(reinstallation._scope(path))
+        for name in ('.codex/config.toml','.claude/settings.json','.codex/agents-other/a.toml'):
+            self.assertFalse(reinstallation._scope(name))
+        inventory=reinstallation._scan(state._Reader(),roots['project'])
+        self.assertEqual(set(inventory),{r['path'] for r in retained+cleanup})
+        document={'cleanup':cleanup,'scoped_inventory':list(inventory.values()),
+                  'installation':{'protected_inputs':[],'project_edits':[]}}
+        with patch.object(installation,'plan',return_value={'outcome':'planned','plan':{}}):
+            reinstallation._preview(document,roots,state._Reader())
+        for row in retained:
+            self.assertEqual((roots['preview']/row['path']).read_bytes(),b'custom')
+        for row in cleanup:
+            self.assertFalse((roots['preview']/row['path']).exists())
+            self.assertEqual((roots['project']/row['path']).read_bytes(),b'managed')
+
+    def test_reinstall_retains_plan_failure_before_and_after_cleanup(self):
+        failure={'outcome':'conflict','changed':False,'diagnostics':[{
+            'code':'unowned-collision','path':'.codex/agents/custom.toml',
+            'reason':'Explicit collision','next_action':'Preserve project-owned file.'}]}
+        for phase in ('preview','after-cleanup'):
+            with self.subTest(phase=phase):
+                root=support.active_run().case('reinstall-failure-'+phase)
+                file=support.active_run().write(root/'retired',b'old')
+                document={'cleanup':[{'path':'retired','sha256':sha256(b'old').hexdigest()}],
+                          'coordination_reset':None,'preserved_inputs':[], 'installation':{}}
+                preview={'outcome':'planned','plan':{}}
+                request={'operation':'apply','expected_plan_sha256':sha256(json_bytes({
+                    **document,'installation_preview':preview['plan']})).hexdigest()}
+                def prepare(_):
+                    return deepcopy(document),{'project':root},state._Reader(),SimpleNamespace(members={})
+                with patch.object(reinstallation,'_prepare',side_effect=prepare), \
+                     patch.object(reinstallation,'_preview',return_value=failure if phase=='preview' else preview), \
+                     patch.object(installation,'plan',return_value=failure), \
+                     patch.object(installation,'apply') as apply:
+                    result=reinstallation.execute(request)
+                key='installation_preview_result' if phase=='preview' else 'installation_plan_result'
+                self.assertEqual(result[key],failure)
+                self.assertEqual(result['changed'],phase=='after-cleanup')
+                self.assertEqual(result['removed'],[] if phase=='preview' else ['retired'])
+                self.assertEqual(file.exists(),phase=='preview')
+                self.assertEqual(result['outcome'],'blocked' if phase=='preview' else 'cleanup-incomplete')
+                apply.assert_not_called()
+
     def roots(self,name):
         base=support.active_run().case(name)
         result={}
