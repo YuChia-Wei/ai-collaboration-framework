@@ -25,7 +25,7 @@ candidate 的目的路徑、明列的 preservation 與 project edits。它不再
 
 未受管或未知內容預設留在原處，包括團隊新增 skill、參考文件、設定與 runtime
 entry；放在 framework 鄰近目錄、已 commit 或內容恰好相同，都不移轉所有權。
-受管檔案若有本機修改，即使已 commit，也會先回報 drift。新目的路徑與自訂
+受管檔案若缺失或有本機修改，即使刪除／修改已 commit，也會先回報 drift。新目的路徑與自訂
 內容衝突時停止。缺少或無法驗證歷史 ownership 時，不得用 caller cleanup 清單
 代替證據；保留內容並交回 owner。這不新增 RC3 直接升級／歷史 lock 支援。
 
@@ -34,8 +34,20 @@ entry；放在 framework 鄰近目錄、已 commit 或內容恰好相同，都�
 | 處置 | 輸入與限制 |
 | --- | --- |
 | 清除 `cleanup` | `{path, sha256}`；必須屬於已驗證 installed inventory（或該 lock 本身），且 baseline 具有相同內容、普通 tracked 狀態；Git 是復原證據，不是 ownership |
-| 保留 `preserved_inputs` | `{path, sha256}`；可額外 pin 少量重要檔案作讀回，不須列出全部歷史；未列檔案仍受預設保留。不能與 candidate 目的檔案衝突 |
+| 保留 `preserved_inputs` | `{path, sha256}`；可額外 pin 少量重要檔案作讀回，不須列出全部歷史；未知／自訂檔案未列入仍預設保留。不能與 candidate 目的檔案衝突 |
 | 明確修改 `installation.project_edits` | 指定 before／after raw hashes 與 staging object；只接受[明列的安裝設定與導覽路徑](installation.md#安裝寫入邊界)，內容仍須 owner 審閱 |
+
+**已驗證的舊受管檔案不適用「漏列即保留」。** 不在新 candidate 的舊受管檔案，
+每個都必須明列於 `cleanup` 或 `preserved_inputs`；漏列會在建立 preview 與清理前
+回報 `reinstall-unclassified` 及精確路徑。新 candidate 仍使用的既有目的檔案，
+則依原規則必須明列 cleanup，才能重新安裝。這只檢查已驗證的舊 inventory，
+不要求分類未知內容或盤點整個專案歷史，也不會自動替 owner 增加刪除項目。
+
+明確保留舊受管檔案表示：檔案 bytes 留下，但**不再由新安裝的 lock 管理**。
+若保留 runtime entry，它可能繼續被發現，或引用已清除的支援資源；必須先確認
+保留用途與必要相依，不能把這個結果說成「skill 已停用／退役」或「仍由 framework
+管理」。後續若選回同一路徑，會是 unowned collision，需由 owner 另行協調。
+`preserved_unknown` 只涵蓋工具觀察到的範圍，不是完整自訂資源清冊。
 
 舊 `.ai/framework.lock` 若存在，必須驗證後明確選入 cleanup。spec、requirement、
 lesson、ADR、workflow、design、assessment 與其他專案紀錄都不是安裝 payload；
@@ -146,7 +158,17 @@ $ReinstallPlan.plan.installation_preview.project_edits
 ```
 
 逐項審閱 inventory、cleanup／preservation、project edits、installation preview
-及 Git recovery baseline。若核准 destructive apply，從保存的原 request 建立
+及 Git recovery baseline。既有回應欄位的分類讀法如下；不另增 request／plan 格式：
+
+| 審閱項目 | 既有回應證據 |
+| --- | --- |
+| 舊受管清理及新 payload | `plan.cleanup`、`plan.installation_preview.delta` |
+| 明確保留 | `plan.preserved_inputs`；若是舊受管檔案，需確認退出新安裝管理的後果 |
+| 必要設定／導覽修改 | `plan.installation_preview.project_edits`，審閱 before／after |
+| 衝突、漏列或無法驗證 ownership | 最外層 `diagnostics`，以及有執行 preview 時的 `installation_preview_result.diagnostics` |
+| 操作觀察範圍 | `plan.scoped_inventory`；不代表全部未知內容或歷史均被盤點 |
+
+若核准 destructive apply，從保存的原 request 建立
 **新檔案**，只把最外層 `operation` 改成 `apply`，並加入最外層
 `expected_plan_sha256`，值取自這次重裝回應的 `plan_sha256`，不是內部安裝 plan
 的 hash。以同一 CLI 執行，保留另一組完整回應。任何輸入、宣告或 preview 變更
@@ -158,6 +180,9 @@ $ReinstallPlan.plan.installation_preview.project_edits
 preservation pins，不能當作全部專案檔案已逐一核對），但
 `project_readiness` 仍是 `not-assessed`。再以新 engine `inspect`、檢查 root 文件
 連結、runtime discovery、工具與知識採用；這些是分開的驗收項目。
+
+舊受管檔案若被清除後成為新 candidate 檔案的父目錄，屬於合法的檔案轉目錄；
+成功檢查會接受該普通目錄。原檔案重新出現、link 或無關目錄仍不能當作清理成功。
 
 `cleanup-incomplete` 表示可能已有檔案被移除；保留 `removed`、diagnostics、
 `installation_result` 及原請求。v0.20.1 另保留 `installation_preview_result`

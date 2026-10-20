@@ -189,6 +189,11 @@ def _prepare(request):
     _native_paths(sorted(clean | keep | edit))
     state._check(not (clean & keep or clean & edit or keep & edit), "reinstall-overlap", "Cleanup, preserved files and project edits must be disjoint.")
     owned = _owned_cleanup(reader, project, candidate, clean)
+    # Old managed bytes have been verified, including existence. Retiring their
+    # lock must not silently turn omitted members into project-owned leftovers.
+    for name in sorted(owned - set(candidate.members) - {state.LOCK_PATH}):
+        state._check(name in clean or name in keep, "reinstall-unclassified",
+                     "Old managed member needs explicit cleanup or preservation outside the new installation.", name)
     for name in clean:
         state._check(name in tracked, "reinstall-untracked", "Untracked or ignored files cannot be destructively removed.", name)
     # Include protected absence assertions too: an unexpected existing file must
@@ -349,9 +354,19 @@ def execute(request):
         state._check(result["outcome"] == "applied", "reinstall-install-failed", "Destructive cleanup completed, but new installation did not complete; use its exact recovery evidence.")
         reader = state._Reader()
         _pins([r for r in document["preserved_inputs"] if r["path"] != state.GUARD_PATH], roots["project"], reader, preservation=True)
-        state._check(all(reader.locate(roots["project"], r["path"]) is None for r in document["cleanup"]
-                         if r["path"] not in candidate.members and r["path"] != state.LOCK_PATH),
-                     "reinstall-remnant", "A selected obsolete file remains after installation.")
+        for row in document["cleanup"]:
+            name = row["path"]
+            if name in candidate.members or name == state.LOCK_PATH:
+                continue
+            target = reader.locate(roots["project"], name)
+            if target is not None:
+                # A removed file may now be an ordinary candidate parent
+                # directory. A file, link or unrelated directory is a remnant.
+                info = target.lstat()
+                state._plain(info, name)
+                state._check(stat.S_ISDIR(info.st_mode) and
+                             any(member.startswith(name + "/") for member in candidate.members),
+                             "reinstall-remnant", "A selected obsolete file remains after installation.", name)
         return {**answer, "outcome": "reinstalled", "removed": removed, "preserved": "hashes-match",
                 "project_readiness": "not-assessed"}
     except (state.InstallationError, OSError, ValueError, TypeError, KeyError, UnicodeError) as exc:

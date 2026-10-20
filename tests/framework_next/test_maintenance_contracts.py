@@ -165,7 +165,9 @@ class MaintenanceContractTests(support.FixtureTestCase):
         with patch.object(reader,'read',wraps=reader.read) as reads:
             inventory=reinstallation._scan(reader,roots['project'],{managed})
         self.assertEqual(set(inventory),{managed})
-        self.assertEqual(reads.call_count,1)
+        self.assertTrue(all(not call.args[0].is_relative_to(history) and
+                            not call.args[0].is_relative_to(custom)
+                            for call in reads.call_args_list))
         document={'cleanup':[{'path':managed}],'scoped_inventory':list(inventory.values()),
                   'installation':{'protected_inputs':[],'project_edits':[]}}
         with patch.object(installation,'plan',return_value={'outcome':'planned','plan':{}}):
@@ -211,21 +213,24 @@ class MaintenanceContractTests(support.FixtureTestCase):
             reinstallation._inventory(state._Reader(),project,{name},{destination},set())
         self.assertEqual(caught.exception.diagnostic['code'],'parent-collision')
 
-    def test_file_to_directory_transition_reaches_reinstall_preview(self):
-        # Real prepare/preview path observation; external engine/candidate/Git
-        # admission is supplied as controlled evidence, not native acceptance.
-        base=support.active_run().case('transition-prepare')
+    @contextmanager
+    def reinstall_fixture(self,label,name,destination,disposition='cleanup'):
+        # Exercise real prepare/preview/execute and filesystem effects. External
+        # engine/candidate/Git admission and nested installer are controlled
+        # dependencies; this fixture is not packaged installation acceptance.
+        base=support.active_run().case(label)
         roots={role:base/role for role in
                ('project','preview','engine','candidate','scratch','staging','recovery')}
         for root in roots.values(): root.mkdir()
-        name='.ai/core/skills/example/runner'
         source=roots['project']/name; source.parent.mkdir(parents=True)
         support.active_run().write(source,b'old runner')
+        (roots['project']/state.LOCK_PATH).parent.mkdir(parents=True,exist_ok=True)
         support.active_run().write(roots['project']/state.LOCK_PATH,b'{}')
-        cleanup=sorted([{'path':n,'sha256':sha256((roots['project']/n).read_bytes()).hexdigest()}
-                        for n in (name,state.LOCK_PATH)],key=lambda r:r['path'])
-        old=state.InstalledLock({},b'{}',cleanup[0]['sha256'],{name:{}})
-        destination=name+'/main.py'
+        pins={n:{'path':n,'sha256':sha256((roots['project']/n).read_bytes()).hexdigest()}
+              for n in (name,state.LOCK_PATH)}
+        cleanup=sorted([pins[state.LOCK_PATH]]+([pins[name]] if disposition=='cleanup' else []),
+                       key=lambda r:r['path'])
+        old=state.InstalledLock({},b'{}',pins[state.LOCK_PATH]['sha256'],{name:{}})
         candidate=SimpleNamespace(identity='selected',members={destination:{}},
                                   selection={'components':[{'id':'example'}]})
         nested={'api_version':2,'operation':'plan','engine':{},'candidate_identity':'selected',
@@ -234,7 +239,8 @@ class MaintenanceContractTests(support.FixtureTestCase):
                 **{role+'_root':str(root) for role,root in roots.items() if role!='preview'}}
         request={'reinstall_version':1,'operation':'plan','project_root':str(roots['project']),
                  'preview_root':str(roots['preview']),'expected_head':'1'*40,
-                 'cleanup':cleanup,'preserved_inputs':[],'installation':nested,
+                 'cleanup':cleanup,'preserved_inputs':[pins[name]] if disposition=='keep' else [],
+                 'installation':nested,
                  'all_framework_activity_stopped':True,
                  'maintenance':{'declared_by':'fixture','declaration_reference':'controlled unit inputs',
                     'affected_capabilities':['example'],'sessions_stopped':True,'tools_stopped':True,
@@ -254,19 +260,81 @@ class MaintenanceContractTests(support.FixtureTestCase):
              patch.object(state,'observe_installation',return_value=state.Observation(roots['project'],old,[],[],[])), \
              patch.object(reinstallation,'_git',side_effect=git_output), \
              patch.object(reinstallation,'_git_filter_boundary'):
-            document,prepared,reader,_=reinstallation._prepare(request)
-        def preview_plan(request):
-            self.assertEqual(request['project_root'],str(roots['preview']))
-            self.assertFalse((roots['preview']/name).exists())
-            # The new parent is free after the verified old file is excluded.
-            (roots['preview']/name).mkdir(parents=True)
-            support.active_run().write(roots['preview']/destination,b'new runner')
-            return {'outcome':'planned','plan':{}}
-        with patch.object(installation,'plan',side_effect=preview_plan):
-            preview=reinstallation._preview(document,prepared,reader)
-        self.assertEqual(preview['outcome'],'planned')
-        self.assertEqual(source.read_bytes(),b'old runner')
-        self.assertEqual((roots['project']/state.LOCK_PATH).read_bytes(),b'{}')
+            yield roots,request
+
+    def nested_install_plan(self):
+        return {'outcome':'planned','plan_sha256':'2'*64,'plan':{
+            'candidate_identity':'selected','engine':{},'expected_lock_sha256':None,
+            'mode_policy':'windows-inventory-only','delta':[],'project_edits':[],
+            'project_inputs':[],'protected_inputs':[],'maintenance_scope':['example'],'noop':False}}
+
+    def test_file_to_directory_transition_finishes_apply_but_remnants_fail(self):
+        name='.ai/core/skills/example/runner'
+        for disposition in ('candidate-directory','file-remnant','unrelated-directory'):
+            destination=name+'/main.py' if disposition!='unrelated-directory' else '.ai/core/skills/example/other.py'
+            with self.subTest(disposition=disposition), \
+                 self.reinstall_fixture('transition-'+disposition,name,destination) as (roots,request), \
+                 patch.object(installation,'plan',return_value=self.nested_install_plan()):
+                source=roots['project']/name
+                plan=reinstallation.execute(request)
+                self.assertEqual(plan['outcome'],'planned')
+                self.assertEqual(source.read_bytes(),b'old runner')
+                self.assertEqual((roots['project']/state.LOCK_PATH).read_bytes(),b'{}')
+                self.assertFalse((roots['preview']/name).exists())
+                def apply(_):
+                    self.assertFalse(source.exists())
+                    if disposition=='file-remnant':
+                        # A successful dependency result must not hide an old
+                        # file reappearing where only a candidate directory fits.
+                        support.active_run().write(source,b'old runner')
+                    else:
+                        source.mkdir()
+                        support.active_run().write(roots['project']/destination,b'new runner')
+                    return {'outcome':'applied'}
+                with patch.object(installation,'apply',side_effect=apply):
+                    result=reinstallation.execute({**request,'operation':'apply',
+                                                   'expected_plan_sha256':plan['plan_sha256']})
+                self.assertTrue(result['changed'])
+                self.assertEqual(set(result['removed']),{name,state.LOCK_PATH})
+                if disposition!='candidate-directory':
+                    self.assertEqual(result['outcome'],'cleanup-incomplete')
+                    self.assertEqual(result['diagnostics'][0]['code'],'reinstall-remnant')
+                else:
+                    self.assertEqual(result['outcome'],'reinstalled')
+                    self.assertEqual((roots['project']/destination).read_bytes(),b'new runner')
+
+    def test_old_managed_member_requires_cleanup_or_explicit_preservation(self):
+        name='.agents/skills/old/SKILL.md'; destination='.agents/skills/new/SKILL.md'
+        for disposition in ('omitted','cleanup','keep'):
+            with self.subTest(disposition=disposition), \
+                 self.reinstall_fixture('old-member-'+disposition,name,destination,disposition) as (roots,request), \
+                 patch.object(installation,'plan',return_value=self.nested_install_plan()) as nested_plan:
+                source=roots['project']/name
+                plan=reinstallation.execute(request)
+                self.assertEqual(source.read_bytes(),b'old runner')
+                self.assertEqual((roots['project']/state.LOCK_PATH).read_bytes(),b'{}')
+                if disposition=='omitted':
+                    self.assertEqual(plan['outcome'],'blocked')
+                    self.assertFalse(plan['changed'])
+                    self.assertEqual(plan['removed'],[])
+                    self.assertEqual(plan['diagnostics'][0]['code'],'reinstall-unclassified')
+                    self.assertEqual(plan['diagnostics'][0]['path'],name)
+                    self.assertEqual(list(roots['preview'].iterdir()),[])
+                    nested_plan.assert_not_called()
+                    continue
+                self.assertEqual(plan['outcome'],'planned')
+                self.assertEqual((roots['preview']/name).exists(),disposition=='keep')
+                def apply(_):
+                    target=roots['project']/destination; target.parent.mkdir(parents=True)
+                    support.active_run().write(target,b'new skill')
+                    return {'outcome':'applied'}
+                with patch.object(installation,'apply',side_effect=apply):
+                    result=reinstallation.execute({**request,'operation':'apply',
+                                                   'expected_plan_sha256':plan['plan_sha256']})
+                self.assertEqual(result['outcome'],'reinstalled')
+                self.assertEqual(source.exists(),disposition=='keep')
+                if disposition=='keep': self.assertEqual(source.read_bytes(),b'old runner')
+                self.assertEqual((roots['project']/destination).read_bytes(),b'new skill')
 
     def test_reinstall_retains_precise_managed_drift_and_marker_conflicts(self):
         root=support.active_run().case('cleanup-drift')

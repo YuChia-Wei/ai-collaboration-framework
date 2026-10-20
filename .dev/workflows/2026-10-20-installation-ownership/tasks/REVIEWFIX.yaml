@@ -1,0 +1,13 @@
+task_id: REVIEWFIX
+workflow_id: 2026-10-20-installation-ownership
+owner_skill: slice-implementer
+status: in_progress
+created_at: '2026-10-21T00:02:54.4751186+08:00'
+updated_at: '2026-10-21T00:02:54.4751186+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+model: gpt-6-astra
+reasoning_effort: medium
+model_identity_evidence: configured fallback; runtime backend not independently observed
+title: Resolve omitted managed members and apply transition findings
+issues: [472, 473]

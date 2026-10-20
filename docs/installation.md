@@ -410,7 +410,8 @@ pin before／after bytes 的必要安裝設定與導覽。`.dev` 或其他 targe
 spec、requirement、lesson、ADR、workflow、design、assessment 紀錄不是安裝資料。
 額外的自訂 skill、references、設定與 runtime entries 預設保留，無須先補登記。
 位於 `.ai`、已 commit 或與新版內容相同，都不代表 installer 擁有它。
-受管內容被修改時回報 drift；unowned destination collision 即使 bytes 相同也拒絕。
+受管內容缺失或被修改時回報 drift（包括已 commit 的刪除／修改）；unowned
+destination collision 即使 bytes 相同也拒絕。重裝不是自動修復缺失檔案的捷徑。
 
 自 v0.20.2 起，`project_edits.path` 僅接受以下精確路徑：
 
@@ -428,6 +429,9 @@ engine／journal；不要用新 engine 或改 journal 來規避路徑限制。
 
 準備 plan 時分開列出 owned 增刪、額外 preservation pins、明確 project edits、
 衝突及無法驗證的 ownership。不需要將全部自訂資源／歷史紀錄加入 request。
+重裝退役舊 lock 時，不在新 candidate 的舊受管檔案須明確清除或保留，不能漏列。
+明確保留後即退出新安裝管理，runtime entry 仍可能被發現；參閱
+[重裝檔案處置與回應欄位](breaking-reinstall.md#選定-baseline-與檔案處置)。
 完成後依這次風險核對 Git 差異與重要自訂內容 raw bytes；來源測試與檢查清單
 不等於實際專案已通過更新驗收。
 

@@ -139,7 +139,8 @@ other than its new lock installation identity.
 
 DOC outcomes are source review and deterministic fixture evidence, not an AI
 actor trial following the guides. Source AGENTS/CLAUDE and generated installed
-resources required no change. This local implementation workflow is complete.
+resources required no change. That local implementation phase completed at
+`b33bad07`; it is reopened for the owner-authorized review remediation below.
 Hosted source CI, PR acceptance, integration, Issue closure and publication are
 not performed. Issues #472/#473 remain open on provider read-back.
 Real installation requires separate authority and reconciliation of the target's
@@ -172,3 +173,74 @@ creation, navigation, discovery, adoption and execution are reported separately.
 Mandatory registration, stable-ID/CRUD tooling, automatic activation, importer
 support and migrations require separate requirements and compatibility decisions.
 This is a deferred plan, not a scheduled release or a created provider Issue.
+
+## Reopened review remediation — 2026-10-21
+
+The owner supplied two external reviews of `92ee2c89..b33bad07` and authorized
+the necessary repair, regression tests, documentation and independent re-review.
+The nine untracked files in the two earlier workflow directories must remain
+unchanged and uncommitted until their own work resumes. No push, PR, integration,
+actual project reinstall or publication is selected. Task `FIX` and the original
+review/native results remain historical evidence for their stated subjects;
+task `REVIEWFIX` owns this follow-up.
+
+Findings and accepted bounded behavior:
+
+- External R1 / F-02: verified old managed members absent from the candidate
+  must be explicitly cleaned or preserved before preview/cleanup. Preserve the
+  existing explicit keep option; do not adopt the second review's stronger
+  `owned <= clean` suggestion, which would forbid intentional preservation.
+  Unknown custom/history files still need no classification. An explicit kept
+  member leaves new lock management and may retain runtime discovery or broken
+  dependencies; docs must explain that consequence.
+- External F-01: `execute(apply)` must accept an old cleanup file becoming an
+  ordinary parent directory of candidate members after successful installation.
+  An actual file, link or unrelated directory remains a failure. The earlier
+  `66eca564` repair only covered prepare/preview; it did not fix this final check.
+- Documentation: explicitly describe missing managed files as drift, and map
+  #473's classification requirement onto existing cleanup/preservation/edit/
+  preview/diagnostic fields. Do not claim the owner waived output classification
+  or that `preserved_unknown` enumerates all retained resources.
+
+Validation selection and test necessity:
+
+- Extend the existing prepare/preview regression through real
+  `reinstallation.execute(apply)` with real disposable filesystem changes;
+  the nested installer and external Git/ownership admission remain controlled
+  dependencies. Include legal directory transition, file remnant and unrelated
+  directory outcomes. Replace the preview-only test rather than duplicating it.
+- Add one parameterized old-member disposition test: omitted, cleanup and
+  explicit keep. Assert refusal before preview/write or the actual final file
+  presence, respectively. The two added/expanded tests have six distinct rows.
+- Keep the separate unremoved-parent collision case: it covers admission before
+  cleanup, unlike the final-state apply cases. Retain the 4,097-history boundary
+  fixture for OWN-06, but replace its brittle exact read-call count with the
+  meaningful condition that unrelated history/custom files are never read.
+- Run the affected distribution suite once after both fixes to cover shared
+  admission and final-state behavior. No new OS/actor matrix, performance
+  benchmark, registry checker, package rebuild or repetition of the previous 26
+  packaged scenarios is required by these two narrow corrections. The real
+  reinstallation wrapper and filesystem behavior are exercised directly; nested
+  installer implementation, public format and packaging are unchanged.
+- Obtain independent read-only review of the fixed follow-up commit, including
+  whether the test scope or rejection rules are unnecessarily restrictive.
+
+Before product edits, the expanded apply test reproduced F-01:
+`cleanup-incomplete` instead of `reinstalled`. The first R1 test setup lacked its
+`.ai` parent (three fixture errors, not product evidence); after fixing setup,
+only the omitted row failed with `planned` instead of `blocked`, reproducing R1.
+Cleanup/explicit keep already passed. Commands were the two selected methods in
+`tests/framework_next/test_maintenance_contracts.py` using Python `-I -B` on the
+normal Windows host; no actual project installation was touched.
+
+The first external review reports 82 distribution tests passed on `b33bad07`
+in 8.03 seconds. This is attributed supplied evidence, not a run by this author.
+The second external review reports static inspection only. Neither report
+establishes the new repaired subject's validation or independent acceptance.
+
+Author validation after both repairs:
+`python -I -B tests/run.py --suite distribution` passed 83 tests, zero failures,
+errors or skips on native Windows (runner duration 9.235719 seconds; unittest
+reported 8.997 seconds). This is the current follow-up run, not a relabeling of
+the earlier 80/82 results. The two reviewed regressions pass all six rows.
+Independent review of the committed repair is pending.
