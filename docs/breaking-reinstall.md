@@ -2,7 +2,7 @@
 
 [回手冊首頁](README.md) · [一般安裝與更新](installation.md) · [操作復原](recovery.md)
 
-本頁適用於 v0.20.1 Catalog 1／Engine 2。公開入口為
+本頁描述 v0.20.2 修正後的 Catalog 1／Engine 2 契約；版本是否已發布須另行確認。入口為
 `engine/src/tools/reinstall-framework.py`，以 JSON stdin 接受 `plan`／`apply`。
 這是先清除明確選定的舊 framework 檔案，再安裝新 candidate 的**非原子重裝**。
 一般更新、取消選配仍使用 `maintain_framework.py`；不要為了避開 drift 或衝突
@@ -18,30 +18,36 @@ v0.20.0 的 macOS 路徑使用同一暫時後端，保證較弱；其 plan／app
 內容；原有編輯先由 owner 決定保存方式。不能由重裝流程代替決定 commit、丟棄
 或覆蓋使用者變動。從 plan 到 apply 完成前，所有新舊 framework 活動都須停止。
 
-自 v0.20.1 起，工具完整盤點 `.ai/`、`.dev/`、`.agents/skills/`、
-`.claude/skills/`、`.codex/agents/`、`.claude/agents/` 內的檔案。
-自訂 sub-agent profile 同樣必須明確分類為保留或經授權的變更，不能因位於
-這些目錄就視為 framework 擁有。`.codex/config.toml` 與
-`.claude/settings.json` 不在新增的清理範圍內。
-盤點中每個檔案都必須歸入以下一種處置；路徑不得互相重疊，hash 必須取自實際
-raw bytes，所有 pin 清單按 path 排序。未知或未分類檔案會被拒絕。
+工具從可驗證的既有 lock inventory 與實際 managed bytes 判定所有權，再觀察新
+candidate 的目的路徑、明列的 preservation 與 project edits。它不再遞迴盤點
+整棵 `.dev`／`.ai`，也不要求為大量歷史紀錄逐檔分類、複製、移走或補登記。
+`scoped_inventory` 是這次操作的受影響檔案，不是專案全部資源清冊。
+
+未受管或未知內容預設留在原處，包括團隊新增 skill、參考文件、設定與 runtime
+entry；放在 framework 鄰近目錄、已 commit 或內容恰好相同，都不移轉所有權。
+受管檔案若有本機修改，即使已 commit，也會先回報 drift。新目的路徑與自訂
+內容衝突時停止。缺少或無法驗證歷史 ownership 時，不得用 caller cleanup 清單
+代替證據；保留內容並交回 owner。這不新增 RC3 直接升級／歷史 lock 支援。
+
+以下明列處置的路徑不得重疊，hash 必須取自實際 raw bytes，pin 清單按 path 排序：
 
 | 處置 | 輸入與限制 |
 | --- | --- |
-| 清除 `cleanup` | `{path, sha256}`；只能刪除 baseline 具有相同內容的普通 tracked framework 檔案，不接受 untracked／ignored 或隱藏 index flags |
-| 保留 `preserved_inputs` | `{path, sha256}`；保留專案資料，不能與新 candidate 的目的檔案衝突 |
-| 明確修改 `installation.project_edits` | 指定 before／after raw hashes 與 staging object；用途包括經 owner 審閱的 root 文件調整 |
+| 清除 `cleanup` | `{path, sha256}`；必須屬於已驗證 installed inventory（或該 lock 本身），且 baseline 具有相同內容、普通 tracked 狀態；Git 是復原證據，不是 ownership |
+| 保留 `preserved_inputs` | `{path, sha256}`；可額外 pin 少量重要檔案作讀回，不須列出全部歷史；未列檔案仍受預設保留。不能與 candidate 目的檔案衝突 |
+| 明確修改 `installation.project_edits` | 指定 before／after raw hashes 與 staging object；只接受[明列的安裝設定與導覽路徑](installation.md#安裝寫入邊界)，內容仍須 owner 審閱 |
 
-舊 `.ai/framework.lock` 若存在，必須明確選入 cleanup。`.dev/workflows/` 與
-`.dev/workflows-v2/` 的歷史紀錄不得列為 cleanup；`.ai/local/` 不得作為一般
+舊 `.ai/framework.lock` 若存在，必須驗證後明確選入 cleanup。spec、requirement、
+lesson、ADR、workflow、design、assessment 與其他專案紀錄都不是安裝 payload；
+不能經 cleanup 或 project edits 刪除、重寫或搬移。`.ai/local/` 不得作為一般
 cleanup 資源。既有 `.ai/local/installation.guard` 必須明確列入 preservation，
 工具會先驗證它是 inert coordination file，再依宣告的完整 quiescence 重設。
 任何未完成 operation marker 必須先走原操作復原，不能重裝繞過。
 
-root `AGENTS.md`／`CLAUDE.md` 不在上述自動盤點範圍。Fable 回報的舊入口連結
+root `AGENTS.md`／`CLAUDE.md` 只有被明列時才成為操作輸入。Fable 回報的舊入口連結
 殘留應由 owner 審閱後，透過 `project_edits` 與重裝配對修改，或另外做 project-owned
 文件變更；installer 不會自行理解並重寫團隊規則。也須人工檢查其他 runtime
-config 是否仍引用退役資源，不能把這六個根目錄當作全專案所有歷史設定的清單。
+config 是否仍引用退役資源；必要的導覽修正不得順便重設團隊規則或自訂設定。
 
 ## 準備新安裝與 project edits
 
@@ -54,7 +60,7 @@ API 2 **plan request** 作為 `installation`：包含完整 engine pin、candida
 
 根目錄及所有外部工作目錄必須已存在、互不重疊；scratch／staging 可共用。
 `preview_root` 必須在專案之外，初次使用空目錄，並符合[平台限制](installation.md#8-平台與常見問題)。
-重裝 plan 不修改目標專案，但**會在外部 preview 寫入保留檔案的副本**；它不是
+重裝 plan 不修改目標專案，但**會在外部 preview 寫入選定操作輸入的副本**；它不是
 完全不寫磁碟的操作。內容改變後若 preview 不符，選另一個空 preview，不覆蓋舊證據。
 
 每個 project edit 的 closed object 為以下四個欄位；這是欄位說明，不是可直接
@@ -148,7 +154,8 @@ $ReinstallPlan.plan.installation_preview.project_edits
 
 ## 成功與部分失敗的判讀
 
-成功結果應為 `outcome: reinstalled`、`preserved: hashes-match`，但
+成功結果應為 `outcome: reinstalled`、`preserved: hashes-match`（只指明列的
+preservation pins，不能當作全部專案檔案已逐一核對），但
 `project_readiness` 仍是 `not-assessed`。再以新 engine `inspect`、檢查 root 文件
 連結、runtime discovery、工具與知識採用；這些是分開的驗收項目。
 

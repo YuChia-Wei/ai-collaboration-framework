@@ -18,7 +18,6 @@ from . import installation
 from .data import json_bytes
 from .installation_io import platform_diagnostics
 
-SCOPES = (".ai", ".dev", ".agents/skills", ".claude/skills", ".codex/agents", ".claude/agents")
 FIELDS = {"reinstall_version", "operation", "project_root", "expected_head",
           "cleanup", "preserved_inputs", "preview_root", "installation", "maintenance",
           "all_framework_activity_stopped"}
@@ -29,10 +28,6 @@ def _git(root, *args, input_bytes=None):
                             stderr=subprocess.PIPE, input=input_bytes, check=False)
     state._check(result.returncode == 0, "reinstall-git", "Selected Git baseline is unavailable.")
     return result.stdout
-
-
-def _scope(name):
-    return any(name == prefix or name.startswith(prefix + "/") for prefix in SCOPES)
 
 
 def _native_relative(name):
@@ -87,30 +82,24 @@ def _git_filter_boundary(root, tracked):
                      "reinstall-git-filter", "Custom Git content filters are unsupported for breaking reinstall.")
 
 
-def _scan(reader, root):
-    """Complete bounded inventory, refusing links, hard links and aliases."""
+def _scan(reader, root, names):
+    """Observe only operation inputs/destinations, never unrelated history."""
     result = {}
-    def visit(name):
+    _native_paths(sorted(names))
+    for name in sorted(names):
         target = _locate_native(reader, root, name)
         if target is None:
-            return
+            continue
         info = target.lstat()
         state._plain(info, name)
         state._check(info.st_dev == root.stat().st_dev and not os.path.ismount(target),
                      "reinstall-volume", "Scoped resources cannot cross a mount or volume boundary.", name)
-        if stat.S_ISDIR(info.st_mode):
-            for child in sorted(target.iterdir(), key=lambda p: p.name):
-                visit(name + "/" + child.name)
-        else:
-            state._check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
-                         "reinstall-file-type", "Framework scope contains a non-direct file.", name)
-            raw = reader.read(target, name)
-            result[name] = {"path": name, "sha256": sha256(raw).hexdigest(),
-                            "size": len(raw), "mode": "100755" if os.name != "nt" and
-                            stat.S_IMODE(info.st_mode) == 0o755 else "100644"}
-            state._check(len(result) <= state.LIMITS["members"], "reinstall-budget", "Scoped inventory exceeds its bound.")
-    for prefix in SCOPES:
-        visit(prefix)
+        state._check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
+                     "reinstall-file-type", "Operation destination is not a direct file.", name)
+        raw = reader.read(target, name)
+        result[name] = {"path": name, "sha256": sha256(raw).hexdigest(),
+                        "size": len(raw), "mode": "100755" if os.name != "nt" and
+                        stat.S_IMODE(info.st_mode) == 0o755 else "100644"}
     return result
 
 
@@ -126,6 +115,21 @@ def _pins(rows, root, reader, *, preservation=False):
         target = _locate_native(reader, root, row["path"]) if preservation else reader.locate(root, row["path"])
         state._check(target is not None and sha256(reader.read(target, row["path"])).hexdigest() == row["sha256"],
                      "reinstall-preimage", "Explicit file preimage differs or is missing.", row["path"], "conflict")
+
+
+def _owned_cleanup(reader, project, candidate, clean):
+    """Admit deletion from verified installed state, never caller/Git labels."""
+    observation = state.observe_installation(str(project), candidate, _reader=reader)
+    state._check(not observation.markers, "maintenance-marker",
+                 "An incomplete operation must be recovered before breaking reinstall.")
+    if observation.drift:
+        raise installation.planning.PlanConflict(observation.drift)
+    old = observation.lock
+    owned = set(old.members) | {state.LOCK_PATH} if old else set()
+    for name in sorted(clean):
+        state._check(name in owned, "reinstall-ownership",
+                     "Cleanup requires verified installed ownership; preserve custom resources and project records.", name)
+    return owned
 
 
 def _prepare(request):
@@ -158,7 +162,6 @@ def _prepare(request):
     _git_filter_boundary(project, tracked)  # Before any command that may run a filter.
     state._check(not _git(project, "diff", "--no-ext-diff", "--no-textconv", "--name-only", "HEAD", "--"),
                  "reinstall-dirty", "Commit or separately reconcile tracked edits before destructive reinstall.", outcome="conflict")
-    inventory = _scan(reader, project)
     state._check(not any(reader.locate(project, name) is not None for name in state.MARKERS),
                  "maintenance-marker", "An incomplete operation must be recovered before breaking reinstall.")
     _pins(request["cleanup"], project, reader)
@@ -166,14 +169,17 @@ def _prepare(request):
     clean = {r["path"] for r in request["cleanup"]}
     keep = {r["path"] for r in request["preserved_inputs"]}
     edit = {r["path"] for r in install["project_edits"]}
+    protected = {r["path"] for r in install["protected_inputs"]}
+    for name in sorted(edit):
+        installation.planning.project_edit_path(name)
     _native_paths(sorted(clean | keep | edit))
     state._check(not (clean & keep or clean & edit or keep & edit), "reinstall-overlap", "Cleanup, preserved files and project edits must be disjoint.")
+    owned = _owned_cleanup(reader, project, candidate, clean)
     for name in clean:
-        state._check(_scope(name) and name not in state.MARKERS and not name.startswith(".ai/local/"),
-                     "reinstall-boundary", "Cleanup must select framework resource files, excluding coordination storage.", name)
-        state._check(not name.startswith((".dev/workflows/", ".dev/workflows-v2/")), "reinstall-workflow",
-                     "Source and project workflow records cannot be cleanup resources.", name)
         state._check(name in tracked, "reinstall-untracked", "Untracked or ignored files cannot be destructively removed.", name)
+    # Include protected absence assertions too: an unexpected existing file must
+    # reach the preview and fail its preimage check before any cleanup.
+    inventory = _scan(reader, project, owned | set(candidate.members) | keep | edit | protected)
     flags = {row[2:]: row[:1] for row in _git(project, "ls-files", "-v", "-z").decode("utf-8").split("\0") if row}
     tree = {}
     for row in _git(project, "ls-tree", "-r", "-z", "HEAD").decode("utf-8").split("\0"):
@@ -192,8 +198,6 @@ def _prepare(request):
         _pins(request["cleanup"], project, reader)
     state._check(state.LOCK_PATH not in inventory or state.LOCK_PATH in clean,
                  "reinstall-old-lock", "The exact old framework lock must be selected for retirement.")
-    state._check(set(inventory) <= clean | keep | edit,
-                 "reinstall-unclassified", "Every scoped file needs cleanup, preservation or an explicit project edit.")
     state._check(not any(name in candidate.members for name in keep),
                  "reinstall-preserved-collision", "Candidate cannot overwrite a preserved file.")
     state._check(all(name not in inventory or name in clean for name in candidate.members),
@@ -337,7 +341,8 @@ def execute(request):
         return {**answer, "outcome": "reinstalled", "removed": removed, "preserved": "hashes-match",
                 "project_readiness": "not-assessed"}
     except (state.InstallationError, OSError, ValueError, TypeError, KeyError, UnicodeError) as exc:
-        return {**answer, "outcome": "cleanup-incomplete" if answer["changed"] else getattr(exc, "outcome", "blocked"),
-                "removed": removed, "diagnostics": [getattr(exc, "diagnostic", {
+        diagnostics = getattr(exc, "diagnostics", None) or [getattr(exc, "diagnostic", {
                     "code": "reinstall-input", "path": None, "reason": "Breaking reinstall was rejected or interrupted.",
-                    "next_action": "Preserve the result; Git baseline owns cleanup recovery, API 2 owns any new operation recovery."})] + platform_diagnostics()}
+                    "next_action": "Preserve the result; Git baseline owns cleanup recovery, API 2 owns any new operation recovery."})]
+        return {**answer, "outcome": "cleanup-incomplete" if answer["changed"] else getattr(exc, "outcome", "blocked"),
+                "removed": removed, "diagnostics": diagnostics + platform_diagnostics()}

@@ -124,7 +124,7 @@ class MacOSFallbackTests(support.FixtureTestCase):
 
 
 class MaintenanceContractTests(support.FixtureTestCase):
-    def test_reinstall_inventory_and_preview_include_custom_agent_siblings(self):
+    def test_reinstall_preview_copies_only_selected_preservation_inputs(self):
         base=support.active_run().case('reinstall-agent-scope')
         roots={role:base/role for role in ('project','preview')}
         for root in roots.values(): root.mkdir()
@@ -136,10 +136,7 @@ class MaintenanceContractTests(support.FixtureTestCase):
                 support.active_run().write(roots['project']/path,raw)
                 row={'path':path,'sha256':sha256(raw).hexdigest()}
                 (cleanup if name=='managed' else retained).append(row)
-                self.assertTrue(reinstallation._scope(path))
-        for name in ('.codex/config.toml','.claude/settings.json','.codex/agents-other/a.toml'):
-            self.assertFalse(reinstallation._scope(name))
-        inventory=reinstallation._scan(state._Reader(),roots['project'])
+        inventory=reinstallation._scan(state._Reader(),roots['project'],{r['path'] for r in retained+cleanup})
         self.assertEqual(set(inventory),{r['path'] for r in retained+cleanup})
         document={'cleanup':cleanup,'scoped_inventory':list(inventory.values()),
                   'installation':{'protected_inputs':[],'project_edits':[]}}
@@ -150,6 +147,73 @@ class MaintenanceContractTests(support.FixtureTestCase):
         for row in cleanup:
             self.assertFalse((roots['preview']/row['path']).exists())
             self.assertEqual((roots['project']/row['path']).read_bytes(),b'managed')
+
+    def test_unrelated_history_and_custom_resources_need_no_inventory_or_preview(self):
+        base=support.active_run().case('bounded-reinstall')
+        roots={role:base/role for role in ('project','preview')}
+        for root in roots.values(): root.mkdir()
+        history=roots['project']/'.dev'/'lessons'; history.mkdir(parents=True)
+        for index in range(4097):
+            support.active_run().write(history/f'{index}.md',b'project history')
+        custom=roots['project']/'.ai'/'custom'/'team-skill'
+        custom.mkdir(parents=True)
+        support.active_run().write(custom/'SKILL.md',b'team owned')
+        managed='.ai/core/skills/example/SKILL.md'
+        target=roots['project']/managed; target.parent.mkdir(parents=True)
+        support.active_run().write(target,b'old managed')
+        reader=state._Reader()
+        with patch.object(reader,'read',wraps=reader.read) as reads:
+            inventory=reinstallation._scan(reader,roots['project'],{managed})
+        self.assertEqual(set(inventory),{managed})
+        self.assertEqual(reads.call_count,1)
+        document={'cleanup':[{'path':managed}],'scoped_inventory':list(inventory.values()),
+                  'installation':{'protected_inputs':[],'project_edits':[]}}
+        with patch.object(installation,'plan',return_value={'outcome':'planned','plan':{}}):
+            reinstallation._preview(document,roots,state._Reader())
+        self.assertEqual(list(roots['preview'].iterdir()),[])
+        self.assertEqual((custom/'SKILL.md').read_bytes(),b'team owned')
+        self.assertEqual((history/'4096.md').read_bytes(),b'project history')
+
+    def test_cleanup_requires_installed_ownership_not_a_tracked_path(self):
+        root=support.active_run().case('cleanup-ownership')
+        member='.ai/core/skills/example/SKILL.md'
+        lock=state.InstalledLock({},b'{}','1'*64,{member:{}})
+        observation=state.Observation(root,lock,[],[],[])
+        with patch.object(state,'observe_installation',return_value=observation):
+            self.assertEqual(reinstallation._owned_cleanup(state._Reader(),root,None,{member,state.LOCK_PATH}),
+                             {member,state.LOCK_PATH})
+            for name in ('.dev/spec/example.md','.dev/requirement/example.md',
+                         '.dev/lessons/example.md','.dev/adr/example.md',
+                         '.dev/workflows/example.md','.dev/design/example.md',
+                         '.dev/assessments/example.md','.ai/custom/team/SKILL.md',
+                         '.ai/core/skills/team/SKILL.md','.agents/skills/team/SKILL.md',
+                         '.claude/skills/team/SKILL.md','.codex/agents/team.toml'):
+                with self.subTest(path=name),self.assertRaises(state.InstallationError) as caught:
+                    reinstallation._owned_cleanup(state._Reader(),root,None,{name})
+                self.assertEqual(caught.exception.diagnostic['code'],'reinstall-ownership')
+                self.assertEqual(caught.exception.diagnostic['path'],name)
+        with patch.object(state,'observe_installation',return_value=state.Observation(root,None,[],[],[])):
+            with self.assertRaises(state.InstallationError):
+                reinstallation._owned_cleanup(state._Reader(),root,None,{member})
+
+    def test_reinstall_retains_precise_managed_drift_and_marker_conflicts(self):
+        root=support.active_run().case('cleanup-drift')
+        member='.ai/core/skills/example/SKILL.md'
+        observation=state.Observation(root,None,[{'path':member,'reason':'member-drift'}],None,[])
+        with patch.object(state,'observe_installation',return_value=observation):
+            with self.assertRaises(planning.PlanConflict) as caught:
+                reinstallation._owned_cleanup(state._Reader(),root,None,{member})
+        with patch.object(reinstallation,'_prepare',side_effect=caught.exception):
+            result=reinstallation.execute({'operation':'apply'})
+        self.assertEqual(result['outcome'],'conflict')
+        self.assertFalse(result['changed'])
+        self.assertEqual(result['removed'],[])
+        self.assertEqual(result['diagnostics'][0]['path'],member)
+        observation=state.Observation(root,None,[],None,[state.MARKERS[0]])
+        with patch.object(state,'observe_installation',return_value=observation):
+            with self.assertRaises(state.InstallationError) as caught:
+                reinstallation._owned_cleanup(state._Reader(),root,None,set())
+        self.assertEqual(caught.exception.diagnostic['code'],'maintenance-marker')
 
     def test_reinstall_retains_plan_failure_before_and_after_cleanup(self):
         failure={'outcome':'conflict','changed':False,'diagnostics':[{
@@ -217,7 +281,7 @@ class MaintenanceContractTests(support.FixtureTestCase):
 
     def test_content_address_and_delete_shape_fail_closed(self):
         roots=self.roots('object-drift')
-        intent=self.intent(roots,'ROOT.md',None,b'candidate')
+        intent=self.intent(roots,'AGENTS.md',None,b'candidate')
         (roots['staging']/intent['after_content_ref']).write_bytes(b'changed')
         with self.assertRaises(ValueError): planning.project_edits(state._Reader(),roots,[intent],set(),[])
         intent['after_sha256']=None
@@ -225,7 +289,7 @@ class MaintenanceContractTests(support.FixtureTestCase):
 
     def test_recovery_records_reject_unknown_fields_and_wrong_side(self):
         roots=self.roots('record-shape')
-        intent=self.intent(roots,'ROOT.md',b'old',None)
+        intent=self.intent(roots,'AGENTS.md',b'old',None)
         rows,objects=planning.project_edits(state._Reader(),roots,[intent],set(),[])
         # _edit_record consumes already verified object bytes from the same object owner.
         installation._edit_record(rows,state._Reader(),roots['staging'],dict(objects),set(),[])
@@ -242,6 +306,28 @@ class MaintenanceContractTests(support.FixtureTestCase):
         self.assertEqual(operation.descriptors(after)['ROOT.md']['sha256'],new['sha256'])
         foreign=state.InstalledLock({},b'{}','1'*64,{})
         with self.assertRaises(ValueError): operation.descriptors(foreign)
+
+    def test_project_edits_and_retained_records_cannot_modify_custom_resources(self):
+        roots=self.roots('edit-ownership')
+        for name in ('.dev/spec/example.md','.dev/requirement/example.md',
+                     '.dev/lessons/example.md','.dev/adr/example.md',
+                     '.dev/workflows/example.md','.dev/design/example.md',
+                     '.dev/assessments/example.md','docs/requirements/example.md',
+                     '.ai/custom/team/SKILL.md','.ai/custom/framework.json',
+                     '.agents/skills/team/SKILL.md','.claude/skills/team/SKILL.md',
+                     '.codex/agents/team.toml','.ai/core/skills/example/SKILL.md'):
+            with self.subTest(path=name):
+                intent={'path':name,'before_sha256':None,'after_sha256':None,'after_content_ref':None}
+                with self.assertRaises(state.InstallationError) as caught:
+                    planning.project_edits(state._Reader(),roots,[intent],set(),[])
+                self.assertEqual(caught.exception.diagnostic['code'],'project-edit-boundary')
+                with self.assertRaises(state.InstallationError) as caught:
+                    installation._edit_record([{'intent':intent,'before':None,'after':None}],
+                                              state._Reader(),roots['staging'],{},set(),[])
+                self.assertEqual(caught.exception.diagnostic['code'],'project-edit-boundary')
+        for name in ('AGENTS.md','.ai/custom/installation.json','.codex/config.toml',
+                     '.claude/settings.json','.ai/INDEX.MD','.agents/skills/README.md'):
+            self.assertEqual(planning.project_edit_path(name),name)
 
     def test_saved_selection_uses_exact_types_before_semantic_comparison(self):
         roots=self.roots('saved-selection-types')

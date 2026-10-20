@@ -15,6 +15,23 @@ from .installation_io import Backend
 
 __all__ = ["plan", "member_delta", "is_noop"]
 
+# Explicit installation/navigation targets, not general project editing.
+# The caller must still review content and pin exact before/after bytes.
+PROJECT_EDIT_PATHS = frozenset({
+    "AGENTS.md", "AGENTS.zh-TW.md", "CLAUDE.md", "README.md", "README.en.md",
+    ".ai/INDEX.MD", ".ai/custom/installation.json",
+    ".agents/skills/README.md", ".claude/skills/README.md",
+    ".codex/config.toml", ".claude/settings.json",
+})
+
+
+def project_edit_path(name):
+    state._relative(name)
+    state._check(name in PROJECT_EDIT_PATHS, "project-edit-boundary",
+                 "Installation edits are limited to declared configuration/navigation files; "
+                 "preserve records and custom resources and edit them separately.", name)
+    return name
+
 
 def _descriptor(member: dict | None) -> dict | None:
     if member is None:
@@ -332,9 +349,7 @@ def project_edits(reader, roots, intents, managed, protected):
     names = []
     for intent in rows:
         state._shape(intent, {"path", "before_sha256", "after_sha256", "after_content_ref"})
-        name = state._relative(intent["path"])
-        state._check(not name.startswith((".ai/core/", ".ai/local/", ".git/")) and name not in {".ai/core", ".ai/local", ".git"},
-                     "project-edit-boundary", "Project intents cannot own managed, coordination or Git storage.", name)
+        name = project_edit_path(intent["path"])
         names.append(name)
         for key in ("before_sha256", "after_sha256"): state._digest(intent[key], nullable=True)
         state._check(intent["after_content_ref"] == ("objects/" + intent["after_sha256"] if intent["after_sha256"] else None),
