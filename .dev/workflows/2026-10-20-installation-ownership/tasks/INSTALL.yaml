@@ -1,0 +1,15 @@
+task_id: INSTALL
+workflow_id: 2026-10-20-installation-ownership
+owner_skill: software-development-orchestrator
+status: in_progress
+created_at: '2026-10-21T07:10:15.5795249+08:00'
+updated_at: '2026-10-21T07:10:15.5795249+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+model: gpt-6-astra
+reasoning_effort: medium
+model_identity_evidence: configured fallback; active backend not independently observed
+title: Reinstall this project from public v0.20.2 and assess OWN/DOC acceptance
+issues: [472, 473]
+blocker: 'Formal engine rejects the existing RC3 lock before ownership admission; no apply performed.'
+next_action: 'Owner selects a separately scoped RC3 migration/ownership-verification plan; preserve old lock and released assets.'

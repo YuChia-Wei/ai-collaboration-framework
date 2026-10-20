@@ -4,17 +4,17 @@ workflow_id: 2026-10-20-installation-ownership
 workflow_kind: source-repair
 title: Preserve project records and custom AI resources during installation
 owner_skill: software-development-orchestrator
-status: completed
+status: in_progress
 artifact_root: .dev/workflows/2026-10-20-installation-ownership
 entrypoint: workflow-plan.md
 created_at: '2026-10-20T22:29:36.9861097+08:00'
-updated_at: '2026-10-21T00:06:55.3845161+08:00'
+updated_at: '2026-10-21T07:10:15.5795249+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: 1.0.0
-branch: codex/2026-10-20-installation-ownership
+branch: codex/2026-10-21-self-install-v0202
 base_branch: main
 issues:
   - https://github.com/YuChia-Wei/ai-collaboration-framework/issues/472
   - https://github.com/YuChia-Wei/ai-collaboration-framework/issues/473
 input_commit: 92ee2c89d5ab58912402c5789ba56659d8bb40af
-current_phase: completed
+current_phase: installation-blocked

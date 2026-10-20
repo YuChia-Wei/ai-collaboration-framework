@@ -1,5 +1,24 @@
 # Installation ownership repair
 
+## Current continuation — 2026-10-21
+
+The owner now explicitly requests self-reinstallation from public v0.20.2,
+preservation of custom content/history, and assessment against #472/#473.
+The source repair was integrated through PR #474 and v0.20.2 was published.
+This continuation starts from `3c7434fd3ea65bcbf519fef3e3ca232a0bc59043` on
+`codex/2026-10-21-self-install-v0202`; it does not authorize a new product
+compatibility implementation, release replacement, Issue closure or another
+push/PR/merge. The nine prior untracked records remain untouched.
+
+`INSTALL` is blocked before apply: both the formal package's inspect and breaking
+reinstall plan reject this project's RC3 lock. No installed bytes were changed.
+See [the actual-target acceptance assessment](self-install-v0202-assessment.md)
+for all OWN/DOC criteria, retained commands/results and the owner checkpoint.
+This workflow retains the unique real-target compatibility/recovery state; it
+does not reopen the completed source implementation or require its tests again.
+
+## Initial implementation authority — 2026-10-20
+
 Owner authorized implementation of #472 and #473, necessary tests and independent
 review on 2026-10-20. Target is v0.20.2. Reinstallation, publication, push, PR,
 merge and provider state changes are not selected. Preserve both existing
