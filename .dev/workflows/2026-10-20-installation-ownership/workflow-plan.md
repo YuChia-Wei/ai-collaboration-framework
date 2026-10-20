@@ -10,12 +10,33 @@ This continuation starts from `3c7434fd3ea65bcbf519fef3e3ca232a0bc59043` on
 compatibility implementation, release replacement, Issue closure or another
 push/PR/merge. The nine prior untracked records remain untouched.
 
-`INSTALL` is blocked before apply: both the formal package's inspect and breaking
-reinstall plan reject this project's RC3 lock. No installed bytes were changed.
+The initial `INSTALL` attempt stopped before apply: both the formal package's
+inspect and breaking reinstall plan rejected this project's RC3 lock.
 See [the actual-target acceptance assessment](self-install-v0202-assessment.md)
 for all OWN/DOC criteria, retained commands/results and the owner checkpoint.
 This workflow retains the unique real-target compatibility/recovery state; it
 does not reopen the completed source implementation or require its tests again.
+
+The owner subsequently approved the project-specific RC3 migration plan and
+explicitly authorized building the procedure, isolated rehearsal, recovery
+validation, necessary independent review, then direct installation of public
+v0.20.2 in this project. Preserve custom content, history and all nine existing
+untracked records; assess #472/#473 afterward. This supersedes the earlier
+compatibility checkpoint, not the product's supported compatibility boundary.
+Use the exact installed RC3 engine pin for read-only ownership verification,
+retire only its verified 135 members and lock, then use the unchanged released
+v0.20.2 public API. The local bridge is `rc3-migrate.py`; it is not packaged.
+
+Validation is selected by the actual installation/recovery risk: one partial
+retirement and refusal to overwrite unknown bytes; one interrupted public new
+installation followed by official restore and old-file restoration; one complete
+isolated migration with paired navigation edits and preservation read-back.
+Record coordination-file disposition explicitly. Successful completed installs
+cannot be rolled back through replay of an already completed operation.
+Freeze the implemented bridge and evidence in a local commit for independent
+read-only review before actual-target writes. Then observe quiescence afresh,
+snapshot the target, execute and read back the accepted installation criteria.
+No push, PR, merge, Issue closure, new release or history cleanup is selected.
 
 ## Initial implementation authority — 2026-10-20
 
