@@ -103,6 +103,20 @@ def _scan(reader, root, names):
     return result
 
 
+def _inventory(reader, root, inputs, destinations, clean):
+    """Keep existing inputs distinct from the post-cleanup destination space."""
+    inventory = _scan(reader, root, inputs)
+    pending = set()
+    for name in set(destinations) - set(inventory):
+        # A verified cleanup file may become a new directory. Its descendants
+        # cannot exist yet; the empty-after-cleanup preview validates them.
+        parts = name.split("/")
+        if not any("/".join(parts[:i]) in clean for i in range(1, len(parts))):
+            pending.add(name)
+    inventory.update(_scan(reader, root, pending))
+    return inventory
+
+
 def _pins(rows, root, reader, *, preservation=False):
     state._array(rows)
     for row in rows:
@@ -179,7 +193,7 @@ def _prepare(request):
         state._check(name in tracked, "reinstall-untracked", "Untracked or ignored files cannot be destructively removed.", name)
     # Include protected absence assertions too: an unexpected existing file must
     # reach the preview and fail its preimage check before any cleanup.
-    inventory = _scan(reader, project, owned | set(candidate.members) | keep | edit | protected)
+    inventory = _inventory(reader, project, owned | keep | edit | protected, candidate.members, clean)
     flags = {row[2:]: row[:1] for row in _git(project, "ls-files", "-v", "-z").decode("utf-8").split("\0") if row}
     tree = {}
     for row in _git(project, "ls-tree", "-r", "-z", "HEAD").decode("utf-8").split("\0"):

@@ -3,7 +3,7 @@ workflow_id: 2026-10-20-installation-ownership
 owner_skill: slice-implementer
 status: in_progress
 created_at: '2026-10-20T22:35:28.6576622+08:00'
-updated_at: '2026-10-20T22:35:28.6576622+08:00'
+updated_at: '2026-10-20T22:41:58.6335178+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: 1.0.0
 model: gpt-6-astra

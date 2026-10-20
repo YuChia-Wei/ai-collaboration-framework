@@ -61,6 +61,22 @@ admission including retained recovery records. Small mocked reader observations
 are not packaged installation evidence. Packaged route and independent review
 remain pending.
 
+Independent review by `security_coverage` of
+`92ee2c89d5ab58912402c5789ba56659d8bb40af..ab4a1fddd19dac8256c548c3c9fa98f4aabdf096`
+found one P2: the scanner compared old and prospective destination namespaces
+together and rejected an owned cleanup file becoming a candidate directory.
+The author accepted and repaired it, retaining rejection of unremoved parent
+collisions. Two directly affected cases passed:
+`python -I -B tests/framework_next/test_maintenance_contracts.py MaintenanceContractTests.test_verified_cleanup_file_can_become_a_candidate_directory MaintenanceContractTests.test_file_to_directory_transition_reaches_reinstall_preview`
+(2 tests, 0 failures/errors, 0.095 seconds). The prepare/preview case uses controlled
+Git/engine/candidate evidence and real path observation; it is not native
+installation acceptance. Affected independent re-review is still pending.
+
+The first local snapshot built from `ab4a1fdd` successfully (archive SHA-256
+`bb1b11ed6551b29072b8cf7f188b36a609be25630bfb88f2828e54f643e03929`), before
+this review repair. It has no installation acceptance and will not be used as
+the final repaired subject. No published artifact was changed.
+
 ## Custom resource follow-up
 
 Read-only agents event_evolution and performance_ownership assessed the fixed

@@ -196,6 +196,78 @@ class MaintenanceContractTests(support.FixtureTestCase):
             with self.assertRaises(state.InstallationError):
                 reinstallation._owned_cleanup(state._Reader(),root,None,{member})
 
+    def test_verified_cleanup_file_can_become_a_candidate_directory(self):
+        base=support.active_run().case('cleanup-file-transition')
+        project=base/'project'; project.mkdir()
+        name='.ai/core/skills/example/runner'
+        path=project/name; path.parent.mkdir(parents=True)
+        support.active_run().write(path,b'old managed runner')
+        destination=name+'/main.py'
+        inventory=reinstallation._inventory(state._Reader(),project,{name},{destination},{name})
+        self.assertEqual(set(inventory),{name})
+        self.assertEqual(path.read_bytes(),b'old managed runner')
+        # A retained/unowned parent is not a license to hide the collision.
+        with self.assertRaises(state.InstallationError) as caught:
+            reinstallation._inventory(state._Reader(),project,{name},{destination},set())
+        self.assertEqual(caught.exception.diagnostic['code'],'parent-collision')
+
+    def test_file_to_directory_transition_reaches_reinstall_preview(self):
+        # Real prepare/preview path observation; external engine/candidate/Git
+        # admission is supplied as controlled evidence, not native acceptance.
+        base=support.active_run().case('transition-prepare')
+        roots={role:base/role for role in
+               ('project','preview','engine','candidate','scratch','staging','recovery')}
+        for root in roots.values(): root.mkdir()
+        name='.ai/core/skills/example/runner'
+        source=roots['project']/name; source.parent.mkdir(parents=True)
+        support.active_run().write(source,b'old runner')
+        support.active_run().write(roots['project']/state.LOCK_PATH,b'{}')
+        cleanup=sorted([{'path':n,'sha256':sha256((roots['project']/n).read_bytes()).hexdigest()}
+                        for n in (name,state.LOCK_PATH)],key=lambda r:r['path'])
+        old=state.InstalledLock({},b'{}',cleanup[0]['sha256'],{name:{}})
+        destination=name+'/main.py'
+        candidate=SimpleNamespace(identity='selected',members={destination:{}},
+                                  selection={'components':[{'id':'example'}]})
+        nested={'api_version':2,'operation':'plan','engine':{},'candidate_identity':'selected',
+                'expected_lock_sha256':None,'mode_policy':'windows-inventory-only',
+                'durability':{},'protected_inputs':[],'project_data_action':'none','project_edits':[],
+                **{role+'_root':str(root) for role,root in roots.items() if role!='preview'}}
+        request={'reinstall_version':1,'operation':'plan','project_root':str(roots['project']),
+                 'preview_root':str(roots['preview']),'expected_head':'1'*40,
+                 'cleanup':cleanup,'preserved_inputs':[],'installation':nested,
+                 'all_framework_activity_stopped':True,
+                 'maintenance':{'declared_by':'fixture','declaration_reference':'controlled unit inputs',
+                    'affected_capabilities':['example'],'sessions_stopped':True,'tools_stopped':True,
+                    'external_writers_stopped':True}}
+        def git_output(root,*args,**kwargs):
+            if args==('rev-parse','--show-toplevel'): return str(root).encode()
+            if args==('rev-parse','HEAD'): return b'1'*40
+            if args==('ls-files','-z'): return ('\0'.join(r['path'] for r in cleanup)+'\0').encode()
+            if args==('ls-files','-v','-z'):
+                return ('\0'.join('H '+r['path'] for r in cleanup)+'\0').encode()
+            if args==('ls-tree','-r','-z','HEAD'):
+                return ('\0'.join('100644 blob '+'2'*40+'\t'+r['path'] for r in cleanup)+'\0').encode()
+            if args==('hash-object','--stdin-paths'): return (('2'*40+'\n')*len(cleanup)).encode()
+            if args[0]=='diff': return b''
+            self.fail('Unexpected Git operation: '+str(args))
+        with patch.object(state,'_engine'),patch.object(state,'read_candidate',return_value=candidate), \
+             patch.object(state,'observe_installation',return_value=state.Observation(roots['project'],old,[],[],[])), \
+             patch.object(reinstallation,'_git',side_effect=git_output), \
+             patch.object(reinstallation,'_git_filter_boundary'):
+            document,prepared,reader,_=reinstallation._prepare(request)
+        def preview_plan(request):
+            self.assertEqual(request['project_root'],str(roots['preview']))
+            self.assertFalse((roots['preview']/name).exists())
+            # The new parent is free after the verified old file is excluded.
+            (roots['preview']/name).mkdir(parents=True)
+            support.active_run().write(roots['preview']/destination,b'new runner')
+            return {'outcome':'planned','plan':{}}
+        with patch.object(installation,'plan',side_effect=preview_plan):
+            preview=reinstallation._preview(document,prepared,reader)
+        self.assertEqual(preview['outcome'],'planned')
+        self.assertEqual(source.read_bytes(),b'old runner')
+        self.assertEqual((roots['project']/state.LOCK_PATH).read_bytes(),b'{}')
+
     def test_reinstall_retains_precise_managed_drift_and_marker_conflicts(self):
         root=support.active_run().case('cleanup-drift')
         member='.ai/core/skills/example/SKILL.md'
