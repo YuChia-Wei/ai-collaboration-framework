@@ -4,7 +4,7 @@
 [知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) ·
 [復原](recovery.md) · [Breaking reinstall](breaking-reinstall.md) · [RC4 舊版指令](installation-rc4.md)
 
-本頁適用於 v0.20.1 Catalog 1／Engine 2：engine 的 23 個成員全部
+本頁描述 v0.20.2 修正後的 Catalog 1／Engine 2：engine 的 23 個成員全部
 來自 `src/`，三個消費端入口位於 `engine/src/tools/`；不含來源庫 build 工具。
 請使用同一封存檔的 catalog、engine 與獨立選定的 pin。RC4 使用舊目錄，
 不能混用本頁指令；其已發布位元組與[舊版說明](installation-rc4.md)維持原樣。
@@ -59,8 +59,8 @@ if ($LASTEXITCODE -ne 0) { throw '隔離 Python 無法載入依賴' }
 你的選擇；checksum 比對證明位元組一致，不代表 target 或 agent 驗收。
 
 ```powershell
-$ReleaseTag = 'v0.20.1' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
-$ReleaseRoot = 'C:\aicf\v0201'
+$ReleaseTag = 'v0.20.2' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
+$ReleaseRoot = 'C:\aicf\v0202'
 $ReleaseText = gh release view $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework --json tagName,isDraft
 if ($LASTEXITCODE -ne 0) { throw '所選公開 Release 尚不可用；停止下載與安裝' }
 $Release = $ReleaseText | ConvertFrom-Json
@@ -403,6 +403,46 @@ $After.details.owned          # Installed files and hashes.
 
 這個範例的 `project_data_action: "none"` 與空的 `project_edits` 不會編輯目標業務資料。對既有專案，先以 `inspect` 和 `plan` 讀回 lock、`delta`、`preserved_unknown` 與 protected inputs；任何 marker、drift、未知衝突或未審閱的 removal 都是停止條件，不能以手動遞迴刪除來取得「乾淨」結果。
 
+### 安裝寫入邊界
+
+安裝／更新／重裝只能處理可驗證 ownership 的 payload，以及明列、審閱且
+pin before／after bytes 的必要安裝設定與導覽。`.dev` 或其他 target-owned
+spec、requirement、lesson、ADR、workflow、design、assessment 紀錄不是安裝資料。
+額外的自訂 skill、references、設定與 runtime entries 預設保留，無須先補登記。
+位於 `.ai`、已 commit 或與新版內容相同，都不代表 installer 擁有它。
+受管內容缺失或被修改時回報 drift（包括已 commit 的刪除／修改）；unowned
+destination collision 即使 bytes 相同也拒絕。重裝不是自動修復缺失檔案的捷徑。
+
+自 v0.20.2 起，`project_edits.path` 僅接受以下精確路徑：
+
+- `AGENTS.md`、`AGENTS.zh-TW.md`、`CLAUDE.md`、`README.md`、`README.en.md`
+- `.ai/INDEX.MD`、`.ai/custom/installation.json`
+- `.agents/skills/README.md`、`.claude/skills/README.md`
+- `.codex/config.toml`、`.claude/settings.json`
+
+這是保護性相容性收斂：舊版接受的其他 project edits 現在回報
+`project-edit-boundary`，須另由專案編輯處理；request 欄位、API 與 lock 版本不變。
+清單不是可整份重設的授權。必須逐項保留既有團隊規則、自訂 skill 引用與設定，
+僅修改已審閱的安裝差異。其他位置的 selection／導航仍可由專案自行維護，
+不因未列入 paired edit 清單而失去保護。復原既有 operation 使用原先精確配對
+engine／journal；不要用新 engine 或改 journal 來規避路徑限制。
+
+準備 plan 時分開列出 owned 增刪、額外 preservation pins、明確 project edits、
+衝突及無法驗證的 ownership。不需要將全部自訂資源／歷史紀錄加入 request。
+重裝退役舊 lock 時，不在新 candidate 的舊受管檔案須明確清除或保留，不能漏列。
+明確保留後即退出新安裝管理，runtime entry 仍可能被發現；參閱
+[重裝檔案處置與回應欄位](breaking-reinstall.md#選定-baseline-與檔案處置)。
+完成後依這次風險核對 Git 差異與重要自訂內容 raw bytes；來源測試與檢查清單
+不等於實際專案已通過更新驗收。
+
+自訂 skill／AI 資源應依目標專案既有的 authoring 與 runtime 慣例選擇位置，
+保留 project ownership；`.ai/core` 是 framework managed output，不能當成
+自訂 authoring 位置。需要讓人或 agent 找到新資源時，維護專案既有 index／
+reading map 與必要相依連結，不要把任意 custom ID 加進 catalog selection 或
+手改 lock。沒有既定慣例時，先由專案 owner 選定位置與導覽方式。導覽登記不代表
+runtime 已發現、啟用或採用該資源；沒有登記也不會使既有資源失去安裝保護。
+本修補版未新增強制 registry、全歷史補登或自訂套件安裝功能。
+
 - `inspect` 是唯讀檢查，回報 `uninstalled`、`managed-bytes-consistent`、`drift` 或 `recovery-needed`，但 `project_readiness` 一律是 `not-assessed`。
 - `plan` 是唯讀預覽，不配置 operation directory、不取得 writer lock、不宣告 caller quiescence。它需額外提供 `candidate_root`、`candidate_identity`、`expected_lock_sha256`、`mode_policy`、`scratch_root`、`staging_root`、`recovery_root`、`durability`、`protected_inputs`、`project_data_action: "none"`、`project_edits`。回傳的 `plan_sha256` 必須是後續 apply 的精確輸入。
 - `apply` 是實際寫入。它以相同 plan 欄位加上 `expected_plan_sha256` 與新鮮 `maintenance` 宣告，並在 writer lock 下重新計算 plan。maintenance 的 `affected_capabilities` 必須與 plan 的排序 scope 完全相同，且 `sessions_stopped`、`tools_stopped`、`external_writers_stopped` 都必須確實為 `true`。套用前應先由專案擁有者審閱 plan、衝突、protected inputs 與候選來源。
@@ -415,8 +455,8 @@ Windows 隔離實測中，v0.19.1 的 skill 安裝以原版引擎檢查正常，
 引擎在讀取舊安裝時回報 `unsupported-adapter`；Codex-only、Claude-only
 及兩者並用的最小案例皆停在 inspect／plan，未進入升級 apply。
 v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比對；
-可從 v0.19.1 或 v0.20.0 依上述 inspect／plan／apply 程序升級至 v0.20.1。
-請使用完整 v0.20.1 archive 的 engine 與 pin，保留原 lock、安裝檔案與原版 engine；
+支援的 v0.19.1／v0.20.0 安裝仍使用上述 inspect／plan／apply 程序。
+請使用完整所選版本 archive 的 engine 與 pin，保留原 lock、安裝檔案與原版 engine；
 不要改寫 hash、混用模板或刪除 lock 來繞過檢查。已發布的 v0.20.0 archive
 維持原樣，升級至 v0.20.0 的上述限制不會因文件更新而消失。
 

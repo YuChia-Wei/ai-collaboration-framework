@@ -1,0 +1,51 @@
+{
+  "reviewer": "/root/security_coverage",
+  "method": "Installed code-reviewer common method; read-only fixed-commit review",
+  "base_commit": "b33bad07c980fe3c86925d04cf2008eca1d4f8c5",
+  "head_commit": "b0da96993e681eb0c30ad2079c3ca53192a7e47a",
+  "scope": "External R1/F-02 and F-01 repair, direct installation dependencies, affected documentation, regression meaning and necessity",
+  "findings": [
+    {
+      "external_ids": ["R1", "F-02"],
+      "priority": "P2",
+      "path": "src/distribution/reinstallation.py",
+      "lines": [191, 196],
+      "disposition": "resolved",
+      "evidence": "Verified old members absent from the new candidate require cleanup or explicit preservation before preview or cleanup. Omission reports the exact path; unknown custom/history files remain outside mandatory classification."
+    },
+    {
+      "external_ids": ["F-01"],
+      "priority": "P2",
+      "path": "src/distribution/reinstallation.py",
+      "lines": [357, 369],
+      "disposition": "resolved",
+      "evidence": "Traced execute(apply) through real cleanup, nested plan/apply and final observation. Only an ordinary directory that is a candidate-member ancestor is accepted at a retired file path; files, linked paths and unrelated directories remain rejected."
+    }
+  ],
+  "new_actionable_findings": [],
+  "test_necessity": {
+    "conclusion": "No unnecessary restrictive case or additional broad matrix identified in the affected scope.",
+    "transition_rows": "Candidate directory, file remnant and unrelated directory test distinct final-state branches; the apply test replaces the previous preview-only test.",
+    "ownership_rows": "Omitted, cleanup and keep test distinct owner dispositions and refusal before preview or mutation.",
+    "retained_cases": "Unremoved parent collision protects pre-cleanup admission. The 4097-history boundary directly covers OWN-06.",
+    "relaxed_assertion": "Replaced exact read-call count with no reads of unrelated history/custom bytes; permits legitimate implementation changes."
+  },
+  "documentation": "Explicit keep leaves new lock management and may retain runtime discovery or broken references. Missing managed files remain drift. Existing response fields explain plan classification without a new schema.",
+  "author_test_evidence": {
+    "command": "python -I -B tests/run.py --suite distribution",
+    "platform": "native Windows",
+    "tests": 83,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "runner_duration_seconds": 9.235719,
+    "reviewer_reran": false
+  },
+  "limitations": [
+    "Reviewer performed static read-only review and did not execute tests, installation, provider writes or a security scan.",
+    "Regression fixtures execute the outer reinstallation wrapper and filesystem effects; nested installer and external engine/candidate/Git admission remain controlled dependencies.",
+    "No new packaged acceptance, real-project installation, hosted CI or publication is claimed.",
+    "Original independent-review.json and native-validation.json retain their earlier subjects; this record supplements rather than rewrites them.",
+    "The nine untracked prior workflow files were excluded from independent review and remain unmodified and uncommitted."
+  ]
+}

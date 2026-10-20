@@ -124,7 +124,7 @@ class MacOSFallbackTests(support.FixtureTestCase):
 
 
 class MaintenanceContractTests(support.FixtureTestCase):
-    def test_reinstall_inventory_and_preview_include_custom_agent_siblings(self):
+    def test_reinstall_preview_copies_only_selected_preservation_inputs(self):
         base=support.active_run().case('reinstall-agent-scope')
         roots={role:base/role for role in ('project','preview')}
         for root in roots.values(): root.mkdir()
@@ -136,10 +136,7 @@ class MaintenanceContractTests(support.FixtureTestCase):
                 support.active_run().write(roots['project']/path,raw)
                 row={'path':path,'sha256':sha256(raw).hexdigest()}
                 (cleanup if name=='managed' else retained).append(row)
-                self.assertTrue(reinstallation._scope(path))
-        for name in ('.codex/config.toml','.claude/settings.json','.codex/agents-other/a.toml'):
-            self.assertFalse(reinstallation._scope(name))
-        inventory=reinstallation._scan(state._Reader(),roots['project'])
+        inventory=reinstallation._scan(state._Reader(),roots['project'],{r['path'] for r in retained+cleanup})
         self.assertEqual(set(inventory),{r['path'] for r in retained+cleanup})
         document={'cleanup':cleanup,'scoped_inventory':list(inventory.values()),
                   'installation':{'protected_inputs':[],'project_edits':[]}}
@@ -150,6 +147,213 @@ class MaintenanceContractTests(support.FixtureTestCase):
         for row in cleanup:
             self.assertFalse((roots['preview']/row['path']).exists())
             self.assertEqual((roots['project']/row['path']).read_bytes(),b'managed')
+
+    def test_unrelated_history_and_custom_resources_need_no_inventory_or_preview(self):
+        base=support.active_run().case('bounded-reinstall')
+        roots={role:base/role for role in ('project','preview')}
+        for root in roots.values(): root.mkdir()
+        history=roots['project']/'.dev'/'lessons'; history.mkdir(parents=True)
+        for index in range(4097):
+            support.active_run().write(history/f'{index}.md',b'project history')
+        custom=roots['project']/'.ai'/'custom'/'team-skill'
+        custom.mkdir(parents=True)
+        support.active_run().write(custom/'SKILL.md',b'team owned')
+        managed='.ai/core/skills/example/SKILL.md'
+        target=roots['project']/managed; target.parent.mkdir(parents=True)
+        support.active_run().write(target,b'old managed')
+        reader=state._Reader()
+        with patch.object(reader,'read',wraps=reader.read) as reads:
+            inventory=reinstallation._scan(reader,roots['project'],{managed})
+        self.assertEqual(set(inventory),{managed})
+        self.assertTrue(all(not call.args[0].is_relative_to(history) and
+                            not call.args[0].is_relative_to(custom)
+                            for call in reads.call_args_list))
+        document={'cleanup':[{'path':managed}],'scoped_inventory':list(inventory.values()),
+                  'installation':{'protected_inputs':[],'project_edits':[]}}
+        with patch.object(installation,'plan',return_value={'outcome':'planned','plan':{}}):
+            reinstallation._preview(document,roots,state._Reader())
+        self.assertEqual(list(roots['preview'].iterdir()),[])
+        self.assertEqual((custom/'SKILL.md').read_bytes(),b'team owned')
+        self.assertEqual((history/'4096.md').read_bytes(),b'project history')
+
+    def test_cleanup_requires_installed_ownership_not_a_tracked_path(self):
+        root=support.active_run().case('cleanup-ownership')
+        member='.ai/core/skills/example/SKILL.md'
+        lock=state.InstalledLock({},b'{}','1'*64,{member:{}})
+        observation=state.Observation(root,lock,[],[],[])
+        with patch.object(state,'observe_installation',return_value=observation):
+            self.assertEqual(reinstallation._owned_cleanup(state._Reader(),root,None,{member,state.LOCK_PATH}),
+                             {member,state.LOCK_PATH})
+            for name in ('.dev/spec/example.md','.dev/requirement/example.md',
+                         '.dev/lessons/example.md','.dev/adr/example.md',
+                         '.dev/workflows/example.md','.dev/design/example.md',
+                         '.dev/assessments/example.md','.ai/custom/team/SKILL.md',
+                         '.ai/core/skills/team/SKILL.md','.agents/skills/team/SKILL.md',
+                         '.claude/skills/team/SKILL.md','.codex/agents/team.toml'):
+                with self.subTest(path=name),self.assertRaises(state.InstallationError) as caught:
+                    reinstallation._owned_cleanup(state._Reader(),root,None,{name})
+                self.assertEqual(caught.exception.diagnostic['code'],'reinstall-ownership')
+                self.assertEqual(caught.exception.diagnostic['path'],name)
+        with patch.object(state,'observe_installation',return_value=state.Observation(root,None,[],[],[])):
+            with self.assertRaises(state.InstallationError):
+                reinstallation._owned_cleanup(state._Reader(),root,None,{member})
+
+    def test_verified_cleanup_file_can_become_a_candidate_directory(self):
+        base=support.active_run().case('cleanup-file-transition')
+        project=base/'project'; project.mkdir()
+        name='.ai/core/skills/example/runner'
+        path=project/name; path.parent.mkdir(parents=True)
+        support.active_run().write(path,b'old managed runner')
+        destination=name+'/main.py'
+        inventory=reinstallation._inventory(state._Reader(),project,{name},{destination},{name})
+        self.assertEqual(set(inventory),{name})
+        self.assertEqual(path.read_bytes(),b'old managed runner')
+        # A retained/unowned parent is not a license to hide the collision.
+        with self.assertRaises(state.InstallationError) as caught:
+            reinstallation._inventory(state._Reader(),project,{name},{destination},set())
+        self.assertEqual(caught.exception.diagnostic['code'],'parent-collision')
+
+    @contextmanager
+    def reinstall_fixture(self,label,name,destination,disposition='cleanup'):
+        # Exercise real prepare/preview/execute and filesystem effects. External
+        # engine/candidate/Git admission and nested installer are controlled
+        # dependencies; this fixture is not packaged installation acceptance.
+        base=support.active_run().case(label)
+        roots={role:base/role for role in
+               ('project','preview','engine','candidate','scratch','staging','recovery')}
+        for root in roots.values(): root.mkdir()
+        source=roots['project']/name; source.parent.mkdir(parents=True)
+        support.active_run().write(source,b'old runner')
+        (roots['project']/state.LOCK_PATH).parent.mkdir(parents=True,exist_ok=True)
+        support.active_run().write(roots['project']/state.LOCK_PATH,b'{}')
+        pins={n:{'path':n,'sha256':sha256((roots['project']/n).read_bytes()).hexdigest()}
+              for n in (name,state.LOCK_PATH)}
+        cleanup=sorted([pins[state.LOCK_PATH]]+([pins[name]] if disposition=='cleanup' else []),
+                       key=lambda r:r['path'])
+        old=state.InstalledLock({},b'{}',pins[state.LOCK_PATH]['sha256'],{name:{}})
+        candidate=SimpleNamespace(identity='selected',members={destination:{}},
+                                  selection={'components':[{'id':'example'}]})
+        nested={'api_version':2,'operation':'plan','engine':{},'candidate_identity':'selected',
+                'expected_lock_sha256':None,'mode_policy':'windows-inventory-only',
+                'durability':{},'protected_inputs':[],'project_data_action':'none','project_edits':[],
+                **{role+'_root':str(root) for role,root in roots.items() if role!='preview'}}
+        request={'reinstall_version':1,'operation':'plan','project_root':str(roots['project']),
+                 'preview_root':str(roots['preview']),'expected_head':'1'*40,
+                 'cleanup':cleanup,'preserved_inputs':[pins[name]] if disposition=='keep' else [],
+                 'installation':nested,
+                 'all_framework_activity_stopped':True,
+                 'maintenance':{'declared_by':'fixture','declaration_reference':'controlled unit inputs',
+                    'affected_capabilities':['example'],'sessions_stopped':True,'tools_stopped':True,
+                    'external_writers_stopped':True}}
+        def git_output(root,*args,**kwargs):
+            if args==('rev-parse','--show-toplevel'): return str(root).encode()
+            if args==('rev-parse','HEAD'): return b'1'*40
+            if args==('ls-files','-z'): return ('\0'.join(r['path'] for r in cleanup)+'\0').encode()
+            if args==('ls-files','-v','-z'):
+                return ('\0'.join('H '+r['path'] for r in cleanup)+'\0').encode()
+            if args==('ls-tree','-r','-z','HEAD'):
+                return ('\0'.join('100644 blob '+'2'*40+'\t'+r['path'] for r in cleanup)+'\0').encode()
+            if args==('hash-object','--stdin-paths'): return (('2'*40+'\n')*len(cleanup)).encode()
+            if args[0]=='diff': return b''
+            self.fail('Unexpected Git operation: '+str(args))
+        with patch.object(state,'_engine'),patch.object(state,'read_candidate',return_value=candidate), \
+             patch.object(state,'observe_installation',return_value=state.Observation(roots['project'],old,[],[],[])), \
+             patch.object(reinstallation,'_git',side_effect=git_output), \
+             patch.object(reinstallation,'_git_filter_boundary'):
+            yield roots,request
+
+    def nested_install_plan(self):
+        return {'outcome':'planned','plan_sha256':'2'*64,'plan':{
+            'candidate_identity':'selected','engine':{},'expected_lock_sha256':None,
+            'mode_policy':'windows-inventory-only','delta':[],'project_edits':[],
+            'project_inputs':[],'protected_inputs':[],'maintenance_scope':['example'],'noop':False}}
+
+    def test_file_to_directory_transition_finishes_apply_but_remnants_fail(self):
+        name='.ai/core/skills/example/runner'
+        for disposition in ('candidate-directory','file-remnant','unrelated-directory'):
+            destination=name+'/main.py' if disposition!='unrelated-directory' else '.ai/core/skills/example/other.py'
+            with self.subTest(disposition=disposition), \
+                 self.reinstall_fixture('transition-'+disposition,name,destination) as (roots,request), \
+                 patch.object(installation,'plan',return_value=self.nested_install_plan()):
+                source=roots['project']/name
+                plan=reinstallation.execute(request)
+                self.assertEqual(plan['outcome'],'planned')
+                self.assertEqual(source.read_bytes(),b'old runner')
+                self.assertEqual((roots['project']/state.LOCK_PATH).read_bytes(),b'{}')
+                self.assertFalse((roots['preview']/name).exists())
+                def apply(_):
+                    self.assertFalse(source.exists())
+                    if disposition=='file-remnant':
+                        # A successful dependency result must not hide an old
+                        # file reappearing where only a candidate directory fits.
+                        support.active_run().write(source,b'old runner')
+                    else:
+                        source.mkdir()
+                        support.active_run().write(roots['project']/destination,b'new runner')
+                    return {'outcome':'applied'}
+                with patch.object(installation,'apply',side_effect=apply):
+                    result=reinstallation.execute({**request,'operation':'apply',
+                                                   'expected_plan_sha256':plan['plan_sha256']})
+                self.assertTrue(result['changed'])
+                self.assertEqual(set(result['removed']),{name,state.LOCK_PATH})
+                if disposition!='candidate-directory':
+                    self.assertEqual(result['outcome'],'cleanup-incomplete')
+                    self.assertEqual(result['diagnostics'][0]['code'],'reinstall-remnant')
+                else:
+                    self.assertEqual(result['outcome'],'reinstalled')
+                    self.assertEqual((roots['project']/destination).read_bytes(),b'new runner')
+
+    def test_old_managed_member_requires_cleanup_or_explicit_preservation(self):
+        name='.agents/skills/old/SKILL.md'; destination='.agents/skills/new/SKILL.md'
+        for disposition in ('omitted','cleanup','keep'):
+            with self.subTest(disposition=disposition), \
+                 self.reinstall_fixture('old-member-'+disposition,name,destination,disposition) as (roots,request), \
+                 patch.object(installation,'plan',return_value=self.nested_install_plan()) as nested_plan:
+                source=roots['project']/name
+                plan=reinstallation.execute(request)
+                self.assertEqual(source.read_bytes(),b'old runner')
+                self.assertEqual((roots['project']/state.LOCK_PATH).read_bytes(),b'{}')
+                if disposition=='omitted':
+                    self.assertEqual(plan['outcome'],'blocked')
+                    self.assertFalse(plan['changed'])
+                    self.assertEqual(plan['removed'],[])
+                    self.assertEqual(plan['diagnostics'][0]['code'],'reinstall-unclassified')
+                    self.assertEqual(plan['diagnostics'][0]['path'],name)
+                    self.assertEqual(list(roots['preview'].iterdir()),[])
+                    nested_plan.assert_not_called()
+                    continue
+                self.assertEqual(plan['outcome'],'planned')
+                self.assertEqual((roots['preview']/name).exists(),disposition=='keep')
+                def apply(_):
+                    target=roots['project']/destination; target.parent.mkdir(parents=True)
+                    support.active_run().write(target,b'new skill')
+                    return {'outcome':'applied'}
+                with patch.object(installation,'apply',side_effect=apply):
+                    result=reinstallation.execute({**request,'operation':'apply',
+                                                   'expected_plan_sha256':plan['plan_sha256']})
+                self.assertEqual(result['outcome'],'reinstalled')
+                self.assertEqual(source.exists(),disposition=='keep')
+                if disposition=='keep': self.assertEqual(source.read_bytes(),b'old runner')
+                self.assertEqual((roots['project']/destination).read_bytes(),b'new skill')
+
+    def test_reinstall_retains_precise_managed_drift_and_marker_conflicts(self):
+        root=support.active_run().case('cleanup-drift')
+        member='.ai/core/skills/example/SKILL.md'
+        observation=state.Observation(root,None,[{'path':member,'reason':'member-drift'}],None,[])
+        with patch.object(state,'observe_installation',return_value=observation):
+            with self.assertRaises(planning.PlanConflict) as caught:
+                reinstallation._owned_cleanup(state._Reader(),root,None,{member})
+        with patch.object(reinstallation,'_prepare',side_effect=caught.exception):
+            result=reinstallation.execute({'operation':'apply'})
+        self.assertEqual(result['outcome'],'conflict')
+        self.assertFalse(result['changed'])
+        self.assertEqual(result['removed'],[])
+        self.assertEqual(result['diagnostics'][0]['path'],member)
+        observation=state.Observation(root,None,[],None,[state.MARKERS[0]])
+        with patch.object(state,'observe_installation',return_value=observation):
+            with self.assertRaises(state.InstallationError) as caught:
+                reinstallation._owned_cleanup(state._Reader(),root,None,set())
+        self.assertEqual(caught.exception.diagnostic['code'],'maintenance-marker')
 
     def test_reinstall_retains_plan_failure_before_and_after_cleanup(self):
         failure={'outcome':'conflict','changed':False,'diagnostics':[{
@@ -217,7 +421,7 @@ class MaintenanceContractTests(support.FixtureTestCase):
 
     def test_content_address_and_delete_shape_fail_closed(self):
         roots=self.roots('object-drift')
-        intent=self.intent(roots,'ROOT.md',None,b'candidate')
+        intent=self.intent(roots,'AGENTS.md',None,b'candidate')
         (roots['staging']/intent['after_content_ref']).write_bytes(b'changed')
         with self.assertRaises(ValueError): planning.project_edits(state._Reader(),roots,[intent],set(),[])
         intent['after_sha256']=None
@@ -225,7 +429,7 @@ class MaintenanceContractTests(support.FixtureTestCase):
 
     def test_recovery_records_reject_unknown_fields_and_wrong_side(self):
         roots=self.roots('record-shape')
-        intent=self.intent(roots,'ROOT.md',b'old',None)
+        intent=self.intent(roots,'AGENTS.md',b'old',None)
         rows,objects=planning.project_edits(state._Reader(),roots,[intent],set(),[])
         # _edit_record consumes already verified object bytes from the same object owner.
         installation._edit_record(rows,state._Reader(),roots['staging'],dict(objects),set(),[])
@@ -242,6 +446,28 @@ class MaintenanceContractTests(support.FixtureTestCase):
         self.assertEqual(operation.descriptors(after)['ROOT.md']['sha256'],new['sha256'])
         foreign=state.InstalledLock({},b'{}','1'*64,{})
         with self.assertRaises(ValueError): operation.descriptors(foreign)
+
+    def test_project_edits_and_retained_records_cannot_modify_custom_resources(self):
+        roots=self.roots('edit-ownership')
+        for name in ('.dev/spec/example.md','.dev/requirement/example.md',
+                     '.dev/lessons/example.md','.dev/adr/example.md',
+                     '.dev/workflows/example.md','.dev/design/example.md',
+                     '.dev/assessments/example.md','docs/requirements/example.md',
+                     '.ai/custom/team/SKILL.md','.ai/custom/framework.json',
+                     '.agents/skills/team/SKILL.md','.claude/skills/team/SKILL.md',
+                     '.codex/agents/team.toml','.ai/core/skills/example/SKILL.md'):
+            with self.subTest(path=name):
+                intent={'path':name,'before_sha256':None,'after_sha256':None,'after_content_ref':None}
+                with self.assertRaises(state.InstallationError) as caught:
+                    planning.project_edits(state._Reader(),roots,[intent],set(),[])
+                self.assertEqual(caught.exception.diagnostic['code'],'project-edit-boundary')
+                with self.assertRaises(state.InstallationError) as caught:
+                    installation._edit_record([{'intent':intent,'before':None,'after':None}],
+                                              state._Reader(),roots['staging'],{},set(),[])
+                self.assertEqual(caught.exception.diagnostic['code'],'project-edit-boundary')
+        for name in ('AGENTS.md','.ai/custom/installation.json','.codex/config.toml',
+                     '.claude/settings.json','.ai/INDEX.MD','.agents/skills/README.md'):
+            self.assertEqual(planning.project_edit_path(name),name)
 
     def test_saved_selection_uses_exact_types_before_semantic_comparison(self):
         roots=self.roots('saved-selection-types')

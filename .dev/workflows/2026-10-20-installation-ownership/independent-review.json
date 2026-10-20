@@ -1,0 +1,28 @@
+{
+  "reviewer": "/root/security_coverage",
+  "method": "installed code-reviewer common method; read-only fixed-commit review",
+  "base_commit": "92ee2c89d5ab58912402c5789ba56659d8bb40af",
+  "initial_head": "ab4a1fddd19dac8256c548c3c9fa98f4aabdf096",
+  "repaired_head": "66eca564fcef5e53897ed6ec2986727948b6513f",
+  "scope": "Installation ownership repair diff, its immediate dependencies, Issues #472/#473 criteria and governing source policies",
+  "compatibility_authority": "Owner explicitly accepted the project_edits installation/navigation allowlist as a v0.20.2 protection correction after its effect on previously accepted requests was explained.",
+  "findings": [
+    {
+      "id": "R1",
+      "priority": "P2",
+      "path": "src/distribution/reinstallation.py",
+      "initial_lines": [88, 90],
+      "problem": "Scanning the union of old inputs and new destinations rejected a verified cleanup file becoming a new candidate directory.",
+      "disposition": "resolved",
+      "repair": "Observe existing inputs separately; defer a candidate descendant only when its exact parent is verified cleanup. Preserve unremoved-parent and case-alias rejection.",
+      "verification": "Reviewer rechecked ab4a1fdd..66eca564 and the two direct regression cases; no remaining or new actionable finding in the affected scope."
+    }
+  ],
+  "remaining_actionable_findings": [],
+  "limitations": [
+    "Reviewer did not execute tests, native installation, a security scan or provider operations.",
+    "The two transition tests use real filesystem observations with controlled admission inputs; they are not complete native installation acceptance.",
+    "Parent-owned packaged validation is separate evidence.",
+    "No claim of exhaustive security, hosted CI, real-project adoption or release approval."
+  ]
+}

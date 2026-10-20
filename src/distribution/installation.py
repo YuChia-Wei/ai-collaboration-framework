@@ -616,9 +616,7 @@ def _edit_record(rows, reader, root, objects, managed, protected):
     for row in rows:
         state._shape(row, {"intent", "before", "after"})
         intent = state._shape(row["intent"], {"path", "before_sha256", "after_sha256", "after_content_ref"})
-        name = state._relative(intent["path"]); names.append(name)
-        state._check(not name.startswith((".ai/core/", ".ai/local/", ".git/")) and name not in {".ai/core", ".ai/local", ".git"},
-                     "project-edit-boundary", "Retained project edit crosses storage ownership.", name)
+        name = planning.project_edit_path(intent["path"]); names.append(name)
         for side in ("before", "after"):
             state._digest(intent[side + "_sha256"], nullable=True)
             value = row[side]
