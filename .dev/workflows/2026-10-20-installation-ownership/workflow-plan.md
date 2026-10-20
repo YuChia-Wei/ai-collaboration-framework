@@ -47,7 +47,7 @@ Two read-only sub-agents assess existing custom skill/resource creation rules
 and patch compatibility at the input commit. Parent integrates their evidence
 and future-work recommendation; they have no write or registry authority.
 
-## Results and remaining work
+## Results and acceptance boundaries
 
 `python -I -B tests/run.py --suite distribution`: 80 tests passed, 0 failures,
 0 errors, 0 skips, 8.975409 seconds, on the normal Windows host. Initial sandbox
@@ -58,8 +58,8 @@ not a successful product run. `git diff --check` passed.
 The suite verifies bounded history observation and selected preview inputs,
 cleanup ownership admission, exact drift paths, markers and project-edit
 admission including retained recovery records. Small mocked reader observations
-are not packaged installation evidence. Packaged route and independent review
-remain pending.
+are not packaged installation evidence. This 80-test run preceded the review
+repair below; it is not relabeled as an 82-test run of the final commit.
 
 Independent review by `security_coverage` of
 `92ee2c89d5ab58912402c5789ba56659d8bb40af..ab4a1fddd19dac8256c548c3c9fa98f4aabdf096`
@@ -70,12 +70,81 @@ collisions. Two directly affected cases passed:
 `python -I -B tests/framework_next/test_maintenance_contracts.py MaintenanceContractTests.test_verified_cleanup_file_can_become_a_candidate_directory MaintenanceContractTests.test_file_to_directory_transition_reaches_reinstall_preview`
 (2 tests, 0 failures/errors, 0.095 seconds). The prepare/preview case uses controlled
 Git/engine/candidate evidence and real path observation; it is not native
-installation acceptance. Affected independent re-review is still pending.
+installation acceptance. Independent re-review of
+`ab4a1fddd19dac8256c548c3c9fa98f4aabdf096..66eca564fcef5e53897ed6ec2986727948b6513f`
+resolved the finding and found no new actionable issue in the affected scope.
+The full review boundary and limitations are in [independent-review.json](independent-review.json).
 
 The first local snapshot built from `ab4a1fdd` successfully (archive SHA-256
 `bb1b11ed6551b29072b8cf7f188b36a609be25630bfb88f2828e54f643e03929`), before
 this review repair. It has no installation acceptance and will not be used as
 the final repaired subject. No published artifact was changed.
+
+The final local package was built from
+`66eca564fcef5e53897ed6ec2986727948b6513f` in an isolated clean worktree:
+
+```text
+python -I -B .github/scripts/build-release.py --repository F:/git-worktree/v0202-ownership-validation/ai-collaboration-prompts-dotnet-backend --source-commit 66eca564fcef5e53897ed6ec2986727948b6513f --tooling-commit 66eca564fcef5e53897ed6ec2986727948b6513f --workflow-commit 66eca564fcef5e53897ed6ec2986727948b6513f --workflow .github/workflows/package-candidate.yml --run-id local-ownership-validation --run-attempt 2 --work-root C:/tmp/aicf-0202-build2 --output C:/tmp/aicf-0202-output2
+```
+
+Build passed; final archive SHA-256 is
+`c6e68ec42e96ea6b8395cef053daa4c7650eeb9d71e73f93d6a6bbd99be13de3`.
+The local candidate's generated version is `0.0.0-rc.113166573174000`, not a
+published v0.20.2. Both extracted packages matched their original archive bytes
+(482 files each); the old origin is the immutable public v0.20.1 archive.
+
+Disposable native Windows checks used the packaged CLI entry points without
+importing product implementation into the driver. Commands:
+
+```text
+python -I -B .dev/ai-context/local/ownership-trials.py C:/tmp/aicf-self-0201-20261020/package C:/tmp/aicf-0202-output2/package C:/tmp/own202-t1
+python -I -B .dev/ai-context/local/ownership-trials.py C:/tmp/aicf-self-0201-20261020/package C:/tmp/aicf-0202-output2/package C:/tmp/own202-t2
+python -I -B .dev/ai-context/local/ownership-trials-continue.py C:/tmp/aicf-self-0201-20261020/package C:/tmp/aicf-0202-output2/package C:/tmp/own202-t2
+```
+
+The first setup stopped before apply because the driver omitted the existing
+configuration preservation pin. The second setup reached 16 successful checks,
+then stopped because the driver expected `owned-drift` for a reinstall hardlink;
+the implementation correctly returned the earlier `hardlinked-file` rejection.
+The corrected continuation retained those successful checks, rechecked the
+hardlink case and completed the remaining cases. Neither harness interruption is
+reported as a product pass. Requests, responses and driver files are local
+diagnostic artifacts, not new product tooling or a required validation system.
+
+[native-validation.json](native-validation.json) retains 26 completed cases:
+25 expected refusals with unchanged project bytes, and one public-origin update
+and reinstall scenario with successful post-inspect. That scenario preserved
+19 custom/record sentinels (apart from the explicitly approved additive AGENTS
+navigation edit) and all 4,097 unrelated history files. Reinstall observed only
+14 affected paths and one explicit preservation pin; no `.dev` tree was copied
+into preview. Protected Git diff was empty. Reinstall changed no file bytes
+other than its new lock installation identity.
+
+| Criterion | Outcome in this scope | Evidence |
+| --- | --- | --- |
+| OWN-01 | Passed in disposable fixture | Seven record categories retained; protected Git diff empty |
+| OWN-02 | Passed in disposable fixture | Custom skill entries, support and configuration retained across update/reinstall |
+| OWN-03 | Passed in disposable fixture | Uncommitted update and committed reinstall managed drift rejected with exact path |
+| OWN-04 | Passed in disposable fixture | Byte-identical custom destination rejected in both routes |
+| OWN-05 | Passed in disposable fixture | Four protected path examples rejected through cleanup and both project-edit routes |
+| OWN-06 | Passed in disposable fixture | 4,097 unrelated history files retained with bounded 14-path inventory |
+| OWN-07 | Passed in selected source and native cases | Missing ownership, plan drift, markers, hardlinks, aliases and preimage protections; not an exhaustive platform/recovery matrix |
+| OWN-08 | Not run; deferred to owner-selected real installation | Disposable fixture success does not establish source-project or team-project adoption |
+| DOC-01 | Source guidance aligned; fixture corroboration | Default preservation and bounded ownership in both guides and packaged README |
+| DOC-02 | Source guidance aligned; fixture corroboration | Git tracking never substitutes for installed ownership |
+| DOC-03 | Source guidance aligned; fixture corroboration | Managed drift and unowned collisions retain conflicts; no overwrite shortcut |
+| DOC-04 | Source guidance aligned; fixture corroboration | Shared 11-path project-edit allowlist and explicit review requirement |
+| DOC-05 | Source guidance aligned; fixture corroboration | Bounded affected-path planning; no history reclassification or limit increase |
+| DOC-06 | Real installation not run; deferred to owner | Guides distinguish static, source, fixture and installation evidence |
+
+DOC outcomes are source review and deterministic fixture evidence, not an AI
+actor trial following the guides. Source AGENTS/CLAUDE and generated installed
+resources required no change. This local implementation workflow is complete.
+Hosted source CI, PR acceptance, integration, Issue closure and publication are
+not performed. Issues #472/#473 remain open on provider read-back.
+Real installation requires separate authority and reconciliation of the target's
+actual installed ownership; this change does not restore an RC3 migration route.
+No test rerun is selected merely for these final record changes.
 
 ## Custom resource follow-up
 

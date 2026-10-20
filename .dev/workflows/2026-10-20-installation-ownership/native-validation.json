@@ -1,0 +1,203 @@
+{
+  "source_commit": "66eca564fcef5e53897ed6ec2986727948b6513f",
+  "platform": "native Windows",
+  "cases": [
+    {
+      "case": "cleanup-custom-0",
+      "outcome": "blocked",
+      "expected_diagnostic": "reinstall-ownership",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "update-custom-edit-0",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "reinstall-custom-edit-0",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "cleanup-custom-1",
+      "outcome": "blocked",
+      "expected_diagnostic": "reinstall-ownership",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "update-custom-edit-1",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "reinstall-custom-edit-1",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "cleanup-custom-2",
+      "outcome": "blocked",
+      "expected_diagnostic": "reinstall-ownership",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "update-custom-edit-2",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "reinstall-custom-edit-2",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "cleanup-custom-3",
+      "outcome": "blocked",
+      "expected_diagnostic": "reinstall-ownership",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "update-custom-edit-3",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "reinstall-custom-edit-3",
+      "outcome": "blocked",
+      "expected_diagnostic": "project-edit-boundary",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "protected-absence",
+      "outcome": "blocked",
+      "expected_diagnostic": "protected-input-conflict",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "update-marker",
+      "outcome": "blocked",
+      "expected_diagnostic": "maintenance-marker",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "reinstall-marker",
+      "outcome": "blocked",
+      "expected_diagnostic": "maintenance-marker",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "update-hardlinked-member",
+      "outcome": "conflict",
+      "expected_diagnostic": "owned-drift",
+      "project_bytes_unchanged": true,
+      "evidence": "Retained successful checks before driver interruption"
+    },
+    {
+      "case": "reinstall-hardlinked-member-recheck",
+      "outcome": "blocked",
+      "expected_diagnostic": "hardlinked-file",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "update-identical-custom-collision",
+      "outcome": "conflict",
+      "expected_diagnostic": "unowned-collision",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "reinstall-identical-custom-collision",
+      "outcome": "blocked",
+      "expected_diagnostic": "reinstall-collision",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "update-uncommitted-managed-drift",
+      "outcome": "conflict",
+      "expected_diagnostic": "owned-drift",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "reinstall-committed-managed-drift",
+      "outcome": "conflict",
+      "expected_diagnostic": "owned-drift",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "update-case-alias",
+      "outcome": "blocked",
+      "expected_diagnostic": "path-alias",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "reinstall-case-alias",
+      "outcome": "blocked",
+      "expected_diagnostic": "path-alias",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "missing-ownership",
+      "outcome": "blocked",
+      "expected_diagnostic": "reinstall-ownership",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "changed-plan-hash",
+      "outcome": "conflict",
+      "expected_diagnostic": "reinstall-plan-drift",
+      "project_bytes_unchanged": true
+    },
+    {
+      "case": "public-origin-update-and-reinstall",
+      "outcome": "passed",
+      "origin": "v0.20.1",
+      "target": "0.0.0-rc.113166573174000",
+      "post_inspect": "managed-bytes-consistent",
+      "custom_files_preserved": 19,
+      "unrelated_history_files_preserved": 4097,
+      "scoped_inventory_count": 14,
+      "preservation_pin_count": 1,
+      "approved_navigation_edit": "AGENTS.md exact before/after; original team text retained",
+      "bytes_unchanged_except_new_lock_identity": true,
+      "protected_git_diff": "empty"
+    }
+  ],
+  "scope": "Disposable packaged fixtures only; no real-project adoption or release acceptance.",
+  "archive_verification": {
+    "new_source": "66eca564fcef5e53897ed6ec2986727948b6513f",
+    "new_archive_sha256": "c6e68ec42e96ea6b8395cef053daa4c7650eeb9d71e73f93d6a6bbd99be13de3",
+    "new_files_checked": 482,
+    "old_release": "v0.20.1",
+    "old_archive_sha256": "e60b53e83e89ee3742e5ff4b20b5a28037ffef3cf8b12817dcb40c869b89be80",
+    "old_files_checked": 482,
+    "outcome": "raw-extracted-bytes-match"
+  },
+  "raw_trial_root": "C:/tmp/own202-t2",
+  "limitations": [
+    "Disposable Windows fixtures only; not actual source-project or team-project adoption.",
+    "25 expected refusal cases and one update/reinstall scenario; not a complete OS, recovery or actor matrix.",
+    "The 19 sentinels retain their original bytes except the approved additive AGENTS.md navigation edit.",
+    "Initial setup and diagnostic-expectation interruptions are retained in workflow-plan.md; the continuation did not overwrite earlier evidence."
+  ]
+}
