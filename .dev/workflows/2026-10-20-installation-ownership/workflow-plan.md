@@ -1,5 +1,53 @@
 # Installation ownership repair
 
+## Current continuation — 2026-10-21
+
+Completed: this project is now installed from public v0.20.2. The independent
+review of `6a552659b0aec503237bae6c0db4b7cbc2ac0c58` reported no actionable
+findings; actual public post-inspect reports 137 owned members and no drift.
+All 4,386 files outside the managed/edit set, including nine original untracked
+records, retained exact bytes at the immediate post-install observation.
+See [actual acceptance and all OWN/DOC criteria](self-install-v0202-accepted.md).
+`INSTALL` and the local workflow are complete; provider states remain separate.
+
+The owner now explicitly requests self-reinstallation from public v0.20.2,
+preservation of custom content/history, and assessment against #472/#473.
+The source repair was integrated through PR #474 and v0.20.2 was published.
+This continuation starts from `3c7434fd3ea65bcbf519fef3e3ca232a0bc59043` on
+`codex/2026-10-21-self-install-v0202`; it does not authorize a new product
+compatibility implementation, release replacement, Issue closure or another
+push/PR/merge. The nine prior untracked records remain untouched.
+
+The initial `INSTALL` attempt stopped before apply: both the formal package's
+inspect and breaking reinstall plan rejected this project's RC3 lock.
+See [the actual-target acceptance assessment](self-install-v0202-assessment.md)
+for all OWN/DOC criteria, retained commands/results and the owner checkpoint.
+This workflow retains the unique real-target compatibility/recovery state; it
+does not reopen the completed source implementation or require its tests again.
+
+The owner subsequently approved the project-specific RC3 migration plan and
+explicitly authorized building the procedure, isolated rehearsal, recovery
+validation, necessary independent review, then direct installation of public
+v0.20.2 in this project. Preserve custom content, history and all nine existing
+untracked records; assess #472/#473 afterward. This supersedes the earlier
+compatibility checkpoint, not the product's supported compatibility boundary.
+Use the exact installed RC3 engine pin for read-only ownership verification,
+retire only its verified 135 members and lock, then use the unchanged released
+v0.20.2 public API. The local bridge is `rc3-migrate.py`; it is not packaged.
+
+Validation is selected by the actual installation/recovery risk: one partial
+retirement and refusal to overwrite unknown bytes; one interrupted public new
+installation followed by official restore and old-file restoration; one complete
+isolated migration with paired navigation edits and preservation read-back.
+Record coordination-file disposition explicitly. Successful completed installs
+cannot be rolled back through replay of an already completed operation.
+Freeze the implemented bridge and evidence in a local commit for independent
+read-only review before actual-target writes. Then observe quiescence afresh,
+snapshot the target, execute and read back the accepted installation criteria.
+No push, PR, merge, Issue closure, new release or history cleanup is selected.
+
+## Initial implementation authority — 2026-10-20
+
 Owner authorized implementation of #472 and #473, necessary tests and independent
 review on 2026-10-20. Target is v0.20.2. Reinstallation, publication, push, PR,
 merge and provider state changes are not selected. Preserve both existing

@@ -2,6 +2,13 @@
 
 ## Intake and ownership
 
+Use this method for ongoing maintenance of existing project-owned context.
+Initialization fills missing foundations; an explicitly selected initialization
+refresh may update repository facts, commands and navigation without redesigning
+rules. Audit returns read-only findings or comparisons and is not required before
+an already authorized maintenance edit. Neither the filename nor its original
+author selects the current operation or supplies authority.
+
 Select `propose` or `apply`, the concrete problem/request, intended behavior,
 files and relevant authority. Read only selected owner statements, current
 contents and dependencies needed for the action. Identify project/path and
@@ -53,15 +60,38 @@ finalization are separate operations with their own owners and authority.
    Reconcile stale inputs/collisions; preserve other writers' edits and unrelated
    content. Change only authorized project-owned files and in-scope direct
    references. A needed out-of-scope change is an explicit owner handoff.
-3. Preserve meaning and full adopted rule text at the existing canonical owner.
-   Retain required source/decision references and applicability there. Do not
-   duplicate normative statements into a new ledger or shadow entry, weaken
-   protections, or manufacture another tool's adoption/effect evidence.
-4. Read back actual changes and perform the narrow authorized project checks.
+3. Maintain one complete effective rule at its canonical owner. For an
+   authorized semantic replacement, delete or rewrite obsolete, duplicate and
+   contradictory instructions in that scope; do not leave them active beneath
+   an added priority disclaimer. Preserve still-valid protections, adopted
+   meaning outside the authorized change, unrelated custom content and required
+   source/decision references. Do not create a shadow rule or manufacture
+   another tool's adoption/effect evidence.
+4. Read back actual changes, effective entry links and applicability. Decide
+   which checks the actual diff, semantics, direct dependencies and target-owned
+   gates require before executing them. Ordinary explanatory text or whitespace
+   with no parsing, output or content-contract effect needs no product/schema
+   test merely because of its extension or location. Whitespace affecting those
+   contracts requires the relevant checks; unclear impact needs investigation.
    Report paths, source/decision references, outcomes, uncertainty and next action.
    Failed, unavailable, deferred and not-run checks are not passed. A diff,
    commit or syntax check is not independent review, runtime effect or provider
    acceptance. Execute no check whose side effects exceed the authorized scope.
+
+Remove unnecessary old experience from current operating text. If useful
+history must remain in the same document, isolate it in a clearly named
+`NOT AN EXECUTION TRIGGER / historical context only` section. State that it
+does not meet current trigger conditions, why it is retained and any separately
+selected legacy applicability. Remove active entry links to superseded steps;
+a label alone does not guarantee that an agent will not execute them. Preserve
+separately owned historical records rather than rewriting history.
+
+Select large integration, E2E, usability, full installation/upgrade or high-cost AI
+checks only for a clearly affected behavior/boundary or an explicit user request or
+accepted acceptance criterion. Preserve mandatory target-owned gates,
+security and release duties. A changed SHA, report or handoff alone is no test
+trigger. A short reason in the existing output suffices; add no reuse receipt,
+ledger, complete hash inventory or generic classification tool.
 
 These instructions provide no generic lock, compare-and-swap, rollback or
 multi-file atomicity. On interruption or unexpected changes, report the actual
