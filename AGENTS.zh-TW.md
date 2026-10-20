@@ -48,7 +48,7 @@ Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skill
 | --- | --- |
 | AI-context audit 或 comparison | `ai-context-auditor` |
 | AI-context governance 與 reusable context maintenance | `ai-context-governance` |
-| Architecture、GWT design、code review、diagnosis 或 implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
+| Architecture、GWT design、code review、diagnosis 或 implementation | `ddd-ca-hex-architect` / `test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 | Decisions、lessons、local backlog 或 pull requests | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` |
 | 多階段軟體開發 | `software-development-orchestrator` 負責階段選擇與專業 skill 交接；source `.dev/` policy 與 Issue authority 擁有 workflow records 與整合權限 |

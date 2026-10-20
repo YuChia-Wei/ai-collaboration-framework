@@ -6,7 +6,7 @@ Regenerate through the pinned catalog subset and installation owner.
 - [`adr-author`](adr-author/SKILL.md)
 - [`ai-context-auditor`](ai-context-auditor/SKILL.md)
 - [`ai-context-governance`](ai-context-governance/SKILL.md)
-- [`bdd-gwt-test-designer`](bdd-gwt-test-designer/SKILL.md)
+- [`test-designer`](test-designer/SKILL.md)
 - [`code-reviewer`](code-reviewer/SKILL.md)
 - [`ddd-ca-hex-architect`](ddd-ca-hex-architect/SKILL.md)
 - [`diagnostic-analyst`](diagnostic-analyst/SKILL.md)

@@ -1,11 +1,11 @@
 ---
 name: ai-context-governance
-description: "Propose or apply a bounded authorized change to project-owned AI context. Preserve semantic authority, custom content and protected managed files; optionally hand useful candidates to project-selected knowledge tools."
+description: "Maintain existing project-owned AI context by proposing or applying bounded changes to rules, document responsibilities, precedence and navigation. Use for ongoing context maintenance and conflict reconciliation; preserve custom content and protected managed files."
 ---
 
 # ai-context-governance
 
-Claude runtime entry for `ai-context-governance@0.1.0`. This generated projection does not
+Claude runtime entry for `ai-context-governance@0.1.1`. This generated projection does not
 prove installation, operation execution, validation or runtime discovery.
 Regenerate it from the selected package and verified Claude adapter.
 
@@ -19,11 +19,15 @@ Selected installed skill members:
 
 - [references/maintenance.md](../../../.ai/core/skills/ai-context-governance/references/maintenance.md)
 
-For metadata version 4, `knowledge_consumption` declares exact knowledge package
+For metadata versions 4 and 5, `knowledge_consumption` declares exact knowledge package
 versions, operations and resource IDs. Follow the installed skill's selected
 binding to access knowledge. An optional missing package or resource makes the
 named coverage unavailable; do not assume it was installed or promise that
 coverage. Required dependencies must be present before the operation is used.
+
+Metadata 5 also declares executable module closure in tool `support_files`.
+Keep every declared member with its tool entrypoint; never load missing modules
+from the framework source checkout or ambient paths.
 
 For metadata versions 1–3, follow the declared operation and runtime contracts.
 An instruction operation means read its declared instructions; a tool operation

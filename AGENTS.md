@@ -50,7 +50,7 @@ Use the original skill IDs in `.agents/skills/<skill-id>/SKILL.md` for Codex and
 | --- | --- |
 | AI-context audit or comparison | `ai-context-auditor` |
 | AI-context governance and reusable context maintenance | `ai-context-governance` |
-| Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
+| Architecture, GWT design, code review, diagnosis, or implementation | `ddd-ca-hex-architect` / `test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 | Decisions, lessons, local backlog, or pull requests | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` |
 | Multi-stage software development | `software-development-orchestrator` for stage selection and specialist handoffs; source `.dev/` policy and Issue authority own workflow records and integration |

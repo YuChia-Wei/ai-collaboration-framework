@@ -2,6 +2,14 @@
 
 ## Current continuation — 2026-10-21
 
+Completed: this project is now installed from public v0.20.2. The independent
+review of `6a552659b0aec503237bae6c0db4b7cbc2ac0c58` reported no actionable
+findings; actual public post-inspect reports 137 owned members and no drift.
+All 4,386 files outside the managed/edit set, including nine original untracked
+records, retained exact bytes at the immediate post-install observation.
+See [actual acceptance and all OWN/DOC criteria](self-install-v0202-accepted.md).
+`INSTALL` and the local workflow are complete; provider states remain separate.
+
 The owner now explicitly requests self-reinstallation from public v0.20.2,
 preservation of custom content/history, and assessment against #472/#473.
 The source repair was integrated through PR #474 and v0.20.2 was published.

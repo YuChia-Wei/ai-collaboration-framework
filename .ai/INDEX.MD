@@ -9,5 +9,5 @@ under `.dev/`. Use root `AGENTS.md` for current source routes and retained dutie
 Portable workflow v2 is retired. Source `.dev/workflows` records are retained.
 
 For a Git-backed breaking reinstall, use the independently pinned engine entry
-`tools/reinstall-framework.py` and an exact cleanup/preservation plan. Ordinary
+`src/tools/reinstall-framework.py` and an exact cleanup/preservation plan. Ordinary
 API 2 maintenance preserves its existing non-destructive contract.

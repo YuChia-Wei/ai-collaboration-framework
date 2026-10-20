@@ -1,9 +1,9 @@
 task_id: INSTALL
 workflow_id: 2026-10-20-installation-ownership
 owner_skill: software-development-orchestrator
-status: in_progress
+status: completed
 created_at: '2026-10-21T07:10:15.5795249+08:00'
-updated_at: '2026-10-21T07:36:29.857889+08:00'
+updated_at: '2026-10-21T07:43:22.530515+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: 1.0.0
 model: gpt-6-astra
@@ -12,4 +12,7 @@ model_identity_evidence: configured fallback; active backend not independently o
 title: Reinstall this project from public v0.20.2 and assess OWN/DOC acceptance
 issues: [472, 473]
 blocker: null
-next_action: 'Complete Git-based recovery and success rehearsal, fixed-commit independent review, then authorized actual migration.'
+next_action: 'No remaining local installation task; push, PR, merge and Issue/Project changes are not selected.'
+result_summary: 'Public v0.20.2 installed; 137 owned members have no drift, 17 skills and both adapters match, 4386 files and nine original untracked records preserved; all OWN/DOC criteria assessed.'
+finding_status: 'Independent immutable migration review of 6a552659 found no actionable defect; actual installation and preservation checks passed.'
+result_artifact: self-install-v0202-accepted.md
