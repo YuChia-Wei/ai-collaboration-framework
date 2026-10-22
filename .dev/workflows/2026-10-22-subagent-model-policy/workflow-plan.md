@@ -84,23 +84,32 @@ implementing the general skill Feature/Story #482/#484.
 
 ## Current status
 
-The model-policy slice is implemented at
-`5d80f8cf939036d9a005a2af28496366937f5c6f` and its prior review remains scoped to
-that implementation. The resource-customization slice is in progress and needs
-its own immutable review. Current focused checks: 166 distribution/schema/loader
-checks passed, including 13 registry behavior cases and portable CLI use.
+Local delivery is complete. The model-policy slice is implemented at
+`5d80f8cf939036d9a005a2af28496366937f5c6f`. The resource manager is implemented
+at `fe0928e74b344c1a0208261ab764e6a0630cbbbc`; scoped fixes end at
+`580dadc3910bef78ae916039023a8ed476228c8b`. Independent review findings are
+resolved and affected re-reviews returned no supported actionable findings.
+See [validation](validation.md) for exact subject and evidence boundaries.
 
-Branch: `codex/2026-10-22-subagent-model-policy`. Parent remains the only tracked
-writer. The accepted project migration has 7 role records, 20 authoring/resource
-files and 8 runtime entries; all resource hashes read back matched. Runtime names
-remain unchanged; future actual catalog selection determines which collisions
-need explicit namespace rebinding or framework adoption.
+The selected checks passed: 166 distribution/schema/loader tests, followed by
+14 registry and 9 policy/public-CLI tests after the targeted replay repair.
+An isolated actual-source public CLI trial proved collision refusal, explicit
+namespace rebind, framework install and deselect while preserving all 9 selected
+project/custom/unknown files. Final pinned public CLI readback matched 7 role
+records, 20 authoring/reference files and 8 runtime projections in this repo.
+
+Branch: `codex/2026-10-22-subagent-model-policy`. Runtime names remain unchanged;
+future actual catalog selection determines which collisions need explicit
+namespace rebinding or framework adoption. No automatic ownership takeover or
+native activation is claimed.
 
 ## Continuation boundary
 
-Complete the isolated collision/rebind/installation check, inspect the final
-diff, commit locally, and obtain independent scoped review. No push, PR, merge,
-publication, Issue closure or Project mutation is authorized. Live Claude tests
-are not requested; the owner accepts official documentation alignment for this
-delivery and will use the team environment later. Existing product checks may
-be retained when further changes do not affect their subject.
+No authorized local implementation task remains. Push, PR, merge, publication,
+Issue closure and Project mutation require their separately applicable authority.
+A future PR needs actual current-head hosted Source change gate success. Keep
+existing test evidence unless affected semantics or inputs justify repetition.
+
+No live Claude tests or company-account login are requested. The owner accepts
+official documentation alignment for this delivery and will test in the team
+environment later. General skill customization under #482/#484 remains separate.

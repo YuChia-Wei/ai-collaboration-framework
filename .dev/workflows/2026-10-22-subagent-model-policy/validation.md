@@ -107,7 +107,10 @@ slice has separate implementation and review evidence.
   after-state. Registry suite: 14 passed; model policy/portable CLI suite: 9 passed.
   The earlier 166-check result and trial remain scoped to their source revision;
   this repair changes completed replay only, not first application, installation
-  or deselection. Affected independent review of the repair follows its commit.
+  or deselection. Independent affected review passed at
+  `580dadc3910bef78ae916039023a8ed476228c8b`, with no supported actionable
+  findings; the reviewer verified pre-publication resume and post-publication
+  unchanged replay remain coherent.
 
 ## Accepted Claude verification scope
 
@@ -126,3 +129,20 @@ or billing result is claimed.
 Downstream native installation acceptance and savings measurement remain outside
 this delivery. Hosted `Source change gate` remains required for a future
 authorized PR.
+
+## Final project readback
+
+Packaged the engine from `580dadc3910bef78ae916039023a8ed476228c8b` and ran its
+public `manage-sub-agents.py` in isolated Python from outside the source checkout.
+`registry-inspect` reported 7 roles, 28 matched authoring/projection resources,
+and no unknown native entries in this selected project. `route-resolve` returned
+Sol/medium for the Codex fixed-head auditor and Haiku/no effort for Claude
+translation. Both remain configured with availability/activation unknown and
+invocation unobserved. No native model/account test was invoked.
+
+Local implementation and the selected independent reviews are complete. The
+final workflow record commit changes records only; implementation evidence stays
+bound to the commits above. Issue #487 remains open; no push, PR, merge or
+publication is performed. The real source repo's installed lock and 17-skill
+installation remain unchanged. Future self-installation must select the actual
+released candidate and explicitly resolve any colliding project runtime names.
