@@ -22,10 +22,12 @@ historical paths in retained records do not establish current availability.
 | Path | Purpose |
 | --- | --- |
 | `design/` | Source design records |
+| [Skill evolution design (2026-10-22)](design/skill-evolution-2026-10-22/README.md) | Authorized domain/software split: complete design, responsibility contracts, source mapping and references; local workflow/customization are separate future work |
 | `requirement/` | Source requirement records |
 | `adr/` | Architectural decisions |
 | `assessments/` | Durable observations and their evidence |
 | `workflows/` | Execution locators and handoffs |
+| [Domain/software split](workflows/2026-10-22-domain-architecture-split/workflow-plan.md) | Design review, Issues 476-480, authorized source work and validation |
 | [Lessons](lessons/INDEX.MD) | Evidence-backed experience; not independent normative authority |
 
 Existing design/requirement/ADR/assessment/workflow contents are excluded from

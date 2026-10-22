@@ -7,28 +7,34 @@
 先依要交付的成果選擇；不必為了使用其中
 一個就跑完整開發流程。明確指定的 skill 若在其契約範圍內，應沿用你的選擇。
 
-| Skill | 版本 | 何時使用 | 操作形式 |
-| --- | --- | --- | --- |
-| [adr-author](adr-author.md) | 0.1.0 | 記錄架構替代方案與 owner 決策 | Python record 工具 |
-| [ai-context-auditor](ai-context-auditor.md) | 0.1.0 | 只讀稽核或比較 AI context | 指令 |
-| [ai-context-governance](ai-context-governance.md) | 0.1.1 | 提案或維護已有的專案 context | 指令 |
-| [ai-context-init](ai-context-init.md) | 0.2.1 | 建立最小協作起點，或更新事實／指令／導覽 | 指令 |
-| [test-designer](test-designer.md) | 0.4.1 | 設計或審查一般測試與正式測試規格 | 指令；可選知識 |
-| [code-reviewer](code-reviewer.md) | 0.2.4 | 審查程式或實作指引中的缺陷 | 指令；可選知識 |
-| [ddd-ca-hex-architect](ddd-ca-hex-architect.md) | 0.3.1 | 設計或審查領域、架構與依賴邊界 | 指令；可選知識 |
-| [diagnostic-analyst](diagnostic-analyst.md) | 0.1.0 | 解釋已觀察到的故障或效能症狀 | 指令 |
-| [lesson-author](lesson-author.md) | 0.2.0 | 保存有證據的經驗與接受決定 | Python record 工具 |
-| [local-backlog](local-backlog.md) | 0.1.0 | 管理專案選定的本機 work items | Python record 工具 |
-| [local-change-implementer](local-change-implementer.md) | 0.2.5 | 一個局部技術操作與直接影響範圍 | 指令；可選知識 |
-| [pr-author](pr-author.md) | 0.1.0 | 準備 PR record，或執行另行授權的 GitHub draft 操作 | Python record／provider 工具 |
-| [problem-frame-author](problem-frame-author.md) | 0.1.0 | 撰寫／審查 problem frame；選定 CBF 時保存版本化 snapshot | 指令＋選用 Python CBF 工具 |
-| [requirement-author](requirement-author.md) | 0.2.1 | 探索、撰寫或正規化需求與可觀察驗收條件 | 指令 |
-| [slice-implementer](slice-implementer.md) | 0.2.5 | 實作一個 command／query／reactor／generic slice | 指令；可選知識 |
-| [software-development-orchestrator](software-development-orchestrator.md) | 0.3.2 | 協調跨階段開發，或從 checkpoint 繼續 | 指令 |
-| [spec-author](spec-author.md) | 0.2.0 | 依需求與設計撰寫 production／entity／adapter 規格 | 指令 |
-| [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 指令 |
-| [user-story-author](user-story-author.md) | 0.1.0 | 獨立 Story 切分、撰寫、正規化與整份／指定 AC 審查 | 指令；可選 |
-| [workflow-records](workflow-records.md) | 0.1.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | Python record 工具；可選 |
+| Skill | 版本 | 主要責任／何時使用 | 職責邊界 | 操作形式 |
+| --- | --- | --- | --- | --- |
+| [adr-author](adr-author.md) | 0.1.0 | 記錄架構替代方案與 owner 決策 | 記錄決策，不取代架構設計或證明已實作 | Python record 工具 |
+| [ai-context-auditor](ai-context-auditor.md) | 0.1.0 | 只讀稽核或比較 AI context | 回傳 findings；不修正受評對象 | 指令 |
+| [ai-context-governance](ai-context-governance.md) | 0.1.1 | 提案或維護已有的專案 context | 維護 project-owned 規則；不手改 managed core | 指令 |
+| [ai-context-init](ai-context-init.md) | 0.2.1 | 建立最小協作起點，或更新事實／指令／導覽 | 不安裝 framework、不決定產品策略或執行第一次開發工作 | 指令 |
+| [test-designer](test-designer.md) | 0.4.1 | 設計或審查一般測試與正式測試規格 | 擁有案例、層級、資料與預期結果來源；不實作或執行測試 | 指令；可選知識 |
+| [code-reviewer](code-reviewer.md) | 0.2.4 | 審查程式或實作指引中的缺陷 | 維持唯讀；故障因果調查、架構／情境文件審查各有 owner | 指令；可選知識 |
+| [ddd-ca-hex-architect](ddd-ca-hex-architect.md) | 0.3.1 | 設計或審查領域、架構與依賴邊界 | 目前仍合併 DDD／CA／Hex；設計提案不等於 owner 採納或實作 | 指令；可選知識 |
+| [diagnostic-analyst](diagnostic-analyst.md) | 0.1.0 | 解釋已觀察到的故障或效能症狀 | 診斷與修復建議不額外授權修復 | 指令 |
+| [lesson-author](lesson-author.md) | 0.2.0 | 保存有證據的經驗與接受決定 | 經驗接受不自動變成專案規則 | Python record 工具 |
+| [local-backlog](local-backlog.md) | 0.1.0 | 管理專案選定的本機 work items | 管理記錄與狀態，不同步線上 tracker 或決定開發流程 | Python record 工具 |
+| [local-change-implementer](local-change-implementer.md) | 0.2.5 | 一個局部技術操作與直接影響範圍 | 保持接受的公開契約；協調性行為變更由 slice 承接 | 指令；可選知識 |
+| [pr-author](pr-author.md) | 0.1.0 | 準備 PR record，或執行另行授權的 GitHub draft 操作 | 不取代 defect review，也不包含 push、merge 或 Issue／Project 更新 | Python record／provider 工具 |
+| [problem-frame-author](problem-frame-author.md) | 0.1.0 | 撰寫／審查 problem frame；選定 CBF 時保存版本化 snapshot | 特定問題框架，不是所有需求的必經格式；結構有效不等於行為接受 | 指令＋選用 Python CBF 工具 |
+| [requirement-author](requirement-author.md) | 0.2.1 | 探索、撰寫或正規化需求與可觀察驗收條件 | 釐清需要與規則；不把推測模型／機制當作接受的需求 | 指令；可選知識 |
+| [slice-implementer](slice-implementer.md) | 0.2.5 | 實作一個 command／query／reactor／generic slice | 擁有切片內部修改與直接驗證，不需逐方法交接 | 指令；可選知識 |
+| [software-development-orchestrator](software-development-orchestrator.md) | 0.3.2 | 協調跨階段開發，或從 checkpoint 繼續 | 選必要工作並重用已接受輸入；記錄儲存與專業判斷各有 owner | 指令 |
+| [spec-author](spec-author.md) | 0.2.0 | 依需求與設計撰寫 production／entity／adapter 規格 | 表達已接受契約；不填補未定設計，正式測試規格由 test-designer 擁有 | 指令 |
+| [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 限指定判準與範圍，不代替實際測試執行或全系統認證 | 指令 |
+| [user-story-author](user-story-author.md) | 0.1.0 | 獨立 Story 切分、撰寫、正規化與整份／指定 AC 審查 | 擁有 Story／AC；一般需求與測試設計保留原 owner | 指令；可選 |
+| [workflow-records](workflow-records.md) | 0.1.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | 不決定開發階段；Git 目前只追加 checkpoint，兩 provider 均未提供 task editing | Python record 工具；可選 |
+
+本表是人類選讀入口；操作細節與可用能力以各頁連結的來源契約及實際安裝版本為準。
+新增、拆分、改名、退役或責任改變時，與產品變更一起更新本表及受影響的單項說明，
+依[文件維護方式](../maintaining-documentation.md)核對。規劃中的能力不列為已可用項目；
+[職責變遷](../../.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)
+另保留固定歷史比較。
 
 ## 常見選擇
 

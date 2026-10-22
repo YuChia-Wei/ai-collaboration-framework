@@ -1,0 +1,16 @@
+{
+  "task_id": "VERIFY",
+  "workflow_id": "2026-10-22-domain-architecture-split",
+  "owner_skill": "code-reviewer",
+  "title": "Validate affected contracts and independently review fixed source",
+  "status": "pending",
+  "created_at": "2026-10-22T07:38:36+08:00",
+  "updated_at": "2026-10-22T07:38:36+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "low",
+  "runtime_identity_source": "Effective configured fallback; active provider model/effort not exposed; no override requested.",
+  "result_summary": null,
+  "finding_status": "pending"
+}
