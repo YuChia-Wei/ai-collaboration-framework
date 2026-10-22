@@ -102,3 +102,22 @@ writer 只能處理明確選定的 project-owned 記錄，不能藉標籤改 man
 本輪僅檢查修改的文件、連結、雙語對齊與 Issue 寫入結果；沒有產品行為變更，
 不因文件位於 src 就重跑 130 項測試。PR hosted gate、merge、Issue closure、
 Project 狀態與 release 仍各自獨立。
+
+
+## 2026-10-22 後續修正授權
+
+Owner 在 Preview／Gemini／獨立 sub-agent 審核後，選定修正剩餘三項缺陷，
+準備確認內容後安排合併；本次整合僅關閉已交付工作項目，下一版發布另行安排。
+上述「R26-3 尚未實作」是先前 checkpoint；本次執行狀態與證據改由
+[REPAIR 工作紀錄](../../workflows/2026-10-22-domain-architecture-split/workflow-plan.md#2026-10-22-remaining-defect-repair-and-merge-preparation)
+承接，不重寫原審核歷史。
+
+#480 同時承接這輪確認的既有可攜角色缺陷：fixed auditor 強制要求未分發的
+source preflight，以及四角色八個 projections 引用未定義的 role_bindings。
+修正以實際可提供的 parent assignment 與 target rules 表達權威，保留唯讀、
+獨立、固定 subject、漂移停止、失敗證據與 integration owner；不恢復舊工具或新增 schema。
+四個角色 package 以 0.1.1 識別修正內容，不代表 framework 新版發布。
+
+Gemini 的 .NET design 資源缺少候選未採納為缺陷：舊 architect 同樣未消費這四項，
+新 skills 符合已接受的 allowlist，不能因 capability 分類相同而自動擴大採納。
+#481–#484 保持後續產品設計，未納入這次交付的關閉清單。

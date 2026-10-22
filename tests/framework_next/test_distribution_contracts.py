@@ -44,6 +44,83 @@ def skill():
                                       'resources':['index'],'requirement':'optional','on_missing':'unavailable'}]}
 
 
+class DerivationDiagnosticsTests(unittest.TestCase):
+    """Exercise real resolution/projection/identity, replacing only execution admission and disk emission."""
+
+    def parent_catalog(self, required=False):
+        consumer = skill()
+        if required:
+            consumer['knowledge_consumption'][0]['requirement'] = 'required'
+        package = load_package(blob('skill-package.yaml', consumer))
+        common = load_content_package(blob('content-package.yaml', knowledge()))
+        packages = {('skill', 'reviewer'): package, ('knowledge', 'common'): common}
+        payload = {
+            ('skill', 'reviewer', 'skill-package.yaml'): json_bytes(consumer),
+            ('skill', 'reviewer', 'SKILL.md'): b'---\nname: reviewer\ndescription: Review a bounded artifact.\n---\n# Review\n',
+            ('skill', 'reviewer', 'review.md'): b'# Review method\n',
+            ('knowledge', 'common', 'content-package.yaml'): json_bytes(knowledge()),
+            ('knowledge', 'common', 'README.md'): b'# Common knowledge\n',
+        }
+        sources = {name: {'path': name, 'git_blob': '1' * 40, 'mode': '100644',
+                          'size': 0, 'sha256': '2' * 64}
+                   for name in set(catalog.GENERATOR_FILES) | {'src/distribution/manifest.yaml'}}
+        files, contents = [], {}
+        for (kind, owner, member), raw in sorted(payload.items()):
+            source = 'src/' + ('skills' if kind == 'skill' else 'knowledge') + '/' + owner + '/' + member
+            source_blob = Blob(source, sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest(), '100644', raw)
+            sources[source] = source_blob.identity()
+            path = f'packages/{kind}/{owner}/{member}'
+            files.append({'path': path, 'kind': kind, 'owner': owner, 'member': member, 'source': sources[source]})
+            contents[path] = raw
+        parent = {'catalog_version': 1, 'release_version': '0.0.0',
+                  'source': {'commit': '1' * 40, 'tree': '3' * 40},
+                  'components': sorted((descriptor(kind, p) for (kind, _), p in packages.items()),
+                                       key=lambda row: (row['kind'], row['id'])),
+                  'adapters': [], 'presets': [], 'build_inputs': [sources[n] for n in sorted(sources)],
+                  'generator': {'id': 'aicf-catalog-assembly',
+                                'implementation': [sources[n] for n in catalog.GENERATOR_FILES]}}
+        inventory = {'catalog_files_version': 1, 'files': files}
+        raw = {'metadata/catalog.json': json_bytes(parent), 'metadata/catalog-files.json': json_bytes(inventory)}
+        _, _, pin = catalog.parent_documents(raw)
+        return catalog.Catalog(None, parent, inventory, pin, raw, contents, packages)
+
+    def desired(self, parent, knowledge_ids=()):
+        return {'selection_version': 2, 'catalog': parent.pin, 'skills': ['reviewer'],
+                'knowledge': list(knowledge_ids), 'adapters': [], 'bindings': [], 'skill_naming': 'original'}
+
+    def test_public_result_reports_optional_gap_without_changing_artifact_identity(self):
+        parent = self.parent_catalog()
+        desired = self.desired(parent)
+        original = deepcopy(desired)
+        with patch.object(catalog, 'execution_sources'), patch.object(catalog, 'emit_artifact') as emit:
+            emit.side_effect = lambda metadata, payload, output, scratch, kind, ident, **kwargs: {
+                'outcome': 'assembled', 'identity': ident}
+            result = catalog.derive_subset(parent, desired, Path('unused'), Path('unused'))
+        self.assertEqual(result['unavailable'], [{'package': 'reviewer', 'consumption': 'common',
+                                                'missing': ['index'], 'status': 'unavailable'}])
+        self.assertEqual(desired, original)
+        raw = emit.call_args.args[0]
+        selection = json_object(raw['metadata/selection.json'], 'selection')
+        self.assertEqual(selection['desired'], original)
+        self.assertNotIn('unavailable', selection)
+        self.assertEqual(result['identity'], catalog.subset_documents(raw)[4])
+        self.assertEqual(set(raw), set(catalog.SUBSET_METADATA))
+
+    def test_public_result_has_empty_diagnostics_when_knowledge_is_present(self):
+        parent = self.parent_catalog()
+        with patch.object(catalog, 'execution_sources'), patch.object(catalog, 'emit_artifact', return_value={}):
+            result = catalog.derive_subset(parent, self.desired(parent, ('common',)), Path('unused'), Path('unused'))
+        self.assertEqual(result['unavailable'], [])
+
+    def test_required_dependency_failure_still_precedes_emission(self):
+        parent = self.parent_catalog(required=True)
+        with patch.object(catalog, 'execution_sources') as execution, patch.object(catalog, 'emit_artifact') as emit:
+            with self.assertRaisesRegex(DistributionError, 'dependency-closure'):
+                catalog.derive_subset(parent, self.desired(parent), Path('unused'), Path('unused'))
+        execution.assert_not_called()
+        emit.assert_not_called()
+
+
 class DistributionContractTests(unittest.TestCase):
     def test_content_and_metadata4_have_distinct_closed_shapes(self):
         package=load_content_package(blob('content-package.yaml',knowledge()))

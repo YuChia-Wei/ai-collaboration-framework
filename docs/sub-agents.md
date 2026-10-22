@@ -103,9 +103,12 @@ profile，即使內容相同，也會造成 collision；安裝器不會自動接
 lock 所擁有的檔案，其他 project profiles 保留。
 
 角色只提供執行邊界，不代替 target-owned policy、授權、驗證工具或
-parent 的 integration 決策。Fixed-head auditor 的 preflight/tooling
-前提仍須由 caller 證明；套件不提供 source repository 的 `.dev/`
-治理檔案。檔案發布、安裝驗證、runtime discovery 與角色實際執行是
+parent 的 integration 決策。Fixed-head auditor 由 parent 明確提供固定 commit、
+比較基準、範圍、判準、實際權限與停止條件；不依賴來源庫的 classifier、
+packet tier、lease 或 preflight 腳本。若 target 另有必要檢查，仍須確認
+工具可用且執行方式已授權；無法執行時回報 blocked。套件不提供 source repository 的 `.dev/`
+治理檔案。四個修正權威引用的角色套件升至 `0.1.1`，不改現有 runtime 工具權限。
+檔案發布、安裝驗證、runtime discovery 與角色實際執行是
 不同證據。
 
 ## 模型選型與成本邊界

@@ -590,8 +590,10 @@ def derive_subset(catalog,desired,output_root,scratch_root):
     metadata['metadata/build.json']=json_bytes(completion('subset',selection,ident,inputs))
     subset_documents(metadata)
     payload={r['path']:(contents[r['destination']],r['mode']) for r in inventory['files']}
-    return emit_artifact(metadata,payload,output_root,scratch_root,'subset',ident,parent_root=catalog.root,
+    result=emit_artifact(metadata,payload,output_root,scratch_root,'subset',ident,parent_root=catalog.root,
                          source_root=state._root(str(Path(__file__).absolute().parents[2])))
+    result['unavailable']=resolved['unavailable']
+    return result
 
 
 def package_engine(repository,commit,output_root):

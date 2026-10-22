@@ -189,6 +189,12 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 
+`derive_subset` API 與 `derive-subset.py` 的成功 JSON 結果都包含 `unavailable`
+陣列，沿用 resolver 的逐項診斷；沒有缺口時為 `[]`。例如 skill 的項目包含
+consumer `package`、`consumption`、缺少的 resource IDs `missing` 與 `status`。
+這是本次選配的診斷輸出，不寫入 desired selection、lock 或 artifact identity，
+也不代表已安裝、執行 skill 或採納知識規則。
+
 三種常用選擇只需替換 selection 的 `knowledge`：
 
 ```json

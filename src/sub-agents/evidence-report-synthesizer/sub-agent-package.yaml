@@ -1,6 +1,6 @@
 sub_agent_package_version: 1
 id: evidence-report-synthesizer
-version: 0.1.0
+version: 0.1.1
 entrypoint: sub-agent.yaml
 members:
 - references/evidence-report-synthesis-playbook.md

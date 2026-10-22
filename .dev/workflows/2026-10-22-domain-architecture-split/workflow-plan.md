@@ -115,7 +115,7 @@ root entry clarifies an already installed route. No product suite or additional
 model review is selected merely for this documentation update. The branch's
 eventual PR still retains applicable hosted and independent-review requirements.
 
-Next product action, if selected, is the bounded R26-3 derive-result diagnostics
+At that checkpoint, the next product action, if selected, was the bounded R26-3 derive-result diagnostics
 change in #480. #483/#484 remain design proposals. Push continues the existing
 owner-authorized review branch; PR/merge/closure/release are separate.
 
@@ -142,8 +142,74 @@ pin policy alternatives and C/D product decisions remain separately selectable.
 The incorrect D-P3-04 attribution was corrected in design and #481/#483 without
 declaring any unaccepted supersession. #43 remains initial-intake work.
 
-All workflow-owned authorized tasks are complete. This lifecycle completion
+At that checkpoint, all workflow-owned authorized tasks were complete. That lifecycle completion
 does not close provider Issues, claim hosted CI, authorize integration, select
 a release, or update either installed target. The containing record commit is
 to be pushed on the already authorized branch; final transport read-back belongs
 to the delivery response rather than another evidence-only commit.
+
+## 2026-10-22 remaining-defect repair and merge preparation
+
+The owner subsequently authorized repairing all three confirmed remaining
+defects, continuing the existing branch and work items, and preparing for
+their review before arranging integration. The intended integration closes
+only delivered work items; the owner plans further changes before a later
+release. No merge, closure, version allocation, tag or publication is performed
+by this repair task. Gemini may be used as a bounded delegate; the owner also
+authorized communication through the existing ROBO Agents Slack DM when useful.
+
+REPAIR uses slice-implementer generic mode with the remediation overlay. The
+parent is the only tracked writer. Fixed input: `329571b583cc6290f4c0950a232675bd3edbb45f`.
+The fresh reviewer and Gemini evidence is retained in the external Preview
+Notes; these findings are pre-existing, not regressions introduced by the split.
+
+- #480 R26-3: expose the existing resolver `unavailable` list in the successful
+  library/CLI result, including an empty list; preserve required-dependency
+  failures, selection/lock/artifact identity and no implicit installation.
+- #480 portable-role follow-up: replace fixed auditor's unavailable source
+  preflight/classifier/packet-tier/digest admission with explicit bounded
+  parent inputs. Preserve independent read-only review, fixed clean subject,
+  drift stops, actual authority, failure history and no integration acceptance.
+- #480 portable-role follow-up: replace undefined `role_bindings` authority in
+  four roles' eight projections with the real owning skill/operation, canonical
+  role, bounded assignment and target rules. Do not introduce a new schema.
+
+Validate public diagnostic behavior with focused regression cases and the
+existing distribution/schema suites; exercise real pinned CLI output at the
+fixed repaired source because the public result changed. Validate role metadata,
+runtime projection parity and unchanged tool/model permissions. The authority
+changes require independent scoped read-only review of the committed diff.
+Do not add lexical role tests, a preflight platform, ledgers or a model matrix.
+Retain the actual hosted PR gate separately from local results. Update existing
+Issue acceptance and the proposed closure set; #481–#484 remain deferred product
+design work and are excluded from this delivery's closure set.
+
+### REPAIR implementation checks
+
+The successful focused run was `python -I -B tests/run.py --suite distribution
+--suite schemas`: 133 tests, zero failures/errors/skips. Three new in-memory
+cases exercise real resolution, projection and metadata/identity, replacing
+only execution-source admission and disk emission; they do not claim a native
+installation. A real pinned CLI check remains pending at the committed source.
+Four role pairs have equivalent shared Codex/Claude instructions and unchanged
+model/tool permissions; metadata parses and 26 local documentation links pass.
+
+Retained initial failures: the first run had three new fixture errors (skill
+knowledge dependencies were incorrectly written as skill dependencies) and four
+source-byte assertions caused by Windows CRLF introduced during editing. The
+fixture now uses the existing knowledge_consumption contract and the changed
+sources retain LF. A targeted retry found the fixture's unsupported on_missing
+value; it was corrected to the existing schema before the successful suite run.
+No product validation was weakened. Independent committed-diff review and public
+CLI evidence are still pending; this task remains in progress.
+
+### REPAIR result
+
+The three selected defects are repaired at `01eabd7f4399ff1fe31edd30e49119372f7484b7`.
+[Repair review and integration handoff](repair-review.md) records 133 passing
+checks, authentic pinned CLI cases, independent review, Gemini interruption/retry
+and candidate disposition, Preview read-back, Slack handoff and five live Issue
+body updates. Remaining provider integration and publication boundaries are
+explicit; they do not keep the completed local repair active. No product content
+changed after the independently reviewed commit. Final record-only transport
+will remain on the existing branch.
