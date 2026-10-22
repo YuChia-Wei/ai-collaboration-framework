@@ -53,9 +53,12 @@ handoff_rules:
   scope, or unauthorized writing.
 status: active
 model_policy:
-  policy_version: 2
+  policy_version: 3
   codex:
-    selection: inherit
+    selection: task
   claude:
-    selection: inherit
+    selection: task
+  policy_path: .ai/project/sub-agent-policy.json
+  default_task: synthesis
+  on_unavailable: stop
   escalation: explicit-user-authorized-visible-task

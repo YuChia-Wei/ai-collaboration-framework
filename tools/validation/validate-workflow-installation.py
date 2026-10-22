@@ -276,7 +276,7 @@ class Smoke:
         fresh(self.project / "sentinel.txt", b"caller-owned sentinel\r\n")
         fresh(self.project / "caller-data.bin", bytes(range(256)))
         self.database = self.work / "store.sqlite"
-        self.config_path = self.project / ".ai/custom/workflow-records.json"
+        self.config_path = self.project / ".ai/project/workflow-records.json"
         self.config_path.parent.mkdir(parents=True)
         config = {"contract_version": VERSION, "default_provider": "local", "stores": {"local": {"kind": "local",
                   "store_id": LOCAL_REF["store_id"], "repository_id": "smoke-repository", "database": str(self.database), "busy_timeout_ms": 500}}}

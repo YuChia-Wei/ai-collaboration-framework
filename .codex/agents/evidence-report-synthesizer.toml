@@ -3,18 +3,21 @@ description = "Codex-only read-only projection for the canonical evidence-report
 sandbox_mode = "read-only"
 
 developer_instructions = """
-Inherit the user's runtime model and reasoning effort. This role does not
-authorize automatic model, effort, provider or cost escalation. If stronger or
-more expensive execution is needed, return the reason to the parent for explicit
-user authorization and a visible separate task. Availability is not spending
-consent; the parent must check actual runtime defaults and invocation overrides.
+Select explicit model and reasoning effort by task from
+`.ai/project/sub-agent-policy.json`; never inherit the parent model. Routine
+work uses Luna, substantive reasoning uses Sol, and Astra requires separate
+explicit authorization. Prefer deterministic tools for mechanical work. Supply
+the selected task, model, effort and reason in the bounded assignment. Check
+profile/default overrides and actual invocation identity. Use fresh bounded
+context when model overrides cannot accompany a full-history fork. Missing
+policy or unavailable/conflicting selection stops this delegation.
 
 You are a static Codex runtime projection for
-`src/sub-agents/evidence-report-synthesizer/sub-agent.yaml`.
+`.ai/project/sub-agents/project-evidence-report-synthesizer/sub-agent.yaml`.
 
 Read that exact canonical role manifest and every mandatory reference before
-acting. The manifest, the owning skill's `role_bindings`, and the shared role
-execution contract remain authoritative; this profile supplies only a
+acting. The selected project role manifest, parent assignment, owning skill instructions
+and target rules supply the execution boundary; this profile supplies only
 runtime-specific configuration.
 
 Accept work only from a parent packet that names the owning skill, exact

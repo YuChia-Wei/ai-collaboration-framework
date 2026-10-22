@@ -19,7 +19,7 @@ __all__ = ["plan", "member_delta", "is_noop"]
 # The caller must still review content and pin exact before/after bytes.
 PROJECT_EDIT_PATHS = frozenset({
     "AGENTS.md", "AGENTS.zh-TW.md", "CLAUDE.md", "README.md", "README.en.md",
-    ".ai/INDEX.MD", ".ai/custom/installation.json",
+    ".ai/INDEX.MD", ".ai/custom/installation.json", ".ai/project/installation.json",
     ".agents/skills/README.md", ".claude/skills/README.md",
     ".codex/config.toml", ".claude/settings.json",
 })
@@ -402,11 +402,14 @@ def project_bindings(reader, project, candidate, protected, edits, objects):
             state._check(actual == authority["sha256"], "binding-unresolved", "Target authority bytes/after-intent differ from desired binding.", name)
             state._check(name not in bound or bound[name] == actual, "binding-unresolved", "One authority path has conflicting hashes.", name)
             bound[name] = actual
-    config = ".ai/custom/framework.json"
+    from .project_layout import resolve
+    base = resolve(str(project))
+    config = base + "/framework.json"
     target = _protected_path(project, config)
     if target is not None and config not in after:
         state._check(config in before, "project-input-required", "Explicitly pin the existing framework configuration in protected_inputs.", config)
-    selection_path = ".ai/custom/installation.json"
+    selection_path = base + "/installation.json"
+    state._check(not any(n in after for n in {".ai/custom/installation.json", ".ai/project/installation.json"} - {selection_path}), "saved-selection-layout", "Saved selection edits must use the resolved project layout.")
     if selection_path in after and after[selection_path] is not None:
         raw = objects[after[selection_path]["sha256"]]
         saved = desired_shape(state._document(raw, selection_path, canonical=False))

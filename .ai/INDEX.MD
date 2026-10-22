@@ -1,7 +1,7 @@
 # Installed framework context
 
 The installer owns `.ai/core/` and `framework.lock`. The project owns explicit
-settings and selection in `custom/`. Runtime entries are generated into
+settings, selection and resources in `project/`. Runtime entries are generated into
 `.agents/skills/` and `.claude/skills/` with the selected canonical names.
 
 Editable framework sources live in `src/`; source governance and records remain

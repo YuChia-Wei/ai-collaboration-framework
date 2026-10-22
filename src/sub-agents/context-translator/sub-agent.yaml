@@ -30,7 +30,7 @@ outputs:
 - structural and terminology parity summary
 - unresolved wording list for main-agent review
 constraints:
-- Inherit the user's runtime model and effort; a cheaper explicit selection is optional, not a role prerequisite.
+- Select model and effort from the project task policy; never inherit the parent model as fallback.
 - Never translate before the English source is finalized for the current task.
 - Preserve headings, list nesting, tables, links, anchors, code fences, inline code, paths, IDs, frontmatter,
   and normative strength.
@@ -55,9 +55,12 @@ references:
 examples: []
 status: active
 model_policy:
-  policy_version: 2
+  policy_version: 3
   codex:
-    selection: inherit
+    selection: task
   claude:
-    selection: inherit
+    selection: task
+  policy_path: .ai/project/sub-agent-policy.json
+  default_task: translation
+  on_unavailable: stop
   escalation: explicit-user-authorized-visible-task

@@ -123,6 +123,27 @@ action. A plan, diagnosis, review or installed capability supplies no additional
 permission. Push, PR, merge, release, provider writes, credentials and adoption
 use their actual owners and separately applicable authorization.
 
+Before delegation, select the least costly model and supported reasoning effort
+sufficient for the concrete task under the target's adopted model policy. Prefer
+deterministic tools for mechanical work. Include task category, model, effort,
+selection reason and existing authority in the handoff. Never substitute parent
+inheritance for missing selection. Reconcile runtime profile/environment overrides
+and confirm actual invocation identity; static selection is not availability or
+billing evidence. Use fresh bounded context when full-history forks cannot change
+model. Missing policy or unavailable choice stops that delegation. Escalation
+outside the approved model/effort range needs explicit authority. Keep rapid model
+preferences project-owned, separate from managed skill/role bytes; package updates
+do not adopt or replace them. Reuse an existing approved choice without asking again.
+
+When the target has selected a sub-agent resource registry, resolve the purpose
+and adapter through its explicit route before selecting the model. Verify the
+project package and runtime projection or the selected installed framework entry.
+Keep custom authoring outside managed core. An overlapping upstream capability
+is a comparison candidate, not automatic replacement authority. Use the selected
+resource manager for project-entry adoption/rebinding and the installation owner
+for managed drift; preserve baseline, local intent and unknown entries. Coverage,
+owner adoption, file readback and runtime discovery are distinct observations.
+
 Give each specialist or delegated worker a bounded handoff: goal and non-goals,
 source/artifact identities, accepted decisions and current approval, owned
 paths/operations, expected output and check, dependencies, stop conditions and

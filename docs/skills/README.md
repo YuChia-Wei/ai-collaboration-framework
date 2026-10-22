@@ -11,8 +11,8 @@
 | --- | --- | --- | --- | --- |
 | [adr-author](adr-author.md) | 0.1.0 | 記錄架構替代方案與 owner 決策 | 記錄決策，不取代架構設計或證明已實作 | Python record 工具 |
 | [ai-context-auditor](ai-context-auditor.md) | 0.1.0 | 只讀稽核或比較 AI context | 回傳 findings；不修正受評對象 | 指令 |
-| [ai-context-governance](ai-context-governance.md) | 0.1.1 | 提案或維護已有的專案 context | 維護 project-owned 規則；不手改 managed core | 指令 |
-| [ai-context-init](ai-context-init.md) | 0.2.1 | 建立最小協作起點，或更新事實／指令／導覽 | 不安裝 framework、不決定產品策略或執行第一次開發工作 | 指令 |
+| [ai-context-governance](ai-context-governance.md) | 0.1.2 | 提案或維護已有的專案 context | 維護 project-owned 規則；不手改 managed core | 指令 |
+| [ai-context-init](ai-context-init.md) | 0.2.3 | 建立最小協作起點，或更新事實／指令／導覽 | 不安裝 framework、不決定產品策略或執行第一次開發工作 | 指令 |
 | [test-designer](test-designer.md) | 0.4.2 | 設計或審查一般測試與正式測試規格 | 擁有案例、層級、資料與預期結果來源；不實作或執行測試 | 指令；可選知識 |
 | [code-reviewer](code-reviewer.md) | 0.2.5 | 審查程式或實作指引中的缺陷 | 維持唯讀；故障因果調查、架構／情境文件審查各有 owner | 指令；可選知識 |
 | [domain-model-designer](domain-model-designer.md) | 0.1.0 | 探索、設計或審查領域語言與模型 | 擁有不變條件與業務一致性需求；不選軟體機制 | 指令；可選知識 |
@@ -25,7 +25,7 @@
 | [problem-frame-author](problem-frame-author.md) | 0.1.0 | 撰寫／審查 problem frame；選定 CBF 時保存版本化 snapshot | 特定問題框架，不是所有需求的必經格式；結構有效不等於行為接受 | 指令＋選用 Python CBF 工具 |
 | [requirement-author](requirement-author.md) | 0.2.2 | 探索、撰寫或正規化需求與可觀察驗收條件 | 釐清需要與規則；不把推測模型／機制當作接受的需求 | 指令；可選知識 |
 | [slice-implementer](slice-implementer.md) | 0.2.6 | 實作一個 command／query／reactor／generic slice | 擁有切片內部修改與直接驗證，不需逐方法交接 | 指令；可選知識 |
-| [software-development-orchestrator](software-development-orchestrator.md) | 0.4.0 | 協調跨階段開發，或從 checkpoint 繼續 | 選必要工作並重用已接受輸入；記錄儲存與專業判斷各有 owner | 指令 |
+| [software-development-orchestrator](software-development-orchestrator.md) | 0.4.1 | 協調跨階段開發，或從 checkpoint 繼續 | 選必要工作並重用已接受輸入；記錄儲存與專業判斷各有 owner | 指令 |
 | [spec-author](spec-author.md) | 0.3.0 | 依需求與設計撰寫 production／entity／adapter 規格 | 表達已接受契約；不填補未定設計，正式測試規格由 test-designer 擁有 | 指令；可選知識 |
 | [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 限指定判準與範圍，不代替實際測試執行或全系統認證 | 指令 |
 | [user-story-author](user-story-author.md) | 0.2.0 | 獨立 Story 切分、撰寫、正規化與整份／指定 AC 審查 | 擁有 Story／AC；一般需求與測試設計保留原 owner | 指令；可選 |

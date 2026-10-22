@@ -69,7 +69,8 @@ _V2_TEMPLATE_SHA256 = frozenset(("68b0d2718e3b8db008ac5d8f29696b6a37e0c07da761ff
 
 def project_entry_v2(template_bytes: bytes, package_id: str, package_version: str,
                      description: str, destinations: dict[str, str],
-                     *, configuration: dict | None, skill_naming: str = "original") -> tuple[str, bytes]:
+                     *, configuration: dict | None, skill_naming: str = "original",
+                     configuration_path: str = ".ai/custom/framework.json") -> tuple[str, bytes]:
     """Render only the selected skill's rc.2 Codex projection."""
     from hashlib import sha256
     from .data import identifier, path, string, version
@@ -82,6 +83,8 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
     description = string(description, "description")
     require(configuration is None or type(configuration) is dict,
             "configuration must be an object or null")
+    require(configuration_path in (".ai/custom/framework.json", ".ai/project/framework.json"),
+            "unsupported configuration convention")
     require(type(destinations) is dict
             and all(type(member) is str and type(target) is str
                     for member, target in destinations.items()),
@@ -113,7 +116,7 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
     else:
         configuration_guidance = (
             "Obtain the caller's explicit `project_root`, configuration selection "
-            "and operation. The project-owned `.ai/custom/framework.json` is not "
+            f"and operation. The project-owned `{configuration_path}` is not "
             "supplied by this entry. Pass the chosen configuration path explicitly "
             "under the installed skill's contract; do not infer it from the "
             "current working directory."

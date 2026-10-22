@@ -100,8 +100,12 @@ restore a presumed baseline. Read back uncertain writes before deciding a retry.
 
 ## Necessary semantic state
 
-Use the project's existing rule and decision owners; create no second
-customization catalog, ledger, acceptance packet or universal rule engine.
+Use the project's existing rule and decision owners; create no duplicate
+decision ledger, acceptance packet or universal rule engine. A project-selected
+resource manager may own its executable customization registry: use that reader
+and writer for provenance, resource closure and runtime routing, and reference
+existing decisions there. That registry does not own rules, grant installer
+ownership or turn coverage metadata into adoption or runtime evidence.
 Keep the full effective statement with its canonical rule owner. When required,
 retain semantic identity, material baseline, reason for extension/override,
 applicability, decision evidence and real review/expiry obligations with the
