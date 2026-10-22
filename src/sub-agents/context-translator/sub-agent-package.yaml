@@ -1,6 +1,6 @@
 sub_agent_package_version: 1
 id: context-translator
-version: 0.1.0
+version: 0.2.0
 entrypoint: sub-agent.yaml
 members:
 - references/translation-playbook.md

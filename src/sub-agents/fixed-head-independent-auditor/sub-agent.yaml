@@ -61,9 +61,12 @@ handoff_rules:
   or any request to repair the audited subject.
 status: active
 model_policy:
-  policy_version: 2
+  policy_version: 3
   codex:
-    selection: inherit
+    selection: task
   claude:
-    selection: inherit
+    selection: task
+  policy_path: .ai/custom/sub-agent-policy.json
+  default_task: independent-review
+  on_unavailable: stop
   escalation: explicit-user-authorized-visible-task

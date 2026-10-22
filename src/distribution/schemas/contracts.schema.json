@@ -1959,6 +1959,9 @@
         },
         {
           "$ref": "#/$defs/SubAgentModelPolicyV2"
+        },
+        {
+          "$ref": "#/$defs/SubAgentModelPolicyV3"
         }
       ]
     },
@@ -2278,6 +2281,67 @@
         "sha256": {
           "type": "string",
           "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "SubAgentModelPolicyV3": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_version",
+        "codex",
+        "claude",
+        "escalation",
+        "policy_path",
+        "default_task",
+        "on_unavailable"
+      ],
+      "properties": {
+        "policy_version": {
+          "const": 3
+        },
+        "codex": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selection"
+          ],
+          "properties": {
+            "selection": {
+              "const": "task"
+            }
+          }
+        },
+        "claude": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selection"
+          ],
+          "properties": {
+            "selection": {
+              "const": "task"
+            }
+          }
+        },
+        "escalation": {
+          "const": "explicit-user-authorized-visible-task"
+        },
+        "policy_path": {
+          "const": ".ai/custom/sub-agent-policy.json"
+        },
+        "default_task": {
+          "enum": [
+            "inventory",
+            "translation",
+            "synthesis",
+            "implementation",
+            "semantic-review",
+            "independent-review"
+          ]
+        },
+        "on_unavailable": {
+          "const": "stop"
         }
       }
     }

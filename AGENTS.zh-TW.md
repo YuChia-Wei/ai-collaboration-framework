@@ -29,7 +29,7 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 - Inventory、paths、hashes、schemas、Git identity、build、test 與 receipts 優先使用 deterministic tools。
 - `failed`、`blocked-by-environment`、`not-applicable` 與 `deferred-with-owner` 都不是 `passed`。
 - 適用且已允許時，優先使用 IDE MCP refactoring operation。
-- Sub-agents 沿用使用者在 runtime 選定的模型與推理深度。不得因角色名稱自動提高模型、推理深度、provider 或成本。需要升級時，先說明理由，取得使用者對可見獨立任務的明確授權；runtime 可用性不等於成本授權。
+- 依任務從 `.ai/custom/sub-agent-policy.json` 選擇 sub-agent 模型與推理深度，不得直接繼承本對話。優先使用確定性工具；Codex 預設 Luna，實質推理使用 Sol；Claude 預設 Haiku，依任務使用 Sonnet。Astra／Opus 必須另行取得明確授權。確認 runtime 覆寫與實際呼叫身分；缺少政策或選定模型不可用時，停止該次委派。專案模型偏好與受管理角色套件分開維護，見[子代理管理](docs/sub-agent-management.md)。
 
 ## 漸進式 Context 載入
 

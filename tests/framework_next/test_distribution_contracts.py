@@ -263,7 +263,7 @@ class SubAgentDistributionTests(unittest.TestCase):
                 elif member=='runtime/codex.toml':
                     raw=(f'model = "{models[0]}"\nmodel_reasoning_effort = "{effort}"\n'.encode()+raw)
                 elif member=='runtime/claude.md':
-                    raw=raw.replace(b'model: inherit',('model: '+claude).encode())
+                    raw=raw.replace(b'model: haiku',('model: '+claude).encode())
             src=source_blob(prefix+'/'+member,raw)
             artifact=f'packages/sub-agent/{role}/{member}'
             inventory['files'].append({'path':artifact,'kind':'sub-agent','owner':role,'member':member,'source':src.identity()})
@@ -511,14 +511,14 @@ class SubAgentDistributionTests(unittest.TestCase):
             parent=self.role_catalog(role); package=parent.packages[('sub-agent',role)]
             blobs={m:source_blob(m,parent.contents[f'packages/sub-agent/{role}/'+m]) for m in package.members}
             raw=blobs['runtime/claude.md'].data.decode().replace('\r\n','\n')
-            for altered in (raw.replace('model: inherit','model: claude-fable-5-1'),
-                            raw.replace('model: inherit\n',''),
-                            raw.replace('model: inherit','model: inherit\neffort: max')):
+            for altered in (raw.replace('model: haiku','model: claude-fable-5-1'),
+                            raw.replace('model: haiku\n',''),
+                            raw.replace('model: haiku','model: haiku\neffort: max')):
                 with self.subTest(role=role),self.assertRaisesRegex(ValueError,'Claude model'):
                     changed=dict(blobs); changed['runtime/claude.md']=source_blob('runtime/claude.md',altered.encode())
                     check_sub_agent(package,changed)
 
-    def test_current_roles_inherit_models_without_observation_or_generation_pins(self):
+    def test_task_roles_keep_codex_dispatch_free_and_claude_low_cost_default(self):
         import tomllib
         from test_skill_naming import ROOT
         roles=sorted(p.name for p in (ROOT/'src/sub-agents').iterdir() if (p/'sub-agent-package.yaml').is_file())
@@ -529,8 +529,24 @@ class SubAgentDistributionTests(unittest.TestCase):
                 _,_,contents=self.projection(parent,desired)
                 profile=tomllib.loads(contents[f'.codex/agents/{role}.toml'].decode())
                 self.assertFalse({'model','model_reasoning_effort','model_provider'} & profile.keys())
-                self.assertIn(b'\nmodel: inherit\n',contents[f'.claude/agents/{role}.md'])
+                self.assertIn(b'\nmodel: haiku\n',contents[f'.claude/agents/{role}.md'])
                 self.assertNotIn('model_resolution',desired)
+
+    def test_previous_inherited_model_policy_still_reads_without_rewriting_it(self):
+        from distribution.content import check_sub_agent, sub_agent_model_policy
+        from test_skill_naming import source_blob
+        parent=self.role_catalog('context-translator')
+        package=parent.packages[('sub-agent','context-translator')]
+        blobs={m:source_blob(m,parent.contents['packages/sub-agent/context-translator/'+m]) for m in package.members}
+        role=yaml_object(blobs['sub-agent.yaml'].data,'role')
+        role['model_policy']={'policy_version':2,
+            'codex':{'selection':'inherit'}, 'claude':{'selection':'inherit'},
+            'escalation':'explicit-user-authorized-visible-task'}
+        blobs['sub-agent.yaml']=source_blob('sub-agent.yaml',json_bytes(role))
+        blobs['runtime/claude.md']=source_blob('runtime/claude.md',
+            blobs['runtime/claude.md'].data.replace(b'model: haiku',b'model: inherit'))
+        check_sub_agent(package,blobs)
+        self.assertEqual(sub_agent_model_policy(role)['policy_version'],2)
 
     def test_discovery_does_not_pin_or_escalate_inherited_roles(self):
         parent=self.role_catalog('fixed-head-independent-auditor')
@@ -560,7 +576,7 @@ class SubAgentDistributionTests(unittest.TestCase):
         for line in ('model = "gpt-6-astra"','model_reasoning_effort = "max"','model_provider = "another"'):
             changed=dict(blobs)
             changed['runtime/codex.toml']=source_blob('runtime/codex.toml',line.encode()+b'\n'+blobs['runtime/codex.toml'].data)
-            with self.assertRaisesRegex(ValueError,'inherited Codex'):
+            with self.assertRaisesRegex(ValueError,'delegated Codex'):
                 check_sub_agent(package,changed)
 
     def test_runtime_tamper_and_destination_escape_are_rejected(self):

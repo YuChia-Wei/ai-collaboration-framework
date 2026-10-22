@@ -1,0 +1,43 @@
+{
+  "adapters": {
+    "claude": {
+      "premium": {
+        "effort": "medium",
+        "model": "opus"
+      },
+      "reasoning": {
+        "effort": "medium",
+        "model": "sonnet"
+      },
+      "routine": {
+        "effort": null,
+        "model": "haiku"
+      }
+    },
+    "codex": {
+      "premium": {
+        "effort": "low",
+        "model": "gpt-6-astra"
+      },
+      "reasoning": {
+        "effort": "medium",
+        "model": "gpt-6.1-sol"
+      },
+      "routine": {
+        "effort": "medium",
+        "model": "gpt-6-luna"
+      }
+    }
+  },
+  "extensions": {},
+  "on_unavailable": "stop",
+  "schema_version": 1,
+  "tasks": {
+    "implementation": "reasoning",
+    "independent-review": "reasoning",
+    "inventory": "routine",
+    "semantic-review": "reasoning",
+    "synthesis": "routine",
+    "translation": "routine"
+  }
+}

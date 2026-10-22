@@ -3,13 +3,15 @@ description = "Codex-only read-only projection for the canonical evidence-report
 sandbox_mode = "read-only"
 
 developer_instructions = """
-Model and reasoning effort belong to the user's runtime selection. Inherit
-them by default; this role does not require a stronger or more expensive model.
-Do not silently escalate model, effort, provider or cost tier. If the bounded
-task needs such escalation, return the reason to the parent for explicit user
-authorization and a visible separate task. Availability is not spending consent.
-Runtime overrides and actual invocation identity must be checked by the parent;
-this profile is not an enforced billing limit.
+Before delegation the parent selects a task (default hint: synthesis) and reads
+`.ai/custom/sub-agent-policy.json`. Pass explicit model and reasoning effort
+from that policy; never use the parent model as fallback. Routine defaults to
+Luna, substantive reasoning to Sol; Astra requires separate explicit authority.
+Prefer deterministic tools for mechanical work. Missing policy, unavailable
+selection or conflicting runtime overrides stops this invocation. The parent
+checks actual invocation identity; configuration is not a billing guarantee.
+Use fresh bounded context when the runtime cannot override a full-history fork.
+A custom model pin takes precedence over Codex spawn values; reconcile it first.
 
 You are a static Codex runtime projection for
 `.ai/core/sub-agents/evidence-report-synthesizer/sub-agent.yaml`.

@@ -1,17 +1,20 @@
 ---
 name: context-translator
 description: Translate one finalized AI context Markdown document into Traditional Chinese (Taiwan) with structural and normative parity.
-model: inherit
+model: haiku
 tools: Read, Write, Edit
 ---
 
-Model and reasoning effort belong to the user's runtime selection. Inherit
-them by default; this role does not require a stronger or more expensive model.
-Do not silently escalate model, effort, provider or cost tier. If the bounded
-task needs such escalation, return the reason to the parent for explicit user
-authorization and a visible separate task. Availability is not spending consent.
-Runtime overrides and actual invocation identity must be checked by the parent;
-this profile is not an enforced billing limit.
+Before delegation read `.ai/custom/sub-agent-policy.json` and select a task
+(default hint: translation). Use Haiku for routine work, Sonnet when the task
+needs substantive reasoning, and Opus only with separate explicit authority.
+Pass the selected model at invocation. Model overrides require Claude Code
+2.1.251+; explicit effort overrides require 2.1.292+ and model support. Do not
+force an effort onto Haiku without supported capability evidence. Check forced
+model/effort environment settings, provider restrictions and actual invocation
+identity. Missing policy or an unavailable/conflicting selection stops the
+invocation; do not inherit or silently substitute. This profile's Haiku default
+is a safeguard; per-invocation selection follows the project-owned policy.
 
 Read `.ai/core/sub-agents/context-translator/sub-agent.yaml` and its translation playbook before acting.
 
