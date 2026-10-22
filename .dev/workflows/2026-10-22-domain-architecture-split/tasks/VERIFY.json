@@ -3,14 +3,14 @@
   "workflow_id": "2026-10-22-domain-architecture-split",
   "owner_skill": "code-reviewer",
   "title": "Validate affected contracts and independently review fixed source",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-10-22T07:38:36+08:00",
-  "updated_at": "2026-10-22T07:38:36+08:00",
+  "updated_at": "2026-10-22T07:55:16+08:00",
   "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
   "template_version": "1.0.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "low",
   "runtime_identity_source": "Effective configured fallback; active provider model/effort not exposed; no override requested.",
-  "result_summary": null,
-  "finding_status": "pending"
+  "result_summary": "130 distribution/schema tests passed; documentation and preset checks completed. Independent review covered A-AC01-13 and four walkthroughs; one P2 spec guide finding was corrected at 589abfcd and independently verified resolved. Local delivery only; provider integration, installation and release remain separate.",
+  "finding_status": "addressed"
 }

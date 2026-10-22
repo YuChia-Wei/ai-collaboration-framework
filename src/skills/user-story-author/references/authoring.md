@@ -27,3 +27,6 @@ Check value/outcome, boundaries, source support, observable AC and handoff suffi
 Missing necessary decisions remain visible; do not force PRD, spec or test-design
 stages to compensate. Return the fields plus relevant portable context, actual
 normalization changes and remaining decisions. No write beyond the selected destination.
+
+Use optional discovery/formulation to express source-backed examples; do not
+turn missing model or mechanism decisions into accepted Story constraints.

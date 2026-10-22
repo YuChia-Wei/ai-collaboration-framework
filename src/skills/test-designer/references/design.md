@@ -198,3 +198,16 @@ Do not invent future files, commands, discovered tests or passing results.
 Implementation, executable-test review, actual execution and target acceptance
 remain distinct. An author using [review criteria](review.md) records self-check,
 not independent review or specification compliance.
+
+## Feedback from examples
+
+Reuse source/example IDs across requirement, model and system-specification work.
+Their GWT wording alone does not require another test-design operation. When the
+request is test design, add the necessary boundary, level, data, isolation, oracle
+and coverage decisions without replacing accepted behavioral outcomes.
+
+A counterexample may reveal an ambiguous business rule, disputed invariant owner,
+or infeasible technical mechanism. Return respectively to the requirement owner,
+domain-model designer or software architect with the trigger, evidence and impact.
+Keep affected expectations unresolved; do not revise tests or production behavior
+merely to hide the contradiction. A handoff carries existing permission unchanged.

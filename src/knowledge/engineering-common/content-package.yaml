@@ -1,6 +1,6 @@
 content_package_version: 1
 id: engineering-common
-version: 0.3.0
+version: 0.4.0
 entrypoint: README.md
 members:
 - path: README.md
@@ -170,6 +170,7 @@ resources:
   kind: knowledge
   rule_ids: []
   capabilities:
+  - architecture
   - requirements
   - test-design
   operations:
@@ -177,6 +178,7 @@ resources:
   - draft
   - explore
   - normalize
+  - plan
   - review
   technology_profile: null
 - id: member:bdd/examples/library-renewal.md
@@ -198,7 +200,9 @@ resources:
   kind: knowledge
   rule_ids: []
   capabilities:
+  - architecture
   - requirements
+  - specification
   - test-design
   operations:
   - design
@@ -249,6 +253,7 @@ resources:
   - draft
   - explore
   - normalize
+  - plan
   - review
   technology_profile: null
 - id: member:ddd/examples/order-cancellation.md
@@ -324,6 +329,7 @@ resources:
   - draft
   - explore
   - normalize
+  - plan
   - review
   technology_profile: null
 - id: member:domain-language/README.MD

@@ -5,6 +5,10 @@
 產品選項，沒有執行 CLI、建立 store、安裝、遷移或驗證 runtime。基準為
 `f96fffe0af6e9e4f79d5f2f4be05bb3665553123`。
 
+2026-10-22 外部審核後的[歷史／現況／候選取代矩陣與最小 consumer 設計](review-follow-up.md)
+補充本評估；C-B、無 Git 模式與客製 manifest 仍未採納。D-P3-04 是並行寫入限制，
+不是本機資料 owner 的決策編號；不據報告誤引宣告它被取代。
+
 ## 1. 本機工作管理目前具備什麼
 
 | 面向 | `local-backlog` | `workflow-records` |
