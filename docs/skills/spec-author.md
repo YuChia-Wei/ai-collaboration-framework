@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-本次來源版本草案：`0.2.0`。實際操作與版本以已安裝 metadata 為準。
+來源套件版本：`0.3.0`。實際操作與版本以已安裝 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,8 @@ adapter/interface 系統規格，依據需求與已接受的 designer 產出表�
 
 ## 責任界線
 
-正式 test specification 及所有測試、情境、assertion 設計由 `test-designer` 負責。
+正式 test specification、測試案例矩陣、fixtures／oracle 與 assertion 設計由 `test-designer` 負責。
+系統契約可以包含 GWT 或其他可觀察例子；格式本身不轉移 authoring owner。
 系統規格仍須保留可觀察 acceptance，並在有需要時引用已存在的測試設計與 IDs；
 責任轉移不代表刪除系統可驗證性。
 
@@ -39,7 +40,10 @@ production specification，保留其 ownership、invariants、輸入、輸出與
 
 ## 知識與開始使用
 
-本 skill metadata 維持版本 3，沒有直接方法知識消費綁定。
+本 skill 使用 metadata 4，optional engineering-common@0.4.0 可供 draft/normalize
+選讀 BDD formulation、DDD discovery/tactical 與 authoring boundary。這些方法只幫助
+表達已接受模型，不授權新 aggregate、交易或業務決策。缺少時揭露 unavailable，
+依 [knowledge protocol](../../src/skills/spec-author/references/knowledge.md) 驗證安裝資源。
 先確認已安裝 runtime entry，提供操作、範圍、來源及可寫目的地。
 範例是自然語言請求，不是 shell 指令；prefixed 名稱可能是 `aicf-spec-author`，
 canonical package ID 仍為 `spec-author`。本套件提供指令方法，沒有同名 CLI。

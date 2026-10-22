@@ -4,9 +4,9 @@
 
 ## 先說結論
 
-目前來源 catalog 的 19 個 skills 都可以在不安裝這兩個知識套件的選擇中使用，前提是各自
+目前來源 catalog 的 [skills](skills/README.md) 都可以在不安裝這兩個知識套件的選擇中使用，前提是各自
 作業需要的專案規則、輸入、工具、設定與授權齊備。**不安裝知識不會讓
-skill 自動失效，但會減少 6 個 skills 的套件專業覆蓋。** 如果任務明確要求
+skill 自動失效，但會減少下列 skills 的套件專業覆蓋。** 如果任務明確要求
 該覆蓋，就要補齊依賴或把該部分列為 unavailable／blocked，不能說完整完成。
 
 目前十一個 presets 都明確設定 `knowledge: []`。包含 `complete`、
@@ -24,8 +24,8 @@ skill 自動失效，但會減少 6 個 skills 的套件專業覆蓋。** 如果
 
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
-| `engineering-common@0.3.0` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet-backend@0.1.4` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.3.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
+| `engineering-common@0.4.0` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
+| `dotnet-backend@0.1.5` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.4.0`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -34,8 +34,13 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 
 ## 哪些 skills 會失去完整的配套效果
 
+`capability` 是較粗的消費分類，例如兩個新 skills 都使用 `architecture`。
+實際可讀覆蓋還須同時符合 operation、resource selectors、skill allowlist、
+選定 binding 與已安裝版本／成員；目標專案的 adopted authority 決定規則是否適用。
+allowlist 不能單獨授權採用規則，套件存在也不代表資源適用於所有操作。
+
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.3.0` 與 `dotnet-backend@0.1.4`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
+`engineering-common@0.4.0` 與 `dotnet-backend@0.1.5`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet-backend` | 仍可做的工作 |
@@ -43,15 +48,15 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 | [requirement-author](skills/requirement-author.md) `explore`／`draft`／`normalize` | 所選探索、BDD 與 DDD 方法覆蓋不可用 | 無直接 .NET binding | 依 caller 來源探索與整理需求；保留已決事項 |
 | [test-designer](skills/test-designer.md) `design`／`review` | 共通工程 catalog、BDD 方法、Gherkin 表述與 GWT 交接準則不可用 | .NET catalog 與測試規範覆蓋不可用 | 依提供的需求與專案慣例設計、審查情境 |
 | [code-reviewer](skills/code-reviewer.md) `review` | 共通工程 catalog 覆蓋不可用 | .NET catalog、DbC、aggregate／repository／test／use-case 規範覆蓋不可用 | 對照預期行為與目標規則找程式缺陷 |
-| [ddd-ca-hex-architect](skills/ddd-ca-hex-architect.md) `design`／`review` | 共通工程 catalog、DDD 主題、領域語言及 Context Map 覆蓋不可用 | .NET catalog、building blocks、DbC、aggregate、交易訊息、use-case、project structure 覆蓋不可用 | 領域／依賴／不變量與架構替代方案分析 |
+| [domain-model-designer](skills/domain-model-designer.md) explore/design/review | DDD、語言、Context Map、BDD 方法覆蓋不可用 | design/review 的 aggregate／DbC 覆蓋不可用 | 依 caller sources 探索／設計／審查領域模型 |
+| [software-architect](skills/software-architect.md) design/review | 技術選擇與邊界／review 方法覆蓋不可用 | building blocks、DbC、messaging、usecase、project structure 覆蓋不可用 | 依接受模型與限制設計軟體機制 |
+| [user-story-author](skills/user-story-author.md) plan/draft/normalize/review | 所選 discovery/formulation 覆蓋不可用 | 無直接 .NET binding | Story 與 AC authoring/review |
+| [spec-author](skills/spec-author.md) draft/normalize | BDD formulation、DDD discovery/tactical 與 authoring boundary 不可用 | 無直接 .NET binding | 依 accepted design 表達系統契約與例子 |
 | [local-change-implementer](skills/local-change-implementer.md) `implement` | 共通工程 catalog 覆蓋不可用 | .NET catalog、aggregate／repository／test／use-case 規範覆蓋不可用 | 依接受的行為與技術，完成局部修改及直接檢查 |
 | [slice-implementer](skills/slice-implementer.md) `implement` | 共通工程 catalog、一般與 GWT 測試交接準則不可用 | .NET catalog、DbC、aggregate／repository／test／交易訊息／use-case 規範覆蓋不可用 | 依已接受架構與情境，實作一個行為 slice |
 
-其餘 13 個沒有宣告 `knowledge_consumption`：`adr-author`、
-`ai-context-auditor`、`ai-context-governance`、`ai-context-init`、
-`diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、
-`problem-frame-author`、`software-development-orchestrator`、
-`spec-author`、`spec-compliance-validator`、`workflow-records`。
+未列於上表的 skills 沒有直接宣告這兩包的 knowledge consumption；這不表示任務無需
+目標專案的領域、規則、事實或其他所選能力。
 
 例如 `spec-compliance-validator` 仍須有明確 criteria 和 authentic evidence；
 `pr-author` 的 provider 操作仍需正確設定與授權；orchestrator 若選到

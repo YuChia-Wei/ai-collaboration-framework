@@ -1,5 +1,11 @@
 # Skill 增減與職責變遷
 
+目前來源能力的選讀表與職責邊界見 [Skill 目錄](../../../docs/skills/README.md)。
+本文件保留固定時點的歷史比較。
+[2026-10-22 職責拆分設計](../../design/skill-evolution-2026-10-22/README.md)與
+[本機實作及驗證紀錄](../../workflows/2026-10-22-domain-architecture-split/implementation-results.md)
+另外保存，不回填下列歷史比較；來源拆分不表示既有安裝已升級。
+
 這份盤點回答「哪些 skill 新增、移除、改名，以及同名職責、行為與原因是否改變」。
 2026-10-01 的修復由 [#421](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/421)
 與 [本次 workflow](../../workflows/2026-10-01-orchestrator-restore/workflow.yaml) 追蹤。

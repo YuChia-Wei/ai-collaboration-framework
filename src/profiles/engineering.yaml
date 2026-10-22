@@ -1,14 +1,15 @@
 preset_version: 1
 id: engineering
-version: 0.1.0
+version: 0.2.0
 skills:
 - code-reviewer
-- ddd-ca-hex-architect
 - diagnostic-analyst
+- domain-model-designer
 - local-change-implementer
 - problem-frame-author
 - requirement-author
 - slice-implementer
+- software-architect
 - spec-author
 - spec-compliance-validator
 - test-designer

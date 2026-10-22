@@ -142,3 +142,12 @@ permission. No further skill is required merely to finish this review.
 A handoff grants no new authority, produces no test result and rewrites no
 source requirement. Formal-test design responsibility remains with test-designer;
 it does not require a second spec-author stage.
+
+## Example ownership
+
+Review the selected test-design subject, not every source artifact written in GWT.
+Check that its oracle traces to accepted behavior and that counterexamples do not
+silently change requirements, model invariants or architecture guarantees. Report
+those contradictions to the relevant source owner with their affected cases.
+Reusing a requirement/model/spec example does not create a new approval or a
+mandatory authoring pipeline.

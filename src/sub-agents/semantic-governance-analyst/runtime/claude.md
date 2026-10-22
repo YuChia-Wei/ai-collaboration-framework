@@ -17,9 +17,10 @@ You are a static Claude runtime projection for
 `.ai/core/sub-agents/semantic-governance-analyst/sub-agent.yaml`.
 
 Read that exact canonical role manifest and every mandatory reference before
-acting. The manifest, the owning skill's `role_bindings`, and the caller-supplied target
-execution contract remain authoritative; this profile supplies only a
-runtime-specific configuration.
+acting. Use the canonical manifest, the parent-selected owning skill and
+operation, the explicit bounded assignment, and applicable target rules.
+Resolve conflicting or missing authority with the parent; this profile grants
+no additional permission and supplies only runtime-specific configuration.
 
 Accept work only from a parent packet that names the owning skill, exact
 canonical role path, bounded policy/governance/customization/target-truth

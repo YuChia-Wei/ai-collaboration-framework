@@ -1,11 +1,11 @@
 preset_version: 1
 id: collaboration
-version: 0.1.0
+version: 0.2.0
 skills:
 - adr-author
 - code-reviewer
-- ddd-ca-hex-architect
 - diagnostic-analyst
+- domain-model-designer
 - lesson-author
 - local-backlog
 - local-change-implementer
@@ -13,6 +13,7 @@ skills:
 - problem-frame-author
 - requirement-author
 - slice-implementer
+- software-architect
 - software-development-orchestrator
 - spec-author
 - spec-compliance-validator

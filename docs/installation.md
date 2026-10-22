@@ -111,7 +111,7 @@ Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路
 
 ## 3. 檢視 catalog 與選擇規格
 
-目前沒有一個「列出 catalog」的互動式 CLI。請讀取 `catalog/metadata/catalog.json` 檢視 components 與 presets，並讀取 `catalog/metadata/build.json` 取得 catalog identity 與兩個 digest。此版 catalog 有 20 個 skill、兩個知識包、六個 sub-agent 角色及 Codex/Claude adapters。知識與角色都是明確選配，不能由 preset 名稱推定。
+目前沒有一個「列出 catalog」的互動式 CLI。請讀取 `catalog/metadata/catalog.json` 檢視 components 與 presets，並讀取 `catalog/metadata/build.json` 取得 catalog identity 與兩個 digest。本來源 catalog 的 skills 見[skill 目錄](skills/README.md)，另有兩個知識包、六個 sub-agent 角色及 Codex/Claude adapters；既有下載成品以其 catalog 為準。知識與角色都是明確選配，不能由 preset 名稱推定。
 
 ```powershell
 $Catalog = Get-Content -Raw "$PackageRoot\catalog\metadata\catalog.json" | ConvertFrom-Json
@@ -153,12 +153,12 @@ lock 中 adapter metadata 的 `prefix: "aicf-"` 表示可用的前綴設定；
 只有 `skill_naming: "prefixed"` 才套用。選 `original` 時仍可能看到這份
 metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 prefix 欄位。
 
-修改 `skills` 為你要的 canonical IDs；[20 個 skill 目錄](skills/README.md)
+修改 `skills` 為你要的 canonical IDs；[skill 目錄](skills/README.md)
 可逐一挑選。只用 Claude 時填 `"adapters": ["claude"]`，兩者都用填
 `["claude", "codex"]`；這裡是 JSON 欄位內容，不是 YAML selection 範例。
 只裝一個 skill 並不需要先裝 orchestrator 或其他 skills。
 
-十一個 preset 的目前內容如下；preset 版本皆 `0.1.0`，knowledge 皆為空：
+十一個 preset 的來源內容如下；`collaboration`、`complete`、`engineering`、`source-repository` 為 `0.2.0`，其餘為 `0.1.0`，knowledge 皆為空。這是來源選擇，不回填既有 Release：
 
 | Preset | 能力範圍 | Adapter |
 | --- | --- | --- |
@@ -167,10 +167,10 @@ metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 
 | `work-management` | local-backlog、pr-author、orchestrator（3） | Codex |
 | `context-maintenance` | auditor、governance（2） | Codex |
 | `project-initialization` | ai-context-init（1） | Claude、Codex |
-| `engineering` | 需求、規格、架構、GWT、診斷、實作與驗證（10） | Codex |
-| `source-repository` | collaboration 除 local-backlog（14） | Codex |
-| `collaboration` | 工程與記錄／編排 skills，無 context 三項（15） | Codex |
-| `complete` | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（17） | Codex |
+| `engineering` | 需求、領域模型、軟體架構、規格、測試設計、診斷、實作與驗證（11） | Codex |
+| `source-repository` | collaboration 除 local-backlog（15） | Codex |
+| `collaboration` | 工程與記錄／編排 skills，無 context 三項（16） | Codex |
+| `complete` | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（18） | Codex |
 | `sub-agents` | 六個角色，不含 skills | Codex |
 | `sub-agents-claude` | 六個角色，不含 skills | Claude |
 
@@ -184,10 +184,16 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
-| `engineering-common` | `0.3.0` | 無 |
-| `dotnet-backend` | `0.1.4` | 必須同時選 `engineering-common@0.3.0` |
+| `engineering-common` | `0.4.0` | 無 |
+| `dotnet-backend` | `0.1.5` | 必須同時選 `engineering-common@0.4.0` |
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
+
+`derive_subset` API 與 `derive-subset.py` 的成功 JSON 結果都包含 `unavailable`
+陣列，沿用 resolver 的逐項診斷；沒有缺口時為 `[]`。例如 skill 的項目包含
+consumer `package`、`consumption`、缺少的 resource IDs `missing` 與 `status`。
+這是本次選配的診斷輸出，不寫入 desired selection、lock 或 artifact identity，
+也不代表已安裝、執行 skill 或採納知識規則。
 
 三種常用選擇只需替換 selection 的 `knowledge`：
 
@@ -207,18 +213,22 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 ### 已宣告會受知識缺少影響的 skill
 
-下列六個 skill 的 package metadata 宣告 optional `knowledge_consumption`。若未安裝對應包，該表列出的作業無法使用該包的規則、標準或範例，應在 skill 操作結果中保留為 unavailable，而不要假設有完整技術指引。
+下列 skill 的 package metadata 宣告 optional `knowledge_consumption`。若未安裝對應包，該表列出的作業無法使用該包的規則、標準或範例，應在 skill 操作結果中保留為 unavailable，而不要假設有完整技術指引。
 
 | Skill | `engineering-common` 缺少時 | `dotnet-backend` 缺少時 |
 | --- | --- | --- |
 | `requirement-author` | `explore`／`draft`／`normalize` 選定方法的 coverage 不可用 | 沒有直接宣告 .NET binding |
 | `test-designer` | `design`、`review` 的 common test design 資源不可用 | `design`、`review` 的 .NET test standards 不可用 |
 | `code-reviewer` | `review` 的 engineering rule catalog 不可用 | `review` 的 .NET design-by-contract、aggregate、repository、test、use-case standards 不可用 |
-| `ddd-ca-hex-architect` | `design`、`review` 的 common architecture 規則不可用 | `design`、`review` 的 .NET architecture、messaging、project structure 資源不可用 |
+| `domain-model-designer` | explore/design/review 的選定模型與 BDD 方法不可用 | design/review 的 aggregate／DbC 覆蓋不可用；explore 不選 .NET |
+| `software-architect` | design/review 的選定架構方法不可用 | design/review 的 building blocks／DbC／messaging／usecase／structure 不可用 |
+| `user-story-author` | plan/draft/normalize/review 的選定 discovery/formulation 不可用 | 無直接 .NET binding |
+| `spec-author` | draft/normalize 的選定 BDD/DDD 方法與 authoring boundary 不可用 | 無直接 .NET binding |
 | `local-change-implementer` | `implement` 的 common rule catalog 不可用 | `implement` 的 .NET aggregate、repository、test、use-case standards 不可用 |
 | `slice-implementer` | `implement` 的 common engineering/GWT handoff 資源不可用 | `implement` 的 .NET design、aggregate、repository、test、messaging、use-case standards 不可用 |
 
-其餘 14 個 skill 未在 package metadata 宣告任何知識 consumption：`adr-author`、`ai-context-auditor`、`ai-context-governance`、`ai-context-init`、`diagnostic-analyst`、`lesson-author`、`local-backlog`、`pr-author`、`problem-frame-author`、`software-development-orchestrator`、`spec-author`、`spec-compliance-validator`、`user-story-author`、`workflow-records`。這只表示此版沒有宣告該兩包的必要資源；它不替目標專案補足自己的領域、政策或產品事實。
+未列於上表的 skills 沒有直接宣告這兩包的 knowledge consumption；這不表示任務無需
+目標專案的領域、規則、事實或其他所選能力。
 
 ## 5. 僅組裝候選子集
 
@@ -631,3 +641,10 @@ skill 名稱是否加 `aicf-` 前綴，不控制能力啟用與否；是否真�
 Prefixed entry 為 `aicf-test-designer`，canonical package ID 仍為 `test-designer`，prefix 不建立另一個 ID。這是來源能力的升級說明，不代表已執行安裝或遷移。
 
 保留的 legacy target-authority 標記屬其選定歷史 target，不是新 catalog 的 alias 或現行 runtime route；本次未遷移 legacy authority。
+
+## 領域／軟體架構 skill 退役與升級
+
+新來源 catalog 不再提供 ddd-ca-hex-architect，且沒有 alias；明選 domain-model-designer、
+software-architect 或兩者，再依本頁既有 inspect/plan/apply 流程與授權升級。
+詳細 selection、bindings、managed drift 與既有 installed snapshot 的區別見
+[遷移指南](skills/domain-architecture-migration.md)。來源修改不自動改寫本專案的安裝。
