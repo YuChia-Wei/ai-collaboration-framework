@@ -246,3 +246,20 @@ cross-runtime work as one branch unit, after current-head hosted checks and live
 PR/review readback. Issue #487 has deferred delivery intent (`Refs #487`): keep it
 open pending owner manual review/administrative closure. Do not infer Issue or
 Project completion, publication, branch cleanup or native activation from merge.
+
+The first hosted PR #488 run, `39823631224`, checked exact head
+`fb43996bc4492b88893ed77ef567aa3648787c23` and failed: 298 tests, 3 failures and
+27 errors. The new policy/registry/layout fixtures passed raw tempfile roots to
+interfaces requiring a direct canonical root. Failures occurred at canonical-root
+or protected-path admission; a Windows short-name TEMP alias is consistent with
+the result, but its exact runner spelling was not separately observed. Read-only
+Sol/medium diagnosis confirmed the missing fixture normalization and found no
+engine-byte newline defect in those fixtures.
+
+Only fixture roots/arguments now use `Path(...).resolve()`; deliberately invalid
+traversal input and all product path/ownership guards remain intact. The 37
+affected policy/registry/layout tests passed in 24.880 seconds with isolated
+Python and an explicitly verified RAM-disk temporary directory. The final product
+source and governing rules still match the independent review and preview source;
+this test-input repair does not require repackaging the preview or a new product
+review. A new hosted current-head result is required before merge.

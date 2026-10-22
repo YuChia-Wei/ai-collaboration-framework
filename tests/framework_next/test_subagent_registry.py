@@ -38,7 +38,7 @@ class RegistryTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         plan = p.plan(str(self.root), p.defaults())
         p.apply(str(self.root), plan['plan'], plan['plan_sha256'])
 
