@@ -191,4 +191,23 @@ occur in the clean isolated migration consumer described above.
 Staged Git bytes also match all 28 registered resources and preserve configuration,
 selection and model-policy bytes across the rename.
 
-The requested immutable Antigravity / Claude Opus 5.5 analysis is pending.
+The Antigravity CLI reported requested model `claude-opus-5-5-medium` in its
+initialization event, but its first read command was denied by the headless
+permission mechanism. Its empty response and SUCCESS envelope do not establish
+an analysis. No permission bypass, login or settings change was attempted.
+The initial full snapshot invocation was blocked by automatic approval review;
+a reduced source-only packet was then admitted after GitHub confirmed the source
+repository is public. That actual invocation still produced no review.
+The owner selected manual Antigravity analysis of `F:/AICF-Release-Preview` with
+a supplied prompt as the fallback; preparing that local preview is pending.
+
+A separate source-policy independent Sol/medium review examined immutable
+`15dd211e90f433be4ceb586f1f0643b078c7f180` against
+`1f860379118ee5e113e8487fe9f2c0b29bb35140`. It identified one P2 finding:
+completed migration replay admitted a later restoration of the exact pre-migration
+lock and could overwrite it. The author reproduced the defect with a failing
+regression, then required the after-lock hash when completion evidence exists.
+Genuinely interrupted operations retain before/after recovery. The restored-lock,
+interrupted-operation and lockless completed-replay checks all passed (3 tests).
+Affected independent
+verification follows the correction commit; no Opus acceptance is inferred.

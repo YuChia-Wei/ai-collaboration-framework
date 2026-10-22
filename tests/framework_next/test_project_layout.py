@@ -210,6 +210,12 @@ class LayoutTests(unittest.TestCase):
                 self.assertEqual(p.digest((self.root / new['path']).read_bytes()), new['sha256'])
         self.assertEqual(layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())['outcome'], 'unchanged')
 
+        # Completion is not permission to undo a later owner restoration.
+        (self.root / state.LOCK_PATH).write_bytes(original.raw)
+        with self.assertRaisesRegex(ValueError, 'completed migration lock drift'):
+            layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())
+        self.assertEqual((self.root / state.LOCK_PATH).read_bytes(), original.raw)
+
     def test_moved_lock_input_drift_rejected_without_mutation(self):
         self.seed()
         original = deepcopy(state.read_lock(str(ROOT)).document)
