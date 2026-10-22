@@ -18,7 +18,7 @@ Edit the source owner; duplication does not authorize editing managed outputs.
 | `src/sub-agents/` | Reusable bounded roles and their product-owned projections |
 | `src/distribution/`, `src/profiles/` | Product packaging and explicit component selection |
 | `.ai/core/`, `.agents/skills/`, `.claude/skills/` | Managed installed projections |
-| `.ai/custom/` | This repository's installation selection and customization |
+| `.ai/project/` | This repository's AI settings, selections and project-maintained resources |
 | `.dev/` | Source-project rules, decisions, records, collaboration and evidence |
 | `docs/` | Human-facing product instructions, limitations and manuals |
 | `releases/` | Source release identity and compatibility/support records |

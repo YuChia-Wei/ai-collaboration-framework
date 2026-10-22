@@ -10537,23 +10537,23 @@
       },
       {
         "path": "src/distribution/catalog.py",
-        "sha256": "88db79985cab5c758b62cad95fc88dec13c6415194aa60d725045a81f935004c"
+        "sha256": "85622a68c66ee6ee1d40ecf8f607ba8fa4a4135c388a50e6cf40c56ff01fd7d2"
       },
       {
         "path": "src/distribution/claude.py",
-        "sha256": "2c79db10ded390c209145e9539a91bb1bee5c2370b5aa804de64947364afa910"
+        "sha256": "1a8e29242e947c6c2bda811da75185d2dca2c3ccd2ec4953afde144365b17f93"
       },
       {
         "path": "src/distribution/codex.py",
-        "sha256": "5fbe00b4e2390ce7ef411105fab8afaa1e22462da381a8f17e8ca3844283d8eb"
+        "sha256": "2eea7d83456ecec7cc56813ab4b8e4054b2b80cefce13d5493a7e6fb5fe5003d"
       },
       {
         "path": "src/distribution/content.py",
-        "sha256": "2923bad9c9867cceb62e2c1ac0d3e551e8d52eb5da68012bbc006d6c893a3dce"
+        "sha256": "9172af44b48a9d1bbac38ee8891716a83e4581d980b5dfa55d5cbe331a43220d"
       },
       {
         "path": "src/distribution/contracts.py",
-        "sha256": "9c904ab999ae5efb0722e6b6c9b0ce14809ec9347af4b7e3c3f27196c3a46427"
+        "sha256": "6cf63d7d5f84188f58652fffb50c62882bca611a74ce152628ce8ede4e741bca"
       },
       {
         "path": "src/distribution/data.py",
@@ -10573,11 +10573,11 @@
       },
       {
         "path": "src/distribution/installation_plan.py",
-        "sha256": "349ae8d2fd5591b22fbc75af2be5dc93e53207adff1f372fff174007dd06382e"
+        "sha256": "15719b4e4ef29a87f45baaedbcc33a4e118630ed98334bbfbe3a8053db274e2d"
       },
       {
         "path": "src/distribution/installation_state.py",
-        "sha256": "f1899faaa68da25af5f8e2bf380c2138ca2e3de0d085c616a607bbbb2fc6e13a"
+        "sha256": "6d7b2bd9c416bda13fb780b7de657aaf9c9b2cf78797be205517852877cd998d"
       },
       {
         "path": "src/distribution/maintenance_coordination.py",
@@ -10588,6 +10588,10 @@
         "sha256": "c69e4485213ed195d67d2776fc49ec2c16177391c6311a0a48828eb16510df58"
       },
       {
+        "path": "src/distribution/project_layout.py",
+        "sha256": "b324a1ed9f877cb7e4391d0f10040b3f06d7b6185c9deb4587acf255ac68bf09"
+      },
+      {
         "path": "src/distribution/reinstallation.py",
         "sha256": "dfb0ca9f53df52afca41a1b699b2c0a0673e0c3aceef5b5a2ec299c1d2262f79"
       },
@@ -10596,12 +10600,24 @@
         "sha256": "d36be253554e30bffb98f3740e35ce9909fb638c171d68435c7bfc46beaf68fc"
       },
       {
+        "path": "src/distribution/subagent_policy.py",
+        "sha256": "4975bbbebf1134fbf080f3352a5d7595955557799a1918e2017435c0e16de704"
+      },
+      {
+        "path": "src/distribution/subagent_registry.py",
+        "sha256": "fcb93c02c8c8ee8145ccef0408a252248dac407405bfb4a877043134faab7ecc"
+      },
+      {
         "path": "src/tools/derive-subset.py",
         "sha256": "169d75ec5bfde50d05684ffa107def94f627ff7aa7db2efc9d233361a1f62dd2"
       },
       {
         "path": "src/tools/maintain_framework.py",
-        "sha256": "1fd876785bd99fd8d8055d664b1909c6067a3f186453257e2c524dbc1ce3d24f"
+        "sha256": "1b2572be133d0034f46f1afb9463844dadc99d6c4babbd502a6d2172ebf0672f"
+      },
+      {
+        "path": "src/tools/manage-sub-agents.py",
+        "sha256": "b0719b620ccfe5768b0d88545dfd20a7f5ff93f630b88765ff04bcc197998551"
       },
       {
         "path": "src/tools/reinstall-framework.py",
@@ -10609,7 +10625,7 @@
       }
     ],
     "id": "framework-managed-installation",
-    "source_commit": "3c7434fd3ea65bcbf519fef3e3ca232a0bc59043",
+    "source_commit": "8424f92e42d523a9514bb4e9afccd37524934d26",
     "version": "2.0.0"
   },
   "installation_id": "9ca16115325d8c66bf5e49cdf393fa2c",
@@ -12959,11 +12975,11 @@
       "sha256": "272a4ab5cd4f03a823662b4aa2a5b630f2cced0ac36bef4667dd9665df8c0e05"
     },
     {
-      "path": ".ai/custom/framework.json",
+      "path": ".ai/project/framework.json",
       "sha256": "ef451ac6cf6c5599c1b6e4fb23f3e5ee6591635303895eeeff76d4ea2f1b1601"
     },
     {
-      "path": ".ai/custom/installation.json",
+      "path": ".ai/project/installation.json",
       "sha256": "59985df0a1a7acd05361052426504e0b621e74a3f3fda12fa91d65db9db15a74"
     },
     {
