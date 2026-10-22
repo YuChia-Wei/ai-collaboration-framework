@@ -170,14 +170,26 @@ class LayoutTests(unittest.TestCase):
                 r.apply(self.project, {}, '0' * 64)
         self.assertTrue((self.root / layout.LEGACY).exists())
 
-    def test_actual_old_lock_relocation_keeps_candidate_owned_assets_and_other_inputs(self):
+    def test_existing_lock_relocation_keeps_candidate_owned_assets_and_other_inputs(self):
         self.seed()
         original = state.read_lock(str(ROOT))
         self.assertIsNotNone(original)
+        # Keep the legacy-input fixture meaningful after this source project has
+        # itself migrated. Retain its real catalog/selection/member closure.
+        document = deepcopy(original.document)
+        for row in document['project_inputs']:
+            if row['path'].startswith(layout.CANONICAL + '/'):
+                row['path'] = layout.LEGACY + row['path'][len(layout.CANONICAL):]
+        document['project_inputs'].sort(key=lambda row: row['path'])
+        original = catalog.lock_bytes(json_bytes(document))
+        self.assertTrue(any(row['path'].startswith(layout.LEGACY + '/')
+                            for row in original.document['project_inputs']))
         (self.root / state.LOCK_PATH).write_bytes(original.raw)
         for row in original.document['project_inputs']:
             if row['path'].startswith(layout.LEGACY + '/'):
                 source = ROOT / row['path']
+                if not source.exists():
+                    source = ROOT / layout.relocated(row['path'])
                 self.assertEqual(p.digest(source.read_bytes()), row['sha256'])
                 target = self.root / row['path']
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -215,6 +227,36 @@ class LayoutTests(unittest.TestCase):
                  'on_unavailable': 'stop', 'policy_path': p.POLICY_PATH}
         for name in (p.POLICY_PATH, layout.LEGACY + '/sub-agent-policy.json'):
             contracts.validate('SubAgentModelPolicyV3', {**value, 'policy_path': name})
+
+    def test_configured_old_wrappers_remain_reproducible_after_layout_migration(self):
+        installed = state.read_lock(str(ROOT))
+        contents = {name: (ROOT / name).read_bytes() for name in installed.members}
+        state.verify_lock_contents(installed, contents)
+        for name, expected in (
+            ('.agents/skills/adr-author/SKILL.md', 'b0aaf2f221b3fdd85d0e2b57d3f910d4cc0f29fda6f36a6043619ab2ac3bf15a'),
+            ('.claude/skills/adr-author/SKILL.md', 'a792df7c5a0a463688c1295e2d1320eac528b40f7c0935f73142243560011bfc'),
+        ):
+            self.assertEqual(p.digest(contents[name]), expected)
+            self.assertIn(b'.ai/custom/framework.json', contents[name])
+        doc = deepcopy(installed.document['catalog_document'])
+        files = installed.document['catalog_inventory']
+        selected = installed.document['selection']
+        # Exercise convention dispatch while holding selected payload, templates
+        # and naming constant; this unit projection is not a new build receipt.
+        doc['generator']['implementation'] = [{'path': name} for name in state.ENGINE_FILES]
+        inventory, projected = catalog.project_members(doc, files, selected, contents)
+        catalog.verify_subset_contents(doc, files, selected, inventory, projected)
+        for name in contents:
+            expected = contents[name]
+            if name.startswith(('.agents/skills/', '.claude/skills/')):
+                expected = expected.replace(b'.ai/custom/framework.json', b'.ai/project/framework.json')
+            self.assertEqual(projected[name], expected)
+        # Even coherent alternate byte hashes cannot override provenance.
+        with self.assertRaisesRegex(ValueError, 'projection/inventory/content'):
+            catalog.verify_subset_contents(doc, files, selected, installed.document['inventory'], contents)
+        with self.assertRaisesRegex(ValueError, 'projection/inventory/content'):
+            catalog.verify_subset_contents(installed.document['catalog_document'], files,
+                                           selected, inventory, projected)
 
     def test_saved_selection_and_config_protection_follow_resolved_layout(self):
         desired = state.read_lock(str(ROOT)).document['selection']['desired']

@@ -312,6 +312,14 @@ def template_bytes(adapter,expected,provided=None):
 
 def project_members(doc,files,selection,contents,templates=None):
     naming=selection_skill_naming(selection['desired'])
+    # Artifact generation determines reproducible wrapper bytes. The executing
+    # engine or relocated project namespace must not rewrite old candidates.
+    implementation=tuple(r['path'] for r in doc['generator']['implementation'])
+    require(implementation in (GENERATOR_FILES, state.REGISTRY_ENGINE_FILES,
+                              state.POLICY_ENGINE_FILES, state.LEGACY_ENGINE_FILES),
+            'generator implementation closure')
+    configuration_path=('.ai/project/framework.json' if implementation==GENERATOR_FILES
+                        else '.ai/custom/framework.json')
     rows=[]; output={}; indexed={(r['kind'],r['owner'],r['member']):r for r in files['files']}
     for c in selection['components']:
         kind,pid=dependency_key(c); destinations={m:f".ai/core/{component_root(kind)}/{pid}/{m}" for m in c['members']}
@@ -338,7 +346,7 @@ def project_members(doc,files,selection,contents,templates=None):
             aid=adapter['id']; src=indexed[('adapter',aid,adapter['template'])]['source']
             raw_template=template_bytes(aid,src['sha256'],None if templates is None else templates[aid])
             renderer=codex_entry if aid=='codex' else claude_entry
-            dest,raw=renderer(raw_template,pid,c['version'],front['description'],destinations,configuration=package.metadata['configuration'],skill_naming=naming)
+            dest,raw=renderer(raw_template,pid,c['version'],front['description'],destinations,configuration=package.metadata['configuration'],skill_naming=naming,configuration_path=configuration_path)
             rows.append({'path':'runtime/'+dest,'destination':dest,'owner':f'adapter/{aid}/skill/{pid}','kind':'runtime','mode':'100644',
                          'size':len(raw),'sha256':digest(raw),'source':None,
                          'binding':{'adapter':aid,'skill':pid,'entry_name':runtime_skill_name(pid,naming),'core_entrypoint':destinations['SKILL.md'],'template_sha256':src['sha256']}})

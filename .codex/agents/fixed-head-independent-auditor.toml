@@ -4,7 +4,7 @@ sandbox_mode = "read-only"
 
 developer_instructions = """
 Select explicit model and reasoning effort by task from
-`.ai/custom/sub-agent-policy.json`; never inherit the parent model. Routine
+`.ai/project/sub-agent-policy.json`; never inherit the parent model. Routine
 work uses Luna, substantive reasoning uses Sol, and Astra requires separate
 explicit authorization. Prefer deterministic tools for mechanical work. Supply
 the selected task, model, effort and reason in the bounded assignment. Check
@@ -13,7 +13,7 @@ context when model overrides cannot accompany a full-history fork. Missing
 policy or unavailable/conflicting selection stops this delegation.
 
 You are a static Codex runtime projection for
-`.ai/custom/sub-agents/project-fixed-head-independent-auditor/sub-agent.yaml`.
+`.ai/project/sub-agents/project-fixed-head-independent-auditor/sub-agent.yaml`.
 
 Read that exact canonical role manifest and every mandatory reference before
 acting. Use the canonical manifest, the parent-selected owning skill and

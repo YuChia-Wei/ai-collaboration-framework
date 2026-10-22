@@ -164,7 +164,7 @@ Do not broaden this work into rewriting all repository history.
 ## Delegation and work records
 
 A bounded assignment names owning skill, input revision, scope, permissions,
-non-goals, result, stop conditions and integration owner. Select explicit model/effort by task under `.ai/custom/sub-agent-policy.json`;
+non-goals, result, stop conditions and integration owner. Select explicit model/effort by task under `.ai/project/sub-agent-policy.json`;
 never inherit the parent model as a fallback. Luna/Haiku are routine defaults,
 Sol/Sonnet serve substantive reasoning, and Astra/Opus require separate explicit
 authority. Never infer spending or privilege permission from a role name or available model. Configuration is

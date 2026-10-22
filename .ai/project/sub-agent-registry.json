@@ -23,7 +23,7 @@
       },
       "intent": "Preserve the project bounded-general-worker execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
-        "runtime/codex.toml": "c5771b83f4228e41e97466bcbd6009f23501eff6376f878122c77c6ca9a49eef"
+        "runtime/codex.toml": "5f1fd322479863b72022d38dbafdf21a227f537795fd505602f205792bcd616b"
       },
       "origin": "project-authored",
       "projections": {
@@ -59,8 +59,8 @@
       "intent": "Preserve the project bounded-routine-worker execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/mechanical-evidence-playbook.md": "fdbeb19178d83ee6bf2c40ec95bc4310ecfcb1508a00482fe40297c7d7d001ab",
-        "runtime/codex.toml": "5c8f4620f3df3dd56c4fc1cb69ff3e76b5949eabaf0242adf89c80b7f1d4f76d",
-        "sub-agent.yaml": "c461147693d36241af92624afea18a1ca9ffa8698865c92cb61c4b2cab2a682a"
+        "runtime/codex.toml": "17964653fdf298c3c4e1bb155edbb0418eb6be0fff3b9faca2e6c8c77ce05144",
+        "sub-agent.yaml": "b392033699cad5cb90eb8d685ff99114f5bbeb9866be967828252a419bf65493"
       },
       "origin": "project-derived",
       "projections": {
@@ -97,9 +97,9 @@
       "intent": "Preserve the project context-translator execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/translation-playbook.md": "7d8cc582297c1f0ed40ef3d883a5f6ddafde04e253dff71af1f6123d2997be91",
-        "runtime/claude.md": "d7a0c9bd80e82f2a80d66fa3f39f5697a1a97a7c9d95c066dd8da708261cd3da",
-        "runtime/codex.toml": "28e08571c54d50c6ebc153db16472e3be80ba3032bdd38e3d53edcb437e4bf18",
-        "sub-agent.yaml": "f4576cf9d8ee86b9df30a89f7fc5508ea4ff92c7f3e9352dcbb9cdb2332162c0"
+        "runtime/claude.md": "3b97b386ee0d76bda7905dde9faaaa76c18bf8c8a029f91f4e6edc35ba5f26d9",
+        "runtime/codex.toml": "db265107fa2ef8ecf7f66da6cf15cedaf44656d1cf3be8777be06e5b7e0c2896",
+        "sub-agent.yaml": "7623ce768bbcf9c1eb2b8421c9241ba8c583fb4f1680c609ee2b9752d26dc96f"
       },
       "origin": "project-derived",
       "projections": {
@@ -139,8 +139,8 @@
       "intent": "Preserve the project evidence-report-synthesizer execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/evidence-report-synthesis-playbook.md": "4eec5a101253c6d1843b183cb30bd708df502dae88bcd4ff93a5a5a9dd8bf12d",
-        "runtime/codex.toml": "9f19ca06d8bc80a9cd8b366c852dec09662889ee2414d6e944e00683cddfa173",
-        "sub-agent.yaml": "52b96ec1e255949a32fad600dce0b99a647ef7bc6c5228ffdf84bffd9f91bb4d"
+        "runtime/codex.toml": "bd2ddaba5434536ee670f7d938df9caf8bfa3483659acda09def4c3239a406eb",
+        "sub-agent.yaml": "4549df129239773c05be3a3af45177f8f750a28d072ab4b23548153db966bf7f"
       },
       "origin": "project-derived",
       "projections": {
@@ -176,8 +176,8 @@
       "intent": "Preserve the project fixed-head-independent-auditor execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/fixed-head-independent-audit-playbook.md": "77ce1d2a8fe981bd98550158da8f95e95fc975961692e4bb5114070c91c8d037",
-        "runtime/codex.toml": "2cb100e340687f227d52aa64c90605f3cf347ffe6fd6bda250bbd3a1818307de",
-        "sub-agent.yaml": "c9c4d67e3dbab7b6ff88f747160906101dd4be1cf694f01b0c215bff080edc55"
+        "runtime/codex.toml": "47c458664d08b3c2a92517114ccac6e6c5d94d1e9540417e09409a6af1395f1f",
+        "sub-agent.yaml": "95aedb50c3641546d440d0c528a3e811067eef2136b3a1c2ab3028331277c130"
       },
       "origin": "project-derived",
       "projections": {
@@ -213,8 +213,8 @@
       "intent": "Preserve the project reconciliation-worker execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/reconciliation-playbook.md": "2fe1beaef86d90a42587d7e649e1da264eba1dbacdfeeec16f3e5a7d970fe92a",
-        "runtime/codex.toml": "3581b137d41d30882913007ba87f58de537c1820bc4566addb9417b8d974319d",
-        "sub-agent.yaml": "1d01d284b0a93ee129d2f31d9fca7b756a252511663dcc9e2b8e8857369a2270"
+        "runtime/codex.toml": "477725ea9cc81ba2bff8ef4b8cacd2191462e29b1027fbb6db602b561bb8ac07",
+        "sub-agent.yaml": "403adc14453980af5842b43699346381b85ed17b1a6720ed43e4c0f5c5df4455"
       },
       "origin": "project-derived",
       "projections": {
@@ -250,8 +250,8 @@
       "intent": "Preserve the project semantic-governance-analyst execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/semantic-governance-analysis-playbook.md": "3ee75ecf5728ba7a765d3a8397922b26604b4797aaf0ea5a01b92ebfb47b1d40",
-        "runtime/codex.toml": "2e1ce0ec5c436acfad8930ec1d42e63e04699f0fff11046ba1f1553cdc624932",
-        "sub-agent.yaml": "25243638dd0db591edcf79db2cc37089ede65d4c28f9ab1371d95754b9cad168"
+        "runtime/codex.toml": "17d3d808a50d0d80d83bcfd683537f8b23d9dee592a6306c9294c8b1c8212be6",
+        "sub-agent.yaml": "cbbafb09759edc99924f8769da823670ba3976b8cc132b4923f0068290a2f68e"
       },
       "origin": "project-derived",
       "projections": {

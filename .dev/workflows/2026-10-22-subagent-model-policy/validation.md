@@ -143,6 +143,52 @@ invocation unobserved. No native model/account test was invoked.
 Local implementation and the selected independent reviews are complete. The
 final workflow record commit changes records only; implementation evidence stays
 bound to the commits above. Issue #487 remains open; no push, PR, merge or
-publication is performed. The real source repo's installed lock and 17-skill
-installation remain unchanged. Future self-installation must select the actual
+publication is performed. At that earlier boundary the source repo's installed lock and 17-skill
+installation remained unchanged; the later directory transition is recorded below. Future self-installation must select the actual
 released candidate and explicitly resolve any colliding project runtime names.
+
+
+## Project directory transition
+
+The owner selected `.ai/project` on 2026-10-23. Source implementation commit
+`8424f92e42d523a9514bb4e9afccd37524934d26` passed 180 distribution/schema/loader
+checks and supplies the pinned public CLI used for the actual migration.
+
+An isolated consumer was first installed by the previous 26-file engine
+`015c44e692f0500a4b58c34ed7ec55583e4a5602`. Its subsequent public layout migration
+preserved all 7 managed members, configuration and selection bytes, provenance,
+model preferences, unknown binary/native files and an empty directory. Its strict
+installed-resource reader passed after relocation; completed replay was unchanged.
+A subsequent actual deselection with an explicit canonical selection edit passed
+and preserved the 9 selected project files. This is a bounded consumer trial,
+not native agent activation or general skill-customization acceptance.
+
+The actual source-project migration used the same pinned CLI and matched 7 roles
+and all 28 registered authoring/native resources. The validated lock transition
+changes only the executing engine pin and two relocated project-input paths;
+candidate identity, selected packages, inventory and managed bytes remain intact.
+Root guidance and project navigation now name the canonical directory.
+
+Author compatibility inspection found a configured-skill wrapper regression:
+current rendering initially changed old candidate guidance. The correction chooses
+the convention from the artifact's admitted generator closure, preserving legacy
+v1 and v2 outputs and producing canonical guidance for new artifacts. Regression
+coverage uses the actual old Codex and Claude adr-author wrapper hashes, rejects
+cross-convention contents even when inventory hashes match, and verifies the full
+old installed-member projection. Installed skill entries are not hand-edited.
+
+The source project's strict installed-resource index is not claimed current:
+AGENTS.md and AGENTS.zh-TW.md already differed from their stored project-input
+hashes before this continuation; the authorized navigation edit also changes
+.ai/INDEX.MD. Their hashes were not silently rebound by the directory migrator.
+Managed-member verification and registry readback are separate successful facts.
+An explicitly selected future installation must reconcile current root authority
+inputs through its normal protected-input planning. This limitation does not
+occur in the clean isolated migration consumer described above.
+
+128 distribution checks passed after the adapter correction; 10 loader checks passed with isolated Python. Earlier schema coverage remains applicable. The first combined invocation omitted -I and six loader checks correctly refused that host; only the loader suite was rerun, without a product-code change.
+
+Staged Git bytes also match all 28 registered resources and preserve configuration,
+selection and model-policy bytes across the rename.
+
+The requested immutable Antigravity / Claude Opus 5.5 analysis is pending.

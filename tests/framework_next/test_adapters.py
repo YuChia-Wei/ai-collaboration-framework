@@ -117,6 +117,25 @@ class AdapterProjectionTests(unittest.TestCase):
         self.assertEqual(".agents/skills/framework-example/SKILL.md", destination)
         self.assertIn(b"name: framework-example", raw)
         self.assertNotIn(b"aicf-example", raw)
+        _, configured = codex.project_entry(
+            CODEX_LEGACY.read_bytes(), "example", "0.1.0", "Example",
+            MEMBERS, configuration={}
+        )
+        self.assertIn(b"`.ai/custom/framework.json`; it remains project-owned", configured)
+        self.assertNotIn(b".ai/project/", configured)
+
+    def test_configured_guidance_is_explicit_and_null_configuration_unchanged(self):
+        for module, template in ((codex, CODEX_V2), (claude, CLAUDE_V2)):
+            with self.subTest(adapter=module.__name__):
+                _, legacy = self.render(module, template, configuration={})
+                _, current = self.render(module, template, configuration={},
+                                         configuration_path=".ai/project/framework.json")
+                self.assertIn(b"The project-owned `.ai/custom/framework.json` is not", legacy)
+                self.assertEqual(current, legacy.replace(b".ai/custom/", b".ai/project/"))
+                self.assertEqual(self.render(module, template), self.render(
+                    module, template, configuration_path=".ai/project/framework.json"))
+                with self.assertRaises(DistributionError):
+                    self.render(module, template, configuration_path="unrecognized.json")
 
 
 if __name__ == "__main__":

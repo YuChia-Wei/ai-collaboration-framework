@@ -18,7 +18,7 @@ Sol requests with `fork_turns=none`; no Astra child is authorized.
 - For this delivery, the owner accepts Claude configuration alignment with
   official documentation. Live account tests belong to the owner's later team
   environment testing and are not a completion prerequisite on this private host.
-- Independently versioned project-owned `.ai/custom/sub-agent-policy.json` has
+- Independently versioned project-owned `.ai/project/sub-agent-policy.json` has
   a deterministic reader, preview/update writer and three-way comparison.
   Managed role bytes and framework lock do not own project model preferences.
 - Management tool ships with the existing pinned engine, not a new installer.
@@ -65,8 +65,8 @@ future framework role overlaps a local role. This extends #487 rather than
 implementing the general skill Feature/Story #482/#484.
 
 - Project resource provenance and exact package/reference closure have a real
-  reader/writer under `.ai/custom/sub-agent-registry.json` and
-  `.ai/custom/sub-agents/<project-id>/`.
+  reader/writer under `.ai/project/sub-agent-registry.json` and
+  `.ai/project/sub-agents/<project-id>/`.
 - Existing 7 Codex and 1 Claude entries are explicitly adopted by preimage;
   preserve runtime names and permissions. Selected source-role snapshots and
   project profiles provide baseline evidence, not installer ownership.
@@ -143,5 +143,10 @@ metadata, template and documentation integration, 180 distribution/schema/loader
 checks passed with no skips. A subsequent edit adds the new module to the unused
 catalog module-name inventory; executable engine closure was already covered.
 The old fixed public engine installed an isolated legacy-layout consumer and its
-exact installed-resource reader passed. Current-engine migration, actual project
-readback and the requested immutable Antigravity analysis remain pending.
+exact installed-resource reader passed. Current-engine migration and actual project readback passed. An isolated old-layout
+consumer retained managed bytes, project preferences, unknown binary/native files
+and empty directories; canonical deselection also preserved project resources.
+The actual source migration retained 7 roles and 28 matching registered resources.
+The adapter compatibility correction selects wrapper convention from the artifact
+generator closure, retaining old configured wrappers byte-for-byte.
+The requested immutable Antigravity analysis remains pending.
