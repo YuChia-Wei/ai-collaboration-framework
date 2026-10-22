@@ -144,7 +144,7 @@ class CompatibilityTests(unittest.TestCase):
         old = json.loads(raw)
         self.assertIn(tuple(r['path'] for r in old['engine']['files']),
                       (state.LEGACY_ENGINE_FILES, state.POLICY_ENGINE_FILES,
-                       state.REGISTRY_ENGINE_FILES, state.ENGINE_FILES))
+                   state.REGISTRY_ENGINE_FILES, state.LAYOUT_ENGINE_FILES, state.ENGINE_FILES))
         catalog.lock_bytes(raw)
         for changed in [old['engine']['files'][:-1], old['engine']['files'] +
                         [{'path': 'src/tools/unowned.py', 'sha256': '0' * 64}]]:
