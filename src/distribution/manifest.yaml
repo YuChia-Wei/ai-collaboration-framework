@@ -645,7 +645,7 @@ components:
   version: 0.1.2
 - kind: skill
   id: ai-context-init
-  version: 0.2.2
+  version: 0.2.3
   source: src/skills/ai-context-init
   metadata: skill-package.yaml
   members:
@@ -1021,7 +1021,7 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/sqlite_store.py
 - kind: sub-agent
   id: context-translator
-  version: 0.2.0
+  version: 0.2.1
   source: src/sub-agents/context-translator
   metadata: sub-agent-package.yaml
   members:
@@ -1037,7 +1037,7 @@ components:
     destination: .ai/core/sub-agents/context-translator/sub-agent.yaml
 - kind: sub-agent
   id: evidence-report-synthesizer
-  version: 0.2.0
+  version: 0.2.1
   source: src/sub-agents/evidence-report-synthesizer
   metadata: sub-agent-package.yaml
   members:
@@ -1053,7 +1053,7 @@ components:
     destination: .ai/core/sub-agents/evidence-report-synthesizer/sub-agent.yaml
 - kind: sub-agent
   id: fixed-head-independent-auditor
-  version: 0.2.0
+  version: 0.2.1
   source: src/sub-agents/fixed-head-independent-auditor
   metadata: sub-agent-package.yaml
   members:
@@ -1069,7 +1069,7 @@ components:
     destination: .ai/core/sub-agents/fixed-head-independent-auditor/sub-agent.yaml
 - kind: sub-agent
   id: mechanical-evidence-worker
-  version: 0.2.0
+  version: 0.2.1
   source: src/sub-agents/mechanical-evidence-worker
   metadata: sub-agent-package.yaml
   members:
@@ -1085,7 +1085,7 @@ components:
     destination: .ai/core/sub-agents/mechanical-evidence-worker/sub-agent.yaml
 - kind: sub-agent
   id: reconciliation-worker
-  version: 0.2.0
+  version: 0.2.1
   source: src/sub-agents/reconciliation-worker
   metadata: sub-agent-package.yaml
   members:
@@ -1101,7 +1101,7 @@ components:
     destination: .ai/core/sub-agents/reconciliation-worker/sub-agent.yaml
 - kind: sub-agent
   id: semantic-governance-analyst
-  version: 0.2.0
+  version: 0.2.1
   source: src/sub-agents/semantic-governance-analyst
   metadata: sub-agent-package.yaml
   members:

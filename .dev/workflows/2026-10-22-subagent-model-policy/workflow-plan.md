@@ -84,7 +84,7 @@ implementing the general skill Feature/Story #482/#484.
 
 ## Current status
 
-Local delivery is complete. The model-policy slice is implemented at
+The earlier local delivery is complete. The model-policy slice is implemented at
 `5d80f8cf939036d9a005a2af28496366937f5c6f`. The resource manager is implemented
 at `fe0928e74b344c1a0208261ab764e6a0630cbbbc`; scoped fixes end at
 `580dadc3910bef78ae916039023a8ed476228c8b`. Independent review findings are
@@ -105,7 +105,8 @@ native activation is claimed.
 
 ## Continuation boundary
 
-No authorized local implementation task remains. Push, PR, merge, publication,
+The owner authorized a project-directory migration continuation on 2026-10-23.
+Push, PR, merge, publication,
 Issue closure and Project mutation require their separately applicable authority.
 A future PR needs actual current-head hosted Source change gate success. Keep
 existing test evidence unless affected semantics or inputs justify repetition.
@@ -113,3 +114,34 @@ existing test evidence unless affected semantics or inputs justify repetition.
 No live Claude tests or company-account login are requested. The owner accepts
 official documentation alignment for this delivery and will test in the team
 environment later. General skill customization under #482/#484 remains separate.
+
+## Project directory migration continuation (2026-10-23)
+
+The owner selected `.ai/project` and authorized renaming the current project
+resources, related tools, path contracts, templates and documentation, with
+legacy `.ai/custom` compatibility. Skill customization migration policies remain
+in the separate conversation. After completion the owner explicitly selected
+Antigravity with Claude Opus 5.5 for one analysis; this is premium review authority,
+not permission to change accounts, substitute models or publish.
+
+- Canonical new layout with coherent legacy-only read/write support; both roots
+  present is an ambiguity error. Preserve unknown files and empty directories.
+- Explicit pinned migration rewrites registered authoring/native path references,
+  updates member hashes, and emits validated installation input relocation.
+  Preserve candidate, selection, managed assets, provenance, baseline and routing.
+- Existing authorities embedded in a selected binding require separately planned
+  installation changes; unrelated pre-existing project-input drift is not accepted
+  implicitly. Do not hand-edit installed skill projections.
+- Current writers share installer exclusion. Accepted-plan recovery and completion
+  state live under ignored `.ai/local`; completed replay cannot overwrite later
+  owner changes. No guarantee is made against unrelated external writers.
+- Root is integration owner. A fresh Sol/medium child implemented only the bounded
+  code/test slice as sole writer; root stayed read-only on the worktree until handback.
+
+Validation: 36 focused layout/policy/registry tests passed; after source profile,
+metadata, template and documentation integration, 180 distribution/schema/loader
+checks passed with no skips. A subsequent edit adds the new module to the unused
+catalog module-name inventory; executable engine closure was already covered.
+The old fixed public engine installed an isolated legacy-layout consumer and its
+exact installed-resource reader passed. Current-engine migration, actual project
+readback and the requested immutable Antigravity analysis remain pending.

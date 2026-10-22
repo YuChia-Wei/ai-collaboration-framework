@@ -426,7 +426,7 @@ destination collision 即使 bytes 相同也拒絕。重裝不是自動修復缺
 自 v0.20.2 起，`project_edits.path` 僅接受以下精確路徑：
 
 - `AGENTS.md`、`AGENTS.zh-TW.md`、`CLAUDE.md`、`README.md`、`README.en.md`
-- `.ai/INDEX.MD`、`.ai/custom/installation.json`
+- `.ai/INDEX.MD`、`.ai/project/installation.json`
 - `.agents/skills/README.md`、`.claude/skills/README.md`
 - `.codex/config.toml`、`.claude/settings.json`
 
@@ -477,7 +477,7 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 1. 保留舊 selection、下載的 catalog／engine、目前 lock 和 recovery records。
    先 inspect；有 drift 或 recovery marker 就處理該狀態，不進行下一次 apply。
 2. 編輯 project-owned selection 中的 skills／knowledge／adapters／bindings，
-   由所選新版本重新 derive。專案可以選用 `.ai/custom/installation.json`
+   由所選新版本重新 derive。專案可以選用 `.ai/project/installation.json`
    保存 selection，來源庫自己採此位置；它不是必須存在的固定設定檔。
    本教學 `project_edits: []` 不會自動複製該檔，actual desired selection
    仍保存在 managed `.ai/framework.lock`。不要手動改 lock 代替新 candidate。

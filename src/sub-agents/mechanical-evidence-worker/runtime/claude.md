@@ -5,7 +5,11 @@ model: haiku
 tools: Read, Grep, Glob
 ---
 
-Before delegation read `.ai/custom/sub-agent-policy.json` and select a task
+Resolve project model preferences from `.ai/project/`; a legacy-only project may use
+`.ai/custom/`. If both roots exist, stop for reconciliation.
+
+
+Before delegation read `.ai/project/sub-agent-policy.json` and select a task
 (default hint: inventory). Use Haiku for routine work, Sonnet when the task
 needs substantive reasoning, and Opus only with separate explicit authority.
 Pass the selected model at invocation. Model overrides require Claude Code

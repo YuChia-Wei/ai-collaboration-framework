@@ -2328,7 +2328,10 @@
           "const": "explicit-user-authorized-visible-task"
         },
         "policy_path": {
-          "const": ".ai/custom/sub-agent-policy.json"
+          "enum": [
+            ".ai/project/sub-agent-policy.json",
+            ".ai/custom/sub-agent-policy.json"
+          ]
         },
         "default_task": {
           "enum": [
