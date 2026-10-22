@@ -30,7 +30,7 @@ class LayoutTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.project = str(self.root)
 
     def seed(self, legacy=True):
@@ -268,7 +268,7 @@ class LayoutTests(unittest.TestCase):
         desired = state.read_lock(str(ROOT)).document['selection']['desired']
         for base in (layout.LEGACY, layout.CANONICAL):
             with self.subTest(layout=base), tempfile.TemporaryDirectory() as project:
-                root = Path(project)
+                root = Path(project).resolve()
                 (root / base).mkdir(parents=True)
                 config = base + '/framework.json'
                 selection = base + '/installation.json'

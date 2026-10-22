@@ -66,7 +66,7 @@ class PolicyTests(unittest.TestCase):
 
     def test_read_only_plan_atomic_apply_stale_replay_and_unknown_preservation(self):
         with tempfile.TemporaryDirectory() as name:
-            root = Path(name)
+            root = Path(name).resolve()
             unknown = root / 'my-agent.md'
             unknown.write_bytes(b'project custom instructions')
             before = sorted(root.rglob('*'))
@@ -92,36 +92,36 @@ class PolicyTests(unittest.TestCase):
 
     def test_missing_policy_invalid_paths_and_writer_conflict(self):
         with tempfile.TemporaryDirectory() as name:
-            root = Path(name)
+            root = Path(name).resolve()
             with self.assertRaisesRegex(ValueError, 'policy missing'):
-                policy.execute({'operation': 'resolve', 'project_root': name, 'adapter': 'codex', 'task': 'inventory'})
-            prepared = policy.plan(name, policy.defaults())
+                policy.execute({'operation': 'resolve', 'project_root': str(root), 'adapter': 'codex', 'task': 'inventory'})
+            prepared = policy.plan(str(root), policy.defaults())
             (root / '.ai/project').mkdir(parents=True)
             guard = root / '.ai/project/sub-agent-policy.json.writer'
             guard.write_text('another writer')
             with self.assertRaisesRegex(ValueError, 'writer active'):
-                policy.apply(name, prepared['plan'], prepared['plan_sha256'])
+                policy.apply(str(root), prepared['plan'], prepared['plan_sha256'])
             self.assertEqual(guard.read_text(), 'another writer')
             guard.unlink()
             target = root / policy.POLICY_PATH
             target.mkdir()
             with self.assertRaises(ValueError):
-                policy.inspect(name)
+                policy.inspect(str(root))
             target.rmdir()
             source = root / 'hardlink-source'
             source.write_bytes(policy.encode(policy.defaults()))
             os.link(source, target)
             with self.assertRaises(ValueError):
-                policy.inspect(name)
+                policy.inspect(str(root))
             with self.assertRaises(ValueError):
                 policy.inspect(str(root / '..' / root.name))
 
     def test_policy_initialization_rejects_case_alias_before_creating_paths(self):
         with tempfile.TemporaryDirectory() as name:
-            root = Path(name)
+            root = Path(name).resolve()
             (root / '.AI').mkdir()
             with self.assertRaisesRegex(ValueError, 'case collision'):
-                policy.plan(name, policy.defaults())
+                policy.plan(str(root), policy.defaults())
             self.assertEqual([p.name for p in root.iterdir()], ['.AI'])
 
     def test_three_way_comparison_does_not_adopt_or_erase_customization(self):
@@ -155,7 +155,7 @@ class CompatibilityTests(unittest.TestCase):
 
     def test_portable_pinned_cli_without_source_checkout_imports_and_tamper_rejection(self):
         with tempfile.TemporaryDirectory() as name:
-            root = Path(name)
+            root = Path(name).resolve()
             engine = root / 'engine'
             engine.mkdir()
             rows = []
