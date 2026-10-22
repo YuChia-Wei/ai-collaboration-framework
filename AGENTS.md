@@ -32,6 +32,7 @@ owners. No merge or date proves CI success.
 - `failed`, `blocked-by-environment`, `not-applicable`, and `deferred-with-owner` are not `passed`.
 - Prefer an applicable and permitted IDE MCP refactoring operation.
 - Select sub-agent model and effort by task from `.ai/custom/sub-agent-policy.json`, never by inheriting this conversation. Prefer deterministic tools; Codex defaults to Luna and uses Sol for substantive reasoning, Claude defaults to Haiku and uses Sonnet by task. Astra/Opus require separate explicit authorization. Check runtime overrides and actual invocation identity; missing policy or unavailable selection stops that delegation. Project model preferences are maintained separately from managed role packages; see [sub-agent management](docs/sub-agent-management.md).
+- Resolve registered sub-agent purposes through `.ai/custom/sub-agent-registry.json`; verify the selected package and runtime entry before delegation. Project authoring lives under `.ai/custom/sub-agents/`. Preserve unknown entries and keep upstream coverage, owner adoption, file readback and runtime activation separate. Registry records never grant framework ownership or authorize an automatic route switch.
 
 ## Progressive Context Loading
 

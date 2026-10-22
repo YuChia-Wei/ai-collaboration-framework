@@ -21,6 +21,7 @@ SUITES = {
         "framework_next.test_distribution_contracts", "framework_next.test_maintenance_contracts",
         "framework_next.test_skill_naming", "framework_next.test_distribution_versions",
         "framework_next.test_subagent_policy",
+        "framework_next.test_subagent_registry",
     ),
     "release": "release",
     "source": ("source.test_source_workflow", "source.test_source_policy", "test_runner"),

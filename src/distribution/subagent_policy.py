@@ -1,7 +1,8 @@
 """Project-owned model policy; no model calls, installation or native-config writes.
 
 Selection is a proposal for a caller-controlled invocation, not a budget enforcer.
-The only write target is POLICY_PATH. Framework lock and role bytes are untouched.
+Policy operations write only POLICY_PATH. The public dispatcher delegates explicit
+resource operations to subagent_registry; neither writer edits the framework lock.
 """
 from __future__ import annotations
 
@@ -287,6 +288,9 @@ def resolve(policy, adapter, task, *, tier=None, authority_ref=None, observation
 def execute(request):
     require(type(request) is dict, 'request object required')
     operation = request.get('operation')
+    if operation in {'registry-inspect', 'registry-plan', 'registry-apply', 'role-compare', 'route-resolve'}:
+        from .subagent_registry import execute as registry_execute
+        return registry_execute(request)
     common = {'operation', 'engine', 'engine_root'}
     extras = {'defaults': set(), 'inspect': {'project_root'}, 'plan': {'project_root', 'proposed'},
               'apply': {'project_root', 'plan', 'plan_sha256'},

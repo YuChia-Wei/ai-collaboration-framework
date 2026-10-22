@@ -25,8 +25,10 @@ Sol requests with `fork_turns=none`; no Astra child is authorized.
   Existing exact engine closures remain readable for upgrade; execution pins
   remain strict. Native config changes are explicit project edits, not hidden
   installation writes. Unknown custom entries remain protected without registry.
-- Reuse #482/#484 ownership and baseline/local/candidate distinctions for this
-  bounded model policy only. Do not implement or close general skill provenance.
+- Apply #482/#484 ownership, resource provenance, baseline/local/candidate and
+  explicit routing to sub-agents. Keep general skill customization outside this
+  slice. Project authoring lives outside managed core; registry never grants
+  installer ownership.
 - Reusable cost/authorization rules feed back to the public AGENTS template;
   source GitHub governance and exact source-project models do not.
 
@@ -54,27 +56,51 @@ Do not run paid model matrices. Static tests do not prove actual invocation or
 subscription debit. Installation/authority changes require immutable independent
 review. Hosted gate remains for a future authorized PR; not run without push.
 
+## Resource customization acceptance
+
+Owner explicitly selected the earlier customization design for this subagent
+work: distinguish user-created, user-modified and framework-integrated resources;
+keep project authoring outside managed core; provide explicit routing when a
+future framework role overlaps a local role. This extends #487 rather than
+implementing the general skill Feature/Story #482/#484.
+
+- Project resource provenance and exact package/reference closure have a real
+  reader/writer under `.ai/custom/sub-agent-registry.json` and
+  `.ai/custom/sub-agents/<project-id>/`.
+- Existing 7 Codex and 1 Claude entries are explicitly adopted by preimage;
+  preserve runtime names and permissions. Selected source-role snapshots and
+  project profiles provide baseline evidence, not installer ownership.
+- Runtime projections use project packages, with no framework checkout resource
+  dependency. Existing obsolete `.ai/assets` and undeclared role_bindings
+  references are reconciled inside the adopted project profiles.
+- Upgrade comparison exposes old/local/candidate tree differences, unavailable
+  base, declared capability overlap and registered/unknown path collisions.
+- Explicit namespace rebinding or selected framework routing preserves custom
+  authoring; only exact registered project runtime entries may be detached.
+- Managed paths remain with the installer. Coverage/adoption references, file
+  readback, native discovery and observed invocation remain distinct.
+- Interrupted multi-file writes report partial progress, preserve the accepted
+  plan and support explicit resume; stale external edits are never overwritten.
+
 ## Current status
 
-Authorized local implementation is complete at source commit
-`5d80f8cf939036d9a005a2af28496366937f5c6f`; the subsequent record commit contains
-only review/validation/closeout evidence. See [validation](validation.md).
-Branch: `codex/2026-10-22-subagent-model-policy`; base remains the SHA above.
-Issue #487 was read back open after implementation. #482/#484 remain
-reference-only open design work. No push, merge, publication, runtime acceptance
-or savings measurement is claimed.
+The model-policy slice is implemented at
+`5d80f8cf939036d9a005a2af28496366937f5c6f` and its prior review remains scoped to
+that implementation. The resource-customization slice is in progress and needs
+its own immutable review. Current focused checks: 166 distribution/schema/loader
+checks passed, including 13 registry behavior cases and portable CLI use.
+
+Branch: `codex/2026-10-22-subagent-model-policy`. Parent remains the only tracked
+writer. The accepted project migration has 7 role records, 20 authoring/resource
+files and 8 runtime entries; all resource hashes read back matched. Runtime names
+remain unchanged; future actual catalog selection determines which collisions
+need explicit namespace rebinding or framework adoption.
 
 ## Continuation boundary
 
-No local implementation task remains. The owner may separately authorize a PR
-and push; then inspect this branch and current provider state, retain the existing
-product checks unless the diff changes, and obtain actual hosted Source change
-gate success before integration. Do not close #487 or change Project state
-without the separately required authority and integration evidence.
-
-Claude documentation alignment is accepted. No further local Claude validation
-or company-account login is requested; the owner will conduct live account tests
-separately in the team environment. New checkouts must explicitly merge native
-settings proposals because this source project's `.codex/config.toml` remains
-ignored/local. General skill customization
-under #482/#484 and downstream native acceptance remain outside this delivery.
+Complete the isolated collision/rebind/installation check, inspect the final
+diff, commit locally, and obtain independent scoped review. No push, PR, merge,
+publication, Issue closure or Project mutation is authorized. Live Claude tests
+are not requested; the owner accepts official documentation alignment for this
+delivery and will use the team environment later. Existing product checks may
+be retained when further changes do not affect their subject.

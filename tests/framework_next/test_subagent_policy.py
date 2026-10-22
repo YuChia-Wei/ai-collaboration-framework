@@ -183,6 +183,27 @@ class CompatibilityTests(unittest.TestCase):
             result = invoke(request)
             self.assertEqual(result.returncode, 0, (result.stdout, result.stderr))
             self.assertEqual(policy.inspect(str(project))['policy'], policy.defaults())
+            from distribution import subagent_registry as registry
+            raw = 'name = "team-worker"\n'
+            custom = registry.empty()
+            custom['roles']['team-worker'] = {
+                'origin': 'project-authored', 'source_ref': 'owner-task', 'intent': 'Bounded team work',
+                'acceptance': ['Return bounded output'], 'capabilities': ['inventory'],
+                'members': {'codex.toml': policy.digest(raw.encode())}, 'baseline': None,
+                'projections': {'codex': {'source': 'codex.toml', 'runtime_id': 'team-worker'}},
+                'integration': {'candidate_ref': None, 'coverage': 'not-assessed', 'status': 'pending',
+                                'evidence_ref': None, 'decision_ref': None}}
+            request = {'engine_root': str(engine), 'engine': pin, 'operation': 'registry-plan',
+                       'project_root': str(project), 'proposed': custom,
+                       'files': {registry.PACKAGES + 'team-worker/codex.toml': raw}}
+            prepared_result = invoke(request)
+            self.assertEqual(prepared_result.returncode, 0, prepared_result.stdout)
+            prepared = json.loads(prepared_result.stdout)
+            request = {k: v for k, v in request.items() if k not in {'proposed', 'files'}}
+            request.update(operation='registry-apply', plan=prepared['plan'], plan_sha256=prepared['plan_sha256'])
+            result = invoke(request)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            self.assertEqual(registry.inspect(str(project))['registry'], custom)
             (engine / 'src/distribution/subagent_policy.py').write_bytes(b'raise RuntimeError("untrusted")')
             result = invoke(request)
             self.assertNotEqual(result.returncode, 0)

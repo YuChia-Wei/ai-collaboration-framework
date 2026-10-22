@@ -135,6 +135,15 @@ outside the approved model/effort range needs explicit authority. Keep rapid mod
 preferences project-owned, separate from managed skill/role bytes; package updates
 do not adopt or replace them. Reuse an existing approved choice without asking again.
 
+When the target has selected a sub-agent resource registry, resolve the purpose
+and adapter through its explicit route before selecting the model. Verify the
+project package and runtime projection or the selected installed framework entry.
+Keep custom authoring outside managed core. An overlapping upstream capability
+is a comparison candidate, not automatic replacement authority. Use the selected
+resource manager for project-entry adoption/rebinding and the installation owner
+for managed drift; preserve baseline, local intent and unknown entries. Coverage,
+owner adoption, file readback and runtime discovery are distinct observations.
+
 Give each specialist or delegated worker a bounded handoff: goal and non-goals,
 source/artifact identities, accepted decisions and current approval, owned
 paths/operations, expected output and check, dependencies, stop conditions and

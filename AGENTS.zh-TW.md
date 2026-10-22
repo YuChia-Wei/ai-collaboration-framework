@@ -30,6 +30,7 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 - `failed`、`blocked-by-environment`、`not-applicable` 與 `deferred-with-owner` 都不是 `passed`。
 - 適用且已允許時，優先使用 IDE MCP refactoring operation。
 - 依任務從 `.ai/custom/sub-agent-policy.json` 選擇 sub-agent 模型與推理深度，不得直接繼承本對話。優先使用確定性工具；Codex 預設 Luna，實質推理使用 Sol；Claude 預設 Haiku，依任務使用 Sonnet。Astra／Opus 必須另行取得明確授權。確認 runtime 覆寫與實際呼叫身分；缺少政策或選定模型不可用時，停止該次委派。專案模型偏好與受管理角色套件分開維護，見[子代理管理](docs/sub-agent-management.md)。
+- 透過 `.ai/custom/sub-agent-registry.json` 解析已登記的 sub-agent 用途，委派前確認選定套件與 runtime entry。專案原稿放在 `.ai/custom/sub-agents/`。保留未知 entry，分開判讀上游涵蓋、owner 採納、檔案讀回與 runtime 啟用。登記資料不授予 framework 所有權，也不授權自動切換路由。
 
 ## 漸進式 Context 載入
 
