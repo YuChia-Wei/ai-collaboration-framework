@@ -12,6 +12,12 @@ non-goals, expected result, stop conditions and integration owner. State actual
 authorization and any explicit execution limit. Resolve only an applicable
 role; a static profile or configuration is not proof of an invocation.
 
+For registered purposes, resolve `.ai/custom/sub-agent-registry.json` and verify
+the selected project package/runtime projection before delegation. Supply that
+package's actual role path; do not substitute a similarly named framework role.
+Keep custom packages outside managed core and use explicit routes for overlapping
+capabilities. Registry metadata cannot grant installer ownership or prove adoption.
+
 Use task-selected model/effort from `.ai/custom/sub-agent-policy.json` and the
 permitted execution surface. Supply task, model, effort, selection reason and
 authority in the bounded assignment. Do not inherit the parent model. Codex

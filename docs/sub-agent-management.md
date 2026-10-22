@@ -1,4 +1,4 @@
-# Sub-agent 模型政策與獨立管理
+# Sub-agent 模型政策、客製資源與升級分流
 
 角色描述工作邊界；模型政策決定每次任務的模型與推理深度。兩者分開維護，
 讓模型改版、成本偏好與下游客製不必跟著 framework 發布，也不必修改 managed core。
@@ -9,6 +9,9 @@
 | --- | --- |
 | `.ai/core/sub-agents` 與由 lock 管理的 runtime entries | framework 套件，使用原安裝 plan/apply |
 | `.ai/custom/sub-agent-policy.json` | 專案自有，管理工具只在明確 apply 時更新 |
+| `.ai/custom/sub-agent-registry.json` | 專案自有的來源、資源閉包、整合證據引用與用途路由 |
+| `.ai/custom/sub-agents/<project-id>/` | 自建／明確衍生的原稿與必要參考資源，不放進 managed core |
+| registry 明確登記的 runtime entries | 專案投影；與原稿相同 bytes，由資源管理 plan/apply 更新 |
 | `.codex/config.toml`、`.claude/settings.json` | 專案／runtime 自有，明確檢視與合併必要設定 |
 | 未登記、自建或既有本地 agent entries | 保留原 owner，不自動接管、覆蓋或刪除 |
 
@@ -16,6 +19,8 @@
 或必裝 skill。只安裝角色不代表外部 engine 已存在。使用與該 engine 完全一致的
 pin；更新 framework 不更新 policy、不把它加入 lock，也不擅自採納新版預設。
 舊 engine closure 僅可作歷史 catalog/lock 的讀取資料；實際執行仍須驗證現行完整 pin。
+Policy 與 registry 是兩個獨立 version 1 格式；調整模型不必改角色內容，調整角色
+也不必重新分類所有模型。Registry 不加入 framework lock，不改 installer 的所有權。
 
 ## 初始政策與任務選擇
 
@@ -86,6 +91,11 @@ python -I -B <engine-root>/src/tools/manage-sub-agents.py < request.json
 | apply | project_root、plan、plan_sha256 | 只原子更新固定 policy 路徑；拒絕 stale plan |
 | resolve | project_root、adapter、task；可選 tier、authority_ref、observations、profile | task-specific dispatch 建議；缺政策時拒絕，不繼承 |
 | compare | baseline、local、candidate（各為 policy document；baseline 可 null） | 三方欄位差異；缺 base 明示，不自動合併／採納 |
+| registry-inspect | project_root | 登記來源、local delta、資源／投影漂移、managed drift、未知 entry |
+| registry-plan | project_root、proposed registry、files；可選 adopt、detach | 明確原稿與投影變更、全部 preimages、lock pin；唯讀 |
+| registry-apply | project_root、plan、plan_sha256 | 寫入選定專案原稿／投影，最後發布 registry；可續作 |
+| role-compare | project_root、candidates | 完整 declared members 的三方差異、能力候選與 runtime 碰撞 |
+| route-resolve | project_root、purpose、adapter、task；可選 tier、authority_ref、observations | 檢查明確路由的資源閉包，再解析模型選擇 |
 
 Policy schema version 1 有 `on_unavailable: stop`、`tasks`、`adapters` 與
 `extensions`。正式 reader/writer 為 engine 中的 `distribution.subagent_policy`。
@@ -110,6 +120,82 @@ profile 與 task 的衝突。caller 須提供實際有效設定，工具不讀�
    並合併，保留 hooks、permissions、plugins、MCP 與其他 env。
 5. 檢查實際 runtime discovery 與呼叫身分；既有 session 可能須重新載入設定。
 
-這是 #482/#484 原則的模型政策切片，不實作完整 skill 客製來源平台。Managed
-角色的語意客製仍使用 project-owned entry 與明確資源引用，不能改 core 來繞過
-drift，也不能自動刪除被 upstream 涵蓋的 local 內容。
+## 資源登記與標籤
+
+這次將 #482/#484 的做法實作於 sub-agents；一般 skill 客製設計仍由該 Issues 承接。
+正式 reader/writer 是 pinned engine 的 `distribution.subagent_registry`，不是單純放置
+一份沒人使用的標籤文件。未登記 custom 仍受原安裝器保護，不需先補登記才能保留。
+
+Registry 的 `roles` 以專案 ID 索引，每筆包括：
+
+- `origin`：`project-authored`、`project-derived` 或 `unknown`；搭配 `source_ref`。
+- `intent`、`acceptance` 與 `capabilities`：客製意圖、既有驗收引用、明確能力標籤。
+- `members`：相對 package root 的每個原稿／參考資源及 SHA-256。
+- `baseline`：來源 `ref` 與 `files` 的 UTF-8 原始快照；可為 null。缺 base 明示未知。
+- `projections`：每個 adapter 的原稿 `source` 與 `runtime_id`。檔案內 `name` 必須相符。
+- `integration`：`candidate_ref`、`coverage`、`status`、`evidence_ref`、`decision_ref`。
+
+`routes` 以 `purpose → adapter` 指向 `{kind, id, decision_ref, expected_sha256}`。
+Project route 的 ID 是 registry role ID，`expected_sha256` 為 null；framework route
+使用 canonical role ID 與已選定 runtime bytes 的 hash。Framework route 必須讀回
+真正 lock ownership、runtime entry 與整個角色資源閉包，尚未安裝或漂移就停止。
+
+| 顯示情境 | 來源與判讀 |
+| --- | --- |
+| 使用者自建 | project-authored 原稿；來源引用是專案聲明，工具不重建作者身分 |
+| 使用者修改 | baseline 與實際 local tree 不同；缺 base 時回報 unknown，不猜測 |
+| Framework 已整合客製需求 | coverage=covered、status=adopted，且附候選、驗證及 owner 決策引用；顯示帶 evidence reference 的標籤 |
+| 已寫入／已安裝 | 實際 bytes 與 project registry／framework lock 相符 |
+| Runtime 已發現／已啟用 | 需要另外觀察；以上欄位均不證明這件事 |
+
+工具不驗證引用中的語意結論或人類同意，因此回傳 `evidence_verified: false`。
+「已整合」可與「本地仍保留客製路由」同時成立。不要把自行填寫 coverage 當作
+驗收；caller 必須用客製意圖與 AC 核對候選，並沿用真實 owner 決策。
+
+## 原稿與 runtime entry 的更新
+
+`files` 是以完整專案相對路徑為 key、UTF-8 原稿文字為 value 的物件，只接受
+所選 `.ai/custom/sub-agents/<id>/` 內已宣告 members。未提供的 member 從目前
+原稿讀取並驗 hash。投影直接複製選定原稿，不自行放寬 tools／sandbox／model。
+
+初次接管既有 runtime entry，即使 bytes 一樣，也要在 `adopt` 明確列出
+`{".codex/agents/<id>.toml": "<current-sha256>"}`。已登記檔案被外部修改時，
+重新接受它也需相同的明確 preimage。這只取得 project manager 的更新範圍；
+任何真正 lock-owned path 都拒絕，不因標籤變成可覆寫。
+
+換 runtime 名稱時，同時修改原稿中的 name 和 binding.runtime_id，並在 `detach`
+列出原登記 entry 路徑。工具只移除 bytes 仍完全相符且已退出新投影集合的舊 entry。
+未登記檔案不刪除；取消登記／切換路由也保留所有 custom authoring 與 baseline。
+若保留 entry、只改 route，native 工具仍可能列出兩者，caller 必須使用明確路由。
+
+Plan 綁定 registry、framework lock、每個檔案的前後 hash。Apply 先完整檢查，
+再寫原稿與新 entry、執行明確 detach，最後寫 registry。這是多檔可續作操作，
+不宣稱跨檔 atomic transaction。中斷會回報 `interrupted`、`changed: true` 與
+已寫路徑；保留 exact plan 後明確重試。每筆只能處於原 preimage 或已接受 after
+bytes，其他修改會阻擋。程序強制終止可能留下 `.json.writer`；先確認 writer
+已停止，再由 owner 處理 guard。外部 writer 不遵守 guard 的競爭仍須避免。
+
+## 新版 framework 出現重疊角色時
+
+向 `role-compare` 提供每個候選的 `{id, ref, capabilities, files, runtime_paths}`。
+`files` 使用與 baseline/local 相同的 package-relative 名稱。相同 ID、能力標籤或
+runtime path 只表示要比較的候選；工具不從文字近似推導語意等效。未知 entry 的
+名稱碰撞也會回報，即使沒有對應的已登記能力。
+
+1. **保留客製**：維持目前 route，暫不選取會撞名的 framework role。
+2. **共存分流**：選定唯一名稱，例如 `team-reviewer`，更新原稿 name／binding，
+   以 registry-plan/apply 明確 detach 原 project entry；再交原 installer 安裝
+   framework role。以 purpose route 決定每個任務用哪一個。
+3. **採用 framework**：保留客製原稿與證據，明確 detach 舊 project entry，設定
+   framework route 的精確預期 hash，再執行原安裝流程。安裝尚未完成時 resolver
+   回報 pending，不能以 metadata 宣稱已切換成功。
+
+Managed 檔案若已直接改動，inspect 會顯示 managed-drift。可先在 project package
+保存客製內容／意圖，但本管理器不改 managed path。必須由原安裝／恢復 owner
+取得可驗證的舊 baseline，依支援程序恢復或處置；不能改 lock hash 消除漂移。
+
+本來源 repo 已選用 registry：7 個 project roles、20 份原稿／參考資源、8 個
+runtime entries；原有 runtime 名稱保留，避免把本次資源治理當作 native discovery
+遷移。未來自我安裝選中同名 framework roles 時，仍須先選上述共存／採用操作。
+這保留原本 unowned-collision 保護，並提供可執行的解決路徑。未發布的 0.21.0
+不作候選身份；比較及安裝須使用屆時實際取得的固定 artifact。

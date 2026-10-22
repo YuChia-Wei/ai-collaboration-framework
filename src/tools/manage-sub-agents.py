@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent project subagent policy management; pinned engine, no model calls."""
+"""Project subagent policy/resources/routing; pinned engine, no model calls."""
 import hashlib
 import json
 import os
