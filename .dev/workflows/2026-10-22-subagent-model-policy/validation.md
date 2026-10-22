@@ -199,7 +199,7 @@ The initial full snapshot invocation was blocked by automatic approval review;
 a reduced source-only packet was then admitted after GitHub confirmed the source
 repository is public. That actual invocation still produced no review.
 The owner selected manual Antigravity analysis of `F:/AICF-Release-Preview` with
-a supplied prompt as the fallback; preparing that local preview is pending.
+a supplied prompt as the fallback; the completed preparation is recorded below.
 
 A separate source-policy independent Sol/medium review examined immutable
 `15dd211e90f433be4ceb586f1f0643b078c7f180` against
@@ -209,5 +209,40 @@ lock and could overwrite it. The author reproduced the defect with a failing
 regression, then required the after-lock hash when completion evidence exists.
 Genuinely interrupted operations retain before/after recovery. The restored-lock,
 interrupted-operation and lockless completed-replay checks all passed (3 tests).
-Affected independent
-verification follows the correction commit; no Opus acceptance is inferred.
+Affected independent verification at
+`546c1041959ae7209d7afe758012bd34afc72838` confirmed that the P2 finding is resolved
+with no new findings. The fixed-head reviewer remained read-only and observed a
+clean worktree before and after review. No Opus acceptance is inferred.
+
+## Local preview and authorized integration handoff
+
+The existing `F:/AICF-Release-Preview` workspace was updated through the pinned
+Engine-2 public maintenance interface built from corrected source
+`546c1041959ae7209d7afe758012bd34afc72838`. The local catalog/subset version is
+`0.0.0-rc.92823105934746`; this is not a public Release or tag. Its original
+selection of 21 skills, 6 subagents, two knowledge packages and both adapters
+was retained. All 513 installed managed members passed strict installed-resource
+readback. Five pre-existing project documents and 756 Git files remained
+byte-identical. The project selection and explicit default subagent policy were
+saved under `.ai/project` through their owning interfaces.
+
+The local preparation first stopped on a missing caller catalog-identity argument,
+then on unsorted protected inputs. Both were invocation errors before mutation;
+the corrected request reused the successfully derived candidate. The final
+maintenance plan/apply and policy plan/apply succeeded. No product repair or
+additional model invocation was required.
+
+The workspace now contains `ANTIGRAVITY-REVIEW-PROMPT.md` and
+`PREVIEW-BUILD-INFO.json` for the owner's manual analysis. The prompt identifies
+the same-source external engine/catalog, evidence boundaries, and the absence of
+native activation or a successful prior Opus analysis. Manual review is still
+owner-pending, independently of source-policy integration approval.
+
+All nine implementation/checkpoint commit messages passed the source validator.
+The final handoff changes workflow records only; unchanged implementation and
+review evidence remain bound to their recorded commits. The owner authorized
+push, PR and merge. Use a merge commit to retain the coordinated migration and
+cross-runtime work as one branch unit, after current-head hosted checks and live
+PR/review readback. Issue #487 has deferred delivery intent (`Refs #487`): keep it
+open pending owner manual review/administrative closure. Do not infer Issue or
+Project completion, publication, branch cleanup or native activation from merge.
