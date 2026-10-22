@@ -12,8 +12,13 @@ non-goals, expected result, stop conditions and integration owner. State actual
 authorization and any explicit execution limit. Resolve only an applicable
 role; a static profile or configuration is not proof of an invocation.
 
-Use the user-selected model/effort and permitted execution surface. An explicit
-user choice may select a different reviewer. Do not silently raise model,
+Use task-selected model/effort from `.ai/custom/sub-agent-policy.json` and the
+permitted execution surface. Supply task, model, effort, selection reason and
+authority in the bounded assignment. Do not inherit the parent model. Codex
+full-history forks cannot override the model here; use fresh bounded context.
+Reconcile custom profile pins and forced Claude model/effort overrides before
+invocation. Missing policy/availability stops delegation; deterministic direct
+work remains available. An explicit user choice may select a different reviewer. Do not silently raise model,
 effort, cost, credential privileges or provider scope. Record selected settings
 separately from actual runtime observations; unavailable identity remains unknown.
 

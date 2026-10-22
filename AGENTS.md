@@ -31,7 +31,7 @@ owners. No merge or date proves CI success.
 - Prefer deterministic tools for inventories, paths, hashes, schemas, Git identity, build, test, and receipts.
 - `failed`, `blocked-by-environment`, `not-applicable`, and `deferred-with-owner` are not `passed`.
 - Prefer an applicable and permitted IDE MCP refactoring operation.
-- Sub-agents inherit the user's runtime model and reasoning effort. Do not automatically escalate model, effort, provider or cost because of a role name. Explain a needed escalation and obtain explicit user authorization for a visible separate task; runtime availability is not spending consent.
+- Select sub-agent model and effort by task from `.ai/custom/sub-agent-policy.json`, never by inheriting this conversation. Prefer deterministic tools; Codex defaults to Luna and uses Sol for substantive reasoning, Claude defaults to Haiku and uses Sonnet by task. Astra/Opus require separate explicit authorization. Check runtime overrides and actual invocation identity; missing policy or unavailable selection stops that delegation. Project model preferences are maintained separately from managed role packages; see [sub-agent management](docs/sub-agent-management.md).
 
 ## Progressive Context Loading
 

@@ -43,9 +43,16 @@ repository evidence. Respect any explicitly selected target language ownership.
   policy paths, required services or approval records.
 - Delegate only when authorized and available. Bound the task, ownership and
   evidence; retain one tracked writer per worktree and report actual invocations.
-- Keep delegation within the user's selected model, reasoning and cost boundary.
-  A role name is not permission to escalate. Disclose a needed escalation and
-  obtain explicit authorization for a visible separate task before using it.
+- Select the least costly sufficient model and supported effort for each delegated
+  task using the target's adopted policy; prefer deterministic tools for mechanical
+  work. Specify the choice explicitly rather than inheriting the parent model.
+  Missing policy, unavailable choices or conflicting runtime overrides stop the
+  affected delegation. Confirm actual invocation identity separately from configuration.
+- Keep model preferences and custom agent instructions project-owned and separate
+  from managed framework resources. Updates preserve local choices and unknown
+  entries; compare baseline/local/candidate before adopting a changed default.
+  A role name or available model grants no spending permission. Reuse approved
+  choices; escalation beyond the accepted model/effort boundary needs explicit authority.
 
 ## CLI Execution Routing
 

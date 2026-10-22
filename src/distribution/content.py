@@ -116,9 +116,9 @@ def check_sub_agent(package, blobs):
         raw=blobs[member].data.decode('utf-8')
         if aid=='codex':
             profile=tomllib.loads(raw)
-            if policy['policy_version']==2:
+            if policy['policy_version'] in (2,3):
                 require(not {'model','model_reasoning_effort','model_provider'} & profile.keys(),
-                        'sub-agent inherited Codex model/effort')
+                        'sub-agent delegated Codex model/effort')
             else:
                 require(profile.get('model')==policy[aid]['candidates'][0]
                         and profile.get('model_reasoning_effort')==policy[aid]['reasoning_effort'], 'sub-agent Codex model')
@@ -130,8 +130,8 @@ def check_sub_agent(package, blobs):
             require(match is not None, 'sub-agent Claude frontmatter')
             profile=yaml_object(match[1].encode(),'Claude frontmatter')
             require(profile.get('name')==package.id and canonical in match[2], 'sub-agent Claude binding')
-            if policy['policy_version']==2:
-                require(profile.get('model')=='inherit' and 'effort' not in profile,
+            if policy['policy_version'] in (2,3):
+                require(profile.get('model')==('inherit' if policy['policy_version']==2 else 'haiku') and 'effort' not in profile,
                         'sub-agent inherited Claude model/effort')
             else:
                 require(profile.get('model')==policy[aid]['candidates'][0], 'sub-agent Claude model')
@@ -147,7 +147,7 @@ def check_sub_agent(package, blobs):
 
 def sub_agent_model_policy(role):
     policy=validate('SubAgentModelPolicy',role.get('model_policy'))
-    if policy['policy_version']==2: return policy
+    if policy['policy_version'] in (2,3): return policy
     for aid in ('codex','claude'):
         candidates=policy[aid]['candidates']
         require(len(candidates)==len(set(candidates)), 'duplicate model candidate')
@@ -173,7 +173,7 @@ def model_availability(desired, observations):
 
 
 def resolved_sub_agent_models(packages, desired, observations):
-    """Read legacy policy-1 bindings; inherited roles cannot become fixed models."""
+    """Read legacy policy-1 bindings; delegated roles cannot become fixed installation models."""
     available=model_availability(desired,observations)
     bindings=[]
     for aid in desired['adapters']:
