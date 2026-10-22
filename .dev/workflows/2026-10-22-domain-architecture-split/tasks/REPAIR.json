@@ -1,0 +1,16 @@
+{
+  "task_id": "REPAIR",
+  "workflow_id": "2026-10-22-domain-architecture-split",
+  "owner_skill": "slice-implementer",
+  "title": "Repair portable role prerequisites and public subset diagnostics",
+  "status": "completed",
+  "created_at": "2026-10-22T15:03:34.847840+08:00",
+  "updated_at": "2026-10-22T15:18:36.752745+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "low",
+  "runtime_identity_source": "Effective configured fallback; no runtime override selected.",
+  "result_summary": "Three defects repaired at 01eabd7f; 133 distribution/schema tests passed, authentic pinned CLI diagnostics verified, fixed-diff independent review found no actionable findings. Gemini interrupted attempt and successful bounded retry/candidate rejection retained. Preview 513 managed/22 changed/drift 0 and 6 custom hashes preserved. Five Issue bodies read back, all open; merge/hosted gate/closure/release pending separately.",
+  "finding_status": "addressed"
+}
