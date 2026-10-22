@@ -3,13 +3,13 @@
   "workflow_id": "2026-10-22-subagent-model-policy",
   "owner_skill": "slice-implementer",
   "title": "Implement task routing and customization-preserving model policy",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-22T21:45:09+08:00",
-  "updated_at": "2026-10-22T21:45:09+08:00",
+  "updated_at": "2026-10-22T23:09:35+08:00",
   "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
   "template_version": "1.0.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "low",
   "runtime_identity_source": "Configured parent fallback only; active provider identity is not independently observed. Research/review children explicitly select Sol with fresh bounded context.",
-  "finding_status": "pending"
+  "finding_status": "no_supported_actionable_findings"
 }
