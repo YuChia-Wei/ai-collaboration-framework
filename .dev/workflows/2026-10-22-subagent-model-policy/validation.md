@@ -7,10 +7,6 @@ release, publication, Issue closure or paid model matrix was performed.
 
 - `python -I -B tests/run.py --suite distribution --suite schemas --suite loader`:
   153 tests, 0 failures, 0 errors, 0 skipped (2026-10-22, Windows, 14.41 seconds).
-  The earlier run exposed an unsynchronized inline schema definition and stale
-  Claude inheritance text; both were corrected. The added legacy-v2 fixture
-  initially used fields absent from the original schema; it was corrected to
-  the actual v2 contract before the final passing run.
 - Coverage includes explicit task/tier selection, premium authority requirement,
   provider/effort observations, conflicting overrides, legacy v1/v2 role reading,
   exact old engine catalog/lock closures, v3 adapter projection, policy plan/apply,
@@ -27,6 +23,13 @@ release, publication, Issue closure or paid model matrix was performed.
   match the policy; all seven existing project Codex profiles have no conflicting
   fixed model/effort/provider pins. Framework lock and installed skill bytes were
   not edited. The source project's old installed skill snapshot remains separate.
+- Exported all 25 engine members from immutable commit
+  `5d80f8cf939036d9a005a2af28496366937f5c6f` and exercised the public
+  `manage-sub-agents.py` interface in isolated Python outside the source checkout.
+  Project inspect matched the above hash; plan plus apply returned `unchanged`.
+  Resolve returned Luna/medium and Sol/medium for Codex inventory/review, and
+  Haiku/no effort and Sonnet/medium for Claude inventory/review. All remained
+  `configured`, availability unknown, invocation unobserved.
 
 Disposable tests used bounded `F:/aicf-subagents-487` on the rechecked NTFS RAM
 disk with per-process TEMP/TMP only. No machine-wide temporary setting changed.
@@ -45,14 +48,39 @@ Root AGENTS English and Taiwan Traditional Chinese carry matching rules. The
 public source AGENTS template receives portable task/cost/authorization/ownership
 principles, without copying source repository governance or specific model IDs.
 
-## Limits and pending evidence
+## Independent review
 
-Independent review is pending on a fixed local commit. Provider configuration,
-CLI version, available model listings and selected call arguments do not prove
-the executed provider identity or billing. No paid Claude run, downstream native
-installation acceptance, savings measurement or hosted CI pass is claimed.
-`claude --version` reports 2.1.239 on this host, below the documented invocation
-model/effort override requirements (2.1.251 / 2.1.292). Haiku defaults are
-configured; task-specific Claude invocation using these overrides is unavailable
-on this installed version and must stop. No CLI upgrade was selected or performed.
-Hosted `Source change gate` remains required for a future authorized PR.
+Reviewer: `subagent_policy_review`, a separate read-only Codex agent requested
+as `gpt-6.1-sol` with `medium` reasoning and fresh bounded context. Reviewed base
+`1d9a42c80a0f0db2d69dc36d335a090bfb071281` through head
+`5d80f8cf939036d9a005a2af28496366937f5c6f` using the installed `code-reviewer`
+common method, source policy, guardrails and Issue #487 acceptance criteria.
+
+Outcome: no supported actionable findings. Static coverage included policy
+selection and file operations, CLI authentication, exact current/legacy closure
+separation, v1/v2/v3 compatibility, runtime projections and documentation/tests.
+No reviewer tests or mutations were performed; the 153 passing checks were
+author-provided evidence. No technology knowledge package or exhaustive security
+coverage was requested or claimed. Disposition: local implementation accepted for
+this scope, with runtime/environment/provider limitations retained below.
+
+The reviewed product diff and governing rules remain unchanged. Documentation
+updates require content, reference and commit-message checks only.
+
+## Accepted Claude verification scope
+
+The owner accepts consistency with official Claude Code documentation as the
+Claude verification criterion for this delivery. Model precedence, supported
+per-invocation model/effort overrides and forced environment overrides were
+checked against the [official subagent documentation](https://code.claude.com/docs/en/sub-agents).
+This criterion is satisfied; a live Claude account test is not a prerequisite
+for completing the current work.
+
+The owner will perform live account tests separately in an appropriate team
+environment. This private computer will not use a company account, and no login
+or further Claude runtime validation is requested here. No live Claude invocation
+or billing result is claimed.
+
+Downstream native installation acceptance and savings measurement remain outside
+this delivery. Hosted `Source change gate` remains required for a future
+authorized PR.

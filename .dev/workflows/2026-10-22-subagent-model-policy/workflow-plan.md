@@ -15,6 +15,9 @@ Sol requests with `fork_turns=none`; no Astra child is authorized.
   policy/availability never authorizes parent inheritance or escalation.
 - Codex: Luna/Sol/Astra; Claude: Haiku/Sonnet/Opus. Premium is separately
   authorized. Provider-specific precedence and supported effort stay distinct.
+- For this delivery, the owner accepts Claude configuration alignment with
+  official documentation. Live account tests belong to the owner's later team
+  environment testing and are not a completion prerequisite on this private host.
 - Independently versioned project-owned `.ai/custom/sub-agent-policy.json` has
   a deterministic reader, preview/update writer and three-way comparison.
   Managed role bytes and framework lock do not own project model preferences.
@@ -30,10 +33,10 @@ Sol requests with `fork_turns=none`; no Astra child is authorized.
 ## Evidence and sequence
 
 1. Official Codex and Claude docs plus current static inventory; completed.
-2. Source policy/schema/profiles, portable manager and project settings; active.
-3. Focused resolver/management/distribution tests and old-lock compatibility.
-4. Immutable local commit and independent scoped Sol review; repair findings.
-5. Local-only delivery with actual results and unverified runtime/billing limits.
+2. Source policy/schema/profiles, portable manager and project settings; completed.
+3. Focused checks and old-lock compatibility; 153 checks passed.
+4. Immutable implementation commit and independent Sol review; no supported findings.
+5. Public CLI readback and local-only delivery records; completed.
 
 Claude references: https://code.claude.com/docs/en/sub-agents,
 https://code.claude.com/docs/en/model-config and
@@ -53,6 +56,25 @@ review. Hosted gate remains for a future authorized PR; not run without push.
 
 ## Current status
 
-Implementation and focused local checks are ready for immutable independent
-review. See [validation](validation.md). No runtime acceptance, savings
-measurement or publication claim. #482/#484 remain reference-only open design work.
+Authorized local implementation is complete at source commit
+`5d80f8cf939036d9a005a2af28496366937f5c6f`; the subsequent record commit contains
+only review/validation/closeout evidence. See [validation](validation.md).
+Branch: `codex/2026-10-22-subagent-model-policy`; base remains the SHA above.
+Issue #487 was read back open after implementation. #482/#484 remain
+reference-only open design work. No push, merge, publication, runtime acceptance
+or savings measurement is claimed.
+
+## Continuation boundary
+
+No local implementation task remains. The owner may separately authorize a PR
+and push; then inspect this branch and current provider state, retain the existing
+product checks unless the diff changes, and obtain actual hosted Source change
+gate success before integration. Do not close #487 or change Project state
+without the separately required authority and integration evidence.
+
+Claude documentation alignment is accepted. No further local Claude validation
+or company-account login is requested; the owner will conduct live account tests
+separately in the team environment. New checkouts must explicitly merge native
+settings proposals because this source project's `.codex/config.toml` remains
+ignored/local. General skill customization
+under #482/#484 and downstream native acceptance remain outside this delivery.
