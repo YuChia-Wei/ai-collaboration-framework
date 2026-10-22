@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.3.2`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.4.0`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -50,6 +50,6 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
 
-按需要的成果選 owner：requirement-author 可先探索；spec-author 依需求與接受的設計形成系統規格；test-designer 統一一般測試設計與正式測試規格。BDD／DDD metadata 可用不代表每次全讀或強制全作者 pipeline。
+按阻礙成果的未知選 owner：需求意圖交 requirement-author；語言、規則與模型歧義交 domain-model-designer；依賴、軟體結構與技術機制交 software-architect。混合問題可先做有界探索，逐段形成可供下一步使用的結果，不強制完整流水線。spec-author 依接受的需求與設計形成系統規格；test-designer 負責測試層級、資料與預期結果來源。技術限制無法滿足業務一致性時，回饋模型 owner，不自行改寫規則。BDD／DDD metadata 可用不代表每次全讀。
 
 獨立 Story 規劃、撰寫、正規化或整份／指定 AC 需求審查，可在可用時選 user-story-author；PRD／Feature／一般需求仍由 requirement-author 處理，不構成必經管線。

@@ -42,13 +42,14 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前 distribution catalog 有 20 個 skills，包含恢復的開發編排 skill、可選的 `ai-context-init@0.2.1`、可選的 `workflow-records@0.1.0` 與可選的 `user-story-author@0.1.0`（來源套件可用，不代表本來源專案已安裝此路由）。`project-initialization` preset 獨立選取初始化；既有 presets 與本來源專案的 17-skill installation 維持原狀。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前來源 distribution catalog 有 21 個 skills；版本與責任見 [skill 目錄](docs/skills/README.md)。來源以 `domain-model-designer` 與 `software-architect` 取代 `ddd-ca-hex-architect`，不保留 alias。原本選取舊 ID 的四個來源 presets 現在改選兩個新 ID。本來源專案既有的 17-skill installation 是分開且未變的 snapshot，仍包含舊 architect entry；新來源套件不是已安裝路由。呼叫前須核對實際 runtime entry。可選的 `ai-context-init`、`workflow-records` 與 `user-story-author` 仍是可獨立選取的來源套件。`project-initialization` preset 獨立選取初始化。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
 | AI-context audit 或 comparison | `ai-context-auditor` |
 | AI-context governance 與 reusable context maintenance | `ai-context-governance` |
-| Architecture、GWT design、code review、diagnosis 或 implementation | `ddd-ca-hex-architect` / `test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
+| 領域探索／建模或軟體架構 | Source owners：`domain-model-designer` / `software-architect`。在另行選定升級前，本專案已安裝的路由是 [ddd-ca-hex-architect](.agents/skills/ddd-ca-hex-architect/SKILL.md)（Claude：`.claude/skills/ddd-ca-hex-architect/SKILL.md`）；依其安裝契約操作。它不是任一新來源套件的 alias。 |
+| Test design、code review、diagnosis 或 implementation | `test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 | Decisions、lessons、local backlog 或 pull requests | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` |
 | 多階段軟體開發 | `software-development-orchestrator` 負責階段選擇與專業 skill 交接；source `.dev/` policy 與 Issue authority 擁有 workflow records 與整合權限 |

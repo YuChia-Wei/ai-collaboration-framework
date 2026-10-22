@@ -25,3 +25,6 @@ unknowns and current authority without inventing a mandatory pipeline.
 Return subject/scope, findings (or no findings within that scope), consulted context
 and material limits/open decisions. No findings is a bounded review result, not
 product acceptance, approval, test execution or proof of all unexamined content.
+
+Selected method knowledge may clarify the criteria, but a stylistic preference
+or different valid GWT expression is not a defect without source-based impact.

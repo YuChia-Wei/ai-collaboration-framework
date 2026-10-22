@@ -17,7 +17,7 @@ RC4 的舊目錄、固定版本連結與實測邊界保留於 [RC4 安裝說明]
    安裝、驗證，以及日後調整與復原。
 2. [知識套件與缺少知識的影響](knowledge-packages.md)：哪些能力會減少、
    如何分開安裝與採用規則，以及不安裝知識時可做什麼。
-3. [各 skill 使用說明](skills/README.md)：18 個發行 skill 的操作、輸入、
+3. [各 skill 使用說明](skills/README.md)：來源 catalog 的 skill 選讀表、操作、輸入、
    產出、範例與限制。
 4. [工具型 skills 共通設定](tool-skills.md)：五個 record／CBF 工具的設定、
    `explain` request、生命週期與 provider 邊界。
@@ -66,7 +66,7 @@ Preset 是選擇的起點，名稱不保證包含所有你需要的項目。
 
 `software-development-orchestrator` 已恢復開發階段協調；舊的 portable
 workflow-v2 紀錄操作已退場，workflow 儲存方式由專案決定。
-`standards-promotion` 是未發佈的實驗，不在本手冊的 18 個可安裝 skills 中。
+`standards-promotion` 是未發佈的實驗，不在現行可安裝的 skill 目錄中。
 舊版 published-format 升級／復原不能套用新的安裝命令便宣稱相容。
 實際 runtime discovery、跨電腦復原與穩定版升級，仍須各自取得對應驗收。
 

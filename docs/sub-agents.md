@@ -5,6 +5,11 @@
 runtime profile。發布沿用 `src/distribution/manifest.yaml` 的 catalog
 與既有 Engine 2；沒有另外一套複製或安裝工具。
 
+目前六個角色涵蓋證據整理、調和、語意治理分析、報告彙整、固定版本獨立審核
+與上下文翻譯。它們提供有界的委派責任；需求、領域建模、軟體架構與實作方法
+仍由選定 skills 提供。角色存在不代表已啟動 agent，也不代表自動取得另一模型、
+額外工具權限或執行授權；使用哪個角色與 skill 應由當次工作範圍決定。
+
 這份設定需要包含 sub-agents 的新 catalog 及其配對 engine。已發布的 RC4
 沒有這些角色，不能用新設定要求舊 catalog 安裝。舊 engine 遇到新的
 `sub-agent` component kind 或 selection version 3 會拒絕處理。
@@ -98,9 +103,12 @@ profile，即使內容相同，也會造成 collision；安裝器不會自動接
 lock 所擁有的檔案，其他 project profiles 保留。
 
 角色只提供執行邊界，不代替 target-owned policy、授權、驗證工具或
-parent 的 integration 決策。Fixed-head auditor 的 preflight/tooling
-前提仍須由 caller 證明；套件不提供 source repository 的 `.dev/`
-治理檔案。檔案發布、安裝驗證、runtime discovery 與角色實際執行是
+parent 的 integration 決策。Fixed-head auditor 由 parent 明確提供固定 commit、
+比較基準、範圍、判準、實際權限與停止條件；不依賴來源庫的 classifier、
+packet tier、lease 或 preflight 腳本。若 target 另有必要檢查，仍須確認
+工具可用且執行方式已授權；無法執行時回報 blocked。套件不提供 source repository 的 `.dev/`
+治理檔案。四個修正權威引用的角色套件升至 `0.1.1`，不改現有 runtime 工具權限。
+檔案發布、安裝驗證、runtime discovery 與角色實際執行是
 不同證據。
 
 ## 模型選型與成本邊界

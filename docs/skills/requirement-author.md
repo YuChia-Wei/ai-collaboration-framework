@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.1`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.2`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -14,7 +14,7 @@
 
 ## 何時用／界線
 
-不自動加規格、情境設計或 problem-frame 階段；文件作者不能宣稱 stakeholder 已核准、已實作或已跑驗收。
+需求可包含 GWT 驗收例子；領域模型的 aggregate／不變條件設計由 domain-model-designer 負責，軟體機制由 software-architect 負責。不自動加規格、測試設計或 problem-frame 階段；文件作者不能宣稱 stakeholder 已核准、已實作或已跑驗收。
 
 ## 範例請求
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-metadata 4 宣告 optional `engineering-common@0.3.0`。`explore` 可選 collaborative-discovery、BDD discovery、DDD domain-discovery；`draft`／`normalize` 可選 BDD discovery/formulation 與 DDD domain-discovery。只讀任務需要的資源，依 references/knowledge.md 驗證 lock、hash、allowlist 與 authority。缺少時揭露 unavailable，不偷讀 source，也不強制先 explore。
+metadata 4 宣告 optional `engineering-common@0.4.0`。`explore` 可選 collaborative-discovery、BDD discovery、DDD domain-discovery；`draft`／`normalize` 可選 BDD discovery/formulation 與 DDD domain-discovery。只讀任務需要的資源，依 references/knowledge.md 驗證 lock、hash、allowlist 與 authority。缺少時揭露 unavailable，不偷讀 source，也不強制先 explore。
 
 ## 開始使用
 

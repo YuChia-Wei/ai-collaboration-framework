@@ -12,6 +12,8 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from distribution.content import closure, dependency_key, descriptor, load_content_package, ordered, selected_references, load_sub_agent_package, check_sub_agent
+from distribution import catalog
+from distribution.content import desired_shape
 from distribution.contracts import validate
 from distribution.data import DistributionError, json_bytes, yaml_object
 from distribution.git_source import Blob
@@ -115,6 +117,99 @@ class SourceDeclarationTests(unittest.TestCase):
                         self.assertIn(operation["instructions"], package.members)
                 if data["configuration"] is None:
                     self.assertEqual(data["artifact_roles"], [])
+
+class ArchitectureSplitSelectionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        _, packages, source_contents = source_inventory()
+        # Source-backed resolver unit fixture, not artifact admission or installation.
+        pin = {"identity": "catalog:1:0.1.0:" + "1" * 40 + ":" + "2" * 64,
+               "catalog_sha256": "3" * 64, "files_sha256": "4" * 64}
+        files, contents = [], {}
+        for (kind, owner, member), raw in sorted(source_contents.items()):
+            path = f"packages/{kind}/{owner}/{member}"
+            files.append({"path": path, "kind": kind, "owner": owner, "member": member})
+            contents[path] = raw
+        cls.parent_catalog = catalog.Catalog(
+            None,
+            {"components": sorted((descriptor(kind, p) for (kind, _), p in packages.items()),
+                                  key=dependency_key), "adapters": [], "presets": []},
+            {"files": files}, pin, {}, contents, packages)
+
+    def desired(self, skills, *, knowledge=(), bindings=()):
+        return {"selection_version": 2, "catalog": dict(self.parent_catalog.pin),
+                "skills": sorted(skills), "knowledge": sorted(knowledge), "adapters": [],
+                "bindings": sorted(bindings, key=lambda row: row["id"]), "skill_naming": "original"}
+
+    @staticmethod
+    def binding(capability, operation, resources):
+        return {"id": "selected-method", "package": "engineering-common", "resources": sorted(resources),
+                "use_as": "knowledge", "selector": {
+                    "capabilities": [capability], "operations": [operation], "path_prefixes": ["."],
+                    "technology_profile": None, "file_types": ["markdown"], "execution_modes": ["local"]},
+                "authorities": [], "required_rule_ids": [], "required_for_coverage": False}
+
+    def test_architecture_split_selection_and_retirement(self):
+        choices = (("domain-model-designer",), ("software-architect",),
+                   ("domain-model-designer", "software-architect"))
+        for skills in choices:
+            for knowledge in ((), ("engineering-common",), ("dotnet-backend", "engineering-common")):
+                with self.subTest(skills=skills, knowledge=knowledge):
+                    result = catalog.resolve_selection(self.parent_catalog,
+                                                       self.desired(skills, knowledge=knowledge))
+                    actual = {(row["kind"], row["id"]) for row in result["components"]}
+                    expected = {("skill", name) for name in skills}
+                    expected.update(("knowledge", name) for name in knowledge)
+                    self.assertEqual(actual, expected)
+                    if not knowledge:
+                        unavailable_owners = {row["package"] for row in result["unavailable"]
+                                              if row["status"] == "unavailable"}
+                        self.assertTrue(set(skills) <= unavailable_owners)
+        retired = self.desired(("ddd-ca-hex-architect",))
+        # Generic ID shape remains valid; this catalog owns retirement rejection.
+        desired_shape(retired)
+        with self.assertRaisesRegex(DistributionError, "selection-unavailable"):
+            catalog.resolve_selection(self.parent_catalog, retired)
+
+    def test_new_operation_bindings_match_source_consumption(self):
+        discovery = ("member:bdd/discovery.md", "member:ddd/domain-discovery.md",
+                     "member:discovery/collaborative-discovery.md")
+        cases = (("domain-model-designer", "architecture", "explore", discovery),
+                 ("user-story-author", "requirements", "plan", discovery),
+                 ("spec-author", "specification", "draft", ("member:bdd/formulation.md",)))
+        packages = self.parent_catalog.packages
+        common = packages[("knowledge", "engineering-common")]
+        for skill_id, capability, operation, resources in cases:
+            with self.subTest(skill=skill_id, operation=operation):
+                consumer = packages[("skill", skill_id)]
+                self.assertIn(operation, {row["id"] for row in consumer.metadata["operations"]})
+                uses = [row for row in consumer.metadata.get("knowledge_consumption", [])
+                        if row["package"] == "engineering-common" and operation in row["operations"]]
+                self.assertTrue(uses)
+                for row in uses:
+                    self.assertEqual(row["version"], common.version)
+                allowed = {resource for row in uses for resource in row["resources"]}
+                self.assertTrue(set(resources) <= allowed)
+                binding = self.binding(capability, operation, resources)
+                result = catalog.resolve_selection(
+                    self.parent_catalog, self.desired((skill_id,), knowledge=("engineering-common",),
+                                                      bindings=(binding,)))
+                self.assertEqual(result["binding_observations"], [{"binding": binding,
+                                 "status": "available", "semantic_applicability": "target-owned"}])
+
+    def test_story_plan_cannot_bind_formulation(self):
+        story = self.parent_catalog.packages[("skill", "user-story-author")]
+        plan_resources = {resource for row in story.metadata.get("knowledge_consumption", [])
+                          if row["package"] == "engineering-common" and "plan" in row["operations"]
+                          for resource in row["resources"]}
+        self.assertNotIn("member:bdd/formulation.md", plan_resources)
+        binding = self.binding("requirements", "plan",
+                               ("member:bdd/discovery.md", "member:bdd/formulation.md"))
+        desired = self.desired(("user-story-author",), knowledge=("engineering-common",), bindings=(binding,))
+        desired_shape(desired)
+        with self.assertRaisesRegex(DistributionError, "binding-unresolved: resource capability/operation"):
+            catalog.resolve_selection(self.parent_catalog, desired)
+
 
 def blob(name, value):
     raw = value if type(value) is bytes else json_bytes(value)
