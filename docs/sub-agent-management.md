@@ -8,9 +8,9 @@
 | 內容 | Owner／更新方式 |
 | --- | --- |
 | `.ai/core/sub-agents` 與由 lock 管理的 runtime entries | framework 套件，使用原安裝 plan/apply |
-| `.ai/custom/sub-agent-policy.json` | 專案自有，管理工具只在明確 apply 時更新 |
-| `.ai/custom/sub-agent-registry.json` | 專案自有的來源、資源閉包、整合證據引用與用途路由 |
-| `.ai/custom/sub-agents/<project-id>/` | 自建／明確衍生的原稿與必要參考資源，不放進 managed core |
+| `.ai/project/sub-agent-policy.json` | 專案自有，管理工具只在明確 apply 時更新 |
+| `.ai/project/sub-agent-registry.json` | 專案自有的來源、資源閉包、整合證據引用與用途路由 |
+| `.ai/project/sub-agents/<project-id>/` | 自建／明確衍生的原稿與必要參考資源，不放進 managed core |
 | registry 明確登記的 runtime entries | 專案投影；與原稿相同 bytes，由資源管理 plan/apply 更新 |
 | `.codex/config.toml`、`.claude/settings.json` | 專案／runtime 自有，明確檢視與合併必要設定 |
 | 未登記、自建或既有本地 agent entries | 保留原 owner，不自動接管、覆蓋或刪除 |
@@ -96,6 +96,9 @@ python -I -B <engine-root>/src/tools/manage-sub-agents.py < request.json
 | registry-apply | project_root、plan、plan_sha256 | 寫入選定專案原稿／投影，最後發布 registry；可續作 |
 | role-compare | project_root、candidates | 完整 declared members 的三方差異、能力候選與 runtime 碰撞 |
 | route-resolve | project_root、purpose、adapter、task；可選 tier、authority_ref、observations | 檢查明確路由的資源閉包，再解析模型選擇 |
+| layout-inspect | project_root | 實際專案目錄、完整檔案清單與 lock identity；唯讀 |
+| layout-plan | project_root | 從舊目錄遷移的完整前後內容、參照修改與 lock transition；唯讀 |
+| layout-apply | project_root、plan、plan_sha256 | 套用已接受的遷移；可續作，拒絕漂移與重播覆寫 |
 
 Policy schema version 1 有 `on_unavailable: stop`、`tasks`、`adapters` 與
 `extensions`。正式 reader/writer 為 engine 中的 `distribution.subagent_policy`。
@@ -111,6 +114,44 @@ configured/availability unknown；有匹配資料時為 selected/caller-observed
 profile 與 task 的衝突。caller 須提供實際有效設定，工具不讀私人 credentials。
 
 ## 升級與客製協調
+
+### 專案目錄更名與舊版相容
+
+`.ai/project/` 儲存專案維護的 AI 設定、選擇、資源與登錄。它和框架管理的
+`.ai/core/` 分開；目錄名稱表達管理歸屬，registry 保留內容來源與整合證據。
+這次只處理共用目錄與 sub-agents 的遷移，不定義 skills 的客製合併政策。
+
+新專案使用 `.ai/project/`。若只有 `.ai/custom/`，新工具繼續從該目錄讀寫，
+回報實際路徑；不會將舊 registry 誤認為空白，也不會暗中建立第二份政策。
+兩個目錄同時存在時，即使內容相同也停止，須先由專案釐清唯一來源。
+舊版 v3 role policy 路徑及既有 23、25、26 檔 engine closure 保留讀取相容性；
+執行仍須提供目前完整且驗證過的 engine pin。
+
+明確更名時，先停止會修改專案設定、角色與安裝的其他工具：
+
+1. 用 `layout-inspect` 核對舊目錄、lock 與完整清單。
+2. 用 `layout-plan` 取得完整前後雜湊及修改清單，保留回傳的 plan 與 plan_sha256。
+3. 檢視後將原 plan 原封不動傳入 `layout-apply`；有外部修改時重新評估，不覆寫。
+4. 用 `registry-inspect`、`route-resolve` 及安裝檢查讀回實際結果。
+
+遷移以目錄 rename 保留未知檔案、二進位內容與空目錄，只修改已登錄原稿與其
+完全相符的 project runtime 投影中的舊路徑，並同步 registry member hashes。
+模型選擇、extensions、來源引用、baseline、路由與採納紀錄保留。未登錄的
+native entry 不改寫；若它自行引用舊路徑，由該資源的 owner 另行處理。
+
+安裝輸入不能只搬檔案：遷移透過正式 lock reader/serializer 將已驗證的
+`project_inputs` 路徑與相關雜湊改成新位置，記錄實際執行 engine，最後發布 lock。
+既有 candidate、selection、inventory 與 managed members 保持一致，沒有升級
+已安裝 skill 或接管 framework runtime entry。其他原已漂移的 project input
+不會被順便重新接受。若 desired binding 的 authority 位於舊目錄，遷移會拒絕；
+這需要另行規劃安裝選擇的變更，不能以目錄搬移偷偷改寫已接受的 authority。
+
+遷移是可續作的多檔操作，並非跨檔原子交易。復原資料只放在
+`.ai/local/project-layout-plan.json` 與 `project-layout-complete.json`，不作資源所有權
+或採納紀錄；保留原 plan，檢查 `interrupted` 回傳後才能明確續作。已完成重播只
+接受仍相符的 after-state，不能重新取得使用者後續修改的所有權。參與的新工具
+共用安裝 writer lock；舊版 `.writer` guard 也會阻擋搬移。外部編輯器的並行修改
+仍須由 caller 停止。舊版程式本身不會因搬移取得新路徑支援，後續操作須使用新 engine。
 
 1. 保留原 policy 與 custom entries；未登記仍受安裝器原有保護。
 2. 明確提供舊 baseline、local policy 與新 candidate；無 base 不推論差異來源。
@@ -155,7 +196,7 @@ Project route 的 ID 是 registry role ID，`expected_sha256` 為 null；framewo
 ## 原稿與 runtime entry 的更新
 
 `files` 是以完整專案相對路徑為 key、UTF-8 原稿文字為 value 的物件，只接受
-所選 `.ai/custom/sub-agents/<id>/` 內已宣告 members。未提供的 member 從目前
+所選 `.ai/project/sub-agents/<id>/` 內已宣告 members。未提供的 member 從目前
 原稿讀取並驗 hash。投影直接複製選定原稿，不自行放寬 tools／sandbox／model。
 
 初次接管既有 runtime entry，即使 bytes 一樣，也要在 `adopt` 明確列出

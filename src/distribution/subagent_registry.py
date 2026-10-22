@@ -12,9 +12,19 @@ import tomllib
 
 from . import installation_state as state
 from . import subagent_policy as p
+from .project_layout import resolve as layout
 
-REGISTRY = '.ai/custom/sub-agent-registry.json'
-PACKAGES = '.ai/custom/sub-agents/'
+
+def registry_path(project):
+    return layout(project) + '/sub-agent-registry.json'
+
+
+def packages(project):
+    return layout(project) + '/sub-agents/'
+
+
+REGISTRY = '.ai/project/sub-agent-registry.json'
+PACKAGES = '.ai/project/sub-agents/'
 ADAPTERS = {'codex': ('.codex/agents/', '.toml'), 'claude': ('.claude/agents/', '.md')}
 
 
@@ -129,7 +139,7 @@ def at(project, name):
 
 
 def read_registry(project):
-    raw = p.raw_read(at(project, REGISTRY))
+    raw = p.raw_read(at(project, registry_path(project)))
     return (empty() if raw is None else validate(p.decode(raw))), p.digest(raw)
 
 
@@ -139,20 +149,21 @@ def lock(project):
     return (None, {}) if installed is None else (installed.sha256, installed.members)
 
 
-def expected(registry):
+def expected(registry, prefix=PACKAGES):
     result = {}
     for rid, role in registry['roles'].items():
-        result.update({PACKAGES + rid + '/' + name: digest for name, digest in role['members'].items()})
+        result.update({prefix + rid + '/' + name: digest for name, digest in role['members'].items()})
         for adapter, binding in role['projections'].items():
             result[runtime(adapter, binding['runtime_id'])] = role['members'][binding['source']]
     return result
 
 
 def inspect(project):
+    REGISTRY, PACKAGES = registry_path(project), packages(project)
     registry, digest = read_registry(project)
     _, managed = lock(project)
     observed = {}
-    for name, wanted in expected(registry).items():
+    for name, wanted in expected(registry, PACKAGES).items():
         actual = p.digest(p.raw_read(at(project, name)))
         observed[name] = {'sha256': actual, 'state': 'managed-collision' if name in managed else
                          'missing' if actual is None else 'matched' if actual == wanted else 'drift'}
@@ -211,10 +222,11 @@ def plan(project, proposed, files, adopt=None, detach=None):
     explicit list of no-longer-selected, previously registered runtime entries.
     Authoring resources are retained even after unregistering a role.
     """
+    REGISTRY, PACKAGES = registry_path(project), packages(project)
     validate(proposed)
     old, before_registry = read_registry(project)
     lock_sha, managed = lock(project)
-    owned, wanted = expected(old), expected(proposed)
+    owned, wanted = expected(old, PACKAGES), expected(proposed, PACKAGES)
     adopt, detach = {} if adopt is None else adopt, [] if detach is None else detach
     p.require(type(files) is dict and type(adopt) is dict and type(detach) is list, 'plan maps')
     p.require(len(set(detach)) == len(detach), 'duplicate detach')
@@ -260,6 +272,13 @@ def plan(project, proposed, files, adopt=None, detach=None):
 
 
 def apply(project, document, plan_sha256):
+    from .project_layout import writer
+    with writer(project):
+        return _apply(project, document, plan_sha256)
+
+
+def _apply(project, document, plan_sha256):
+    REGISTRY, PACKAGES = registry_path(project), packages(project)
     fields(document, 'plan_version project_root lock_sha256 previous writes')
     p.require(type(document['plan_version']) is int and document['plan_version'] == 1
               and document['project_root'] == str(Path(project))
@@ -267,12 +286,12 @@ def apply(project, document, plan_sha256):
     rows = document['writes']
     p.require(type(rows) is list and rows and rows[-1]['path'] == REGISTRY, 'registry must publish last')
     final = validate(p.decode(rows[-1]['content'].encode('utf-8')))
-    wanted = expected(final)
+    wanted = expected(final, PACKAGES)
     current, current_sha = read_registry(project)
     previous = validate(document['previous'])
     p.require(current_sha in (rows[-1]['before_sha256'], rows[-1]['after_sha256']), 'stale registry plan')
     p.require(current == (final if current_sha == rows[-1]['after_sha256'] else previous), 'previous registry mismatch')
-    owned = expected(previous)
+    owned = expected(previous, PACKAGES)
     state._paths([r['path'] for r in rows])
     for row in rows:
         fields(row, 'path before_sha256 after_sha256 content')
@@ -346,6 +365,7 @@ def apply(project, document, plan_sha256):
 
 
 def compare(project, candidates):
+    REGISTRY, PACKAGES = registry_path(project), packages(project)
     current = inspect(project)
     p.require(type(candidates) is list and len(candidates) <= 64, 'candidate budget')
     results, collisions = [], []
@@ -394,6 +414,7 @@ def compare(project, candidates):
 
 
 def resolve(project, purpose, adapter, task, **selection):
+    REGISTRY, PACKAGES = registry_path(project), packages(project)
     current = inspect(project)
     route = current['registry']['routes'].get(purpose, {}).get(adapter)
     p.require(route is not None, 'explicit role route missing')

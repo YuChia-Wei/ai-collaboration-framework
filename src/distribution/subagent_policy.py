@@ -15,7 +15,7 @@ import re
 import stat
 import tempfile
 
-POLICY_PATH = '.ai/custom/sub-agent-policy.json'
+POLICY_PATH = '.ai/project/sub-agent-policy.json'
 LIMIT = 256 * 1024
 TIERS = ('routine', 'reasoning', 'premium')
 TASKS = {'inventory': 'routine', 'translation': 'routine', 'synthesis': 'routine',
@@ -119,7 +119,8 @@ def direct(target, *, directory=False, missing=False):
 def location(project):
     root = Path(project)
     direct(root, directory=True)
-    target = root / POLICY_PATH
+    from .project_layout import resolve
+    target = root / resolve(project) / 'sub-agent-policy.json'
     direct(target, missing=True)
     return target
 
@@ -147,7 +148,7 @@ def digest(raw):
 def inspect(project):
     raw = raw_read(location(project))
     return {'outcome': 'missing' if raw is None else 'inspected', 'changed': False,
-            'path': POLICY_PATH, 'sha256': digest(raw),
+            'path': location(project).relative_to(Path(project)).as_posix(), 'sha256': digest(raw),
             'policy': None if raw is None else validate(decode(raw)),
             'ownership': 'project', 'invocation_observed': False}
 
@@ -162,7 +163,7 @@ def native_defaults(policy):
 def plan(project, proposed):
     validate(proposed)
     current = inspect(project)
-    document = {'plan_version': 1, 'project_root': str(Path(project)), 'path': POLICY_PATH,
+    document = {'plan_version': 1, 'project_root': str(Path(project)), 'path': current['path'],
                 'before_sha256': current['sha256'], 'after_sha256': digest(encode(proposed)),
                 'proposed': deepcopy(proposed)}
     return {'outcome': 'planned', 'changed': False, 'plan': document,
@@ -170,9 +171,15 @@ def plan(project, proposed):
 
 
 def apply(project, document, plan_sha256):
+    from .project_layout import writer
+    with writer(project):
+        return _apply(project, document, plan_sha256)
+
+
+def _apply(project, document, plan_sha256):
     require(type(document) is dict and set(document) == {
         'plan_version', 'project_root', 'path', 'before_sha256', 'after_sha256', 'proposed'}, 'plan fields')
-    require(document['plan_version'] == 1 and document['path'] == POLICY_PATH
+    require(document['plan_version'] == 1 and document['path'] == location(project).relative_to(Path(project)).as_posix()
             and document['project_root'] == str(Path(project)), 'plan target')
     require(digest(encode(document)) == plan_sha256, 'plan changed')
     validate(document['proposed'])
@@ -204,7 +211,7 @@ def apply(project, document, plan_sha256):
         os.replace(temporary, target)
         temporary = None
         require(raw_read(target) == replacement, 'policy readback mismatch')
-        return {'outcome': 'applied', 'changed': True, 'path': POLICY_PATH, 'sha256': digest(replacement),
+        return {'outcome': 'applied', 'changed': True, 'path': document['path'], 'sha256': digest(replacement),
                 'native_settings_applied': False, 'invocation_observed': False}
     finally:
         if temporary is not None:
@@ -288,6 +295,9 @@ def resolve(policy, adapter, task, *, tier=None, authority_ref=None, observation
 def execute(request):
     require(type(request) is dict, 'request object required')
     operation = request.get('operation')
+    if operation in {'layout-inspect', 'layout-plan', 'layout-apply'}:
+        from .project_layout import execute as layout_execute
+        return layout_execute(request)
     if operation in {'registry-inspect', 'registry-plan', 'registry-apply', 'role-compare', 'route-resolve'}:
         from .subagent_registry import execute as registry_execute
         return registry_execute(request)

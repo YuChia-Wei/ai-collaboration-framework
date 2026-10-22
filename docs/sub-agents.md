@@ -75,7 +75,7 @@ Codex custom agents 使用 `.codex/agents/*.toml`，名稱、說明及
 `developer_instructions` 為必要欄位，見
 [OpenAI 官方 sub-agents 文件](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
 Canonical role 的 `model_policy` version 3 要求依任務選型，從專案自有的
-`.ai/custom/sub-agent-policy.json` 讀取偏好，不直接繼承主對話。Codex profile
+`.ai/project/sub-agent-policy.json` 讀取偏好，不直接繼承主對話。Codex profile
 不固定模型，以免覆蓋每次委派參數；由 parent 明確傳入模型與 effort，另設
 Luna 專案預設防止漏填。設定與實際呼叫仍須分別確認。
 安裝器不改 `.codex/config.toml`、個人設定、concurrency 或 credentials。
@@ -108,7 +108,7 @@ parent 的 integration 決策。Fixed-head auditor 由 parent 明確提供固定
 比較基準、範圍、判準、實際權限與停止條件；不依賴來源庫的 classifier、
 packet tier、lease 或 preflight 腳本。若 target 另有必要檢查，仍須確認
 工具可用且執行方式已授權；無法執行時回報 blocked。套件不提供 source repository 的 `.dev/`
-治理檔案。六個角色套件升至 `0.2.0`，不改角色的檔案與工具責任邊界。
+治理檔案。六個角色套件為 `0.2.1`，不改角色的檔案與工具責任邊界。
 檔案發布、安裝驗證、runtime discovery 與角色實際執行是
 不同證據。
 

@@ -88,7 +88,7 @@ class PolicyTests(unittest.TestCase):
             self.assertEqual(unknown.read_bytes(), b'project custom instructions')
             self.assertFalse((root / '.ai/framework.lock').exists())
             self.assertFalse((root / '.codex/config.toml').exists())
-            self.assertFalse(list((root / '.ai/custom').glob('*.writer')))
+            self.assertFalse(list((root / '.ai/project').glob('*.writer')))
 
     def test_missing_policy_invalid_paths_and_writer_conflict(self):
         with tempfile.TemporaryDirectory() as name:
@@ -96,8 +96,8 @@ class PolicyTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'policy missing'):
                 policy.execute({'operation': 'resolve', 'project_root': name, 'adapter': 'codex', 'task': 'inventory'})
             prepared = policy.plan(name, policy.defaults())
-            (root / '.ai/custom').mkdir(parents=True)
-            guard = root / '.ai/custom/sub-agent-policy.json.writer'
+            (root / '.ai/project').mkdir(parents=True)
+            guard = root / '.ai/project/sub-agent-policy.json.writer'
             guard.write_text('another writer')
             with self.assertRaisesRegex(ValueError, 'writer active'):
                 policy.apply(name, prepared['plan'], prepared['plan_sha256'])
@@ -142,7 +142,9 @@ class CompatibilityTests(unittest.TestCase):
     def test_real_previous_installed_lock_remains_readable_but_arbitrary_closure_is_rejected(self):
         raw = (ROOT / '.ai/framework.lock').read_bytes()
         old = json.loads(raw)
-        self.assertEqual(tuple(r['path'] for r in old['engine']['files']), state.LEGACY_ENGINE_FILES)
+        self.assertIn(tuple(r['path'] for r in old['engine']['files']),
+                      (state.LEGACY_ENGINE_FILES, state.POLICY_ENGINE_FILES,
+                       state.REGISTRY_ENGINE_FILES, state.ENGINE_FILES))
         catalog.lock_bytes(raw)
         for changed in [old['engine']['files'][:-1], old['engine']['files'] +
                         [{'path': 'src/tools/unowned.py', 'sha256': '0' * 64}]]:

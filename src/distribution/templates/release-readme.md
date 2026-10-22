@@ -27,7 +27,7 @@ runtime entries may still be discovered or reference removed dependencies.
 Preservation is not deactivation or continued framework ownership.
 
 Paired project edits accept only AGENTS.md, AGENTS.zh-TW.md, CLAUDE.md, README.md,
-README.en.md, .ai/INDEX.MD, .ai/custom/installation.json,
+README.en.md, .ai/INDEX.MD, .ai/project/installation.json,
 .agents/skills/README.md, .claude/skills/README.md, .codex/config.toml and
 .claude/settings.json. Review exact content changes and retain custom settings;
 other project editing is a separate operation. This protective restriction

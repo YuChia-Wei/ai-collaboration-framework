@@ -52,7 +52,7 @@ repository evidence. Respect any explicitly selected target language ownership.
   from managed framework resources. Updates preserve local choices and unknown
   entries; compare baseline/local/candidate before adopting a changed default.
   When the project selects sub-agent resource management, author custom packages
-  under `.ai/custom/sub-agents/` and use its `.ai/custom/sub-agent-registry.json`
+  under `.ai/project/sub-agents/` and use its `.ai/project/sub-agent-registry.json`
   for provenance and explicit role routes. Check the chosen package and runtime
   entry before delegation. Capability overlap proposes a comparison; it does not
   switch a route, confer installer ownership or prove runtime activation.

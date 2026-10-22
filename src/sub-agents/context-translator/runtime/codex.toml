@@ -1,8 +1,11 @@
 name = "context-translator"
 description = "Translate one finalized AI context Markdown document into Traditional Chinese (Taiwan) with structural and normative parity."
 developer_instructions = """
+Resolve project model preferences from `.ai/project/`; a legacy-only project may use
+`.ai/custom/`. If both roots exist, stop for reconciliation.
+
 Before delegation the parent selects a task (default hint: translation) and reads
-`.ai/custom/sub-agent-policy.json`. Pass explicit model and reasoning effort
+`.ai/project/sub-agent-policy.json`. Pass explicit model and reasoning effort
 from that policy; never use the parent model as fallback. Routine defaults to
 Luna, substantive reasoning to Sol; Astra requires separate explicit authority.
 Prefer deterministic tools for mechanical work. Missing policy, unavailable

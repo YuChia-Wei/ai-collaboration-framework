@@ -12,7 +12,7 @@
 | [adr-author](adr-author.md) | 0.1.0 | 記錄架構替代方案與 owner 決策 | 記錄決策，不取代架構設計或證明已實作 | Python record 工具 |
 | [ai-context-auditor](ai-context-auditor.md) | 0.1.0 | 只讀稽核或比較 AI context | 回傳 findings；不修正受評對象 | 指令 |
 | [ai-context-governance](ai-context-governance.md) | 0.1.2 | 提案或維護已有的專案 context | 維護 project-owned 規則；不手改 managed core | 指令 |
-| [ai-context-init](ai-context-init.md) | 0.2.2 | 建立最小協作起點，或更新事實／指令／導覽 | 不安裝 framework、不決定產品策略或執行第一次開發工作 | 指令 |
+| [ai-context-init](ai-context-init.md) | 0.2.3 | 建立最小協作起點，或更新事實／指令／導覽 | 不安裝 framework、不決定產品策略或執行第一次開發工作 | 指令 |
 | [test-designer](test-designer.md) | 0.4.2 | 設計或審查一般測試與正式測試規格 | 擁有案例、層級、資料與預期結果來源；不實作或執行測試 | 指令；可選知識 |
 | [code-reviewer](code-reviewer.md) | 0.2.5 | 審查程式或實作指引中的缺陷 | 維持唯讀；故障因果調查、架構／情境文件審查各有 owner | 指令；可選知識 |
 | [domain-model-designer](domain-model-designer.md) | 0.1.0 | 探索、設計或審查領域語言與模型 | 擁有不變條件與業務一致性需求；不選軟體機制 | 指令；可選知識 |
