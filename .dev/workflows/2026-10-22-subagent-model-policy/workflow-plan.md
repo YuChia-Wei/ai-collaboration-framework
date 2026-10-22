@@ -106,8 +106,9 @@ native activation is claimed.
 ## Continuation boundary
 
 The owner authorized a project-directory migration continuation on 2026-10-23.
-Push, PR, merge, publication,
-Issue closure and Project mutation require their separately applicable authority.
+The owner has now explicitly authorized commit, push, PR and merge after the
+required checks. Hosted publication, Issue closure and Project mutation retain
+their separately applicable authority.
 A future PR needs actual current-head hosted Source change gate success. Keep
 existing test evidence unless affected semantics or inputs justify repetition.
 
@@ -150,3 +151,17 @@ The actual source migration retained 7 roles and 28 matching registered resource
 The adapter compatibility correction selects wrapper convention from the artifact
 generator closure, retaining old configured wrappers byte-for-byte.
 The requested immutable Antigravity analysis remains pending.
+
+
+## Authorized integration and next feature
+
+The owner subsequently authorized local publication/update of the existing
+`F:/AICF-Release-Preview` workspace with a manual Antigravity analysis prompt when
+headless analysis cannot complete, followed by commit/push/PR/merge of #487.
+After merge into main is confirmed, proceed with Feature #482. Before implementing
+skills, compare and directly revise the online Issue plan to use the solution
+established by this sub-agent work: project-owned authoring, explicit provenance
+and baseline evidence, local/candidate comparison, separate mechanical integration
+and owner adoption, and explicit routing/coexistence for overlapping resources.
+The earlier #482 issue design is input for reconciliation, not the implementation
+specification. No Feature #482 source changes occur before #487 integration.
