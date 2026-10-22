@@ -1,0 +1,16 @@
+{
+  "task_id": "IMPLEMENT",
+  "workflow_id": "2026-10-23-project-skill-management",
+  "owner_skill": "slice-implementer",
+  "title": "Implement project skill resources, comparison and protected native projection",
+  "status": "in_progress",
+  "created_at": "2026-10-23T02:06:08+08:00",
+  "updated_at": "2026-10-23T02:06:08+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "runtime_identity_source": "Implementation sub-agent explicitly invoked with gpt-6.1-sol/medium and fresh bounded context. Parent work uses its configured fallback for commit attribution; active provider identity is not independently observed.",
+  "finding_status": "pending_independent_review",
+  "result_summary": "Source implementation and focused checks complete; packaged consumer and independent review pending."
+}

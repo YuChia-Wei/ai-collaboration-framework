@@ -1,7 +1,8 @@
 # Skill 使用說明目錄
 
 [回手冊首頁](../README.md) · [安裝說明](../installation.md) ·
-[知識選配](../knowledge-packages.md) · [工具型 skills 設定](../tool-skills.md)
+[知識選配](../knowledge-packages.md) · [工具型 skills 設定](../tool-skills.md) ·
+[自建／客製 skill 管理](../skill-management.md)
 
 本來源 catalog 有 21 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
 先依要交付的成果選擇；不必為了使用其中

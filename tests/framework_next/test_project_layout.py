@@ -227,7 +227,7 @@ class LayoutTests(unittest.TestCase):
 
     def test_old_metadata_paths_and_exact_historical_closures_remain_readable(self):
         self.assertEqual([len(x) for x in (state.LEGACY_ENGINE_FILES, state.POLICY_ENGINE_FILES,
-                                          state.REGISTRY_ENGINE_FILES, state.ENGINE_FILES)], [23, 25, 26, 27])
+                                          state.REGISTRY_ENGINE_FILES, state.LAYOUT_ENGINE_FILES, state.ENGINE_FILES)], [23, 25, 26, 27, 29])
         value = {'policy_version': 3, 'codex': {'selection': 'task'}, 'claude': {'selection': 'task'},
                  'escalation': 'explicit-user-authorized-visible-task', 'default_task': 'inventory',
                  'on_unavailable': 'stop', 'policy_path': p.POLICY_PATH}
@@ -252,6 +252,13 @@ class LayoutTests(unittest.TestCase):
         doc['generator']['implementation'] = [{'path': name} for name in state.ENGINE_FILES]
         inventory, projected = catalog.project_members(doc, files, selected, contents)
         catalog.verify_subset_contents(doc, files, selected, inventory, projected)
+        # The immediately previous 27-file engine already used canonical paths;
+        # accepting it as historical metadata must preserve those exact wrappers.
+        old_doc = deepcopy(doc)
+        old_doc['generator']['implementation'] = [{'path': name} for name in state.LAYOUT_ENGINE_FILES]
+        old_inventory, old_projected = catalog.project_members(old_doc, files, selected, contents)
+        self.assertEqual(old_projected, projected)
+        self.assertEqual(old_inventory, inventory)
         for name in contents:
             expected = contents[name]
             if name.startswith(('.agents/skills/', '.claude/skills/')):
