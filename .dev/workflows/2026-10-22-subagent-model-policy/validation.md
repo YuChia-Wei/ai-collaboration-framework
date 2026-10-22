@@ -64,8 +64,32 @@ author-provided evidence. No technology knowledge package or exhaustive security
 coverage was requested or claimed. Disposition: local implementation accepted for
 this scope, with runtime/environment/provider limitations retained below.
 
-The reviewed product diff and governing rules remain unchanged. Documentation
-updates require content, reference and commit-message checks only.
+This review covers the model-policy slice. The following resource-management
+slice has separate implementation and review evidence.
+
+## Resource registry and routing
+
+- Fixed implementation: `fe0928e74b344c1a0208261ab764e6a0630cbbbc`.
+- `python -I -B tests/run.py --suite distribution --suite schemas --suite loader`:
+  166 tests, 0 failures/errors/skips, Windows, 18.77 seconds. Includes 13 new
+  resource registry cases and source-free public CLI registry plan/apply.
+- Project migration through registry plan/apply adopted 7 project roles,
+  20 authoring/reference resources and 8 runtime entries; all hashes matched.
+  Managed installation, model policy and native runtime names were preserved.
+- Independent reviewer `subagent_registry_review`, requested Sol/medium with
+  fresh bounded context, reviewed `ea7be1c81e0dd0b43245635109473d48e41c8df9`
+  through the fixed implementation above. It inspected common contract/routing,
+  path/write/recovery boundaries, source closures and project projections.
+- One P2: the adopted auditor runtime retained obsolete guardrails classifier
+  and preflight requirements contrary to its selected project role/playbook.
+  The author repaired its project original through registry plan/apply, regenerated
+  the native entry, and read back all registry resources. Permission and fixed
+  independent-review boundaries remain. Affected independent re-review is pending.
+- No other supported actionable findings. Reviewer performed no tests or writes;
+  this is not specialist security, hosted CI or runtime activation evidence.
+- The isolated current-source artifact trial is pending. Its first attempt used
+  an unsupported trial-version string and was rejected before artifact publication
+  or consumer installation; the input is corrected to supported local metadata.
 
 ## Accepted Claude verification scope
 

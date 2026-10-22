@@ -176,7 +176,7 @@
       "intent": "Preserve the project fixed-head-independent-auditor execution contract with task-selected cost policy and explicit resource ownership.",
       "members": {
         "references/fixed-head-independent-audit-playbook.md": "77ce1d2a8fe981bd98550158da8f95e95fc975961692e4bb5114070c91c8d037",
-        "runtime/codex.toml": "b2223a8ce0c2ffdc4bfd29d1ea0ff893f8e6cec5f422bce574215fd6f9ddc4ec",
+        "runtime/codex.toml": "2cb100e340687f227d52aa64c90605f3cf347ffe6fd6bda250bbd3a1818307de",
         "sub-agent.yaml": "c9c4d67e3dbab7b6ff88f747160906101dd4be1cf694f01b0c215bff080edc55"
       },
       "origin": "project-derived",
