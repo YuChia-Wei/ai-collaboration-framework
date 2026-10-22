@@ -1,17 +1,18 @@
 preset_version: 1
 id: source-repository
-version: 0.1.0
+version: 0.2.0
 skills:
 - adr-author
 - code-reviewer
-- ddd-ca-hex-architect
 - diagnostic-analyst
+- domain-model-designer
 - lesson-author
 - local-change-implementer
 - pr-author
 - problem-frame-author
 - requirement-author
 - slice-implementer
+- software-architect
 - software-development-orchestrator
 - spec-author
 - spec-compliance-validator

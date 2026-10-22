@@ -21,8 +21,11 @@ and preserve its accepted terminology and custom format.
 
 Return in conversation unless a destination is requested and authorized. Review
 leaves its subject and provider state untouched; export a report only if requested.
-This instruction package has no configuration, store, tool, knowledge-consumption
-binding or required skill dependency. Availability supplies no provider-write,
+This instruction package has no configuration, store, tool or required skill
+dependency. Optional selected BDD/DDD knowledge follows the metadata-4 allowlist
+and [verified resource protocol](references/knowledge.md). Missing coverage is
+unavailable without source fallback; selection does not adopt target rules.
+Availability supplies no provider-write,
 implementation, approval or product-acceptance authority.
 
 This skill owns dedicated Story planning, authoring and requirement/AC review.

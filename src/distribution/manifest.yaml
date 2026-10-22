@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet-backend
-  version: 0.1.4
+  version: 0.1.5
   source: src/knowledge/dotnet-backend
   metadata: content-package.yaml
   members:
@@ -523,7 +523,7 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
 - kind: knowledge
   id: engineering-common
-  version: 0.3.0
+  version: 0.4.0
   source: src/knowledge/engineering-common
   metadata: content-package.yaml
   members:
@@ -690,21 +690,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.4
-- id: ddd-ca-hex-architect
-  source: src/skills/ddd-ca-hex-architect
-  metadata: skill-package.yaml
-  members:
-  - source: SKILL.md
-    destination: .ai/core/skills/ddd-ca-hex-architect/SKILL.md
-  - source: references/design.md
-    destination: .ai/core/skills/ddd-ca-hex-architect/references/design.md
-  - source: references/review.md
-    destination: .ai/core/skills/ddd-ca-hex-architect/references/review.md
-  - source: skill-package.yaml
-    destination: .ai/core/skills/ddd-ca-hex-architect/skill-package.yaml
-  kind: skill
-  version: 0.3.1
+  version: 0.2.5
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -715,6 +701,24 @@ components:
     destination: .ai/core/skills/diagnostic-analyst/references/diagnose.md
   - source: skill-package.yaml
     destination: .ai/core/skills/diagnostic-analyst/skill-package.yaml
+  kind: skill
+  version: 0.1.0
+- id: domain-model-designer
+  source: src/skills/domain-model-designer
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/domain-model-designer/SKILL.md
+  - source: references/design.md
+    destination: .ai/core/skills/domain-model-designer/references/design.md
+  - source: references/explore.md
+    destination: .ai/core/skills/domain-model-designer/references/explore.md
+  - source: references/knowledge.md
+    destination: .ai/core/skills/domain-model-designer/references/knowledge.md
+  - source: references/review.md
+    destination: .ai/core/skills/domain-model-designer/references/review.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/domain-model-designer/skill-package.yaml
   kind: skill
   version: 0.1.0
 - id: lesson-author
@@ -774,7 +778,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.5
+  version: 0.2.6
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -846,7 +850,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/requirement-author/skill-package.yaml
   kind: skill
-  version: 0.2.1
+  version: 0.2.2
 - id: slice-implementer
   source: src/skills/slice-implementer
   metadata: skill-package.yaml
@@ -870,7 +874,23 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.5
+  version: 0.2.6
+- id: software-architect
+  source: src/skills/software-architect
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/software-architect/SKILL.md
+  - source: references/design.md
+    destination: .ai/core/skills/software-architect/references/design.md
+  - source: references/knowledge.md
+    destination: .ai/core/skills/software-architect/references/knowledge.md
+  - source: references/review.md
+    destination: .ai/core/skills/software-architect/references/review.md
+  - source: skill-package.yaml
+    destination: .ai/core/skills/software-architect/skill-package.yaml
+  kind: skill
+  version: 0.1.0
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -882,7 +902,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
   kind: skill
-  version: 0.3.2
+  version: 0.4.0
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml
@@ -895,6 +915,8 @@ components:
     destination: .ai/core/skills/spec-author/references/authoring.md
   - source: references/entity-template.md
     destination: .ai/core/skills/spec-author/references/entity-template.md
+  - source: references/knowledge.md
+    destination: .ai/core/skills/spec-author/references/knowledge.md
   - source: references/production-template.md
     destination: .ai/core/skills/spec-author/references/production-template.md
   - source: references/spec-guide.md
@@ -904,7 +926,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/spec-author/skill-package.yaml
   kind: skill
-  version: 0.2.0
+  version: 0.3.0
 - id: spec-compliance-validator
   source: src/skills/spec-compliance-validator
   metadata: skill-package.yaml
@@ -938,10 +960,10 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.1
+  version: 0.4.2
 - kind: skill
   id: user-story-author
-  version: 0.1.0
+  version: 0.2.0
   source: src/skills/user-story-author
   metadata: skill-package.yaml
   members:
@@ -951,6 +973,8 @@ components:
     destination: .ai/core/skills/user-story-author/references/authoring.md
   - source: references/examples.md
     destination: .ai/core/skills/user-story-author/references/examples.md
+  - source: references/knowledge.md
+    destination: .ai/core/skills/user-story-author/references/knowledge.md
   - source: references/plan.md
     destination: .ai/core/skills/user-story-author/references/plan.md
   - source: references/review.md

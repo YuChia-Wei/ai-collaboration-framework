@@ -38,7 +38,7 @@ Excluded:
 
 ## Adoption and coverage
 
-Requires `engineering-common@0.3.0`, matching the exact required dependency in
+Requires `engineering-common@0.4.0`, matching the exact required dependency in
 `content-package.yaml`. Preserve per-domain persistence and transaction
 choices, conditional Event Sourcing, explicit BDDfy opt-out and target-selected
 mocking. No file extension or example automatically selects a technology.

@@ -111,3 +111,15 @@ When selected knowledge is relevant to this draft or normalization, follow
 [the installed-resource protocol](knowledge.md) and the current operation allowlist.
 Reuse accepted inputs and decisions; do not require exploration or re-ask resolved
 questions unless new conflicting evidence affects the requested output.
+
+## Behavioral examples and design questions
+
+Requirements may contain sourced Given/When/Then or other observable examples.
+Their format alone does not select test-designer. Test level, data partitions,
+fixtures, dependency control, independent oracle machinery and coverage design
+are distinct requested outputs. Preserve shared example IDs when handing them off.
+
+Domain-model-designer is a candidate for unresolved language/model responsibility
+or invariant ownership; software-architect for software dependencies, ports and
+mechanisms. Do not select these choices while authoring requirements. Reuse accepted
+model/architecture decisions and keep only the concrete remaining question open.

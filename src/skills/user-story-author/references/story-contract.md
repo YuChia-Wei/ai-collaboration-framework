@@ -30,3 +30,18 @@ Include only relevant dependencies, identifying none known versus not establishe
 A receiving agent must be able to continue from the artifact without private chat.
 Do not impose custom provider fields, a work-item hierarchy or an execution
 workflow. A draft/review is not approval, implemented behavior or executed acceptance.
+
+## Optional methods and responsibility
+
+For requested selected knowledge, follow [the installed protocol](knowledge.md)
+with capability `requirements` and the actual public operation. Planning uses
+its discovery row; draft/normalize/review use their authoring row. Read only
+needed leaf resources, not an undeclared BDD index. Without knowledge, common
+work based on caller sources remains available with its coverage limits.
+
+BDD discovery/formulation can clarify rules and observable examples, and DDD
+discovery can clarify language. They do not authorize context/aggregate ownership,
+persistence or transaction decisions. Carry concrete model questions to its
+owner and software mechanism questions to the architecture owner only when needed.
+GWT in AC is not test design; reuse the same example IDs when test level, data,
+isolation, oracle or coverage design is later requested.

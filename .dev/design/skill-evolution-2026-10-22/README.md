@@ -1,7 +1,8 @@
 # DDD 與軟體架構 skill 拆分設計
 
 - 日期：2026-10-22（Asia/Taipei）
-- 狀態：owner 已授權本次拆分；完整設計須先經其他 agent 審核，再開始產品實作。
+- 設計狀態：已先完成獨立審核及修正，再進行本機產品實作；[設計審核紀錄](../../workflows/2026-10-22-domain-architecture-split/design-review.md)保存固定版本與 findings。
+- 執行狀態：見[本次 workflow](../../workflows/2026-10-22-domain-architecture-split/workflow-plan.md)與[實作／驗證紀錄](../../workflows/2026-10-22-domain-architecture-split/implementation-results.md)，不由設計文件推定發布或安裝。
 - 來源盤點基準：`f96fffe0af6e9e4f79d5f2f4be05bb3665553123`
 - 工作分支：`codex/plan/skill-evolution-20261022`
 - 本文件是設計入口；設計、審核、實作、驗證與發布各有獨立狀態。
@@ -26,6 +27,7 @@
 | [實作與驗證設計](implementation-design.md) | 要改哪些來源、版本、知識 selector、退役／升級語意與驗證方法 |
 | [討論脈絡與參考資料](context-and-references.md) | 原始需求、盤點發現、替代方案及外部研究如何支持本設計 |
 | [本機 workflow 與客製升級評估](local-workflow-and-customization.md) | 另案問題、現況、候選方案、尚未接受的決策 |
+| [外部審核處置與後續設計](review-follow-up.md) | Claude 報告的逐項核對、文件修正、引擎缺口提案與原 Issues 接續 |
 | [現行 skill 選讀表](../../../docs/skills/README.md) | 當前來源提供的能力；安裝是否更新另由 installed state 證明 |
 
 本組設計不能以「採納前述建議」或私人對話作為缺省內容。新接手者須從這些文件、
@@ -51,10 +53,14 @@
 | O-11 | 完整設計先完成；實作前請其他 agent 審核；保存對話脈絡；完成後建立中文 Feature/User Story | 本次交付順序，審核與 Issue 必須先於 src 修改 |
 | O-12 | 名稱為 domain-model-designer 與 software-architect；舊 ID 直接退役，不保留 alias | 已定案；不再把名稱／過渡 router 留待實作者決定 |
 | O-13 | 依計畫實作拆分與相鄰調整；本機 workflow／客製升級另案 | 僅主 Feature 實作；另案不得藉相依更新混入 |
+| O-14 | 將目前版本更新至既有 Windows Preview，使用 Antigravity CLI / Gemini 4 Argon 審核 | 已對 438b15eb 完成；來源專案的 17-skill 安裝未更新 |
+| O-15 | 修正審核建議，接續原 Issue，推既有分支供 macOS / Claude 審核 | O1/O2 修正及分支推送已完成；實際收到報告的 reviewer 為 Claude Fable 5.1 |
+| O-16 | 讀取 Slack 的 Claude 分析，安排修正與設計／既有線上 User Story 調整 | 本輪文件與 Issue 修正；其餘產品選項依 review-follow-up.md 保留待決策／未實作 |
 
-授權包括本機設計、來源實作、必要驗證及對應中文 Issue 建立。依來源政策保存階段
-commit。push、PR、merge、Issue closure、Project 狀態、self-installation、下游升級、
-release/tag/publication 均不是這項實作的自動後續動作。
+授權包括原本的本機設計、來源實作、必要驗證及中文 Issues，以及後續 O-14–O-16
+明列的 Preview、審核、既有分支推送與文件／Issue 整理。依來源政策保存階段 commit。
+PR、merge、Issue closure、Project 狀態、來源專案 self-installation 與 release/tag/
+publication 仍不是這些動作的自動後續。
 
 ## 明確決策與取捨
 

@@ -1,6 +1,6 @@
-metadata_version: 3
+metadata_version: 4
 id: user-story-author
-version: 0.1.0
+version: 0.2.0
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -9,7 +9,11 @@ dependencies:
 runtime:
 - id: skill-instruction-reader
   requirement: Read selected Story instructions, template and permitted caller sources
-  for_operations: [plan, draft, normalize, review]
+  for_operations:
+  - plan
+  - draft
+  - normalize
+  - review
   on_missing: unavailable
 configuration: null
 artifact_roles: []
@@ -17,6 +21,7 @@ resources:
   references:
   - references/authoring.md
   - references/examples.md
+  - references/knowledge.md
   - references/plan.md
   - references/review.md
   - references/story-contract.md
@@ -63,3 +68,28 @@ operations:
   - Findings only for the whole Story or selected AC subject, with evidence and limits
   instructions: references/review.md
   implementation_status: implemented
+knowledge_consumption:
+- id: common-story-authoring
+  package: engineering-common
+  version: 0.4.0
+  operations:
+  - draft
+  - normalize
+  - review
+  resources:
+  - member:bdd/discovery.md
+  - member:bdd/formulation.md
+  - member:ddd/domain-discovery.md
+  requirement: optional
+  on_missing: unavailable
+- id: common-story-planning
+  package: engineering-common
+  version: 0.4.0
+  operations:
+  - plan
+  resources:
+  - member:bdd/discovery.md
+  - member:ddd/domain-discovery.md
+  - member:discovery/collaborative-discovery.md
+  requirement: optional
+  on_missing: unavailable

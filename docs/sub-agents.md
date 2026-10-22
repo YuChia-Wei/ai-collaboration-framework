@@ -5,6 +5,11 @@
 runtime profile。發布沿用 `src/distribution/manifest.yaml` 的 catalog
 與既有 Engine 2；沒有另外一套複製或安裝工具。
 
+目前六個角色涵蓋證據整理、調和、語意治理分析、報告彙整、固定版本獨立審核
+與上下文翻譯。它們提供有界的委派責任；需求、領域建模、軟體架構與實作方法
+仍由選定 skills 提供。角色存在不代表已啟動 agent，也不代表自動取得另一模型、
+額外工具權限或執行授權；使用哪個角色與 skill 應由當次工作範圍決定。
+
 這份設定需要包含 sub-agents 的新 catalog 及其配對 engine。已發布的 RC4
 沒有這些角色，不能用新設定要求舊 catalog 安裝。舊 engine 遇到新的
 `sub-agent` component kind 或 selection version 3 會拒絕處理。
