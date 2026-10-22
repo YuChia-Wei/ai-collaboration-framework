@@ -84,12 +84,30 @@ slice has separate implementation and review evidence.
   and preflight requirements contrary to its selected project role/playbook.
   The author repaired its project original through registry plan/apply, regenerated
   the native entry, and read back all registry resources. Permission and fixed
-  independent-review boundaries remain. Affected independent re-review is pending.
+  independent-review boundaries remain. Affected independent re-review passed
+  at `015c44e692f0500a4b58c34ed7ec55583e4a5602`; the original P2 is resolved,
+  with no new related actionable findings.
 - No other supported actionable findings. Reviewer performed no tests or writes;
   this is not specialist security, hosted CI or runtime activation evidence.
-- The isolated current-source artifact trial is pending. Its first attempt used
-  an unsupported trial-version string and was rejected before artifact publication
-  or consumer installation; the input is corrected to supported local metadata.
+- Actual-source artifacts at `015c44e692f0500a4b58c34ed7ec55583e4a5602`, with
+  local-only version `0.0.0`, passed the isolated RAM-disk consumer trial through
+  the public pinned maintenance CLI: ordinary install first returned
+  `unowned-collision`; explicit project rebind to `team-context-translator`
+  allowed framework installation; framework deselection removed its 2 runtime
+  entries while all 9 project/custom/unknown files retained exact bytes.
+  Both Codex and Claude entry files were included; this is filesystem/installer
+  evidence, not native agent discovery or an account/model invocation.
+- Trial harness inputs initially used an unsupported version and a library call
+  outside the selected engine root. Both were correctly rejected before consumer
+  installation. Corrected to supported local metadata and the actual pinned CLI;
+  reused the built artifacts instead of rebuilding the catalog.
+- Author inspection then reproduced a completed-plan replay defect: a detached
+  old entry recreated with matching old bytes could be deleted again. Added a
+  failing regression case, then changed completed replay to accept only matching
+  after-state. Registry suite: 14 passed; model policy/portable CLI suite: 9 passed.
+  The earlier 166-check result and trial remain scoped to their source revision;
+  this repair changes completed replay only, not first application, installation
+  or deselection. Affected independent review of the repair follows its commit.
 
 ## Accepted Claude verification scope
 
