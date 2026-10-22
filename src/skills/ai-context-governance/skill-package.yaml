@@ -1,6 +1,6 @@
 metadata_version: 3
 id: ai-context-governance
-version: 0.1.1
+version: 0.1.2
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:

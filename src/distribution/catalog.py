@@ -25,7 +25,7 @@ SUBSET_METADATA=(*PARENT_METADATA,'metadata/selection.json','metadata/files.json
 TEMPLATES=('src/adapters/claude/skill-entry-v2.md.template','src/adapters/codex/skill-entry-v2.md.template',
            'src/adapters/codex/skill-entry.md.template')
 MODULES=('__init__','assembly','catalog','claude','codex','content','contracts','data','git_source',
-         'installation','installation_io','installation_plan','installation_state','maintenance_coordination','package','reinstallation','selection')
+         'installation','installation_io','installation_plan','installation_state','maintenance_coordination','package','project_layout','reinstallation','selection','subagent_policy','subagent_registry')
 ENGINE_FILES=state.ENGINE_FILES
 GENERATOR_FILES=ENGINE_FILES
 
@@ -96,9 +96,9 @@ def parent_documents(raw):
         require(len(row['git_blob'])==len(doc['source']['commit'])==len(doc['source']['tree']),'mixed Git object formats')
     require(doc['generator']['id']=='aicf-catalog-assembly','unsupported-generator')
     implementation=doc['generator']['implementation']
-    require([r['path'] for r in implementation]==list(GENERATOR_FILES),'generator implementation closure')
+    require(tuple(r['path'] for r in implementation) in (GENERATOR_FILES, state.REGISTRY_ENGINE_FILES, state.POLICY_ENGINE_FILES, state.LEGACY_ENGINE_FILES),'generator implementation closure')
     require(all(inputs.get(r['path'])==r for r in implementation),'generator/source binding')
-    expected=set(GENERATOR_FILES)|{'src/distribution/manifest.yaml'}
+    expected={r['path'] for r in implementation}|{'src/distribution/manifest.yaml'}
     for preset in doc['presets']:
         for key in ('skills','knowledge','adapters','sub_agents'): ordered(preset.get(key,[]))
         selected=selected_keys(preset)
@@ -239,7 +239,7 @@ def resolve_sub_agent_model_selection(catalog, desired, observations):
     result.pop('model_resolution',None)
     resolve_selection(catalog,result)
     roles={pid:yaml_object(catalog.contents[f'packages/sub-agent/{pid}/sub-agent.yaml'],'sub-agent.yaml') for pid in result['sub_agents']}
-    inherited=[sub_agent_model_policy(role)['policy_version']==2 for role in roles.values()]
+    inherited=[sub_agent_model_policy(role)['policy_version'] in (2,3) for role in roles.values()]
     if any(inherited):
         require(all(inherited), 'mixed legacy fixed and inherited model policies need separate selections')
         require('model_resolution' not in desired,
@@ -312,6 +312,14 @@ def template_bytes(adapter,expected,provided=None):
 
 def project_members(doc,files,selection,contents,templates=None):
     naming=selection_skill_naming(selection['desired'])
+    # Artifact generation determines reproducible wrapper bytes. The executing
+    # engine or relocated project namespace must not rewrite old candidates.
+    implementation=tuple(r['path'] for r in doc['generator']['implementation'])
+    require(implementation in (GENERATOR_FILES, state.REGISTRY_ENGINE_FILES,
+                              state.POLICY_ENGINE_FILES, state.LEGACY_ENGINE_FILES),
+            'generator implementation closure')
+    configuration_path=('.ai/project/framework.json' if implementation==GENERATOR_FILES
+                        else '.ai/custom/framework.json')
     rows=[]; output={}; indexed={(r['kind'],r['owner'],r['member']):r for r in files['files']}
     for c in selection['components']:
         kind,pid=dependency_key(c); destinations={m:f".ai/core/{component_root(kind)}/{pid}/{m}" for m in c['members']}
@@ -338,7 +346,7 @@ def project_members(doc,files,selection,contents,templates=None):
             aid=adapter['id']; src=indexed[('adapter',aid,adapter['template'])]['source']
             raw_template=template_bytes(aid,src['sha256'],None if templates is None else templates[aid])
             renderer=codex_entry if aid=='codex' else claude_entry
-            dest,raw=renderer(raw_template,pid,c['version'],front['description'],destinations,configuration=package.metadata['configuration'],skill_naming=naming)
+            dest,raw=renderer(raw_template,pid,c['version'],front['description'],destinations,configuration=package.metadata['configuration'],skill_naming=naming,configuration_path=configuration_path)
             rows.append({'path':'runtime/'+dest,'destination':dest,'owner':f'adapter/{aid}/skill/{pid}','kind':'runtime','mode':'100644',
                          'size':len(raw),'sha256':digest(raw),'source':None,
                          'binding':{'adapter':aid,'skill':pid,'entry_name':runtime_skill_name(pid,naming),'core_entrypoint':destinations['SKILL.md'],'template_sha256':src['sha256']}})
@@ -420,7 +428,7 @@ def lock_bytes(raw):
     ident,inputs=identity('subset',doc['selection'],metadata)
     _,_,_,members,_=subset_documents(metadata,completed=False)
     require(ident==doc['candidate_identity'],'lock identity mismatch')
-    state._engine_shape(doc['engine']); require(tuple(r['path'] for r in doc['engine']['files'])==ENGINE_FILES,'lock engine closure')
+    state._engine_shape(doc['engine']); require(tuple(r['path'] for r in doc['engine']['files']) in (ENGINE_FILES, state.REGISTRY_ENGINE_FILES, state.POLICY_ENGINE_FILES, state.LEGACY_ENGINE_FILES),'lock engine closure')
     ordered(doc['project_inputs'],lambda r:r['path']); require(len(doc['project_inputs'])<=128,'project input budget')
     portable(list(members)+[state.LOCK_PATH,state.GUARD_PATH,*state.MARKERS]+[r['path'] for r in doc['project_inputs']])
     return state.InstalledLock(doc,raw,digest(raw),members)

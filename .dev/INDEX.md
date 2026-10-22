@@ -45,6 +45,6 @@ compatible historical revision for an actual retained duty.
 | `../src/skills/`, `../src/knowledge/`, `../src/sub-agents/` | Editable reusable product sources |
 | [Engineering methods](../src/knowledge/engineering-common/README.md) | Source-owned reusable context and engineering methods |
 | `../.ai/core/` | Managed installed resources; update through selected installation |
-| `../.ai/custom/` | This project's installation selection/customization |
+| `../.ai/project/` | This project's AI settings, selections and resources |
 | [Installed context index](../.ai/INDEX.MD) | Generated selection and installed state |
 | `../.agents/skills/`, `../.claude/skills/` | Managed runtime skill entries |

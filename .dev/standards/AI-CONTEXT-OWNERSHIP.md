@@ -9,7 +9,7 @@ This document assigns owners in this source repository. The
 - `src/skills`, `src/knowledge` and `src/sub-agents` own editable reusable product.
   Component metadata and `src/distribution/manifest.yaml` declare package members.
 - `.ai/core` and runtime entries are managed installation outputs. The installer
-  owns generated state; `.ai/custom` holds this project's selection/customization.
+  owns generated state; `.ai/project` holds this project's AI settings, selections and resources.
 - `.dev/standards` and `.dev/contracts` own this source project's governance and
   selected compatibility duties, not consumers' engineering semantics.
 - `docs` owns human product manuals; `.dev/guides` explains this project's work.

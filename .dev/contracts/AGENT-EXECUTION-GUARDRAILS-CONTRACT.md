@@ -12,8 +12,19 @@ non-goals, expected result, stop conditions and integration owner. State actual
 authorization and any explicit execution limit. Resolve only an applicable
 role; a static profile or configuration is not proof of an invocation.
 
-Use the user-selected model/effort and permitted execution surface. An explicit
-user choice may select a different reviewer. Do not silently raise model,
+For registered purposes, resolve `.ai/project/sub-agent-registry.json` and verify
+the selected project package/runtime projection before delegation. Supply that
+package's actual role path; do not substitute a similarly named framework role.
+Keep custom packages outside managed core and use explicit routes for overlapping
+capabilities. Registry metadata cannot grant installer ownership or prove adoption.
+
+Use task-selected model/effort from `.ai/project/sub-agent-policy.json` and the
+permitted execution surface. Supply task, model, effort, selection reason and
+authority in the bounded assignment. Do not inherit the parent model. Codex
+full-history forks cannot override the model here; use fresh bounded context.
+Reconcile custom profile pins and forced Claude model/effort overrides before
+invocation. Missing policy/availability stops delegation; deterministic direct
+work remains available. An explicit user choice may select a different reviewer. Do not silently raise model,
 effort, cost, credential privileges or provider scope. Record selected settings
 separately from actual runtime observations; unavailable identity remains unknown.
 

@@ -16,6 +16,8 @@
 .claude/skills/*/SKILL.md -text !eol
 .ai/custom/framework.json -text !eol whitespace=cr-at-eol
 .ai/custom/installation.json -text !eol whitespace=cr-at-eol
+.ai/project/framework.json -text !eol whitespace=cr-at-eol
+.ai/project/installation.json -text !eol whitespace=cr-at-eol
 
 # Preserve explicitly classified immutable external originals byte-for-byte.
 # Ordinary assessment evidence remains text-normalized and diffable.

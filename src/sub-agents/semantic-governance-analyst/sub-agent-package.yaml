@@ -1,6 +1,6 @@
 sub_agent_package_version: 1
 id: semantic-governance-analyst
-version: 0.1.1
+version: 0.2.1
 entrypoint: sub-agent.yaml
 members:
 - references/semantic-governance-analysis-playbook.md

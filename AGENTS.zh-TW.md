@@ -29,7 +29,8 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 - Inventory、paths、hashes、schemas、Git identity、build、test 與 receipts 優先使用 deterministic tools。
 - `failed`、`blocked-by-environment`、`not-applicable` 與 `deferred-with-owner` 都不是 `passed`。
 - 適用且已允許時，優先使用 IDE MCP refactoring operation。
-- Sub-agents 沿用使用者在 runtime 選定的模型與推理深度。不得因角色名稱自動提高模型、推理深度、provider 或成本。需要升級時，先說明理由，取得使用者對可見獨立任務的明確授權；runtime 可用性不等於成本授權。
+- 依任務從 `.ai/project/sub-agent-policy.json` 選擇 sub-agent 模型與推理深度，不得直接繼承本對話。優先使用確定性工具；Codex 預設 Luna，實質推理使用 Sol；Claude 預設 Haiku，依任務使用 Sonnet。Astra／Opus 必須另行取得明確授權。確認 runtime 覆寫與實際呼叫身分；缺少政策或選定模型不可用時，停止該次委派。專案模型偏好與受管理角色套件分開維護，見[子代理管理](docs/sub-agent-management.md)。
+- 透過 `.ai/project/sub-agent-registry.json` 解析已登記的 sub-agent 用途，委派前確認選定套件與 runtime entry。專案原稿放在 `.ai/project/sub-agents/`。保留未知 entry，分開判讀上游涵蓋、owner 採納、檔案讀回與 runtime 啟用。登記資料不授予 framework 所有權，也不授權自動切換路由。
 
 ## 漸進式 Context 載入
 
@@ -42,7 +43,7 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/custom/installation.json` 選取。不得編輯 generated installed files。目前來源 distribution catalog 有 21 個 skills；版本與責任見 [skill 目錄](docs/skills/README.md)。來源以 `domain-model-designer` 與 `software-architect` 取代 `ddd-ca-hex-architect`，不保留 alias。原本選取舊 ID 的四個來源 presets 現在改選兩個新 ID。本來源專案既有的 17-skill installation 是分開且未變的 snapshot，仍包含舊 architect entry；新來源套件不是已安裝路由。呼叫前須核對實際 runtime entry。可選的 `ai-context-init`、`workflow-records` 與 `user-story-author` 仍是可獨立選取的來源套件。`project-initialization` preset 獨立選取初始化。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/project/installation.json` 選取。不得編輯 generated installed files。目前來源 distribution catalog 有 21 個 skills；版本與責任見 [skill 目錄](docs/skills/README.md)。來源以 `domain-model-designer` 與 `software-architect` 取代 `ddd-ca-hex-architect`，不保留 alias。原本選取舊 ID 的四個來源 presets 現在改選兩個新 ID。本來源專案既有的 17-skill installation 是分開且未變的 snapshot，仍包含舊 architect entry；新來源套件不是已安裝路由。呼叫前須核對實際 runtime entry。可選的 `ai-context-init`、`workflow-records` 與 `user-story-author` 仍是可獨立選取的來源套件。`project-initialization` preset 獨立選取初始化。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
