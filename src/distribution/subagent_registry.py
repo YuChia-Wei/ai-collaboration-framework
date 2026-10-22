@@ -261,7 +261,8 @@ def plan(project, proposed, files, adopt=None, detach=None):
 
 def apply(project, document, plan_sha256):
     fields(document, 'plan_version project_root lock_sha256 previous writes')
-    p.require(document['plan_version'] == 1 and document['project_root'] == str(Path(project))
+    p.require(type(document['plan_version']) is int and document['plan_version'] == 1
+              and document['project_root'] == str(Path(project))
               and p.digest(p.encode(document)) == plan_sha256, 'registry plan changed')
     rows = document['writes']
     p.require(type(rows) is list and rows and rows[-1]['path'] == REGISTRY, 'registry must publish last')
@@ -300,10 +301,15 @@ def apply(project, document, plan_sha256):
         p.require(read_registry(project)[1] == current_sha, 'registry changed before writer acquired')
         lock_sha, managed = lock(project)
         p.require(lock_sha == document['lock_sha256'], 'framework lock changed')
+        completed = (current_sha == rows[-1]['after_sha256']
+                     and rows[-1]['before_sha256'] != rows[-1]['after_sha256'])
         # Validate every preimage before the first write; exact after bytes permit resume.
         for row in rows:
             p.require(row['path'] not in managed, 'framework-owned write denied')
             actual = p.digest(p.raw_read(at(project, row['path'])))
+            # Registry is the last published file. Once published, a former entry
+            # can be unknown/newly owned; replay cannot acquire its ownership again.
+            p.require(not completed or actual == row['after_sha256'], 'completed registry plan no longer matches')
             p.require(actual in (row['before_sha256'], row['after_sha256']), 'stale registry plan')
         for row in rows:
             target = at(project, row['path'])

@@ -174,6 +174,8 @@ Plan 綁定 registry、framework lock、每個檔案的前後 hash。Apply 先�
 已寫路徑；保留 exact plan 後明確重試。每筆只能處於原 preimage 或已接受 after
 bytes，其他修改會阻擋。程序強制終止可能留下 `.json.writer`；先確認 writer
 已停止，再由 owner 處理 guard。外部 writer 不遵守 guard 的競爭仍須避免。
+Registry 已發布完成後，重播只接受所有 after bytes 仍相符；已解除登記的舊 entry
+若重新出現，即使與原 bytes 一樣也阻擋，不重新取得所有權或再次刪除。
 
 ## 新版 framework 出現重疊角色時
 

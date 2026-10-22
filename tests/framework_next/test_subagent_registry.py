@@ -100,6 +100,20 @@ class RegistryTests(unittest.TestCase):
         self.assertFalse((self.root / r.PACKAGES).exists())
         self.assertEqual(entry.read_text(), 'foreign')
 
+    def test_completed_rebind_replay_does_not_delete_a_reappeared_unowned_entry(self):
+        registry, files = fixture()
+        apply(self.root, registry, files)
+        old_entry = r.runtime('codex', 'local-reviewer')
+        original = (self.root / old_entry).read_bytes()
+        newer, changed = fixture('team-reviewer-v2')
+        prepared = r.plan(str(self.root), newer, changed, detach=[old_entry])
+        r.apply(str(self.root), prepared['plan'], prepared['plan_sha256'])
+        # After registry publication this path is no longer owned, even if bytes match.
+        (self.root / old_entry).write_bytes(original)
+        with self.assertRaisesRegex(ValueError, 'completed registry plan'):
+            r.apply(str(self.root), prepared['plan'], prepared['plan_sha256'])
+        self.assertEqual((self.root / old_entry).read_bytes(), original)
+
     def test_managed_ownership_cannot_be_overridden_by_registry_adoption(self):
         registry, files = fixture()
         entry = r.runtime('codex', 'local-reviewer')
