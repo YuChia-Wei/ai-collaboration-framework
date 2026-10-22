@@ -128,6 +128,12 @@ registry 與檔案 preimages，先寫資源與精確 detach，最後發布 regis
 中斷後保留原 plan 與 hash，明確重試。每個檔案只能處於已接受的 before 或
 已寫入的 after 狀態；外部變更會阻擋。完成後重播要求 after-state 仍相符，
 已 detach 的舊檔案重新出現時，即使 bytes 與以前相同也不能再刪一次。
+每次產生的 plan 包含新的 UUIDv4 `operation_id`，並納入 plan hash。成功完成
+後，在 `.ai/local/skill-registry-completed/<plan-sha256>.json` 保留該次完成標記；
+這是重播防護所需的執行狀態，不是 owner 採納或語意驗收紀錄。即使 registry
+內容沒有改變，舊 plan 也不能重新接管後來出現的檔案。若要明確修復新的漂移，
+重新 inspect、接受目前 preimages 並產生新 plan；不要刪除舊標記來重播。
+標記損壞或不符會停止。完成標記發布失敗回報 interrupted，可保留原 plan 續作。
 外部編輯器仍需由 caller 停止；遺留 writer guard 須確認原程序已停止後由 owner
 處置，不自動清除。
 

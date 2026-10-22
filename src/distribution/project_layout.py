@@ -251,7 +251,9 @@ def apply(project, document, plan_sha256, engine):
                       'framework lock changed')
             p.require(completed is None or lock is None or current_lock == lock['after_sha256'],
                       'completed migration lock drift')
-            complete = completed is not None or (lock is not None and current_lock == lock['after_sha256'])
+            complete = completed is not None or (lock is not None
+                       and lock['before_sha256'] != lock['after_sha256']
+                       and current_lock == lock['after_sha256'])
             if base == LEGACY:
                 p.require(inventory(project, LEGACY) == document['before'], 'layout contents changed')
             else:

@@ -114,6 +114,112 @@ class SkillRegistryTests(unittest.TestCase):
             r.apply(self.project, prepared['plan'], prepared['plan_sha256'])
         self.assertEqual(entry.read_bytes(), b'reappeared')
 
+    def test_completed_same_registry_repair_cannot_reacquire_restored_preimage(self):
+        registry, files = fixture()
+        apply(self.root, registry, files)
+        name = r.runtime('codex', 'team-check')
+        entry = self.root / name
+        expected = entry.read_bytes()
+        entry.write_bytes(b'foreign preimage')
+        repaired = r.plan(self.project, registry, {}, adopt={name: p.digest(b'foreign preimage')})
+        self.assertEqual(repaired['plan']['writes'][-1]['before_sha256'], repaired['plan']['writes'][-1]['after_sha256'])
+        self.assertEqual(r.apply(self.project, repaired['plan'], repaired['plan_sha256'])['outcome'], 'applied')
+        marker = self.root / '.ai/local/skill-registry-completed' / (repaired['plan_sha256'] + '.json')
+        marker_bytes = p.encode({'completion_version': 1, 'plan_sha256': repaired['plan_sha256']})
+        self.assertEqual(marker.read_bytes(), marker_bytes)
+        entry.write_bytes(b'foreign preimage')
+        with self.assertRaisesRegex(ValueError, 'completed registry plan'):
+            r.apply(self.project, repaired['plan'], repaired['plan_sha256'])
+        self.assertEqual(entry.read_bytes(), b'foreign preimage')
+        entry.write_bytes(expected)
+        # Another completed plan must not forget this earlier completion fact.
+        later = r.plan(self.project, registry, {})
+        self.assertNotEqual(later['plan_sha256'], repaired['plan_sha256'])
+        self.assertEqual(r.apply(self.project, later['plan'], later['plan_sha256'])['outcome'], 'applied')
+        self.assertEqual(marker.read_bytes(), marker_bytes)
+        entry.write_bytes(b'foreign preimage')
+        with self.assertRaisesRegex(ValueError, 'completed registry plan'):
+            r.apply(self.project, repaired['plan'], repaired['plan_sha256'])
+        self.assertEqual(entry.read_bytes(), b'foreign preimage')
+
+    def test_fresh_explicit_repair_is_distinct_from_completed_plan_replay(self):
+        registry, files = fixture()
+        apply(self.root, registry, files)
+        name = r.runtime('codex', 'team-check')
+        target = self.root / name
+        expected = target.read_bytes()
+        target.write_bytes(b'foreign')
+        original = r.plan(self.project, registry, {}, adopt={name: p.digest(b'foreign')})
+        r.apply(self.project, original['plan'], original['plan_sha256'])
+        target.write_bytes(b'foreign')
+        with self.assertRaisesRegex(ValueError, 'completed registry plan'):
+            r.apply(self.project, original['plan'], original['plan_sha256'])
+        fresh = r.plan(self.project, registry, {}, adopt={name: p.digest(b'foreign')})
+        self.assertEqual(original['plan']['writes'], fresh['plan']['writes'])
+        self.assertNotEqual(original['plan']['operation_id'], fresh['plan']['operation_id'])
+        self.assertNotEqual(original['plan_sha256'], fresh['plan_sha256'])
+        self.assertEqual(r.apply(self.project, fresh['plan'], fresh['plan_sha256'])['outcome'], 'applied')
+        self.assertEqual(target.read_bytes(), expected)
+        target.write_bytes(b'foreign')
+        with self.assertRaisesRegex(ValueError, 'completed registry plan'):
+            r.apply(self.project, original['plan'], original['plan_sha256'])
+        self.assertEqual(target.read_bytes(), b'foreign')
+        for operation_id in (None, 'not-a-uuid', 'AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA',
+                             '00000000-0000-0000-0000-000000000000'):
+            forged = deepcopy(fresh['plan'])
+            forged['operation_id'] = operation_id
+            with self.subTest(operation_id=operation_id), self.assertRaises(ValueError):
+                r.apply(self.project, forged, p.digest(p.encode(forged)))
+        self.assertEqual(target.read_bytes(), b'foreign')
+
+    def test_malformed_or_mismatched_completion_marker_rejects_before_repair(self):
+        registry, files = fixture()
+        apply(self.root, registry, files)
+        name = r.runtime('codex', 'team-check')
+        entry = self.root / name
+        entry.write_bytes(b'foreign')
+        planned = r.plan(self.project, registry, {}, adopt={name: p.digest(b'foreign')})
+        marker = self.root / '.ai/local/skill-registry-completed' / (planned['plan_sha256'] + '.json')
+        for raw in (b'invalid', p.encode({'completion_version': 1, 'plan_sha256': '0' * 64})):
+            marker.write_bytes(raw)
+            with self.subTest(raw=raw), self.assertRaisesRegex(ValueError, 'completion marker'):
+                r.apply(self.project, planned['plan'], planned['plan_sha256'])
+            self.assertEqual(entry.read_bytes(), b'foreign')
+            self.assertEqual(marker.read_bytes(), raw)
+
+    def test_completion_directory_preflight_rejects_file_before_any_plan_write(self):
+        registry, files = fixture()
+        planned = r.plan(self.project, registry, files)
+        directory = self.root / '.ai/local/skill-registry-completed'
+        directory.parent.mkdir(parents=True)
+        directory.write_bytes(b'preserve unknown file')
+        with self.assertRaises(ValueError):
+            r.apply(self.project, planned['plan'], planned['plan_sha256'])
+        self.assertFalse((self.root / r.REGISTRY).exists())
+        self.assertFalse((self.root / r.PACKAGES).exists())
+        self.assertEqual(directory.read_bytes(), b'preserve unknown file')
+
+    def test_completion_publication_failure_is_interrupted_and_exact_plan_resumes(self):
+        registry, files = fixture()
+        apply(self.root, registry, files)
+        # A no-op resource plan still needs its own durable completion fact.
+        planned = r.plan(self.project, registry, {})
+        marker = self.root / '.ai/local/skill-registry-completed' / (planned['plan_sha256'] + '.json')
+        original = os.replace
+        def fail_completion(source, target):
+            if Path(target) == marker:
+                raise OSError('fixture completion publication interruption')
+            return original(source, target)
+        with patch.object(r.os, 'replace', side_effect=fail_completion):
+            result = r.apply(self.project, planned['plan'], planned['plan_sha256'])
+        self.assertEqual(result['outcome'], 'interrupted')
+        self.assertFalse(result['changed'])
+        self.assertFalse(marker.exists())
+        self.assertFalse(list(marker.parent.glob('.skill-completion-*')))
+        self.assertEqual(r.apply(self.project, planned['plan'], planned['plan_sha256'])['outcome'], 'applied')
+        self.assertTrue(marker.is_file())
+        self.assertEqual(r.apply(self.project, planned['plan'], planned['plan_sha256'])['outcome'], 'unchanged')
+
     def test_detach_requires_registered_exact_files(self):
         registry, files = fixture()
         apply(self.root, registry, files)
@@ -254,6 +360,36 @@ class SkillRegistryTests(unittest.TestCase):
         self.assertEqual([row['ownership'] for row in result['runtime_collisions']],
                          ['unknown-preserve', 'framework-managed'])
         self.assertEqual(unknown.read_text(), 'preserve')
+
+    def test_compare_accepts_framework_dotted_ids_and_original_prefixed_native_paths(self):
+        registry, files = fixture()
+        apply(self.root, registry, files)
+        native_paths = ['.agents/skills/reviewer.audit/SKILL.md',
+                        '.claude/skills/aicf-reviewer.audit/SKILL.md']
+        for name in native_paths:
+            target = self.root / name
+            target.parent.mkdir(parents=True)
+            target.write_text('preserve framework candidate collision')
+        candidate = {'id': 'reviewer.audit', 'ref': 'candidate:dotted', 'capabilities': ['review'],
+                     'files': {}, 'runtime_paths': native_paths}
+        result = r.compare(self.project, [candidate])
+        self.assertEqual([row['path'] for row in result['runtime_collisions']], native_paths)
+        self.assertEqual(result['comparisons'][0]['project_skill'], 'team-check')
+        # Framework IDs use their established grammar, rather than project ID limits.
+        candidate['id'] = 'reviewer.' + 'audit' * 14
+        candidate['runtime_paths'] = []
+        self.assertEqual(r.compare(self.project, [candidate])['outcome'], 'compared')
+        for name in ('.agents/skills/reviewer..audit/SKILL.md',
+                     '.agents/skills/reviewer.audit/../outside.md',
+                     '.agents/skills/reviewer.audit/SKILL.md/../../outside.md',
+                     '.agents/skills/Reviewer.audit/SKILL.md'):
+            candidate['runtime_paths'] = [name]
+            with self.subTest(path=name), self.assertRaises(ValueError):
+                r.compare(self.project, [candidate])
+        # Project-owned authoring identifiers intentionally remain stricter.
+        registry['skills']['team.check'] = registry['skills'].pop('team-check')
+        with self.assertRaisesRegex(ValueError, 'registry identifier'):
+            r.validate(registry)
 
     def test_missing_baseline_is_unknown_not_unchanged(self):
         registry, files = fixture(base=False)

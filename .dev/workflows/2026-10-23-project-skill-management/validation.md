@@ -98,6 +98,37 @@ and a protected project AGENTS.md. It is the actual upgrade starting point,
 not a mock or a claim that the new manager passed. Driver and results:
 `F:/aicf482/seed-old-consumer.py`, `old-consumer-result.json`.
 
+## Independent review and actual consumer correction
+
+The independent read-only reviewer examined clean commit
+`ff7c86b8e831fb98b4def274b9b3d84c93cea14b` against the selected main base under
+the installed code-reviewer route and registered fixed-head-independent-auditor
+profile, explicitly invoked as Sol/medium. It reported two actionable P2 findings:
+completed same-registry repairs could reacquire a subsequently restored foreign
+preimage, and comparison rejected valid dotted framework IDs/native entry names.
+
+The same fixed commit produced an actual 29-file pinned catalog/engine. Its public
+CLI passed explicit same-byte adoption, seven-member projection per adapter,
+original/prefixed framework routing, managed collision rejection, upgrade and
+optional deselection protection. The subsequent legacy migration failed before
+renaming: its lock before/after hashes were identical, and apply incorrectly
+inferred completion from equality with the after hash. This is a retained failed
+attempt (`F:/aicf482/layout-apply.json`), not a passed migration.
+
+The bounded repair adds a fresh UUIDv4 operation ID to each skill plan and a
+canonical completion marker for each exact completed plan under `.ai/local`.
+Fresh explicit repairs remain possible; completed-plan replay requires after
+states even after other plans finish. Invalid markers and publication failure
+remain visible. Comparison uses the existing framework ID grammar. Layout apply
+infers completion from a lock hash only when that lock actually transitions.
+
+The implementation worker was the sole tracked writer for these four source/test
+files and returned ownership before parent integration. Its final focused run
+passed all 39 tests (24 skill, 15 layout) in 38.009 s, with zero failures, errors
+or skips. Log: `F:/aicf482/skill-layout-review-repairs-final.log`. The harness and
+TEMP/TMP contract are the same as above. Targeted 5-test and intermediate 23-test
+runs also passed; the 39-test run includes subsequent UUID/layout additions.
+
 ## Remaining acceptance at this checkpoint
 
 - Build the current pinned catalog/engine from one clean fixed commit and use
