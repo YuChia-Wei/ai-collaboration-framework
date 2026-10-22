@@ -216,6 +216,44 @@ class LayoutTests(unittest.TestCase):
             layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())
         self.assertEqual((self.root / state.LOCK_PATH).read_bytes(), original.raw)
 
+    def test_equal_lock_first_migration_rewrites_skill_resources_then_protects_replay(self):
+        from distribution import skill_registry as skills
+        from framework_next.test_skill_registry import fixture as skill_fixture
+        (self.root / layout.LEGACY).mkdir(parents=True)
+        registry, files = skill_fixture()
+        files = {n.replace(layout.CANONICAL, layout.LEGACY): v for n, v in files.items()}
+        method = layout.LEGACY + '/skills/team-check/references/method.md'
+        files[method] += 'Read .ai/custom/skills/team-check/templates/report.md\n'
+        registry['skills']['team-check']['members']['references/method.md'] = p.digest(files[method].encode())
+        planned = skills.plan(self.project, registry, files)
+        skills.apply(self.project, planned['plan'], planned['plan_sha256'])
+        # Keep authentic catalog/selection/ownership from a real lock while the
+        # engine is already current and no protected input needs relocation.
+        document = deepcopy(state.read_lock(str(ROOT)).document)
+        document['engine'] = engine()
+        document['project_inputs'] = []
+        original = catalog.lock_bytes(json_bytes(document))
+        (self.root / state.LOCK_PATH).write_bytes(original.raw)
+        native = self.root / '.agents/skills/team-check/references/method.md'
+        preimage = native.read_bytes()
+        planned = layout.plan(self.project, engine())
+        lock = planned['plan']['lock']
+        self.assertEqual(lock['before_sha256'], lock['after_sha256'])
+        self.assertTrue(any(row['path'] == '.agents/skills/team-check/references/method.md'
+                            for row in planned['plan']['writes']))
+        result = layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())
+        self.assertEqual(result['outcome'], 'applied')
+        self.assertFalse((self.root / layout.LEGACY).exists())
+        self.assertEqual((self.root / state.LOCK_PATH).read_bytes(), original.raw)
+        self.assertIn(b'.ai/project/skills/', native.read_bytes())
+        self.assertNotIn(b'.ai/custom/', native.read_bytes())
+        self.assertEqual(skills.resolve(self.project, 'review', 'codex')['runtime_id'], 'team-check')
+        self.assertEqual(layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())['outcome'], 'unchanged')
+        native.write_bytes(preimage)
+        with self.assertRaisesRegex(ValueError, 'resource drift'):
+            layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())
+        self.assertEqual(native.read_bytes(), preimage)
+
     def test_moved_lock_input_drift_rejected_without_mutation(self):
         self.seed()
         original = deepcopy(state.read_lock(str(ROOT)).document)

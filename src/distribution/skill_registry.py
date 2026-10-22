@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import re
 import tempfile
+import uuid
 
 from . import installation_state as state
 from . import subagent_policy as p
@@ -320,7 +321,8 @@ def plan(project, proposed, files, adopt=None, detach=None):
     writes.sort(key=lambda r: (r['content'] is None, not r['path'].startswith(PACKAGES), r['path']))
     writes.append({'path': REGISTRY, 'before_sha256': before_registry,
                    'after_sha256': p.digest(p.encode(proposed)), 'content': p.encode(proposed).decode('utf-8')})
-    document = {'plan_version': 1, 'project_root': str(Path(project)), 'lock_sha256': lock_sha,
+    document = {'plan_version': 1, 'operation_id': str(uuid.uuid4()),
+                'project_root': str(Path(project)), 'lock_sha256': lock_sha,
                 'previous': old, 'writes': writes}
     p.decode(p.encode(document))
     return {'outcome': 'planned', 'changed': False, 'plan': document, 'plan_sha256': p.digest(p.encode(document))}
@@ -334,7 +336,10 @@ def apply(project, document, plan_sha256):
 
 def _apply(project, document, plan_sha256):
     REGISTRY, PACKAGES = registry_path(project), packages(project)
-    fields(document, 'plan_version project_root lock_sha256 previous writes')
+    fields(document, 'plan_version operation_id project_root lock_sha256 previous writes')
+    operation_id = document['operation_id']
+    p.require(type(operation_id) is str and str(uuid.UUID(operation_id)) == operation_id
+              and uuid.UUID(operation_id).version == 4, 'canonical random operation UUID required')
     p.require(type(document['plan_version']) is int and document['plan_version'] == 1
               and document['project_root'] == str(Path(project))
               and p.digest(p.encode(document)) == plan_sha256, 'registry plan changed')
@@ -368,6 +373,11 @@ def _apply(project, document, plan_sha256):
                 row = next(r for r in rows if r['path'] == native(adapter, binding, destination))
                 p.require(row['content'].encode('utf-8') == source_content[PACKAGES + rid + '/' + source],
                           'projection differs from authoring member')
+    completion_name = '.ai/local/skill-registry-completed/' + plan_sha256 + '.json'
+    completion = at(project, completion_name)
+    completed_bytes = p.encode({'completion_version': 1, 'plan_sha256': plan_sha256})
+    completion_before = p.raw_read(completion)
+    p.require(completion_before in (None, completed_bytes), 'malformed or mismatched skill completion marker')
     guard = at(project, REGISTRY + '.writer')
     guard.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -375,13 +385,17 @@ def _apply(project, document, plan_sha256):
     except FileExistsError:
         raise p.PolicyError('registry writer active; reconcile its owner before resuming')
     written = []
+    completing = False
     try:
         os.close(descriptor)
         p.require(read_registry(project)[1] == current_sha, 'registry changed before writer acquired')
         lock_sha, managed = lock(project)
         p.require(lock_sha == document['lock_sha256'], 'framework lock changed')
-        completed = (current_sha == rows[-1]['after_sha256']
-                     and rows[-1]['before_sha256'] != rows[-1]['after_sha256'])
+        p.require(p.raw_read(completion) == completion_before, 'completion marker changed before apply')
+        p.require(completion_name not in managed, 'framework-owned completion marker denied')
+        completed = (completion_before is not None or
+                     (current_sha == rows[-1]['after_sha256']
+                      and rows[-1]['before_sha256'] != rows[-1]['after_sha256']))
         # Validate every preimage before the first write; exact after bytes permit resume.
         for row in rows:
             p.require(row['path'] not in managed, 'framework-owned write denied')
@@ -413,12 +427,35 @@ def _apply(project, document, plan_sha256):
                     Path(temporary).unlink(missing_ok=True)
             written.append(row['path'])
             p.require(p.digest(p.raw_read(target)) == row['after_sha256'], 'resource readback mismatch')
+        # A successful same-registry repair cannot be distinguished by registry
+        # bytes alone. Keep a separate immutable completion fact for every exact
+        # plan, after verifying the entire published state again.
+        p.require(lock(project)[0] == lock_sha and all(
+            p.digest(p.raw_read(at(project, row['path']))) == row['after_sha256'] for row in rows),
+            'final registry plan state changed')
+        p.require(p.raw_read(completion) == completion_before, 'completion marker changed during apply')
+        completing = True
+        if completion_before is None:
+            completion.parent.mkdir(parents=True, exist_ok=True)
+            p.direct(completion.parent, directory=True)
+            fd, temporary = tempfile.mkstemp(prefix='.skill-completion-', dir=completion.parent)
+            try:
+                with os.fdopen(fd, 'wb') as stream:
+                    stream.write(completed_bytes)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                p.require(p.raw_read(completion) is None, 'completion marker appeared during apply')
+                os.replace(temporary, completion)
+                written.append(completion_name)
+            finally:
+                Path(temporary).unlink(missing_ok=True)
+        p.require(p.raw_read(completion) == completed_bytes, 'completion marker readback mismatch')
         return {'outcome': 'applied' if written else 'unchanged', 'changed': bool(written),
                 'written': written, 'runtime_activation': 'unknown'}
     except (ValueError, OSError) as exc:
-        if not written:
+        if not written and not completing:
             raise
-        return {'outcome': 'interrupted', 'changed': True, 'written': written,
+        return {'outcome': 'interrupted', 'changed': bool(written), 'written': written,
                 'reason': str(exc), 'recovery': 'Preserve the plan and files; inspect, then explicitly resume the same plan.'}
     finally:
         guard.unlink()
@@ -431,7 +468,8 @@ def compare(project, candidates):
     results, collisions = [], []
     for candidate in candidates:
         fields(candidate, 'id ref capabilities files runtime_paths')
-        identifier(candidate['id'])
+        from .data import identifier as package_identifier
+        package_identifier(candidate['id'], 'framework candidate ID')
         text(candidate['ref'])
         p.require(type(candidate['capabilities']) is list and type(candidate['files']) is dict
                   and type(candidate['runtime_paths']) is list, 'candidate shape')
@@ -445,7 +483,7 @@ def compare(project, candidates):
             p.require(len(prefixes) == 1, 'candidate runtime path')
             parts = name[len(prefixes[0]):].split('/', 1)
             p.require(len(parts) == 2, 'candidate skill member required')
-            identifier(parts[0])
+            package_identifier(parts[0], 'framework candidate entry name')
             relative(parts[1])
             if (name in current['resources'] or name in current['managed_resources']
                     or p.raw_read(at(project, name)) is not None):
