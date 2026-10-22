@@ -150,7 +150,9 @@ and empty directories; canonical deselection also preserved project resources.
 The actual source migration retained 7 roles and 28 matching registered resources.
 The adapter compatibility correction selects wrapper convention from the artifact
 generator closure, retaining old configured wrappers byte-for-byte.
-The requested immutable Antigravity analysis remains pending.
+The requested headless Antigravity analysis did not complete because its initial
+read was denied. The owner-selected manual fallback preview and prompt are ready;
+see validation.md for the fixed source, installed readback and remaining limits.
 
 
 ## Authorized integration and next feature

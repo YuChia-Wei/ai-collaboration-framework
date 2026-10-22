@@ -3,13 +3,13 @@
   "workflow_id": "2026-10-22-subagent-model-policy",
   "owner_skill": "slice-implementer",
   "title": "Implement subagent project resources and compatible project-directory migration",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-22T21:45:09+08:00",
-  "updated_at": "2026-10-23T01:18:27+08:00",
+  "updated_at": "2026-10-23T01:30:00+08:00",
   "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
   "template_version": "1.0.0",
   "model": "gpt-6-astra",
   "reasoning_effort": "xhigh",
   "runtime_identity_source": "Parent configured fallback currently gpt-6-astra/xhigh; active provider identity is not independently observed. Implementation child explicitly selected gpt-6.1-sol/medium with fresh context.",
-  "finding_status": "corrected_restored_lock_replay_awaiting_affected_review"
+  "finding_status": "affected_independent_review_accepted_at_546c1041"
 }
