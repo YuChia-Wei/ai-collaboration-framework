@@ -44,12 +44,19 @@ jobs:
         id: build
         shell: bash
         run: |
+          set +e
           python -I -B .github/scripts/build-release.py \
             --repository "$GITHUB_WORKSPACE" --tag "$RELEASE_TAG" \
             --tooling-commit "$TOOLING_COMMIT" --workflow-commit "$TOOLING_COMMIT" \
             --workflow .github/workflows/publish-release.yml \
             --repository-name "$GITHUB_REPOSITORY" --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
-            --work-root "$RUNNER_TEMP/rb" --output "$RUNNER_TEMP/release-assets" --github-output "$GITHUB_OUTPUT"
+            --work-root "$RUNNER_TEMP/rb" --output "$RUNNER_TEMP/release-assets" --github-output "$GITHUB_OUTPUT" \
+            > "$RUNNER_TEMP/build-release.stdout" 2> "$RUNNER_TEMP/build-release.stderr"
+          build_status=$?
+          set -e
+          cat "$RUNNER_TEMP/build-release.stdout"
+          cat "$RUNNER_TEMP/build-release.stderr" >&2
+          exit "$build_status"
       - name: Admit exact package bytes for writer and retries
         id: upload
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -60,14 +67,16 @@ jobs:
           compression-level: 0
           retention-days: 30
       - name: Retain builder diagnostic output
-        if: failure()
+        if: failure() && steps.build.outcome == 'failure'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: release-build-failure-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
+            ${{ runner.temp }}/build-release.stdout
+            ${{ runner.temp }}/build-release.stderr
             ${{ runner.temp }}/rb/builder.stdout
             ${{ runner.temp }}/rb/builder.stderr
-          if-no-files-found: ignore
+          if-no-files-found: error
           retention-days: 30
   draft:
     needs: build
