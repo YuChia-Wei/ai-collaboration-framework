@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import ctypes
+import errno
 from hashlib import sha256
 import os
 from pathlib import Path
@@ -41,6 +42,7 @@ class Changes:
     protected: str = "unresolved"
     marker_admitted: bool = False
     residues: list[dict] = field(default_factory=list)
+    diagnostics: list[dict] = field(default_factory=list)
 
     def record(self, role: str, name: str) -> None:
         self.changed = True
@@ -399,6 +401,64 @@ class IO:
             self.changes.counts[category] += 1
         self.backend.flush_directory((root / name).parent)
         self.expect(root, name, None)
+
+    def prune_empty_managed_directories(self, root: Path, members: set[str]) -> None:
+        """Recycle empty shells only inside the seven fixed managed roots.
+
+        Unknown files and unsafe boundaries are observations, never deletion
+        authority. Use bounded listings and rmdir, with no recursive deletion.
+        """
+        scopes = (".ai/core/skills", ".ai/core/knowledge", ".ai/core/sub-agents",
+                  ".agents/skills", ".claude/skills", ".codex/agents", ".claude/agents")
+
+        def preserved(name: str, reason: str) -> None:
+            self.changes.diagnostics.append({"code": "preserved-unmanaged-path", "path": name,
+                "reason": reason, "next_action": "Review retained content with its project owner; no file cleanup was performed."})
+
+        for scope in scopes:
+            pending = [(scope, False)]
+            while pending:
+                name, visited = pending.pop()
+                try:
+                    target = self.locate(root, name)
+                except state.InstallationError as exc:
+                    if exc.diagnostic["code"] not in {"linked-path", "nested-mount"}:
+                        raise
+                    preserved(name, "Linked or mounted content is retained without traversal.")
+                    continue
+                if target is None:
+                    continue
+                if not stat.S_ISDIR(target.lstat().st_mode):
+                    if name not in members:
+                        preserved(name, "Unknown or non-managed file is retained.")
+                    continue
+                self.reader.forget_listing(target)
+                children = self.reader.listing(target)
+                if not visited and children:
+                    pending.append((name, True))
+                    pending.extend((name + "/" + child, False) for child in sorted(children.values(), reverse=True))
+                    continue
+                if name == scope or children:
+                    continue
+                # Re-admit direct ancestry and identity immediately before rmdir.
+                before = self.reader._directory_observation(target)
+                state._check(self.locate(root, name) == target
+                             and self.reader._directory_observation(target) == before,
+                             "directory-drift", "Empty directory changed before removal.", name, "conflict")
+                try:
+                    target.rmdir()
+                except OSError as exc:
+                    if exc.errno not in {errno.ENOTEMPTY, errno.EEXIST}:
+                        raise
+                    preserved(name, "Directory became nonempty before removal; concurrent content was retained.")
+                    self.reader.forget_listing(target)
+                    continue
+                self.changes.record("project", name)
+                self.reader.forget_listing(target)
+                self.reader.forget_listing(target.parent)
+                self.backend.flush_directory(target.parent)
+                self.changes.diagnostics.append({"code": "empty-managed-directory-removed", "path": name,
+                    "reason": "Empty managed-root subdirectory was removed with rmdir.", "next_action": "None."})
 
     def mode(self, root: Path, name: str, raw: bytes, before_mode: str, after_mode: str) -> None:
         self.expect(root, name, raw, before_mode)

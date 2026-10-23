@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
+import errno
 import os
 import sys
 import unittest
@@ -17,7 +18,7 @@ sys.dont_write_bytecode=True
 sys.path[:0]=[str(HERE),str(HERE.parents[1]/'src')]
 import support
 from distribution import installation_plan as planning,installation_state as state,installation,reinstallation
-from distribution.installation_io import Backend,sibling
+from distribution.installation_io import Backend,Changes,IO,sibling
 from distribution.data import json_bytes
 
 
@@ -121,6 +122,144 @@ class MacOSFallbackTests(support.FixtureTestCase):
         self.assertEqual(notes['maintenance-quiescence']['status'],'pending')
         native={r['id']:r for r in planning._prerequisites(False,False,False)}
         self.assertIn('Native filesystem/domain',native['durability-declaration']['next_action'])
+
+
+class EmptyManagedDirectoryTests(support.FixtureTestCase):
+    scopes = ('.ai/core/skills', '.ai/core/knowledge', '.ai/core/sub-agents',
+              '.agents/skills', '.claude/skills', '.codex/agents', '.claude/agents')
+
+    def fixture(self, name):
+        root = support.active_run().case(name)
+        backend = SimpleNamespace(windows=os.name == 'nt', flush_directory=lambda path: None,
+                                  move=lambda source, target, replace: source.replace(target) if replace else source.rename(target))
+        return root, IO(backend, state._Reader(), Changes())
+
+    def test_rename_and_removal_recycle_nested_shells_in_every_managed_root(self):
+        for rename in (False, True):
+            with self.subTest(rename=rename):
+                root, io = self.fixture('rename' if rename else 'remove')
+                old, new, objects = {}, {}, {}
+                for scope in self.scopes:
+                    before = scope + '/retired/references/entry.txt'
+                    after = scope + '/replacement/entry.txt'
+                    raw = b'managed member'; digest = sha256(raw).hexdigest()
+                    row = {'sha256':digest, 'size':len(raw), 'mode':'100644'}
+                    old[before] = row
+                    if rename: new[after] = row
+                    objects[digest] = raw
+                    target = root / before; target.parent.mkdir(parents=True)
+                    support.active_run().write(target, raw)
+                    if os.name != 'nt': target.chmod(0o644)
+                before = state.InstalledLock({}, b'old lock', '1'*64, old)
+                after = state.InstalledLock({'project_inputs':[]}, b'new lock', '2'*64, new)
+                operation = installation.Operation({'project_edits':[], 'protected_inputs':[], 'operation_id':'1'*32},
+                                                   b'operation', before, after, objects)
+                for name, raw in ((state.LOCK_PATH, before.raw), *((name, operation.raw) for name in state.MARKERS)):
+                    target = root/name; target.parent.mkdir(parents=True, exist_ok=True)
+                    support.active_run().write(target, raw)
+                guard = SimpleNamespace(verify=lambda:None)
+                installation._transition(io, guard, root, operation, installation._current(io, root, operation), after)
+                installation._finish(io, guard, root, operation, after, before.raw)
+                for scope in self.scopes:
+                    self.assertTrue((root/scope).is_dir())
+                    self.assertFalse((root/scope/'retired').exists())
+                    if rename: self.assertEqual((root/scope/'replacement/entry.txt').read_bytes(), b'managed member')
+                self.assertEqual(io.changes.counts['removed'], len(self.scopes))
+                self.assertEqual(len([r for r in io.changes.diagnostics if r['code']=='empty-managed-directory-removed']), 2*len(self.scopes))
+                self.assertFalse((root/state.MARKERS[0]).exists())
+
+    def test_historical_shells_are_recycled_but_unknown_files_and_outside_roots_remain(self):
+        root, io = self.fixture('historical-shells')
+        for scope in self.scopes:
+            (root/scope/'retired/references').mkdir(parents=True)
+            custom = root/scope/'custom'; custom.mkdir()
+            support.active_run().write(custom/'secret.bin', b'project owned')
+            (custom/'empty').mkdir()
+        outside = root/'.ai/custom/empty'; outside.mkdir(parents=True)
+        # Unknown contents must never be opened by cleanup.
+        with patch.object(io.reader, 'read', side_effect=AssertionError('unknown file read')):
+            io.prune_empty_managed_directories(root, set())
+        self.assertTrue(outside.is_dir())
+        for scope in self.scopes:
+            self.assertFalse((root/scope/'retired').exists())
+            self.assertEqual((root/scope/'custom/secret.bin').read_bytes(), b'project owned')
+        retained = {r['path'] for r in io.changes.diagnostics if r['code']=='preserved-unmanaged-path'}
+        self.assertEqual(retained, {scope+'/custom/secret.bin' for scope in self.scopes})
+        # No files or empty roots are removed on a repeated sweep.
+        io.changes = Changes()
+        io.prune_empty_managed_directories(root, set())
+        self.assertFalse(io.changes.changed)
+
+    def test_link_and_mount_boundaries_are_retained_without_traversal(self):
+        root, io = self.fixture('unsafe-boundaries')
+        for suffix in ('linked', 'mounted'):
+            (root/'.agents/skills'/suffix/'empty').mkdir(parents=True)
+        original = io.locate
+        def bounded_locate(base, name):
+            for suffix, code in (('linked','linked-path'), ('mounted','nested-mount')):
+                if name == '.agents/skills/'+suffix:
+                    raise state.InstallationError(code, 'fixture unsafe boundary', name)
+            return original(base, name)
+        with patch.object(io, 'locate', side_effect=bounded_locate):
+            io.prune_empty_managed_directories(root, set())
+        for suffix in ('linked', 'mounted'):
+            self.assertTrue((root/'.agents/skills'/suffix/'empty').is_dir())
+        self.assertEqual(len(io.changes.diagnostics), 2)
+        self.assertFalse(io.changes.changed)
+
+    def test_racing_content_is_preserved_and_reported(self):
+        root, io = self.fixture('racing-content')
+        target = root/'.agents/skills/retired'; target.mkdir(parents=True)
+        original = Path.rmdir
+        def racing_rmdir(path):
+            if path == target:
+                support.active_run().write(path/'custom.txt', b'arrived')
+                raise OSError(errno.ENOTEMPTY, 'directory is not empty')
+            return original(path)
+        with patch.object(Path, 'rmdir', racing_rmdir):
+            io.prune_empty_managed_directories(root, set())
+        self.assertEqual((target/'custom.txt').read_bytes(), b'arrived')
+        self.assertEqual(io.changes.diagnostics[0]['code'], 'preserved-unmanaged-path')
+        self.assertFalse(io.changes.changed)
+
+    def test_noop_apply_remains_read_only_even_with_historical_shells(self):
+        root, io = self.fixture('noop-shells')
+        shell = root/'.agents/skills/retired/references'; shell.mkdir(parents=True)
+        request = {'expected_plan_sha256':'1'*64, 'maintenance':{}, 'protected_inputs':[]}
+        preview = {'plan_sha256':'1'*64, 'plan':{'noop':True, 'maintenance_scope':[]}}
+        candidate = SimpleNamespace(members={})
+        prepared = (preview, candidate, SimpleNamespace(lock=None), {'project':root}, io.backend)
+        guard = SimpleNamespace(created=False, verify=lambda:None)
+        with patch.object(state, '_request', return_value=request), \
+             patch.object(planning, '_prepare', return_value=prepared), \
+             patch.object(installation, 'declaration'), patch.object(installation, '_admit'), \
+             patch.object(installation, 'WriterLock') as lock, \
+             patch.object(IO, 'prune_empty_managed_directories') as prune:
+            lock.return_value.__enter__.return_value = guard
+            result = installation.apply({})
+        self.assertEqual(result['outcome'], 'unchanged')
+        self.assertFalse(result['changed'])
+        self.assertTrue(shell.is_dir())
+        prune.assert_not_called()
+
+    def test_cleanup_failure_retains_markers_for_finish_retry(self):
+        root, io = self.fixture('cleanup-recovery')
+        (root/'.agents/skills/retired/references').mkdir(parents=True)
+        before = state.InstalledLock({}, b'old lock', '1'*64, {})
+        after = state.InstalledLock({'project_inputs':[]}, b'new lock', '2'*64, {})
+        operation = installation.Operation({'project_edits':[], 'protected_inputs':[], 'operation_id':'1'*32},
+                                           b'operation', before, after, {})
+        for name, raw in ((state.LOCK_PATH, before.raw), *((name, operation.raw) for name in state.MARKERS)):
+            target = root/name; target.parent.mkdir(parents=True, exist_ok=True)
+            support.active_run().write(target, raw)
+        guard = SimpleNamespace(verify=lambda:None)
+        with patch.object(Path, 'rmdir', side_effect=PermissionError('fixture interruption')):
+            with self.assertRaises(PermissionError): installation._finish(io, guard, root, operation, after, before.raw)
+        self.assertEqual((root/state.MARKERS[0]).read_bytes(), operation.raw)
+        self.assertEqual((root/state.LOCK_PATH).read_bytes(), after.raw)
+        installation._finish(io, guard, root, operation, after, after.raw)
+        self.assertFalse((root/'.agents/skills/retired').exists())
+        self.assertFalse((root/state.MARKERS[0]).exists())
 
 
 class MaintenanceContractTests(support.FixtureTestCase):
