@@ -4,12 +4,12 @@ workflow_id: 2026-10-23-controller-example-consistency
 workflow_kind: source-knowledge-maintenance
 title: Repair four Controller guidance example contradictions
 owner_skill: software-development-orchestrator
-status: in_progress
-current_phase: waiting-shared-preview
+status: completed
+current_phase: completed
 artifact_root: .dev/workflows/2026-10-23-controller-example-consistency
 entrypoint: workflow-plan.md
 created_at: '2026-10-23T09:41:52+08:00'
-updated_at: '2026-10-23T09:45:28+08:00'
+updated_at: '2026-10-23T10:01:02+08:00'
 template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
 template_version: 1.0.0
 branch: codex/2026-10-23-controller-example-consistency
@@ -33,15 +33,17 @@ tasks:
   runtime_identity_basis: Configured defaults in user config.toml; actual primary
     runtime labels not exposed
   title: Repair examples, exact versions and catalog; verify source
-  findings_status: Author inspection addressed; optional fixed-commit review follows
+  findings_status: No supported actionable finding in fixed-commit common review
   result_summary: Four corrections, exact version closure, 11 guidance hashes and
     catalog digest passed read-back; 197 distribution/schema tests passed.
+  reviewer: /root/package_tooling
+  reviewed_commit: cf3690b7fcfd833944b627d31223804bb8a49548
 - task_id: T2
   workflow_id: 2026-10-23-controller-example-consistency
   owner_skill: local-change-implementer
-  status: in_progress
+  status: completed
   created_at: '2026-10-23T09:41:52+08:00'
-  updated_at: '2026-10-23T09:45:28+08:00'
+  updated_at: '2026-10-23T10:01:02+08:00'
   template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
   template_version: 1.0.0
   model: gpt-6.1-sol
@@ -49,3 +51,9 @@ tasks:
   runtime_identity_basis: Configured defaults in user config.toml; actual primary
     runtime labels not exposed
   title: After the selected chat completes, update and verify shared Preview
+  findings_status: Direct and independent read-back passed
+  result_summary: 'After prerequisite chat completion, Preview apply/inspect passed:
+    513 managed files verified, four fixes and six links confirmed, six protected
+    files unchanged, selection preserved.'
+  source_commit: 1c1e696ee2170caa07ad0a83a48abf831c7292e1
+  evidence_root: F:\AICF-Preview-Builds\491-1c1e696e
