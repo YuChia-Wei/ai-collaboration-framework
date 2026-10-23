@@ -21,3 +21,16 @@
   gpt-6.1-sol / medium, overriding default Luna explicitly. No forced env override
   observed. Actual invocation remains to be recorded after dispatch.
 - No push, PR, merge, hosted gate, release or downstream upgrade performed.
+
+## Independent review and R1 correction
+
+Project fixed-head-independent-auditor was invoked with explicit Sol/medium.
+Reviewed 542a37db7edea2a3bc064fc9aa189c0d644f6702 against base 6574d3362e79aae71f674547afe1f7d0b50fd0a2.
+Reviewer confirmed clean fixed subject/diff check and reported one medium finding:
+qualify approval/revision history as execution-authorization history, preserving
+product requirement revisions and decisions. Parent corrected all five normative
+copies and made the allowed requirement revision/status explicit. No other finding
+was reported. Reviewer could not independently observe actual model identity;
+selected invocation settings are not presented as telemetry proof. No review tests
+ran. The repair changes prose scope only; existing structural tests are not rerun.
+Affected-rule independent re-review is pending on the next fixed commit.
