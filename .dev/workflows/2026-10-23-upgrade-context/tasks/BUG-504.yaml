@@ -6,7 +6,7 @@ intent: bug-fix
 mode: generic
 overlay: remediation
 created_at: '2026-10-23T21:23:01+08:00'
-updated_at: '2026-10-23T21:23:01+08:00'
+updated_at: '2026-10-23T21:29:41+08:00'
 template_source: .dev/workflows/2026-10-22-domain-architecture-split/template.md
 template_version: '1.0.0'
 model: gpt-6.1-sol

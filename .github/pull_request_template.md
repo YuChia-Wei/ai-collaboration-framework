@@ -27,5 +27,5 @@ or unresolved defects remain visible even when Source change gate passes.
 
 Link related requirements and summarize delivered, remaining or deferred product
 scope. Use closing keywords only for the selected final delivery; otherwise use
-`Refs` with the functional limitation or dependency. Keep closure authority,
+`Refs` with actual product status and any remaining limitation or dependency. Keep closure authority,
 integration decisions and execution checkpoints in the workflow, not this body.

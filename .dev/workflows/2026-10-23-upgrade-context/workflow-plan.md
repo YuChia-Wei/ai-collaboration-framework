@@ -143,3 +143,20 @@ product and technical evidence without the previously copied execution passages.
 No runtime language-model enforcement is claimed. Next: commit this bounded
 repair, obtain independent review including public PR content, then push and
 require fresh hosted CI before the user-authorized same-PR merge.
+
+Independent Bug review attempt 1: `/root/upgrade_independent_review` inspected
+clean d628e1116ba915fd294811871f6b1f358dea8bd0 against 62a50d47, with original
+PR base 83df8fce, using the same policy-selected gpt-6.1-sol/medium project role.
+It requested changes for F1 (medium, high confidence): operations.md and
+example.md still instructed deferred validation reasons to name owner/next action,
+which the public renderer emits. It found no supported violation in the live PR
+or Bug and no additional version/bilingual/installer regression. No tests ran in
+the read-only review; actual model identity remained independently unavailable.
+
+F1 remediation replaces those instructions with technical causes, coverage limits
+or functional dependencies and supplies a technical-only example. The renderer
+and schema remain unchanged. Also clarified reference-only completed delivery:
+Refs may report actual product status without inventing a functional gap or
+publishing missing closure authority. This preserves explicit closure authority
+in the workflow. Only prose changed after the passing 12/80 tests; reuse those
+results, inspect changed links/diff and return the fixed commit for affected review.
