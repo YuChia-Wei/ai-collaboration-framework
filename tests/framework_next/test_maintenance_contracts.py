@@ -22,6 +22,45 @@ from distribution.installation_io import Backend,Changes,IO,sibling
 from distribution.data import json_bytes
 
 
+class ContextFollowUpTests(unittest.TestCase):
+    def test_inspect_only_hands_off_consistent_installed_state(self):
+        lock = SimpleNamespace(document={"inventory": {"files": []}, "mode_policy": "windows-inventory-only"})
+        for installed, drift, markers, expected in (
+            (lock, [], [], True), (None, [], [], False),
+            (lock, [{"path": "changed", "reason": "member-drift"}], [], False),
+            (lock, [], ["marker"], False)):
+            with self.subTest(installed=installed is not None, drift=drift, markers=markers), \
+                 patch.object(state, '_request', return_value={"project_root": "project", "engine_root": "engine", "engine": {}}), \
+                 patch.object(state, '_root', side_effect=Path), \
+                 patch.object(state, '_roots_disjoint'), patch.object(state, '_engine'), \
+                 patch.object(state, 'observe_installation', return_value=SimpleNamespace(
+                     lock=installed, drift=drift, markers=markers, unknown=[])):
+                result = state.inspect({})
+                self.assertFalse(result['changed'])
+                self.assertEqual(result['details']['project_readiness'], 'not-assessed')
+                self.assertEqual('context_follow_up' in result['details'], expected)
+                if expected:
+                    follow = result['details']['context_follow_up']
+                    self.assertEqual(follow['semantic_assessment'], 'not-performed')
+                    self.assertIn('unchanged', follow['next_actions'][0])
+                    self.assertIn('optional', follow['next_actions'][2])
+                if markers:
+                    self.assertEqual(result['diagnostics'][0]['code'], 'maintenance-marker')
+
+    def test_apply_handoff_does_not_replace_failure_or_recovery_diagnostics(self):
+        for operation, outcome, managed, expected in (
+            ('apply', 'applied', 'managed-bytes-consistent', True),
+            ('apply', 'unchanged', 'managed-bytes-consistent', True),
+            ('apply', 'blocked', 'managed-bytes-consistent', False),
+            ('apply', 'interrupted', 'recovery-needed', False),
+            ('recover', 'recovered', 'managed-bytes-consistent', False)):
+            with self.subTest(operation=operation, outcome=outcome):
+                result = installation._result(operation, outcome, Changes(), managed, [{'code': 'retained'}])
+                self.assertEqual('context_follow_up' in result['details'], expected)
+                self.assertEqual(result['diagnostics'][0]['code'], 'retained')
+                self.assertEqual(result['details']['project_readiness'], 'not-assessed')
+
+
 class UnsupportedPlatformTests(unittest.TestCase):
     def test_unsupported_hosts_stop_before_native_io_and_report_an_actionable_route(self):
         durability={'declared_by':'test-owner','declaration_reference':'unit fixture',
@@ -254,6 +293,8 @@ class EmptyManagedDirectoryTests(support.FixtureTestCase):
             result = installation.apply({})
         self.assertEqual(result['outcome'], 'unchanged')
         self.assertFalse(result['changed'])
+        self.assertEqual(result['details']['context_follow_up']['status'], 'review-needed')
+        self.assertEqual(result['details']['project_readiness'], 'not-assessed')
         self.assertTrue(shell.is_dir())
         prune.assert_not_called()
 

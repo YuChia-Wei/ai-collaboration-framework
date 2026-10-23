@@ -102,6 +102,14 @@ essential source/test/document paths, selected runtime navigation, stack constra
 and commands with working directories, prerequisites and evidence status. Mark
 unresolved facts explicitly. Include only existing links and adopted target rules.
 
+When present, identify the actual project-owned installation selection, framework
+configuration and adopted model policy, with their purpose and reading triggers.
+Use `.ai/project/` only when that is the target's actual layout; resolve supported
+legacy paths instead of inventing links. Include resource registries only when
+selected. Direct delegation to the adopted policy before choosing model/effort;
+keep its model mappings in that policy rather than copying them into this entry.
+Keep installation ownership evidence distinct from project policy adoption.
+
 Add a concise reading map using the target's actual document paths. Point product
 or behavior work to the authoritative background and requirements; point changes
 to applicable collaboration rules and check commands; point a selected first task
