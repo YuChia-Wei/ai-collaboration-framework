@@ -30,7 +30,7 @@
 3. 檢查 knowledge bindings：兩新 skills 沿用 architecture capability。既有 design/review
    bindings 保留 ID、authority、selectors 與 coverage 意圖，逐項核對新 allowlist。
    Domain 的 explore、Story 的 plan 是不同 operations，不能由名稱替換推論已被採納。
-4. 新 source 的 common 是 0.4.0，dotnet 是 0.1.5，後者精確依賴 common0.4.0；
+4. 新 source 的 common 是 0.4.0，dotnet 是 0.1.6，後者精確依賴 common0.4.0；
    metadata pins 必須和所用 catalog 一致。Story plan 的 discovery 與 formulation
    不可混成含 plan 的同一 binding，因 formulation 不宣告 plan。
 5. 依既有 derive/inspect/plan 與現有授權 apply，再讀回 managed inventory、選擇與 entries。
