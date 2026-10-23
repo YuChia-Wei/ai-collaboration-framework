@@ -11,8 +11,10 @@ For each Issue delivered by a PR, state one disposition in its existing body:
 
 - `terminal-close`: final accepted delivery, with an owner-authorized matching
   `Closes`, `Fixes` or `Resolves` keyword.
-- `deferred`: partial/checkpoint delivery, using `Refs #<number>` with the
-  functional limitation or dependency; no closing keyword for that Issue.
+- `deferred`: Issue closure is not selected, using `Refs #<number>` with the
+  actual product delivery status and any remaining functional limitation or
+  dependency; no closing keyword for that Issue. Completed implementation may
+  still be reference-only; do not invent a functional gap to explain its lifecycle.
 
 The public body contains product delivery facts under
 [the public content boundary](PUBLIC-REQUIREMENT-CONTENT-POLICY.md).
