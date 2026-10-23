@@ -1,9 +1,9 @@
 # AI Collaboration Framework 使用手冊
 
-本手冊描述 `0.19.0` 定版來源的能力，包括 `ai-context-init@0.2.1` 入門
-資源、可選 sub-agents 與 `engine/src/tools/` 安裝入口。是否已發布某個版本，
-請查實際公開 Release；來源文件不會自動回填到已下載的 ZIP。請以實際
-版本、catalog 與安裝 lock 判定可用能力。
+本手冊說明 Framework 的能力，包括領域建模與軟體架構、協作入口初始化與
+升版後對齊、專案 skill／sub-agent 管理，以及 `engine/src/tools/` 安裝入口。
+請以所選公開 Release、catalog 與安裝 lock 判定可用能力；
+文件更新不會改變已下載的 ZIP 或既有安裝。
 
 手冊位於來源庫的 `docs/`，供使用者閱讀，不屬於下游發佈資源。
 ZIP 沒有內附這組文件。安裝命令只需要已下載的 archive，
@@ -23,8 +23,8 @@ RC4 的舊目錄、固定版本連結與實測邊界保留於 [RC4 安裝說明]
    `explain` request、生命週期與 provider 邊界。
 5. [初始化協作起點](skills/ai-context-init.md)：沿用既有背景與規則，補齊入口、
    可採用的協作基線與第一次任務指引。
-6. [Sub-agents](sub-agents.md)：六個可選角色、安裝位置、模型繼承與成本邊界。
-7. [自建／客製 skill 管理](skill-management.md)：目前來源新增的多檔原稿／投影、
+6. [Sub-agents](sub-agents.md)：六個可選角色、安裝位置、依任務選型與成本邊界。
+7. [自建／客製 skill 管理](skill-management.md)：多檔原稿／投影、
    三方比較、明確路由與恢復；使用前核對實際 engine 版本。
 
 遇到中斷時使用[精確復原指南](recovery.md)；舊布局需要清除重裝時，另讀

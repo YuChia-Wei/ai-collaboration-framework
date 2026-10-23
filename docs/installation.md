@@ -4,8 +4,9 @@
 [知識效果](knowledge-packages.md) · [Sub-agents](sub-agents.md) ·
 [復原](recovery.md) · [Breaking reinstall](breaking-reinstall.md) · [RC4 舊版指令](installation-rc4.md)
 
-本頁描述 v0.20.2 修正後的 Catalog 1／Engine 2：engine 的 23 個成員全部
-來自 `src/`，三個消費端入口位於 `engine/src/tools/`；不含來源庫 build 工具。
+本頁描述 Catalog 1／Engine 2 的安裝契約：engine 成員全部來自 `src/`，
+安裝、subset 與重裝入口位於 `engine/src/tools/`；完整成員以所選套件的
+`engine.json` 與 pin 為準，不含來源庫 build 工具。
 請使用同一封存檔的 catalog、engine 與獨立選定的 pin。RC4 使用舊目錄，
 不能混用本頁指令；其已發布位元組與[舊版說明](installation-rc4.md)維持原樣。
 
@@ -59,8 +60,8 @@ if ($LASTEXITCODE -ne 0) { throw '隔離 Python 無法載入依賴' }
 你的選擇；checksum 比對證明位元組一致，不代表 target 或 agent 驗收。
 
 ```powershell
-$ReleaseTag = 'v0.20.2' # 僅當此 tag 的公開 Release 存在時執行；不要改成 RC4 後混用新入口。
-$ReleaseRoot = 'C:\aicf\v0202'
+$ReleaseTag = 'v0.21.0' # 使用此公開版本的完整套件；不要與 RC4 舊入口混用。
+$ReleaseRoot = 'C:\aicf\v0210'
 $ReleaseText = gh release view $ReleaseTag --repo YuChia-Wei/ai-collaboration-framework --json tagName,isDraft
 if ($LASTEXITCODE -ne 0) { throw '所選公開 Release 尚不可用；停止下載與安裝' }
 $Release = $ReleaseText | ConvertFrom-Json
@@ -423,7 +424,7 @@ spec、requirement、lesson、ADR、workflow、design、assessment 紀錄不是�
 受管內容缺失或被修改時回報 drift（包括已 commit 的刪除／修改）；unowned
 destination collision 即使 bytes 相同也拒絕。重裝不是自動修復缺失檔案的捷徑。
 
-自 v0.20.2 起，`project_edits.path` 僅接受以下精確路徑：
+目前 `project_edits.path` 僅接受以下精確路徑：
 
 - `AGENTS.md`、`AGENTS.zh-TW.md`、`CLAUDE.md`、`README.md`、`README.en.md`
 - `.ai/INDEX.MD`、`.ai/project/installation.json`
@@ -707,7 +708,7 @@ Prefixed entry 為 `aicf-test-designer`，canonical package ID 仍為 `test-desi
 
 ## 領域／軟體架構 skill 退役與升級
 
-新來源 catalog 不再提供 ddd-ca-hex-architect，且沒有 alias；明選 domain-model-designer、
+本版 catalog 不再提供 ddd-ca-hex-architect，且沒有 alias；明選 domain-model-designer、
 software-architect 或兩者，再依本頁既有 inspect/plan/apply 流程與授權升級。
 詳細 selection、bindings、managed drift 與既有 installed snapshot 的區別見
 [遷移指南](skills/domain-architecture-migration.md)。來源修改不自動改寫本專案的安裝。
