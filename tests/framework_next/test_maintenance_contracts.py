@@ -190,6 +190,21 @@ class EmptyManagedDirectoryTests(support.FixtureTestCase):
         io.prune_empty_managed_directories(root, set())
         self.assertFalse(io.changes.changed)
 
+    def test_unknown_nonportable_names_are_preserved_and_reported(self):
+        root, io = self.fixture('unknown-names')
+        names = ('my notes.txt', '說明.md', 'space directory/keep.txt')
+        for name in names:
+            target = root/'.agents/skills/custom'/name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            support.active_run().write(target, b'project owned')
+        (root/'.agents/skills/retired/references').mkdir(parents=True)
+        io.prune_empty_managed_directories(root, set())
+        self.assertFalse((root/'.agents/skills/retired').exists())
+        for name in names:
+            self.assertEqual((root/'.agents/skills/custom'/name).read_bytes(), b'project owned')
+        retained = {r['path'] for r in io.changes.diagnostics if r['code']=='preserved-unmanaged-path'}
+        self.assertEqual(retained, {'.agents/skills/custom/'+name for name in ('my notes.txt','說明.md','space directory')})
+
     def test_link_and_mount_boundaries_are_retained_without_traversal(self):
         root, io = self.fixture('unsafe-boundaries')
         for suffix in ('linked', 'mounted'):
@@ -245,6 +260,8 @@ class EmptyManagedDirectoryTests(support.FixtureTestCase):
     def test_cleanup_failure_retains_markers_for_finish_retry(self):
         root, io = self.fixture('cleanup-recovery')
         (root/'.agents/skills/retired/references').mkdir(parents=True)
+        custom = root/'.agents/skills/custom/說明.md'; custom.parent.mkdir()
+        support.active_run().write(custom, b'project owned')
         before = state.InstalledLock({}, b'old lock', '1'*64, {})
         after = state.InstalledLock({'project_inputs':[]}, b'new lock', '2'*64, {})
         operation = installation.Operation({'project_edits':[], 'protected_inputs':[], 'operation_id':'1'*32},
@@ -260,6 +277,7 @@ class EmptyManagedDirectoryTests(support.FixtureTestCase):
         installation._finish(io, guard, root, operation, after, after.raw)
         self.assertFalse((root/'.agents/skills/retired').exists())
         self.assertFalse((root/state.MARKERS[0]).exists())
+        self.assertEqual(custom.read_bytes(), b'project owned')
 
 
 class MaintenanceContractTests(support.FixtureTestCase):
