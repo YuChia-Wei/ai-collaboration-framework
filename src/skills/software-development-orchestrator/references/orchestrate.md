@@ -114,6 +114,19 @@ increment, obtain its necessary verification, then use actual feedback for the
 next increment. No fixed domain-to-architecture-to-spec-to-test chain, extra
 record family or per-skill task/agent is required.
 
+## Public requirements and workflow records
+
+Public Issues, Epics, Features and Stories MUST contain understandable requirements,
+functional discussion, dependencies and feature completion summaries. Execution authorization
+and its approval/revision history, agent handoff and resume checkpoints MUST use the selected
+workflow mechanism; never publish them in an Issue body or comment. If the workflow
+is unavailable, report the missing persistence or blocked handoff instead of falling
+back to the Issue system. Do not force a particular provider or storage product.
+Product decisions, supported requirement revisions/status and product
+permission/approval behavior remain valid requirement content. Before
+any public work-item update, check this semantic boundary and keep execution
+context separate; a requirement link does not itself authorize execution.
+
 ## Execute and hand off
 
 Carry existing approval and the user's constraints into every stage. Resolve a

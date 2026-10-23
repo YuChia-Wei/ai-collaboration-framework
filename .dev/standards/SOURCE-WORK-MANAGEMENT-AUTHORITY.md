@@ -16,16 +16,18 @@ or target-owned `repo-backlog` selection distributed by the framework.
 
 ## Current Authority Boundary
 
-- Live GitHub Issues own candidate, approved, authorized, in-progress, and
-  completed source-repository work-item state.
+- Live GitHub Issues own requirement scope, functional discussion and
+  candidate/in-progress/completed feature state; not execution authorization or handoff.
 - Live GitHub Project #3 owns current priority, status, owner-review,
   target-release, and published-in views.
 - `.dev/workflows/` owns authorized execution and validation evidence.
 - Integrated `main` owns repository-integrated truth. A branch, workflow,
   Issue, Project field, commit, or pull request is not integrated truth by
   itself.
-- Provider state alone never authorizes execution. The applicable online Issue
-  must also contain explicit owner authorization.
+- Provider state alone never authorizes execution. Bind the applicable online
+  Issue to actual owner authorization recorded through the workflow mechanism.
+  Apply [public requirement content](PUBLIC-REQUIREMENT-CONTENT-POLICY.md);
+  never store authorization or handoff in the Issue system.
 
 The single active provider configuration is
 [`GITHUB-WORK-MANAGEMENT-POLICY.yaml`](GITHUB-WORK-MANAGEMENT-POLICY.yaml).

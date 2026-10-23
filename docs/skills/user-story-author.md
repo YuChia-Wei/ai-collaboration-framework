@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md)
 
-套件版本：`0.2.0`。這是來源 catalog 的獨立選配能力；可用性依實際安裝
+套件版本：`0.2.1`。這是來源 catalog 的獨立選配能力；可用性依實際安裝
 版本與 runtime entry，不代表本來源專案已自行安裝。
 
 ## 用途與操作
@@ -19,8 +19,8 @@ technical 三套 Description 範本；研究可調整 technical 範本，保留�
 證據輸出、時間／範圍界線、停止條件與決策 owner，缺少的條件保持未知。
 輸出分開的 Title、Description、Acceptance Criteria，可分別貼入 Azure
 DevOps 等系統，不強制 provider 或自訂欄位。另附必要來源／版本／狀態、
-真實依賴或明標的本機提案代號、未知影響、最小下一步與目前授權，讓接手者
-不必依賴私人對話。支援 caller 語言，包括臺灣繁體中文。
+真實依賴或明標的本機提案代號，以及需求未知事項的影響。執行授權、
+下一位 Agent 的操作與交接必須另存 workflow 機制，不得附加到 Issue 正文或留言。支援 caller 語言，包括臺灣繁體中文。
 
 既有 GWT、非 Gherkin 技術 AC 與自訂範本均可保留，不會自動轉寫或改變
 驗收意義。缺少資料只阻擋相關主張，不必先建立 PRD 或完整技能管線。
@@ -58,3 +58,12 @@ lock／hash／authority 與 allowlist，缺少時揭露 unavailable，不讀 sou
 - [範例](../../src/skills/user-story-author/references/examples.md)
 
 以上來源連結供核對；實際執行讀取已安裝套件資源。
+
+## 公開需求內容的強制界線
+
+公開 Epic／Feature／User Story／Issue 必須能獨立說明需求與驗收；授權與
+交接必須使用 workflow 機制，不得存入線上 Issue 系統或留言。功能盤點、
+設計討論、相依及已完成／待完成／延後的功能摘要可以保留；產品本身的
+權限或審核行為仍可作為需求。依內容用途判斷，不使用關鍵字黑名單。
+workflow 不可用時如實回報，不能改存 Issue 或宣稱已轉移紀錄。這是來源
+指令契約；不代表現有安裝已升級、模型行為已驗收或已發布套件。

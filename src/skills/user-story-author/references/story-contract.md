@@ -1,5 +1,35 @@
 # Shared Story, acceptance and handoff contract
 
+## Mandatory public requirement boundary
+
+For public Epic, Feature, User Story and Issue/ticket content, including comments,
+MUST describe the product need independently: problem, beneficiary or outcome,
+scope, relevant scenarios, observable acceptance and real dependencies. Readers
+must not need a private conversation to reconstruct the requirement.
+
+MUST NOT publish execution authorization or its approval/revision history, agent handoff,
+resume instructions or execution checkpoints in that requirement channel. Record
+and retrieve authorization and handoff through the target's workflow mechanism.
+An Issue system is not a substitute workflow store. If that mechanism is unavailable,
+report the missing record or blocked handoff; do not silently fall back to an Issue,
+comment, or another store, and do not claim a transfer occurred.
+
+Feature inventories, requirement/design discussion, product decisions and supported
+requirement revisions/status, linked
+Issues, and concise completed/pending/deferred feature summaries MAY remain.
+Explain dependencies such as "requires #123's API" and link relevant result evidence
+without copying execution logs. Product approval/permission behavior is valid
+requirement content; permission for an agent to push or merge is execution authority.
+Classify by purpose and meaning, not forbidden words or headings.
+
+Before creating or updating content, check this boundary and correct violations
+within the authorized scope. In a read-only review, report the selected violation
+and a bounded correction; do not edit it. Keep valid requirements, IDs, decisions,
+uncertainty and acceptance meaning. Do not mandate one wording, heading order,
+provider, Workflow Board deployment or new storage product. Unselected historical
+records remain unchanged. Drafting or reviewing requirements never grants execution
+permission or proves implementation, adoption or acceptance.
+
 Start with the requested operation, subject, sources/revisions, target rules,
 accepted decisions, template/language and current authority. Reuse supplied
 information. Missing information blocks only dependent claims; mark unknowns and
@@ -22,14 +52,13 @@ template. AC state observable conditions/results and applicable failure boundari
 using source-backed measures when available; an unknown threshold stays unknown.
 Do not invent tests or implementation constraints to make a criterion measurable.
 
-For portable handoff, provide concise context beside the fields (or in the target's
-chosen location): sources and their versions/status; real parent/dependency
-references or clearly labelled local proposal labels; accepted decisions; unknowns
-and their impact; smallest next step and current authority/required owner decision.
-Include only relevant dependencies, identifying none known versus not established.
-A receiving agent must be able to continue from the artifact without private chat.
-Do not impose custom provider fields, a work-item hierarchy or an execution
-workflow. A draft/review is not approval, implemented behavior or executed acceptance.
+Public Story context includes sources/versions, real parent/dependency references,
+product decisions and unknowns with their requirement impact. Execution context,
+authority, next-agent actions and continuation checkpoints MUST instead be handed
+off through the workflow mechanism. Return them separately from publishable fields;
+never append them to an Issue body or comment. Do not claim they were persisted
+without a successful write to the selected workflow. Preserve target workflow
+selection and report unavailable support without inventing a replacement store.
 
 ## Optional methods and responsibility
 
