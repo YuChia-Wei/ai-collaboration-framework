@@ -1,5 +1,6 @@
 """Source-only release transport contracts; never part of the installation engine."""
 from __future__ import annotations
+import ast
 import hashlib
 import json
 import os
@@ -17,6 +18,7 @@ README_SOURCE_PATH = "src/distribution/templates/release-readme.md"
 README_FIELDS = frozenset({"label", "source_commit", "catalog_identity", "release_version"})
 README_LIMIT = 1024 * 1024
 LIMIT = 256 * 1024 * 1024
+ENGINE_DECLARATIONS = ("src/tools/maintain_framework.py", "src/distribution/installation_state.py")
 
 
 def require(condition, message):
@@ -68,6 +70,28 @@ def safe_name(value):
     for part in PurePosixPath(value).parts:
         require(not part.endswith((" ", ".")) and not re.fullmatch(r"(?i)(con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\..*)?", part), "unsafe portable path")
     return value
+
+
+def engine_files(read):
+    """Read, never execute, the two selected product closure declarations."""
+    declarations = []
+    for name in ENGINE_DECLARATIONS:
+        try:
+            tree = ast.parse(read(name))
+        except (SyntaxError, UnicodeError) as exc:
+            raise ValueError("invalid Engine declaration source") from exc
+        values = [node.value for node in tree.body if isinstance(node, ast.Assign)
+                  and any(isinstance(t, ast.Name) and t.id == "ENGINE_FILES" for t in node.targets)]
+        require(len(values) == 1 and isinstance(values[0], ast.Tuple), "literal ENGINE_FILES tuple required")
+        members = ast.literal_eval(values[0])
+        require(members and all(type(n) is str and safe_name(n).startswith("src/") for n in members),
+                "nonempty product-only Engine 2 closure required")
+        require(tuple(sorted(set(members))) == members and len({n.casefold() for n in members}) == len(members),
+                "sorted unique Engine 2 closure required")
+        require(set(ENGINE_DECLARATIONS) <= set(members), "Engine declaration owners missing from closure")
+        declarations.append(members)
+    require(declarations[0] == declarations[1], "ENGINE_FILES declarations disagree")
+    return declarations[0]
 
 
 def git(repository, *args):
@@ -182,7 +206,9 @@ def verify_bundle(directory, expected_source=None):
     require(sha(pin_raw) == manifest["engine_pin_sha256"] and pin["source_commit"] == source["commit"], "engine pin/source mismatch")
     require(pin["id"] == "framework-managed-installation" and pin["version"] == "2.0.0", "engine version")
     pin_names = [r["path"] for r in pin["files"]]
-    require(len(pin_names) == 23 and pin_names == sorted(set(pin_names)) and all(n.startswith("src/") for n in pin_names), "engine pin closure")
+    require(all("engine/" + n in payload for n in ENGINE_DECLARATIONS), "Engine declaration sources missing")
+    declared = engine_files(lambda n: payload["engine/" + n])
+    require(tuple(pin_names) == declared, "engine pin closure differs from product declarations")
     require(document(payload["engine/engine.json"]) == {"engine": pin, "engine_package_version": 1}, "engine descriptor mismatch")
     require({x[7:] for x in names if x.startswith("engine/")} == set(pin_names) | {"engine.json"}, "engine archive closure")
     for row in pin["files"]:

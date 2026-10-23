@@ -4,13 +4,17 @@ import copy
 import importlib.util
 import hashlib
 import json
+import os
 from pathlib import Path
+import shutil
 import stat
+import subprocess
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 import zipfile
+import yaml
 
 SCRIPTS = Path(__file__).absolute().parents[2] / ".github/scripts"
 sys.path.insert(0, str(SCRIPTS))
@@ -28,6 +32,9 @@ draft = load("draft_release", "draft-release.py")
 builder = load("build_release", "build-release.py")
 SOURCE = {"tag": "v0.19.0-rc.3", "tag_object": "a" * 40, "commit": "b" * 40}
 README_TEMPLATE = "# ${label}\nSource: ${source_commit}\nCatalog: ${catalog_identity}\nVersion: ${release_version}\n"
+ROOT = SCRIPTS.parents[1]
+CURRENT_ENGINE = common.engine_files(lambda name: (ROOT / name).read_bytes())
+ENGINE_BYTES = {name: (ROOT / name).read_bytes() for name in CURRENT_ENGINE}
 
 
 def readme_source(template=README_TEMPLATE):
@@ -37,12 +44,15 @@ def readme_source(template=README_TEMPLATE):
             "sha256": common.sha(raw), "size": len(raw), "template_utf8": template}
 
 
-def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None):
-    engine_names = [f"src/module{i:02}.py" for i in range(23)]
+def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
+            engine_members=None, engine_bytes=None):
+    engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
+    engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
+    members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
     pin = {"id": "framework-managed-installation", "version": "2.0.0", "source_commit": SOURCE["commit"],
-           "files": [{"path": n, "sha256": common.sha(b"engine")} for n in engine_names]}
+           "files": [{"path": n, "sha256": common.sha(members[n])} for n in engine_names]}
     pin_raw = common.encoded(pin)
-    payload = {"engine/" + n: (b"engine", 0o644) for n in engine_names}
+    payload = {"engine/" + n: (members[n], 0o644) for n in engine_names}
     payload["engine/engine.json"] = (common.encoded({"engine": pin, "engine_package_version": 1}), 0o644)
     payload["engine-pin.json"] = (pin_raw, 0o644)
     catalog = {"source": {"commit": SOURCE["commit"]}, "release_version": "0.19.0-rc.3"}
@@ -190,8 +200,8 @@ class ReleaseContracts(unittest.TestCase):
             common.identity(self.directory, source_commit="d" * 40, tag=SOURCE["tag"])
 
     def test_engine_declarations_must_agree(self):
-        first = repr(tuple(f"src/a{i:02}.py" for i in range(23))).encode()
-        second = repr(tuple(f"src/b{i:02}.py" for i in range(23))).encode()
+        first = repr(tuple(sorted((*common.ENGINE_DECLARATIONS, "src/a.py")))).encode()
+        second = repr(tuple(sorted((*common.ENGINE_DECLARATIONS, "src/b.py")))).encode()
         with patch.object(builder, "git", side_effect=[b"ENGINE_FILES = " + first, b"ENGINE_FILES = " + second]):
             with self.assertRaisesRegex(ValueError, "declarations disagree"):
                 builder.engine_pin(self.directory, SOURCE["commit"])
@@ -202,6 +212,67 @@ class ReleaseContracts(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'product-only'):
                 builder.engine_pin(self.directory,SOURCE['commit'])
             self.assertEqual(git_read.call_count,1)
+
+    def test_current_engine_pin_uses_exact_selected_source_bytes(self):
+        for name, raw in ENGINE_BYTES.items():
+            target = self.directory / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(raw)
+        def selected_blob(repository, command, reference):
+            self.assertEqual(command, "show")
+            self.assertTrue(reference.startswith(SOURCE["commit"] + ":"))
+            return ENGINE_BYTES[reference.split(":", 1)[1]]
+        with patch.object(builder, "git", side_effect=selected_blob):
+            pin = builder.engine_pin(self.directory, SOURCE["commit"])
+            self.assertEqual([r["path"] for r in pin["files"]], list(CURRENT_ENGINE))
+            self.assertEqual([r["sha256"] for r in pin["files"]],
+                             [common.sha(ENGINE_BYTES[n]) for n in CURRENT_ENGINE])
+            (self.directory / CURRENT_ENGINE[0]).write_bytes(b"working tree drift")
+            with self.assertRaisesRegex(ValueError, "differs from selected Git blob"):
+                builder.engine_pin(self.directory, SOURCE["commit"])
+
+    def test_engine_declarations_fail_closed_before_reading_members(self):
+        owners = tuple(sorted(common.ENGINE_DECLARATIONS))
+        bad = ((), list(owners), owners[::-1], owners + owners[-1:],
+               tuple(sorted((*owners, "src/../tools/escape.py"))),
+               tuple(sorted((*owners, "src/CON.py"))),
+               tuple(sorted((*owners, "src/Case.py", "src/case.py"))),
+               tuple(sorted((*owners, "src/"))),
+               (True,), ("src/only.py",))
+        sources = ["ENGINE_FILES = " + repr(value) for value in bad]
+        sources += ["ENGINE_FILES = tuple(['src/a.py'])", "ENGINE_FILES = ('src/a.py',)\nENGINE_FILES = ()",
+                    "ENGINE_FILES = (untrusted(),)", "ENGINE_FILES = (", "untrusted()"]
+        for source in sources:
+            with self.subTest(source=source), patch.object(builder, "git", return_value=source.encode()) as read:
+                with self.assertRaises(ValueError):
+                    builder.engine_pin(self.directory, SOURCE["commit"])
+                self.assertEqual(read.call_count, 1)
+
+    def test_engine_pin_and_archive_cannot_change_declared_members(self):
+        missing = tuple(n for n in CURRENT_ENGINE if n != "src/distribution/data.py")
+        mutations = (missing, tuple(sorted((*CURRENT_ENGINE, "src/extra.py"))),
+                     tuple(sorted((*missing, "src/substitute.py"))), CURRENT_ENGINE[::-1],
+                     CURRENT_ENGINE + (CURRENT_ENGINE[-1],))
+        for members in mutations:
+            with self.subTest(members=members):
+                fixture(self.directory, engine_members=members)
+                with self.assertRaisesRegex(ValueError, "engine pin closure"):
+                    common.verify_bundle(self.directory)
+
+    def test_archive_declaration_disagreement_is_rejected_even_with_matching_hashes(self):
+        changed = dict(ENGINE_BYTES)
+        changed[common.ENGINE_DECLARATIONS[0]] = ("ENGINE_FILES = " + repr(tuple(
+            n for n in CURRENT_ENGINE if n != "src/distribution/data.py"))).encode()
+        fixture(self.directory, engine_bytes=changed)
+        with self.assertRaisesRegex(ValueError, "declarations disagree"):
+            common.verify_bundle(self.directory)
+
+    def test_previous_23_member_declaration_contract_remains_readable(self):
+        members = tuple(sorted((*common.ENGINE_DECLARATIONS, *(f"src/module{i:02}.py" for i in range(21)))))
+        raw = ("ENGINE_FILES = " + repr(members)).encode()
+        source_bytes = {n: raw for n in common.ENGINE_DECLARATIONS}
+        expected = fixture(self.directory, engine_members=members, engine_bytes=source_bytes)
+        self.assertEqual(common.verify_bundle(self.directory), expected)
 
     def test_current_engine_has_relocated_consumer_entries_and_no_build_cli(self):
         import ast
@@ -487,6 +558,40 @@ class ReleaseContracts(unittest.TestCase):
         with patch.object(api, "request", side_effect=[rows, [{"id": 999}]]) as request:
             self.assertEqual(len(api.pages("/releases")), 101)
             self.assertIn("page=2", request.call_args_list[1].args[1])
+
+
+class BuildDiagnostics(unittest.TestCase):
+    def test_both_workflows_capture_early_failure_and_preserve_exit_status(self):
+        # Exercise the actual shell blocks without a product builder or provider call.
+        bash = (Path(shutil.which("git")).parents[1] / "bin/bash.exe"
+                if os.name == "nt" else Path(shutil.which("bash")))
+        self.assertTrue(bash.is_file(), "Git Bash is required for workflow shell regression")
+        for name in ("package-candidate.yml", "publish-release.yml"):
+            workflow = yaml.safe_load((ROOT / ".github/workflows" / name).read_text(encoding="utf-8"))
+            steps = workflow["jobs"]["build"]["steps"]
+            build = next(step for step in steps if step.get("id") == "build")
+            upload = next(step for step in steps if step["name"] == "Retain builder diagnostic output")
+            self.assertEqual(upload["if"], "failure() && steps.build.outcome == 'failure'")
+            self.assertEqual(upload["with"]["if-no-files-found"], "error")
+            for status in (0, 7):
+                with self.subTest(workflow=name, status=status), tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    environment = dict(os.environ, RUNNER_TEMP=root.as_posix(), GITHUB_WORKSPACE=ROOT.as_posix(),
+                                       SOURCE_COMMIT=SOURCE["commit"], TOOLING_COMMIT="c" * 40,
+                                       RELEASE_TAG=SOURCE["tag"], GITHUB_REPOSITORY="owner/repo",
+                                       GITHUB_RUN_ID="fixture", GITHUB_RUN_ATTEMPT="1",
+                                       GITHUB_OUTPUT=(root / "github-output").as_posix())
+                    fake = "python() { printf 'builder stdout\\n'; printf 'early failure diagnostic\\n' >&2; return " + str(status) + "; }\n"
+                    result = subprocess.run([str(bash), "--noprofile", "--norc", "-e", "-o", "pipefail"],
+                                            input=fake + build["run"], text=True, capture_output=True,
+                                            env=environment, timeout=30)
+                    self.assertEqual(result.returncode, status, result.stderr)
+                    for stream, expected in (("stdout", "builder stdout\n"), ("stderr", "early failure diagnostic\n")):
+                        diagnostic = "build-release." + stream
+                        self.assertEqual((root / diagnostic).read_text(), expected)
+                        self.assertEqual(getattr(result, stream), expected)
+                        self.assertIn("${{ runner.temp }}/" + diagnostic, upload["with"]["path"].splitlines())
+                    self.assertFalse((root / "rb").exists(), "fixture fails before product builder starts")
 
 
 if __name__ == "__main__":
