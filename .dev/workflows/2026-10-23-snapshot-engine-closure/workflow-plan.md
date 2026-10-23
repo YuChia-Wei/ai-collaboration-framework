@@ -1,11 +1,17 @@
 # Snapshot Engine closure repair
 
+Current continuation: PR494 advanced `main` to `aa8bf7c934efa17e15f925befec3b12f77b58998`.
+The owner explicitly requested compatibility reconciliation and affected validation.
+Use branch `codex/492-snapshot-engine-closure-cont-02`; the earlier local handoff
+below remains historical evidence, not a current-source build claim. See the
+successor section at the end for current progress and the #491 gate relationship.
+
 Issue: [#492](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/492).
 Template: `.dev/workflows/2026-10-22-domain-architecture-split/template.md` @ 1.0.0.
 
 The user authorized isolated local repair, tests and a reviewable handoff. Push,
 PR creation, integration, publication, source self-upgrade and Issue closure are
-excluded. The parent conversation owns tracker work. One tracked writer owns this
+excluded. Issue synchronization is limited to technical cause, scope and acceptance results; internal execution records remain local. One tracked writer owns this
 clone; independent workers and reviewers are read-only.
 
 ## Subject and cause
@@ -191,3 +197,69 @@ the sibling retained assets/evidence. The task evidence also receives a patch
 against `c9999be` for review. Next owner action is to review the local delivery and
 separately authorize any push/PR/hosted validation or integration. Issue #492 stays
 open. No transport, merge, publication or closure permission is implied.
+
+## Continuation 02: PR494 source compatibility and #491 terminal gate
+
+Reopened explicitly for the parent's 2026-10-23 instruction after PR494, not for a
+provider-only status synchronization. Provider read-back confirmed latest main
+`aa8bf7c934efa17e15f925befec3b12f77b58998`, merged at 02:06 UTC. Its snapshot run
+39887771375, job 120199869761 failed with the identical 23-file error before the
+product builder; complete upload skipped and diagnostic upload found no files.
+The full 307-line job log is retained as `job-120199869761.log` in task evidence.
+
+The 22 changed paths relative to `c9999be` are Controller guidance, catalog hash,
+component versions/references, manuals and its own workflow records. No release
+helper, release workflow, Engine declaration, installed projection or governing
+policy changed. No path overlaps the six-file product repair. The local fetch
+requested only this exact provider-read-back commit into the isolated clone.
+
+Original handoff branch `codex/492-snapshot-engine-closure` remains at
+`999290ca1f375fd767c4b8d62545a19265d49a9b`, preserving the reviewed/built `a9b47a`
+and its artifacts. A new continuation branch replays the two isolated commits
+onto `aa8bf7c` without conflicts. Product code and test changes compare byte-for-byte
+as the same Git patch before/after rebase (`original-product-fix.patch` and
+`latest-product-fix.patch`). Previously reviewed behavior, criteria and rules are
+unchanged; this is identity/input reconciliation, not another implementation.
+
+`git diff aa8bf7c..HEAD -- src/distribution/manifest.yaml src/knowledge/dotnet-backend
+src/skills docs .dev/workflows/2026-10-23-controller-example-consistency` is empty.
+Installed `.ai`, `.agents`, `.codex`, `.claude` and root AGENTS also compare equal.
+No Controller content, shared Preview, metadata versions or #491 records are edited.
+
+Validation selection: current-source schemas/distribution/release tests, because
+PR494 changes serialized component metadata, exact dependency versions and catalog
+payload. The current-source exact snapshot is rebuilt using fresh short external
+roots, then copied and read back through the existing verifier and ZIP CRC. The
+previous default329 result retains its earlier subject; unchanged tools/source
+tests are not repeated just for identity. Prior artifacts/failures are preserved.
+
+#492 owns the packaging helper defect. #491 has integrated its Controller repair
+and keeps its terminal gate open until an actual integrated main hosted snapshot
+passes and its owner reads provider state. This local repair/build can supply
+evidence for the helper fix; it cannot satisfy that hosted main condition, close
+#491 or grant push/PR/merge/closure authority. Those exclusions remain in effect.
+
+Next: run selected current-source tests, fix the source subject as a clean local
+commit, build/read back the corresponding full package, then append the renewed
+handoff while preserving this continuation history.
+
+
+## Resumed validation checkpoint
+
+The user resumed #492 with the contract-based approach and authorized technical
+Issue synchronization, excluding approval/review chatter and internal work logs.
+The implementation already removes fixed cardinality from both transport checks;
+29 is an observation, never the new invariant. Exact declared set, safe sorted
+unique paths, declaration agreement and byte/hash integrity remain enforced.
+
+The aa8bf7c-based source passed `python -I -B tests/run.py --suite schemas
+--suite distribution --suite release`: 248 tests, zero failures/errors/skips,
+90.467891 seconds. Logs: sibling `evidence/cont02-tests.stdout` and `.stderr`.
+The six-file repair patch is identical before/after replay (20,942 bytes,
+SHA256 122fc6fa2c5a0c2903dfc93dc854494209f488059a690d837d3154253a8d5c20).
+The independent immutable a9b47a code review remains applicable to that unchanged
+patch and unchanged rules; the deterministic compatibility inventory is not a
+new code review. No same-file conflict with PR494 was found.
+
+This checkpoint fixes a clean source/tooling/workflow subject for a full snapshot
+build using fresh short external roots. Complete build/readback is still pending.
