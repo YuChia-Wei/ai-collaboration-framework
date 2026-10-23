@@ -3,7 +3,7 @@
 Source commit: ${source_commit}
 Catalog identity: ${catalog_identity}
 Distribution label: ${release_version}
-Engine: framework-managed-installation 2.0.0 (23 pinned product-source files).
+Engine: framework-managed-installation 2.0.0 (exact pinned product-source closure).
 
 This generic package includes the full catalog, standalone engine, independently
 selected engine pin and raw content hashes. Catalog metadata includes the actual
