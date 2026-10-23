@@ -999,6 +999,17 @@ def _failure(operation: str, exc: Exception, details: dict | None = None) -> dic
             "changed": False, "details": details, "diagnostics": [diagnostic]}
 
 
+def context_follow_up() -> dict:
+    """Advisory only: installation does not inspect or adopt project rules."""
+    return {"status": "review-needed", "semantic_assessment": "not-performed",
+            "reason": "Managed-byte consistency does not assess project-owned collaboration context.",
+            "next_actions": [
+                "Review the actual root collaboration entry and project navigation, even after an unchanged update.",
+                "Refresh selected facts, commands and links using current target resources.",
+                "Reconcile policy or starter differences through authorized project maintenance; ai-context-governance propose/apply is optional.",
+                "Preserve intentional customizations; report unresolved decisions separately from installation success."]}
+
+
 def inspect(request: dict | bytes) -> dict:
     """Closed API 2 inspect request/result; always read-only and not-assessed."""
     empty = {"managed_state": "blocked", "project_readiness": "not-assessed", "owned": None,
@@ -1023,6 +1034,8 @@ def inspect(request: dict | bytes) -> dict:
                    "project_readiness": "not-assessed", "owned": lock.document["inventory"]["files"] if lock else [],
                    "unknown": observation.unknown, "drift": observation.drift,
                    "mode_policy": lock.document["mode_policy"] if lock else None}
+        if lock is not None and not observation.drift:
+            details["context_follow_up"] = context_follow_up()
         return {"api_version": 2, "operation": "inspect", "outcome": "inspected", "changed": False,
                 "details": details, "diagnostics": []}
     except (InstallationError, OSError, UnicodeError, ValueError, TypeError, RecursionError, OverflowError) as exc:
