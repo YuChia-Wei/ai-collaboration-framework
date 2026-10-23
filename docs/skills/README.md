@@ -22,7 +22,7 @@
 | [lesson-author](lesson-author.md) | 0.2.0 | 保存有證據的經驗與接受決定 | 經驗接受不自動變成專案規則 | Python record 工具 |
 | [local-backlog](local-backlog.md) | 0.1.0 | 管理專案選定的本機 work items | 管理記錄與狀態，不同步線上 tracker 或決定開發流程 | Python record 工具 |
 | [local-change-implementer](local-change-implementer.md) | 0.2.7 | 一個局部技術操作與直接影響範圍 | 保持接受的公開契約；協調性行為變更由 slice 承接 | 指令；可選知識 |
-| [pr-author](pr-author.md) | 0.1.0 | 準備 PR record，或執行另行授權的 GitHub draft 操作 | 不取代 defect review，也不包含 push、merge 或 Issue／Project 更新 | Python record／provider 工具 |
+| [pr-author](pr-author.md) | 0.1.1 | 準備 PR record，或執行另行授權的 GitHub draft 操作 | 不取代 defect review，也不包含 push、merge 或 Issue／Project 更新 | Python record／provider 工具 |
 | [problem-frame-author](problem-frame-author.md) | 0.1.0 | 撰寫／審查 problem frame；選定 CBF 時保存版本化 snapshot | 特定問題框架，不是所有需求的必經格式；結構有效不等於行為接受 | 指令＋選用 Python CBF 工具 |
 | [requirement-author](requirement-author.md) | 0.2.3 | 探索、撰寫或正規化需求與可觀察驗收條件 | 釐清需要與規則；不把推測模型／機制當作接受的需求 | 指令；可選知識 |
 | [slice-implementer](slice-implementer.md) | 0.2.7 | 實作一個 command／query／reactor／generic slice | 擁有切片內部修改與直接驗證，不需逐方法交接 | 指令；可選知識 |

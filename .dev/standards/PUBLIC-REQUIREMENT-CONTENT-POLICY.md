@@ -1,21 +1,26 @@
 # Public requirement content policy
 
 Rule ID: `PUBLIC-REQ-001`. Source-repository policy for new or edited public
-requirement content. Related delivery: #496, #497, #498.
+requirement and pull request content. Related delivery: #496, #497, #498, #504.
 
 ## Mandatory public requirement boundary
 
-For public Epic, Feature, User Story and Issue/ticket content, including comments,
+For public Epic, Feature, User Story and Issue/ticket descriptions and comments,
 MUST describe the product need independently: problem, beneficiary or outcome,
 scope, relevant scenarios, observable acceptance and real dependencies. Readers
 must not need a private conversation to reconstruct the requirement.
 
+The same boundary applies to public pull requests, including descriptions,
+comments and review discussions. PRs describe the concrete problem, resulting
+behavior, scope, validation and defect-review evidence, limitations and related
+requirements. Public PRs are part of the Issue channel, not a workflow exception.
+
 MUST NOT publish execution authorization or its approval/revision history, agent handoff,
-resume instructions or execution checkpoints in that requirement channel. Record
+resume instructions or execution checkpoints in these public channels. Record
 and retrieve authorization and handoff through the target's workflow mechanism.
 An Issue system is not a substitute workflow store. If that mechanism is unavailable,
 report the missing record or blocked handoff; do not silently fall back to an Issue,
-comment, or another store, and do not claim a transfer occurred.
+PR, comment, or another store, and do not claim a transfer occurred.
 
 Feature inventories, requirement/design discussion, product decisions and supported
 requirement revisions/status, linked
@@ -24,6 +29,13 @@ Explain dependencies such as "requires #123's API" and link relevant result evid
 without copying execution logs. Product approval/permission behavior is valid
 requirement content; permission for an agent to push or merge is execution authority.
 Classify by purpose and meaning, not forbidden words or headings.
+
+Keep technical validation and review evidence public when useful: subject
+identity, actual results, supported findings and coverage limitations. Keep
+agent assignments, approval requests/history, continuation steps and integration
+instructions in the workflow. A product completion summary or technical finding
+is not an execution handoff. Do not paste the workflow or authorization payload
+into a PR to satisfy a template's provenance or review section.
 
 Before creating or updating content, check this boundary and correct violations
 within the authorized scope. In a read-only review, report the selected violation

@@ -23,7 +23,7 @@ owners. No merge or date proves CI success.
 - Keep source-framework, downstream target, provider, and runtime session truth separate.
 - Do not invent facts, authorization, availability, execution, validation, Issue state, or release state. Stop for unresolved owner-sensitive decisions.
 
-- Public Epic/Feature/Story and Issue content MUST follow [public requirement content](.dev/standards/PUBLIC-REQUIREMENT-CONTENT-POLICY.md). Keep authorization and handoff in the workflow mechanism, never in the Issue system; preserve functional discussion, dependencies and feature completion summaries.
+- Public Epic/Feature/Story, Issue and PR content, including comments and review discussions, MUST follow [public requirement content](.dev/standards/PUBLIC-REQUIREMENT-CONTENT-POLICY.md). Keep execution authorization and handoff in the workflow mechanism, never in the Issue or PR channel; preserve functional discussion, dependencies, validation/review evidence and feature completion summaries.
 
 ## Execution Rules
 

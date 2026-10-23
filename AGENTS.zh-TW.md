@@ -21,7 +21,7 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 - Source-framework、target、provider 與 runtime truth 必須分開。
 - 不得捏造 facts、authorization、availability、execution、validation、Issue state 或 release state。遇到未決 owner-sensitive decisions 時停止。
 
-- 公開 Epic／Feature／Story 與 Issue 內容必須遵守[公開需求內容規則](.dev/standards/PUBLIC-REQUIREMENT-CONTENT-POLICY.md)。授權與交接必須使用 workflow 機制，不得存入 Issue 系統；保留功能討論、相依與功能完成摘要。
+- 公開 Epic／Feature／Story、Issue 與 PR 內容（含留言與 review 討論）必須遵守[公開需求內容規則](.dev/standards/PUBLIC-REQUIREMENT-CONTENT-POLICY.md)。執行授權與交接必須使用 workflow 機制，不得存入 Issue 或 PR 管道；保留功能討論、相依、驗證／審查證據與功能完成摘要。
 
 ## 執行規則
 
