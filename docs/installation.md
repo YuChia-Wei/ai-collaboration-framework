@@ -472,6 +472,36 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 
 取消選擇或卸載某個 skill/knowledge 同樣沒有單獨 `uninstall` 命令：建立不含該 component 的新 selection，再用 plan 審閱 `remove` delta。若要撤除 runtime skill entry，任何未知的 discovery 子樹、未受舊 inventory 擁有的檔案或漂移都會造成 conflict，不應以手動遞迴刪除繞過它。`reinstall-framework.py` 是另一條 Git-backed breaking reinstall 路徑，要求完整 quiescence、乾淨 Git baseline、明確 cleanup/preservation pins 與可恢復的 content；它不是一般 upgrade 或 deselect 的替代方案。
 
+### 升級後整合公開需求規則
+
+公開需求／workflow 邊界由 requirement-author 0.2.3、user-story-author 0.2.1、
+ai-context-init 0.2.4 與 software-development-orchestrator 0.4.2 的來源指引提供。
+版本號描述來源能力，不表示已有對應公開 Release；實際使用須核對所選成品的
+catalog、engine、pin 與已安裝版本。未選配的 skill 不會因升級自動加入。
+
+| 對象 | 更新與採納方式 |
+| --- | --- |
+| 已選配的受管理 skill 與 native entry | 依 derive／inspect／plan／apply 更新，讀回 lock 與完整資源；有 drift／碰撞時先處理，不手改 managed 檔案。 |
+| 新專案的根入口 | 另行執行初始化，採用新版 AGENTS 基線並調和目標規則；安裝本身不會產生已採納的根文件。 |
+| 已有 AGENTS／自訂政策的專案 | 套件升級後，由已授權的 context governance 或目標維護流程合併規則；不能把 initialize／refresh 當整份範本更新器。 |
+
+既有專案的整合須檢查：
+
+1. 讀取目前根入口、公開需求撰寫規則、授權與交接的 workflow 位置，確認
+   ownership、既有客製內容及允許修改的範圍。
+2. 在原本的規則 owner 位置替換「授權或交接必須貼進 Issue」等矛盾指令。
+   明列授權與交接使用 workflow，不能以 Issue 正文或留言替代；保留功能
+   盤點、設計討論、需求修訂、相依與完成／待完成／延後的功能摘要。
+3. 保留其他團隊規則與未知內容；既有自訂 skill 如重疊，先比較再明確決定
+   採納與路由，不因安裝新版而自動切換或覆寫。可用既有 skill 管理流程；
+   沒有該工具時維持目標既有方式，不能假稱完成自動合併。
+4. 讀回實際差異、入口連結及雙語語意。分開記錄「套件已更新」、「專案規則
+   已整合」及「runtime 已載入／行為已驗證」；檔案完整性不能代替後兩者。
+
+若 workflow 機制不可用，保留未完成紀錄／交接狀態，不改存 Issue 系統。
+初始化不擁有既有根文件；若明確選用 installer 的 project-edit 配對操作，
+仍須提供精確 before／after bytes 並遵守上節寫入邊界，不可整份重設。
+
 ### 既有 managed 安裝的調整
 
 1. 保留舊 selection、下載的 catalog／engine、目前 lock 和 recovery records。
