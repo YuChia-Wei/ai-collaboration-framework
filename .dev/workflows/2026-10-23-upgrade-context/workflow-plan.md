@@ -8,6 +8,10 @@ implementation and necessary validation. Push, PR, merge, release and downstream
 installation remain separate. Public requirements are #500, #501 and #502;
 authorization and continuation remain in this workflow.
 
+The user's subsequent instruction authorized independent read-only review,
+repair of findings, necessary validation, then branch push and PR creation after
+passing. Merge, Issue closure, release and downstream adoption remain separate.
+
 Local and remote main were both 83df8fcef8b2b05388eb876490fb148f75e8f79a.
 The worktree was clean. Compared with the prior a7ecb86 assessment, root starter
 0.2.4 adds public requirement rules but the refresh boundary and installer
@@ -52,12 +56,42 @@ Validation on 2026-10-23 with Python 3.13.14:
 - Changed documentation/reference local links: six files checked, no missing
   local paths. `git diff --check`: passed. Author inspected the complete diff.
 
-Next: independent scoped read-only review of the immutable implementation commit,
-then any separately authorized push/PR and current-head hosted Source change gate.
-Independent review has not been performed; author checks do not substitute for it.
+PR preparation validation: `python -I -B tests/run.py` on clean implementation
+commit b458abdc506f8252bbdc183a8fd1509265941cf9 passed all 338 tests in
+101.120 seconds, with zero failures, errors or skips. Selected suites were
+schemas, tools, distribution, release and source. Python 3.13.14; process-local
+TEMP/TMP remained F:/aicf500-context on re-observed RAMDRIVE. The full raw log is
+F:/aicf500-context/pr-source-tests.log (disposable local evidence). This one local
+PR integration run supplements the focused checks; it does not replace hosted CI.
+
+## Independent review and disposition
+
+Reviewer `/root/upgrade_independent_review` was independently invoked through
+`fixed-head-independent-auditor`, with installed `code-reviewer` operation
+`review` and the registry-selected project role at
+`.ai/project/sub-agents/project-fixed-head-independent-auditor/sub-agent.yaml`.
+The runtime projection matched the selected package. Policy selected task
+independent-review, gpt-6.1-sol, medium. Actual execution identity was not
+independently exposed and remains unknown.
+
+Reviewed head: b458abdc506f8252bbdc183a8fd1509265941cf9.
+Comparison base: 83df8fcef8b2b05388eb876490fb148f75e8f79a.
+The reviewer inspected the complete 16-file diff, direct installation callers,
+failure/dispatch paths, tests, skill instructions and version declarations against
+#501/#502 criteria and the source policy. Checkout remained clean and fixed.
+Result: no actionable defects; advisory approve/accept, not integration approval.
+No repairs were needed. Static checks included diff whitespace and subject checks;
+the reviewer did not run tests, create fixtures or verify runtime/downstream use.
+Parent accepted this bounded evidence. The follow-up commit changes only this
+workflow evidence and phase: product, tests, acceptance criteria and governing
+rules remain identical to the reviewed commit, so affected review is not repeated.
+
+Next: push the reviewed branch, create the authorized PR and read back its
+current-head hosted Source change gate. Maintainer acceptance and integration
+remain pending. The workflow remains in progress for PR delivery/integration.
 No full installation matrix, runtime actor trial or publication is selected.
 Feature #500 and Stories #501/#502 remain open; local implementation is not
-integration or Issue completion. The workflow remains in progress for review.
+integration or Issue completion.
 
 Preferred eventual integration is linear: this is one cohesive outcome without
 a separate migration or release boundary. Integration is not performed here.
