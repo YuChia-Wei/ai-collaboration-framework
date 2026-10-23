@@ -5,7 +5,7 @@ description: "Maintain existing project-owned AI context by proposing or applyin
 
 # ai-context-governance
 
-Claude runtime entry for `ai-context-governance@0.1.1`. This generated projection does not
+Claude runtime entry for `ai-context-governance@0.1.3`. This generated projection does not
 prove installation, operation execution, validation or runtime discovery.
 Regenerate it from the selected package and verified Claude adapter.
 

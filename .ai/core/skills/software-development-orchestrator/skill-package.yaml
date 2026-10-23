@@ -1,6 +1,6 @@
 metadata_version: 4
 id: software-development-orchestrator
-version: 0.3.2
+version: 0.4.2
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
