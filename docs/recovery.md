@@ -3,7 +3,7 @@
 [回手冊首頁](README.md) · [安裝與平台限制](installation.md) ·
 [Breaking reinstall](breaking-reinstall.md)
 
-本頁適用於 v0.20.1 Catalog 1／Engine 2，入口為
+本頁說明 Catalog 1／Engine 2 的復原契約；執行時必須使用原操作配對的 engine 與 pin。入口為
 `engine/src/tools/maintain_framework.py` 的 JSON stdin `recover` operation。
 它只處理一份精確保留的安裝操作，不能當作一般 rollback、跨電腦搬移或清理工具。
 本頁提供來源契約與請求範例，沒有宣稱已完成你的目標環境復原驗收。

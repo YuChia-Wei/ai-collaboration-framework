@@ -2,7 +2,7 @@
 
 [回手冊首頁](README.md) · [一般安裝與更新](installation.md) · [操作復原](recovery.md)
 
-本頁描述 v0.20.2 修正後的 Catalog 1／Engine 2 契約；版本是否已發布須另行確認。入口為
+本頁描述 Catalog 1／Engine 2 的重裝契約。請使用所選公開套件的完整 engine 與 pin；入口為
 `engine/src/tools/reinstall-framework.py`，以 JSON stdin 接受 `plan`／`apply`。
 這是先清除明確選定的舊 framework 檔案，再安裝新 candidate 的**非原子重裝**。
 一般更新、取消選配仍使用 `maintain_framework.py`；不要為了避開 drift 或衝突

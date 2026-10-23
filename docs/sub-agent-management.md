@@ -242,5 +242,5 @@ Managed 檔案若已直接改動，inspect 會顯示 managed-drift。可先在 p
 本來源 repo 已選用 registry：7 個 project roles、20 份原稿／參考資源、8 個
 runtime entries；原有 runtime 名稱保留，避免把本次資源治理當作 native discovery
 遷移。未來自我安裝選中同名 framework roles 時，仍須先選上述共存／採用操作。
-這保留原本 unowned-collision 保護，並提供可執行的解決路徑。未發布的 0.21.0
-不作候選身份；比較及安裝須使用屆時實際取得的固定 artifact。
+這保留原本 unowned-collision 保護，並提供可執行的解決路徑。比較及安裝
+須使用實際取得並驗證的固定 artifact；版本名稱不能代替 catalog、engine pin 與檔案雜湊。

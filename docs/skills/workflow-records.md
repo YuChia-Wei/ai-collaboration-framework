@@ -7,7 +7,7 @@
 存於明確選定的 repo 外本機資料庫。既有 presets 不會自動選入它。
 
 使用支援 metadata 5 的 catalog／engine，在安裝選取加入此 skill，並選取所需
-Codex 或 Claude adapter。此處描述目前來源候選能力，不表示 v0.20.0 已發布。
+Codex 或 Claude adapter。可用能力以所選公開套件與實際安裝版本為準。
 需預先準備 Python 3.11+、PyYAML 6.x、Git；SQLite 使用 Python 標準模組，
 無額外服務，也不會自動下載 prerequisites。
 

@@ -1,0 +1,11 @@
+{
+  "task_id": "REL021-001",
+  "title": "Publish v0.21.0 with aligned documentation and tracking",
+  "status": "in_progress",
+  "executor": "OpenAI Codex",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "high",
+  "result_summary": "Version fields assigned; documentation and publication verification in progress.",
+  "finding_status": "not-assessed",
+  "model_identity_source": "configured default in ~/.codex/config.toml; session-specific override not exposed"
+}
