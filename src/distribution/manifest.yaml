@@ -645,7 +645,7 @@ components:
   version: 0.1.2
 - kind: skill
   id: ai-context-init
-  version: 0.2.3
+  version: 0.2.4
   source: src/skills/ai-context-init
   metadata: skill-package.yaml
   members:
@@ -850,7 +850,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/requirement-author/skill-package.yaml
   kind: skill
-  version: 0.2.2
+  version: 0.2.3
 - id: slice-implementer
   source: src/skills/slice-implementer
   metadata: skill-package.yaml
@@ -902,7 +902,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
   kind: skill
-  version: 0.4.1
+  version: 0.4.2
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml
@@ -963,7 +963,7 @@ components:
   version: 0.4.3
 - kind: skill
   id: user-story-author
-  version: 0.2.0
+  version: 0.2.1
   source: src/skills/user-story-author
   metadata: skill-package.yaml
   members:

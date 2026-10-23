@@ -20,8 +20,9 @@ and decision owner. A proposed stopping criterion must be labelled proposed.
 Do not claim a production capability or successful experiment before evidence.
 Adapt the technical template if a full research Story is requested.
 
-Return proposed slices and reasons, unresolved decisions and the smallest next
-step under current authority. Planning alone does not create work items or authorize
+Return proposed slices and reasons with requirement uncertainties as public
+content. Keep the smallest execution next step and current authority in the
+workflow handoff, separate from Issue fields. Planning alone does not create work items or authorize
 implementation. Load a Description template only if asked to draft the slices.
 
 Use the planning discovery allowlist; do not select formulation, a model or a

@@ -11,6 +11,10 @@ context can establish a finding about a selected AC; it does not expand the repo
 scope. Report findings only in the selected subject. Never rewrite the subject,
 unselected AC, provider fields or work-item state. Export only when requested.
 
+Treat a breach of the shared public requirement boundary within the selected
+subject as a required correction, not a stylistic preference. Product approval
+rules, design discussion and feature completion summaries remain valid content.
+
 Assess meaning, source traceability, scope consistency, observable acceptance,
 failure/exception boundaries and ambiguity relevant to the selection. Distinguish
 a proven defect from missing input or uncertainty. Each finding includes selected

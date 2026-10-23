@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.4.1`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.4.2`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -53,3 +53,12 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 按阻礙成果的未知選 owner：需求意圖交 requirement-author；語言、規則與模型歧義交 domain-model-designer；依賴、軟體結構與技術機制交 software-architect。混合問題可先做有界探索，逐段形成可供下一步使用的結果，不強制完整流水線。spec-author 依接受的需求與設計形成系統規格；test-designer 負責測試層級、資料與預期結果來源。技術限制無法滿足業務一致性時，回饋模型 owner，不自行改寫規則。BDD／DDD metadata 可用不代表每次全讀。
 
 獨立 Story 規劃、撰寫、正規化或整份／指定 AC 需求審查，可在可用時選 user-story-author；PRD／Feature／一般需求仍由 requirement-author 處理，不構成必經管線。
+
+## 公開需求內容的強制界線
+
+公開 Epic／Feature／User Story／Issue 必須能獨立說明需求與驗收；授權與
+交接必須使用 workflow 機制，不得存入線上 Issue 系統或留言。功能盤點、
+設計討論、相依及已完成／待完成／延後的功能摘要可以保留；產品本身的
+權限或審核行為仍可作為需求。依內容用途判斷，不使用關鍵字黑名單。
+workflow 不可用時如實回報，不能改存 Issue 或宣稱已轉移紀錄。這是來源
+指令契約；不代表現有安裝已升級、模型行為已驗收或已發布套件。

@@ -43,3 +43,8 @@ context/aggregate responsibility, state or invariant ownership belongs to domain
 model design; a dependency, port or technical mechanism belongs to software
 architecture. Name only the specific missing decision. Observable examples,
 including GWT, remain valid requirement content and do not require test design.
+
+All public requirement outputs, including exploration summaries selected for an
+Issue, MUST follow the [mandatory public requirement boundary](references/authoring.md#mandatory-public-requirement-boundary).
+Execution authorization and handoff use the workflow mechanism, never Issue fields
+or comments. This rule does not require a particular workflow product.

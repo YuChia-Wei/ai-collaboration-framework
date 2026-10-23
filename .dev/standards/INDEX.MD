@@ -6,6 +6,9 @@ installed content in `.ai/core`. Load only the applicable policy.
 
 ## Ordinary Source Work
 
+- [Public requirement content](PUBLIC-REQUIREMENT-CONTENT-POLICY.md): mandatory
+  requirement versus workflow authorization/handoff boundary.
+
 - [Source development policy](SOURCE-DEVELOPMENT-POLICY.md): adopted eight rules,
   affected checks and conditional independent review.
 - [Context boundary](AI-CONTEXT-BOUNDARY.md), [language](AI-CONTEXT-LANGUAGE-POLICY.md)

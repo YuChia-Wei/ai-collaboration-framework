@@ -23,10 +23,12 @@ flag ambiguity or conflicts for their owner. Do not silently strengthen/weaken A
 resolve an unknown, change approval or translate criteria into another form.
 If no material change was made, say so. Suggestions outside scope stay suggestions.
 
-Check value/outcome, boundaries, source support, observable AC and handoff sufficiency.
+Check value/outcome, boundaries, source support, observable AC and the mandatory
+public requirement boundary. Keep execution handoff in the workflow mechanism.
 Missing necessary decisions remain visible; do not force PRD, spec or test-design
-stages to compensate. Return the fields plus relevant portable context, actual
-normalization changes and remaining decisions. No write beyond the selected destination.
+stages to compensate. Return publishable fields and requirement context separately from workflow-only
+handoff and execution authorization. Report actual normalization changes and
+remaining product decisions without adding execution history to the public fields. No write beyond the selected destination.
 
 Use optional discovery/formulation to express source-backed examples; do not
 turn missing model or mechanism decisions into accepted Story constraints.
