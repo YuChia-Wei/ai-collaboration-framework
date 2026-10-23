@@ -89,7 +89,7 @@ public async Task<IActionResult> Create(
         input,
         cancellationToken);
 
-    return Ok(output);
+    return Created($"/resources/{output.Id}", output);
 }
 
 // ❌ Forbidden: controller contains business logic
@@ -186,7 +186,7 @@ return Ok(resourceDto);
 // POST - 201 Created
 return CreatedAtAction(nameof(GetResource), new { id = resourceId }, response);
 
-// PUT - 200 OK
+// PUT / PATCH - 200 OK (or 204 No Content when no response body is returned)
 return Ok(updatedResource);
 
 // DELETE - 204 No Content
@@ -198,22 +198,39 @@ return Accepted(operationId);
 
 ### Error Status Codes
 
+The illustrative Application result exposes `IsSuccess`, `Error`, and a typed
+`ErrorCode` using the enum below. The target owns this result contract. Map a
+specific failure before a general failure; never classify errors by message text.
+
 ```csharp
-// 400 Bad Request - validation error
+public enum ResourceErrorCode
+{
+    None,
+    InvalidRequest,
+    AlreadyExists
+}
+```
+
+```csharp
+// 409 Conflict - resource conflict
+if (!result.IsSuccess && result.ErrorCode == ResourceErrorCode.AlreadyExists)
+    return Conflict(new ProblemDetails
+    {
+        Detail = result.Error,
+        Status = StatusCodes.Status409Conflict
+    });
+
+// 400 Bad Request - invalid request (after specific failures have been mapped)
 if (!result.IsSuccess)
     return BadRequest(new ProblemDetails
     {
         Detail = result.Error,
-        Status = 400
+        Status = StatusCodes.Status400BadRequest
     });
 
 // 404 Not Found - resource does not exist
 if (resource is null)
     return NotFound();
-
-// 409 Conflict - resource conflict
-if (result.Error?.Contains("already exists") == true)
-    return Conflict(new ProblemDetails { Detail = result.Error });
 ```
 
 ---
@@ -263,9 +280,9 @@ public class CreateResourceRequestValidator : AbstractValidator<CreateResourceRe
         RuleFor(x => x.UserId)
             .NotEmpty().WithMessage("User ID is required");
 
-        RuleFor(x => x.Price)
-            .GreaterThan(0).When(x => x.Price.HasValue)
-            .WithMessage("Price must be positive");
+        RuleFor(x => x.Description)
+            .MaximumLength(500).WithMessage("Description must not exceed 500 characters")
+            .When(x => x.Description is not null);
     }
 }
 ```

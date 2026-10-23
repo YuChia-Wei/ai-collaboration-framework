@@ -1,0 +1,51 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-23-controller-example-consistency
+workflow_kind: source-knowledge-maintenance
+title: Repair four Controller guidance example contradictions
+owner_skill: software-development-orchestrator
+status: in_progress
+current_phase: waiting-shared-preview
+artifact_root: .dev/workflows/2026-10-23-controller-example-consistency
+entrypoint: workflow-plan.md
+created_at: '2026-10-23T09:41:52+08:00'
+updated_at: '2026-10-23T09:45:28+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+branch: codex/2026-10-23-controller-example-consistency
+base_branch: main
+input_commit: a7ecb86e6b65d55e2447e43d86ad1497530135f6
+work_items:
+- provider: github
+  issue: 491
+  url: https://github.com/YuChia-Wei/ai-collaboration-framework/issues/491
+tasks:
+- task_id: T1
+  workflow_id: 2026-10-23-controller-example-consistency
+  owner_skill: local-change-implementer
+  status: completed
+  created_at: '2026-10-23T09:41:52+08:00'
+  updated_at: '2026-10-23T09:45:28+08:00'
+  template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+  template_version: 1.0.0
+  model: gpt-6.1-sol
+  reasoning_effort: ultra
+  runtime_identity_basis: Configured defaults in user config.toml; actual primary
+    runtime labels not exposed
+  title: Repair examples, exact versions and catalog; verify source
+  findings_status: Author inspection addressed; optional fixed-commit review follows
+  result_summary: Four corrections, exact version closure, 11 guidance hashes and
+    catalog digest passed read-back; 197 distribution/schema tests passed.
+- task_id: T2
+  workflow_id: 2026-10-23-controller-example-consistency
+  owner_skill: local-change-implementer
+  status: in_progress
+  created_at: '2026-10-23T09:41:52+08:00'
+  updated_at: '2026-10-23T09:45:28+08:00'
+  template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+  template_version: 1.0.0
+  model: gpt-6.1-sol
+  reasoning_effort: ultra
+  runtime_identity_basis: Configured defaults in user config.toml; actual primary
+    runtime labels not exposed
+  title: After the selected chat completes, update and verify shared Preview
