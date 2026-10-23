@@ -37,3 +37,27 @@ its bounded wording repair passed re-review at 4369ce56332345d045d58b63c5ca143f7
 No new tests. See validation.md for actual outcomes and limits. Public Issues
 remain open pending integration; this workflow completion describes local delivery,
 not merge, release or installed adoption.
+
+## Authorized integration and upgrade analysis
+
+On 2026-10-23 the owner requested upgrade integration analysis, then authorized
+push, PR, current-head CI/review, merge and updating/closing #496/#497/#498 when
+no unresolved problem remains. Authorization/handoff stays in this workflow.
+The online Issues receive functional completion only. Terminal-close applies to
+all three; preserve this policy/package change as one merge-commit delivery unit.
+
+Analysis: manifest members include the changed instructions/templates; four
+package versions and docs agree. Installer owns selected managed resources, not
+existing target AGENTS or custom rules. `initialize`/`refresh` explicitly preserve
+existing policy; `ai-context-governance apply` replaces contradictory rules with
+actual authority and preserves custom content. Existing project-edits support
+pinned root changes but do not authorize resets. No installation schema/engine
+change is needed. Added a product installation guide mapping managed upgrades,
+new initialization, and explicit adoption in existing projects; unselected skills
+remain unselected. Missing workflow does not permit Issue fallback. This is
+source/contract analysis, not an executed downstream upgrade or runtime claim.
+
+Validation: existing 204 schema/distribution checks cover unchanged package
+structure; no new tests or costly installation trial selected for this analysis.
+New installation prose and workflow record get diff/semantic review, then the
+actual PR current-head hosted gate. No release/self-install/branch deletion.
