@@ -10,7 +10,7 @@ clone; independent workers and reviewers are read-only.
 
 ## Subject and cause
 
-Base: `a7ecb86e6b65d55e2447e43d86ad1497530135f6` (`main`, provider read-back).
+Initial base: `a7ecb86e6b65d55e2447e43d86ad1497530135f6` (`main`, initial provider read-back).
 Registered original checkout: `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend`.
 It was clean, with three existing unrelated worktrees. This work uses a separate
 clone at `C:/Users/h4227/Documents/Codex/2026-10-23/task/snapshot-repair`, branch
@@ -82,6 +82,112 @@ Actual execution OS read-back: Microsoft Windows 10.0.26300; CPU AMD Ryzen 9 395
 The filesystem paths above are this desktop's local files, not inferred from a
 task label. `git diff --check` and changed-record JSON/YAML parsing passed.
 
-Next: finish the bounded repair and regressions, create a clean immutable local
-commit, build/verify its exact source, review that diff independently and record
-actual results and any limits here. No permission for transport is implied.
+## Final local result and exact subject
+
+While this work ran, provider `main` advanced to
+`c9999be432b4a0e91510ec667e7d818fe495a3e7` through the unrelated #490 repair.
+Its two Engine member edits and seven additional maintenance tests do not overlap
+this fix. The isolated unshared repair was rebased without conflict, producing
+`a9b47a5171d6de8115376cd0a2712604b8059595`. The original pre-rebase checkpoint
+`28dd25d6bd6579b5cd85c6e46ed976e019e15047` remains historical local evidence;
+its 329-test result is not relabeled as a test of the newer base.
+
+On clean `a9b47a5171d6de8115376cd0a2712604b8059595`,
+`python -I -B tests/run.py --suite release --suite distribution` passed all
+204 tests in 94.494622 seconds, no failures/errors/skips
+(`rebased-tests.stdout/stderr`). The unchanged schemas/tools/source checks retain
+the earlier default-suite coverage; another full matrix was not selected merely
+for a base identity change. Installed lock, selection and runtime projections have
+no diff against `c9999be`.
+
+The first repaired exact-head build reached the catalog builder but returned
+`unsupported/path-budget` under the long workspace output root. Retained evidence:
+`fixed.stdout/stderr`, `fixed-work/builder.stdout/stderr` and `fixed-assets`.
+The existing 240 UTF-16 physical-path refusal budget was not weakened. Fresh
+already-authorized shorter external roots resolved the environmental limitation:
+
+```powershell
+$repairRoot = 'C:\Users\h4227\Documents\Codex\2026-10-23\task\snapshot-repair'
+$repairHead = 'a9b47a5171d6de8115376cd0a2712604b8059595'
+$evidenceRoot = 'C:\Users\h4227\Documents\Codex\2026-10-23\task\evidence'
+& '..\python312\Scripts\python.exe' -I -B .github/scripts/build-release.py `
+  --repository $repairRoot --source-commit $repairHead `
+  --tooling-commit $repairHead --workflow-commit $repairHead `
+  --workflow .github/workflows/package-candidate.yml `
+  --repository-name YuChia-Wei/ai-collaboration-framework `
+  --run-id local-492-fixed --run-attempt 2 `
+  --work-root 'C:\Users\h4227\AppData\Local\Temp\r492' `
+  --output 'C:\Users\h4227\AppData\Local\Temp\a492' `
+  --github-output "$evidenceRoot\short-fixed-github-output" `
+  1> "$evidenceRoot\short-fixed.stdout" 2> "$evidenceRoot\short-fixed.stderr"
+```
+
+Working directory was `$repairRoot`; TEMP/TMP were the contained sibling
+`task/test-temp`. Python 3.12.14 and PyYAML 6.0.3 were observed. This command exited
+0, built the complete snapshot, invoked existing `verify_bundle`, extracted each
+manifest member and checked its raw hash, source cleanliness and source identity.
+The log stderr is empty. `r492/builder.stdout/stderr` retain the product receipt.
+For a new attempt choose new external roots; do not reuse or delete prior roots.
+
+All three output files were copied with matching SHA-256 into the durable task
+evidence directory `snapshot-assets/`:
+
+- `ai-collaboration-framework-snapshot-a9b47a5171d6de8115376cd0a2712604b8059595.zip`
+- the same ZIP name plus `.sha256`
+- `release-manifest.json`
+
+ZIP: 1,082,041 bytes; 497 entries, including 29 Engine members and 29 catalog
+components. SHA-256:
+`3a65a58d44b8c518477e3fef8cae74e62fd455277c9a4291d740909b457847f7`.
+Source, tooling and workflow commits in the manifest are all the exact repair
+commit above. Publication and installation were not performed. Manifest
+`tests: not-run` correctly describes the builder itself; the separately executed
+local test results are recorded above, not rewritten into the manifest.
+
+The retained copy was read back with:
+
+```powershell
+& '..\python312\Scripts\python.exe' -I -B '..\evidence\verify-snapshot.py' `
+  --repository $repairRoot --assets "$evidenceRoot\snapshot-assets" `
+  --commit $repairHead
+```
+
+`verification.json` records passed existing bundle integrity verification and ZIP
+CRC, plus exact manifest identity, counts and hash. This is author execution.
+
+## Independent review and limits
+
+`fixed_head_review`, explicitly selected `gpt-6.1-sol/medium` under project policy,
+reviewed clean `a9b47a5171d6de8115376cd0a2712604b8059595` against `c9999be` with
+installed `code-reviewer` and the project fixed-head auditor role. It found no
+actionable scoped defects and confirmed literal closure, raw bytes/hashes,
+descriptor/archive guards and both diagnostic shell paths. Its initial evidence
+read-back observed the retained long-root path-budget failure. The short-root
+success did not change reviewed product bytes, criteria or rules.
+
+An optional follow-up to independently read the successful artifact evidence did
+not execute: the selected model was at capacity. It made no writes; this was not
+a permission denial, pending operation or uncertain mutation. No substitute model
+was selected. The original completed independent code review remains valid; the
+artifact read-back result above is the author's, not an invented independent pass.
+
+Both workflow shell blocks were exercised locally for early exit 7 and success 0,
+including captured stdout/stderr before the product builder creates any `rb`
+directory. Hosted Actions upload itself, Linux/Python 3.12.15 parity, downstream
+installation/runtime behavior and publication remain unexecuted. These are not
+claimed by a local snapshot or the earlier PR Source check. v0.20.2 tags, Release
+and assets were not modified or assessed as damaged.
+
+## Handoff
+
+Local repair, selected tests, exact-source snapshot and scoped code review are
+complete. The final record commit changes only this workflow's three records;
+the reviewed/built product subject stays `a9b47a5171d6de8115376cd0a2712604b8059595`.
+No product rerun is selected for these record-only edits.
+
+Resume at the local clone/branch named above; do not restart from the untouched
+original checkout. Inspect `git log -2`, `git status --short`, this record and
+the sibling retained assets/evidence. The task evidence also receives a patch
+against `c9999be` for review. Next owner action is to review the local delivery and
+separately authorize any push/PR/hosted validation or integration. Issue #492 stays
+open. No transport, merge, publication or closure permission is implied.
