@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.1.0`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.1.1`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -15,6 +15,12 @@
 ## 何時用／界線
 
 可建立/更新 draft PR；不推 branch、不 merge/close PR、不改 Issue/Project、release 或 credential。prepare 不等於已發佈。
+
+公開 PR 描述、留言與 review 討論適用 Issue 的公開內容界線：說明問題、
+行為變更、範圍、驗證／缺陷審查結果、限制及功能相依。代理執行授權、
+核准歷程、交接與續作指令留在目標 workflow 機制，不能因 PR 範本要求而
+填入公開內容。產品本身的權限行為仍可描述。發佈前依語意檢查實際 render
+結果，發佈後讀回；工具成功與 schema 有效不代表內容已符合此界線。
 
 ## 範例請求
 

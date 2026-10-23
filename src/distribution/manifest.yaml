@@ -804,7 +804,7 @@ components:
   - source: templates/pr.md
     destination: .ai/core/skills/pr-author/templates/pr.md
   kind: skill
-  version: 0.1.0
+  version: 0.1.1
 - id: problem-frame-author
   source: src/skills/problem-frame-author
   metadata: skill-package.yaml
