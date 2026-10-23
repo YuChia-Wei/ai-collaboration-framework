@@ -129,20 +129,148 @@ or skips. Log: `F:/aicf482/skill-layout-review-repairs-final.log`. The harness a
 TEMP/TMP contract are the same as above. Targeted 5-test and intermediate 23-test
 runs also passed; the 39-test run includes subsequent UUID/layout additions.
 
-## Remaining acceptance at this checkpoint
+## Fixed repaired source and independent re-review
 
-- Build the current pinned catalog/engine from one clean fixed commit and use
-  its public manager for registration, explicit same-byte adoption, multi-file
-  readback, original/prefixed framework routing, protected upgrade/deselection,
-  legacy migration and precise detachment.
-- Observe Codex native `skills/list` and native filesystem reads in that
-  consumer without a model turn. This proves discovery/readability only.
-  Claude native discovery and actual skill behavior remain separately unverified.
-  The protocol is documented in the official
-  [Codex app-server reference](https://developers.openai.com/codex/app-server#skills);
-  local CLI 0.163.0 generated the actual request schema used by the probe.
-- Complete independent scoped read-only review of the clean fixed implementation
-  under code-reviewer, covering ownership, path, installation and recovery.
-  Record findings and affected re-review without repeating unchanged conclusions.
+Clean commit `87b85018b32e43db1e705c33e7e54972cc1426eb` contains the repaired
+implementation. The same independent reviewer examined only the two findings,
+the equal-lock migration correction and directly affected ownership/recovery
+paths against `ff7c86b8e831fb98b4def274b9b3d84c93cea14b`. It found R1 and R2
+resolved, found the migration correction sound, and reported no new actionable
+defect in that scope. HEAD and the clean worktree were unchanged before/after.
+The reviewer inspected tests but did not execute them or access providers.
 
-No pending item in this section is a passed acceptance criterion.
+The repaired commit was built through the source catalog builder with a complete
+independently constructed pin: all 29 engine members matched that commit's Git
+bytes before execution. Actual output was `assembled`:
+
+```text
+catalog:1:0.0.0-rc.149225687528238:87b85018b32e43db1e705c33e7e54972cc1426eb:67350212628f5fa7cdd9495a1bb5c1e01dc448cf3eadb5f32bbd177154953b5a
+```
+
+The build is a local candidate, with no invented hosted-build provenance or
+public release. Later record-only commits do not relabel this artifact's source.
+
+## Actual public-CLI consumer results
+
+The original RAM-disk consumer was continued through the repaired pinned
+`derive-subset.py`, `maintain_framework.py`, `manage-sub-agents.py` and
+`manage-skills.py`; it was not reset after its failed attempt. Process-local
+TEMP/TMP remained `F:/aicf482b/tmp`. Commands from the repository root were:
+
+```text
+python -I -B F:/aicf482b/build-current.py 87b85018b32e43db1e705c33e7e54972cc1426eb
+python -I -B F:/aicf482b/consumer-resume.py
+python -I -B F:/aicf482b/consumer-detach.py
+python -I -B F:/aicf482b/ntfs-native-setup.py
+python -I -B F:/aicf482b/native-codex-probe.py F:/aicf482b/ntfs-native-spec.json
+python -I -B F:/aicf482b/consumer-rename.py
+```
+
+Each completed successfully. The first consumer's lock after the repaired engine
+upgrade was `f317efbc946e9bb8038a7aa198cc4f6ae5622ef1412fd22cef6567e76263298b`.
+The actual legacy migration plan again had identical before/after lock hashes:
+first apply now succeeded, changed registered references and hashes coherently,
+preserved baseline history and opaque unknown bytes, and returned unchanged on
+completed replay. Both project adapter routes and strict installed-resource
+reading passed.
+
+Same-registry repair succeeded with explicit foreign preimages; replay after
+restoring those preimages was blocked without overwriting them. A fresh plan had
+a distinct operation ID/hash and repaired the current state. Earlier completed
+plans remained blocked after later plans completed. Dotted canonical candidate
+IDs with original/prefixed native paths passed public comparison.
+
+Precise detachment removed exactly 14 registered native files across both
+adapters, retaining eight authoring members, the skill record, provenance,
+baseline and unknown sibling. Recreating an old entry and replaying the completed
+plan was blocked; the recreated entry survived. The framework lock stayed
+unchanged, protected project input hashes matched, and strict installed-resource
+reading still passed. The fixture intentionally retains that unowned entry.
+
+A second small consumer was created by the same actual pinned manager in the
+verified ignored `.dev/ai-context/local/native-skill-482` directory for native
+discovery, following the filesystem limitation below. All seven projected Codex
+member hashes matched the RAM-disk consumer. A later public-CLI rename moved the
+Codex entry to `team-resource-demo-renamed` while retaining the Claude entry as
+`team-resource-demo`; both explicit routes resolved. Exactly seven old registered
+Codex members were detached; unknown siblings and baseline were preserved. The
+synthetic script's sibling import printed `resource-closure-ok` through local
+Python. This is a local resource execution check, not AI behavior evidence.
+
+Bounded transient results are `F:/aicf482b/build.json`, `consumer-result.json`,
+`detach-result.json`, `ntfs-native-setup-result.json`, `native-codex-result.json`
+and `rename-result.json`. Durable outcomes are retained here; RAM-disk files are
+not the sole continuation record.
+
+## Native evidence and retained environment limit
+
+The first native Codex attempt on the RAM-disk consumer returned no matching
+entry. Its stderr reported `failed to walk skills root file:///F:/aicf482/consumer/.agents/skills`
+with Windows `os error 1`. A diagnostic-only repeat confirmed no per-entry parse
+errors and retained the same traversal failure. This is failed native discovery
+on that fixture, not a successful RAM-disk runtime acceptance. It is preserved
+in `F:/aicf482/native-codex-ramdisk-failure.json` and the matching stderr log.
+
+The bounded workspace-filesystem consumer was then registered through the real
+manager, not copied into native discovery by an untracked file shortcut.
+Codex CLI 0.163.0 app-server returned one matching `team-resource-demo` entry with
+`enabled: true` and `scope: repo`. Its native `fs/readFile` returned all seven
+projected members with exact expected SHA-256 values, including nested references,
+schema, template, script and sibling module. The probe used only initialize,
+skills/list and fs/readFile; no thread/model turn, login or paid test was started.
+The second consumer has its own Git root and is ignored by the source repository.
+Test drivers and other temporary files remained on F:; the source project's
+installed skill tree and global runtime configuration were unchanged.
+
+The protocol was taken from the official
+[Codex app-server reference](https://developers.openai.com/codex/app-server#skills)
+and the installed CLI's generated schema. This establishes that selected native
+entry's discovery and file readability at that observation. It does not establish
+model selection of the skill, semantic correctness of its method, or the later
+renamed entry's native discovery. Claude projections/routes were mechanically
+verified; Claude native discovery and actual AI behavior remain unverified.
+
+## Criterion coverage and delivery state
+
+| Feature criterion | Observed coverage / limit |
+| --- | --- |
+| F-AC01 | Inspect exposes registry facts, deltas and resource observations; unknown/baseline cases covered by focused tests and actual consumer readback. References remain caller-supplied, not independently accepted semantic facts. |
+| F-AC02 | Actual pinned inspect/plan/apply/compare/resolve executed. Skill operations retained framework lock bytes and respected installer ownership. |
+| F-AC03 | Eight source members and seven resources per native adapter retained. Focused checks cover missing declared resources, metadata, hash, path/case aliases and unsupported content. Native reads and a local sibling import cover the representative resource closure. |
+| F-AC04 | Same-byte unowned rejection then explicit adoption, managed collision rejection, unknown retention, actual rename/coexist and precise detachment observed. |
+| F-AC05 | Focused tests cover union additions/deletions, conflicts and missing baseline; public comparison left routes unchanged. No coverage label performs owner acceptance or retirement. |
+| F-AC06 | Complete project routes, original and prefixed installed framework bindings, required resource drift and deselected-framework rejection covered. |
+| F-AC07 | Focused interruption/recovery tests plus actual completed repair/detach replay, fresh repair and retained history observed; R1 resolved by independent re-review. |
+| F-AC08 | Historical readers/wrapper tests passed after retained fixture repairs. Actual legacy migration on the equal-lock boundary passed after the retained first failure. |
+| F-AC09 | Real pinned public CLI performed registration, multi-file readback, upgrade, original/prefixed conversion, deselection, migration, rename and detachment in isolated consumers. |
+| F-AC10 | Selected Codex native discovery and seven native file reads passed on the workspace filesystem. F: native walk failed; Claude native discovery and AI behavior remain unverified. |
+| F-AC11 | Immutable initial review plus affected repair review completed with both P2 findings resolved and no new actionable finding in the repair scope. |
+
+The authorized local implementation and selected validation are complete. This
+does not close either online Issue or accept every future runtime/platform.
+Feature #482 has no push, PR, merge, hosted CI, public publication or real-project
+self-installation from this work. A separately authorized transport must use its
+own current PR hosted gate; no existing local result substitutes for it.
+
+## Online progress readback and publication limit
+
+After the interrupted progress update, the owner explicitly requested fresh
+readback of #482/#484, missing progress updates where needed, then completion of
+local records and commit. Both Issues were read back as OPEN without the new
+local-delivery progress section. Their previously revised implementation plans
+remain present.
+
+Automatic approval review rejected the #482 full-body progress update, citing
+the local paths, branch/commit and internal validation/design details in the
+payload. A safer concise progress-only addition removed those local identifiers
+and retained the existing body, but review also rejected that action because
+the API still replaces the complete Issue body and sends validation progress.
+No alternate tool or indirect write was used to bypass the rejection. The same
+progress has not been published to #484. Neither Issue's pending progress is
+reported as updated successfully.
+
+Local records and the authorized local commit can complete independently.
+Publishing the prepared concise progress to both Issues now awaits explicit
+owner approval of that exact external update; no state, labels or Project fields
+are included. This provider-only limitation does not reopen implementation work
+or erase the previously authorized and completed Issue-plan reconciliation.
