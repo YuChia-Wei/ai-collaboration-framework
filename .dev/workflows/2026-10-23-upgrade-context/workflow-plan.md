@@ -160,3 +160,23 @@ Refs may report actual product status without inventing a functional gap or
 publishing missing closure authority. This preserves explicit closure authority
 in the workflow. Only prose changed after the passing 12/80 tests; reuse those
 results, inspect changed links/diff and return the fixed commit for affected review.
+
+Independent Bug review attempt 2 approved clean
+3655dee9e489aa905aa94b487edb1013e9065a42, delta from
+d628e1116ba915fd294811871f6b1f358dea8bd0 and cumulative Bug base 62a50d47.
+The same independent reviewer confirmed F1 resolved, reference-only complete
+delivery coherent, no actionable remaining defect in the correction, and the
+current live PR sanitized. The proposed public content envelope was accepted;
+the final rendered body still needs publication readback. The reviewer performed
+static inspection, diff whitespace and clean-subject checks, not test execution.
+Parent accepted the evidence. This record-only commit leaves product, tests,
+policies and acceptance unchanged from the reviewed head.
+
+BUG-504 implementation and independent review are complete. The user-selected
+same-PR integration remains next: push, update PR #503 with product/evidence
+content, verify the new head's hosted gate, then merge with expected-head binding
+using rebase (linear topology). Read back merged provider state and synchronize
+local main. Do not close Issues or mutate Project fields in this selected scope.
+Public Issue/PR bodies carry no execution continuation or authority. The provider
+PR is the source for later merge/CI observations; no evidence-only source loop is
+needed after integration. No downstream installation or release is selected.
