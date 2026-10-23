@@ -651,6 +651,39 @@ skill 名稱是否加 `aicf-` 前綴，不控制能力啟用與否；是否真�
 安裝 init 後，請依 [init 手冊](skills/ai-context-init.md) 另行建立協作起點；
 初始化產出的專案文件不歸 managed skill 所有，更新／移除套件不重設團隊規則。
 
+## 升版後的協作入口對齊
+
+已安裝且一致的 `inspect`，以及成功 `apply`（包括 `unchanged`）會在
+`details.context_follow_up` 回報 `status: review-needed` 與
+`semantic_assessment: not-performed`。這是後續工作提示，並未檢查根目錄
+規則或確認語意 drift；`project_readiness` 仍為 `not-assessed`。未安裝、
+drift、失敗及 recovery-needed 不提供安裝完成的交接，先依原診斷處理。
+這是 API 2 details 的新增欄位；舊 engine 沒有它時，仍可依下列流程檢視。
+
+原地更新與預覽交付採以下順序：
+
+1. 完成安裝讀回，記錄 managed state；保留規則及自訂檔案的安裝前後證據。
+2. 檢視現有協作入口與索引，以及實際 installation selection、configuration、
+   model policy 和已選用 registry。即使本次 managed bytes 全部未變，仍可能
+   存在較早留下的入口落差。已有且仍適用的維護結果可以沿用。
+3. 使用已選定的 `ai-context-init refresh` 或目標事實維護方法，更新事實與
+   導覽。不要因 template hash 不同就宣告專案政策錯誤。
+4. 將需要改變條文的差異交給專案維護 owner；可使用既有 governance
+   `propose/apply`。已明確授權的有界維護不必重跑 proposal。保留刻意的
+   客製差異，缺少採納決策時列為未解決，不自動裝入另一個 skill。
+5. 分別回報安裝一致性、事實刷新、政策對齊及未解決事項。安裝階段的
+   「project bytes 保留」不應成為後續已授權文件維護的永久禁止條件。
+
+例如可以向 Agent 指定：「依目前實際安裝與已採納的模型政策，刷新既有
+AGENTS 與索引導覽；有明確政策依據的過時委派條文，以有界治理修改對齊。
+保留其他團隊規則，回報未解決的採納差異及實際讀回結果。」這個範例是
+指令型操作，沒有同名 refresh CLI；應選用實際可用入口與目標寫入權限。
+
+提示每次符合條件的讀回都可出現，因 installer 不保存 context 完成狀態。
+不需要建立第二份採納 ledger。根目錄可透過已審閱的精確 project edits
+處理；`.dev/INDEX.md` 等其他專案文件由一般授權文件維護處理，無須擴大
+installer allowlist。兩者不構成跨文件原子交易，也不證明 runtime 已遵循政策。
+
 ## 新 test-designer ID 的受控升級
 
 目前 source catalog 使用 canonical `test-designer`；新 catalog 不接受舊 `bdd-gwt-test-designer` ID，也沒有 alias engine。既有安裝不能只改名稱當作已升級。

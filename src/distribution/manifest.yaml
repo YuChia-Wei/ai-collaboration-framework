@@ -642,10 +642,10 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/ai-context-governance/skill-package.yaml
   kind: skill
-  version: 0.1.2
+  version: 0.1.3
 - kind: skill
   id: ai-context-init
-  version: 0.2.4
+  version: 0.2.5
   source: src/skills/ai-context-init
   metadata: skill-package.yaml
   members:

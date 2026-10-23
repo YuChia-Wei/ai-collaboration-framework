@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-本頁對應 `ai-context-init@0.2.4`；實際操作仍以已安裝 metadata 為準。
+本頁對應 `ai-context-init@0.2.5`；實際操作仍以已安裝 metadata 為準。
 RC4 的舊資源不會因來源手冊更新就取得這次入門擴充。
 
 ## 目的與完成點
@@ -92,6 +92,15 @@ AGENTS.md
 
 文件中的授權與成本條款是行為指引，不是 sandbox 或計費限制器。
 初始化完成、套件安裝成功、runtime 載入及 agent 實際遵守規則，仍是不同證據。
+
+## Framework 更新後
+
+refresh 核對實際 project 設定位置與用途，更新既有入口及索引的導覽。
+starter 新增的模型政策或協作條文差異，交給現有維護 owner／governance
+處理；不以重跑 initialize 自動採納。根目錄只導向已採納政策，模型對照
+留在該政策。不存在或未採納的資源不可產生有效連結或規範宣稱。
+操作結果分別列出事實刷新、待維護條文、保留的刻意差異及未解決決策。
+完整原地更新順序見[安裝指引](../installation.md#升版後的協作入口對齊)。
 
 ## 權威參考
 
