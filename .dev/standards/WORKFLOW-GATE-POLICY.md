@@ -41,7 +41,7 @@ authorize repository work or create a workflow.
 | --- | --- | --- |
 | Conversation and exploration | The conversation only. | No branch, workflow locator, commit, or pull request. |
 | Candidate work and unapproved plan | For this source repository, a GitHub Issue; GitHub Projects provide the priority and status views. | The tracker item records possible work but does not authorize execution merely by existing or changing provider state. No repository branch or pull request is created merely to record it. |
-| Authorized execution | An online GitHub Issue that records the material scope plus explicit owner authorization, and a skill-owned workflow when the workflow gate applies. | Create the dedicated branch before the locator or material repository edits. Bind the workflow and pull request to the Issue; never fabricate a tracker identifier or infer authorization from provider state. |
+| Authorized execution | An online GitHub Issue recording material requirement scope, with authorization and handoff recorded through the workflow mechanism. | Create the dedicated branch before the locator or material repository edits. Bind the workflow and pull request to the Issue; never fabricate a tracker identifier or infer authorization from provider state. |
 | Integrated repository fact | `main`, after the required pull request is merged. | Do not describe branch-only or tracker-only work as integrated repository truth. |
 
 GitHub Issues and Projects are this repository's selected work-management
@@ -62,17 +62,19 @@ A valid work-item binding serves two purposes together:
 
 An Issue, Project field, provider event, or provider state never authorizes
 execution by itself. The binding becomes authorization evidence only when the
-owner's explicit approval is recorded in the work item, workflow, pull request,
-or conversation. The workflow remains execution truth and `main` remains
+owner's explicit approval is captured in the workflow mechanism and bound to
+the requirement. A conversation may supply the decision, but the Issue system
+MUST NOT store authorization or handoff, including in comments. Follow the
+[public requirement content policy](PUBLIC-REQUIREMENT-CONTENT-POLICY.md). The workflow remains execution truth and `main` remains
 integrated repository truth.
 
 Targets select a provider-neutral binding mode:
 
 - `required`: an approved work item must be bound before execution;
 - `optional`: a binding is preferred but explicit owner authorization may be
-  recorded without one; or
+  recorded through the workflow without an Issue binding; or
 - `disabled`: no work-item binding is used and authorization is recorded
-  outside a tracker.
+  through the workflow mechanism, outside the Issue system.
 
 Targets separately select whether pull-request integration enforces the
 binding as `required`, treats it as `optional`, or leaves the merge gate

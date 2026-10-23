@@ -30,7 +30,7 @@ not settled. Local source: example brief V1, accepted fictional intent.
   then the matching shipment status is displayed.
 - AC-B (supplied local label): Searching an unmatched reference displays a no-match message.
 
-**Handoff:** Source example brief V1; accepted fictional scope above. No parent or
+**Workflow-only handoff (never part of the public Story or Issue comment):** Source example brief V1; accepted fictional scope above. No parent or
 external dependency is established. Next: owner resolves reference format; current
 authority is drafting only. Existing GWT and prose AC remain in their supplied forms.
 
@@ -59,7 +59,7 @@ BR-A is a supplied local label. Source: fictional booking rules V1, accepted.
 room is rejected with an overlap message. A non-overlapping request continues
 through the existing booking flow. Endpoint-boundary acceptance remains unresolved.
 
-**Handoff:** Booking rules V1, accepted fictional input; no provider/parent ID.
+**Workflow-only handoff (never part of the public Story or Issue comment):** Booking rules V1, accepted fictional input; no provider/parent ID.
 Dependency: existing booking records (source states their use, interface unknown).
 Next: booking-rule owner decides endpoint semantics; authority is draft only.
 
@@ -88,7 +88,7 @@ input. Supported callers retain their existing observable behavior. Export proce
 does not require the complete file in memory. These are supplied prose technical AC;
 no forced Gherkin conversion or test-level selection occurs.
 
-**Handoff:** Export constraint V1, accepted fictional input. Dependency: existing
+**Workflow-only handoff (never part of the public Story or Issue comment):** Export constraint V1, accepted fictional input. Dependency: existing
 export contract, exact version unknown. Next: owner supplies that contract before
 dependent implementation. Authority is draft only; no implementation/test execution claim.
 
@@ -118,7 +118,7 @@ was supplied. Source: fictional investigation brief V1, accepted research scope.
 and limits, or explains why it remains unanswered. Observations and recommendations
 are distinguished. This is proposed acceptance for owner decision, not research success.
 
-**Handoff:** Investigation brief V1; proposed acceptance/stopping criterion explicitly
+**Workflow-only handoff (never part of the public Story or Issue comment):** Investigation brief V1; proposed acceptance/stopping criterion explicitly
 unaccepted. Corpus delivery is a dependency. Next: search owner confirms method and
 criteria; current authority is research planning only.
 

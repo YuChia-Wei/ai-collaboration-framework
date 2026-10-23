@@ -34,7 +34,7 @@ project:
   - Target release
   - Published in
 issue:
-  canonical_language: en
+  canonical_language: zh-TW
   comments_languages:
   - en
   - zh-TW
@@ -54,7 +54,9 @@ work_item_binding:
     requires_explicit_owner_approval: true
     provider_state_alone_authorizes: false
     missing_binding: block material execution until an online GitHub Issue records
-      the scope and explicit owner authorization
+      the scope and its workflow records explicit owner authorization
+    record_owner: workflow-mechanism
+    issue_authorization_or_handoff: forbidden
   merge_gate:
     mode: required
     disposition_required_per_issue: true
