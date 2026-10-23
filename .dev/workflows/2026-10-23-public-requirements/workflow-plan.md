@@ -31,5 +31,9 @@ required before any later integration; this scope does not assume push/merge/rel
 
 ## Progress
 
-Implementation in progress. Issues created with two native sub-issue relations.
-Actual checks, independent review and local commit are pending.
+Local implementation completed, with two native sub-issue relations. Existing
+schemas/distribution: 204 passed. Independent fixed-subject review identified R1;
+its bounded wording repair passed re-review at 4369ce56332345d045d58b63c5ca143f7e5f81f1.
+No new tests. See validation.md for actual outcomes and limits. Public Issues
+remain open pending integration; this workflow completion describes local delivery,
+not merge, release or installed adoption.

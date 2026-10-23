@@ -34,3 +34,22 @@ was reported. Reviewer could not independently observe actual model identity;
 selected invocation settings are not presented as telemetry proof. No review tests
 ran. The repair changes prose scope only; existing structural tests are not rerun.
 Affected-rule independent re-review is pending on the next fixed commit.
+
+## R1 re-review and local delivery
+
+The same independent reviewer inspected clean fixed commit
+4369ce56332345d045d58b63c5ca143f7e5f81f1 against 542a37db7edea2a3bc064fc9aa189c0d644f6702.
+R1 resolved; no introduced actionable findings. Reviewer checked the six-file
+correction, range whitespace and initial/final clean identity, without writes,
+tests or provider calls. Advisory accept is not integration approval. Prior
+unchanged review remains bound to its original base and criteria.
+
+Local source delivery is complete. The final record-only commit does not change
+product resources, policies or acceptance criteria from that reviewed subject.
+The 204 structural checks are retained without rerunning unchanged structure.
+Feature #496 has verified native children #497/#498. They remain OPEN; public
+functional summaries do not contain execution permission or handoff records.
+GitHub native Feature type assignment was attempted but read-back remained null;
+Feature designation is the title, with native sub-issue links and existing labels.
+No hosted gate, merge, release, source self-installation or downstream upgrade
+is claimed. Next integration requires its applicable permission and PR gate.
