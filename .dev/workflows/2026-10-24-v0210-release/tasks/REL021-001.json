@@ -1,11 +1,11 @@
 {
   "task_id": "REL021-001",
   "title": "Publish v0.21.0 with aligned documentation and tracking",
-  "status": "in_progress",
+  "status": "completed",
   "executor": "OpenAI Codex",
   "model": "gpt-6-astra",
   "reasoning_effort": "high",
-  "result_summary": "Version fields assigned; documentation and publication verification in progress.",
-  "finding_status": "not-assessed",
+  "result_summary": "PR #510 fast-forward merged; annotated v0.21.0 published as stable Latest; 497 entries verified and all three public/Draft/Actions assets identical; all 16 product Issues Version and Published v0.21.0 read back.",
+  "finding_status": "addressed",
   "model_identity_source": "configured default in ~/.codex/config.toml; session-specific override not exposed"
 }

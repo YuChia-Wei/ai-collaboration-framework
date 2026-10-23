@@ -1,16 +1,16 @@
-schema_version: "1.0"
-lifecycle_contract: "1.0"
-workflow_id: "2026-10-24-v0210-release"
-workflow_kind: "source-release"
-title: "Publish v0.21.0 and align user documentation"
-owner_skill: "source-release-policy"
-status: "in_progress"
-current_phase: "documentation"
-artifact_root: ".dev/workflows/2026-10-24-v0210-release"
-entrypoint: "workflow-plan.md"
-created_at: "2026-10-24T00:27:47+08:00"
-updated_at: "2026-10-24T00:27:47+08:00"
-template_source: ".dev/workflows/2026-10-03-documentation-boundaries/template.md"
-template_version: "1.0.0"
-branch: "codex/2026-10-24-v0210-release"
-base_branch: "main"
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-10-24-v0210-release
+workflow_kind: source-release
+title: Publish v0.21.0 and align user documentation
+owner_skill: source-release-policy
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-10-24-v0210-release
+entrypoint: workflow-plan.md
+created_at: '2026-10-24T00:27:47+08:00'
+updated_at: '2026-10-24T00:38:41+08:00'
+template_source: .dev/workflows/2026-10-03-documentation-boundaries/template.md
+template_version: 1.0.0
+branch: codex/2026-10-24-v0210-release-closeout
+base_branch: main
