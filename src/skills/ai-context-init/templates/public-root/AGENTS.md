@@ -61,17 +61,22 @@ repository evidence. Respect any explicitly selected target language ownership.
 
 ## Mandatory public requirement boundary
 
-For public Epic, Feature, User Story and Issue/ticket content, including comments,
+For public Epic, Feature, User Story and Issue/ticket descriptions and comments,
 MUST describe the product need independently: problem, beneficiary or outcome,
 scope, relevant scenarios, observable acceptance and real dependencies. Readers
 must not need a private conversation to reconstruct the requirement.
 
+The same boundary applies to public PR descriptions, comments and review
+discussions. Describe the concrete problem, resulting behavior, scope, validation
+and defect-review evidence, limitations and related requirements. PRs are part of
+the public Issue channel, not a workflow exception.
+
 MUST NOT publish execution authorization or its approval/revision history, agent handoff,
-resume instructions or execution checkpoints in that requirement channel. Record
+resume instructions or execution checkpoints in these public channels. Record
 and retrieve authorization and handoff through the target's workflow mechanism.
 An Issue system is not a substitute workflow store. If that mechanism is unavailable,
 report the missing record or blocked handoff; do not silently fall back to an Issue,
-comment, or another store, and do not claim a transfer occurred.
+PR, comment, or another store, and do not claim a transfer occurred.
 
 Feature inventories, requirement/design discussion, product decisions and supported
 requirement revisions/status, linked
@@ -80,6 +85,11 @@ Explain dependencies such as "requires #123's API" and link relevant result evid
 without copying execution logs. Product approval/permission behavior is valid
 requirement content; permission for an agent to push or merge is execution authority.
 Classify by purpose and meaning, not forbidden words or headings.
+
+Preserve technical verification results, supported findings and coverage limits;
+keep agent assignments, approval history and continuation or integration
+instructions in the workflow. A template does not authorize copying those
+execution records into public prose.
 
 Before creating or updating content, check this boundary and correct violations
 within the authorized scope. In a read-only review, report the selected violation

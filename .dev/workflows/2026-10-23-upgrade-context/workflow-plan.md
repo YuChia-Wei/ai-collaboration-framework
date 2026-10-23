@@ -95,3 +95,51 @@ integration or Issue completion.
 
 Preferred eventual integration is linear: this is one cohesive outcome without
 a separate migration or release boundary. Integration is not performed here.
+
+## Bug #504: public PR content remediation
+
+The user identified execution authorization/handoff in PR #503 and requested a
+bug fix merged with that PR. This supersedes the previous pending merge authority:
+repair, review, validation, push, PR update and integration are authorized.
+Issue closure and Project mutation are not selected. Public PR content must not
+carry these execution facts. PR #503 was created at head 62a50d47; its Source
+change gate passed in run 39959546620 before this additional source change.
+
+Observed cause: the source PR template requested owner authorization, execution
+record and remaining owner decisions; PUBLIC-REQ-001 did not explicitly name
+PRs, and pr-author lacked a public prose boundary. The author incorrectly copied
+workflow facts into the public body. On 2026-10-23 the live PR body was corrected
+first and Bug #504 created with functional problem and acceptance only.
+
+BUG-504 uses slice-implementer generic mode with remediation overlay. Fix the
+source policy, root bilingual navigation, PR template, closure wording, reusable
+pr-author instructions and starter. Preserve validation/review facts and product
+permission requirements; no blacklist, provider schema change or historical sweep.
+Source pr-author advances to 0.1.1. Init remains the unpublished 0.2.5 candidate
+in this PR, now including the clarified public boundary. Installed projections
+are not hand-edited or implicitly upgraded.
+
+Validation selection: source contract suite checks metadata/manifest closure;
+manual semantic examples check forbidden execution history versus allowed product
+permission behavior, test evidence, defects and dependencies. Check bilingual
+parity, actual public PR readback, links and diff whitespace. The PR tool has an
+exact package-version admission check; synchronize it to 0.1.1 and run the tools
+suite to verify loading and existing operations. Schemas are unchanged; do not
+add tests that mirror policy strings or rerun the full local suite merely for
+prose. The graph search did not cover the package loader; selected tracked source
+and literal version checks supplied the direct evidence. Current-head hosted source checks and
+independent affected review are required before integration; the previous review
+does not establish this correction's semantic acceptance.
+
+Bug validation results: source contract suite 12 passed; tools suite 80 passed
+(48.212 seconds, zero failures/errors/skips; raw disposable log
+F:/aicf500-context/bug504-tools.log). Thirteen changed Markdown files had no
+missing local links. Diff whitespace passed. Author compared the English and
+Traditional Chinese root clause for the same PR/comment/review scope and the
+same allowed evidence. Semantic counterexamples: agent push permission and
+resume instructions are excluded; product approval behavior, test results,
+defect findings and API dependencies remain valid. The live PR readback contains
+product and technical evidence without the previously copied execution passages.
+No runtime language-model enforcement is claimed. Next: commit this bounded
+repair, obtain independent review including public PR content, then push and
+require fresh hosted CI before the user-authorized same-PR merge.
