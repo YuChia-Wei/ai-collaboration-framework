@@ -24,6 +24,8 @@ RC4 的舊目錄、固定版本連結與實測邊界保留於 [RC4 安裝說明]
 5. [初始化協作起點](skills/ai-context-init.md)：沿用既有背景與規則，補齊入口、
    可採用的協作基線與第一次任務指引。
 6. [Sub-agents](sub-agents.md)：六個可選角色、安裝位置、模型繼承與成本邊界。
+7. [自建／客製 skill 管理](skill-management.md)：目前來源新增的多檔原稿／投影、
+   三方比較、明確路由與恢復；使用前核對實際 engine 版本。
 
 遇到中斷時使用[精確復原指南](recovery.md)；舊布局需要清除重裝時，另讀
 [破壞性重裝指南](breaking-reinstall.md)。開始操作前，先核對
