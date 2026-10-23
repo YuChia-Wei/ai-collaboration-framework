@@ -5,7 +5,7 @@ description: "Maintain existing project-owned AI context by proposing or applyin
 
 # ai-context-governance
 
-Codex runtime entry for `ai-context-governance@0.1.1`. This generated projection does not
+Codex runtime entry for `ai-context-governance@0.1.3`. This generated projection does not
 prove installation, operation execution, validation or runtime discovery.
 Regenerate it from the selected package and verified Codex adapter.
 

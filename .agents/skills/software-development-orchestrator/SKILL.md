@@ -5,7 +5,7 @@ description: "Coordinate software development from high-level intent or an exist
 
 # software-development-orchestrator
 
-Codex runtime entry for `software-development-orchestrator@0.3.2`. This generated projection does not
+Codex runtime entry for `software-development-orchestrator@0.4.2`. This generated projection does not
 prove installation, operation execution, validation or runtime discovery.
 Regenerate it from the selected package and verified Codex adapter.
 

@@ -98,10 +98,39 @@ multi-file atomicity. On interruption or unexpected changes, report the actual
 partial state and remaining work. Do not overwrite newer external changes to
 restore a presumed baseline. Read back uncertain writes before deciding a retry.
 
+## Framework upgrade reconciliation
+
+Use the existing `propose` or `apply` operation for selected project-owned entry
+clauses after an upgrade. Read the current root/index, installed candidate
+instructions and actual target policy or decision evidence. Installation success
+and a context follow-up hint do not establish a contradiction or adoption.
+Compare meaning: an intentional project variation can remain valid.
+
+Refresh facts and navigation within the authorized edit radius. For rule changes,
+show or apply the bounded replacement under the existing authority, preserving
+unrelated rules and resolving consequential adoption choices before their writes.
+An already authorized direct edit needs no extra proposal cycle. Do not use a
+former starter as an assumed merge base or rewrite the whole root.
+
+Keep the root usable for scope, authorization and truthful reporting. Where the
+target has adopted a model policy, direct delegation to that actual policy and
+keep model/effort mappings there instead of duplicating them in the root. Verify
+paths and reading triggers; missing policy and conflicting overrides remain
+visible. A link proves neither client loading nor runtime enforcement.
+
+Read back the effective clauses and navigation; report maintained facts, adopted
+rule changes, preserved intentional differences and pending decisions. Keep
+managed installation, lock/configuration changes and runtime activation with
+their owners. This method adds no operation, store or mandatory dependency.
+
 ## Necessary semantic state
 
-Use the project's existing rule and decision owners; create no second
-customization catalog, ledger, acceptance packet or universal rule engine.
+Use the project's existing rule and decision owners; create no duplicate
+decision ledger, acceptance packet or universal rule engine. A project-selected
+resource manager may own its executable customization registry: use that reader
+and writer for provenance, resource closure and runtime routing, and reference
+existing decisions there. That registry does not own rules, grant installer
+ownership or turn coverage metadata into adoption or runtime evidence.
 Keep the full effective statement with its canonical rule owner. When required,
 retain semantic identity, material baseline, reason for extension/override,
 applicability, decision evidence and real review/expiry obligations with the
