@@ -263,3 +263,49 @@ new code review. No same-file conflict with PR494 was found.
 
 This checkpoint fixes a clean source/tooling/workflow subject for a full snapshot
 build using fresh short external roots. Complete build/readback is still pending.
+
+
+## Continuation 02 final delivery
+
+Exact build subject: `23d753542101eb16b85a87eae02ba546b85a606a`, containing
+PR494 base `aa8bf7c934efa17e15f925befec3b12f77b58998`. The clean tooling checkout
+was stable throughout build. Python 3.12.14/PyYAML 6.0.3 ran:
+
+```text
+python -I -B .github/scripts/build-release.py --repository <snapshot-repair>
+  --source-commit 23d753542101eb16b85a87eae02ba546b85a606a
+  --tooling-commit 23d753542101eb16b85a87eae02ba546b85a606a
+  --workflow-commit 23d753542101eb16b85a87eae02ba546b85a606a
+  --workflow .github/workflows/package-candidate.yml
+  --repository-name YuChia-Wei/ai-collaboration-framework
+  --run-id local-492-cont02 --run-attempt 1
+  --work-root C:/Users/h4227/AppData/Local/Temp/r492b
+  --output C:/Users/h4227/AppData/Local/Temp/a492b
+  --github-output ../evidence/cont02-github-output.txt
+```
+
+Exit 0. Wrapper logs: `../evidence/cont02-fixed.stdout` and `.stderr`.
+The three output files were copied hash-identically to
+`../evidence/cont02-snapshot-assets`. Existing `verify_bundle` and ZIP CRC passed;
+`../evidence/cont02-verification.json` retains read-back. ZIP has 497 entries,
+29 Engine members and 29 catalog components (observed values, not gates).
+ZIP SHA256: `1b935c9de0f7383f6cfe7806588526b54a5b0134201592c53e093a83d04d56f1`;
+size 1,082,230 bytes. This supersedes the older-base build for current delivery;
+all older artifacts and failures remain retained.
+
+248 current-base selected tests remain valid; final edits affect only these
+workflow records. No product rerun follows from record-only identity changes.
+The previous six-file immutable code-review diff and current repair compare
+identically; no new product finding or criteria/rule change arose.
+
+Issue #492 body now contains technical root cause, contract-based scope,
+local acceptance evidence and the still-pending hosted-main condition only.
+Read-back confirmed exact body and open state. No review/approval chatter or
+internal work log was posted. No push, PR, merge, publication, installed-source
+upgrade or closure occurred. #491 scope remains unchanged. Hosted upload behavior,
+Linux parity and downstream runtime execution are not claimed by this build.
+
+Handoff: current continuation branch in the isolated clone; final commit only
+records completion. Built source remains the exact SHA above. Reviewable patch
+against aa8bf7c is `../evidence/492-snapshot-repair-cont02.patch`. Next step is
+separately authorized transport/integration and actual hosted-main verification.
