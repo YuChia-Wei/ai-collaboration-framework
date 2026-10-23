@@ -421,19 +421,20 @@ class IO:
                 name, visited = pending.pop()
                 try:
                     target = self.locate(root, name)
+                    if target is None:
+                        continue
+                    if not stat.S_ISDIR(target.lstat().st_mode):
+                        if name not in members:
+                            preserved(name, "Unknown or non-managed file is retained.")
+                        continue
+                    self.reader.forget_listing(target)
+                    children = self.reader.listing(target)
                 except state.InstallationError as exc:
-                    if exc.diagnostic["code"] not in {"linked-path", "nested-mount"}:
+                    if name in members or exc.diagnostic["code"] not in {
+                            "linked-path", "nested-mount", "invalid-path", "path-limit", "path-alias"}:
                         raise
-                    preserved(name, "Linked or mounted content is retained without traversal.")
+                    preserved(name, "Unknown path cannot safely enter managed traversal; retained without descent.")
                     continue
-                if target is None:
-                    continue
-                if not stat.S_ISDIR(target.lstat().st_mode):
-                    if name not in members:
-                        preserved(name, "Unknown or non-managed file is retained.")
-                    continue
-                self.reader.forget_listing(target)
-                children = self.reader.listing(target)
                 if not visited and children:
                     pending.append((name, True))
                     pending.extend((name + "/" + child, False) for child in sorted(children.values(), reverse=True))
