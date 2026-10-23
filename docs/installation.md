@@ -185,7 +185,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
 | `engineering-common` | `0.4.0` | 無 |
-| `dotnet-backend` | `0.1.5` | 必須同時選 `engineering-common@0.4.0` |
+| `dotnet-backend` | `0.1.6` | 必須同時選 `engineering-common@0.4.0` |
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 

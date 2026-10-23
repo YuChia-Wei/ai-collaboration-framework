@@ -1,6 +1,6 @@
 content_package_version: 1
 id: dotnet-backend
-version: 0.1.5
+version: 0.1.6
 entrypoint: README.md
 members:
 - {path: README.md, kind: index}
