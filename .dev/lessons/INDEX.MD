@@ -31,3 +31,4 @@ schema and lifecycle; they do not convert the historical Markdown lessons above.
 | Record | Reading view | Status | Evidence / scope |
 | --- | --- | --- | --- |
 | [lesson-0506f884c87943a9a27ca3ffb5f76dd4](records/lesson-0506f884c87943a9a27ca3ffb5f76dd4.lesson.json) | [Hotfix testing, release timing and context continuity](records/hotfix-testing-release-20261019.md) | `candidate` | v0.20.1 / Issue #467; measured timing, lessons and read-only entrypoint proposals. Non-normative; no rule adoption. |
+| [Worktree registration/access recovery](records/lesson-2a0d6ef0b36e48f09278e272108b4a47.lesson.json) | Record only | `candidate` | Historical 2026-10-17 observation: distinguish checkout creation, app registration and filesystem access; avoid placing durable worktrees in an ignored nested scratch directory. Tentative, not reproduced or adopted as policy. |
