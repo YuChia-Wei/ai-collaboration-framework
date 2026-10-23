@@ -2,7 +2,6 @@
 """Build generic catalog + Engine 2 bytes from a clean isolated immutable source."""
 from __future__ import annotations
 import argparse
-import ast
 import hashlib
 from datetime import datetime, timezone
 import os
@@ -15,24 +14,14 @@ import sys
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).absolute().parent))
-from release_common import (SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, entry, git, identity, oid,
+from release_common import (SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, engine_files, entry, git, identity, oid,
                             plain, render_readme, require, safe_name, sha, verify_bundle)
 
 
 def engine_pin(repository, source):
-    lists = []
-    for name in ("src/tools/maintain_framework.py", "src/distribution/installation_state.py"):
-        tree = ast.parse(git(repository, "show", source + ":" + name))
-        values = [node.value for node in tree.body if isinstance(node, ast.Assign)
-                  and any(isinstance(t, ast.Name) and t.id == "ENGINE_FILES" for t in node.targets)]
-        require(len(values) == 1 and isinstance(values[0], ast.Tuple), "literal ENGINE_FILES tuple required")
-        value = ast.literal_eval(values[0])
-        require(len(value) == 23 and all(type(n) is str and n.startswith("src/") for n in value) and tuple(sorted(set(value))) == value,
-                "expected sorted 23-file product-only Engine 2 closure")
-        lists.append(value)
-    require(lists[0] == lists[1], "ENGINE_FILES declarations disagree")
+    members = engine_files(lambda n: git(repository, "show", source + ":" + n))
     rows = []
-    for name in lists[0]:
+    for name in members:
         safe_name(name)
         blob = git(repository, "show", source + ":" + name)
         path = repository / name
