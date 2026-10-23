@@ -208,7 +208,7 @@ class SimulatedWindowsPaths(unittest.TestCase):
             def invoke():
                 if family == 'distribution':
                     backend = io.Backend.__new__(io.Backend)
-                    backend.windows, backend.native = True, kernel
+                    backend.windows, backend.macos, backend.native = True, False, kernel
                     return backend._volume(DIRECT)
                 module = MODULES[family]
                 return (module.local_backend if family == 'problem-frame-author' else module.local_write_backend)(DIRECT)
