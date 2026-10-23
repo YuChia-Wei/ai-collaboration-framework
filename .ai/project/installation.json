@@ -5,9 +5,9 @@
   ],
   "bindings": [],
   "catalog": {
-    "identity": "catalog:1:0.20.2:3c7434fd3ea65bcbf519fef3e3ca232a0bc59043:ef70ed3b9298e17dc03e7a6283950b0c1749ca0384dc2a79984cd2ea82ba6844",
-    "catalog_sha256": "fe03002af85c45bcd63e5c770912f2724cd996647606f0b52550c29760cf2392",
-    "files_sha256": "a60fe308a994c76e4628a499174f32addfbb9e637e4f94c40b28ded861a74d90"
+    "identity": "catalog:1:0.21.0:221695622dde248a2dc84ffb9fc675d7c45d0768:2e924c8314edfb763e8662dab29dbd24c2ee6c0f8318429fa967171e3b24053e",
+    "catalog_sha256": "ca2b9c23eb0ed6552acfed4406ab93f96b3991f5320c1e57f40de5a22fa842f3",
+    "files_sha256": "636a2d82a4dbab3cd292ab2d3a6599db84e4342c41fdb23beddd1fd5b9575366"
   },
   "knowledge": [],
   "selection_version": 2,
@@ -17,8 +17,8 @@
     "ai-context-auditor",
     "ai-context-governance",
     "code-reviewer",
-    "ddd-ca-hex-architect",
     "diagnostic-analyst",
+    "domain-model-designer",
     "lesson-author",
     "local-backlog",
     "local-change-implementer",
@@ -26,6 +26,7 @@
     "problem-frame-author",
     "requirement-author",
     "slice-implementer",
+    "software-architect",
     "software-development-orchestrator",
     "spec-author",
     "spec-compliance-validator",

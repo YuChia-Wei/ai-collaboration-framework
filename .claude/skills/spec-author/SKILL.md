@@ -5,7 +5,7 @@ description: "Draft or normalize production, entity or adapter system specificat
 
 # spec-author
 
-Claude runtime entry for `spec-author@0.2.0`. This generated projection does not
+Claude runtime entry for `spec-author@0.3.0`. This generated projection does not
 prove installation, operation execution, validation or runtime discovery.
 Regenerate it from the selected package and verified Claude adapter.
 
@@ -20,6 +20,7 @@ Selected installed skill members:
 - [references/adapter-template.md](../../../.ai/core/skills/spec-author/references/adapter-template.md)
 - [references/authoring.md](../../../.ai/core/skills/spec-author/references/authoring.md)
 - [references/entity-template.md](../../../.ai/core/skills/spec-author/references/entity-template.md)
+- [references/knowledge.md](../../../.ai/core/skills/spec-author/references/knowledge.md)
 - [references/production-template.md](../../../.ai/core/skills/spec-author/references/production-template.md)
 - [references/spec-guide.md](../../../.ai/core/skills/spec-author/references/spec-guide.md)
 - [references/spec-organization-guide.md](../../../.ai/core/skills/spec-author/references/spec-organization-guide.md)
