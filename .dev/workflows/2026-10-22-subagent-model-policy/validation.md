@@ -263,3 +263,46 @@ Python and an explicitly verified RAM-disk temporary directory. The final produc
 source and governing rules still match the independent review and preview source;
 this test-input repair does not require repackaging the preview or a new product
 review. A new hosted current-head result is required before merge.
+
+## Integration, preview feedback and attribution correction (2026-10-23)
+
+The final PR #488 head `7ea3e60f5f09eaaaabe00a117a2c55b6dca7b909`
+passed hosted Source checks run `39824592118`; provider readback confirms PR #488
+merged at `1f473ecdb5a7544233299dd69bc6376a43a6c912`. Its tree matches the
+passed PR head. The completed workflow locator now reflects that no implementation
+task remains; Issue/Project state is a separate provider operation.
+
+The owner reports Antigravity Opus 5.5 analysis of the preview content directly,
+without using the supplied prompt, and no feedback currently relevant to this
+sub-agents/skills work. The owner accepted closing #487. This is reported feedback;
+no raw review artifact or exact model invocation was independently inspected here.
+It does not replace the scoped independent source reviews, turn the failed headless
+attempt into a pass, or prove native activation, billing or the newer skills source.
+
+Commit attribution was checked against this conversation's session metadata
+(session `01a16144-a339-70c0-8c38-b35e55f127db`). The metadata reports
+`gpt-6-astra / ultra` from `2026-10-22T13:41:10.925Z` onward, including the
+latest preceding turn for every commit below. The earlier trailers recorded the
+wrong effort. Only model/effort/timestamps were extracted; no prompt or secret
+content is reproduced. Correct attribution is recorded here without changing
+commit objects, review subjects, package pins or published history.
+
+| Existing commit | Recorded parent attribution | Corrected session attribution |
+| --- | --- | --- |
+| `5d80f8cf939036d9a005a2af28496366937f5c6f` | `gpt-6-astra / low` | `gpt-6-astra / ultra` |
+| `ea7be1c81e0dd0b43245635109473d48e41c8df9` | `gpt-6-astra / low` | `gpt-6-astra / ultra` |
+| `fe0928e74b344c1a0208261ab764e6a0630cbbbc` | `gpt-6-astra / low` | `gpt-6-astra / ultra` |
+| `015c44e692f0500a4b58c34ed7ec55583e4a5602` | `gpt-6-astra / low` | `gpt-6-astra / ultra` |
+| `580dadc3910bef78ae916039023a8ed476228c8b` | `gpt-6-astra / low` | `gpt-6-astra / ultra` |
+| `1f860379118ee5e113e8487fe9f2c0b29bb35140` | `gpt-6-astra / low` | `gpt-6-astra / ultra` |
+| `8424f92e42d523a9514bb4e9afccd37524934d26` | `gpt-6-astra / xhigh` | `gpt-6-astra / ultra` |
+| `15dd211e90f433be4ceb586f1f0643b078c7f180` | `gpt-6-astra / xhigh` | `gpt-6-astra / ultra` |
+| `546c1041959ae7209d7afe758012bd34afc72838` | `gpt-6-astra / xhigh` | `gpt-6-astra / ultra` |
+| `fb43996bc4492b88893ed77ef567aa3648787c23` | `gpt-6-astra / xhigh` | `gpt-6-astra / ultra` |
+| `7ea3e60f5f09eaaaabe00a117a2c55b6dca7b909` | `gpt-6-astra / xhigh` | `gpt-6-astra / ultra` |
+| `1f473ecdb5a7544233299dd69bc6376a43a6c912` | `gpt-6-astra / xhigh` | `gpt-6-astra / ultra` |
+
+Material sub-agent attribution remains separate: explicitly selected Sol/medium
+contributors retain their marked trailers. The parent task's effort and identity
+source are corrected; this does not change the code or executed validation.
+The commit-message validator established message format, not runtime identity.

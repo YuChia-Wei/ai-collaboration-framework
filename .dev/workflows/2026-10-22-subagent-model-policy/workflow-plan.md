@@ -1,5 +1,30 @@
 # Subagent model policy execution
 
+## Current closeout (2026-10-23)
+
+PR #488 is merged at `1f473ecdb5a7544233299dd69bc6376a43a6c912`.
+Its final head `7ea3e60f5f09eaaaabe00a117a2c55b6dca7b909` passed
+Source checks run `39824592118`. Live provider readback confirmed both facts.
+The earlier failed hosted run remains recorded; no separate main CI run is claimed.
+
+The owner reports having used Antigravity with Opus 5.5 to inspect the preview
+content directly, without the supplied prompt. The feedback received so far has
+no item related to the current sub-agents/skills work. This is owner-reported
+analysis, not an independently observed tool invocation or proof that the prepared
+prompt was executed. The owner accepted closing #487; no workflow-owned task
+remains. Issue/Project closure is performed and read back separately.
+
+The same instruction authorizes correcting model attribution and continuing
+#482/#484 through push, PR, current-head CI/review, merge and completion.
+Existing pushed/merged history is preserved. This correction is carried on the
+existing skills branch; the completed #487 locator retains its delivered branch.
+General skills remain the separate #482/#484 delivery, not a #487 closing dependency.
+
+The sections below preserve the earlier execution sequence and its then-current
+authority. The current closeout and validation addendum supersede their pending
+transport/manual-analysis statements.
+
+
 Issue: [#487](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/487).
 Base: `1d9a42c80a0f0db2d69dc36d335a090bfb071281`.
 
@@ -82,7 +107,7 @@ implementing the general skill Feature/Story #482/#484.
 - Interrupted multi-file writes report partial progress, preserve the accepted
   plan and support explicit resume; stale external edits are never overwritten.
 
-## Current status
+## Earlier local delivery
 
 The earlier local delivery is complete. The model-policy slice is implemented at
 `5d80f8cf939036d9a005a2af28496366937f5c6f`. The resource manager is implemented

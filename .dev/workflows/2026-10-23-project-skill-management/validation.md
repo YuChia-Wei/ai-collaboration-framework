@@ -274,3 +274,38 @@ Publishing the prepared concise progress to both Issues now awaits explicit
 owner approval of that exact external update; no state, labels or Project fields
 are included. This provider-only limitation does not reopen implementation work
 or erase the previously authorized and completed Issue-plan reconciliation.
+
+## Attribution correction and authorized integration (2026-10-23)
+
+The earlier progress-write rejection is historical. Subsequent explicit Issue
+content reconciliation succeeded: #482 comment `6354452565` and #484 comment
+`6354454041` were read back byte-for-byte, while their functional bodies and OPEN
+state were preserved. #487 was similarly clarified without adding skills as a
+closing dependency. The owner now authorizes the skills push, PR, successful
+current-head CI/review, merge and Feature/Story completion, and closing #487.
+
+The parent session was `gpt-6-astra / ultra`, not the configured default
+`gpt-6.1-sol / ultra`. This was confirmed from session
+`01a16144-a339-70c0-8c38-b35e55f127db` turn_context metadata: the preceding turns
+at `2026-10-22T17:51:29.536Z`, `2026-10-22T18:20:24.943Z` and
+`2026-10-23T00:03:30.591Z` all report Astra/ultra. The latest current turn also
+reports Astra/ultra. The earlier attribution incorrectly treated the configured
+fallback as necessary even though active-session metadata was available.
+
+| Existing commit | Recorded parent attribution | Corrected session attribution |
+| --- | --- | --- |
+| `ff7c86b8e831fb98b4def274b9b3d84c93cea14b` | `gpt-6.1-sol / ultra` | `gpt-6-astra / ultra` |
+| `87b85018b32e43db1e705c33e7e54972cc1426eb` | `gpt-6.1-sol / ultra` | `gpt-6-astra / ultra` |
+| `706a5505cc33c5d7a123f7a96817b53dfdf8cb0b` | `gpt-6.1-sol / ultra` | `gpt-6-astra / ultra` |
+
+The explicitly selected material implementation worker remains `gpt-6.1-sol / medium`;
+its task fields and marked sub-agent trailers are correct. No existing commit is
+rewritten. The source policy already requires active-session attribution first;
+no policy change is needed. Correcting these records does not modify the source,
+tests or product docs reviewed and packaged at `87b85018b32e43db1e705c33e7e54972cc1426eb`.
+
+Selected checks for this correction: JSON/YAML parsing, lifecycle relationships,
+commit/reference identity, actual diff and exact commit-message validation.
+Product tests are not repeated for record-only edits. The upcoming PR still
+requires its actual current-head hosted Source change gate and valid review;
+no local result is relabeled as that hosted outcome.
