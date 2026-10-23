@@ -91,23 +91,35 @@ changes for review. Record exact commands, failures and evidence limits in
 validation.md. No preview rewrite is planned while the owner uses the #487
 snapshot for manual analysis. Subsequent transport requires its actual authority.
 
-## Current checkpoint
+## Completed local delivery
 
-The bounded implementation is complete and source checks are recorded in
-validation.md. The implementation worker returned sole-writer ownership to the
-parent. A new pinned 29-file engine owns the skill manager; old 27-file wrappers
-retain their canonical project paths, alongside older legacy conventions.
-Detachment retains the existing skill record, provenance and baseline; removal
-of projections/routes does not erase source history. Documentation reflects
-that explicit retention boundary.
+Implementation and selected local validation are complete at fixed source commit
+`87b85018b32e43db1e705c33e7e54972cc1426eb`. Initial independent review identified
+two P2 defects; the actual packaged consumer found an equal-lock migration bug.
+All three were repaired. The affected 39-test run passed and independent repair
+review reported both findings resolved with no new actionable defect in scope.
 
-An actual old 27-file packaged CLI installed adr-author and test-designer with
-both adapters and original naming in a new isolated consumer. It preserves a
-legacy-only project root and opaque unknown file. This establishes the upgrade
-starting point, not new-feature acceptance. The existing manual-review preview
-is unchanged.
+Actual pinned public CLIs exercised both native projections, explicit adoption,
+original/prefixed framework routes, protected upgrade/deselection, legacy
+migration, replay rejection, fresh repair, rename/coexist and precise detach.
+Authoring, provenance, baseline, protected project files and unknown siblings
+were preserved. See validation.md for source identities, commands, retained
+failures, criterion-by-criterion coverage and evidence limits.
 
-Next: create the clean source checkpoint, build current catalog/engine once,
-run the selected packaged consumer and Codex native discovery/resource reads,
-and independently review the fixed implementation. Push/PR/merge, public release,
-source-project self-installation and administrative closure remain unperformed.
+Codex native traversal failed on F: with os error 1. A second small consumer was
+created through the same public manager in a verified ignored workspace folder;
+Codex discovered its entry and read all seven resources with matching hashes.
+No model turn was started. Claude native discovery and AI behavior remain
+unverified, separately from mechanically verified Claude projections/routes.
+
+The owner-requested #487 preview and manual Antigravity prompt remain unchanged.
+Feature #482/#484 remain OPEN. Their earlier plan reconciliation is present;
+fresh readback found that the later implementation-progress addition was not
+published. Automatic approval review rejected both the complete progress update
+and a concise addition through the full-body Issue API. The precise external
+progress update requires renewed explicit owner approval; local work is complete.
+No Feature #482 push/PR/merge, hosted CI, public
+release, real-project self-installation or Project mutation has been performed.
+The next owner-selected action may be transport and its required PR gate, or
+additional runtime acceptance; neither changes this completed local work record
+into an already integrated or published result.
