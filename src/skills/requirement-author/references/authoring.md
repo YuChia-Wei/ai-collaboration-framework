@@ -1,5 +1,34 @@
 # Requirement authoring method
 
+## Mandatory public requirement boundary
+
+For public Epic, Feature, User Story and Issue/ticket content, including comments,
+MUST describe the product need independently: problem, beneficiary or outcome,
+scope, relevant scenarios, observable acceptance and real dependencies. Readers
+must not need a private conversation to reconstruct the requirement.
+
+MUST NOT publish execution authorization, approval/revision history, agent handoff,
+resume instructions or execution checkpoints in that requirement channel. Record
+and retrieve authorization and handoff through the target's workflow mechanism.
+An Issue system is not a substitute workflow store. If that mechanism is unavailable,
+report the missing record or blocked handoff; do not silently fall back to an Issue,
+comment, or another store, and do not claim a transfer occurred.
+
+Feature inventories, requirement/design discussion, product decisions, linked
+Issues, and concise completed/pending/deferred feature summaries MAY remain.
+Explain dependencies such as "requires #123's API" and link relevant result evidence
+without copying execution logs. Product approval/permission behavior is valid
+requirement content; permission for an agent to push or merge is execution authority.
+Classify by purpose and meaning, not forbidden words or headings.
+
+Before creating or updating content, check this boundary and correct violations
+within the authorized scope. In a read-only review, report the selected violation
+and a bounded correction; do not edit it. Keep valid requirements, IDs, decisions,
+uncertainty and acceptance meaning. Do not mandate one wording, heading order,
+provider, Workflow Board deployment or new storage product. Unselected historical
+records remain unchanged. Drafting or reviewing requirements never grants execution
+permission or proves implementation, adoption or acceptance.
+
 These are instructions for the selected operation, not an executable command.
 The package metadata's implemented status means that these instructions exist;
 it does not mean they have been invoked, verified or accepted for a target.
@@ -46,8 +75,9 @@ their meaning. Distinguish:
 - **Unresolved choice or conflict:** retain both sources, the affected claim
   and the needed decision. Do not silently choose the most convenient source.
 
-Record approval only when supplied evidence supports it, and only within that
-evidence's scope. Preserve separate approval and observation statuses where
+Record product requirement/decision approval only when supplied evidence supports
+it, within that scope. Execution authorization belongs exclusively to the workflow
+mechanism, not the public requirement. Preserve separate approval and observation statuses where
 needed. Do not invent revisions, owners, source files, IDs from another system,
 measurements or acceptance results. New local draft labels may aid traceability
 if clearly identified as draft labels. Do not promote an architecture decision

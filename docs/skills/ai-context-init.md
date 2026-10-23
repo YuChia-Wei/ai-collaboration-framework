@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-本頁對應 `ai-context-init@0.2.3`；實際操作仍以已安裝 metadata 為準。
+本頁對應 `ai-context-init@0.2.4`；實際操作仍以已安裝 metadata 為準。
 RC4 的舊資源不會因來源手冊更新就取得這次入門擴充。
 
 ## 目的與完成點
@@ -106,3 +106,12 @@ AGENTS.md
 - [技術盤點範本](../../src/skills/ai-context-init/templates/project-config.template.yaml)
 
 來源連結供核對；實際執行應讀取所安裝套件中的對應資源。
+
+## 公開需求內容的強制界線
+
+公開 Epic／Feature／User Story／Issue 必須能獨立說明需求與驗收；授權與
+交接必須使用 workflow 機制，不得存入線上 Issue 系統或留言。功能盤點、
+設計討論、相依及已完成／待完成／延後的功能摘要可以保留；產品本身的
+權限或審核行為仍可作為需求。依內容用途判斷，不使用關鍵字黑名單。
+workflow 不可用時如實回報，不能改存 Issue 或宣稱已轉移紀錄。這是來源
+指令契約；不代表現有安裝已升級、模型行為已驗收或已發布套件。
