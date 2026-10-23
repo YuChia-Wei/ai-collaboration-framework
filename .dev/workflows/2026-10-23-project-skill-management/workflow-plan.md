@@ -1,5 +1,38 @@
 # Project skill management
 
+## Current transport and attribution correction (2026-10-23)
+
+Local implementation and selected validation are complete. The owner now
+explicitly authorizes push, PR creation, merge after current-head CI and review,
+and completion of Feature #482 and its directly delivered User Story #484.
+No release, self-installation or branch deletion is included. Use a merge commit
+to preserve the reviewed implementation/repair checkpoints and the coordinated
+multi-runtime migration/recovery delivery as one integration unit.
+
+The owner also accepted closing already-integrated #487 after reporting direct
+Antigravity Opus 5.5 preview analysis without the supplied prompt, with no feedback
+currently related to sub-agents/skills. The #487 workflow closeout and parent
+model attribution are corrected in its existing records. Provider states are
+read back independently and do not select another product test.
+
+The owner-selected Issue content boundary was reconciled online: #482/#484 retain
+functional descriptions and have supplemental inventory/design/delivery comments;
+#487 explains its integrated scope and the separate skills follow-up. Historical
+automatic-review rejections below are resolved, not current publication blockers.
+Current functional criteria are F-AC01..F-AC10 and Story AC01..AC07. The former
+F-AC11 independent-review requirement is retained as source-workflow evidence,
+not an extra functional requirement in the current Issue.
+
+All three existing skills commits already contain `Refs: #482, #484`; future
+bounded Story changes make that direct relationship visible in the subject too.
+Their incorrect parent model trailers are corrected in validation.md, with the
+original commits preserved. The primary implementation worker remains Sol/medium;
+the parent integration session is Astra/ultra.
+
+The sections below retain the earlier stage's scope, decisions and results.
+This current section supersedes their old pending-authorization/provider statements.
+
+
 ## Authority and fixed start
 
 The owner explicitly requested completing the sub-agents merge first, then
