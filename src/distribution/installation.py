@@ -67,7 +67,7 @@ def _details(changes: Changes, managed: str) -> dict:
 
 def _result(operation: str, outcome: str, changes: Changes, managed: str, diagnostics: list | None = None) -> dict:
     return {"api_version": 2, "operation": operation, "outcome": outcome, "changed": changes.changed,
-            "details": _details(changes, managed), "diagnostics": list(diagnostics or []) + platform_diagnostics()}
+            "details": _details(changes, managed), "diagnostics": list(diagnostics or []) + changes.diagnostics + platform_diagnostics()}
 
 
 def _failed(operation: str, exc: Exception, changes: Changes) -> dict:
@@ -405,6 +405,8 @@ def _finish(io: IO, guard: WriterLock, project: Path, operation: Operation, targ
             state._check(_hash(io.raw(project, row["path"])) == row["sha256"], "project-input-drift", "Paired project input differs after transition.", row["path"], "conflict")
     io.changes.lock_sha256 = _hash(desired_lock)
     _verify_target(io, project, operation, target)
+    guard.verify()
+    io.prune_empty_managed_directories(project, set(target.members) if target else set())
     # The marker is the final namespace removal. Failed read-back remains an
     # incomplete result even if a subsequent inspection finds matching bytes.
     io.remove(project, state.MARKERS[1], operation.raw)
