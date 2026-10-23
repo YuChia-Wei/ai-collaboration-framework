@@ -119,12 +119,13 @@ profile 與 task 的衝突。caller 須提供實際有效設定，工具不讀�
 
 `.ai/project/` 儲存專案維護的 AI 設定、選擇、資源與登錄。它和框架管理的
 `.ai/core/` 分開；目錄名稱表達管理歸屬，registry 保留內容來源與整合證據。
-這次只處理共用目錄與 sub-agents 的遷移，不定義 skills 的客製合併政策。
+共用目錄遷移同時處理已登記的 sub-agents 與 skills；技能的多檔投影與
+客製協調規則見[專案 skill 管理](skill-management.md)。
 
 新專案使用 `.ai/project/`。若只有 `.ai/custom/`，新工具繼續從該目錄讀寫，
 回報實際路徑；不會將舊 registry 誤認為空白，也不會暗中建立第二份政策。
 兩個目錄同時存在時，即使內容相同也停止，須先由專案釐清唯一來源。
-舊版 v3 role policy 路徑及既有 23、25、26 檔 engine closure 保留讀取相容性；
+舊版 v3 role policy 路徑及既有 23、25、26、27 檔 engine closure 保留讀取相容性；
 執行仍須提供目前完整且驗證過的 engine pin。
 
 明確更名時，先停止會修改專案設定、角色與安裝的其他工具：
@@ -163,7 +164,8 @@ native entry 不改寫；若它自行引用舊路徑，由該資源的 owner 另
 
 ## 資源登記與標籤
 
-這次將 #482/#484 的做法實作於 sub-agents；一般 skill 客製設計仍由該 Issues 承接。
+Sub-agents 與 [skills](skill-management.md) 使用獨立 registry，沿用相同的
+來源、比較與明確路由概念；前者投影單一 native entry，後者明列多檔 mapping。
 正式 reader/writer 是 pinned engine 的 `distribution.subagent_registry`，不是單純放置
 一份沒人使用的標籤文件。未登記 custom 仍受原安裝器保護，不需先補登記才能保留。
 

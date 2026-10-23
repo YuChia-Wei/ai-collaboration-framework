@@ -132,7 +132,7 @@ def plan(project, engine):
     from . import installation_state as s, subagent_policy as p, subagent_registry as r
     p.require(resolve(project) == LEGACY, 'legacy project layout required')
     p.require(not any((Path(project) / LEGACY / name).exists() for name in
-                      ('sub-agent-policy.json.writer', 'sub-agent-registry.json.writer')),
+                      ('sub-agent-policy.json.writer', 'sub-agent-registry.json.writer', 'skill-registry.json.writer')),
               'legacy subagent writer active; reconcile its owner')
     p.require(all(not (Path(project) / marker).exists() for marker in s.MARKERS), 'installation operation active')
     before = inventory(project, LEGACY)
@@ -173,6 +173,8 @@ def plan(project, engine):
         raw = p.encode(updated)
         writes.append({'path': CANONICAL + '/sub-agent-registry.json', 'before_sha256': p.digest(old_registry),
                        'after_sha256': p.digest(raw), 'content': raw.decode('utf-8')})
+    from .skill_registry import migration_writes
+    writes.extend(migration_writes(project))
     lock = _lock_transition(project, writes, engine)
     post = deepcopy(before)
     by_path = {row['path']: row for row in writes}
@@ -229,7 +231,8 @@ def apply(project, document, plan_sha256, engine):
         r.fields(row, 'path before_sha256 after_sha256 content')
         p.require(p.digest(row['content'].encode('utf-8')) == row['after_sha256'], 'migration bytes changed')
         p.require(row['path'].startswith(CANONICAL + '/') or
-                  any(row['path'].startswith(v[0]) for v in r.ADAPTERS.values()) or row['path'] == s.LOCK_PATH,
+                  any(row['path'].startswith(prefix) for prefix in
+                      ('.codex/agents/', '.claude/agents/', '.agents/skills/', '.claude/skills/')) or row['path'] == s.LOCK_PATH,
                   'migration write boundary')
     if lock is not None:
         catalog.lock_bytes(lock['content'].encode('utf-8'))
@@ -248,7 +251,9 @@ def apply(project, document, plan_sha256, engine):
                       'framework lock changed')
             p.require(completed is None or lock is None or current_lock == lock['after_sha256'],
                       'completed migration lock drift')
-            complete = completed is not None or (lock is not None and current_lock == lock['after_sha256'])
+            complete = completed is not None or (lock is not None
+                       and lock['before_sha256'] != lock['after_sha256']
+                       and current_lock == lock['after_sha256'])
             if base == LEGACY:
                 p.require(inventory(project, LEGACY) == document['before'], 'layout contents changed')
             else:
