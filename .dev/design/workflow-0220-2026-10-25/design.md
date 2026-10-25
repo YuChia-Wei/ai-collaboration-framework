@@ -443,3 +443,62 @@ line-ending conversion. The largest unit by bytes has 41 files and 6473677 bytes
 the largest by file count has 107 files and 612065 bytes. Legacy fields, binaries
 and records without locators must remain data, not be coerced into current create
 semantics. Whole Git commit history is outside this snapshot copy.
+
+## 14. SQLite snapshot and replica delivery implementation boundary
+
+After independent command review, implement an additive version-2 SQLite schema
+in the same explicit database. Preserve native workflows/revisions/blobs/operations
+and their hashes; add immutable source snapshots/raw chunks, persisted replica
+bindings, immutable delivery intents and delivery observations. The new profile
+may provide its own CLI and kind-aware discovery without changing existing /1
+request meanings. New initialization explicitly selects schema 2. Existing v1
+databases are never upgraded by a read or an ordinary write; snapshot/replica
+operations refuse v1 with an actionable result unless a separately implemented
+explicit upgrade is selected. This increment may support fresh schema 2 only.
+
+Historical snapshots have a distinct kind and preserve original bytes, paths,
+modes, status, unknown fields and missing locators. Do not weaken native create
+validation or invent tasks/authority/entrypoints to fit legacy data. A root-index
+archive unit preserves the three files outside workflow folders. Derived views
+identify source files and leave missing/unparseable values unknown. A committed
+Git snapshot import must read Git objects, not checkout bytes. Local readback must
+reconstruct every file and verify its size/hash before reporting import acceptance.
+
+Snapshot staging accepts bounded manifest and chunk input; activation validates
+all files, publishes the local version and enqueues the fixed-target intent in
+one existing SQLite transaction. Native create/create-task/write-document/checkpoint
+use the same transaction completion hook when a persisted binding is active.
+Omitting per-call binding data cannot bypass that saved requirement. Replay occurs
+before active/current-revision checks and never adds a second intent. Binding
+activation and baseline selection must avoid a scan/install missed-write window.
+
+Use the reviewed Board `workflow-board/source-replica/1` input/response contract
+from 5bf075abb64b797f039e7484aa96485f814835e2, with self-contained packaged support.
+Freeze each source snapshot, target/project/source mapping and binding revision.
+Materialize and retain each exact begin/chunk/activate command before dispatch;
+the next source version waits for the preceding accepted remote activation.
+Unknown/conflict retains the original operation, expected revision and payload.
+No automatic rebase, target switch, lost-payload replay or manufactured acceptance.
+Receipt recording must be monotonic; a delayed unknown observation cannot erase
+accepted evidence or recursively create a source revision/delivery.
+
+The host dispatches one explicitly requested bounded step at a time; no background
+scheduler or automatic pruning is selected. Native local acceptance means state
+plus pending intent committed, with synchronization separately reported incomplete
+until all selected replica receipts are verified. Reads continue using SQLite.
+Transport credentials remain host-owned and never enter the database or export.
+
+Version-2 export/restore includes all native history, staging/published snapshots,
+raw chunks, bindings, intents, exact prepared requests and receipts, with complete
+referential/hash/capacity validation. Keep v1 archive validation and semantics
+unchanged. Restore remains inactive; neither restore nor inactive/retired stores
+may dispatch. The existing deactivate/activate authority-transfer rules still
+apply. No history, unfinished delivery or unknown fields may be silently dropped
+to fit retention bounds; capacity failure rolls back the local mutation.
+
+Required checks include transaction rollback and committed-response loss; replay
+without duplicate enqueue; binary/empty/oversized/legacy reconstruction; bad or
+missing chunk refusal; persisted binding enforcement; ordering and stale remote
+receipts; inactive dispatch refusal; export/restore of pending prepared commands;
+source-only isolated package execution; and immutable independent recovery review.
+Runtime/host acceptance and formal source-policy cutover remain later evidence.
