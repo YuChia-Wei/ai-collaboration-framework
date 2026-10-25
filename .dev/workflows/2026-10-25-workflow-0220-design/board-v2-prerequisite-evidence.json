@@ -1,0 +1,298 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-10-25T07:12:46.804Z",
+  "selected_plugin": "plugin://plugin_asdk_app_sites_4463576e26d081918dee0f01d0f3f8d2",
+  "discovery": {
+    "total_tools": 58,
+    "v2_tools": 32
+  },
+  "boundary": "Direct selected-plugin prerequisite evidence, not yet execution through the new Framework adapter.",
+  "initial_failures": [
+    {
+      "operation": "workflow.context",
+      "attempts": 2,
+      "reason": "Caller requested limit=100; connector rejected maximum 20 before execution. Corrected to advertised context_page_items=20."
+    }
+  ],
+  "contexts": [
+    {
+      "workflow_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "record_kind": "collaboration",
+        "workflow_id": "WF22",
+        "project_id": "board22-20261025-A"
+      },
+      "revision": 3,
+      "tasks": [
+        {
+          "id": "T1",
+          "title": "A task 1"
+        },
+        {
+          "id": "T2",
+          "title": "A task 2"
+        }
+      ],
+      "missing": [],
+      "has_more": false,
+      "plan": {
+        "document_id": "plan",
+        "revision": 1,
+        "content_hash": "sha256:c0776f032be8ee7b1d30375d78c1f25fd1f97aa063177b671435d03f65b727ec"
+      }
+    },
+    {
+      "workflow_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "record_kind": "collaboration",
+        "workflow_id": "WF22",
+        "project_id": "board22-20261025-B"
+      },
+      "revision": 2,
+      "tasks": [
+        {
+          "id": "T1",
+          "title": "B task 1"
+        },
+        {
+          "id": "T2",
+          "title": "B task 2"
+        }
+      ],
+      "missing": [],
+      "has_more": false,
+      "plan": {
+        "document_id": "plan",
+        "revision": 1,
+        "content_hash": "sha256:b52d38a406a31972f1ac347b455681cddd33ad6e1971125fd59ea73d373f6cc0"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "workflow_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "project_id": "board22-20261025-A",
+        "record_kind": "collaboration",
+        "workflow_id": "WF22"
+      },
+      "ref": {
+        "document_id": "plan",
+        "revision": 1,
+        "content_hash": "sha256:c0776f032be8ee7b1d30375d78c1f25fd1f97aa063177b671435d03f65b727ec"
+      },
+      "content": "# Board22 hosted acceptance A\nProject: board22-20261025-A\nSynthetic data only; no Framework workflow imported.\n",
+      "created_at": "2026-10-25T06:58:17.056Z",
+      "actor": {
+        "subject_id": "owner-agent",
+        "kind": "agent",
+        "binding_id": "owner-agent-grant-1"
+      }
+    },
+    {
+      "workflow_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "project_id": "board22-20261025-B",
+        "record_kind": "collaboration",
+        "workflow_id": "WF22"
+      },
+      "ref": {
+        "document_id": "plan",
+        "revision": 1,
+        "content_hash": "sha256:b52d38a406a31972f1ac347b455681cddd33ad6e1971125fd59ea73d373f6cc0"
+      },
+      "content": "# Board22 hosted acceptance B\nProject: board22-20261025-B\nSynthetic data only; no Framework workflow imported.\n",
+      "created_at": "2026-10-25T06:58:46.109Z",
+      "actor": {
+        "subject_id": "owner-agent",
+        "kind": "agent",
+        "binding_id": "owner-agent-grant-1"
+      }
+    }
+  ],
+  "receipts": [
+    {
+      "project_id": "board22-20261025-A",
+      "workflow_create": {
+        "outcome": "accepted",
+        "receipt": {
+          "accepted": true,
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "workflow_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A",
+            "record_kind": "collaboration",
+            "workflow_id": "WF22"
+          },
+          "operation_id": "workflow-create",
+          "request_digest": "sha256:807386a080e6bcdf0e7607bc8ec075c1be2828cd0215d90d2893f1252abeb75c",
+          "actor": {
+            "subject_id": "owner-agent",
+            "kind": "agent",
+            "binding_id": "owner-agent-grant-1"
+          },
+          "before_revision": 0,
+          "revision": 1,
+          "accepted_at": "2026-10-25T06:58:11.761Z",
+          "effects": [
+            {
+              "kind": "workflow",
+              "id": "WF22",
+              "revision": 1
+            }
+          ]
+        }
+      },
+      "document_only_A": {
+        "outcome": "accepted",
+        "receipt": {
+          "accepted": true,
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "workflow_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A",
+            "record_kind": "collaboration",
+            "workflow_id": "WF22"
+          },
+          "operation_id": "document-only-A",
+          "request_digest": "sha256:3b15ad5309d7b5f689e7da68cd3f70c708bd5ef9c19d58c080297f229c4ba0bb",
+          "actor": {
+            "subject_id": "owner-agent",
+            "kind": "agent",
+            "binding_id": "owner-agent-grant-1"
+          },
+          "before_revision": 2,
+          "revision": 3,
+          "accepted_at": "2026-10-25T06:59:11.162Z",
+          "effects": [
+            {
+              "kind": "document",
+              "id": "only-A",
+              "revision": 1
+            },
+            {
+              "kind": "workflow",
+              "id": "WF22",
+              "revision": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "project_id": "board22-20261025-B",
+      "workflow_create": {
+        "outcome": "accepted",
+        "receipt": {
+          "accepted": true,
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "workflow_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-B",
+            "record_kind": "collaboration",
+            "workflow_id": "WF22"
+          },
+          "operation_id": "workflow-create",
+          "request_digest": "sha256:5c0313c68954b76c801bd4416918a755557b517fcbec25e865567d0ed6f2f384",
+          "actor": {
+            "subject_id": "owner-agent",
+            "kind": "agent",
+            "binding_id": "owner-agent-grant-1"
+          },
+          "before_revision": 0,
+          "revision": 1,
+          "accepted_at": "2026-10-25T06:58:40.577Z",
+          "effects": [
+            {
+              "kind": "workflow",
+              "id": "WF22",
+              "revision": 1
+            }
+          ]
+        }
+      },
+      "document_only_A": {
+        "outcome": "unknown",
+        "workflow_ref": {
+          "store_id": "workflow-records-private-collaboration",
+          "namespace": "personal",
+          "record_kind": "collaboration",
+          "workflow_id": "WF22",
+          "project_id": "board22-20261025-B"
+        },
+        "operation_id": "document-only-A"
+      }
+    }
+  ],
+  "formal_project": {
+    "request": {
+      "service_contract_version": "workflow-board/collaboration/2",
+      "schema_version": "2.0",
+      "project_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework"
+      },
+      "operation_id": "framework-project-create-20261025",
+      "expected_revision": 0,
+      "command": "project.create",
+      "payload": {
+        "name": "AI Collaboration Framework"
+      }
+    },
+    "receipt": {
+      "accepted": true,
+      "project_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework"
+      },
+      "operation_id": "framework-project-create-20261025",
+      "request_digest": "sha256:a7ba61ba9b23b38b28f513f666abc8e719471e11c23700ea1cf8efc15d616e60",
+      "expected_revision": 0,
+      "revision": 1,
+      "error": null
+    },
+    "readback": {
+      "project_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework"
+      },
+      "name": "AI Collaboration Framework",
+      "revision": 1,
+      "workflow_contract": "workflow-board/collaboration/2"
+    },
+    "operation_readback": {
+      "outcome": "accepted",
+      "receipt": {
+        "accepted": true,
+        "project_ref": {
+          "store_id": "workflow-records-private-collaboration",
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework"
+        },
+        "operation_id": "framework-project-create-20261025",
+        "request_digest": "sha256:a7ba61ba9b23b38b28f513f666abc8e719471e11c23700ea1cf8efc15d616e60",
+        "expected_revision": 0,
+        "revision": 1,
+        "error": null
+      }
+    }
+  },
+  "limitations": [
+    "No selected-plugin write operation except the explicitly selected formal project creation.",
+    "No source workflow migration, full export/restore, data deletion, publication or installation.",
+    "Board deployment/CI details arrived through a user-authorized handoff; these live reads establish only the current bounded tool behavior."
+  ]
+}

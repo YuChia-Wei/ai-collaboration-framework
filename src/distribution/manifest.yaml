@@ -1019,6 +1019,12 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/service.py
   - source: tools/workflow_records/sqlite_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/sqlite_store.py
+  - source: references/board-query.md
+    destination: .ai/core/skills/workflow-records/references/board-query.md
+  - source: tools/board-query.py
+    destination: .ai/core/skills/workflow-records/tools/board-query.py
+  - source: tools/workflow_records/board_query.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_query.py
 - kind: sub-agent
   id: context-translator
   version: 0.2.1
