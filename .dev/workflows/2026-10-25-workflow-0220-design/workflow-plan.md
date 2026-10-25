@@ -53,7 +53,7 @@ record before #514 cutover, not evidence that no-Git workflow adoption is comple
 | Task | Owner | Status | Result / next boundary |
 | --- | --- | --- | --- |
 | DESIGN | software-architect, coordinated by software-development-orchestrator | completed | [Design](../../design/workflow-0220-2026-10-25/design.md) includes latest owner direction and remaining decisions; Issue closure separate |
-| CREATE-TASK | slice-implementer | in_progress | Implementation and focused checks complete; independent review of recovery-history validation pending |
+| CREATE-TASK | slice-implementer | completed | Implementation, focused checks and independent recovery review complete; R1 corrected and read back |
 
 Live native hierarchy was read through GitHub GraphQL, not inferred from body links:
 #416 has #481 (child #483), #513 (child #445), and #514 (no child at readback).
@@ -190,8 +190,19 @@ from `tools.test_workflow_sqlite.SQLiteRecordTests` in 19.232 seconds:
 - `test_corrupt_backup_preflight_and_existing_target_refuse_before_restore`
 
 The runner used `tests` on sys.path and the same process-local F: scratch. Both the
-initial review failure and red reproduction remain evidence. Affected independent
-readback is pending the corrective fixed commit; no clean-review conclusion yet.
+initial review failure and red reproduction remain evidence. The same independent
+reviewer read corrective clean commit `5d8efd8ef663a09e8b3f1551798419432e819240`
+against `ee5a2021b8038ab16dd33c0d91e584a789b06a98`, confirmed R1 addressed and
+reported no supported new regression in the affected delta. It performed no tests.
+Unchanged source, criteria and governing rules retain the prior scoped review;
+this closeout changes only execution records and navigation, with source/test equivalence checked.
+
+Both workflow-owned tasks are terminal. This completes the bounded design and
+SQLite create-task increment, not Epic #416, full #481/#483 acceptance, integration,
+release or adoption. All related Issues remain open. Later implementation still
+includes task editing/transitions, the remaining local operation contract, optional
+local work-item parity/migration, Board adapter #445, fanout #520 and source adoption
+#514. Their completion is not inferred from this local checkpoint.
 
 ## Resume without private conversation
 
@@ -199,13 +210,17 @@ Board #22 is assigned to the explicitly requested chat
 `01a171b0-1260-7990-a8fe-23cd6614efb0` (local host), titled
 "實作 Board 多專案 workflow 隔離與選擇". It owns Board changes only. Baseline main
 `ea161dcbbe045eb9b22468348da94fcae4bba567` was clean; private Site version 14 and
-live collaboration/1 capabilities were read. The chat is actively implementing;
-that dispatch is not evidence of feature completion. Read status through wait_threads.
+live collaboration/1 capabilities were read. The chat remains active and reports
+A/B same-ID isolation, old-row migration comparison and CLI/MCP continuation tests
+passing; packaging and browser checks are still in progress. These are that chat's
+development observations, not live deployment or feature-completion acceptance.
+Read its current status through wait_threads.
 Current multi-project gap and Board #6 recovery limits prohibit premature full migration.
 
 Read this record, the design, live Issues and current working tree first. Keep
-the parent's draft separate from accepted product policy. The next action is the
-affected fixed-commit review of the R1 correction, preserving the owner's
+the parent's draft separate from accepted product policy. The next source increment
+is the remaining #481 task editing/transition contract, coordinated with Board #22
+before implementing the #445 project-aware adapter. Preserve the owner's
 multi-carrier and partial-failure decision. Do not ask the owner again whether
 partial synchronization should be visible and durably retried; that is selected.
 
