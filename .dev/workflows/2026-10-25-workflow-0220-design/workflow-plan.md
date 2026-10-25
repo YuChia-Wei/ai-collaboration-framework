@@ -36,8 +36,9 @@ must precede any destructive rebuild; clearing is not needed to add project scop
 - Local main, origin/main and GitHub live main matched that source at kickoff.
 - Branch: `codex/2026-10-25-workflow-0220-design`, created before material writes.
 - Initial working tree: clean; no attached worktree was available or needed.
-- The bounded delivery now joins #483 design with its first #481 SQLite operation.
-  Board development, online adapter, fanout and adoption remain separate increments.
+- The bounded delivery joins #483 design, its first #481 SQLite operation, and
+  the first #445 Board V2 query/receipt adapter. Board writes, fanout and adoption
+  remain separate increments.
   This record does not claim to execute all Features or complete Epic #416.
 - Proposed eventual integration: linear, because this bounded design delivery has
   no migration or external lifecycle execution requiring a merge node. Not executed.
@@ -54,7 +55,7 @@ record before #514 cutover, not evidence that no-Git workflow adoption is comple
 | --- | --- | --- | --- |
 | DESIGN | software-architect, coordinated by software-development-orchestrator | completed | [Design](../../design/workflow-0220-2026-10-25/design.md) includes latest owner direction and remaining decisions; Issue closure separate |
 | CREATE-TASK | slice-implementer | completed | Implementation, focused checks and independent recovery review complete; R1 corrected and read back |
-| BOARD-V2-QUERY | slice-implementer | in_progress | Additive Board V2 query/receipt profile and actual selected-plugin bridge; see design section 11 |
+| BOARD-V2-QUERY | slice-implementer | completed | Additive Board V2 query/receipt profile, 15 actual selected-plugin queries and independent fixed-commit review complete; see design section 11 |
 
 Live native hierarchy was read through GitHub GraphQL, not inferred from body links:
 #416 has #481 (child #483), #513 (child #445), and #514 (no child at readback).
@@ -267,9 +268,30 @@ workflow receipts passed. decision.read has fixture evidence only. A successful
 lookup retains mutation_state none and does not claim a write or migration.
 
 This increment adds a provider-boundary validator and distribution members, so
-independent scoped review is selected under source policy rule 6. It is pending
-the fixed implementation commit. Hosted PR gate, installation, cross-session
-adoption, writes/fanout and complete recovery remain unexecuted for this increment.
+independent scoped review was selected under source policy rule 6.
+`create_task_audit`, using the registered fixed-head-independent-auditor role and
+`independent-review -> gpt-6.1-sol / medium`, reviewed clean implementation commit
+`bd8d219337b3250c3228f023cb87e9c9b4ca8814` against
+`8c5c879251cd52f3c77268615af7c724ae60945a`. Runtime source/projection hashes matched;
+there was no model pin, and actual serving identity remains unknown. The reviewer
+inspected the eight source/test/manifest files, accepted section 11 criteria and
+recorded evidence, without tests, provider calls or edits. It reported no supported
+actionable findings and an advisory accept disposition. Parent author inspection
+and the independent review remain separate evidence.
+
+A possible document character/byte-limit mismatch was investigated and dismissed:
+Board's `src/Core/Workflows/Domain/collaboration-workflow.mjs:100` separately enforces
+256000 UTF-8 bytes, matching the adapter. The bounded expansion used graph/source
+readback at Board commit `b100c9f9bd09b2a1c125c8b511f06defeb29c556`; parent Git readback
+confirmed that exact head and clean tree. The reviewer's earlier denied Board Git
+probe is not a pass. Framework graph coverage predated the new modules, so they
+were reviewed through an explicit tracked-file fallback.
+
+All three workflow tasks are terminal. This completes only the bounded design,
+SQLite create-task and Board query increments. The closeout changes records and
+navigation; source/test/manifest and governing-policy equivalence with the reviewed
+head is checked directly. Hosted PR gate, installation, cross-session adoption,
+formal workflow migration, writes/fanout and complete recovery remain unexecuted.
 
 The following Board development snapshot is historical evidence from the first
 increment, superseded for availability by the continuation above:
@@ -283,12 +305,14 @@ A/B same-ID isolation, old-row migration comparison and CLI/MCP continuation tes
 passing; packaging and browser checks are still in progress. These are that chat's
 development observations, not live deployment or feature-completion acceptance.
 Read its current status through wait_threads.
-Current multi-project gap and Board #6 recovery limits prohibit premature full migration.
+The former multi-project gap is superseded by the V2 availability proof above.
+Board #6 recovery limits still prevent declaring full migration readiness.
 
 Read this record, the design, live Issues and current working tree first. Keep
 the parent's draft separate from accepted product policy. The next source increment
-is the remaining #481 task editing/transition contract, coordinated with Board #22
-before implementing the #445 project-aware adapter. Preserve the owner's
+is the remaining #481 task editing/transition contract and #445 native command
+adapter; the project-aware query path now exists. Before fanout #520, resolve the
+command authority and replication contract in design section 5. Preserve the owner's
 multi-carrier and partial-failure decision. Do not ask the owner again whether
 partial synchronization should be visible and durably retried; that is selected.
 

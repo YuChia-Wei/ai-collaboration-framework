@@ -30,7 +30,7 @@ historical paths in retained records do not establish current availability.
 | `assessments/` | Durable observations and their evidence |
 | `workflows/` | Execution locators and handoffs |
 | [Domain/software split](workflows/2026-10-22-domain-architecture-split/workflow-plan.md) | Design review, Issues 476-480, authorized source work and validation |
-| [Workflow 0.22.0 design and SQLite task increment](workflows/2026-10-25-workflow-0220-design/workflow-plan.md) | Bounded local increment completed with focused tests and independent recovery review; Epic 416 and adoption remain open |
+| [Workflow 0.22.0 records and Board V2 query adapter](workflows/2026-10-25-workflow-0220-design/workflow-plan.md) | Bounded design, SQLite task and Board query increments completed with focused tests, actual plugin queries and independent review; Epic 416 and adoption remain open |
 | [Lessons](lessons/INDEX.MD) | Evidence-backed experience; not independent normative authority |
 
 Existing design/requirement/ADR/assessment/workflow contents are excluded from

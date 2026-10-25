@@ -1,6 +1,6 @@
 # Workflow 0.22.0：本機紀錄契約與多載體整合設計
 
-狀態：#483 設計已依本次 owner 補充收斂，開始第一個本機操作增量；未定選項仍明列，不是完整功能驗收。
+狀態：#483 設計已依本次 owner 補充收斂，SQLite create-task 與 Board V2 query 增量已完成來源實作、直接驗證及獨立審查；未定選項仍明列，不是完整功能或遷移驗收。
 來源基準：`b6de8cdb28404296e41f2b15079675cc96c7b8e4`。
 本次讀回的需求：[Epic #416](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/416)、
 [#481](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/481)、

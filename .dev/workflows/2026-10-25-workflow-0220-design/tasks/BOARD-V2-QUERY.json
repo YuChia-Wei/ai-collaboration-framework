@@ -3,14 +3,14 @@
   "workflow_id": "2026-10-25-workflow-0220-design",
   "owner_skill": "slice-implementer",
   "title": "Implement a versioned Board V2 read and receipt adapter through the selected MCP host bridge",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-25T15:13:00+08:00",
-  "updated_at": "2026-10-25T15:24:00+08:00",
+  "updated_at": "2026-10-25T15:27:14+08:00",
   "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
   "template_version": "1.0.0",
   "model": "gpt-6.1-sol",
   "reasoning_effort": "medium",
   "runtime_identity_source": "Explicit project implementation selection; actual serving-model identity is not independently observable.",
-  "finding_status": "pending",
-  "result_summary": "Additive query profile implemented. 24 focused methods passed, followed by targeted MCP and strict UTF-8 corrections/checks; UTF-16 failure retained. Fifteen real prepare/plugin/accept queries across ten families passed, including A/B snapshot pages, exact documents and scoped receipts. Independent fixed-commit review pending. Existing /1, installed projections and completed tasks remain unchanged; no workflow migration or write/fanout acceptance claimed."
+  "finding_status": "addressed",
+  "result_summary": "Additive query profile implemented. 24 focused methods passed, followed by targeted MCP and strict UTF-8 corrections/checks; UTF-16 failure retained. Fifteen real prepare/plugin/accept queries across ten families passed, including A/B snapshot pages, exact documents and scoped receipts. Independent read-only review accepted clean commit bd8d219337b3250c3228f023cb87e9c9b4ca8814 with no supported actionable findings. decision.read retains fixture evidence only. Existing /1 and installed projections are unchanged; no workflow migration, adoption or write/fanout acceptance claimed."
 }
