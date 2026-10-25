@@ -102,6 +102,9 @@ skill through existing presets or change the source project's own installation.
 
 ## Exact requests
 
+The additive [source-store profile](source-store.md) provides explicit schema-2
+source snapshots and persisted replica delivery while preserving the requests below.
+
 Board V2 uses the additive [board-query profile](board-query.md) and separate
 `tools/board-query.py` CLI for `board-query-prepare` / `board-query-accept`.
 The `workflow-records/1` requests below keep their existing provider semantics.

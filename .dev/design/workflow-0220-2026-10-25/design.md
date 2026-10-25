@@ -502,3 +502,30 @@ missing chunk refusal; persisted binding enforcement; ordering and stale remote
 receipts; inactive dispatch refusal; export/restore of pending prepared commands;
 source-only isolated package execution; and immutable independent recovery review.
 Runtime/host acceptance and formal source-policy cutover remain later evidence.
+
+## 15. Implemented source-store slice and remaining cutover gaps
+
+The first slice implements explicit fresh schema 2 and the separate
+`workflow-records/source-store/1` CLI. Local historical import reads one committed
+Git directory and atomically publishes its verified snapshot and target intents;
+it does not expose a general caller-driven local staging/chunk import API.
+Native capture runs for all four existing local mutation families. Each intent
+already contains its complete immutable Board requests, and predecessor acceptance
+gates later dispatch. Source observations remain separate from domain revisions.
+Schema-2 export/restore retains the complete snapshot/delivery closure while v1
+archives and native request meanings remain compatible.
+
+The reviewed Board source-replica contract is deployed in owner-private Site
+version 16. Actual CLI capabilities/list queries and browser project selection
+succeeded; the project still has no published source copy. New source MCP tools
+are not currently exposed in this runtime. The supported Windows CLI can carry
+native DTOs through the source-store observation boundary after strict host
+response validation; credentials remain host-owned.
+
+This is an initial immutable-binding, SQLite-authority, manual-dispatch slice.
+Dynamic binding changes, read-source switching, complete task/workflow editing,
+permanent store provisioning, historical copy, real cross-session synchronization
+and formal source-policy adoption are not established by local tests. Existing
+Git workflow/branch/commit policies and locator consumers must be reconciled at
+their owners before retiring daily Git writes. Keep historical source files and
+their missing fields intact; an archive is not a migrated native lifecycle.

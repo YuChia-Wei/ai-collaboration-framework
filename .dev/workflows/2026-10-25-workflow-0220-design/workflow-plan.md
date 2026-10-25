@@ -463,3 +463,148 @@ hooks and complete backup/restore closure. The parent selects manual bounded
 dispatch with exact retained requests and no pruning. Pending delivery cannot be
 created in a second transaction or second database. Permanent path selection is
 still pending; implementation/testing do not initialize the production store.
+
+### SQLite snapshot implementation and Board deployment evidence
+
+The source increment adds `workflow-records/source-store/1` and explicitly fresh
+`workflow-sqlite/2`. Native create/create-task/checkpoint/write-document preserve
+their public request meanings; snapshot capture and fixed-target delivery intents
+commit with their state/receipt. Git snapshot import preserves complete raw files
+as archive-workflow or archive-root-index, without manufacturing native tasks.
+Exact Board begin/chunk/activate requests are retained before dispatch, with
+predecessor ordering, original-request recovery and monotonic receipt evidence.
+Schema-2 backup/restore includes all source/delivery tables and remains inactive
+after restore. Initial bindings cannot be replaced or silently adopted.
+
+The bounded implementation worker used the registered general profile with
+implementation -> gpt-6.1-sol/medium; actual serving identity is unavailable.
+Forty distinct methods have passing evidence across the selected runs: 26 existing
+SQLite v1 methods, 13 new source-store methods and package closure. The final
+14-method source/closure run passed in 9.658 seconds; three affected checks then
+passed in 2.673 seconds. An extended existing isolated-CLI method additionally
+passed in 1.008 seconds after adding exact local module/schema closure checks.
+The CLI refuses a missing initializer rather than resolving an ambient package.
+Tests include an actually killed local writer, committed-response loss, rollback,
+binary/empty/oversized Git blobs, exact raw-byte reconstruction, ordering,
+misrouted lookup refusal, delayed unknown evidence and inactive restore/transfer.
+These are local fixture/process checks, not physical-device or hosted acceptance.
+The runner used `python -I -B -`, explicit `tests` and `tests/framework_next`
+module paths, and process-local `tempfile.tempdir=F:\tmp\aicf-416-sync` after a
+ready-RAMDRIVE check. Its selected names were
+`tools.test_source_store.SourceStoreTests` and
+`framework_next.test_distribution_contracts.Metadata5DistributionTests.test_workflow_records_is_optional_and_manifest_matches_metadata`.
+The final closure repair selected only
+`tools.test_source_store.SourceStoreTests.test_isolated_source_cli_has_declared_source_only_runtime`.
+
+Retained initial failures: the first 36-method run passed all 26 pre-existing
+SQLite methods but had three new failures. Schema-2 initialization required its
+new administrative event alias only in v2 native-backup validation, and lookup
+fixtures omitted the actual outer project/operation fields. Those were corrected.
+Parent inspection additionally required known lookup outer identity/outcome
+correlation and structured malformed-backup failure. The worker applied them and
+returned sole writer ownership before this record update. No broad rerun was
+needed after the focused repairs. Disposable tests stayed on verified F: RAMDRIVE;
+no production store or credential was created by these tests.
+
+Board #24 is now implemented through
+[PR #25](https://github.com/YuChia-Wei/ai-collaboration-workflow-board/pull/25).
+The four checks in run 40207589373 passed for reviewed source
+5bf075abb64b797f039e7484aa96485f814835e2. The authorized merge commit is
+8417d869d07ab52887124222aa4f1e0e37517164, with two parents and tree
+4d26f2f646338e7c6d4ed2bd02de1813352e8077. Its equivalent Site source commit
+570e77f2371db3b905e26c77ceba3a2d1d2c322b has that same tree. Site version 16
+deployment appgdep_6ade22cd28a08191bb86865753995315 succeeded, including the
+additive migration. Existing access policy revision 1 remains owner only; no
+sharing change or credential rotation was made. Board Issue #24 remains open.
+The initial artifact check found CRLF migration bytes differing from canonical
+Git LF bytes; packaging was corrected and the artifact check passed before deploy.
+
+Actual post-deployment CLI queries used the existing `workflow-records-private`
+Windows Credential Manager profile, without outputting or saving tokens. Source
+capabilities and `replica.list` succeeded in project `ai-collaboration-framework`;
+the latter returned an empty complete list. The browser likewise displayed that
+project and no published copies. New source MCP tools are not exposed in this
+session; the existing supported CLI is the selected transport for the copy pilot.
+This does not claim source-plugin acceptance or actual historical import.
+
+The user-requested low-cost general worker selected Luna/medium and prepared a
+bounded host runner in scratch. Its fixed Git inventory agrees: 220 archive units
+(219 workflows plus one root-index), 1931 files and 19427197 raw bytes. The small
+pilot is `2026-08-08-v0-10-release-publication`, two files and 4400 bytes. The root
+index has three files and 57560 bytes. The first runner inspection found a stale
+undefined argument and missing delivery/readback phases; repair is in progress.
+No local import or Board copy has been executed. Do not use a plan-only success
+as apply-path or delivery evidence.
+
+The exact permanent database path remains an unanswered owner selection. Before
+initializing a production store or dispatching copies, resolve that pending choice,
+finish immutable source review, and validate the bounded runner against actual
+CLI response shapes. Store credentials stay in the existing host credential path;
+prepared commands and raw transport evidence must survive RAM-disk loss.
+
+Formal source adoption is still pending. Current daily writer gaps include full
+task/workflow status editing. Artifact/Gate policies, Git checkpoint rules,
+source policy and commit policy still require Git daily records, and consumers
+still resolve Git locators. The bounded read-only policy analysis found no current
+portable machine-readable store-discovery resolver; explicit caller-owned
+`--config` is supported. A future secret-free binding may use the already ignored
+`.dev/ai-context/local/` with explicit navigation, but has not been created.
+Retain existing Git records and their historical meanings until supported daily
+operations, policy/consumer alignment, real cross-session use and full backup
+readback justify a selected cutover. Board #6 recovery remains a separate gap.
+
+This increment deliberately leaves dynamic target changes, read-source switching,
+full local status editing and formal migration open. It does not complete #416,
+#481, #514 or #520. The owner requires the next Framework integration to preserve
+the accumulated commits with a merge commit (`--no-ff` semantics); no squash,
+rebase or fast-forward integration is selected. Framework push/PR/merge permission
+is still separate from the completed Board delivery grant.
+
+### Independent recovery findings and complete corpus preflight
+
+The fixed-head reviewer inspected clean 4ff9014027df51a360108bf764ed0e8a55495339
+against 21d96f4b575ba00a22b620e0eeb66cd10b648b51 and returned two P2 findings:
+
+- R1: native source backup validation checked four sidecars but did not compare
+  the complete document/attachment/header projection against retained native
+  history. A rehashed but incomplete source snapshot could pass preflight.
+- R2: a source-operation receipt containing JSON `[]` reached `.get` without an
+  object guard, escaping the public structured-error boundary.
+
+The implementation worker reproduced six incorrectly accepted projection
+corruptions and the uncaught AttributeError before repairing them. Capture and
+backup now share a pure deterministic native projection; validation requires the
+complete header/file list and exact paths, modes, sizes, hashes and raw bytes.
+Receipt object/field validation now precedes access. Nine focused methods passed
+in 6.590 seconds, including two new independent regression methods; the distinct
+method total with passing evidence is now 42. The new cases recalculate inner and
+outer hashes, so rejection proves equivalence checking rather than only a stale
+hash. Public preflight/restore and the real CLI reject the non-object receipt with
+empty stderr and without creating the restore target. V1 default validation was
+not changed. Repair re-review is next on a new immutable commit.
+
+Separately, the parent imported the entire selected Git corpus into a synthetic
+schema-2 store on verified F: RAMDRIVE. Independent `git ls-tree` and one binary
+`git cat-file --batch` read supplied expected paths, modes, sizes and SHA-256;
+every imported manifest matched. All 220 archive units, 1931 files and 19427197
+bytes imported in 209.024 seconds. No production store or remote dispatch occurred.
+The retained tables contain 220 snapshots, 2118 unique raw chunks, 2125 chunk
+references, one synthetic binding, 220 intents, 714 exact prepared steps, zero
+observations and 221 source-operation receipts.
+
+Complete export produced 63308807 bytes with archive digest
+`sha256:ccab5385248ab2c372c465e6c06f9f7a1e7cf8442c95e1ed164b1073d2c4b5bc` and
+logical snapshot digest
+`sha256:2a83255393a45824c20373dadc91bd811457809b3a2fd2d37947bd601d57d127`.
+Preflight and restore succeeded. The first harness then incorrectly compared
+`restore.state` with `inactive`; the actual successful receipt has
+`state: applied` and `store_state: inactive`. The corrected continuation replayed
+that same restore request and received `replayed: true`, compared every source
+table byte-for-byte, and confirmed inactive dispatch returns `store_inactive`.
+It also revalidated the same full archive with the repaired source validator,
+without reimporting the corpus. The repaired module hashes are
+source_backup.py `73bb2593ab4332b0a15f284ff4742ed7ed61f64f31d7bdab85c43f1d0bb37d25`
+and source_store.py `46648d80a2d4473c123cac242b873fcbacf911687bf2651c32ad5e0047a05072`.
+The [bounded preflight script](source-sync-preflight/corpus-preflight.py) retains
+the reproducible procedure with the harness assertion corrected. Scratch data
+is disposable; this evidence does not select F: as a durable workflow store.
