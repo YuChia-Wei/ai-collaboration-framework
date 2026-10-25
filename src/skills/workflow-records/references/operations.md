@@ -119,6 +119,7 @@ returned IDs and digests exactly rather than deriving them from display titles.
 | `operation` | exactly one of `workflow_ref` or `store_ref`, plus `operation_id` |
 | `init` | `store_ref`, `operation_id` |
 | `create` | `workflow_ref`, `operation_id`, `record` |
+| `create-task` | `workflow_ref`, `operation_id`, `expected_revision`, `expected_source_head`, `task` |
 | `write-document` | `workflow_ref`, `operation_id`, `expected_revision`, `expected_source_head`, `document`, `content` |
 | `export` | `store_ref`, absolute local `destination` (must not exist) |
 | `preflight` | `store_ref`, absolute local `archive`, `archive_digest` |
@@ -128,9 +129,21 @@ returned IDs and digests exactly rather than deriving them from display titles.
 
 `read` addresses text documents. Binary attachments are retained and checked in
 complete exports; this version has no separate binary-read or attachment-update
-operation. `write-document` replaces one existing text document. Task/metadata
+operation. `write-document` replaces one existing text document. Existing task/metadata
 editing, Git-to-SQLite migration and multi-document commands are not advertised.
 The Git format and existing checkpoint behavior are in [git-format.md](git-format.md).
+
+`create-task` is available only on SQLite. It appends one task to the selected
+workflow using the same task contract as `create`: a path-safe `task_id` and
+nonempty `status` and `title` strings, within the state byte limit. Unknown task extensions, including
+optional `owner_skill`, are preserved. The task ID must be unique within that
+workflow (`already_exists` otherwise); the 128-task limit remains in force.
+Copy `revision` and `source_head` from `context` into the required expected fields.
+Missing or unknown envelope fields are rejected. The operation preserves all
+existing tasks, metadata, documents, attachments and checkpoint history, and
+commits the new revision and receipt in one transaction. Replay precedes current
+revision/source and active-store checks. No local-backlog, local item or tracker
+write is required. Task transitions and completion policy are outside this operation.
 
 ## SQLite setup and operation chain
 

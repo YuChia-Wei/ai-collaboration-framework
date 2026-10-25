@@ -133,7 +133,7 @@ def validate_payload(value):
             validate_checkpoint(checkpoint["value"])
         event = state["event"]
         require(isinstance(event, dict) and set(event) == {"operation_id", "operation", "recorded_at", "parent"}
-                and event["parent"] == parent and event["operation"] in ("create", "checkpoint", "write-document"),
+                and event["parent"] == parent and event["operation"] in ("create", "create-task", "checkpoint", "write-document"),
                 "malformed_record", "Invalid revision event.")
         identifier(event["operation_id"])
         timestamp(event["recorded_at"])
@@ -159,6 +159,13 @@ def validate_payload(value):
         require(isinstance(parent, str) and (workflow_id, parent) in revisions,
                 "malformed_record", "A mutation requires its retained parent.")
         prior = revisions[(workflow_id, parent)][1]
+        if operation == "create-task":
+            require(all(encoded(state[key]) == encoded(prior[key]) for key in
+                        ("metadata", "entrypoint", "attachments", "documents", "checkpoint"))
+                    and len(state["tasks"]) == len(prior["tasks"]) + 1
+                    and encoded(state["tasks"][:-1]) == encoded(prior["tasks"]),
+                    "malformed_record", "Task creation must append one task and preserve all other state.")
+            continue
         require(all(state[key] == prior[key] for key in ("metadata", "tasks", "entrypoint", "attachments")),
                 "malformed_record", "Mutation changed fields outside its supported contract.")
         if operation == "checkpoint":

@@ -236,6 +236,12 @@ class SQLiteStore:
         return key
 
     @staticmethod
+    def validate_task(task):
+        require(isinstance(task, dict), "invalid_input", "Task must be an object.")
+        identifier(task.get("task_id"))
+        required_strings(task, ("status", "title"))
+
+    @staticmethod
     def validate_record(record):
         require(isinstance(record, dict) and set(record) == {"metadata", "tasks", "entrypoint", "documents", "attachments"},
                 "invalid_input", "Local record requires metadata, tasks, entrypoint, documents and attachments.")
@@ -246,9 +252,8 @@ class SQLiteStore:
         require(isinstance(tasks, list) and 0 < len(tasks) <= MAX_TASKS, "invalid_input", "A bounded nonempty task list is required.")
         ids = set()
         for task in tasks:
-            require(isinstance(task, dict), "invalid_input", "Task must be an object.")
-            task_id = identifier(task.get("task_id"))
-            required_strings(task, ("status", "title"))
+            SQLiteStore.validate_task(task)
+            task_id = task["task_id"]
             require(task_id not in ids, "invalid_input", "Task identity is duplicated.")
             ids.add(task_id)
         paths = set()
@@ -321,6 +326,13 @@ class SQLiteStore:
             require(request.get("expected_source_head") == head, "source_conflict", "Git HEAD changed; reconcile the source first.")
             if request["operation"] == "checkpoint":
                 state["checkpoint"] = {"operation_id": op, "recorded_at": now(), "value": request["checkpoint"]}
+            elif request["operation"] == "create-task":
+                task = request.get("task")
+                self.validate_task(task)
+                require(all(existing["task_id"] != task["task_id"] for existing in state["tasks"]),
+                        "already_exists", "Task already exists in the selected workflow.")
+                require(len(state["tasks"]) < MAX_TASKS, "limit_exceeded", "Task capacity reached.")
+                state["tasks"].append(task)
             else:
                 name = str(relative_path(request.get("document")))
                 content = request.get("content")
