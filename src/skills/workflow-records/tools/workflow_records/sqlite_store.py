@@ -124,7 +124,7 @@ class SQLiteStore:
         row = connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()
         require(row is not None, "malformed_record", "Store identity is missing.")
         value = decode_json(bytes(row[0]))
-        require(value.get("schema_version") == SCHEMA, "unsupported_version", "Unsupported local schema.")
+        require(value.get("schema_version") in (SCHEMA, "workflow-sqlite/2"), "unsupported_version", "Unsupported local schema.")
         require((value.get("provider_id"), value.get("store_id"), value.get("repository_id"), value.get("repository_binding")) ==
                 (self.provider_id, self.store_id, self.repository_id, self.binding),
                 "binding_mismatch", "Local store belongs to a different repository or provider.")
@@ -135,7 +135,8 @@ class SQLiteStore:
     def save_meta(connection, meta):
         connection.execute("UPDATE store_meta SET value=? WHERE id=1", (encoded(meta),))
 
-    def initialize(self, request):
+    def initialize(self, request, schema=SCHEMA):
+        require(schema in (SCHEMA, "workflow-sqlite/2"), "unsupported_version", "Unsupported initialization schema.")
         op = identifier(request.get("operation_id"))
         if self.database.exists():
             with self.transaction() as (connection, _):
@@ -157,7 +158,11 @@ class SQLiteStore:
             connection.execute("BEGIN IMMEDIATE")
             for statement in DDL:
                 connection.execute(statement)
-            meta = {"schema_version": SCHEMA, "provider_id": self.provider_id, "store_id": self.store_id,
+            if schema == "workflow-sqlite/2":
+                from .source_store import DDL as source_ddl
+                for statement in source_ddl:
+                    connection.execute(statement)
+            meta = {"schema_version": schema, "provider_id": self.provider_id, "store_id": self.store_id,
                     "repository_id": self.repository_id, "repository_binding": self.binding,
                     "instance_id": str(uuid.uuid4()), "state": "active", "origin": None, "retirement": None}
             connection.execute("INSERT INTO store_meta VALUES(1,?)", (encoded(meta),))
@@ -197,6 +202,14 @@ class SQLiteStore:
         event = {"operation": request["operation"], "operation_id": request["operation_id"], "recorded_at": now()}
         connection.execute("INSERT INTO operations VALUES(?,?,?,?,?)",
                            (scope, request["operation_id"], request_digest(request), encoded(receipt), encoded(event)))
+        if scope and request["operation"] in ("create", "create-task", "checkpoint", "write-document"):
+            meta = decode_json(bytes(connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()[0]))
+            if meta["schema_version"] == "workflow-sqlite/2":
+                try:
+                    from .source_store import capture_native
+                    capture_native(connection, scope, receipt["revision"])
+                except ImportError as exc:
+                    raise RecordError("provider_unavailable", "Schema-2 writes require the declared local snapshot runtime; mutation was rolled back.") from exc
         # Check the actual portable representation while the write can still
         # roll back. Normal history cannot consume lifecycle transfer headroom.
         from .backup import check_capacity

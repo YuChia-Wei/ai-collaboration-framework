@@ -1033,6 +1033,18 @@ components:
     destination: .ai/core/skills/workflow-records/tools/board-command.py
   - source: tools/workflow_records/board_command.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/board_command.py
+  - source: references/source-store.md
+    destination: .ai/core/skills/workflow-records/references/source-store.md
+  - source: tools/source-store.py
+    destination: .ai/core/skills/workflow-records/tools/source-store.py
+  - source: tools/workflow_records/source_contract.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_contract.py
+  - source: tools/workflow_records/source_store.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_store.py
+  - source: tools/workflow_records/source_backup.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_backup.py
+  - source: schemas/source-replica-v1.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/source-replica-v1.schema.json
 - kind: sub-agent
   id: context-translator
   version: 0.2.1

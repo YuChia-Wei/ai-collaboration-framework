@@ -5,6 +5,13 @@ description: Read and maintain selected Git or SQLite workflow records, or prepa
 
 # Workflow Records
 
+For explicitly selected unified SQLite source authority and Board source-copy
+delivery, use the additive [source-store profile](references/source-store.md) and
+[CLI](tools/source-store.py). Fresh schema 2 is an explicit selection; never upgrade
+a v1 database implicitly. Preserve archive kinds/raw bytes, original identities,
+fixed targets and exact pending commands. Local acceptance and replica completion
+are separate, and each host dispatch remains explicit.
+
 Use the [operation contract](references/operations.md) and the bundled
 [CLI](tools/workflow-records.py) for an explicitly selected project and store.
 For Board V2 reads and receipt lookup, use the separate

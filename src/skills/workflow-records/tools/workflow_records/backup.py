@@ -23,6 +23,9 @@ TABLES = {"workflows": (2, ()), "revisions": (4, (3,)),
 
 
 def payload(connection, meta):
+    if meta["schema_version"] == "workflow-sqlite/2":
+        from .source_backup import payload as source_payload
+        return source_payload(connection, meta)
     tables = {}
     for table, (_, byte_columns) in TABLES.items():
         order = "hash" if table == "blobs" else "id" if table == "workflows" else "workflow_id,revision" if table == "revisions" else "workflow_id,id"
@@ -46,6 +49,9 @@ def check_capacity(connection, reserve=0):
 
 
 def check_payload_capacity(value, reserve=0):
+    if value["schema_version"] == "workflow-sqlite/2":
+        from .source_backup import check_capacity as source_capacity
+        return source_capacity(value, reserve)
     admin = [row for row in value["tables"]["operations"] if row[0] == ""]
     require(len(admin) + reserve <= MAX_ADMIN_OPERATIONS,
             "limit_exceeded", "Administrative history lacks capacity for another complete transfer; retain the active store.")
@@ -56,7 +62,13 @@ def check_payload_capacity(value, reserve=0):
             "limit_exceeded", "Complete backup capacity reached; no history was removed.")
 
 
-def validate_payload(value):
+def validate_payload(value, *, schema2_native=False):
+    if isinstance(value, dict) and value.get("schema_version") == "workflow-sqlite/2":
+        from .source_backup import validate_payload as source_validate
+        try:
+            return source_validate(value)
+        except (ValueError, TypeError, KeyError, IndexError, StopIteration, OverflowError) as exc:
+            raise RecordError("malformed_record", "Schema-2 backup contains malformed encoding or broken references.") from exc
     require(isinstance(value, dict) and set(value) == {"schema_version", "identity", "tables"},
             "malformed_record", "Invalid backup payload.")
     require(value["schema_version"] == SCHEMA, "unsupported_version", "Unsupported backup database schema.")
@@ -205,9 +217,11 @@ def validate_payload(value):
             shapes = {"init": {"instance_id", "store_state"}, "restore": {"instance_id", "store_state", "snapshot_digest"},
                       "deactivate": {"store_state", "retirement_seal", "snapshot_digest"}, "activate": {"instance_id", "store_state"}}
             kind = event.get("operation")
+            if schema2_native:
+                shapes["source-init"] = {"instance_id", "store_state"}
             require(isinstance(kind, str) and kind in shapes and set(receipt) == shapes[kind] |
                     {"state", "operation_id", "replayed"}, "malformed_record", "Invalid administrative receipt shape.")
-            require(receipt["store_state"] == {"init": "active", "restore": "inactive", "deactivate": "retired", "activate": "active"}[kind],
+            require(receipt["store_state"] == {"init": "active", "source-init": "active", "restore": "inactive", "deactivate": "retired", "activate": "active"}[kind],
                     "malformed_record", "Administrative receipt state disagrees with its operation.")
             for key in ("instance_id", "retirement_seal"):
                 if key in receipt:
@@ -226,8 +240,8 @@ def preflight(path, expected_digest):
     require(isinstance(expected_digest, str) and expected_digest.startswith("sha256:"), "invalid_input", "Supply the observed backup digest.")
     require(source.is_file(), "not_found", "Backup is missing.")
     with source.open("rb") as stream:
-        raw = stream.read(MAX_ARCHIVE + 1)
-    require(len(raw) <= MAX_ARCHIVE, "limit_exceeded", "Backup exceeds the archive limit.")
+        raw = stream.read(256 * 1024 * 1024 + 1)
+    require(len(raw) <= 256 * 1024 * 1024, "limit_exceeded", "Backup exceeds the archive limit.")
     require(digest(raw) == expected_digest, "integrity_error", "Backup bytes differ from the expected digest.")
     try:
         def reject_constant(_):
@@ -237,7 +251,12 @@ def preflight(path, expected_digest):
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise RecordError("malformed_record", "Invalid backup JSON.") from exc
     require(isinstance(archive, dict) and set(archive) == {"format", "snapshot_digest", "payload"}, "malformed_record", "Invalid backup envelope.")
-    require(archive["format"] == FORMAT, "unsupported_version", "Unsupported backup format.")
+    selected_v2 = archive["format"] == "workflow-backup/2"
+    require(isinstance(archive["payload"], dict), "malformed_record", "Backup payload must be an object.")
+    require(archive["format"] == FORMAT or selected_v2, "unsupported_version", "Unsupported backup format.")
+    require((archive["payload"].get("schema_version") == "workflow-sqlite/2") == selected_v2,
+            "unsupported_version", "Backup envelope and payload versions disagree.")
+    require(len(raw) <= (256 * 1024 * 1024 if selected_v2 else MAX_ARCHIVE), "limit_exceeded", "Backup exceeds its version's archive limit.")
     require(archive["snapshot_digest"] == digest(encoded(archive["payload"])), "integrity_error", "Backup snapshot digest mismatch.")
     decoded = validate_payload(archive["payload"])
     return archive, decoded
@@ -250,8 +269,9 @@ def export_store(store, request):
         value = payload(connection, meta)
     validate_payload(value)
     snapshot = digest(encoded(value))
-    raw = encoded({"format": FORMAT, "snapshot_digest": snapshot, "payload": value})
-    require(len(raw) <= MAX_ARCHIVE, "limit_exceeded", "Backup exceeds the archive limit.")
+    selected_v2 = value["schema_version"] == "workflow-sqlite/2"
+    raw = encoded({"format": "workflow-backup/2" if selected_v2 else FORMAT, "snapshot_digest": snapshot, "payload": value})
+    require(len(raw) <= (256 * 1024 * 1024 if selected_v2 else MAX_ARCHIVE), "limit_exceeded", "Backup exceeds the archive limit.")
     created = False
     try:
         fd = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
@@ -295,12 +315,18 @@ def restore_store(store, request):
         connection.execute("BEGIN IMMEDIATE")
         for statement in DDL:
             connection.execute(statement)
-        meta = {"schema_version": SCHEMA, "provider_id": store.provider_id, "store_id": store.store_id,
+        selected_tables = TABLES
+        if archive["payload"]["schema_version"] == "workflow-sqlite/2":
+            from .source_store import DDL as source_ddl, TABLES as source_tables
+            for statement in source_ddl:
+                connection.execute(statement)
+            selected_tables = {**TABLES, **source_tables}
+        meta = {"schema_version": archive["payload"]["schema_version"], "provider_id": store.provider_id, "store_id": store.store_id,
                 "repository_id": store.repository_id, "repository_binding": store.binding,
                 "instance_id": str(uuid.uuid4()), "state": "inactive", "retirement": None,
                 "origin": {"instance_id": identity["instance_id"], "snapshot_digest": archive["snapshot_digest"]}}
         connection.execute("INSERT INTO store_meta VALUES(1,?)", (encoded(meta),))
-        for table, (width, _) in TABLES.items():
+        for table, (width, _) in selected_tables.items():
             connection.executemany(f"INSERT INTO {table} VALUES({','.join('?' for _ in range(width))})", tables[table])
         receipt = {"state": "applied", "operation_id": op, "instance_id": meta["instance_id"], "store_state": "inactive",
                    "snapshot_digest": archive["snapshot_digest"], "replayed": False}
