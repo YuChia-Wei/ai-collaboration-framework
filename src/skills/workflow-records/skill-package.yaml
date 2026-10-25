@@ -10,6 +10,9 @@ runtime:
 - id: python
   version: '>=3.11,<4'
   for_operations:
+  - board-command-prepare
+  - board-command-accept
+  - board-command-reconcile
   - board-query-prepare
   - board-query-accept
   - capabilities
@@ -93,12 +96,20 @@ runtime:
   - deactivate
   - activate
   on_missing: unavailable
+- id: jsonschema
+  version: '>=4.26,<5'
+  for_operations:
+  - board-command-prepare
+  - board-command-accept
+  - board-command-reconcile
+  on_missing: unavailable
 configuration: null
 artifact_roles: []
 resources:
   references:
   - references/operations.md
   - references/board-query.md
+  - references/board-command.md
   - references/git-format.md
   schemas: []
   templates: []
@@ -144,6 +155,18 @@ resources:
     - board-query-accept
     support_files:
     - tools/workflow_records/board_query.py
+  - id: board-command-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/board-command.py
+    operation_contract: references/board-command.md
+    operations:
+    - board-command-prepare
+    - board-command-accept
+    - board-command-reconcile
+    support_files:
+    - tools/workflow_records/board_command.py
+    - schemas/board-collaboration-v2.schema.json
 operations:
 - id: capabilities
   execution: tool
@@ -327,6 +350,33 @@ operations:
 - id: board-query-accept
   execution: tool
   tool: board-query-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-command-prepare
+  execution: tool
+  tool: board-command-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-command-accept
+  execution: tool
+  tool: board-command-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-command-reconcile
+  execution: tool
+  tool: board-command-cli
   inputs:
   - explicit-non-secret-binding
   - bounded-json-request

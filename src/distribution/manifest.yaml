@@ -1025,6 +1025,14 @@ components:
     destination: .ai/core/skills/workflow-records/tools/board-query.py
   - source: tools/workflow_records/board_query.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/board_query.py
+  - source: references/board-command.md
+    destination: .ai/core/skills/workflow-records/references/board-command.md
+  - source: schemas/board-collaboration-v2.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/board-collaboration-v2.schema.json
+  - source: tools/board-command.py
+    destination: .ai/core/skills/workflow-records/tools/board-command.py
+  - source: tools/workflow_records/board_command.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_command.py
 - kind: sub-agent
   id: context-translator
   version: 0.2.1

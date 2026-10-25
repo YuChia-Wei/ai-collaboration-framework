@@ -245,10 +245,10 @@ Git 工作紀錄處置推薦「停止新 workflow 的 Git writer，保留歷史�
 | 決策 | 建議／已知狀態 | 阻擋範圍 |
 | --- | --- | --- |
 | D01 資料與編排 owner | B：外部 tracker 為主要需求來源，可選本機 item 整合至 workflow-records，獨立 skill 待相容遷移後退役 | 第一個 workflow/task 增量可開始；退役需等效能力與讀回 |
-| D02 Git 文件處置 | 推薦停止新 Git writer、歷史唯讀；未採納 | 來源庫政策切換 |
-| D03 DB 位置與 Git 前提 | 建議第一個實作增量保留現有安全限制；精確持久路徑未選 | store 初始化／採用；不阻擋契約設計 |
+| D02 Git 文件處置 | owner 已選統一以 SQLite 日常讀寫，再同步 Board；歷史 Git 保留，正式政策切換尚未執行 | 來源庫政策切換與既有紀錄匯入驗收 |
+| D03 DB 位置與 Git 前提 | SQLite 為已選命令權威；持久路徑提案見第 13 節，尚未初始化；現有 Git binding 限制暫留 | store 初始化／採用；不阻擋契約設計 |
 | D04 平台/client/帳號與維護 | 已選 Workflow Board，保持當前 owner-private；CLI／現有 MCP 是初始入口，多專案由 Board #22 補齊 | project-aware adapter 與真實跨 client 驗收 |
-| D05 多載體失敗結果 | owner 已選逐載體結果、同步未完成、持久補送與有限重試 | retry 參數、command acceptance、命令權威與切換仍待固定 |
+| D05 多載體失敗結果 | owner 已選 SQLite 權威、Board 同步副本、逐載體結果、同步未完成、持久補送與有限重試 | 交易內 outbox、retry 參數及正式切換待實作驗證 |
 | D06 recovery／備份／保留 | 原 store 不可用時啟用程序及參數待決 | 災難接續與完整退出驗收 |
 | D07 多 executor claim | 本增量不選；是否列 0.22.0 不適用需 owner 固定 | 不得以未實作 fencing 宣稱 claim 安全 |
 | D08 新 Story 與版本 | #520，在所需 adapters 後交付，屬 #416／0.22.0 | adapters 的必要能力完成後實作 |
@@ -345,3 +345,101 @@ binding persistence, credential setup, full export/restore, publication, install
 and migration. Their later contracts retain the original complete scope, operation
 ID, expected revision and payload after unknown outcomes. Board #6 still owns the
 full recovery gap; a deployed V2 endpoint does not remove that prerequisite.
+
+## 12. Board V2 command adapter
+
+The owner explicitly authorized this continuation after the query increment.
+Add `workflow-records/board-command/1` alongside the unchanged query and local
+profiles. Use the same explicit nonsecret binding and selected host connection.
+The parent selects a Python CLI with jsonschema as an explicitly declared runtime
+dependency for these new operations only. Package a frozen, source-owned native
+V2 schema resource with origin commit/hash; no Board checkout or network schema
+resolution is permitted at consumer runtime. Validate only the supported schema
+selectors and the 18 currently advertised workflow commands; decision.resolve and
+project administration remain outside this writer profile. Missing dependency or
+capability is unavailable, not success.
+
+Prepare validates binding, full V2 command, native capability scope/versions and
+limits, safe integer wire syntax (including rejection of -0/exponents/floats),
+UTF-8/Unicode and native byte limits. It returns the unchanged command, symbolic
+allowlisted tool, separate local command fingerprint and original operation.get
+query. A host must retain the complete prepared object before dispatch and pass
+request/result as code. It must not alter operation ID, payload, expected revision,
+project or identity during retry. This pure adapter is not a durable journal.
+
+Accept validates the actual direct command result against the prepared request,
+including exact workflow/operation, original expected revision, before/after
+revision, actor shape, native digest shape and receipt/effect invariants. Preserve
+the native receipt and distinguish accepted, durable rejected and unknown. The
+bridge has no direct side effects, but observed original-command acceptance must
+not be described by an unconditional mutation_state none. Native faults are not
+durable rejected receipts; lost, malformed or mismatched responses after dispatch
+remain unresolved. Authentication/permission failure never selects a new identity.
+
+Board request_digest includes trusted owner_id and actor. The current host does
+not expose independently verified owner_id; do not derive it from project or actor,
+and do not relabel the local command fingerprint as the server digest. Direct
+command acceptance is correlated by the host sending the exact prepared command
+through the selected tool. State that server payload digest is not recomputed
+locally. Operation lookup alone is insufficient to establish that an unknown
+operation ID belongs to the original payload. If a prior verified server digest
+exists, compare it; otherwise an observed lookup receipt requires replaying the
+exact original command through the same host before final acceptance. The server's
+payload-conflict check precedes CAS and prevents accepting a different payload.
+The implementation must expose this distinction, not silently adopt a lookup as
+proof. Reconcile prepares/validates only the original lookup; it never dispatches
+or creates a new command automatically.
+
+Host retry remains bounded and explicit. This increment supplies primitives and
+clear next actions, not a background retry loop, automatic fallback or fanout.
+Domain lifecycle, task/assignment fencing, human decisions, scope changes and
+completion semantics remain Board-owned. Historical copies preserve source data
+through the selected project-scoped source-replica profile; they do not translate
+historical status into native events.
+
+Required evidence includes supported commands and fail-closed capability/schema
+checks, isolated package closure, exact request preservation, direct accepted and
+rejected receipts, lost-response lookup requiring original replay, altered payload
+collision, stale revision, wrong target, corrupted transport, strict bytes/numbers
+and independent review. Actual host tests use an explicit synthetic workflow, then
+low-cost workers may run deterministic historical copy batches and exact readback.
+
+Observed host compatibility is now part of this profile: the selected MCP host
+adds only `structuredContent.error_code: "INVALID_ARGUMENT"` on error results.
+Accept that exact annotation only with `isError: true` and corroborating native
+text; all remaining parsed fields must agree. A fully correlated native
+`accepted: false` receipt remains a durable rejection even with that error flag.
+An accepted receipt with the flag is contradictory; native faults remain unknown.
+
+## 13. Selected SQLite authority and historical replica direction
+
+The owner corrected the proposed read choice: "應該是統一使用 SQLite ，然後同步寫入
+Board 才對". SQLite therefore owns daily reads, command acceptance and retained
+workflow data; Board is a synchronized replica. The previously proposed Board-only
+read authority was not selected. A local state mutation and its immutable pending
+delivery must commit together in the same SQLite transaction. Remote receipt
+updates must not create another domain revision or recursively enqueue delivery.
+
+The proposed durable directory is
+`C:\Users\h4227\AppData\Local\AI-Collaboration\ai-collaboration-framework\`.
+It has not been provisioned or selected as an active store. RAM-disk scratch is
+for disposable validation only. Source policy cutover, installation and recovery
+remain concrete follow-on operations; none is implied by the command bridge.
+
+The owner selected implementing a project-scoped historical mirror importer
+before pushing the old workflow copies, and separately authorized Board Issue
+[#24](https://github.com/YuChia-Wei/ai-collaboration-workflow-board/issues/24).
+The selected new Board contract is `workflow-board/source-replica/1`: preserve
+original metadata/status, paths, modes and raw bytes, stage bounded chunks, then
+activate a complete immutable version with CAS and a receipt. This supports Git
+snapshot IDs and SQLite logical revisions without manufacturing native task events.
+The existing forbidden fixture import is not a production route. Production
+delivery and actual historical import are not yet accepted.
+
+At fixed Framework commit `f701105059bfc180dc5c212122e2fed939fdf664`, the inventory
+contains 219 workflow units plus three root index/control files: 1931 Git blobs,
+19427197 exact bytes. The 19437970 checkout-byte count is superseded because of
+line-ending conversion. The largest unit by bytes has 41 files and 6473677 bytes;
+the largest by file count has 107 files and 612065 bytes. Legacy fields, binaries
+and records without locators must remain data, not be coerced into current create
+semantics. Whole Git commit history is outside this snapshot copy.

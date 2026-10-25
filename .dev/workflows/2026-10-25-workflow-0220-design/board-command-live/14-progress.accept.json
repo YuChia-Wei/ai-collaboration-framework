@@ -1,0 +1,51 @@
+{
+  "bridge_effect": "none",
+  "command_outcome": "applied",
+  "contract_version": "workflow-records/board-command/1",
+  "operation": "board-command-accept",
+  "result": {
+    "correlation": "direct_host_request_response",
+    "native_result": {
+      "accepted": true,
+      "accepted_at": "2026-10-25T15:21:28.853Z",
+      "actor": {
+        "binding_id": "owner-agent-grant-1",
+        "kind": "agent",
+        "subject_id": "owner-agent"
+      },
+      "before_revision": 5,
+      "effects": [
+        {
+          "id": "proof-task",
+          "kind": "task",
+          "revision": 1
+        },
+        {
+          "id": "framework-command-proof-20261025",
+          "kind": "workflow",
+          "revision": 6
+        }
+      ],
+      "operation_id": "framework-command-proof-20261025-progress",
+      "request_digest": "sha256:4691459fbd1bb553f6366d5cb6b724df906b47423e08c48e0c0bdcb8b9e8a191",
+      "revision": 6,
+      "schema_version": "2.0",
+      "service_contract_version": "workflow-board/collaboration/2",
+      "workflow_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "record_kind": "collaboration",
+        "store_id": "workflow-records-private-collaboration",
+        "workflow_id": "framework-command-proof-20261025"
+      }
+    },
+    "next_action": "retain_receipt_and_original_prepared_command",
+    "prior_confirmation": {
+      "local_command_fingerprint": "sha256:dda8e76a36d08806c85c4ec47188de2305587cd533ee82d89c584e7c6b68c112",
+      "request_digest": "sha256:4691459fbd1bb553f6366d5cb6b724df906b47423e08c48e0c0bdcb8b9e8a191"
+    },
+    "requires_original_replay": false,
+    "server_digest_verification": "host_correlated_not_recomputed"
+  },
+  "status": "ok"
+}

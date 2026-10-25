@@ -105,6 +105,8 @@ skill through existing presets or change the source project's own installation.
 Board V2 uses the additive [board-query profile](board-query.md) and separate
 `tools/board-query.py` CLI for `board-query-prepare` / `board-query-accept`.
 The `workflow-records/1` requests below keep their existing provider semantics.
+Authorized Board writes use the separate [board-command profile](board-command.md)
+and `tools/board-command.py`; query preparation does not grant write authority.
 
 Every request includes `contract_version: "workflow-records/1"` and `operation`.
 All accept optional `max_output_bytes` from 2048 to 65536. Unknown fields fail.

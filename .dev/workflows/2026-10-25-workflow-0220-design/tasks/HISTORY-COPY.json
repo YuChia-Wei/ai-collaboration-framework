@@ -1,0 +1,16 @@
+{
+  "task_id": "HISTORY-COPY",
+  "workflow_id": "2026-10-25-workflow-0220-design",
+  "owner_skill": "slice-implementer",
+  "title": "Copy historical workflow content to Board with exact source mapping and readback",
+  "status": "pending",
+  "created_at": "2026-10-25T22:57:41+08:00",
+  "updated_at": "2026-10-25T22:57:41+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "medium",
+  "runtime_identity_source": "Project task selection; actual serving identity unavailable. Historical copy uses the user-requested low-cost sub-agent.",
+  "finding_status": "pending",
+  "result_summary": "Pending implementation and acceptance; prior tasks remain completed."
+}

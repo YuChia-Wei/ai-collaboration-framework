@@ -1,0 +1,15 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"error\":\"operation_payload_conflict\",\"category\":\"conflict\",\"details\":{}}"
+    }
+  ],
+  "structuredContent": {
+    "error": "operation_payload_conflict",
+    "category": "conflict",
+    "details": {},
+    "error_code": "INVALID_ARGUMENT"
+  },
+  "isError": true
+}

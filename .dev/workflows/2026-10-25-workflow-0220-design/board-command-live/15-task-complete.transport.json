@@ -1,0 +1,48 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"accepted\":true,\"service_contract_version\":\"workflow-board/collaboration/2\",\"schema_version\":\"2.0\",\"workflow_ref\":{\"store_id\":\"workflow-records-private-collaboration\",\"namespace\":\"personal\",\"record_kind\":\"collaboration\",\"workflow_id\":\"framework-command-proof-20261025\",\"project_id\":\"ai-collaboration-framework\"},\"operation_id\":\"framework-command-proof-20261025-task-complete\",\"request_digest\":\"sha256:3c0156856b5727d0729613c42a317e30995e5784d900c113daa249a06ebd314f\",\"actor\":{\"subject_id\":\"owner-agent\",\"kind\":\"agent\",\"binding_id\":\"owner-agent-grant-1\"},\"before_revision\":6,\"revision\":7,\"accepted_at\":\"2026-10-25T15:21:55.180Z\",\"effects\":[{\"kind\":\"assignment\",\"id\":\"assignment-7e76cdd9-042b-4744-93c1-0350392874cb\",\"revision\":1},{\"kind\":\"task\",\"id\":\"proof-task\",\"revision\":1},{\"kind\":\"workflow\",\"id\":\"framework-command-proof-20261025\",\"revision\":7}]}"
+    }
+  ],
+  "structuredContent": {
+    "accepted": true,
+    "service_contract_version": "workflow-board/collaboration/2",
+    "schema_version": "2.0",
+    "workflow_ref": {
+      "store_id": "workflow-records-private-collaboration",
+      "namespace": "personal",
+      "record_kind": "collaboration",
+      "workflow_id": "framework-command-proof-20261025",
+      "project_id": "ai-collaboration-framework"
+    },
+    "operation_id": "framework-command-proof-20261025-task-complete",
+    "request_digest": "sha256:3c0156856b5727d0729613c42a317e30995e5784d900c113daa249a06ebd314f",
+    "actor": {
+      "subject_id": "owner-agent",
+      "kind": "agent",
+      "binding_id": "owner-agent-grant-1"
+    },
+    "before_revision": 6,
+    "revision": 7,
+    "accepted_at": "2026-10-25T15:21:55.180Z",
+    "effects": [
+      {
+        "kind": "assignment",
+        "id": "assignment-7e76cdd9-042b-4744-93c1-0350392874cb",
+        "revision": 1
+      },
+      {
+        "kind": "task",
+        "id": "proof-task",
+        "revision": 1
+      },
+      {
+        "kind": "workflow",
+        "id": "framework-command-proof-20261025",
+        "revision": 7
+      }
+    ]
+  },
+  "isError": false
+}
