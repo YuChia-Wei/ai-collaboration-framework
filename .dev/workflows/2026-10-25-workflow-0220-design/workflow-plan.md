@@ -40,8 +40,10 @@ must precede any destructive rebuild; clearing is not needed to add project scop
   the first #445 Board V2 query/receipt adapter. Board writes, fanout and adoption
   remain separate increments.
   This record does not claim to execute all Features or complete Epic #416.
-- Proposed eventual integration: linear, because this bounded design delivery has
-  no migration or external lifecycle execution requiring a merge node. Not executed.
+- The owner subsequently selected `--no-ff` integration because the branch now
+  contains multiple durable commits. Preserve a distinct merge commit; do not use
+  fast-forward, squash or rebase merge. This replaces the earlier linear proposal.
+  Integration itself remains unexecuted.
 
 The workflow preserves unique owner decisions, the cross-skill design handoff
 and the transition from the current Git record policy to future source adoption.
@@ -56,9 +58,9 @@ record before #514 cutover, not evidence that no-Git workflow adoption is comple
 | DESIGN | software-architect, coordinated by software-development-orchestrator | completed | [Design](../../design/workflow-0220-2026-10-25/design.md) includes latest owner direction and remaining decisions; Issue closure separate |
 | CREATE-TASK | slice-implementer | completed | Implementation, focused checks and independent recovery review complete; R1 corrected and read back |
 | BOARD-V2-QUERY | slice-implementer | completed | Additive Board V2 query/receipt profile, 15 actual selected-plugin queries and independent fixed-commit review complete; see design section 11 |
-| BOARD-V2-COMMAND | slice-implementer | in_progress | Implementation and selected-plugin command/readback checks complete; independent fixed-head review is next |
+| BOARD-V2-COMMAND | slice-implementer | completed | Implementation, selected-plugin validation and independent fixed-head review complete |
 | HISTORY-COPY | software-development-orchestrator | pending | Exact Git inventory retained; Board #24 source-replica implementation is under repair after independent review; real import not run |
-| MULTI-CARRIER | slice-implementer | pending | SQLite authority and Board replica selected; transactional pending delivery is next after command review |
+| MULTI-CARRIER | slice-implementer | in_progress | SQLite schema-2 snapshot, transactional outbox and recovery implementation |
 | SOURCE-MIGRATION | software-development-orchestrator | pending | Persistent store, migration, installation and source-policy cutover not performed |
 
 Live native hierarchy was read through GitHub GraphQL, not inferred from body links:
@@ -434,3 +436,30 @@ actual historical copy is established by this command increment. Board importer
 commit 89f6dd35b3484822ca035baac50d2dcd67007b82 had two independent P2 findings
 (HTTP profile binding and CLI result identity); repair and affected review are
 being performed in the separate Board checkout.
+
+### Command review and SQLite synchronization handoff
+
+The independent fixed-head auditor reviewed clean
+5c0abfe7ea064fdaadab8e64b8b00d9656705bbf against f701105059bfc180dc5c212122e2fed939fdf664
+under code-reviewer/review and the project fixed-head role, selected Sol/medium
+(actual serving identity unknown). It returned no supported actionable findings.
+Current loader evidence resolved the shared query helper: tool support members
+are combined into one complete skill package, so a single declaration supplies
+both CLIs. Review was read-only and did not rerun tests or provider calls.
+
+Board independent review of 89f6dd35b3484822ca035baac50d2dcd67007b82 found two P2
+issues. The affected review of clean 5bf075abb64b797f039e7484aa96485f814835e2 verified
+both repairs and the bounded activation reader, with no new actionable finding.
+On 2026-10-25 the owner explicitly authorized Board branch push, PR creation,
+merge after CI, deployment to the existing owner-private Site and additive
+migration, followed by the already authorized historical copy. The current Site
+readback is version 15, access policy revision 1 with owner only. No audience
+change is selected. Framework push/PR/merge remain separate from that Board grant;
+the owner's later no-ff instruction selects merge method, not unexecuted CI success.
+
+The next implementation uses design section 14: a versioned snapshot and outbox
+layer inside the same SQLite database, lossless historical import, native writer
+hooks and complete backup/restore closure. The parent selects manual bounded
+dispatch with exact retained requests and no pruning. Pending delivery cannot be
+created in a second transaction or second database. Permanent path selection is
+still pending; implementation/testing do not initialize the production store.
