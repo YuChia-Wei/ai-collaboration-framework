@@ -1,0 +1,17 @@
+{
+  "task_id": "DESIGN",
+  "workflow_id": "2026-10-25-workflow-0220-design",
+  "owner_skill": "software-architect",
+  "title": "Define current owners, public operation gaps and migration contract for Issue 483",
+  "status": "completed",
+  "created_at": "2026-10-25T13:45:45+08:00",
+  "updated_at": "2026-10-25T14:12:50+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "runtime_identity_source": "Configured Codex default read from config.toml on 2026-10-25; actual parent serving-model identity is not independently observable. Sub-agent selection was separately gpt-6.1-sol/medium under project policy.",
+  "finding_status": "addressed",
+  "result_summary": "Completed bounded design and seven Story acceptance mappings. Latest owner direction selects Workflow Board, external tracker use without local-backlog dependency, optional local item integration and eventual compatible retirement. Fanout is Issue 520; Board project scoping is Issue 22 in a separate authorized development chat. First create-task slice selected. Remaining cutover and recovery decisions are explicit; no Issue closure or runtime acceptance claimed.",
+  "artifact": ".dev/design/workflow-0220-2026-10-25/design.md"
+}

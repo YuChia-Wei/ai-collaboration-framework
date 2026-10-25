@@ -1,0 +1,43 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"accepted\":true,\"service_contract_version\":\"workflow-board/collaboration/2\",\"schema_version\":\"2.0\",\"workflow_ref\":{\"store_id\":\"workflow-records-private-collaboration\",\"namespace\":\"personal\",\"record_kind\":\"collaboration\",\"workflow_id\":\"framework-command-proof-20261025\",\"project_id\":\"ai-collaboration-framework\"},\"operation_id\":\"framework-command-proof-20261025-checkpoint\",\"request_digest\":\"sha256:f5415de48e280d89702872efdde79e7eb8d1e6c8afbb069e4a186c19297e266a\",\"actor\":{\"subject_id\":\"owner-agent\",\"kind\":\"agent\",\"binding_id\":\"owner-agent-grant-1\"},\"before_revision\":8,\"revision\":9,\"accepted_at\":\"2026-10-25T15:22:51.797Z\",\"effects\":[{\"kind\":\"checkpoint\",\"id\":\"checkpoint-db757a24-e584-45f3-852b-f92ecb7458ba\",\"revision\":1},{\"kind\":\"workflow\",\"id\":\"framework-command-proof-20261025\",\"revision\":9}]}"
+    }
+  ],
+  "structuredContent": {
+    "accepted": true,
+    "service_contract_version": "workflow-board/collaboration/2",
+    "schema_version": "2.0",
+    "workflow_ref": {
+      "store_id": "workflow-records-private-collaboration",
+      "namespace": "personal",
+      "record_kind": "collaboration",
+      "workflow_id": "framework-command-proof-20261025",
+      "project_id": "ai-collaboration-framework"
+    },
+    "operation_id": "framework-command-proof-20261025-checkpoint",
+    "request_digest": "sha256:f5415de48e280d89702872efdde79e7eb8d1e6c8afbb069e4a186c19297e266a",
+    "actor": {
+      "subject_id": "owner-agent",
+      "kind": "agent",
+      "binding_id": "owner-agent-grant-1"
+    },
+    "before_revision": 8,
+    "revision": 9,
+    "accepted_at": "2026-10-25T15:22:51.797Z",
+    "effects": [
+      {
+        "kind": "checkpoint",
+        "id": "checkpoint-db757a24-e584-45f3-852b-f92ecb7458ba",
+        "revision": 1
+      },
+      {
+        "kind": "workflow",
+        "id": "framework-command-proof-20261025",
+        "revision": 9
+      }
+    ]
+  },
+  "isError": false
+}

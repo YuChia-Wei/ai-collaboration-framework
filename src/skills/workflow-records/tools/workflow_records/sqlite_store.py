@@ -124,7 +124,7 @@ class SQLiteStore:
         row = connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()
         require(row is not None, "malformed_record", "Store identity is missing.")
         value = decode_json(bytes(row[0]))
-        require(value.get("schema_version") == SCHEMA, "unsupported_version", "Unsupported local schema.")
+        require(value.get("schema_version") in (SCHEMA, "workflow-sqlite/2"), "unsupported_version", "Unsupported local schema.")
         require((value.get("provider_id"), value.get("store_id"), value.get("repository_id"), value.get("repository_binding")) ==
                 (self.provider_id, self.store_id, self.repository_id, self.binding),
                 "binding_mismatch", "Local store belongs to a different repository or provider.")
@@ -135,7 +135,8 @@ class SQLiteStore:
     def save_meta(connection, meta):
         connection.execute("UPDATE store_meta SET value=? WHERE id=1", (encoded(meta),))
 
-    def initialize(self, request):
+    def initialize(self, request, schema=SCHEMA):
+        require(schema in (SCHEMA, "workflow-sqlite/2"), "unsupported_version", "Unsupported initialization schema.")
         op = identifier(request.get("operation_id"))
         if self.database.exists():
             with self.transaction() as (connection, _):
@@ -157,7 +158,11 @@ class SQLiteStore:
             connection.execute("BEGIN IMMEDIATE")
             for statement in DDL:
                 connection.execute(statement)
-            meta = {"schema_version": SCHEMA, "provider_id": self.provider_id, "store_id": self.store_id,
+            if schema == "workflow-sqlite/2":
+                from .source_store import DDL as source_ddl
+                for statement in source_ddl:
+                    connection.execute(statement)
+            meta = {"schema_version": schema, "provider_id": self.provider_id, "store_id": self.store_id,
                     "repository_id": self.repository_id, "repository_binding": self.binding,
                     "instance_id": str(uuid.uuid4()), "state": "active", "origin": None, "retirement": None}
             connection.execute("INSERT INTO store_meta VALUES(1,?)", (encoded(meta),))
@@ -197,6 +202,14 @@ class SQLiteStore:
         event = {"operation": request["operation"], "operation_id": request["operation_id"], "recorded_at": now()}
         connection.execute("INSERT INTO operations VALUES(?,?,?,?,?)",
                            (scope, request["operation_id"], request_digest(request), encoded(receipt), encoded(event)))
+        if scope and request["operation"] in ("create", "create-task", "checkpoint", "write-document", "revise-workflow"):
+            meta = decode_json(bytes(connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()[0]))
+            if meta["schema_version"] == "workflow-sqlite/2":
+                try:
+                    from .source_store import capture_native
+                    capture_native(connection, scope, receipt["revision"])
+                except ImportError as exc:
+                    raise RecordError("provider_unavailable", "Schema-2 writes require the declared local snapshot runtime; mutation was rolled back.") from exc
         # Check the actual portable representation while the write can still
         # roll back. Normal history cannot consume lifecycle transfer headroom.
         from .backup import check_capacity
@@ -236,6 +249,12 @@ class SQLiteStore:
         return key
 
     @staticmethod
+    def validate_task(task):
+        require(isinstance(task, dict), "invalid_input", "Task must be an object.")
+        identifier(task.get("task_id"))
+        required_strings(task, ("status", "title"))
+
+    @staticmethod
     def validate_record(record):
         require(isinstance(record, dict) and set(record) == {"metadata", "tasks", "entrypoint", "documents", "attachments"},
                 "invalid_input", "Local record requires metadata, tasks, entrypoint, documents and attachments.")
@@ -246,9 +265,8 @@ class SQLiteStore:
         require(isinstance(tasks, list) and 0 < len(tasks) <= MAX_TASKS, "invalid_input", "A bounded nonempty task list is required.")
         ids = set()
         for task in tasks:
-            require(isinstance(task, dict), "invalid_input", "Task must be an object.")
-            task_id = identifier(task.get("task_id"))
-            required_strings(task, ("status", "title"))
+            SQLiteStore.validate_task(task)
+            task_id = task["task_id"]
             require(task_id not in ids, "invalid_input", "Task identity is duplicated.")
             ids.add(task_id)
         paths = set()
@@ -308,6 +326,35 @@ class SQLiteStore:
         validate_checkpoint(request.get("checkpoint"))
         return self.update(ref, request)
 
+    def revise(self, connection, state, request):
+        """Patch one complete native record inside the existing optimistic transaction."""
+        metadata = request.get("metadata_patch", {})
+        patches = request.get("task_patches", [])
+        documents = request.get("documents", {})
+        require(isinstance(metadata, dict) and isinstance(patches, list) and isinstance(documents, dict),
+                "invalid_input", "Revision patches require metadata/document objects and a task list.")
+        require(metadata or patches or documents, "invalid_input", "Revision requires a nonempty change.")
+        require(len(patches) <= MAX_TASKS, "limit_exceeded", "Task patch count exceeds the limit.")
+        state["metadata"].update(metadata)
+        tasks = {task["task_id"]: task for task in state["tasks"]}
+        selected = set()
+        for patch in patches:
+            require(isinstance(patch, dict) and len(patch) > 1,
+                    "invalid_input", "Each task patch requires a selector and supplied fields.")
+            task_id = identifier(patch.get("task_id"))
+            require(task_id in tasks and task_id not in selected,
+                    "invalid_input", "Task patch selector is unknown or duplicated.")
+            selected.add(task_id)
+            tasks[task_id].update(patch)
+        # Validate the complete resulting identity map before retaining new blobs.
+        resulting = {key: state[key] for key in ("metadata", "tasks", "entrypoint", "attachments")}
+        resulting["documents"] = {**state["documents"], **documents}
+        self.validate_record(resulting)
+        for name, content in documents.items():
+            raw = content.encode("utf-8")
+            text(raw)
+            state["documents"][name] = self.put_blob(connection, raw)
+
     def update(self, ref, request):
         op = identifier(request.get("operation_id"))
         with self.transaction(write=True) as (connection, meta):
@@ -321,6 +368,15 @@ class SQLiteStore:
             require(request.get("expected_source_head") == head, "source_conflict", "Git HEAD changed; reconcile the source first.")
             if request["operation"] == "checkpoint":
                 state["checkpoint"] = {"operation_id": op, "recorded_at": now(), "value": request["checkpoint"]}
+            elif request["operation"] == "create-task":
+                task = request.get("task")
+                self.validate_task(task)
+                require(all(existing["task_id"] != task["task_id"] for existing in state["tasks"]),
+                        "already_exists", "Task already exists in the selected workflow.")
+                require(len(state["tasks"]) < MAX_TASKS, "limit_exceeded", "Task capacity reached.")
+                state["tasks"].append(task)
+            elif request["operation"] == "revise-workflow":
+                self.revise(connection, state, request)
             else:
                 name = str(relative_path(request.get("document")))
                 content = request.get("content")

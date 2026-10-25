@@ -197,14 +197,19 @@ Rules:
 
 ## Commit Timing
 
-Create a commit when:
+For authorized Git delivery, create a commit when the tracked source, policy or
+formal-artifact diff forms a coherent validated unit, including:
 
-- a workflow stage is completed and validated;
-- a task JSON status is updated to `completed`;
+- a workflow stage's tracked changes are completed and validated;
 - a policy or source-of-truth document is introduced;
 - a file move or large rename is completed and references are checked;
 - the user explicitly asks for a commit.
 - a standalone assessment draft reaches a durable resume checkpoint or becomes final.
+
+Daily native workflow creation, task completion, progress and handoff under
+[workflow storage](WORKFLOW-STORE-POLICY.md) do not themselves require a commit.
+Do not manufacture a tracked locator or evidence-sync diff to create such a
+boundary. Preserve workflow identity in actual workflow-stage commit messages.
 
 Do not commit when:
 
@@ -216,12 +221,12 @@ Do not commit when:
 
 ## Workflow Commit Rule
 
-For workflow mode, the default density is one validated commit per durable
-stage or coherent bounded task batch. A skill invocation is not a commit
-boundary by itself. Commit at these boundaries when they form a durable,
-validated unit:
+For workflow mode, the default density is one validated commit per coherent
+tracked source, policy or formal-artifact unit. A skill invocation, native
+bootstrap or SQLite task completion is not a commit boundary by itself. These
+examples select a commit only when they produce such an authorized tracked unit:
 
-1. workflow bootstrap;
+1. tracked source/formal-artifact preparation;
 2. inventory completed;
 3. each policy completed;
 4. each skill or wrapper sync completed;

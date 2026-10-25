@@ -45,7 +45,9 @@ provider, Workflow Board deployment or new storage product. Unselected historica
 records remain unchanged. Drafting or reviewing requirements never grants execution
 permission or proves implementation, adoption or acceptance.
 
-This repository uses `.dev/workflows/` for workflow authorization and handoff.
+This repository uses the selected native store under
+[workflow storage](WORKFLOW-STORE-POLICY.md) for current workflow authorization
+and handoff. Historical `.dev/workflows/` files retain their provenance.
 Live Issues retain requirement scope and functional status, and Project fields
 retain their existing planning responsibilities. A conversation can supply the
 owner decision; capture necessary continuation evidence in the workflow, never

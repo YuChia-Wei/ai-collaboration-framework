@@ -1,0 +1,171 @@
+{
+  "binding": {
+    "adapter_id": "workflow-board-v2",
+    "binding_id": "codex-workroom-framework-v2",
+    "binding_revision": 1,
+    "project_ref": {
+      "namespace": "personal",
+      "project_id": "ai-collaboration-framework",
+      "store_id": "workflow-records-private-collaboration"
+    }
+  },
+  "capabilities": {
+    "commands": [
+      "workflow.create",
+      "workflow.start",
+      "workflow.pause",
+      "workflow.resume",
+      "workflow.cancel",
+      "workflow.complete",
+      "plan.revise",
+      "document.append",
+      "task.claim",
+      "task.progress",
+      "task.release",
+      "task.block",
+      "task.unblock",
+      "task.complete",
+      "task.cancel",
+      "decision.open",
+      "handoff.record",
+      "checkpoint.append"
+    ],
+    "contract_status": "implemented",
+    "limits": {
+      "context_page_items": 20,
+      "context_utf8_bytes": 64000,
+      "decisions_per_workflow": 100,
+      "document_utf8_bytes": 256000,
+      "header_utf8_bytes": 16000,
+      "record_utf8_bytes": 64000,
+      "request_utf8_bytes": 300000,
+      "tasks_per_workflow": 100
+    },
+    "namespace": "personal",
+    "project_id": "ai-collaboration-framework",
+    "queries": [
+      "capabilities",
+      "workflow.find",
+      "workflow.context",
+      "context.page",
+      "task.read",
+      "decision.read",
+      "document.read",
+      "operation.get"
+    ],
+    "schema_version": "2.0",
+    "service_contract_version": "workflow-board/collaboration/2",
+    "store_id": "workflow-records-private-collaboration"
+  },
+  "command": {
+    "command": "plan.revise",
+    "expected_revision": 2,
+    "operation_id": "framework-command-proof-20261025-plan",
+    "payload": {
+      "completion_requirements": [
+        {
+          "description": "Complete the synthetic command validation",
+          "document_refs": [
+            {
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+              "document_id": "proof-plan",
+              "revision": 2
+            }
+          ],
+          "id": "proof-complete",
+          "task_ids": [
+            "proof-task"
+          ]
+        }
+      ],
+      "decision_dispositions": [],
+      "execution_impact": "declared",
+      "plan": {
+        "content": "Synthetic command bridge plan.\nVerify exact UTF-8: 臺灣 測試 👩‍💻\n",
+        "document_id": "proof-plan",
+        "expected_document_revision": 1
+      },
+      "requirement_dispositions": [],
+      "task_changes": [
+        {
+          "definition": {
+            "completion_criteria": [
+              "A direct bridge result is retained."
+            ],
+            "decision_ids": [],
+            "dependencies": [],
+            "description": "Exercise the command adapter with observed receipts.",
+            "expected_artifacts": [],
+            "id": "proof-task",
+            "inputs": [],
+            "plan_basis": {
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+              "document_id": "proof-plan",
+              "revision": 2
+            },
+            "scope": {
+              "excluded": "Production work",
+              "included": "Synthetic bridge checks"
+            },
+            "title": "Synthetic proof-task",
+            "workstream": null
+          },
+          "kind": "add"
+        },
+        {
+          "definition": {
+            "completion_criteria": [
+              "A direct bridge result is retained."
+            ],
+            "decision_ids": [],
+            "dependencies": [],
+            "description": "Exercise the command adapter with observed receipts.",
+            "expected_artifacts": [],
+            "id": "cancel-task",
+            "inputs": [],
+            "plan_basis": {
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+              "document_id": "proof-plan",
+              "revision": 2
+            },
+            "scope": {
+              "excluded": "Production work",
+              "included": "Synthetic bridge checks"
+            },
+            "title": "Synthetic cancel-task",
+            "workstream": null
+          },
+          "kind": "add"
+        }
+      ],
+      "unaffected_task_ids": []
+    },
+    "schema_version": "2.0",
+    "service_contract_version": "workflow-board/collaboration/2",
+    "workflow_ref": {
+      "namespace": "personal",
+      "project_id": "ai-collaboration-framework",
+      "record_kind": "collaboration",
+      "store_id": "workflow-records-private-collaboration",
+      "workflow_id": "framework-command-proof-20261025"
+    }
+  },
+  "contract_version": "workflow-records/board-command/1",
+  "local_command_fingerprint": "sha256:fb9db1d6de4a52b957427e312868a801cba29c78f245a25ed4dc60f3077dbf4c",
+  "recovery_query": {
+    "payload": {
+      "operation_id": "framework-command-proof-20261025-plan",
+      "workflow_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "record_kind": "collaboration",
+        "store_id": "workflow-records-private-collaboration",
+        "workflow_id": "framework-command-proof-20261025"
+      }
+    },
+    "query": "operation.get",
+    "schema_version": "2.0",
+    "service_contract_version": "workflow-board/collaboration/2"
+  },
+  "tool_name": "v2_plan_revise"
+}

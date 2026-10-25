@@ -1,12 +1,29 @@
 ---
 name: workflow-records
-description: Read and maintain explicitly selected workflow records through the bundled Git or local SQLite provider, preserving record identity, authorization and recovery evidence.
+description: Read and maintain selected Git or SQLite workflow records, or prepare and accept Board V2 queries through an explicit host MCP binding, preserving identity, authorization and recovery evidence.
 ---
 
 # Workflow Records
 
+For explicitly selected unified SQLite source authority and Board source-copy
+delivery, use the additive [source-store profile](references/source-store.md) and
+[CLI](tools/source-store.py). Fresh schema 2 is an explicit selection; never upgrade
+a v1 database implicitly. Preserve archive kinds/raw bytes, original identities,
+fixed targets and exact pending commands. Local acceptance and replica completion
+are separate, and each host dispatch remains explicit.
+
 Use the [operation contract](references/operations.md) and the bundled
 [CLI](tools/workflow-records.py) for an explicitly selected project and store.
+For Board V2 reads and receipt lookup, use the separate
+[Board query contract](references/board-query.md) and [CLI](tools/board-query.py).
+Its `board-query-prepare` and `board-query-accept` operations require an explicit
+binding and a caller-supplied MCP transport; preparation does not execute a query.
+Keep its native numeric revisions, project scope and opaque cursors intact.
+For explicitly authorized Board writes, use the separate
+[command bridge contract](references/board-command.md) and
+[CLI](tools/board-command.py). Retain the complete prepared command before the
+host dispatches it. Lost responses and unconfirmed lookups remain unresolved;
+reconcile only the original operation and replay only its exact original command.
 This optional skill supplies the executable and its complete local modules;
 selecting or installing it does not select a store, initialize a database,
 migrate records or adopt workflow governance.
@@ -19,8 +36,9 @@ switch stores, install dependencies or save configuration implicitly.
 
 Use `find`, `context`, `read`, `resume`, `validate` and `operation` for bounded
 reads. Preserve the returned revision and complete workflow reference. Perform
-`checkpoint`, `init`, `create`, `write-document`, `export`, `preflight`, `restore`,
-`deactivate` or `activate` only for the caller's selected effect and destination.
+`checkpoint`, `init`, `create`, `create-task`, `write-document`, `revise-workflow`,
+`export`, `preflight`, `restore`, `deactivate` or `activate` only for the caller's
+selected effect and destination.
 Apply the runtime's operation-specific concurrency and recovery contracts;
 do not invent successful retries or infer success from a process interruption.
 

@@ -7,7 +7,7 @@ from jsonschema import Draft202012Validator
 from referencing.exceptions import Unresolvable
 
 from schemas.schema_support import (
-    DISTRIBUTION, JSON_PATHS, PROVIDER_SCHEMA, RECORDS, ROOT, SHA, changed,
+    DISTRIBUTION, JSON_PATHS, PROVIDER_SCHEMA, RECORDS, ROOT, SHA, WORKFLOW_CONTRACTS, changed,
     distribution_examples, distribution_validator, document, knowledge,
     registry, selection, source, validator,
 )
@@ -30,7 +30,7 @@ class SourceSchemaInventoryTests(unittest.TestCase):
         paths.update((ROOT / "src/skills").glob("*/schemas/*.schema.json"))
         paths.update((ROOT / "src/knowledge").rglob("*.schema.yaml"))
         self.assertEqual({p.relative_to(ROOT).as_posix() for p in paths}, set(JSON_PATHS) | {PROVIDER_SCHEMA})
-        self.assertEqual((len(DISTRIBUTION), len(RECORDS)), (12, 7))
+        self.assertEqual((len(DISTRIBUTION), len(RECORDS), len(WORKFLOW_CONTRACTS)), (12, 7, 2))
 
     def test_all_json_schemas_are_well_formed(self):
         for path in JSON_PATHS:

@@ -150,11 +150,29 @@ def workflow_reference_error(root: Path, workflow_id: str, records=None) -> str 
     from workflow_records.contracts import VERSION, RecordError
     try:
         response = records.execute({"contract_version": VERSION, "operation": "validate",
-                                    "workflow_ref": records.reference(workflow_id)})
+                                    "workflow_ref": records.reference(workflow_id, provider_id="git")})
     except RecordError as exc:
         return f"workflow_refs {workflow_id}: {exc.code}"
     if response["status"] != "ok":
         return f"workflow_refs {workflow_id}: {response['error']['code']}"
+    return None
+
+
+def workflow_record_reference_error(reference: object, records=None) -> str | None:
+    """Validate an explicit complete reference without default-provider resolution."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+    from workflow_records.contracts import VERSION, RecordError, WorkflowRef
+    label = f"workflow_record_refs {reference!r}"
+    try:
+        ref = WorkflowRef.parse(reference)
+        if records is None:
+            return f"{label}: explicit --workflow-store-config is required"
+        response = records.execute({"contract_version": VERSION, "operation": "validate",
+                                    "workflow_ref": ref.as_dict()})
+    except RecordError as exc:
+        return f"{label}: {exc.code}"
+    if response["status"] != "ok":
+        return f"{label}: {response['error']['code']}"
     return None
 
 
@@ -196,8 +214,8 @@ def validate_assessments(root: Path, workflow_records=None) -> tuple[list[str], 
         if missing:
             errors.append(f"{label}: missing fields {', '.join(missing)}")
             continue
-        if locator.get("schema_version") != "1.0":
-            errors.append(f"{label}: schema_version must be 1.0")
+        if locator.get("schema_version") not in ("1.0", "1.1"):
+            errors.append(f"{label}: schema_version must be 1.0 or 1.1")
         if locator.get("assessment_id") != assessment_id:
             errors.append(f"{label}: assessment_id must match directory name")
         if locator.get("commit_search_id") != assessment_id:
@@ -260,6 +278,11 @@ def validate_assessments(root: Path, workflow_records=None) -> tuple[list[str], 
             errors.append(f"{label}: missing relation lists {', '.join(missing_relations)}")
         for key in RELATION_KEYS:
             string_list(relations.get(key), f"{label} relations.{key}", errors)
+        if "workflow_record_refs" in relations:
+            if locator.get("schema_version") != "1.1":
+                errors.append(f"{label}: relations.workflow_record_refs requires schema_version 1.1")
+            elif not isinstance(relations["workflow_record_refs"], list):
+                errors.append(f"{label}: relations.workflow_record_refs must be a list of complete workflow references")
 
         resume = locator.get("resume")
         if not isinstance(resume, dict):
@@ -322,6 +345,11 @@ def validate_assessments(root: Path, workflow_records=None) -> tuple[list[str], 
             error = workflow_reference_error(root, workflow_id, workflow_records)
             if error:
                 errors.append(f"{locator_path.relative_to(root)}: {error}")
+        if locator.get("schema_version") == "1.1" and isinstance(relations.get("workflow_record_refs"), list):
+            for reference in relations["workflow_record_refs"]:
+                error = workflow_record_reference_error(reference, workflow_records)
+                if error:
+                    errors.append(f"{locator_path.relative_to(root)}: {error}")
         for backlog_id in relations.get("backlog_refs", []) if isinstance(relations.get("backlog_refs"), list) else []:
             if not (root / ".dev" / "backlog" / "items" / f"{backlog_id}.yaml").is_file():
                 errors.append(f"{locator_path.relative_to(root)}: backlog_refs references missing item {backlog_id}")

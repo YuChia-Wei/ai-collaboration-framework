@@ -10,6 +10,20 @@ runtime:
 - id: python
   version: '>=3.11,<4'
   for_operations:
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - replica-prepare
+  - replica-observe
+  - board-command-prepare
+  - board-command-accept
+  - board-command-reconcile
+  - board-query-prepare
+  - board-query-accept
   - capabilities
   - find
   - context
@@ -20,7 +34,9 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -30,6 +46,15 @@ runtime:
 - id: pyyaml
   version: '>=6,<7'
   for_operations:
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - replica-prepare
+  - replica-observe
   - capabilities
   - find
   - context
@@ -40,7 +65,9 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -50,6 +77,15 @@ runtime:
 - id: git
   requirement: Git CLI for the selected repository and source identity binding
   for_operations:
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - replica-prepare
+  - replica-observe
   - capabilities
   - find
   - context
@@ -60,7 +96,9 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -70,6 +108,15 @@ runtime:
 - id: sqlite
   requirement: Python sqlite3 module for explicitly selected local stores
   for_operations:
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - replica-prepare
+  - replica-observe
   - capabilities
   - find
   - context
@@ -80,18 +127,39 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
   - deactivate
   - activate
   on_missing: unavailable
+- id: jsonschema
+  version: '>=4.26,<5'
+  for_operations:
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - replica-prepare
+  - replica-observe
+  - board-command-prepare
+  - board-command-accept
+  - board-command-reconcile
+  on_missing: unavailable
 configuration: null
 artifact_roles: []
 resources:
   references:
   - references/operations.md
+  - references/board-query.md
+  - references/board-command.md
+  - references/source-store.md
   - references/git-format.md
   schemas: []
   templates: []
@@ -112,7 +180,9 @@ resources:
     - operation
     - init
     - create
+    - create-task
     - write-document
+    - revise-workflow
     - export
     - preflight
     - restore
@@ -126,6 +196,48 @@ resources:
     - tools/workflow_records/git_store.py
     - tools/workflow_records/service.py
     - tools/workflow_records/sqlite_store.py
+  - id: board-query-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/board-query.py
+    operation_contract: references/board-query.md
+    operations:
+    - board-query-prepare
+    - board-query-accept
+    support_files:
+    - tools/workflow_records/board_query.py
+  - id: board-command-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/board-command.py
+    operation_contract: references/board-command.md
+    operations:
+    - board-command-prepare
+    - board-command-accept
+    - board-command-reconcile
+    support_files:
+    - tools/workflow_records/board_command.py
+    - schemas/board-collaboration-v2.schema.json
+  - id: source-store-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/source-store.py
+    operation_contract: references/source-store.md
+    operations:
+    - source-init
+    - source-import-git
+    - source-list
+    - source-read
+    - source-chunk
+    - source-operation
+    - replica-bind
+    - replica-prepare
+    - replica-observe
+    support_files:
+    - tools/workflow_records/source_contract.py
+    - tools/workflow_records/source_store.py
+    - tools/workflow_records/source_backup.py
+    - schemas/source-replica-v1.schema.json
 operations:
 - id: capabilities
   execution: tool
@@ -227,7 +339,27 @@ operations:
   outputs:
   - bounded-json-response
   implementation_status: implemented
+- id: create-task
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
 - id: write-document
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: revise-workflow
   execution: tool
   tool: workflow-records-cli
   inputs:
@@ -284,6 +416,141 @@ operations:
   - explicit-project-root
   - bounded-json-request
   - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-query-prepare
+  execution: tool
+  tool: board-query-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-query-accept
+  execution: tool
+  tool: board-query-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-command-prepare
+  execution: tool
+  tool: board-command-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-command-accept
+  execution: tool
+  tool: board-command-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-command-reconcile
+  execution: tool
+  tool: board-command-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-init
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-import-git
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-list
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-read
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-chunk
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-operation
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: replica-bind
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: replica-prepare
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: replica-observe
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
   outputs:
   - bounded-json-response
   implementation_status: implemented

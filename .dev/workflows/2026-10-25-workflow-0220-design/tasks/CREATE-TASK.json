@@ -1,0 +1,16 @@
+{
+  "task_id": "CREATE-TASK",
+  "workflow_id": "2026-10-25-workflow-0220-design",
+  "owner_skill": "slice-implementer",
+  "title": "Add a transactional SQLite create-task public operation without local-backlog dependency",
+  "status": "completed",
+  "created_at": "2026-10-25T14:14:59+08:00",
+  "updated_at": "2026-10-25T14:26:20+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "runtime_identity_source": "Task selection implementation -> reasoning from project sub-agent policy; actual serving identity is not independently observable.",
+  "finding_status": "addressed",
+  "result_summary": "SQLite create-task completed with task_id/status/title and optional extensions, atomic revision/receipt, replay and conflict guards. Seven new tests; initial combined evidence covered 50 distinct methods in 52 executions after two expectation corrections. Independent review found R1; parent reproduced the bool/int preservation defect, corrected canonical JSON comparison, and passed four affected methods. Independent readback of 5d8efd8ef663a09e8b3f1551798419432e819240 confirmed R1 addressed with no supported new delta regression. No installation, migration, hosted gate, Issue completion or online execution claimed."
+}

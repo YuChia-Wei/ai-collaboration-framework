@@ -997,18 +997,38 @@ components:
   members:
   - source: SKILL.md
     destination: .ai/core/skills/workflow-records/SKILL.md
+  - source: references/board-command.md
+    destination: .ai/core/skills/workflow-records/references/board-command.md
+  - source: references/board-query.md
+    destination: .ai/core/skills/workflow-records/references/board-query.md
   - source: references/git-format.md
     destination: .ai/core/skills/workflow-records/references/git-format.md
   - source: references/operations.md
     destination: .ai/core/skills/workflow-records/references/operations.md
+  - source: references/source-store.md
+    destination: .ai/core/skills/workflow-records/references/source-store.md
+  - source: schemas/board-collaboration-v2.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/board-collaboration-v2.schema.json
+  - source: schemas/source-replica-v1.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/source-replica-v1.schema.json
   - source: skill-package.yaml
     destination: .ai/core/skills/workflow-records/skill-package.yaml
+  - source: tools/board-command.py
+    destination: .ai/core/skills/workflow-records/tools/board-command.py
+  - source: tools/board-query.py
+    destination: .ai/core/skills/workflow-records/tools/board-query.py
+  - source: tools/source-store.py
+    destination: .ai/core/skills/workflow-records/tools/source-store.py
   - source: tools/workflow-records.py
     destination: .ai/core/skills/workflow-records/tools/workflow-records.py
   - source: tools/workflow_records/__init__.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/__init__.py
   - source: tools/workflow_records/backup.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/backup.py
+  - source: tools/workflow_records/board_command.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_command.py
+  - source: tools/workflow_records/board_query.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_query.py
   - source: tools/workflow_records/common.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/common.py
   - source: tools/workflow_records/contracts.py
@@ -1017,6 +1037,12 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/git_store.py
   - source: tools/workflow_records/service.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/service.py
+  - source: tools/workflow_records/source_backup.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_backup.py
+  - source: tools/workflow_records/source_contract.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_contract.py
+  - source: tools/workflow_records/source_store.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_store.py
   - source: tools/workflow_records/sqlite_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/sqlite_store.py
 - kind: sub-agent

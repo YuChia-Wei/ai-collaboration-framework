@@ -88,6 +88,13 @@ class SQLiteRecordTests(unittest.TestCase):
         return self.request("checkpoint", operation_id=operation_id, checkpoint=copy.deepcopy(CHECKPOINT),
                             expected_revision=current["revision"], expected_source_head=current["source_head"])
 
+    def create_task(self, task_id="T2", operation_id="add-task"):
+        current = self.ok(self.run("context"))
+        return self.request("create-task", operation_id=operation_id,
+                            expected_revision=current["revision"], expected_source_head=current["source_head"],
+                            task={"task_id": task_id, "title": "Additional task", "status": "pending",
+                                  "owner_skill": "fixture", "extensions": {"future": ["保留", 2]}})
+
     def launch(self, request, config=None, suffix="cli"):
         request_path = self.directory / (suffix + "-request.json")
         config_path = self.directory / (suffix + "-config.json")
@@ -119,6 +126,135 @@ class SQLiteRecordTests(unittest.TestCase):
         result = self.ok(service.execute(request))
         self.assertEqual(result["store_state"], "inactive")
         return service, config
+
+    def test_create_task_cli_fifty_additions_preserve_history_and_export_closure(self):
+        self.ok(self.service.execute(self.checkpoint()))
+        before = self.tables()
+        first_request = self.create_task()
+        first = self.ok(self.launch(first_request))
+        for index in range(3, 52):
+            self.ok(self.service.execute(self.create_task("T" + str(index), "add-" + str(index))))
+        resumed = self.ok(self.launch(self.request("resume", task_limit=128)))
+        self.assertEqual([task["task_id"] for task in resumed["tasks"]], ["T" + str(i) for i in range(1, 52)])
+        self.assertEqual(resumed["plan"]["content"], record()["documents"]["plan.md"])
+        self.assertEqual(git(self.project, "status", "--porcelain"), "")
+        self.assertFalse((self.project / ".dev/local-backlog").exists())
+        after = self.tables()
+        self.assertEqual(after["blobs"], before["blobs"])
+        self.assertTrue(all(row in after["revisions"] for row in before["revisions"]))
+        states = {row[1]: json.loads(row[3]) for row in after["revisions"]}
+        original = states[first_request["expected_revision"]]
+        latest = states[resumed["revision"]]
+        for key in ("metadata", "documents", "attachments", "entrypoint", "checkpoint"):
+            self.assertEqual(latest[key], original[key])
+        self.assertEqual(latest["tasks"][0], record()["tasks"][0])
+        self.assertEqual(latest["tasks"][1], first_request["task"])
+        self.assertEqual(len(after["revisions"]), len(before["revisions"]) + 50)
+        archive, exported = self.export()
+        restored, config = self.restored(archive, exported)
+        recovered = self.tables(Path(config["stores"]["local"]["database"]))
+        for key in ("workflows", "revisions", "blobs"):
+            self.assertEqual(recovered[key], after[key])
+        replay = self.ok(self.launch(first_request, config))
+        self.assertEqual({**replay, "replayed": False}, first)
+        fresh = self.create_task("T52", "inactive-add")
+        self.error(restored.execute(fresh), "store_inactive")
+        self.assertEqual(self.ok(self.launch(self.request("resume", task_limit=128), config))["tasks"], resumed["tasks"])
+
+    def test_create_task_replay_collision_duplicate_and_stale_inputs(self):
+        request = self.create_task()
+        first = self.ok(self.launch(request))
+        self.ok(self.service.execute(self.create_task("T3", "add-next")))
+        before = self.tables()
+        self.assertEqual({**self.ok(self.launch(request)), "replayed": False}, first)
+        changed = copy.deepcopy(request)
+        changed["task"]["title"] = "different"
+        self.error(self.launch(changed), "operation_id_conflict")
+        changed = copy.deepcopy(request)
+        changed["operation_id"] = "stale-add"
+        self.error(self.launch(changed), "revision_conflict")
+        self.error(self.service.execute(self.create_task("T2", "duplicate")), "already_exists")
+        fresh = self.create_task("T4", "stale-source")
+        git(self.project, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "-c", "commit.gpgsign=false",
+            "-c", "core.hooksPath=empty-hooks", "commit", "--allow-empty", "-m", "advance")
+        self.error(self.launch(fresh), "source_conflict")
+        self.assertEqual(self.tables(), before)
+
+    def test_create_task_malformed_envelopes_and_tasks_do_not_write(self):
+        request = self.create_task()
+        before = self.tables()
+        for key in ("workflow_ref", "operation_id", "expected_revision", "expected_source_head", "task"):
+            with self.subTest(missing=key):
+                changed = copy.deepcopy(request)
+                del changed[key]
+                self.error(self.service.execute(changed), "invalid_input")
+        for task, code in ((None, "invalid_input"), ([], "invalid_input"), ({}, "invalid_input"),
+                           ({"task_id": "bad/path", "title": "title", "status": "pending"}, "invalid_input"),
+                           ({"task_id": "T2", "status": "pending"}, "malformed_record"),
+                           ({"task_id": "T2", "title": "title", "status": 1}, "malformed_record")):
+            with self.subTest(task=task):
+                self.error(self.service.execute({**request, "task": task}), code)
+        self.error(self.service.execute({**request, "unexpected": True}), "invalid_input")
+        self.error(self.service.execute({**request, "expected_revision": None}), "invalid_input")
+        self.assertEqual(self.tables(), before)
+
+    def test_create_task_two_clients_and_same_request_have_atomic_results(self):
+        first = self.create_task("T2", "parallel-task-1")
+        second = copy.deepcopy(first)
+        second["operation_id"] = "parallel-task-2"
+        second["task"]["task_id"] = "T3"
+        responses = self.simultaneous([first, second])
+        self.assertEqual(sum(r["status"] == "ok" for r in responses), 1, responses)
+        self.assertEqual([r["error"]["code"] for r in responses if r["status"] != "ok"], ["revision_conflict"])
+        request = self.create_task("T4", "parallel-task-same")
+        results = [self.ok(response) for response in self.simultaneous([request, request])]
+        self.assertEqual(sorted(r["replayed"] for r in results), [False, True])
+        self.assertEqual(len(self.tables()["revisions"]), 3)
+        self.assertEqual(len(self.tables()["operations"]), 4)
+
+    def test_create_task_capacity_and_source_change_before_commit_roll_back(self):
+        from workflow_records import sqlite_store
+        request = self.create_task()
+        before = self.tables()
+        with patch.object(sqlite_store, "MAX_TASKS", 1):
+            self.error(self.service.execute(request), "limit_exceeded")
+        with patch.object(sqlite_store, "source_head", side_effect=[request["expected_source_head"], "changed"]):
+            self.error(self.service.execute(request), "source_conflict")
+        self.assertEqual(self.tables(), before)
+        self.assertEqual(self.ok(self.run("operation", operation_id=request["operation_id"]))["state"], "unknown")
+
+    def test_create_task_not_advertised_or_dispatched_on_git(self):
+        service = WorkflowRecords(self.project)
+        capabilities = self.ok(service.execute({"contract_version": VERSION, "operation": "capabilities"}))
+        self.assertNotIn("create-task", capabilities["providers"]["git"]["operations"])
+        local = self.ok(self.run("capabilities"))
+        self.assertIn("create-task", local["providers"]["local"]["operations"])
+        request = self.create_task()
+        request["workflow_ref"] = service.reference("example")
+        self.error(service.execute(request), "unsupported_capability")
+
+    def test_create_task_backup_rejects_rehashed_changes_to_prior_task(self):
+        from workflow_records import backup
+        from workflow_records.contracts import RecordError
+        receipt = self.ok(self.service.execute(self.create_task()))
+        archive, _ = self.export()
+        original = json.loads(archive.read_bytes())["payload"]
+        for replacement in (False, 1):
+            with self.subTest(replacement=replacement):
+                value = copy.deepcopy(original)
+                row = next(row for row in value["tables"]["revisions"] if row[1] == receipt["revision"])
+                state = json.loads(base64.b64decode(row[3]))
+                state["tasks"][0]["unknown"] = {"x": replacement}
+                raw = encoded(state)
+                row[1], row[3] = digest(raw), base64.b64encode(raw).decode("ascii")
+                value["tables"]["workflows"][0][1] = row[1]
+                operation = next(item for item in value["tables"]["operations"] if item[1] == receipt["operation_id"])
+                changed_receipt = json.loads(base64.b64decode(operation[3]))
+                changed_receipt["revision"] = row[1]
+                operation[3] = base64.b64encode(encoded(changed_receipt)).decode("ascii")
+                with self.assertRaises(RecordError) as error:
+                    backup.validate_payload(value)
+                self.assertEqual(error.exception.code, "malformed_record")
 
     def test_real_cli_checkpoint_new_process_resume_replay_and_no_tracked_diff(self):
         found = self.ok(self.launch(self.request("find")))

@@ -1,0 +1,40 @@
+{
+  "bridge_effect": "none",
+  "command_outcome": "unknown",
+  "contract_version": "workflow-records/board-command/1",
+  "error": {
+    "code": "remote_error",
+    "message": "MCP reported a native fault; this is not a durable rejected receipt."
+  },
+  "next_action": "retain_original_prepared_command_and_query_or_replay_same_operation",
+  "operation": "board-command-accept",
+  "result": {
+    "native_result": {
+      "category": "conflict",
+      "details": {},
+      "error": "operation_payload_conflict"
+    },
+    "next_action": "query_original_operation",
+    "recovery": {
+      "query": {
+        "payload": {
+          "operation_id": "framework-command-proof-20261025-create",
+          "workflow_ref": {
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework",
+            "record_kind": "collaboration",
+            "store_id": "workflow-records-private-collaboration",
+            "workflow_id": "framework-command-proof-20261025"
+          }
+        },
+        "query": "operation.get",
+        "schema_version": "2.0",
+        "service_contract_version": "workflow-board/collaboration/2"
+      },
+      "tool_name": "v2_operation_get"
+    },
+    "requires_original_replay": false,
+    "server_digest_verification": "not_recomputed"
+  },
+  "status": "error"
+}

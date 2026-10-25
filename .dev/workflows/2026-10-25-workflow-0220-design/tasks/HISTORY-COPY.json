@@ -1,0 +1,16 @@
+{
+  "task_id": "HISTORY-COPY",
+  "workflow_id": "2026-10-25-workflow-0220-design",
+  "owner_skill": "slice-implementer",
+  "title": "Copy historical workflow content and prepare native daily-progress support",
+  "status": "in_progress",
+  "created_at": "2026-10-25T22:57:41+08:00",
+  "updated_at": "2026-10-26T01:02:09+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "medium",
+  "runtime_identity_source": "Project task selection; actual serving identity unavailable. Historical copy uses the user-requested low-cost sub-agent.",
+  "finding_status": "pending",
+  "result_summary": "All 220 historical units, 1931 files and 19427197 bytes passed public local readback against Git; complete production backup and inactive restore passed. Online batch 1 of 17 is in progress under count/byte/concurrency bounds. Atomic native revision review found one P2 test-validity gap; corrected fixture and a guard-removal mutation probe passed, with repair review next."
+}

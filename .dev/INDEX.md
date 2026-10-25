@@ -10,6 +10,7 @@ historical paths in retained records do not establish current availability.
 | --- | --- |
 | [Standards](standards/INDEX.MD) | Current source policies and selected legacy obligations |
 | [Source development](standards/SOURCE-DEVELOPMENT-POLICY.md) | Ordinary execution, checks and conditional independent review |
+| [Daily workflow storage](standards/WORKFLOW-STORE-POLICY.md) | Current native SQLite discovery, explicit configuration/source CLI, continuation and separate Board replica delivery |
 | [Contracts](contracts/README.md) | Source execution, provider bindings and record interpretation |
 | [Git flow](TEAM-GIT-FLOW-RULES.MD) | Source branch/integration rules under adopted source policy |
 | [Repository rename](REPOSITORY-RENAME-COMPATIBILITY.md) | Repository/package identity and compatibility limits |
@@ -24,15 +25,18 @@ historical paths in retained records do not establish current availability.
 | `design/` | Source design records |
 | [Framework-next historical design](design/framework-next/README.md) | Historical redesign decisions and retained obligations; current product navigation is separate |
 | [Skill evolution design (2026-10-22)](design/skill-evolution-2026-10-22/README.md) | Authorized domain/software split: complete design, responsibility contracts, source mapping and references; local workflow/customization are separate future work |
+| [Workflow 0.22.0 design](design/workflow-0220-2026-10-25/design.md) | Issue 483 design: optional local work items, selected Board platform, migration and multi-carrier contract; remaining owner choices explicit |
 | `requirement/` | Source requirement records |
 | `adr/` | Architectural decisions |
 | `assessments/` | Durable observations and their evidence |
-| `workflows/` | Execution locators and handoffs |
-| [Domain/software split](workflows/2026-10-22-domain-architecture-split/workflow-plan.md) | Design review, Issues 476-480, authorized source work and validation |
+| `workflows/` | Historical/pre-cutover Git execution locators and handoffs; current discovery follows the store policy |
+| [Domain/software split](workflows/2026-10-22-domain-architecture-split/workflow-plan.md) | Historical Git record of design review, Issues 476-480, authorized source work and validation |
+| [Workflow 0.22.0 records and Board V2 query adapter](workflows/2026-10-25-workflow-0220-design/workflow-plan.md) | Pre-cutover Git record of bounded design, SQLite and Board increments, tests, plugin queries and review; native continuation acceptance is recorded separately |
 | [Lessons](lessons/INDEX.MD) | Evidence-backed experience; not independent normative authority |
 
 Existing design/requirement/ADR/assessment/workflow contents are excluded from
-this cleanup. New authorized work keeps its own locator. Removed legacy backlog,
+this cleanup. New authorized execution uses the selected native identity and
+entrypoint; formal artifact locators remain with their Git-owned families. Removed legacy backlog,
 operations and release-navigation roots are not current routes; select the
 compatible historical revision for an actual retained duty.
 

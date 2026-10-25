@@ -19,7 +19,8 @@ installed content in `.ai/core`. Load only the applicable policy.
   [Issue closure](GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md).
 - [Git commit policy](GIT-COMMIT-POLICY.md) and [configuration](GIT-COMMIT-POLICY.yaml).
 - [Assessment records](ASSESSMENT-ARTIFACT-POLICY.md),
-  [workflow locator](WORKFLOW-ARTIFACT-POLICY.md),
+  [workflow identity and metadata](WORKFLOW-ARTIFACT-POLICY.md),
+  [daily workflow storage and native continuation](WORKFLOW-STORE-POLICY.md),
   [workflow selection](WORKFLOW-GATE-POLICY.md) and
   [handoff](WORKFLOW-HANDOFF-POLICY.md).
 - [Effective source rules](AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml).

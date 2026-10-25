@@ -65,6 +65,7 @@ workflow records and database lifecycle.
 | `init` | Initialize the explicitly selected local store. |
 | `create` | Create a workflow in the explicitly selected local store. |
 | `write-document` | Write a selected local workflow document. |
+| `revise-workflow` | Atomically patch local metadata, existing tasks and named text documents. |
 | `export` | Export the selected local store to an authorized destination. |
 | `preflight` | Check the selected local export and recovery inputs. |
 | `restore` | Restore from the explicitly selected local recovery inputs. |
@@ -72,8 +73,8 @@ workflow records and database lifecycle.
 | `activate` | Activate the selected local store under its runtime contract. |
 
 `init`, `export`, `preflight`, `restore`, `deactivate` and `activate` use a complete
-store reference. `create` and `write-document` are also local-only. Follow the
-runtime's exact request validation and returned diagnostics; this table does
+store reference. `create`, `create-task`, `write-document` and `revise-workflow`
+are also local-only. Follow the runtime's exact request validation and returned diagnostics; this table does
 not add accepted fields or guarantees. Remote storage is unavailable unless a
 future implemented provider is explicitly selected. No operation automatically
 commits, pushes, migrates Git history or updates an external work tracker.
@@ -102,6 +103,15 @@ skill through existing presets or change the source project's own installation.
 
 ## Exact requests
 
+The additive [source-store profile](source-store.md) provides explicit schema-2
+source snapshots and persisted replica delivery while preserving the requests below.
+
+Board V2 uses the additive [board-query profile](board-query.md) and separate
+`tools/board-query.py` CLI for `board-query-prepare` / `board-query-accept`.
+The `workflow-records/1` requests below keep their existing provider semantics.
+Authorized Board writes use the separate [board-command profile](board-command.md)
+and `tools/board-command.py`; query preparation does not grant write authority.
+
 Every request includes `contract_version: "workflow-records/1"` and `operation`.
 All accept optional `max_output_bytes` from 2048 to 65536. Unknown fields fail.
 References and operation IDs use nonempty bounded ASCII identifiers; preserve
@@ -119,7 +129,9 @@ returned IDs and digests exactly rather than deriving them from display titles.
 | `operation` | exactly one of `workflow_ref` or `store_ref`, plus `operation_id` |
 | `init` | `store_ref`, `operation_id` |
 | `create` | `workflow_ref`, `operation_id`, `record` |
+| `create-task` | `workflow_ref`, `operation_id`, `expected_revision`, `expected_source_head`, `task` |
 | `write-document` | `workflow_ref`, `operation_id`, `expected_revision`, `expected_source_head`, `document`, `content` |
+| `revise-workflow` | `workflow_ref`, `operation_id`, `expected_revision`, `expected_source_head`; optional `metadata_patch`, `task_patches`, `documents` |
 | `export` | `store_ref`, absolute local `destination` (must not exist) |
 | `preflight` | `store_ref`, absolute local `archive`, `archive_digest` |
 | `restore` | `store_ref`, `operation_id`, absolute local `archive`, `archive_digest` |
@@ -128,9 +140,34 @@ returned IDs and digests exactly rather than deriving them from display titles.
 
 `read` addresses text documents. Binary attachments are retained and checked in
 complete exports; this version has no separate binary-read or attachment-update
-operation. `write-document` replaces one existing text document. Task/metadata
-editing, Git-to-SQLite migration and multi-document commands are not advertised.
+operation. `write-document` replaces one existing text document.
 The Git format and existing checkpoint behavior are in [git-format.md](git-format.md).
+
+`revise-workflow` is local-only and requires at least one nonempty change.
+`metadata_patch` is an object shallow-merged into retained metadata. `task_patches`
+is a list of objects, each containing an existing immutable `task_id` selector
+and at least one other field to shallow-merge. Unknown or duplicate selectors
+and empty task patches fail. Required metadata/task strings must remain valid;
+unrelated extension fields remain intact. Status meanings belong to the caller.
+`documents` maps relative POSIX names to UTF-8 text, adding or replacing documents
+within the complete record's existing bounds, reserved-prefix and case-insensitive
+uniqueness rules across documents and attachments. This operation preserves the
+entrypoint, attachments and checkpoint and deletes no records or fields. Use
+`create-task` for new tasks. Replay and expected-input checks follow the existing
+transaction contract below. Schema 2 also captures its source snapshot and saved
+target intents atomically; no Board command is dispatched.
+
+`create-task` is available only on SQLite. It appends one task to the selected
+workflow using the same task contract as `create`: a path-safe `task_id` and
+nonempty `status` and `title` strings, within the state byte limit. Unknown task extensions, including
+optional `owner_skill`, are preserved. The task ID must be unique within that
+workflow (`already_exists` otherwise); the 128-task limit remains in force.
+Copy `revision` and `source_head` from `context` into the required expected fields.
+Missing or unknown envelope fields are rejected. The operation preserves all
+existing tasks, metadata, documents, attachments and checkpoint history, and
+commits the new revision and receipt in one transaction. Replay precedes current
+revision/source and active-store checks. No local-backlog, local item or tracker
+write is required. Task transitions and completion policy are outside this operation.
 
 ## SQLite setup and operation chain
 

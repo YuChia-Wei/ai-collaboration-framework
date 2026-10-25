@@ -1,0 +1,827 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-10-25T07:23:38.949Z",
+  "selected_plugin": "plugin://plugin_asdk_app_sites_4463576e26d081918dee0f01d0f3f8d2",
+  "input_head": "8c5c879251cd52f3c77268615af7c724ae60945a",
+  "source_members": {
+    "tools/board-query.py": "da8bee87a87b3e5ad96c3d07b46cad71cc2d5224680d292243dbd985d4b879fb",
+    "tools/workflow_records/board_query.py": "15948c6f4b49a532fcda475fec159e00c01d97b98835351e856a9c29a3e954b3"
+  },
+  "bridge": "PowerShell single-quoted JSON (apostrophes doubled) piped to python -X utf8 -I -B tools/board-query.py --request -. Parse prepare.result, dispatch exact prepared.query to the allowlisted selected MCP tool, then serialize its complete CallToolResult into board-query-accept. No model rewriting between hops.",
+  "validated_queries": 15,
+  "native_query_families": [
+    "project.read",
+    "workflow.context",
+    "capabilities",
+    "workflow.find",
+    "project.operation.get",
+    "context.page",
+    "document.read",
+    "task.read",
+    "project.list",
+    "operation.get"
+  ],
+  "entries": [
+    {
+      "name": "formal_project",
+      "observed_at": "2026-10-25T07:20:38.205Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-framework-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "project.read",
+          "payload": {
+            "project_ref": {
+              "store_id": "workflow-records-private-collaboration",
+              "namespace": "personal",
+              "project_id": "ai-collaboration-framework"
+            }
+          }
+        }
+      },
+      "tool_name": "v2_project_read",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "store_id": "workflow-records-private-collaboration"
+        },
+        "revision": 1,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "context_A",
+      "observed_at": "2026-10-25T07:20:39.146Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-A-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "workflow.context",
+          "payload": {
+            "workflow_ref": {
+              "store_id": "workflow-records-private-collaboration",
+              "namespace": "personal",
+              "project_id": "board22-20261025-A",
+              "record_kind": "collaboration",
+              "workflow_id": "WF22"
+            },
+            "limit": 1
+          }
+        }
+      },
+      "tool_name": "v2_workflow_context",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-A",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": 3,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": [
+          {
+            "id": "T1",
+            "title": "A task 1"
+          }
+        ],
+        "missing": []
+      }
+    },
+    {
+      "name": "context_B",
+      "observed_at": "2026-10-25T07:20:39.315Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-B-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-B"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "workflow.context",
+          "payload": {
+            "workflow_ref": {
+              "store_id": "workflow-records-private-collaboration",
+              "namespace": "personal",
+              "project_id": "board22-20261025-B",
+              "record_kind": "collaboration",
+              "workflow_id": "WF22"
+            },
+            "limit": 1
+          }
+        }
+      },
+      "tool_name": "v2_workflow_context",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-B",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": 2,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": [
+          {
+            "id": "T1",
+            "title": "B task 1"
+          }
+        ],
+        "missing": []
+      }
+    },
+    {
+      "name": "formal_capabilities",
+      "observed_at": "2026-10-25T07:22:30.104Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-framework-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "capabilities",
+          "payload": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework"
+          }
+        }
+      },
+      "tool_name": "v2_capabilities",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": null,
+        "revision": null,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "formal_find",
+      "observed_at": "2026-10-25T07:22:31.275Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-framework-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "workflow.find",
+          "payload": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework",
+            "q": "",
+            "limit": 10,
+            "cursor": null
+          }
+        }
+      },
+      "tool_name": "v2_workflow_find",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": null,
+        "revision": null,
+        "outcome": null,
+        "document_ref": null,
+        "items": [],
+        "has_more": false,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "formal_operation",
+      "observed_at": "2026-10-25T07:22:30.800Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-framework-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "project.operation.get",
+          "payload": {
+            "project_ref": {
+              "store_id": "workflow-records-private-collaboration",
+              "namespace": "personal",
+              "project_id": "ai-collaboration-framework"
+            },
+            "operation_id": "framework-project-create-20261025"
+          }
+        }
+      },
+      "tool_name": "v2_project_operation_get",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "store_id": "workflow-records-private-collaboration"
+        },
+        "revision": 1,
+        "outcome": "accepted",
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "page_A",
+      "observed_at": "2026-10-25T07:22:31.239Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-A-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "context.page",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-A",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "section": "tasks",
+            "cursor": "ff83cd9936e7d3650008abba0e8cc3dc4617875c3c67eeaa14ebd3e23eecef8a"
+          }
+        },
+        "expected_snapshot_revision": 3
+      },
+      "tool_name": "v2_context_page",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-A",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": 3,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": false,
+        "tasks": [
+          {
+            "id": "T2",
+            "title": "A task 2"
+          }
+        ],
+        "missing": null
+      }
+    },
+    {
+      "name": "document_A",
+      "observed_at": "2026-10-25T07:22:30.488Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-A-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "document.read",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-A",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "document_ref": {
+              "content_hash": "sha256:c0776f032be8ee7b1d30375d78c1f25fd1f97aa063177b671435d03f65b727ec",
+              "document_id": "plan",
+              "revision": 1
+            }
+          }
+        }
+      },
+      "tool_name": "v2_document_read",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-A",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": null,
+        "outcome": null,
+        "document_ref": {
+          "content_hash": "sha256:c0776f032be8ee7b1d30375d78c1f25fd1f97aa063177b671435d03f65b727ec",
+          "document_id": "plan",
+          "revision": 1
+        },
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "task_A",
+      "observed_at": "2026-10-25T07:22:30.942Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-A-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "task.read",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-A",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "task_id": "T1",
+            "definition_revision": 1,
+            "at_revision": 3
+          }
+        }
+      },
+      "tool_name": "v2_task_read",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-A",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": 3,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "project_list",
+      "observed_at": "2026-10-25T07:22:59.237Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-framework-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "project.list",
+          "payload": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "limit": 2,
+            "cursor": null
+          }
+        }
+      },
+      "tool_name": "v2_project_list",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": null,
+        "revision": null,
+        "outcome": null,
+        "document_ref": null,
+        "items": [
+          {
+            "namespace": "personal",
+            "project_id": "legacy-personal",
+            "store_id": "workflow-records-private-collaboration"
+          },
+          {
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework",
+            "store_id": "workflow-records-private-collaboration"
+          }
+        ],
+        "has_more": true,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "find_A",
+      "observed_at": "2026-10-25T07:22:59.326Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-A-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "workflow.find",
+          "payload": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A",
+            "q": "",
+            "limit": 10,
+            "cursor": null
+          }
+        }
+      },
+      "tool_name": "v2_workflow_find",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": null,
+        "revision": null,
+        "outcome": null,
+        "document_ref": null,
+        "items": [
+          {
+            "namespace": "personal",
+            "project_id": "board22-20261025-A",
+            "record_kind": "collaboration",
+            "store_id": "workflow-records-private-collaboration",
+            "workflow_id": "WF22"
+          }
+        ],
+        "has_more": false,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "accepted_A",
+      "observed_at": "2026-10-25T07:22:59.188Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-A-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-A"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "operation.get",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-A",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "operation_id": "workflow-create"
+          }
+        }
+      },
+      "tool_name": "v2_operation_get",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-A",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": 1,
+        "outcome": "accepted",
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "unknown_B",
+      "observed_at": "2026-10-25T07:22:59.139Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-B-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-B"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "operation.get",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-B",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "operation_id": "document-only-A"
+          }
+        }
+      },
+      "tool_name": "v2_operation_get",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-B",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": null,
+        "outcome": "unknown",
+        "document_ref": null,
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "document_B",
+      "observed_at": "2026-10-25T07:22:59.211Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-B-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-B"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "document.read",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-B",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "document_ref": {
+              "content_hash": "sha256:b52d38a406a31972f1ac347b455681cddd33ad6e1971125fd59ea73d373f6cc0",
+              "document_id": "plan",
+              "revision": 1
+            }
+          }
+        }
+      },
+      "tool_name": "v2_document_read",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-B",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": null,
+        "outcome": null,
+        "document_ref": {
+          "content_hash": "sha256:b52d38a406a31972f1ac347b455681cddd33ad6e1971125fd59ea73d373f6cc0",
+          "document_id": "plan",
+          "revision": 1
+        },
+        "items": null,
+        "has_more": null,
+        "tasks": null,
+        "missing": null
+      }
+    },
+    {
+      "name": "page_B",
+      "observed_at": "2026-10-25T07:22:59.397Z",
+      "request": {
+        "contract_version": "workflow-records/board-query/1",
+        "operation": "board-query-prepare",
+        "binding": {
+          "adapter_id": "workflow-board-v2",
+          "binding_id": "codex-workroom-test-B-v2",
+          "binding_revision": 1,
+          "project_ref": {
+            "store_id": "workflow-records-private-collaboration",
+            "namespace": "personal",
+            "project_id": "board22-20261025-B"
+          }
+        },
+        "query": {
+          "service_contract_version": "workflow-board/collaboration/2",
+          "schema_version": "2.0",
+          "query": "context.page",
+          "payload": {
+            "workflow_ref": {
+              "namespace": "personal",
+              "project_id": "board22-20261025-B",
+              "record_kind": "collaboration",
+              "store_id": "workflow-records-private-collaboration",
+              "workflow_id": "WF22"
+            },
+            "section": "tasks",
+            "cursor": "37f104214f911aedeecaac7d2129ea826692e9adf9548c04628bc9a7a3e12aee"
+          }
+        },
+        "expected_snapshot_revision": 2
+      },
+      "tool_name": "v2_context_page",
+      "adapter_status": "ok",
+      "mutation_state": "none",
+      "observed": {
+        "scope": {
+          "namespace": "personal",
+          "project_id": "board22-20261025-B",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "WF22"
+        },
+        "revision": 2,
+        "outcome": null,
+        "document_ref": null,
+        "items": null,
+        "has_more": false,
+        "tasks": [
+          {
+            "id": "T2",
+            "title": "B task 2"
+          }
+        ],
+        "missing": null
+      }
+    }
+  ],
+  "limitations": [
+    "decision.read was fixture-tested only; no hosted decision was created.",
+    "project.list intentionally used a partial page to verify the returned cursor; complete prerequisite registry discovery was a separate direct plugin call.",
+    "The first three calls preceded a strict UTF-8 decoder correction. Their host inputs were explicitly UTF-8 and the correction affects only other input encodings; all other adapter code and native payloads are unchanged.",
+    "No domain writes, formal workflow migration, full recovery, fanout, source adoption or cross-session execution is established by these query checks."
+  ]
+}

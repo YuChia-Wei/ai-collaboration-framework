@@ -1,0 +1,268 @@
+{
+  "key": "20-final-context",
+  "prepared": {
+    "binding": {
+      "adapter_id": "workflow-board-v2",
+      "binding_id": "codex-workroom-framework-v2",
+      "binding_revision": 1,
+      "project_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "store_id": "workflow-records-private-collaboration"
+      }
+    },
+    "contract_version": "workflow-records/board-query/1",
+    "expected_snapshot_revision": null,
+    "query": {
+      "payload": {
+        "limit": 20,
+        "workflow_ref": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "framework-command-proof-20261025"
+        }
+      },
+      "query": "workflow.context",
+      "schema_version": "2.0",
+      "service_contract_version": "workflow-board/collaboration/2"
+    },
+    "tool_name": "v2_workflow_context"
+  },
+  "native": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"service_contract_version\":\"workflow-board/collaboration/2\",\"schema_version\":\"2.0\",\"workflow_ref\":{\"store_id\":\"workflow-records-private-collaboration\",\"namespace\":\"personal\",\"record_kind\":\"collaboration\",\"workflow_id\":\"framework-command-proof-20261025\",\"project_id\":\"ai-collaboration-framework\"},\"revision\":10,\"workflow\":{\"title\":\"Synthetic Board command bridge verification\",\"goal\":\"Verify the selected plugin command bridge and recovery behavior.\",\"scope\":{\"included\":\"Synthetic validation records\",\"excluded\":\"Historical workflow imports and production execution claims\"},\"status\":\"completed\",\"plan\":{\"document_id\":\"proof-active-plan\",\"revision\":1,\"content_hash\":\"sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b\"},\"skill\":{\"id\":\"slice-implementer\",\"version\":null},\"external_work_refs\":[],\"completion_requirements\":[{\"id\":\"proof-complete\",\"description\":\"Complete the synthetic command validation\",\"task_ids\":[\"proof-task\"],\"document_refs\":[{\"document_id\":\"proof-active-plan\",\"revision\":1,\"content_hash\":\"sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b\"}]}],\"requirement_dispositions\":[],\"result\":{\"summary\":\"Synthetic command adapter integration check completed; historical import remains separate.\",\"document_refs\":[],\"actor\":{\"subject_id\":\"owner-agent\",\"kind\":\"agent\",\"binding_id\":\"owner-agent-grant-1\"},\"completed_at\":\"2026-10-25T15:23:18.589Z\"}},\"missing\":[],\"tasks\":{\"items\":[{\"id\":\"proof-task\",\"title\":\"Synthetic proof-task\",\"status\":\"completed\",\"definition_revision\":1,\"dependencies\":[],\"plan_basis\":{\"document_id\":\"proof-active-plan\",\"revision\":1,\"content_hash\":\"sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b\"},\"assignment\":null,\"ready\":false,\"claimable\":false,\"blocking_decision_ids\":[]},{\"id\":\"cancel-task\",\"title\":\"Synthetic cancel-task\",\"status\":\"cancelled\",\"definition_revision\":1,\"dependencies\":[],\"plan_basis\":{\"document_id\":\"proof-active-plan\",\"revision\":1,\"content_hash\":\"sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b\"},\"assignment\":null,\"ready\":false,\"claimable\":false,\"blocking_decision_ids\":[]}],\"total\":2,\"has_more\":false,\"cursor\":null},\"decisions\":{\"items\":[],\"total\":0,\"has_more\":false,\"cursor\":null},\"handoffs\":{\"items\":[],\"total\":0,\"has_more\":false,\"cursor\":null}}"
+      }
+    ],
+    "structuredContent": {
+      "service_contract_version": "workflow-board/collaboration/2",
+      "schema_version": "2.0",
+      "workflow_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "record_kind": "collaboration",
+        "workflow_id": "framework-command-proof-20261025",
+        "project_id": "ai-collaboration-framework"
+      },
+      "revision": 10,
+      "workflow": {
+        "title": "Synthetic Board command bridge verification",
+        "goal": "Verify the selected plugin command bridge and recovery behavior.",
+        "scope": {
+          "included": "Synthetic validation records",
+          "excluded": "Historical workflow imports and production execution claims"
+        },
+        "status": "completed",
+        "plan": {
+          "document_id": "proof-active-plan",
+          "revision": 1,
+          "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b"
+        },
+        "skill": {
+          "id": "slice-implementer",
+          "version": null
+        },
+        "external_work_refs": [],
+        "completion_requirements": [
+          {
+            "id": "proof-complete",
+            "description": "Complete the synthetic command validation",
+            "task_ids": [
+              "proof-task"
+            ],
+            "document_refs": [
+              {
+                "document_id": "proof-active-plan",
+                "revision": 1,
+                "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b"
+              }
+            ]
+          }
+        ],
+        "requirement_dispositions": [],
+        "result": {
+          "summary": "Synthetic command adapter integration check completed; historical import remains separate.",
+          "document_refs": [],
+          "actor": {
+            "subject_id": "owner-agent",
+            "kind": "agent",
+            "binding_id": "owner-agent-grant-1"
+          },
+          "completed_at": "2026-10-25T15:23:18.589Z"
+        }
+      },
+      "missing": [],
+      "tasks": {
+        "items": [
+          {
+            "id": "proof-task",
+            "title": "Synthetic proof-task",
+            "status": "completed",
+            "definition_revision": 1,
+            "dependencies": [],
+            "plan_basis": {
+              "document_id": "proof-active-plan",
+              "revision": 1,
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b"
+            },
+            "assignment": null,
+            "ready": false,
+            "claimable": false,
+            "blocking_decision_ids": []
+          },
+          {
+            "id": "cancel-task",
+            "title": "Synthetic cancel-task",
+            "status": "cancelled",
+            "definition_revision": 1,
+            "dependencies": [],
+            "plan_basis": {
+              "document_id": "proof-active-plan",
+              "revision": 1,
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b"
+            },
+            "assignment": null,
+            "ready": false,
+            "claimable": false,
+            "blocking_decision_ids": []
+          }
+        ],
+        "total": 2,
+        "has_more": false,
+        "cursor": null
+      },
+      "decisions": {
+        "items": [],
+        "total": 0,
+        "has_more": false,
+        "cursor": null
+      },
+      "handoffs": {
+        "items": [],
+        "total": 0,
+        "has_more": false,
+        "cursor": null
+      }
+    },
+    "isError": false
+  },
+  "accepted": {
+    "contract_version": "workflow-records/board-query/1",
+    "mutation_state": "none",
+    "operation": "board-query-accept",
+    "result": {
+      "decisions": {
+        "cursor": null,
+        "has_more": false,
+        "items": [],
+        "total": 0
+      },
+      "handoffs": {
+        "cursor": null,
+        "has_more": false,
+        "items": [],
+        "total": 0
+      },
+      "missing": [],
+      "revision": 10,
+      "schema_version": "2.0",
+      "service_contract_version": "workflow-board/collaboration/2",
+      "tasks": {
+        "cursor": null,
+        "has_more": false,
+        "items": [
+          {
+            "assignment": null,
+            "blocking_decision_ids": [],
+            "claimable": false,
+            "definition_revision": 1,
+            "dependencies": [],
+            "id": "proof-task",
+            "plan_basis": {
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+              "document_id": "proof-active-plan",
+              "revision": 1
+            },
+            "ready": false,
+            "status": "completed",
+            "title": "Synthetic proof-task"
+          },
+          {
+            "assignment": null,
+            "blocking_decision_ids": [],
+            "claimable": false,
+            "definition_revision": 1,
+            "dependencies": [],
+            "id": "cancel-task",
+            "plan_basis": {
+              "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+              "document_id": "proof-active-plan",
+              "revision": 1
+            },
+            "ready": false,
+            "status": "cancelled",
+            "title": "Synthetic cancel-task"
+          }
+        ],
+        "total": 2
+      },
+      "workflow": {
+        "completion_requirements": [
+          {
+            "description": "Complete the synthetic command validation",
+            "document_refs": [
+              {
+                "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+                "document_id": "proof-active-plan",
+                "revision": 1
+              }
+            ],
+            "id": "proof-complete",
+            "task_ids": [
+              "proof-task"
+            ]
+          }
+        ],
+        "external_work_refs": [],
+        "goal": "Verify the selected plugin command bridge and recovery behavior.",
+        "plan": {
+          "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+          "document_id": "proof-active-plan",
+          "revision": 1
+        },
+        "requirement_dispositions": [],
+        "result": {
+          "actor": {
+            "binding_id": "owner-agent-grant-1",
+            "kind": "agent",
+            "subject_id": "owner-agent"
+          },
+          "completed_at": "2026-10-25T15:23:18.589Z",
+          "document_refs": [],
+          "summary": "Synthetic command adapter integration check completed; historical import remains separate."
+        },
+        "scope": {
+          "excluded": "Historical workflow imports and production execution claims",
+          "included": "Synthetic validation records"
+        },
+        "skill": {
+          "id": "slice-implementer",
+          "version": null
+        },
+        "status": "completed",
+        "title": "Synthetic Board command bridge verification"
+      },
+      "workflow_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "record_kind": "collaboration",
+        "store_id": "workflow-records-private-collaboration",
+        "workflow_id": "framework-command-proof-20261025"
+      }
+    },
+    "status": "ok"
+  }
+}

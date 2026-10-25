@@ -1,0 +1,93 @@
+{
+  "bridge_effect": "none",
+  "command_outcome": "unknown",
+  "contract_version": "workflow-records/board-command/1",
+  "operation": "board-command-reconcile",
+  "result": {
+    "native_result": {
+      "outcome": "accepted",
+      "receipt": {
+        "accepted": true,
+        "accepted_at": "2026-10-25T15:14:11.643Z",
+        "actor": {
+          "binding_id": "owner-agent-grant-1",
+          "kind": "agent",
+          "subject_id": "owner-agent"
+        },
+        "before_revision": 1,
+        "effects": [
+          {
+            "id": "proof-plan",
+            "kind": "document",
+            "revision": 1
+          },
+          {
+            "id": "framework-command-proof-20261025",
+            "kind": "workflow",
+            "revision": 2
+          }
+        ],
+        "operation_id": "framework-command-proof-20261025-document",
+        "request_digest": "sha256:ea0e70b51d96977ec7d6d246d9e48e5ff28bca433d5d519e1f44602bf7ab3dc0",
+        "revision": 2,
+        "schema_version": "2.0",
+        "service_contract_version": "workflow-board/collaboration/2",
+        "workflow_ref": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "framework-command-proof-20261025"
+        }
+      }
+    },
+    "next_action": "replay_exact_original_command",
+    "observed_outcome": "accepted",
+    "recovery": {
+      "query": {
+        "payload": {
+          "operation_id": "framework-command-proof-20261025-document",
+          "workflow_ref": {
+            "namespace": "personal",
+            "project_id": "ai-collaboration-framework",
+            "record_kind": "collaboration",
+            "store_id": "workflow-records-private-collaboration",
+            "workflow_id": "framework-command-proof-20261025"
+          }
+        },
+        "query": "operation.get",
+        "schema_version": "2.0",
+        "service_contract_version": "workflow-board/collaboration/2"
+      },
+      "tool_name": "v2_operation_get"
+    },
+    "replay": {
+      "command": {
+        "command": "document.append",
+        "expected_revision": 1,
+        "operation_id": "framework-command-proof-20261025-document",
+        "payload": {
+          "document": {
+            "content": "Synthetic command bridge plan.\nVerify exact UTF-8: 臺灣 測試 👩‍💻\n",
+            "document_id": "proof-plan",
+            "expected_document_revision": 0
+          },
+          "purpose": "supporting"
+        },
+        "schema_version": "2.0",
+        "service_contract_version": "workflow-board/collaboration/2",
+        "workflow_ref": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "framework-command-proof-20261025"
+        }
+      },
+      "tool_name": "v2_document_append"
+    },
+    "requires_original_replay": true,
+    "server_digest_verification": "not_recomputed"
+  },
+  "status": "ok"
+}

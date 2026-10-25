@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"accepted\":false,\"service_contract_version\":\"workflow-board/collaboration/2\",\"schema_version\":\"2.0\",\"workflow_ref\":{\"store_id\":\"workflow-records-private-collaboration\",\"namespace\":\"personal\",\"record_kind\":\"collaboration\",\"workflow_id\":\"framework-command-proof-20261025\",\"project_id\":\"ai-collaboration-framework\"},\"operation_id\":\"framework-command-proof-20261025-stale\",\"request_digest\":\"sha256:93af3977d6c51cfd3787d041a615816676e7da33a73cfc596415ec860453d951\",\"actor\":{\"subject_id\":\"owner-agent\",\"kind\":\"agent\",\"binding_id\":\"owner-agent-grant-1\"},\"expected_revision\":3,\"current_revision\":4,\"recorded_at\":\"2026-10-25T15:20:24.772Z\",\"failure\":{\"error\":\"revision_conflict\",\"category\":\"conflict\",\"details\":{\"current_revision\":4}}}"
+    }
+  ],
+  "structuredContent": {
+    "accepted": false,
+    "service_contract_version": "workflow-board/collaboration/2",
+    "schema_version": "2.0",
+    "workflow_ref": {
+      "store_id": "workflow-records-private-collaboration",
+      "namespace": "personal",
+      "record_kind": "collaboration",
+      "workflow_id": "framework-command-proof-20261025",
+      "project_id": "ai-collaboration-framework"
+    },
+    "operation_id": "framework-command-proof-20261025-stale",
+    "request_digest": "sha256:93af3977d6c51cfd3787d041a615816676e7da33a73cfc596415ec860453d951",
+    "actor": {
+      "subject_id": "owner-agent",
+      "kind": "agent",
+      "binding_id": "owner-agent-grant-1"
+    },
+    "expected_revision": 3,
+    "current_revision": 4,
+    "recorded_at": "2026-10-25T15:20:24.772Z",
+    "failure": {
+      "error": "revision_conflict",
+      "category": "conflict",
+      "details": {
+        "current_revision": 4
+      }
+    },
+    "error_code": "INVALID_ARGUMENT"
+  },
+  "isError": true
+}
