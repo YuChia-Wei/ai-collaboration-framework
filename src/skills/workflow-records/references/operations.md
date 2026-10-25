@@ -102,6 +102,10 @@ skill through existing presets or change the source project's own installation.
 
 ## Exact requests
 
+Board V2 uses the additive [board-query profile](board-query.md) and separate
+`tools/board-query.py` CLI for `board-query-prepare` / `board-query-accept`.
+The `workflow-records/1` requests below keep their existing provider semantics.
+
 Every request includes `contract_version: "workflow-records/1"` and `operation`.
 All accept optional `max_output_bytes` from 2048 to 65536. Unknown fields fail.
 References and operation IDs use nonempty bounded ASCII identifiers; preserve

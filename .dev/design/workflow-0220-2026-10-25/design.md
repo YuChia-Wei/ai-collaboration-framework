@@ -272,3 +272,76 @@ task 使用既有 create 的 task_id/status/title 要求；owner_skill 為可選
 本文件保存 #483 的設計與後續增量邊界；第 10 節已有來源實作，驗證與審查狀態由
 workflow 記錄。其他候選操作仍是設計，不代表現行 package、政策、安裝或資料已切換。
 後續採納應更新同一設計的狀態與決策來源；新的來源需求／公開 Story 需保持可讀回關聯。
+
+## 11. Board V2 query adapter increment
+
+The 2026-10-25 continuation received the owner's Board deployment handoff and
+confirmed the selected Work Records plugin's V2 tools in this conversation.
+The owner then explicitly selected stable project ID `ai-collaboration-framework`.
+Its creation and accepted receipt were read back at project revision 1. This is
+project provisioning, not Framework workflow migration or source adoption.
+
+### Accepted implementation boundary
+
+Use an additive `workflow-records/board-query/1` profile in the existing reusable
+package. Keep Git/SQLite `workflow-records/1` unchanged: its three-field references,
+digest revisions, source_head and offset paging cannot losslessly represent Board
+V2's complete project scope, numeric revisions, document ID/revision/hash and cursors.
+The parent selects this versioning and transport mechanism as technical details
+within the authorized #445 adapter scope; it does not adopt new lifecycle policy.
+
+The first increment has two executable operations, `board-query-prepare` and
+`board-query-accept`, implemented by a separately packaged Python CLI and modules.
+The prepare operation validates an explicit non-secret binding and query, and
+returns the exact native request plus an allowlisted symbolic MCP tool name.
+The accept operation receives that prepared request, the same explicit binding,
+and the real MCP result, checks their identities and critical response invariants,
+then returns the native result without flattening its unknown data, missing inputs,
+pagination, document references or receipt outcome. Preparation alone is not execution.
+
+The binding contains adapter_id `workflow-board-v2`, a stable transport binding ID,
+a positive binding revision and complete ProjectRef. It carries no token or ambient
+credential lookup. A host supplies the selected connection and tool-name mapping.
+The final concrete JSON shape is documented with the implementation before use;
+unknown envelope fields, profile/schema drift and mismatched returned scope fail.
+ProjectRef is explicit per request, never a mutable default substituted during replay.
+
+Allow only `project.list`, `project.read`, `project.operation.get`, `capabilities`,
+`workflow.find`, `workflow.context`, `context.page`, `task.read`, `decision.read`,
+`document.read` and `operation.get`. Preserve the two receipt types and unknown
+outcomes. Do not advertise remote commands as adapter writers merely because Board
+capabilities list them. Do not route legacy-personal V2 workflow reads into V1.
+No source_head is synthesized, and no local provider is selected on remote failure.
+
+The host bridge must pass the prepared object directly to the selected plugin tool,
+and pass the returned structured result directly to the accept operation. Both hops
+must run as code, without AI copying or rewriting document bodies or native payloads.
+This session will exercise that path through the actual selected plugin. The package
+does not pretend that a standalone Python process can invoke Codex tools itself;
+host availability and binding remain explicit runtime prerequisites.
+
+Whole-response limits must be explicit and bounded. The profile may accept up to
+2 MiB of JSON with a default 64 KiB output budget, using explicit caller overrides
+for larger documents. Refuse an oversized whole result rather than clip content.
+Verify exact document UTF-8 SHA-256 against the requested document reference.
+Preserve opaque cursors and require exact fixed revisions in detail/page reads.
+
+### Required evidence and exclusions
+
+Direct tests cover valid native queries, A/B scope mismatch, missing/unknown fields,
+contract mismatch, distinct project/workflow receipts, accepted/rejected/unknown,
+exact document revision/hash, paging/missing context, malformed plugin results,
+bounded output and no transport or mutation during prepare/accept. A package-closure
+check must prove the isolated CLI has all source-owned modules. Existing local/Git
+behavior remains a separate regression boundary.
+
+Live acceptance must run through prepare -> selected plugin -> accept, including
+the formal project read, A/B context, at least one exact document and known/unknown
+receipt lookup. Direct prerequisite reads cannot substitute for this path. Test
+fixtures and source code never require the Board checkout at consumer runtime.
+
+This query increment excludes domain writes, claims, retry/fanout queues, implicit
+binding persistence, credential setup, full export/restore, publication, installation
+and migration. Their later contracts retain the original complete scope, operation
+ID, expected revision and payload after unknown outcomes. Board #6 still owns the
+full recovery gap; a deployed V2 endpoint does not remove that prerequisite.

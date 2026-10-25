@@ -1,12 +1,17 @@
 ---
 name: workflow-records
-description: Read and maintain explicitly selected workflow records through the bundled Git or local SQLite provider, preserving record identity, authorization and recovery evidence.
+description: Read and maintain selected Git or SQLite workflow records, or prepare and accept Board V2 queries through an explicit host MCP binding, preserving identity, authorization and recovery evidence.
 ---
 
 # Workflow Records
 
 Use the [operation contract](references/operations.md) and the bundled
 [CLI](tools/workflow-records.py) for an explicitly selected project and store.
+For Board V2 reads and receipt lookup, use the separate
+[Board query contract](references/board-query.md) and [CLI](tools/board-query.py).
+Its `board-query-prepare` and `board-query-accept` operations require an explicit
+binding and a caller-supplied MCP transport; preparation does not execute a query.
+Keep its native numeric revisions, project scope and opaque cursors intact.
 This optional skill supplies the executable and its complete local modules;
 selecting or installing it does not select a store, initialize a database,
 migrate records or adopt workflow governance.

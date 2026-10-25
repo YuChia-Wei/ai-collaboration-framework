@@ -10,6 +10,8 @@ runtime:
 - id: python
   version: '>=3.11,<4'
   for_operations:
+  - board-query-prepare
+  - board-query-accept
   - capabilities
   - find
   - context
@@ -96,6 +98,7 @@ artifact_roles: []
 resources:
   references:
   - references/operations.md
+  - references/board-query.md
   - references/git-format.md
   schemas: []
   templates: []
@@ -131,6 +134,16 @@ resources:
     - tools/workflow_records/git_store.py
     - tools/workflow_records/service.py
     - tools/workflow_records/sqlite_store.py
+  - id: board-query-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/board-query.py
+    operation_contract: references/board-query.md
+    operations:
+    - board-query-prepare
+    - board-query-accept
+    support_files:
+    - tools/workflow_records/board_query.py
 operations:
 - id: capabilities
   execution: tool
@@ -299,6 +312,24 @@ operations:
   - explicit-project-root
   - bounded-json-request
   - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-query-prepare
+  execution: tool
+  tool: board-query-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: board-query-accept
+  execution: tool
+  tool: board-query-cli
+  inputs:
+  - explicit-non-secret-binding
+  - bounded-json-request
   outputs:
   - bounded-json-response
   implementation_status: implemented

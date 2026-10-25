@@ -1,4 +1,4 @@
-# Workflow 0.22.0 design and SQLite task increment
+# Workflow 0.22.0 records and Board V2 adapter
 
 ## Scope and authorization
 
@@ -54,6 +54,7 @@ record before #514 cutover, not evidence that no-Git workflow adoption is comple
 | --- | --- | --- | --- |
 | DESIGN | software-architect, coordinated by software-development-orchestrator | completed | [Design](../../design/workflow-0220-2026-10-25/design.md) includes latest owner direction and remaining decisions; Issue closure separate |
 | CREATE-TASK | slice-implementer | completed | Implementation, focused checks and independent recovery review complete; R1 corrected and read back |
+| BOARD-V2-QUERY | slice-implementer | in_progress | Additive Board V2 query/receipt profile and actual selected-plugin bridge; see design section 11 |
 
 Live native hierarchy was read through GitHub GraphQL, not inferred from body links:
 #416 has #481 (child #483), #513 (child #445), and #514 (no child at readback).
@@ -197,7 +198,8 @@ reported no supported new regression in the affected delta. It performed no test
 Unchanged source, criteria and governing rules retain the prior scoped review;
 this closeout changes only execution records and navigation, with source/test equivalence checked.
 
-Both workflow-owned tasks are terminal. This completes the bounded design and
+At commit `8c5c879251cd52f3c77268615af7c724ae60945a`, both original tasks were terminal.
+That completed the bounded design and
 SQLite create-task increment, not Epic #416, full #481/#483 acceptance, integration,
 release or adoption. All related Issues remain open. Later implementation still
 includes task editing/transitions, the remaining local operation contract, optional
@@ -205,6 +207,72 @@ local work-item parity/migration, Board adapter #445, fanout #520 and source ado
 #514. Their completion is not inferred from this local checkpoint.
 
 ## Resume without private conversation
+
+### 2026-10-25 continuation after Board deployment
+
+The user explicitly asked the Board chat to hand deployment/acceptance back here,
+verify V2 availability in this conversation, and continue the original integration.
+The handoff reported merged Board PR #23, main `b100c9f9bd09b2a1c125c8b511f06defeb29c556`,
+CI run 40170618704 and private Site version 15. Those are handoff observations;
+this conversation independently called the selected plugin's V2 queries.
+The original branch and clean HEAD `8c5c879251cd52f3c77268615af7c724ae60945a` were
+read back. The existing dedicated branch continues the same Epic; completed tasks
+remain terminal, and the new implementation task supplies the unique current state.
+
+The [prerequisite evidence](board-v2-prerequisite-evidence.json) records 58 visible
+tools (32 V2), project discovery, A/B contexts, exact documents and receipts. Initial
+context requests used limit 100 and were rejected by connector schema before
+execution; the corrected limit 20 calls succeeded. Formal project ID
+`ai-collaboration-framework` was explicitly selected by the user, created using
+operation `framework-project-create-20261025`, and read back with its accepted
+receipt at revision 1. No synthetic A/B data became formal project data.
+
+Read-only analysis established that local `/1` cannot losslessly encode Board V2.
+The parent selected the additive profile and deterministic prepare/plugin/accept
+bridge described in design section 11. This is the current #445 increment; a
+title-only SQLite revise-task can follow independently, while lifecycle policy
+remains unresolved. Source adoption, fanout and full recovery are still separate.
+No Framework push, PR, merge, installation or publication authority is inferred
+from Board's separate deployment authorization. Existing online data is retained.
+
+### Board adapter implementation and validation
+
+`sqlite_create_task` implemented the new query-mode slice as sole tracked writer
+under the registered bounded-general-worker profile, selecting gpt-6.1-sol/medium
+from the project implementation policy. Actual serving identity is unknown. It
+returned writer ownership after eight source/test/manifest changes; existing `/1`
+runtime and installed projections were not changed. The CLI and one declared
+runtime module are standard-library-only, with no Board-checkout dependency.
+
+Its `python -I -B -` unittest runner inserted `tests` and `tests/framework_next`
+in sys.path, set process-local tempfile.tempdir to `F:\tmp\aicf-416-board-v2`, and
+loaded `tools.test_workflow_board_query` plus
+`framework_next.test_distribution_contracts.Metadata5DistributionTests.test_workflow_records_is_optional_and_manifest_matches_metadata`.
+All 24 methods passed in 0.979 seconds (23 new plus package closure). After adding
+explicit-null structuredContent rejection, the affected MCP representation method
+passed again in 0.003 seconds. No global TEMP/TMP was changed.
+
+Parent inspection found that json.loads(bytes) also accepts UTF-16 despite the
+declared UTF-8 input contract. An added UTF-16 case reproduced the gap (one method
+failed in 0.003 seconds). Decoding strict UTF-8 before JSON parsing corrected it;
+the malformed-input and isolated file/stdin CLI methods passed in 0.694 seconds.
+The failure remains recorded. This does not affect earlier valid UTF-8 inputs.
+
+The [live adapter evidence](board-v2-adapter-evidence.json) records 15 successful
+prepare -> actual selected-plugin tool -> accept calls across 10 query families.
+The host serialized both hops as code, without model copying native documents.
+Formal project/read/capability/find and project receipt checks passed; A/B context,
+fixed snapshot pages, exact UTF-8 document hashes, task detail and accepted/unknown
+workflow receipts passed. decision.read has fixture evidence only. A successful
+lookup retains mutation_state none and does not claim a write or migration.
+
+This increment adds a provider-boundary validator and distribution members, so
+independent scoped review is selected under source policy rule 6. It is pending
+the fixed implementation commit. Hosted PR gate, installation, cross-session
+adoption, writes/fanout and complete recovery remain unexecuted for this increment.
+
+The following Board development snapshot is historical evidence from the first
+increment, superseded for availability by the continuation above:
 
 Board #22 is assigned to the explicitly requested chat
 `01a171b0-1260-7990-a8fe-23cd6614efb0` (local host), titled
