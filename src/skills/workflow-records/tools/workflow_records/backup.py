@@ -145,7 +145,7 @@ def validate_payload(value, *, schema2_native=False):
             validate_checkpoint(checkpoint["value"])
         event = state["event"]
         require(isinstance(event, dict) and set(event) == {"operation_id", "operation", "recorded_at", "parent"}
-                and event["parent"] == parent and event["operation"] in ("create", "create-task", "checkpoint", "write-document"),
+                and event["parent"] == parent and event["operation"] in ("create", "create-task", "checkpoint", "write-document", "revise-workflow"),
                 "malformed_record", "Invalid revision event.")
         identifier(event["operation_id"])
         timestamp(event["recorded_at"])
@@ -171,6 +171,14 @@ def validate_payload(value, *, schema2_native=False):
         require(isinstance(parent, str) and (workflow_id, parent) in revisions,
                 "malformed_record", "A mutation requires its retained parent.")
         prior = revisions[(workflow_id, parent)][1]
+        if operation == "revise-workflow":
+            require(all(state[key] == prior[key] for key in ("entrypoint", "attachments", "checkpoint"))
+                    and [task["task_id"] for task in state["tasks"]] == [task["task_id"] for task in prior["tasks"]]
+                    and set(prior["documents"]) <= set(state["documents"])
+                    and set(prior["metadata"]) <= set(state["metadata"])
+                    and all(set(old) <= set(new) for old, new in zip(prior["tasks"], state["tasks"])),
+                    "malformed_record", "Workflow revision deleted identities or altered protected state.")
+            continue
         if operation == "create-task":
             require(all(encoded(state[key]) == encoded(prior[key]) for key in
                         ("metadata", "entrypoint", "attachments", "documents", "checkpoint"))

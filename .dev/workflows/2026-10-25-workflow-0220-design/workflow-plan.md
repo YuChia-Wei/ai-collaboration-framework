@@ -536,11 +536,12 @@ undefined argument and missing delivery/readback phases; repair is in progress.
 No local import or Board copy has been executed. Do not use a plan-only success
 as apply-path or delivery evidence.
 
-The exact permanent database path remains an unanswered owner selection. Before
-initializing a production store or dispatching copies, resolve that pending choice,
-finish immutable source review, and validate the bounded runner against actual
-CLI response shapes. Store credentials stay in the existing host credential path;
-prepared commands and raw transport evidence must survive RAM-disk loss.
+The owner explicitly selected the permanent database path on 2026-10-26:
+`C:\Users\h4227\AppData\Local\AI-Collaboration\ai-collaboration-framework\records.sqlite`,
+with transport records and backups in the same directory. Store credentials stay
+in the existing host credential path; prepared commands and raw transport
+evidence must survive RAM-disk loss. Validate the bounded runner against actual
+CLI response shapes before releasing the historical push.
 
 Formal source adoption is still pending. Current daily writer gaps include full
 task/workflow status editing. Artifact/Gate policies, Git checkpoint rules,
@@ -581,7 +582,10 @@ method total with passing evidence is now 42. The new cases recalculate inner an
 outer hashes, so rejection proves equivalence checking rather than only a stale
 hash. Public preflight/restore and the real CLI reject the non-object receipt with
 empty stderr and without creating the restore target. V1 default validation was
-not changed. Repair re-review is next on a new immutable commit.
+not changed. The independent reviewer rechecked clean repair commit
+4abe9e4293e5e8c74908933af9f88f26e71cc39d, resolved both findings, and found no
+supported new regression in the repair delta. This is code-review evidence, not
+production provisioning or remote-delivery acceptance.
 
 Separately, the parent imported the entire selected Git corpus into a synthetic
 schema-2 store on verified F: RAMDRIVE. Independent `git ls-tree` and one binary
@@ -608,3 +612,176 @@ and source_store.py `46648d80a2d4473c123cac242b873fcbacf911687bf2651c32ad5e0047a
 The [bounded preflight script](source-sync-preflight/corpus-preflight.py) retains
 the reproducible procedure with the harness assertion corrected. Scratch data
 is disposable; this evidence does not select F: as a durable workflow store.
+
+### Permanent store provisioning
+
+After the path selection and immutable re-review, a fresh source-schema-2 store
+was initialized through the public source CLI. The selected store reference is
+`local/framework-workflows`, repository ID `ai-collaboration-framework`, instance
+`0834b2e6-7dfd-4261-b244-7f844dc2b118`, state `active`. The explicit secret-free
+configuration is `store-config.json` beside the database. Original requests and
+responses are retained under that directory's `transport/`.
+
+A fresh CLI `replica.list` read again returned an empty complete result for the
+formal project. Initial binding `board-formal-project`, revision 1, targets
+`workflow-records-private-collaboration/personal/ai-collaboration-framework`
+with the new source namespace `aicf-sqlite-20261026-01`. Initialization and binding
+both returned applied receipts. No credential was read into the record store.
+The bounded history runner remains under review; provisioning alone does not
+establish a successful copy or formal source-policy cutover.
+
+### First production historical-copy pilot
+
+The parent imported `2026-08-08-v0-10-release-publication` from the selected
+f701105059bfc180dc5c212122e2fed939fdf664 Git objects. The two files total 4400
+bytes. The stable local import ID follows the bulk runner's commit/kind/original-ID
+mapping, so subsequent inventory processing can safely reuse the same snapshot.
+
+The persisted begin, chunk-batch and activate commands were sent unchanged via
+the existing Windows CLI profile. All three native receipts were accepted;
+begin/chunk retained expected revision 0 and activation returned revision 1.
+The source profile accepted each directly correlated receipt, then returned
+`synchronization.state: complete` and a complete preparation result.
+
+The resulting snapshot is
+`snapshot-69154254080f9b363e1a1b27abac509ff77d7e3b1f5218413cc622495114b776`;
+the remote workflow is
+`unit-4993a6e786c073d9704a3c64ddb1cc39c5a1db8c1fc07e873dfc0ca801f0642b`.
+Independent remote read, manifest and batch-chunk queries returned the exact
+project/source/version identity. Both full file byte sequences match local size
+and SHA-256, including the manifest's Git modes and original metadata. The browser
+also displayed the completed original status and complete mirror revision 1.
+Original local requests, raw CLI responses and observation receipts are retained
+under the permanent store directory's `transport/pilot/`.
+
+This establishes one real historical-copy pilot. Larger pagination/binary pilots,
+the low-cost worker's complete corpus push and a production backup remain pending.
+
+### Parallel migration readiness
+
+The low-cost worker subsequently verified both boundary pilots: the 41-file unit
+`2026-09-05-published-asset-identity` retained all 6473677 bytes and 164 chunks;
+the 107-file unit `2026-09-23-framework-redesign-control` retained all 612065 bytes
+and 110 chunks through paginated reads. Their batches completed with two verified
+units and zero stopped units. The selected entire 220-unit copy is now running
+with at most four independent units and serialized local store operations.
+
+While this mechanical transfer runs, the current migration-readiness task also
+prepares the atomic native progress prerequisite selected in design section 16.
+The copy uses an exact 25-file package frozen from reviewed commit
+4abe9e4293e5e8c74908933af9f88f26e71cc39d under the permanent transport directory,
+so product implementation cannot change its running command semantics. The
+source-policy cutover remains the separate `SOURCE-MIGRATION` task after the
+prerequisite review and complete historical-copy verification. The workflow
+continues to have one coordinating in-progress task.
+
+Native `context`/`resume` intentionally project limited fields. Full preserved
+metadata and task extensions are publicly readable from the immutable schema-2
+`_native/state.json` snapshot, after matching its native revision to the selected
+context and checking every chunk plus the whole file hash. The source adoption
+instructions must document this path; no raw database access is required.
+
+### Owner refinement: complete local data before bounded online batches
+
+The owner required bounded batches instead of attempting a large historical
+transfer, then explicitly prioritized completing and verifying SQLite before
+continuing online data. The initial interleaved import/delivery controller was
+drained through a pre-import pause guard: active delivery/verification continued,
+but the next unit stopped before local import or remote dispatch. No process was
+killed and no in-flight command was intentionally interrupted.
+
+The initial bulk attempt reported 50 scheduled units, 49 verified units and one
+operator-stopped import at index 49. Indices 0 through 48 plus the two large pilots
+have 51 runner verification summaries; the separately verified small pilot at
+index 84 also exists. A fresh public `source-list` inventory confirmed exactly
+52 local archive-workflow units and no root-index unit, leaving 168 of the selected
+220 units absent locally. This is not a complete local corpus yet. The wrapper's
+`import_failed` attempt is an operator pause, not an observed API or data failure.
+
+The low-cost worker is now authorized for local-only completion and full byte
+verification against the selected Git objects. Existing stable operation IDs and
+receipts are preserved. The online controller's pause remains in place; newly
+enqueued pending intents are expected and do not authorize dispatch by themselves.
+Before online resumption, require all 220 units, 1931 files and 19427197 bytes,
+with exact path/mode/hash/content comparison and a verified production backup.
+
+Subsequent online batches will be bounded by both workflow count and total raw
+bytes, with a lower concurrency limit and complete readback before each next
+batch. Existing protocol bounds remain 49152 raw bytes per chunk and 300000
+UTF-8 bytes per whole command. The largest actual retained command so far is
+299296 bytes; this is a per-request bound, independent of the 19.4 MB corpus.
+No persisted command may be rewritten, automatically rebased or silently split
+after dispatch. Unknown responses retain their original operation identity.
+
+### Local completion and atomic native revision candidate
+
+All 220 selected local imports completed through the frozen public source API:
+52 operations safely replayed and 168 new imports committed. The corpus retains
+1931 files and 19427197 source bytes. Independent source-list/source-read/chunk
+comparison against the fixed Git object tree is still running at this checkpoint;
+import success alone does not establish complete readback or recovery acceptance.
+Remote dispatch remains paused. The next online plan contains 17 explicit batches
+of at most 10 units and 2 MiB raw content, with at most two concurrent units and
+complete verification before proceeding to the next batch.
+
+The section-16 `revise-workflow` candidate implements local atomic metadata/task
+patches and text document upsert using the existing optimistic transaction and
+replay rules. It retains protected state, captures native snapshots and enqueues
+all saved target intents atomically. New transition validation preserves the
+existing schema-1 recovery restrictions. The product adds no automatic dispatch.
+
+Validation was selected for the changed native mutation/recovery boundary:
+50 tests passed across 8 new revision cases, existing native SQLite/source-store
+cases and the optional-package closure case. One affected rollback test passed
+again after adding an assertion for source HEAD movement before commit. Runner
+discovery includes the 8 new cases in the 170-test distribution selection; this
+is discovery evidence, not a claim that all 170 cases were executed. An initial
+binary-text test expected the wrong error code; it was corrected to the existing
+`unsupported_format` contract before the passing run. Scratch stayed in the
+verified F: RAMDRIVE task directory. Fixed-head independent review is pending.
+
+The deployed Board repair from PR #27 passed its independent review and four
+hosted checks. Site version 18 was then verified in the real browser: source
+list, detail, historical document with matching bytes/SHA-256 and return-to-list
+all worked. This repairs the embedded-script corruption introduced by string
+replacement interpreting dollar sequences. It does not certify unexercised MCP
+exposure or all browser behaviors.
+
+### Local proof, recovery and review repair
+
+The production local proof passed for all 220 units through three source-list
+pages, all 220 manifests and 2125 public chunks. All 1931 files and 19427197 raw
+bytes match the pinned Git objects, paths, modes, sizes and hashes. Missing/extra
+units and byte/hash mismatches are zero. The durable report is
+`transport/local-completion/local-verification.json` beneath the selected store;
+its SHA-256 is b74d58d953b46e247afddc1f0743a95ef38842e7b671ab564b9413a583fd671f.
+
+The complete 64063486-byte production archive passed public export, preflight
+and inactive restore. Archive SHA-256 is
+fc90805f835d7f86dff1c9f74acb1eb3d2b5e2e1dc35177667b991026d01ec58;
+snapshot digest is
+e07011a661b9e6727e24499df1061bf03e5b58c1f48bcd94ab70dfa07d1fb76d.
+The retained native/source data, commands, bindings, intents and receipts compare
+exactly. The verification harness initially compared administrative operation
+tables without accounting for the restore's own new receipt; it was corrected
+to require every original row unchanged and exactly that authentic new restore
+receipt/event. The existing archive and restored database were reused, not
+replaced. Original authority stayed active; the restored copy stayed inactive
+and public replica preparation refused with `store_inactive`.
+
+Only after those local gates passed was the pause marker retained under a new
+name and the first explicit online batch released: indices 49-58, 678611 raw
+bytes, at most two concurrent units. The earlier stopped index 49 was explicitly
+resumed because its pause was before import. Unknown/conflict/rejected remote
+results still stop progression; no new operation identity or rebase is allowed.
+
+The independent fixed-head reviewer examined aee81c7c0a19ee8bc12a625851d0fec67c0eaae6
+against 4abe9e4293e5e8c74908933af9f88f26e71cc39d and found no actionable product
+code defect, but one P2 regression-test validity gap. The v1 tamper fixture had
+stale receipt/event references, allowing a different closure check to reject it.
+The fixture now consistently rewrites the revision and its receipt/event and
+asserts the specific unsupported-field transition rejection. That one repaired
+test passed. A separate in-memory mutation probe removed only that transition
+guard and confirmed the repaired test fails with `RecordError not raised`;
+all other closure checks then accept the fixture. Product code was unchanged by
+this repair. Independent repair review remains pending at this checkpoint.

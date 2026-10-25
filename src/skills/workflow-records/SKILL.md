@@ -36,8 +36,9 @@ switch stores, install dependencies or save configuration implicitly.
 
 Use `find`, `context`, `read`, `resume`, `validate` and `operation` for bounded
 reads. Preserve the returned revision and complete workflow reference. Perform
-`checkpoint`, `init`, `create`, `write-document`, `export`, `preflight`, `restore`,
-`deactivate` or `activate` only for the caller's selected effect and destination.
+`checkpoint`, `init`, `create`, `create-task`, `write-document`, `revise-workflow`,
+`export`, `preflight`, `restore`, `deactivate` or `activate` only for the caller's
+selected effect and destination.
 Apply the runtime's operation-specific concurrency and recovery contracts;
 do not invent successful retries or infer success from a process interruption.
 

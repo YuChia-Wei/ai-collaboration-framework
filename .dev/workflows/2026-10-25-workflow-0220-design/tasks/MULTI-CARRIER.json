@@ -3,14 +3,14 @@
   "workflow_id": "2026-10-25-workflow-0220-design",
   "owner_skill": "slice-implementer",
   "title": "Implement durable multi-carrier dispatch under the selected command authority",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-10-25T22:57:41+08:00",
-  "updated_at": "2026-10-26T00:04:19+08:00",
+  "updated_at": "2026-10-26T00:15:27+08:00",
   "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
   "template_version": "1.0.0",
   "model": "gpt-6.1-sol",
   "reasoning_effort": "medium",
   "runtime_identity_source": "Project task selection; actual serving identity unavailable. Historical copy uses the user-requested low-cost sub-agent.",
-  "finding_status": "pending",
-  "result_summary": "Implemented schema-2 snapshots and fixed-target delivery; 42 distinct methods have passing evidence. Reproduced and repaired two independent P2 backup findings. Full 1931-file corpus import/export/inactive-restore preflight passed in disposable scratch; repair re-review and real persistent-store/Board verification remain pending."
+  "finding_status": "addressed",
+  "result_summary": "Initial schema-2 snapshot and fixed-target delivery slice passed 42 distinct methods, immutable review after two repairs, full corpus recovery preflight, and the first real Board copy with exact 4400-byte readback. Dynamic targets and full feature completion remain outside this slice."
 }

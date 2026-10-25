@@ -86,7 +86,7 @@ and the full original `sha256:` revision is retained in provenance. Native state
 receipt and event bytes are copied, not rewritten. Document/attachment blobs are
 included separately. Old native hashes and original limits remain unchanged.
 
-Schema-2 native create/create-task/checkpoint/write-document capture runs after
+Schema-2 native create/create-task/checkpoint/write-document/revise-workflow capture runs after
 the native receipt/event insert and before capacity checking in the same SQLite
 transaction. State, snapshot and every configured pending intent commit together.
 Omitting caller binding data cannot bypass saved bindings. Replays do not enqueue.
