@@ -1,0 +1,238 @@
+# Workflow 0.22.0：本機紀錄契約與多載體整合設計
+
+狀態：設計草案，供 #483 審核；未採納的選項均明列，不是已實作契約。
+來源基準：`b6de8cdb28404296e41f2b15079675cc96c7b8e4`。
+本次讀回的需求：[Epic #416](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/416)、
+[#481](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/481)、
+[#483](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/483)、
+[#513](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/513)、
+[#445](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/445)、
+[#514](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/514)。
+執行狀態與 owner 決策來源見[本次工作紀錄](../../workflows/2026-10-25-workflow-0220-design/workflow-plan.md)。
+
+## 1. 目標與需求變更
+
+0.22.0 同時交付本機 SQLite、線上 adapter 與本來源庫實際採用。日常計畫、
+狀態、日誌、工作文件、結果與接續資訊應離開 Git 追蹤；正式採納的規格、決策、
+程式碼、測試、規則及可重用資源仍保留版本審查。
+
+本次 owner 補充了三項產品需求：
+
+1. 同一份 workflow 可同時保存於多個載體；由 adapter 傳送資料，避免 AI 為每個載體重複輸出。
+2. 讀取使用者明確指定的唯一來源。
+3. 某載體失敗時，顯示各載體結果與「同步未完成」；adapter 保留待補送資料並有限重試。
+
+這是同一 workflow 的多載體寫入需求，超出「不同 workflow 分別選不同 provider」。
+上述需求已由 owner 提出；跨載體成功語意、命令權威與讀取切換的具體機制仍需設計。
+此時 GitHub #416 仍寫「一個可寫權威來源」且未選同步，#513/#445 也以單一 provider
+為基礎。需要在發布新 Story 時同步校正這些需求，不能宣稱線上 Issue 已更新。
+
+「由 adapter 傳送」不表示 adapter 自動理解或撰寫工作成果。AI 仍可產生一次必要的
+語意內容；已存在的文件、命令、結果與附件應由工具讀取、序列化並傳送，避免再由
+AI 抄寫成多份。節省 token 是目標，尚無實測節省比例。
+
+## 2. 固定來源的現況與缺口
+
+| 現有 owner | 公開能力 | 限制與後續變更 |
+| --- | --- | --- |
+| `local-backlog` | `explain/create/inspect/query/revise/transition/render`；JSON work item 是權威，Markdown 是 view | 有 AC、狀態與完成證據；沒有 operation receipt、版本歷史或 migration API；不能直接刪除入口 |
+| `workflow-records` Git | `capabilities/find/context/read/checkpoint/resume/validate/operation` | 唯一持久 writer 是 checkpoint journal；locator、task、status 仍由專案 writer 管理 |
+| `workflow-records` SQLite | 上列能力及 `init/create/write-document/export/preflight/restore/deactivate/activate` | `create` 可含初始 task；之後沒有 task/metadata 編輯與完整 transition；文件更新只能取代既有文字文件 |
+| `software-development-orchestrator` | instruction 型 `orchestrate/resume` | 選階段、路由、驗證與下一步；沒有資料庫、schema 或 record writer |
+
+直接依據：
+
+- [local-backlog operations](../../../src/skills/local-backlog/references/operations.md) 與 [configuration](../../../src/skills/local-backlog/references/configuration.md)。
+- [workflow operations](../../../src/skills/workflow-records/references/operations.md) 的 Public operations、Exact requests、SQLite recovery；[Git format](../../../src/skills/workflow-records/references/git-format.md) 的 writer 邊界。
+- [service dispatch](../../../src/skills/workflow-records/tools/workflow_records/service.py) 與 [SQLite writer](../../../src/skills/workflow-records/tools/workflow_records/sqlite_store.py)。
+- [orchestrator metadata](../../../src/skills/software-development-orchestrator/skill-package.yaml) 與 [orchestration method](../../../src/skills/software-development-orchestrator/references/orchestrate.md)。
+
+目前兩個 workflow provider 都需要 Git source identity。SQLite 使用明確選定的
+持久本機路徑，排除工作目錄、Git common directory 所在目錄及不安全路徑；不能用
+RAM disk 保存工作紀錄。Git common directory identity 可識別 linked worktree，
+獨立 clone 不因 logical repository ID 相同就可直接寫同一 store。
+
+local-backlog 採 expected raw hash/state 與合作 writer lock；workflow-records 採
+revision/source head、operation ID 與持久 receipt。兩者不是相同的並行契約。
+SQLite 的 status 目前是必要字串，並未等價提供 local-backlog 的完整生命週期。
+
+現有 SQLite export 保存保留期內 revisions、events、blobs 與 receipts，但 binary
+附件沒有公開讀寫操作；容量有限且滿額拒絕，不能稱無限歷史。restore 產生 inactive
+實體，啟用依賴原 DB 退役與唯一 successor；原 store 不可用時的接續需求仍有缺口。
+package 的 `implemented`、schema、capabilities 或歷史測試檔均不證明本次 runtime 通過。
+
+## 3. 責任與候選方案
+
+| 方案 | 資料責任 | 取捨／目前狀態 |
+| --- | --- | --- |
+| A：維持分離 | local-backlog 管 item；workflow-records 管 workflow | 遷移少，但跨 store 的關聯、版本及恢復仍需處理；未採納 |
+| B：整合紀錄、編排分離 | workflow-records 管 item/workflow/task/document；orchestrator 決定工作 | 推薦；提供一致操作與恢復閉包，但需補齊 writers 與遷移；未採納 |
+| C：紀錄與編排全部合一 | 新 manager 同時管理資料與階段判斷 | 與現行 orchestrator 重疊、擴大授權耦合；不推薦，未採納 |
+
+推薦 B 延續[既有候選](../skill-evolution-2026-10-22/local-workflow-and-customization.md)，
+不把歷史推薦當決策。D-P3-04 是 optimistic preflight/post-read，並非 writer owner 決策。
+新多載體需求不改變 orchestrator 的開發判斷責任，也不使它成為同步引擎。
+
+| 概念 | 建議唯一責任及生命週期 |
+| --- | --- |
+| Work item | 需求、AC、狀態與完成依據；本機模式可自行管理。來源庫仍由 GitHub 擁有外部需求狀態，不建立第二份可寫 GitHub 狀態 |
+| Workflow | 一次被選定的執行脈絡、item refs、計畫、授權引用、結果；不強制 item 與 workflow 1:1 |
+| Task/step | workflow 內部工作與阻礙、相依、結果；新增 50 個 step 不新增 Issue 或改 Project |
+| Checkpoint | 對特定 revisions 的接續觀察；不覆寫 item/task state，也不自行產生授權 |
+| Document/revision | 穩定文件 ID、不可變修訂及 lineage；定稿用增補／勘誤／後繼修訂，保留 finding/decision ID |
+| Command owner | 檢查授權、版本及合法狀態轉換，接受一次邏輯 mutation；不可由讀取或 resume 隱式觸發 |
+| Dispatcher 與 provider adapters | 保存及傳送同一 accepted payload，記錄逐載體 receipts、unknown 與補送；不決定工作優先序或放寬權限 |
+| Read router | 只讀明確的 carrier reference，回報其 revision/同步進度；不因來源失聯自動改讀其他副本 |
+
+Command owner 與 dispatcher 的實際承載位置仍待選定。推薦一個邏輯命令入口配合
+多個受控儲存副本；這不是現有的 provider 組合能力，也不是允許各副本獨立改寫後自動合併。
+人類 UI 若能繞過此入口，必須有可驗證的同等命令／事件契約，否則不能納入「一致寫入」聲明。
+
+## 4. 建議公開操作與版本語意
+
+下表是能力設計，名稱是候選 operation family，尚未加入 `workflow-records/1`。
+正式名稱、contract version 與相容讀取範圍須在實作前固定。
+
+| 操作族 | 主要輸入／輸出 | 新增或保留的契約 |
+| --- | --- | --- |
+| work-item create/read/query/revise/transition | ID、AC、狀態、完成證據、extensions、expected revision | 保留原 ID/created_at；合法轉換；completed/cancelled 不自動重開 |
+| workflow create/read/revise/transition | source identity、item refs、授權引用、狀態與結果 | revision 不代替授權；外部 work item 狀態只是帶時間的 provider observation |
+| task create/read/revise/transition | workflow ID、task ID、相依、owner、結果、expected revision | 不依靠手改 DB 或 checkpoint 假冒 task writer；完成必備證據由明確契約定義 |
+| document create/read/revise/finalize/supersede | document ID、content/hash、parent revision、finding/decision refs | 新增文件與附件公開操作；任意 SQL、任意路徑覆寫不在一般 agent 權限 |
+| context/resume | workflow ref、分頁／範圍、必要 revision refs | 清楚呈現完整／截斷／缺漏；摘要不能替代未讀正文；不執行下一步 |
+| checkpoint | revision、source identity、operation ID、observations | 引用 item/task/doc 版本，不另立狀態權威 |
+| operation/result | logical operation ID 與逐載體 ID/receipt | same ID+payload 回傳原結果；異 payload 衝突；不存在 receipt 為 unknown |
+| export/preflight/restore/activate | manifest、cut、hash、identity mapping、activation authority | export、migration、同步及切換分開；保留 inactive restore 與受控啟用 |
+
+單一 SQLite mutation 需在同一 transaction 提交狀態、revision、事件及 receipt；
+衝突或不合法轉換不留下半份資料。查既有 receipt 應先於新寫入的 stale revision 判斷，
+使已成功操作的重試不因 current revision 前進而被誤認失敗。異 payload 不覆寫原 receipt。
+對未知結果先查 operation，再有限重試原命令；不自行換 expected revision 或換身分。
+
+狀態對映需要逐項保留：local-backlog 的 draft/planned/in_progress/blocked/completed/cancelled，
+來源庫 task 的 pending/in_progress/completed/deferred，以及 legacy 不認得的值。
+不把 deferred 改成 passed，也不把沒有證據的 completed 升級成已驗收。
+
+## 5. 多載體增量與 Story 安排
+
+建議新增一個實作 Story：「透過轉接器同步 workflow 至多個載體，並從指定來源讀取」。
+放在 #513 的 adapter 整合範圍，明列依賴 #481 所需本機操作與 #445 所選線上 adapter；
+#513 的範圍文字也須相應擴充。這是安排建議，尚未建立 Issue 或變更原生關係。
+
+| 既有工作 | 應吸收的部分 | 保留的交付邊界 |
+| --- | --- | --- |
+| #416 | 多載體產品目標；單一邏輯寫入權威與唯一指定讀取來源；部分成功語意 | 仍分開實作、來源庫採用及 0.22.0 驗收；新 Story 是否納入同版需明確記錄 |
+| #483 | 現在設計 command/dispatcher/adapter/read router 邊界與相容契約 | 不提前實作 fanout，不選定平台 |
+| #481、#445 | 每個載體的能力協商、operation lookup、revision、receipt 與完整資料操作 | 不各自實作跨載體同步策略 |
+| 新 Story | 多目標傳送、逐載體進度、持久待補送、重試、指定讀取與來源切換 | 在實際選用 adapters 具備所需能力後交付，不等待所有可能平台 |
+| #514 | 真實 SQLite+線上多載體整合、跨 session/client 與無 tracked diff | 不以模擬或 adapter 連線取代使用證據 |
+
+傳送紀錄至少需保存 logical operation ID、canonical payload digest、固定目標集合、
+各載體 operation ID、expected/actual revision 與 receipt/status。各 provider 的 revision
+不能互相比大小；須另有可對應的 logical revision/sequence。新操作不能越過同一載體未完成
+的相依操作。payload 大小、附件與完整歷史仍受 provider 的實際能力及容量約束。
+
+在任何載體寫入之前，命令權威必須以同一持久提交保存「命令已接受」與完整傳送意圖：
+不可變 payload（或足以重建原內容的不可變 references）、digest、logical sequence、固定
+目標集合，以及各目標初始 pending 狀態。若權威狀態也在此步改變，必須在同一原子邊界
+提交，不能先改資料再另寫待補送紀錄。重啟由同一 journal 恢復；不可重新讀取已變動文件
+拼出不同 payload。選定 host 若無法提供此邊界，須先說明替代協定與失敗語意，不能宣稱
+已具有可靠補送。此處的命令接受不等於所有載體均已同步完成。
+
+已接受的需求是「逐載體結果＋同步未完成＋持久待補送＋有限重試」。因此不能在部分成功
+時回報全部完成、重送已成功 mutation 或假稱所有載體都回滾。重試上限、退避、保留期、
+停止／人工處置及總體 command acceptance 與同步完成的關係，仍需在新 Story 定稿。
+認證或權限失敗不能以重試換身分；達限後保留待處理結果。
+
+讀取選擇應持久保存完整 carrier ref 與 binding revision。當所選來源落後時，明示其
+logical revision 與未完成同步；來源不可用時回報不可用，不偷偷讀另一份。來源切換
+須是明確操作，驗證新來源的完整性／進度，不等同寫入權威切換、災難復原或遷移。
+新增／移除載體及補齊歷史需要另外受控的配置 revision；不能靠改 default provider
+重新解釋既有 operation 的目標集合。同步錯誤或刪除也可能傳播，副本不等於獨立備份。
+
+## 6. 遷移、退出與恢復
+
+1. 預覽選定原資料與目標映射：repo/commit、原始 bytes/hash、schema/policy version、
+   work item/workflow/task/document ID、created_at、AC、終態、完成證據、references、extensions。
+2. 無法理解的版本／欄位保留原資料及診斷，該項不可宣稱完成遷移；不丟欄位、不重開終態。
+   既有 local-backlog 若未保存 revisions，只能匯入可證明的歷史，不能製造完整修訂。
+3. 新 store 先建 inactive/staging 資料並讀回；比對數量、hash、關聯、歷史與操作去重。
+   Git 歷史須讀相應 commits，僅讀最新檔案不能稱完整歷史。
+4. 凍結選定原 writer，取得最後一致截點，再完成增量、驗證並切換 binding。無法確認
+   原 writer 停止時不啟用第二個獨立 writer；多載體副本須服從同一邏輯命令入口。
+5. 回復涵蓋切換後新資料。不得只回退舊 snapshot，也不得重播 Issue/Project/部署等外部副作用。
+   未選定紀錄維持原樣，不改 Git history。
+6. 完整匯出含 versioned manifest、cut、IDs、保留期 revisions/events/receipts/tombstones、
+   文件與附件實體/hash、來源與角色 mapping。秘密與 token 排除；重新綁定身份、使舊 lease
+   失效，外部寫入預設停用。最新 Markdown、CSV 或過期 URL 不構成完整退出。
+7. 原 store 不可用時仍需乾淨替代 store 的可閱讀／接續驗收。目前 activation route 不足，
+   必須另設可審核 recovery authority／舊 writer 隔離程序；在決策完成前不能聲稱已解決。
+   不以單機設定檔保證跨機所有歷史副本都已失效。
+
+備份頻率、保留期、容量及刪除政策仍待決策。現階段建議維持滿額拒絕與不自動刪除，
+但必須評估 50 個 task 加文件修訂的實際 workload，不能沿用舊上限就宣稱足夠。
+export/restore 不等同 Git↔SQLite↔online 轉換；fanout 亦不等同雙向同步。
+
+## 7. 來源庫採用影響
+
+本次仍依現行政策保存 bootstrap workflow，尚未達成「日常工作紀錄不進 Git」。
+後續 #514 必須一次對齊下列直接 owners/consumers，避免只搬 status：
+
+| Owner／consumer | 必要調整 |
+| --- | --- |
+| WORKFLOW-GATE／ARTIFACT／HANDOFF policies | store discovery、穩定 refs、授權與完整接續；取代 Git-trackable root 必要條件 |
+| SOURCE-DEVELOPMENT、Git flow、commit policy | 保留程式碼分支／PR／授權責任，移除日常狀態紀錄專用 commit 要求 |
+| `.dev/INDEX.md`、workflow index、root navigation | 區分歷史 Git records 與目前 store；索引不再複製每日狀態 |
+| Assessment refs／validator | `tools/maintenance/validate-assessment-artifacts.py` 現在查 Git locator，需明確 resolver |
+| `workflow-records` Git reader／project writers | 保留舊 refs；切換後停止選定舊 writer；不能刪 locator 卻繼續靠它接續 |
+| 安裝與 runtime entry | 本 repo 安裝不含 workflow-records；source CLI 可供開發，不能當成已安裝或已採用 |
+| 特殊 release/recovery records | 保留原 ID、revision 與適用責任；不存在的 legacy validator 不因圖索引命中就恢復可用 |
+
+Git 工作紀錄處置推薦「停止新 workflow 的 Git writer，保留歷史唯讀」；若需可編輯的
+不追蹤文件區，必須定義匯入命令與 revision 檢查，避免它與 DB 都成為權威。此選項未採納。
+正式規格／已採納決策保留 Git；工作草稿、審查執行結果與日誌進 store，是否升格為正式
+版本文件須由文件 owner 決定，不將整個 `.dev` 一律搬走。
+
+## 8. 後續可觀察情境（尚未執行）
+
+| ID／Given | When | Then |
+| --- | --- | --- |
+| S01：無網路但本機 prerequisites 齊備 | 建立 item、workflow 與 50 個 task，再由新 session resume | 完整資料可讀，外部 Issue/Project 無變動，紀錄更新不產生 tracked diff |
+| S02：兩個 writer 持同 revision | 同時修改同一 task／文件 | 一個成功，另一個衝突；無遺失更新或半份 receipt |
+| S03：服務已提交但回應遺失 | 以相同 operation ID/payload 查詢及重送 | 回傳原接受結果，mutation/event 不重複；payload 不同則拒絕 |
+| S04：task 缺完成證據或要求非法轉換 | 提交 transition | 拒絕且狀態/revision 不變，不以 checkpoint 繞過 |
+| S05：定稿文件／舊修訂仍被引用 | 更正文件 | 新增可追溯 successor/erratum，原 finding/decision IDs 與原文仍可讀 |
+| S06：transaction 中斷與完整 export 存在 | 重開 SQLite；另向乾淨 store restore | 無部分 transaction；ID/hash/history/receipt 一致，未經啟用不接受 writes |
+| S07：原 store 不可用 | 依新 recovery 契約恢復並接續 | 必須提供受控啟用與舊 writer 隔離證據；現行契約不足，此項未通過 |
+| S08：migration 遇未知欄位／版本／終態 | 預覽及嘗試切換 | 原資料保留，未映射項阻擋完成宣告；終態不重開，未選定紀錄不變 |
+| S09：兩載體 A 成功、B 失敗 | adapter 回報並跨 session 補送 | 顯示 A receipt、B 待處理與同步未完成；不重複 A，B 有限重試且達限可查 |
+| S10：唯一讀取來源 B 落後或失聯 | context/resume | 只回 B 的可證明內容及落後／不可用狀態，不默讀 A 或補寫成成功 |
+| S11：固定目標集合的操作尚未完成 | 修改 carrier config 或相同 ID 改 payload | 原操作目標與 digest 不變；配置修改是新受控操作，無跨目標誤重播 |
+| S12：選定人類與兩個真實 client | 登入、讀寫、交接、撤銷與 namespace 越權測試 | 真實可讀回結果；憑證身份不冒充每個 agent；stub/開網頁不算驗收 |
+| S13：命令接受與傳送意圖使用同一持久提交 | 在意圖提交前、提交後首次 dispatch 前，以及 A 已提交但 receipt 未保存時中斷 | 提交前無接受命令或載體寫入；提交後重啟從原 payload/目標恢復；先查 A 的 operation 結果，不遺失 B 的待補送也不重複 A |
+
+## 9. #483 驗收對照與待決事項
+
+| #483 AC | 設計涵蓋 | 結論 |
+| --- | --- | --- |
+| AC01 | 第 2 節現況／缺口，第 4 節候選操作 | 草案已涵蓋；未宣稱 runtime |
+| AC02 | 第 3 節 owner、GitHub 與授權邊界 | B 與邏輯 command owner 尚待採納 |
+| AC03 | 第 2、4、5、7 節 before/after 與 conflict/replay | Git 文件處置與新同步契約待決 |
+| AC04 | S01–S07 | 已列具體情境，尚未執行 |
+| AC05 | 第 6 節與 S08 | 保留未知資料、終態與舊入口 |
+| AC06 | 本節決策表 | 明列缺口；草案不是實作或採用 |
+| AC07 | 第 5–6 節 | export/recovery/migration/fanout/read-source switch 分開 |
+
+| 決策 | 建議／已知狀態 | 阻擋範圍 |
+| --- | --- | --- |
+| D01 資料與編排 owner | 推薦 B；未採納 | 整合 writer 實作 |
+| D02 Git 文件處置 | 推薦停止新 Git writer、歷史唯讀；未採納 | 來源庫政策切換 |
+| D03 DB 位置與 Git 前提 | 建議第一個實作增量保留現有安全限制；精確持久路徑未選 | store 初始化／採用；不阻擋契約設計 |
+| D04 平台/client/帳號與維護 | 未選；既有 Board 只是候選 | 真實線上與跨 client 驗收 |
+| D05 多載體失敗結果 | owner 已選逐載體結果、同步未完成、持久補送與有限重試 | retry 參數、command acceptance、命令權威與切換仍待固定 |
+| D06 recovery／備份／保留 | 原 store 不可用時啟用程序及參數待決 | 災難接續與完整退出驗收 |
+| D07 多 executor claim | 本增量不選；是否列 0.22.0 不適用需 owner 固定 | 不得以未實作 fencing 宣稱 claim 安全 |
+| D08 新 Story 與版本 | 推薦獨立 Story 接在所需 adapters 後；尚未建立 | 公開 backlog 與 0.22.0 範圍更新 |
+
+本文件是已授權 #483 設計工作的草案，不修改現行 package、政策、安裝或資料。
+後續採納應更新同一設計的狀態與決策來源；新的來源需求／公開 Story 需保持可讀回關聯。
