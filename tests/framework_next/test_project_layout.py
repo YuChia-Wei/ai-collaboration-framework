@@ -273,18 +273,27 @@ class LayoutTests(unittest.TestCase):
             contracts.validate('SubAgentModelPolicyV3', {**value, 'policy_path': name})
 
     def test_configured_old_wrappers_remain_reproducible_after_layout_migration(self):
-        installed = state.read_lock(str(ROOT))
-        contents = {name: (ROOT / name).read_bytes() for name in installed.members}
-        state.verify_lock_contents(installed, contents)
+        # This configured ADR 0.1.0 baseline predates the current installation.
+        # Keep exact historical bytes locally: CI intentionally fetches only HEAD.
+        fixture = json.loads((Path(__file__).parent / 'fixtures/configured-adr-layout-history.json').read_bytes())
+        self.assertEqual(fixture['source_commit'], '15dd211e90f433be4ceb586f1f0643b078c7f180')
+        self.assertEqual(tuple(fixture['installed_engine_files']), state.LAYOUT_ENGINE_FILES)
+        contents = {name: raw.encode('utf-8') for name, raw in fixture['contents'].items()}
         for name, expected in (
             ('.agents/skills/adr-author/SKILL.md', 'b0aaf2f221b3fdd85d0e2b57d3f910d4cc0f29fda6f36a6043619ab2ac3bf15a'),
             ('.claude/skills/adr-author/SKILL.md', 'a792df7c5a0a463688c1295e2d1320eac528b40f7c0935f73142243560011bfc'),
         ):
             self.assertEqual(p.digest(contents[name]), expected)
             self.assertIn(b'.ai/custom/framework.json', contents[name])
-        doc = deepcopy(installed.document['catalog_document'])
-        files = installed.document['catalog_inventory']
-        selected = installed.document['selection']
+        historical = fixture['catalog_document']
+        files = fixture['catalog_inventory']
+        selected = fixture['selection']
+        self.assertEqual(p.digest(json_bytes(selected['desired'])), selected['desired_sha256'])
+        # Validate exact payload, wrapper and descriptor provenance under the old
+        # 23-file generator before comparing 27-file and current conventions.
+        self.assertEqual(tuple(row['path'] for row in historical['generator']['implementation']), state.LEGACY_ENGINE_FILES)
+        catalog.verify_subset_contents(historical, files, selected, fixture['inventory'], contents)
+        doc = deepcopy(historical)
         # Exercise convention dispatch while holding selected payload, templates
         # and naming constant; this unit projection is not a new build receipt.
         doc['generator']['implementation'] = [{'path': name} for name in state.ENGINE_FILES]
@@ -295,6 +304,7 @@ class LayoutTests(unittest.TestCase):
         old_doc = deepcopy(doc)
         old_doc['generator']['implementation'] = [{'path': name} for name in state.LAYOUT_ENGINE_FILES]
         old_inventory, old_projected = catalog.project_members(old_doc, files, selected, contents)
+        catalog.verify_subset_contents(old_doc, files, selected, old_inventory, old_projected)
         self.assertEqual(old_projected, projected)
         self.assertEqual(old_inventory, inventory)
         for name in contents:
@@ -304,9 +314,9 @@ class LayoutTests(unittest.TestCase):
             self.assertEqual(projected[name], expected)
         # Even coherent alternate byte hashes cannot override provenance.
         with self.assertRaisesRegex(ValueError, 'projection/inventory/content'):
-            catalog.verify_subset_contents(doc, files, selected, installed.document['inventory'], contents)
+            catalog.verify_subset_contents(doc, files, selected, fixture['inventory'], contents)
         with self.assertRaisesRegex(ValueError, 'projection/inventory/content'):
-            catalog.verify_subset_contents(installed.document['catalog_document'], files,
+            catalog.verify_subset_contents(historical, files,
                                            selected, inventory, projected)
 
     def test_saved_selection_and_config_protection_follow_resolved_layout(self):

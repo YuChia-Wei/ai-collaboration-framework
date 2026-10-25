@@ -13,9 +13,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 # Deliberate scope matrix: 12 distribution JSON schemas, seven record JSON
-# schemas (including legacy lesson and unpublished standards-promotion), and
-# one custom declarative knowledge baseline. New source schemas require a
-# conscious fixture/coverage decision, not just automatic meta-validation.
+# schemas (including legacy lesson and unpublished standards-promotion), two
+# workflow transport contracts, and one custom declarative knowledge baseline.
+# New source schemas require a conscious fixture/coverage decision, not just
+# automatic meta-validation.
 DISTRIBUTION = {
     "build": "Build", "catalog-files": "CatalogFiles", "catalog": "Catalog",
     "content-package": "ContentPackage", "contracts": None,
@@ -32,11 +33,16 @@ RECORDS = {
     "cbf": ("problem-frame-author", "cbf-record-v1", "problem_frame.py"),
     "promotion": ("standards-promotion", "promotion-record", "standards_promotion.py"),
 }
+WORKFLOW_CONTRACTS = {
+    "board-collaboration-v2": "src/skills/workflow-records/schemas/board-collaboration-v2.schema.json",
+    "source-replica-v1": "src/skills/workflow-records/schemas/source-replica-v1.schema.json",
+}
 PROVIDER_ROOT = "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation"
 PROVIDER_SCHEMA = PROVIDER_ROOT + "/provider-contract.schema.yaml"
 JSON_PATHS = tuple(
     [f"src/distribution/schemas/{name}.schema.json" for name in DISTRIBUTION]
     + [f"src/skills/{family}/schemas/{name}.schema.json" for family, name, _ in RECORDS.values()]
+    + list(WORKFLOW_CONTRACTS.values())
 )
 STAMP = "2026-10-02T00:00:00+00:00"
 SHA = "a" * 64
