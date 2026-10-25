@@ -15,9 +15,9 @@ DEFAULT_CONFIG = {
     "stores": {"git": {"kind": "git", "store_id": "project-workflows", "root": ".dev/workflows"}},
 }
 GIT_OPERATIONS = ["find", "context", "read", "checkpoint", "resume", "validate", "operation"]
-LOCAL_OPERATIONS = GIT_OPERATIONS + ["init", "create", "write-document", "export", "preflight", "restore", "deactivate", "activate"]
+LOCAL_OPERATIONS = GIT_OPERATIONS + ["init", "create", "create-task", "write-document", "export", "preflight", "restore", "deactivate", "activate"]
 STORE_OPERATIONS = {"init", "export", "preflight", "restore", "deactivate", "activate"}
-MUTATIONS = {"checkpoint", "init", "create", "write-document", "export", "restore", "deactivate", "activate"}
+MUTATIONS = {"checkpoint", "init", "create", "create-task", "write-document", "export", "restore", "deactivate", "activate"}
 LIMITATIONS = ["cooperating API writers only; no protection against direct storage edits",
               "no automatic commit, migration, failover or cross-clone synchronization"]
 
@@ -105,6 +105,7 @@ class WorkflowRecords:
                        "operation": {"workflow_ref", "store_ref", "operation_id"},
                        "init": {"store_ref", "operation_id"},
                        "create": {"workflow_ref", "record", "operation_id"},
+                       "create-task": {"workflow_ref", "task", "operation_id", "expected_revision", "expected_source_head"},
                        "write-document": {"workflow_ref", "document", "content", "operation_id", "expected_revision", "expected_source_head"},
                        "export": {"store_ref", "destination"},
                        "preflight": {"store_ref", "archive", "archive_digest"},
@@ -112,6 +113,12 @@ class WorkflowRecords:
                        "deactivate": {"store_ref", "snapshot_digest", "operation_id"},
                        "activate": {"store_ref", "retired_database", "retirement_seal", "operation_id"}}[operation]
             require(set(request) <= fields, "invalid_input", "Request contains unknown fields.")
+            if operation == "create-task":
+                require(fields - {"max_output_bytes"} <= set(request),
+                        "invalid_input", "Create-task requires a reference, operation identity, expected inputs and task.")
+                require(all(isinstance(request[key], str) and request[key] for key in
+                            ("expected_revision", "expected_source_head")),
+                        "invalid_input", "Expected revision and source head must be nonempty strings.")
             maximum = integer(request.get("max_output_bytes", MAX_OUTPUT), 2048, MAX_OUTPUT)
             if operation == "capabilities":
                 result = self.capabilities()
@@ -168,7 +175,7 @@ class WorkflowRecords:
                                            integer(request.get("limit", 4096), 1, 32768))
                 elif operation == "checkpoint":
                     result = provider.checkpoint(ref, request)
-                elif operation in ("create", "write-document"):
+                elif operation in ("create", "create-task", "write-document"):
                     require(isinstance(provider, SQLiteStore), "unsupported_capability", "This operation requires the local SQLite provider.")
                     result = provider.create(ref, request) if operation == "create" else provider.update(ref, request)
                 else:

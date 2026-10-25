@@ -20,6 +20,7 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
   - export
   - preflight
@@ -40,6 +41,7 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
   - export
   - preflight
@@ -60,6 +62,7 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
   - export
   - preflight
@@ -80,6 +83,7 @@ runtime:
   - operation
   - init
   - create
+  - create-task
   - write-document
   - export
   - preflight
@@ -112,6 +116,7 @@ resources:
     - operation
     - init
     - create
+    - create-task
     - write-document
     - export
     - preflight
@@ -218,6 +223,16 @@ operations:
   - bounded-json-response
   implementation_status: implemented
 - id: create
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: create-task
   execution: tool
   tool: workflow-records-cli
   inputs:

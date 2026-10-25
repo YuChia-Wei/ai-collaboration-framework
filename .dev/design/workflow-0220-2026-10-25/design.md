@@ -1,6 +1,6 @@
 # Workflow 0.22.0：本機紀錄契約與多載體整合設計
 
-狀態：設計草案，供 #483 審核；未採納的選項均明列，不是已實作契約。
+狀態：#483 設計已依本次 owner 補充收斂，開始第一個本機操作增量；未定選項仍明列，不是完整功能驗收。
 來源基準：`b6de8cdb28404296e41f2b15079675cc96c7b8e4`。
 本次讀回的需求：[Epic #416](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/416)、
 [#481](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/481)、
@@ -24,8 +24,9 @@
 
 這是同一 workflow 的多載體寫入需求，超出「不同 workflow 分別選不同 provider」。
 上述需求已由 owner 提出；跨載體成功語意、命令權威與讀取切換的具體機制仍需設計。
-此時 GitHub #416 仍寫「一個可寫權威來源」且未選同步，#513/#445 也以單一 provider
-為基礎。需要在發布新 Story 時同步校正這些需求，不能宣稱線上 Issue 已更新。
+後續收斂使用 [#520](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/520)
+承接多載體實作。線上平台已選定 Workflow Board，採用需要其
+[多專案能力 #22](https://github.com/YuChia-Wei/ai-collaboration-workflow-board/issues/22)。
 
 「由 adapter 傳送」不表示 adapter 自動理解或撰寫工作成果。AI 仍可產生一次必要的
 語意內容；已存在的文件、命令、結果與附件應由工具讀取、序列化並傳送，避免再由
@@ -66,16 +67,27 @@ package 的 `implemented`、schema、capabilities 或歷史測試檔均不證明
 | 方案 | 資料責任 | 取捨／目前狀態 |
 | --- | --- | --- |
 | A：維持分離 | local-backlog 管 item；workflow-records 管 workflow | 遷移少，但跨 store 的關聯、版本及恢復仍需處理；未採納 |
-| B：整合紀錄、編排分離 | workflow-records 管 item/workflow/task/document；orchestrator 決定工作 | 推薦；提供一致操作與恢復閉包，但需補齊 writers 與遷移；未採納 |
+| B：整合紀錄、編排分離 | workflow-records 管 workflow/task/document 與可選本機 item；orchestrator 決定工作 | 本次選定方向；優先服務外部 Issue 系統，補齊 writers 與遷移後退役獨立 local-backlog |
 | C：紀錄與編排全部合一 | 新 manager 同時管理資料與階段判斷 | 與現行 orchestrator 重疊、擴大授權耦合；不推薦，未採納 |
 
-推薦 B 延續[既有候選](../skill-evolution-2026-10-22/local-workflow-and-customization.md)，
-不把歷史推薦當決策。D-P3-04 是 optimistic preflight/post-read，並非 writer owner 決策。
+B 延續[既有候選](../skill-evolution-2026-10-22/local-workflow-and-customization.md)，
+本次依 owner 對外部 Issue 系統的實際使用與開始作業授權收斂；不是回頭將歷史推薦改成決策。
+D-P3-04 是 optimistic preflight/post-read，並非 writer owner 決策。
 新多載體需求不改變 orchestrator 的開發判斷責任，也不使它成為同步引擎。
+
+**local-backlog 不是 workflow 的必要依賴。** 一個 workflow 可以關聯外部權威工作項目、
+明確選用的本機 work item，或經授權的直接工作；建立 workflow 不必先建 local item。
+本來源庫與 owner 的主要情境直接關聯 GitHub／ADO，需求／AC／外部狀態仍由該系統擁有。
+內部 task、結果與 checkpoint 不複製成另一套可寫 Issue 系統，也不自動關閉外部 Issue。
+
+本機需求管理對無線上 tracker 的使用者仍有價值，但保留的是 workflow-records 的可選能力，
+不是永久維持一個必要的獨立 skill。獨立 local-backlog 在等效 create/read/revise/transition、
+render 與 migration 讀回完成後退役；在此之前保留舊入口相容性，不手改 managed installation。
+這項相容工作不阻擋一般 workflow/task 操作、線上 adapter 或多載體功能。
 
 | 概念 | 建議唯一責任及生命週期 |
 | --- | --- |
-| Work item | 需求、AC、狀態與完成依據；本機模式可自行管理。來源庫仍由 GitHub 擁有外部需求狀態，不建立第二份可寫 GitHub 狀態 |
+| Work item | 外部 tracker 擁有外部需求、AC、狀態；workflow 僅保存穩定 refs／帶時間觀察。只有明確選本機需求模式時才由可選 local item 擁有需求，不是每個 workflow 的前置 |
 | Workflow | 一次被選定的執行脈絡、item refs、計畫、授權引用、結果；不強制 item 與 workflow 1:1 |
 | Task/step | workflow 內部工作與阻礙、相依、結果；新增 50 個 step 不新增 Issue 或改 Project |
 | Checkpoint | 對特定 revisions 的接續觀察；不覆寫 item/task state，也不自行產生授權 |
@@ -115,16 +127,16 @@ Command owner 與 dispatcher 的實際承載位置仍待選定。推薦一個邏
 
 ## 5. 多載體增量與 Story 安排
 
-建議新增一個實作 Story：「透過轉接器同步 workflow 至多個載體，並從指定來源讀取」。
-放在 #513 的 adapter 整合範圍，明列依賴 #481 所需本機操作與 #445 所選線上 adapter；
-#513 的範圍文字也須相應擴充。這是安排建議，尚未建立 Issue 或變更原生關係。
+實作 Story [#520](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/520)
+承接「由轉接器同步 workflow 至多個載體並從指定來源讀取」，歸入 #513 的 adapter 整合範圍，
+依賴 #481 所需本機操作與 #445 的 Workflow Board adapter，納入 #416 的 0.22.0 交付。
 
 | 既有工作 | 應吸收的部分 | 保留的交付邊界 |
 | --- | --- | --- |
 | #416 | 多載體產品目標；單一邏輯寫入權威與唯一指定讀取來源；部分成功語意 | 仍分開實作、來源庫採用及 0.22.0 驗收；新 Story 是否納入同版需明確記錄 |
 | #483 | 現在設計 command/dispatcher/adapter/read router 邊界與相容契約 | 不提前實作 fanout，不選定平台 |
 | #481、#445 | 每個載體的能力協商、operation lookup、revision、receipt 與完整資料操作 | 不各自實作跨載體同步策略 |
-| 新 Story | 多目標傳送、逐載體進度、持久待補送、重試、指定讀取與來源切換 | 在實際選用 adapters 具備所需能力後交付，不等待所有可能平台 |
+| #520 | 多目標傳送、逐載體進度、持久待補送、重試、指定讀取與來源切換 | 在實際選用 adapters 具備所需能力後交付，不等待所有可能平台 |
 | #514 | 真實 SQLite+線上多載體整合、跨 session/client 與無 tracked diff | 不以模擬或 adapter 連線取代使用證據 |
 
 傳送紀錄至少需保存 logical operation ID、canonical payload digest、固定目標集合、
@@ -175,6 +187,13 @@ export/restore 不等同 Git↔SQLite↔online 轉換；fanout 亦不等同雙�
 
 ## 7. 來源庫採用影響
 
+Workflow Board 是本次選定平台。2026-10-25 讀回其私人 Site version 14 與現行
+collaboration/1 的 18 commands、8 queries；實際 schema 固定 personal namespace，
+服務只接受一個 configured store。它已有 owner 隔離，尚無同 owner 的多專案資料範圍。
+Board #22 補穩定 project ID、UI/CLI/MCP 傳遞、文件/cursor/receipt 隔離及舊資料映射；
+不擴充成商業租戶組織、帳務或完整 RBAC。完整退出與恢復仍屬 Board #6。
+清空資料不能補上 project scope；本次先保留線上資料，完整備份、匯入預檢及恢復未驗證前不重建。
+
 本次仍依現行政策保存 bootstrap workflow，尚未達成「日常工作紀錄不進 Git」。
 後續 #514 必須一次對齊下列直接 owners/consumers，避免只搬 status：
 
@@ -197,7 +216,7 @@ Git 工作紀錄處置推薦「停止新 workflow 的 Git writer，保留歷史�
 
 | ID／Given | When | Then |
 | --- | --- | --- |
-| S01：無網路但本機 prerequisites 齊備 | 建立 item、workflow 與 50 個 task，再由新 session resume | 完整資料可讀，外部 Issue/Project 無變動，紀錄更新不產生 tracked diff |
+| S01：無網路但本機 prerequisites 齊備，沒有 local-backlog 或 local item | 建立 workflow 與 50 個 task，再由新 session resume | 完整資料可讀，可保留已有外部 refs；不需連線 tracker，外部 Issue/Project 無變動，紀錄更新不產生 tracked diff |
 | S02：兩個 writer 持同 revision | 同時修改同一 task／文件 | 一個成功，另一個衝突；無遺失更新或半份 receipt |
 | S03：服務已提交但回應遺失 | 以相同 operation ID/payload 查詢及重送 | 回傳原接受結果，mutation/event 不重複；payload 不同則拒絕 |
 | S04：task 缺完成證據或要求非法轉換 | 提交 transition | 拒絕且狀態/revision 不變，不以 checkpoint 繞過 |
@@ -216,7 +235,7 @@ Git 工作紀錄處置推薦「停止新 workflow 的 Git writer，保留歷史�
 | #483 AC | 設計涵蓋 | 結論 |
 | --- | --- | --- |
 | AC01 | 第 2 節現況／缺口，第 4 節候選操作 | 草案已涵蓋；未宣稱 runtime |
-| AC02 | 第 3 節 owner、GitHub 與授權邊界 | B 與邏輯 command owner 尚待採納 |
+| AC02 | 第 3 節 owner、GitHub 與授權邊界 | B 已收斂；本機 item 可選；dispatcher 的具體承載仍待固定 |
 | AC03 | 第 2、4、5、7 節 before/after 與 conflict/replay | Git 文件處置與新同步契約待決 |
 | AC04 | S01–S07 | 已列具體情境，尚未執行 |
 | AC05 | 第 6 節與 S08 | 保留未知資料、終態與舊入口 |
@@ -225,14 +244,31 @@ Git 工作紀錄處置推薦「停止新 workflow 的 Git writer，保留歷史�
 
 | 決策 | 建議／已知狀態 | 阻擋範圍 |
 | --- | --- | --- |
-| D01 資料與編排 owner | 推薦 B；未採納 | 整合 writer 實作 |
+| D01 資料與編排 owner | B：外部 tracker 為主要需求來源，可選本機 item 整合至 workflow-records，獨立 skill 待相容遷移後退役 | 第一個 workflow/task 增量可開始；退役需等效能力與讀回 |
 | D02 Git 文件處置 | 推薦停止新 Git writer、歷史唯讀；未採納 | 來源庫政策切換 |
 | D03 DB 位置與 Git 前提 | 建議第一個實作增量保留現有安全限制；精確持久路徑未選 | store 初始化／採用；不阻擋契約設計 |
-| D04 平台/client/帳號與維護 | 未選；既有 Board 只是候選 | 真實線上與跨 client 驗收 |
+| D04 平台/client/帳號與維護 | 已選 Workflow Board，保持當前 owner-private；CLI／現有 MCP 是初始入口，多專案由 Board #22 補齊 | project-aware adapter 與真實跨 client 驗收 |
 | D05 多載體失敗結果 | owner 已選逐載體結果、同步未完成、持久補送與有限重試 | retry 參數、command acceptance、命令權威與切換仍待固定 |
 | D06 recovery／備份／保留 | 原 store 不可用時啟用程序及參數待決 | 災難接續與完整退出驗收 |
 | D07 多 executor claim | 本增量不選；是否列 0.22.0 不適用需 owner 固定 | 不得以未實作 fencing 宣稱 claim 安全 |
-| D08 新 Story 與版本 | 推薦獨立 Story 接在所需 adapters 後；尚未建立 | 公開 backlog 與 0.22.0 範圍更新 |
+| D08 新 Story 與版本 | #520，在所需 adapters 後交付，屬 #416／0.22.0 | adapters 的必要能力完成後實作 |
 
-本文件是已授權 #483 設計工作的草案，不修改現行 package、政策、安裝或資料。
+## 10. 第一個可獨立交付的本機操作
+
+先加入 SQLite-only `create-task`，不依賴 Board 或 local-backlog。request 攜帶既有
+workflow_ref、operation_id、expected_revision、expected_source_head 與一個 task。
+task 使用既有 create 的 task_id/status/title 要求；owner_skill 為可選 extension，
+保留未知 extension 欄位；
+不能重複 task_id，不修改其他 task、metadata、documents 或 attachments。
+使用現有單 DB transaction／revision／receipt 邊界；同操作重播先於 current revision
+檢查，異 payload、過期 revision/source、inactive store 均拒絕。此操作只新增 task，
+不另定 transition、完成證據或刪除規則；後續 task 更新／transition 分別依設計補齊。
+
+直接驗證：公開 CLI 可新增並由 context/resume 讀回、相同 payload 重播、異 payload
+碰撞、重複 task ID、stale revision/source、50 tasks 不變更外部 tracker、extensions／
+文件／附件／原修訂保留，以及既有 export/restore 的資料閉包。Git provider 明確不宣告
+此 writer。套件發布與來源庫安裝另行驗證，source 能力不等於下游已採用。
+
+本文件保存 #483 的設計與後續增量邊界；第 10 節已有來源實作，驗證與審查狀態由
+workflow 記錄。其他候選操作仍是設計，不代表現行 package、政策、安裝或資料已切換。
 後續採納應更新同一設計的狀態與決策來源；新的來源需求／公開 Story 需保持可讀回關聯。
