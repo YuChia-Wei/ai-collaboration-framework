@@ -1,0 +1,112 @@
+{
+  "key": "21-rejected-lookup",
+  "prepared": {
+    "binding": {
+      "adapter_id": "workflow-board-v2",
+      "binding_id": "codex-workroom-framework-v2",
+      "binding_revision": 1,
+      "project_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "store_id": "workflow-records-private-collaboration"
+      }
+    },
+    "contract_version": "workflow-records/board-query/1",
+    "expected_snapshot_revision": null,
+    "query": {
+      "payload": {
+        "operation_id": "framework-command-proof-20261025-stale",
+        "workflow_ref": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "framework-command-proof-20261025"
+        }
+      },
+      "query": "operation.get",
+      "schema_version": "2.0",
+      "service_contract_version": "workflow-board/collaboration/2"
+    },
+    "tool_name": "v2_operation_get"
+  },
+  "native": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"outcome\":\"rejected\",\"receipt\":{\"accepted\":false,\"service_contract_version\":\"workflow-board/collaboration/2\",\"schema_version\":\"2.0\",\"workflow_ref\":{\"store_id\":\"workflow-records-private-collaboration\",\"namespace\":\"personal\",\"record_kind\":\"collaboration\",\"workflow_id\":\"framework-command-proof-20261025\",\"project_id\":\"ai-collaboration-framework\"},\"operation_id\":\"framework-command-proof-20261025-stale\",\"request_digest\":\"sha256:93af3977d6c51cfd3787d041a615816676e7da33a73cfc596415ec860453d951\",\"actor\":{\"subject_id\":\"owner-agent\",\"kind\":\"agent\",\"binding_id\":\"owner-agent-grant-1\"},\"expected_revision\":3,\"current_revision\":4,\"recorded_at\":\"2026-10-25T15:20:24.772Z\",\"failure\":{\"error\":\"revision_conflict\",\"category\":\"conflict\",\"details\":{\"current_revision\":4}}}}"
+      }
+    ],
+    "structuredContent": {
+      "outcome": "rejected",
+      "receipt": {
+        "accepted": false,
+        "service_contract_version": "workflow-board/collaboration/2",
+        "schema_version": "2.0",
+        "workflow_ref": {
+          "store_id": "workflow-records-private-collaboration",
+          "namespace": "personal",
+          "record_kind": "collaboration",
+          "workflow_id": "framework-command-proof-20261025",
+          "project_id": "ai-collaboration-framework"
+        },
+        "operation_id": "framework-command-proof-20261025-stale",
+        "request_digest": "sha256:93af3977d6c51cfd3787d041a615816676e7da33a73cfc596415ec860453d951",
+        "actor": {
+          "subject_id": "owner-agent",
+          "kind": "agent",
+          "binding_id": "owner-agent-grant-1"
+        },
+        "expected_revision": 3,
+        "current_revision": 4,
+        "recorded_at": "2026-10-25T15:20:24.772Z",
+        "failure": {
+          "error": "revision_conflict",
+          "category": "conflict",
+          "details": {
+            "current_revision": 4
+          }
+        }
+      }
+    },
+    "isError": false
+  },
+  "accepted": {
+    "contract_version": "workflow-records/board-query/1",
+    "mutation_state": "none",
+    "operation": "board-query-accept",
+    "result": {
+      "outcome": "rejected",
+      "receipt": {
+        "accepted": false,
+        "actor": {
+          "binding_id": "owner-agent-grant-1",
+          "kind": "agent",
+          "subject_id": "owner-agent"
+        },
+        "current_revision": 4,
+        "expected_revision": 3,
+        "failure": {
+          "category": "conflict",
+          "details": {
+            "current_revision": 4
+          },
+          "error": "revision_conflict"
+        },
+        "operation_id": "framework-command-proof-20261025-stale",
+        "recorded_at": "2026-10-25T15:20:24.772Z",
+        "request_digest": "sha256:93af3977d6c51cfd3787d041a615816676e7da33a73cfc596415ec860453d951",
+        "schema_version": "2.0",
+        "service_contract_version": "workflow-board/collaboration/2",
+        "workflow_ref": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "framework-command-proof-20261025"
+        }
+      }
+    },
+    "status": "ok"
+  }
+}

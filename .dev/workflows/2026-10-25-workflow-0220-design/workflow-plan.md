@@ -56,6 +56,10 @@ record before #514 cutover, not evidence that no-Git workflow adoption is comple
 | DESIGN | software-architect, coordinated by software-development-orchestrator | completed | [Design](../../design/workflow-0220-2026-10-25/design.md) includes latest owner direction and remaining decisions; Issue closure separate |
 | CREATE-TASK | slice-implementer | completed | Implementation, focused checks and independent recovery review complete; R1 corrected and read back |
 | BOARD-V2-QUERY | slice-implementer | completed | Additive Board V2 query/receipt profile, 15 actual selected-plugin queries and independent fixed-commit review complete; see design section 11 |
+| BOARD-V2-COMMAND | slice-implementer | in_progress | Implementation and selected-plugin command/readback checks complete; independent fixed-head review is next |
+| HISTORY-COPY | software-development-orchestrator | pending | Exact Git inventory retained; Board #24 source-replica implementation is under repair after independent review; real import not run |
+| MULTI-CARRIER | slice-implementer | pending | SQLite authority and Board replica selected; transactional pending delivery is next after command review |
+| SOURCE-MIGRATION | software-development-orchestrator | pending | Persistent store, migration, installation and source-policy cutover not performed |
 
 Live native hierarchy was read through GitHub GraphQL, not inferred from body links:
 #416 has #481 (child #483), #513 (child #445), and #514 (no child at readback).
@@ -326,3 +330,107 @@ Public requirements may describe the new product behavior and dependencies; they
 must not contain this authorization history, agent assignments or resume checkpoint.
 After a selected requirement update, read back actual Issue text/hierarchy. Carry
 unchanged completed design analysis forward rather than repeating repository discovery.
+
+## 2026-10-25 Board command, copies and synchronization continuation
+
+The owner explicitly requested continuation of #416: implement the Board write
+adapter, validate and independently review it, then advance multi-carrier sync and
+formal migration. The owner also explicitly requested historical repository
+workflow copies on Board using low-cost sub-agents. This authorizes additive
+copy writes and selected synthetic command verification; it does not require
+clearing online data or inventing historical execution. Push/PR/merge/publication
+remain separate. Prior tasks remain completed; BOARD-V2-COMMAND is the unique
+current task, followed by HISTORY-COPY, MULTI-CARRIER and SOURCE-MIGRATION.
+
+Input Framework HEAD is f701105059bfc180dc5c212122e2fed939fdf664, clean; Board HEAD
+b100c9f9bd09b2a1c125c8b511f06defeb29c556 was read back clean. The selected plugin
+still advertises 18 workflow commands under the formal project. The scoped
+Framework tools graph was reindexed as framework-records-f7011050 (200 nodes,
+1272 edges); an insufficient symbol search uses explicit source fallback.
+
+Low-cost inventory selected the registered bounded-routine-worker with
+inventory -> gpt-6-luna/medium, source/runtime hash matched, no pin; actual serving
+identity unknown. At the fixed source it found 1931 Git blobs, 19427197 bytes,
+219 first-segment workflow units, 199 root locators and 20 legacy units without
+root locators, plus three root-level index/control files. The earlier 654 count
+was all parent directories, corrected before use as workflow count. Located
+statuses are 186 completed and 13 in_progress; status is preserved as historical
+source data. Seven files exceed 262144 bytes, including three binary ZIPs; no symlinks.
+Legacy missing fields do not retroactively invalidate their historical records.
+
+Historical copies must preserve exact Git-blob bytes, original paths/IDs/status,
+source commit and hashes, including unknown fields and binary bytes. A Board draft
+archive container is not an imported completed workflow. Do not replay historical
+claim/complete actions to manufacture lifecycle equivalence. Source Git records
+remain intact. True lifecycle migration needs a supported import/mapping and
+recovery boundary; Board #6 remains an external dependency.
+
+D03/D05 owner response selected SQLite for unified daily reads/writes and Board
+as synchronized replica. The earlier Board-only read proposal is superseded.
+The proposed persistent directory remains
+C:\Users\h4227\AppData\Local\AI-Collaboration\ai-collaboration-framework\; no directory,
+database or active binding has been created. Design section 13 records the current
+decision and the separately selected project-scoped historical importer (Board #24).
+
+Validation plan: native request schema and strict integer/UTF-8 parsing; explicit
+capabilities and binding; direct command receipt correlation; same-ID same-payload
+replay, altered payload conflict, stale revision durable rejection, lost-response
+lookup/replay, exact document content, scoped target refusal and malformed MCP.
+Run focused tests plus package closure, then actual selected-plugin calls on an
+explicit synthetic workflow, commit and independent immutable-diff review before
+bulk copies. Keep fixture, actual plugin, cross-session and adoption results distinct.
+
+### Command adapter implementation and actual host evidence
+
+The registered bounded-general-worker used implementation -> gpt-6.1-sol/medium,
+with source/runtime hash matched and no model pin; actual serving identity is
+unknown. Parent inspected the implementation, package closure and actual host
+results. The change adds nine source/test/metadata files or modifications; the
+existing query and local/Git runtime are unchanged.
+
+Focused evidence covers 25 distinct methods: 24 command methods plus the existing
+optional-package closure method. Initial command/closure run passed 21 methods in
+3.105 seconds; the additional decision/claim effect method passed in 0.053 seconds.
+The observed host-format repair then passed nine new/affected methods in 2.416
+seconds, including three new regressions and isolated CLI closure. Disposable
+fixtures used only verified F:\tmp\aicf-416-board-command with process-local
+`tempfile.tempdir`; global TEMP/TMP were unchanged. Suite selection used
+`tools.test_workflow_board_command` and
+`framework_next.test_distribution_contracts.Metadata5DistributionTests.test_workflow_records_is_optional_and_manifest_matches_metadata`
+through `python -I -B -` and unittest's loader from explicit tests paths.
+
+Retained initial failures: date-time validation lacked jsonschema's optional format
+extra, corrected with a standard-library Gregorian checker; package metadata first
+duplicated a member and then declared an artifact schema under null configuration,
+corrected by declaring the frozen schema as tool support. An initial drive guard
+expected a Ram driver type; actual readback showed a ready Fixed-type RAMDRIVE.
+Later real MCP calls exposed a host-only `INVALID_ARGUMENT` annotation and
+`isError: true` on durable rejected receipts. A narrow normalization/correlation
+repair passed the affected tests and re-accepted the saved real responses without
+repeating their mutations. Original failed adapter outputs remain retained.
+
+The durable [live evidence directory](board-command-live/summary.json) preserves
+complete prepared requests written before dispatch, actual selected-plugin replies
+and adapter results. Fifteen actual command calls exercise ten families: twelve
+accepted replies (including two exact replays), two durable rejections and one
+native payload conflict. Eight other supported families retain fixture coverage.
+Four queries after capability readback cover accepted operation lookup, exact
+Unicode document/hash, final workflow context at revision 10, and rejected
+operation lookup. The query bridge also validates the latter three responses.
+
+Response loss was explicitly simulated with null after a real document acceptance;
+lookup observed accepted but kept unknown/requires-original-replay until the same
+request was resent. A retained prior fingerprint/digest pair later established the
+known rejected receipt. One plan attempt reused a supporting document ID and was
+durably rejected with document_role_conflict; a distinct plan ID and new operation
+then succeeded. The stale expected-revision case was durably rejected. Exact
+UTF-8 content including Traditional Chinese and emoji matched its SHA-256. The
+synthetic workflow is completed, one task completed and one cancelled; these are
+validation records, not historical migration or source adoption.
+
+Independent review is next on an immutable clean commit. No push, PR, hosted gate,
+installation, SQLite synchronization, production source-replica deployment or
+actual historical copy is established by this command increment. Board importer
+commit 89f6dd35b3484822ca035baac50d2dcd67007b82 had two independent P2 findings
+(HTTP profile binding and CLI result identity); repair and affected review are
+being performed in the separate Board checkout.

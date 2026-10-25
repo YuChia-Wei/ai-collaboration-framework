@@ -1,0 +1,16 @@
+{
+  "task_id": "BOARD-V2-COMMAND",
+  "workflow_id": "2026-10-25-workflow-0220-design",
+  "owner_skill": "slice-implementer",
+  "title": "Implement and validate the Board V2 write adapter with independent review",
+  "status": "in_progress",
+  "created_at": "2026-10-25T22:57:41+08:00",
+  "updated_at": "2026-10-25T23:25:53+08:00",
+  "template_source": ".dev/workflows/2026-10-22-domain-architecture-split/template.md",
+  "template_version": "1.0.0",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "runtime_identity_source": "Project task selection; actual serving identity unavailable. Historical copy uses the user-requested low-cost sub-agent.",
+  "finding_status": "pending",
+  "result_summary": "Implementation and focused fixture checks complete, including observed host error annotation repair. Fifteen actual selected-plugin commands across ten families: 12 accepted including two exact replays, two durable rejections, one native payload conflict. Four queries verify loss recovery, exact Unicode bytes, completed revision 10 and rejected receipt. Independent fixed-head review pending."
+}

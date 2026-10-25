@@ -1,0 +1,94 @@
+{
+  "key": "19-exact-document",
+  "prepared": {
+    "binding": {
+      "adapter_id": "workflow-board-v2",
+      "binding_id": "codex-workroom-framework-v2",
+      "binding_revision": 1,
+      "project_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "store_id": "workflow-records-private-collaboration"
+      }
+    },
+    "contract_version": "workflow-records/board-query/1",
+    "expected_snapshot_revision": null,
+    "query": {
+      "payload": {
+        "document_ref": {
+          "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+          "document_id": "proof-active-plan",
+          "revision": 1
+        },
+        "workflow_ref": {
+          "namespace": "personal",
+          "project_id": "ai-collaboration-framework",
+          "record_kind": "collaboration",
+          "store_id": "workflow-records-private-collaboration",
+          "workflow_id": "framework-command-proof-20261025"
+        }
+      },
+      "query": "document.read",
+      "schema_version": "2.0",
+      "service_contract_version": "workflow-board/collaboration/2"
+    },
+    "tool_name": "v2_document_read"
+  },
+  "native": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"workflow_ref\":{\"store_id\":\"workflow-records-private-collaboration\",\"namespace\":\"personal\",\"record_kind\":\"collaboration\",\"workflow_id\":\"framework-command-proof-20261025\",\"project_id\":\"ai-collaboration-framework\"},\"ref\":{\"document_id\":\"proof-active-plan\",\"revision\":1,\"content_hash\":\"sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b\"},\"content\":\"Synthetic command bridge plan.\\nVerify exact UTF-8: 臺灣 測試 👩‍💻\\n\",\"created_at\":\"2026-10-25T15:19:16.750Z\",\"actor\":{\"subject_id\":\"owner-agent\",\"kind\":\"agent\",\"binding_id\":\"owner-agent-grant-1\"}}"
+      }
+    ],
+    "structuredContent": {
+      "workflow_ref": {
+        "store_id": "workflow-records-private-collaboration",
+        "namespace": "personal",
+        "record_kind": "collaboration",
+        "workflow_id": "framework-command-proof-20261025",
+        "project_id": "ai-collaboration-framework"
+      },
+      "ref": {
+        "document_id": "proof-active-plan",
+        "revision": 1,
+        "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b"
+      },
+      "content": "Synthetic command bridge plan.\nVerify exact UTF-8: 臺灣 測試 👩‍💻\n",
+      "created_at": "2026-10-25T15:19:16.750Z",
+      "actor": {
+        "subject_id": "owner-agent",
+        "kind": "agent",
+        "binding_id": "owner-agent-grant-1"
+      }
+    },
+    "isError": false
+  },
+  "accepted": {
+    "contract_version": "workflow-records/board-query/1",
+    "mutation_state": "none",
+    "operation": "board-query-accept",
+    "result": {
+      "actor": {
+        "binding_id": "owner-agent-grant-1",
+        "kind": "agent",
+        "subject_id": "owner-agent"
+      },
+      "content": "Synthetic command bridge plan.\nVerify exact UTF-8: 臺灣 測試 👩‍💻\n",
+      "created_at": "2026-10-25T15:19:16.750Z",
+      "ref": {
+        "content_hash": "sha256:8c876eb5fb0cf7c30c59ced4cdca6a6592eafe039a0a2f64d874797a62d5333b",
+        "document_id": "proof-active-plan",
+        "revision": 1
+      },
+      "workflow_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "record_kind": "collaboration",
+        "store_id": "workflow-records-private-collaboration",
+        "workflow_id": "framework-command-proof-20261025"
+      }
+    },
+    "status": "ok"
+  }
+}

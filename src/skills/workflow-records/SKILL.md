@@ -12,6 +12,11 @@ For Board V2 reads and receipt lookup, use the separate
 Its `board-query-prepare` and `board-query-accept` operations require an explicit
 binding and a caller-supplied MCP transport; preparation does not execute a query.
 Keep its native numeric revisions, project scope and opaque cursors intact.
+For explicitly authorized Board writes, use the separate
+[command bridge contract](references/board-command.md) and
+[CLI](tools/board-command.py). Retain the complete prepared command before the
+host dispatches it. Lost responses and unconfirmed lookups remain unresolved;
+reconcile only the original operation and replay only its exact original command.
 This optional skill supplies the executable and its complete local modules;
 selecting or installing it does not select a store, initialize a database,
 migrate records or adopt workflow governance.

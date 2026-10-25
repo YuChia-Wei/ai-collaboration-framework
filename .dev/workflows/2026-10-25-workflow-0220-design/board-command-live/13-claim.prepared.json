@@ -1,0 +1,101 @@
+{
+  "binding": {
+    "adapter_id": "workflow-board-v2",
+    "binding_id": "codex-workroom-framework-v2",
+    "binding_revision": 1,
+    "project_ref": {
+      "namespace": "personal",
+      "project_id": "ai-collaboration-framework",
+      "store_id": "workflow-records-private-collaboration"
+    }
+  },
+  "capabilities": {
+    "commands": [
+      "workflow.create",
+      "workflow.start",
+      "workflow.pause",
+      "workflow.resume",
+      "workflow.cancel",
+      "workflow.complete",
+      "plan.revise",
+      "document.append",
+      "task.claim",
+      "task.progress",
+      "task.release",
+      "task.block",
+      "task.unblock",
+      "task.complete",
+      "task.cancel",
+      "decision.open",
+      "handoff.record",
+      "checkpoint.append"
+    ],
+    "contract_status": "implemented",
+    "limits": {
+      "context_page_items": 20,
+      "context_utf8_bytes": 64000,
+      "decisions_per_workflow": 100,
+      "document_utf8_bytes": 256000,
+      "header_utf8_bytes": 16000,
+      "record_utf8_bytes": 64000,
+      "request_utf8_bytes": 300000,
+      "tasks_per_workflow": 100
+    },
+    "namespace": "personal",
+    "project_id": "ai-collaboration-framework",
+    "queries": [
+      "capabilities",
+      "workflow.find",
+      "workflow.context",
+      "context.page",
+      "task.read",
+      "decision.read",
+      "document.read",
+      "operation.get"
+    ],
+    "schema_version": "2.0",
+    "service_contract_version": "workflow-board/collaboration/2",
+    "store_id": "workflow-records-private-collaboration"
+  },
+  "command": {
+    "command": "task.claim",
+    "expected_revision": 4,
+    "operation_id": "framework-command-proof-20261025-claim",
+    "payload": {
+      "expected_definition_revision": 1,
+      "session": {
+        "client": "Codex",
+        "label": "Synthetic command bridge validation",
+        "skill_id": "slice-implementer"
+      },
+      "task_id": "proof-task"
+    },
+    "schema_version": "2.0",
+    "service_contract_version": "workflow-board/collaboration/2",
+    "workflow_ref": {
+      "namespace": "personal",
+      "project_id": "ai-collaboration-framework",
+      "record_kind": "collaboration",
+      "store_id": "workflow-records-private-collaboration",
+      "workflow_id": "framework-command-proof-20261025"
+    }
+  },
+  "contract_version": "workflow-records/board-command/1",
+  "local_command_fingerprint": "sha256:91fb390806fb70e32f781a4a1f38aea0d4c0fcbde0c5b0d11d91cc5360f8d62e",
+  "recovery_query": {
+    "payload": {
+      "operation_id": "framework-command-proof-20261025-claim",
+      "workflow_ref": {
+        "namespace": "personal",
+        "project_id": "ai-collaboration-framework",
+        "record_kind": "collaboration",
+        "store_id": "workflow-records-private-collaboration",
+        "workflow_id": "framework-command-proof-20261025"
+      }
+    },
+    "query": "operation.get",
+    "schema_version": "2.0",
+    "service_contract_version": "workflow-board/collaboration/2"
+  },
+  "tool_name": "v2_task_claim"
+}

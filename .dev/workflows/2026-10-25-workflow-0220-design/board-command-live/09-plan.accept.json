@@ -1,0 +1,12 @@
+{
+  "bridge_effect": "none",
+  "command_outcome": "unknown",
+  "contract_version": "workflow-records/board-command/1",
+  "error": {
+    "code": "invalid_transport",
+    "message": "MCP representations disagree."
+  },
+  "next_action": "retain_original_prepared_command_and_query_or_replay_same_operation",
+  "operation": "board-command-accept",
+  "status": "error"
+}
