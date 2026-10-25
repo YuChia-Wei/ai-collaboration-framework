@@ -36,6 +36,7 @@ runtime:
   - create
   - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -66,6 +67,7 @@ runtime:
   - create
   - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -96,6 +98,7 @@ runtime:
   - create
   - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -126,6 +129,7 @@ runtime:
   - create
   - create-task
   - write-document
+  - revise-workflow
   - export
   - preflight
   - restore
@@ -178,6 +182,7 @@ resources:
     - create
     - create-task
     - write-document
+    - revise-workflow
     - export
     - preflight
     - restore
@@ -345,6 +350,16 @@ operations:
   - bounded-json-response
   implementation_status: implemented
 - id: write-document
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - optional-explicit-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: revise-workflow
   execution: tool
   tool: workflow-records-cli
   inputs:

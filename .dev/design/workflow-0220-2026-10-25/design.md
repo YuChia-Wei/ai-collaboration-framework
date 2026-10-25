@@ -529,3 +529,50 @@ and formal source-policy adoption are not established by local tests. Existing
 Git workflow/branch/commit policies and locator consumers must be reconciled at
 their owners before retiring daily Git writes. Keep historical source files and
 their missing fields intact; an archive is not a migrated native lifecycle.
+
+The later production pilot in the workflow plan supersedes that empty-list
+baseline: a permanent SQLite store now exists at the owner's selected LocalAppData
+path, and the first two-file historical copy passed complete remote byte readback.
+Those runtime observations do not by themselves change daily source policy.
+
+## 16. Next bounded slice: atomic native progress revision
+
+Formal SQLite adoption requires one local operation that can complete the current
+task, start its successor and update workflow metadata in one revision. Separate
+writes would expose an intermediate state that violates this source project's
+accepted lifecycle contract. Product code must supply atomic record editing;
+source-project policies continue to own their lifecycle and evidence rules.
+
+Select an additive local-only `revise-workflow` operation in `workflow-records/1`.
+It uses the existing complete workflow reference, stable operation ID,
+`expected_revision` and `expected_source_head`. Optional `metadata_patch`,
+`task_patches` and `documents` fields describe a nonempty bounded change:
+
+- `metadata_patch` shallow-merges selected keys into retained metadata. Required
+  strings must remain valid; unrelated and unknown extension fields remain.
+- `task_patches` selects existing tasks by immutable `task_id` and shallow-merges
+  their supplied fields. Duplicate selectors, unknown tasks and an empty patch
+  fail. Creation remains with `create-task`; no deletion or ID rename is added.
+- `documents` adds or replaces named UTF-8 text documents. Apply the existing
+  path, reserved-prefix, case-insensitive uniqueness, per-blob and document-count
+  limits across the complete resulting record. Do not replace attachments or
+  change the entrypoint through this operation.
+
+The resulting record must satisfy the existing generic shape and byte bounds.
+Metadata/task extension keys and source-project status meanings remain caller
+owned; do not hard-code this repository's lifecycle policy into the product.
+No task/workflow/document deletion, binary update, Git-provider write or automatic
+Board dispatch is added.
+
+Reuse the existing optimistic transaction and replay ordering. Native state,
+revision, event, receipt, schema-2 source snapshot and every saved target intent
+must commit together, or all roll back. Same-request replay must preserve the
+original receipt and enqueue nothing. Backup validation and source capture must
+recognize the new authentic mutation without weakening v1 recovery validation.
+
+Verify atomic task completion/next-task start and phase change, preserved extension
+fields, report-document addition, invalid/duplicate selectors, reserved/colliding
+paths, limits, stale revision/source, changed-payload replay, rollback and
+schema-2 snapshot/backup closure. After fixed-head review, source adoption can
+select actual CLI/config discovery, replace conflicting daily-record rules at
+their owners, and exercise a real native continuation with separate Board sync.

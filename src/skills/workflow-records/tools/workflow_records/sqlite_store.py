@@ -202,7 +202,7 @@ class SQLiteStore:
         event = {"operation": request["operation"], "operation_id": request["operation_id"], "recorded_at": now()}
         connection.execute("INSERT INTO operations VALUES(?,?,?,?,?)",
                            (scope, request["operation_id"], request_digest(request), encoded(receipt), encoded(event)))
-        if scope and request["operation"] in ("create", "create-task", "checkpoint", "write-document"):
+        if scope and request["operation"] in ("create", "create-task", "checkpoint", "write-document", "revise-workflow"):
             meta = decode_json(bytes(connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()[0]))
             if meta["schema_version"] == "workflow-sqlite/2":
                 try:
@@ -326,6 +326,35 @@ class SQLiteStore:
         validate_checkpoint(request.get("checkpoint"))
         return self.update(ref, request)
 
+    def revise(self, connection, state, request):
+        """Patch one complete native record inside the existing optimistic transaction."""
+        metadata = request.get("metadata_patch", {})
+        patches = request.get("task_patches", [])
+        documents = request.get("documents", {})
+        require(isinstance(metadata, dict) and isinstance(patches, list) and isinstance(documents, dict),
+                "invalid_input", "Revision patches require metadata/document objects and a task list.")
+        require(metadata or patches or documents, "invalid_input", "Revision requires a nonempty change.")
+        require(len(patches) <= MAX_TASKS, "limit_exceeded", "Task patch count exceeds the limit.")
+        state["metadata"].update(metadata)
+        tasks = {task["task_id"]: task for task in state["tasks"]}
+        selected = set()
+        for patch in patches:
+            require(isinstance(patch, dict) and len(patch) > 1,
+                    "invalid_input", "Each task patch requires a selector and supplied fields.")
+            task_id = identifier(patch.get("task_id"))
+            require(task_id in tasks and task_id not in selected,
+                    "invalid_input", "Task patch selector is unknown or duplicated.")
+            selected.add(task_id)
+            tasks[task_id].update(patch)
+        # Validate the complete resulting identity map before retaining new blobs.
+        resulting = {key: state[key] for key in ("metadata", "tasks", "entrypoint", "attachments")}
+        resulting["documents"] = {**state["documents"], **documents}
+        self.validate_record(resulting)
+        for name, content in documents.items():
+            raw = content.encode("utf-8")
+            text(raw)
+            state["documents"][name] = self.put_blob(connection, raw)
+
     def update(self, ref, request):
         op = identifier(request.get("operation_id"))
         with self.transaction(write=True) as (connection, meta):
@@ -346,6 +375,8 @@ class SQLiteStore:
                         "already_exists", "Task already exists in the selected workflow.")
                 require(len(state["tasks"]) < MAX_TASKS, "limit_exceeded", "Task capacity reached.")
                 state["tasks"].append(task)
+            elif request["operation"] == "revise-workflow":
+                self.revise(connection, state, request)
             else:
                 name = str(relative_path(request.get("document")))
                 content = request.get("content")
