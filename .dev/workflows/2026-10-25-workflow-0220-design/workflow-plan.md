@@ -48,8 +48,9 @@ must precede any destructive rebuild; clearing is not needed to add project scop
 The workflow preserves unique owner decisions, the cross-skill design handoff
 and the transition from the current Git record policy to future source adoption.
 That is why a durable workflow is appropriate despite the low task count.
-Current ARTIFACT policy still requires a Git-trackable root. This is a bootstrap
-record before #514 cutover, not evidence that no-Git workflow adoption is complete.
+This Git record remains the pre-cutover baseline. The adopted store policy
+selects native daily records; the actual native continuation and its public
+read-back are still pending and must preserve this baseline's provenance.
 
 ## Work and current result
 
@@ -59,9 +60,9 @@ record before #514 cutover, not evidence that no-Git workflow adoption is comple
 | CREATE-TASK | slice-implementer | completed | Implementation, focused checks and independent recovery review complete; R1 corrected and read back |
 | BOARD-V2-QUERY | slice-implementer | completed | Additive Board V2 query/receipt profile, 15 actual selected-plugin queries and independent fixed-commit review complete; see design section 11 |
 | BOARD-V2-COMMAND | slice-implementer | completed | Implementation, selected-plugin validation and independent fixed-head review complete |
-| HISTORY-COPY | software-development-orchestrator | pending | Exact Git inventory retained; Board #24 source-replica implementation is under repair after independent review; real import not run |
-| MULTI-CARRIER | slice-implementer | in_progress | SQLite schema-2 snapshot, transactional outbox and recovery implementation |
-| SOURCE-MIGRATION | software-development-orchestrator | pending | Persistent store, migration, installation and source-policy cutover not performed |
+| HISTORY-COPY | software-development-orchestrator | in_progress | All 220 local historical units verified against Git and backup/restore verified; bounded online delivery is progressing after 82 completed units; native daily-progress operation independently reviewed |
+| MULTI-CARRIER | slice-implementer | completed | Initial SQLite schema-2 snapshots, transactional outbox and recovery slice passed 42 focused tests and fixed-head review; broader Epic completion remains separate |
+| SOURCE-MIGRATION | software-development-orchestrator | pending | Persistent local store is ready; explicit daily-store policies and assessment references prepared for fixed-head review, followed by native continuation; managed package installation is not selected |
 
 Live native hierarchy was read through GitHub GraphQL, not inferred from body links:
 #416 has #481 (child #483), #513 (child #445), and #514 (no child at readback).
@@ -785,3 +786,33 @@ test passed. A separate in-memory mutation probe removed only that transition
 guard and confirmed the repaired test fails with `RecordError not raised`;
 all other closure checks then accept the fixture. Product code was unchanged by
 this repair. Independent repair review remains pending at this checkpoint.
+
+
+The fixed repair review of 8a96735330dc05070ca753ab7e5b46f0a4a474e6 closed the P2
+fixture-validity finding with no new findings; product code was unchanged from
+the prior reviewed aee81c7c candidate. Formal source adoption preparation can
+proceed while the remaining bounded online batches complete. Design section 17
+selects explicit versioned assessment workflow references, preserving historical
+Git relationships and fail-closed behavior in older validators.
+
+Source adoption now has a bounded source policy and consumer candidate. The
+assessment validator preserves bare Git relationships and accepts complete
+provider/store/workflow references only through schema 1.1 and explicit config.
+All 27 focused assessment/workflow consumer tests passed, including four new CLI
+cases for mixed providers, matching human IDs, missing config and fail-closed
+version/identity behavior. Across the 13 policy/navigation files, 91 local links
+resolved and the paired English/Traditional Chinese root guidance matched.
+Product tests were not rerun for the Markdown-only policy changes. The native
+revision implementation retains its separately reviewed 50-test result and
+specific repaired-test/mutation-probe evidence above.
+
+Online batches 1-3 each passed complete remote manifest/chunk verification,
+bringing the certified total to 82 of the original 220 units at this checkpoint.
+Later batches remain sequential, each bounded by ten units and 2 MiB raw bytes,
+with at most two concurrent units. Fixed-head authority review of this policy
+and consumer candidate precedes native cutover. After all historical remote
+units are verified, preserve this latest Git baseline as an additional archive
+snapshot, create one native continuation of this same human workflow ID, and
+use an authentic atomic revision to complete HISTORY-COPY and start
+SOURCE-MIGRATION. Other historical workflows remain archives. Subsequent daily
+progress belongs only in that selected native record.

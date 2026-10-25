@@ -7,13 +7,25 @@ model, host or executor is not itself a reason to rerun product tests.
 
 ## A usable handoff
 
-Update the existing workflow entrypoint or work record with:
+Update the selected native workflow's existing entrypoint or work record under
+[workflow storage](WORKFLOW-STORE-POLICY.md) with:
 
 - the Issue, accepted scope and actual authorization, including exclusions;
 - repository, branch/base and source commit, plus any uncommitted work;
 - completed and pending work, decisions, unresolved findings and next owner;
 - relevant commands/results and where their evidence can be read;
-- the next concrete action and any missing permission or environment.
+- the next concrete action and any missing permission or environment;
+- the complete WorkflowRef, accepted native revision, logical entrypoint document
+  and explicit configuration path; preserve the exact pending operation request
+  or receipt when its outcome is uncertain.
+
+The source-store policy gives the actual source CLI and complete-read procedure.
+`context`/`resume` are bounded projections: when complete metadata/tasks are
+needed, paginate `source-list`, select the matching native snapshot, compare
+`manifest.source.native_revision` with context and verify `_native/state.json`
+chunks and full hash before using its fields. Missing configuration/store stops
+dependent continuation without Git fallback. Local acceptance and pending replica
+intents must not be reported as Board synchronization completion.
 
 The receiver must be able to continue without private conversation history.
 Keep one current entrypoint. Do not duplicate the same facts into a universal
@@ -23,10 +35,15 @@ new workflow. Do not fabricate missing model/runtime or validation observations.
 
 ## Before continuing
 
-Read the handoff, current Issue authority, branch and working-tree changes.
+Read the handoff, selected native state, current Issue authority, branch and
+working-tree changes.
 Check only the inputs needed for the next action. Resolve stale or conflicting
 state before writing; preserve other writers' work. Resume from the correct
 branch instead of restarting work already completed.
+
+An explicitly continued historical Git workflow first needs the store policy's
+native creation and provenance read-back. Imported archives alone do not establish
+native continuation; preserve one current entrypoint rather than updating both.
 
 Apply source policy to decide whether any new change affects existing evidence.
 Keep earlier results attributed to their actual subject. Unknown coverage stays

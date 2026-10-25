@@ -70,7 +70,7 @@ Use the agent prefix when an agent performs the work.
 
 ## Workflow Branches
 
-When work uses `.dev/workflows/<workflow-id>/`, use:
+When work selects workflow mode, regardless of execution-record storage, use:
 
 ```text
 codex/<workflow-id>
@@ -84,7 +84,10 @@ codex/2026-07-11-ai-context-skill-and-doc-cleanup
 claude/2026-07-11-payment-refactor-stage-1
 ```
 
-Create the branch before creating `.dev/workflows/<workflow-id>/workflow.yaml`. Record the branch and base branch in the locator.
+Create the branch before creating or materially changing the selected workflow
+record. Record branch and base branch in native metadata under the
+[workflow store policy](standards/WORKFLOW-STORE-POLICY.md). Historical Git
+locators retain their original branch provenance.
 
 ## Assessment Branches
 
@@ -187,16 +190,25 @@ completion; preserve the required checkpoint and continuation state.
 
 When work must move to another machine or session before all workflow tasks are complete:
 
-1. Commit a coherent validated checkpoint and keep the workflow `active`.
-2. Prefer pushing the workflow branch when integration into `main` is not required.
+1. Save a native handoff with complete reference, revision, source/branch and next
+   action; keep unfinished workflow state active. For separately authorized,
+   coherent tracked changes, commit a validated checkpoint. A session changing
+   only native records requires no record-only Git commit.
+2. Prefer pushing the workflow branch when tracked-change transport is authorized
+   and integration into `main` is not required. Native database access/backup and
+   explicit replica delivery follow the store policy; Git push does not transport
+   that database or make another machine's store available.
 3. For a push-only handoff, fetch the remote branch on the next machine and resume that branch, or create a continuation branch from that remote branch. Do not restart from `main`, because it does not contain the unmerged checkpoint.
 4. If integration is explicitly requested, push the branch and integrate its
    pull request using the selected topology. A checkpoint or handoff normally
    retains a merge commit because the branch boundary carries resume evidence;
    do not bypass the pull-request gate.
 5. After a checkpoint merge, start from the updated target branch and create a new continuation branch such as `<prefix>/<workflow-id>-cont-02`; do not continue material work on the target branch.
-6. Record the checkpoint type (`push` or `merge`), commit, remote or target, timestamp, reason, last completed task, and exact resume branch/action in the workflow plan.
-7. Update locator `branch`, `base_branch`, `updated_at`, and branch history only when the active branch segment changes.
+6. Record any actual checkpoint type (`push` or `merge`), commit, remote or target,
+   timestamp, reason, last completed task and exact resume branch/action in the
+   native entrypoint. A record-only handoff states that no Git transport occurred.
+7. Update native `branch`, `base_branch`, `updated_at` and branch history only when
+   the active branch segment changes; preserve historical locator bytes.
 
 A checkpoint push or merge is a transport and handoff boundary. Neither is a
 workflow completion signal.

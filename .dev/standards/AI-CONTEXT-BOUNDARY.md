@@ -47,8 +47,11 @@ an old filename, installed example, static provider profile or migrated record.
 
 ## Project Documentation And Cleanup
 
-Keep source governance, project-specific guides and actual collaboration records
-under `.dev`. Put product use, installation and authoring documentation under
+Keep source governance, project-specific guides and formal collaboration artifacts
+under `.dev`. Daily workflow execution records follow the explicitly selected
+external SQLite authority in [workflow storage](WORKFLOW-STORE-POLICY.md);
+historical `.dev/workflows/` files retain their provenance. Put product use,
+installation and authoring documentation under
 `docs`. If a project document contains reusable capability knowledge, prepare
 that knowledge in `src` first. Self-installation/upgrade is a separately selected
 operation after the product changes are ready; do not hand-edit generated core.

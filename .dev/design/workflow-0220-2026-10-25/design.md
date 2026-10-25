@@ -576,3 +576,32 @@ paths, limits, stale revision/source, changed-payload replay, rollback and
 schema-2 snapshot/backup closure. After fixed-head review, source adoption can
 select actual CLI/config discovery, replace conflicting daily-record rules at
 their owners, and exercise a real native continuation with separate Board sync.
+
+## 17. Source assessment references during daily-store adoption
+
+Source assessments stay Git-owned. Existing schema-1.0
+`relations.workflow_refs` remain historical Git workflow IDs with their current
+unconfigured existence-only and explicitly configured strict-Git behavior.
+Do not reinterpret those strings through a new default provider.
+
+Select source assessment locator schema `1.1` for the additive optional
+`relations.workflow_record_refs` list. Each entry is a complete closed
+`workflow-records/1` WorkflowRef (`provider_id`, `store_id`, `workflow_id`).
+Schema 1.0 must reject this new field; an old validator rejects schema 1.1,
+preventing it from silently skipping an explicit native relationship. Existing
+schema-1.0 records and templates need no rewrite. This retains the same assessment
+family, ID, index, lifecycle and all existing fields.
+
+Nonempty complete references require the existing explicit
+`--workflow-store-config` input. Resolve each exact reference through its selected
+provider and store; a missing provider, store mismatch or native workflow failure
+must not fall back to Git. A mixed validation configuration may explicitly include
+both the historical Git descriptor and selected local descriptor. The config's
+`default_provider` does not select the meaning of either relationship field.
+The production daily config remains local-only; do not add or change it merely
+for validation. Diagnostics must identify the complete failed reference.
+
+The source validator and focused CLI tests own this bounded consumer change.
+Source policy must describe the explicit version and mixed-store selection.
+No historical assessment mutation, new locator family, new registry, automatic
+configuration or production database validation in hosted CI is selected.

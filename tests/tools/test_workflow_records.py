@@ -425,6 +425,125 @@ class WorkflowRecordTests(unittest.TestCase):
         (self.artifact / "workflow.yaml").unlink()
         self.assertIn(b"not_found", validate(True).stdout)
 
+    def assessment_locator(self, assessment_id, schema="1.0", legacy=None, complete=None):
+        root = self.project / ".dev/assessments"
+        folder = root / assessment_id
+        folder.mkdir(parents=True, exist_ok=True)
+        (root / "README.MD").write_text("Fixture assessments", encoding="utf-8")
+        (folder / "report.md").write_text("Fixture report", encoding="utf-8")
+        head = git(self.project, "rev-parse", "HEAD")
+        stamp = "2026-10-10T11:00:00+08:00"
+        locator = {"schema_version": schema, "assessment_id": assessment_id, "commit_search_id": assessment_id,
+                   "assessment_type": "inventory", "title": "Fixture", "owner_skill": "ai-context-auditor",
+                   "status": "draft", "report": "report.md", "artifact_branch": "fixture", "base_branch": "main",
+                   "created_at": stamp, "updated_at": stamp, "template_source": ".dev/assessments/README.MD",
+                   "template_version": "1", "report_template_source": ".dev/assessments/README.MD", "report_template_version": "1",
+                   "subject_ref": {"repository": "fixture", "branch": "fixture", "commit": head},
+                   "scope": {"included": ["workflow reference"], "excluded": []},
+                   "relations": {key: [] for key in ("supersedes", "superseded_by", "related_assessments", "workflow_refs", "backlog_refs", "adr_refs")},
+                   "resume": {"last_completed_action": "setup", "next_action": "review", "blockers": []}}
+        locator["relations"]["workflow_refs"] = legacy or []
+        if complete is not None:
+            locator["relations"]["workflow_record_refs"] = complete
+        (folder / "assessment.yaml").write_text(yaml.safe_dump(locator), encoding="utf-8")
+        # Rebuild only this tiny fixture's index so revisions of the same locator
+        # cannot leave duplicate or stale rows.
+        rows = []
+        for path in sorted(root.glob("*/assessment.yaml")):
+            other = yaml.safe_load(path.read_text(encoding="utf-8"))
+            identity = other["assessment_id"]
+            rows.append(f"| [`{identity}`]({identity}/assessment.yaml) | Fixture | `inventory` | `ai-context-auditor` | `draft` | `{head}` | `{stamp}` | [report]({identity}/report.md) |")
+        (root / "INDEX.MD").write_text("## Draft Assessments\n\n" + "\n".join(rows) + "\n", encoding="utf-8")
+
+    def assessment_cli(self, config=None):
+        argv = [sys.executable, "-I", "-B", str(ASSESSMENT_CLI), "--root", str(self.project)]
+        if config is not None:
+            path = Path(self.temporary.name) / "assessment-config.json"
+            path.write_bytes(encoded(config))
+            argv += ["--workflow-store-config", str(path)]
+        result = subprocess.run(argv, capture_output=True, timeout=20)
+        self.assertEqual(result.stderr, b"", result.stderr)
+        return result.returncode, result.stdout.decode("utf-8")
+
+    def mixed_assessment_store(self):
+        config = copy.deepcopy(DEFAULT_CONFIG)
+        config["default_provider"] = "local"
+        config["stores"]["local"] = {"kind": "local", "store_id": "native-records", "repository_id": "fixture",
+                                     "database": str(Path(self.temporary.name) / "assessment.sqlite")}
+        native = WorkflowRecords(self.project, config)
+        store_ref = {"provider_id": "local", "store_id": "native-records"}
+        initialized = native.execute({"contract_version": VERSION, "operation": "init", "store_ref": store_ref, "operation_id": "init"})
+        self.assertEqual(initialized["status"], "ok", initialized)
+        reference = {**store_ref, "workflow_id": WORKFLOW}
+        created = native.execute({"contract_version": VERSION, "operation": "create", "workflow_ref": reference,
+                                  "operation_id": "create", "record": {
+                                      "metadata": {"title": "Native", "status": "pending", "owner_skill": "fixture", "authority": "fixture"},
+                                      "tasks": [{"task_id": "T1", "title": "Native task", "status": "pending"}],
+                                      "entrypoint": "plan.md", "documents": {"plan.md": "native"}, "attachments": {}}})
+        self.assertEqual(created["status"], "ok", created)
+        return config, reference
+
+    def test_assessment_mixed_versions_and_same_workflow_id_keep_complete_store_identity(self):
+        config, local = self.mixed_assessment_store()
+        self.assessment_locator("ASM-20261010-11-old", legacy=[WORKFLOW])
+        self.assessment_locator("ASM-20261010-11-new", "1.1", legacy=[WORKFLOW], complete=[REF, local])
+        code, output = self.assessment_cli(config)
+        self.assertEqual(code, 0, output)
+        self.assertIn("passed for 2 assessment(s)", output)
+        # Local default must not retarget even the legacy string in schema 1.1.
+        (self.artifact / "workflow.yaml").write_bytes(b"broken: [")
+        code, output = self.assessment_cli(config)
+        self.assertEqual(code, 1, output)
+        self.assertIn("malformed_record", output)
+        self.assertIn("workflow_refs " + WORKFLOW, output)
+
+    def test_assessment_explicit_refs_require_config_and_cannot_fall_back_to_git(self):
+        config, local = self.mixed_assessment_store()
+        missing = {**local, "workflow_id": "absent-native"}
+        historical = self.project / ".dev/workflows/absent-native"
+        historical.mkdir()
+        (historical / "workflow.yaml").write_text("title: exists\n", encoding="utf-8")
+        self.assessment_locator("ASM-20261010-11-new", "1.1", complete=[missing])
+        code, output = self.assessment_cli()
+        self.assertEqual(code, 1, output)
+        self.assertIn("--workflow-store-config is required", output)
+        code, output = self.assessment_cli(config)
+        self.assertEqual(code, 1, output)
+        for value in (*missing.keys(), *missing.values(), "not_found"):
+            self.assertIn(value, output)
+
+    def test_assessment_complete_refs_fail_closed_for_bad_identity_and_selected_store(self):
+        config, local = self.mixed_assessment_store()
+        cases = [("bare-id", "invalid_input"),
+                 ({"workflow_id": WORKFLOW}, "invalid_input"),
+                 ({**local, "extra": True}, "invalid_input"),
+                 ({**local, "workflow_id": "../unsafe"}, "invalid_input"),
+                 ({**local, "store_id": "different"}, "binding_mismatch"),
+                 ({**local, "provider_id": "unconfigured"}, "provider_unavailable")]
+        for reference, error in cases:
+            with self.subTest(reference=reference):
+                self.assessment_locator("ASM-20261010-11-new", "1.1", complete=[reference])
+                code, output = self.assessment_cli(config)
+                self.assertEqual(code, 1, output)
+                self.assertIn(error, output)
+                if isinstance(reference, dict):
+                    for key, value in reference.items():
+                        self.assertIn(key, output)
+                        self.assertIn(str(value), output)
+                else:
+                    self.assertIn(reference, output)
+
+    def test_assessment_version_boundary_and_optional_reference_list(self):
+        identity = "ASM-20261010-11-new"
+        for schema, complete, expected in (("1.0", None, 0), ("1.1", None, 0), ("1.1", [], 0),
+                                            ("1.0", [], 1), ("1.1", "invalid-list", 1)):
+            with self.subTest(schema=schema, complete=complete):
+                self.assessment_locator(identity, schema, complete=complete)
+                code, output = self.assessment_cli()
+                self.assertEqual(code, expected, output)
+                if schema == "1.0" and complete is not None:
+                    self.assertIn("requires schema_version 1.1", output)
+
 
 if __name__ == "__main__":
     unittest.main()

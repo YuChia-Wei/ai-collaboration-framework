@@ -11,43 +11,42 @@ This policy defines the repository-wide discovery and metadata contract for dura
 - Every skill that can create a workflow owns the templates and domain-specific layout it creates.
 - A skill may define its workflow topic, task IDs, report set, and artifact root.
 - The repository owns only the minimum discovery, identity, time, relationship, and lifecycle contract in this document.
-- This source project owns its software-development workflow records and selected templates. Portable capability skills do not require or supply a workflow record store. Other workflow kinds retain their project-selected owners.
+- This source project owns its software-development workflow records and selected templates. Portable capability skills do not choose this source project's store. Other workflow kinds retain their project-selected owners.
 
-## Workflow Discovery Locator
+## Workflow Discovery And Identity
 
-Every workflow created on or after 2026-07-10 must have this locator, even when its artifacts are stored elsewhere:
+Daily execution records use the selected native store and complete WorkflowRef
+under [workflow storage](WORKFLOW-STORE-POLICY.md). No new Git locator is required.
+The source project owns this selection; portable skills do not select a store.
 
-```text
-.dev/workflows/<workflow-id>/workflow.yaml
-```
+Retain these workflow metadata fields in the native record:
 
-Required locator fields:
+- `schema_version` and the selected `lifecycle_contract`;
+- immutable human `workflow_id`;
+- `workflow_kind`, `title`, `owner_skill`, `status`;
+- `created_at`, `updated_at`, `template_source`, `template_version`;
+- `branch` and `base_branch` for current dedicated branch segments;
+- `current_phase` and other template-owned progress/authority fields.
 
-```yaml
-schema_version: "1.0"
-lifecycle_contract: "1.0"
-workflow_id: "YYYY-MM-DD-topic"
-workflow_kind: "skill-defined-kind"
-title: "Human-readable title"
-owner_skill: "workflow-owning-skill"
-status: "in_progress"
-artifact_root: ".dev/workflows/YYYY-MM-DD-topic"
-entrypoint: "workflow-plan.md"
-created_at: "2026-07-10T18:17:55+08:00"
-updated_at: "2026-07-10T18:17:55+08:00"
-template_source: "<existing-project-selected-template-path>"
-template_version: "1.0.0"
-branch: "<runtime-prefix>/YYYY-MM-DD-topic"
-base_branch: "main"
-```
+The native record's `entrypoint` names its current logical text document.
+Preserve unknown metadata and the actual authority for execution. Required
+field names and meanings must not be changed by a skill template.
 
-The locator may contain additional skill-specific fields. Required field names and meanings must not be changed by a skill template.
+### Legacy Git Discovery Locators
 
-For workflows created on or after 2026-07-11, `branch` and `base_branch` are also required. The workflow branch must differ from the base branch and must not be `main` or another long-lived trunk.
+Existing `.dev/workflows/<workflow-id>/workflow.yaml` records retain their
+original locator schema, `artifact_root`, timestamps and history. They are
+historical provenance, not a required write destination for daily continuation.
+An explicitly selected continuation follows the store policy's public native
+creation and provenance procedure; no automatic migration or historical rewrite
+is implied. A separately selected compatible legacy obligation retains its
+original locator contract and verified route.
 
 ## Branch Metadata And Continuation
 
-- Create the dedicated workflow branch before the locator or material workflow edits.
+- Create the dedicated workflow branch before the current execution record or material workflow edits.
+- The workflow branch must differ from `base_branch` and must not be `main` or
+  another long-lived trunk.
 - Default Codex naming to `codex/<workflow-id>`; use the active runtime or repository prefix when another convention applies.
 - Keep `base_branch` as the integration branch from which the current workflow segment started.
 - Treat `branch` as the current or most recent dedicated workflow branch. Update it when an incomplete workflow continues on a new branch after a checkpoint merge.
@@ -55,7 +54,7 @@ For workflows created on or after 2026-07-11, `branch` and `base_branch` are als
 - A push-only handoff normally keeps the same branch; a checkpoint merge starts the next branch segment from the updated target branch.
 - A checkpoint push or merge does not change `status` to `completed`; pending tasks and exact continuation instructions remain durable.
 - Conversely, `status: in_progress` does not block an otherwise authorized push, pull request, or merge. Transport and workflow completion are independent facts.
-- A historical active workflow without branch metadata must add branch metadata when it next resumes, after creating its continuation branch.
+- A historical active workflow without branch metadata must record it in its selected native continuation after creating the continuation branch; preserve the historical locator.
 
 ## Workflow ID
 
@@ -66,16 +65,21 @@ For workflows created on or after 2026-07-11, `branch` and `base_branch` are als
 - A skill may define the topic and suffix but must preserve the sortable full-date prefix.
 - Do not rename historical month-only workflows merely to conform. Preserve their paths and treat them as legacy artifacts.
 
-## Artifact Root
+## Artifact Root And Logical Documents
 
-- Default to `.dev/workflows/<workflow-id>/`.
-- A skill may select another repository-relative, Git-trackable artifact root when its workflow design requires it.
-- Keep the discovery locator at `.dev/workflows/<workflow-id>/workflow.yaml` when a non-default root is used.
-- The locator `entrypoint` must resolve inside the declared artifact root and must lead to current progress, next work, blockers, and deferred items without repeating repository analysis.
-- Do not use ignored, generated, dependency, temporary, or repository-external locations.
-- Do not store runtime workflow records inside `.ai/assets/skills/`, `.agents/skills/`, or `.claude/skills/`.
-- Do not let two active workflows share one artifact root.
-- Treat `artifact_root` as immutable. If relocation is necessary, update the locator and every active reference and record the origin in the destination artifacts.
+- Daily workflow metadata, task records, plans and progress reports live in the
+  selected repository-external store, with logical document names and one current
+  entrypoint. The entrypoint must lead to current progress, next work, blockers
+  and deferrals without repeating repository analysis.
+- Formal Git-owned artifacts keep their selected repository-relative paths;
+  reference them from the native record with source provenance.
+- Retain a legacy `artifact_root` as provenance for the original Git artifacts;
+  it does not relocate the database or require a new Git execution tree.
+- Do not store runtime workflow records inside managed skill resources, ignored
+  scratch, generated/dependency directories or temporary locations. Use only the
+  explicitly selected persistent store, not another repository-external path.
+- Keep active workflow identities and their logical documents distinct. A
+  document's source provenance does not make it a second current entrypoint.
 
 ## Time Metadata
 
@@ -96,7 +100,7 @@ Every workflow-producing skill must declare its templates and defaults in its ca
 
 Artifacts generated from a template must record `template_source` and `template_version` when the format supports metadata.
 
-The skill may define additional workflow, task, report, and status fields. Shared compatibility requires only the locator and the minimum task relationship fields below.
+The skill may define additional workflow, task, report, and status fields. Shared compatibility requires the selected workflow identity/metadata and the minimum task relationship fields below.
 
 ## Task Minimum Contract
 
@@ -135,13 +139,14 @@ pending -> in_progress -> completed
 
 Use `deferred` only with a recorded reason and handoff condition. Skills may add domain-specific states without redefining the shared meanings.
 
-Locators generated from template version `1.2.0` or later opt into
-`lifecycle_contract: "1.0"`. Under that prospective contract:
+Workflow metadata from template version `1.2.0` or later selects
+`lifecycle_contract: "1.0"`, including native continuations preserving that
+selection. Under that prospective contract:
 
 - an `in_progress` workflow has exactly one `in_progress` task;
 - a `completed` workflow has no unfinished task and uses `completed` or `closed` as `current_phase`;
 - a completed task has a non-empty result summary and an addressed finding status;
-- legacy locators without the field remain compatible and are not silently reinterpreted.
+- legacy records without the field retain their original meaning and are not silently reinterpreted.
 
 ## Workflow Completion
 
@@ -173,8 +178,8 @@ later provider state into an already completed implementation workflow.
 
 - New workflows dated 2026-07-10 or later must satisfy this policy.
 - Historical workflows may retain month-only IDs and older layouts.
-- When a historical workflow remains active, add a new locator or migration note instead of silently rewriting its identity.
-- Check changed locator/task fields, paths and status relationships directly,
+- When a historical workflow is explicitly continued, create its native continuation with baseline provenance under the store policy; preserve its original identity and Git history.
+- Check changed workflow metadata/task fields, logical documents and status relationships directly,
   using an existing applicable validator if available. Do not scan all history
   or restore an unavailable validator solely to admit a new record.
 - Validate `branch` and `base_branch` for workflows dated 2026-07-11 or later.
