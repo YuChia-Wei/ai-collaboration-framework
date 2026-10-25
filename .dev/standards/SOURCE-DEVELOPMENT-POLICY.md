@@ -171,12 +171,17 @@ authority. Never infer spending or privilege permission from a role name or avai
 not proof of actual runtime identity, usage or billing. Keep one tracked writer
 per worktree and a read-only reviewer on the immutable subject.
 
-Use the existing locator/task identity fields in
-[workflow artifacts](WORKFLOW-ARTIFACT-POLICY.md) when workflow mode is needed.
+Use the selected native workflow/task identity fields in
+[workflow artifacts](WORKFLOW-ARTIFACT-POLICY.md) and the explicit configuration,
+complete references and source CLI of [workflow storage](WORKFLOW-STORE-POLICY.md)
+when workflow mode is needed.
 Check changed records, not every historical workflow. A
 [handoff](WORKFLOW-HANDOFF-POLICY.md) records source/branch, authority, completed
 and pending work, actual results, limitations and the next action.
-No new record store or automatic historical migration is selected.
+Daily execution uses that source-selected SQLite authority; formal artifacts stay
+Git-owned. Historical snapshots remain provenance, and explicit native
+continuation is separate from archive import. No automatic historical migration
+or Git fallback is selected.
 Graph discovery needs known source identity/coverage or an explicit tracked-file
 fallback. Never assign PowerShell automatic/reserved variables.
 

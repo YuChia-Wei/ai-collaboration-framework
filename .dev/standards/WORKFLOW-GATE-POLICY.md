@@ -10,7 +10,7 @@ This policy defines when an agent should create workflow artifacts proactively i
 
 | Mode | Use |
 | --- | --- |
-| Direct mode | Conversation, exploration, or small single-pass work that does not need a durable repository execution record. |
+| Direct mode | Conversation, exploration, or small single-pass work that does not need a durable source-project execution record. |
 | Assessment mode | Read-only analysis that needs a durable report but does not authorize remediation or execution tracking. |
 | Workflow mode | Authorized execution that changes source-of-truth, crosses skill boundaries, or needs durable execution-task tracking. |
 
@@ -22,7 +22,7 @@ Do not collapse these decisions into one another:
 
 | Decision | Question | Typical values |
 | --- | --- | --- |
-| Execution record | What durable repository execution state is needed? | `direct`, `assessment`, `workflow` |
+| Execution record | What durable source-project execution state is needed? | `direct`, `assessment`, `workflow` |
 | Delivery grouping | Which approved outcomes must move, validate, review, and roll back together? | one outcome per delivery, or several work items in one cohesive delivery |
 | Integration gate | What review or automation must pass before the target branch changes? | direct push where target policy permits, or pull request |
 | Git topology | Does a grouped branch boundary carry information that must remain visible? | linear integration or merge commit |
@@ -39,9 +39,9 @@ authorize repository work or create a workflow.
 
 | State | Durable home | Repository execution consequence |
 | --- | --- | --- |
-| Conversation and exploration | The conversation only. | No branch, workflow locator, commit, or pull request. |
+| Conversation and exploration | The conversation only. | No branch, execution record, commit, or pull request. |
 | Candidate work and unapproved plan | For this source repository, a GitHub Issue; GitHub Projects provide the priority and status views. | The tracker item records possible work but does not authorize execution merely by existing or changing provider state. No repository branch or pull request is created merely to record it. |
-| Authorized execution | An online GitHub Issue recording material requirement scope, with authorization and handoff recorded through the workflow mechanism. | Create the dedicated branch before the locator or material repository edits. Bind the workflow and pull request to the Issue; never fabricate a tracker identifier or infer authorization from provider state. |
+| Authorized execution | An online GitHub Issue recording material requirement scope, with authorization and handoff recorded through the workflow mechanism. | Create the dedicated branch before the selected execution record or material repository edits. Bind the workflow and pull request to the Issue; never fabricate a tracker identifier or infer authorization from provider state. |
 | Integrated repository fact | `main`, after the required pull request is merged. | Do not describe branch-only or tracker-only work as integrated repository truth. |
 
 GitHub Issues and Projects are this repository's selected work-management
@@ -120,7 +120,7 @@ than one Issue. Issue count is traceability input, not delivery cardinality.
 
 ## Must Create a Workflow
 
-Create a durable workflow and its discovery locator only when execution is
+Create a durable workflow in the selected store only when execution is
 authorized, or the owner requires durable cross-session execution tracking,
 **and both of these tests pass**:
 
@@ -202,7 +202,7 @@ Use assessment mode when all of these are true:
 
 Follow `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`. Create a dedicated
 assessment branch before writing `.dev/assessments/<assessment-id>/`, but do not
-create a workflow locator solely because the report is durable. Commits contain
+create a workflow execution record solely because the report is durable. Commits contain
 only assessment-owned artifacts and required assessment index updates.
 
 If remediation is authorized later, create a new workflow and reference the
@@ -216,26 +216,25 @@ When workflow mode is used:
 
 1. Start from the intended base branch, normally `main`.
 2. Create or switch to a dedicated workflow branch before creating workflow artifacts or making material task changes.
-3. Then create the workflow locator and skill-owned artifacts.
+3. Then create or explicitly continue the native workflow record and its skill-owned logical documents under [workflow storage](WORKFLOW-STORE-POLICY.md).
 
 Branch naming, checkpoint integration, continuation branch, push, and positive
 linear-versus-merge-commit selection are defined by
 `.dev/TEAM-GIT-FLOW-RULES.MD`.
 
-```text
-.dev/workflows/<workflow-id>/
-  workflow.yaml
-```
-
-- Follow `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` for discovery, full-date IDs, timestamps, artifact roots, and minimum task metadata.
-- Use the workflow-owning skill's templates for its plan, tasks, reports, and domain-specific layout.
-- Default the artifact root to `.dev/workflows/<workflow-id>/`; a skill may declare another repository-relative root while retaining the locator above.
-- Do not assume every workflow has `review-report.md` or the same task/report structure.
-- Do not create a workflow directly on `main`. Historical workflows created before this rule are not retroactively rewritten, but must use a dedicated continuation branch before resuming material work.
+- Follow `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` for complete native identity,
+  full-date IDs, timestamps, logical documents and minimum task metadata.
+- Use the workflow-owning source templates for plans, tasks, reports and layout;
+  the selected store holds daily execution state without requiring a Git YAML tree.
+- Keep formal artifacts in their Git-owned paths and historical locators as provenance.
+- Do not assume every workflow has `review-report.md` or the same report structure.
+- Do not create a workflow directly on `main`. Historical workflows created before
+  this rule retain their history and need a dedicated continuation branch before
+  resuming material work through the selected native record.
 
 ## Task Status Rule
 
-Each task JSON should move through:
+Each task record should move through:
 
 ```text
 pending -> in_progress -> completed
@@ -246,8 +245,9 @@ Use `deferred` only when the task is intentionally postponed and the workflow pl
 ## Commit Rule
 
 Workflow stages should follow `.dev/standards/GIT-COMMIT-POLICY.md`. Commit one
-validated durable stage or coherent bounded task batch, not each skill
-invocation. Small tasks completed and validated together may share a commit.
+validated coherent unit of tracked source, policy or formal artifacts when
+Git delivery is authorized. Native progress alone does not require a commit.
+Small tasks completed and validated together may share a commit.
 History compression is limited to unshared, unpushed commits under the active
 repository policy and must preserve approval, review, evidence, checkpoint,
 handoff, and shared-history boundaries.

@@ -71,6 +71,7 @@ Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authorit
 - 小型、局部、單次可完成的工作可以維持 direct mode。
 - Source-of-truth、AI-context、routing、wrapper、multi-stage 或 durable cross-session work，載入 `.dev/standards/WORKFLOW-GATE-POLICY.md`。
 - Workflow mode 時，遵循 `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` 與 `.dev/TEAM-GIT-FLOW-RULES.MD`；material edits 前切換 dedicated branch。
+- 日常執行紀錄儲存與明確的 native continuation 遵循[工作流程儲存政策](.dev/standards/WORKFLOW-STORE-POLICY.md)。使用其中明確指定的 configuration 與 source CLI；可選的 `workflow-records` package 未安裝於此專案。正式產物仍由 Git 管理，歷史 workflow files 保留為 provenance；不選用自動探索或 Git fallback。
 - 需留存的唯讀報告使用 `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`；報告本身不必然需要 workflow。
 - Cross-session transfer 遵循 `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`；checkpoint 不得依賴 hidden conversation state。
 - Commit 前遵循 `.dev/standards/GIT-COMMIT-POLICY.md`，並在執行 `git commit` 前以 message file 驗證完整 planned message。

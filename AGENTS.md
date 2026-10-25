@@ -73,6 +73,7 @@ For source work, `.dev/standards/` continues to own source policy, GitHub work a
 - Small, local, single-pass work may remain direct mode.
 - For source-of-truth, AI-context, routing, wrapper, multi-stage, or durable cross-session work, load `.dev/standards/WORKFLOW-GATE-POLICY.md`.
 - In workflow mode, follow `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` and `.dev/TEAM-GIT-FLOW-RULES.MD`; switch to the dedicated branch before material edits.
+- Daily execution storage and explicit native continuation follow [workflow storage](.dev/standards/WORKFLOW-STORE-POLICY.md). Use its explicit configuration and source CLI; the optional `workflow-records` package is not installed here. Formal artifacts stay Git-owned and historical workflow files remain provenance; no automatic discovery or Git fallback is selected.
 - A retained read-only report uses `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`; it does not require a workflow by itself.
 - For cross-session transfer, follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`; the checkpoint must not depend on hidden conversation state.
 - Before committing, follow `.dev/standards/GIT-COMMIT-POLICY.md` and validate the complete planned message from a message file before invoking `git commit`.

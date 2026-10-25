@@ -10,7 +10,7 @@ specific repository revision; it does not authorize remediation.
 | --- | --- | --- |
 | Transient analysis | Read-only analysis that remains in the conversation. | none |
 | Standalone assessment | A persisted audit, large code review, architecture assessment, or technical-debt inventory without authorized remediation. | `.dev/assessments/<assessment-id>/` |
-| Workflow execution | Authorized multi-stage work, remediation, or source-of-truth change. | `.dev/workflows/<workflow-id>/` |
+| Workflow execution | Authorized multi-stage work, remediation, or source-of-truth change. | Selected native record under [workflow storage](WORKFLOW-STORE-POLICY.md) |
 
 Persistence alone does not turn an observation into a workflow. If the user asks
 to assess and remediate in one request, store the assessment under
@@ -28,8 +28,10 @@ workflow references the assessment; it does not copy the report.
 - For this source repository, an online GitHub Issue owns candidate work
   selected from assessments; targets use their own configured work-item surface.
   The frozen `.dev/backlog/` tree is historical and legacy compatibility only.
-- `.dev/workflows/` owns authorized execution plans, tasks, remediation evidence,
-  and checkpoints.
+- The selected native workflow store owns current daily execution plans, tasks,
+  progress and checkpoints under [workflow storage](WORKFLOW-STORE-POLICY.md).
+  Existing `.dev/workflows/` files retain historical provenance; formal assessment
+  reports and their evidence remain Git-owned in this assessment family.
 - ADRs and standards own adopted decisions and normative truth.
 
 ## Storage Contract
@@ -135,6 +137,19 @@ Every `assessment.yaml` must contain:
 The assessment commit SHA is not required inside the initial locator because it
 does not exist until after the locator is committed. Find artifact commits by
 the stable assessment ID in Git history.
+
+Locator schema `1.1` additionally permits optional `relations.workflow_record_refs`,
+a list of complete closed `workflow-records/1` references containing exactly
+`provider_id`, `store_id` and `workflow_id`. Schema `1.0` rejects this field;
+both versions may omit it. Nonempty complete references require the validator's
+explicit `--workflow-store-config` and resolve only through their supplied provider
+and store, without fallback. Existing `relations.workflow_refs` strings retain
+historical Git meaning: file existence when unconfigured and strict Git validation
+when configured. A mixed validation config explicitly includes both Git and local
+descriptors; `default_provider` never retargets either relationship. Preserve the
+complete reference in the locator and diagnostics. This does not change the
+production daily-store config or require rewriting historical assessments,
+templates, identities or indexes; older validators reject schema `1.1`.
 
 ## Assessment Lifecycle
 
