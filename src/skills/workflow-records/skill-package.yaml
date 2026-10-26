@@ -10,6 +10,36 @@ runtime:
 - id: python
   version: '>=3.11,<4'
   for_operations:
+  - group-init
+  - group-configuration
+  - group-context
+  - group-resume
+  - group-read
+  - group-operation
+  - group-create
+  - group-create-task
+  - group-checkpoint
+  - group-write-document
+  - group-revise-workflow
+  - member-add
+  - member-remove
+  - select-authority
+  - group-sync
+  - group-sync-status
+  - group-resume-intent
+  - group-export
+  - group-preflight
+  - group-restore
+  - group-deactivate
+  - group-activate
+  - provider-list
+  - provider-inspect
+  - provider-register
+  - provider-update
+  - provider-enable
+  - provider-disable
+  - provider-prepare
+  - provider-observe
   - capabilities
   - find
   - context
@@ -50,6 +80,36 @@ runtime:
 - id: pyyaml
   version: '>=6,<7'
   for_operations:
+  - group-resume-intent
+  - group-init
+  - group-configuration
+  - group-context
+  - group-resume
+  - group-read
+  - group-operation
+  - group-create
+  - group-create-task
+  - group-checkpoint
+  - group-write-document
+  - group-revise-workflow
+  - member-add
+  - member-remove
+  - select-authority
+  - group-sync
+  - group-sync-status
+  - group-export
+  - group-preflight
+  - group-restore
+  - group-deactivate
+  - group-activate
+  - provider-list
+  - provider-inspect
+  - provider-register
+  - provider-update
+  - provider-enable
+  - provider-disable
+  - provider-prepare
+  - provider-observe
   - capabilities
   - find
   - context
@@ -188,6 +248,7 @@ configuration: null
 artifact_roles: []
 resources:
   references:
+  - references/local-group.md
   - references/operations.md
   - references/source-store.md
   - references/git-format.md
@@ -257,6 +318,48 @@ resources:
     - tools/workflow_records/source_config.py
     - tools/workflow_records/source_proof.py
     - schemas/source-replica-v1.schema.json
+  - id: local-group-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/local-group.py
+    operation_contract: references/local-group.md
+    operations:
+    - group-resume-intent
+    - group-init
+    - group-configuration
+    - group-context
+    - group-resume
+    - group-read
+    - group-operation
+    - group-create
+    - group-create-task
+    - group-checkpoint
+    - group-write-document
+    - group-revise-workflow
+    - member-add
+    - member-remove
+    - select-authority
+    - group-sync
+    - group-sync-status
+    - group-export
+    - group-preflight
+    - group-restore
+    - group-deactivate
+    - group-activate
+    - provider-list
+    - provider-inspect
+    - provider-register
+    - provider-update
+    - provider-enable
+    - provider-disable
+    - provider-prepare
+    - provider-observe
+    support_files:
+    - tools/workflow_records/group_storage.py
+    - tools/workflow_records/group_model.py
+    - tools/workflow_records/group_providers.py
+    - tools/workflow_records/group_service.py
+    - tools/workflow_records/group_backup.py
 operations:
 - id: capabilities
   execution: tool
@@ -615,6 +718,306 @@ operations:
   - explicit-project-root
   - bounded-json-request
   - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-init
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-configuration
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-context
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-resume
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-read
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-operation
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-create
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-create-task
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-checkpoint
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-write-document
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-revise-workflow
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: member-add
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: member-remove
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: select-authority
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-sync
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-sync-status
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-export
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-preflight
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-restore
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-deactivate
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-activate
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-list
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-inspect
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-register
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-update
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-enable
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-disable
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-prepare
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-observe
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-resume-intent
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
   outputs:
   - bounded-json-response
   implementation_status: implemented

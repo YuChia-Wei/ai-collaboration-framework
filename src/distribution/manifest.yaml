@@ -1027,12 +1027,16 @@ components:
     destination: .ai/core/skills/workflow-records/references/operations.md
   - source: references/source-store.md
     destination: .ai/core/skills/workflow-records/references/source-store.md
+  - source: references/local-group.md
+    destination: .ai/core/skills/workflow-records/references/local-group.md
   - source: schemas/source-replica-v1.schema.json
     destination: .ai/core/skills/workflow-records/schemas/source-replica-v1.schema.json
   - source: skill-package.yaml
     destination: .ai/core/skills/workflow-records/skill-package.yaml
   - source: tools/source-store.py
     destination: .ai/core/skills/workflow-records/tools/source-store.py
+  - source: tools/local-group.py
+    destination: .ai/core/skills/workflow-records/tools/local-group.py
   - source: tools/workflow-records.py
     destination: .ai/core/skills/workflow-records/tools/workflow-records.py
   - source: tools/workflow_records/__init__.py
@@ -1045,6 +1049,16 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/contracts.py
   - source: tools/workflow_records/git_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/git_store.py
+  - source: tools/workflow_records/group_storage.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_storage.py
+  - source: tools/workflow_records/group_model.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_model.py
+  - source: tools/workflow_records/group_providers.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_providers.py
+  - source: tools/workflow_records/group_service.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_service.py
+  - source: tools/workflow_records/group_backup.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_backup.py
   - source: tools/workflow_records/service.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/service.py
   - source: tools/workflow_records/source_backup.py

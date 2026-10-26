@@ -5,6 +5,15 @@ description: Read and maintain selected Git or SQLite workflow records and local
 
 # Workflow Records
 
+For an explicitly initialized offline Local file authority, optional same-workflow
+SQLite carrier, and project-owned provider controls, use the additive
+[local-group contract](references/local-group.md) and [CLI](tools/local-group.py).
+It selects one carrier for both reads and writes and preserves fixed delivery
+targets. Its SQLite schema and backup format are distinct from native schemas
+1/2/3. Remote descriptors are disabled by default; host-mediated prepare/observe
+never launches code or proves backend acceptance. Do not reinterpret the older
+source-store/2 read selector as command-authority transfer.
+
 For explicitly selected unified SQLite source authority and Board source-copy
 delivery, use the additive [source-store profile](references/source-store.md) and
 [CLI](tools/source-store.py). Fresh schema 2 is an explicit selection; never upgrade
