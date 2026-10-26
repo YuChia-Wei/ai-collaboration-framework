@@ -134,13 +134,7 @@ def observe(envelope, request):
     require(saved is not None, "not_found", "Pinned handoff is absent.")
     command = saved["command"]
     observed = request["observation"]
-    c.fields(observed, {"contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision", "outcome", "provider_revision"})
-    require(all(observed[key] == command[key] for key in ("contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision")), "binding_mismatch", "Observation does not match the original handoff scope/digest/logical cut.")
-    require(observed["outcome"] in ("accepted", "rejected", "conflict", "unknown"), "invalid_input", "Unknown observation classification.")
-    if observed["outcome"] == "accepted":
-        require(isinstance(observed["provider_revision"], str) and 0 < len(observed["provider_revision"]) <= 1024, "invalid_input", "Accepted provider revision must be bounded opaque text.")
-    else:
-        require(observed["provider_revision"] is None or isinstance(observed["provider_revision"], str), "invalid_input", "Provider revision must be text or null.")
+    m.validate_observation(command, observed)
     status = envelope["deliveries"][saved["intent_id"]]
     if status["state"] == "accepted" and observed["outcome"] == "accepted":
         require(status["provider_revision"] == observed["provider_revision"], "revision_conflict", "Accepted opaque provider revision changed.")

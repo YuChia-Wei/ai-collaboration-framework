@@ -349,6 +349,80 @@ class LocalGroupTests(unittest.TestCase):
         self.ok(self.request("group-resume-intent", intent_id=intent, additional_attempts=1))
         self.assertEqual(self.ok(self.request("provider-prepare", intent_id=intent, mode="command"))["request"], first)
 
+    def accepted_remote_backup(self):
+        """Framework-only host assertions; no downstream provider is executed."""
+        self.create()
+        self.ok(self.request("provider-register", registration=self.registration("alpha")))
+        provider = self.ok(self.request("provider-list"))["providers"]["alpha"]
+        self.ok(self.request("provider-enable", provider_id="alpha", expected_generation=provider["current_generation"]))
+        self.ok(self.request("group-write-document", document="plan.md", content={"encoding": "utf-8", "content": "closure fixture"}))
+        intent = self.ok(self.request("group-sync-status"))["targets"][0]["intent_id"]
+        prepared = self.ok(self.request("provider-prepare", intent_id=intent, mode="command"))
+        command = prepared["request"]
+        observation = {key: command[key] for key in ("contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision")}
+        observation.update(outcome="accepted", provider_revision="opaque-provider-etag-42")
+        self.ok(self.request("provider-observe", handoff_id=prepared["handoff_id"], observation=observation))
+        unknown = {**observation, "outcome": "unknown", "provider_revision": None}
+        result = self.ok(self.request("provider-observe", handoff_id=prepared["handoff_id"], observation=unknown))
+        self.assertEqual(result["outcome"], "accepted")
+        exported = self.ok(self.request("group-export", destination=str(self.directory / "remote-backup.json")))
+        return storage.read_json(Path(exported["destination"])), exported, intent
+
+    def test_remote_assertion_closure_rejects_rehashed_archives_before_restore_writes(self):
+        original, _, intent = self.accepted_remote_backup()
+        from workflow_records import source_contract as c
+        variants = {
+            "contract": ("contract_version", "foreign/1"),
+            "group": ("group_ref", {**self.ref, "project_id": "foreign-project"}),
+            "provider": ("provider_id", "foreign-provider"),
+            "generation": ("generation", "generation-foreign"),
+            "operation": ("operation_id", "foreign-operation"),
+            "digest": ("request_digest", "sha256:" + "f" * 64),
+            "logical-cut": ("logical_revision", "sha256:" + "e" * 64),
+            "missing-handoff": None,
+            "later-unknown-provider": ("provider_id", "foreign-provider"),
+        }
+        for name, mutation in variants.items():
+            with self.subTest(variant=name):
+                archive = copy.deepcopy(original)
+                envelope = archive["payload"]["members"]["file"]
+                if mutation is None:
+                    envelope["handoffs"].clear()
+                else:
+                    position = -1 if name == "later-unknown-provider" else 0
+                    envelope["deliveries"][intent]["observations"][position][mutation[0]] = mutation[1]
+                m.seal(envelope)
+                archive["snapshot_digest"] = c.digest(storage.bounded(archive["payload"]))
+                path = self.directory / (name + "-backup.json")
+                storage.atomic_json(path, archive, fresh=True)
+                digest = c.digest(storage.bounded(archive))
+                self.error(self.request("group-preflight", archive=str(path), archive_digest=digest), "integrity_error")
+                config = self.configuration(name + "-restore")
+                group = LocalGroup(self.project, config)
+                response = group.execute({"contract_version": m.PROFILE, "group_ref": self.ref, "operation": "group-restore", "operation_id": name + "-restore",
+                                          "archive": str(path), "archive_digest": digest, "member_paths": {"file": config["file_path"]}})
+                self.assertEqual(response["status"], "error", response)
+                self.assertEqual(response["error"]["code"], "integrity_error", response)
+                self.assertFalse(Path(config["file_path"]).exists())
+                control_directory = Path(config["control_directory"])
+                self.assertFalse((control_directory / "control.json").exists())
+                self.assertFalse((control_directory / "transition.json").exists())
+
+    def test_valid_remote_assertions_restore_inactive_and_preserve_accepted_after_unknown(self):
+        _, exported, intent = self.accepted_remote_backup()
+        self.ok(self.request("group-preflight", archive=exported["destination"], archive_digest=exported["archive_digest"]))
+        config = self.configuration("valid-remote-restore")
+        group = LocalGroup(self.project, config)
+        result = self.ok({"contract_version": m.PROFILE, "group_ref": self.ref, "operation": "group-restore", "operation_id": "valid-remote-restore",
+                          "archive": exported["destination"], "archive_digest": exported["archive_digest"], "member_paths": {"file": config["file_path"]}}, group)
+        self.assertEqual(result["store_state"], "inactive")
+        status = self.ok({"contract_version": m.PROFILE, "group_ref": self.ref, "operation": "group-sync-status"}, group)
+        delivery = next(row["delivery"] for row in status["targets"] if row["intent_id"] == intent)
+        self.assertEqual(delivery["state"], "accepted")
+        self.assertEqual(delivery["provider_revision"], "opaque-provider-etag-42")
+        self.assertNotEqual(delivery["provider_revision"], delivery["logical_revision"])
+        self.assertEqual([observation["outcome"] for observation in delivery["observations"]], ["accepted", "unknown"])
+
 
 if __name__ == "__main__":
     unittest.main()

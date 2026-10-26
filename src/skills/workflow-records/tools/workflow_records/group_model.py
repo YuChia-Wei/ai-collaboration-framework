@@ -185,6 +185,24 @@ def validate_control(value, identity, repository_binding=None):
     return value
 
 
+def validate_observation(command, observed, *, persisted=False):
+    """Apply the same pinned-command admission rules live and during recovery."""
+    c.fields(observed, {"contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision", "outcome", "provider_revision"})
+    binding_error = "integrity_error" if persisted else "binding_mismatch"
+    input_error = "integrity_error" if persisted else "invalid_input"
+    require(all(observed[key] == command[key] for key in
+                ("contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision")),
+            binding_error, "Observation does not match the original handoff scope/digest/logical cut.")
+    require(observed["outcome"] in ("accepted", "rejected", "conflict", "unknown"), input_error, "Unknown observation classification.")
+    if observed["outcome"] == "accepted":
+        require(isinstance(observed["provider_revision"], str) and 0 < len(observed["provider_revision"]) <= 1024,
+                input_error, "Accepted provider revision must be bounded opaque text.")
+    else:
+        require(observed["provider_revision"] is None or isinstance(observed["provider_revision"], str),
+                input_error, "Provider revision must be text or null.")
+    return observed
+
+
 def validate(envelope, identity):
     c.fields(envelope, {"format", "identity", "events", "baselines", "deliveries", "aux_operations", "handoffs", "checksum"})
     require(envelope["format"] == FORMAT and envelope["identity"] == identity, "binding_mismatch", "Carrier identity differs from the complete group reference.")
@@ -227,6 +245,9 @@ def validate(envelope, identity):
     for baseline in envelope["baselines"].values():
         require(baseline["cut"] is None or baseline["cut"] in cuts, "integrity_error", "Baseline cut is not retained.")
         require(baseline["target"]["kind"] == "local" and baseline["target"]["expected_parent"] is None, "integrity_error", "Invalid baseline target.")
+    from .group_providers import intents
+    targets = {row["intent_id"]: row for row in intents(envelope)}
+    pinned_commands = {}
     for key, handoff in envelope["handoffs"].items():
         command = handoff["command"]
         c.fields(handoff, {"intent_id", "command"})
@@ -239,13 +260,19 @@ def validate(envelope, identity):
         require(event is not None and command["payload"] == event["body"]["state"], "integrity_error", "Pinned handoff payload differs from its cut.")
         require(any(target["kind"] == "remote" and target["provider_id"] == command["provider_id"] and target["generation"] == command["generation"] and
                     target["descriptor"] == command["registration"] for target in event["body"]["targets"]), "integrity_error", "Handoff lost its fixed target.")
+        intent = handoff["intent_id"]
+        require(intent in targets and intent not in pinned_commands, "integrity_error", "Handoff requires one exact retained intent/command.")
+        fixed = targets[intent]
+        target = fixed["target"]
+        require(target["kind"] == "remote" and fixed["cut"] == command["logical_revision"] and
+                target["provider_id"] == command["provider_id"] and target["generation"] == command["generation"] and
+                target["descriptor"] == command["registration"], "integrity_error", "Pinned command differs from its original fixed intent.")
+        pinned_commands[intent] = command
     for key, value in envelope["aux_operations"].items():
         c.fields(value, {"request", "request_digest", "receipt"})
         require(value["request"]["operation_id"] == key and value["request"]["group_ref"] == identity and fingerprint(value["request"]) == value["request_digest"],
                 "integrity_error", "Auxiliary operation closure differs.")
         require(value["receipt"]["operation_id"] == key and value["receipt"]["replayed"] is False and key not in ids, "integrity_error", "Auxiliary receipt identity differs.")
-    from .group_providers import intents
-    targets = {row["intent_id"]: row for row in intents(envelope)}
     for key, status in envelope["deliveries"].items():
         require(key in targets and status.get("state") in ("pending", "accepted", "rejected", "conflict", "unknown"), "integrity_error", "Delivery lost its fixed intent/state.")
         c.integer(status.get("attempt_limit", 32), 32, 1024)
@@ -253,13 +280,17 @@ def validate(envelope, identity):
         c.integer(status.get("observation_limit", 64), 64, 4096)
         require(type(status.get("dispatch_authorized", False)) is bool and isinstance(status.get("observations", []), list) and len(status.get("observations", [])) <= status.get("observation_limit", 64),
                 "integrity_error", "Invalid delivery resume/observation history.")
+        if targets[key]["target"]["kind"] == "remote":
+            observations = status.get("observations", [])
+            if observations or status["state"] == "accepted":
+                require(key in pinned_commands, "integrity_error", "Remote observations/acceptance require the original retained handoff.")
+                for observed in observations:
+                    validate_observation(pinned_commands[key], observed, persisted=True)
         if targets[key]["target"]["kind"] == "remote" and status["state"] == "accepted":
             require(status["logical_revision"] == targets[key]["cut"] and isinstance(status["provider_revision"], str) and bool(status["provider_revision"]),
                     "integrity_error", "Accepted logical/provider revision closure differs.")
             require(any(observed.get("outcome") == "accepted" and observed.get("provider_revision") == status["provider_revision"] and observed.get("logical_revision") == status["logical_revision"]
                         for observed in status.get("observations", [])), "integrity_error", "Accepted remote delivery lacks its retained host assertion.")
-    for saved in envelope["handoffs"].values():
-        require(saved["intent_id"] in targets, "integrity_error", "Handoff intent is absent.")
     bounded(envelope)
     return envelope
 
