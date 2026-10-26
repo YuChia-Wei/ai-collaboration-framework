@@ -31,10 +31,16 @@ flowchart LR
   Orch --> Git[正式規格 / ADR / 程式碼的 Git artifacts]
   Core --> SQLite[(明確選定的 SQLite)]
   SQLite --> Snapshot[Snapshots / receipts / pending / read proofs]
-  Snapshot -. 明確選用且啟用 .-> Bridge[workflow-board-experimental]
-  Bridge -. prepared data .-> Host[明確選定的 host transport]
+  Snapshot -. 明確選用 SourceReplica 傳送 .-> Host[明確選定的 host transport]
+  Orch -. 另選套件並啟用 .-> Bridge[workflow-board-experimental]
+  Bridge -. Board V2 協作查詢與命令 .-> Host
   Host --> Board[線上 Workflow Board]
 ```
+
+SourceReplica 的 `source_v1_*` 請求由核心準備，交給明確選定的 host transport
+傳送；`workflow-board-experimental` 準備的是協作資料契約 V2 的 `v2_*` 請求。
+兩者使用不同契約，SourceReplica 不經過 V2 bridge。核心中的純資料驗證與
+請求準備不會啟用網路傳送；實際線上操作仍須明確選用。
 
 所有現有 presets 已不選取 workflow-records，本次也不加入實驗性套件。
 Catalog 是可選套件全集，`complete` 是具體的 18-skill 選擇。選取實驗性套件時，
