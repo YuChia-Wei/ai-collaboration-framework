@@ -19,7 +19,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
-TOOLS = ROOT / "src/skills/workflow-records/tools"
+TOOLS = ROOT / "src/skills/workflow-board-experimental/tools"
 spec = importlib.util.spec_from_file_location("board_query_test_runtime", TOOLS / "workflow_records/board_query.py")
 api = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(api)
@@ -381,7 +381,7 @@ class BoardQueryTests(unittest.TestCase):
             path = target / "prepare.json"
             path.write_bytes(api.encode(value))
             def launch(source, stdin=None):
-                return subprocess.run([sys.executable, "-I", "-S", "-B", str(target / "board-query.py"), "--request", source],
+                return subprocess.run([sys.executable, "-I", "-S", "-B", str(target / "board-query.py"), "--activate", "--request", source],
                                       input=stdin, cwd=target, capture_output=True, timeout=10)
             process = launch(str(path))
             self.assertEqual((process.returncode, process.stderr), (0, b""))

@@ -34,7 +34,7 @@ RECORDS = {
     "promotion": ("standards-promotion", "promotion-record", "standards_promotion.py"),
 }
 WORKFLOW_CONTRACTS = {
-    "board-collaboration-v2": "src/skills/workflow-records/schemas/board-collaboration-v2.schema.json",
+    "board-collaboration-v2": "src/skills/workflow-board-experimental/schemas/board-collaboration-v2.schema.json",
     "source-replica-v1": "src/skills/workflow-records/schemas/source-replica-v1.schema.json",
 }
 PROVIDER_ROOT = "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation"

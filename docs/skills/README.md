@@ -4,7 +4,7 @@
 [知識選配](../knowledge-packages.md) · [工具型 skills 設定](../tool-skills.md) ·
 [自建／客製 skill 管理](../skill-management.md)
 
-本來源 catalog 有 21 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
+本來源 catalog 有 22 個 skills；實際可用版本依下載的 catalog 與安裝 lock。
 先依要交付的成果選擇；不必為了使用其中
 一個就跑完整開發流程。明確指定的 skill 若在其契約範圍內，應沿用你的選擇。
 
@@ -30,7 +30,8 @@
 | [spec-author](spec-author.md) | 0.3.0 | 依需求與設計撰寫 production／entity／adapter 規格 | 表達已接受契約；不填補未定設計，正式測試規格由 test-designer 擁有 | 指令；可選知識 |
 | [spec-compliance-validator](spec-compliance-validator.md) | 0.1.0 | 規劃證據、審查規格語意、評估真實執行證據 | 限指定判準與範圍，不代替實際測試執行或全系統認證 | 指令 |
 | [user-story-author](user-story-author.md) | 0.2.1 | 獨立 Story 切分、撰寫、正規化與整份／指定 AC 審查 | 擁有 Story／AC；一般需求與測試設計保留原 owner | 指令；可選 |
-| [workflow-records](workflow-records.md) | 0.1.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | 不決定開發階段；Git 目前只追加 checkpoint，兩 provider 均未提供 task editing | Python record 工具；可選 |
+| [workflow-records](workflow-records.md) | 0.2.0 | 查找、checkpoint、接續 Git 或本機 SQLite workflow 紀錄 | 不決定開發階段；Git 目前只追加 checkpoint；SQLite 提供 create-task 與受控 revise-workflow | Python record 工具；可選 |
+| [workflow-board-experimental](workflow-board-experimental.md) | 0.1.0 | 明確選用的實驗性 Board query／command bridges | 需 workflow-records；預設不安裝、不啟用，實際線上驗收另排 | Python 工具 |
 
 本表是人類選讀入口；操作細節與可用能力以各頁連結的來源契約及實際安裝版本為準。
 新增、拆分、改名、退役或責任改變時，與產品變更一起更新本表及受影響的單項說明，

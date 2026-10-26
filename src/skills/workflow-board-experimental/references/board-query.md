@@ -54,7 +54,7 @@ revision; document reads require `document_id`, positive `revision`, and
 }
 ```
 
-Run `python -I -B <package>/tools/board-query.py --request prepare.json`.
+Run `python -I -B <package>/tools/board-query.py --activate --request prepare.json`.
 `--request -` reads UTF-8 JSON from stdin. No project-root argument is needed.
 The successful response is `{contract_version, operation, status: "ok",
 mutation_state: "none", result: prepared}`. `prepared` has exactly
@@ -79,7 +79,7 @@ const acceptRequest = {
 // Serialize acceptRequest directly to accept.json or the CLI's stdin.
 ```
 
-Run `python -I -B <package>/tools/board-query.py --request accept.json`.
+Run `python -I -B <package>/tools/board-query.py --activate --request accept.json`.
 Acceptance revalidates the prepared query and exact binding, revision and tool
 mapping. A successful response's `result` is the native data, with unknown
 extensions, missing inputs, cursors and receipt outcomes preserved.
@@ -132,3 +132,6 @@ invariants, not every field of the full native JSON Schema. Unknown native data
 is retained, not executed. Host authentication/authorization, hosted behavior,
 cross-session persistence, full export/recovery, writes, claims, retry/fanout,
 publication, installation and migration need their separately selected evidence.
+
+This bridge belongs to `workflow-board-experimental`. Installation is not activation;
+select `--activate` for each invocation. No bridge performs network dispatch.

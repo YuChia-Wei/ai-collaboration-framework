@@ -990,33 +990,47 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/user-story-author/skill-package.yaml
 - kind: skill
-  id: workflow-records
+  id: workflow-board-experimental
   version: 0.1.0
+  source: src/skills/workflow-board-experimental
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/workflow-board-experimental/SKILL.md
+  - source: references/board-command.md
+    destination: .ai/core/skills/workflow-board-experimental/references/board-command.md
+  - source: references/board-query.md
+    destination: .ai/core/skills/workflow-board-experimental/references/board-query.md
+  - source: schemas/board-collaboration-v2.schema.json
+    destination: .ai/core/skills/workflow-board-experimental/schemas/board-collaboration-v2.schema.json
+  - source: skill-package.yaml
+    destination: .ai/core/skills/workflow-board-experimental/skill-package.yaml
+  - source: tools/board-command.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/board-command.py
+  - source: tools/board-query.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/board-query.py
+  - source: tools/workflow_records/board_command.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/workflow_records/board_command.py
+  - source: tools/workflow_records/board_query.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/workflow_records/board_query.py
+- kind: skill
+  id: workflow-records
+  version: 0.2.0
   source: src/skills/workflow-records
   metadata: skill-package.yaml
   members:
   - source: SKILL.md
     destination: .ai/core/skills/workflow-records/SKILL.md
-  - source: references/board-command.md
-    destination: .ai/core/skills/workflow-records/references/board-command.md
-  - source: references/board-query.md
-    destination: .ai/core/skills/workflow-records/references/board-query.md
   - source: references/git-format.md
     destination: .ai/core/skills/workflow-records/references/git-format.md
   - source: references/operations.md
     destination: .ai/core/skills/workflow-records/references/operations.md
   - source: references/source-store.md
     destination: .ai/core/skills/workflow-records/references/source-store.md
-  - source: schemas/board-collaboration-v2.schema.json
-    destination: .ai/core/skills/workflow-records/schemas/board-collaboration-v2.schema.json
   - source: schemas/source-replica-v1.schema.json
     destination: .ai/core/skills/workflow-records/schemas/source-replica-v1.schema.json
   - source: skill-package.yaml
     destination: .ai/core/skills/workflow-records/skill-package.yaml
-  - source: tools/board-command.py
-    destination: .ai/core/skills/workflow-records/tools/board-command.py
-  - source: tools/board-query.py
-    destination: .ai/core/skills/workflow-records/tools/board-query.py
   - source: tools/source-store.py
     destination: .ai/core/skills/workflow-records/tools/source-store.py
   - source: tools/workflow-records.py
@@ -1025,10 +1039,6 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/__init__.py
   - source: tools/workflow_records/backup.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/backup.py
-  - source: tools/workflow_records/board_command.py
-    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_command.py
-  - source: tools/workflow_records/board_query.py
-    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_query.py
   - source: tools/workflow_records/common.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/common.py
   - source: tools/workflow_records/contracts.py
@@ -1039,8 +1049,12 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/service.py
   - source: tools/workflow_records/source_backup.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_backup.py
+  - source: tools/workflow_records/source_config.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_config.py
   - source: tools/workflow_records/source_contract.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_contract.py
+  - source: tools/workflow_records/source_proof.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_proof.py
   - source: tools/workflow_records/source_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_store.py
   - source: tools/workflow_records/sqlite_store.py

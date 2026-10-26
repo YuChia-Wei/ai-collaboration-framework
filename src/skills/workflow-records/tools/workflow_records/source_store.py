@@ -31,7 +31,7 @@ TABLES = {"source_snapshots": (6, (5,)), "source_blobs": (2, (1,)), "source_chun
 
 
 def schema2(meta):
-    require(meta["schema_version"] == c.SCHEMA, "explicit_upgrade_required",
+    require(meta["schema_version"] in (c.SCHEMA, c.SCHEMA3), "explicit_upgrade_required",
             "This operation requires an explicitly initialized workflow-sqlite/2 database; v1 was not upgraded.")
 
 
@@ -117,8 +117,13 @@ def publish(connection, kind, workflow_id, source, workflow, files, revision=Non
             connection.execute("INSERT OR IGNORE INTO source_blobs VALUES(?,?)", (hash_value, chunk))
             connection.execute("INSERT INTO source_chunks VALUES(?,?,?,?)", (key, path, index, hash_value))
     snapshot(connection, key)
-    for (binding_id, value) in connection.execute("SELECT id,value FROM source_bindings ORDER BY id").fetchall():
-        enqueue(connection, key, binding_id, c.parse(bytes(value)))
+    selected_schema = decode_json(bytes(connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()[0]))["schema_version"]
+    if selected_schema == c.SCHEMA3:
+        from .source_config import capture_membership
+        capture_membership(connection, key, kind, workflow_id)
+    else:
+        for (binding_id, value) in connection.execute("SELECT id,value FROM source_bindings ORDER BY id").fetchall():
+            enqueue(connection, key, binding_id, c.parse(bytes(value)))
     return key
 
 
@@ -205,12 +210,7 @@ def evaluate(connection, intent_id, index, command, channel, transport):
     if transport is None:
         return {"outcome": "unknown", "reason": "response_missing"}
     try:
-        from .board_command import mcp_value
-        from .board_command import CommandError
-        try:
-            native = mcp_value(transport)
-        except CommandError as exc:
-            raise RecordError(exc.code, exc.message) from exc
+        native = c.mcp_value(transport)
         if channel == "lookup":
             c.validate("result_replica_operation_get", native)
             require(native["project_ref"] == command["project_ref"] and native["operation_id"] == command["operation_id"],
@@ -297,6 +297,9 @@ class SourceStore:
         self.service = WorkflowRecords(root, config)
 
     def execute(self, request):
+        if isinstance(request, dict) and request.get("contract_version") == c.PROFILE2:
+            from .source_config import execute
+            return execute(self, request)
         operation = request.get("operation") if isinstance(request, dict) else None
         if not isinstance(operation, str) or len(operation) > 64 or not operation.isascii():
             operation = None
@@ -343,6 +346,7 @@ class SourceStore:
                             key = publish(connection, request["kind"], request["workflow_id"], source, view, files)
                             result = receipt(connection, request, {"snapshot_id": key, "synchronization": synchronization(connection, key)})
                         elif operation == "replica-bind":
+                            require(meta["schema_version"] == c.SCHEMA, "unsupported_capability", "Schema 3 uses workflow-scoped /2 carrier configuration.")
                             target = request["binding"]
                             c.binding(target)
                             require(request["new_source_namespace"] is True, "invalid_input", "Binding requires an explicitly new remote source namespace at head zero.")

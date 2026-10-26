@@ -19,8 +19,12 @@ def native_payload(value):
 def payload(connection, meta):
     from . import backup
     value = backup.payload(connection, {**meta, "schema_version": "workflow-sqlite/1"})
-    value["schema_version"] = c.SCHEMA
-    for table, (_, columns) in TABLES.items():
+    value["schema_version"] = meta["schema_version"]
+    selected_tables = TABLES
+    if meta["schema_version"] == c.SCHEMA3:
+        from .source_config import TABLES as config_tables
+        selected_tables = {**TABLES, **config_tables}
+    for table, (_, columns) in selected_tables.items():
         rows = connection.execute("SELECT * FROM " + table + " ORDER BY 1,2").fetchall()
         require(len(rows) <= MAX_ROWS, "limit_exceeded", "Source backup row capacity exceeded.")
         value["tables"][table] = [[base64.b64encode(bytes(item)).decode("ascii") if index in columns else item for index, item in enumerate(row)] for row in rows]
@@ -40,12 +44,17 @@ def check_capacity(value, reserve=0):
 def validate_payload(value):
     from . import backup
     from . import source_store as s
+    selected_ddl, selected_tables = DDL, TABLES
+    schema3 = isinstance(value, dict) and value.get("schema_version") == c.SCHEMA3
+    if schema3:
+        from .source_config import DDL as config_ddl, TABLES as config_tables
+        selected_ddl, selected_tables = DDL + config_ddl, {**TABLES, **config_tables}
     require(isinstance(value, dict) and set(value) == {"schema_version", "identity", "tables"}
-            and value["schema_version"] == c.SCHEMA and isinstance(value["tables"], dict)
-            and set(value["tables"]) == set(backup.TABLES) | set(TABLES), "malformed_record", "Schema-2 backup table closure is incomplete.")
+            and value["schema_version"] in (c.SCHEMA, c.SCHEMA3) and isinstance(value["tables"], dict)
+            and set(value["tables"]) == set(backup.TABLES) | set(selected_tables), "malformed_record", "Source backup table closure is incomplete.")
     decoded = backup.validate_payload(native_payload(value), schema2_native=True)
     check_capacity(value)
-    for table, (width, columns) in TABLES.items():
+    for table, (width, columns) in selected_tables.items():
         output = []
         for row in value["tables"][table]:
             require(isinstance(row, list) and len(row) == width, "malformed_record", "Invalid source backup row width.")
@@ -64,9 +73,9 @@ def validate_payload(value):
     try:
         with closing(sqlite3.connect(":memory:")) as connection:
             connection.execute("PRAGMA foreign_keys=ON")
-            for statement in DDL:
+            for statement in selected_ddl:
                 connection.execute(statement)
-            for table, (width, _) in TABLES.items():
+            for table, (width, _) in selected_tables.items():
                 connection.executemany("INSERT INTO " + table + " VALUES(" + ",".join("?" for _ in range(width)) + ")", decoded[table])
             used = set()
             native = {(row[0], row[1]): bytes(row[3]) for row in decoded["revisions"]}
@@ -83,7 +92,8 @@ def validate_payload(value):
                         and manifest["source"]["original_workflow_id"] == workflow_id and manifest["workflow"]["original_id"] == workflow_id
                         and manifest["workflow"]["kind"] == kind and manifest["workflow"]["id"] == c.unit_id(kind, workflow_id),
                         "malformed_record", "Source mapping is not reversible or changed.")
-                c.validate("command", {"service_contract_version": c.NATIVE_PROFILE, "schema_version": "1.0",
+                if decoded["source_bindings"]:
+                    c.validate("command", {"service_contract_version": c.NATIVE_PROFILE, "schema_version": "1.0",
                                       "project_ref": {"store_id": "validation", "namespace": "personal", "project_id": "validation"},
                                       "operation_id": "validation", "expected_revision": 0, "command": "replica.begin",
                                       "payload": {"source_id": "validation", "workflow_id": manifest["workflow"]["id"], "source_revision": revision,
@@ -138,8 +148,12 @@ def validate_payload(value):
                     c.validate("command", command)
                     expected_steps.add((key, index))
             require(expected_steps == {(row[0], row[1]) for row in decoded["replica_steps"]}, "malformed_record", "Orphan replica step.")
-            require({(row[2], row[3]) for row in decoded["replica_intents"]} == {(row[1], binding_id) for row in decoded["source_snapshots"] for binding_id in bindings},
-                    "malformed_record", "A fixed target delivery intent is missing.")
+            if schema3:
+                from .source_config import validate_backup
+                validate_backup(connection, decoded)
+            else:
+                require({(row[2], row[3]) for row in decoded["replica_intents"]} == {(row[1], binding_id) for row in decoded["source_snapshots"] for binding_id in bindings},
+                        "malformed_record", "A fixed target delivery intent is missing.")
             # Replay observation interpretation in order without trusting stored
             # outcome flags. Earlier accepted evidence cannot be overwritten.
             observations = sorted(decoded["replica_observations"])

@@ -712,3 +712,13 @@ Prefixed entry 為 `aicf-test-designer`，canonical package ID 仍為 `test-desi
 software-architect 或兩者，再依本頁既有 inspect/plan/apply 流程與授權升級。
 詳細 selection、bindings、managed drift 與既有 installed snapshot 的區別見
 [遷移指南](skills/domain-architecture-migration.md)。來源修改不自動改寫本專案的安裝。
+
+
+### 實驗性 Workflow Board 選配
+
+`complete` 是列出的 18-skill preset，不是 catalog 全選；原有 presets 保持不變。
+離線工作可單獨明確選取 `workflow-records@0.2.0`；需要 Board bridges 時再明確
+選取 `workflow-board-experimental@0.1.0`（required dependency 為前者），
+以正常 derive／inspect／plan／apply 流程檢查選擇與移除。安裝不等於啟用；實驗性
+CLI 每次須明確 `--activate`。升級不根據既有 binding 自動新增套件，也不改寫
+production DB 或設定。參閱[模組圖與相容性](workflow-module-map.md)。

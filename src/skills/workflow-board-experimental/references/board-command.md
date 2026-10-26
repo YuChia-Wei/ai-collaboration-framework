@@ -2,7 +2,7 @@
 
 `workflow-records/board-command/1` supplies `board-command-prepare`,
 `board-command-accept` and `board-command-reconcile` through
-`python -I -B <package>/tools/board-command.py --request <file-or->`.
+`python -I -B <package>/tools/board-command.py --activate --request <file-or->`.
 It validates data and prepares explicit host actions. It does not dispatch,
 retry, persist a journal/binding, find credentials, change identity or fall back.
 The caller must already have authority for the selected domain write. This
@@ -196,3 +196,6 @@ This bridge does not prove hosted behavior, downstream installation, persistent
 command acceptance, aggregate acceptance, journal recovery, fanout, migration,
 historical event equivalence or publication. Those require their selected host,
 storage, domain and integration evidence.
+
+This bridge belongs to `workflow-board-experimental`. Installation is not activation;
+select `--activate` for each invocation. No bridge performs network dispatch.

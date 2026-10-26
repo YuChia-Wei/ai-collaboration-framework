@@ -35,7 +35,13 @@ def runtime():
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--request", required=True, help="Strict UTF-8 JSON file, or '-' for stdin")
+    parser.add_argument("--activate", action="store_true", help="Explicitly activate this experimental bridge for this invocation")
     args = parser.parse_args(argv)
+    if not args.activate:
+        print(json.dumps({"contract_version": "workflow-records/board-command/1", "operation": None,
+                          "status": "unavailable", "bridge_effect": "none", "command_outcome": "unknown",
+                          "error": {"code": "experimental_not_activated", "message": "Installation does not activate the experimental Board bridge; select --activate explicitly."}}))
+        return 1
     try:
         api = runtime()
     except (ImportError, OSError, ValueError):

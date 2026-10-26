@@ -8,10 +8,12 @@ database outside the repository, with the existing `/1` configuration format.
 
 Run `python -I -B <package>/tools/source-store.py --root <Git-repository>
 --config <configuration.json> --request <request.json-or->`. Prerequisites are
-Python 3.11+, PyYAML 6 and jsonschema 4.26+ with the complete declared source
-package. No dependency, network schema or credential is fetched. Shared package
-members are declared once; the CLI uses existing provider and command-transport
-modules plus its source-store modules.
+Python 3.11+ and PyYAML 6 with the complete declared core package.
+`jsonschema` 4.26+ is loaded only for selected replica DTO/proof validation or
+backup data containing replicas; ordinary local-only operation needs no Board
+module, Board V2 schema or jsonschema runtime. No dependency, network schema or credential is fetched. Shared package members are declared once; the CLI uses only its local provider
+and source-store modules. The inert SourceReplica schema preserves existing
+replica data; it does not activate an online integration.
 
 ## Requests and local results
 
@@ -149,11 +151,10 @@ validated before restore. Restore is inactive and retains pending delivery bytes
 the original retirement/single-successor activation protocol still applies.
 V1 archives retain their original format and validation; no v1 data is upgraded.
 
-This increment supplies initial immutable bindings, SQLite-only read authority
-and manual host dispatch. Dynamic target changes, read-source switching, full
-local task/status editing, formal source-policy adoption and the remaining
-multi-carrier/migration behavior are separate feature gaps. It does not complete
-those larger delivery scopes.
+The `/1` profile retains initial immutable bindings, explicit SQLite reads and
+manual host dispatch. Workflow-scoped configuration and selected reads use the
+separate `/2` profile below. Formal source-policy adoption, migration and real
+cross-client/hosted acceptance remain separate from controlled fixture evidence.
 
 Limits refuse instead of dropping data: 1000 files, 16 MiB/file, 32 MiB/unit,
 240000 canonical manifest bytes, 49152 raw bytes/chunk, 64 MiB retained source raw
@@ -172,3 +173,118 @@ Only CRLF→LF normalization was applied; packaged SHA256 is
 Runtime verifies the packaged hash and uses jsonschema with only local references.
 These source/fixture checks do not establish production provisioning, migration,
 hosted quota acceptance, physical durability, installation or source-policy cutover.
+
+## Workflow-scoped configuration and selected reads: `/2`
+
+`workflow-records/source-store/2` requires an explicitly initialized fresh
+`workflow-sqlite/3` database. Its default read source is SQLite and its only
+command authority is SQLite. It uses the same explicit root, store configuration,
+CLI, strict request fields and whole-object limits. No operation upgrades an
+existing database. Schema-1/2 stores keep their existing capabilities; `/2`
+operations return `explicit_upgrade_required` there. Production provisioning,
+configuration changes and migration are never selected by installation.
+
+Each logical workflow has its own configuration revision, initially zero, and
+exactly one read source. Configuring one workflow cannot change another workflow.
+The native workflow must already exist. Archive units retain `/1` physical reads;
+they do not acquire a native workflow identity or workflow configuration.
+
+| Operation | Required additional fields |
+| --- | --- |
+| `source-init` | `operation_id`, `schema_version: workflow-sqlite/3` |
+| `source-configuration` | `workflow_id` |
+| `source-operation` | `operation_id` |
+| `replica-add` | `operation_id`, `workflow_id`, `expected_configuration_revision`, `binding`, `new_source_namespace: true` |
+| `replica-update` | Same as add plus `expected_binding_generation` |
+| `replica-remove` | `operation_id`, `workflow_id`, `expected_configuration_revision`, `binding_id`, `expected_binding_generation` |
+| `select-read-source` | `operation_id`, `workflow_id`, `expected_configuration_revision`, `read_source`; `proof_id` required for replica selection |
+| `read-prepare` | `operation_id`, `workflow_id`, `expected_configuration_revision`; optional `binding_id` prepares a candidate selection proof |
+| `read-accept` | `operation_id`, `proof_id`, `step_index`, `mcp_result` |
+| `read-result` | `proof_id` |
+| `read-chunk` | `proof_id`, `path`, `index` |
+
+Every request also carries `contract_version`, `operation` and the complete
+`store_ref`. `max_output_bytes` is optional. Configuration mutations replay an
+already accepted identical operation before checking the expected configuration
+revision; changed content under that ID conflicts. CAS, configuration history,
+baseline intents and receipt share one `BEGIN IMMEDIATE` transaction. A stale CAS
+leaves no new binding, baseline, receipt or configuration revision.
+
+```json
+{"contract_version":"workflow-records/source-store/2","operation":"source-init","store_ref":{"provider_id":"local","store_id":"records"},"operation_id":"initialize-three","schema_version":"workflow-sqlite/3"}
+```
+
+```json
+{"contract_version":"workflow-records/source-store/2","operation":"replica-add","store_ref":{"provider_id":"local","store_id":"records"},"operation_id":"add-selected-carrier","workflow_id":"example","expected_configuration_revision":0,"new_source_namespace":true,"binding":{"binding_id":"board","project_ref":{"store_id":"board","namespace":"personal","project_id":"example-project"},"source_id":"explicit-fresh-namespace"}}
+```
+
+The `binding` input has exactly `binding_id`, `project_ref` and `source_id`.
+The accepted configuration returns its immutable `generation_id` and full
+`target`, including the generated physical binding identity and revision. Update
+requires a fresh namespace; existing/retired targets cannot be adopted or reset.
+Baseline includes every retained native snapshot of this workflow. Later native
+mutations capture exactly the active generations under the same SQLite lock.
+Updating/removing a carrier changes future membership only. Original pending
+intents, payloads, target IDs, expected remote heads and receipts remain intact
+and retain their original `/1` preparation/observation route. A selected read
+binding must first be explicitly switched away before removal/replacement.
+
+### Complete read proof and explicit switching
+
+For the default SQLite source, `read-prepare` immediately returns a complete
+persisted read token. `read-result` returns its pinned native state, manifest and
+revision mapping; `read-chunk` returns its exact source bytes. No remote schema or
+transport is required for an unbound offline workflow.
+
+For an explicitly chosen experimental replica, prepare a candidate proof:
+
+```json
+{"contract_version":"workflow-records/source-store/2","operation":"read-prepare","store_ref":{"provider_id":"local","store_id":"records"},"operation_id":"prove-current-cut","workflow_id":"example","expected_configuration_revision":1,"binding_id":"board"}
+```
+
+Preparation persists the workflow/configuration/generation/source/version/hash
+token and returns one exact SourceReplica/1 query. The explicit host dispatches
+that unchanged request and supplies its raw MCP result to `read-accept`, retaining
+the original operation ID for response-loss replay. Accept returns the next exact
+query until `read_state: complete`. No network call runs inside a local transaction.
+The plan covers the exact-version `replica.read` header, every 50-file manifest
+page and every file chunk. Project/source/workflow/version/hash, provider revision,
+page totals/order and all raw chunk/file bytes must agree with the immutable
+local cut. Empty files have no chunks. Conflicting text/structured MCP results,
+missing pages, altered bytes and wrong scope fail without advancing proof state.
+This proof correlates host-returned data; it does not attest remote actor identity.
+
+```json
+{"contract_version":"workflow-records/source-store/2","operation":"select-read-source","store_ref":{"provider_id":"local","store_id":"records"},"operation_id":"select-proven-replica","workflow_id":"example","expected_configuration_revision":1,"read_source":{"kind":"replica","binding_id":"board","generation_id":"generation-<returned-digest>"},"proof_id":"read-<returned-digest>"}
+```
+
+Selection checks the completed candidate proof against the workflow's **current**
+local cut under the CAS transaction. A native write or configuration change after
+proof preparation requires a new proof; an intentionally older cut is refused.
+Selecting `read_source: {"kind":"sqlite"}` needs no remote proof and remains an
+explicit configuration mutation. Neither operation changes command authority.
+
+After selection, omit `binding_id` from `read-prepare` to read the saved unique
+source. A replica read pins the latest immutable version established by confirmed
+activation or a complete remote read proof, then obtains and verifies actual
+bytes through that same carrier. Read proof never manufactures command receipts
+or marks pending synchronization complete. An absent proven version, unavailable
+transport, incomplete data or wrong scope returns an error without falling back
+to SQLite. Once complete, `read-result` reports `freshness: current` or
+`behind` against the current local authority cut. A normal native write does not
+invalidate the pinned immutable read; a configuration change invalidates the
+token and returns `configuration_conflict`. Tokens and raw read evidence survive
+backup/restore, but inactive stores cannot prepare new reads or accept transport.
+
+`configuration_revision` orders only this workflow's carrier/read selection.
+`logical_revision` is the immutable `native-<digest>` source revision.
+`native_state_revision` preserves the original native `sha256:<digest>` revision.
+`provider_revision` is the replica's independent activation counter, or null for
+SQLite. Digests and provider counters never share an ordering relation; freshness
+uses retained snapshot identity and local sequence, not numeric comparison.
+
+Schema-3 export uses `workflow-backup/3`. Validation preserves native history,
+complete configuration history, generations, exact historical target membership,
+pending commands, observations, read tokens and proof bytes. Restore is inactive
+and retains the existing sole-successor activation protocol. Backup-1/2 formats
+and validators remain compatible; no restore converts their schema.

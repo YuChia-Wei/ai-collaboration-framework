@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md)
 
-`workflow-records@0.1.0` 是可選的 workflow 紀錄工具。Git provider 沿用專案
+`workflow-records@0.2.0` 是可選的 workflow 紀錄工具。Git provider 沿用專案
 工作目錄中的檔案；SQLite provider 將 workflow、文件、checkpoint 與完整歷史
 存於明確選定的 repo 外本機資料庫。既有 presets 不會自動選入它。
 
@@ -13,7 +13,7 @@ Codex 或 Claude adapter。可用能力以所選公開套件與實際安裝版�
 
 安裝後的入口是 `.ai/core/skills/workflow-records/tools/workflow-records.py`。
 先以 `capabilities` 讀取能力，再依明確 reference 執行 find、context、read、
-checkpoint、operation 或 resume。SQLite 額外提供 init、create、write-document、
+checkpoint、operation 或 resume。SQLite 額外提供 init、create、create-task、revise-workflow、write-document、
 完整 export／preflight／inactive restore，以及受控 deactivate／activate。
 
 [完整操作契約](../../src/skills/workflow-records/references/operations.md)包含
@@ -39,3 +39,23 @@ GitHub Issue／Project、同步遠端 board 或將舊 Git 紀錄搬到 SQLite。
 既有共通入口的 [逐步範例](../workflow-records-walkthrough.md)與隨包操作契約
 提供 request 格式；本次來源候選的實際安裝與限制見
 [交付驗收紀錄](../../.dev/workflows/2026-10-11-workflow-sqlite-package/acceptance.md)。
+
+
+## 離線核心與實驗性 Board
+
+來源版 `workflow-records@0.2.0` 只封裝 Git／SQLite、source snapshots、
+本機配置、read proofs 與備份恢復。一般 SQLite 操作不需要 Board 執行模組、
+V2 schema、帳號或網路；本機且沒有 replica 資料的備份亦不需要 jsonschema。
+保留的 SourceReplica schema 是歷史資料與 proof 的靜態驗證契約，不啟用線上服務。
+包含既有 replica 資料的嚴格驗證仍須其 validator，不會略過或刪除資料。
+
+[workflow-board-experimental](workflow-board-experimental.md) 另行明確選取，
+並 required-depend on 本核心。所有現有 presets（包含 complete）均不選這兩個套件；
+full catalog 是可選能力全集，不是預設安裝。完整責任與時序見
+[模組與資料流](../workflow-module-map.md)。
+
+從舊合併套件升級時，正常 installer plan 會呈現舊 Board 檔案移除與新套件選擇。
+仍需 Board bridges 的專案應明確把實驗性套件加入選擇並審閱該計畫；不從既有
+binding 推定選擇，不自動安裝、啟用或改寫設定。若只升級核心，原入口路徑不再
+存在；core source-store 收到 board-* 操作則明確 unavailable，不隱式查找 adapter。
+既有 pending commands、receipts、配置與讀寫權威不隨套件拆分自動改變。
