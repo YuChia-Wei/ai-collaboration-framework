@@ -64,6 +64,7 @@ class InstructionSettingsTests(unittest.TestCase):
                   {"mode": "default", "route": ""}, {"mode": "experimental", "route": "other"},
                   {"mode": "experimental"}, {"mode": "project", "route": ""},
                   {"mode": "project", "route": " leading"}, {"mode": "project", "route": "trailing "},
+                  {"mode": "project", "route": "team\n"}, {"mode": "project", "route": "team\r\n"},
                   {"mode": "project", "route": "a\nb"}, {"mode": "project", "route": "a" * 4097},
                   {"mode": "project", "route": "team", "fallback": "local"})
         for value in values:
