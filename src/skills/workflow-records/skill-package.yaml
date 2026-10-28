@@ -1,6 +1,6 @@
 metadata_version: 5
 id: workflow-records
-version: 0.1.0
+version: 0.2.0
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -10,20 +10,38 @@ runtime:
 - id: python
   version: '>=3.11,<4'
   for_operations:
-  - source-init
-  - source-import-git
-  - source-list
-  - source-read
-  - source-chunk
-  - source-operation
-  - replica-bind
-  - replica-prepare
-  - replica-observe
-  - board-command-prepare
-  - board-command-accept
-  - board-command-reconcile
-  - board-query-prepare
-  - board-query-accept
+  - group-init
+  - group-configuration
+  - group-context
+  - group-resume
+  - group-read
+  - group-operation
+  - group-create
+  - group-create-task
+  - group-checkpoint
+  - group-write-document
+  - group-revise-workflow
+  - member-add
+  - member-remove
+  - select-authority
+  - group-sync
+  - group-sync-status
+  - group-resume-intent
+  - group-export
+  - group-export-files
+  - group-preflight-files
+  - group-preflight
+  - group-restore
+  - group-deactivate
+  - group-activate
+  - provider-list
+  - provider-inspect
+  - provider-register
+  - provider-update
+  - provider-enable
+  - provider-disable
+  - provider-prepare
+  - provider-observe
   - capabilities
   - find
   - context
@@ -38,23 +56,68 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
   - activate
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - binding-status
+  - binding-disable
+  - replica-prepare
+  - replica-observe
+  - source-configuration
+  - replica-add
+  - replica-remove
+  - replica-update
+  - select-read-source
+  - read-prepare
+  - read-accept
+  - read-result
+  - read-chunk
   on_missing: unavailable
 - id: pyyaml
   version: '>=6,<7'
   for_operations:
-  - source-init
-  - source-import-git
-  - source-list
-  - source-read
-  - source-chunk
-  - source-operation
-  - replica-bind
-  - replica-prepare
-  - replica-observe
+  - group-resume-intent
+  - group-init
+  - group-configuration
+  - group-context
+  - group-resume
+  - group-read
+  - group-operation
+  - group-create
+  - group-create-task
+  - group-checkpoint
+  - group-write-document
+  - group-revise-workflow
+  - member-add
+  - member-remove
+  - select-authority
+  - group-sync
+  - group-sync-status
+  - group-export
+  - group-export-files
+  - group-preflight-files
+  - group-preflight
+  - group-restore
+  - group-deactivate
+  - group-activate
+  - provider-list
+  - provider-inspect
+  - provider-register
+  - provider-update
+  - provider-enable
+  - provider-disable
+  - provider-prepare
+  - provider-observe
   - capabilities
   - find
   - context
@@ -69,23 +132,36 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
   - activate
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - binding-status
+  - binding-disable
+  - replica-prepare
+  - replica-observe
+  - source-configuration
+  - replica-add
+  - replica-remove
+  - replica-update
+  - select-read-source
+  - read-prepare
+  - read-accept
+  - read-result
+  - read-chunk
   on_missing: unavailable
 - id: git
   requirement: Git CLI for the selected repository and source identity binding
   for_operations:
-  - source-init
-  - source-import-git
-  - source-list
-  - source-read
-  - source-chunk
-  - source-operation
-  - replica-bind
-  - replica-prepare
-  - replica-observe
   - capabilities
   - find
   - context
@@ -100,23 +176,36 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
   - activate
+  - source-init
+  - source-import-git
+  - source-list
+  - source-read
+  - source-chunk
+  - source-operation
+  - replica-bind
+  - binding-status
+  - binding-disable
+  - replica-prepare
+  - replica-observe
+  - source-configuration
+  - replica-add
+  - replica-remove
+  - replica-update
+  - select-read-source
+  - read-prepare
+  - read-accept
+  - read-result
+  - read-chunk
   on_missing: unavailable
 - id: sqlite
   requirement: Python sqlite3 module for explicitly selected local stores
   for_operations:
-  - source-init
-  - source-import-git
-  - source-list
-  - source-read
-  - source-chunk
-  - source-operation
-  - replica-bind
-  - replica-prepare
-  - replica-observe
   - capabilities
   - find
   - context
@@ -131,14 +220,12 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
   - activate
-  on_missing: unavailable
-- id: jsonschema
-  version: '>=4.26,<5'
-  for_operations:
   - source-init
   - source-import-git
   - source-list
@@ -146,19 +233,48 @@ runtime:
   - source-chunk
   - source-operation
   - replica-bind
+  - binding-status
+  - binding-disable
   - replica-prepare
   - replica-observe
-  - board-command-prepare
-  - board-command-accept
-  - board-command-reconcile
+  - source-configuration
+  - replica-add
+  - replica-remove
+  - replica-update
+  - select-read-source
+  - read-prepare
+  - read-accept
+  - read-result
+  - read-chunk
   on_missing: unavailable
+- id: jsonschema
+  version: '>=4.26,<5'
+  for_operations:
+  - replica-bind
+  - replica-prepare
+  - replica-observe
+  - replica-add
+  - replica-update
+  - select-read-source
+  - read-prepare
+  - read-accept
+  - export
+  - export-files
+  - preflight-files
+  - group-export-files
+  - group-preflight-files
+  - preflight
+  - restore
+  on_missing: unavailable
+  purpose: Selected project file schemas/templates, replica DTO/proof validation or backups containing retained
+    replica data; unselected current-record export and ordinary local-only operations do not import this runtime.
 configuration: null
 artifact_roles: []
 resources:
   references:
+  - references/file-export.md
+  - references/local-group.md
   - references/operations.md
-  - references/board-query.md
-  - references/board-command.md
   - references/source-store.md
   - references/git-format.md
   schemas: []
@@ -184,40 +300,26 @@ resources:
     - write-document
     - revise-workflow
     - export
+    - export-files
+    - preflight-files
     - preflight
     - restore
     - deactivate
     - activate
     support_files:
+    - schemas/file-workflow-v1.schema.json
+    - schemas/file-task-v1.schema.json
+    - templates/file-workflow.yaml
+    - templates/file-task.yaml
+    - templates/file-schema-selection.json
     - tools/workflow_records/__init__.py
+    - tools/workflow_records/file_export.py
     - tools/workflow_records/backup.py
     - tools/workflow_records/common.py
     - tools/workflow_records/contracts.py
     - tools/workflow_records/git_store.py
     - tools/workflow_records/service.py
     - tools/workflow_records/sqlite_store.py
-  - id: board-query-cli
-    owner: workflow-records
-    implementation_status: implemented
-    entrypoint: tools/board-query.py
-    operation_contract: references/board-query.md
-    operations:
-    - board-query-prepare
-    - board-query-accept
-    support_files:
-    - tools/workflow_records/board_query.py
-  - id: board-command-cli
-    owner: workflow-records
-    implementation_status: implemented
-    entrypoint: tools/board-command.py
-    operation_contract: references/board-command.md
-    operations:
-    - board-command-prepare
-    - board-command-accept
-    - board-command-reconcile
-    support_files:
-    - tools/workflow_records/board_command.py
-    - schemas/board-collaboration-v2.schema.json
   - id: source-store-cli
     owner: workflow-records
     implementation_status: implemented
@@ -231,13 +333,70 @@ resources:
     - source-chunk
     - source-operation
     - replica-bind
+    - binding-status
+    - binding-disable
     - replica-prepare
     - replica-observe
+    - source-configuration
+    - replica-add
+    - replica-remove
+    - replica-update
+    - select-read-source
+    - read-prepare
+    - read-accept
+    - read-result
+    - read-chunk
     support_files:
     - tools/workflow_records/source_contract.py
     - tools/workflow_records/source_store.py
     - tools/workflow_records/source_backup.py
+    - tools/workflow_records/source_config.py
+    - tools/workflow_records/source_proof.py
     - schemas/source-replica-v1.schema.json
+  - id: local-group-cli
+    owner: workflow-records
+    implementation_status: implemented
+    entrypoint: tools/local-group.py
+    operation_contract: references/local-group.md
+    operations:
+    - group-resume-intent
+    - group-init
+    - group-configuration
+    - group-context
+    - group-resume
+    - group-read
+    - group-operation
+    - group-create
+    - group-create-task
+    - group-checkpoint
+    - group-write-document
+    - group-revise-workflow
+    - member-add
+    - member-remove
+    - select-authority
+    - group-sync
+    - group-sync-status
+    - group-export
+    - group-export-files
+    - group-preflight-files
+    - group-preflight
+    - group-restore
+    - group-deactivate
+    - group-activate
+    - provider-list
+    - provider-inspect
+    - provider-register
+    - provider-update
+    - provider-enable
+    - provider-disable
+    - provider-prepare
+    - provider-observe
+    support_files:
+    - tools/workflow_records/group_storage.py
+    - tools/workflow_records/group_model.py
+    - tools/workflow_records/group_providers.py
+    - tools/workflow_records/group_service.py
+    - tools/workflow_records/group_backup.py
 operations:
 - id: capabilities
   execution: tool
@@ -419,51 +578,6 @@ operations:
   outputs:
   - bounded-json-response
   implementation_status: implemented
-- id: board-query-prepare
-  execution: tool
-  tool: board-query-cli
-  inputs:
-  - explicit-non-secret-binding
-  - bounded-json-request
-  outputs:
-  - bounded-json-response
-  implementation_status: implemented
-- id: board-query-accept
-  execution: tool
-  tool: board-query-cli
-  inputs:
-  - explicit-non-secret-binding
-  - bounded-json-request
-  outputs:
-  - bounded-json-response
-  implementation_status: implemented
-- id: board-command-prepare
-  execution: tool
-  tool: board-command-cli
-  inputs:
-  - explicit-non-secret-binding
-  - bounded-json-request
-  outputs:
-  - bounded-json-response
-  implementation_status: implemented
-- id: board-command-accept
-  execution: tool
-  tool: board-command-cli
-  inputs:
-  - explicit-non-secret-binding
-  - bounded-json-request
-  outputs:
-  - bounded-json-response
-  implementation_status: implemented
-- id: board-command-reconcile
-  execution: tool
-  tool: board-command-cli
-  inputs:
-  - explicit-non-secret-binding
-  - bounded-json-request
-  outputs:
-  - bounded-json-response
-  implementation_status: implemented
 - id: source-init
   execution: tool
   tool: source-store-cli
@@ -524,6 +638,26 @@ operations:
   outputs:
   - bounded-json-response
   implementation_status: implemented
+- id: binding-status
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: binding-disable
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
 - id: replica-bind
   execution: tool
   tool: source-store-cli
@@ -551,6 +685,436 @@ operations:
   - explicit-project-root
   - bounded-json-request
   - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: source-configuration
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: replica-add
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: replica-remove
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: replica-update
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: select-read-source
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: read-prepare
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: read-accept
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: read-result
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: read-chunk
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-init
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-configuration
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-context
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-resume
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-read
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-operation
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-create
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-create-task
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-checkpoint
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-write-document
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-revise-workflow
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: member-add
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: member-remove
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: select-authority
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-sync
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-sync-status
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-export
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-preflight
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-restore
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-deactivate
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-activate
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-list
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-inspect
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-register
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-update
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-enable
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-disable
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-prepare
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: provider-observe
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-resume-intent
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - explicit-group-configuration
+  - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: export-files
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: preflight-files
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-export-files
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-preflight-files
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
   outputs:
   - bounded-json-response
   implementation_status: implemented

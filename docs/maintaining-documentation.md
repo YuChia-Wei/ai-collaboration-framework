@@ -60,3 +60,8 @@ Git revision 與舊路徑可作為歷史來源證據，不是安裝時必須存�
 
 修改後檢查 current 文件引用、套件 closure 與受影響的 source checks。
 內容檢查不能代替 runtime、native、hosted 或發布驗收。
+
+正式版本 tag 前，依[來源發布政策](../.dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md)
+核對該版 source 與 `docs/` 的 skill 清單、操作及設定、安裝／移除、架構與資料流、
+相容性和限制。仍有落差時先修正文檔，再交付 tag；合併 main 或標記預計版號
+不等於已完成這項核對，也不代表發布。

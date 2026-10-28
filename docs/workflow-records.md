@@ -9,7 +9,7 @@ Python 3.11+、PyYAML 6 與 Git。套件支援 Git 與 SQLite；本頁說明 Git
 
 此切片支援目前 `workflow.yaml`、`tasks/*.json|yaml|yml` 與 UTF-8 文件格式，
 可查找、讀取、留下 checkpoint、查操作結果及整理接手資料。未選用的專案繼續
-使用原方式。SQLite 的初始化、create 與備份操作見套件契約；remote 尚未實作。
+使用原方式。SQLite 及 local-group 的建立、修訂、同步意圖、唯一來源與匯出／備份操作見套件契約；遠端 transport 不會自動執行。
 
 ## 使用方式
 
@@ -20,7 +20,7 @@ Python 3.11+、PyYAML 6 與 Git。套件支援 Git 與 SQLite；本頁說明 Git
 `--request` 指向自行建立的 UTF-8 JSON 請求。工具不會自動儲存設定。
 
 ```powershell
-python -I -B tools/workflow-records.py --root C:/path/to/project --request C:/path/to/request.json
+python -I -B src/skills/workflow-records/tools/workflow-records.py --root C:/path/to/project --request C:/path/to/request.json
 ```
 
 先查找紀錄：
@@ -116,6 +116,6 @@ stale lock／temporary file；工具不會自動搶鎖。移除前保留 checkpo
 操作結果，再重新讀 context。歷史容量滿時工具拒絕新寫入，不會自動清除 receipt。
 
 仍未接入：舊 handoff／terminal validators、所有歷史格式、Git provider 的 create、
-任意多文件修改、board、Git-to-SQLite 搬遷及發布。SQLite 與 installed entry
+任意多文件修改、歷史自訂格式自動搬遷及發布。Board 為獨立實驗性套件；SQLite 與 installed entry
 是另行選用的能力，不能把本頁 Git 情境當成它們的執行證據。
 F RAM disk 可用於暫存 fixture；其測試結果不代表斷電後的資料持久性。

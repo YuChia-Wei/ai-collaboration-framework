@@ -807,13 +807,35 @@ class Metadata5DistributionTests(unittest.TestCase):
         row = next(row for row in manifest['components'] if (row['kind'], row['id']) == ('skill', 'workflow-records'))
         raw = (ROOT / row['source'] / row['metadata']).read_bytes()
         package = load_package(Blob(row['source'] + '/' + row['metadata'], '0' * 40, '100644', raw))
-        self.assertEqual((package.id, package.version, package.metadata['metadata_version']), ('workflow-records', '0.1.0', 5))
+        self.assertEqual((package.id, package.version, package.metadata['metadata_version']), ('workflow-records', '0.2.0', 5))
         self.assertEqual({member['source'] for member in row['members']}, package.members)
         self.assertTrue(all(member['destination'] == '.ai/core/skills/workflow-records/' + member['source'] for member in row['members']))
         for profile in manifest['profiles']:
             preset = yaml_object((ROOT / profile['path']).read_bytes(), profile['path'])
             with self.subTest(preset=profile['id']):
                 self.assertNotIn('workflow-records', preset['skills'])
+
+    def test_experimental_board_requires_core_and_is_excluded_from_all_presets(self):
+        from test_contracts import ROOT
+        manifest = yaml_object((ROOT / 'src/distribution/manifest.yaml').read_bytes(), 'manifest')
+        packages = {}
+        for name in ('workflow-board-experimental', 'workflow-records'):
+            row = next(r for r in manifest['components'] if r['id'] == name)
+            raw = (ROOT / row['source'] / row['metadata']).read_bytes()
+            package = load_package(Blob(row['source'] + '/' + row['metadata'], '0' * 40, '100644', raw))
+            packages[name] = package
+            self.assertEqual({m['source'] for m in row['members']}, package.members)
+            check_references(package, {m: Blob(row['source'] + '/' + m, '0' * 40, '100644', (ROOT / row['source'] / m).read_bytes()) for m in package.members})
+        self.assertEqual(packages['workflow-board-experimental'].metadata['dependencies']['required'],
+                         [{'id': 'workflow-records', 'version': '0.2.0'}])
+        self.assertEqual(packages['workflow-records'].metadata['dependencies']['required'], [])
+        components = sorted([descriptor('skill', p) for p in packages.values()], key=lambda c: (c['kind'], c['id']))
+        closure(components)
+        with self.assertRaisesRegex(ValueError, 'dependency-closure'):
+            closure([descriptor('skill', packages['workflow-board-experimental'])])
+        closure([descriptor('skill', packages['workflow-records'])])
+        for profile in manifest['profiles']:
+            self.assertNotIn('workflow-board-experimental', yaml_object((ROOT / profile['path']).read_bytes(), profile['path'])['skills'])
 
     def test_published_schema_and_runtime_schema_stay_identical(self):
         from distribution.contracts import DEFINITIONS

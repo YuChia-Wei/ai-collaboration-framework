@@ -171,6 +171,18 @@ class ArchitectureSplitSelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(DistributionError, "selection-unavailable"):
             catalog.resolve_selection(self.parent_catalog, retired)
 
+    def test_retired_backlog_and_future_issue_control_are_not_catalog_routes(self):
+        for owner in ("local-backlog", "issue-control"):
+            with self.subTest(owner=owner):
+                self.assertNotIn(("skill", owner), self.parent_catalog.packages)
+                with self.assertRaisesRegex(DistributionError, "selection-unavailable"):
+                    catalog.resolve_selection(self.parent_catalog, self.desired((owner,)))
+        manifest, _, _ = source_inventory()
+        for row in manifest["profiles"]:
+            preset = yaml_object((ROOT / row["path"]).read_bytes(), row["path"])
+            self.assertNotIn("local-backlog", preset["skills"])
+            self.assertNotIn("issue-control", preset["skills"])
+
     def test_new_operation_bindings_match_source_consumption(self):
         discovery = ("member:bdd/discovery.md", "member:ddd/domain-discovery.md",
                      "member:discovery/collaborative-discovery.md")

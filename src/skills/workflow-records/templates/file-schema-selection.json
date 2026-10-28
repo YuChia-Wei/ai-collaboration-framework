@@ -1,0 +1,25 @@
+{
+  "contract_version": "workflow-records/file-schema-selection/1",
+  "profile_id": "project-current-record",
+  "profile_version": "1",
+  "schemas": {
+    "workflow": {
+      "path": ".ai/project/workflow-records/workflow.schema.json",
+      "sha256": "sha256:bbf05c33aa68b6829934413297aeceb8fe167a77ffd814edd6b5c12a26fa6d3a"
+    },
+    "task": {
+      "path": ".ai/project/workflow-records/task.schema.json",
+      "sha256": "sha256:ae18a0c285e3a698ed4dc41764973eda7d2a6d70025dc910ea2cdd61d42f0143"
+    }
+  },
+  "templates": {
+    "workflow": {
+      "path": ".ai/project/workflow-records/workflow-template.yaml",
+      "sha256": "sha256:3a743d6a4344cf12b1abb03ce5e452b30e591f8b371b04b53549697657bfa079"
+    },
+    "task": {
+      "path": ".ai/project/workflow-records/task-template.yaml",
+      "sha256": "sha256:0a2eb4e24859500ddbebc1ace3c75ecd8365e2155e7a968ca91a66186c7995b8"
+    }
+  }
+}

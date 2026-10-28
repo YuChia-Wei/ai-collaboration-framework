@@ -15,9 +15,9 @@ DEFAULT_CONFIG = {
     "stores": {"git": {"kind": "git", "store_id": "project-workflows", "root": ".dev/workflows"}},
 }
 GIT_OPERATIONS = ["find", "context", "read", "checkpoint", "resume", "validate", "operation"]
-LOCAL_OPERATIONS = GIT_OPERATIONS + ["init", "create", "create-task", "write-document", "revise-workflow", "export", "preflight", "restore", "deactivate", "activate"]
+LOCAL_OPERATIONS = GIT_OPERATIONS + ["init", "create", "create-task", "write-document", "revise-workflow", "export", "preflight", "restore", "deactivate", "activate", "export-files", "preflight-files"]
 STORE_OPERATIONS = {"init", "export", "preflight", "restore", "deactivate", "activate"}
-MUTATIONS = {"checkpoint", "init", "create", "create-task", "write-document", "revise-workflow", "export", "restore", "deactivate", "activate"}
+MUTATIONS = {"checkpoint", "init", "create", "create-task", "write-document", "revise-workflow", "export", "restore", "deactivate", "activate", "export-files"}
 LIMITATIONS = ["cooperating API writers only; no protection against direct storage edits",
               "no automatic commit, migration, failover or cross-clone synchronization"]
 
@@ -109,6 +109,8 @@ class WorkflowRecords:
                        "write-document": {"workflow_ref", "document", "content", "operation_id", "expected_revision", "expected_source_head"},
                        "revise-workflow": {"workflow_ref", "operation_id", "expected_revision", "expected_source_head", "metadata_patch", "task_patches", "documents"},
                        "export": {"store_ref", "destination"},
+                       "export-files": {"workflow_ref", "destination", "expected_revision", "schema_selection"},
+                       "preflight-files": {"workflow_ref", "directory", "manifest_digest", "schema_selection"},
                        "preflight": {"store_ref", "archive", "archive_digest"},
                        "restore": {"store_ref", "archive", "archive_digest", "operation_id"},
                        "deactivate": {"store_ref", "snapshot_digest", "operation_id"},
@@ -185,6 +187,11 @@ class WorkflowRecords:
                 elif operation in ("create", "create-task", "write-document", "revise-workflow"):
                     require(isinstance(provider, SQLiteStore), "unsupported_capability", "This operation requires the local SQLite provider.")
                     result = provider.create(ref, request) if operation == "create" else provider.update(ref, request)
+                elif operation in ("export-files", "preflight-files"):
+                    require(isinstance(provider, SQLiteStore), "unsupported_capability", "Current-record file export requires native SQLite.")
+                    from . import file_export
+                    result = file_export.native(provider, ref, request) if operation == "export-files" else file_export.preflight(
+                        self.root, request, "native", ref.as_dict())
                 else:
                     result = provider.operation(ref, identifier(request.get("operation_id")))
             response = {"contract_version": VERSION, "operation": operation, "status": "ok", "result": result,

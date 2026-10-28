@@ -45,7 +45,7 @@ Owner 於 2026-10-18 的 #461 決策僅簡化本專案規範；#463 的 framewor
 
 ## 任務路由
 
-Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/project/installation.json` 選取。不得編輯 generated installed files。目前來源 distribution catalog 有 21 個 skills；版本與責任見 [skill 目錄](docs/skills/README.md)。來源以 `domain-model-designer` 與 `software-architect` 取代 `ddd-ca-hex-architect`，不保留 alias。原本選取舊 ID 的四個來源 presets 現在改選兩個新 ID。本來源專案安裝 AICF 0.21.0，共 18 個 skills，包含 `domain-model-designer` 與 `software-architect`；已移除退役的合併架構 entry。呼叫前須核對實際 runtime entry。可選的 `ai-context-init`、`workflow-records` 與 `user-story-author` 仍是可獨立選取的來源套件。`project-initialization` preset 獨立選取初始化。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
+Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skills/<skill-id>/SKILL.md`，兩者皆以原始 skill ID 命名。這些 generated entries 與 `.ai/core/skills/` 是可編輯產品來源 `src/skills/` 的安裝投影；透過 `.ai/project/installation.json` 選取。不得編輯 generated installed files。目前來源 distribution catalog 有 21 個 skills；版本與責任見 [skill 目錄](docs/skills/README.md)。來源以 `domain-model-designer` 與 `software-architect` 取代 `ddd-ca-hex-architect`，不保留 alias。原本選取舊 ID 的四個來源 presets 現在改選兩個新 ID。本來源專案安裝經審查的本機來源快照，共 17 個 skills，包含 `domain-model-designer` 與 `software-architect`；已移除退役的合併架構 entry。呼叫前須核對實際 runtime entry。可選的 `ai-context-init`、`workflow-records` 與 `user-story-author` 仍是可獨立選取的來源套件。`project-initialization` preset 獨立選取初始化。安裝此套件只提供文件撰寫資源，不代表根目錄文件已初始化。`standards-promotion@0.1.1-alpha.1` 保留於 `src/skills/`，供獨立複製試驗；在 owner 選定的驗證完成前，排除於 catalogs、presets 與發布成品，且不是本來源專案已安裝的路由。Generated installation state 分開更新。已移除的 compatibility roots 不提供目前可執行路由。
 
 | Need | Owning route |
 | --- | --- |
@@ -54,10 +54,16 @@ Codex 使用 `.agents/skills/<skill-id>/SKILL.md`，Claude 使用 `.claude/skill
 | 領域探索／建模或軟體架構 | 領域探索／建模使用 [domain-model-designer](.agents/skills/domain-model-designer/SKILL.md)，軟體架構使用 [software-architect](.agents/skills/software-architect/SKILL.md)（Claude：對應的 `.claude/skills/<skill-id>/SKILL.md` entries）。依各自安裝契約操作；兩者都不是退役合併 skill 的 alias。 |
 | Test design、code review、diagnosis 或 implementation | `test-designer` / `code-reviewer` / `diagnostic-analyst` / `slice-implementer` / `local-change-implementer` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
-| Decisions、lessons、local backlog 或 pull requests | `adr-author` / `lesson-author` / `local-backlog` / `pr-author` |
+| Decisions、lessons 或 pull requests | `adr-author` / `lesson-author` / `pr-author` |
 | 多階段軟體開發 | `software-development-orchestrator` 負責階段選擇與專業 skill 交接；source `.dev/` policy 與 Issue authority 擁有 workflow records 與整合權限 |
 | 初始化或升級先前發布的 legacy package format | 保留 source compatibility duty，目前沒有 portable 或可執行路由；執行前須恢復已驗證的 source-owned procedure。 |
 | Historical 或 exceptional source release closeout | `releases/` 與 source release policy；沒有 portable installed skill route。 |
+
+Issue 操作須明確讀取 `.ai/project/framework.json` 的
+`skills.software-development-orchestrator.issue_control` 選擇。空白表示依來源
+GitHub 政策使用目前可用且已授權的工具。若選定 project 或實驗性 route，須確認
+它可用，不得默默切換。獨立 `local-backlog` 已退役，目前尚未提供替代的
+issue-control skill。變更設定時須保留既有外部工作項目的完整參照。
 
 Source work 仍由 `.dev/standards/` 擁有 source policy、GitHub work authority、release governance、U001 與 P7 deferrals。明確保留以下 source duties：source assessment persistence 與 terminal records；source customization 與 policy reconciliation；legacy CBF/SWF intake 與 active records；target-selected legacy .NET 100% gate 與 rule resolver（僅維護該舊版下游格式或 target 時適用，不適用於本 framework source 或其自身安裝）；舊 published-format initialization、upgrade 與 recovery。保留 duty 不代表工具可用。已移除的 legacy roots 與仍依賴它們的 validators，在恢復已驗證的 source-owned route 前不可用；它們不會恢復已移除的 runtime discovery entries。
 

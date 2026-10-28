@@ -124,7 +124,7 @@ class SQLiteStore:
         row = connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()
         require(row is not None, "malformed_record", "Store identity is missing.")
         value = decode_json(bytes(row[0]))
-        require(value.get("schema_version") in (SCHEMA, "workflow-sqlite/2"), "unsupported_version", "Unsupported local schema.")
+        require(value.get("schema_version") in (SCHEMA, "workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"), "unsupported_version", "Unsupported local schema.")
         require((value.get("provider_id"), value.get("store_id"), value.get("repository_id"), value.get("repository_binding")) ==
                 (self.provider_id, self.store_id, self.repository_id, self.binding),
                 "binding_mismatch", "Local store belongs to a different repository or provider.")
@@ -136,7 +136,7 @@ class SQLiteStore:
         connection.execute("UPDATE store_meta SET value=? WHERE id=1", (encoded(meta),))
 
     def initialize(self, request, schema=SCHEMA):
-        require(schema in (SCHEMA, "workflow-sqlite/2"), "unsupported_version", "Unsupported initialization schema.")
+        require(schema in (SCHEMA, "workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"), "unsupported_version", "Unsupported initialization schema.")
         op = identifier(request.get("operation_id"))
         if self.database.exists():
             with self.transaction() as (connection, _):
@@ -158,10 +158,14 @@ class SQLiteStore:
             connection.execute("BEGIN IMMEDIATE")
             for statement in DDL:
                 connection.execute(statement)
-            if schema == "workflow-sqlite/2":
+            if schema in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"):
                 from .source_store import DDL as source_ddl
                 for statement in source_ddl:
                     connection.execute(statement)
+                if schema == "workflow-sqlite/3":
+                    from .source_config import DDL as config_ddl
+                    for statement in config_ddl:
+                        connection.execute(statement)
             meta = {"schema_version": schema, "provider_id": self.provider_id, "store_id": self.store_id,
                     "repository_id": self.repository_id, "repository_binding": self.binding,
                     "instance_id": str(uuid.uuid4()), "state": "active", "origin": None, "retirement": None}
@@ -204,7 +208,7 @@ class SQLiteStore:
                            (scope, request["operation_id"], request_digest(request), encoded(receipt), encoded(event)))
         if scope and request["operation"] in ("create", "create-task", "checkpoint", "write-document", "revise-workflow"):
             meta = decode_json(bytes(connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()[0]))
-            if meta["schema_version"] == "workflow-sqlite/2":
+            if meta["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"):
                 try:
                     from .source_store import capture_native
                     capture_native(connection, scope, receipt["revision"])

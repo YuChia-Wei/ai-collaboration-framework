@@ -745,28 +745,6 @@ components:
     destination: .ai/core/skills/lesson-author/templates/lesson.md
   kind: skill
   version: 0.2.0
-- id: local-backlog
-  source: src/skills/local-backlog
-  metadata: skill-package.yaml
-  members:
-  - source: SKILL.md
-    destination: .ai/core/skills/local-backlog/SKILL.md
-  - source: references/configuration.md
-    destination: .ai/core/skills/local-backlog/references/configuration.md
-  - source: references/example.md
-    destination: .ai/core/skills/local-backlog/references/example.md
-  - source: references/operations.md
-    destination: .ai/core/skills/local-backlog/references/operations.md
-  - source: schemas/local-backlog-record.schema.json
-    destination: .ai/core/skills/local-backlog/schemas/local-backlog-record.schema.json
-  - source: scripts/local_backlog.py
-    destination: .ai/core/skills/local-backlog/scripts/local_backlog.py
-  - source: skill-package.yaml
-    destination: .ai/core/skills/local-backlog/skill-package.yaml
-  - source: templates/work-item.md
-    destination: .ai/core/skills/local-backlog/templates/work-item.md
-  kind: skill
-  version: 0.1.0
 - id: local-change-implementer
   source: src/skills/local-change-implementer
   metadata: skill-package.yaml
@@ -897,12 +875,16 @@ components:
   members:
   - source: SKILL.md
     destination: .ai/core/skills/software-development-orchestrator/SKILL.md
+  - source: references/issue-control.md
+    destination: .ai/core/skills/software-development-orchestrator/references/issue-control.md
   - source: references/orchestrate.md
     destination: .ai/core/skills/software-development-orchestrator/references/orchestrate.md
+  - source: schemas/issue-control-settings.schema.json
+    destination: .ai/core/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json
   - source: skill-package.yaml
     destination: .ai/core/skills/software-development-orchestrator/skill-package.yaml
   kind: skill
-  version: 0.4.2
+  version: 0.5.0
 - id: spec-author
   source: src/skills/spec-author
   metadata: skill-package.yaml
@@ -990,33 +972,63 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/user-story-author/skill-package.yaml
 - kind: skill
-  id: workflow-records
+  id: workflow-board-experimental
   version: 0.1.0
+  source: src/skills/workflow-board-experimental
+  metadata: skill-package.yaml
+  members:
+  - source: SKILL.md
+    destination: .ai/core/skills/workflow-board-experimental/SKILL.md
+  - source: references/board-command.md
+    destination: .ai/core/skills/workflow-board-experimental/references/board-command.md
+  - source: references/board-query.md
+    destination: .ai/core/skills/workflow-board-experimental/references/board-query.md
+  - source: schemas/board-collaboration-v2.schema.json
+    destination: .ai/core/skills/workflow-board-experimental/schemas/board-collaboration-v2.schema.json
+  - source: skill-package.yaml
+    destination: .ai/core/skills/workflow-board-experimental/skill-package.yaml
+  - source: tools/board-command.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/board-command.py
+  - source: tools/board-query.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/board-query.py
+  - source: tools/workflow_records/board_command.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/workflow_records/board_command.py
+  - source: tools/workflow_records/board_query.py
+    destination: .ai/core/skills/workflow-board-experimental/tools/workflow_records/board_query.py
+- kind: skill
+  id: workflow-records
+  version: 0.2.0
   source: src/skills/workflow-records
   metadata: skill-package.yaml
   members:
   - source: SKILL.md
     destination: .ai/core/skills/workflow-records/SKILL.md
-  - source: references/board-command.md
-    destination: .ai/core/skills/workflow-records/references/board-command.md
-  - source: references/board-query.md
-    destination: .ai/core/skills/workflow-records/references/board-query.md
+  - source: references/file-export.md
+    destination: .ai/core/skills/workflow-records/references/file-export.md
   - source: references/git-format.md
     destination: .ai/core/skills/workflow-records/references/git-format.md
+  - source: references/local-group.md
+    destination: .ai/core/skills/workflow-records/references/local-group.md
   - source: references/operations.md
     destination: .ai/core/skills/workflow-records/references/operations.md
   - source: references/source-store.md
     destination: .ai/core/skills/workflow-records/references/source-store.md
-  - source: schemas/board-collaboration-v2.schema.json
-    destination: .ai/core/skills/workflow-records/schemas/board-collaboration-v2.schema.json
+  - source: schemas/file-task-v1.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/file-task-v1.schema.json
+  - source: schemas/file-workflow-v1.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/file-workflow-v1.schema.json
   - source: schemas/source-replica-v1.schema.json
     destination: .ai/core/skills/workflow-records/schemas/source-replica-v1.schema.json
   - source: skill-package.yaml
     destination: .ai/core/skills/workflow-records/skill-package.yaml
-  - source: tools/board-command.py
-    destination: .ai/core/skills/workflow-records/tools/board-command.py
-  - source: tools/board-query.py
-    destination: .ai/core/skills/workflow-records/tools/board-query.py
+  - source: templates/file-schema-selection.json
+    destination: .ai/core/skills/workflow-records/templates/file-schema-selection.json
+  - source: templates/file-task.yaml
+    destination: .ai/core/skills/workflow-records/templates/file-task.yaml
+  - source: templates/file-workflow.yaml
+    destination: .ai/core/skills/workflow-records/templates/file-workflow.yaml
+  - source: tools/local-group.py
+    destination: .ai/core/skills/workflow-records/tools/local-group.py
   - source: tools/source-store.py
     destination: .ai/core/skills/workflow-records/tools/source-store.py
   - source: tools/workflow-records.py
@@ -1025,26 +1037,39 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/__init__.py
   - source: tools/workflow_records/backup.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/backup.py
-  - source: tools/workflow_records/board_command.py
-    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_command.py
-  - source: tools/workflow_records/board_query.py
-    destination: .ai/core/skills/workflow-records/tools/workflow_records/board_query.py
   - source: tools/workflow_records/common.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/common.py
   - source: tools/workflow_records/contracts.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/contracts.py
+  - source: tools/workflow_records/file_export.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/file_export.py
   - source: tools/workflow_records/git_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/git_store.py
+  - source: tools/workflow_records/group_backup.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_backup.py
+  - source: tools/workflow_records/group_model.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_model.py
+  - source: tools/workflow_records/group_providers.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_providers.py
+  - source: tools/workflow_records/group_service.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_service.py
+  - source: tools/workflow_records/group_storage.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/group_storage.py
   - source: tools/workflow_records/service.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/service.py
   - source: tools/workflow_records/source_backup.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_backup.py
+  - source: tools/workflow_records/source_config.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_config.py
   - source: tools/workflow_records/source_contract.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_contract.py
+  - source: tools/workflow_records/source_proof.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/source_proof.py
   - source: tools/workflow_records/source_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_store.py
   - source: tools/workflow_records/sqlite_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/sqlite_store.py
+
 - kind: sub-agent
   id: context-translator
   version: 0.2.1

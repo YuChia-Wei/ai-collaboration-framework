@@ -11,7 +11,7 @@ sys.path.insert(0, str(runtime_root))
 try:
     if not (3, 11) <= sys.version_info[:2] < (4, 0):
         raise ImportError("Python prerequisite")
-    for member in ("__init__", "contracts", "common", "git_store", "sqlite_store", "backup", "service"):
+    for member in ("__init__", "contracts", "common", "git_store", "sqlite_store", "backup", "file_export", "service"):
         source = runtime_root / "workflow_records" / (member + ".py")
         if not source.is_file() or source.is_symlink():
             raise ImportError("Required local member")

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""Explicit schema-2 local source snapshots and replica host bridge; no dispatch."""
+"""Explicit local source snapshots and retained replica data; no dispatch."""
 import argparse
-import importlib.metadata
 import json
 from pathlib import Path
 import sys
@@ -21,25 +20,19 @@ def main(argv=None):
         # Fail before import rather than resolving a namespace/ambient package
         # when a declared local initializer or shared runtime member is absent.
         for member in ("__init__", "contracts", "common", "git_store", "sqlite_store", "backup", "service",
-                       "source_contract", "source_store", "source_backup", "board_query", "board_command"):
+                       "source_contract", "source_store", "source_backup", "source_config", "source_proof"):
             local = runtime_root / "workflow_records" / (member + ".py")
             if not local.is_file() or local.is_symlink():
                 raise ImportError("Declared local source-store runtime is incomplete")
-        for member in ("source-replica-v1.schema.json", "board-collaboration-v2.schema.json"):
-            local = runtime_root.parent / "schemas" / member
-            if not local.is_file() or local.is_symlink():
-                raise ImportError("Declared local schema is missing")
         import yaml
-        import jsonschema
-        version = tuple(int(part) for part in importlib.metadata.version("jsonschema").split(".")[:2])
-        if not (3, 11) <= sys.version_info[:2] < (4, 0) or yaml.__version__.split(".")[0] != "6" or not (4, 26) <= version < (5, 0):
+        if not (3, 11) <= sys.version_info[:2] < (4, 0) or yaml.__version__.split(".")[0] != "6":
             raise ImportError("Selected source-store runtime version is unavailable")
         from workflow_records import source_contract as c
         from workflow_records.source_store import SourceStore
         from workflow_records.contracts import RecordError, encoded
     except (ImportError, ValueError):
         print(json.dumps({"contract_version": "workflow-records/source-store/1", "status": "unavailable", "local_result": "unknown",
-                          "error": {"code": "provider_unavailable", "message": "Requires Python 3.11+, PyYAML 6, jsonschema 4.26+ and the complete declared package; nothing was installed."}}))
+                          "error": {"code": "provider_unavailable", "message": "Requires Python 3.11+, PyYAML 6 and the complete local source-store runtime; nothing was installed."}}))
         return 1
     try:
         with Path(args.config).open("rb") as stream:
@@ -51,7 +44,10 @@ def main(argv=None):
                 raw = stream.read(c.MAX_INPUT + 1)
         if len(raw) > c.MAX_INPUT:
             raise RecordError("limit_exceeded", "Source-store input exceeds whole-object limit.")
-        result = SourceStore(args.root, config).execute(c.parse(raw))
+        request = c.parse(raw)
+        if isinstance(request, dict) and str(request.get("operation", "")).startswith("board-"):
+            raise RecordError("provider_unavailable", "Board bridges require explicitly selected and activated workflow-board-experimental; core never loads an adapter implicitly.")
+        result = SourceStore(args.root, config).execute(request)
     except (RecordError, OSError) as exc:
         result = {"contract_version": c.PROFILE, "status": "error", "local_result": "unknown",
                   "error": {"code": getattr(exc, "code", "io_error"), "message": getattr(exc, "message", "Cannot read selected source-store inputs.")}}

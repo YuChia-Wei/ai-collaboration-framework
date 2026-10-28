@@ -7,8 +7,11 @@ from pathlib import Path
 from .contracts import RecordError, require, validate_unicode
 
 PROFILE = "workflow-records/source-store/1"
+PROFILE2 = "workflow-records/source-store/2"
 NATIVE_PROFILE = "workflow-board/source-replica/1"
 SCHEMA = "workflow-sqlite/2"
+SCHEMA21 = "workflow-sqlite/2.1"
+SCHEMA3 = "workflow-sqlite/3"
 CHUNK = 49152
 MAX_FILE = 16777216
 MAX_UNIT = 33554432
@@ -106,10 +109,37 @@ def validate(selector, value):
             Draft202012Validator.check_schema(schema)
             _validators = {name: Draft202012Validator({"$schema": schema["$schema"], "$defs": schema["$defs"],
                                                       "$ref": "#/$defs/" + name}, registry=Registry())
-                           for name in ("command", "receipt", "result_replica_operation_get")}
+                           for name in ("command", "query", "receipt", "result_replica_operation_get",
+                                        "result_replica_read", "result_replica_manifest", "result_replica_file_chunk")}
         except ImportError as exc:
             raise RecordError("provider_unavailable", "Source replication requires the declared jsonschema runtime; nothing was installed.") from exc
     require(selector in _validators and _validators[selector].is_valid(value), "malformed_record", "Source replica DTO violates its frozen schema.")
+
+
+def mcp_value(transport):
+    """Decode retained host data without loading an optional execution adapter."""
+    require(isinstance(transport, dict) and "error_code" not in transport
+            and isinstance(transport.get("content"), list) and type(transport.get("isError", False)) is bool,
+            "invalid_transport", "Expected an MCP result with content.")
+    value = None
+    if transport["content"]:
+        content = transport["content"]
+        require(len(content) == 1 and isinstance(content[0], dict) and content[0].get("type") == "text"
+                and isinstance(content[0].get("text"), str), "invalid_transport", "Expected one JSON text block.")
+        value = parse(content[0]["text"].encode("utf-8"))
+    if "structuredContent" in transport:
+        structured = transport["structuredContent"]
+        require(isinstance(structured, dict), "invalid_transport", "Structured result must be an object.")
+        canonical(structured)
+        if "error_code" in structured:
+            require(transport.get("isError") is True and structured["error_code"] == "INVALID_ARGUMENT"
+                    and isinstance(value, dict) and "error_code" not in value,
+                    "invalid_transport", "Uncorroborated host error annotation.")
+            structured = {key: item for key, item in structured.items() if key != "error_code"}
+        require(value is None or canonical(structured) == canonical(value), "invalid_transport", "MCP representations disagree.")
+        value = structured
+    require(isinstance(value, dict), "invalid_transport", "Native result must be an object.")
+    return value
 
 
 def decode_chunk(value):

@@ -14,7 +14,7 @@ contract_role:
 authority:
   work_items: live GitHub Issues
   current_views: 'live GitHub Project #3'
-  execution_evidence: .dev/workflows/
+  execution_evidence: selected-native-store-under-WORKFLOW-STORE-POLICY
   integrated_truth: main
   provider_state_alone_authorizes: false
 current_provider_state:
@@ -31,8 +31,9 @@ project:
   - Status
   - Priority
   - Owner review
-  - Target release
-  - Published in
+  - Version
+  - Published
+  - Planning maturity
 issue:
   canonical_language: zh-TW
   comments_languages:

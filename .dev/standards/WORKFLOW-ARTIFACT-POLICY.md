@@ -148,6 +148,25 @@ selection. Under that prospective contract:
 - a completed task has a non-empty result summary and an addressed finding status;
 - legacy records without the field retain their original meaning and are not silently reinterpreted.
 
+### Reopen and atomic progress
+
+A completed workflow or task may be reopened repeatedly for authorized follow-up
+on the same subject. Retain its immutable IDs, creation times, earlier results
+and revision history. Use one native `revise-workflow` operation with fresh CAS
+inputs to reconcile workflow status, current phase, affected task statuses,
+timestamps, current results and the entrypoint document. An active workflow must
+again have exactly one `in_progress` task; unaffected completed tasks stay complete.
+Record the follow-up reason and scope in that revision. Earlier acceptance remains
+historical evidence, not the result of the reopened task's unfinished work.
+
+Complete a task and start its successor in the same revision. At terminal
+completion, leave no unfinished task and set phase to `completed` or `closed`.
+Check those relationships on the complete changed record after read-back. The
+generic workflow tool preserves project fields and validates storage integrity;
+it does not enforce this source project's lifecycle or infer progress from a
+checkpoint summary. Correct inconsistent current records through a new revision,
+without rewriting prior events or claiming the old state was coherent.
+
 ## Workflow Completion
 
 `status: completed` means workflow completion only: every workflow-owned task

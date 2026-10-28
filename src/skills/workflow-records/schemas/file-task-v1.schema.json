@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Current task with project extensions",
+  "type": "object",
+  "required": ["task_id"],
+  "properties": {"task_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,159}$"}},
+  "additionalProperties": true
+}

@@ -1,5 +1,9 @@
 # Workflow record operations
 
+For current native record directory export and explicit project schema/template
+selection, see [file export](file-export.md): `export-files` and `preflight-files`
+are separate from the complete recovery archive operations below.
+
 ## Runtime and invocation
 
 Use Python 3.11 or later in the 3.x series, PyYAML 6.x, Git, and Python's
@@ -86,7 +90,7 @@ performed or that another machine can use the restored store.
 
 ## Package and reader compatibility
 
-This optional package is `workflow-records@0.1.0`; its runtime contract remains
+This optional package is `workflow-records@0.2.0`; its runtime contract remains
 `workflow-records/1`. Distribution release versions have a separate lifecycle.
 Metadata 5 declares the CLI's supporting modules in `resources.tools[].support_files`
 so code is included as executable support, not represented as documentation.
@@ -103,14 +107,14 @@ skill through existing presets or change the source project's own installation.
 
 ## Exact requests
 
-The additive [source-store profile](source-store.md) provides explicit schema-2
-source snapshots and persisted replica delivery while preserving the requests below.
+The additive [source-store profile](source-store.md) provides explicit schema-2 snapshots and the additive /2 schema-3
+configuration/read-proof profile, with persisted replica delivery while preserving the requests below.
 
-Board V2 uses the additive [board-query profile](board-query.md) and separate
-`tools/board-query.py` CLI for `board-query-prepare` / `board-query-accept`.
-The `workflow-records/1` requests below keep their existing provider semantics.
-Authorized Board writes use the separate [board-command profile](board-command.md)
-and `tools/board-command.py`; query preparation does not grant write authority.
+Board V2 query and command bridges belong to the separately selected
+`workflow-board-experimental` package. Their entrypoints are absent from the
+core package. Explicit installation and per-invocation activation are separate;
+core does not load an adapter or dispatch any network call. Preparing a query
+does not grant write authority.
 
 Every request includes `contract_version: "workflow-records/1"` and `operation`.
 All accept optional `max_output_bytes` from 2048 to 65536. Unknown fields fail.

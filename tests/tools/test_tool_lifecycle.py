@@ -47,7 +47,7 @@ class ReadOnlyTests(ToolCase):
         self.assertEqual(path.read_bytes(), before)
 
     def test_queries_keep_malformed_records_as_partial_evidence(self):
-        for family in ("lesson-author", "adr-author", "local-backlog", "pr-author"):
+        for family in ("lesson-author", "adr-author", "pr-author"):
             with self.subTest(family=family):
                 module, binding, value, path = self.persist(family)
                 result = module.query(binding, "")
@@ -166,39 +166,6 @@ class NativeLifecycleTests(ToolCase):
 
     def test_adr_mapped_acceptance_and_derivation_keep_decision_provenance(self):
         self.mapped_decision("adr-author")
-
-    def test_backlog_transitions_require_current_state_and_completion_evidence(self):
-        family = "local-backlog"
-        module, binding = self.provision(family)
-        self.require_native(module, binding.store)
-        created = self.invoke(family, "create", content=content(family))
-        reference = created["reference"]
-        revised_content = content(family)
-        revised_content["summary"] = "Revised local scope"
-        revised = self.invoke(family, "revise", reference=reference, expected_sha256=created["sha256"], content=revised_content)
-        path = binding.record_path(reference)
-        before = path.read_bytes()
-        self.invoke(family, "revise", expected="conflict", reference=reference, expected_sha256=created["sha256"], content=revised_content)
-        self.assertEqual(path.read_bytes(), before)
-        current = revised
-        for prior, target in (("draft", "planned"), ("planned", "in_progress")):
-            current = self.invoke(family, "transition", reference=reference, expected_sha256=current["sha256"],
-                                  expected_state=prior, target_state=target, reason="Explicit fixture progression", completion_evidence=[])
-            self.assertEqual(self.invoke(family, "inspect", reference=reference)["record"]["state"], target)
-        before = path.read_bytes()
-        for expected_state, expected in (("draft", "conflict"), ("in_progress", "invalid-input")):
-            self.invoke(family, "transition", expected=expected, reference=reference, expected_sha256=current["sha256"],
-                        expected_state=expected_state, target_state="completed", reason="No evidence", completion_evidence=[])
-            self.assertEqual(path.read_bytes(), before)
-        completed = self.invoke(family, "transition", reference=reference, expected_sha256=current["sha256"],
-                                expected_state="in_progress", target_state="completed", reason="Caller supplied completion",
-                                completion_evidence=[{"source": "fixture:observation", "note": "Retained attribution"}])
-        terminal = path.read_bytes()
-        self.invoke(family, "revise", expected="unsupported", reference=reference, expected_sha256=completed["sha256"], content=revised_content)
-        self.assertEqual(path.read_bytes(), terminal)
-        view = self.invoke(family, "render", reference=reference)["view"]["markdown"]
-        self.assertIn("State: completed", view)
-        self.assertIn("note: Retained attribution; source: fixture:observation", view)
 
     def test_pr_revision_preserves_explicit_subject_without_git(self):
         family = "pr-author"

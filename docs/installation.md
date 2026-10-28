@@ -165,13 +165,13 @@ metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 
 | --- | --- | --- |
 | `lesson-minimal` | 只有 lesson-author（1） | Codex |
 | `knowledge` | adr-author、lesson-author（2）；名稱不代表知識套件 | Codex |
-| `work-management` | local-backlog、pr-author、orchestrator（3） | Codex |
+| `work-management` | pr-author、orchestrator（2） | Codex |
 | `context-maintenance` | auditor、governance（2） | Codex |
 | `project-initialization` | ai-context-init（1） | Claude、Codex |
 | `engineering` | 需求、領域模型、軟體架構、規格、測試設計、診斷、實作與驗證（11） | Codex |
-| `source-repository` | collaboration 除 local-backlog（15） | Codex |
-| `collaboration` | 工程與記錄／編排 skills，無 context 三項（16） | Codex |
-| `complete` | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（18） | Codex |
+| `source-repository` | 工程與記錄／編排 skills（15） | Codex |
+| `collaboration` | 工程與記錄／編排 skills，無 context 三項（15） | Codex |
+| `complete` | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（17） | Codex |
 | `sub-agents` | 六個角色，不含 skills | Codex |
 | `sub-agents-claude` | 六個角色，不含 skills | Claude |
 
@@ -712,3 +712,25 @@ Prefixed entry 為 `aicf-test-designer`，canonical package ID 仍為 `test-desi
 software-architect 或兩者，再依本頁既有 inspect/plan/apply 流程與授權升級。
 詳細 selection、bindings、managed drift 與既有 installed snapshot 的區別見
 [遷移指南](skills/domain-architecture-migration.md)。來源修改不自動改寫本專案的安裝。
+
+
+### local-backlog 退役與 Issue 操作選擇
+
+目前來源已移除獨立 `local-backlog` 套件。升級選擇須移除該 ID，然後依本頁
+inspect／plan／apply 流程審閱並移除其 managed core 與 runtime entries。
+專案既有 work-item records、客製設定和未知檔案不得因此刪除；套件移除不等於資料遷移。
+保留原 lock、舊 engine 和 recovery 資料，依實際 plan 處理 managed drift。
+
+`software-development-orchestrator@0.5.0` 提供空白／實驗性 issue-control／project
+自有 route 三種[設定](skills/software-development-orchestrator.md)。新的 issue-control
+skill 尚未提供，不會預設安裝；選取不可用 route 會明確停止。需要既有本機 backlog
+工具的專案應在升級前安排其資料及操作承接，不能假設新 skill 已可替代。
+
+### 實驗性 Workflow Board 選配
+
+`complete` 是列出的 17-skill preset，不是 catalog 全選。
+離線工作可單獨明確選取 `workflow-records@0.2.0`；需要 Board bridges 時再明確
+選取 `workflow-board-experimental@0.1.0`（required dependency 為前者），
+以正常 derive／inspect／plan／apply 流程檢查選擇與移除。安裝不等於啟用；實驗性
+CLI 每次須明確 `--activate`。升級不根據既有 binding 自動新增套件，也不改寫
+production DB 或設定。參閱[模組圖與相容性](workflow-module-map.md)。

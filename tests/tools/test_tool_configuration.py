@@ -11,7 +11,7 @@ class ConfigurationTests(ToolCase):
 
     def test_defaults_do_not_create_store_or_claim_runtime_capability(self):
         roots = {"lesson-author": "notes/lessons", "adr-author": "notes/adrs",
-                 "local-backlog": "notes/work-items", "pr-author": "notes/pull-requests",
+                 "pr-author": "notes/pull-requests",
                  "problem-frame-author": "specs/problem-frames"}
         for family in FAMILIES:
             with self.subTest(family=family):

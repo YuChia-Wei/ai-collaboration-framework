@@ -1,4 +1,4 @@
-"""Seven source record contracts, including legacy and unpublished formats.
+"""Six source record contracts, including legacy and unpublished formats.
 
 Calling the actual in-memory validators establishes data behavior only. It does
 not publish standards-promotion or claim installation, adoption, or agent quality.
@@ -55,7 +55,6 @@ class RecordSchemaTests(unittest.TestCase):
             "adr": (("status",), "published", ("content", "title")),
             "lesson": (("content", "confidence"), "certain", ("content", "title")),
             "legacy-lesson": (("status",), "accepted", ("title",)),
-            "backlog": (("state",), "merged", ("title",)),
             "pr": (("state",), "merged", ("title",)),
             "cbf": (("sources", 0, "authority"), "accepted", ("title",)),
             "promotion": (("status",), "adopted", ("content", "title")),
@@ -139,11 +138,6 @@ class RecordSchemaTests(unittest.TestCase):
 
     def test_completion_and_validation_evidence_cannot_be_claimed_empty(self):
         examples = record_examples()
-        completed = {**examples["backlog"], "state": "completed"}
-        self.assertFalse(record_validator("backlog").is_valid(completed))
-        completed["completion_evidence"] = [{"source": "check.log", "note": "Outcome observed"}]
-        validate_record("backlog", completed)
-        self.assertFalse(record_validator("backlog").is_valid({**completed, "state": "draft"}))
         check = {"id": "focused", "command": "fixture-only", "disposition": "succeeded", "subject_head": OID,
                  "subject_diff_sha256": SHA, "evidence": [], "reason": "Focused check"}
         pr = {**examples["pr"], "validation": [check]}
@@ -164,7 +158,7 @@ class RecordSchemaTests(unittest.TestCase):
                 validate_record("pr", bad)
 
     def test_work_github_references_stay_reference_only(self):
-        for name in ("backlog", "pr"):
+        for name in ("pr",):
             reference = {"kind": "github-issue", "target": "https://github.com/owner/repo/issues/1", "relationship": "reference-only"}
             good = {**record_examples()[name], "references": [reference]}
             validate_record(name, good)

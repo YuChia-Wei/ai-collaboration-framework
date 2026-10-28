@@ -31,7 +31,7 @@ TABLES = {"source_snapshots": (6, (5,)), "source_blobs": (2, (1,)), "source_chun
 
 
 def schema2(meta):
-    require(meta["schema_version"] == c.SCHEMA, "explicit_upgrade_required",
+    require(meta["schema_version"] in (c.SCHEMA, c.SCHEMA21, c.SCHEMA3), "explicit_upgrade_required",
             "This operation requires an explicitly initialized workflow-sqlite/2 database; v1 was not upgraded.")
 
 
@@ -52,6 +52,52 @@ def receipt(connection, request, result):
     from .backup import check_capacity
     check_capacity(connection)
     return value
+
+
+def disabled_bindings(connection):
+    """Read immutable disable receipts; never rewrite a binding or historical intent."""
+    disabled = {}
+    maximum = connection.execute("SELECT coalesce(max(sequence),0) FROM source_snapshots").fetchone()[0]
+    for operation_id, fingerprint, raw in connection.execute("SELECT id,request_digest,receipt FROM source_operations"):
+        value = c.parse(bytes(raw))
+        require(isinstance(value, dict), "malformed_record", "Source operation receipt must be an object.")
+        if value.get("operation") != "binding-disable":
+            require(not ({"cutoff_sequence", "binding_digest"} & set(value)), "malformed_record", "Unrecognized binding control receipt.")
+            continue
+        c.fields(value, {"state", "operation_id", "replayed", "operation", "request", "binding_id", "binding_digest", "cutoff_sequence"})
+        request = value["request"]
+        c.fields(request, {"contract_version", "operation", "store_ref", "operation_id", "binding_id", "expected_binding_digest", "expected_snapshot_sequence"}, {"max_output_bytes"})
+        ref = StoreRef.parse(request["store_ref"])
+        c.native_id(operation_id)
+        c.native_id(value["binding_id"])
+        if "max_output_bytes" in request:
+            c.integer(request["max_output_bytes"], 2048, c.MAX_INPUT)
+        cutoff = c.integer(value["cutoff_sequence"], 0, maximum)
+        c.integer(request["expected_snapshot_sequence"], 0, maximum)
+        require(cutoff == 0 or connection.execute("SELECT 1 FROM source_snapshots WHERE sequence=?", (cutoff,)).fetchone(), "malformed_record", "Control cutoff snapshot is absent.")
+        target = connection.execute("SELECT value FROM source_bindings WHERE id=?", (value["binding_id"],)).fetchone()
+        require(target is not None, "malformed_record", "Control binding is absent.")
+        target_digest = c.digest(c.canonical(c.parse(bytes(target[0]))))
+        require(value["state"] == "applied" and value["replayed"] is False and
+                request["contract_version"] == c.PROFILE and request["operation"] == "binding-disable" and
+                request["operation_id"] == value["operation_id"] == operation_id and
+                request["binding_id"] == value["binding_id"] and
+                request["expected_binding_digest"] == value["binding_digest"] == target_digest and
+                request["expected_snapshot_sequence"] == cutoff and fingerprint == request_digest(request) and
+                value["binding_id"] not in disabled,
+                "malformed_record", "Disable control identity, digest, cutoff or uniqueness changed.")
+        disabled[value["binding_id"]] = value
+    return disabled
+
+
+def binding_status(connection, binding_id):
+    c.native_id(binding_id)
+    target = connection.execute("SELECT value FROM source_bindings WHERE id=?", (binding_id,)).fetchone()
+    require(target is not None, "not_found", "Source binding is absent.")
+    control = disabled_bindings(connection).get(binding_id)
+    return {"binding_id": binding_id, "binding_digest": c.digest(c.canonical(c.parse(bytes(target[0])))),
+            "snapshot_sequence": connection.execute("SELECT coalesce(max(sequence),0) FROM source_snapshots").fetchone()[0],
+            "state": "disabled" if control else "active", "disable_receipt": control}
 
 
 def snapshot(connection, snapshot_id, verify=True):
@@ -117,8 +163,15 @@ def publish(connection, kind, workflow_id, source, workflow, files, revision=Non
             connection.execute("INSERT OR IGNORE INTO source_blobs VALUES(?,?)", (hash_value, chunk))
             connection.execute("INSERT INTO source_chunks VALUES(?,?,?,?)", (key, path, index, hash_value))
     snapshot(connection, key)
-    for (binding_id, value) in connection.execute("SELECT id,value FROM source_bindings ORDER BY id").fetchall():
-        enqueue(connection, key, binding_id, c.parse(bytes(value)))
+    selected_schema = decode_json(bytes(connection.execute("SELECT value FROM store_meta WHERE id=1").fetchone()[0]))["schema_version"]
+    if selected_schema == c.SCHEMA3:
+        from .source_config import capture_membership
+        capture_membership(connection, key, kind, workflow_id)
+    else:
+        disabled = disabled_bindings(connection)
+        for (binding_id, value) in connection.execute("SELECT id,value FROM source_bindings ORDER BY id").fetchall():
+            if binding_id not in disabled:
+                enqueue(connection, key, binding_id, c.parse(bytes(value)))
     return key
 
 
@@ -205,12 +258,7 @@ def evaluate(connection, intent_id, index, command, channel, transport):
     if transport is None:
         return {"outcome": "unknown", "reason": "response_missing"}
     try:
-        from .board_command import mcp_value
-        from .board_command import CommandError
-        try:
-            native = mcp_value(transport)
-        except CommandError as exc:
-            raise RecordError(exc.code, exc.message) from exc
+        native = c.mcp_value(transport)
         if channel == "lookup":
             c.validate("result_replica_operation_get", native)
             require(native["project_ref"] == command["project_ref"] and native["operation_id"] == command["operation_id"],
@@ -297,6 +345,9 @@ class SourceStore:
         self.service = WorkflowRecords(root, config)
 
     def execute(self, request):
+        if isinstance(request, dict) and request.get("contract_version") == c.PROFILE2:
+            from .source_config import execute
+            return execute(self, request)
         operation = request.get("operation") if isinstance(request, dict) else None
         if not isinstance(operation, str) or len(operation) > 64 or not operation.isascii():
             operation = None
@@ -304,7 +355,9 @@ class SourceStore:
             require(isinstance(request, dict) and request.get("contract_version") == c.PROFILE, "unsupported_version", "Unsupported source-store profile.")
             common = {"contract_version", "operation", "store_ref"}
             inputs = {"source-init": {"operation_id", "schema_version"}, "source-import-git": {"operation_id", "kind", "workflow_id", "source_commit", "source_root"},
-                      "replica-bind": {"operation_id", "binding", "new_source_namespace"}, "source-list": set(), "source-read": {"snapshot_id"},
+                      "replica-bind": {"operation_id", "binding", "new_source_namespace"},
+                      "binding-status": {"binding_id"},
+                      "binding-disable": {"operation_id", "binding_id", "expected_binding_digest", "expected_snapshot_sequence"}, "source-list": set(), "source-read": {"snapshot_id"},
                       "source-chunk": {"snapshot_id", "path", "index"}, "replica-prepare": {"intent_id"},
                       "replica-observe": {"operation_id", "intent_id", "step_index", "channel", "mcp_result"}, "source-operation": {"operation_id"}}
             require(operation in inputs, "unsupported_capability", "Unknown source-store operation.")
@@ -330,7 +383,7 @@ class SourceStore:
                         import_prior = replay(connection, request)
                     if import_prior is None:
                         files, view, source = import_git(store, request)
-                write = operation in ("source-import-git", "replica-bind", "replica-observe")
+                write = operation in ("source-import-git", "replica-bind", "replica-observe", "binding-disable")
                 with store.transaction(write=write) as (connection, meta):
                     schema2(meta)
                     prior = replay(connection, request) if write else None
@@ -343,6 +396,7 @@ class SourceStore:
                             key = publish(connection, request["kind"], request["workflow_id"], source, view, files)
                             result = receipt(connection, request, {"snapshot_id": key, "synchronization": synchronization(connection, key)})
                         elif operation == "replica-bind":
+                            require(meta["schema_version"] in (c.SCHEMA, c.SCHEMA21), "unsupported_capability", "Schema 3 uses workflow-scoped /2 carrier configuration.")
                             target = request["binding"]
                             c.binding(target)
                             require(request["new_source_namespace"] is True, "invalid_input", "Binding requires an explicitly new remote source namespace at head zero.")
@@ -353,6 +407,21 @@ class SourceStore:
                             for (key,) in connection.execute("SELECT id FROM source_snapshots ORDER BY sequence").fetchall():
                                 enqueue(connection, key, target["binding_id"], target)
                             result = receipt(connection, request, {"binding_id": target["binding_id"]})
+                        elif operation == "binding-status":
+                            result = binding_status(connection, request["binding_id"])
+                        elif operation == "binding-disable":
+                            require(meta["schema_version"] in (c.SCHEMA, c.SCHEMA21), "unsupported_capability", "Schema 3 retains its explicit configuration owner.")
+                            status = binding_status(connection, request["binding_id"])
+                            require(status["state"] == "active", "binding_disabled", "The binding is already disabled; replay its original operation.")
+                            c.integer(request["expected_snapshot_sequence"], 0)
+                            require(request["expected_binding_digest"] == status["binding_digest"] and
+                                    request["expected_snapshot_sequence"] == status["snapshot_sequence"],
+                                    "revision_conflict", "Binding or atomic snapshot cutoff changed; read binding-status before retry.")
+                            meta["schema_version"] = c.SCHEMA21
+                            store.save_meta(connection, meta)
+                            result = receipt(connection, request, {"operation": "binding-disable", "request": copy.deepcopy(request),
+                                "binding_id": request["binding_id"], "binding_digest": status["binding_digest"],
+                                "cutoff_sequence": status["snapshot_sequence"]})
                         elif operation == "source-list":
                             offset, limit = c.integer(request.get("offset", 0), 0, MAX_ROWS), c.integer(request.get("limit", 20), 1, 100)
                             rows = connection.execute("SELECT id FROM source_snapshots s WHERE sequence=(SELECT max(sequence) FROM source_snapshots p WHERE p.kind=s.kind AND p.workflow_id=s.workflow_id) ORDER BY sequence LIMIT ? OFFSET ?", (limit + 1, offset)).fetchall()
@@ -408,9 +477,13 @@ class SourceStore:
         intent_id = request["intent_id"]
         intent = connection.execute("SELECT sequence,snapshot_id,binding_id,target FROM replica_intents WHERE id=?", (intent_id,)).fetchone()
         require(intent is not None, "not_found", "Replica intent is absent.")
+        mode = request.get("mode", "command")
+        require(mode in ("command", "lookup"), "invalid_input", "Dispatch mode must be explicit command or lookup.")
+        require(mode == "lookup" or intent[2] not in disabled_bindings(connection),
+                "binding_disabled", "Disabled bindings cannot prepare commands; retained lookup and observation remain available.")
         row, manifest = snapshot(connection, intent[1])
         for prior_id, prior_snapshot in connection.execute("SELECT id,snapshot_id FROM replica_intents WHERE binding_id=? AND sequence<? ORDER BY sequence", (intent[2], intent[0])):
-            if snapshot(connection, prior_snapshot, False)[1]["workflow"]["id"] == manifest["workflow"]["id"]:
+            if mode == "command" and snapshot(connection, prior_snapshot, False)[1]["workflow"]["id"] == manifest["workflow"]["id"]:
                 require(synchronization(connection, prior_snapshot)["targets"] and all(item["state"] == "complete" for item in synchronization(connection, prior_snapshot)["targets"] if item["binding_id"] == intent[2]),
                         "predecessor_pending", "Prior remote activation for this workflow must be accepted before dispatch.")
         for index, raw in connection.execute("SELECT step_index,command FROM replica_steps WHERE intent_id=? ORDER BY step_index", (intent_id,)):

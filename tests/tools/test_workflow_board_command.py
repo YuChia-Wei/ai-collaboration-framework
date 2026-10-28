@@ -17,7 +17,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
-PACKAGE = ROOT / 'src/skills/workflow-records'
+PACKAGE = ROOT / 'src/skills/workflow-board-experimental'
 spec = importlib.util.spec_from_file_location('board_command_test_runtime', PACKAGE / 'tools/workflow_records/board_command.py')
 api = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(api)
@@ -740,7 +740,7 @@ class BoardCommandTests(unittest.TestCase):
                 args=[sys.executable,'-I','-B']
                 if not site:
                     args.append('-S')
-                return subprocess.run([*args,str(target/'tools/board-command.py'),'--request','-'],
+                return subprocess.run([*args,str(target/'tools/board-command.py'),'--activate','--request','-'],
                                       input=api.encode(value),capture_output=True,cwd=target,timeout=20)
             process=launch(prepare_request())
             self.assertEqual((process.returncode,process.stderr),(0,b''))
