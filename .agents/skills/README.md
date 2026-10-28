@@ -12,7 +12,6 @@ Regenerate through the pinned catalog subset and installation owner.
 - [`software-architect`](software-architect/SKILL.md)
 - [`diagnostic-analyst`](diagnostic-analyst/SKILL.md)
 - [`lesson-author`](lesson-author/SKILL.md)
-- [`local-backlog`](local-backlog/SKILL.md)
 - [`local-change-implementer`](local-change-implementer/SKILL.md)
 - [`pr-author`](pr-author/SKILL.md)
 - [`problem-frame-author`](problem-frame-author/SKILL.md)

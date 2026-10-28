@@ -1,5 +1,5 @@
 {
-  "candidate_identity": "subset:3:0.21.0:221695622dde248a2dc84ffb9fc675d7c45d0768:97c2ea472902642ef5592e5c1ef92be189093f63ccd1bff5242edaf387a40229",
+  "candidate_identity": "subset:3:0.0.0-rc.139062226434433:7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3:e4d51b31c95d4f5fb429b70fbbdde1abb27632e0ce8a3d2ef760e2ad4fab296f",
   "catalog_document": {
     "adapters": [
       {
@@ -65,18 +65,18 @@
         "size": 41775
       },
       {
-        "git_blob": "0e77be0ba9c363e5fe037f925a84bdcc9aff92bf",
+        "git_blob": "c1d12f414c7ff1ebc2f88d40755c4ad865228079",
         "mode": "100644",
         "path": "src/distribution/claude.py",
-        "sha256": "dcf045d461ad8ba41e7a5f15de500fa9fca37008f0223b2f9e4e0cdf2d47d9f4",
-        "size": 5082
+        "sha256": "0c745b2de854481879d14bac6176dc9e9832aba431599721188a2152bf1d0cd1",
+        "size": 5946
       },
       {
-        "git_blob": "7eeebd2d966da276bb23530336624446c519eac8",
+        "git_blob": "19908d754952ae5327172cf1f40af4e4f8f8461a",
         "mode": "100644",
         "path": "src/distribution/codex.py",
-        "sha256": "cb7c212563bda5817a629fd2ce3cbc4deb28679ee0d81c287e6323087d7f67d0",
-        "size": 8255
+        "sha256": "425484434ae08d216cd4561e7b7b8d34386324d0b552658a4f57a4247ce5532c",
+        "size": 9983
       },
       {
         "git_blob": "d4fe158614a7ac43601a19799c9f13c6fdfe6848",
@@ -142,18 +142,18 @@
         "size": 5704
       },
       {
-        "git_blob": "c8f4120398bb42d188be9d4639457cd220bdb16d",
+        "git_blob": "b7676119849667396abf22846a646ad3e5a5a1a6",
         "mode": "100644",
         "path": "src/distribution/manifest.yaml",
-        "sha256": "c4155fc80e820158e71e7cab90ec445b8cec55843804c28cfdf827c92cd6c26e",
-        "size": 69238
+        "sha256": "c3abcce9d2ea7fc7cf2fe37d82bd68a80cc5972cf95ac898bbb4da1a7276d3a2",
+        "size": 72742
       },
       {
-        "git_blob": "ecfe6555bfc495f37dcf04678fbdb8e9e04a7193",
+        "git_blob": "990bc8c6c5c88e6677cda7c50f15f4b481d7d94c",
         "mode": "100644",
         "path": "src/distribution/package.py",
-        "sha256": "c69e4485213ed195d67d2776fc49ec2c16177391c6311a0a48828eb16510df58",
-        "size": 18988
+        "sha256": "390312ac7f0896b29386afe78c8041a3ececf6e1cf56e7973320acf5d9f0fdb6",
+        "size": 25013
       },
       {
         "git_blob": "056779fd69487c9d4fcd1343acdec2149c455b92",
@@ -2158,18 +2158,18 @@
         "size": 4880
       },
       {
-        "git_blob": "859304f3f4a8fe832fcb0b98952607bee8e1794f",
+        "git_blob": "128b2c1ce4e428faff302309bd767ef0f9b14daa",
         "mode": "100644",
         "path": "src/profiles/collaboration.yaml",
-        "sha256": "9443d1bd69863597a93d996ed7618367d246ce0b530c950e31e901c1e8cde8ee",
-        "size": 415
+        "sha256": "e2fceec88d583210f37e93f586dfa1cd68264a9d6316d369b3321368c671006a",
+        "size": 399
       },
       {
-        "git_blob": "98d94e54509685691196764d841ccb7999422860",
+        "git_blob": "1f6199c621be05b42b1ce14f5d27c953aaf141ac",
         "mode": "100644",
         "path": "src/profiles/complete.yaml",
-        "sha256": "f9cc5e565b2881f6fe386689a1b7d0373fb8ba25eaab18a4cdc9227fad819919",
-        "size": 455
+        "sha256": "20fcf839bf30ba78933e6e7b81cdb98d21aae60cd47fa64140794430dad67d59",
+        "size": 439
       },
       {
         "git_blob": "adce813b4cb865b93b004af0e665f226842dc4ee",
@@ -2228,11 +2228,11 @@
         "size": 270
       },
       {
-        "git_blob": "da6f69e37f506688e577c03a5f688d7149a5fd45",
+        "git_blob": "c5f37aa2b4588b324e8a82eaa85036405ecfe1e9",
         "mode": "100644",
         "path": "src/profiles/work-management.yaml",
-        "sha256": "e475d4884c2df2fb6072f0155135b6ca29e8f1d4454ad682edb85a4519729b9a",
-        "size": 157
+        "sha256": "66f74dd21f78a32b4d7c9353eddcb7ed311be05f830f1a66c873cf454757adf4",
+        "size": 141
       },
       {
         "git_blob": "a991cda1173954337c679162e9d9f5470a221940",
@@ -2592,62 +2592,6 @@
         "size": 508
       },
       {
-        "git_blob": "06b01bd221b418b6b73eef48f97537718f104cc6",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/SKILL.md",
-        "sha256": "052e4db046710899a30aaef9f65c0138303ae6664159e3d7b218bdad9c133637",
-        "size": 1558
-      },
-      {
-        "git_blob": "3bbca977c83c901312c46d86a94658620ec000e8",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/references/configuration.md",
-        "sha256": "b9bf9ad19813fd841a9ffb9dbf0df6247313b77db277c5b7f6891cd8a6c74530",
-        "size": 4272
-      },
-      {
-        "git_blob": "a03b0653189f27b0e2dc0b51f19bf2f6d8059c4b",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/references/example.md",
-        "sha256": "eddf6af8c6514b4099c5285ebb5db938c2b59c898e0ee7aef3e7b0a7585ffe49",
-        "size": 1088
-      },
-      {
-        "git_blob": "3afb328d250401393ca1d29c5a32a75d5f2c2689",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/references/operations.md",
-        "sha256": "53052a7a31366eab7ffea22c053cedf8dfc0b6c4165096f1f9fec9efe5efcbb8",
-        "size": 4818
-      },
-      {
-        "git_blob": "9c508ebe914f4dc954e1a5754749796fb31e1a83",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/schemas/local-backlog-record.schema.json",
-        "sha256": "0342c853227183386b70426390fc6e7798acd81dae542804c1cdd585b2291ea2",
-        "size": 4269
-      },
-      {
-        "git_blob": "2750072578fad79a68352824471e7c0ed8a68217",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/scripts/local_backlog.py",
-        "sha256": "6a2b251aee90ae4226e589ef03417ec655fb61cf97ceb6f7b192181fd1378c32",
-        "size": 55385
-      },
-      {
-        "git_blob": "58bd679c9d5a0d31f61883013ad69839cf4c93ae",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/skill-package.yaml",
-        "sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d",
-        "size": 4488
-      },
-      {
-        "git_blob": "b5ba16c33a3271c106f470fa6b1956061d8af941",
-        "mode": "100644",
-        "path": "src/skills/local-backlog/templates/work-item.md",
-        "sha256": "2c7a10b53791cd63f327bb5e7b545c270201729a1f90a81a7935b9e253d7a60c",
-        "size": 204
-      },
-      {
         "git_blob": "c0b0cc2a7cee94f88760588a9efb5cfa68727df5",
         "mode": "100644",
         "path": "src/skills/local-change-implementer/SKILL.md",
@@ -2956,25 +2900,39 @@
         "size": 2432
       },
       {
-        "git_blob": "af901596299a5ef64ca1eac43dbded080cb836d9",
+        "git_blob": "9bd2ee8669e0e66256144b56b92f736bca726adc",
         "mode": "100644",
         "path": "src/skills/software-development-orchestrator/SKILL.md",
-        "sha256": "475b3fac4de75f4c32ec7c7d3368d71488f142165afdee9bdf571b4fafca6e52",
-        "size": 2123
+        "sha256": "213e7c960165d3fdebf0dbb225251cc7a43632e33f4ba259b122ed3773a60600",
+        "size": 2335
       },
       {
-        "git_blob": "24fbd4764ae1fd4c2b786d0d215414559841901b",
+        "git_blob": "491e98cdf466c6c074fda7956d9b4e240c8a4575",
+        "mode": "100644",
+        "path": "src/skills/software-development-orchestrator/references/issue-control.md",
+        "sha256": "0edc84775ada3b79b33cb8b54eb8223f0936bef426f97b676be63c1e389a8968",
+        "size": 5208
+      },
+      {
+        "git_blob": "1aa39d2908ff305f7614c0ce8896a9f301ba7655",
         "mode": "100644",
         "path": "src/skills/software-development-orchestrator/references/orchestrate.md",
-        "sha256": "262ee46b694d484812dbbf50700e262bcd0ce866ade63613b8d605f1937dee96",
-        "size": 15768
+        "sha256": "a091e338ca94537220796248c2d332f0cd7cc43d85d17c9fe99dc15e65b7b56a",
+        "size": 16187
       },
       {
-        "git_blob": "9c04fade6e1d81fa5fa4215657dfcfa911f6d19d",
+        "git_blob": "65790380c83615d95381136498f6b2126a596da9",
+        "mode": "100644",
+        "path": "src/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+        "sha256": "1ed2a02ffdedd7c2d802fd122bae745f79afe4641fc66fc390d0833cb294b0c1",
+        "size": 1115
+      },
+      {
+        "git_blob": "51a4b95d39fa9c216c9aa7e93fcfcefec10ff462",
         "mode": "100644",
         "path": "src/skills/software-development-orchestrator/skill-package.yaml",
-        "sha256": "8f4f2d03b10effa1b0e3f23ce056e988b8656d057082fda3427db9cdbc0d742a",
-        "size": 1687
+        "sha256": "3c739d71f642fd6dcf0969a778005363e994a7d90432c831941742d54912262e",
+        "size": 2193
       },
       {
         "git_blob": "62f25bf2c91848c5c0a1e02d38118d25e8bb4698",
@@ -3194,11 +3152,81 @@
         "size": 2787
       },
       {
-        "git_blob": "20720db2e98bf92412b8130400378f088b86c7b9",
+        "git_blob": "3c1ec589e8d47cf4bd9283a334e8b3788f1e7bbd",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/SKILL.md",
+        "sha256": "5803c1da48b3b34a669c77ad8147c44bfbaa03cc212497a1796be2cc36639630",
+        "size": 2018
+      },
+      {
+        "git_blob": "a6b3fd512839a116a4b78ec5f70cf57adaa7988d",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/references/board-command.md",
+        "sha256": "bb99c03d1f95c8cf28c896760c300376018d0e06b41471a3ea379d4d4fc8f007",
+        "size": 11140
+      },
+      {
+        "git_blob": "7f74da3ef4409d8cd5b69b8c31c85794bc90de3e",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/references/board-query.md",
+        "sha256": "5489b77eaee4922992a18fc1cf73f0089efa701cb367cbfb37207b66dce96e7a",
+        "size": 7591
+      },
+      {
+        "git_blob": "d3369abd31df62b183083a13ef54a23fd8d9bda2",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/schemas/board-collaboration-v2.schema.json",
+        "sha256": "f9c40d058019a408097ddbf3fd414f5d638fc7a0678853cd2a0d75df55c5c1a4",
+        "size": 115582
+      },
+      {
+        "git_blob": "6fd9826fd1def65205e8499c5a7fdb80377fdb5b",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/skill-package.yaml",
+        "sha256": "cf65f744d820bceedd6542fa580b4898621a2a8d38ca32cd076e4332ceffa10b",
+        "size": 2569
+      },
+      {
+        "git_blob": "56d4bd4c0caf88b00f04b9c2aa821eaec10e13c5",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/tools/board-command.py",
+        "sha256": "d086758b7d0d0fbb73aa637e71978da8c289a7ec52bfe02023499f223cce5d07",
+        "size": 3009
+      },
+      {
+        "git_blob": "96932039680945cb38e75b1cb7a326af7aa5fc37",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/tools/board-query.py",
+        "sha256": "63fa0fe256df3c1bd794c4b48a999fea17a370386d7c6ee7800ae56fea6319f8",
+        "size": 2601
+      },
+      {
+        "git_blob": "a59896f1cbfa5f3c3ac391ae2b53d382de4956f4",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/tools/workflow_records/board_command.py",
+        "sha256": "0c5fe16eadfa5768a83ecf31205c4df94aa77d02760deef530aa89e82108c76d",
+        "size": 20590
+      },
+      {
+        "git_blob": "fae981530a488f1afd7f81803502f33afb5afadb",
+        "mode": "100644",
+        "path": "src/skills/workflow-board-experimental/tools/workflow_records/board_query.py",
+        "sha256": "15948c6f4b49a532fcda475fec159e00c01d97b98835351e856a9c29a3e954b3",
+        "size": 22323
+      },
+      {
+        "git_blob": "ef0a4b91bfdbe74ee8403e334493e7e76910fb5c",
         "mode": "100644",
         "path": "src/skills/workflow-records/SKILL.md",
-        "sha256": "23ff1ceae7931c039df707ec4d55f5c97db5aa75a8da69ae29a9117cad313544",
-        "size": 1762
+        "sha256": "1e7aaa576df123312c5f421060a16597578c4e38467400afe8d561fe3fee14ab",
+        "size": 4425
+      },
+      {
+        "git_blob": "e10bdf5a7e26a5c5f550295ae96a31593409925a",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/references/file-export.md",
+        "sha256": "d59c3951fb013732d403cd6e04cec2661c7b6d96566a77aec3f68010139cc8c8",
+        "size": 8503
       },
       {
         "git_blob": "e64aff150e1ff0ce363c247fa150ed434fe20c03",
@@ -3208,39 +3236,109 @@
         "size": 7288
       },
       {
-        "git_blob": "58893d1b59218e94f4b1533a7f269acaf1625882",
+        "git_blob": "541f221fc13840aa755b44f2e64b8877f5a65df7",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/references/local-group.md",
+        "sha256": "305d80ab1f0b5d0fb0422d8fb229c07e2b6c595f5cbe45eedfe35a444bcafc30",
+        "size": 14986
+      },
+      {
+        "git_blob": "4ee17c3815bb4dbd7d41979b4dbbf457c3afb352",
         "mode": "100644",
         "path": "src/skills/workflow-records/references/operations.md",
-        "sha256": "f6ac73a7f7c469c7699ca72cf1a5050b849332e577d50faa810cbeadf15c80fd",
-        "size": 14453
+        "sha256": "ddbb4cd6a327dd3b8864328bfa395aebe03214b601fdf0735f87567f791b763f",
+        "size": 17461
       },
       {
-        "git_blob": "2e436f9195ae7961a0693e38779a3c41e3b016b3",
+        "git_blob": "a5ec80108f1ac8ec01ad49a2a5786507ee922160",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/references/source-store.md",
+        "sha256": "9e9e9816f982b48bc4603e6638ea4172967bc9d193eebb282bde14d2055c6977",
+        "size": 22125
+      },
+      {
+        "git_blob": "4bc0108239b8b5c2e3f691f0e94c336906cb251d",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/schemas/file-task-v1.schema.json",
+        "sha256": "ae18a0c285e3a698ed4dc41764973eda7d2a6d70025dc910ea2cdd61d42f0143",
+        "size": 292
+      },
+      {
+        "git_blob": "a70a7de5da0287ce43d2a906b954a13f37b4f95f",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/schemas/file-workflow-v1.schema.json",
+        "sha256": "bbf05c33aa68b6829934413297aeceb8fe167a77ffd814edd6b5c12a26fa6d3a",
+        "size": 299
+      },
+      {
+        "git_blob": "26a280c1c302230adea8088fb2d08bb21bfd2d1d",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/schemas/source-replica-v1.schema.json",
+        "sha256": "02ac880c1969e43c0094e88bd5817e2e205fb8552cbaf7b8f30ae2e45f331ab9",
+        "size": 64715
+      },
+      {
+        "git_blob": "e4e0fd3c76dc40730fe0737ec7f42d96dc40ea19",
         "mode": "100644",
         "path": "src/skills/workflow-records/skill-package.yaml",
-        "sha256": "c7d4660b505e04d5a4733b326c40dea3cfe97743a54b5d82d2ad9ac8d107a29f",
-        "size": 6065
+        "sha256": "e98483c01c33998f426303373e6d65fe9a6a6c39d5cfacefb79676ff8d02036b",
+        "size": 25176
       },
       {
-        "git_blob": "24346027c33776f1dbe9a0229a846dbe1458024c",
+        "git_blob": "1f5efc419e19373b3c02b7302f23e89c4746bfb6",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/templates/file-schema-selection.json",
+        "sha256": "ed118ad6c5cb3728e92f71932459290cf71d67a9fc9187f5add0e5cdab22d150",
+        "size": 893
+      },
+      {
+        "git_blob": "50a75bfa4445d1e74b077a621b226ec6cebd2687",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/templates/file-task.yaml",
+        "sha256": "0a2eb4e24859500ddbebc1ace3c75ecd8365e2155e7a968ca91a66186c7995b8",
+        "size": 14
+      },
+      {
+        "git_blob": "dd2bc82ae2fdb937e0cecd7346fecceb9e7d5d8b",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/templates/file-workflow.yaml",
+        "sha256": "3a743d6a4344cf12b1abb03ce5e452b30e591f8b371b04b53549697657bfa079",
+        "size": 40
+      },
+      {
+        "git_blob": "09b15efe22dbf1dae89a3cbcec847ffcbd28c14f",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/local-group.py",
+        "sha256": "a8a0802da7e0e4790b0588d0d4026751a7db2efb960847e787f453b4b579bd94",
+        "size": 2212
+      },
+      {
+        "git_blob": "4d0ecbdb70d5cd191100fe9f0de93471255f09d7",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/source-store.py",
+        "sha256": "3ea7008d1e1dc13c3f1cab3d0f35ffdefbc28c898441f2a6645be9918177edbc",
+        "size": 3199
+      },
+      {
+        "git_blob": "14024ed59bc0ebecd3b353c0c1021b91fd2ec704",
         "mode": "100644",
         "path": "src/skills/workflow-records/tools/workflow-records.py",
-        "sha256": "3d36e64da50bb22f1ad317c6fad2cc043f8124a9c0f6da063c2b560183ab3189",
-        "size": 2395
+        "sha256": "4d334b819bf8159c0f5e55bd3b4f85edbd35429f91960ac376334155fdb8a395",
+        "size": 2410
       },
       {
-        "git_blob": "4220340f681948da3d0b4a2ad0d6d10321c6e15b",
+        "git_blob": "a0c1e04a933afea06a798ed714fa41e3450000c2",
         "mode": "100644",
         "path": "src/skills/workflow-records/tools/workflow_records/__init__.py",
-        "sha256": "c897ff01ec11455156ac296a3d1626fcd1042ba04125c610b0c63e530d9c359d",
-        "size": 112
+        "sha256": "7311a07cd1b318fbdd5016c5e24f755b5bd2fa036fabb8e1e0f35ce417631908",
+        "size": 359
       },
       {
-        "git_blob": "82e9257f2e8865f25f2797a6a26b03aeb88a1578",
+        "git_blob": "c1c9f5ad97291dfbb43b3d1bb6205c0a85599c0c",
         "mode": "100644",
         "path": "src/skills/workflow-records/tools/workflow_records/backup.py",
-        "sha256": "1272e3fc1377b0a6c2d66701b1b6757701bd830db14df0b7a703c942e3e2e846",
-        "size": 23696
+        "sha256": "86e3f39e8245c0a31dbd4cd31386d595452167634a73a4deaadaf838fca18713",
+        "size": 27684
       },
       {
         "git_blob": "b32037e1a27618fed78995eff4e386c88d37b353",
@@ -3257,6 +3355,13 @@
         "size": 4791
       },
       {
+        "git_blob": "dd06d636512fc11932f7e6ea203c77fe150e581c",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/file_export.py",
+        "sha256": "83037741e16b3414b6045651ffc75a84a51e7c52ee73ccd4884d8c4fd13f7bcb",
+        "size": 21932
+      },
+      {
         "git_blob": "2c2d729c4d9b35e793c236999ca8cb75d5d522cf",
         "mode": "100644",
         "path": "src/skills/workflow-records/tools/workflow_records/git_store.py",
@@ -3264,18 +3369,88 @@
         "size": 13678
       },
       {
-        "git_blob": "3387ad9bd66dd5c240b17be5886e897e239aa411",
+        "git_blob": "4ce425db7131cfe19af062cc99c3efa400c1e00a",
         "mode": "100644",
-        "path": "src/skills/workflow-records/tools/workflow_records/service.py",
-        "sha256": "59bcb638b5fab1866ad941371e21f0a06b2df2f48f99f6fd08129e96391cf057",
-        "size": 14195
+        "path": "src/skills/workflow-records/tools/workflow_records/group_backup.py",
+        "sha256": "b38f12f805d28b5154363a1340f89235f120faf8874a017fefa4c69e7f17d693",
+        "size": 8331
       },
       {
-        "git_blob": "95f566d7e31eadbb91b399dd59eb1ba2ec351311",
+        "git_blob": "4cb69421d1ce132769f33d2b298010fff7e2f8d1",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/group_model.py",
+        "sha256": "36fe1a82acbb5b6dbcb301b83c26770f88dfcd196e74f23693067f3053565024",
+        "size": 23826
+      },
+      {
+        "git_blob": "1c050bfeabbb5f370c75907f5a7e2e68625bc3cc",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/group_providers.py",
+        "sha256": "b26196095b64af89787e2264f918cb1cb867681f21b2bc98ae1c71c833beed22",
+        "size": 9964
+      },
+      {
+        "git_blob": "85ceaa9bd43ec66d3c619c2a183294eb786e07cc",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/group_service.py",
+        "sha256": "7c760b65805f24d9dbd42d0b1d5cb7ce2118fb44a0530f231d11d3a63a8d3a9c",
+        "size": 32802
+      },
+      {
+        "git_blob": "f6d7c18723ee30090823fd67054144c5616abba2",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/group_storage.py",
+        "sha256": "5cbadbe4ad1838809e6d6e50680b85205a59708bc3f237f22e4ed17839edea52",
+        "size": 8564
+      },
+      {
+        "git_blob": "01bcf695e2680ee1a93afbab6b1374b0aa5c5b43",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/service.py",
+        "sha256": "4dc1573e0e6199926fc497f6e8793c992dbadd9bc61bd062f4bb19941d9f834c",
+        "size": 16386
+      },
+      {
+        "git_blob": "bb8c241c60edd4ac44b5e79f7ef59289aeeb52cd",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/source_backup.py",
+        "sha256": "fa412b0196e140180bda0c33d72ee422836db4804d00a57ee1462cda6fde24b2",
+        "size": 14611
+      },
+      {
+        "git_blob": "3746a79c2166cecbd7aa681a5790597909b8ced1",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/source_config.py",
+        "sha256": "4755044be7d6df6ea1aee65280cb1c2644b32c27c2c46b71d9a796b6dcd2ee7d",
+        "size": 26059
+      },
+      {
+        "git_blob": "b32f9a79cffb0a42fca4034a63aa51023edad672",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/source_contract.py",
+        "sha256": "2c6767b915b59ece63f83a4021c30549246adc8e91fbc3865b410bdc57b12380",
+        "size": 7478
+      },
+      {
+        "git_blob": "f0506a3a212cf7049854bb4c943790c6cb4b76a7",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/source_proof.py",
+        "sha256": "39fdd72de9430a179c955d43bb4f382e90412f4716d548a2e5284c07c576cd40",
+        "size": 11954
+      },
+      {
+        "git_blob": "41f1eb086a63ec62d62f914fa4294d391db135e6",
+        "mode": "100644",
+        "path": "src/skills/workflow-records/tools/workflow_records/source_store.py",
+        "sha256": "b4609fae4f312341001811ca590d141ca3cc69e65ce24948dadcf5d59b58d689",
+        "size": 38793
+      },
+      {
+        "git_blob": "01a10902e8d8660a6a70bbf0c9943603e7729975",
         "mode": "100644",
         "path": "src/skills/workflow-records/tools/workflow_records/sqlite_store.py",
-        "sha256": "48962010e2734db075396cecabafad6eb905f446707b3bfaae3076e0eb21cd18",
-        "size": 24267
+        "sha256": "4b9c9526eb93c8b8b9a23ce2d215b9f5d7ed1965b9001996e03ffa00d99f17ae",
+        "size": 28176
       },
       {
         "git_blob": "773fccda64aea4ed71a293fa9c1223363eca91f9",
@@ -3999,25 +4174,6 @@
         "version": "0.2.0"
       },
       {
-        "id": "local-backlog",
-        "kind": "skill",
-        "members": [
-          "SKILL.md",
-          "references/configuration.md",
-          "references/example.md",
-          "references/operations.md",
-          "schemas/local-backlog-record.schema.json",
-          "scripts/local_backlog.py",
-          "skill-package.yaml",
-          "templates/work-item.md"
-        ],
-        "metadata": "skill-package.yaml",
-        "metadata_version": 2,
-        "optional_dependencies": [],
-        "required_dependencies": [],
-        "version": "0.1.0"
-      },
-      {
         "id": "local-change-implementer",
         "kind": "skill",
         "members": [
@@ -4178,14 +4334,16 @@
         "kind": "skill",
         "members": [
           "SKILL.md",
+          "references/issue-control.md",
           "references/orchestrate.md",
+          "schemas/issue-control-settings.schema.json",
           "skill-package.yaml"
         ],
         "metadata": "skill-package.yaml",
         "metadata_version": 4,
         "optional_dependencies": [],
         "required_dependencies": [],
-        "version": "0.4.2"
+        "version": "0.5.0"
       },
       {
         "id": "spec-author",
@@ -4290,27 +4448,75 @@
         "version": "0.2.1"
       },
       {
+        "id": "workflow-board-experimental",
+        "kind": "skill",
+        "members": [
+          "SKILL.md",
+          "references/board-command.md",
+          "references/board-query.md",
+          "schemas/board-collaboration-v2.schema.json",
+          "skill-package.yaml",
+          "tools/board-command.py",
+          "tools/board-query.py",
+          "tools/workflow_records/board_command.py",
+          "tools/workflow_records/board_query.py"
+        ],
+        "metadata": "skill-package.yaml",
+        "metadata_version": 5,
+        "optional_dependencies": [],
+        "required_dependencies": [
+          {
+            "id": "workflow-records",
+            "kind": "skill",
+            "version": "0.2.0"
+          }
+        ],
+        "version": "0.1.0"
+      },
+      {
         "id": "workflow-records",
         "kind": "skill",
         "members": [
           "SKILL.md",
+          "references/file-export.md",
           "references/git-format.md",
+          "references/local-group.md",
           "references/operations.md",
+          "references/source-store.md",
+          "schemas/file-task-v1.schema.json",
+          "schemas/file-workflow-v1.schema.json",
+          "schemas/source-replica-v1.schema.json",
           "skill-package.yaml",
+          "templates/file-schema-selection.json",
+          "templates/file-task.yaml",
+          "templates/file-workflow.yaml",
+          "tools/local-group.py",
+          "tools/source-store.py",
           "tools/workflow-records.py",
           "tools/workflow_records/__init__.py",
           "tools/workflow_records/backup.py",
           "tools/workflow_records/common.py",
           "tools/workflow_records/contracts.py",
+          "tools/workflow_records/file_export.py",
           "tools/workflow_records/git_store.py",
+          "tools/workflow_records/group_backup.py",
+          "tools/workflow_records/group_model.py",
+          "tools/workflow_records/group_providers.py",
+          "tools/workflow_records/group_service.py",
+          "tools/workflow_records/group_storage.py",
           "tools/workflow_records/service.py",
+          "tools/workflow_records/source_backup.py",
+          "tools/workflow_records/source_config.py",
+          "tools/workflow_records/source_contract.py",
+          "tools/workflow_records/source_proof.py",
+          "tools/workflow_records/source_store.py",
           "tools/workflow_records/sqlite_store.py"
         ],
         "metadata": "skill-package.yaml",
         "metadata_version": 5,
         "optional_dependencies": [],
         "required_dependencies": [],
-        "version": "0.1.0"
+        "version": "0.2.0"
       },
       {
         "id": "context-translator",
@@ -4455,18 +4661,18 @@
           "size": 41775
         },
         {
-          "git_blob": "0e77be0ba9c363e5fe037f925a84bdcc9aff92bf",
+          "git_blob": "c1d12f414c7ff1ebc2f88d40755c4ad865228079",
           "mode": "100644",
           "path": "src/distribution/claude.py",
-          "sha256": "dcf045d461ad8ba41e7a5f15de500fa9fca37008f0223b2f9e4e0cdf2d47d9f4",
-          "size": 5082
+          "sha256": "0c745b2de854481879d14bac6176dc9e9832aba431599721188a2152bf1d0cd1",
+          "size": 5946
         },
         {
-          "git_blob": "7eeebd2d966da276bb23530336624446c519eac8",
+          "git_blob": "19908d754952ae5327172cf1f40af4e4f8f8461a",
           "mode": "100644",
           "path": "src/distribution/codex.py",
-          "sha256": "cb7c212563bda5817a629fd2ce3cbc4deb28679ee0d81c287e6323087d7f67d0",
-          "size": 8255
+          "sha256": "425484434ae08d216cd4561e7b7b8d34386324d0b552658a4f57a4247ce5532c",
+          "size": 9983
         },
         {
           "git_blob": "d4fe158614a7ac43601a19799c9f13c6fdfe6848",
@@ -4532,11 +4738,11 @@
           "size": 5704
         },
         {
-          "git_blob": "ecfe6555bfc495f37dcf04678fbdb8e9e04a7193",
+          "git_blob": "990bc8c6c5c88e6677cda7c50f15f4b481d7d94c",
           "mode": "100644",
           "path": "src/distribution/package.py",
-          "sha256": "c69e4485213ed195d67d2776fc49ec2c16177391c6311a0a48828eb16510df58",
-          "size": 18988
+          "sha256": "390312ac7f0896b29386afe78c8041a3ececf6e1cf56e7973320acf5d9f0fdb6",
+          "size": 25013
         },
         {
           "git_blob": "056779fd69487c9d4fcd1343acdec2149c455b92",
@@ -4631,7 +4837,6 @@
           "diagnostic-analyst",
           "domain-model-designer",
           "lesson-author",
-          "local-backlog",
           "local-change-implementer",
           "pr-author",
           "problem-frame-author",
@@ -4643,7 +4848,7 @@
           "spec-compliance-validator",
           "test-designer"
         ],
-        "version": "0.2.0"
+        "version": "0.3.0"
       },
       {
         "adapters": [
@@ -4660,7 +4865,6 @@
           "diagnostic-analyst",
           "domain-model-designer",
           "lesson-author",
-          "local-backlog",
           "local-change-implementer",
           "pr-author",
           "problem-frame-author",
@@ -4672,7 +4876,7 @@
           "spec-compliance-validator",
           "test-designer"
         ],
-        "version": "0.2.0"
+        "version": "0.3.0"
       },
       {
         "adapters": [
@@ -4817,17 +5021,16 @@
         "knowledge": [],
         "preset_version": 1,
         "skills": [
-          "local-backlog",
           "pr-author",
           "software-development-orchestrator"
         ],
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     ],
-    "release_version": "0.21.0",
+    "release_version": "0.0.0-rc.139062226434433",
     "source": {
-      "commit": "221695622dde248a2dc84ffb9fc675d7c45d0768",
-      "tree": "2fbd7073b213a036834b105aaff8fe3090120514"
+      "commit": "7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3",
+      "tree": "651b5782f0e6515cf827f6874339af7ccb5b79b7"
     }
   },
   "catalog_inventory": {
@@ -9165,110 +9368,6 @@
       {
         "kind": "skill",
         "member": "SKILL.md",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/SKILL.md",
-        "source": {
-          "git_blob": "06b01bd221b418b6b73eef48f97537718f104cc6",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/SKILL.md",
-          "sha256": "052e4db046710899a30aaef9f65c0138303ae6664159e3d7b218bdad9c133637",
-          "size": 1558
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "references/configuration.md",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/references/configuration.md",
-        "source": {
-          "git_blob": "3bbca977c83c901312c46d86a94658620ec000e8",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/references/configuration.md",
-          "sha256": "b9bf9ad19813fd841a9ffb9dbf0df6247313b77db277c5b7f6891cd8a6c74530",
-          "size": 4272
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "references/example.md",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/references/example.md",
-        "source": {
-          "git_blob": "a03b0653189f27b0e2dc0b51f19bf2f6d8059c4b",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/references/example.md",
-          "sha256": "eddf6af8c6514b4099c5285ebb5db938c2b59c898e0ee7aef3e7b0a7585ffe49",
-          "size": 1088
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "references/operations.md",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/references/operations.md",
-        "source": {
-          "git_blob": "3afb328d250401393ca1d29c5a32a75d5f2c2689",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/references/operations.md",
-          "sha256": "53052a7a31366eab7ffea22c053cedf8dfc0b6c4165096f1f9fec9efe5efcbb8",
-          "size": 4818
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "schemas/local-backlog-record.schema.json",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/schemas/local-backlog-record.schema.json",
-        "source": {
-          "git_blob": "9c508ebe914f4dc954e1a5754749796fb31e1a83",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/schemas/local-backlog-record.schema.json",
-          "sha256": "0342c853227183386b70426390fc6e7798acd81dae542804c1cdd585b2291ea2",
-          "size": 4269
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "scripts/local_backlog.py",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/scripts/local_backlog.py",
-        "source": {
-          "git_blob": "2750072578fad79a68352824471e7c0ed8a68217",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/scripts/local_backlog.py",
-          "sha256": "6a2b251aee90ae4226e589ef03417ec655fb61cf97ceb6f7b192181fd1378c32",
-          "size": 55385
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "skill-package.yaml",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/skill-package.yaml",
-        "source": {
-          "git_blob": "58bd679c9d5a0d31f61883013ad69839cf4c93ae",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/skill-package.yaml",
-          "sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d",
-          "size": 4488
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "templates/work-item.md",
-        "owner": "local-backlog",
-        "path": "packages/skill/local-backlog/templates/work-item.md",
-        "source": {
-          "git_blob": "b5ba16c33a3271c106f470fa6b1956061d8af941",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/templates/work-item.md",
-          "sha256": "2c7a10b53791cd63f327bb5e7b545c270201729a1f90a81a7935b9e253d7a60c",
-          "size": 204
-        }
-      },
-      {
-        "kind": "skill",
-        "member": "SKILL.md",
         "owner": "local-change-implementer",
         "path": "packages/skill/local-change-implementer/SKILL.md",
         "source": {
@@ -9844,11 +9943,24 @@
         "owner": "software-development-orchestrator",
         "path": "packages/skill/software-development-orchestrator/SKILL.md",
         "source": {
-          "git_blob": "af901596299a5ef64ca1eac43dbded080cb836d9",
+          "git_blob": "9bd2ee8669e0e66256144b56b92f736bca726adc",
           "mode": "100644",
           "path": "src/skills/software-development-orchestrator/SKILL.md",
-          "sha256": "475b3fac4de75f4c32ec7c7d3368d71488f142165afdee9bdf571b4fafca6e52",
-          "size": 2123
+          "sha256": "213e7c960165d3fdebf0dbb225251cc7a43632e33f4ba259b122ed3773a60600",
+          "size": 2335
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "references/issue-control.md",
+        "owner": "software-development-orchestrator",
+        "path": "packages/skill/software-development-orchestrator/references/issue-control.md",
+        "source": {
+          "git_blob": "491e98cdf466c6c074fda7956d9b4e240c8a4575",
+          "mode": "100644",
+          "path": "src/skills/software-development-orchestrator/references/issue-control.md",
+          "sha256": "0edc84775ada3b79b33cb8b54eb8223f0936bef426f97b676be63c1e389a8968",
+          "size": 5208
         }
       },
       {
@@ -9857,11 +9969,24 @@
         "owner": "software-development-orchestrator",
         "path": "packages/skill/software-development-orchestrator/references/orchestrate.md",
         "source": {
-          "git_blob": "24fbd4764ae1fd4c2b786d0d215414559841901b",
+          "git_blob": "1aa39d2908ff305f7614c0ce8896a9f301ba7655",
           "mode": "100644",
           "path": "src/skills/software-development-orchestrator/references/orchestrate.md",
-          "sha256": "262ee46b694d484812dbbf50700e262bcd0ce866ade63613b8d605f1937dee96",
-          "size": 15768
+          "sha256": "a091e338ca94537220796248c2d332f0cd7cc43d85d17c9fe99dc15e65b7b56a",
+          "size": 16187
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "schemas/issue-control-settings.schema.json",
+        "owner": "software-development-orchestrator",
+        "path": "packages/skill/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+        "source": {
+          "git_blob": "65790380c83615d95381136498f6b2126a596da9",
+          "mode": "100644",
+          "path": "src/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+          "sha256": "1ed2a02ffdedd7c2d802fd122bae745f79afe4641fc66fc390d0833cb294b0c1",
+          "size": 1115
         }
       },
       {
@@ -9870,11 +9995,11 @@
         "owner": "software-development-orchestrator",
         "path": "packages/skill/software-development-orchestrator/skill-package.yaml",
         "source": {
-          "git_blob": "9c04fade6e1d81fa5fa4215657dfcfa911f6d19d",
+          "git_blob": "51a4b95d39fa9c216c9aa7e93fcfcefec10ff462",
           "mode": "100644",
           "path": "src/skills/software-development-orchestrator/skill-package.yaml",
-          "sha256": "8f4f2d03b10effa1b0e3f23ce056e988b8656d057082fda3427db9cdbc0d742a",
-          "size": 1687
+          "sha256": "3c739d71f642fd6dcf0969a778005363e994a7d90432c831941742d54912262e",
+          "size": 2193
         }
       },
       {
@@ -10283,14 +10408,144 @@
       {
         "kind": "skill",
         "member": "SKILL.md",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/SKILL.md",
+        "source": {
+          "git_blob": "3c1ec589e8d47cf4bd9283a334e8b3788f1e7bbd",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/SKILL.md",
+          "sha256": "5803c1da48b3b34a669c77ad8147c44bfbaa03cc212497a1796be2cc36639630",
+          "size": 2018
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "references/board-command.md",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/references/board-command.md",
+        "source": {
+          "git_blob": "a6b3fd512839a116a4b78ec5f70cf57adaa7988d",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/references/board-command.md",
+          "sha256": "bb99c03d1f95c8cf28c896760c300376018d0e06b41471a3ea379d4d4fc8f007",
+          "size": 11140
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "references/board-query.md",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/references/board-query.md",
+        "source": {
+          "git_blob": "7f74da3ef4409d8cd5b69b8c31c85794bc90de3e",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/references/board-query.md",
+          "sha256": "5489b77eaee4922992a18fc1cf73f0089efa701cb367cbfb37207b66dce96e7a",
+          "size": 7591
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "schemas/board-collaboration-v2.schema.json",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/schemas/board-collaboration-v2.schema.json",
+        "source": {
+          "git_blob": "d3369abd31df62b183083a13ef54a23fd8d9bda2",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/schemas/board-collaboration-v2.schema.json",
+          "sha256": "f9c40d058019a408097ddbf3fd414f5d638fc7a0678853cd2a0d75df55c5c1a4",
+          "size": 115582
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "skill-package.yaml",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/skill-package.yaml",
+        "source": {
+          "git_blob": "6fd9826fd1def65205e8499c5a7fdb80377fdb5b",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/skill-package.yaml",
+          "sha256": "cf65f744d820bceedd6542fa580b4898621a2a8d38ca32cd076e4332ceffa10b",
+          "size": 2569
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/board-command.py",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/tools/board-command.py",
+        "source": {
+          "git_blob": "56d4bd4c0caf88b00f04b9c2aa821eaec10e13c5",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/tools/board-command.py",
+          "sha256": "d086758b7d0d0fbb73aa637e71978da8c289a7ec52bfe02023499f223cce5d07",
+          "size": 3009
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/board-query.py",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/tools/board-query.py",
+        "source": {
+          "git_blob": "96932039680945cb38e75b1cb7a326af7aa5fc37",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/tools/board-query.py",
+          "sha256": "63fa0fe256df3c1bd794c4b48a999fea17a370386d7c6ee7800ae56fea6319f8",
+          "size": 2601
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/board_command.py",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/tools/workflow_records/board_command.py",
+        "source": {
+          "git_blob": "a59896f1cbfa5f3c3ac391ae2b53d382de4956f4",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/tools/workflow_records/board_command.py",
+          "sha256": "0c5fe16eadfa5768a83ecf31205c4df94aa77d02760deef530aa89e82108c76d",
+          "size": 20590
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/board_query.py",
+        "owner": "workflow-board-experimental",
+        "path": "packages/skill/workflow-board-experimental/tools/workflow_records/board_query.py",
+        "source": {
+          "git_blob": "fae981530a488f1afd7f81803502f33afb5afadb",
+          "mode": "100644",
+          "path": "src/skills/workflow-board-experimental/tools/workflow_records/board_query.py",
+          "sha256": "15948c6f4b49a532fcda475fec159e00c01d97b98835351e856a9c29a3e954b3",
+          "size": 22323
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "SKILL.md",
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/SKILL.md",
         "source": {
-          "git_blob": "20720db2e98bf92412b8130400378f088b86c7b9",
+          "git_blob": "ef0a4b91bfdbe74ee8403e334493e7e76910fb5c",
           "mode": "100644",
           "path": "src/skills/workflow-records/SKILL.md",
-          "sha256": "23ff1ceae7931c039df707ec4d55f5c97db5aa75a8da69ae29a9117cad313544",
-          "size": 1762
+          "sha256": "1e7aaa576df123312c5f421060a16597578c4e38467400afe8d561fe3fee14ab",
+          "size": 4425
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "references/file-export.md",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/references/file-export.md",
+        "source": {
+          "git_blob": "e10bdf5a7e26a5c5f550295ae96a31593409925a",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/references/file-export.md",
+          "sha256": "d59c3951fb013732d403cd6e04cec2661c7b6d96566a77aec3f68010139cc8c8",
+          "size": 8503
         }
       },
       {
@@ -10308,15 +10563,80 @@
       },
       {
         "kind": "skill",
+        "member": "references/local-group.md",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/references/local-group.md",
+        "source": {
+          "git_blob": "541f221fc13840aa755b44f2e64b8877f5a65df7",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/references/local-group.md",
+          "sha256": "305d80ab1f0b5d0fb0422d8fb229c07e2b6c595f5cbe45eedfe35a444bcafc30",
+          "size": 14986
+        }
+      },
+      {
+        "kind": "skill",
         "member": "references/operations.md",
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/references/operations.md",
         "source": {
-          "git_blob": "58893d1b59218e94f4b1533a7f269acaf1625882",
+          "git_blob": "4ee17c3815bb4dbd7d41979b4dbbf457c3afb352",
           "mode": "100644",
           "path": "src/skills/workflow-records/references/operations.md",
-          "sha256": "f6ac73a7f7c469c7699ca72cf1a5050b849332e577d50faa810cbeadf15c80fd",
-          "size": 14453
+          "sha256": "ddbb4cd6a327dd3b8864328bfa395aebe03214b601fdf0735f87567f791b763f",
+          "size": 17461
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "references/source-store.md",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/references/source-store.md",
+        "source": {
+          "git_blob": "a5ec80108f1ac8ec01ad49a2a5786507ee922160",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/references/source-store.md",
+          "sha256": "9e9e9816f982b48bc4603e6638ea4172967bc9d193eebb282bde14d2055c6977",
+          "size": 22125
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "schemas/file-task-v1.schema.json",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/schemas/file-task-v1.schema.json",
+        "source": {
+          "git_blob": "4bc0108239b8b5c2e3f691f0e94c336906cb251d",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/schemas/file-task-v1.schema.json",
+          "sha256": "ae18a0c285e3a698ed4dc41764973eda7d2a6d70025dc910ea2cdd61d42f0143",
+          "size": 292
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "schemas/file-workflow-v1.schema.json",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/schemas/file-workflow-v1.schema.json",
+        "source": {
+          "git_blob": "a70a7de5da0287ce43d2a906b954a13f37b4f95f",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/schemas/file-workflow-v1.schema.json",
+          "sha256": "bbf05c33aa68b6829934413297aeceb8fe167a77ffd814edd6b5c12a26fa6d3a",
+          "size": 299
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "schemas/source-replica-v1.schema.json",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/schemas/source-replica-v1.schema.json",
+        "source": {
+          "git_blob": "26a280c1c302230adea8088fb2d08bb21bfd2d1d",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/schemas/source-replica-v1.schema.json",
+          "sha256": "02ac880c1969e43c0094e88bd5817e2e205fb8552cbaf7b8f30ae2e45f331ab9",
+          "size": 64715
         }
       },
       {
@@ -10325,11 +10645,76 @@
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/skill-package.yaml",
         "source": {
-          "git_blob": "2e436f9195ae7961a0693e38779a3c41e3b016b3",
+          "git_blob": "e4e0fd3c76dc40730fe0737ec7f42d96dc40ea19",
           "mode": "100644",
           "path": "src/skills/workflow-records/skill-package.yaml",
-          "sha256": "c7d4660b505e04d5a4733b326c40dea3cfe97743a54b5d82d2ad9ac8d107a29f",
-          "size": 6065
+          "sha256": "e98483c01c33998f426303373e6d65fe9a6a6c39d5cfacefb79676ff8d02036b",
+          "size": 25176
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "templates/file-schema-selection.json",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/templates/file-schema-selection.json",
+        "source": {
+          "git_blob": "1f5efc419e19373b3c02b7302f23e89c4746bfb6",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/templates/file-schema-selection.json",
+          "sha256": "ed118ad6c5cb3728e92f71932459290cf71d67a9fc9187f5add0e5cdab22d150",
+          "size": 893
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "templates/file-task.yaml",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/templates/file-task.yaml",
+        "source": {
+          "git_blob": "50a75bfa4445d1e74b077a621b226ec6cebd2687",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/templates/file-task.yaml",
+          "sha256": "0a2eb4e24859500ddbebc1ace3c75ecd8365e2155e7a968ca91a66186c7995b8",
+          "size": 14
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "templates/file-workflow.yaml",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/templates/file-workflow.yaml",
+        "source": {
+          "git_blob": "dd2bc82ae2fdb937e0cecd7346fecceb9e7d5d8b",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/templates/file-workflow.yaml",
+          "sha256": "3a743d6a4344cf12b1abb03ce5e452b30e591f8b371b04b53549697657bfa079",
+          "size": 40
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/local-group.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/local-group.py",
+        "source": {
+          "git_blob": "09b15efe22dbf1dae89a3cbcec847ffcbd28c14f",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/local-group.py",
+          "sha256": "a8a0802da7e0e4790b0588d0d4026751a7db2efb960847e787f453b4b579bd94",
+          "size": 2212
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/source-store.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/source-store.py",
+        "source": {
+          "git_blob": "4d0ecbdb70d5cd191100fe9f0de93471255f09d7",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/source-store.py",
+          "sha256": "3ea7008d1e1dc13c3f1cab3d0f35ffdefbc28c898441f2a6645be9918177edbc",
+          "size": 3199
         }
       },
       {
@@ -10338,11 +10723,11 @@
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/tools/workflow-records.py",
         "source": {
-          "git_blob": "24346027c33776f1dbe9a0229a846dbe1458024c",
+          "git_blob": "14024ed59bc0ebecd3b353c0c1021b91fd2ec704",
           "mode": "100644",
           "path": "src/skills/workflow-records/tools/workflow-records.py",
-          "sha256": "3d36e64da50bb22f1ad317c6fad2cc043f8124a9c0f6da063c2b560183ab3189",
-          "size": 2395
+          "sha256": "4d334b819bf8159c0f5e55bd3b4f85edbd35429f91960ac376334155fdb8a395",
+          "size": 2410
         }
       },
       {
@@ -10351,11 +10736,11 @@
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/tools/workflow_records/__init__.py",
         "source": {
-          "git_blob": "4220340f681948da3d0b4a2ad0d6d10321c6e15b",
+          "git_blob": "a0c1e04a933afea06a798ed714fa41e3450000c2",
           "mode": "100644",
           "path": "src/skills/workflow-records/tools/workflow_records/__init__.py",
-          "sha256": "c897ff01ec11455156ac296a3d1626fcd1042ba04125c610b0c63e530d9c359d",
-          "size": 112
+          "sha256": "7311a07cd1b318fbdd5016c5e24f755b5bd2fa036fabb8e1e0f35ce417631908",
+          "size": 359
         }
       },
       {
@@ -10364,11 +10749,11 @@
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/tools/workflow_records/backup.py",
         "source": {
-          "git_blob": "82e9257f2e8865f25f2797a6a26b03aeb88a1578",
+          "git_blob": "c1c9f5ad97291dfbb43b3d1bb6205c0a85599c0c",
           "mode": "100644",
           "path": "src/skills/workflow-records/tools/workflow_records/backup.py",
-          "sha256": "1272e3fc1377b0a6c2d66701b1b6757701bd830db14df0b7a703c942e3e2e846",
-          "size": 23696
+          "sha256": "86e3f39e8245c0a31dbd4cd31386d595452167634a73a4deaadaf838fca18713",
+          "size": 27684
         }
       },
       {
@@ -10399,6 +10784,19 @@
       },
       {
         "kind": "skill",
+        "member": "tools/workflow_records/file_export.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/file_export.py",
+        "source": {
+          "git_blob": "dd06d636512fc11932f7e6ea203c77fe150e581c",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/file_export.py",
+          "sha256": "83037741e16b3414b6045651ffc75a84a51e7c52ee73ccd4884d8c4fd13f7bcb",
+          "size": 21932
+        }
+      },
+      {
+        "kind": "skill",
         "member": "tools/workflow_records/git_store.py",
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/tools/workflow_records/git_store.py",
@@ -10412,15 +10810,145 @@
       },
       {
         "kind": "skill",
+        "member": "tools/workflow_records/group_backup.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/group_backup.py",
+        "source": {
+          "git_blob": "4ce425db7131cfe19af062cc99c3efa400c1e00a",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/group_backup.py",
+          "sha256": "b38f12f805d28b5154363a1340f89235f120faf8874a017fefa4c69e7f17d693",
+          "size": 8331
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/group_model.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/group_model.py",
+        "source": {
+          "git_blob": "4cb69421d1ce132769f33d2b298010fff7e2f8d1",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/group_model.py",
+          "sha256": "36fe1a82acbb5b6dbcb301b83c26770f88dfcd196e74f23693067f3053565024",
+          "size": 23826
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/group_providers.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/group_providers.py",
+        "source": {
+          "git_blob": "1c050bfeabbb5f370c75907f5a7e2e68625bc3cc",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/group_providers.py",
+          "sha256": "b26196095b64af89787e2264f918cb1cb867681f21b2bc98ae1c71c833beed22",
+          "size": 9964
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/group_service.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/group_service.py",
+        "source": {
+          "git_blob": "85ceaa9bd43ec66d3c619c2a183294eb786e07cc",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/group_service.py",
+          "sha256": "7c760b65805f24d9dbd42d0b1d5cb7ce2118fb44a0530f231d11d3a63a8d3a9c",
+          "size": 32802
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/group_storage.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/group_storage.py",
+        "source": {
+          "git_blob": "f6d7c18723ee30090823fd67054144c5616abba2",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/group_storage.py",
+          "sha256": "5cbadbe4ad1838809e6d6e50680b85205a59708bc3f237f22e4ed17839edea52",
+          "size": 8564
+        }
+      },
+      {
+        "kind": "skill",
         "member": "tools/workflow_records/service.py",
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/tools/workflow_records/service.py",
         "source": {
-          "git_blob": "3387ad9bd66dd5c240b17be5886e897e239aa411",
+          "git_blob": "01bcf695e2680ee1a93afbab6b1374b0aa5c5b43",
           "mode": "100644",
           "path": "src/skills/workflow-records/tools/workflow_records/service.py",
-          "sha256": "59bcb638b5fab1866ad941371e21f0a06b2df2f48f99f6fd08129e96391cf057",
-          "size": 14195
+          "sha256": "4dc1573e0e6199926fc497f6e8793c992dbadd9bc61bd062f4bb19941d9f834c",
+          "size": 16386
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/source_backup.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/source_backup.py",
+        "source": {
+          "git_blob": "bb8c241c60edd4ac44b5e79f7ef59289aeeb52cd",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/source_backup.py",
+          "sha256": "fa412b0196e140180bda0c33d72ee422836db4804d00a57ee1462cda6fde24b2",
+          "size": 14611
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/source_config.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/source_config.py",
+        "source": {
+          "git_blob": "3746a79c2166cecbd7aa681a5790597909b8ced1",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/source_config.py",
+          "sha256": "4755044be7d6df6ea1aee65280cb1c2644b32c27c2c46b71d9a796b6dcd2ee7d",
+          "size": 26059
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/source_contract.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/source_contract.py",
+        "source": {
+          "git_blob": "b32f9a79cffb0a42fca4034a63aa51023edad672",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/source_contract.py",
+          "sha256": "2c6767b915b59ece63f83a4021c30549246adc8e91fbc3865b410bdc57b12380",
+          "size": 7478
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/source_proof.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/source_proof.py",
+        "source": {
+          "git_blob": "f0506a3a212cf7049854bb4c943790c6cb4b76a7",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/source_proof.py",
+          "sha256": "39fdd72de9430a179c955d43bb4f382e90412f4716d548a2e5284c07c576cd40",
+          "size": 11954
+        }
+      },
+      {
+        "kind": "skill",
+        "member": "tools/workflow_records/source_store.py",
+        "owner": "workflow-records",
+        "path": "packages/skill/workflow-records/tools/workflow_records/source_store.py",
+        "source": {
+          "git_blob": "41f1eb086a63ec62d62f914fa4294d391db135e6",
+          "mode": "100644",
+          "path": "src/skills/workflow-records/tools/workflow_records/source_store.py",
+          "sha256": "b4609fae4f312341001811ca590d141ca3cc69e65ce24948dadcf5d59b58d689",
+          "size": 38793
         }
       },
       {
@@ -10429,11 +10957,11 @@
         "owner": "workflow-records",
         "path": "packages/skill/workflow-records/tools/workflow_records/sqlite_store.py",
         "source": {
-          "git_blob": "95f566d7e31eadbb91b399dd59eb1ba2ec351311",
+          "git_blob": "01a10902e8d8660a6a70bbf0c9943603e7729975",
           "mode": "100644",
           "path": "src/skills/workflow-records/tools/workflow_records/sqlite_store.py",
-          "sha256": "48962010e2734db075396cecabafad6eb905f446707b3bfaae3076e0eb21cd18",
-          "size": 24267
+          "sha256": "4b9c9526eb93c8b8b9a23ce2d215b9f5d7ed1965b9001996e03ffa00d99f17ae",
+          "size": 28176
         }
       },
       {
@@ -10856,11 +11384,11 @@
       },
       {
         "path": "src/distribution/claude.py",
-        "sha256": "dcf045d461ad8ba41e7a5f15de500fa9fca37008f0223b2f9e4e0cdf2d47d9f4"
+        "sha256": "0c745b2de854481879d14bac6176dc9e9832aba431599721188a2152bf1d0cd1"
       },
       {
         "path": "src/distribution/codex.py",
-        "sha256": "cb7c212563bda5817a629fd2ce3cbc4deb28679ee0d81c287e6323087d7f67d0"
+        "sha256": "425484434ae08d216cd4561e7b7b8d34386324d0b552658a4f57a4247ce5532c"
       },
       {
         "path": "src/distribution/content.py",
@@ -10900,7 +11428,7 @@
       },
       {
         "path": "src/distribution/package.py",
-        "sha256": "c69e4485213ed195d67d2776fc49ec2c16177391c6311a0a48828eb16510df58"
+        "sha256": "390312ac7f0896b29386afe78c8041a3ececf6e1cf56e7973320acf5d9f0fdb6"
       },
       {
         "path": "src/distribution/project_layout.py",
@@ -10948,7 +11476,7 @@
       }
     ],
     "id": "framework-managed-installation",
-    "source_commit": "221695622dde248a2dc84ffb9fc675d7c45d0768",
+    "source_commit": "7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3",
     "version": "2.0.0"
   },
   "installation_id": "9ca16115325d8c66bf5e49cdf393fa2c",
@@ -11564,142 +12092,6 @@
           "path": "src/skills/lesson-author/templates/lesson.md",
           "sha256": "97492805aeb42bd74f47f3d7bc5719cf39949980ceff4d7d707d6ab1aaf0798b",
           "size": 508
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/SKILL.md",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/SKILL.md",
-        "sha256": "052e4db046710899a30aaef9f65c0138303ae6664159e3d7b218bdad9c133637",
-        "size": 1558,
-        "source": {
-          "git_blob": "06b01bd221b418b6b73eef48f97537718f104cc6",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/SKILL.md",
-          "sha256": "052e4db046710899a30aaef9f65c0138303ae6664159e3d7b218bdad9c133637",
-          "size": 1558
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/references/configuration.md",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/references/configuration.md",
-        "sha256": "b9bf9ad19813fd841a9ffb9dbf0df6247313b77db277c5b7f6891cd8a6c74530",
-        "size": 4272,
-        "source": {
-          "git_blob": "3bbca977c83c901312c46d86a94658620ec000e8",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/references/configuration.md",
-          "sha256": "b9bf9ad19813fd841a9ffb9dbf0df6247313b77db277c5b7f6891cd8a6c74530",
-          "size": 4272
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/references/example.md",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/references/example.md",
-        "sha256": "eddf6af8c6514b4099c5285ebb5db938c2b59c898e0ee7aef3e7b0a7585ffe49",
-        "size": 1088,
-        "source": {
-          "git_blob": "a03b0653189f27b0e2dc0b51f19bf2f6d8059c4b",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/references/example.md",
-          "sha256": "eddf6af8c6514b4099c5285ebb5db938c2b59c898e0ee7aef3e7b0a7585ffe49",
-          "size": 1088
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/references/operations.md",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/references/operations.md",
-        "sha256": "53052a7a31366eab7ffea22c053cedf8dfc0b6c4165096f1f9fec9efe5efcbb8",
-        "size": 4818,
-        "source": {
-          "git_blob": "3afb328d250401393ca1d29c5a32a75d5f2c2689",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/references/operations.md",
-          "sha256": "53052a7a31366eab7ffea22c053cedf8dfc0b6c4165096f1f9fec9efe5efcbb8",
-          "size": 4818
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/schemas/local-backlog-record.schema.json",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/schemas/local-backlog-record.schema.json",
-        "sha256": "0342c853227183386b70426390fc6e7798acd81dae542804c1cdd585b2291ea2",
-        "size": 4269,
-        "source": {
-          "git_blob": "9c508ebe914f4dc954e1a5754749796fb31e1a83",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/schemas/local-backlog-record.schema.json",
-          "sha256": "0342c853227183386b70426390fc6e7798acd81dae542804c1cdd585b2291ea2",
-          "size": 4269
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/scripts/local_backlog.py",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/scripts/local_backlog.py",
-        "sha256": "6a2b251aee90ae4226e589ef03417ec655fb61cf97ceb6f7b192181fd1378c32",
-        "size": 55385,
-        "source": {
-          "git_blob": "2750072578fad79a68352824471e7c0ed8a68217",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/scripts/local_backlog.py",
-          "sha256": "6a2b251aee90ae4226e589ef03417ec655fb61cf97ceb6f7b192181fd1378c32",
-          "size": 55385
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/skill-package.yaml",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/skill-package.yaml",
-        "sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d",
-        "size": 4488,
-        "source": {
-          "git_blob": "58bd679c9d5a0d31f61883013ad69839cf4c93ae",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/skill-package.yaml",
-          "sha256": "c5e439f350b3c1b6b102a5fb094b24d12f014c7c2ccc890248e6968d3f2e4a5d",
-          "size": 4488
-        }
-      },
-      {
-        "binding": null,
-        "destination": ".ai/core/skills/local-backlog/templates/work-item.md",
-        "kind": "payload",
-        "mode": "100644",
-        "owner": "skill/local-backlog",
-        "path": "payload/.ai/core/skills/local-backlog/templates/work-item.md",
-        "sha256": "2c7a10b53791cd63f327bb5e7b545c270201729a1f90a81a7935b9e253d7a60c",
-        "size": 204,
-        "source": {
-          "git_blob": "b5ba16c33a3271c106f470fa6b1956061d8af941",
-          "mode": "100644",
-          "path": "src/skills/local-backlog/templates/work-item.md",
-          "sha256": "2c7a10b53791cd63f327bb5e7b545c270201729a1f90a81a7935b9e253d7a60c",
-          "size": 204
         }
       },
       {
@@ -12457,14 +12849,31 @@
         "mode": "100644",
         "owner": "skill/software-development-orchestrator",
         "path": "payload/.ai/core/skills/software-development-orchestrator/SKILL.md",
-        "sha256": "475b3fac4de75f4c32ec7c7d3368d71488f142165afdee9bdf571b4fafca6e52",
-        "size": 2123,
+        "sha256": "213e7c960165d3fdebf0dbb225251cc7a43632e33f4ba259b122ed3773a60600",
+        "size": 2335,
         "source": {
-          "git_blob": "af901596299a5ef64ca1eac43dbded080cb836d9",
+          "git_blob": "9bd2ee8669e0e66256144b56b92f736bca726adc",
           "mode": "100644",
           "path": "src/skills/software-development-orchestrator/SKILL.md",
-          "sha256": "475b3fac4de75f4c32ec7c7d3368d71488f142165afdee9bdf571b4fafca6e52",
-          "size": 2123
+          "sha256": "213e7c960165d3fdebf0dbb225251cc7a43632e33f4ba259b122ed3773a60600",
+          "size": 2335
+        }
+      },
+      {
+        "binding": null,
+        "destination": ".ai/core/skills/software-development-orchestrator/references/issue-control.md",
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "skill/software-development-orchestrator",
+        "path": "payload/.ai/core/skills/software-development-orchestrator/references/issue-control.md",
+        "sha256": "0edc84775ada3b79b33cb8b54eb8223f0936bef426f97b676be63c1e389a8968",
+        "size": 5208,
+        "source": {
+          "git_blob": "491e98cdf466c6c074fda7956d9b4e240c8a4575",
+          "mode": "100644",
+          "path": "src/skills/software-development-orchestrator/references/issue-control.md",
+          "sha256": "0edc84775ada3b79b33cb8b54eb8223f0936bef426f97b676be63c1e389a8968",
+          "size": 5208
         }
       },
       {
@@ -12474,14 +12883,31 @@
         "mode": "100644",
         "owner": "skill/software-development-orchestrator",
         "path": "payload/.ai/core/skills/software-development-orchestrator/references/orchestrate.md",
-        "sha256": "262ee46b694d484812dbbf50700e262bcd0ce866ade63613b8d605f1937dee96",
-        "size": 15768,
+        "sha256": "a091e338ca94537220796248c2d332f0cd7cc43d85d17c9fe99dc15e65b7b56a",
+        "size": 16187,
         "source": {
-          "git_blob": "24fbd4764ae1fd4c2b786d0d215414559841901b",
+          "git_blob": "1aa39d2908ff305f7614c0ce8896a9f301ba7655",
           "mode": "100644",
           "path": "src/skills/software-development-orchestrator/references/orchestrate.md",
-          "sha256": "262ee46b694d484812dbbf50700e262bcd0ce866ade63613b8d605f1937dee96",
-          "size": 15768
+          "sha256": "a091e338ca94537220796248c2d332f0cd7cc43d85d17c9fe99dc15e65b7b56a",
+          "size": 16187
+        }
+      },
+      {
+        "binding": null,
+        "destination": ".ai/core/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+        "kind": "payload",
+        "mode": "100644",
+        "owner": "skill/software-development-orchestrator",
+        "path": "payload/.ai/core/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+        "sha256": "1ed2a02ffdedd7c2d802fd122bae745f79afe4641fc66fc390d0833cb294b0c1",
+        "size": 1115,
+        "source": {
+          "git_blob": "65790380c83615d95381136498f6b2126a596da9",
+          "mode": "100644",
+          "path": "src/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+          "sha256": "1ed2a02ffdedd7c2d802fd122bae745f79afe4641fc66fc390d0833cb294b0c1",
+          "size": 1115
         }
       },
       {
@@ -12491,14 +12917,14 @@
         "mode": "100644",
         "owner": "skill/software-development-orchestrator",
         "path": "payload/.ai/core/skills/software-development-orchestrator/skill-package.yaml",
-        "sha256": "8f4f2d03b10effa1b0e3f23ce056e988b8656d057082fda3427db9cdbc0d742a",
-        "size": 1687,
+        "sha256": "3c739d71f642fd6dcf0969a778005363e994a7d90432c831941742d54912262e",
+        "size": 2193,
         "source": {
-          "git_blob": "9c04fade6e1d81fa5fa4215657dfcfa911f6d19d",
+          "git_blob": "51a4b95d39fa9c216c9aa7e93fcfcefec10ff462",
           "mode": "100644",
           "path": "src/skills/software-development-orchestrator/skill-package.yaml",
-          "sha256": "8f4f2d03b10effa1b0e3f23ce056e988b8656d057082fda3427db9cdbc0d742a",
-          "size": 1687
+          "sha256": "3c739d71f642fd6dcf0969a778005363e994a7d90432c831941742d54912262e",
+          "size": 2193
         }
       },
       {
@@ -12963,23 +13389,6 @@
       {
         "binding": {
           "adapter": "codex",
-          "core_entrypoint": ".ai/core/skills/local-backlog/SKILL.md",
-          "entry_name": "local-backlog",
-          "skill": "local-backlog",
-          "template_sha256": "786fba6b9ed3eaba711d39d2366d39ccfbfe4a5f2a39947256ceab7ed37fd4f6"
-        },
-        "destination": ".agents/skills/local-backlog/SKILL.md",
-        "kind": "runtime",
-        "mode": "100644",
-        "owner": "adapter/codex/skill/local-backlog",
-        "path": "runtime/.agents/skills/local-backlog/SKILL.md",
-        "sha256": "020f2d7538e95327d51c2b3b1fa6bb181212516f2b0f3e0a4157d0e1a919b31d",
-        "size": 2416,
-        "source": null
-      },
-      {
-        "binding": {
-          "adapter": "codex",
           "core_entrypoint": ".ai/core/skills/local-change-implementer/SKILL.md",
           "entry_name": "local-change-implementer",
           "skill": "local-change-implementer",
@@ -13092,8 +13501,8 @@
         "mode": "100644",
         "owner": "adapter/codex/skill/software-development-orchestrator",
         "path": "runtime/.agents/skills/software-development-orchestrator/SKILL.md",
-        "sha256": "960f6cdfdfc40d481282c9a9ef64fd901b7f81bb5af74dc86801d0e1a1394e7c",
-        "size": 2117,
+        "sha256": "4c8e068e6a8e0926cf2b0106b8abf9b86f7c94565522288517f0538fde8c6b94",
+        "size": 2610,
         "source": null
       },
       {
@@ -13269,23 +13678,6 @@
       {
         "binding": {
           "adapter": "claude",
-          "core_entrypoint": ".ai/core/skills/local-backlog/SKILL.md",
-          "entry_name": "local-backlog",
-          "skill": "local-backlog",
-          "template_sha256": "4a0ef01a22ecb4511e003da9998274d8c1a4ec482b6acf03c8f4c508a9efd966"
-        },
-        "destination": ".claude/skills/local-backlog/SKILL.md",
-        "kind": "runtime",
-        "mode": "100644",
-        "owner": "adapter/claude/skill/local-backlog",
-        "path": "runtime/.claude/skills/local-backlog/SKILL.md",
-        "sha256": "f0be9e3d83fccc1252b40364de9c5d9ccab657994122ca6f81bbb765012aaf0d",
-        "size": 2418,
-        "source": null
-      },
-      {
-        "binding": {
-          "adapter": "claude",
           "core_entrypoint": ".ai/core/skills/local-change-implementer/SKILL.md",
           "entry_name": "local-change-implementer",
           "skill": "local-change-implementer",
@@ -13398,8 +13790,8 @@
         "mode": "100644",
         "owner": "adapter/claude/skill/software-development-orchestrator",
         "path": "runtime/.claude/skills/software-development-orchestrator/SKILL.md",
-        "sha256": "b4cd5584d30478b4ca311e9186b47366aa02d95e9ba968dbcdf034c5aa620d9b",
-        "size": 2119,
+        "sha256": "4adb19b7dfbcfdba69f4ce0b1adf3b3ef40568c1196af48890805a218f394947",
+        "size": 2612,
         "source": null
       },
       {
@@ -13461,35 +13853,35 @@
   "project_inputs": [
     {
       "path": ".agents/skills/README.md",
-      "sha256": "0291612de737248c7947cfe0dc220169cbb66a9ac61913cf089564223830594a"
+      "sha256": "63783ecbf75acfe0cb38fc783e26c93dd353265591e5f0443cddce41eebff348"
     },
     {
       "path": ".ai/project/framework.json",
-      "sha256": "ef451ac6cf6c5599c1b6e4fb23f3e5ee6591635303895eeeff76d4ea2f1b1601"
+      "sha256": "44af8f67c6f31cc2722752132ab0dd0b9c29f250b528e4e4a74e1ce7c0422de4"
     },
     {
       "path": ".ai/project/installation.json",
-      "sha256": "d58648655d4df5acdf25ca5b6b29d526e83d3ed2f831401407e8b4b3a49fe88a"
+      "sha256": "9ab1c512348bcd3daa2238480130779570d23da62aad738a59f6309fddfaba72"
     },
     {
       "path": ".claude/skills/README.md",
-      "sha256": "f5c716d0370c5f35cbc0f863084169b7686e486b627d318f37a2db18af98c922"
+      "sha256": "9c53096696a5ad52b3425b901ce55f15cabd50f8fff3122668c2b614b57f6acf"
     },
     {
       "path": "AGENTS.md",
-      "sha256": "cb4e29f50845f19fbf6f4fccd594ba240585a9a1bacf72319b080e728cc50b69"
+      "sha256": "fbc43791c4bd365ec9199bc3cf199877d842460f6e04129bdb42b75363c92725"
     },
     {
       "path": "AGENTS.zh-TW.md",
-      "sha256": "5a53bb5f34ad80fa49d1bdc72b0290d70950d2dd1ac85f5c3e3be72e58af47a6"
+      "sha256": "3df24770b31906d9684f6c4e119731cae5adbd623f368651569ee93d5139a4ec"
     },
     {
       "path": "README.en.md",
-      "sha256": "2fdde9d489f301f2df95659ee8cabe7156738a69d3d2b17ef088a24350a154ea"
+      "sha256": "434d5c444a27d23bed73793eaf6965ce4fdf63ad436fab482f4f2c1f46650311"
     },
     {
       "path": "README.md",
-      "sha256": "f235a61b3612ca711976a0f1cd37d61da84c08532077f5fcd5b90ad2b0e7766e"
+      "sha256": "2953896eae0ab76d5d70001bd026fd68f54e61edf6d608688bd597ef630eaf21"
     }
   ],
   "selection": {
@@ -13514,9 +13906,9 @@
       }
     ],
     "catalog": {
-      "catalog_sha256": "ca2b9c23eb0ed6552acfed4406ab93f96b3991f5320c1e57f40de5a22fa842f3",
-      "files_sha256": "636a2d82a4dbab3cd292ab2d3a6599db84e4342c41fdb23beddd1fd5b9575366",
-      "identity": "catalog:1:0.21.0:221695622dde248a2dc84ffb9fc675d7c45d0768:2e924c8314edfb763e8662dab29dbd24c2ee6c0f8318429fa967171e3b24053e"
+      "catalog_sha256": "49592bd80b39583fc65eba004837d55303dca270c6c29e29ee1a2ed8a86aa15d",
+      "files_sha256": "aef811b7d25234ea4c563bbcf941570ac78f698f8f8517961d4fbaea12266d77",
+      "identity": "catalog:1:0.0.0-rc.139062226434433:7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3:e389609aed945a70aa735a446bb698a615e7073ba94b7fbfb25011ce81bc762e"
     },
     "components": [
       {
@@ -13657,25 +14049,6 @@
         "optional_dependencies": [],
         "required_dependencies": [],
         "version": "0.2.0"
-      },
-      {
-        "id": "local-backlog",
-        "kind": "skill",
-        "members": [
-          "SKILL.md",
-          "references/configuration.md",
-          "references/example.md",
-          "references/operations.md",
-          "schemas/local-backlog-record.schema.json",
-          "scripts/local_backlog.py",
-          "skill-package.yaml",
-          "templates/work-item.md"
-        ],
-        "metadata": "skill-package.yaml",
-        "metadata_version": 2,
-        "optional_dependencies": [],
-        "required_dependencies": [],
-        "version": "0.1.0"
       },
       {
         "id": "local-change-implementer",
@@ -13838,14 +14211,16 @@
         "kind": "skill",
         "members": [
           "SKILL.md",
+          "references/issue-control.md",
           "references/orchestrate.md",
+          "schemas/issue-control-settings.schema.json",
           "skill-package.yaml"
         ],
         "metadata": "skill-package.yaml",
         "metadata_version": 4,
         "optional_dependencies": [],
         "required_dependencies": [],
-        "version": "0.4.2"
+        "version": "0.5.0"
       },
       {
         "id": "spec-author",
@@ -13928,9 +14303,9 @@
       ],
       "bindings": [],
       "catalog": {
-        "catalog_sha256": "ca2b9c23eb0ed6552acfed4406ab93f96b3991f5320c1e57f40de5a22fa842f3",
-        "files_sha256": "636a2d82a4dbab3cd292ab2d3a6599db84e4342c41fdb23beddd1fd5b9575366",
-        "identity": "catalog:1:0.21.0:221695622dde248a2dc84ffb9fc675d7c45d0768:2e924c8314edfb763e8662dab29dbd24c2ee6c0f8318429fa967171e3b24053e"
+        "catalog_sha256": "49592bd80b39583fc65eba004837d55303dca270c6c29e29ee1a2ed8a86aa15d",
+        "files_sha256": "aef811b7d25234ea4c563bbcf941570ac78f698f8f8517961d4fbaea12266d77",
+        "identity": "catalog:1:0.0.0-rc.139062226434433:7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3:e389609aed945a70aa735a446bb698a615e7073ba94b7fbfb25011ce81bc762e"
       },
       "knowledge": [],
       "selection_version": 2,
@@ -13943,7 +14318,6 @@
         "diagnostic-analyst",
         "domain-model-designer",
         "lesson-author",
-        "local-backlog",
         "local-change-implementer",
         "pr-author",
         "problem-frame-author",
@@ -13956,7 +14330,7 @@
         "test-designer"
       ]
     },
-    "desired_sha256": "b637699af4d1f883f8903903fa523e320a9cb8ff1459a302995fbca08b8d01b3",
+    "desired_sha256": "9192ec74079af7395ba5e7e132e4d8e795d8e17edd408ed000ed72c76ca55002",
     "generator": {
       "id": "aicf-subset-derivation",
       "implementation": [
@@ -14003,18 +14377,18 @@
           "size": 41775
         },
         {
-          "git_blob": "0e77be0ba9c363e5fe037f925a84bdcc9aff92bf",
+          "git_blob": "c1d12f414c7ff1ebc2f88d40755c4ad865228079",
           "mode": "100644",
           "path": "src/distribution/claude.py",
-          "sha256": "dcf045d461ad8ba41e7a5f15de500fa9fca37008f0223b2f9e4e0cdf2d47d9f4",
-          "size": 5082
+          "sha256": "0c745b2de854481879d14bac6176dc9e9832aba431599721188a2152bf1d0cd1",
+          "size": 5946
         },
         {
-          "git_blob": "7eeebd2d966da276bb23530336624446c519eac8",
+          "git_blob": "19908d754952ae5327172cf1f40af4e4f8f8461a",
           "mode": "100644",
           "path": "src/distribution/codex.py",
-          "sha256": "cb7c212563bda5817a629fd2ce3cbc4deb28679ee0d81c287e6323087d7f67d0",
-          "size": 8255
+          "sha256": "425484434ae08d216cd4561e7b7b8d34386324d0b552658a4f57a4247ce5532c",
+          "size": 9983
         },
         {
           "git_blob": "d4fe158614a7ac43601a19799c9f13c6fdfe6848",
@@ -14080,11 +14454,11 @@
           "size": 5704
         },
         {
-          "git_blob": "ecfe6555bfc495f37dcf04678fbdb8e9e04a7193",
+          "git_blob": "990bc8c6c5c88e6677cda7c50f15f4b481d7d94c",
           "mode": "100644",
           "path": "src/distribution/package.py",
-          "sha256": "c69e4485213ed195d67d2776fc49ec2c16177391c6311a0a48828eb16510df58",
-          "size": 18988
+          "sha256": "390312ac7f0896b29386afe78c8041a3ececf6e1cf56e7973320acf5d9f0fdb6",
+          "size": 25013
         },
         {
           "git_blob": "056779fd69487c9d4fcd1343acdec2149c455b92",
@@ -14166,11 +14540,11 @@
       ]
     },
     "mode": "catalog-subset",
-    "release_version": "0.21.0",
+    "release_version": "0.0.0-rc.139062226434433",
     "schema_version": 3,
     "source": {
-      "commit": "221695622dde248a2dc84ffb9fc675d7c45d0768",
-      "tree": "2fbd7073b213a036834b105aaff8fe3090120514"
+      "commit": "7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3",
+      "tree": "651b5782f0e6515cf827f6874339af7ccb5b79b7"
     }
   }
 }

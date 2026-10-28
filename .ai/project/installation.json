@@ -5,9 +5,9 @@
   ],
   "bindings": [],
   "catalog": {
-    "identity": "catalog:1:0.21.0:221695622dde248a2dc84ffb9fc675d7c45d0768:2e924c8314edfb763e8662dab29dbd24c2ee6c0f8318429fa967171e3b24053e",
-    "catalog_sha256": "ca2b9c23eb0ed6552acfed4406ab93f96b3991f5320c1e57f40de5a22fa842f3",
-    "files_sha256": "636a2d82a4dbab3cd292ab2d3a6599db84e4342c41fdb23beddd1fd5b9575366"
+    "identity": "catalog:1:0.0.0-rc.139062226434433:7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3:e389609aed945a70aa735a446bb698a615e7073ba94b7fbfb25011ce81bc762e",
+    "catalog_sha256": "49592bd80b39583fc65eba004837d55303dca270c6c29e29ee1a2ed8a86aa15d",
+    "files_sha256": "aef811b7d25234ea4c563bbcf941570ac78f698f8f8517961d4fbaea12266d77"
   },
   "knowledge": [],
   "selection_version": 2,
@@ -20,7 +20,6 @@
     "diagnostic-analyst",
     "domain-model-designer",
     "lesson-author",
-    "local-backlog",
     "local-change-implementer",
     "pr-author",
     "problem-frame-author",
