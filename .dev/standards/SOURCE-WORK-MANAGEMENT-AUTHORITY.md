@@ -20,7 +20,9 @@ or target-owned `repo-backlog` selection distributed by the framework.
   candidate/in-progress/completed feature state; not execution authorization or handoff.
 - Live GitHub Project #3 owns current priority, status, owner-review,
   target-release, and published-in views.
-- `.dev/workflows/` owns authorized execution and validation evidence.
+- The selected native SQLite store under [workflow storage](WORKFLOW-STORE-POLICY.md)
+  owns daily execution records and their validation results. Formal artifacts
+  remain Git-owned; `.dev/workflows/` retains historical provenance.
 - Integrated `main` owns repository-integrated truth. A branch, workflow,
   Issue, Project field, commit, or pull request is not integrated truth by
   itself.
