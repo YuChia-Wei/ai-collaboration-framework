@@ -10,7 +10,7 @@ historical paths in retained records do not establish current availability.
 | --- | --- |
 | [Standards](standards/INDEX.MD) | Current source policies and selected legacy obligations |
 | [Source development](standards/SOURCE-DEVELOPMENT-POLICY.md) | Ordinary execution, checks and conditional independent review |
-| [Daily workflow storage](standards/WORKFLOW-STORE-POLICY.md) | Current native SQLite discovery, explicit configuration/source CLI, continuation and separate Board replica delivery |
+| [Daily workflow storage](standards/WORKFLOW-STORE-POLICY.md) | SQLite-only daily records, explicit configuration/source CLI, continuation, backup and retained Board replica history |
 | [Contracts](contracts/README.md) | Source execution, provider bindings and record interpretation |
 | [Git flow](TEAM-GIT-FLOW-RULES.MD) | Source branch/integration rules under adopted source policy |
 | [Repository rename](REPOSITORY-RENAME-COMPATIBILITY.md) | Repository/package identity and compatibility limits |

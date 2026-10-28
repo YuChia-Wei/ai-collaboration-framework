@@ -6,7 +6,7 @@ status: "active"
 authority:
   work_items: "live-github-issues"
   current_views: "live-github-project-3"
-  execution_evidence: ".dev/workflows/"
+  execution_evidence: "selected-native-store-under-WORKFLOW-STORE-POLICY"
   integrated_truth: "main"
   provider_state_alone_authorizes: false
   ordinary_validation_requires_github_credentials: false
