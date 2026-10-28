@@ -1,8 +1,7 @@
 preset_version: 1
 id: work-management
-version: 0.1.0
+version: 0.2.0
 skills:
-- local-backlog
 - pr-author
 - software-development-orchestrator
 knowledge: []

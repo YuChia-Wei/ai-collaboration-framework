@@ -96,6 +96,64 @@ class LocalGroupTests(unittest.TestCase):
         self.assertEqual(result.stderr, b"")
         return result.returncode, json.loads(result.stdout)
 
+    def test_repeated_completion_reopen_on_sqlite_authority_preserves_atomic_cuts(self):
+        # The caller coordinates its source lifecycle fields in one generic revision.
+        self.create()
+        self.add_sqlite()
+        self.sync()
+        self.switch("sqlite")
+        member = self.ok(self.request("group-configuration"))["members"]["sqlite"]
+        initial = storage.load_member(member)
+        retained = copy.deepcopy(initial["events"])
+        created_at = "2026-10-29T09:00:00+08:00"
+        requests = []
+        for step, status in enumerate(("completed", "in_progress", "completed", "in_progress", "completed"), 1):
+            with self.subTest(step=step, status=status):
+                timestamp = "2026-10-29T10:00:0" + str(step) + "+08:00"
+                phase = "completed" if status == "completed" else "implementation"
+                result = {"summary": "Caller transition " + str(step),
+                          "finding_status": "addressed" if status == "completed" else "pending"}
+                document = "# Cycle " + str(step) + "\n" + status + "\n"
+                request = self.request("group-revise-workflow", operation_id="lifecycle-" + str(step),
+                                       metadata_patch={"lifecycle_contract": "1.0", "status": status, "current_phase": phase,
+                                                       "created_at": created_at, "updated_at": timestamp},
+                                       task_patches={"T1": {"status": status, "created_at": created_at, "updated_at": timestamp, "result": result}},
+                                       documents={"plan.md": {"encoding": "utf-8", "content": document}}, attachments={})
+                receipt = self.ok(request)
+                current = self.ok(self.request("group-context"))
+                after = storage.load_member(member)
+                state = current["record"]
+                self.assertEqual(current["authority"], "sqlite")
+                self.assertEqual(current["revision"], receipt["revision"])
+                self.assertEqual(len(after["events"]), len(initial["events"]) + step)
+                self.assertEqual(after["events"][:-1], retained)
+                self.assertEqual(after["events"][-1]["body"]["parent"], request["expected_revision"])
+                self.assertEqual(after["events"][-1]["body"]["operation_id"], request["operation_id"])
+                for field in ("status", "current_phase", "created_at", "updated_at", "lifecycle_contract"):
+                    self.assertEqual(state["metadata"][field], request["metadata_patch"][field])
+                for field in ("status", "created_at", "updated_at", "result"):
+                    self.assertEqual(state["tasks"][0][field], request["task_patches"]["T1"][field])
+                self.assertEqual(state["metadata"]["extension"], {"future": [1, True]})
+                self.assertEqual(state["tasks"][0]["extra"], "keep")
+                read = self.ok(self.request("group-read", collection="documents", document="plan.md"))
+                self.assertEqual(read["revision"], receipt["revision"])
+                self.assertEqual(base64.b64decode(read["content"]), document.encode("utf-8"))
+                self.assertEqual({**self.ok(request), "replayed": False}, receipt)
+                stale = copy.deepcopy(request)
+                stale["operation_id"] += "-stale"
+                stale["metadata_patch"]["updated_at"] = "2026-10-29T23:59:59+08:00"
+                stale["task_patches"]["T1"]["result"] = {"summary": "must not persist", "finding_status": "pending"}
+                stale["documents"]["plan.md"]["content"] = "must not persist"
+                self.error(stale, "revision_conflict")
+                self.assertEqual(storage.load_member(member), after)
+                retained = copy.deepcopy(after["events"])
+                requests.append((request, receipt))
+        terminal = storage.load_member(member)
+        for request, receipt in requests:
+            self.assertEqual({**self.ok(request), "replayed": False}, receipt)
+        self.assertEqual(storage.load_member(member), terminal)
+        self.assertEqual(self.ok(self.request("group-context"))["record"]["metadata"]["status"], "completed")
+
     def test_file_only_public_cli_and_byte_preservation(self):
         request = self.request("group-create", record={"metadata": {"title": "offline", "status": "active"}, "tasks": [], "entrypoint": "plan.md", "documents": {"plan.md": {"encoding": "utf-8", "content": "a\r\nb"}}, "attachments": {}})
         code, result = self.cli(request)

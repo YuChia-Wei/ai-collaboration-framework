@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.4.2`。操作名稱以實際安裝的 metadata 為準。
+來源套件版本：`0.5.0`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -23,6 +23,30 @@
 ## 知識
 
 無套件綁定。
+
+## Issue 操作設定
+
+在專案明確選定的 `config_version: 2` 設定檔，以
+`skills.software-development-orchestrator.issue_control` 選擇方式；本來源 repo
+使用 `.ai/project/framework.json`。Installer 不自動建立或改寫這項 project 設定。
+這項來源能力使用新的 `instruction-settings` metadata 分支，須搭配支援它的 engine；
+舊 loader 會拒絕新欄位，不會把它當作 filesystem store 設定。精確規則見
+[issue-operation 設定契約](../../src/skills/software-development-orchestrator/references/issue-control.md)。
+
+| 值 | 行為 |
+| --- | --- |
+| 缺省或 `""` | 不指定 framework route；agent 依當前工具與專案權限操作，仍須核對實際 provider 和命令 |
+| `{"mode":"experimental","route":"issue-control"}` | 明確選擇未來實驗性 skill；目前尚未提供，因此所需操作 unavailable，不退回其他工具 |
+| `{"mode":"project","route":"team-issue-skill"}` | 使用專案指定的實際 skill 或 MCP entry；可指向團隊自有 Azure DevOps 等工具，名稱須換成真實 route |
+
+每次 operation 重新讀設定並依套件 schema 驗證。缺少明確選定的設定檔、格式錯誤
+或 route 不可用都會停止依賴它的操作。設定不授權外部寫入、不安裝工具，也不提供
+自動 provider fallback。Resume 保留已存在 work item 的完整 provider references；
+改設定不會搬移資料或重新建立既有 Issue。
+
+獨立 `local-backlog` 已從來源 catalog 與 presets 移除；既有 project records 保留。
+新的 issue-control skill 尚在規劃，預計以 GitHub Issue／Project 及明確選用的本機
+backlog 為初始範圍，並保留團隊流程差異；本版不宣稱已具備這些 provider。
 
 編排 task 時先規劃驗證目的、項目、觸發條件與執行時機，區分必要 gate／已接受驗收與依影響選用的檢查。
 實作期間依實際差異校正，執行測試前確認必要性；完成修改後確認驗收證據齊備。

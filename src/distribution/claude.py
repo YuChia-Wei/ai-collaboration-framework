@@ -52,11 +52,23 @@ def project_entry_v2(template_bytes: bytes, package_id: str, package_version: st
     def relative(member: str) -> str:
         return posixpath.relpath(destinations[member], directory)
 
+    require(configuration is None or type(configuration) is dict, "configuration must be an object or null")
+    require(configuration is None or "kind" not in configuration or configuration["kind"] == "instruction-settings",
+            "unknown configuration kind")
     if configuration is None:
         configuration_guidance = (
             "This package declares `configuration: null`. It needs no framework "
             "configuration file or managed record store. Obtain only the target "
             "inputs required by the selected operation."
+        )
+    elif configuration.get("kind") == "instruction-settings":
+        configuration_guidance = (
+            "This package has optional project-owned instruction settings. Read the "
+            "explicitly selected project configuration anew for each operation and "
+            "validate only its declared namespace/schema. With no selected settings, "
+            "use the package defaults; an empty issue route is fully unspecified. "
+            "Do not create a configuration file or record store implicitly. "
+            "Settings select no credentials or execution authority."
         )
     else:
         configuration_guidance = (

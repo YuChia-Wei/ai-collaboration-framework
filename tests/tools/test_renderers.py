@@ -12,7 +12,7 @@ class RendererTests(ToolCase):
         before = copy.deepcopy(value)
         template = binding["template"] if family == "problem-frame-author" else binding.template
         template_path = package(family) / "templates" / {
-            "lesson-author": "lesson.md", "adr-author": "adr.md", "local-backlog": "work-item.md",
+            "lesson-author": "lesson.md", "adr-author": "adr.md",
             "pr-author": "pr.md", "problem-frame-author": "cbf.md"}[family]
         template_bytes = template_path.read_bytes()
         if family == "problem-frame-author":
@@ -72,15 +72,6 @@ class RendererTests(ToolCase):
                      "## Decision\n\nNone supplied", "## Provenance\n\n\\[\\]", "## History\n\n\\[\\]"]:
             with self.subTest(text=text):
                 self.assertIn(text, output)
-
-    def test_backlog_markdown_lists_indent_multiline_items(self):
-        output = self.rendered("local-backlog")
-        self.assertIn(r"# 工作 \*項目\* &lt;tag&gt;", output)
-        self.assertIn("First summary\nSecond summary", output)
-        self.assertIn("State: draft\n\nReason: Created as candidate work\\.", output)
-        self.assertIn("## Acceptance\n\n- Keep state\n  Keep evidence", output)
-        self.assertIn("## Completion evidence\n\nNone supplied", output)
-        self.assertIn("- kind: text; target: fixture:reference; relationship: related", output)
 
     def test_pr_includes_entire_selected_subject_and_deferred_evidence(self):
         output = self.rendered("pr-author")
@@ -146,7 +137,7 @@ class RendererTests(ToolCase):
                         "lesson-author", "adr-author") else lambda: module.validate_template(template)
                     self.assert_fault(module, operation, code="template-token")
             repeated = binding.template + "\n{{title}}"
-            if family in ("local-backlog", "pr-author"):
+            if family == "pr-author":
                 module.validate_template(repeated)
             output = module.render(SimpleNamespace(template=repeated), value)
             self.assertEqual(output.count("&lt;tag&gt;"), 2)

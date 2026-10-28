@@ -14,7 +14,7 @@ writer，也不修改 task 或 workflow 的生命週期狀態。範例驗證使�
 將各請求存成 UTF-8 JSON，再以同一個 `--root` 執行：
 
 ```powershell
-python -I -B tools/workflow-records.py --root C:/path/to/project --request C:/path/to/request.json
+python -I -B src/skills/workflow-records/tools/workflow-records.py --root C:/path/to/project --request C:/path/to/request.json
 ```
 
 每次同時檢查 exit code、`status`、`mutation_state` 和結果／錯誤。

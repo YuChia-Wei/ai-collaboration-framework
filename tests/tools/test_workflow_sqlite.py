@@ -127,6 +127,60 @@ class SQLiteRecordTests(unittest.TestCase):
         self.assertEqual(result["store_state"], "inactive")
         return service, config
 
+    def test_repeated_completion_reopen_is_atomic_and_preserves_replay_and_history(self):
+        # Source lifecycle values are supplied by the caller, not generic admission rules.
+        original = self.tables()
+        created_at = "2026-10-29T09:00:00+08:00"
+        retained = list(original["revisions"])
+        requests = []
+        for step, status in enumerate(("completed", "in_progress", "completed", "in_progress", "completed"), 1):
+            with self.subTest(step=step, status=status):
+                current = self.ok(self.run("context"))
+                timestamp = "2026-10-29T10:00:0" + str(step) + "+08:00"
+                phase = "completed" if status == "completed" else "implementation"
+                result = {"summary": "Caller transition " + str(step),
+                          "finding_status": "addressed" if status == "completed" else "pending"}
+                document = "# Cycle " + str(step) + "\n" + status + "\n"
+                request = self.request("revise-workflow", operation_id="lifecycle-" + str(step),
+                                       expected_revision=current["revision"], expected_source_head=current["source_head"],
+                                       metadata_patch={"lifecycle_contract": "1.0", "status": status, "current_phase": phase,
+                                                       "created_at": created_at, "updated_at": timestamp},
+                                       task_patches=[{"task_id": "T1", "status": status, "created_at": created_at,
+                                                      "updated_at": timestamp, "result": result}],
+                                       documents={"plan.md": document})
+                receipt = self.ok(self.service.execute(request))
+                after = self.tables()
+                self.assertEqual(len(after["revisions"]), len(original["revisions"]) + step)
+                self.assertTrue(all(row in after["revisions"] for row in retained))
+                row = next(row for row in after["revisions"] if row[1] == receipt["revision"])
+                state = json.loads(row[3])
+                self.assertEqual(row[2], current["revision"])
+                self.assertEqual(state["event"]["operation_id"], request["operation_id"])
+                for field in ("status", "current_phase", "created_at", "updated_at", "lifecycle_contract"):
+                    self.assertEqual(state["metadata"][field], request["metadata_patch"][field])
+                for field in ("status", "created_at", "updated_at", "result"):
+                    self.assertEqual(state["tasks"][0][field], request["task_patches"][0][field])
+                self.assertEqual(state["metadata"]["extensions"], record()["metadata"]["extensions"])
+                self.assertEqual(state["tasks"][0]["unknown"], record()["tasks"][0]["unknown"])
+                self.assertEqual(self.ok(self.run("read", document="plan.md"))["content"], document)
+                self.assertEqual(state["documents"]["plan.md"], digest(document.encode("utf-8")))
+                self.assertEqual(self.ok(self.run("context"))["status"], status)
+                self.assertEqual({**self.ok(self.service.execute(request)), "replayed": False}, receipt)
+                stale = copy.deepcopy(request)
+                stale["operation_id"] += "-stale"
+                stale["metadata_patch"]["updated_at"] = "2026-10-29T23:59:59+08:00"
+                stale["task_patches"][0]["result"] = {"summary": "must not persist", "finding_status": "pending"}
+                stale["documents"]["plan.md"] = "must not persist"
+                self.error(self.service.execute(stale), "revision_conflict")
+                self.assertEqual(self.tables(), after)
+                retained = list(after["revisions"])
+                requests.append((request, receipt))
+        terminal = self.tables()
+        for request, receipt in requests:
+            self.assertEqual({**self.ok(self.service.execute(request)), "replayed": False}, receipt)
+        self.assertEqual(self.tables(), terminal)
+        self.assertEqual(self.ok(self.run("context"))["status"], "completed")
+
     def test_create_task_cli_fifty_additions_preserve_history_and_export_closure(self):
         self.ok(self.service.execute(self.checkpoint()))
         before = self.tables()

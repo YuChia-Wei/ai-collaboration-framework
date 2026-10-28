@@ -321,6 +321,24 @@ class EmptyManagedDirectoryTests(support.FixtureTestCase):
         self.assertEqual(custom.read_bytes(), b'project owned')
 
 
+class BacklogDeselectionTests(unittest.TestCase):
+    def test_descriptor_delta_removes_only_old_owned_backlog_members(self):
+        # Exact old component closure is a retained upgrade fixture, not a source dependency.
+        old_members = ("SKILL.md", "references/configuration.md", "references/example.md",
+                       "references/operations.md", "schemas/local-backlog-record.schema.json",
+                       "scripts/local_backlog.py", "skill-package.yaml", "templates/work-item.md")
+        paths = {".ai/core/skills/local-backlog/" + name for name in old_members}
+        paths.update({".agents/skills/local-backlog/SKILL.md", ".claude/skills/local-backlog/SKILL.md"})
+        common = {"sha256": "1" * 64, "size": 10, "mode": "100644", "owner": "skill:local-backlog"}
+        before = {name: {**common, "kind": "runtime" if name.startswith((".agents/", ".claude/")) else "payload"} for name in paths}
+        kept = ".ai/core/skills/pr-author/SKILL.md"
+        before[kept] = {**common, "owner": "skill:pr-author", "kind": "payload"}
+        rows = planning.member_delta(SimpleNamespace(members=before), SimpleNamespace(members={kept: before[kept]}))
+        self.assertEqual({row["destination"] for row in rows if row["action"] == "remove"}, paths)
+        self.assertEqual(next(row["action"] for row in rows if row["destination"] == kept), "unchanged")
+        self.assertFalse(any(row["destination"].startswith(("notes/", ".dev/")) for row in rows))
+
+
 class MaintenanceContractTests(support.FixtureTestCase):
     def test_reinstall_preview_copies_only_selected_preservation_inputs(self):
         base=support.active_run().case('reinstall-agent-scope')

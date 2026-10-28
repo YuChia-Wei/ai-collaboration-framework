@@ -1,13 +1,12 @@
 preset_version: 1
 id: collaboration
-version: 0.2.0
+version: 0.3.0
 skills:
 - adr-author
 - code-reviewer
 - diagnostic-analyst
 - domain-model-designer
 - lesson-author
-- local-backlog
 - local-change-implementer
 - pr-author
 - problem-frame-author

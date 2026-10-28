@@ -12,9 +12,10 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
-# Deliberate scope matrix: 12 distribution JSON schemas, seven record JSON
+# Deliberate scope matrix: 12 distribution JSON schemas, six record JSON
 # schemas (including legacy lesson and unpublished standards-promotion), two
-# workflow transport contracts, and one custom declarative knowledge baseline.
+# workflow transport contracts, three settings/file-export schemas, and one
+# custom declarative knowledge baseline.
 # New source schemas require a conscious fixture/coverage decision, not just
 # automatic meta-validation.
 DISTRIBUTION = {
@@ -28,7 +29,6 @@ RECORDS = {
     "adr": ("adr-author", "adr-record", "adr.py"),
     "lesson": ("lesson-author", "lesson-record-v2", "lesson.py"),
     "legacy-lesson": ("lesson-author", "lesson-record", "lesson.py"),
-    "backlog": ("local-backlog", "local-backlog-record", "local_backlog.py"),
     "pr": ("pr-author", "pr-record", "pr.py"),
     "cbf": ("problem-frame-author", "cbf-record-v1", "problem_frame.py"),
     "promotion": ("standards-promotion", "promotion-record", "standards_promotion.py"),
@@ -37,12 +37,17 @@ WORKFLOW_CONTRACTS = {
     "board-collaboration-v2": "src/skills/workflow-board-experimental/schemas/board-collaboration-v2.schema.json",
     "source-replica-v1": "src/skills/workflow-records/schemas/source-replica-v1.schema.json",
 }
+SETTINGS_AND_FILE_SCHEMAS = (
+    "src/skills/software-development-orchestrator/schemas/issue-control-settings.schema.json",
+    "src/skills/workflow-records/schemas/file-workflow-v1.schema.json",
+    "src/skills/workflow-records/schemas/file-task-v1.schema.json",
+)
 PROVIDER_ROOT = "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation"
 PROVIDER_SCHEMA = PROVIDER_ROOT + "/provider-contract.schema.yaml"
 JSON_PATHS = tuple(
     [f"src/distribution/schemas/{name}.schema.json" for name in DISTRIBUTION]
     + [f"src/skills/{family}/schemas/{name}.schema.json" for family, name, _ in RECORDS.values()]
-    + list(WORKFLOW_CONTRACTS.values())
+    + list(WORKFLOW_CONTRACTS.values()) + list(SETTINGS_AND_FILE_SCHEMAS)
 )
 STAMP = "2026-10-02T00:00:00+00:00"
 SHA = "a" * 64
@@ -208,8 +213,6 @@ def record_examples():
         "lesson": {**base, **lifecycle, "schema_version": "2.0.0", "kind": "lesson", "id": "lesson-" + "c" * 32,
                    "status": "candidate", "decision": None, "content": lesson_content()},
         "legacy-lesson": {**base, "kind": "lesson", "id": "lesson-" + "c" * 32, "status": "candidate", **lesson_content()},
-        "backlog": {**base, "kind": "local-backlog", "id": "work-" + "c" * 32, "title": "Work item", "summary": "Bounded work",
-                    "references": [], "writable_authority": "local", "state": "draft", "state_reason": "Proposed", "acceptance": ["Observable result"], "completion_evidence": []},
         "pr": {**base, "kind": "pr", "id": "pr-" + "c" * 32, "state": "prepared", "title": "Proposed change",
                "summary": "Review a bounded change", "references": [], "subject": pr_subject, "validation": []},
         "cbf": cbf(),

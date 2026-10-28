@@ -177,9 +177,18 @@ class LayoutTests(unittest.TestCase):
         # Keep the legacy-input fixture meaningful after this source project has
         # itself migrated. Retain its real catalog/selection/member closure.
         document = deepcopy(original.document)
+        moved_inputs = {
+            layout.LEGACY + '/framework.json': json_bytes({'config_version': 2, 'skills': {}, 'constraints': {}}),
+            layout.LEGACY + '/installation.json': json_bytes(document['selection']['desired']),
+        }
+        moved_paths = set()
         for row in document['project_inputs']:
             if row['path'].startswith(layout.CANONICAL + '/'):
                 row['path'] = layout.LEGACY + row['path'][len(layout.CANONICAL):]
+            if row['path'].startswith(layout.LEGACY + '/'):
+                moved_paths.add(row['path'])
+                row['sha256'] = p.digest(moved_inputs[row['path']])
+        self.assertEqual(moved_paths, set(moved_inputs))
         document['project_inputs'].sort(key=lambda row: row['path'])
         original = catalog.lock_bytes(json_bytes(document))
         self.assertTrue(any(row['path'].startswith(layout.LEGACY + '/')
@@ -187,13 +196,11 @@ class LayoutTests(unittest.TestCase):
         (self.root / state.LOCK_PATH).write_bytes(original.raw)
         for row in original.document['project_inputs']:
             if row['path'].startswith(layout.LEGACY + '/'):
-                source = ROOT / row['path']
-                if not source.exists():
-                    source = ROOT / layout.relocated(row['path'])
-                self.assertEqual(p.digest(source.read_bytes()), row['sha256'])
+                raw = moved_inputs[row['path']]
+                self.assertEqual(p.digest(raw), row['sha256'])
                 target = self.root / row['path']
                 target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(source.read_bytes())
+                target.write_bytes(raw)
         planned = layout.plan(self.project, engine())
         result = layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())
         self.assertEqual(result['outcome'], 'applied')

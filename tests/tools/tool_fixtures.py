@@ -15,7 +15,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = {
     "lesson-author": "lesson.py", "adr-author": "adr.py",
-    "local-backlog": "local_backlog.py", "pr-author": "pr.py",
+    "pr-author": "pr.py",
     "problem-frame-author": "problem_frame.py",
 }
 FAMILIES = tuple(SCRIPTS)
@@ -63,14 +63,11 @@ def content(family):
                 "applies_when": ["Single owner"], "does_not_apply_when": []}
     value = {"title": "工作 *項目* <tag>", "summary": "First summary\nSecond summary",
              "references": [{"kind": "text", "target": "fixture:reference", "relationship": "related"}]}
-    if family == "local-backlog":
-        value["acceptance"] = ["Keep state\nKeep evidence"]
-    else:
-        value["validation"] = [{"id": "V1", "command": "python check", "disposition": "deferred",
-                                "subject_head": "b" * 40, "subject_diff_sha256": "f" * 64,
-                                "evidence": [], "reason": "Await caller evidence"}]
-        value["provider_target"] = {"provider": "github", "host": "github.com", "repository": "fixture/example",
-                                    "base_ref": "main", "head_ref": "fixture"}
+    value["validation"] = [{"id": "V1", "command": "python check", "disposition": "deferred",
+                            "subject_head": "b" * 40, "subject_diff_sha256": "f" * 64,
+                            "evidence": [], "reason": "Await caller evidence"}]
+    value["provider_target"] = {"provider": "github", "host": "github.com", "repository": "fixture/example",
+                                "base_ref": "main", "head_ref": "fixture"}
     return value
 
 
@@ -78,22 +75,19 @@ def record(family):
     """Fixed records authored independently of production constructors."""
     if family == "problem-frame-author":
         return cbf_record()
-    prefix = {"lesson-author": "lesson", "adr-author": "adr", "local-backlog": "work", "pr-author": "pr"}[family]
+    prefix = {"lesson-author": "lesson", "adr-author": "adr", "pr-author": "pr"}[family]
     value = {"schema_version": "2.0.0" if family == "lesson-author" else "1.0.0",
-             "kind": "local-backlog" if family == "local-backlog" else prefix,
+             "kind": prefix,
              "owner": "project", "id": prefix + "-" + "1" * 32, "created_at": STAMP, "updated_at": STAMP}
     if family in ("lesson-author", "adr-author"):
         value.update(content=content(family), status="candidate" if family == "lesson-author" else "draft",
                      revision=1, successor=None, decision=None, history=[], provenance=[])
     else:
         value.update(content(family))
-        if family == "local-backlog":
-            value.update(state="draft", writable_authority="local", state_reason="Created as candidate work.", completion_evidence=[])
-        else:
-            value.update(state="prepared", subject={"object_format": "sha1", "base_commit": "a" * 40,
-                         "head_commit": "b" * 40, "merge_base": "a" * 40, "base_tree": "c" * 40,
-                         "head_tree": "d" * 40, "diff_sha256": "f" * 64, "git_version": "fixture git",
-                         "diff_recipe": "pr.diff/v1"})
+        value.update(state="prepared", subject={"object_format": "sha1", "base_commit": "a" * 40,
+                     "head_commit": "b" * 40, "merge_base": "a" * 40, "base_tree": "c" * 40,
+                     "head_tree": "d" * 40, "diff_sha256": "f" * 64, "git_version": "fixture git",
+                     "diff_recipe": "pr.diff/v1"})
     return value
 
 

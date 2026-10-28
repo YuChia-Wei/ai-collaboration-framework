@@ -22,6 +22,9 @@
         "origin": "package",
         "path": "templates/adr.md"
       }
+    },
+    "software-development-orchestrator": {
+      "issue_control": ""
     }
   },
   "constraints": {

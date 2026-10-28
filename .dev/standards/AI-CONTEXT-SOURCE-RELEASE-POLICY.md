@@ -17,6 +17,14 @@ and may create an owned draft. Workflow/tooling identity may be newer than an
 old selected tag and is bound separately. No tag creation/movement, AI runtime,
 automatic release notes or automatic public publication is part of this flow.
 
+Before requesting a version tag, reconcile `docs/` with the exact source selected
+for that release: skill IDs and versions, operation/configuration examples,
+installation and removal steps, architecture/data-flow diagrams, compatibility
+and known limitations. Update affected guides in the product change and record
+the checked source and any unresolved mismatch in the release preparation work.
+An unresolved mismatch blocks the tag handoff. A planned version, completed Issue
+or merge to `main` does not select publication or satisfy this documentation check.
+
 For this current format, actual package bytes and the external build manifest
 are produced by the pipeline. Per-version tracked notes, release records,
 asset-admission files and post-tag source metadata commits are not prerequisites.

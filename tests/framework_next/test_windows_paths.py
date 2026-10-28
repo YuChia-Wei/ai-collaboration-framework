@@ -19,7 +19,7 @@ from distribution import installation_state as state, installation_io as io
 
 SCRIPTS = {
     'lesson-author': 'lesson', 'adr-author': 'adr', 'standards-promotion': 'standards_promotion',
-    'pr-author': 'pr', 'local-backlog': 'local_backlog',
+    'pr-author': 'pr',
     'problem-frame-author': 'problem_frame',
 }
 MODULES = {}

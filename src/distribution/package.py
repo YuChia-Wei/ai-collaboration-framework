@@ -201,7 +201,25 @@ def load_package(blob: Blob) -> Package:
         require(template["input_role"] in roles and template["output_role"] in roles,
                 f"{owner}: template role binding is missing")
 
-    if metadata_version in {3, 4, 5} and data["configuration"] is None:
+    if isinstance(data["configuration"], dict) and "kind" in data["configuration"]:
+        config = mapping(data["configuration"], {"kind", "namespace", "schema", "defaults"}, set(), label)
+        require(config["kind"] == "instruction-settings", f"{owner}: unknown configuration kind")
+        require(metadata_version in {3, 4, 5} and not roles and not templates and not tools
+                and all(row["execution"] == "instruction" for row in operations.values()),
+                f"{owner}: instruction settings require instruction-only operations and no record resources")
+        require(config["namespace"] == owner, f"{owner}: configuration namespace mismatch")
+        selected = mapping(config["schema"], {"id", "version", "path"}, set(), label)
+        selected_id = (identifier(selected["id"], label), version(selected["version"], label))
+        require(selected_id in schemas and selected["path"] == schemas[selected_id]["path"],
+                f"{owner}: settings schema must exactly select a declared schema identity/path")
+        require(type(config["defaults"]) is dict, f"{owner}: instruction defaults must be a JSON object")
+        from .data import json_bytes
+        try:
+            json_bytes(config["defaults"])
+        except (TypeError, ValueError, UnicodeError) as exc:
+            from .data import DistributionError
+            raise DistributionError(f"{owner}: instruction defaults must be JSON") from exc
+    elif metadata_version in {3, 4, 5} and data["configuration"] is None:
         require(not roles and not schemas and not templates,
                 f"{owner}: null configuration requires empty artifact_roles, schemas and templates")
     else:
@@ -258,6 +276,79 @@ def _same_document_schema_reference(document: dict, reference: str, label: str) 
         else:
             require(False, f"{label}: schema reference traverses a scalar")
     require(type(target) in {dict, bool}, f"{label}: schema reference must select an object or boolean schema")
+
+
+def _check_instruction_defaults(schema: dict, defaults: dict, label: str) -> None:
+    """Finite settings assertions; no external resolver or project settings IO.
+
+    Only object/string types, const, anyOf, closed properties, required, string
+    lengths/pattern and string annotations are supported. Unknown assertions fail
+    closed, including in an unselected union arm. Record schemas keep their owner.
+    """
+    from .data import DistributionError
+    annotations = {"$schema", "$id", "title", "description"}
+    supported = annotations | {"type", "const", "anyOf", "properties", "required",
+                               "additionalProperties", "minLength", "maxLength", "pattern"}
+    def grammar(spec, depth=0):
+        require(depth <= 16 and type(spec) is dict and bool(spec) and set(spec) <= supported,
+                label + ": unsupported instruction settings schema assertion")
+        for key in annotations & spec.keys():
+            string(spec[key], label)
+        require("type" in spec or "const" in spec or "anyOf" in spec, label + ": schema needs an assertion")
+        typ = spec.get("type")
+        require(typ is None or typ in ("object", "string"), label + ": unsupported settings type")
+        if {"properties", "required", "additionalProperties"} & spec.keys():
+            require(typ == "object" and spec.get("additionalProperties") is False
+                    and type(spec.get("properties")) is dict, label + ": settings objects must be closed")
+        if typ == "object":
+            require(type(spec.get("properties")) is dict and spec.get("additionalProperties") is False,
+                    label + ": settings objects must declare closed properties")
+            required = text_array(spec.get("required", []), label)
+            require(set(required) <= spec["properties"].keys(), label + ": required settings property is absent")
+            for name, child in spec["properties"].items():
+                string(name, label)
+                grammar(child, depth + 1)
+        if {"minLength", "maxLength", "pattern"} & spec.keys():
+            require(typ == "string", label + ": string assertion requires string type")
+        if typ == "string":
+            for key in ("minLength", "maxLength"):
+                if key in spec:
+                    require(type(spec[key]) is int and 0 <= spec[key] <= 4096, label + ": invalid string bound")
+            require(spec.get("minLength", 0) <= spec.get("maxLength", 4096), label + ": inverted string bounds")
+            if "pattern" in spec:
+                try:
+                    re.compile(string(spec["pattern"], label))
+                except re.error as exc:
+                    raise DistributionError(label + ": invalid settings pattern") from exc
+        if "anyOf" in spec:
+            require(type(spec["anyOf"]) is list and 1 <= len(spec["anyOf"]) <= 16, label + ": invalid settings union")
+            for arm in spec["anyOf"]:
+                grammar(arm, depth + 1)
+    def check(spec, value):
+        if "const" in spec:
+            require(type(value) is type(spec["const"]) and value == spec["const"], label + ": defaults violate constant")
+        if "anyOf" in spec:
+            for arm in spec["anyOf"]:
+                try:
+                    check(arm, value)
+                    break
+                except DistributionError:
+                    pass
+            else:
+                require(False, label + ": defaults violate settings union")
+        if spec.get("type") == "object":
+            require(type(value) is dict and set(spec.get("required", [])) <= value.keys() <= spec["properties"].keys(),
+                    label + ": defaults violate closed settings object")
+            for name, item in value.items():
+                check(spec["properties"][name], item)
+        elif spec.get("type") == "string":
+            require(type(value) is str and spec.get("minLength", 0) <= len(value) <= spec.get("maxLength", 4096),
+                    label + ": defaults violate string bounds")
+            require("pattern" not in spec or re.search(spec["pattern"], value) is not None,
+                    label + ": defaults violate string pattern")
+    require(schema.get("type") == "object", label + ": settings schema root must be object")
+    grammar(schema)
+    check(schema, defaults)
 
 
 def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
@@ -318,6 +409,9 @@ def check_references(package: Package, blobs: dict[str, Blob]) -> dict:
                 for child in value:
                     walk(child)
         walk(schema)
+        config = package.metadata["configuration"]
+        if isinstance(config, dict) and config.get("kind") == "instruction-settings" and name == config["schema"]["path"]:
+            _check_instruction_defaults(schema, config["defaults"], package.id)
     entry = blobs[package.metadata["entrypoint"]].data.decode("utf-8", errors="strict")
     frontmatter = re.match(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|$)", entry, re.DOTALL)
     require(frontmatter is not None, f"{package.id}: SKILL.md needs name/description frontmatter")

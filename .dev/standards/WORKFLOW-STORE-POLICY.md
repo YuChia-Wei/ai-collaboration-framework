@@ -2,16 +2,18 @@
 
 This policy selects daily workflow storage for this framework source project
 only. It does not select storage for downstream projects or alter the generic
-product contract. The owner selected local SQLite authority and explicit manual
-Board source-copy delivery under Issue #416 and the
-[accepted design](../design/workflow-0220-2026-10-25/design.md), sections 16–17.
-Policy adoption, a successful local operation, native continuation, replica
-completion and repository integration are separate observations.
+product contract. The owner's 2026-10-29 scope for Issues #416 and #514 selects
+SQLite as this repository's sole read authority and write target. Online Board
+development and multi-agent acceptance remain separately planned work.
+Policy adoption, actual store configuration and repository integration are
+separate observations.
 
 ## Authority and explicit runtime selection
 
 New daily execution workflows and explicitly continued existing workflows use
-the selected local schema-2 SQLite store. The approved persistent configuration
+the selected local SQLite store. Disabling the existing source replica binding
+explicitly advances its format to `workflow-sqlite/2.1`; older runtimes must
+refuse that format. The approved persistent configuration
 is `%LOCALAPPDATA%\AI-Collaboration\ai-collaboration-framework\store-config.json`;
 the database is `records.sqlite` in that same directory. Its selected identity is:
 
@@ -132,15 +134,16 @@ Retain the exact request and receipt. Same-request replay uses the same operatio
 ID; a changed payload requires a new operation. A missing/lost response is not
 proof of rollback: reconcile the original receipt before retry or new work.
 
-## Replica delivery and recovery
+## SQLite-only operation and recovery
 
-Local reads/writes and explicit manual Board replica delivery are distinct.
-Saved target intents capture local revisions atomically. Local acceptance with
-pending intents is not remote synchronization completion. Use the source-store
-contract's `replica-prepare` and `replica-observe` through the explicitly selected
-host transport; preserve persisted command identities and payloads. No automatic
-dispatch, scheduler or credential storage is selected. Board unavailability does
-not silently change the local authority or prove a replica current.
+The existing Board binding must be disabled through public `binding-status`
+and CAS-bound `binding-disable`, retaining the original request and receipt.
+After its cutoff, new local revisions capture no intents for that binding;
+command preparation is refused. Keep prior snapshots, bindings, pending intents,
+commands and observations unchanged as history. Do not dispatch retained pending
+commands, create a new remote target or select a remote read source under this
+policy. Historical lookup/observation support is not delivery authorization.
+Local reads and writes continue without Board or network availability.
 
 Use complete native `export`, `preflight` and inactive `restore` for selected
 backup/recovery checks, retaining archive/snapshot digests. A restored copy is
@@ -149,3 +152,8 @@ Deactivation, activation or replacement requires its separately selected recover
 procedure and authorization. Preserve the existing database and recovery evidence.
 This policy neither performs native cutover nor claims backup, transport or
 runtime acceptance merely because these instructions exist.
+
+Use `export-files` and `preflight-files` for readable current `workflow.yaml`,
+tasks and documents, with explicit project-owned schema/template selection when
+needed. That projection does not replace the complete archive or authorize
+re-import, migration, disaster promotion or activation.

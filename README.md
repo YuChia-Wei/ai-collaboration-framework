@@ -23,7 +23,7 @@
 
 完整的增減、改名與職責變化見 [Skill 職責變遷](.dev/guides/ai-collaboration-guides/SKILL-RESPONSIBILITY-CHANGES.md)。
 
-Installation selection 與 skill operation settings 分開管理。`.ai/project/framework.json` 為 Lesson、ADR、PR、CBF 與 standards-promotion skills 設定了五個 project-owned filesystem roots 及精確 write_roots，採用套件模板與 tracked-intent；目前沒有建立記錄或 evidence，也沒有配置 ADR decision、promotion target/source adapters 或 local-backlog provider。standards-promotion namespace 設定保留，但目前不安裝該 skill。這是 path selection，不是執行權限、store availability 或 runtime capability 證明。
+Installation selection 與 skill operation settings 分開管理。`.ai/project/framework.json` 明確設定 Lesson 與 ADR 的 project-owned filesystem roots、write_roots 及套件範本，並將 orchestrator 的 `issue_control` 留空，使用目前可用且已授權的 GitHub 工具。其他技能設定保持未選取。設定只表達操作方式，不代表 store 可用、外部寫入授權或 runtime 驗收。
 
 RC3 透過固定 engine 的 `tools/reinstall-framework.py` 提供明確選用的 Git-backed 破壞性重裝。呼叫者指定精確清理與保留清單，工具先在外部 preview 預檢新安裝，並在安裝後核對保留內容。清理不是原子操作：已提交的 Git baseline 負責過時檔案還原，固定 API 2 journal 負責新安裝。請參閱[重裝契約](.dev/workflows/2026-09-30-rc3-reinstall/breaking-reinstall.md)與[來源／MQ 實測結果](.dev/workflows/2026-09-30-rc3-reinstall/results.md)。
 
