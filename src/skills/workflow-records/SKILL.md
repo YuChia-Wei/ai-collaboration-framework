@@ -5,6 +5,12 @@ description: Read and maintain selected Git or SQLite workflow records and local
 
 # Workflow Records
 
+For readable `workflow.yaml`, task YAML and byte-preserved document/attachment
+exports of one current native/group record, use [file export](references/file-export.md).
+Explicit project-owned schema/template selection validates without inserting
+defaults. File export/preflight do not replace complete recovery archives or
+provide a historical import/restore adapter.
+
 For an explicitly initialized offline Local file authority, optional same-workflow
 SQLite carrier, and project-owned provider controls, use the additive
 [local-group contract](references/local-group.md) and [CLI](tools/local-group.py).

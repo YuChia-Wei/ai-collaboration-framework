@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Current workflow metadata, preserving project extensions",
+  "type": "object",
+  "required": ["title", "status"],
+  "properties": {"title": {"type": "string"}, "status": {"type": "string"}},
+  "additionalProperties": true
+}

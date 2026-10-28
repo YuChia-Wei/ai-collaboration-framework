@@ -33,6 +33,8 @@ original operation ID and query its receipt; an error is not proof of rollback.
 | `source-chunk` | `snapshot_id`, `path`, `index` | Exact chunk base64, raw hash and identity |
 | `source-operation` | `operation_id` | Local mutation receipt or unknown |
 | `replica-bind` | `operation_id`, `binding`, `new_source_namespace: true` | Initial-only binding and baseline under one write lock |
+| `binding-status` | `binding_id` | Current target digest, global snapshot sequence and retained disable receipt |
+| `binding-disable` | `operation_id`, `binding_id`, `expected_binding_digest`, `expected_snapshot_sequence` | Atomic irreversible cutoff and immutable original-request receipt |
 | `replica-prepare` | `intent_id`, optional `mode: command` or `lookup` | One exact already-persisted command or original lookup |
 | `replica-observe` | `operation_id`, `intent_id`, `step_index`, `channel: direct` or `lookup`, `mcp_result` | Retained transport/evaluation and monotonic sync status |
 
@@ -288,3 +290,35 @@ complete configuration history, generations, exact historical target membership,
 pending commands, observations, read tokens and proof bytes. Restore is inactive
 and retains the existing sole-successor activation protocol. Backup-1/2 formats
 and validators remain compatible; no restore converts their schema.
+
+## Explicitly stop capture for one schema-2 binding
+
+Read `binding-status`, then explicitly submit `binding-disable` with its exact
+`binding_digest` as `expected_binding_digest` and `snapshot_sequence` as
+`expected_snapshot_sequence`. The write lock compares both values before recording
+an immutable control in `source_operations`. Its receipt retains the original
+request, target digest and cutoff sequence. Exact operation replay occurs before
+CAS and inactive-store checks; a changed request under the same operation ID
+conflicts. A different operation cannot disable an already disabled binding.
+
+Only this explicit operation upgrades schema 2 to `workflow-sqlite/2.1`, atomically
+with the disable receipt; reads and ordinary workflow writes do not upgrade it.
+This marker makes older runtimes refuse to open the database. Schema 3 keeps its
+separate explicit configuration operations; this operation does not migrate it.
+
+Local reads/writes remain SQLite operations. Later snapshots do not enqueue an
+intent for the disabled binding; other active bindings retain capture. No binding,
+intent, prepared command, observation or historical bytes are deleted or rewritten.
+Command preparation for the disabled binding fails with `binding_disabled`.
+`mode: lookup` and `replica-observe` retain historical reconciliation only; lookup
+can inspect a later pending intent without dispatching its pending predecessor.
+The returned `command` in lookup mode is retained evidence; only `request` is the
+lookup request. Disabled bindings cannot be implicitly reenabled or replaced.
+
+Complete backup uses `workflow-backup/2.1`; preflight validates the control's
+original request/digest, binding identity, store reference and exact cutoff, then
+requires every snapshot/binding intent through that cut and none after it. The
+format preserves existing tables and historical commands; restore remains
+inactive. Existing schema-2 backups stay readable. Old runtimes refuse the new
+backup format. Installation and binding status reads perform no control write,
+provider dispatch, data migration or automatic disable.

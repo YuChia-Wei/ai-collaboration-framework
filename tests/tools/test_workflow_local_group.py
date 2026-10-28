@@ -408,6 +408,153 @@ class LocalGroupTests(unittest.TestCase):
                 self.assertFalse((control_directory / "control.json").exists())
                 self.assertFalse((control_directory / "transition.json").exists())
 
+    def reject_rehashed_group_archive(self, original, name):
+        from workflow_records import source_contract as c
+        archive = copy.deepcopy(original)
+        for envelope in archive["payload"]["members"].values():
+            m.seal(envelope)
+        archive["snapshot_digest"] = c.digest(storage.bounded(archive["payload"]))
+        path = self.directory / (name + "-forged.json")
+        storage.atomic_json(path, archive, fresh=True)
+        archive_digest = c.digest(storage.bounded(archive))
+        self.error(self.request("group-preflight", archive=str(path), archive_digest=archive_digest), "integrity_error")
+        config = self.configuration(name + "-restore")
+        restored = LocalGroup(self.project, config)
+        response = restored.execute({"contract_version": m.PROFILE, "group_ref": self.ref, "operation": "group-restore", "operation_id": name + "-restore",
+                                     "archive": str(path), "archive_digest": archive_digest, "member_paths": {"file": config["file_path"]}})
+        self.assertEqual(response["status"], "error", response)
+        self.assertEqual(response["error"]["code"], "integrity_error", response)
+        self.assertFalse(Path(config["file_path"]).exists())
+        self.assertFalse((Path(config["control_directory"]) / "control.json").exists())
+        self.assertFalse((Path(config["control_directory"]) / "transition.json").exists())
+
+    @staticmethod
+    def rehash_remote_command(envelope, intent, mutate):
+        """Forge consistent hashes/receipts so only semantic correlation can reject."""
+        from workflow_records import source_contract as c
+        old_id, saved = next((key, value) for key, value in envelope["handoffs"].items() if value["intent_id"] == intent)
+        command = saved["command"]
+        mutate(command)
+        command["request_digest"] = c.digest(c.canonical({key: value for key, value in command.items() if key != "request_digest"}))
+        new_id = "handoff-" + command["request_digest"][7:]
+        del envelope["handoffs"][old_id]
+        envelope["handoffs"][new_id] = saved
+        for observed in envelope["deliveries"].get(intent, {}).get("observations", []):
+            observed["request_digest"] = command["request_digest"]
+        for value in envelope["aux_operations"].values():
+            request, receipt = value["request"], value["receipt"]
+            if request.get("operation") == "provider-prepare" and request.get("intent_id") == intent:
+                receipt["handoff_id"] = new_id
+                receipt["request"] = copy.deepcopy(command) if request["mode"] == "command" else {key: command[key] for key in
+                                     ("contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision")}
+            elif request.get("operation") == "provider-observe" and request.get("handoff_id") == old_id:
+                request["handoff_id"] = new_id
+                request["observation"]["request_digest"] = command["request_digest"]
+                value["request_digest"] = m.fingerprint(request)
+
+    def test_recovery_binds_fresh_and_pending_expected_provider_revision(self):
+        original, _, first = self.accepted_remote_backup()
+        self.rehash_remote_command(original["payload"]["members"]["file"], first,
+                                   lambda command: command.update(expected_provider_revision="forged-first-revision"))
+        self.reject_rehashed_group_archive(original, "fresh-provider-revision")
+        self.ok(self.request("group-write-document", document="plan.md", content={"encoding": "utf-8", "content": "successor"}))
+        successor = [row for row in self.ok(self.request("group-sync-status"))["targets"] if row["target"].get("provider_id") == "alpha"][-1]["intent_id"]
+        self.ok(self.request("provider-prepare", intent_id=successor, mode="command"))
+        exported = self.ok(self.request("group-export", destination=str(self.directory / "successor.json")))
+        valid = storage.read_json(Path(exported["destination"]))
+        self.ok(self.request("group-preflight", archive=exported["destination"], archive_digest=exported["archive_digest"]))
+        for name, revision in (("pending-null", None), ("pending-wrong", "forged-predecessor-revision")):
+            with self.subTest(variant=name):
+                archive = copy.deepcopy(valid)
+                self.rehash_remote_command(archive["payload"]["members"]["file"], successor,
+                                           lambda command: command.update(expected_provider_revision=revision))
+                self.reject_rehashed_group_archive(archive, name)
+
+    def test_recovery_requires_exact_accepted_predecessor(self):
+        self.accepted_remote_backup()
+        self.ok(self.request("group-write-document", document="plan.md", content={"encoding": "utf-8", "content": "successor"}))
+        successor = [row for row in self.ok(self.request("group-sync-status"))["targets"] if row["target"].get("provider_id") == "alpha"][-1]["intent_id"]
+        self.ok(self.request("provider-prepare", intent_id=successor, mode="command"))
+        exported = self.ok(self.request("group-export", destination=str(self.directory / "predecessors.json")))
+        valid = storage.read_json(Path(exported["destination"]))
+        from workflow_records import source_contract as c, group_providers as providers
+        for name, predecessor in (("skipped-predecessor", None), ("foreign-predecessor", "intent-foreign")):
+            with self.subTest(variant=name):
+                archive = copy.deepcopy(valid)
+                envelope = archive["payload"]["members"]["file"]
+                event = envelope["events"][-1]
+                target = event["body"]["targets"][0]
+                target["predecessor_intent_id"] = predecessor
+                event["cut"] = c.digest(c.canonical(event["body"]))
+                replacement = providers.intent_id(event["cut"], target)
+                envelope["deliveries"][replacement] = envelope["deliveries"].pop(successor)
+                handoff = next(value for value in envelope["handoffs"].values() if value["intent_id"] == successor)
+                handoff["intent_id"] = replacement
+                for value in envelope["aux_operations"].values():
+                    if value["request"].get("intent_id") == successor:
+                        value["request"]["intent_id"] = replacement
+                        value["request_digest"] = m.fingerprint(value["request"])
+                self.rehash_remote_command(envelope, replacement, lambda command: command.update(operation_id=replacement, logical_revision=event["cut"]))
+                self.reject_rehashed_group_archive(archive, name)
+        archive = copy.deepcopy(valid)
+        envelope = archive["payload"]["members"]["file"]
+        predecessor = envelope["events"][-1]["body"]["targets"][0]["predecessor_intent_id"]
+        envelope["deliveries"][predecessor]["state"] = "unknown"
+        self.reject_rehashed_group_archive(archive, "unaccepted-predecessor")
+
+    def test_recovery_correlates_prepare_receipt_to_original_command_and_lookup(self):
+        original, _, intent = self.accepted_remote_backup()
+        self.ok(self.request("provider-prepare", intent_id=intent, mode="lookup"))
+        exported = self.ok(self.request("group-export", destination=str(self.directory / "lookup.json")))
+        original = storage.read_json(Path(exported["destination"]))
+        variants = (("command-body", "command", "body"), ("lookup-body", "lookup", "body"),
+                    ("handoff", "command", "handoff"), ("mode", "lookup", "mode"), ("state", "command", "state"))
+        for name, mode, field in variants:
+            with self.subTest(variant=name):
+                archive = copy.deepcopy(original)
+                envelope = archive["payload"]["members"]["file"]
+                value = next(value for value in envelope["aux_operations"].values()
+                             if value["request"].get("operation") == "provider-prepare" and value["request"]["mode"] == mode)
+                receipt = value["receipt"]
+                if field == "body":
+                    receipt["request"]["provider_id"] = "foreign-provider"
+                elif field == "handoff":
+                    receipt["handoff_id"] = "handoff-" + "f" * 64
+                elif field == "mode":
+                    receipt["mode"] = "command"
+                else:
+                    receipt["state"] = "applied"
+                self.reject_rehashed_group_archive(archive, name)
+
+    def test_older_local_prefix_omits_later_remote_auxiliary_receipts(self):
+        self.create()
+        self.add_sqlite()
+        self.ok(self.request("provider-register", registration=self.registration("alpha")))
+        provider = self.ok(self.request("provider-list"))["providers"]["alpha"]
+        self.ok(self.request("provider-enable", provider_id="alpha", expected_generation=provider["current_generation"]))
+        self.ok(self.request("group-write-document", document="plan.md", content={"encoding": "utf-8", "content": "later remote cut"}))
+        statuses = self.ok(self.request("group-sync-status"))["targets"]
+        remote = next(row["intent_id"] for row in statuses if row["target"]["kind"] == "remote")
+        prepared = self.ok(self.request("provider-prepare", intent_id=remote, mode="command"))
+        observation = {key: prepared["request"][key] for key in
+                       ("contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision")}
+        observation.update(outcome="unknown", provider_revision=None)
+        self.ok(self.request("provider-observe", handoff_id=prepared["handoff_id"], observation=observation))
+        self.ok(self.request("group-resume-intent", intent_id=remote, additional_attempts=1))
+        baseline = next(row["intent_id"] for row in statuses if row["target"]["kind"] == "local")
+        self.assertEqual(self.ok(self.request("group-sync", intent_id=baseline))["state"], "applied")
+        replica = storage.load_member(self.ok(self.request("group-configuration"))["members"]["sqlite"])
+        m.validate(replica, self.ref)
+        self.assertFalse(replica["handoffs"])
+        self.assertFalse(any(value["request"].get("intent_id") == remote or value["request"].get("handoff_id") == prepared["handoff_id"]
+                             for value in replica["aux_operations"].values()))
+        exported = self.ok(self.request("group-export", destination=str(self.directory / "older-prefix.json")))
+        self.ok(self.request("group-preflight", archive=exported["destination"], archive_digest=exported["archive_digest"]))
+        # Catch-up and authority transfer retain the full valid reconciliation state.
+        self.sync()
+        self.switch("sqlite")
+        self.assertEqual(self.ok(self.request("provider-prepare", intent_id=remote, mode="lookup"))["request"]["request_digest"], prepared["request"]["request_digest"])
+
     def test_valid_remote_assertions_restore_inactive_and_preserve_accepted_after_unknown(self):
         _, exported, intent = self.accepted_remote_backup()
         self.ok(self.request("group-preflight", archive=exported["destination"], archive_digest=exported["archive_digest"]))

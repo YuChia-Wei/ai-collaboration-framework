@@ -1,5 +1,9 @@
 # Workflow record operations
 
+For current native record directory export and explicit project schema/template
+selection, see [file export](file-export.md): `export-files` and `preflight-files`
+are separate from the complete recovery archive operations below.
+
 ## Runtime and invocation
 
 Use Python 3.11 or later in the 3.x series, PyYAML 6.x, Git, and Python's

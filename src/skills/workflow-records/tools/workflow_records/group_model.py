@@ -208,7 +208,9 @@ def validate(envelope, identity):
     require(envelope["format"] == FORMAT and envelope["identity"] == identity, "binding_mismatch", "Carrier identity differs from the complete group reference.")
     require(envelope["checksum"] == c.digest(bounded({key: value for key, value in envelope.items() if key != "checksum"})), "integrity_error", "Complete envelope checksum differs.")
     require(isinstance(envelope["events"], list) and len(envelope["events"]) <= MAX_EVENTS, "limit_exceeded", "Retained event capacity exceeded.")
+    from .group_providers import intents, intent_id
     previous, ids = None, set()
+    predecessors = {}
     for index, event in enumerate(envelope["events"]):
         c.fields(event, {"cut", "body"})
         body = event["body"]
@@ -238,6 +240,9 @@ def validate(envelope, identity):
             else:
                 registration = body["providers"][target["provider_id"]]["generations"][target["generation"]]
                 require(target["descriptor"] == registration["descriptor"] and registration["enabled"], "integrity_error", "Remote target lost its accepted generation.")
+                scope = (target["provider_id"], target["generation"])
+                require(target.get("predecessor_intent_id") == predecessors.get(scope), "integrity_error", "Remote target predecessor differs from its retained event order.")
+                predecessors[scope] = intent_id(event["cut"], target)
         previous = event["cut"]
     for key in ("baselines", "deliveries", "aux_operations", "handoffs"):
         require(isinstance(envelope[key], dict) and len(envelope[key]) <= 4096, "limit_exceeded", "Invalid or excessive retained auxiliary records.")
@@ -245,7 +250,6 @@ def validate(envelope, identity):
     for baseline in envelope["baselines"].values():
         require(baseline["cut"] is None or baseline["cut"] in cuts, "integrity_error", "Baseline cut is not retained.")
         require(baseline["target"]["kind"] == "local" and baseline["target"]["expected_parent"] is None, "integrity_error", "Invalid baseline target.")
-    from .group_providers import intents
     targets = {row["intent_id"]: row for row in intents(envelope)}
     pinned_commands = {}
     for key, handoff in envelope["handoffs"].items():
@@ -273,6 +277,17 @@ def validate(envelope, identity):
         require(value["request"]["operation_id"] == key and value["request"]["group_ref"] == identity and fingerprint(value["request"]) == value["request_digest"],
                 "integrity_error", "Auxiliary operation closure differs.")
         require(value["receipt"]["operation_id"] == key and value["receipt"]["replayed"] is False and key not in ids, "integrity_error", "Auxiliary receipt identity differs.")
+        if value["request"].get("operation") == "provider-prepare":
+            request, result = value["request"], value["receipt"]
+            c.fields(result, {"state", "operation_id", "handoff_id", "mode", "request", "backend_verification", "replayed"})
+            intent = request.get("intent_id")
+            require(intent in pinned_commands and request.get("mode") in ("command", "lookup"), "integrity_error", "Prepare receipt lost its original intent/mode.")
+            command = pinned_commands[intent]
+            expected = command if request["mode"] == "command" else {name: command[name] for name in
+                       ("contract_version", "group_ref", "provider_id", "generation", "operation_id", "request_digest", "logical_revision")}
+            require(result["state"] == "prepared" and result["mode"] == request["mode"] and
+                    result["handoff_id"] == "handoff-" + command["request_digest"][7:] and result["request"] == expected and
+                    result["backend_verification"] == "unavailable", "integrity_error", "Prepare receipt differs from its original pinned command.")
     for key, status in envelope["deliveries"].items():
         require(key in targets and status.get("state") in ("pending", "accepted", "rejected", "conflict", "unknown"), "integrity_error", "Delivery lost its fixed intent/state.")
         c.integer(status.get("attempt_limit", 32), 32, 1024)
@@ -291,6 +306,14 @@ def validate(envelope, identity):
                     "integrity_error", "Accepted logical/provider revision closure differs.")
             require(any(observed.get("outcome") == "accepted" and observed.get("provider_revision") == status["provider_revision"] and observed.get("logical_revision") == status["logical_revision"]
                         for observed in status.get("observations", [])), "integrity_error", "Accepted remote delivery lacks its retained host assertion.")
+    for intent, command in pinned_commands.items():
+        predecessor = targets[intent]["target"]["predecessor_intent_id"]
+        expected = None
+        if predecessor is not None:
+            status = envelope["deliveries"].get(predecessor, {})
+            require(status.get("state") == "accepted", "integrity_error", "Prepared successor lacks accepted predecessor evidence.")
+            expected = status["provider_revision"]
+        require(command["expected_provider_revision"] == expected, "integrity_error", "Pinned provider revision differs from its accepted predecessor.")
     bounded(envelope)
     return envelope
 

@@ -1073,6 +1073,20 @@ components:
     destination: .ai/core/skills/workflow-records/tools/workflow_records/source_store.py
   - source: tools/workflow_records/sqlite_store.py
     destination: .ai/core/skills/workflow-records/tools/workflow_records/sqlite_store.py
+  - source: references/file-export.md
+    destination: .ai/core/skills/workflow-records/references/file-export.md
+  - source: schemas/file-workflow-v1.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/file-workflow-v1.schema.json
+  - source: schemas/file-task-v1.schema.json
+    destination: .ai/core/skills/workflow-records/schemas/file-task-v1.schema.json
+  - source: templates/file-workflow.yaml
+    destination: .ai/core/skills/workflow-records/templates/file-workflow.yaml
+  - source: templates/file-task.yaml
+    destination: .ai/core/skills/workflow-records/templates/file-task.yaml
+  - source: templates/file-schema-selection.json
+    destination: .ai/core/skills/workflow-records/templates/file-schema-selection.json
+  - source: tools/workflow_records/file_export.py
+    destination: .ai/core/skills/workflow-records/tools/workflow_records/file_export.py
 - kind: sub-agent
   id: context-translator
   version: 0.2.1

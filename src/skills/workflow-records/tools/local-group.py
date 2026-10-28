@@ -16,7 +16,7 @@ def main(argv=None):
     parser.add_argument("--request", required=True)
     args = parser.parse_args(argv)
     try:
-        for name in ("__init__", "contracts", "common", "source_contract", "group_storage", "group_model", "group_providers", "group_service", "group_backup"):
+        for name in ("__init__", "contracts", "common", "source_contract", "group_storage", "group_model", "group_providers", "group_service", "group_backup", "file_export"):
             path = runtime_root / "workflow_records" / (name + ".py")
             if not path.is_file() or path.is_symlink():
                 raise ImportError("Incomplete local-group closure")

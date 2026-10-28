@@ -23,7 +23,7 @@ TABLES = {"workflows": (2, ()), "revisions": (4, (3,)),
 
 
 def payload(connection, meta):
-    if meta["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/3"):
+    if meta["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"):
         from .source_backup import payload as source_payload
         return source_payload(connection, meta)
     tables = {}
@@ -49,7 +49,7 @@ def check_capacity(connection, reserve=0):
 
 
 def check_payload_capacity(value, reserve=0):
-    if value["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/3"):
+    if value["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"):
         from .source_backup import check_capacity as source_capacity
         return source_capacity(value, reserve)
     admin = [row for row in value["tables"]["operations"] if row[0] == ""]
@@ -63,7 +63,7 @@ def check_payload_capacity(value, reserve=0):
 
 
 def validate_payload(value, *, schema2_native=False):
-    if isinstance(value, dict) and value.get("schema_version") in ("workflow-sqlite/2", "workflow-sqlite/3"):
+    if isinstance(value, dict) and value.get("schema_version") in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"):
         from .source_backup import validate_payload as source_validate
         try:
             return source_validate(value)
@@ -259,10 +259,10 @@ def preflight(path, expected_digest):
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise RecordError("malformed_record", "Invalid backup JSON.") from exc
     require(isinstance(archive, dict) and set(archive) == {"format", "snapshot_digest", "payload"}, "malformed_record", "Invalid backup envelope.")
-    selected_v2 = archive["format"] in ("workflow-backup/2", "workflow-backup/3")
+    selected_v2 = archive["format"] in ("workflow-backup/2", "workflow-backup/2.1", "workflow-backup/3")
     require(isinstance(archive["payload"], dict), "malformed_record", "Backup payload must be an object.")
     require(archive["format"] == FORMAT or selected_v2, "unsupported_version", "Unsupported backup format.")
-    require(archive["payload"].get("schema_version") == {FORMAT: SCHEMA, "workflow-backup/2": "workflow-sqlite/2", "workflow-backup/3": "workflow-sqlite/3"}.get(archive["format"]),
+    require(archive["payload"].get("schema_version") == {FORMAT: SCHEMA, "workflow-backup/2": "workflow-sqlite/2", "workflow-backup/2.1": "workflow-sqlite/2.1", "workflow-backup/3": "workflow-sqlite/3"}.get(archive["format"]),
             "unsupported_version", "Backup envelope and payload versions disagree.")
     require(len(raw) <= (256 * 1024 * 1024 if selected_v2 else MAX_ARCHIVE), "limit_exceeded", "Backup exceeds its version's archive limit.")
     require(archive["snapshot_digest"] == digest(encoded(archive["payload"])), "integrity_error", "Backup snapshot digest mismatch.")
@@ -277,8 +277,8 @@ def export_store(store, request):
         value = payload(connection, meta)
     validate_payload(value)
     snapshot = digest(encoded(value))
-    selected_v2 = value["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/3")
-    raw = encoded({"format": {SCHEMA: FORMAT, "workflow-sqlite/2": "workflow-backup/2", "workflow-sqlite/3": "workflow-backup/3"}[value["schema_version"]], "snapshot_digest": snapshot, "payload": value})
+    selected_v2 = value["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3")
+    raw = encoded({"format": {SCHEMA: FORMAT, "workflow-sqlite/2": "workflow-backup/2", "workflow-sqlite/2.1": "workflow-backup/2.1", "workflow-sqlite/3": "workflow-backup/3"}[value["schema_version"]], "snapshot_digest": snapshot, "payload": value})
     require(len(raw) <= (256 * 1024 * 1024 if selected_v2 else MAX_ARCHIVE), "limit_exceeded", "Backup exceeds the archive limit.")
     created = False
     try:
@@ -324,7 +324,7 @@ def restore_store(store, request):
         for statement in DDL:
             connection.execute(statement)
         selected_tables = TABLES
-        if archive["payload"]["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/3"):
+        if archive["payload"]["schema_version"] in ("workflow-sqlite/2", "workflow-sqlite/2.1", "workflow-sqlite/3"):
             from .source_store import DDL as source_ddl, TABLES as source_tables
             for statement in source_ddl:
                 connection.execute(statement)

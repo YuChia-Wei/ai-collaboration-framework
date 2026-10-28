@@ -10,6 +10,7 @@ PROFILE = "workflow-records/source-store/1"
 PROFILE2 = "workflow-records/source-store/2"
 NATIVE_PROFILE = "workflow-board/source-replica/1"
 SCHEMA = "workflow-sqlite/2"
+SCHEMA21 = "workflow-sqlite/2.1"
 SCHEMA3 = "workflow-sqlite/3"
 CHUNK = 49152
 MAX_FILE = 16777216

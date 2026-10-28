@@ -28,6 +28,8 @@ runtime:
   - group-sync-status
   - group-resume-intent
   - group-export
+  - group-export-files
+  - group-preflight-files
   - group-preflight
   - group-restore
   - group-deactivate
@@ -54,6 +56,8 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
@@ -65,6 +69,8 @@ runtime:
   - source-chunk
   - source-operation
   - replica-bind
+  - binding-status
+  - binding-disable
   - replica-prepare
   - replica-observe
   - source-configuration
@@ -98,6 +104,8 @@ runtime:
   - group-sync
   - group-sync-status
   - group-export
+  - group-export-files
+  - group-preflight-files
   - group-preflight
   - group-restore
   - group-deactivate
@@ -124,6 +132,8 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
@@ -135,6 +145,8 @@ runtime:
   - source-chunk
   - source-operation
   - replica-bind
+  - binding-status
+  - binding-disable
   - replica-prepare
   - replica-observe
   - source-configuration
@@ -164,6 +176,8 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
@@ -175,6 +189,8 @@ runtime:
   - source-chunk
   - source-operation
   - replica-bind
+  - binding-status
+  - binding-disable
   - replica-prepare
   - replica-observe
   - source-configuration
@@ -204,6 +220,8 @@ runtime:
   - write-document
   - revise-workflow
   - export
+  - export-files
+  - preflight-files
   - preflight
   - restore
   - deactivate
@@ -215,6 +233,8 @@ runtime:
   - source-chunk
   - source-operation
   - replica-bind
+  - binding-status
+  - binding-disable
   - replica-prepare
   - replica-observe
   - source-configuration
@@ -239,15 +259,20 @@ runtime:
   - read-prepare
   - read-accept
   - export
+  - export-files
+  - preflight-files
+  - group-export-files
+  - group-preflight-files
   - preflight
   - restore
   on_missing: unavailable
-  purpose: Only selected replica DTO/proof validation or backups containing retained
-    replica data; ordinary local-only operations do not import this runtime.
+  purpose: Selected project file schemas/templates, replica DTO/proof validation or backups containing retained
+    replica data; unselected current-record export and ordinary local-only operations do not import this runtime.
 configuration: null
 artifact_roles: []
 resources:
   references:
+  - references/file-export.md
   - references/local-group.md
   - references/operations.md
   - references/source-store.md
@@ -275,12 +300,20 @@ resources:
     - write-document
     - revise-workflow
     - export
+    - export-files
+    - preflight-files
     - preflight
     - restore
     - deactivate
     - activate
     support_files:
+    - schemas/file-workflow-v1.schema.json
+    - schemas/file-task-v1.schema.json
+    - templates/file-workflow.yaml
+    - templates/file-task.yaml
+    - templates/file-schema-selection.json
     - tools/workflow_records/__init__.py
+    - tools/workflow_records/file_export.py
     - tools/workflow_records/backup.py
     - tools/workflow_records/common.py
     - tools/workflow_records/contracts.py
@@ -300,6 +333,8 @@ resources:
     - source-chunk
     - source-operation
     - replica-bind
+    - binding-status
+    - binding-disable
     - replica-prepare
     - replica-observe
     - source-configuration
@@ -342,6 +377,8 @@ resources:
     - group-sync
     - group-sync-status
     - group-export
+    - group-export-files
+    - group-preflight-files
     - group-preflight
     - group-restore
     - group-deactivate
@@ -592,6 +629,26 @@ operations:
   - bounded-json-response
   implementation_status: implemented
 - id: source-operation
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: binding-status
+  execution: tool
+  tool: source-store-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-store-configuration
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: binding-disable
   execution: tool
   tool: source-store-cli
   inputs:
@@ -1018,6 +1075,46 @@ operations:
   - explicit-project-root
   - explicit-group-configuration
   - bounded-json-request
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: export-files
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: preflight-files
+  execution: tool
+  tool: workflow-records-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-export-files
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
+  outputs:
+  - bounded-json-response
+  implementation_status: implemented
+- id: group-preflight-files
+  execution: tool
+  tool: local-group-cli
+  inputs:
+  - explicit-project-root
+  - bounded-json-request
+  - explicit-source-and-destination
   outputs:
   - bounded-json-response
   implementation_status: implemented

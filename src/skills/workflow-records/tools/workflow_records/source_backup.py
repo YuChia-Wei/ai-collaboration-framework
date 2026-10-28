@@ -5,7 +5,7 @@ import hashlib
 import sqlite3
 
 from . import source_contract as c
-from .contracts import decode_json, encoded, require
+from .contracts import StoreRef, decode_json, encoded, require
 from .source_store import DDL, TABLES, MAX_ROWS, MAX_RAW, MAX_PREPARED
 
 MAX_DATA_BYTES = 240 * 1024 * 1024
@@ -50,7 +50,7 @@ def validate_payload(value):
         from .source_config import DDL as config_ddl, TABLES as config_tables
         selected_ddl, selected_tables = DDL + config_ddl, {**TABLES, **config_tables}
     require(isinstance(value, dict) and set(value) == {"schema_version", "identity", "tables"}
-            and value["schema_version"] in (c.SCHEMA, c.SCHEMA3) and isinstance(value["tables"], dict)
+            and value["schema_version"] in (c.SCHEMA, c.SCHEMA21, c.SCHEMA3) and isinstance(value["tables"], dict)
             and set(value["tables"]) == set(backup.TABLES) | set(selected_tables), "malformed_record", "Source backup table closure is incomplete.")
     decoded = backup.validate_payload(native_payload(value), schema2_native=True)
     check_capacity(value)
@@ -125,6 +125,13 @@ def validate_payload(value):
                 require(target["binding_id"] == key and target_key == c.digest(c.canonical({"project_ref": target["project_ref"], "source_id": target["source_id"]})),
                         "malformed_record", "Source binding identity changed.")
                 bindings[key] = target
+            controls = s.disabled_bindings(connection)
+            require(not controls or value["schema_version"] == c.SCHEMA21, "malformed_record", "Disable controls require the explicit schema-2.1 marker.")
+            require(value["schema_version"] != c.SCHEMA21 or controls, "malformed_record", "Schema-2.1 lost its disable controls.")
+            for control in controls.values():
+                selected_ref = StoreRef.parse(control["request"]["store_ref"])
+                require((selected_ref.provider_id, selected_ref.store_id) == (value["identity"]["provider_id"], value["identity"]["store_id"]),
+                        "malformed_record", "Disable request belongs to another store.")
             heads = {}
             expected_steps = set()
             for sequence, key, snapshot_id, binding_id, expected, raw in sorted(decoded["replica_intents"]):
@@ -152,7 +159,8 @@ def validate_payload(value):
                 from .source_config import validate_backup
                 validate_backup(connection, decoded)
             else:
-                require({(row[2], row[3]) for row in decoded["replica_intents"]} == {(row[1], binding_id) for row in decoded["source_snapshots"] for binding_id in bindings},
+                require({(row[2], row[3]) for row in decoded["replica_intents"]} == {(row[1], binding_id) for row in decoded["source_snapshots"] for binding_id in bindings
+                        if binding_id not in controls or row[0] <= controls[binding_id]["cutoff_sequence"]},
                         "malformed_record", "A fixed target delivery intent is missing.")
             # Replay observation interpretation in order without trusting stored
             # outcome flags. Earlier accepted evidence cannot be overwritten.

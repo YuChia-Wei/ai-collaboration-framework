@@ -31,6 +31,8 @@ EXTRAS = {
     "provider-enable": {"provider_id", "expected_generation"}, "provider-disable": {"provider_id", "expected_generation"},
     "provider-prepare": {"intent_id", "mode"}, "provider-observe": {"handoff_id", "observation"},
     "group-export": {"destination"}, "group-preflight": {"archive", "archive_digest"},
+    "group-export-files": {"destination", "expected_configuration_revision", "expected_authority_epoch", "expected_revision"},
+    "group-preflight-files": {"directory", "manifest_digest"},
     "group-restore": {"archive", "archive_digest", "member_paths"},
     "group-deactivate": {"snapshot_digest"}, "group-activate": {"original_control_directory", "retirement_seal"},
 }
@@ -245,6 +247,12 @@ class LocalGroup:
             known = {item["intent_id"] for item in p.intents(copied)}
             copied["deliveries"] = {key: value for key, value in copied["deliveries"].items() if key in known}
             copied["handoffs"] = {key: value for key, value in copied["handoffs"].items() if value["intent_id"] in known}
+            # Receipts for later intents cannot accompany an earlier immutable prefix.
+            copied["aux_operations"] = {key: value for key, value in copied["aux_operations"].items()
+                                        if (value["request"].get("operation") not in ("provider-prepare", "group-sync", "group-resume-intent") or
+                                            value["request"].get("intent_id") in known) and
+                                           (value["request"].get("operation") != "provider-observe" or
+                                            value["request"].get("handoff_id") in copied["handoffs"])}
             m.seal(copied)
             save_member(member, copied, envelope_digest(replica))
         envelope["deliveries"][row["intent_id"]] = {**prior, "state": "accepted", "attempts": prior.get("attempts", 0) + 1}
@@ -315,7 +323,7 @@ class LocalGroup:
             require(isinstance(request, dict) and operation in EXTRAS, "unsupported_capability", "Unknown local-group operation.")
             require(version == (m.PROVIDERS if operation.startswith("provider-") else m.PROFILE), "unsupported_version", "Select the operation's exact versioned contract.")
             required = {"contract_version", "group_ref", "operation"} | EXTRAS[operation]
-            mutation = operation not in READS | {"group-export", "group-preflight"}
+            mutation = operation not in READS | {"group-export", "group-preflight", "group-export-files", "group-preflight-files"}
             if mutation:
                 required |= {"operation_id"}
                 m.identifier(request.get("operation_id"))
@@ -323,7 +331,8 @@ class LocalGroup:
                 required |= {"expected_configuration_revision", "expected_authority_epoch", "expected_revision"}
             if operation in ("provider-register", "provider-update", "provider-enable", "provider-disable"):
                 required |= {"expected_provider_configuration_revision"}
-            c.fields(request, required, {"max_output_bytes"})
+            optional = {"max_output_bytes"} | ({"schema_selection"} if operation in ("group-export-files", "group-preflight-files") else set())
+            c.fields(request, required, optional)
             if "expected_configuration_revision" in required:
                 c.integer(request["expected_configuration_revision"])
                 c.integer(request["expected_authority_epoch"], 1)
@@ -337,6 +346,9 @@ class LocalGroup:
                 self.recover()
                 if operation == "group-init":
                     result = self.init(request)
+                elif operation == "group-preflight-files":
+                    from .file_export import preflight
+                    result = preflight(self.root, request, "local-group", self.identity)
                 elif operation in ("group-preflight", "group-restore"):
                     from .group_backup import preflight, restore
                     archive = preflight(request["archive"], request["archive_digest"], self.identity)
@@ -349,6 +361,9 @@ class LocalGroup:
                     elif operation == "group-export":
                         from .group_backup import export
                         result = export(self, control, envelope, request)
+                    elif operation == "group-export-files":
+                        from .file_export import group
+                        result = group(self, control, envelope, request)
                     else:
                         prior = self.admin_replay(control, request) or m.replay(envelope, request)
                         if prior is not None:

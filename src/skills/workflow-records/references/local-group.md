@@ -1,5 +1,10 @@
 # Local file authority, SQLite synchronization and project provider controls
 
+For current selected-authority directory export, see [file export](file-export.md):
+`group-export-files` and `group-preflight-files` preserve the current cut and
+explicit project schema/template identity. Complete group recovery remains the
+separate `group-export` archive/restore lifecycle described below.
+
 `workflow-records/local-group/1` owns one logical workflow per explicitly initialized
 local group. The selected member owns **both** reads and accepted commands. A fresh
 group uses an ordinary JSON file. SQLite is optional and has the distinct schema
@@ -201,6 +206,13 @@ all receipts, generations/settings snapshots, fixed targets, payloads, observati
 and pending intent state under the group lock. Preflight checks hashes, identities,
 event closure and member prefixes. Restore selects fresh paths for all members,
 preserves pending work, creates a new inactive instance and sends no external IO.
+Every prepared command must retain its exact predecessor and accepted provider
+revision; command and lookup receipts must match the original pinned handoff.
+Recomputing archive hashes cannot replace those relationships. Earlier runtimes
+could copy later auxiliary receipts into an older local prefix. Such an envelope
+is inconsistent and now fails integrity validation without changing stored data;
+this version neither silently discards the receipts nor repairs an existing copy.
+New prefix synchronization copies only auxiliary records belonging to that cut.
 Complete export requires every retained carrier to be readable, including removed
 members whose original intents/history remain retained. An unavailable member
 prevents complete export; it is never silently omitted. Restore may select a new
