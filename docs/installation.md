@@ -476,7 +476,7 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 ### 升級後整合公開需求規則
 
 公開需求／workflow 邊界由 requirement-author 0.2.4、user-story-author 0.2.2、
-ai-context-init 0.2.4 與 software-development-orchestrator 0.4.2 的來源指引提供。
+ai-context-init 0.2.5 與 software-development-orchestrator 0.5.0 的來源指引提供。
 版本號描述來源能力，不表示已有對應公開 Release；實際使用須核對所選成品的
 catalog、engine、pin 與已安裝版本。未選配的 skill 不會因升級自動加入。
 
