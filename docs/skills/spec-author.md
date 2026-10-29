@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-來源套件版本：`0.3.0`。實際操作與版本以已安裝 metadata 為準。
+來源套件版本：`0.3.1`。實際操作與版本以已安裝 metadata 為準。
 
 ## 用途與操作
 

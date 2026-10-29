@@ -3,7 +3,7 @@
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md) ·
 [舊 architect 遷移](domain-architecture-migration.md)
 
-來源套件版本：`0.1.1`。實際可用性依已安裝 metadata 與 runtime entry。
+來源套件版本：`0.1.2`。實際可用性依已安裝 metadata 與 runtime entry。
 本套件提供指令方法，沒有同名 CLI、配置或 managed store。
 
 ## 用途、輸入與輸出

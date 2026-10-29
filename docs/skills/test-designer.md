@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.4.3`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.4.4`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
