@@ -1,0 +1,45 @@
+schema_version: '1.1'
+assessment_id: ASM-20261029-08-0ee
+commit_search_id: ASM-20261029-08-0ee
+assessment_type: ai-context-audit
+title: Current skills and knowledge gaps for Issues 516 and 518
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-10-29-knowledge-policy
+base_branch: main
+created_at: '2026-10-29T08:21:53+08:00'
+updated_at: '2026-10-29T08:31:29+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/core/skills/ai-context-auditor/references/audit.md
+report_template_version: 0.1.0
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: main
+  commit: 0ee07d8314c55a95c99428fa8d4fd12c4673c04c
+scope:
+  included:
+  - 'Selected skills, knowledge owners, installation selection and #516 observations'
+  excluded:
+  - Runtime model acceptance
+  - Downstream adoption
+  - Product repairs
+  - ArchPrecept execution
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs: []
+  backlog_refs: []
+  adr_refs: []
+  workflow_record_refs:
+  - provider_id: local
+    store_id: framework-workflows
+    workflow_id: 2026-10-29-knowledge-policy
+resume:
+  last_completed_action: Completed AC01-10 analysis; appended historical-policy-addendum.md
+    without replacing the final baseline report
+  next_action: 'Continue authorized #518 source revision; retain #515/#519/#443/#179
+    decisions separately'
+  blockers: []

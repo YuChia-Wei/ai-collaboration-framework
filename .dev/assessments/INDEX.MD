@@ -3,6 +3,8 @@
 This index catalogs durable assessments. Each assessment's `assessment.yaml`
 owns its identity, current lifecycle state, subject revision, and relationships.
 
+[Historical decision addendum for ASM-20261029-08-0ee](ASM-20261029-08-0ee/historical-policy-addendum.md) supplements its fixed-source report.
+
 ## Draft Assessments
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
@@ -12,6 +14,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20261029-08-0ee`](ASM-20261029-08-0ee/assessment.yaml) | Current skills and knowledge gaps for Issues 516 and 518 | `ai-context-audit` | `ai-context-auditor` | `final` | `0ee07d8314c55a95c99428fa8d4fd12c4673c04c` | `2026-10-29T08:31:29+08:00` | [report](ASM-20261029-08-0ee/report.md) |
 | [`ASM-20260923-00-6oq`](ASM-20260923-00-6oq/assessment.yaml) | Framework 可攜技能、專案所有權與維護模式重設評估 | `framework-future-strategy` | `direct-analysis (user exception)` | `final` | `c2e7071335d02d9b8d40ab4dcaf437e690791741` | `2026-09-23T00:54:31+08:00` | [report](ASM-20260923-00-6oq/report.md) |
 | [`ASM-20260922-20-qk2`](ASM-20260922-20-qk2/assessment.yaml) | Independent verification of bounded artifact writers and automated report maintenance | `ai-context-verification` | `ai-context-auditor` | `final` | `9423211893fc75ce6f4eac799d79df8a48b8cd33` | `2026-09-22T20:05:06.437578+08:00` | [report](ASM-20260922-20-qk2/report.md) |
 | [`ASM-20260922-10-8ay`](ASM-20260922-10-8ay/assessment.yaml) | Artifact lifecycle P3/P4 independent verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cca7dcb12355dcabfc710f34d711080073661494` | `2026-09-22T10:29:29+08:00` | [report](ASM-20260922-10-8ay/report.md) |
