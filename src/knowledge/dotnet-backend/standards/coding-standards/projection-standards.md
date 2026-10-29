@@ -2,6 +2,11 @@
 
 This document defines CQRS read-side ports, adapters, optional Query Services, and provider-specific considerations.
 
+Here, query-side means the read operation. A read-model projector may separately
+update its owned read store under an explicit event/failure contract; that is
+not permission for a query reader to write, mutate the command store or perform
+arbitrary external effects. See [role rationale](../POLICY-RATIONALE.md#query-reader-and-read-model-projector).
+
 ## Core Rules
 
 - The query side does not modify Domain state.

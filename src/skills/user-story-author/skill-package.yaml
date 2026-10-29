@@ -1,6 +1,6 @@
 metadata_version: 4
 id: user-story-author
-version: 0.2.1
+version: 0.2.2
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -71,7 +71,7 @@ operations:
 knowledge_consumption:
 - id: common-story-authoring
   package: engineering-common
-  version: 0.4.0
+  version: 0.4.1
   operations:
   - draft
   - normalize
@@ -84,7 +84,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: common-story-planning
   package: engineering-common
-  version: 0.4.0
+  version: 0.4.1
   operations:
   - plan
   resources:

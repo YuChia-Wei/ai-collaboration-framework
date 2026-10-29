@@ -3,7 +3,7 @@
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md) ·
 [舊 architect 遷移](domain-architecture-migration.md)
 
-來源套件版本：`0.1.1`。實際可用性以已安裝 metadata 與 runtime entry 為準。
+來源套件版本：`0.1.2`。實際可用性以已安裝 metadata 與 runtime entry 為準。
 這是指令型 skill，沒有同名 CLI、record store 或強制技術依賴。
 
 ## 用途、輸入與輸出
@@ -43,9 +43,9 @@ Review 綁定固定 artifact，作者自檢與具有證據的獨立審核分開�
 
 ## 知識選配
 
-- `engineering-common@0.4.0`：explore 使用 DDD／BDD discovery 與 collaborative discovery；
+- `engineering-common@0.4.1`：explore 使用 DDD／BDD discovery 與 collaborative discovery；
   design/review 可選 DDD 各主題、domain-language、Context Map、BDD discovery/formulation。
-- `dotnet-backend@0.1.6`：只供 design/review 使用 rule catalog、DbC 與 aggregate standards；
+- `dotnet-backend@0.1.7`：只供 design/review 使用 rule catalog、DbC、aggregate standards 與政策理由 guidance；
   需要搭配其 required common dependency。Explore 不消費 .NET 規則。
 
 兩者使用既有 `architecture` capability，以不同 operation／allowlist 控制資源。

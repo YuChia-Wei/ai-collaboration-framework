@@ -1,0 +1,633 @@
+[
+  {
+    "id": "adr-author",
+    "version": "0.1.0",
+    "operations": [
+      "explain",
+      "create",
+      "inspect",
+      "query",
+      "validate",
+      "revise",
+      "render",
+      "derive",
+      "decide",
+      "retire",
+      "supersede"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "ai-context-auditor",
+    "version": "0.1.0",
+    "operations": [
+      "audit",
+      "compare"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "ai-context-governance",
+    "version": "0.1.3",
+    "operations": [
+      "propose",
+      "apply"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "ai-context-init",
+    "version": "0.2.5",
+    "operations": [
+      "initialize",
+      "refresh"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "code-reviewer",
+    "version": "0.2.6",
+    "operations": [
+      "review"
+    ],
+    "knowledge": [
+      {
+        "id": "common-review",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "dotnet-review",
+        "package": "dotnet-backend",
+        "version": "0.1.6",
+        "operations": [
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:review/review-routing.yaml",
+          "member:standards/DESIGN-BY-CONTRACT.md",
+          "member:standards/coding-standards/aggregate-standards.md",
+          "member:standards/coding-standards/controller-standards.md",
+          "member:standards/coding-standards/repository-standards.md",
+          "member:standards/coding-standards/test-standards.md",
+          "member:standards/coding-standards/usecase-standards.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "diagnostic-analyst",
+    "version": "0.1.0",
+    "operations": [
+      "diagnose"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "domain-model-designer",
+    "version": "0.1.1",
+    "operations": [
+      "explore",
+      "design",
+      "review"
+    ],
+    "knowledge": [
+      {
+        "id": "common-domain-discovery",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "explore"
+        ],
+        "resources": [
+          "member:bdd/discovery.md",
+          "member:ddd/README.md",
+          "member:ddd/domain-discovery.md",
+          "member:ddd/examples/order-cancellation.md",
+          "member:discovery/collaborative-discovery.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "common-domain-model",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "design",
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:bdd/discovery.md",
+          "member:bdd/formulation.md",
+          "member:ddd/README.md",
+          "member:ddd/domain-discovery.md",
+          "member:ddd/examples/order-cancellation.md",
+          "member:ddd/model-evolution.md",
+          "member:ddd/strategic-design.md",
+          "member:ddd/tactical-design.md",
+          "member:domain-language/README.MD",
+          "member:domain-language/templates/aggregate-vocabulary-template.md",
+          "member:domain-language/templates/bounded-context-language-template.md",
+          "member:domain-language/templates/domain-event-language-template.md",
+          "member:operations/CONTEXT-MAP-GUIDE.MD"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "dotnet-domain-model",
+        "package": "dotnet-backend",
+        "version": "0.1.6",
+        "operations": [
+          "design",
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:standards/DESIGN-BY-CONTRACT.md",
+          "member:standards/coding-standards/aggregate-standards.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "lesson-author",
+    "version": "0.2.0",
+    "operations": [
+      "explain",
+      "create",
+      "inspect",
+      "query",
+      "validate",
+      "revise",
+      "render",
+      "derive",
+      "accept",
+      "retire",
+      "supersede"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "local-change-implementer",
+    "version": "0.2.7",
+    "operations": [
+      "implement"
+    ],
+    "knowledge": [
+      {
+        "id": "common-local-change",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "implement"
+        ],
+        "resources": [
+          "engineering-rule-catalog"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "dotnet-local-change",
+        "package": "dotnet-backend",
+        "version": "0.1.6",
+        "operations": [
+          "implement"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:standards/coding-standards/aggregate-standards.md",
+          "member:standards/coding-standards/controller-standards.md",
+          "member:standards/coding-standards/repository-standards.md",
+          "member:standards/coding-standards/test-standards.md",
+          "member:standards/coding-standards/usecase-standards.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "pr-author",
+    "version": "0.1.1",
+    "operations": [
+      "explain",
+      "prepare",
+      "inspect",
+      "query",
+      "revise",
+      "render",
+      "provider-read",
+      "provider-create",
+      "provider-update"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "problem-frame-author",
+    "version": "0.1.0",
+    "operations": [
+      "draft",
+      "review-draft",
+      "explain",
+      "create",
+      "inspect",
+      "validate",
+      "render"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "requirement-author",
+    "version": "0.2.3",
+    "operations": [
+      "explore",
+      "draft",
+      "normalize"
+    ],
+    "knowledge": [
+      {
+        "id": "common-requirement-authoring",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "resources": [
+          "member:bdd/discovery.md",
+          "member:bdd/formulation.md",
+          "member:ddd/domain-discovery.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "common-requirement-exploration",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "explore"
+        ],
+        "resources": [
+          "member:bdd/discovery.md",
+          "member:ddd/domain-discovery.md",
+          "member:discovery/collaborative-discovery.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "slice-implementer",
+    "version": "0.2.7",
+    "operations": [
+      "implement"
+    ],
+    "knowledge": [
+      {
+        "id": "common-implementation",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "implement"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:references/GWT-TEST-HANDOFF-CONTRACT.md",
+          "member:references/TEST-DESIGN-HANDOFF-CONTRACT.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "dotnet-implementation",
+        "package": "dotnet-backend",
+        "version": "0.1.6",
+        "operations": [
+          "implement"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:standards/DESIGN-BY-CONTRACT.md",
+          "member:standards/coding-standards/aggregate-standards.md",
+          "member:standards/coding-standards/controller-standards.md",
+          "member:standards/coding-standards/repository-standards.md",
+          "member:standards/coding-standards/test-standards.md",
+          "member:standards/coding-standards/transactional-messaging-standards.md",
+          "member:standards/coding-standards/usecase-standards.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "software-architect",
+    "version": "0.1.1",
+    "operations": [
+      "design",
+      "review"
+    ],
+    "knowledge": [
+      {
+        "id": "common-software-architecture",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "design",
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:references/ARTIFACT-DESIGN-REVIEW-CONTRACT.md",
+          "member:references/AUTHORING-BOUNDARY-CONTRACT.md",
+          "member:references/TECHNOLOGY-SELECTION-POLICY.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "dotnet-software-architecture",
+        "package": "dotnet-backend",
+        "version": "0.1.6",
+        "operations": [
+          "design",
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+          "member:standards/DESIGN-BY-CONTRACT.md",
+          "member:standards/coding-standards/transactional-messaging-standards.md",
+          "member:standards/coding-standards/usecase-standards.md",
+          "member:standards/project-structure.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "software-development-orchestrator",
+    "version": "0.5.0",
+    "operations": [
+      "orchestrate",
+      "resume"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "spec-author",
+    "version": "0.3.0",
+    "operations": [
+      "draft",
+      "normalize"
+    ],
+    "knowledge": [
+      {
+        "id": "common-specification",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "draft",
+          "normalize"
+        ],
+        "resources": [
+          "member:bdd/formulation.md",
+          "member:ddd/domain-discovery.md",
+          "member:ddd/tactical-design.md",
+          "member:references/AUTHORING-BOUNDARY-CONTRACT.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "spec-compliance-validator",
+    "version": "0.1.0",
+    "operations": [
+      "plan-validation",
+      "review-semantics",
+      "assess-runtime"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "standards-promotion",
+    "version": "0.1.1-alpha.1",
+    "operations": [
+      "explain",
+      "propose",
+      "inspect",
+      "query",
+      "validate",
+      "revise",
+      "render",
+      "withdraw",
+      "supersede",
+      "reconcile"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "test-designer",
+    "version": "0.4.3",
+    "operations": [
+      "design",
+      "review"
+    ],
+    "knowledge": [
+      {
+        "id": "common-test-design",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "design",
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:bdd/README.md",
+          "member:bdd/automation.md",
+          "member:bdd/discovery.md",
+          "member:bdd/examples/library-renewal.md",
+          "member:bdd/formulation.md",
+          "member:bdd/gherkin.md",
+          "member:references/GWT-TEST-HANDOFF-CONTRACT.md",
+          "member:references/TEST-DESIGN-HANDOFF-CONTRACT.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "dotnet-test-design",
+        "package": "dotnet-backend",
+        "version": "0.1.6",
+        "operations": [
+          "design",
+          "review"
+        ],
+        "resources": [
+          "engineering-rule-catalog",
+          "member:standards/coding-standards/test-standards.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "user-story-author",
+    "version": "0.2.1",
+    "operations": [
+      "plan",
+      "draft",
+      "normalize",
+      "review"
+    ],
+    "knowledge": [
+      {
+        "id": "common-story-authoring",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "draft",
+          "normalize",
+          "review"
+        ],
+        "resources": [
+          "member:bdd/discovery.md",
+          "member:bdd/formulation.md",
+          "member:ddd/domain-discovery.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      },
+      {
+        "id": "common-story-planning",
+        "package": "engineering-common",
+        "version": "0.4.0",
+        "operations": [
+          "plan"
+        ],
+        "resources": [
+          "member:bdd/discovery.md",
+          "member:ddd/domain-discovery.md",
+          "member:discovery/collaborative-discovery.md"
+        ],
+        "requirement": "optional",
+        "on_missing": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "workflow-board-experimental",
+    "version": "0.1.0",
+    "operations": [
+      "board-query-prepare",
+      "board-query-accept",
+      "board-command-prepare",
+      "board-command-accept",
+      "board-command-reconcile"
+    ],
+    "knowledge": []
+  },
+  {
+    "id": "workflow-records",
+    "version": "0.2.0",
+    "operations": [
+      "capabilities",
+      "find",
+      "context",
+      "read",
+      "checkpoint",
+      "resume",
+      "validate",
+      "operation",
+      "init",
+      "create",
+      "create-task",
+      "write-document",
+      "revise-workflow",
+      "export",
+      "preflight",
+      "restore",
+      "deactivate",
+      "activate",
+      "source-init",
+      "source-import-git",
+      "source-list",
+      "source-read",
+      "source-chunk",
+      "source-operation",
+      "binding-status",
+      "binding-disable",
+      "replica-bind",
+      "replica-prepare",
+      "replica-observe",
+      "source-configuration",
+      "replica-add",
+      "replica-remove",
+      "replica-update",
+      "select-read-source",
+      "read-prepare",
+      "read-accept",
+      "read-result",
+      "read-chunk",
+      "group-init",
+      "group-configuration",
+      "group-context",
+      "group-resume",
+      "group-read",
+      "group-operation",
+      "group-create",
+      "group-create-task",
+      "group-checkpoint",
+      "group-write-document",
+      "group-revise-workflow",
+      "member-add",
+      "member-remove",
+      "select-authority",
+      "group-sync",
+      "group-sync-status",
+      "group-export",
+      "group-preflight",
+      "group-restore",
+      "group-deactivate",
+      "group-activate",
+      "provider-list",
+      "provider-inspect",
+      "provider-register",
+      "provider-update",
+      "provider-enable",
+      "provider-disable",
+      "provider-prepare",
+      "provider-observe",
+      "group-resume-intent",
+      "export-files",
+      "preflight-files",
+      "group-export-files",
+      "group-preflight-files"
+    ],
+    "knowledge": []
+  }
+]

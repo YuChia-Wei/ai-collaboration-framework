@@ -1,6 +1,6 @@
 metadata_version: 4
 id: slice-implementer
-version: 0.2.7
+version: 0.2.8
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -53,7 +53,7 @@ operations:
 knowledge_consumption:
 - id: common-implementation
   package: engineering-common
-  version: 0.4.0
+  version: 0.4.1
   operations:
   - implement
   resources:
@@ -64,13 +64,14 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-implementation
   package: dotnet-backend
-  version: 0.1.6
+  version: 0.1.7
   operations:
   - implement
   resources:
   # Controller is guidance only; access does not adopt a normative rule.
   - engineering-rule-catalog
   - member:standards/DESIGN-BY-CONTRACT.md
+  - member:standards/POLICY-RATIONALE.md
   - member:standards/coding-standards/aggregate-standards.md
   - member:standards/coding-standards/controller-standards.md
   - member:standards/coding-standards/repository-standards.md

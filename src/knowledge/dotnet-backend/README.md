@@ -17,6 +17,13 @@ through its existing binding. A source-provenance marker is inert history and mu
 never be loaded as an installed dependency. Target project paths in illustrative
 layouts/configuration examples refer only to the target and are not bundled inputs.
 
+## Policy interpretation
+
+[Official sources, policy reasons and representative cases](standards/POLICY-RATIONALE.md)
+distinguish methodology, selected .NET policies, unresolved decisions and bounded
+ArchPrecept observations. New knowledge/pins do not overwrite a target's accepted
+policy, allocate Rule IDs or establish runtime adoption.
+
 ## Scope
 
 Included:
@@ -38,7 +45,7 @@ Excluded:
 
 ## Adoption and coverage
 
-Requires `engineering-common@0.4.0`, matching the exact required dependency in
+Requires `engineering-common@0.4.1`, matching the exact required dependency in
 `content-package.yaml`. Preserve per-domain persistence and transaction
 choices, conditional Event Sourcing, explicit BDDfy opt-out and target-selected
 mocking. No file extension or example automatically selects a technology.

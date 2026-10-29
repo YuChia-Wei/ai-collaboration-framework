@@ -9,6 +9,10 @@ unpacketized status until stable rule identities are explicitly allocated.
 
 ---
 
+The direct UseCase policy keeps HTTP delivery separate from reusable operation
+orchestration. It costs explicit mapping; other application-handler architectures
+require separate selection. See [rationale](../POLICY-RATIONALE.md#controller-usecase-handler-and-operation-shape).
+
 ## 📌 Overview
 
 Controllers are responsible only for the transport layer and input validation; they must not contain business logic.

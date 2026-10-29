@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md)
 
-套件版本：`0.2.1`。這是來源 catalog 的獨立選配能力；可用性依實際安裝
+套件版本：`0.2.2`。這是來源 catalog 的獨立選配能力；可用性依實際安裝
 版本與 runtime entry，不代表本來源專案已自行安裝。
 
 ## 用途與操作
@@ -41,7 +41,7 @@ requirement-author 保留 PRD／Feature／一般需求；此技能負責獨立 S
 ```
 
 沒有 configuration、工具或必要 skill 相依。Metadata 4 宣告 optional
-engineering-common@0.4.0：plan 可選 BDD/DDD discovery 與 collaborative discovery；
+engineering-common@0.4.1：plan 可選 BDD/DDD discovery 與 collaborative discovery；
 draft/normalize/review 可選 BDD discovery/formulation 與 DDD discovery。依
 [knowledge protocol](../../src/skills/user-story-author/references/knowledge.md) 驗證
 lock／hash／authority 與 allowlist，缺少時揭露 unavailable，不讀 source 補缺。

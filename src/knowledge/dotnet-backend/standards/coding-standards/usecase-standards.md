@@ -15,6 +15,10 @@ Controller / Handler (inbound adapter)
 ```
 
 - A Use Case and a Handler are distinct objects.
+- A Use Case MUST NOT inject or chain another Use Case; one operation owns its
+  orchestration through Domain behavior and outbound ports.
+- These are selected profile policies; [rationale and sources](../POLICY-RATIONALE.md)
+  explain their purposes and costs without claiming universal methodology forms.
 - By default, a synchronous API Controller directly injects the Use Case interface.
 - A Handler exists only for a real dispatch or message entry point.
 - Wolverine is a conditional adapter technology, not a portable Use Case dependency.
@@ -67,6 +71,9 @@ Two exceptions are allowed:
 The scalar exception is limited to `string`, numeric types, `bool`, `Guid`, and
 date/time types. Collections, tuples, custom records/classes, or multiple values
 MUST use a dedicated input.
+
+A plain Application Command may be transport-neutral and still fail this
+dedicated Input policy; transport identity and operation shape are distinct.
 
 A Use Case MUST NOT accept:
 

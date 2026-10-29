@@ -3,7 +3,7 @@
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md) ·
 [舊 architect 遷移](domain-architecture-migration.md)
 
-來源套件版本：`0.1.1`。實際可用性依已安裝 metadata 與 runtime entry。
+來源套件版本：`0.1.2`。實際可用性依已安裝 metadata 與 runtime entry。
 本套件提供指令方法，沒有同名 CLI、配置或 managed store。
 
 ## 用途、輸入與輸出
@@ -44,8 +44,8 @@ Review 請另外提供固定檔案／版本與需求來源；reviewer 維持唯�
 
 ## 知識選配
 
-- `engineering-common@0.4.0`：rule catalog、technology selection、authoring boundaries、artifact review。
-- `dotnet-backend@0.1.6`：rule catalog、building-block reconstruction、DbC、transactional messaging、usecase、project structure；required common dependency 一起選。
+- `engineering-common@0.4.1`：rule catalog、technology selection、authoring boundaries、artifact review。
+- `dotnet-backend@0.1.7`：rule catalog、building-block reconstruction、DbC、transactional messaging、usecase、project structure 與政策理由 guidance；required common dependency 一起選。
 
 Capability 為 `architecture`，operations 為 design/review；只載入匹配 allowlist 與
 目標 bindings 的資源。模型是 caller input，不為架構問題預載全部 DDD。

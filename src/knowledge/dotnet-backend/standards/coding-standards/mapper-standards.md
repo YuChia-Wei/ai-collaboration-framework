@@ -16,7 +16,8 @@ Mappers convert between Domain and DTO/Data objects.
 
 ## 🏷️ Pattern Markers (for Automated Checks)
 
-The following markers are used by automated code-review scripts:
+These illustrative markers describe the selected policy. They do not establish
+that a script or Analyzer implements or has executed these checks:
 
 ```yaml
 # Mapper rules
@@ -33,7 +34,12 @@ Pattern (forbidden, ignore-comment): I[A-Za-z0-9]*Repository|UseCase|Handler
 
 ### 1. Use Static Methods
 
-A Mapper SHOULD use static methods and avoid instance creation:
+A pure object Mapper MUST use a static class and static methods, without instance
+state, DI, I/O or orchestration. Work requiring clock, user or query access belongs
+to an explicit Enricher, Assembler or Adapter that supplies conversion inputs.
+This is the selected Framework policy, not Fowler's persistence Data Mapper
+pattern. Static syntax alone proves neither purity nor determinism. See
+[policy rationale](../POLICY-RATIONALE.md#pure-object-mapper-versus-work-with-dependencies).
 
 ```csharp
 // ✅ Correct: use a static class and static methods
@@ -96,7 +102,12 @@ public class ProductMapper
 
 ### 2. Complete Bidirectional Conversion
 
-`ToData()` and `ToDomain()` MUST be symmetrical:
+For a write-model persistence round trip, `ToData()` and `ToDomain()` MUST preserve
+the state required by the selected invariant, metadata and event contract. This
+requires explicit field/behavior checks; static syntax does not prove symmetry.
+A one-way DTO projection does not need an invented inverse. The following is an
+illustrative conversion; reconstruction failure and event lifecycle require their
+separately selected contract:
 
 ```csharp
 // ✅ Correct: ToData serializes; ToDomain deserializes

@@ -30,12 +30,13 @@ is an explicit Aggregate profile, not a requirement for every Aggregate.
 
 ## 🏷️ Automated Check Boundaries
 
-`DBA1009` and `DBA1003` are reference binding labels for an explicitly
-target-selected analyzer. The framework supplies no implementation. A target
-implementation scopes `DBA1009` to descendants of a type named
-`EsAggregateRoot` and uses `DBA1003` for Aggregate/Entity Infrastructure
-dependencies. Invariant completeness, event completeness, and target
-deletion-policy adoption still require target tests and review.
+`DBA1009` and `DBA1003` are optional product binding labels; Framework supplies
+no Analyzer implementation. Do not use type/method names as proof of current
+product predicates. The [versioned comparison](../POLICY-RATIONALE.md#versioned-archprecept-comparison-not-a-second-rule-catalog)
+records ArchPrecept source `60330242f7f690a01cfa2332b578aac35584f067`, including
+DBA1009's recognized ES role and canonical transition override identity. It is
+not evidence of a published package or target adoption. Invariant completeness,
+event completeness and deletion-policy adoption still need target tests/review.
 
 Rule IDs: `AGGREGATE-ES-001`, `DELETE-SOFT-001`,
 `CONTRACT-SEMANTICS-001`.
@@ -208,6 +209,12 @@ Do not introduce `DomainEntity<TId>`, non-ES `AggregateRoot<TId>`, or
 
 ### 2. Constructor Design
 
+The retained profile uses public constructors and rejects static Aggregate
+factories. This form restriction lacks sufficient rationale for universal use;
+it is not a DDD theorem. [Factory comparison](../POLICY-RATIONALE.md#factory-retained-policy-and-unresolved-justification)
+keeps alternatives unselected pending owner decision. Every creation path must
+complete invariants; rehydration is a separate lifecycle and cannot bypass state.
+
 ```csharp
 // ✅ Correct: provide two constructors
 public class Product : EsAggregateRoot<ProductId>
@@ -235,10 +242,10 @@ public class Product : EsAggregateRoot<ProductId>
     }
 }
 
-// ❌ Incorrect: static factory method
+// Outside this retained profile: static Aggregate factory (not a universal DDD violation)
 public static Product Create(ProductId id, string name)
 {
-    // Do not use a static factory method
+    // Requires an explicit owner decision before changing this profile
 }
 ```
 
@@ -303,6 +310,11 @@ public readonly record struct Money(decimal Amount, string Currency)
 
 ### 2. Immutability Principle
 
+Value semantics exclude conceptual identity; immutable treatment protects shared
+values from unexpected change. A record or readonly reference does not prove
+deep immutability. ArchPrecept DBA1018/1019 are stricter bounded product policies;
+retain unknown/not-evaluated results and consult the [versioned VO comparison](../POLICY-RATIONALE.md#value-objects-and-bounded-product-checks).
+
 ```csharp
 // ✅ Correct: return a new instance
 public Money Add(Money other)
@@ -312,7 +324,7 @@ public Money Add(Money other)
     return this with { Amount = Amount + other.Amount };
 }
 
-// ❌ Incorrect: mutate internal state (a record prevents this, but a class may not)
+// Incorrect: mutate value state; record syntax alone does not prevent mutable members
 public void Add(Money other)
 {
     Amount = Amount + other.Amount;  // Violates immutability
