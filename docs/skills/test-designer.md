@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選兩個 binding：`engineering-common@0.4.0`（`design`,`review`，依當前 allowlist 選讀）與 `dotnet-backend@0.1.6`（同操作，2 項資源）。缺失只會使這些專門準則不可用，通用情境設計仍可完成。
+可選兩個 binding：`engineering-common@0.4.1`（`design`,`review`，依當前 allowlist 選讀）與 `dotnet-backend@0.1.7`（同操作，3 項資源）。缺失只會使這些專門準則不可用，通用情境設計仍可完成。
 
 需要釐清規則、例子與未決問題時，選讀 BDD 方法；明確要求 Gherkin 輸出或
 審查時，才選讀 Gherkin 表述指引。只探索需求可先交付問題與暫定例子，
@@ -44,7 +44,7 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### common-test-design
 
-`engineering-common@0.4.0`；操作：`design`、`review`。
+`engineering-common@0.4.1`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
 - `member:bdd/README.md`
@@ -58,9 +58,10 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-test-design
 
-`dotnet-backend@0.1.6`；操作：`design`、`review`。
+`dotnet-backend@0.1.7`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
+- `member:standards/POLICY-RATIONALE.md`
 - `member:standards/coding-standards/test-standards.md`
 
 ## 權威參考

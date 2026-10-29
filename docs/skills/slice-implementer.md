@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.4.0`（3 項）與 `dotnet-backend@0.1.6`（8 項）binding；未裝時 generic/common slice 仍能執行，但不能自稱 .NET 專門設計/交易/測試涵蓋。
+可選 `engineering-common@0.4.1`（3 項）與 `dotnet-backend@0.1.7`（9 項）binding；未裝時 generic/common slice 仍能執行，但不能自稱 .NET 專門設計/交易/測試涵蓋。
 
 將既有驗證計畫視為初步安排，實作期間依實際差異校正條件式檢查，執行前確認必要性。
 修改完成後確認驗收證據齊備；必要 gate 與已接受驗收不得自行取消。
@@ -48,7 +48,7 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### common-implementation
 
-`engineering-common@0.4.0`；操作：`implement`。
+`engineering-common@0.4.1`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:references/GWT-TEST-HANDOFF-CONTRACT.md`
@@ -56,9 +56,10 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-implementation
 
-`dotnet-backend@0.1.6`；操作：`implement`。
+`dotnet-backend@0.1.7`；操作：`implement`。
 
 - `engineering-rule-catalog`
+- `member:standards/POLICY-RATIONALE.md`
 - `member:standards/DESIGN-BY-CONTRACT.md`
 - `member:standards/coding-standards/aggregate-standards.md`
 - `member:standards/coding-standards/repository-standards.md`

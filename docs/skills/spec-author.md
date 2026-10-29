@@ -40,7 +40,7 @@ production specification，保留其 ownership、invariants、輸入、輸出與
 
 ## 知識與開始使用
 
-本 skill 使用 metadata 4，optional engineering-common@0.4.0 可供 draft/normalize
+本 skill 使用 metadata 4，optional engineering-common@0.4.1 可供 draft/normalize
 選讀 BDD formulation、DDD discovery/tactical 與 authoring boundary。這些方法只幫助
 表達已接受模型，不授權新 aggregate、交易或業務決策。缺少時揭露 unavailable，
 依 [knowledge protocol](../../src/skills/spec-author/references/knowledge.md) 驗證安裝資源。

@@ -22,7 +22,7 @@
 
 ## 知識
 
-metadata 4 宣告 optional `engineering-common@0.4.0`。`explore` 可選 collaborative-discovery、BDD discovery、DDD domain-discovery；`draft`／`normalize` 可選 BDD discovery/formulation 與 DDD domain-discovery。只讀任務需要的資源，依 references/knowledge.md 驗證 lock、hash、allowlist 與 authority。缺少時揭露 unavailable，不偷讀 source，也不強制先 explore。
+metadata 4 宣告 optional `engineering-common@0.4.1`。`explore` 可選 collaborative-discovery、BDD discovery、DDD domain-discovery；`draft`／`normalize` 可選 BDD discovery/formulation 與 DDD domain-discovery。只讀任務需要的資源，依 references/knowledge.md 驗證 lock、hash、allowlist 與 authority。缺少時揭露 unavailable，不偷讀 source，也不強制先 explore。
 
 ## 開始使用
 

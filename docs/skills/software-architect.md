@@ -44,8 +44,8 @@ Review 請另外提供固定檔案／版本與需求來源；reviewer 維持唯�
 
 ## 知識選配
 
-- `engineering-common@0.4.0`：rule catalog、technology selection、authoring boundaries、artifact review。
-- `dotnet-backend@0.1.6`：rule catalog、building-block reconstruction、DbC、transactional messaging、usecase、project structure；required common dependency 一起選。
+- `engineering-common@0.4.1`：rule catalog、technology selection、authoring boundaries、artifact review。
+- `dotnet-backend@0.1.7`：rule catalog、building-block reconstruction、DbC、transactional messaging、usecase、project structure 與政策理由 guidance；required common dependency 一起選。
 
 Capability 為 `architecture`，operations 為 design/review；只載入匹配 allowlist 與
 目標 bindings 的資源。模型是 caller input，不為架構問題預載全部 DDD。

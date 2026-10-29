@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.4.0`（1 項）與 `dotnet-backend@0.1.6`（8 項）審查 binding；未裝時不可宣稱有那些專門覆蓋。
+可選 `engineering-common@0.4.1`（1 項）與 `dotnet-backend@0.1.7`（9 項）審查 binding；未裝時不可宣稱有那些專門覆蓋。
 
 ## 開始使用
 
@@ -40,16 +40,17 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### common-review
 
-`engineering-common@0.4.0`；操作：`review`。
+`engineering-common@0.4.1`；操作：`review`。
 
 - `engineering-rule-catalog`
 
 ### dotnet-review
 
-`dotnet-backend@0.1.6`；操作：`review`。
+`dotnet-backend@0.1.7`；操作：`review`。
 
 - `engineering-rule-catalog`
 - `member:standards/DESIGN-BY-CONTRACT.md`
+- `member:standards/POLICY-RATIONALE.md`
 - `member:standards/coding-standards/aggregate-standards.md`
 - `member:standards/coding-standards/repository-standards.md`
 - `member:standards/coding-standards/test-standards.md`
