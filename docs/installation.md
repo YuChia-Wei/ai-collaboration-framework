@@ -117,9 +117,22 @@ Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路
 ```powershell
 $Catalog = Get-Content -Raw "$PackageRoot\catalog\metadata\catalog.json" | ConvertFrom-Json
 $Catalog.components | Select-Object kind,id,version
+$Catalog.adapters | Select-Object id,version,template,members
 $Catalog.presets | Select-Object id,version,skills,knowledge,sub_agents,adapters
 Get-Content -Raw "$PackageRoot\catalog\metadata\build.json"
 ```
+
+`components` 不包含 skill adapters；可用 adapters 在同一份 catalog 的頂層
+`adapters`。Preset 或專案 selection 的 `adapters` 是選擇結果，不能據此判定
+完整 ZIP 沒有其他 adapter。通用 ZIP 內的 `catalog/adapters/claude/` 與
+`catalog/adapters/codex/` 保存模板，derive 才依 selection 產生 runtime entries，
+apply 才寫入目標的 `.claude/skills/` 與 `.agents/skills/`。
+
+套件 README 的 classification 由打包來源身分產生；是否已公開仍須核對該版本
+GitHub Release 的 draft／prerelease 狀態及資產 checksum。`build.json` 與
+`release-manifest.json` 的 `publication: not-performed` 記錄建置階段，
+不表示後續尚未公開。舊 v0.21.0 README 保留 snapshot／rc.N 共用文案，
+不能單憑該段將已公開的非 prerelease 版本判為開發快照。
 
 手動選擇檔的副檔名可以自行命名，但內容必須是 JSON；YAML 會被 `derive-subset.py` 以 `invalid-json` 拒絕。selection 必須含下列封閉欄位，陣列須依字典序排列：
 

@@ -15,7 +15,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).absolute().parent))
 from release_common import (SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, engine_files, entry, git, identity, oid,
-                            plain, render_readme, require, safe_name, sha, verify_bundle)
+                            package_adapters, plain, render_readme, require, safe_name, sha, verify_bundle)
 
 
 def engine_pin(repository, source):
@@ -109,7 +109,9 @@ def build(args):
     payload = collect(catalog_root, "catalog") | collect(engine_root, "engine")
     payload["engine-pin.json"] = (pin_raw, 0o644)
     label = source["tag"] or "snapshot"
-    readme = render_readme(readme_source["template_utf8"], source, receipt["identity"], release_version)
+    adapters = package_adapters(document(payload["catalog/metadata/catalog.json"][0]),
+                                {n: raw for n, (raw, _) in payload.items()})
+    readme = render_readme(readme_source["template_utf8"], source, receipt["identity"], release_version, adapters)
     payload["README.md"] = (readme, 0o644)
     payload["content-hashes.json"] = (encoded([entry(n, b, m) for n, (b, m) in sorted(payload.items())]), 0o644)
     name = f"ai-collaboration-framework-{label}-{source['commit']}.zip"
@@ -131,7 +133,8 @@ def build(args):
                     "run_id": args.run_id, "run_attempt": args.run_attempt,
                     "started_at": started, "completed_at": datetime.now(timezone.utc).isoformat(),
                     "python": platform.python_version(), "platform": platform.platform()},
-                "validation": {"archive_raw_hashes": "verified", "readme_source": "verified", "tests": "not-run", "runtime": "not-run", "publication": "not-performed"}}
+                "validation": {"archive_raw_hashes": "verified", "readme_source": "verified", "generated_release_context": "verified",
+                    "skill_adapter_inventory": "verified", "tests": "not-run", "runtime": "not-run", "publication": "not-performed"}}
     (output / "release-manifest.json").write_bytes(encoded(manifest))
     (output / (archive.name + ".sha256")).write_text(f"{sha(raw)}  {archive.name}\n", encoding="utf-8", newline="\n")
     verify_bundle(output, source)
