@@ -4,6 +4,11 @@ This document is the canonical standard for aggregate persistence and query-side
 
 This standard defines application-port semantics without prescribing a database, ORM, event store, or package. EF Core, Dapper, Npgsql, and other adapter content is conditional implementation guidance only.
 
+The identity-load/save surface below is a selected Framework policy, not the
+method list prescribed by DDD. It prevents query demands from widening the write
+port and generic Entity CRUD from bypassing invariants, at the cost of separate
+query ports and reload/revalidation. See [sources and representative cases](../POLICY-RATIONALE.md#repository-a-narrow-selected-write-port).
+
 ## Core Boundaries
 
 Repository rules distinguish three roles:

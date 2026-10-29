@@ -1,6 +1,6 @@
 content_package_version: 1
 id: dotnet-backend
-version: 0.1.6
+version: 0.1.7
 entrypoint: README.md
 members:
 - {path: README.md, kind: index}
@@ -218,6 +218,7 @@ members:
 - {path: standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md, kind: knowledge}
 - {path: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md, kind: normative-rule}
 - {path: standards/DESIGN-BY-CONTRACT.md, kind: normative-rule}
+- {path: standards/POLICY-RATIONALE.md, kind: knowledge}
 - {path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD, kind: knowledge}
 - {path: standards/anti-patterns.md, kind: knowledge}
 - {path: standards/best-practices.md, kind: knowledge}
@@ -2143,6 +2144,13 @@ resources:
   operations: [apply, assess-runtime, audit, compare, design, draft, implement, normalize, plan-validation, propose, review,
     review-draft, review-semantics]
   technology_profile: dotnet-backend
+- id: member:standards/POLICY-RATIONALE.md
+  path: standards/POLICY-RATIONALE.md
+  kind: knowledge
+  rule_ids: []
+  capabilities: [architecture, implementation, local-change, review, test-design]
+  operations: [design, explore, implement, review]
+  technology_profile: dotnet-backend
 - id: member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   kind: knowledge
@@ -2424,7 +2432,7 @@ resources:
   technology_profile: dotnet-backend
 dependencies:
   required:
-  - {kind: knowledge, id: engineering-common, version: 0.4.0}
+  - {kind: knowledge, id: engineering-common, version: 0.4.1}
   optional: []
 references:
 - from: README.md
@@ -2608,6 +2616,14 @@ references:
   requirement: required
   on_missing: unavailable
 - from: README.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: README.md
   resource_id: member:standards/coding-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards.md, anchor: null}
   requirement: required
@@ -2635,6 +2651,14 @@ references:
 - from: design/architecture-overview.md
   resource_id: member:standards/project-structure.md
   target: {package: dotnet-backend, path: standards/project-structure.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: design/architecture-playbook.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: null
   requirement: required
   on_missing: unavailable
 - from: design/architecture-playbook.md
@@ -3963,6 +3987,86 @@ references:
   target: {package: dotnet-backend, path: source-includes/domain/README.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:design/architecture-playbook.md
+  target:
+    package: dotnet-backend
+    path: design/architecture-playbook.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+  target:
+    package: dotnet-backend
+    path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/coding-standards/aggregate-standards.md
+  target:
+    package: dotnet-backend
+    path: standards/coding-standards/aggregate-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/coding-standards/controller-standards.md
+  target:
+    package: dotnet-backend
+    path: standards/coding-standards/controller-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/coding-standards/mapper-standards.md
+  target:
+    package: dotnet-backend
+    path: standards/coding-standards/mapper-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/coding-standards/projection-standards.md
+  target:
+    package: dotnet-backend
+    path: standards/coding-standards/projection-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/coding-standards/repository-standards.md
+  target:
+    package: dotnet-backend
+    path: standards/coding-standards/repository-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/POLICY-RATIONALE.md
+  resource_id: member:standards/coding-standards/usecase-standards.md
+  target:
+    package: dotnet-backend
+    path: standards/coding-standards/usecase-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: cross-bc-interaction-retained-restriction-and-scope-gap
+  requirement: required
+  on_missing: unavailable
 - from: standards/anti-patterns.md
   resource_id: member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   target: {package: dotnet-backend, path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD, anchor: null}
@@ -4109,6 +4213,30 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/aggregate-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: factory-retained-policy-and-unresolved-justification
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/aggregate-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: value-objects-and-bounded-product-checks
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/aggregate-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: versioned-archprecept-comparison-not-a-second-rule-catalog
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/aggregate-standards.md
   resource_id: member:standards/coding-standards/mapper-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/mapper-standards.md, anchor: null}
   requirement: required
@@ -4179,6 +4307,14 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/controller-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: controller-usecase-handler-and-operation-shape
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/controller-standards.md
   resource_id: member:standards/coding-standards/test-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/test-standards.md, anchor: null}
   requirement: required
@@ -4201,6 +4337,14 @@ references:
 - from: standards/coding-standards/mapper-standards.md
   resource_id: member:guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
   target: {package: dotnet-backend, path: guides/FRAMEWORK-API-INTEGRATION-GUIDE.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/mapper-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: pure-object-mapper-versus-work-with-dependencies
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/mapper-standards.md
@@ -4236,6 +4380,14 @@ references:
 - from: standards/coding-standards/projection-standards.md
   resource_id: member:references/rationale/query-side-layering-rationale.MD
   target: {package: dotnet-backend, path: references/rationale/query-side-layering-rationale.MD, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/projection-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: query-reader-and-read-model-projector
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/projection-standards.md
@@ -4276,6 +4428,14 @@ references:
 - from: standards/coding-standards/repository-standards.md
   resource_id: member:references/rationale/query-side-layering-rationale.MD
   target: {package: dotnet-backend, path: references/rationale/query-side-layering-rationale.MD, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/repository-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: repository-a-narrow-selected-write-port
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/repository-standards.md
@@ -4356,6 +4516,14 @@ references:
 - from: standards/coding-standards/test-standards.md
   resource_id: member:standards/coding-standards/usecase-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/usecase-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/usecase-standards.md
+  resource_id: member:standards/POLICY-RATIONALE.md
+  target:
+    package: dotnet-backend
+    path: standards/POLICY-RATIONALE.md
+    anchor: null
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/usecase-standards.md

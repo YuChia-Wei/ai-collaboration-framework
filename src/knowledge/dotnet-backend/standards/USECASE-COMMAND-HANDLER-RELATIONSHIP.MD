@@ -2,14 +2,19 @@
 
 This document defines the standard responsibility boundaries among `Use Case`,
 `Input`, `Command`, `Query`, `Handler`, `Controller`, and related ports in this
-repository under DDD, Clean Architecture, CQRS, and Hexagonal Architecture.
+selected .NET profile. DDD, Clean Architecture and Hexagonal Architecture support
+responsibility/dependency separation; they do not prescribe this unique object
+shape. [Policy rationale and sources](POLICY-RATIONALE.md) explain the retained
+choices, costs and unresolved Factory/cross-BC questions.
 
 ## Core Conclusions
 
 - A `Use Case interface` is an Application inbound port.
 - A concrete `*UseCase` class implements application-flow orchestration.
 - A `Controller` is an HTTP inbound adapter and calls only a Use Case interface by default.
-- A `Command` / message contract is dispatch or transport input, not Use Case input.
+- A dispatch `Command` / message contract is delivery input, not Use Case input.
+  A pure Application Command is not inherently transport, but still does not
+  replace the dedicated `*Input` required by this profile.
 - A `Handler` exists only when there is an actual dispatch, message, consumer, or scheduled entry. It maps input and invokes one Use Case.
 - Use Cases and Handlers are distinct objects. A Handler must not be the default Use Case implementation.
 - A Use Case depends on outbound ports. Wolverine, MediatR, HTTP, MQ, and persistence packages must not leak into portable Use Case contracts.
@@ -76,7 +81,12 @@ BC A Use Case
   -> BC B Use Case
 ```
 
-Cross-BC communication must use MQ. A Use Case does not depend directly on
+The retained .NET policy requires MQ for cross-BC communication. This is not
+a DDD/CA/HexArch theorem. The rationale and applicable conditions for a blanket
+restriction remain unresolved; the playbook also restricts broker choice, a
+separate scope gap recorded in [the comparison](POLICY-RATIONALE.md#cross-bc-interaction-retained-restriction-and-scope-gap).
+HTTP/RPC/module-port alternatives are not newly adopted by this explanation.
+A Use Case does not depend directly on
 Wolverine `IMessageBus`; Infrastructure adapts the project-owned event publisher
 port to the selected broker/framework.
 
@@ -177,7 +187,9 @@ A Handler must not:
 - inject or chain multiple Use Cases.
 
 When multiple steps are needed to complete one business goal, create a higher-level
-Use Case. Do not have a Controller or Handler orchestrate multiple Use Cases.
+Use Case that owns those steps through Domain behavior and outbound ports.
+Do not have a Controller or Handler orchestrate multiple Use Cases, and do not
+implement the higher-level operation by injecting or chaining other Use Cases.
 
 ## Handler Placement
 

@@ -1,6 +1,9 @@
 # Architecture Playbook
 
-This file distills the repo's non-negotiable architecture constraints for design work.
+This file describes the selected .NET profile for target adoption. Methodology
+principles, selected policies and unresolved rationale are distinguished in
+[Policy rationale](../standards/POLICY-RATIONALE.md); reading this file does not
+change a target's authority or register its unpacketized guidance.
 Detailed Aggregate transaction and exceptional Unit of Work criteria are owned by
 [Aggregate Standards](../standards/coding-standards/aggregate-standards.md)
 and [Use Case Standards](../standards/coding-standards/usecase-standards.md#7-strong-consistency-must-be-explicit).
@@ -9,7 +12,8 @@ and [Use Case Standards](../standards/coding-standards/usecase-standards.md#7-st
 
 - DDD + Clean Architecture + CQRS is the base architecture.
 - Use Hexagonal Architecture as the port-and-adapter interpretation of those layers.
-- Use MQ-first integration between bounded contexts.
+- The retained profile requires MQ between bounded contexts; the blanket
+  restriction and broker-specific scope have unresolved rationale below.
 
 ## Layer Intent
 
@@ -30,8 +34,11 @@ and [Use Case Standards](../standards/coding-standards/usecase-standards.md#7-st
 ## Repo Constraints
 
 - Use repository code and project evidence as architecture truth. A generated `.dev/project-config.yaml` may be used as a secondary summary when present.
-- Cross-BC communication must use RabbitMQ or Kafka only.
-- Do not route BC collaboration through direct web API calls.
+- The retained playbook restricts cross-BC communication to RabbitMQ or Kafka
+  and excludes direct web API calls. Its broker-only scope is narrower than
+  the relationship document's MQ-only text. Supporting conditions and the
+  scope difference remain unresolved; neither is a general DDD/HexArch theorem.
+  HTTP/RPC/in-process ports remain comparison candidates, not adopted alternatives.
 - Use `IAggregateRepository<TAggregate, TId>` for aggregate-root writes; retain
   `IDomainRepository<TAggregate, TId>` only as the documented compatibility alias.
 - Use read-only `IQueryRepository` ports for query models. Add a query service only

@@ -13,7 +13,7 @@ ordering:
   array_contents: retain declared source order
 catalog_digest:
   algorithm: sha256
-  value: 39a1072fda6fb83f5e5fdb72047f03e90f05806989fd2b071c7e5e1b82b61afd
+  value: 23bacab1e4ab1cda5a34c5509a5c1ec5115f78bafefed8d44af3e5adf822bfe3
   canonicalization: UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array
     order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input.
 selector_contract:
@@ -168,7 +168,7 @@ rules:
   - shared/common-rules.md
   - review/review-routing.yaml
   status: active
-  source_file_sha256: 3f69354497aa9c2e875b43788dc1d8c9d418c98122bf1276c9d069bdea1b4030
+  source_file_sha256: c21783fcc3209ec14fdc5bd6a877c3497e303ee26a042dd09453c89fe2153aeb
   normative_text_sha256: 0bc2ba0f84e5a4faed68487721b1ac9b501a68e8ad714225da143ef6abaa6ee8
   normative_text: |
     ### 7. Strong Consistency MUST Be Explicit
@@ -393,7 +393,7 @@ rules:
   - shared/common-rules.md
   - review/review-routing.yaml
   status: active
-  source_file_sha256: e95668a82496e7db2ab3ddbd59932bb949ff1b986d597f964d73f3ea0c6a3f44
+  source_file_sha256: a0d3a037e5bb064f58a245f5c35a228e25a744a5c8249cea9bf1aad1dbc60857
   normative_text_sha256: 5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7
   normative_text: |
     ### 0. Soft-Delete Default Profile
@@ -480,7 +480,7 @@ rules:
   - shared/common-rules.md
   - review/review-routing.yaml
   status: active
-  source_file_sha256: efe5d0fa1d7a45daac413652b79511863e0d4139c8039e4bd4edb80465ebb4ef
+  source_file_sha256: 2483ae0f3fb5103a499c803cd251d56308642748eb5a9813eee7a0ce93e38465
   normative_text_sha256: 1a3c010a5f2e863bcf60c7ddc333a23c7d96705e8c758bb4a89fa9cae111c01c
   normative_text: |
     ### Pending Domain Events After Reconstruction
@@ -622,7 +622,7 @@ rules:
   - shared/architecture-config.md
   - shared/common-rules.md
   status: active
-  source_file_sha256: f3db3f4f2a454c7d2e7b4cea97f7c8319307c73a10fb743de595fdf1696068e1
+  source_file_sha256: a6e3d0bb9f622d09d179c2a5ce8c5ed13794265b3013a154cad4720a50f1c229
   normative_text_sha256: 128cc7e3a4315baa4ac69fbc944e11297eaaedef745de742350ebe522130f69c
   normative_text: |
     ### Workload Mapping
@@ -1046,7 +1046,7 @@ unpacketized_documents:
     path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   migration_provenance:
     legacy_path: .dev/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
-  source_file_sha256: 12a263b623c280d16dea2b2b6b58d55470e6ce84ea9d206de79f6b67376806e1
+  source_file_sha256: 0c685f7c079e5f63ce0e5b5d6556ccd9fb68026b65d7fc6e89fa26a3802eb678
   packet_state: identity-allocation-required
   resolver_disposition: unpacketized-fail-closed
   reason: The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive
@@ -1141,7 +1141,7 @@ unpacketized_documents:
     path: standards/coding-standards/controller-standards.md
   migration_provenance:
     legacy_path: .dev/standards/coding-standards/controller-standards.md
-  source_file_sha256: c63b7203080e1e85093b2ed90110e18760dc6b348daabed4cdc0fb5c720f4687
+  source_file_sha256: 873f4ce8ec4c58d6f2d43b27f2147f086b55a8929847832dc606e447553e7315
   packet_state: identity-allocation-required
   resolver_disposition: unpacketized-fail-closed
   reason: The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive
@@ -1179,7 +1179,7 @@ unpacketized_documents:
     path: standards/coding-standards/projection-standards.md
   migration_provenance:
     legacy_path: .dev/standards/coding-standards/projection-standards.md
-  source_file_sha256: e7016eba7ae63efa4c279f2e4288f12aa26f2d7a377bcd13a9c4a93f62a3d907
+  source_file_sha256: 82afb07529e64e8cff2002d3fd5e4f2d83715173372d8ee12cf5ecb44a03633d
   packet_state: identity-allocation-required
   resolver_disposition: unpacketized-fail-closed
   reason: The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive
@@ -1217,7 +1217,7 @@ unpacketized_documents:
     path: standards/coding-standards/repository-standards.md
   migration_provenance:
     legacy_path: .dev/standards/coding-standards/repository-standards.md
-  source_file_sha256: e728b64ed10658622b66463f1d1f85e38542e6bf9c19c455c83965813a94184b
+  source_file_sha256: 38a4bf30d882dedf8015033c130ee00732405cb745ffadd271ee0ff9cb21c652
   packet_state: identity-allocation-required
   resolver_disposition: unpacketized-fail-closed
   reason: The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive
