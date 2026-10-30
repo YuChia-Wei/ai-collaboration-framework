@@ -92,6 +92,29 @@ class PathBudgetTests(unittest.TestCase):
                     self.assertIn('241 full-path', caught.exception.diagnostic['reason'])
                     self.assertNotIn(str(roots[role]), json.dumps(caught.exception.diagnostic, ensure_ascii=False))
 
+    def test_plan_counts_project_edit_siblings_and_content_sources(self):
+        name = '.agents/skills/README.md'  # An admitted project-edit target with a short leaf.
+        self.assertEqual(planning.project_edit_path(name), name)
+        candidate = SimpleNamespace(members={}, metadata_bytes={})
+        roots = {key: PureWindowsPath('C:/' + key)
+                 for key in ('project', 'candidate', 'engine', 'scratch', 'staging', 'recovery')}
+        edits = [{'intent': {'path': name, 'after_content_ref': 'objects/' + '0' * 64}}]
+        # The sibling is 31 units relative; controls alone are at most 28.
+        roots['project'] = windows_root(208)
+        result = planning._path_budget(roots, candidate, None, [], [], {'files': []}, edits)
+        self.assertEqual(result['maximum_full_path_utf16'], 240)
+        roots['project'] = windows_root(209)
+        with self.assertRaises(state.InstallationError) as caught:
+            planning._path_budget(roots, candidate, None, [], [], {'files': []}, edits)
+        self.assertIn('plan stage, project root', caught.exception.diagnostic['reason'])
+        self.assertIn('new plan', caught.exception.diagnostic['next_action'])
+        roots['project'] = PureWindowsPath('C:/project')
+        roots['staging'] = windows_root(169)  # 169 + separator + 72-unit object reference = 242.
+        with self.assertRaises(state.InstallationError) as caught:
+            planning._path_budget(roots, candidate, None, [], [], {'files': []}, edits)
+        self.assertIn('plan stage, staging root', caught.exception.diagnostic['reason'])
+        self.assertIn('242 full-path', caught.exception.diagnostic['reason'])
+
     def test_relative_limits_and_impossible_layout_do_not_suggest_root_shortening(self):
         with self.assertRaises(state.InstallationError) as caught:
             budget([('project', PureWindowsPath('C:/private'), 'a' * 240)], stage='plan')
