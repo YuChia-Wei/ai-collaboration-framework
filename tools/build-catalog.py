@@ -64,7 +64,12 @@ def main():
             result=build_catalog(args.repository,args.commit,args.release_version,args.output_root,args.scratch_root)
             if args.engine_output_root is not None: result['engine_bundle']=package_engine(args.repository,args.commit,args.engine_output_root)
     except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
-        print(json.dumps({'outcome':getattr(exc,'outcome','blocked'),'code':getattr(exc,'code',getattr(exc,'diagnostic',{}).get('code','catalog-input')),'reason':'Exact committed inputs, roots or bounded catalog closure were rejected; preserve any partial output.'}))
+        reason='Exact committed inputs, roots or bounded catalog closure were rejected; preserve any partial output.'
+        diagnostic=getattr(exc,'diagnostic',{})
+        if diagnostic.get('code') in {'path-budget','path-limit'}:
+            relative=(' Relative path: '+diagnostic['path']+'.') if diagnostic.get('path') else ''
+            reason=diagnostic['reason']+relative+' '+diagnostic['next_action']
+        print(json.dumps({'outcome':getattr(exc,'outcome','blocked'),'code':getattr(exc,'code',getattr(exc,'diagnostic',{}).get('code','catalog-input')),'reason':reason}))
         return 1
     print(json.dumps(result,indent=2,ensure_ascii=False))
     return 0

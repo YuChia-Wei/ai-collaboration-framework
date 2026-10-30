@@ -65,6 +65,40 @@ def _check(ok: bool, code: str, reason: str, name: str | None = None,
         raise InstallationError(code, reason, name, outcome)
 
 
+def path_budget(stage: str, role: str, root: Path, name: str) -> tuple[int, int]:
+    """Measure the selected layout; public diagnostics never include host roots."""
+    target = root.joinpath(*name.split("/")) if name else root
+    units = lambda value: len(value.encode("utf-16-le", errors="strict")) // 2
+    full = units(str(target))
+    segment = max(units(part) for part in target.parts)
+    if full > LIMITS["path_utf16"] or segment > LIMITS["segment_utf16"]:
+        reason = (f"{stage} stage, {role} root: root uses {units(str(root))} UTF-16 units; "
+                  f"selected path uses {full} full-path / {segment} segment UTF-16 units; "
+                  f"limits are {LIMITS['path_utf16']} / {LIMITS['segment_utf16']}.")
+        # Even a volume root cannot fit this relative layout. The real root
+        # contract is stricter; this lower bound must not promise feasibility.
+        minimum = root.__class__(root.anchor).joinpath(*name.split("/")) if name else root.__class__(root.anchor)
+        if stage == "recover":
+            action = ("Preserve the original operation record, engine pin and recorded roots. "
+                      "Do not move or rename recovery or managed files; reconcile the unsupported "
+                      "layout with the recovery owner before retrying the exact operation.")
+        elif units(str(minimum)) > LIMITS["path_utf16"] or any(
+                units(part) > LIMITS["segment_utf16"] for part in name.split("/")):
+            action = ("Shortening the root alone cannot fit this selected relative layout. "
+                      "Select a supported package/layout or correct its source and regenerate it; "
+                      "do not rename managed files or recovery records manually.")
+        else:
+            action = (f"Select a shorter explicit {role} root and recalculate the complete layout; "
+                      "no fixed root-length allowance applies to every selection. ")
+            if stage in {"plan", "apply"}:
+                action += ("Generate and review a new plan before apply. Preserve any existing "
+                           "operation and recover it at its original recorded roots first.")
+            else:
+                action += "Retry generation with the new root; preserve existing artifacts."
+        raise InstallationError("path-budget", reason, name or None, "unsupported", action)
+    return full, segment
+
+
 def _shape(value: Any, required: set[str], optional: set[str] = frozenset()) -> dict:
     _check(type(value) is dict and all(type(k) is str for k in value),
            "invalid-shape", "Expected a closed object with string keys.")
@@ -109,8 +143,14 @@ def _oid(value: Any) -> str:
 
 def _relative(value: Any) -> str:
     _text(value)
-    _check(len(value.split("/")) <= LIMITS["depth"] and len(value.encode("utf-16-le")) // 2 <= LIMITS["path_utf16"],
-           "path-limit", "Relative path exceeds the depth or UTF-16 length limit.")
+    depth, units = len(value.split("/")), len(value.encode("utf-16-le")) // 2
+    if depth > LIMITS["depth"] or units > LIMITS["path_utf16"]:
+        raise InstallationError("path-limit",
+                                f"Relative path uses {units} UTF-16 units / {depth} segments; "
+                                f"limits are {LIMITS['path_utf16']} / {LIMITS['depth']}.",
+                                next_action="Correct the selected relative member or package layout and regenerate it. "
+                                            "Shortening a root cannot resolve this relative-path limit; "
+                                            "do not rename managed files or recovery records manually.")
     try:
         return path(value, "relative path")
     except DistributionError:

@@ -290,7 +290,7 @@ def _layout(io: IO, roots: dict[str, Path], operation: Operation, rows: list[dic
         for name in siblings.values():
             state._check(io.locate(roots["project"], name) is None, "sibling-collision", "Derived sibling path already exists.", name, "conflict")
     paths.extend(("engine", roots["engine"], row["path"]) for row in operation.document["engine"]["files"])
-    budget(paths)
+    budget(paths, stage="apply" if rows is not None else "recover")
     for _, root, name in paths:
         io.contained_volume(root, name)
     return siblings

@@ -52,16 +52,13 @@ class Changes:
                 self.residues.append({"role": role, "path": name})
 
 
-def budget(paths: list[tuple[str, Path, str]]) -> None:
+def budget(paths: list[tuple[str, Path, str]], *, stage: str = "write") -> None:
     """Check every actual name (and its ancestors) before any allocation."""
     for role, root, name in paths:
         state._relative(name)
         target = root.joinpath(*name.split("/"))
         state._check(target.is_relative_to(root), "path-containment", "Derived path escapes its selected root.", name)
-        lengths = [len(str(target).encode("utf-16-le")) // 2]
-        segments = [len(part.encode("utf-16-le")) // 2 for part in target.parts]
-        state._check(lengths[0] <= state.LIMITS["path_utf16"] and max(segments) <= state.LIMITS["segment_utf16"],
-                     "path-budget", f"Actual {role} path exceeds the 240/255 UTF-16 refusal budget.", name, "unsupported")
+        state.path_budget(stage, role, root, name)
 
 
 def sibling(operation_id: str, destination: str) -> str:

@@ -174,12 +174,8 @@ def _path_budget(roots: dict[str, Path], candidate: state.Candidate,
     paths.add(("recovery", operation + "/objects/" + "0" * 64))
     maximum, longest_segment = 0, 0
     for role, name in sorted(paths):
-        target = roots[role].joinpath(*name.split("/")) if name else roots[role]
-        full_length = len(str(target).encode("utf-16-le", errors="strict")) // 2
-        segment_length = max(len(part.encode("utf-16-le", errors="strict")) // 2 for part in target.parts)
+        full_length, segment_length = state.path_budget("plan", role, roots[role], name)
         maximum, longest_segment = max(maximum, full_length), max(longest_segment, segment_length)
-        state._check(full_length <= state.LIMITS["path_utf16"] and segment_length <= state.LIMITS["segment_utf16"],
-                     "path-budget", f"{role} path uses {full_length} full-path / {segment_length} segment UTF-16 units; limits are 240 / 255.", name or None, "unsupported")
     return {"policy": "conservative-windows-v1", "full_path_utf16_limit": state.LIMITS["path_utf16"],
             "segment_utf16_limit": state.LIMITS["segment_utf16"], "maximum_full_path_utf16": maximum,
             "maximum_segment_utf16": longest_segment, "checked_paths": len(paths),
