@@ -44,7 +44,7 @@ Catalog／Engine 2 發布與安裝路線，本次近邊界驗收不將它們納�
 - Staging：`i-<32 hex>/` 下的 add／change destination 與 lock。
 - Recovery：`i-<32 hex>/operation.json` 與 `i-<32 hex>/objects/<64 hex>`；最後一個相對布局為 107 個 ASCII 單元。
 
-`plan.details.path_budget` 回報選定布局的 `checked_paths`、
+`plan` 回應中的 `plan.path_budget` 回報選定布局的 `checked_paths`、
 `maximum_full_path_utf16`、`maximum_segment_utf16` 與上限。它不提供通用
 53／80 字元根上限；[安裝手冊](installation.md#2-目錄與工作目錄規則)中的
 v0.19.0 例子是歷史選取計量，不能套用到新版或另一份 selection。
@@ -70,3 +70,31 @@ v0.19.0 例子是歷史選取計量，不能套用到新版或另一份 selectio
 原生驗收需另保留候選身分、選取、根角色計量、公開入口回應與 readback，並確認
 超限在受影響寫入前停止。segment／相對路徑案例若已被更早限制拒絕，就記錄
 該拒絕；不為了湊滿 255 邊界而宣稱存在不可達的成功組合。
+
+## 2026-10-30 的原生驗收範圍
+
+固定來源 `0d79867ca0cf9cbedd11ae6499c2bd74ddbebbc6` 的本機候選，使用
+Windows 本機 NTFS、`local-change-implementer` 與 Codex adapter 選取，
+經封裝內公開 CLI 驗證。候選 ZIP SHA-256 為
+`b9287e2650015c6f67bd64adddc5210153300238185c709ce1a0d3050d93a684`。
+這是未發布的固定候選驗收，不是任何已發布資產或全平台認證。
+
+| 情境 | 實際結果 |
+| --- | --- |
+| ASCII 完整路徑 239 UTF-16 單元 | subset 產生、plan、apply、inspect 成功；4 個 managed 檔案逐一 hash 核對，3 個原有檔案保留 |
+| 含非 BMP 字元根目錄，完整路徑 240 單元 | 同一組公開操作成功；plan 計量 74 個路徑，最大 segment 70 單元 |
+| subset output／scratch 為 241 單元 | `path-budget` 拒絕，未配置輸出或 scratch 子目錄 |
+| project／scratch／staging／recovery 選定路徑為 241 單元 | plan 與 apply 都拒絕；相關根目錄的檔案內容快照不變 |
+| 239 配置的 finish、240 配置的 restore | 原生 read handle 不允許 delete sharing，造成替換失敗並回報 `recovery-needed`；關閉 handle 後，以精確 operation 完成復原 |
+| 復原身分與 cleanup | 錯誤 operation digest 無寫入拒絕；原 operation 保留、已驗證同層暫存及 markers 移除、無關 `.fi-` 檔保留；restore 的完整檔案快照回到原狀，重播為 `already-matching` |
+
+上述首次安裝的 project／scratch／staging／recovery／engine 根長度，
+在 239 情境分別為 170／176／139／131／192 單元，240 情境各增加一單元。
+對應最長相對布局為 68／62／99／107／46 單元。這些數字只屬於該選取；
+已安裝且無差異的操作不配置相同 staging payload，不能套用首次安裝的布局。
+project edit 另以 README 內容修改驗證復原，純回歸案例涵蓋較長同層名稱及
+staging content reference 的 plan 計量。
+
+測試沒有修改 Git／Windows 全域 long-path 設定，也沒有模擬或繞過引擎的
+檔案系統後端。受控替換失敗不等於程序終止或斷電測試；不宣稱所有選取、
+檔案系統、歷史 assembly 格式、外部解壓或客戶端 worktree 註冊均已驗收。
