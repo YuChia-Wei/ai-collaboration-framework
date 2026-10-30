@@ -4,7 +4,7 @@
       "建立或連接 worktree 時，app 註冊與檔案系統存取結果不一致。",
       "選擇持久工作位置或清理 ignored 暫存目錄，可能涉及獨立 worktree。"
     ],
-    "conclusion": "先區分 checkout 是否已建立、app 是否已註冊、目前執行環境是否可存取，對已存在的 checkout 使用當前工具支援的 attach／修復路徑。不要因其中一層失敗就另建在主 checkout 的 ignored 暫存區。選址優先使用已設定且可驗證的 worktree root，保留短路徑與可見的交付位置；搬移或清理前核對 Git 登錄、HEAD、未提交及 ignored 資料與目標是否已存在。具體工具可用性與許可需當次核對。本記錄是候選經驗，不新增 gate、不改現行政策。",
+    "conclusion": "先區分 checkout 是否已建立、app 是否已註冊、目前執行環境是否可存取，對已存在的 checkout 使用當前工具支援的 attach／修復路徑。不要因其中一層失敗就另建在主 checkout 的 ignored 暫存區。選址優先使用已設定且可驗證的 worktree root，保留短路徑與可見的交付位置；搬移或清理前核對 Git 登錄、HEAD、未提交及 ignored 資料與目標是否已存在。具體工具可用性與許可需當次核對。本記錄保留候選經驗身分；2026-10-30 的 #508 工作已將安全處置寫入 .dev/TEAM-GIT-FLOW-RULES.MD 的 Worktree Location And Failed Setup。規範文字採納不等於歷史故障已重現或磁碟／客戶端根因已證實。整合狀態由 Git main 與 PR 結果另行確認。",
     "confidence": "tentative",
     "does_not_apply_when": [
       "一般無 worktree 的暫存檔清理；不要求每次作業建立額外紀錄。",
@@ -18,24 +18,70 @@
       {
         "note": "現行規則涵蓋分支生命週期、單一 writer 與跨執行面權限；本次候選補充失敗後選址的具體經驗，不取代這些規範。",
         "source": "main fca7ca3e4a8d76699c0e1452e8c9458197f4ef3c: .dev/TEAM-GIT-FLOW-RULES.MD; .dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md; .dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md"
+      },
+      {
+        "note": "依本次使用者授權，既有 Git/worktree owner 已新增 checkout/Git/client/access 分別核對、attach/repair 能力確認、明確可見選址及移除／搬移前資料保全。只修改來源規範，沒有修復客戶端或移動／刪除 worktree。",
+        "source": ".dev/TEAM-GIT-FLOW-RULES.MD#worktree-location-and-failed-setup (2026-10-30 #508 working branch)"
       }
     ],
     "follow_up": [
-      "若未來遇到同類故障，依當次實際路徑、Git 登錄與工具結果判斷；只有新的證據或明確採納決定才修訂或提升此候選。無需另造重現試驗。"
+      "若未來遇到同類故障，依當次實際路徑、Git 登錄與工具結果判斷；只有新的證據或明確採納決定才修訂或提升此候選。無需另造重現試驗。",
+      "#508 處置：採納安全處置文字於既有 owning 規範；四個文件情境走查為已建立未註冊、已註冊不可存取、新位置占用、含 dirty/untracked/ignored 成果。各自要求先核對 attach 能力、不繞過權限、停止覆蓋、保全後才依授權搬移或刪除。沒有把一般暫存清理升格為全面 gate。",
+      "Lesson 狀態仍為 candidate；本次沒有選用或建立 lesson accept 的 decision-source adapter，不偽造接受紀錄。來源規範採納與 lesson lifecycle 接受是不同事實。"
     ],
     "observation": "2026-10-17 的紀錄描述：依設定在 F 槽建立 worktree 後，app 註冊失敗且 shell 存取受拒；當時改建於主 checkout 的 .dev/ai-context/local/validation-cost-assessment。維護者指出巢狀路徑過長，以及交付混入 ignored 暫存區的誤清理風險。這是舊紀錄中的具體經驗，本次沒有重現故障、驗證搬移結果或認定 F 槽本身有問題。",
     "title": "Worktree 註冊或存取失敗後，避免改建於主 checkout 的 ignored 目錄"
   },
   "created_at": "2026-10-23T14:21:40.126107+00:00",
   "decision": null,
-  "history": [],
+  "history": [
+    {
+      "from_revision": 1,
+      "operation": "revise",
+      "previous_sha256": "924e1fe440b1e6fd064a2a9a93d12031a6b91d35c289b0b81517715477f2048b",
+      "previous_state": {
+        "content": {
+          "applies_when": [
+            "建立或連接 worktree 時，app 註冊與檔案系統存取結果不一致。",
+            "選擇持久工作位置或清理 ignored 暫存目錄，可能涉及獨立 worktree。"
+          ],
+          "conclusion": "先區分 checkout 是否已建立、app 是否已註冊、目前執行環境是否可存取，對已存在的 checkout 使用當前工具支援的 attach／修復路徑。不要因其中一層失敗就另建在主 checkout 的 ignored 暫存區。選址優先使用已設定且可驗證的 worktree root，保留短路徑與可見的交付位置；搬移或清理前核對 Git 登錄、HEAD、未提交及 ignored 資料與目標是否已存在。具體工具可用性與許可需當次核對。本記錄是候選經驗，不新增 gate、不改現行政策。",
+          "confidence": "tentative",
+          "does_not_apply_when": [
+            "一般無 worktree 的暫存檔清理；不要求每次作業建立額外紀錄。",
+            "未查明實際現況時的強制搬移、刪除、prune 或繞過權限；本 lesson 不提供該授權。"
+          ],
+          "evidence": [
+            {
+              "note": "刪除舊分支前讀回的關鍵原文：『實際先使用已設定的 F:/git-worktree，但 app 建立後註冊失敗；shell 存取又被拒絕。助手沒有先解決既有 worktree 存取，反而另建巢狀 worktree』。同段記錄維護者指出路徑過長及 ignored 暫存區誤清理風險。此摘錄自足保存觀察；原 Git locator 僅供歷史辨識，分支刪除後不保證物件永久可取，不作執行依賴。",
+              "source": "Historical local Git e477dd21a23153b321fc0af98b719365982fee77:.dev/assessments/ASM-20261017-13-n6r/side-conversation-record.zh-TW.md, section 補充經驗：工作樹位置與權限失敗處理"
+            },
+            {
+              "note": "現行規則涵蓋分支生命週期、單一 writer 與跨執行面權限；本次候選補充失敗後選址的具體經驗，不取代這些規範。",
+              "source": "main fca7ca3e4a8d76699c0e1452e8c9458197f4ef3c: .dev/TEAM-GIT-FLOW-RULES.MD; .dev/contracts/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md; .dev/contracts/CLI-EXECUTION-ROUTING-CONTRACT.md"
+            }
+          ],
+          "follow_up": [
+            "若未來遇到同類故障，依當次實際路徑、Git 登錄與工具結果判斷；只有新的證據或明確採納決定才修訂或提升此候選。無需另造重現試驗。"
+          ],
+          "observation": "2026-10-17 的紀錄描述：依設定在 F 槽建立 worktree 後，app 註冊失敗且 shell 存取受拒；當時改建於主 checkout 的 .dev/ai-context/local/validation-cost-assessment。維護者指出巢狀路徑過長，以及交付混入 ignored 暫存區的誤清理風險。這是舊紀錄中的具體經驗，本次沒有重現故障、驗證搬移結果或認定 F 槽本身有問題。",
+          "title": "Worktree 註冊或存取失敗後，避免改建於主 checkout 的 ignored 目錄"
+        },
+        "decision": null,
+        "successor": null
+      },
+      "previous_status": "candidate",
+      "reason": "Record #508 source-rule adoption and bounded scenario walkthrough while preserving the tentative historical observation and candidate lifecycle.",
+      "recorded_at": "2026-10-30T07:05:51.817063+00:00"
+    }
+  ],
   "id": "lesson-2a0d6ef0b36e48f09278e272108b4a47",
   "kind": "lesson",
   "owner": "project",
   "provenance": [],
-  "revision": 1,
+  "revision": 2,
   "schema_version": "2.0.0",
   "status": "candidate",
   "successor": null,
-  "updated_at": "2026-10-23T14:21:40.126107+00:00"
+  "updated_at": "2026-10-30T07:05:51.817063+00:00"
 }
