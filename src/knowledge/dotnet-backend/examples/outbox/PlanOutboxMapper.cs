@@ -13,67 +13,11 @@ public static class PlanOutboxMapper
     {
         ArgumentNullException.ThrowIfNull(plan);
 
-        var planData = new PlanData
-        {
-            PlanId = plan.Id.Value,
-            Name = plan.Name,
-            UserId = plan.UserId,
-            NextTaskId = 0,
-            IsDeleted = plan.IsDeleted
-        };
-
-        if (plan.DomainEvents.Count > 0)
-        {
-            planData.CreatedAt = plan.DomainEvents[0].OccurredOn;
-            planData.LastUpdated = plan.DomainEvents[^1].OccurredOn;
-        }
-        else
-        {
-            planData.CreatedAt = DateProvider.Now();
-            planData.LastUpdated = DateProvider.Now();
-        }
-
-        planData.StreamName = plan.StreamName;
-        planData.DomainEventDatas = plan.DomainEvents
-            .Select(DomainEventMapper.ToData)
-            .ToList();
-
-        planData.ProjectDatas.RemoveAll(projectData =>
-            !plan.GetProjects().ContainsKey(ProjectId.ValueOf(projectData.ProjectId)));
-
-        foreach (var project in plan.GetProjects().Values)
-        {
-            var existingProject = planData.ProjectDatas.FirstOrDefault(pd => pd.ProjectId == project.Id.Value);
-            if (existingProject == null)
-            {
-                planData.AddProjectData(ProjectOutboxMapper.ToData(project));
-                continue;
-            }
-
-            existingProject.TaskDatas.RemoveAll(taskData =>
-                !project.GetTasks().ContainsKey(TaskId.ValueOf(taskData.TaskId)));
-
-            foreach (var task in project.GetTasks().Values)
-            {
-                var existingTask = existingProject.TaskDatas.FirstOrDefault(td => td.TaskId == task.Id.Value);
-                if (existingTask == null)
-                {
-                    existingProject.AddTaskData(TaskOutboxMapper.ToData(task, project.Id.Value));
-                }
-                else
-                {
-                    existingTask.Name = task.Name;
-                    existingTask.IsDone = task.IsDone;
-                    existingTask.TagIds = task.Tags.Select(tag => new TaskTagData
-                    {
-                        TaskId = task.Id.Value,
-                        TagId = tag.Value
-                    }).ToList();
-                }
-            }
-        }
-
-        return planData;
+        // This portfolio does not supply a complete current-state persistence
+        // contract (including next-task ID and persisted metadata). Never write
+        // default values or invent creation timestamps to pretend it does.
+        throw new NotSupportedException(
+            "Implement the target-selected complete state/metadata mapping before persistence.");
     }
 
     public static PlanDto ToDto(Plan plan)
@@ -93,24 +37,12 @@ public static class PlanOutboxMapper
     {
         ArgumentNullException.ThrowIfNull(planData);
 
-        if (planData.DomainEventDatas is { Count: > 0 })
-        {
-            var events = planData.DomainEventDatas
-                .Select(DomainEventMapper.ToDomain)
-                .Cast<PlanEvents.IPlanEvent>()
-                .ToList();
-            var plan = new Plan(events) { Version = (int)planData.Version };
-            plan.ClearDomainEvents();
-            return plan;
-        }
-
-        // TODO: Rebuild events from data if no domain events are persisted.
-        var reconstructed = new Plan(PlanId.ValueOf(planData.PlanId), planData.Name, planData.UserId)
-        {
-            Version = (int)planData.Version
-        };
-        reconstructed.ClearDomainEvents();
-        return reconstructed;
+        // DomainEventDatas is a non-mapped pending outbox batch, not committed
+        // full history. Neither creation+Clear nor a partial replay restores this
+        // state-based record. This adapter remains unavailable until the target
+        // implements its complete versioned state-rehydration contract.
+        throw new NotSupportedException(
+            "Implement the target-selected complete state rehydration before command-side loads.");
     }
 
     private static readonly IOutboxMapper<Plan, PlanData> Mapper = new MapperImpl();

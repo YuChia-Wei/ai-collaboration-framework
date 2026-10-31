@@ -25,12 +25,20 @@ skill 自動失效，但會減少下列 skills 的套件專業覆蓋。** 如果
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
 | `engineering-common@0.4.1` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet-backend@0.1.7` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.4.1`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
+| `dotnet-backend@0.1.8` | DDD／Clean／Hexagonal／CQRS、ASP.NET Core、aggregate、repository、command/query/reactor、交易訊息、.NET 測試慣例與範例 | 必要相依為 `engineering-common@0.4.1`；不是 UI、Razor、Blazor、MAUI 或完整 full-stack 模板 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
 Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由目標專案決定。
 範例與 source includes 不會自動複製進產品，也不是已通過你的產品測試的程式。
+
+`dotnet-backend@0.1.8` 修正既有 `MAP-EVENTS-001` 的重建事件生命週期，
+移除通用強制 Clear 與必要業務狀態反序列化失敗後繼續成功的指引，並補明
+query reader／read-model projector 的責任與恢復條件。若舊目標專案已接受不同
+失敗政策或依賴 Clear，採用前須列出受影響重建、dispatcher／repository 呼叫及
+遷移方式，由目標所有者處理衝突；安裝或 pin 更新不會替它作決定。
+套件另附固定已發布 ArchPrecept `0.0.3-preview` 的 CT-005 案例及 package-free
+對照；實際外部整合仍由 #179 獨立選版，不代表 Analyzer 新增了副作用分析能力。
 
 ## 哪些 skills 會失去完整的配套效果
 
@@ -40,7 +48,7 @@ Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由�
 allowlist 不能單獨授權採用規則，套件存在也不代表資源適用於所有操作。
 
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.4.1` 與 `dotnet-backend@0.1.7`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
+`engineering-common@0.4.1` 與 `dotnet-backend@0.1.8`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet-backend` | 仍可做的工作 |

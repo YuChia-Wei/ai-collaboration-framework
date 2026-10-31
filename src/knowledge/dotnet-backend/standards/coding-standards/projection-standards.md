@@ -17,7 +17,10 @@ arbitrary external effects. See [role rationale](../POLICY-RATIONALE.md#query-re
 
 ## Query Repository Port
 
-Every query repository port must implement the canonical marker:
+Map the query-reader role and its dependencies explicitly. A target may use the
+following marker, its own equivalent contract or a verified role mapping; the
+canonical marker is not mandatory. Do not classify a projector as a query reader
+merely because its name contains `Projection`.
 
 ```csharp
 public interface IQueryRepository
@@ -158,9 +161,9 @@ When an EF projection read model needs model registration validation, implement 
 ## Automated Validation Ownership
 
 - Target-selected Roslyn analyzer or architecture test:
-  - `IQueryRepository`-derived ports must not declare persistence write methods;
+  - recognized query-reader ports must not declare persistence write methods;
   - they must not return an Aggregate Root or child Entity;
-  - projection services must not call provider write APIs.
+  - query-reader services/adapters must not call provider write APIs.
 - Target-owned configuration tests:
   - assembled model registration for EF read models.
 - Tests / profiling / AI review:
@@ -168,9 +171,65 @@ When an EF projection read model needs model registration validation, implement 
 
 Do not infer Query Repository semantics from filenames or grep results.
 
+## Event-Driven Read-Model Projector
+
+A projector consumes events and writes its owned read-model store through a
+capability-specific writer. An ES projection is an event-driven materialization;
+a DTO projection is a conversion/query expression; a query port reads results.
+They do not acquire each other's capabilities from the word `Projection`.
+
+| Role / example | Judgment |
+|---|---|
+| Reader: query DTOs through a read port | Allowed; no command-state mutation or writes hidden in the query. |
+| Reader: call `SaveChanges` or update a read row while answering a query | Rejected under the query-only contract. |
+| Projector: handle `ProductRenamed` and update its product-summary row | Allowed under the selected event and owned read-store contract. |
+| Projector: load/save an Aggregate, change the command store or publish externally | Not authorized by read-store projection; requires a separately selected responsibility/contract. |
+
+Select persistence, ordering and delivery semantics explicitly. The following
+original pseudocode selects a local transaction containing both read-row update
+and deduplication by `(projector version, event ID)`. The broker acknowledgement
+is separate and occurs only after that transaction commits:
+
+```text
+receive event
+validate supported envelope/schema and required data
+begin owned read-store transaction
+  if event ID already recorded for this projector version: no-op
+  otherwise:
+    require the expected per-stream sequence (gap -> rollback and retry/park)
+    update owned read row
+    record event ID and applied stream sequence in the same transaction
+commit read-store transaction
+ack delivery
+```
+
+This example assumes ordered per-stream processing; it supplies no global order.
+It does not use timestamps to guess order or skip sequence gaps. Select a bounded
+retry/parking and owner repair policy for poison data. A projector rebuild uses
+a separately identified projection version/store and a selected replay/cutover
+procedure; do not erase live checkpoints or acknowledge unread events.
+
+| Selected case | Outcome and recovery |
+|---|---|
+| Duplicate after successful commit, including an ack timeout | Deduplication makes the read-store operation a no-op; retry acknowledgement. No exactly-once claim. |
+| Read-row update or local commit fails | No ack and no completed checkpoint; roll back the transaction and retry the same event under the failure policy. |
+| Separate ack fails or its result is unknown after commit | Read update remains committed; expect redelivery and deduplicate. Do not undo/reapply blindly or claim delivery completion. |
+| Polling runner uses a checkpoint instead of broker ack | Advance checkpoint only after durable projection success. If separately stored checkpoint fails/is unknown, reread it and replay idempotently; never advance past an unprocessed gap. |
+| Read row and checkpoint share a supported transaction | Commit them atomically; failure leaves neither completed. Transaction support must be proven by the adapter. |
+| Unsupported event version / malformed required field | No success or checkpoint advance; park/retry with identifiable stream/event/version and data-owner repair. No silent defaults. |
+
+Deduplication state must outlive the selected redelivery/replay window. Competing
+projectors require transaction/concurrency protection for both rows and markers;
+a standalone `HasSeen` check is insufficient. A scalar polling checkpoint covers
+only a contiguous completed prefix, not the highest out-of-order event observed.
+These are selected recovery examples, not a new event store, runner, broker or
+cross-store atomicity service. Official basis and interpretation are recorded in
+[policy rationale](../POLICY-RATIONALE.md#reconstruction-and-projection-sources).
+
 ## Review Checklist
 
-- [ ] The Query Repository implements `IQueryRepository`.
+- [ ] Reader/projector role and narrow dependencies are explicit through the
+      target-selected contract or mapping; no mandatory canonical marker.
 - [ ] The port is in Application and the adapter is in Infrastructure.
 - [ ] It returns a DTO/read model/ID/scalar/page.
 - [ ] It has no write methods or provider writes.
@@ -178,6 +237,11 @@ Do not infer Query Repository semantics from filenames or grep results.
 - [ ] Candidate IDs are used to reload Aggregates and validate invariants in the command flow.
 - [ ] Provider-specific async/materialization rules are correct.
 - [ ] Large result sets have paging, streaming, or a bound.
+- [ ] A projector writes only its owned read store; query DTO projection is distinct.
+- [ ] Projector cases cover duplicate delivery, gaps, read-write/commit failure
+      and checkpoint/ack failure; no completion before durable success.
+- [ ] Concurrency, deduplication retention, poison-event repair and any replay
+      cutover are selected; no unsupported exactly-once guarantee.
 
 ## Related Documents
 

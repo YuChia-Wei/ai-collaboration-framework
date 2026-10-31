@@ -10,7 +10,6 @@ public static class PlanEvents
     public interface IInternalDomainEvent : IDomainEvent
     {
         Guid Id { get; }
-        DateTimeOffset OccurredOn { get; }
         IReadOnlyDictionary<string, string> Metadata { get; }
         string Source { get; }
 

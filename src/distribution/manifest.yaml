@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet-backend
-  version: 0.1.7
+  version: 0.1.8
   source: src/knowledge/dotnet-backend
   metadata: content-package.yaml
   members:
@@ -187,6 +187,14 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/examples/mapper/README.md
   - source: examples/mapper/TaskMapper.cs
     destination: .ai/core/knowledge/dotnet-backend/examples/mapper/TaskMapper.cs
+  - source: examples/mapper/contract-cases.md
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases.md
+  - source: examples/mapper/contract-cases/ContractCases.csproj
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases/ContractCases.csproj
+  - source: examples/mapper/contract-cases/NuGet.Config
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases/NuGet.Config
+  - source: examples/mapper/contract-cases/Program.cs
+    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases/Program.cs
   - source: examples/nuget/Directory.Packages.props
     destination: .ai/core/knowledge/dotnet-backend/examples/nuget/Directory.Packages.props
   - source: examples/outbox/BootstrapConfig.cs
@@ -692,7 +700,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.7
+  version: 0.2.8
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -722,7 +730,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/domain-model-designer/skill-package.yaml
   kind: skill
-  version: 0.1.2
+  version: 0.1.3
 - id: lesson-author
   source: src/skills/lesson-author
   metadata: skill-package.yaml
@@ -758,7 +766,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.8
+  version: 0.2.9
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -854,7 +862,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.8
+  version: 0.2.9
 - id: software-architect
   source: src/skills/software-architect
   metadata: skill-package.yaml
@@ -870,7 +878,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-architect/skill-package.yaml
   kind: skill
-  version: 0.1.2
+  version: 0.1.3
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -944,7 +952,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.4
+  version: 0.4.5
 - kind: skill
   id: user-story-author
   version: 0.2.2

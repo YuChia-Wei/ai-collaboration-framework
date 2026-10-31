@@ -54,7 +54,8 @@ Rule IDs: `TEST-GWT-001`, `TEST-BDDFY-001`, `TEST-MOCK-001`,
 - Preserve DDD/CA/CQRS/ES/Outbox concepts from the Java prompts.
 - Keep prompt output portable across repositories (see `../../engineering-common/references/PROMPT-PORTABILITY-RULES.md`).
 - Use `IAggregateRepository<TAggregate, TId>` for Aggregate Root persistence and
-  `IQueryRepository`-derived ports for read models.
+  explicitly read-only query ports for read models (`IQueryRepository` or an
+  equivalent target-selected contract/role mapping).
 - Treat `IDomainRepository<TAggregate, TId>` as a compatibility alias that inherits
   `IAggregateRepository<TAggregate, TId>`.
 - Soft deletion is the Aggregate Repository profile default. Require `IsDeleted`

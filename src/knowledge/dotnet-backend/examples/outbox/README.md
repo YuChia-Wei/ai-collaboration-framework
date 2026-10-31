@@ -68,6 +68,17 @@ See:
 ### 2) Implement Outbox Mappers
 Provide `ToData` / `ToDomain` mappings and keep an inner outbox mapper.
 
+`PlanOutboxMapper` is a reference-only adapter shape. Its persistence conversion
+methods deliberately fail until the target supplies complete state/metadata
+serialization and versioned rehydration. The `DomainEventDatas` field is marked
+`NotMapped` and carries pending outgoing events; it is not committed full ES
+history. Do not reconstruct through creation commands, synthesize history, clear
+events to mask side effects, write default next-task IDs or invent timestamps.
+The separate Mapper contract cases demonstrate supported replay/commit behavior;
+they do not make this EF/Wolverine portfolio executable. Validate the selected
+state constructor, required nested state, failure and transaction boundaries
+before using the adapter for command-side load/save.
+
 See:
 - `PlanOutboxMapper.cs`
 - `ProjectOutboxMapper.cs`

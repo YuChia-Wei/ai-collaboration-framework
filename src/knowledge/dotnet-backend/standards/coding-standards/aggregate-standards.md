@@ -207,6 +207,24 @@ Do not introduce `DomainEntity<TId>`, non-ES `AggregateRoot<TId>`, or
 `ValueObject` base classes as default requirements. See the
 [BuildingBlocks Reconstruction Contract](../BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md).
 
+### Creation and Rehydration Responsibilities
+
+Creation produces new facts and checks current command preconditions. Rehydration
+restores already accepted state/history under selected schema/event-version and
+compatibility rules, without producing new pending events or external effects.
+Do not invoke creation commands to rebuild state and then erase their events.
+Historical transitions do not rerun today's command preconditions; unsupported
+versions and missing required business state still fail explicitly. An identity
+is insufficient proof of completeness. A failed/partly mutated reconstruction
+returns no usable Aggregate; discard it and route repair to the target data owner.
+
+State rehydration can use a dedicated constructor accepting validated complete
+persisted state. ES reconstruction uses the selected replay entrypoint after
+initialization. `Replay` below is the package-free source-include API;
+ArchPrecept CT-005 uses `LoadFromHistory`. Neither justifies a universal Clear.
+See [mapper lifecycle](mapper-standards.md#pending-domain-events-after-reconstruction)
+and the [fixed API cases](../../examples/mapper/contract-cases.md).
+
 ### 2. Constructor Design
 
 The retained profile uses public constructors and rejects static Aggregate
@@ -509,6 +527,10 @@ protected override void When(IDomainEvent @event)
 - [ ] Has an `IsDeleted` field under the default soft-delete profile, or records an explicit target opt-out.
 - [ ] Command methods check preconditions.
 - [ ] Command methods check postconditions.
+- [ ] Required reconstruction state and versions are validated; failures expose
+      no usable partial Aggregate and have an identifiable repair owner.
+- [ ] Historical transitions do not re-run current creation preconditions or
+      external effects; pending/commit behavior follows the selected protocol.
 - [ ] If event-sourced, applies Domain Events correctly (`Apply`).
 - [ ] If event-sourced, collection fields are initialized before `Replay` and
       replay is not initiated from a base constructor.

@@ -1,6 +1,6 @@
 content_package_version: 1
 id: dotnet-backend
-version: 0.1.7
+version: 0.1.8
 entrypoint: README.md
 members:
 - {path: README.md, kind: index}
@@ -82,6 +82,14 @@ members:
 - {path: examples/mapper/PlanMapper.cs, kind: example}
 - {path: examples/mapper/README.md, kind: example}
 - {path: examples/mapper/TaskMapper.cs, kind: example}
+- path: examples/mapper/contract-cases.md
+  kind: example
+- path: examples/mapper/contract-cases/ContractCases.csproj
+  kind: example
+- path: examples/mapper/contract-cases/NuGet.Config
+  kind: example
+- path: examples/mapper/contract-cases/Program.cs
+  kind: example
 - {path: examples/nuget/Directory.Packages.props, kind: example}
 - {path: examples/outbox/BootstrapConfig.cs, kind: example}
 - {path: examples/outbox/DataSourceConfig.cs, kind: example}
@@ -952,6 +960,7 @@ resources:
   operations: [apply, assess-runtime, audit, compare, design, draft, implement, normalize, plan-validation, propose, review,
     review-draft, review-semantics]
   technology_profile: dotnet-backend
+- {id: 'member:examples/mapper/contract-cases.md', path: examples/mapper/contract-cases.md, kind: example, rule_ids: [], capabilities: [implementation, review, test-design], operations: [design, implement, review], technology_profile: dotnet-backend}
 - id: member:examples/nuget/Directory.Packages.props
   path: examples/nuget/Directory.Packages.props
   kind: example
@@ -3164,6 +3173,9 @@ references:
   target: {package: dotnet-backend, path: examples/dto/README.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- {from: examples/mapper/README.md, resource_id: 'member:examples/mapper/contract-cases.md', target: {package: dotnet-backend, path: examples/mapper/contract-cases.md, anchor: null}, requirement: required, on_missing: unavailable}
+- {from: examples/mapper/contract-cases.md, resource_id: 'member:standards/coding-standards/mapper-standards.md', target: {package: dotnet-backend, path: standards/coding-standards/mapper-standards.md, anchor: null}, requirement: required, on_missing: unavailable}
+- {from: examples/mapper/contract-cases.md, resource_id: 'member:standards/coding-standards/projection-standards.md', target: {package: dotnet-backend, path: standards/coding-standards/projection-standards.md, anchor: event-driven-read-model-projector}, requirement: required, on_missing: unavailable}
 - from: examples/outbox/README.md
   resource_id: member:examples/outbox/OUTBOX-TEST-CONFIGURATION.md
   target: {package: dotnet-backend, path: examples/outbox/OUTBOX-TEST-CONFIGURATION.md, anchor: null}
@@ -3982,6 +3994,7 @@ references:
   target: {package: dotnet-backend, path: standards/coding-standards/profile-configuration-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- {from: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md, resource_id: 'member:examples/mapper/contract-cases.md', target: {package: dotnet-backend, path: examples/mapper/contract-cases.md, anchor: null}, requirement: required, on_missing: unavailable}
 - from: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
   resource_id: member:source-includes/domain/README.md
   target: {package: dotnet-backend, path: source-includes/domain/README.md, anchor: null}
@@ -3995,6 +4008,7 @@ references:
     anchor: null
   requirement: required
   on_missing: unavailable
+- {from: standards/POLICY-RATIONALE.md, resource_id: 'member:examples/mapper/contract-cases.md', target: {package: dotnet-backend, path: examples/mapper/contract-cases.md, anchor: null}, requirement: required, on_missing: unavailable}
 - from: standards/POLICY-RATIONALE.md
   resource_id: member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   target:
@@ -4202,6 +4216,7 @@ references:
   target: {package: dotnet-backend, path: examples/aggregate/README.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- {from: standards/coding-standards/aggregate-standards.md, resource_id: 'member:examples/mapper/contract-cases.md', target: {package: dotnet-backend, path: examples/mapper/contract-cases.md, anchor: null}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/aggregate-standards.md
   resource_id: member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
   target: {package: dotnet-backend, path: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md, anchor: null}
@@ -4241,6 +4256,7 @@ references:
   target: {package: dotnet-backend, path: standards/coding-standards/mapper-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- {from: standards/coding-standards/aggregate-standards.md, resource_id: 'member:standards/coding-standards/mapper-standards.md', target: {package: dotnet-backend, path: standards/coding-standards/mapper-standards.md, anchor: pending-domain-events-after-reconstruction}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/aggregate-standards.md
   resource_id: member:standards/coding-standards/repository-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/repository-standards.md, anchor: null}
@@ -4324,21 +4340,7 @@ references:
   target: {package: dotnet-backend, path: standards/coding-standards/usecase-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
-- from: standards/coding-standards/mapper-standards.md
-  resource_id: member:examples/dto/README.md
-  target: {package: dotnet-backend, path: examples/dto/README.md, anchor: null}
-  requirement: required
-  on_missing: unavailable
-- from: standards/coding-standards/mapper-standards.md
-  resource_id: member:examples/mapper/README.md
-  target: {package: dotnet-backend, path: examples/mapper/README.md, anchor: null}
-  requirement: required
-  on_missing: unavailable
-- from: standards/coding-standards/mapper-standards.md
-  resource_id: member:guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
-  target: {package: dotnet-backend, path: guides/FRAMEWORK-API-INTEGRATION-GUIDE.md, anchor: null}
-  requirement: required
-  on_missing: unavailable
+- {from: standards/coding-standards/mapper-standards.md, resource_id: 'member:examples/mapper/contract-cases.md', target: {package: dotnet-backend, path: examples/mapper/contract-cases.md, anchor: null}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/mapper-standards.md
   resource_id: member:standards/POLICY-RATIONALE.md
   target:
@@ -4347,6 +4349,7 @@ references:
     anchor: pure-object-mapper-versus-work-with-dependencies
   requirement: required
   on_missing: unavailable
+- {from: standards/coding-standards/mapper-standards.md, resource_id: 'member:standards/POLICY-RATIONALE.md', target: {package: dotnet-backend, path: standards/POLICY-RATIONALE.md, anchor: reconstruction-and-projection-sources}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/mapper-standards.md
   resource_id: member:standards/coding-standards/aggregate-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/aggregate-standards.md, anchor: null}
@@ -4390,6 +4393,7 @@ references:
     anchor: query-reader-and-read-model-projector
   requirement: required
   on_missing: unavailable
+- {from: standards/coding-standards/projection-standards.md, resource_id: 'member:standards/POLICY-RATIONALE.md', target: {package: dotnet-backend, path: standards/POLICY-RATIONALE.md, anchor: reconstruction-and-projection-sources}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/projection-standards.md
   resource_id: member:standards/coding-standards/repository-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/repository-standards.md, anchor: null}
@@ -4443,11 +4447,13 @@ references:
   target: {package: dotnet-backend, path: standards/coding-standards/aggregate-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- {from: standards/coding-standards/repository-standards.md, resource_id: 'member:standards/coding-standards/mapper-standards.md', target: {package: dotnet-backend, path: standards/coding-standards/mapper-standards.md, anchor: null}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/repository-standards.md
   resource_id: member:standards/coding-standards/projection-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/projection-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
+- {from: standards/coding-standards/repository-standards.md, resource_id: 'member:standards/coding-standards/projection-standards.md', target: {package: dotnet-backend, path: standards/coding-standards/projection-standards.md, anchor: event-driven-read-model-projector}, requirement: required, on_missing: unavailable}
 - from: standards/coding-standards/repository-standards.md
   resource_id: member:standards/coding-standards/transactional-messaging-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/transactional-messaging-standards.md, anchor: null}

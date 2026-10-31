@@ -17,8 +17,8 @@
 - Logical solution folders do not require matching physical directories.
 - Command flows use an explicit Use Case and
   `IAggregateRepository<TAggregate, TId>` for Aggregate Roots
-- Query flows default to an explicit Use Case and read-only ports inheriting
-  `IQueryRepository`
+- Query flows default to an explicit Use Case and read-only ports with a
+  target-selected contract or role mapping; `IQueryRepository` is one example.
 - Reactor handlers process event data (not domain entities)
 - Dispatch/message Handlers map delivery input and invoke one Use Case; they do
   not own orchestration

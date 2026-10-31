@@ -92,7 +92,9 @@ public interface IQueryRepository
 }
 ```
 
-A query-specific port MUST implement the marker:
+A query-specific port MUST have an explicit read-only role contract. The marker
+below is one supported expression; an equivalent custom contract or verified
+target role mapping is valid and does not require the canonical marker:
 
 ```csharp
 public interface IProductQueryRepository : IQueryRepository
@@ -191,8 +193,24 @@ Domain Event lifecycle:
 2. Obtain pending Domain Events.
 3. Atomically persist Aggregate state/events and required Outbox records.
 4. Commit.
-5. Acknowledge/clear pending events only after a successful commit.
-6. Preserve retry and optimistic-concurrency semantics on failure.
+5. Acknowledge pending events through the selected protocol only after successful
+   durable completion. For ArchPrecept CT-005 this is `MarkChangesAsCommitted`,
+   not `ClearDomainEvents`; a package-free/custom contract can use another
+   verified acknowledgement API.
+6. Preserve retry and optimistic-concurrency semantics on failure. Unknown append
+   or commit results require storage-side reconciliation before acknowledgement
+   or retry; do not blindly resend or discard pending events.
+
+Aggregate loads return complete, command-usable state under the selected version
+contract or explicit failure. Missing required fields, deserialization failure
+and unsupported history/schema versions are not a not-found result or a successful
+partial load. The adapter retains safe record/stream/version diagnostics; the
+target data owner owns repair/migration. Discard any partly mutated failed
+instance. [Mapper standards](mapper-standards.md) own conversion details.
+
+Query readers remain read-only. A capability-specific projector writer may update
+its own read store, with [projection recovery](projection-standards.md#event-driven-read-model-projector)
+and a checkpoint/ack contract; it is not the Aggregate Repository save lifecycle.
 
 For a selected transactional message path, this Aggregate + Outbox sequence is
 extended by successful incoming-processing completion in the same supported
@@ -300,7 +318,8 @@ not supply an analyzer or depend on an unfinished Use Case/Handler taxonomy.
 
 ### Query Repository
 
-- [ ] Implements the `IQueryRepository` marker.
+- [ ] Has an explicit query-only contract or role mapping; the canonical
+      `IQueryRepository` marker is optional.
 - [ ] Returns only read-side types, IDs, or scalars.
 - [ ] Contains no persistence writes.
 - [ ] A simple Query has no needless pass-through Query Service.
