@@ -207,8 +207,9 @@ class SimulatedWindowsPaths(unittest.TestCase):
         for family in ('lesson-author', 'problem-frame-author', 'distribution'):
             def invoke():
                 if family == 'distribution':
-                    backend = io.Backend.__new__(io.Backend)
-                    backend.windows, backend.macos, backend.native = True, False, kernel
+                    # No roots: construct against the simulated API without a volume preflight.
+                    backend = io.Backend({}, {'declared_by': 'fixture',
+                        'declaration_reference': 'synthetic:505', 'failure_domain': 'process-termination'})
                     return backend._volume(DIRECT)
                 module = MODULES[family]
                 return (module.local_backend if family == 'problem-frame-author' else module.local_write_backend)(DIRECT)
