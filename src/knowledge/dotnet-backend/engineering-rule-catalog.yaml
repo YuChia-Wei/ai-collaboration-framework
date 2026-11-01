@@ -13,7 +13,7 @@ ordering:
   array_contents: retain declared source order
 catalog_digest:
   algorithm: sha256
-  value: 23bacab1e4ab1cda5a34c5509a5c1ec5115f78bafefed8d44af3e5adf822bfe3
+  value: 3e6c2f73fc88bb63120a599a59701fa60e7a4e8103dc94e3cf66ea151244c14b
   canonicalization: UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array
     order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input.
 selector_contract:
@@ -62,8 +62,8 @@ rules:
   - references/BUILDING-BLOCKS-CLASS-INDEX.MD
   - review/review-routing.yaml
   status: active
-  source_file_sha256: 2379f5f0ba261f0aebd03dfe302e16436a7b23d4d4e02407cbdfe63a350556ed
-  normative_text_sha256: 42e47fde0f22044a6667751e0f00397c30715a614fe853f35d2ef546d0d64804
+  source_file_sha256: ce7845fcaac8b86c3c098654960a43d890afb65c44fd65bb89b9200ccde88f83
+  normative_text_sha256: 9e2c725e31eb31b5daa9d120b41bf9ea4c9d97f48525731cf7a74f8bdc49a9ab
   normative_text: |
     ## Optional `EsAggregateRoot<TId>` Behavior Contract
 
@@ -89,6 +89,17 @@ rules:
        events for retry or diagnosis.
     10. Product state changes occur only in `When`; `When` is deterministic and
         performs no external I/O.
+
+    Reconstruction failure MUST expose no command-usable partial Aggregate. The
+    caller discards an instance after replay/transition failure; the reference-only
+    source include does not promise rollback or automatic poisoning. Historical
+    event/schema compatibility and migration are target-owned. New pending events
+    are acknowledged only after durable append/commit; an unknown storage result
+    requires reconciliation, not blind retry or clearing. A generic
+    `ClearDomainEvents` call is not part of this behavior contract. Equivalent custom
+    APIs are valid when their semantics are verified. The published ArchPrecept
+    CT-005 API is a separate optional implementation; see the
+    [fixed contract cases](../examples/mapper/contract-cases.md).
 
     ### Construction rule
 
@@ -393,7 +404,7 @@ rules:
   - shared/common-rules.md
   - review/review-routing.yaml
   status: active
-  source_file_sha256: a0d3a037e5bb064f58a245f5c35a228e25a744a5c8249cea9bf1aad1dbc60857
+  source_file_sha256: d91c1d7cb0365533c27fc7d63915a779aa8cb0f313baf78ca22dacfb24c9323a
   normative_text_sha256: 5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7
   normative_text: |
     ### 0. Soft-Delete Default Profile
@@ -480,19 +491,32 @@ rules:
   - shared/common-rules.md
   - review/review-routing.yaml
   status: active
-  source_file_sha256: 2483ae0f3fb5103a499c803cd251d56308642748eb5a9813eee7a0ce93e38465
-  normative_text_sha256: 1a3c010a5f2e863bcf60c7ddc333a23c7d96705e8c758bb4a89fa9cae111c01c
+  source_file_sha256: 829736419ae027320e03d9725f89db2608f39f43acbf2ab55bc67656dcb2f5a9
+  normative_text_sha256: e67976723bb52de47525674fef9e3fac1851bf27729f5a31350f8ccb4a5d26f5
   normative_text: |
     ### Pending Domain Events After Reconstruction
 
-    An aggregate returned by `ToDomain()` MUST have no pending `DomainEvents`. Rehydration restores historical or persisted state; it does not represent a new business decision and MUST NOT cause those events to be published or persisted again.
+    An Aggregate returned by reconstruction MUST contain no events eligible for
+    publication or persistence as new business facts. Restore historical/persisted
+    state through the selected rehydration/replay protocol, not command methods.
 
-    - A rehydration constructor SHOULD replay historical events through `When(...)` or an equivalent state-transition path that does not enqueue them as new events.
-    - `ClearDomainEvents()` is not unconditionally required when the aggregate API explicitly guarantees that reconstruction leaves the pending-event collection empty.
-    - If the selected constructor or replay path emits or enqueues events, or its cleanliness contract is not explicit, the mapper MUST call `ClearDomainEvents()` before returning the aggregate.
-    - State-based fallback reconstruction follows the same rule; constructor side effects must not escape as pending events.
-
-    ---
+    - Successful replay restores state without enqueueing history as new pending
+      events. Current-state reconstruction has the same no-new-facts obligation.
+    - Do not require `ClearDomainEvents()` as a generic fallback. Its legality and
+      meaning depend on the selected contract. Unknown cleanliness is an unresolved
+      contract: fail/stop affected reconstruction until verified; clearing an unknown
+      instance does not prove safe reconstruction.
+    - For ArchPrecept CT-005, successful `LoadFromHistory` leaves pending empty;
+      `ClearDomainEvents()` is prohibited. Replay/transition failure poisons the
+      instance: discard it. Confirm new events through `MarkChangesAsCommitted`
+      only after successful append of the entire pending batch.
+    - For a package-free/custom contract, verify equivalent replay, failure and
+      commit behavior. Use clear/ack only where the selected protocol permits it
+      after the relevant durable success, never to conceal replay failure.
+    - Append failure does not acknowledge pending events. An unknown append outcome
+      requires storage-side reconciliation using the selected operation identity or
+      idempotency/query protocol before retry or local acknowledgement. Do not blindly
+      resend, clear pending or infer durable success from a local method.
   relocation_provenance:
     source_identity:
       path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md
@@ -1179,7 +1203,7 @@ unpacketized_documents:
     path: standards/coding-standards/projection-standards.md
   migration_provenance:
     legacy_path: .dev/standards/coding-standards/projection-standards.md
-  source_file_sha256: 82afb07529e64e8cff2002d3fd5e4f2d83715173372d8ee12cf5ecb44a03633d
+  source_file_sha256: 9a5081a00a15871bee09a3f1ead4ebb17c092a728216cdff42c7f6cd83f000f1
   packet_state: identity-allocation-required
   resolver_disposition: unpacketized-fail-closed
   reason: The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive
@@ -1217,7 +1241,7 @@ unpacketized_documents:
     path: standards/coding-standards/repository-standards.md
   migration_provenance:
     legacy_path: .dev/standards/coding-standards/repository-standards.md
-  source_file_sha256: 38a4bf30d882dedf8015033c130ee00732405cb745ffadd271ee0ff9cb21c652
+  source_file_sha256: a9cc404103ded8df181b07fe1ea10a6f48889b5affb7844a9b8b23356624932c
   packet_state: identity-allocation-required
   resolver_disposition: unpacketized-fail-closed
   reason: The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive

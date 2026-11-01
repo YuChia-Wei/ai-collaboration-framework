@@ -9,9 +9,6 @@
     }
   },
   "entrypoints": [
-    {"path": ".ai/assets/skills/diagnostic-analyst/scripts/validate-diagnostic-record.py", "portable": true, "dependency_profile": [], "prerequisite_exit_code": 1},
-    {"path": ".ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 2},
-    {"path": ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/plan-ai-context-package-apply.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 2},
     {"path": ".ai/scripts/resolve-effective-rule-packet.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": "tools/maintenance/observe-validation-dependencies.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
@@ -31,7 +28,6 @@
     {"path": ".ai/scripts/validate-software-development-orchestrator-acceptance.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-workflow-artifacts.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": "tools/maintenance/validate-workflow-handoff.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
-    {"path": ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py", "portable": false, "dependency_profile": [], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/build-ai-context-package.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/manage-release-asset-identity.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": "tools/maintenance/measure-ai-context-load.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
@@ -56,5 +52,40 @@
     {"path": ".ai/scripts/validate-source-dispositions.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-source-work-management.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-source-governance.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1}
-  ]
+  ],
+  "historical_entrypoints": {
+    "availability": "unavailable-legacy",
+    "reason": "Removed legacy packages; these records are provenance, not executable routes. Restore a verified source-owned procedure before selected legacy execution.",
+    "source_commit": "f93289c4ea05e582d1c725f9182091461abe9f18",
+    "records": [
+      {
+        "path": ".ai/assets/skills/diagnostic-analyst/scripts/validate-diagnostic-record.py",
+        "portable": true,
+        "dependency_profile": [],
+        "prerequisite_exit_code": 1
+      },
+      {
+        "path": ".ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py",
+        "portable": true,
+        "dependency_profile": [
+          "PyYAML"
+        ],
+        "prerequisite_exit_code": 2
+      },
+      {
+        "path": ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
+        "portable": true,
+        "dependency_profile": [
+          "PyYAML"
+        ],
+        "prerequisite_exit_code": 1
+      },
+      {
+        "path": ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
+        "portable": false,
+        "dependency_profile": [],
+        "prerequisite_exit_code": 1
+      }
+    ]
+  }
 }

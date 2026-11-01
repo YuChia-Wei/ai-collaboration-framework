@@ -79,6 +79,17 @@ that preserves the behavior.
 10. Product state changes occur only in `When`; `When` is deterministic and
     performs no external I/O.
 
+Reconstruction failure MUST expose no command-usable partial Aggregate. The
+caller discards an instance after replay/transition failure; the reference-only
+source include does not promise rollback or automatic poisoning. Historical
+event/schema compatibility and migration are target-owned. New pending events
+are acknowledged only after durable append/commit; an unknown storage result
+requires reconciliation, not blind retry or clearing. A generic
+`ClearDomainEvents` call is not part of this behavior contract. Equivalent custom
+APIs are valid when their semantics are verified. The published ArchPrecept
+CT-005 API is a separate optional implementation; see the
+[fixed contract cases](../examples/mapper/contract-cases.md).
+
 ### Construction rule
 
 Do not invoke virtual `When` from the base constructor. In C#, a derived type's

@@ -101,6 +101,10 @@ Local snapshot 的來源 SHA、版本標籤與證據另行核對，不會因本�
 
 Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路徑上限，並檢查操作時的暫存與復原路徑；這不只適用於 Windows。`.NET` 知識包的最長檔名會讓深層暫存根目錄超出此限制；建議把封存、candidate、scratch、staging 與 recovery 放在短根目錄，例如 `C:\aicf\v020`，而不是使用很深的使用者暫存資料夾。可從 plan 的 `path_budget` 讀回估算；這是輸入路徑預檢，不是內容相依性錯誤。
 
+各階段責任、根角色與中間布局的計算方式，見[路徑預算與拒絕處理](path-budgets.md)。
+超限診斷指出階段、根角色、實際 UTF-16 計量及下一步；復原仍須保留原 operation
+與原始路徑，不能直接搬移目錄來繞過限制。
+
 具體例子：Fable 的 v0.19.0 全選測量中，含 `.NET` 知識的最長 payload 相對
 路徑為 138 個 ASCII 字元。derive 會加上 `\subset-<32 hex>\payload\`，共 49 個
 字元，因此沒有結尾分隔符的 output root 最多約 `240 - 49 - 138 = 53`
@@ -117,9 +121,22 @@ Engine 2 在所有支援平台都採用保守的 240 UTF-16 code units 完整路
 ```powershell
 $Catalog = Get-Content -Raw "$PackageRoot\catalog\metadata\catalog.json" | ConvertFrom-Json
 $Catalog.components | Select-Object kind,id,version
+$Catalog.adapters | Select-Object id,version,template,members
 $Catalog.presets | Select-Object id,version,skills,knowledge,sub_agents,adapters
 Get-Content -Raw "$PackageRoot\catalog\metadata\build.json"
 ```
+
+`components` 不包含 skill adapters；可用 adapters 在同一份 catalog 的頂層
+`adapters`。Preset 或專案 selection 的 `adapters` 是選擇結果，不能據此判定
+完整 ZIP 沒有其他 adapter。通用 ZIP 內的 `catalog/adapters/claude/` 與
+`catalog/adapters/codex/` 保存模板，derive 才依 selection 產生 runtime entries，
+apply 才寫入目標的 `.claude/skills/` 與 `.agents/skills/`。
+
+套件 README 的 classification 由打包來源身分產生；是否已公開仍須核對該版本
+GitHub Release 的 draft／prerelease 狀態及資產 checksum。`build.json` 與
+`release-manifest.json` 的 `publication: not-performed` 記錄建置階段，
+不表示後續尚未公開。舊 v0.21.0 README 保留 snapshot／rc.N 共用文案，
+不能單憑該段將已公開的非 prerelease 版本判為開發快照。
 
 手動選擇檔的副檔名可以自行命名，但內容必須是 JSON；YAML 會被 `derive-subset.py` 以 `invalid-json` 拒絕。selection 必須含下列封閉欄位，陣列須依字典序排列：
 
@@ -186,7 +203,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
 | `engineering-common` | `0.4.1` | 無 |
-| `dotnet-backend` | `0.1.7` | 必須同時選 `engineering-common@0.4.1` |
+| `dotnet-backend` | `0.1.8` | 必須同時選 `engineering-common@0.4.1` |
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 
@@ -616,7 +633,8 @@ Git clone 的跨平台攜帶、runtime 自動 discovery 和各工具型 skill �
 | --- | --- |
 | `invalid-json` | selection/request 使用 UTF-8 JSON；不傳 YAML、重複 key 或未知欄位 |
 | `dependency-closure` | 依下載 catalog 補齊必要依賴；`.NET` 要明列 common |
-| `path-budget` | 選短的全新外部根路徑；保留原失敗；不放寬 240 UTF-16 限制 |
+| `path-budget` | 依診斷指定的根角色與實測量調整，重新 plan；recover 保留原身分與路徑，依[預算指引](path-budgets.md)處理，不放寬限制 |
+| `path-limit` | 修正選取的相對 member／layout；縮短根無法解決相對長度或深度限制 |
 | `native-platform` | 核對 engine 版本與平台；v0.19.0 的 macOS 維護仍不支援，v0.20.0 需 64-bit macOS |
 | `macos-reduced-guarantees` | v0.20.0 的暫時 macOS 路徑；先停止所有 writer，保留復原紀錄並依上文解讀較弱保證 |
 | 不支援的 filesystem／volume | 核對每個 root 的實際掛載與檔案系統；保留證據後選支援的本機位置 |

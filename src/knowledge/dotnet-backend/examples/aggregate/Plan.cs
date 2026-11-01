@@ -20,7 +20,14 @@ public sealed class Plan : EsAggregateRoot<PlanId>
     // Constructor for event sourcing framework to rebuild aggregate from events
     public Plan(IEnumerable<PlanEvents.IPlanEvent> domainEvents)
     {
-        Replay(domainEvents);
+        ArgumentNullException.ThrowIfNull(domainEvents);
+        var history = domainEvents.ToList();
+        if (history.Count == 0 || history[0] is not PlanEvents.PlanCreated
+            || history.Skip(1).Any(e => e is PlanEvents.PlanCreated)
+            || history.Any(e => e is null || !e.PlanId.Equals(history[0].PlanId)))
+            throw new InvalidOperationException("A complete single-Plan history is required.");
+        Replay(history);
+        EnsureInvariant(); // Failure escapes the constructor; no partial Plan returned.
     }
 
     // Public constructor for creating new instances
@@ -391,11 +398,10 @@ public sealed class Plan : EsAggregateRoot<PlanId>
                 break;
             case PlanEvents.TaskCreated e:
                 {
-                    var project = GetProject(e.ProjectId) ?? GetProject(e.ProjectName);
-                    if (project != null)
-                    {
-                        project.AddTask(new Task(e.TaskId, e.TaskName, project.Name));
-                    }
+                    var project = RequireHistoryProject(e.ProjectId);
+                    if (project.HasTask(e.TaskId))
+                        throw new InvalidOperationException("History creates the same task twice.");
+                    project.CreateTask(e.TaskId, e.TaskName);
                     if (int.TryParse(e.TaskId.Value, out var taskIdValue) && taskIdValue >= _nextTaskId)
                     {
                         _nextTaskId = taskIdValue + 1;
@@ -403,24 +409,26 @@ public sealed class Plan : EsAggregateRoot<PlanId>
                 }
                 break;
             case PlanEvents.TaskChecked e:
-                GetProject(e.ProjectId)?.CheckTask(e.TaskId);
+                RequireHistoryTask(e.ProjectId, e.TaskId).MarkAsDone();
                 break;
             case PlanEvents.TaskUnchecked e:
-                GetProject(e.ProjectId)?.UncheckTask(e.TaskId);
+                RequireHistoryTask(e.ProjectId, e.TaskId).UnmarkAsDone();
                 break;
             case PlanEvents.TaskDeleted e:
-                GetProject(e.ProjectId)?.DeleteTask(e.TaskId);
+                RequireHistoryTask(e.ProjectId, e.TaskId);
+                RequireHistoryProject(e.ProjectId).DeleteTask(e.TaskId);
                 break;
             case PlanEvents.TaskDeadlineSet e:
                 {
                     var deadline = e.Deadline != null ? DateOnly.Parse(e.Deadline) : (DateOnly?)null;
-                    GetProject(e.ProjectId)?.SetTaskDeadline(e.TaskId, deadline);
+                    RequireHistoryTask(e.ProjectId, e.TaskId).SetDeadline(deadline);
                 }
                 break;
             case PlanEvents.TaskRenamed e:
-                GetProject(e.ProjectId)?.RenameTask(e.TaskId, e.NewName);
+                RequireHistoryTask(e.ProjectId, e.TaskId).Rename(e.NewName);
                 break;
             case PlanEvents.ProjectDeleted e:
+                RequireHistoryProject(e.ProjectId);
                 _projects.Remove(e.ProjectId);
                 break;
             case PlanEvents.PlanDeleted:
@@ -428,20 +436,25 @@ public sealed class Plan : EsAggregateRoot<PlanId>
                 break;
             case PlanEvents.TagAssigned e:
                 {
-                    var task = GetProject(e.ProjectId)?.GetTask(e.TaskId);
-                    task?.AssignTag(e.TagId);
+                    RequireHistoryTask(e.ProjectId, e.TaskId).AssignTag(e.TagId);
                 }
                 break;
             case PlanEvents.TagUnassigned e:
                 {
-                    var task = GetProject(e.ProjectId)?.GetTask(e.TaskId);
-                    task?.UnassignTag(e.TagId);
+                    RequireHistoryTask(e.ProjectId, e.TaskId).UnassignTag(e.TagId);
                 }
                 break;
             default:
-                break;
+                throw new NotSupportedException("Unsupported Plan event; select a compatible version before replay.");
         }
     }
+
+    private Project RequireHistoryProject(ProjectId id) => GetProject(id)
+        ?? throw new InvalidOperationException("History references a missing project.");
+
+    private Task RequireHistoryTask(ProjectId projectId, TaskId taskId) =>
+        RequireHistoryProject(projectId).GetTask(taskId)
+        ?? throw new InvalidOperationException("History references a missing task.");
 }
 
 public static class DateProvider

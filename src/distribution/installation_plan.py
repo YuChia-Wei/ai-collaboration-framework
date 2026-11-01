@@ -143,7 +143,8 @@ def _protected(reader: state._Reader, root: Path, requested: list, managed: set[
 
 
 def _path_budget(roots: dict[str, Path], candidate: state.Candidate,
-                 old: state.InstalledLock | None, delta: list[dict], protected: list[dict], engine: dict) -> dict:
+                 old: state.InstalledLock | None, delta: list[dict], protected: list[dict], engine: dict,
+                 edits: list[dict] = ()) -> dict:
     """Budget the selected writer layout without allocating IDs or directories.
 
     Fixed-width placeholders are length calculations only. Apply selects a real
@@ -151,7 +152,7 @@ def _path_budget(roots: dict[str, Path], candidate: state.Candidate,
     """
     operation = "i-" + "0" * 32
     paths: set[tuple[str, str]] = {(role, "") for role in roots}
-    names = set(candidate.members) | (set(old.members) if old else set())
+    names = set(candidate.members) | (set(old.members) if old else set()) | {row["intent"]["path"] for row in edits}
     controls = {state.LOCK_PATH, state.GUARD_PATH, *state.MARKERS}
     for name in names | controls | {row["path"] for row in protected}:
         paths.add(("project", name))
@@ -169,17 +170,16 @@ def _path_budget(roots: dict[str, Path], candidate: state.Candidate,
     for row in delta:
         if row["action"] in {"add", "change"}:
             paths.add(("staging", operation + "/" + row["destination"]))
+    for row in edits:
+        if row["intent"]["after_content_ref"] is not None:
+            paths.add(("staging", row["intent"]["after_content_ref"]))
     paths.add(("staging", operation + "/" + state.LOCK_PATH))
     paths.add(("recovery", operation + "/operation.json"))
     paths.add(("recovery", operation + "/objects/" + "0" * 64))
     maximum, longest_segment = 0, 0
     for role, name in sorted(paths):
-        target = roots[role].joinpath(*name.split("/")) if name else roots[role]
-        full_length = len(str(target).encode("utf-16-le", errors="strict")) // 2
-        segment_length = max(len(part.encode("utf-16-le", errors="strict")) // 2 for part in target.parts)
+        full_length, segment_length = state.path_budget("plan", role, roots[role], name)
         maximum, longest_segment = max(maximum, full_length), max(longest_segment, segment_length)
-        state._check(full_length <= state.LIMITS["path_utf16"] and segment_length <= state.LIMITS["segment_utf16"],
-                     "path-budget", f"{role} path uses {full_length} full-path / {segment_length} segment UTF-16 units; limits are 240 / 255.", name or None, "unsupported")
     return {"policy": "conservative-windows-v1", "full_path_utf16_limit": state.LIMITS["path_utf16"],
             "segment_utf16_limit": state.LIMITS["segment_utf16"], "maximum_full_path_utf16": maximum,
             "maximum_segment_utf16": longest_segment, "checked_paths": len(paths),
@@ -293,15 +293,7 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
                  "lock-limit", "Resulting lock would exceed its reader byte limit.")
     state._lock_bytes(json_bytes(prospective_lock))
     backend = Backend(roots, durability)
-    budget = _path_budget(roots, candidate, old, delta, protected + [{"path":r["intent"]["path"]} for r in edits], request["engine"])
-    from .installation_io import budget as actual_budget, sibling
-    edit_paths = []
-    for row in edits:
-        name = row["intent"]["path"]
-        edit_paths.extend(("project", roots["project"], n) for n in (name, sibling("0"*32, name)))
-        if row["intent"]["after_content_ref"] is not None:
-            edit_paths.append(("staging", roots["staging"], row["intent"]["after_content_ref"]))
-    actual_budget(edit_paths)
+    budget = _path_budget(roots, candidate, old, delta, protected, request["engine"], edits)
     noop = is_noop(observation, candidate, request["mode_policy"], project_inputs, edits)
     capabilities = {item["id"] for item in candidate.selection["components"]}
     if old:

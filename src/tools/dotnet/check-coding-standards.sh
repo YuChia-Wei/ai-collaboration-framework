@@ -17,13 +17,12 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Base directories - use relative path or detect from script location
+# Source-checkout resource owners; this is not an installed package tool.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-STANDARDS_DIR="$BASE_DIR/.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards"
-MAIN_FILE="$BASE_DIR/.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md"
+STANDARDS_DIR="$BASE_DIR/src/knowledge/dotnet-backend/standards/coding-standards"
+MAIN_FILE="$BASE_DIR/src/knowledge/dotnet-backend/standards/coding-standards.md"
 INDEX_FILE="$MAIN_FILE"
-SHARED_CONTEXT_DIR="$BASE_DIR/.ai/assets/shared"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}Coding Standards Structural Integrity Check (.NET)${NC}"
@@ -60,14 +59,6 @@ else
     echo -e "  ${RED}✗${NC} INDEX_FILE not found: $INDEX_FILE"
     SELF_CHECK_ERRORS=$((SELF_CHECK_ERRORS + 1))
 fi
-
-if [ -d "$SHARED_CONTEXT_DIR" ]; then
-    echo -e "  ${GREEN}✓${NC} SHARED_CONTEXT_DIR exists"
-else
-    echo -e "  ${RED}✗${NC} SHARED_CONTEXT_DIR not found: $SHARED_CONTEXT_DIR"
-    SELF_CHECK_ERRORS=$((SELF_CHECK_ERRORS + 1))
-fi
-
 echo ""
 echo -e "${BLUE}Checking for unchecked supporting files:${NC}"
 echo -e "  ${BLUE}ℹ${NC} Supporting assets are validated selectively by canonical workflow usage."
@@ -80,11 +71,7 @@ else
     echo -e "${RED}✗ Self-check failed: Script needs updating (found $SELF_CHECK_ERRORS issues)${NC}"
     echo -e "${YELLOW}The script may not accurately check the project. Please fix these issues first.${NC}"
     echo ""
-    read -p "Continue anyway? (y/N) " -n 1 -r
-    echo ""
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        exit 1
-    fi
+    exit 1
 fi
 
 # Function to check if file exists
@@ -199,7 +186,8 @@ for file in "${SPECIALIZED_FILES[@]}"; do
             WARNINGS=$((WARNINGS + 1))
         fi
 
-        if ! grep -Fq "./coding-standards/$file" "$INDEX_FILE"; then
+        if ! grep -Fq "](coding-standards/$file)" "$INDEX_FILE" &&
+           ! grep -Fq "](./coding-standards/$file)" "$INDEX_FILE"; then
             echo -e "  ${RED}✗${NC} Missing exact catalog route in coding-standards.md"
             ERRORS=$((ERRORS + 1))
         fi
@@ -239,9 +227,9 @@ echo ""
 echo -e "${YELLOW}4. Script Health Check${NC}"
 echo "----------------------------------------"
 
-# Check health of scripts in .ai/scripts directory
-SCRIPTS_DIR="$BASE_DIR/.ai/scripts"
-echo -e "${BLUE}Checking scripts in .ai/scripts/:${NC}"
+# Check the source scripts that accompany this checker.
+SCRIPTS_DIR="$SCRIPT_DIR"
+echo -e "${BLUE}Checking scripts in $SCRIPTS_DIR/:${NC}"
 
 SCRIPT_ISSUES=0
 

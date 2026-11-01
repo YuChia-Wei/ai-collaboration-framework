@@ -36,7 +36,7 @@ class InstructionSettingsTests(unittest.TestCase):
 
     def test_source_instruction_settings_load_defaults_and_declared_closure(self):
         package, _ = self.closure()
-        self.assertEqual(package.version, "0.5.0")
+        self.assertEqual(package.version, self.document["version"])
         self.assertEqual(package.metadata["configuration"]["defaults"], {"issue_control": ""})
         self.assertEqual(package.metadata["artifact_roles"], [])
         self.assertEqual(package.metadata["resources"]["tools"], [])

@@ -42,8 +42,8 @@ class ContextFollowUpTests(unittest.TestCase):
                 if expected:
                     follow = result['details']['context_follow_up']
                     self.assertEqual(follow['semantic_assessment'], 'not-performed')
-                    self.assertIn('unchanged', follow['next_actions'][0])
-                    self.assertIn('optional', follow['next_actions'][2])
+                    self.assertTrue(any('unchanged' in action for action in follow['next_actions']))
+                    self.assertTrue(any('optional' in action for action in follow['next_actions']))
                 if markers:
                     self.assertEqual(result['diagnostics'][0]['code'], 'maintenance-marker')
 

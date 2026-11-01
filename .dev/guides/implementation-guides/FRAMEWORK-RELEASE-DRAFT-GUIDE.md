@@ -30,7 +30,7 @@ and carry the full source SHA; this label grants no release status.
 ## Contents and identities
 
 One ZIP contains `catalog/` (complete catalog and all actual metadata),
-`engine/` (standalone 23-file Engine 2 closure and `engine.json`),
+`engine/` (standalone declared Engine 2 closure and `engine.json`),
 `engine-pin.json`, `README.md` and `content-hashes.json`. Before any product
 execution, the tool AST-reads both literal `ENGINE_FILES` declarations, requires
 their agreement and creates an independent pin from raw Git blobs. Executing
@@ -53,29 +53,49 @@ self-referential archive hash. The tool verifies raw ZIP entries, extracts them
 and checks raw hashes again. No MQ/project selection, `.dev` history, target
 installation, scratch files or credentials are packaged.
 
-New builds emit `framework-release-assets/2`. The reusable ZIP `README.md`
+New builds emit `framework-release-assets/3`. The reusable ZIP `README.md`
 comes from the regular UTF-8 Git blob
 `src/distribution/templates/release-readme.md` at the selected **source commit**,
 not the workflow/tooling commit. The renderer uses `string.Template` with exactly
-`label`, `source_commit`, `catalog_identity` and `release_version`; unknown,
+`label`, `source_commit`, `catalog_identity`, `release_version`,
+`package_classification` and `adapter_rows`; unknown,
 missing or malformed placeholders fail. A missing source template fails without
 reading a replacement from the working tree.
 
 The external manifest's mandatory `provenance.readme_source` contains the fixed
 source path, source commit, Git blob identity, raw SHA-256, byte size and original
 `template_utf8`. The offline verifier checks those byte identities, renders the
-four manifest-selected values again and requires exact agreement with ZIP README
-bytes. Version 2 also requires each catalog member's source path to be a safe
+manifest-selected values again and requires exact agreement with ZIP README
+bytes. Classification is `stable` for a matching annotated stable tag,
+`release-candidate` for an annotated RC tag, and `snapshot` without a tag.
+Adapter table rows come from the packaged catalog, not a hard-coded version list.
+All explanatory prose remains in the selected source template. Build receipts'
+`publication: not-performed` describes the build stage; only provider read-back
+establishes subsequent publication. The template does not claim that a tagged
+build has already been published.
+
+Before the build artifact is admitted, and again before the Draft writer calls
+GitHub, version 3 requires both `claude` and `codex` catalog declarations, their
+declared templates and all nonempty member bytes. The README must match those
+verified inputs. A missing adapter, missing member, old four-field template or
+tag/version mismatch fails closed. This checks packaged availability; explicit
+target selection and native client discovery remain separate. Most presets select
+only Codex; use a JSON selection with both adapters for both runtime entry trees.
+
+Version 2 and 3 require each catalog member's source path to be a safe
 `src/` path. The template is not an extra ZIP member, catalog build input or
-engine member; the engine remains the same 23-file closure. Generated manifests,
+engine member; the engine retains its source-declared closure. Generated manifests,
 pins and hashes remain source-project release orchestration.
 
-The reader retains `framework-release-assets/1` handling for existing artifacts.
+The reader retains `framework-release-assets/1` and `/2` handling for existing artifacts.
 A successful version-1 read validates the legacy envelope only: its README source
 evidence is absent, and it does not establish the version-2 source-only rule.
-Published version-1 ZIPs, manifests, tags and notes are never rewritten by this
-change. Draft ownership still binds the exact existing manifest bytes, so a
-new version-2 rebuild cannot replace assets admitted with a version-1 manifest.
+Version 2 verifies its original four-field source template without claiming the
+new classification/adapter checks. Old source tags require compatible historical
+build tooling; the current builder never substitutes a newer source template.
+Published ZIPs, manifests, tags and notes are never rewritten by this change.
+Draft ownership still binds the exact existing manifest bytes, so a new version-3
+rebuild cannot replace assets admitted with an earlier manifest.
 
 Actual build receipts contain time/environment data; rebuilding one source
 commit can yield different ZIP bytes. A matching source or catalog label alone

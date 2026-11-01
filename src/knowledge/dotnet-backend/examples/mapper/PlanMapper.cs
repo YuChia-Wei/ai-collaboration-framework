@@ -15,21 +15,10 @@ public static class PlanMapper
         planData.PlanId = plan.Id.Value;
         planData.Name = plan.Name;
         planData.UserId = plan.UserId;
-        planData.NextTaskId = 0; // TODO: expose nextTaskId if needed
         planData.IsDeleted = plan.IsDeleted;
 
-        if (plan.DomainEvents.Count > 0)
-        {
-            planData.CreatedAt = plan.DomainEvents[0].OccurredOn;
-            planData.LastUpdated = plan.DomainEvents[^1].OccurredOn;
-        }
-        else
-        {
-            planData.CreatedAt = DateProvider.Now();
-            planData.LastUpdated = DateProvider.Now();
-        }
-
         planData.StreamName = plan.StreamName;
+        // Pending append batch, not the complete history expected by ToDomain.
         planData.DomainEventDatas = plan.DomainEvents
             .Select(DomainEventMapper.ToData)
             .ToList();
@@ -92,109 +81,25 @@ public static class PlanMapper
     {
         ArgumentNullException.ThrowIfNull(planData);
 
-        if (planData.DomainEventDatas?.Count > 0)
-        {
-            var domainEvents = planData.DomainEventDatas
-                .Select(DomainEventMapper.ToDomain)
-                .Cast<PlanEvents.IPlanEvent>()
-                .ToList();
+        // Repository input must be a complete committed history, never ToData's
+        // pending append batch. This example has no selected snapshot protocol.
+        if (!planData.ContainsCompleteHistory || planData.DomainEventDatas is not { Count: > 0 })
+            throw new InvalidOperationException("A complete Plan history is required.");
 
-            var plan = new Plan(domainEvents);
-            plan.Version = planData.Version;
-            plan.ClearDomainEvents();
-            return plan;
-        }
+        var history = planData.DomainEventDatas
+            .Select(DomainEventMapper.ToDomain)
+            .Cast<PlanEvents.IPlanEvent>()
+            .ToList(); // Unsupported payload/version failures escape.
+        if (history.Count != planData.Version || history[0] is not PlanEvents.PlanCreated
+            || history.Skip(1).Any(e => e is PlanEvents.PlanCreated)
+            || history.Any(e => e.PlanId.Value != planData.PlanId))
+            throw new InvalidOperationException("History count, creation or stream identity mismatch.");
 
-        var events = new List<PlanEvents.IPlanEvent>
-        {
-            new PlanEvents.PlanCreated(
-                PlanId.ValueOf(planData.PlanId),
-                planData.Name,
-                planData.UserId,
-                new Dictionary<string, string>(),
-                Guid.NewGuid(),
-                planData.CreatedAt
-            )
-        };
-
-        foreach (var projectData in planData.ProjectDatas)
-        {
-            events.Add(new PlanEvents.ProjectCreated(
-                PlanId.ValueOf(planData.PlanId),
-                ProjectId.ValueOf(projectData.ProjectId),
-                ProjectName.ValueOf(projectData.Name),
-                new Dictionary<string, string>(),
-                Guid.NewGuid(),
-                planData.CreatedAt
-            ));
-
-            foreach (var taskData in projectData.TaskDatas)
-            {
-                events.Add(new PlanEvents.TaskCreated(
-                    PlanId.ValueOf(planData.PlanId),
-                    ProjectId.ValueOf(projectData.ProjectId),
-                    ProjectName.ValueOf(projectData.Name),
-                    TaskId.ValueOf(taskData.TaskId),
-                    taskData.Name,
-                    new Dictionary<string, string>(),
-                    Guid.NewGuid(),
-                    planData.CreatedAt
-                ));
-
-                if (taskData.IsDone)
-                {
-                    events.Add(new PlanEvents.TaskChecked(
-                        PlanId.ValueOf(planData.PlanId),
-                        ProjectId.ValueOf(projectData.ProjectId),
-                        TaskId.ValueOf(taskData.TaskId),
-                        new Dictionary<string, string>(),
-                        Guid.NewGuid(),
-                        planData.LastUpdated
-                    ));
-                }
-
-                if (taskData.Deadline != null)
-                {
-                    events.Add(new PlanEvents.TaskDeadlineSet(
-                        PlanId.ValueOf(planData.PlanId),
-                        ProjectId.ValueOf(projectData.ProjectId),
-                        TaskId.ValueOf(taskData.TaskId),
-                        taskData.Deadline,
-                        new Dictionary<string, string>(),
-                        Guid.NewGuid(),
-                        planData.LastUpdated
-                    ));
-                }
-
-                foreach (var tagId in taskData.TagIds)
-                {
-                    events.Add(new PlanEvents.TagAssigned(
-                        PlanId.ValueOf(planData.PlanId),
-                        ProjectId.ValueOf(projectData.ProjectId),
-                        TaskId.ValueOf(taskData.TaskId),
-                        Example.Tags.Domain.TagId.ValueOf(tagId),
-                        new Dictionary<string, string>(),
-                        Guid.NewGuid(),
-                        planData.LastUpdated
-                    ));
-                }
-            }
-        }
-
-        if (planData.IsDeleted)
-        {
-            events.Add(new PlanEvents.PlanDeleted(
-                PlanId.ValueOf(planData.PlanId),
-                new Dictionary<string, string>(),
-                Guid.NewGuid(),
-                planData.LastUpdated
-            ));
-        }
-
-        var rebuilt = new Plan(events);
-        rebuilt.Version = planData.Version;
-        rebuilt.ClearDomainEvents();
-        return rebuilt;
+        var plan = new Plan(history); // Replay failure exposes no usable instance.
+        plan.EnsureInvariant();
+        if (plan.DomainEvents.Count != 0)
+            throw new InvalidOperationException("Replay contract produced new pending events.");
+        return plan; // No Version setter, manufactured history or generic Clear.
     }
 
     public static List<Plan> ToDomain(IEnumerable<PlanData> planDatas) =>
@@ -237,8 +142,10 @@ public interface IOutboxMapper<TAggregate, TData>
 
 public static class DomainEventMapper
 {
-    public static DomainEventData ToData(object domainEvent) => new();
-    public static object ToDomain(DomainEventData data) => new();
+    public static DomainEventData ToData(object domainEvent) =>
+        throw new NotSupportedException("Select a versioned event serializer before use.");
+    public static object ToDomain(DomainEventData data) =>
+        throw new NotSupportedException("Select a versioned event deserializer before use.");
 }
 
 public sealed class DomainEventData { }
@@ -247,14 +154,13 @@ public sealed class PlanData
 {
     public PlanData(int version) => Version = version;
 
+    // Only the repository may set this after loading full committed history.
+    public bool ContainsCompleteHistory { get; set; }
     public int Version { get; set; }
     public string PlanId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string UserId { get; set; } = string.Empty;
-    public int NextTaskId { get; set; }
     public bool IsDeleted { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset LastUpdated { get; set; }
     public string StreamName { get; set; } = string.Empty;
     public List<DomainEventData> DomainEventDatas { get; set; } = new();
     public List<ProjectData> ProjectDatas { get; set; } = new();

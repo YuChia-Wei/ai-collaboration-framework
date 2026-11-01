@@ -1,6 +1,6 @@
 # Methodology sources and selected .NET policies
 
-This is explanatory guidance for `dotnet-backend@0.1.7`, not a new Rule ID,
+This is explanatory guidance for `dotnet-backend@0.1.8`, not a new Rule ID,
 Analyzer catalog or target adoption record. The linked owner documents retain
 their contracts and existing registration status. Reading, installing or updating
 this guidance does not override a target's accepted policy. An alternative may
@@ -35,6 +35,35 @@ Domain Language is implied. The separate *Pattern Summaries* and the full 2004
 book have distinct rights; this notice does not license those works. Check actual
 license/attribution before reproducing any further material. Source qualification
 does not replace package license/provenance review.
+
+## Reconstruction and projection sources
+
+The following sources were rechecked on 2026-10-31 for Framework #519. These
+are original summaries and links, not reproduced articles, diagrams, code or
+translations. For the Microsoft/Fowler articles no open redistribution license
+is asserted; inspect the applicable license before reproducing material.
+
+| Source / version and section | Explicit support | Framework interpretation / selected contract |
+|---|---|---|
+| Microsoft .NET, [Best practices for exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/best-practices-for-exceptions), live documentation, “Use try/catch/finally blocks…” and “Restore state when methods don't complete…” | Recovery must be possible for a handled error; failed operations need defined state. | Required Aggregate reconstruction fails without exposing a usable partial object. Exception versus failed Result is target-selected; optional display degradation is not a mandate for all mappers to throw. |
+| Eric Evans, *DDD Reference*, 2015-03, printed pp.16,18,22, [official PDF](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf), Aggregates / Factories / Assertions | Consistency boundaries, complete valid creation/reconstitution and explicit state assertions. | Identity alone does not establish complete business state. Creation and rehydration responsibilities differ; historical compatibility is explicit. These conceptual adaptations use S1's CC BY 4.0 attribution above. |
+| Martin Fowler, [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html#ExternalUpdates), 2005-12-12 draft, External Updates / External Queries / Code Changes | Replaying history must distinguish external updates and time-dependent external input. | Replay restores facts without new publication or today's external decisions. No unique Gateway, queue topology or pending-event API is prescribed by this summary. |
+| Microsoft Azure Architecture Center, [Event Sourcing pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing), live documentation, Solution / Issues and considerations (versioning, ordering, idempotency) | Event handlers update materialized views; duplicate delivery and schema/order compatibility need handling. | Reader and projector capabilities differ. Owned read-row writes precede checkpoint/ack; selected deduplication and recovery handle replay. The article's example queue is not mandatory for every ES system; tolerant optional additive fields do not justify dropping required invariant state. |
+
+The owner documents are [Mapper](coding-standards/mapper-standards.md),
+[Aggregate](coding-standards/aggregate-standards.md),
+[Repository](coding-standards/repository-standards.md) and
+[query/projector](coding-standards/projection-standards.md). Their original cases
+are Framework interpretations and selected examples, not claims that the cited
+authors mandate each .NET method or transaction mechanism.
+
+The optional [CT-005 case](../examples/mapper/contract-cases.md) selects published
+ArchPrecept `0.0.3-preview` and its exact build source/bytes. It demonstrates an
+API contract, not downstream adoption or the later unshipped Analyzer predicates.
+Framework #179 owns actual external integration/version adoption. Package-free
+and custom-contract implementations remain supported. No knowledge change adds
+Analyzer exception analysis, arbitrary side-effect or interprocedural dataflow
+coverage, an event store, a broker or a universal recovery runtime.
 
 ## Decision provenance and evidence limits
 

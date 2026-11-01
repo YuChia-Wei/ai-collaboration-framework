@@ -212,6 +212,10 @@ def main():
                 result['model_observations']=observations
     except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
         reason=str(exc) if getattr(exc,'code',None)=='model-unavailable' else 'Pinned catalog, explicit selection, model observation or bounded output was rejected; preserve any partial output.'
+        diagnostic=getattr(exc,'diagnostic',{})
+        if diagnostic.get('code') in {'path-budget','path-limit'}:
+            relative=(' Relative path: '+diagnostic['path']+'.') if diagnostic.get('path') else ''
+            reason=diagnostic['reason']+relative+' '+diagnostic['next_action']
         print(json.dumps({'outcome':getattr(exc,'outcome','blocked'),'code':getattr(exc,'code',getattr(exc,'diagnostic',{}).get('code','subset-input')),'reason':reason}))
         return 1
     print(json.dumps(result,indent=2,ensure_ascii=False))

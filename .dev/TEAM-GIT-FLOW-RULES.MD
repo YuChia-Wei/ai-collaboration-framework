@@ -50,6 +50,43 @@ dedicated workflow branch is mandatory. Direct mode remains governed by
 
 Use the agent prefix when an agent performs the work.
 
+## Worktree Location And Failed Setup
+
+When worktree creation, client registration or access fails, establish separately
+whether the checkout exists, Git registers it, the client registers it, and the
+current execution surface can read/write it. Preserve actual errors and unknown
+results. Registration failure or access denied alone does not establish a path
+length, filesystem or client defect.
+
+For an existing checkout, inspect its current Git identity and the client's
+actually available attach or repair capability before creating another checkout.
+Do not bypass access controls or silently create a replacement inside the main
+checkout's ignored temporary tree. Missing client capabilities remain unavailable;
+Git registration alone does not prove client attachment or usable access.
+
+Select a location from the explicitly configured worktree root when usable, with
+a short, visible path appropriate to the selected checkout and intermediate
+operations. Check its current accessibility, filesystem and destination occupancy.
+An unavailable configured root needs an explicit alternative within task authority;
+never assume a drive letter, RAM disk or client tool is always available. Keep
+durable work out of disposable cleanup scope. A short path is risk reduction,
+not evidence that a particular failure was caused by length.
+
+Before an authorized move or deletion of a worktree, verify the resolved absolute
+source/destination, intended containment, Git worktree registration and HEAD,
+dirty tracked changes, untracked and ignored data, destination occupancy, and
+the required recovery or preservation of work. An occupied destination or unknown
+state stops that action until reconciled. Preserve user-owned data; neither an
+ignored path nor a failed registration grants deletion, relocation or prune
+authority. Use the supported Git/client operation only after those facts and
+permissions are established, then read back its actual result.
+
+These rules apply to worktree setup/recovery and cleanup that may contain a
+worktree. They add no universal gate or record requirement to ordinary temporary
+file cleanup. The historical
+[candidate observation](lessons/records/lesson-2a0d6ef0b36e48f09278e272108b4a47.lesson.json)
+is supporting experience, not proof of a reproduced client or disk defect.
+
 ## Normal Flow
 
 1. Start from a clean `main`.

@@ -1,452 +1,194 @@
 # Mapper Coding Standards (.NET)
 
-This document defines coding standards for Mapper classes that convert data objects between layers.
+Mappers convert supplied objects between representations. Distinguish command-side
+Aggregate reconstruction, persistence writes, DTO conversion and optional display
+enrichment before choosing failure behavior.
 
----
-
-## 📌 Overview
-
-Mappers convert between Domain and DTO/Data objects.
-
-- **Domain → Data**: Convert a domain object to a persistence object
-- **Data → Domain**: Convert a persistence object back to a domain object
-- **Domain → DTO**: Convert a domain object to a data-transfer object
-
----
-
-## 🏷️ Pattern Markers (for Automated Checks)
-
-These illustrative markers describe the selected policy. They do not establish
-that a script or Analyzer implements or has executed these checks:
-
-```yaml
-# Mapper rules
-Pattern (required): static class
-Pattern (required): ArgumentNullException\.ThrowIfNull
-
-# Forbidden rules
-Pattern (forbidden, ignore-comment): I[A-Za-z0-9]*Repository|UseCase|Handler
-```
-
----
-
-## 🔴 Mandatory Rules (MUST FOLLOW)
-
-### 1. Use Static Methods
+## Pure Object Mapper Structure
 
 A pure object Mapper MUST use a static class and static methods, without instance
-state, DI, I/O or orchestration. Work requiring clock, user or query access belongs
-to an explicit Enricher, Assembler or Adapter that supplies conversion inputs.
-This is the selected Framework policy, not Fowler's persistence Data Mapper
-pattern. Static syntax alone proves neither purity nor determinism. See
+state, DI, I/O or orchestration. An Enricher, Assembler or Adapter supplies clock,
+user or query inputs. Static syntax proves neither purity, determinism nor complete
+round trips. This is the selected Framework policy, distinct from Fowler's
+persistence Data Mapper pattern; see
 [policy rationale](../POLICY-RATIONALE.md#pure-object-mapper-versus-work-with-dependencies).
 
-```csharp
-// ✅ Correct: use a static class and static methods
-public static class ProductMapper
-{
-    public static ProductData ToData(Product aggregate)
-    {
-        ArgumentNullException.ThrowIfNull(aggregate);
+Handle null inputs explicitly. Reuse `JsonSerializerOptions` where appropriate.
+The snippets use target-owned types and an exception failure policy; an explicit
+failed Result with no usable Aggregate is equally valid. No serializer, error
+class or ArchPrecept dependency is prescribed.
 
-        return new ProductData
-        {
-            Id = aggregate.Id.Value,
-            Name = aggregate.Name,
-            State = aggregate.State.ToString(),
-            IsDeleted = aggregate.IsDeleted,
-            CreatedAt = aggregate.CreatedAt,
-            UpdatedAt = aggregate.UpdatedAt
-        };
-    }
+## Write-Model Round Trips and Reconstruction
 
-    public static Product ToDomain(ProductData data)
-    {
-        ArgumentNullException.ThrowIfNull(data);
+`ToData` / `ToDomain` MUST preserve all state required by the selected invariant,
+metadata and event contract. Check fields and behavior explicitly. A DTO projection
+needs no invented inverse. Serialization failure of required persistence state
+MUST fail the write; do not save defaults that conceal corruption.
 
-        // Rebuild from Event Sourcing
-        if (data.DomainEvents?.Any() == true)
-        {
-            var events = data.DomainEvents
-                .Select(DomainEventMapper.ToDomain)
-                .ToList();
-
-            var product = new Product(events);
-            product.ClearDomainEvents();
-            return product;
-        }
-
-        // Rebuild from current state. Constructor behavior is unknown here,
-        // so explicitly remove any events emitted during reconstruction.
-        var product = new Product(
-            ProductId.From(data.Id),
-            data.Name,
-            data.CreatorId
-        );
-        product.ClearDomainEvents();
-        return product;
-    }
-}
-
-// ❌ Incorrect: create a Mapper instance
-public class ProductMapper
-{
-    public ProductData ToData(Product aggregate)  // Not static
-    {
-        // ...
-    }
-}
-```
-
----
-
-### 2. Complete Bidirectional Conversion
-
-For a write-model persistence round trip, `ToData()` and `ToDomain()` MUST preserve
-the state required by the selected invariant, metadata and event contract. This
-requires explicit field/behavior checks; static syntax does not prove symmetry.
-A one-way DTO projection does not need an invented inverse. The following is an
-illustrative conversion; reconstruction failure and event lifecycle require their
-separately selected contract:
+The storage contract selects full history, supported snapshot plus tail, or current
+state. A pending-event batch is not full committed history. Missing history MUST
+NOT trigger an improvised state fallback or manufacture historical event IDs or
+timestamps. Validate schema/event versions before returning a usable Aggregate;
+unknown versions, malformed required data and missing required state fail.
 
 ```csharp
-// ✅ Correct: ToData serializes; ToDomain deserializes
-public static class ProductMapper
-{
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = false
-    };
-
-    public static ProductData ToData(Product aggregate)
-    {
-        var data = new ProductData
-        {
-            Id = aggregate.Id.Value,
-            Name = aggregate.Name,
-            State = aggregate.State.ToString()
-        };
-
-        // Serialize a complex object
-        if (aggregate.DefinitionOfDone is not null)
-        {
-            data.DefinitionOfDoneJson = JsonSerializer.Serialize(
-                aggregate.DefinitionOfDone, JsonOptions);
-        }
-
-        return data;
-    }
-
-    public static Product ToDomain(ProductData data)
-    {
-        var product = new Product(
-            ProductId.From(data.Id),
-            data.Name,
-            data.CreatorId
-        );
-
-        // Deserialize a complex object
-        if (!string.IsNullOrEmpty(data.DefinitionOfDoneJson))
-        {
-            var dod = JsonSerializer.Deserialize<DefinitionOfDone>(
-                data.DefinitionOfDoneJson, JsonOptions);
-            product.DefineDefinitionOfDone(dod);
-        }
-
-        return product;
-    }
-}
-```
-
-Additional requirements:
-
-- Prefer reusing one `JsonSerializerOptions` instance.
-- A complex-object serialization failure SHOULD degrade gracefully rather than make the mapper terminate the entire flow.
-- If the data contains domain events, `ToDomain()` SHOULD prefer event-based rebuilding.
-
----
-
-### 3. The IsDeleted Field MUST Be Mapped When Soft Delete Applies
-
-Under the `DELETE-SOFT-001` default profile, an Aggregate Root Mapper MUST
-handle the `IsDeleted` field. A target with an evidenced soft-delete opt-out
-does not add or map a synthetic field.
-
-```csharp
-// ✅ Correct: map the IsDeleted field
-public static ProductData ToData(Product aggregate)
-{
-    return new ProductData
-    {
-        Id = aggregate.Id.Value,
-        Name = aggregate.Name,
-        IsDeleted = aggregate.IsDeleted,  // MANDATORY!
-        // ...other fields
-    };
-}
-
+// Selected current-state contract: DefinitionOfDone is required business state.
+// Product(RestoredProductState) validates complete restored state without
+// recording creation events or running today's creation preconditions.
 public static Product ToDomain(ProductData data)
 {
-    var product = new Product(
-        ProductId.From(data.Id),
-        data.Name,
-        data.CreatorId
-    );
+    ArgumentNullException.ThrowIfNull(data);
+    if (data.SchemaVersion != 1)
+        throw new NotSupportedException("Unsupported Product state schema.");
+    if (string.IsNullOrWhiteSpace(data.DefinitionOfDoneJson))
+        throw new InvalidDataException("Required DefinitionOfDone is missing.");
 
-    // MANDATORY: restore IsDeleted state
-    if (data.IsDeleted)
-    {
-        product.MarkAsDeleted();
-    }
-
-    return product;
-}
-
-// ❌ Incorrect: omit IsDeleted mapping
-public static ProductData ToData(Product aggregate)
-{
-    return new ProductData
-    {
-        Id = aggregate.Id.Value,
-        Name = aggregate.Name
-        // IsDeleted is missing!
-    };
+    // JsonException propagates; JSON null is not successful reconstruction.
+    var definition = JsonSerializer.Deserialize<DefinitionOfDone>(
+        data.DefinitionOfDoneJson, JsonOptions)
+        ?? throw new InvalidDataException("Required DefinitionOfDone is null.");
+    var state = new RestoredProductState(
+        ProductId.From(data.Id), data.Name, data.CreatorId, definition,
+        data.IsDeleted, data.CreatedAt, data.UpdatedAt);
+    return new Product(state);
 }
 ```
 
----
-
-### 4. Domain Events and Metadata MUST Be Mapped
-
-If a mapper participates in a write-model/outbox round trip, it MUST handle:
-
-- domain events
-- event metadata
-- stream identity (when the aggregate uses the event/outbox model)
+Validate the required representation before exposing the instance. If construction
+or replay partly mutates an object and fails, propagate failure and discard it;
+it cannot execute commands or be saved. The Repository/adapter retains record or
+stream identity, field and version context without leaking sensitive payloads.
+The target data owner owns repair, migration or quarantine. Identity alone does
+not prove business completeness.
 
 ```csharp
-public static ProductData ToData(Product aggregate)
-{
-    return new ProductData
-    {
-        Id = aggregate.Id.Value,
-        DomainEventDatas = aggregate.DomainEvents
-            .Select(DomainEventMapper.ToData)
-            .ToList(),
-        StreamName = aggregate.StreamName
-    };
-}
+// Incorrect: required state is lost although identity survives.
+var product = new Product(partialState);
+try { RestoreRequiredDefinition(product, data.DefinitionOfDoneJson); }
+catch (JsonException) { /* continue */ }
+return product; // Can execute/save a corrupted default: reject this contract.
 ```
 
+## Creation and Historical Facts
+
+Creation checks today's command preconditions and produces new facts. Rehydration
+restores accepted facts without re-running creation, sending notifications,
+querying today's exchange rate or recording fresh events. Historical facts use
+the selected version/compatibility rules; do not apply today's command precondition
+to invalidate previously valid history. This does not permit ignoring unknown
+events or missing invariant state. Upcasting, migration, snapshot support and
+historical invariant compatibility require target-owner decisions.
+
 ```csharp
-public static Product ToDomain(ProductData data)
+// Selected ES contract: Product(history) replays a complete ordered stream
+// after derived initialization and leaves no new pending events.
+public static Product FromHistory(IReadOnlyList<IDomainEvent> history)
 {
-    if (data.DomainEventDatas is { Count: > 0 })
-    {
-        var events = data.DomainEventDatas
-            .Select(DomainEventMapper.ToDomain)
-            .Cast<IDomainEvent>()
-            .ToList();
-
-        var product = new Product(events);
-        product.ClearDomainEvents();
-        return product;
-    }
-
-    // Fallback: rebuild from current state
+    ArgumentNullException.ThrowIfNull(history);
+    return new Product(history); // Failure escapes; no partial instance returned.
 }
+// Incorrect: call Create/Rename/CommitSprint/MarkAsDeleted to rebuild history,
+// then erase their events. Clearing cannot undo external side effects.
 ```
 
 ### Pending Domain Events After Reconstruction
 
-An aggregate returned by `ToDomain()` MUST have no pending `DomainEvents`. Rehydration restores historical or persisted state; it does not represent a new business decision and MUST NOT cause those events to be published or persisted again.
+An Aggregate returned by reconstruction MUST contain no events eligible for
+publication or persistence as new business facts. Restore historical/persisted
+state through the selected rehydration/replay protocol, not command methods.
 
-- A rehydration constructor SHOULD replay historical events through `When(...)` or an equivalent state-transition path that does not enqueue them as new events.
-- `ClearDomainEvents()` is not unconditionally required when the aggregate API explicitly guarantees that reconstruction leaves the pending-event collection empty.
-- If the selected constructor or replay path emits or enqueues events, or its cleanliness contract is not explicit, the mapper MUST call `ClearDomainEvents()` before returning the aggregate.
-- State-based fallback reconstruction follows the same rule; constructor side effects must not escape as pending events.
+- Successful replay restores state without enqueueing history as new pending
+  events. Current-state reconstruction has the same no-new-facts obligation.
+- Do not require `ClearDomainEvents()` as a generic fallback. Its legality and
+  meaning depend on the selected contract. Unknown cleanliness is an unresolved
+  contract: fail/stop affected reconstruction until verified; clearing an unknown
+  instance does not prove safe reconstruction.
+- For ArchPrecept CT-005, successful `LoadFromHistory` leaves pending empty;
+  `ClearDomainEvents()` is prohibited. Replay/transition failure poisons the
+  instance: discard it. Confirm new events through `MarkChangesAsCommitted`
+  only after successful append of the entire pending batch.
+- For a package-free/custom contract, verify equivalent replay, failure and
+  commit behavior. Use clear/ack only where the selected protocol permits it
+  after the relevant durable success, never to conceal replay failure.
+- Append failure does not acknowledge pending events. An unknown append outcome
+  requires storage-side reconciliation using the selected operation identity or
+  idempotency/query protocol before retry or local acknowledgement. Do not blindly
+  resend, clear pending or infer durable success from a local method.
 
----
+## Selected Optional Display Degradation
 
-## 🎯 Handling Value Objects
-
-### Record Value Objects
-
-```csharp
-// Value Object definition
-public sealed record ProductId(string Value)
-{
-    public static ProductId From(string value) => new(value);
-}
-
-// Use in a Mapper
-public static ProductData ToData(Product aggregate)
-{
-    return new ProductData
-    {
-        Id = aggregate.Id.Value,  // Extract the inner value
-        // ...
-    };
-}
-
-public static Product ToDomain(ProductData data)
-{
-    var product = new Product(
-        ProductId.From(data.Id),  // Rebuild the Value Object
-        // ...
-    );
-    return product;
-}
-```
-
----
-
-## 🎯 Error-Handling Strategy
-
-### Graceful-Degradation Principle
+Only explicitly selected, dispensable display fields that cannot affect invariants
+may degrade. Return visible incompleteness and its reason. Do not return a
+persistable Aggregate or save the display fallback as business truth.
 
 ```csharp
-// ✅ Correct: catch and optionally log the exception without terminating
-public static Product ToDomain(ProductData data)
+// Selected: Badge is display-only; Id/Name are validated required DTO inputs.
+// This DTO never serves as command state. No logger/I/O inside the Mapper.
+public static ProductCard ToCard(ProductCardData data)
 {
-    var product = new Product(...);
-
-    if (!string.IsNullOrEmpty(data.DefinitionOfDoneJson))
+    ArgumentNullException.ThrowIfNull(data);
+    ArgumentException.ThrowIfNullOrWhiteSpace(data.Id);
+    ArgumentException.ThrowIfNullOrWhiteSpace(data.Name);
+    try
     {
-        try
-        {
-            var dod = JsonSerializer.Deserialize<DefinitionOfDone>(
-                data.DefinitionOfDoneJson, JsonOptions);
-            product.DefineDefinitionOfDone(dod);
-        }
-        catch (JsonException ex)
-        {
-            // Optional: log the error for diagnostics
-            // _logger.LogWarning(ex, "Failed to deserialize DefinitionOfDone");
-
-            // Degrade gracefully: continue without terminating the flow
-        }
+        var badge = string.IsNullOrWhiteSpace(data.BadgeJson) ? null
+            : JsonSerializer.Deserialize<Badge>(data.BadgeJson, JsonOptions);
+        return new(data.Id, data.Name, badge, badge is null,
+            badge is null ? "Optional badge unavailable" : null);
     }
-
-    return product;
-}
-
-// ❌ Incorrect: allow the exception to propagate
-public static Product ToDomain(ProductData data)
-{
-    var dod = JsonSerializer.Deserialize<DefinitionOfDone>(
-        data.DefinitionOfDoneJson, JsonOptions);  // May throw
-    // ...
-}
-```
-
----
-
-### JSON Failure-Handling Rules
-
-- A warning may be logged.
-- Failure to serialize/deserialize one complex field SHOULD NOT fail the entire mapping flow.
-- Critical business identity MUST NOT be silently omitted.
-
----
-
-## ⚠️ Common Mistakes
-
-### Aggregate State Is Added Without Updating Data/Mapper
-
-**This is the easiest mistake to overlook.**
-
-```csharp
-// ❌ Incorrect: the Aggregate adds a field that the Mapper does not handle
-// Product.cs
-public class Product : IAggregateRoot<ProductId>
-{
-    private readonly List<CommittedSprint> _committedSprints = new();  // New field
-
-    public void CommitSprint(SprintId sprintId)
+    catch (JsonException)
     {
-        // ... business logic
+        return new(data.Id, data.Name, null, true, "Invalid optional badge");
     }
 }
-
-// ProductMapper.cs - ToData() was not updated ❌
-// ProductMapper.cs - ToDomain() was not updated ❌
-// ProductData.cs - no corresponding field ❌
-
-// Result: after Save() and FindById(), CommittedSprints will be empty!
+public sealed record ProductCard(
+    string Id, string Name, Badge? Badge, bool IsIncomplete, string? Reason);
 ```
 
-```csharp
-// ✅ Correct: all three files MUST be updated together
+This is not a general catch/continue policy for complex fields. An unselected
+fallback or a price, permission, committed-sprint list or invariant-relevant field
+MUST NOT use it. Pure DTO mapping can also fail its required output contract.
+Do not catch every exception, cancellation, infrastructure failure or programmer
+defect as a missing badge.
 
-// 1. ProductData.cs - add a field
-public class ProductData
-{
-    public string? CommittedSprintsJson { get; set; }
-}
+## Field and Metadata Coverage
 
-// 2. ProductMapper.ToData() - serialize
-data.CommittedSprintsJson = JsonSerializer.Serialize(
-    aggregate.CommittedSprints.Select(s => s.SprintId.Value).ToList(),
-    JsonOptions);
+- Preserve required scalar/complex state and metadata in both directions for the
+  selected write contract. Null/default collections are valid only where the
+  persisted schema explicitly defines that meaning.
+- Map `IsDeleted` when `DELETE-SOFT-001` applies; target opt-outs add no synthetic
+  field. Restore deletion state through rehydration, not a fresh delete command.
+- Preserve stream/event identities, ordering, versions and metadata for the
+  selected ES/outbox path. Pending batches, full history, snapshots and state
+  records are distinct representations.
+- When adding Aggregate state, update schema and conversion together. Restore a
+  committed-sprint collection from validated persisted entries in a state
+  constructor; do not call `CommitSprint` per entry or default missing required
+  JSON to an empty collection.
+- Rebuild Value Objects through accepted target contracts. `From`/`ValueOf`
+  spellings are illustrative, not required package APIs.
 
-// 3. ProductMapper.ToDomain() - deserialize
-if (!string.IsNullOrEmpty(data.CommittedSprintsJson))
-{
-    var sprintIds = JsonSerializer.Deserialize<List<string>>(
-        data.CommittedSprintsJson, JsonOptions);
-    foreach (var id in sprintIds ?? [])
-    {
-        product.CommitSprint(SprintId.From(id));
-    }
-}
-```
+## Review Checklist
 
----
-
-## 🔍 Checklist
-
-### Mapper Structure
-- [ ] Uses a `static class` and `static methods`
-- [ ] Handles null input (`ArgumentNullException.ThrowIfNull`)
-- [ ] Configures `JsonSerializerOptions`
-
-### ToData Method
-- [ ] Maps every basic field
-- [ ] Serializes complex objects as JSON
-- [ ] Includes the `IsDeleted` field when `DELETE-SOFT-001` applies
-- [ ] Handles serialization errors
-- [ ] Includes domain events, metadata, and stream identity for a write-model mapper
-
-### ToDomain Method
-- [ ] Prefers rebuilding from events (Event Sourcing)
-- [ ] Supports rebuilding from state
-- [ ] Deserializes every complex object
-- [ ] Restores `IsDeleted` state when `DELETE-SOFT-001` applies
-- [ ] Returns the reconstructed aggregate with no pending `DomainEvents`; calls `ClearDomainEvents()` when the constructor/replay path can enqueue events or does not explicitly guarantee cleanliness
-- [ ] Degrades gracefully on deserialization failure without terminating the entire flow
-
-### ToDto Method
-- [ ] Provides a Domain → DTO method
-- [ ] Provides a Data → DTO method (for Projection)
-
----
-
-## 📂 Code Examples
-
-For more complete examples, see:
-
-| Example | Path |
-|------|------|
-| Mapper example | [../../examples/mapper/](../../examples/mapper/README.md) |
-| DTO example | [../../examples/dto/](../../examples/dto/README.md) |
-
----
+- [ ] Static pure conversion, explicit inputs/null handling, no hidden I/O.
+- [ ] Required state/metadata round trips; serialization errors cannot save defaults.
+- [ ] Selected history/state/schema/event-version contract is explicit; missing,
+      unsupported or corrupt required data returns no usable Aggregate.
+- [ ] Partial instances discarded; diagnosis and data-repair ownership identifiable.
+- [ ] Creation, historical replay and external side effects remain distinct.
+- [ ] Reconstruction leaves no new publishable events under a verified protocol;
+      no generic Clear fallback or durable success inferred from a local method.
+- [ ] Optional display fallback explicitly selected and visibly incomplete;
+      required DTO data and invariants protected.
+- [ ] Deletion, nested state, timestamps and identities preserved without inventing
+      history or an inverse DTO conversion.
+- [ ] Cases cover required-data failure, unsupported versions, optional display,
+      replay failure and unknown append outcomes.
 
 ## Related Documents
 
-- [aggregate-standards.md](aggregate-standards.md)
-- [repository-standards.md](repository-standards.md)
-- [projection-standards.md](projection-standards.md)
-- [../../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)
+- [Aggregate standards](aggregate-standards.md)
+- [Repository standards](repository-standards.md)
+- [Query/projector standards](projection-standards.md)
+- [Contract cases and fixed CT-005 reference](../../examples/mapper/contract-cases.md)
+- [Official sources and interpretation](../POLICY-RATIONALE.md#reconstruction-and-projection-sources)

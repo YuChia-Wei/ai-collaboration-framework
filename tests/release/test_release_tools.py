@@ -32,6 +32,9 @@ draft = load("draft_release", "draft-release.py")
 builder = load("build_release", "build-release.py")
 SOURCE = {"tag": "v0.19.0-rc.3", "tag_object": "a" * 40, "commit": "b" * 40}
 README_TEMPLATE = "# ${label}\nSource: ${source_commit}\nCatalog: ${catalog_identity}\nVersion: ${release_version}\n"
+GENERATED_TEMPLATE = README_TEMPLATE + "\n${package_classification}\n\n${adapter_rows}\n"
+ADAPTERS = [{"id": name, "version": "0.1.0", "members": ["entry.md.template"], "template": "entry.md.template"}
+            for name in ("claude", "codex")]
 ROOT = SCRIPTS.parents[1]
 CURRENT_ENGINE = common.engine_files(lambda name: (ROOT / name).read_bytes())
 ENGINE_BYTES = {name: (ROOT / name).read_bytes() for name in CURRENT_ENGINE}
@@ -45,7 +48,7 @@ def readme_source(template=README_TEMPLATE):
 
 
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
-            engine_members=None, engine_bytes=None):
+            engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -56,8 +59,18 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     payload["engine/engine.json"] = (common.encoded({"engine": pin, "engine_package_version": 1}), 0o644)
     payload["engine-pin.json"] = (pin_raw, 0o644)
     catalog = {"source": {"commit": SOURCE["commit"]}, "release_version": "0.19.0-rc.3"}
+    if schema == common.SCHEMA:
+        catalog["adapters"] = copy.deepcopy(ADAPTERS if adapters is None else adapters)
     payload["catalog/metadata/catalog.json"] = (common.encoded(catalog), 0o644)
     catalog_files = []
+    if schema == common.SCHEMA:
+        for adapter in catalog["adapters"]:
+            for member in adapter.get("members", []):
+                if missing_adapter_member:
+                    continue
+                name, raw = f"adapters/{adapter['id']}/{member}", b"Runtime entry template\n"
+                payload["catalog/" + name] = (raw, 0o644)
+                catalog_files.append({"path": name, "source": {"path": "src/" + name, "size": len(raw), "sha256": common.sha(raw)}})
     if catalog_source is not None:
         name, raw = "packages/skill/reviewer/README.md", b"Selected resource\n"
         payload["catalog/" + name] = (raw, 0o644)
@@ -67,8 +80,9 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     identity_raw = (json.dumps(inputs, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
     ident = f"catalog:1:0.19.0-rc.3:{SOURCE['commit']}:{common.sha(identity_raw)}"
     payload["catalog/metadata/build.json"] = (common.encoded({"identity": ident, "identity_inputs": inputs, "artifact_kind": "catalog"}), 0o644)
-    readme = (common.render_readme(README_TEMPLATE, SOURCE, ident, "0.19.0-rc.3")
-              if schema == common.SCHEMA else b"Generic legacy package\n")
+    template = GENERATED_TEMPLATE if schema == common.SCHEMA else README_TEMPLATE
+    readme = (common.render_readme(template, SOURCE, ident, "0.19.0-rc.3", catalog.get("adapters"))
+              if schema != common.LEGACY_SCHEMA else b"Generic legacy package\n")
     payload["README.md"] = (readme if readme_override is None else readme_override, 0o644)
     payload["content-hashes.json"] = (common.encoded([common.entry(n, b, m) for n, (b, m) in sorted(payload.items())]), 0o644)
     archive = directory / "framework.zip"
@@ -85,8 +99,8 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
         "entries": [common.entry(n, b, m) for n, (b, m) in sorted(payload.items())],
         "provenance": {"repository": "owner/repo", "workflow": common.WORKFLOW,
             "tooling_commit": "c" * 40, "workflow_commit": "c" * 40, "run_id": "123", "run_attempt": "1"}}
-    if schema == common.SCHEMA:
-        manifest["provenance"]["readme_source"] = readme_source()
+    if schema != common.LEGACY_SCHEMA:
+        manifest["provenance"]["readme_source"] = readme_source(template)
     (directory / "release-manifest.json").write_bytes(common.encoded(manifest))
     (directory / "framework.zip.sha256").write_text(f"{common.sha(raw)}  framework.zip\n", encoding="utf-8", newline="\n")
     return manifest
@@ -294,7 +308,7 @@ class ReleaseContracts(unittest.TestCase):
             if defect == 'missing':
                 manifest['provenance'].pop('readme_source')
             else:
-                manifest['schema'] = 'framework-release-assets/3'
+                manifest['schema'] = 'framework-release-assets/999'
             (self.directory / 'release-manifest.json').write_bytes(common.encoded(manifest))
             with self.subTest(defect=defect), self.assertRaises(ValueError):
                 common.verify_bundle(self.directory)
@@ -319,6 +333,46 @@ class ReleaseContracts(unittest.TestCase):
         fixture(self.directory, readme_override=b'Changed README with matching ZIP and content hashes.\n')
         with self.assertRaisesRegex(ValueError, 'README rendered bytes'):
             common.verify_bundle(self.directory)
+
+    def test_source_template_generates_stable_rc_and_snapshot_context(self):
+        template = (ROOT / common.README_SOURCE_PATH).read_text(encoding='utf-8')
+        for tag, release_version, expected in (
+                ('v0.22.0', '0.22.0', 'stable'),
+                ('v0.22.0-rc.1', '0.22.0-rc.1', 'release-candidate'),
+                (None, '0.0.0-rc.123', 'snapshot')):
+            with self.subTest(tag=tag):
+                source = dict(SOURCE, tag=tag, tag_object=SOURCE['tag_object'] if tag else None)
+                raw = common.render_readme(template, source, 'catalog-id', release_version, ADAPTERS).decode()
+                self.assertIn('Package classification: ' + expected, raw)
+                self.assertIn('Build receipts describe the build stage only.', raw)
+                self.assertIn('`publication: not-performed`', raw)
+                self.assertIn('"adapters": ["claude", "codex"]', raw)
+                self.assertIn('| `claude` | `0.1.0` |', raw)
+                self.assertIn('| `codex` | `0.1.0` |', raw)
+                self.assertNotIn('${', raw)
+                if tag:
+                    self.assertNotIn('development snapshot', raw)
+                    self.assertNotIn('Snapshot builds are development artifacts', raw)
+                    self.assertNotIn('numeric rc.N', raw)
+
+    def test_new_renderer_rejects_legacy_template_and_mismatched_identity(self):
+        with self.assertRaisesRegex(ValueError, 'README template fields'):
+            common.render_readme(README_TEMPLATE, SOURCE, 'catalog-id', '0.19.0-rc.3', ADAPTERS)
+        with self.assertRaisesRegex(ValueError, 'version/tag mismatch'):
+            common.render_readme(GENERATED_TEMPLATE, SOURCE, 'catalog-id', '0.22.0', ADAPTERS)
+
+    def test_self_consistent_package_missing_adapter_is_rejected(self):
+        for adapters, missing in (([], False), ([ADAPTERS[1]], False), (ADAPTERS, True)):
+            with self.subTest(adapters=adapters, missing=missing):
+                fixture(self.directory, adapters=adapters, missing_adapter_member=missing)
+                with self.assertRaisesRegex(ValueError, 'release.*adapter'):
+                    common.verify_bundle(self.directory)
+
+    def test_v2_assets_remain_readable_without_new_assurance_claims(self):
+        expected = fixture(self.directory, schema=common.SOURCE_README_SCHEMA)
+        before = (self.directory / 'release-manifest.json').read_bytes()
+        self.assertEqual(common.verify_bundle(self.directory), expected)
+        self.assertEqual((self.directory / 'release-manifest.json').read_bytes(), before)
 
     def test_template_renderer_rejects_unknown_missing_and_invalid_fields(self):
         for template in (README_TEMPLATE.replace('${label}', '${unknown}'),
@@ -387,7 +441,7 @@ class ReleaseContracts(unittest.TestCase):
 
     def test_current_product_template_has_exact_fixed_fields(self):
         template = (SCRIPTS.parents[1] / common.README_SOURCE_PATH).read_text(encoding='utf-8')
-        rendered = common.render_readme(template, SOURCE, 'catalog-id', '0.19.0-rc.3')
+        rendered = common.render_readme(template, SOURCE, 'catalog-id', '0.19.0-rc.3', ADAPTERS)
         self.assertIn(('Source commit: ' + SOURCE['commit']).encode(), rendered)
         self.assertIn(b'Catalog identity: catalog-id', rendered)
 

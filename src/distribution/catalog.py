@@ -517,8 +517,8 @@ def emit_artifact(metadata,payload,output_root,scratch_root,kind,ident,source_ro
     all_files={**{n:(b,'100644') for n,b in metadata.items()},**payload}
     require(len(all_files)<=4096 and sum(len(b) for b,_ in all_files.values())<=state.LIMITS['total_bytes'],'artifact output budget')
     from .installation_io import budget
-    for root,label in ((output,kind+'-'+run),(scratch,'scratch-'+run)):
-        budget([(label,root,label+'/'+name) for name in all_files])
+    for role,root,label in (('output',output,kind+'-'+run),('scratch',scratch,'scratch-'+run)):
+        budget([(role,root,label+'/'+name) for name in all_files],stage=kind)
     staged=OwnedDirectory(scratch,'scratch-'+run)
     published=OwnedDirectory(output,kind+'-'+run)
     for name in sorted(set(all_files)-{'metadata/build.json'}):
@@ -615,7 +615,7 @@ def package_engine(repository,commit,output_root):
          'files':[{'path':n,'sha256':digest(blobs[n].data)} for n in ENGINE_FILES]}
     from .installation_io import budget
     name='engine-'+uuid.uuid4().hex
-    budget([('engine',output,name+'/'+n) for n in (*ENGINE_FILES,'engine.json')])
+    budget([('output',output,name+'/'+n) for n in (*ENGINE_FILES,'engine.json')],stage='engine-package')
     bundle=OwnedDirectory(output,name)
     for n,blob in blobs.items(): bundle.write(n,blob.data,blob.mode)
     bundle.write('engine.json',json_bytes({'engine_package_version':1,'engine':pin}))
