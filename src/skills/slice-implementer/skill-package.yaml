@@ -1,6 +1,6 @@
 metadata_version: 4
 id: slice-implementer
-version: 0.2.10
+version: 0.2.11
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:

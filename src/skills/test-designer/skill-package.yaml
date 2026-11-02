@@ -1,6 +1,6 @@
 metadata_version: 4
 id: test-designer
-version: 0.4.6
+version: 0.4.7
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
