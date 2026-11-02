@@ -112,19 +112,20 @@ what meaning was retained, and unresolved gaps; do not claim new execution.
 1. Map selected criteria, risks and invariants to existing protection, planned
    cases or gaps. Retain source/case IDs; local IDs must not impersonate ACs.
 2. Identify the subject, observable outcomes and concrete failure each case
-   detects. Distinct failure mechanisms justify cases; names or inputs alone do not.
-3. Bind outcomes/properties to independent sources. Missing or conflicting
-   oracles stay unresolved; invent neither expectations nor business rules.
-4. Select meaningful partitions, boundaries and sourced failures. Reuse adequate
-   checks; add uncovered behavior or defect protection. Ordering, duplicates,
-   timeouts, cancellation, concurrency and recovery need a supported goal.
+   detects. Distinct failures, including boundary errors on shared paths, justify cases.
+3. Bind each assertion to an independent source. Missing or conflicting oracles
+   stay unresolved. Cover all contract-required fields, not inferred guarantees.
+4. Select sourced partitions, boundaries and failures; reuse adequate checks.
+   Inspect affected dependencies for risks missing from the sources; ask whether
+   to include them before adding cases/assertions. Sourced boundaries need no
+   new approval; omit speculative lists.
 5. Choose a credible boundary and repeatable fixture: data, identity, permissions,
    time, responses, isolation and cleanup. Expose nondeterminism and missing facilities.
 6. Assert contracts; incidental structure, wording, order or call counts need a
    source requirement. Behavior-preserving refactors should leave assertions valid.
 7. Weigh added detection against false failures, execution and maintenance cost.
-   Omit redundant checks, preserve accepted outcomes and mandatory cases; their
-   changes need the owner's decision. Self-check coverage without claiming a run.
+   Keep accepted outcomes and cases required by accepted criteria or target gates;
+   changing them needs their owner. Omit redundancy; self-check coverage without claiming a run.
 
 ## Choose a credible and feasible test level
 

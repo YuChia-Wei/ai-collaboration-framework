@@ -85,15 +85,15 @@ Leave the subject unchanged. Finish review before a separately authorized
 | Criterion | Inspect for |
 | --- | --- |
 | Source authority | Agreed, proposed, observed and unknown behavior stay distinct; no invented approval or requirement |
-| Traceability | Criteria, risks, invariants and accepted outcomes map to existing/planned cases or gaps with source revisions |
+| Traceability | Source revisions and IDs connect criteria, risks, invariants and outcomes to cases or gaps |
 | Oracle | Important values, relations, properties and exceptions have independent permitted sources |
-| Subject and observations | Assertions detect contract failures; incidental structure, wording, order or call counts need a source requirement |
+| Subject and observations | Cover all contract-required fields; each assertion needs a source, not an inferred guarantee |
 | Test level and facilities | The boundary proves its claim; required real dependencies are available, missing or unknown |
 | Setup and isolation | Relevant data, identity, time, state, responses, nondeterminism and cleanup are controlled or disclosed |
-| Input and failure coverage | Cases add distinct failure detection; unsupported or redundant cases are omitted, mandatory cases retained |
+| Input and failure coverage | Keep cases required by accepted criteria or target gates; cover distinct failures and boundaries; investigate source gaps, ask before adoption; omit speculation and duplication |
 | Format fidelity | Expressions preserve accepted behavior and outcomes |
 | Handoff | IDs, oracle, setup, boundaries and unresolved decisions survive implementation; no invented results |
-| Cost and conventions | Added protection justifies false failures and upkeep; refactors preserve assertions unless contracts change; target rules derive from authority, not examples or runner defaults |
+| Cost and conventions | Protection justifies false failures/upkeep; refactors preserve contracts; target authority, not examples or runner defaults, supplies rules |
 
 For GWT or Gherkin, check each Then/And, independent scenario setup and meaningful
 primary event or justified sequence. Separate syntax defects from optional

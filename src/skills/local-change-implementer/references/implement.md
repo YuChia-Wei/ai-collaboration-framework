@@ -102,12 +102,12 @@ repair; a diagnostic finding does not grant implementation authority.
 3. Apply the single operation and required direct call-site changes. Prefer an
    applicable IDE refactoring if available and permitted; review its actual
    edits. Do not treat a tool's success as proof the radius stayed bounded.
-4. Reuse relevant existing tests; add protection only for uncovered changed
-   behavior or concrete defects. Retain distinct failure mechanisms, supplied
-   scenarios and assertion intent. Use independent expected results; assert
-   contracts, not copied algorithms or mocked subjects. Incidental structure,
-   wording, order or call counts need a source requirement; behavior-preserving
-   refactors should leave assertions valid.
+4. Reuse protection; add uncovered sourced behavior/boundaries or defect cases. Keep cases
+   required by accepted criteria or target gates, supplied outcomes, real subjects
+   and independent oracles. Cover all contract-required fields, not inferred
+   guarantees; tolerate behavior-preserving refactors. Inspect affected dependencies for source gaps;
+   ask a focused inclusion question before adding unsourced cases/assertions.
+   Sourced boundaries need no approval; omit speculation.
 5. Select checks from the actual diff, semantics, direct dependencies and target
    gates. An edit, path, extension, report or SHA alone selects no test; prose
    and whitespace need checks for actual parsing, schema, output or behavior
