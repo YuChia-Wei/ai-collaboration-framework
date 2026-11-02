@@ -1,6 +1,6 @@
 # Methodology sources and selected .NET policies
 
-This is explanatory guidance for `dotnet-backend@0.1.8`, not a new Rule ID,
+This is explanatory guidance for `dotnet-backend@0.1.9`, not a new Rule ID,
 Analyzer catalog or target adoption record. The linked owner documents retain
 their contracts and existing registration status. Reading, installing or updating
 this guidance does not override a target's accepted policy. An alternative may
