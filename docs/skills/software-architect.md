@@ -3,7 +3,7 @@
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md) ·
 [舊 architect 遷移](domain-architecture-migration.md)
 
-來源套件版本：`0.1.3`。實際可用性依已安裝 metadata 與 runtime entry。
+來源套件版本：`0.1.4`。實際可用性依已安裝 metadata 與 runtime entry。
 本套件提供指令方法，沒有同名 CLI、配置或 managed store。
 
 ## 用途、輸入與輸出
@@ -45,10 +45,13 @@ Review 請另外提供固定檔案／版本與需求來源；reviewer 維持唯�
 ## 知識選配
 
 - `engineering-common@0.4.1`：rule catalog、technology selection、authoring boundaries、artifact review。
-- `dotnet-backend@0.1.8`：rule catalog、building-block reconstruction、DbC、transactional messaging、usecase、project structure 與政策理由 guidance；required common dependency 一起選。
+- `dotnet-backend@0.1.9`：rule catalog、building-block reconstruction、DbC、transactional messaging、UseCase/Command/Handler relationship、Controller、Repository、usecase、project structure 與政策理由 guidance；required common dependency 一起選。
 
 Capability 為 `architecture`，operations 為 design/review；只載入匹配 allowlist 與
 目標 bindings 的資源。模型是 caller input，不為架構問題預載全部 DDD。
+新增的 relationship／Controller／Repository owner 僅屬選配 .NET knowledge；依任務
+涉及的入口或持久化責任選讀，不把 HTTP／DTO 慣例套用到未選該 profile 的前端、桌面
+或其他技術專案，也不因開放讀取而採納其中所有慣例。
 未安裝選配可做通用分析並揭露缺口，不能從 source 補讀、假稱 .NET coverage 或
 將 knowledge selection 當作 target rule adoption。
 

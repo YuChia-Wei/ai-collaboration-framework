@@ -1,6 +1,6 @@
 metadata_version: 4
 id: software-architect
-version: 0.1.3
+version: 0.1.4
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -62,7 +62,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-software-architecture
   package: dotnet-backend
-  version: 0.1.8
+  version: 0.1.9
   operations:
   - design
   - review
@@ -71,6 +71,9 @@ knowledge_consumption:
   - member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
   - member:standards/DESIGN-BY-CONTRACT.md
   - member:standards/POLICY-RATIONALE.md
+  - member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+  - member:standards/coding-standards/controller-standards.md
+  - member:standards/coding-standards/repository-standards.md
   - member:standards/coding-standards/transactional-messaging-standards.md
   - member:standards/coding-standards/usecase-standards.md
   - member:standards/project-structure.md
