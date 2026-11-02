@@ -127,10 +127,10 @@ Until a package distribution decision exists:
 1. copying a source include into a target makes the copy target-owned;
 2. the target records namespace changes and local behavior changes as target
    evidence;
-3. `ai-context-upgrader` compares the recorded framework base, incoming
-   framework source, and target copy;
-4. the upgrader proposes reconciliation and never overwrites target-owned truth
-   solely because the framework copy changed.
+3. a target-selected, actually available maintenance procedure compares the
+   recorded framework base, incoming framework source, and target-owned copy;
+4. that procedure proposes reconciliation and never overwrites target-owned
+   truth solely because the framework copy changed.
 
 ## Provenance And Concept Disposition
 

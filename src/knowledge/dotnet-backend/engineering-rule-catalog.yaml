@@ -13,7 +13,7 @@ ordering:
   array_contents: retain declared source order
 catalog_digest:
   algorithm: sha256
-  value: 3e6c2f73fc88bb63120a599a59701fa60e7a4e8103dc94e3cf66ea151244c14b
+  value: 4076dbe77f2772b2c9d55caf192804866823e04031d5bce9aa11f66e2ebec72c
   canonicalization: UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array
     order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input.
 selector_contract:
@@ -62,7 +62,7 @@ rules:
   - references/BUILDING-BLOCKS-CLASS-INDEX.MD
   - review/review-routing.yaml
   status: active
-  source_file_sha256: ce7845fcaac8b86c3c098654960a43d890afb65c44fd65bb89b9200ccde88f83
+  source_file_sha256: 0a6274ddf9471ede7086f8d6ee836252a969cc3bfc886b38a6fe7b0f0f924e98
   normative_text_sha256: 9e2c725e31eb31b5daa9d120b41bf9ea4c9d97f48525731cf7a74f8bdc49a9ab
   normative_text: |
     ## Optional `EsAggregateRoot<TId>` Behavior Contract

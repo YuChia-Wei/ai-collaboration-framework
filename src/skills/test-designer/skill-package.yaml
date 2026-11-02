@@ -1,6 +1,6 @@
 metadata_version: 4
 id: test-designer
-version: 0.4.5
+version: 0.4.6
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -69,7 +69,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-test-design
   package: dotnet-backend
-  version: 0.1.8
+  version: 0.1.9
   operations:
   - design
   - review
