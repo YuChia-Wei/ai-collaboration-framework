@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "id": "framework-dotnet",
+    "version": "0.1.0-dev.1"
+  },
+  "snippets": [
+    {
+      "id": "interface-method",
+      "title": "Interface method declaration",
+      "description": "Declare a method with one typed parameter and an explicit return type.",
+      "context": "interface-member",
+      "bodyFile": "interface-method.snippet",
+      "tags": [
+        "interface",
+        "method",
+        "declaration"
+      ],
+      "requiredUsings": [
+        "System.Threading.Tasks"
+      ],
+      "preconditions": [
+        "Insert inside an interface declaration.",
+        "Use a method name and signature compatible with the surrounding interface."
+      ],
+      "parameters": {
+        "returnType": {
+          "kind": "enum",
+          "default": "void",
+          "values": [
+            "void",
+            "string",
+            "bool",
+            "int",
+            "Task",
+            "Task<string>",
+            "Task<bool>",
+            "Task<int>"
+          ]
+        },
+        "methodName": {
+          "kind": "identifier"
+        },
+        "parameterType": {
+          "kind": "enum",
+          "default": "string",
+          "values": [
+            "string",
+            "string?",
+            "bool",
+            "int"
+          ]
+        },
+        "parameterName": {
+          "kind": "identifier",
+          "default": "value"
+        }
+      }
+    },
+    {
+      "id": "string-guard",
+      "title": "String argument guard",
+      "description": "Reject a null, empty, or whitespace-only string argument.",
+      "context": "method-body",
+      "bodyFile": "string-guard.snippet",
+      "tags": [
+        "guard",
+        "validation",
+        "string"
+      ],
+      "requiredUsings": [
+        "System"
+      ],
+      "preconditions": [
+        "Insert inside a method body before using the selected string parameter.",
+        "The argument must be in scope and the target framework must provide ArgumentException.ThrowIfNullOrWhiteSpace."
+      ],
+      "parameters": {
+        "parameterName": {
+          "kind": "identifier"
+        }
+      }
+    }
+  ]
+}
