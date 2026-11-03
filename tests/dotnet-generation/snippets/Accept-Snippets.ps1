@@ -69,9 +69,9 @@ function Invoke-Request($Request, [string] $ExpectedError = '') {
 }
 
 $listed = Invoke-Request @{schemaVersion=1; operation='list'}
-Assert-Equal ($listed.snippets.id -join ',') 'interface-method,string-guard' 'Packaged catalog IDs'
+Assert-Equal ($listed.snippets.id -join ',') 'cancellation-guard,constructor-assignment,domain-contracts,es-aggregate,guid-id,interface-method,null-guard,readonly-property,string-guard' 'Packaged catalog IDs'
 $search = Invoke-Request @{schemaVersion=1; operation='search'; query='GUARD'}
-Assert-Equal ($search.snippets.id -join ',') 'string-guard' 'Search result'
+Assert-Equal ($search.snippets.id -join ',') 'cancellation-guard,null-guard,string-guard' 'Search result'
 $inspect = Invoke-Request @{schemaVersion=1; operation='inspect'; id='interface-method'}
 Assert-Equal $inspect.snippet.context 'interface-member' 'Inspect context'
 Assert-Equal ($inspect.snippet.requiredUsings -join ',') 'System.Threading.Tasks' 'Inspect using'
@@ -192,6 +192,7 @@ Write-Utf8 'Program.cs' (@'
 using System;
 using System.Threading.Tasks;
 
+Additional.Verify();
 Guard("ok");
 ExpectRejected(null, typeof(ArgumentNullException));
 ExpectRejected("", typeof(ArgumentException));
@@ -227,6 +228,66 @@ static string Probe()
 interface IReader
 {
 '@ + "`n" + $declaration + "}`n")
+
+function Render-Fragment([string] $Id, $Parameters = @{}) {
+    (Invoke-Request @{schemaVersion=1; operation='render'; id=$Id; parameters=$Parameters}).text
+}
+$nullGuard = Render-Fragment 'null-guard' @{parameterName='value'}
+$cancellation = Render-Fragment 'cancellation-guard' @{tokenName='token'}
+$assignment = Render-Fragment 'constructor-assignment' @{fieldName='_value'; parameterName='value'}
+$identifier = Render-Fragment 'guid-id' @{typeName='OrderId'}
+$property = Render-Fragment 'readonly-property' @{propertyName='Count'; propertyType='int'}
+$contracts = Render-Fragment 'domain-contracts'
+$aggregate = Render-Fragment 'es-aggregate'
+Write-Utf8 'Additional.cs' (@"
+using System;
+using System.Threading;
+using System.Collections.Generic;
+$identifier
+$contracts
+$aggregate
+sealed class Holder {
+    private readonly object _value;
+    $property
+    public Holder(object value) { $assignment Count = 3; }
+    public object Value => _value;
+}
+sealed record Changed(Guid EventId, DateTimeOffset OccurredOn) : IDomainEvent;
+sealed class Counter : EsAggregateRoot<Guid> {
+    public override Guid Id => Guid.Empty;
+    public int Count { get; private set; }
+    public Counter(IEnumerable<IDomainEvent> history) { Replay(history); }
+    public void Add() => Apply(new Changed(Guid.NewGuid(), DateTimeOffset.UtcNow));
+    protected override void When(IDomainEvent e) {
+        if (e is not Changed) throw new ArgumentException("unsupported");
+        Count++;
+    }
+}
+static class Additional {
+    static void Require(bool value) { if (!value) throw new Exception("Fragment contract failed"); }
+    static void NullGuard(object? value) { $nullGuard }
+    static void Cancel(CancellationToken token) { $cancellation }
+    public static void Verify() {
+        var value = new object();
+        NullGuard(value);
+        try { NullGuard(null); throw new Exception("Null accepted"); }
+        catch (ArgumentNullException e) { Require(e.ParamName == "value"); }
+        Cancel(CancellationToken.None);
+        try { Cancel(new CancellationToken(true)); throw new Exception("Cancellation ignored"); }
+        catch (OperationCanceledException) { }
+        var holder = new Holder(value); Require(ReferenceEquals(holder.Value, value) && holder.Count == 3);
+        try { _ = new Holder(null!); throw new Exception("Null dependency accepted"); }
+        catch (ArgumentNullException e) { Require(e.ParamName == "value"); }
+        var id = Guid.NewGuid(); Require(new OrderId(id) == new OrderId(id));
+        var counter = new Counter(new[] { new Changed(Guid.NewGuid(), DateTimeOffset.UtcNow) });
+        Require(counter.Count == 1 && counter.Version == 1 && counter.DomainEvents.Count == 0);
+        counter.Add(); Require(counter.Count == 2 && counter.Version == 1 && counter.DomainEvents.Count == 1);
+        try { counter.MarkChangesAsCommitted(3); throw new Exception("Wrong commit accepted"); }
+        catch (InvalidOperationException) { Require(counter.Version == 1 && counter.DomainEvents.Count == 1); }
+        counter.MarkChangesAsCommitted(2); Require(counter.Version == 2 && counter.DomainEvents.Count == 0);
+    }
+}
+"@)
 
 dotnet run --project (Join-Path $Scratch 'Consumer.csproj') --configuration Release
 if ($LASTEXITCODE -ne 0) {

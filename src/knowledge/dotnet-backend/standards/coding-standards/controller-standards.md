@@ -328,9 +328,9 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Controller examples | [../../examples/controller/](../../examples/controller/README.md) |
-| ASP.NET Core examples | [../../examples/aspnet-core/](../../examples/aspnet-core/README.md) |
-| DTO examples | [../../examples/dto/](../../examples/dto/README.md) |
+| Controller examples | [controller standards](controller-standards.md) |
+| ASP.NET Core examples | [controller standards](controller-standards.md) |
+| DTO examples | [DTO guidance](../../guides/DATA-CLASS-STANDARDS.md) |
 
 ---
 

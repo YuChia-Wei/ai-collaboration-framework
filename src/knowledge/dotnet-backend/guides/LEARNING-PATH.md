@@ -31,10 +31,10 @@ integration effects and preserve the target's consistency/replay constraints.
 
 ## Implement the selected behavior
 
-Use [use-case examples](../examples/usecase/README.md) and
+Use [usecase standards](../standards/coding-standards/usecase-standards.md) and
 [code templates](../references/CODE-TEMPLATES.MD) as starting points.
 Choose persistence per bounded context; do not standardize an ORM just because
-one example uses it. If selected, read [outbox examples](../examples/outbox/README.md)
+one example uses it. If selected, read [repository standards](../standards/coding-standards/repository-standards.md)
 and [profile isolation](DUAL-PROFILE-CONFIGURATION-GUIDE.md).
 Package-neutral application ports keep concrete messaging/ORM registration at
 the adapter/composition boundary. Time, randomness and external effects need
@@ -44,7 +44,7 @@ controlled seams when the target's behavior and tests depend on them.
 
 Read the [testing strategy](../shared/testing-strategy.md),
 [test standards](../standards/coding-standards/test-standards.md) and
-[GWT example](../examples/reference/bdd-gwt-test-template.md) only under their
+[test standards](../standards/coding-standards/test-standards.md) only under their
 adopted applicability. Preserve the target-selected Given-When-Then structure;
 BDDfy can be replaced by explicit Given/When/Then steps in the selected runner.
 Mocking packages and `.feature` support are separately selected. Unit/domain

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": {
     "id": "framework-dotnet",
-    "version": "0.1.0-dev.1"
+    "version": "0.1.0-dev.2"
   },
   "snippets": [
     {
@@ -80,6 +80,171 @@
           "kind": "identifier"
         }
       }
+    },
+    {
+      "id": "null-guard",
+      "title": "Reject a null argument",
+      "description": "Reject a null argument.",
+      "context": "method-body",
+      "bodyFile": "null-guard.snippet",
+      "tags": [
+        "null",
+        "guard"
+      ],
+      "requiredUsings": [
+        "System"
+      ],
+      "preconditions": [
+        "The parameter is in scope; target .NET 6 or later."
+      ],
+      "parameters": {
+        "parameterName": {
+          "kind": "identifier"
+        }
+      }
+    },
+    {
+      "id": "cancellation-guard",
+      "title": "Observe cancellation before work",
+      "description": "Observe cancellation before work.",
+      "context": "method-body",
+      "bodyFile": "cancellation-guard.snippet",
+      "tags": [
+        "cancellation",
+        "guard"
+      ],
+      "requiredUsings": [
+        "System.Threading"
+      ],
+      "preconditions": [
+        "The named CancellationToken is in scope."
+      ],
+      "parameters": {
+        "tokenName": {
+          "kind": "identifier",
+          "default": "cancellationToken"
+        }
+      }
+    },
+    {
+      "id": "constructor-assignment",
+      "title": "Validate and assign a constructor dependency",
+      "description": "Validate and assign a constructor dependency.",
+      "context": "constructor-body",
+      "bodyFile": "constructor-assignment.snippet",
+      "tags": [
+        "constructor",
+        "assignment"
+      ],
+      "requiredUsings": [
+        "System"
+      ],
+      "preconditions": [
+        "A reference-type field and compatible constructor parameter already exist."
+      ],
+      "parameters": {
+        "fieldName": {
+          "kind": "identifier"
+        },
+        "parameterName": {
+          "kind": "identifier"
+        }
+      }
+    },
+    {
+      "id": "guid-id",
+      "title": "Declare an immutable Guid identifier",
+      "description": "Declare an immutable Guid identifier.",
+      "context": "namespace-member",
+      "bodyFile": "guid-id.snippet",
+      "tags": [
+        "guid",
+        "id"
+      ],
+      "requiredUsings": [
+        "System"
+      ],
+      "preconditions": [
+        "C# 10 or later; choose domain-specific identity and validate nonempty values at the owning boundary."
+      ],
+      "parameters": {
+        "typeName": {
+          "kind": "identifier"
+        }
+      }
+    },
+    {
+      "id": "readonly-property",
+      "title": "Declare a readonly property",
+      "description": "Declare a readonly property.",
+      "context": "type-member",
+      "bodyFile": "readonly-property.snippet",
+      "tags": [
+        "readonly",
+        "property"
+      ],
+      "requiredUsings": [
+        "System"
+      ],
+      "preconditions": [
+        "Assign required values in the owning constructor."
+      ],
+      "parameters": {
+        "propertyName": {
+          "kind": "identifier"
+        },
+        "propertyType": {
+          "kind": "enum",
+          "default": "string",
+          "values": [
+            "string",
+            "int",
+            "bool",
+            "Guid",
+            "DateTimeOffset"
+          ]
+        }
+      }
+    },
+    {
+      "id": "domain-contracts",
+      "title": "Declare interface-first domain contracts",
+      "description": "Declare interface-first domain contracts.",
+      "context": "namespace-member",
+      "bodyFile": "domain-contracts.snippet",
+      "tags": [
+        "domain",
+        "contracts"
+      ],
+      "requiredUsings": [
+        "System"
+      ],
+      "preconditions": [
+        "Insert only when these contracts are not already supplied by the target.",
+        "This declares contracts; it selects neither Event Sourcing nor a shared base class."
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "es-aggregate",
+      "title": "Event-sourced aggregate mechanics",
+      "description": "Replay history, record new facts and confirm durable commits.",
+      "context": "namespace-member",
+      "bodyFile": "es-aggregate.snippet",
+      "tags": [
+        "domain",
+        "event-sourcing"
+      ],
+      "requiredUsings": [
+        "System",
+        "System.Collections.Generic"
+      ],
+      "preconditions": [
+        "Event Sourcing is explicitly selected; IAggregateRoot<TId> and IDomainEvent already exist.",
+        "C# 12 or later. Implement Id and deterministic When; call Replay from the derived constructor body.",
+        "Discard an instance after replay or transition failure. Confirm only durable whole-batch commits."
+      ],
+      "parameters": {}
     }
   ]
 }

@@ -133,7 +133,7 @@ scenario was implemented faithfully.
 #### Default BDDfy Form
 
 This excerpt's fixture and step implementations are in the
-[runnable step-method example](../../examples/bdd-step-methods/README.md).
+[test standards](test-standards.md).
 It exposes the behavior-bearing data while keeping mechanics inside steps.
 
 ```csharp
@@ -492,8 +492,8 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Reqnroll/Gherkin reference | [../../examples/bdd-gherkin-example/](../../examples/bdd-gherkin-example/README.md) |
-| BDD Given-When-Then | [../../examples/bdd-given-when-then-example/](../../examples/bdd-given-when-then-example/README.md) |
+| Reqnroll/Gherkin reference | [test standards](test-standards.md) |
+| BDD Given-When-Then | [test standards](test-standards.md) |
 
 ---
 

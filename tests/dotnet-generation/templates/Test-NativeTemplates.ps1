@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)]
     [string] $ScratchRoot,
-    [string] $TemplateRoot = (Join-Path $PSScriptRoot '../../../src/knowledge/dotnet-backend/tooling/generation/dotnet-new')
+    [string] $TemplateRoot = (Join-Path $PSScriptRoot '../../../src/knowledge/dotnet-backend/tooling/generation/dotnet-new'),
+    [string] $TemplatePackage
 )
 
 $ErrorActionPreference = 'Stop'
@@ -13,7 +14,15 @@ if (Test-Path -LiteralPath $ScratchRoot) {
 
 New-Item -ItemType Directory -Path $ScratchRoot | Out-Null
 $delivered = Join-Path $ScratchRoot delivered
-Copy-Item -LiteralPath (Resolve-Path -LiteralPath $TemplateRoot).Path -Destination $delivered -Recurse
+if ($TemplatePackage) {
+    $TemplatePackage = (Resolve-Path -LiteralPath $TemplatePackage).Path
+    $extracted = Join-Path $ScratchRoot package
+    [IO.Compression.ZipFile]::ExtractToDirectory($TemplatePackage, $extracted)
+    $delivered = Join-Path $extracted content
+}
+else {
+    Copy-Item -LiteralPath (Resolve-Path -LiteralPath $TemplateRoot).Path -Destination $delivered -Recurse
+}
 $hive = Join-Path $ScratchRoot hive
 
 function Invoke-Dotnet {
@@ -83,7 +92,8 @@ function Test-WorkItemApi {
 }
 
 $roots = 'miniapi', 'web-api', 'use-case', 'class', 'interface' | ForEach-Object { Join-Path $delivered $_ }
-Invoke-Template install @roots
+if ($TemplatePackage) { Invoke-Template install $TemplatePackage }
+else { Invoke-Template install @roots }
 Invoke-Template list aicf
 Invoke-Template aicf-usecase --help
 
@@ -176,5 +186,6 @@ if ($LASTEXITCODE -eq 0 -or (Get-FileHash -LiteralPath $original).Hash -ne $befo
     throw 'Collision did not refuse the overwrite and preserve the target bytes.'
 }
 
-Invoke-Template uninstall @roots $custom
+if ($TemplatePackage) { Invoke-Template uninstall AICF.Dotnet.Templates $custom }
+else { Invoke-Template uninstall @roots $custom }
 Write-Output 'Native template acceptance passed.'

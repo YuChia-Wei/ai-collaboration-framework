@@ -57,7 +57,7 @@ The owner documents are [Mapper](coding-standards/mapper-standards.md),
 are Framework interpretations and selected examples, not claims that the cited
 authors mandate each .NET method or transaction mechanism.
 
-The optional [CT-005 case](../examples/mapper/contract-cases.md) selects published
+The optional [contract cases](contract-cases.md) selects published
 ArchPrecept `0.0.3-preview` and its exact build source/bytes. It demonstrates an
 API contract, not downstream adoption or the later unshipped Analyzer predicates.
 Framework #179 owns actual external integration/version adoption. Package-free

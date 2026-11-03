@@ -1,0 +1,14 @@
+public interface IDomainEntity<out TId> where TId : notnull
+{
+    TId Id { get; }
+}
+
+public interface IAggregateRoot<out TId> : IDomainEntity<TId> where TId : notnull
+{
+}
+
+public interface IDomainEvent
+{
+    Guid EventId { get; }
+    DateTimeOffset OccurredOn { get; }
+}

@@ -217,6 +217,6 @@ aggregate contract explicitly requires that cleanup after replay.
 - `../standards/coding-standards/mapper-standards.md`
 - `../standards/coding-standards/repository-standards.md`
 - `../standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`
-- `../examples/outbox/README.md`
-- `../examples/aspnet-core/Program.cs`
+- `../standards/coding-standards/repository-standards.md`
+- `../tooling/generation/README.md`
 - `../legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml`

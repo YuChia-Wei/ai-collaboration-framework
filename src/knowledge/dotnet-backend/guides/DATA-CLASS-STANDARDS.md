@@ -165,4 +165,4 @@ TODO: replace `src/tools/dotnet/check-data-class-annotations.sh` with a Roslyn a
 ## Related Documents
 - `FRAMEWORK-API-INTEGRATION-GUIDE.md`
 - `../shared/dto-conventions.md`
-- `../examples/dto/README.md`
+- `../standards/coding-standards/controller-standards.md`

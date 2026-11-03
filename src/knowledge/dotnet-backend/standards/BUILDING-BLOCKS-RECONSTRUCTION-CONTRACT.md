@@ -59,7 +59,7 @@ frameworks:
 Rule ID: `AGGREGATE-ES-001` (`conditional` when Event Sourcing is selected).
 
 `EsAggregateRoot<TId>` is the only supplied optional base class. A target may
-copy the source include, reimplement this contract, or use another implementation
+render the ES snippet, reimplement this contract, or use another implementation
 that preserves the behavior.
 
 ### Required behavior
@@ -81,14 +81,14 @@ that preserves the behavior.
 
 Reconstruction failure MUST expose no command-usable partial Aggregate. The
 caller discards an instance after replay/transition failure; the reference-only
-source include does not promise rollback or automatic poisoning. Historical
+snippet does not promise rollback or automatic poisoning. Historical
 event/schema compatibility and migration are target-owned. New pending events
 are acknowledged only after durable append/commit; an unknown storage result
 requires reconciliation, not blind retry or clearing. A generic
 `ClearDomainEvents` call is not part of this behavior contract. Equivalent custom
 APIs are valid when their semantics are verified. The published ArchPrecept
 CT-005 API is a separate optional implementation; see the
-[fixed contract cases](../examples/mapper/contract-cases.md).
+[contract cases](contract-cases.md).
 
 ### Construction rule
 
@@ -114,36 +114,21 @@ public sealed class Order : EsAggregateRoot<OrderId>
 }
 ```
 
-The repository-owned source include is under
-[`source-includes/domain/`](../source-includes/domain/README.md). It is reference-only
-framework material, not a published package or complete reference product. An
-adopting target owns SDK compatibility, compilation, behavior tests, invocation
-evidence, and upgrade reconciliation before claiming executable validation.
+The `domain-contracts` and `es-aggregate` snippets provide the reference mechanics.
+See the [generation guide](../tooling/generation/README.md). Generated code is
+target-owned and requires compilation and behavior verification.
 
-## Source-Include Ownership And Upgrade Rule
+## Generated Source Ownership
 
-Until a package distribution decision exists:
+After generation:
 
-1. copying a source include into a target makes the copy target-owned;
+1. generated source belongs to the target;
 2. the target records namespace changes and local behavior changes as target
    evidence;
 3. a target-selected, actually available maintenance procedure compares the
    recorded framework base, incoming framework source, and target-owned copy;
 4. that procedure proposes reconciliation and never overwrites target-owned
    truth solely because the framework copy changed.
-
-## Provenance And Concept Disposition
-
-| Source evidence | Historical shape | Current disposition | Reason |
-| --- | --- | --- | --- |
-| `ai-coding-exercise` at `f7ed0b9b5b23822ec012c375261df44f6f03a97f` | Java event-sourced aggregate base with `apply/when` and replay constructor | Preserve event-transition and replay concepts; retire Java generic/API shape from active .NET truth | Framework-specific Java types are provenance, not portable .NET contracts |
-| `dotnet-mq-arch-lab` | `EsAggregateRoot<TId>` plus `DomainEntity` and `AggregateRoot` bases; explicit commit lifecycle | Preserve single-generic ES shape and commit lifecycle; do not require the other bases | The ES mechanics have executable downstream evidence; the inheritance chain is not required |
-| `dotnet-webapi-lab` | State-based Aggregates implement `IAggregateRoot<Guid>` directly | Preserve as evidence for interface-first normal Aggregates | Confirms that useful Aggregate models do not require a common base class |
-| Pre-v0.4.0 framework example | Converted `EsAggregateRoot<TId,TEvent>` placeholder embedded in `Plan.cs` | Rewrite to the canonical single-generic contract and keep the portfolio illustrative | Embedded placeholder contradicted `DBA1009` guidance and had no independent test route |
-| `DBA1009` | Reference mapping detects descendants named `EsAggregateRoot` | Keep type-hierarchy recognition in the target-selected analyzer recipe | A target implementation must test its own reimplementations as well as any copied source include |
-
-These repositories are evidence sources only. A target must be reconstructable
-from this repository's current standards and navigation without access to them.
 
 ## Architectural Equivalence Checks
 
@@ -162,7 +147,6 @@ No class-name index by itself proves reconstructability.
 
 ## Deferred
 
-- NuGet or `dotnet new` distribution;
 - a complete BuildingBlocks solution;
 - a golden SampleProduct;
 - target persistence, broker, observability, or AOP implementations;

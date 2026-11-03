@@ -31,8 +31,8 @@ broker, testing and deployment decisions.
 
 ## Packaged examples
 
-- [ASP.NET Core host examples](../examples/aspnet-core/README.md)
-- [Outbox examples](../examples/outbox/README.md)
+- [controller standards](../standards/coding-standards/controller-standards.md)
+- [repository standards](../standards/coding-standards/repository-standards.md)
 - [Persistence registration guidance](PERSISTENCE-CONFIGURATION-GUIDE.md)
 - [Profile testing guidance](PROFILE-BASED-TESTING-GUIDE.md)
 

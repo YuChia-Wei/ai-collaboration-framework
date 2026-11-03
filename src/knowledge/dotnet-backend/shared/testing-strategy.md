@@ -30,7 +30,7 @@ Rule IDs: `TEST-GWT-001`, `TEST-BDDFY-001`, `TEST-MOCK-001`, `TECH-SELECT-001`,
 - Apply the canonical standard's step-method responsibilities, visible scenario
   data, isolated state, async/exception handling and explicit Then assertions.
   Preserve the mapping in `../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md`.
-  The runnable `examples/bdd-step-methods/` reference demonstrates both profiles;
+  The test standard describes both profiles;
   method names, comments and passing tests alone do not establish scenario fidelity.
 - Verify domain events with async-safe assertions (e.g., Eventually/Retry helpers)
 

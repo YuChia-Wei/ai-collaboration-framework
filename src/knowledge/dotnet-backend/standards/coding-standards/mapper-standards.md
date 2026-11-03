@@ -190,5 +190,5 @@ defect as a missing badge.
 - [Aggregate standards](aggregate-standards.md)
 - [Repository standards](repository-standards.md)
 - [Query/projector standards](projection-standards.md)
-- [Contract cases and fixed CT-005 reference](../../examples/mapper/contract-cases.md)
+- [contract cases](../contract-cases.md)
 - [Official sources and interpretation](../POLICY-RATIONALE.md#reconstruction-and-projection-sources)
