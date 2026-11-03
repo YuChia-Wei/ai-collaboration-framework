@@ -59,6 +59,17 @@ required specialist gaps cannot be reported as covered. Continue unaffected
 common work with that limit disclosed. Persist only when the actual task
 authorizes a destination; no new record family or implicit config write.
 
+## Selected code generation
+
+When the target explicitly selects .NET code generation and verified installed
+knowledge makes `member:tooling/generation/README.md` available, read it on demand.
+Use native templates for project/files and the snippet console for in-file
+fragments. Inspect source identity, parameters, context, required usings and API
+preconditions before rendering. Insert returned text through the authorized
+target editor, then validate the affected context. Rendering is not semantic
+integration. Preserve target-owned custom sources and existing code; unavailable
+selected tools must be reported rather than silently substituted.
+
 ## Confirm the semantic radius
 
 Identify one primary class/object/method/local symbol/query, one operation,

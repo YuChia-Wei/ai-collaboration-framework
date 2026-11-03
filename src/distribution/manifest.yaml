@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet-backend
-  version: 0.1.9
+  version: 0.2.0
   source: src/knowledge/dotnet-backend
   metadata: content-package.yaml
   members:
@@ -507,6 +507,92 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/templates/application-properties-templates.md
   - source: templates/profile-isolated-configurations.md
     destination: .ai/core/knowledge/dotnet-backend/templates/profile-isolated-configurations.md
+  - source: tooling/generation/Publish-Snippets.ps1
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/Publish-Snippets.ps1
+  - source: tooling/generation/README.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/README.md
+  - source: tooling/generation/dotnet-new/class/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/class/.template.config/template.json
+  - source: tooling/generation/dotnet-new/class/AicfClass.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/class/AicfClass.cs
+  - source: tooling/generation/dotnet-new/interface/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/interface/.template.config/template.json
+  - source: tooling/generation/dotnet-new/interface/AicfInterface.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/interface/AicfInterface.cs
+  - source: tooling/generation/dotnet-new/miniapi/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/.template.config/template.json
+  - source: tooling/generation/dotnet-new/miniapi/AicfMiniApi.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/AicfMiniApi.csproj
+  - source: tooling/generation/dotnet-new/miniapi/Application/CreateWorkItemUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Application/CreateWorkItemUseCase.cs
+  - source: tooling/generation/dotnet-new/miniapi/Application/GetWorkItemUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Application/GetWorkItemUseCase.cs
+  - source: tooling/generation/dotnet-new/miniapi/Application/WorkItemPorts.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Application/WorkItemPorts.cs
+  - source: tooling/generation/dotnet-new/miniapi/Domain/IAggregateRoot.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Domain/IAggregateRoot.cs
+  - source: tooling/generation/dotnet-new/miniapi/Domain/IDomainEntity.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Domain/IDomainEntity.cs
+  - source: tooling/generation/dotnet-new/miniapi/Domain/WorkItem.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Domain/WorkItem.cs
+  - source: tooling/generation/dotnet-new/miniapi/Infrastructure/InMemoryWorkItems.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Infrastructure/InMemoryWorkItems.cs
+  - source: tooling/generation/dotnet-new/miniapi/Program.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/miniapi/Program.cs
+  - source: tooling/generation/dotnet-new/use-case/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/use-case/.template.config/template.json
+  - source: tooling/generation/dotnet-new/use-case/AicfOperationInput.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/use-case/AicfOperationInput.cs
+  - source: tooling/generation/dotnet-new/use-case/AicfOperationOutput.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/use-case/AicfOperationOutput.cs
+  - source: tooling/generation/dotnet-new/use-case/AicfOperationUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/use-case/AicfOperationUseCase.cs
+  - source: tooling/generation/dotnet-new/use-case/IAicfOperationUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/use-case/IAicfOperationUseCase.cs
+  - source: tooling/generation/dotnet-new/web-api/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/.template.config/template.json
+  - source: tooling/generation/dotnet-new/web-api/AicfWebApi.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/AicfWebApi.csproj
+  - source: tooling/generation/dotnet-new/web-api/Application/CreateWorkItemUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/CreateWorkItemUseCase.cs
+  - source: tooling/generation/dotnet-new/web-api/Application/GetWorkItemUseCase.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/GetWorkItemUseCase.cs
+  - source: tooling/generation/dotnet-new/web-api/Application/WorkItemPorts.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/WorkItemPorts.cs
+  - source: tooling/generation/dotnet-new/web-api/Controllers/WorkItemsController.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Controllers/WorkItemsController.cs
+  - source: tooling/generation/dotnet-new/web-api/Domain/IAggregateRoot.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/IAggregateRoot.cs
+  - source: tooling/generation/dotnet-new/web-api/Domain/IDomainEntity.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/IDomainEntity.cs
+  - source: tooling/generation/dotnet-new/web-api/Domain/WorkItem.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/WorkItem.cs
+  - source: tooling/generation/dotnet-new/web-api/Infrastructure/InMemoryWorkItems.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Infrastructure/InMemoryWorkItems.cs
+  - source: tooling/generation/dotnet-new/web-api/Models/Requests/CreateWorkItemRequest.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Models/Requests/CreateWorkItemRequest.cs
+  - source: tooling/generation/dotnet-new/web-api/Models/Responses/WorkItemResponse.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Models/Responses/WorkItemResponse.cs
+  - source: tooling/generation/dotnet-new/web-api/Program.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Program.cs
+  - source: tooling/generation/snippet-tool/Catalog.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/Catalog.cs
+  - source: tooling/generation/snippet-tool/Contracts.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/Contracts.cs
+  - source: tooling/generation/snippet-tool/Expansion.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/Expansion.cs
+  - source: tooling/generation/snippet-tool/Program.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/Program.cs
+  - source: tooling/generation/snippet-tool/README.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/README.md
+  - source: tooling/generation/snippet-tool/SnippetTool.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/SnippetTool.csproj
+  - source: tooling/generation/snippet-tool/snippets/catalog.json
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/snippets/catalog.json
+  - source: tooling/generation/snippet-tool/snippets/interface-method.snippet
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/snippets/interface-method.snippet
+  - source: tooling/generation/snippet-tool/snippets/string-guard.snippet
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/snippets/string-guard.snippet
   - source: tooling/on-demand-mechanical-validation/README.md
     destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/README.md
   - source: tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
@@ -700,7 +786,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.9
+  version: 0.2.10
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -730,7 +816,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/domain-model-designer/skill-package.yaml
   kind: skill
-  version: 0.1.4
+  version: 0.1.5
 - id: lesson-author
   source: src/skills/lesson-author
   metadata: skill-package.yaml
@@ -766,7 +852,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.11
+  version: 0.2.12
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -862,7 +948,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.11
+  version: 0.2.12
 - id: software-architect
   source: src/skills/software-architect
   metadata: skill-package.yaml
@@ -878,7 +964,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-architect/skill-package.yaml
   kind: skill
-  version: 0.1.4
+  version: 0.1.5
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -952,7 +1038,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.7
+  version: 0.4.8
 - kind: skill
   id: user-story-author
   version: 0.2.2

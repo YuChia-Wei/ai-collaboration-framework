@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.11`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.12`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.4.1`（1 項）與 `dotnet-backend@0.1.9`（8 項）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
+可選 `engineering-common@0.4.1`（1 項）與 `dotnet-backend@0.2.0`（9 項）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
 
 將既有驗證計畫視為初步安排，實作期間依實際差異校正條件式檢查，執行前確認必要性。
 修改完成後確認驗收證據齊備；必要 gate 與已接受驗收不得自行取消。
@@ -54,10 +54,11 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-local-change
 
-`dotnet-backend@0.1.9`；操作：`implement`。
+`dotnet-backend@0.2.0`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:standards/POLICY-RATIONALE.md`
+- `member:tooling/generation/README.md`
 - `member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`
 - `member:standards/coding-standards/aggregate-standards.md`
 - `member:standards/coding-standards/repository-standards.md`
@@ -74,3 +75,5 @@ Controller 文件屬於 guidance；允許讀取不代表採用正式規則。
 - [references/implement.md](../../src/skills/local-change-implementer/references/implement.md)
 
 上述連結方便在來源庫核對；實際使用時應讀取已安裝套件中的相同資源。
+
+明確選擇程式碼產生時，可按需讀取 generation 指引，使用原生模板或 snippet 工具。先 inspect 適用位置與參數，再將 render 的文字插入已檢查的脈絡；展開不等於語意整合或通過編譯。

@@ -26,6 +26,10 @@ policy, allocate Rule IDs or establish runtime adoption.
 
 ## Scope
 
+For executable native templates and deterministic in-file fragments, start with
+the [.NET generation guide](tooling/generation/README.md). Choose generation
+explicitly after checking the target profile and insertion context.
+
 Included:
 
 - DDD, Clean Architecture, CQRS, and Hexagonal Architecture backend rules

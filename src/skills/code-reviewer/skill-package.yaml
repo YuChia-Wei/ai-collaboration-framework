@@ -1,6 +1,6 @@
 metadata_version: 4
 id: code-reviewer
-version: 0.2.9
+version: 0.2.10
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -43,7 +43,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-review
   package: dotnet-backend
-  version: 0.1.9
+  version: 0.2.0
   operations:
   - review
   resources:

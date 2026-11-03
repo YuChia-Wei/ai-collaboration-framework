@@ -3,6 +3,9 @@
 This folder contains legacy generation-oriented references for the .NET
 CA/DDD/CQRS stack. They are not verified generators or copy-ready modules.
 
+For runnable directory templates and the snippet console, use the
+[generation guide](../../tooling/generation/README.md).
+
 ## How This Differs from examples/[pattern]
 - `examples/[pattern]/` = single pattern examples
 - `generation-templates/` = multi-file, full module templates

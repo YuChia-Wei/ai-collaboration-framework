@@ -1,6 +1,6 @@
 metadata_version: 4
 id: local-change-implementer
-version: 0.2.11
+version: 0.2.12
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -50,7 +50,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-local-change
   package: dotnet-backend
-  version: 0.1.9
+  version: 0.2.0
   operations:
   - implement
   resources:
@@ -63,5 +63,6 @@ knowledge_consumption:
   - member:standards/coding-standards/repository-standards.md
   - member:standards/coding-standards/test-standards.md
   - member:standards/coding-standards/usecase-standards.md
+  - member:tooling/generation/README.md
   requirement: optional
   on_missing: unavailable
