@@ -11,6 +11,13 @@ It does not register templates, edit project code or select a technology stack.
 Updates replace only an unchanged previous installation; modified or unknown
 files cause a refusal. Keep custom snippets and templates outside this directory.
 
+After an interrupted installation, stop other installers, run
+`python install-generation.py --project /path/to/project --recover`, then retry.
+Recovery restores the verified previous installation or retains the completed
+new one. If verification refuses recovery, preserve the reported staging and
+target directories for manual reconciliation. The persistent `.lock` file is
+normal; the operating system releases its lock when the process exits.
+
 With the .NET 10 SDK, register the installed package:
 
 ```text

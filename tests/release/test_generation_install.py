@@ -1,8 +1,12 @@
 """Real filesystem checks for the separately selected generation installation."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import runpy
+import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -36,7 +40,70 @@ class GenerationInstallation(unittest.TestCase):
         API['install'](self.bundle, self.project)
         self.assertEqual((self.target / 'tool').read_bytes(), b'second')
         self.assertEqual(custom.read_text(), 'owned by project')
-        self.assertEqual(sorted(p.name for p in self.target.parent.iterdir()), ['dotnet-generation'])
+        self.assertEqual(sorted(p.name for p in self.target.parent.iterdir()),
+                         ['.dotnet-generation-install.lock', 'dotnet-generation'])
+
+    @unittest.skipIf(os.name == 'nt', 'Requires case-sensitive POSIX filesystem')
+    def test_case_alias_and_fifo_are_preserved(self):
+        API['install'](self.bundle, self.project)
+        alias = self.target / 'TOOL'
+        alias.write_bytes(b'custom')
+        with self.assertRaises(ValueError):
+            API['install'](self.bundle, self.project)
+        self.assertEqual(alias.read_bytes(), b'custom')
+        alias.unlink()
+        fifo = self.target / 'team-pipe'
+        os.mkfifo(fifo)
+        with self.assertRaises(ValueError):
+            API['install'](self.bundle, self.project)
+        self.assertTrue(fifo.exists())
+
+    def test_process_death_releases_lock_and_restores_previous_installation(self):
+        API['install'](self.bundle, self.project)
+        self.package(b'second')
+        script = '''import os, runpy, sys
+from pathlib import Path
+api = runpy.run_path(sys.argv[1])
+rename = Path.rename
+def crash(path, target):
+    if path.name == 'payload':
+        os._exit(23)
+    return rename(path, target)
+Path.rename = crash
+api['install'](Path(sys.argv[2]), Path(sys.argv[3]))
+'''
+        result = subprocess.run([sys.executable, '-I', '-B', '-c', script,
+                                 str(Path(API['__file__'])), str(self.bundle), str(self.project)])
+        self.assertEqual(result.returncode, 23)
+        self.assertFalse(self.target.exists())
+        self.assertEqual(API['recover'](self.project)['outcome'], 'restored-previous-installation')
+        self.assertEqual((self.target / 'tool').read_bytes(), b'first')
+        API['install'](self.bundle, self.project)
+        self.assertEqual((self.target / 'tool').read_bytes(), b'second')
+
+    def test_changed_previous_installation_blocks_recovery(self):
+        API['install'](self.bundle, self.project)
+        stage = self.target.parent / '.dotnet-generation-pending'
+        stage.mkdir()
+        before = API['manifest_hash'](self.target)
+        (stage / 'transaction.json').write_text(json.dumps({'before': before, 'after': 'unused'}))
+        self.target.rename(stage / 'previous')
+        (stage / 'previous/tool').write_bytes(b'custom')
+        with self.assertRaises(ValueError):
+            API['recover'](self.project)
+        self.assertEqual((stage / 'previous/tool').read_bytes(), b'custom')
+
+    def test_recovery_finishes_interrupted_cleanup(self):
+        API['install'](self.bundle, self.project)
+        stage = self.target.parent / '.dotnet-generation-pending'
+        stage.mkdir()
+        after = API['manifest_hash'](self.target)
+        (stage / 'transaction.json').write_text(json.dumps({'before': 'old', 'after': after}))
+        shutil.copytree(self.target, stage / 'previous')
+        (stage / 'previous/tool').unlink()
+        self.assertEqual(API['recover'](self.project)['outcome'], 'completed-installation')
+        self.assertFalse(stage.exists())
+        self.assertEqual((self.target / 'tool').read_bytes(), b'first')
 
     def test_modified_installation_is_not_overwritten(self):
         API['install'](self.bundle, self.project)

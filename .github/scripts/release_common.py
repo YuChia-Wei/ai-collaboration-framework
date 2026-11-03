@@ -295,6 +295,26 @@ def verify_bundle(directory, expected_source=None):
                  "generation/snippets/win-x64/SnippetTool.exe", "generation/snippets/linux-x64/SnippetTool",
                  "generation/templates/AICF.Dotnet.Templates." + manifest["version"] + ".nupkg"}
                 <= generation_names, "generation required assets")
+        for rid in generation["runtimes"]:
+            prefix = "generation/snippets/" + rid + "/"
+            native = (["coreclr.dll", "hostfxr.dll", "hostpolicy.dll"] if rid == "win-x64"
+                      else ["libcoreclr.so", "libhostfxr.so", "libhostpolicy.so"])
+            required = ["SnippetTool.dll", "SnippetTool.deps.json", "SnippetTool.runtimeconfig.json",
+                        "System.Private.CoreLib.dll", "snippets/catalog.json"] + native
+            require(all(prefix + n in generation_names for n in required), "self-contained runtime assets")
+            deps = document(payload[prefix + "SnippetTool.deps.json"])
+            target_name = deps["runtimeTarget"]["name"]
+            require(target_name.endswith("/" + rid), "snippet dependency runtime")
+            for library in deps["targets"][target_name].values():
+                for kind in ("runtime", "native", "resources"):
+                    for asset in library.get(kind, {}):
+                        member = safe_name(asset)
+                        if kind != "resources":
+                            member = member.rsplit("/", 1)[-1]
+                        require(prefix + member in generation_names, "snippet dependency asset: " + member)
+            if rid == "linux-x64":
+                require(next(r["mode"] for r in rows if r["path"] == prefix + "SnippetTool") == 0o755,
+                        "Linux snippet executable mode")
     require(set(names) == expected | {"engine/" + n for n in pin_names} | generation_names |
             {"engine/engine.json", "engine-pin.json", "README.md", "content-hashes.json"}, "release payload closure")
     hashes = document(payload["content-hashes.json"])
