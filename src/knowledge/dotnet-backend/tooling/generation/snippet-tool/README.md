@@ -1,6 +1,6 @@
 # .NET snippet tool
 
-SnippetTool renders small C# fragments for a human or agent to insert into a selected context. A release contains a self-contained executable for each supported platform, this README, and the shipped `snippets/` catalog and body files beside each executable. Run the executable for your operating system and architecture from any working directory. The release executable extracts native runtime files to the .NET cache on first use and reuses them on subsequent runs. Building from this source project requires the .NET 10 SDK. The snippet output is ordinary C# and the consuming project only needs the types and APIs listed by the selected snippet.
+SnippetTool renders small C# fragments for a human or agent to insert into a selected context. A release contains a self-contained executable for each supported platform, this README, and the shipped `snippets/` catalog and body files beside each executable. Each executable includes its .NET runtime and can run from any working directory. Building from this source project requires the .NET 10 SDK. The snippet output is ordinary C# and the consuming project only needs the types and APIs listed by the selected snippet.
 
 ## Run
 
