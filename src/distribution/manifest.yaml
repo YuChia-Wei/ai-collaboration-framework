@@ -766,7 +766,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.10
+  version: 0.2.11
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -862,7 +862,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.10
+  version: 0.2.11
 - id: software-architect
   source: src/skills/software-architect
   metadata: skill-package.yaml
@@ -952,7 +952,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.6
+  version: 0.4.7
 - kind: skill
   id: user-story-author
   version: 0.2.2

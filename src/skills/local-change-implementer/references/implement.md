@@ -102,36 +102,35 @@ repair; a diagnostic finding does not grant implementation authority.
 3. Apply the single operation and required direct call-site changes. Prefer an
    applicable IDE refactoring if available and permitted; review its actual
    edits. Do not treat a tool's success as proof the radius stayed bounded.
-4. Update immediate tests when needed to protect the changed contract and
-   within authority. Avoid unrelated cleanup or implementation-mirroring tests.
-5. Confirm test necessity before execution from the actual diff, semantics,
-   direct dependencies and target-owned gates. Ordinary prose or whitespace with no
-   parsing, schema, output or behavior effect does not select a test by edit,
-   extension or path alone. Whitespace affecting those contracts needs the
-   relevant checks; investigate unclear impact before choosing. Run only the
-   necessary authorized checks using the target's actual command, working
-   directory, prerequisites and output scope. No default command is supplied.
-6. Inspect the diff and actual touched radius. Stop dependent edits if an
-   unaccepted semantic/architecture decision or wider operation emerges.
+4. Reuse protection; add uncovered sourced behavior/boundaries or defect cases. Keep cases
+   required by accepted criteria or target gates, supplied outcomes, real subjects
+   and independent oracles. Cover all contract-required fields, not inferred
+   guarantees; tolerate behavior-preserving refactors. Inspect affected dependencies for source gaps;
+   ask a focused inclusion question before adding unsourced cases/assertions.
+   Sourced boundaries need no approval; omit speculation.
+5. Select checks from the actual diff, semantics, direct dependencies and target
+   gates. An edit, path, extension, report or SHA alone selects no test; prose
+   and whitespace need checks for actual parsing, schema, output or behavior
+   effects. Investigate unclear impact. Run necessary authorized checks with
+   actual target commands, working directory, prerequisites and output scope;
+   invent no runner, acquire no credentials and weaken no guard. Retain failures
+   and missing evidence. Test design, code and execution are separate results.
+6. Inspect the diff, acceptance coverage and touched radius. Stop dependent work
+   for unaccepted wider operations or semantic/architecture decisions; return
+   them to the coordination or task owner without unrelated cleanup.
 
-Use any supplied validation plan as an initial expectation, and revise
-conditional checks as actual edits reveal or remove impacts. Before execution,
-confirm which checks are necessary; after the change, confirm required
-acceptance evidence is complete. Do not silently cancel mandatory target gates
-or accepted acceptance requirements. Return newly discovered wider impacts or
-cross-task scheduling changes to the orchestration owner when one is selected;
-otherwise reconcile them through the existing task owner, without requiring an
-orchestrator installation. A change to accepted requirements needs its owner's
-decision. Bug reproduction, TDD and incremental checks may run before or during
-edits for a concrete purpose; the numbered steps do not require all testing to
-wait until implementation ends.
+Revise conditional validation as edits reveal or remove impacts; confirm
+necessity before execution and required evidence afterward. Bug reproduction,
+TDD and incremental checks may run before or during edits for a concrete purpose.
+Preserve mandatory gates, accepted cases, security and release obligations;
+changing accepted requirements needs their owner's decision.
 
-Large integration, E2E, usability, full installation/upgrade and high-cost AI checks
-need a clearly affected behavior/boundary or an explicit user request or accepted
-acceptance criterion; do not expand to a full matrix by default. Preserve
-mandatory target gates, security and release obligations. Reports, handoffs or
-SHA changes alone do not select tests. Explain an unnecessary check briefly in
-the existing result, without a new receipt, ledger or complete hash inventory.
+Large integration, E2E, usability, full installation/upgrade and high-cost AI
+checks need an affected boundary or explicit user/accepted requirement, not a
+default matrix. Weigh added detection against false failures and upkeep. Keep
+required real integration evidence; isolated checks cannot replace it, and
+unavailable facilities remain blocked/not-run. Explain omitted checks briefly
+in the existing result; no new form, ledger, hash inventory or skill is required.
 
 An unavailable editor blocks implementation. Missing selected specialist rules
 block the corresponding decision. Missing test tools, environment or command
