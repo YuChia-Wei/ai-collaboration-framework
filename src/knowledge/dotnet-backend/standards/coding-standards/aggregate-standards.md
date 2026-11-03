@@ -556,18 +556,6 @@ protected override void When(IDomainEvent @event)
 
 ---
 
-## 📂 Code Examples
-
-For more complete examples, see:
-
-| Example | Path |
-|------|------|
-| Aggregate examples | [aggregate standards](aggregate-standards.md) |
-| Domain Events | [aggregate standards](aggregate-standards.md) |
-| Value Objects | [aggregate standards](aggregate-standards.md) |
-
----
-
 ## Related Documents
 
 - [usecase-standards.md](usecase-standards.md)

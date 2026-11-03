@@ -29,10 +29,12 @@ broker, testing and deployment decisions.
    transaction boundaries, delivery and replay semantics. Do not infer either
    pattern from CQRS or from a profile name.
 
-## Packaged examples
+## Implementation guidance
 
-- [controller standards](../standards/coding-standards/controller-standards.md)
-- [repository standards](../standards/coding-standards/repository-standards.md)
+- [Packaged API starters](../tooling/generation/README.md)
+- [Controller standards](../standards/coding-standards/controller-standards.md)
+- [Repository standards](../standards/coding-standards/repository-standards.md)
+- [Transactional messaging](../standards/coding-standards/transactional-messaging-standards.md)
 - [Persistence registration guidance](PERSISTENCE-CONFIGURATION-GUIDE.md)
 - [Profile testing guidance](PROFILE-BASED-TESTING-GUIDE.md)
 

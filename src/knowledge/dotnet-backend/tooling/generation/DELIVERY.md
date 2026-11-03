@@ -36,8 +36,12 @@ The C# sources and `.template.config` inside the package are required by
 
 Run `snippets/win-x64/SnippetTool.exe` on Windows x64 or
 `snippets/linux-x64/SnippetTool` on Linux x64 with `--request request.json`.
-Neither needs an installed .NET runtime. Linux needs the platform's native
-runtime dependencies (Ubuntu 24.04 is the tested baseline).
+Each executable bundles its .NET runtime. On first use, .NET extracts native
+runtime files to its cache and reuses them on subsequent runs. The default
+cache base is `%TEMP%/.net` on Windows and `$HOME/.net` on Linux. Set
+`DOTNET_BUNDLE_EXTRACT_BASE_DIR` to use a different private, writable directory.
+Linux needs the platform's native runtime dependencies (Ubuntu 24.04 is the
+tested baseline). Keep each executable beside its shipped `snippets/` directory.
 Use `{"schemaVersion":1,"operation":"list"}`, then inspect one ID before rendering it.
 See `snippets/README.md` for request fields and customization.
 Rendering returns text; insertion and compilation remain explicit steps.

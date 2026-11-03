@@ -49,7 +49,7 @@ def readme_source(template=README_TEMPLATE):
 
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
             engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
-            missing_generation_member=None, linux_mode=0o755):
+            missing_generation_member=None, extra_generation_member=None, linux_mode=0o755):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -87,29 +87,24 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     payload["README.md"] = (readme if readme_override is None else readme_override, 0o644)
     if schema == common.SCHEMA:
         generated = {
-            "install-generation.py": b"installer", "README.md": b"usage",
+            "install-generation.py": b"installer", "README.md": b"usage", "snippets/README.md": b"usage",
             "snippets/win-x64/SnippetTool.exe": b"windows",
             "snippets/linux-x64/SnippetTool": b"linux",
             "templates/AICF.Dotnet.Templates.0.19.0-rc.3.nupkg": b"template-package",
         }
         for rid in ('win-x64', 'linux-x64'):
             prefix = 'snippets/' + rid + '/'
-            assets = ['SnippetTool.dll', 'System.Private.CoreLib.dll', 'System.Console.dll']
-            assets += (['coreclr.dll', 'hostfxr.dll', 'hostpolicy.dll'] if rid == 'win-x64'
-                       else ['libcoreclr.so', 'libhostfxr.so', 'libhostpolicy.so'])
-            for name in assets:
-                generated[prefix + name] = b'runtime fixture'
-            generated[prefix + 'SnippetTool.runtimeconfig.json'] = b'{}'
-            generated[prefix + 'snippets/catalog.json'] = b'{}'
-            target = '.NETCoreApp,Version=v10.0/' + rid
-            generated[prefix + 'SnippetTool.deps.json'] = common.encoded({
-                'runtimeTarget': {'name': target},
-                'targets': {target: {'test/1': {'runtime': {n: {} for n in assets}}}}})
+            generated[prefix + 'README.md'] = b'usage'
+            generated[prefix + 'snippets/example.snippet'] = b'Example'
+            generated[prefix + 'snippets/catalog.json'] = common.encoded({
+                'snippets': [{'bodyFile': 'example.snippet'}]})
         if missing_generation_member:
             del generated[missing_generation_member]
+        if extra_generation_member:
+            generated[extra_generation_member] = b'extra file'
         generation = {"schema": "aicf-generation/1", "source_commit": SOURCE["commit"],
                       "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
-                      "mode": "self-contained-coreclr", "files": []}
+                      "mode": "self-contained-coreclr-single-file", "files": []}
         for name, data in sorted(generated.items()):
             mode = linux_mode if name.endswith("/SnippetTool") else 0o644
             generation["files"].append(common.entry(name, data, mode))
@@ -207,12 +202,17 @@ class ReleaseContracts(unittest.TestCase):
     def test_actual_zip_raw_inventory(self):
         self.assertEqual(common.verify_bundle(self.directory, SOURCE), self.manifest)
 
-    def test_incomplete_runtime_rejected_even_with_consistent_inventory(self):
-        for name in ('SnippetTool.dll', 'System.Console.dll', 'libcoreclr.so'):
+    def test_incomplete_snippet_layout_rejected_even_with_consistent_inventory(self):
+        for name in ('SnippetTool', 'README.md', 'snippets/catalog.json', 'snippets/example.snippet'):
             with self.subTest(name=name):
                 fixture(self.directory, missing_generation_member='snippets/linux-x64/' + name)
                 with self.assertRaises(ValueError):
                     common.verify_bundle(self.directory)
+
+    def test_loose_runtime_file_rejected_even_with_consistent_inventory(self):
+        fixture(self.directory, extra_generation_member='snippets/linux-x64/libcoreclr.so')
+        with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+            common.verify_bundle(self.directory)
 
     def test_non_executable_linux_apphost_rejected(self):
         fixture(self.directory, linux_mode=0o644)

@@ -322,19 +322,10 @@ public class CreateResourceRequestValidator : AbstractValidator<CreateResourceRe
 
 ---
 
-## 📂 Code Examples
-
-For more complete examples, see:
-
-| Example | Path |
-|------|------|
-| Controller examples | [controller standards](controller-standards.md) |
-| ASP.NET Core examples | [controller standards](controller-standards.md) |
-| DTO examples | [DTO guidance](../../guides/DATA-CLASS-STANDARDS.md) |
-
----
-
 ## Related Documents
+
+- [Packaged API starters](../../tooling/generation/README.md)
+- [DTO guidance](../../guides/DATA-CLASS-STANDARDS.md)
 
 - [usecase-standards.md](usecase-standards.md)
 - [test-standards.md](test-standards.md)

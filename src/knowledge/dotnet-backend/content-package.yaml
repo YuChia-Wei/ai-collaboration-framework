@@ -1462,8 +1462,18 @@ references:
   requirement: required
   on_missing: unavailable
 - from: guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+  resource_id: member:standards/coding-standards/transactional-messaging-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/transactional-messaging-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
   resource_id: member:standards/project-structure.md
   target: {package: dotnet-backend, path: standards/project-structure.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+  resource_id: member:tooling/generation/README.md
+  target: {package: dotnet-backend, path: tooling/generation/README.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: guides/DATABASE-MIGRATION-GUIDE.md
@@ -1484,6 +1494,41 @@ references:
 - from: guides/FAQ.md
   resource_id: member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   target: {package: dotnet-backend, path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  resource_id: member:bdd/README.md
+  target: {package: engineering-common, path: bdd/README.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  resource_id: member:bdd/architecture-boundaries.md
+  target: {package: engineering-common, path: bdd/architecture-boundaries.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  resource_id: member:bdd/examples/library-renewal.feature
+  target: {package: engineering-common, path: bdd/examples/library-renewal.feature, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  resource_id: member:bdd/gherkin.md
+  target: {package: engineering-common, path: bdd/gherkin.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  resource_id: member:standards/coding-standards/test-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/test-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+  resource_id: member:standards/coding-standards/transactional-messaging-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/transactional-messaging-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/LEARNING-PATH.md
+  resource_id: member:bdd/architecture-boundaries.md
+  target: {package: engineering-common, path: bdd/architecture-boundaries.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: guides/LEARNING-PATH.md
@@ -1547,6 +1592,11 @@ references:
   requirement: required
   on_missing: unavailable
 - from: guides/LEARNING-PATH.md
+  resource_id: member:standards/coding-standards/transactional-messaging-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/transactional-messaging-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/LEARNING-PATH.md
   resource_id: member:standards/coding-standards/usecase-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/usecase-standards.md, anchor: null}
   requirement: required
@@ -1560,6 +1610,16 @@ references:
   resource_id: member:tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md
   target: {package: dotnet-backend, path: tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md,
     anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/PROFILE-BASED-TESTING-GUIDE.md
+  resource_id: member:standards/coding-standards/test-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/test-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: guides/PROFILE-BASED-TESTING-GUIDE.md
+  resource_id: member:standards/coding-standards/transactional-messaging-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/transactional-messaging-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: guides/TEMPLATE-USAGE-GUIDE.md
@@ -1649,6 +1709,11 @@ references:
 - from: legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml
   resource_id: member:shared/testing-strategy.md
   target: {package: dotnet-backend, path: shared/testing-strategy.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md
+  resource_id: member:standards/coding-standards/test-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/test-standards.md, anchor: step-methods-and-scenario-readability}
   requirement: required
   on_missing: unavailable
 - from: legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml
@@ -2133,11 +2198,6 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/aggregate-standards.md
-  resource_id: member:standards/coding-standards/aggregate-standards.md
-  target: {package: dotnet-backend, path: standards/coding-standards/aggregate-standards.md, anchor: null}
-  requirement: required
-  on_missing: unavailable
-- from: standards/coding-standards/aggregate-standards.md
   resource_id: member:standards/coding-standards/mapper-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/mapper-standards.md, anchor: null}
   requirement: required
@@ -2173,11 +2233,6 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/archive-standards.md
-  resource_id: member:standards/coding-standards/archive-standards.md
-  target: {package: dotnet-backend, path: standards/coding-standards/archive-standards.md, anchor: null}
-  requirement: required
-  on_missing: unavailable
-- from: standards/coding-standards/archive-standards.md
   resource_id: member:standards/coding-standards/projection-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/projection-standards.md, anchor: null}
   requirement: required
@@ -2208,11 +2263,6 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/controller-standards.md
-  resource_id: member:standards/coding-standards/controller-standards.md
-  target: {package: dotnet-backend, path: standards/coding-standards/controller-standards.md, anchor: null}
-  requirement: required
-  on_missing: unavailable
-- from: standards/coding-standards/controller-standards.md
   resource_id: member:standards/coding-standards/test-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/test-standards.md, anchor: null}
   requirement: required
@@ -2220,6 +2270,11 @@ references:
 - from: standards/coding-standards/controller-standards.md
   resource_id: member:standards/coding-standards/usecase-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/usecase-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/controller-standards.md
+  resource_id: member:tooling/generation/README.md
+  target: {package: dotnet-backend, path: tooling/generation/README.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/mapper-standards.md
@@ -2358,6 +2413,16 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/test-standards.md
+  resource_id: member:bdd/README.md
+  target: {package: engineering-common, path: bdd/README.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/test-standards.md
+  resource_id: member:bdd/architecture-boundaries.md
+  target: {package: engineering-common, path: bdd/architecture-boundaries.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/test-standards.md
   resource_id: member:guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
   target: {package: dotnet-backend, path: guides/FRAMEWORK-API-INTEGRATION-GUIDE.md, anchor: null}
   requirement: required
@@ -2398,13 +2463,18 @@ references:
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/test-standards.md
-  resource_id: member:standards/coding-standards/test-standards.md
-  target: {package: dotnet-backend, path: standards/coding-standards/test-standards.md, anchor: null}
+  resource_id: member:standards/coding-standards/transactional-messaging-standards.md
+  target: {package: dotnet-backend, path: standards/coding-standards/transactional-messaging-standards.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/test-standards.md
   resource_id: member:standards/coding-standards/usecase-standards.md
   target: {package: dotnet-backend, path: standards/coding-standards/usecase-standards.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: standards/coding-standards/transactional-messaging-standards.md
+  resource_id: member:bdd/architecture-boundaries.md
+  target: {package: engineering-common, path: bdd/architecture-boundaries.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: standards/coding-standards/usecase-standards.md

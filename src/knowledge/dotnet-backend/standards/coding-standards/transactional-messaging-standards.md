@@ -94,3 +94,11 @@ window, and optimistic-concurrency handling. Add recovery, outage, Factory, or
 multi-context evidence when the target claims those behaviors. A bounded test
 observation must retain its subject, environment, instrumentation, and limits;
 it is not evidence of unbounded non-delivery or exactly-once behavior.
+
+The common [scenario boundary guide](../../../engineering-common/bdd/architecture-boundaries.md)
+supplies conditional commit, rollback, duplicate and dispatch-retry examples.
+Bind them to the target's real transaction participants and observable outcomes.
+For repository adapters, also verify complete state round trips, required-field
+failures and optimistic-concurrency conflicts. Verify soft-delete state only
+when that Aggregate's contract selects it; CRUD success alone proves no Outbox
+atomicity or Inbox completion behavior.

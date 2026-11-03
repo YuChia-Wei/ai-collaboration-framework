@@ -23,7 +23,8 @@ def build(repository, output, work, version, commit):
         subprocess.run(['dotnet', 'publish', str(generation / 'snippet-tool/SnippetTool.csproj'),
                         '-c', 'Release', '-r', rid, '--self-contained', 'true',
                         '--artifacts-path', str(work / rid), '-o', str(output / 'snippets' / rid),
-                        '-p:Version=' + version, '-p:PublishAot=false', '-p:DebugType=None',
+                        '-p:Version=' + version, '-p:PublishAot=false', '-p:PublishSingleFile=true',
+                        '-p:IncludeNativeLibrariesForSelfExtract=true', '-p:DebugType=None',
                         '-p:DebugSymbols=false'], check=True)
     shutil.copyfile(repository / 'src/tools/install-generation.py', output / 'install-generation.py')
     shutil.copyfile(generation / 'DELIVERY.md', output / 'README.md')
@@ -36,7 +37,7 @@ def build(repository, output, work, version, commit):
             rows.append(dict(path=name, size=path.stat().st_size,
                              sha256=hashlib.sha256(path.read_bytes()).hexdigest(), mode=mode))
     manifest = dict(schema='aicf-generation/1', source_commit=commit, version=version,
-                    runtimes=['win-x64', 'linux-x64'], mode='self-contained-coreclr', files=rows)
+                    runtimes=['win-x64', 'linux-x64'], mode='self-contained-coreclr-single-file', files=rows)
     (output / 'generation.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
 
 

@@ -281,12 +281,18 @@ components:
     destination: .ai/core/knowledge/engineering-common/README.md
   - source: bdd/README.md
     destination: .ai/core/knowledge/engineering-common/bdd/README.md
+  - source: bdd/architecture-boundaries.md
+    destination: .ai/core/knowledge/engineering-common/bdd/architecture-boundaries.md
   - source: bdd/automation.md
     destination: .ai/core/knowledge/engineering-common/bdd/automation.md
   - source: bdd/discovery.md
     destination: .ai/core/knowledge/engineering-common/bdd/discovery.md
+  - source: bdd/examples/library-renewal.feature
+    destination: .ai/core/knowledge/engineering-common/bdd/examples/library-renewal.feature
   - source: bdd/examples/library-renewal.md
     destination: .ai/core/knowledge/engineering-common/bdd/examples/library-renewal.md
+  - source: bdd/examples/transactional-message.feature
+    destination: .ai/core/knowledge/engineering-common/bdd/examples/transactional-message.feature
   - source: bdd/formulation.md
     destination: .ai/core/knowledge/engineering-common/bdd/formulation.md
   - source: bdd/gherkin.md

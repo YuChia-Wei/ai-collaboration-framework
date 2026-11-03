@@ -33,8 +33,10 @@ integration effects and preserve the target's consistency/replay constraints.
 
 Use [usecase standards](../standards/coding-standards/usecase-standards.md) and
 [code templates](../references/CODE-TEMPLATES.MD) as starting points.
-Choose persistence per bounded context; do not standardize an ORM just because
-one example uses it. If selected, read [repository standards](../standards/coding-standards/repository-standards.md)
+Choose persistence per bounded context using the
+[repository standards](../standards/coding-standards/repository-standards.md).
+For targets that use Inbox or Outbox, read
+[transactional messaging](../standards/coding-standards/transactional-messaging-standards.md)
 and [profile isolation](DUAL-PROFILE-CONFIGURATION-GUIDE.md).
 Package-neutral application ports keep concrete messaging/ORM registration at
 the adapter/composition boundary. Time, randomness and external effects need
@@ -42,10 +44,10 @@ controlled seams when the target's behavior and tests depend on them.
 
 ## Design observable verification
 
-Read the [testing strategy](../shared/testing-strategy.md),
-[test standards](../standards/coding-standards/test-standards.md) and
-[test standards](../standards/coding-standards/test-standards.md) only under their
-adopted applicability. Preserve the target-selected Given-When-Then structure;
+Use the [testing strategy](../shared/testing-strategy.md) and the adopted
+[test standards](../standards/coding-standards/test-standards.md). See
+[BDD scenario boundaries](../../engineering-common/bdd/architecture-boundaries.md)
+for examples at different test levels. Preserve the target-selected Given-When-Then structure.
 BDDfy can be replaced by explicit Given/When/Then steps in the selected runner.
 Mocking packages and `.feature` support are separately selected. Unit/domain
 checks can call domain behavior directly; application tests exercise application

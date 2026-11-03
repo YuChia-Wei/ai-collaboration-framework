@@ -1,6 +1,6 @@
 # .NET snippet tool
 
-SnippetTool renders small C# fragments for a human or agent to insert into a selected context. A versioned platform archive contains the executable and runtime files, this README, and the shipped `snippets/` catalog and body files. Extract the archive for your operating system and architecture and run the executable from any working directory. A self-contained build supplies its .NET runtime. Building from this source project requires the .NET 10 SDK. The snippet output is ordinary C# and the consuming project only needs the types and APIs listed by the selected snippet.
+SnippetTool renders small C# fragments for a human or agent to insert into a selected context. A release contains a self-contained executable for each supported platform, this README, and the shipped `snippets/` catalog and body files beside each executable. Run the executable for your operating system and architecture from any working directory. The release executable extracts native runtime files to the .NET cache on first use and reuses them on subsequent runs. Building from this source project requires the .NET 10 SDK. The snippet output is ordinary C# and the consuming project only needs the types and APIs listed by the selected snippet.
 
 ## Run
 
@@ -48,7 +48,7 @@ Use `${name}` to reference a declared parameter and `$${` to output a literal `$
 Select the runtime identifier, preview or release version and a fresh output directory. For example:
 
 ```powershell
-dotnet publish ./SnippetTool.csproj -c Release -r win-x64 --self-contained true -p:Version=0.1.0-dev.1 -o <publish-directory>
+dotnet publish ./SnippetTool.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:Version=0.1.0-dev.1 -o <publish-directory>
 ```
 
-Archive the publish directory with the platform and version in its filename. Keep the generated runtime files and catalog assets beside the executable. For a Native AOT build, add `-p:PublishAot=true` and use the matching platform-native toolchain. Keep package production and support decisions with the distribution owner. The executable's project version is a local preview.
+Archive the publish directory with the platform and version in its filename. Keep the catalog and body files in `snippets/` beside the executable. For development comparisons between folder-based CoreCLR and Native AOT builds, use `Publish-Snippets.ps1` from the generation source directory. Native AOT requires the matching platform-native toolchain. The executable's project version is a local preview.

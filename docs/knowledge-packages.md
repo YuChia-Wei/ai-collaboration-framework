@@ -30,15 +30,16 @@ skill 自動失效，但會減少下列 skills 的套件專業覆蓋。** 如果
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
 Event Sourcing 等條件規則仍需條件成立；BDDfy／mocking 選擇仍由目標專案決定。
-範例與 source includes 不會自動複製進產品，也不是已通過你的產品測試的程式。
+知識套件提供規範、情境示範與產生工具指引。C# snippets 與 `dotnet new` 範本
+由獨立的 generation 發行成品提供。請依目標專案的需求選用與驗證。
 
 `dotnet-backend` 自 `0.1.8` 起修正既有 `MAP-EVENTS-001` 的重建事件生命週期，
 移除通用強制 Clear 與必要業務狀態反序列化失敗後繼續成功的指引，並補明
 query reader／read-model projector 的責任與恢復條件。若舊目標專案已接受不同
 失敗政策或依賴 Clear，採用前須列出受影響重建、dispatcher／repository 呼叫及
 遷移方式，由目標所有者處理衝突；安裝或 pin 更新不會替它作決定。
-套件另附固定已發布 ArchPrecept `0.0.3-preview` 的 CT-005 案例及 package-free
-對照；實際外部整合仍由 #179 獨立選版，不代表 Analyzer 新增了副作用分析能力。
+套件的合約案例摘要引用 ArchPrecept `0.0.3-preview` 的固定 CT-005 合約，並說明
+無套件 ES snippet 的失敗處理責任。實際外部整合由 #179 獨立選版。
 
 ## 哪些 skills 會失去完整的配套效果
 

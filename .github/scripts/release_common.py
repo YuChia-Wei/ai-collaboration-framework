@@ -282,7 +282,7 @@ def verify_bundle(directory, expected_source=None):
                 and generation["source_commit"] == source["commit"]
                 and generation["version"] == manifest["version"], "generation source/version")
         require(generation["runtimes"] == ["win-x64", "linux-x64"]
-                and generation["mode"] == "self-contained-coreclr", "generation runtime contract")
+                and generation["mode"] == "self-contained-coreclr-single-file", "generation runtime contract")
         generation_names = {"generation/generation.json"}
         for row in generation["files"]:
             generation_name = "generation/" + safe_name(row["path"])
@@ -291,30 +291,23 @@ def verify_bundle(directory, expected_source=None):
             data = payload[generation_name]
             require(len(data) == row["size"] and sha(data) == row["sha256"], "generation member hash")
             require(next(r["mode"] for r in rows if r["path"] == generation_name) == row["mode"], "generation mode")
-        require({"generation/install-generation.py", "generation/README.md",
-                 "generation/snippets/win-x64/SnippetTool.exe", "generation/snippets/linux-x64/SnippetTool",
-                 "generation/templates/AICF.Dotnet.Templates." + manifest["version"] + ".nupkg"}
-                <= generation_names, "generation required assets")
+        required = {"generation/generation.json", "generation/install-generation.py", "generation/README.md",
+                    "generation/snippets/README.md",
+                    "generation/templates/AICF.Dotnet.Templates." + manifest["version"] + ".nupkg"}
         for rid in generation["runtimes"]:
             prefix = "generation/snippets/" + rid + "/"
-            native = (["coreclr.dll", "hostfxr.dll", "hostpolicy.dll"] if rid == "win-x64"
-                      else ["libcoreclr.so", "libhostfxr.so", "libhostpolicy.so"])
-            required = ["SnippetTool.dll", "SnippetTool.deps.json", "SnippetTool.runtimeconfig.json",
-                        "System.Private.CoreLib.dll", "snippets/catalog.json"] + native
-            require(all(prefix + n in generation_names for n in required), "self-contained runtime assets")
-            deps = document(payload[prefix + "SnippetTool.deps.json"])
-            target_name = deps["runtimeTarget"]["name"]
-            require(target_name.endswith("/" + rid), "snippet dependency runtime")
-            for library in deps["targets"][target_name].values():
-                for kind in ("runtime", "native", "resources"):
-                    for asset in library.get(kind, {}):
-                        member = safe_name(asset)
-                        if kind != "resources":
-                            member = member.rsplit("/", 1)[-1]
-                        require(prefix + member in generation_names, "snippet dependency asset: " + member)
-            if rid == "linux-x64":
-                require(next(r["mode"] for r in rows if r["path"] == prefix + "SnippetTool") == 0o755,
-                        "Linux snippet executable mode")
+            executable = "SnippetTool.exe" if rid == "win-x64" else "SnippetTool"
+            catalog_name = prefix + "snippets/catalog.json"
+            required.update({prefix + executable, prefix + "README.md", catalog_name})
+            require(catalog_name in generation_names, "missing snippet catalog: " + rid)
+            snippet_catalog = document(payload[catalog_name])
+            for snippet in snippet_catalog["snippets"]:
+                body_file = safe_name(snippet["bodyFile"])
+                require("/" not in body_file and body_file.endswith(".snippet"), "invalid snippet body filename")
+                required.add(prefix + "snippets/" + body_file)
+        require(generation_names == required, "single-file generation layout")
+        require(next(r["mode"] for r in rows if r["path"] == "generation/snippets/linux-x64/SnippetTool") == 0o755,
+                "Linux snippet executable mode")
     require(set(names) == expected | {"engine/" + n for n in pin_names} | generation_names |
             {"engine/engine.json", "engine-pin.json", "README.md", "content-hashes.json"}, "release payload closure")
     hashes = document(payload["content-hashes.json"])

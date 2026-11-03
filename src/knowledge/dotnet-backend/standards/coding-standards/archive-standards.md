@@ -275,17 +275,6 @@ public class UserCreatedReactor
 
 ---
 
-## 📂 Code Examples
-
-For more complete examples, see:
-
-| Example | Path |
-|------|------|
-| Inquiry + Archive examples | [archive standards](archive-standards.md) |
-| Usage guide | [archive standards](archive-standards.md) |
-
----
-
 ## Related Documents
 
 - [repository-standards.md](repository-standards.md)

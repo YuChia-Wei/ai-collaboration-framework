@@ -132,9 +132,9 @@ scenario was implemented faithfully.
 
 #### Default BDDfy Form
 
-This excerpt's fixture and step implementations are in the
-[test standards](test-standards.md).
-It exposes the behavior-bearing data while keeping mechanics inside steps.
+These test-method excerpts illustrate a query returning zero for a month with
+no budget. They show call structure; implement the fixture, real subject and
+step bodies in the target. Keep the distinguishing data and expected amount visible.
 
 ```csharp
 [Fact]
@@ -150,8 +150,8 @@ public void Should_return_zero_when_query_month_has_no_budget()
 
 #### Explicit Plain-xUnit Opt-Out Form
 
-The same example includes a separately selected BDDfy opt-out. Opting out of
-the package preserves method responsibilities and GWT semantics.
+With an explicit BDDfy opt-out, the equivalent form preserves the same step
+responsibilities and GWT semantics.
 
 ```csharp
 [Fact]
@@ -486,14 +486,12 @@ var product = ProductBuilder.AProduct()
 
 ---
 
-## 📂 Code Examples
+## Scenario resources
 
-For more complete examples, see:
-
-| Example | Path |
-|------|------|
-| Reqnroll/Gherkin reference | [test standards](test-standards.md) |
-| BDD Given-When-Then | [test standards](test-standards.md) |
+- [BDD formulation and examples](../../../engineering-common/bdd/README.md)
+- [DDD, CA and conditional Inbox/Outbox test boundaries](../../../engineering-common/bdd/architecture-boundaries.md)
+- [.NET feature placement and runner selection](../../guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD)
+- [Selected transactional messaging contract](transactional-messaging-standards.md)
 
 ---
 

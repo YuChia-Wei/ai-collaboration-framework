@@ -57,9 +57,9 @@ The owner documents are [Mapper](coding-standards/mapper-standards.md),
 are Framework interpretations and selected examples, not claims that the cited
 authors mandate each .NET method or transaction mechanism.
 
-The optional [contract cases](contract-cases.md) selects published
-ArchPrecept `0.0.3-preview` and its exact build source/bytes. It demonstrates an
-API contract, not downstream adoption or the later unshipped Analyzer predicates.
+The [contract cases](contract-cases.md) summarize the optional ArchPrecept
+`0.0.3-preview` behavior from the
+[fixed CT-005 contract](https://github.com/YuChia-Wei/ArchPrecept/blob/fdc1f9ff3934c769047f797803abc8614290e889/docs/product/event-sourcing-contract.md).
 Framework #179 owns actual external integration/version adoption. Package-free
 and custom-contract implementations remain supported. No knowledge change adds
 Analyzer exception analysis, arbitrary side-effect or interprocedural dataflow
