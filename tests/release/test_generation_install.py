@@ -86,7 +86,7 @@ api['install'](Path(sys.argv[2]), Path(sys.argv[3]))
         stage = self.target.parent / '.dotnet-generation-pending'
         stage.mkdir()
         before = API['manifest_hash'](self.target)
-        (stage / 'transaction.json').write_text(json.dumps({'before': before, 'after': 'unused'}))
+        (stage / 'transaction.json').write_text(json.dumps({'before': before, 'after': 'unused', 'before_files': []}))
         self.target.rename(stage / 'previous')
         (stage / 'previous/tool').write_bytes(b'custom')
         with self.assertRaises(ValueError):
@@ -98,9 +98,25 @@ api['install'](Path(sys.argv[2]), Path(sys.argv[3]))
         stage = self.target.parent / '.dotnet-generation-pending'
         stage.mkdir()
         after = API['manifest_hash'](self.target)
-        (stage / 'transaction.json').write_text(json.dumps({'before': 'old', 'after': after}))
+        old_manifest = self.target / 'generation.json'
+        before_files = json.loads(old_manifest.read_text())['files'] + [
+            {'path': 'generation.json', 'size': old_manifest.stat().st_size, 'sha256': after}]
+        (stage / 'transaction.json').write_text(json.dumps(
+            {'before': 'old', 'after': after, 'before_files': before_files}))
         shutil.copytree(self.target, stage / 'previous')
         (stage / 'previous/tool').unlink()
+        custom = stage / 'previous/custom.txt'
+        custom.write_text('custom')
+        with self.assertRaises(ValueError):
+            API['recover'](self.project)
+        self.assertEqual(custom.read_text(), 'custom')
+        custom.unlink()
+        old_tool = stage / 'previous/tool'
+        old_tool.write_bytes(b'changed')
+        with self.assertRaises(ValueError):
+            API['recover'](self.project)
+        self.assertEqual(old_tool.read_bytes(), b'changed')
+        old_tool.unlink()
         self.assertEqual(API['recover'](self.project)['outcome'], 'completed-installation')
         self.assertFalse(stage.exists())
         self.assertEqual((self.target / 'tool').read_bytes(), b'first')

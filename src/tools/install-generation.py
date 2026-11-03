@@ -118,6 +118,23 @@ def cleanup(stage):
     stage.rmdir()
 
 
+def remaining_unchanged(root, rows):
+    """Cleanup may have removed files, but must preserve changed or added data."""
+    expected = {row['path']: row for row in rows}
+    directories = {p.as_posix() for name in expected for p in PurePosixPath(name).parents if str(p) != '.'}
+    for path in root.rglob('*'):
+        direct(path)
+        name = path.relative_to(root).as_posix()
+        if path.is_dir():
+            if name not in directories:
+                raise ValueError('Unknown displaced directory; reconcile manually')
+            continue
+        raw = regular(path)
+        row = expected.get(name)
+        if row is None or len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
+            raise ValueError('Displaced installation changed; reconcile manually')
+
+
 def recover(project):
     target, stage = location(project)
     with exclusive(target.parent):
@@ -127,7 +144,7 @@ def recover(project):
             stage.rmdir()
             return {'outcome': 'removed-empty-stage', 'path': str(target)}
         journal = json.loads(regular(stage / 'transaction.json'))
-        if set(journal) != {'before', 'after'}:
+        if set(journal) != {'before', 'after', 'before_files'}:
             raise ValueError('Unknown recovery journal')
         if {p.name for p in stage.iterdir()} - {'transaction.json', 'payload', 'previous'}:
             raise ValueError('Unknown recovery entries')
@@ -154,6 +171,8 @@ def recover(project):
             outcome = 'cancelled-new-installation'
         else:
             raise ValueError('Previous installation is missing; reconcile manually')
+        if previous.exists():
+            remaining_unchanged(previous, journal['before_files'])
         cleanup(stage)
         return {'outcome': outcome, 'path': str(target)}
 
@@ -168,10 +187,16 @@ def install(bundle, project):
         if stage.exists():
             raise ValueError('Pending installation; run --recover before retrying')
         before = manifest_hash(target) if target.exists() else None
+        before_files = []
+        if before is not None:
+            raw = regular(target / 'generation.json')
+            before_files = json.loads(raw)['files'] + [
+                {'path': 'generation.json', 'size': len(raw), 'sha256': before}]
         after = hashlib.sha256(regular(bundle / 'generation.json')).hexdigest()
         stage.mkdir()
         # Journal is complete before any target rename; an invalid journal fails closed.
-        (stage / 'transaction.json').write_text(json.dumps({'before': before, 'after': after}), encoding='utf-8')
+        (stage / 'transaction.json').write_text(json.dumps(
+            {'before': before, 'after': after, 'before_files': before_files}), encoding='utf-8')
         retired, payload = stage / 'previous', stage / 'payload'
         shutil.copytree(bundle, payload)
         if manifest_hash(payload) != after:
