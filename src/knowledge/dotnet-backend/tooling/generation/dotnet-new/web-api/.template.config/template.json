@@ -3,7 +3,7 @@
   "author": "AI Collaboration Framework",
   "identity": "AiCollaboration.DotNet.AicfWebApi.1",
   "name": "AI Collaboration .NET Web API (Controllers)",
-  "description": "A controller-based ASP.NET Core JSON API for one domain.",
+  "description": "A multi-project solution with a controller-based ASP.NET Core JSON API for one domain.",
   "classifications": ["Web API", "Controllers"],
   "shortName": "aicf-webapi",
   "sourceName": "AicfWebApi",

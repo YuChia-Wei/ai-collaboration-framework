@@ -98,8 +98,36 @@ Test-WorkItemApi -ProjectRoot $backend -ProjectName Sample.Warehouse -Route /wor
 
 $webApi = Join-Path $ScratchRoot 'Sample.WarehouseApi'
 Invoke-Template aicf-webapi --name Sample.WarehouseApi --output $webApi
-Invoke-Dotnet build (Join-Path $webApi 'Sample.WarehouseApi.csproj')
-Test-WorkItemApi -ProjectRoot $webApi -ProjectName Sample.WarehouseApi -Route /api/work-items
+$solution = Join-Path $webApi 'Sample.WarehouseApi.slnx'
+$referencesByProject = @{
+    'Domain/Sample.WarehouseApi.Domain.csproj' = @()
+    'Application/Sample.WarehouseApi.Application.csproj' = @('../Domain/Sample.WarehouseApi.Domain.csproj')
+    'Infrastructure/Sample.WarehouseApi.Infrastructure.csproj' = @('../Application/Sample.WarehouseApi.Application.csproj')
+    'WebApi/Sample.WarehouseApi.WebApi.csproj' = @(
+        '../Application/Sample.WarehouseApi.Application.csproj'
+        '../Infrastructure/Sample.WarehouseApi.Infrastructure.csproj'
+    )
+}
+[xml] $solutionXml = Get-Content -Raw -LiteralPath $solution
+$members = @($solutionXml.SelectNodes('/Solution/Project') | ForEach-Object { $_.Path } | Sort-Object)
+$expectedMembers = @($referencesByProject.Keys | Sort-Object)
+if (($members -join '|') -cne ($expectedMembers -join '|')) {
+    throw 'The Web API solution did not contain the four expected projects.'
+}
+foreach ($member in $members) {
+    [xml] $projectXml = Get-Content -Raw -LiteralPath (Join-Path $webApi $member)
+    $references = @($projectXml.SelectNodes('/Project/ItemGroup/ProjectReference') | ForEach-Object { $_.Include } | Sort-Object)
+    if (($references -join '|') -cne ($referencesByProject[$member] -join '|')) {
+        throw "$member has unexpected project dependencies."
+    }
+}
+$webApiHost = Join-Path $webApi WebApi
+$entryPoints = @(Get-ChildItem -LiteralPath $webApi -Filter Program.cs -File -Recurse)
+if ($entryPoints.Count -ne 1 -or $entryPoints[0].FullName -cne (Join-Path $webApiHost 'Program.cs')) {
+    throw 'The Web API solution must have one Program.cs in the WebApi host.'
+}
+Invoke-Dotnet build $solution
+Test-WorkItemApi -ProjectRoot $webApiHost -ProjectName Sample.WarehouseApi.WebApi -Route /api/work-items
 
 $application = Join-Path $backend Application
 $domain = Join-Path $backend Domain

@@ -4,7 +4,7 @@ using AicfWebApi.Domain;
 
 namespace AicfWebApi.Infrastructure;
 
-internal sealed class InMemoryWorkItems : IAggregateRepository<WorkItem, Guid>, IWorkItemQueries
+public sealed class InMemoryWorkItems : IAggregateRepository<WorkItem, Guid>, IWorkItemQueries
 {
     private readonly ConcurrentDictionary<Guid, WorkItem> items = new();
 

@@ -551,30 +551,38 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/use-case/IAicfOperationUseCase.cs
   - source: tooling/generation/dotnet-new/web-api/.template.config/template.json
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/.template.config/template.json
-  - source: tooling/generation/dotnet-new/web-api/AicfWebApi.csproj
-    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/AicfWebApi.csproj
+  - source: tooling/generation/dotnet-new/web-api/AicfWebApi.slnx
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/AicfWebApi.slnx
+  - source: tooling/generation/dotnet-new/web-api/Application/AicfWebApi.Application.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/AicfWebApi.Application.csproj
   - source: tooling/generation/dotnet-new/web-api/Application/CreateWorkItemUseCase.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/CreateWorkItemUseCase.cs
   - source: tooling/generation/dotnet-new/web-api/Application/GetWorkItemUseCase.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/GetWorkItemUseCase.cs
   - source: tooling/generation/dotnet-new/web-api/Application/WorkItemPorts.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Application/WorkItemPorts.cs
-  - source: tooling/generation/dotnet-new/web-api/Controllers/WorkItemsController.cs
-    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Controllers/WorkItemsController.cs
+  - source: tooling/generation/dotnet-new/web-api/Domain/AicfWebApi.Domain.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/AicfWebApi.Domain.csproj
   - source: tooling/generation/dotnet-new/web-api/Domain/IAggregateRoot.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/IAggregateRoot.cs
   - source: tooling/generation/dotnet-new/web-api/Domain/IDomainEntity.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/IDomainEntity.cs
   - source: tooling/generation/dotnet-new/web-api/Domain/WorkItem.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Domain/WorkItem.cs
+  - source: tooling/generation/dotnet-new/web-api/Infrastructure/AicfWebApi.Infrastructure.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Infrastructure/AicfWebApi.Infrastructure.csproj
   - source: tooling/generation/dotnet-new/web-api/Infrastructure/InMemoryWorkItems.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Infrastructure/InMemoryWorkItems.cs
-  - source: tooling/generation/dotnet-new/web-api/Models/Requests/CreateWorkItemRequest.cs
-    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Models/Requests/CreateWorkItemRequest.cs
-  - source: tooling/generation/dotnet-new/web-api/Models/Responses/WorkItemResponse.cs
-    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Models/Responses/WorkItemResponse.cs
-  - source: tooling/generation/dotnet-new/web-api/Program.cs
-    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/Program.cs
+  - source: tooling/generation/dotnet-new/web-api/WebApi/AicfWebApi.WebApi.csproj
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/WebApi/AicfWebApi.WebApi.csproj
+  - source: tooling/generation/dotnet-new/web-api/WebApi/Controllers/WorkItemsController.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/WebApi/Controllers/WorkItemsController.cs
+  - source: tooling/generation/dotnet-new/web-api/WebApi/Models/Requests/CreateWorkItemRequest.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/WebApi/Models/Requests/CreateWorkItemRequest.cs
+  - source: tooling/generation/dotnet-new/web-api/WebApi/Models/Responses/WorkItemResponse.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/WebApi/Models/Responses/WorkItemResponse.cs
+  - source: tooling/generation/dotnet-new/web-api/WebApi/Program.cs
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/dotnet-new/web-api/WebApi/Program.cs
   - source: tooling/generation/snippet-tool/Catalog.cs
     destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/Catalog.cs
   - source: tooling/generation/snippet-tool/Contracts.cs

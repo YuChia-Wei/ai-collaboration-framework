@@ -1,14 +1,13 @@
 # .NET generation
 
-Both API profiles target the .NET 10 SDK and use a single ASP.NET Core
-project with one `Program.cs` composition root. The Web SDK supplies the
-ASP.NET Core host. Both templates serve JSON endpoints and omit Razor,
-views, static assets, and frontend tooling.
+Both API profiles target the .NET 10 SDK and have one ASP.NET Core host with
+one `Program.cs` composition root. Both templates serve JSON endpoints and
+omit Razor, views, static assets, and frontend tooling.
 
-| Template | HTTP adapter | Work item route |
-| --- | --- | --- |
-| `aicf-miniapi` | Minimal API endpoints in `Program.cs` | `/work-items` |
-| `aicf-webapi` | `ControllerBase` actions with explicit request and response models | `/api/work-items` |
+| Template | Generated layout | HTTP adapter | Work item route |
+| --- | --- | --- | --- |
+| `aicf-miniapi` | One ASP.NET Core project | Minimal API endpoints in `Program.cs` | `/work-items` |
+| `aicf-webapi` | One solution with Domain, Application, Infrastructure, and WebApi projects | `ControllerBase` actions with explicit request and response models | `/api/work-items` |
 
 The `aicf-` short names are provisional names for the current preview.
 
@@ -16,8 +15,9 @@ Both samples create and read work items in process memory. The aggregate
 owns the title invariant, and the Use Cases call application-owned ports.
 The Controller-based template follows the Inventory Web API adapter in
 `dotnet-mq-arch-lab` at `7a0bff401bea86428b5c24eab6362ef2170d20d7`.
-It uses the reference's controller registration, direct Use Case interface
-calls, and HTTP model mapping in a standalone single-domain project.
+Application references Domain, and Infrastructure implements ports defined
+by Application. WebApi calls Use Case interfaces from its controllers and
+wires the in-memory adapter in `Program.cs`.
 
 The native templates are readable directories under `dotnet-new/`. Run the
 commands below from this generation directory. They install template sources
@@ -32,7 +32,8 @@ dotnet new aicf-miniapi --name Example.Orders --output ./Example.Orders
 dotnet run --project ./Example.Orders
 
 dotnet new aicf-webapi --name Example.OrdersApi --output ./Example.OrdersApi
-dotnet run --project ./Example.OrdersApi
+dotnet build ./Example.OrdersApi/Example.OrdersApi.slnx
+dotnet run --project ./Example.OrdersApi/WebApi/Example.OrdersApi.WebApi.csproj
 ```
 
 Send `POST /work-items` to the Minimal API or `POST /api/work-items` to the
