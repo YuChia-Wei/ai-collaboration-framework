@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "AI Collaboration Framework",
+  "identity": "AiCollaboration.DotNet.AicfOperation.1",
+  "name": "AI Collaboration .NET Use Case",
+  "shortName": "aicf-usecase",
+  "sourceName": "AicfOperation",
+  "preferNameDirectory": false,
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "datatype": "string",
+      "description": "C# namespace for the generated files.",
+      "defaultValue": "Example",
+      "replaces": "AicfTemplateNamespace"
+    }
+  }
+}

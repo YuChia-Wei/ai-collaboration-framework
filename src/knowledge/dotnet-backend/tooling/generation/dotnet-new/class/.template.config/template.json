@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "AI Collaboration Framework",
+  "identity": "AiCollaboration.DotNet.AicfClass.1",
+  "name": "AI Collaboration C# Class",
+  "shortName": "aicf-class",
+  "sourceName": "AicfClass",
+  "preferNameDirectory": false,
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  },
+  "symbols": {
+    "namespace": {
+      "type": "parameter",
+      "datatype": "string",
+      "description": "C# namespace for the generated files.",
+      "defaultValue": "Example",
+      "replaces": "AicfTemplateNamespace"
+    }
+  }
+}
