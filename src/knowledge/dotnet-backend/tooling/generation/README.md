@@ -1,124 +1,80 @@
 # .NET generation
 
-Both API profiles target the .NET 10 SDK and have one ASP.NET Core host with
-one `Program.cs` composition root. Both templates serve JSON endpoints and
-omit Razor, views, static assets, and frontend tooling.
+Use native .NET templates in `dotnet-new/` to generate a project, solution or
+C# source files. Use [SnippetTool](snippet-tool/README.md) to render a fragment
+for insertion into an existing interface or method.
 
-| Template | Generated layout | HTTP adapter | Work item route |
+## Native templates
+
+| Source directory under `dotnet-new/` | Preview short name | Kind | Generated layout |
 | --- | --- | --- | --- |
-| `aicf-miniapi` | One ASP.NET Core project | Minimal API endpoints in `Program.cs` | `/work-items` |
-| `aicf-webapi` | One solution with Domain, Application, Infrastructure, and WebApi projects | `ControllerBase` actions with explicit request and response models | `/api/work-items` |
+| `miniapi` | `aicf-miniapi` | Project | One ASP.NET Core project with `Domain/`, `Application/` and `Infrastructure/` folders. `Program.cs` maps `/work-items`. |
+| `web-api` | `aicf-webapi` | Project | A `.slnx` with Domain, Application, Infrastructure and WebApi projects. WebApi has the `Program.cs` composition root, a controller at `/api/work-items`, and request and response models. |
+| `use-case` | `aicf-usecase` | Item | Four files in the output directory. For `--name DescribeLabel`, they are `IDescribeLabelUseCase.cs`, `DescribeLabelUseCase.cs`, `DescribeLabelInput.cs` and `DescribeLabelOutput.cs`. |
+| `class` | `aicf-class` | Item | One `<Name>.cs` file containing a C# class. |
+| `interface` | `aicf-interface` | Item | One `<Name>.cs` file containing a C# interface. |
 
-The `aicf-` short names are provisional names for the current preview.
+Both API templates target .NET 10 and serve JSON. POST a body such as
+`{"title":"Pack the order"}` to the listed route, then follow the response's
+`Location` to read the work item. Data lasts for the lifetime of the process.
 
-Both samples create and read work items in process memory. The aggregate
-owns the title invariant, and the Use Cases call application-owned ports.
-The Controller-based template follows the Inventory Web API adapter in
-`dotnet-mq-arch-lab` at `7a0bff401bea86428b5c24eab6362ef2170d20d7`.
-Application references Domain, and Infrastructure implements ports defined
-by Application. WebApi calls Use Case interfaces from its controllers and
-wires the in-memory adapter in `Program.cs`.
+### Quick start
 
-The native templates are readable directories under `dotnet-new/`. Run the
-commands below from this generation directory. They install template sources
-into the SDK's template registry for the current user.
+With the .NET 10 SDK, run these commands from this directory. Installation
+registers the local template sources for the current user.
 
 ```powershell
 dotnet new install ./dotnet-new/miniapi ./dotnet-new/web-api ./dotnet-new/use-case ./dotnet-new/class ./dotnet-new/interface
 dotnet new list aicf
-dotnet new aicf-usecase --help
-dotnet new aicf-miniapi --name Example.Orders --output ./Example.Orders --dry-run
 dotnet new aicf-miniapi --name Example.Orders --output ./Example.Orders
 dotnet run --project ./Example.Orders
-
-dotnet new aicf-webapi --name Example.OrdersApi --output ./Example.OrdersApi
-dotnet build ./Example.OrdersApi/Example.OrdersApi.slnx
-dotnet run --project ./Example.OrdersApi/WebApi/Example.OrdersApi.WebApi.csproj
 ```
 
-Send `POST /work-items` to the Minimal API or `POST /api/work-items` to the
-Controller-based API with JSON such as `{"title":"Pack the order"}`, then
-follow the response's `Location` to read it. In-memory data lasts for the
-lifetime of the process.
+For the controller-based solution, use `dotnet new aicf-webapi --name
+Example.OrdersApi --output ./Example.OrdersApi` and run
+`dotnet run --project ./Example.OrdersApi/WebApi/Example.OrdersApi.WebApi.csproj`.
+
+Generate an item in the project with a valid C# type name and a dot-separated
+namespace. The item templates default to `Example` if `--namespace` is omitted.
 
 ```powershell
-dotnet new aicf-usecase --name DescribeLabel --namespace Example.Orders.Application --output ./Example.Orders/Application
-dotnet new aicf-class --name PackingNote --namespace Example.Orders.Domain --output ./Example.Orders/Domain
-dotnet new aicf-interface --name IOrderReader --namespace Example.Orders.Application --output ./Example.Orders/Application
-dotnet build ./Example.Orders
+dotnet new aicf-usecase --name DescribeLabel --namespace Example.Orders.Application --output ./Example.Orders/Application --dry-run
 ```
 
-Use valid C# type identifiers for item names and dot-separated identifiers
-for namespaces. The Use Case item emits a port, implementation, input and
-output. Its starter behavior trims text and returns it with its length. Replace
-this example with the target operation and its tests before adopting it as
-business behavior. For an HTTP caller, import the chosen namespace in
-`Program.cs`, register the port and implementation before `builder.Build()`,
-then map the HTTP request to the input in the endpoint.
+Remove `--dry-run` after reviewing the paths. If the SDK reports a destructive
+collision, choose a different name or output directory. The Use Case starter
+returns the trimmed text and its length. Replace that example with the target behavior
+and wire the Use Case into its caller as needed.
 
-```csharp
-builder.Services.AddTransient<IDescribeLabelUseCase, DescribeLabelUseCase>();
-```
+Generated files belong to the target project. For a team template, copy its
+entire directory including `.template.config` and give the copy its own
+versioned `identity`, `name` and unique `shortName` in `template.json` before
+installing it. Use `dotnet new uninstall` to list registered packages and
+`dotnet new uninstall <installation-path>` to remove a directory installation.
 
-Add an endpoint only when the target needs one. The template writes its source
-files into the chosen directory. Use `--dry-run` before writing to a populated
-directory. On a collision, review the reported path and choose a new name or
-location. The ordinary invocation refuses destructive replacements.
+## C# snippets
 
-Generated files belong to the target project. To maintain a custom template,
-copy the whole source directory including `.template.config`, then give the copy
-its own versioned `identity`, `name`, and unique `shortName` in `template.json`
-before installing it. Invoke that short name to select the custom template.
-List registered template packages and remove directory installations with these
-commands from the original generation directory.
+Extract a self-contained archive for your platform and keep the executable and
+catalog assets together. It runs without a separately installed .NET SDK or
+shared runtime. Pass `--request request.json` to the executable and choose
+`list`, `search`, `inspect` or `render` in the request. Use the returned metadata
+to check the insertion context and required types or usings, then insert the
+rendered text and validate the affected code. The renderer works on text.
+Keep team catalogs and bodies outside the tool directory and select the catalog
+with the request's `source`. The [snippet guide](snippet-tool/README.md) includes
+the request schema and examples.
 
-```powershell
-dotnet new uninstall
-dotnet new uninstall ./dotnet-new/miniapi ./dotnet-new/web-api ./dotnet-new/use-case ./dotnet-new/class ./dotnet-new/interface
-```
-
-## Snippet delivery and prerequisites
-
-The [.NET 10 console and snippet inventory](snippet-tool/README.md) provide
-`list`, `search`, `inspect` and `render`. Use them for fragments inside an existing
-interface or method. Inspect the selected metadata, pass parameters explicitly,
-then insert the returned text with the target's editor and validate the affected
-context. Rendering does not perform AST merging or semantic refactoring.
-
-Build a versioned self-contained archive using PowerShell 7 and the .NET 10 SDK:
+Build an archive on the target OS with PowerShell 7 and the .NET 10 SDK.
 
 ```powershell
 ./Publish-Snippets.ps1 -Version 0.1.0-dev.1 -RuntimeIdentifier win-x64 -OutputRoot <fresh-output-root>
 ```
 
-The package contains the executable, its runtime closure, default snippet data,
-README and `package.json`; a SHA-256 sidecar accompanies the archive. Package on
-the target OS. Windows uses ZIP; Linux uses tar.gz to preserve executable modes.
-Add `-NativeAot` only with the platform's native compiler prerequisites. The
-tool uses an independent preview version; package production is separate from
-Framework publication. No `dotnet tool` package is provided.
-
-Local validation covers the Windows x64 CoreCLR archive and both Linux x64
-CoreCLR and Native AOT archives produced by this script. Both Linux archives
-passed extracted CLI and custom-source checks in a clean Ubuntu 24.04 container
-without an installed .NET SDK or runtime. This does not establish clean Windows
-host acceptance or support for every Linux distribution or architecture.
-Windows AOT builds require Visual Studio 2022 or later with Desktop development
-with C++ and its default components, including the Windows SDK. Native AOT
-remains an evaluation candidate; performance observations precede support and
-threshold decisions. No performance acceptance limit has been selected.
-
-Extract each tool version into a fresh directory and retain the complete package.
-Keep team catalogs and bodies in a separate directory and select them with the
-request's `source`; updating the tool must not overwrite those copies. Generated
-code belongs to the target and is not regenerated on tool upgrades.
-
-Running the self-contained snippet package needs neither an installed .NET SDK
-nor a separately installed .NET runtime. Native `dotnet new`, building generated
-projects and building this tool from source need the .NET 10 SDK. Both API templates use
-`Microsoft.NET.Sdk.Web` and the ASP.NET Core shared framework,
-with no third-party PackageReference. The interface snippet needs the declared
-types/usings; the guard uses `ArgumentException.ThrowIfNullOrWhiteSpace` (.NET 8+).
-Other targets must select compatible custom snippets. This does not promise
-universal .NET Framework or .NET 6 compatibility. Generated applications have no
-dependency on the snippet tool, its runtime or the template directory.
+The script produces a ZIP on Windows or tar.gz on Linux, with a SHA-256 sidecar.
+The default is self-contained CoreCLR. `-NativeAot` selects an evaluation build
+that also needs the platform's native compiler and libraries, including MSVC
+Build Tools and the Windows SDK on Windows. Extracted CoreCLR and Native AOT
+archives were exercised in Windows 11 x64 Sandbox and Ubuntu 24.04 x64 without
+a preinstalled modern .NET SDK or shared runtime. Those are the tested platforms.
+The consuming project needs APIs compatible with its selected snippet, such as
+.NET 8+ for the shipped guard, and has no SnippetTool dependency.
