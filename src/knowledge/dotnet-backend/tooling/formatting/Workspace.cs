@@ -37,10 +37,7 @@ internal static partial class Workspace
         {
             if (!Path.GetExtension(project).Equals(".csproj", StringComparison.OrdinalIgnoreCase) || !File.Exists(project))
                 throw new ToolFailure("unsupported-project", "Select existing C# projects.");
-            var command = await sdk.Require("load-failed", "msbuild", project, "-nologo",
-                "-target:Compile", "-property:DesignTimeBuild=true", "-property:SkipCompilerExecution=true",
-                "-property:ProvideCommandLineArgs=true", "-property:BuildProjectReferences=false",
-                "-getItem:Compile,Analyzer,ProjectReference", "-getProperty:UsingMicrosoftNETSdk,TargetFramework,TargetFrameworks,ProjectAssetsFile,MSBuildToolsPath");
+            var command = await LoadDesignTime(sdk, project);
             using var metadata = JsonDocument.Parse(command.StandardOutput);
             var properties = metadata.RootElement.GetProperty("Properties");
             if (properties.GetProperty("UsingMicrosoftNETSdk").GetString() != "true" ||
@@ -70,6 +67,26 @@ internal static partial class Workspace
             CollectAnalyzers(buildDocument.RootElement, externalAnalyzers);
         }
         return new(files, observedFiles.ToArray(), externalAnalyzers.Order(Paths).ToArray());
+    }
+
+    private static async Task<CommandResult> LoadDesignTime(Sdk sdk, string project)
+    {
+        // Match SDK 10.0.403 dotnet-format's MSBuildWorkspaceLoader and netcore
+        // ProjectBuildManager, including optional post-Compile targets. Conditional
+        // Analyzer/ProjectReference items must be inspected in that same context.
+        string[] arguments = ["msbuild", project, "-nologo",
+            "-property:AlwaysCompileMarkupFilesInSeparateDomain=False",
+            "-property:DesignTimeBuild=True", "-property:NonExistentFile=__NonExistentSubDir__\\__NonExistentFile__",
+            "-property:BuildProjectReferences=False", "-property:BuildingProject=False",
+            "-property:ProvideCommandLineArgs=True", "-property:SkipCompilerExecution=True",
+            "-property:ContinueOnError=ErrorAndContinue", "-property:ShouldUnsetParentConfigurationAndPlatform=False"];
+        var available = await sdk.Require("load-failed", [.. arguments, "-targets"]);
+        var hasMarkup = available.StandardOutput.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+            .Any(target => target.Trim().Equals("DesignTimeMarkupCompilation", StringComparison.OrdinalIgnoreCase));
+        var targets = hasMarkup ? "Compile;CoreCompile;DesignTimeMarkupCompilation" : "Compile;CoreCompile";
+        return await sdk.Require("load-failed", [.. arguments, "-target:" + targets,
+            "-getItem:Compile,Analyzer,ProjectReference",
+            "-getProperty:UsingMicrosoftNETSdk,TargetFramework,TargetFrameworks,ProjectAssetsFile,MSBuildToolsPath"]);
     }
 
     private static void RejectProjectReferences(JsonElement metadata)

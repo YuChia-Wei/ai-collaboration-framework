@@ -294,6 +294,30 @@ public sealed class Probe : ISourceGenerator {
             self.assertEqual((code, result['status']), (2, 'changes-required'), result)
             self.assertEqual(marker.read_text(), 'executed')
             marker.unlink()
+            # This item exists only in the formatter's actual design-time property context.
+            project_file.write_text(original.replace('</Project>',
+                '<ItemGroup Condition="\'$(DesignTimeBuild)\' == \'true\' and '
+                '\'$(AlwaysCompileMarkupFilesInSeparateDomain)\' == \'false\' and '
+                '\'$(BuildingProject)\' == \'false\' and \'$(ContinueOnError)\' == \'ErrorAndContinue\'">'
+                f'<Analyzer Include="{analyzer.as_posix()}" /></ItemGroup></Project>'), encoding='utf-8')
+            code, result = self.invoke(**selection, environment=environment)
+            self.assertEqual((code, result['errorCode']), (1, 'analyzer-consent-required'), result)
+            self.assertIn(str(analyzer), result['projectAnalyzers'])
+            self.assertFalse(marker.exists(), 'Formatter-only generator ran before consent')
+            code, result = self.invoke(**selection, environment=environment, allowedProjectAnalyzers=[str(analyzer)])
+            self.assertEqual((code, result['status']), (2, 'changes-required'), result)
+            self.assertEqual(marker.read_text(), 'executed')
+            marker.unlink()
+
+            # The BuildHost runs this optional target after Compile/CoreCompile when present.
+            project_file.write_text(original.replace('</Project>',
+                '<Target Name="DesignTimeMarkupCompilation"><ItemGroup>'
+                f'<Analyzer Include="{analyzer.as_posix()}" /></ItemGroup></Target></Project>'), encoding='utf-8')
+            code, result = self.invoke(**selection, environment=environment)
+            self.assertEqual((code, result['errorCode']), (1, 'analyzer-consent-required'), result)
+            self.assertIn(str(analyzer), result['projectAnalyzers'])
+            self.assertFalse(marker.exists(), 'Optional-target generator ran before consent')
+
             project_file.write_text(original.replace('</Project>',
                 f'<ItemGroup Condition="\'$(Configuration)\' == \'Release\'"><Analyzer Include="{analyzer.as_posix()}" />'
                 '</ItemGroup></Project>'), encoding='utf-8')

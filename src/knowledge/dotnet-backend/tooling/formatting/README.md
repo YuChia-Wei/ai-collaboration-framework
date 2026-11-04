@@ -122,6 +122,12 @@ paths use `pathBase`. This permits their code to execute, including source
 generators, while fixes remain limited to the diagnostic support list above.
 No analyzer is downloaded or installed by this option. Design-time and ordinary
 Compile item queries run with `SkipCompilerExecution=true` before this decision.
+The design-time query uses the pinned formatter's BuildHost global properties,
+including `AlwaysCompileMarkupFilesInSeparateDomain=False`, and runs
+`Compile;CoreCompile` plus `DesignTimeMarkupCompilation` when the project defines
+it. This includes analyzer items conditional on formatter-specific properties or
+its optional markup target. Changing the supported SDK requires rechecking this
+loading contract.
 MSBuild evaluation/custom targets remain trusted execution as described below;
 the allowlist is not a sandbox for a malicious project that runs arbitrary code.
 
