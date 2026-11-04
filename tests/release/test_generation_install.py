@@ -85,6 +85,21 @@ class GenerationInstallation(unittest.TestCase):
         self.assert_blocked(self.cli('--project', str(self.project)), 'filesystem-error')
         self.assertFalse(self.target.exists())
 
+    def test_cli_missing_identity_does_not_replace_existing_installation(self):
+        API['install'](self.bundle, self.project)
+        installed_manifest = (self.target / 'generation.json').read_bytes()
+        self.package(b'second')
+        manifest = self.bundle / 'generation.json'
+        valid = json.loads(manifest.read_text())
+        for field in ('version', 'source_commit'):
+            with self.subTest(field=field):
+                malformed = {key: value for key, value in valid.items() if key != field}
+                manifest.write_text(json.dumps(malformed))
+                self.assert_blocked(self.cli('--project', str(self.project)), 'invalid-bundle')
+                self.assertEqual((self.target / 'tool').read_bytes(), b'first')
+                self.assertEqual((self.target / 'generation.json').read_bytes(), installed_manifest)
+                self.assertFalse((self.target.parent / '.dotnet-generation-pending').exists())
+
     @unittest.skipIf(os.name == 'nt', 'POSIX symlink scenario; Windows reparse checks use the same refusal')
     def test_cli_linked_project_requires_explicit_physical_path(self):
         link = self.root / 'linked-project'

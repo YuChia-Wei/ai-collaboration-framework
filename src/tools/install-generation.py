@@ -42,6 +42,10 @@ def regular(path):
 
 def verify(root):
     doc = json.loads(regular(root / 'generation.json'))
+    if not isinstance(doc, dict) or any(
+            not isinstance(doc.get(name), str) or not doc[name].strip()
+            for name in ('version', 'source_commit')):
+        raise InstallationError('invalid-bundle', 'Bundle version and source_commit must be non-empty strings')
     if doc['schema'] != 'aicf-generation/1':
         raise InstallationError('invalid-bundle', 'Unsupported generation manifest')
     names, folded = set(), {'generation.json'}
