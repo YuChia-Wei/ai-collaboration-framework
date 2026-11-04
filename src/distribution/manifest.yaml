@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet-backend
-  version: 0.2.0
+  version: 0.2.1
   source: src/knowledge/dotnet-backend
   metadata: content-package.yaml
   members:
@@ -273,7 +273,7 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
 - kind: knowledge
   id: engineering-common
-  version: 0.4.1
+  version: 0.4.2
   source: src/knowledge/engineering-common
   metadata: content-package.yaml
   members:
@@ -446,7 +446,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.10
+  version: 0.2.11
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -476,7 +476,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/domain-model-designer/skill-package.yaml
   kind: skill
-  version: 0.1.5
+  version: 0.1.6
 - id: lesson-author
   source: src/skills/lesson-author
   metadata: skill-package.yaml
@@ -512,7 +512,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.12
+  version: 0.2.13
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -584,7 +584,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/requirement-author/skill-package.yaml
   kind: skill
-  version: 0.2.4
+  version: 0.2.5
 - id: slice-implementer
   source: src/skills/slice-implementer
   metadata: skill-package.yaml
@@ -608,7 +608,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.12
+  version: 0.2.13
 - id: software-architect
   source: src/skills/software-architect
   metadata: skill-package.yaml
@@ -624,7 +624,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-architect/skill-package.yaml
   kind: skill
-  version: 0.1.5
+  version: 0.1.6
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -664,7 +664,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/spec-author/skill-package.yaml
   kind: skill
-  version: 0.3.1
+  version: 0.3.2
 - id: spec-compliance-validator
   source: src/skills/spec-compliance-validator
   metadata: skill-package.yaml
@@ -698,10 +698,10 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.8
+  version: 0.4.9
 - kind: skill
   id: user-story-author
-  version: 0.2.2
+  version: 0.2.3
   source: src/skills/user-story-author
   metadata: skill-package.yaml
   members:

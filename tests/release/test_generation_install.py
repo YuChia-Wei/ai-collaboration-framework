@@ -27,10 +27,75 @@ class GenerationInstallation(unittest.TestCase):
 
     def package(self, data):
         (self.bundle / 'tool').write_bytes(data)
+        shutil.copyfile(API['__file__'], self.bundle / 'install-generation.py')
+        rows = []
+        for name, mode in [('tool', 0o755), ('install-generation.py', 0o644)]:
+            raw = (self.bundle / name).read_bytes()
+            rows.append({'path': name, 'size': len(raw), 'sha256': hashlib.sha256(raw).hexdigest(), 'mode': mode})
         (self.bundle / 'generation.json').write_text(json.dumps({
             'schema': 'aicf-generation/1', 'version': '1.0.0', 'source_commit': 'a' * 40,
-            'files': [{'path': 'tool', 'size': len(data), 'sha256': hashlib.sha256(data).hexdigest(), 'mode': 0o755}]
+            'files': rows
         }), encoding='utf-8')
+
+    def cli(self, *args):
+        return subprocess.run([sys.executable, '-I', '-B', str(self.bundle / 'install-generation.py'), *args],
+                              capture_output=True, text=True, encoding='utf-8')
+
+    def assert_blocked(self, result, code):
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, '')
+        self.assertEqual(len(result.stderr.splitlines()), 1)
+        doc = json.loads(result.stderr)
+        self.assertEqual(doc['outcome'], 'blocked')
+        self.assertEqual(doc['code'], code)
+        self.assertTrue(doc['reason'])
+        return doc
+
+    def test_cli_refusals_preserve_local_content_and_pending_state(self):
+        result = self.cli('--project', str(self.project))
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stderr, '')
+        self.assertEqual(json.loads(result.stdout)['outcome'], 'installed')
+        (self.target / 'tool').write_bytes(b'custom')
+        self.assert_blocked(self.cli('--project', str(self.project)), 'bundle-changed')
+        self.assertEqual((self.target / 'tool').read_bytes(), b'custom')
+        (self.target / 'tool').write_bytes(b'first')
+        unknown = self.target / 'team.txt'
+        unknown.write_text('team-owned')
+        self.assert_blocked(self.cli('--project', str(self.project)), 'invalid-bundle')
+        self.assertEqual(unknown.read_text(), 'team-owned')
+        unknown.unlink()
+        stage = self.target.parent / '.dotnet-generation-pending'
+        stage.mkdir()
+        blocked = self.assert_blocked(self.cli('--project', str(self.project)), 'pending-installation')
+        self.assertIn('--recover', blocked['reason'])
+        self.assertTrue(stage.exists())
+        result = self.cli('--project', str(self.project), '--recover')
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)['outcome'], 'removed-empty-stage')
+        self.assertEqual((self.target / 'tool').read_bytes(), b'first')
+
+    def test_cli_input_and_io_errors_are_structured(self):
+        self.assert_blocked(self.cli(), 'invalid-arguments')
+        self.assert_blocked(self.cli('--project', str(self.root / 'missing')), 'project-not-found')
+        manifest = self.bundle / 'generation.json'
+        manifest.write_text('{broken')
+        self.assert_blocked(self.cli('--project', str(self.project)), 'invalid-data')
+        manifest.unlink()
+        self.assert_blocked(self.cli('--project', str(self.project)), 'filesystem-error')
+        self.assertFalse(self.target.exists())
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX symlink scenario; Windows reparse checks use the same refusal')
+    def test_cli_linked_project_requires_explicit_physical_path(self):
+        link = self.root / 'linked-project'
+        link.symlink_to(self.project, target_is_directory=True)
+        doc = self.assert_blocked(self.cli('--project', str(link)), 'linked-path')
+        self.assertIn('physical path', doc['reason'])
+        self.assertIn('realpath', doc['reason'])
+        self.assertFalse(self.target.exists())
+        result = self.cli('--project', str(link.resolve()))
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)['outcome'], 'installed')
 
     def test_install_update_and_project_preservation(self):
         custom = self.project / 'README.md'

@@ -7,6 +7,20 @@ import os
 from pathlib import Path, PurePosixPath
 import shutil
 import stat
+import sys
+
+
+class InstallationError(ValueError):
+    """Expected refusal with a stable CLI diagnostic code."""
+
+    def __init__(self, code, reason):
+        super().__init__(reason)
+        self.code = code
+
+
+class ArgumentParser(argparse.ArgumentParser):
+    def error(self, message):
+        raise InstallationError('invalid-arguments', message)
 
 
 def direct(path):
@@ -14,20 +28,22 @@ def direct(path):
         if item.exists() or item.is_symlink():
             info = item.lstat()
             if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
-                raise ValueError('Linked installation path: ' + str(item))
+                raise InstallationError('linked-path', 'Linked installation path: ' + str(item)
+                                        + '. Inspect the link, then supply the intended physical path'
+                                        + ' (for example, the result of realpath on POSIX).')
 
 
 def regular(path):
     direct(path)
     if not stat.S_ISREG(path.lstat().st_mode):
-        raise ValueError('Not a regular bundle file: ' + str(path))
+        raise InstallationError('invalid-bundle', 'Not a regular bundle file: ' + str(path))
     return path.read_bytes()
 
 
 def verify(root):
     doc = json.loads(regular(root / 'generation.json'))
     if doc['schema'] != 'aicf-generation/1':
-        raise ValueError('Unsupported generation manifest')
+        raise InstallationError('invalid-bundle', 'Unsupported generation manifest')
     names, folded = set(), {'generation.json'}
     expected_dirs = set()
     for row in doc['files']:
@@ -35,18 +51,18 @@ def verify(root):
         parts = PurePosixPath(name).parts
         if (not parts or PurePosixPath(name).is_absolute() or any(p in ('.', '..') for p in parts)
                 or '\\' in name or ':' in name or PurePosixPath(name).as_posix() != name):
-            raise ValueError('Unsafe member path')
+            raise InstallationError('invalid-bundle', 'Unsafe member path')
         if name.casefold() in folded:
-            raise ValueError('Duplicate member path')
+            raise InstallationError('invalid-bundle', 'Duplicate member path')
         folded.add(name.casefold())
         names.add(name)
         expected_dirs.update(p.as_posix() for p in PurePosixPath(name).parents if str(p) != '.')
         raw = regular(root / name)
         if len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256'] or row['mode'] not in (0o644, 0o755):
-            raise ValueError('Changed bundle member: ' + name)
+            raise InstallationError('bundle-changed', 'Changed bundle member: ' + name)
     paths = names | expected_dirs | {'generation.json'}
     if len({p.casefold() for p in paths}) != len(paths):
-        raise ValueError('Aliased bundle paths')
+        raise InstallationError('invalid-bundle', 'Aliased bundle paths')
     actual = set()
     for path in root.rglob('*'):
         direct(path)
@@ -56,11 +72,11 @@ def verify(root):
             actual.add(name)
         elif stat.S_ISDIR(mode):
             if name not in expected_dirs:
-                raise ValueError('Unknown bundle directory')
+                raise InstallationError('invalid-bundle', 'Unknown bundle directory')
         else:
-            raise ValueError('Unsupported bundle entry: ' + name)
+            raise InstallationError('invalid-bundle', 'Unsupported bundle entry: ' + name)
     if actual != names | {'generation.json'}:
-        raise ValueError('Unknown or missing bundle files')
+        raise InstallationError('invalid-bundle', 'Unknown or missing bundle files')
     return doc
 
 
@@ -100,7 +116,7 @@ def location(project):
     project = project.absolute()
     direct(project)
     if not project.is_dir():
-        raise ValueError('Project must exist')
+        raise InstallationError('project-not-found', 'Project must exist')
     target = project / '.ai/tools/dotnet-generation'
     direct(target)
     stage = target.parent / '.dotnet-generation-pending'
@@ -127,12 +143,12 @@ def remaining_unchanged(root, rows):
         name = path.relative_to(root).as_posix()
         if path.is_dir():
             if name not in directories:
-                raise ValueError('Unknown displaced directory; reconcile manually')
+                raise InstallationError('recovery-conflict', 'Unknown displaced directory; reconcile manually')
             continue
         raw = regular(path)
         row = expected.get(name)
         if row is None or len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
-            raise ValueError('Displaced installation changed; reconcile manually')
+            raise InstallationError('recovery-conflict', 'Displaced installation changed; reconcile manually')
 
 
 def recover(project):
@@ -145,14 +161,14 @@ def recover(project):
             return {'outcome': 'removed-empty-stage', 'path': str(target)}
         journal = json.loads(regular(stage / 'transaction.json'))
         if set(journal) != {'before', 'after', 'before_files'}:
-            raise ValueError('Unknown recovery journal')
+            raise InstallationError('invalid-recovery', 'Unknown recovery journal')
         if {p.name for p in stage.iterdir()} - {'transaction.json', 'payload', 'previous'}:
-            raise ValueError('Unknown recovery entries')
+            raise InstallationError('invalid-recovery', 'Unknown recovery entries')
         # Never follow links or remove special objects while cleaning owned staging.
         for item in stage.rglob('*'):
             direct(item)
             if not (stat.S_ISREG(item.lstat().st_mode) or stat.S_ISDIR(item.lstat().st_mode)):
-                raise ValueError('Unsupported recovery entry')
+                raise InstallationError('invalid-recovery', 'Unsupported recovery entry')
         previous = stage / 'previous'
         if target.exists():
             current = manifest_hash(target)
@@ -161,16 +177,16 @@ def recover(project):
             elif current == journal['before'] and not previous.exists():
                 outcome = 'kept-previous-installation'
             else:
-                raise ValueError('Target changed; reconcile manually')
+                raise InstallationError('recovery-conflict', 'Target changed; reconcile manually')
         elif previous.exists():
             if manifest_hash(previous) != journal['before']:
-                raise ValueError('Previous installation changed; reconcile manually')
+                raise InstallationError('recovery-conflict', 'Previous installation changed; reconcile manually')
             previous.rename(target)
             outcome = 'restored-previous-installation'
         elif journal['before'] is None:
             outcome = 'cancelled-new-installation'
         else:
-            raise ValueError('Previous installation is missing; reconcile manually')
+            raise InstallationError('recovery-conflict', 'Previous installation is missing; reconcile manually')
         if previous.exists():
             remaining_unchanged(previous, journal['before_files'])
         cleanup(stage)
@@ -182,10 +198,10 @@ def install(bundle, project):
     doc = verify(bundle)
     target, stage = location(project)
     if bundle == target or bundle.is_relative_to(target) or target.is_relative_to(bundle):
-        raise ValueError('Source and destination overlap')
+        raise InstallationError('overlapping-paths', 'Source and destination overlap')
     with exclusive(target.parent):
         if stage.exists():
-            raise ValueError('Pending installation; run --recover before retrying')
+            raise InstallationError('pending-installation', 'Pending installation; run --recover before retrying')
         before = manifest_hash(target) if target.exists() else None
         before_files = []
         if before is not None:
@@ -200,27 +216,43 @@ def install(bundle, project):
         retired, payload = stage / 'previous', stage / 'payload'
         shutil.copytree(bundle, payload)
         if manifest_hash(payload) != after:
-            raise ValueError('Source changed during preparation; run --recover')
+            raise InstallationError('concurrent-change', 'Source changed during preparation; run --recover')
         if os.name != 'nt':
             for row in doc['files']:
                 (payload / row['path']).chmod(row['mode'])
         direct(target)
         current = manifest_hash(target) if target.exists() else None
         if current != before:
-            raise ValueError('Installation changed during preparation; run --recover')
+            raise InstallationError('concurrent-change', 'Installation changed during preparation; run --recover')
         if target.exists():
             target.rename(retired)
         payload.rename(target)
         if manifest_hash(target) != after:
-            raise ValueError('Installed bytes changed; run --recover')
+            raise InstallationError('concurrent-change', 'Installed bytes changed; run --recover')
         # Cleanup is itself recoverable while the journal exists.
         cleanup(stage)
     return {'outcome': 'installed', 'path': str(target), 'version': doc['version'], 'source_commit': doc['source_commit']}
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
+def main(argv=None):
+    parser = ArgumentParser(description=__doc__)
     parser.add_argument('--project', type=Path, required=True)
     parser.add_argument('--recover', action='store_true', help='Reconcile an interrupted installation before retrying')
-    args = parser.parse_args()
-    print(json.dumps(recover(args.project) if args.recover else install(Path(__file__).absolute().parent, args.project)))
+    try:
+        args = parser.parse_args(argv)
+        result = recover(args.project) if args.recover else install(Path(__file__).absolute().parent, args.project)
+    except InstallationError as exc:
+        result = {'outcome': 'blocked', 'code': exc.code, 'reason': str(exc)}
+    except OSError as exc:
+        result = {'outcome': 'blocked', 'code': 'filesystem-error', 'reason': str(exc)}
+    except (ValueError, KeyError, TypeError) as exc:
+        result = {'outcome': 'blocked', 'code': 'invalid-data', 'reason': str(exc)}
+    else:
+        print(json.dumps(result))
+        return 0
+    print(json.dumps(result), file=sys.stderr)
+    return 1
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

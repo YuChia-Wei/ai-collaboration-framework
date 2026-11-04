@@ -10,7 +10,7 @@ inputs must be available; do not fall back to a framework source checkout.
 Member links are relative to their containing document; rule-owner paths are
 relative to the catalog. Embedded rule text uses its semantic owner's link base.
 
-Requires `engineering-common@0.4.1`. Preserve per-domain persistence choices,
+Requires `engineering-common@0.4.2`. Preserve per-domain persistence choices,
 conditional Event Sourcing, BDDfy opt-out and target-selected mocking. New pins
 do not replace accepted target policy or imply runtime validation.
 
@@ -28,3 +28,26 @@ do not replace accepted target policy or imply runtime validation.
 `content-package.yaml` lists available members and resource IDs. Legacy role
 projections are references, not active skill routes. Generated code and optional
 validation recipes require target-selected compilation and behavior checks.
+
+## Migrating from 0.1.9 examples
+
+The 0.2 line removes the old `examples/` and `source-includes/` trees from the
+installed knowledge package. Runnable starter code now has one template source;
+small insertion fragments use SnippetTool. Tutorial placeholders and optional
+integration examples are not advertised as complete generated capabilities.
+Update project-owned links to the old paths explicitly; installation cannot
+rewrite links in your own documents or upgrade previously copied code.
+
+| Previous content | Current entry or disposition |
+| --- | --- |
+| `examples/usecase`, `examples/use-case-injection` | `aicf-usecase` plus Use Case guidance; dependency registration remains target-owned |
+| `examples/aspnet-core`, `examples/controller`, `examples/dto` | `aicf-miniapi` or `aicf-webapi` reference feature; adapt HTTP contracts to the target |
+| `examples/generation-templates`, `examples/reference`, `examples/profile-configs` | Generation guide above; five native templates replace the incomplete profile sketches |
+| `source-includes/domain`, `examples/aggregate` | `domain-contracts` and optional `es-aggregate` snippets; select ES only when required |
+| `examples/contract`, `examples/mapper` | Existing DbC/mapper standards; the mapper contract-case summary is now `standards/contract-cases.md` |
+| `examples/bdd-gherkin-example`, `examples/bdd-given-when-then-example` | Generic Gherkin examples in `engineering-common/bdd`; no generated business bindings |
+| `examples/bdd-step-methods` | BDD/GWT knowledge remains guidance; target-specific bindings must be implemented and tested locally |
+| `examples/outbox`, `examples/projection`, `examples/inquiry-archive`, `examples/nuget` | Persistence/messaging and package-selection guidance remains; no equivalent complete relay, projector, archive or NuGet integration is promised |
+
+Templates and snippets are delivered separately from knowledge. Copy and adapt
+them under target ownership; upstream updates preserve that ownership boundary.
