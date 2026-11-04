@@ -15,10 +15,10 @@ Rule ID: `AGGREGATE-ES-001`.
 
 | Contract | Default form | Status | Evidence |
 | --- | --- | --- | --- |
-| `IDomainEntity<TId>` | interface | optional when reusable identity marking is useful | snippet [`domain-contracts`](../tooling/generation/snippet-tool/snippets/domain-contracts.snippet) |
-| `IAggregateRoot<TId>` | interface | canonical Aggregate marker | snippet [`domain-contracts`](../tooling/generation/snippet-tool/snippets/domain-contracts.snippet) |
-| `IDomainEvent` | interface | canonical event marker | snippet [`domain-contracts`](../tooling/generation/snippet-tool/snippets/domain-contracts.snippet) |
-| `EsAggregateRoot<TId>` | optional abstract class | only approved default-profile base class | snippet [`es-aggregate`](../tooling/generation/snippet-tool/snippets/es-aggregate.snippet) and [behavior contract](../standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md#optional-esaggregateroottid-behavior-contract) |
+| `IDomainEntity<TId>` | interface | optional when reusable identity marking is useful | `domain-contracts` snippet; [generation guide](../tooling/generation/README.md) |
+| `IAggregateRoot<TId>` | interface | canonical Aggregate marker | `domain-contracts` snippet; [generation guide](../tooling/generation/README.md) |
+| `IDomainEvent` | interface | canonical event marker | `domain-contracts` snippet; [generation guide](../tooling/generation/README.md) |
+| `EsAggregateRoot<TId>` | optional abstract class | only approved default-profile base class | `es-aggregate` snippet; [generation guide](../tooling/generation/README.md) and [behavior contract](../standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md#optional-esaggregateroottid-behavior-contract) |
 
 Normal Aggregates implement `IAggregateRoot<TId>` directly. Entities may express
 identity directly or implement `IDomainEntity<TId>`. Value Objects prefer
