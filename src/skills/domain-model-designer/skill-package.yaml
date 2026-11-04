@@ -1,6 +1,6 @@
 metadata_version: 4
 id: domain-model-designer
-version: 0.1.4
+version: 0.1.6
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -59,7 +59,7 @@ operations:
 knowledge_consumption:
 - id: common-domain-discovery
   package: engineering-common
-  version: 0.4.1
+  version: 0.4.2
   operations:
   - explore
   resources:
@@ -72,7 +72,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: common-domain-model
   package: engineering-common
-  version: 0.4.1
+  version: 0.4.2
   operations:
   - design
   - review
@@ -95,7 +95,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-domain-model
   package: dotnet-backend
-  version: 0.1.9
+  version: 0.2.1
   operations:
   - design
   - review

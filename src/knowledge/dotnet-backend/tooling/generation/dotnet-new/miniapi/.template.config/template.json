@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "AI Collaboration Framework",
+  "identity": "AiCollaboration.DotNet.MiniApi.1",
+  "name": "AI Collaboration .NET Minimal API",
+  "description": "An ASP.NET Core JSON backend with Minimal API endpoints.",
+  "shortName": "aicf-miniapi",
+  "sourceName": "AicfMiniApi",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}

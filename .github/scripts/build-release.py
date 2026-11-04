@@ -113,6 +113,18 @@ def build(args):
                                 {n: raw for n, (raw, _) in payload.items()})
     readme = render_readme(readme_source["template_utf8"], source, receipt["identity"], release_version, adapters)
     payload["README.md"] = (readme, 0o644)
+    # Build tools from the same immutable source as the catalog. Their binaries
+    # have an explicit manifest rather than masquerading as Git source blobs.
+    generation_root = work / "generation"
+    subprocess.run([sys.executable, "-I", "-B", str(checkout / ".github/scripts/build-generation.py"),
+                    "--repository", str(checkout), "--commit", source["commit"],
+                    "--version", release_version, "--output", str(generation_root),
+                    "--work", str(work / "generation-build")], check=True, env=environment, timeout=900,
+                   stdout=sys.stderr)
+    generation = document((generation_root / "generation.json").read_bytes())
+    generated_modes = {row["path"]: row["mode"] for row in generation["files"]}
+    payload.update({name: (raw, generated_modes.get(name.removeprefix("generation/"), 0o644))
+                    for name, (raw, _) in collect(generation_root, "generation").items()})
     payload["content-hashes.json"] = (encoded([entry(n, b, m) for n, (b, m) in sorted(payload.items())]), 0o644)
     name = f"ai-collaboration-framework-{label}-{source['commit']}.zip"
     archive = output / name

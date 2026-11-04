@@ -20,7 +20,7 @@ Generate use case tests with mandatory Given-When-Then structure and naming. Use
 - Consume `../../../../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md` and return concrete
   scenario/data-row-to-test/step/assertion mappings with honest execution status.
 - Follow the canonical .NET step-method contract and the bounded
-  `examples/bdd-step-methods/` reference for visible data, one primary action,
+  test standard for visible data, one primary action,
   isolated results and async/exception handling. Do not copy incomplete legacy
   fixture snippets as if they were executable templates.
 

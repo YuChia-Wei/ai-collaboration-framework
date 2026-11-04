@@ -12,7 +12,8 @@ from string import Template
 import zipfile
 
 WORKFLOW = ".github/workflows/publish-release.yml"
-SCHEMA = "framework-release-assets/3"
+SCHEMA = "framework-release-assets/4"
+ADAPTER_SCHEMA = "framework-release-assets/3"
 SOURCE_README_SCHEMA = "framework-release-assets/2"
 LEGACY_SCHEMA = "framework-release-assets/1"
 README_SOURCE_PATH = "src/distribution/templates/release-readme.md"
@@ -200,7 +201,7 @@ def verify_bundle(directory, expected_source=None):
     manifest_file = directory / "release-manifest.json"
     plain(manifest_file)
     manifest = document(manifest_file.read_bytes())
-    require(manifest["schema"] in (LEGACY_SCHEMA, SOURCE_README_SCHEMA, SCHEMA), "manifest schema")
+    require(manifest["schema"] in (LEGACY_SCHEMA, SOURCE_README_SCHEMA, ADAPTER_SCHEMA, SCHEMA), "manifest schema")
     current = manifest["schema"] != LEGACY_SCHEMA
     # A successful /1 read proves only the retained legacy envelope. It carries
     # no README source evidence and never establishes the /2 source-only rule.
@@ -271,10 +272,43 @@ def verify_bundle(directory, expected_source=None):
     build = document(payload["catalog/metadata/build.json"])
     require(build["identity"] == ident and build["identity_inputs"] == inputs and build["artifact_kind"] == "catalog", "catalog build receipt")
     if current:
-        adapters = package_adapters(catalog, payload) if manifest["schema"] == SCHEMA else None
+        adapters = package_adapters(catalog, payload) if manifest["schema"] in (ADAPTER_SCHEMA, SCHEMA) else None
         verify_readme_source(manifest["provenance"].get("readme_source"), source,
                              manifest["catalog_identity"], manifest["version"], payload["README.md"], adapters)
-    require(set(names) == expected | {"engine/" + n for n in pin_names} |
+    generation_names = set()
+    if manifest["schema"] == SCHEMA:
+        generation = document(payload["generation/generation.json"])
+        require(generation["schema"] == "aicf-generation/1"
+                and generation["source_commit"] == source["commit"]
+                and generation["version"] == manifest["version"], "generation source/version")
+        require(generation["runtimes"] == ["win-x64", "linux-x64"]
+                and generation["mode"] == "self-contained-coreclr-single-file", "generation runtime contract")
+        generation_names = {"generation/generation.json"}
+        for row in generation["files"]:
+            generation_name = "generation/" + safe_name(row["path"])
+            require(generation_name not in generation_names, "duplicate generation member")
+            generation_names.add(generation_name)
+            data = payload[generation_name]
+            require(len(data) == row["size"] and sha(data) == row["sha256"], "generation member hash")
+            require(next(r["mode"] for r in rows if r["path"] == generation_name) == row["mode"], "generation mode")
+        required = {"generation/generation.json", "generation/install-generation.py", "generation/README.md",
+                    "generation/snippets/README.md",
+                    "generation/templates/AICF.Dotnet.Templates." + manifest["version"] + ".nupkg"}
+        for rid in generation["runtimes"]:
+            prefix = "generation/snippets/" + rid + "/"
+            executable = "SnippetTool.exe" if rid == "win-x64" else "SnippetTool"
+            catalog_name = prefix + "snippets/catalog.json"
+            required.update({prefix + executable, prefix + "README.md", catalog_name})
+            require(catalog_name in generation_names, "missing snippet catalog: " + rid)
+            snippet_catalog = document(payload[catalog_name])
+            for snippet in snippet_catalog["snippets"]:
+                body_file = safe_name(snippet["bodyFile"])
+                require("/" not in body_file and body_file.endswith(".snippet"), "invalid snippet body filename")
+                required.add(prefix + "snippets/" + body_file)
+        require(generation_names == required, "single-file generation layout")
+        require(next(r["mode"] for r in rows if r["path"] == "generation/snippets/linux-x64/SnippetTool") == 0o755,
+                "Linux snippet executable mode")
+    require(set(names) == expected | {"engine/" + n for n in pin_names} | generation_names |
             {"engine/engine.json", "engine-pin.json", "README.md", "content-hashes.json"}, "release payload closure")
     hashes = document(payload["content-hashes.json"])
     require(hashes == [r for r in rows if r["path"] != "content-hashes.json"], "content hash inventory")

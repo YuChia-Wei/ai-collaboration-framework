@@ -95,6 +95,41 @@ if ((Get-FileHash -Algorithm SHA256 "$PackageRoot\engine-pin.json").Hash -ne $Ma
 Local snapshot 的來源 SHA、版本標籤與證據另行核對，不會因本頁範例而成為
 正式 Release；已驗證的本機候選可從其實際 `$PackageRoot` 接續第 2 節。
 
+### .NET generation
+
+只有實際包含 `generation/` 的封存檔才提供原生 .NET 範本與 snippet 工具；
+上方舊版下載範例不保證包含此目錄。完成該成品的下載與校驗後，可另行安裝至
+既有專案。以下 `$PackageRoot` 是已解壓成品，`$ProjectRoot` 請填入既有專案的
+實體絕對路徑（不可經過 symlink／junction）：
+
+```powershell
+$ProjectRoot = 'C:\projects\MyApp'
+$GenerationInstaller = Join-Path $PackageRoot 'generation/install-generation.py'
+if (!(Test-Path -LiteralPath $GenerationInstaller -PathType Leaf)) {
+  throw '此成品沒有 generation 工具；請核對所選版本內容'
+}
+python -I -B $GenerationInstaller --project $ProjectRoot
+if ($LASTEXITCODE -ne 0) { throw '生成工具安裝未完成；請依 JSON 診斷處理' }
+```
+
+此步驟使用 Python 3.11+，將完整工具包安裝到 `.ai/tools/dotnet-generation/`，
+不會自動註冊範本或產生應用。Snippet 執行檔包含 .NET runtime，支援 Windows x64
+與 Linux x64；範本的註冊、生成及建置另需 .NET 10 SDK。macOS 正式交付由 #582
+另行處理。目錄式／nupkg 註冊、自訂與恢復指令見成品的 `generation/README.md`
+或[來源交付指南](../src/knowledge/dotnet-backend/tooling/generation/DELIVERY.md)。
+
+工具含兩平台執行檔，可能超過 140 MB；建議由專案自行加入以下 `.gitignore`
+規則，並以版本控制保存自訂來源、所選 release 與 checksum 的重建說明：
+
+```gitignore
+/.ai/tools/dotnet-generation/
+/.ai/tools/.dotnet-generation-*
+```
+
+安裝器不修改 `.gitignore`。Framework 的 `.ai/framework.lock` 與 `inspect`
+不追蹤此獨立工具；請以 `generation.json` 的 `version`、`source_commit` 核對
+所選成品。新 clone 需依重建說明重新安裝，更新時也要另行執行此步驟。
+
 ## 2. 目錄與工作目錄規則
 
 所有 CLI 路徑都必須使用既有的絕對直接目錄，且 `project`、`engine`、`candidate`、`scratch`、`staging`、`recovery` 彼此不能重疊或互為父子。`scratch` 與 `staging` 唯一可共用同一個目錄。不可將 output/scratch 放回來源工作樹或 catalog 下。
@@ -202,8 +237,8 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
-| `engineering-common` | `0.4.1` | 無 |
-| `dotnet-backend` | `0.1.9` | 必須同時選 `engineering-common@0.4.1` |
+| `engineering-common` | `0.4.2` | 無 |
+| `dotnet-backend` | `0.2.1` | 必須同時選 `engineering-common@0.4.2` |
 
 引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 
@@ -492,7 +527,7 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 
 ### 升級後整合公開需求規則
 
-公開需求／workflow 邊界由 requirement-author 0.2.4、user-story-author 0.2.2、
+公開需求／workflow 邊界由 requirement-author 0.2.5、user-story-author 0.2.3、
 ai-context-init 0.2.5 與 software-development-orchestrator 0.5.0 的來源指引提供。
 版本號描述來源能力，不表示已有對應公開 Release；實際使用須核對所選成品的
 catalog、engine、pin 與已安裝版本。未選配的 skill 不會因升級自動加入。

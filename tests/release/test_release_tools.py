@@ -48,7 +48,8 @@ def readme_source(template=README_TEMPLATE):
 
 
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
-            engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False):
+            engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
+            missing_generation_member=None, extra_generation_member=None, linux_mode=0o755):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -59,11 +60,11 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     payload["engine/engine.json"] = (common.encoded({"engine": pin, "engine_package_version": 1}), 0o644)
     payload["engine-pin.json"] = (pin_raw, 0o644)
     catalog = {"source": {"commit": SOURCE["commit"]}, "release_version": "0.19.0-rc.3"}
-    if schema == common.SCHEMA:
+    if schema in (common.ADAPTER_SCHEMA, common.SCHEMA):
         catalog["adapters"] = copy.deepcopy(ADAPTERS if adapters is None else adapters)
     payload["catalog/metadata/catalog.json"] = (common.encoded(catalog), 0o644)
     catalog_files = []
-    if schema == common.SCHEMA:
+    if schema in (common.ADAPTER_SCHEMA, common.SCHEMA):
         for adapter in catalog["adapters"]:
             for member in adapter.get("members", []):
                 if missing_adapter_member:
@@ -80,10 +81,35 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     identity_raw = (json.dumps(inputs, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
     ident = f"catalog:1:0.19.0-rc.3:{SOURCE['commit']}:{common.sha(identity_raw)}"
     payload["catalog/metadata/build.json"] = (common.encoded({"identity": ident, "identity_inputs": inputs, "artifact_kind": "catalog"}), 0o644)
-    template = GENERATED_TEMPLATE if schema == common.SCHEMA else README_TEMPLATE
+    template = GENERATED_TEMPLATE if schema in (common.ADAPTER_SCHEMA, common.SCHEMA) else README_TEMPLATE
     readme = (common.render_readme(template, SOURCE, ident, "0.19.0-rc.3", catalog.get("adapters"))
               if schema != common.LEGACY_SCHEMA else b"Generic legacy package\n")
     payload["README.md"] = (readme if readme_override is None else readme_override, 0o644)
+    if schema == common.SCHEMA:
+        generated = {
+            "install-generation.py": b"installer", "README.md": b"usage", "snippets/README.md": b"usage",
+            "snippets/win-x64/SnippetTool.exe": b"windows",
+            "snippets/linux-x64/SnippetTool": b"linux",
+            "templates/AICF.Dotnet.Templates.0.19.0-rc.3.nupkg": b"template-package",
+        }
+        for rid in ('win-x64', 'linux-x64'):
+            prefix = 'snippets/' + rid + '/'
+            generated[prefix + 'README.md'] = b'usage'
+            generated[prefix + 'snippets/example.snippet'] = b'Example'
+            generated[prefix + 'snippets/catalog.json'] = common.encoded({
+                'snippets': [{'bodyFile': 'example.snippet'}]})
+        if missing_generation_member:
+            del generated[missing_generation_member]
+        if extra_generation_member:
+            generated[extra_generation_member] = b'extra file'
+        generation = {"schema": "aicf-generation/1", "source_commit": SOURCE["commit"],
+                      "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
+                      "mode": "self-contained-coreclr-single-file", "files": []}
+        for name, data in sorted(generated.items()):
+            mode = linux_mode if name.endswith("/SnippetTool") else 0o644
+            generation["files"].append(common.entry(name, data, mode))
+            payload["generation/" + name] = (data, mode)
+        payload["generation/generation.json"] = (common.encoded(generation), 0o644)
     payload["content-hashes.json"] = (common.encoded([common.entry(n, b, m) for n, (b, m) in sorted(payload.items())]), 0o644)
     archive = directory / "framework.zip"
     with zipfile.ZipFile(archive, "w") as zipped:
@@ -175,6 +201,23 @@ class ReleaseContracts(unittest.TestCase):
 
     def test_actual_zip_raw_inventory(self):
         self.assertEqual(common.verify_bundle(self.directory, SOURCE), self.manifest)
+
+    def test_incomplete_snippet_layout_rejected_even_with_consistent_inventory(self):
+        for name in ('SnippetTool', 'README.md', 'snippets/catalog.json', 'snippets/example.snippet'):
+            with self.subTest(name=name):
+                fixture(self.directory, missing_generation_member='snippets/linux-x64/' + name)
+                with self.assertRaises(ValueError):
+                    common.verify_bundle(self.directory)
+
+    def test_loose_runtime_file_rejected_even_with_consistent_inventory(self):
+        fixture(self.directory, extra_generation_member='snippets/linux-x64/libcoreclr.so')
+        with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+            common.verify_bundle(self.directory)
+
+    def test_non_executable_linux_apphost_rejected(self):
+        fixture(self.directory, linux_mode=0o644)
+        with self.assertRaisesRegex(ValueError, 'executable mode'):
+            common.verify_bundle(self.directory)
 
     def test_source_manifest_mismatch(self):
         with self.assertRaisesRegex(ValueError, "source/manifest"):
@@ -343,10 +386,9 @@ class ReleaseContracts(unittest.TestCase):
             with self.subTest(tag=tag):
                 source = dict(SOURCE, tag=tag, tag_object=SOURCE['tag_object'] if tag else None)
                 raw = common.render_readme(template, source, 'catalog-id', release_version, ADAPTERS).decode()
-                self.assertIn('Package classification: ' + expected, raw)
-                self.assertIn('Build receipts describe the build stage only.', raw)
-                self.assertIn('`publication: not-performed`', raw)
-                self.assertIn('"adapters": ["claude", "codex"]', raw)
+                self.assertIn('(' + expected + ')' , raw)
+                self.assertIn('check GitHub for publication status', raw)
+                self.assertIn('Select both `claude` and `codex`', raw)
                 self.assertIn('| `claude` | `0.1.0` |', raw)
                 self.assertIn('| `codex` | `0.1.0` |', raw)
                 self.assertNotIn('${', raw)
@@ -442,8 +484,8 @@ class ReleaseContracts(unittest.TestCase):
     def test_current_product_template_has_exact_fixed_fields(self):
         template = (SCRIPTS.parents[1] / common.README_SOURCE_PATH).read_text(encoding='utf-8')
         rendered = common.render_readme(template, SOURCE, 'catalog-id', '0.19.0-rc.3', ADAPTERS)
-        self.assertIn(('Source commit: ' + SOURCE['commit']).encode(), rendered)
-        self.assertIn(b'Catalog identity: catalog-id', rendered)
+        self.assertIn(('Source: `' + SOURCE['commit'] + '`').encode(), rendered)
+        self.assertIn(b'Catalog: `catalog-id`', rendered)
 
     def test_published_release_refused_without_writes(self):
         api = self.api()

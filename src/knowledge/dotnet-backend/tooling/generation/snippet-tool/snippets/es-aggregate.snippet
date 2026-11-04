@@ -1,0 +1,54 @@
+public abstract class EsAggregateRoot<TId> : IAggregateRoot<TId>
+    where TId : notnull
+{
+    private readonly List<IDomainEvent> _pendingEvents = [];
+
+    public abstract TId Id { get; }
+
+    public int Version { get; private set; }
+
+    public IReadOnlyList<IDomainEvent> DomainEvents => _pendingEvents;
+
+    protected IDomainEvent? LastDomainEvent =>
+        _pendingEvents.Count == 0 ? null : _pendingEvents[^1];
+
+    protected void Replay(IEnumerable<IDomainEvent> history)
+    {
+        ArgumentNullException.ThrowIfNull(history);
+
+        if (Version != 0 || _pendingEvents.Count != 0)
+        {
+            throw new InvalidOperationException(
+                "Replay can only initialize an aggregate with no committed or pending events.");
+        }
+
+        foreach (var @event in history)
+        {
+            ArgumentNullException.ThrowIfNull(@event);
+            When(@event);
+            Version++;
+        }
+    }
+
+    protected void Apply(IDomainEvent @event)
+    {
+        ArgumentNullException.ThrowIfNull(@event);
+        When(@event);
+        _pendingEvents.Add(@event);
+    }
+
+    public void MarkChangesAsCommitted(int committedVersion)
+    {
+        var expectedVersion = checked(Version + _pendingEvents.Count);
+        if (committedVersion != expectedVersion)
+        {
+            throw new InvalidOperationException(
+                $"Committed version {committedVersion} does not match expected version {expectedVersion}.");
+        }
+
+        Version = committedVersion;
+        _pendingEvents.Clear();
+    }
+
+    protected abstract void When(IDomainEvent @event);
+}

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <PackageId>AICF.Dotnet.Templates</PackageId>
+    <PackageType>Template</PackageType>
+    <Title>AICF .NET templates</Title>
+    <Description>Project, class, interface and Use Case templates for .NET 10.</Description>
+    <Authors>AICF contributors</Authors>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="dotnet-new/**/*" Exclude="dotnet-new/**/bin/**;dotnet-new/**/obj/**" Pack="true" PackagePath="content" />
+  </ItemGroup>
+</Project>

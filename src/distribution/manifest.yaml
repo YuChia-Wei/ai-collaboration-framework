@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet-backend
-  version: 0.1.9
+  version: 0.2.1
   source: src/knowledge/dotnet-backend
   metadata: content-package.yaml
   members:
@@ -43,264 +43,6 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/design/source-map.md
   - source: engineering-rule-catalog.yaml
     destination: .ai/core/knowledge/dotnet-backend/engineering-rule-catalog.yaml
-  - source: examples/aggregate/Plan.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/Plan.cs
-  - source: examples/aggregate/PlanEvents.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/PlanEvents.cs
-  - source: examples/aggregate/PlanId.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/PlanId.cs
-  - source: examples/aggregate/Project.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/Project.cs
-  - source: examples/aggregate/ProjectId.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/ProjectId.cs
-  - source: examples/aggregate/ProjectName.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/ProjectName.cs
-  - source: examples/aggregate/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/README.md
-  - source: examples/aggregate/TagEvents.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/TagEvents.cs
-  - source: examples/aggregate/TagId.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/TagId.cs
-  - source: examples/aggregate/TaskId.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aggregate/TaskId.cs
-  - source: examples/aspnet-core/InMemoryRepositoryConfig.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/InMemoryRepositoryConfig.cs
-  - source: examples/aspnet-core/OutboxRepositoryConfig.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/OutboxRepositoryConfig.cs
-  - source: examples/aspnet-core/Program.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/Program.cs
-  - source: examples/aspnet-core/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/README.md
-  - source: examples/aspnet-core/UseCaseConfiguration.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/UseCaseConfiguration.cs
-  - source: examples/aspnet-core/appsettings.InMemory.json
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.InMemory.json
-  - source: examples/aspnet-core/appsettings.Outbox.json
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.Outbox.json
-  - source: examples/aspnet-core/appsettings.TestInMemory.json
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.TestInMemory.json
-  - source: examples/aspnet-core/appsettings.TestOutbox.json
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.TestOutbox.json
-  - source: examples/aspnet-core/appsettings.json
-    destination: .ai/core/knowledge/dotnet-backend/examples/aspnet-core/appsettings.json
-  - source: examples/bdd-gherkin-example/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/README.md
-  - source: examples/bdd-gherkin-example/aggregate-outbox-repository.feature
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/aggregate-outbox-repository.feature
-  - source: examples/bdd-gherkin-example/complete-usecase-with-rules.feature
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/complete-usecase-with-rules.feature
-  - source: examples/bdd-gherkin-example/create-task-usecase.feature
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/create-task-usecase.feature
-  - source: examples/bdd-gherkin-example/rule-design-before-after.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/rule-design-before-after.md
-  - source: examples/bdd-gherkin-example/rule-migration-guide.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-gherkin-example/rule-migration-guide.md
-  - source: examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs
-  - source: examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs
-  - source: examples/bdd-given-when-then-example/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/README.md
-  - source: examples/bdd-given-when-then-example/rule-design-before-after.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/rule-design-before-after.md
-  - source: examples/bdd-given-when-then-example/rule-migration-guide.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-given-when-then-example/rule-migration-guide.md
-  - source: examples/bdd-step-methods/BudgetQuery.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs
-  - source: examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs
-  - source: examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj
-  - source: examples/bdd-step-methods/Directory.Build.props
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/Directory.Build.props
-  - source: examples/bdd-step-methods/NuGet.Config
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/NuGet.Config
-  - source: examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs
-  - source: examples/bdd-step-methods/PlainXunit/PlainXunit.csproj
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj
-  - source: examples/bdd-step-methods/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/README.md
-  - source: examples/bdd-step-methods/scenarios.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/bdd-step-methods/scenarios.md
-  - source: examples/contract/CONTRACT-GUIDE.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/contract/CONTRACT-GUIDE.md
-  - source: examples/contract/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/contract/README.md
-  - source: examples/contract/aggregate-contract-example.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/contract/aggregate-contract-example.md
-  - source: examples/contract/usecase-contract-example.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/contract/usecase-contract-example.md
-  - source: examples/contract/value-object-contract-example.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/contract/value-object-contract-example.md
-  - source: examples/controller/CreateTaskController.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/controller/CreateTaskController.cs
-  - source: examples/controller/CreateTaskRequest.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/controller/CreateTaskRequest.cs
-  - source: examples/controller/CreateTaskResponse.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/controller/CreateTaskResponse.cs
-  - source: examples/controller/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/controller/README.md
-  - source: examples/dto/PlanDto.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/dto/PlanDto.cs
-  - source: examples/dto/ProjectDto.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/dto/ProjectDto.cs
-  - source: examples/dto/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/dto/README.md
-  - source: examples/dto/TaskDto.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/dto/TaskDto.cs
-  - source: examples/generation-templates/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/README.md
-  - source: examples/generation-templates/base-test-classes.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/base-test-classes.md
-  - source: examples/generation-templates/complex-aggregate-spec.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/complex-aggregate-spec.md
-  - source: examples/generation-templates/local-utils.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/local-utils.md
-  - source: examples/generation-templates/reactor-full.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/reactor-full.md
-  - source: examples/generation-templates/test-case-full.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/test-case-full.md
-  - source: examples/generation-templates/test-suites.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/generation-templates/test-suites.md
-  - source: examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs
-  - source: examples/inquiry-archive/EfUserArchive.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/EfUserArchive.cs
-  - source: examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs
-  - source: examples/inquiry-archive/FindCardsByTagIdInquiry.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/FindCardsByTagIdInquiry.cs
-  - source: examples/inquiry-archive/InquiryContracts.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/InquiryContracts.cs
-  - source: examples/inquiry-archive/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/README.md
-  - source: examples/inquiry-archive/USAGE-GUIDE.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md
-  - source: examples/inquiry-archive/UserArchive.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/UserArchive.cs
-  - source: examples/inquiry-archive/UserDbContext.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/inquiry-archive/UserDbContext.cs
-  - source: examples/mapper/PlanMapper.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/PlanMapper.cs
-  - source: examples/mapper/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/README.md
-  - source: examples/mapper/TaskMapper.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/TaskMapper.cs
-  - source: examples/mapper/contract-cases.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases.md
-  - source: examples/mapper/contract-cases/ContractCases.csproj
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases/ContractCases.csproj
-  - source: examples/mapper/contract-cases/NuGet.Config
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases/NuGet.Config
-  - source: examples/mapper/contract-cases/Program.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/mapper/contract-cases/Program.cs
-  - source: examples/nuget/Directory.Packages.props
-    destination: .ai/core/knowledge/dotnet-backend/examples/nuget/Directory.Packages.props
-  - source: examples/outbox/BootstrapConfig.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/BootstrapConfig.cs
-  - source: examples/outbox/DataSourceConfig.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/DataSourceConfig.cs
-  - source: examples/outbox/OUTBOX-TEST-CONFIGURATION.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md
-  - source: examples/outbox/OutboxContracts.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/OutboxContracts.cs
-  - source: examples/outbox/PlanData.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/PlanData.cs
-  - source: examples/outbox/PlanDbContext.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/PlanDbContext.cs
-  - source: examples/outbox/PlanOutboxMapper.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/PlanOutboxMapper.cs
-  - source: examples/outbox/ProjectData.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/ProjectData.cs
-  - source: examples/outbox/ProjectOutboxMapper.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/ProjectOutboxMapper.cs
-  - source: examples/outbox/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/README.md
-  - source: examples/outbox/RepositoryConfig.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/RepositoryConfig.cs
-  - source: examples/outbox/TaskData.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/TaskData.cs
-  - source: examples/outbox/TaskOutboxMapper.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/outbox/TaskOutboxMapper.cs
-  - source: examples/profile-configs/event-architecture-reference.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/profile-configs/event-architecture-reference.md
-  - source: examples/profile-configs/inmemory-profile-config.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/profile-configs/inmemory-profile-config.md
-  - source: examples/profile-configs/outbox-profile-config.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/profile-configs/outbox-profile-config.md
-  - source: examples/projection/AllTagsProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/AllTagsProjection.cs
-  - source: examples/projection/EfAllTagsProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfAllTagsProjection.cs
-  - source: examples/projection/EfPlanDtosProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfPlanDtosProjection.cs
-  - source: examples/projection/EfTasksByDateProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfTasksByDateProjection.cs
-  - source: examples/projection/EfTasksDueTodayProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/EfTasksDueTodayProjection.cs
-  - source: examples/projection/PlanDtosProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/PlanDtosProjection.cs
-  - source: examples/projection/ProjectionDtos.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/ProjectionDtos.cs
-  - source: examples/projection/ProjectionModels.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/ProjectionModels.cs
-  - source: examples/projection/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/README.md
-  - source: examples/projection/ReadModelDbContext.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/ReadModelDbContext.cs
-  - source: examples/projection/TasksByDateProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/TasksByDateProjection.cs
-  - source: examples/projection/TasksDueTodayProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/TasksDueTodayProjection.cs
-  - source: examples/projection/TasksSortedByDeadlineProjection.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/projection/TasksSortedByDeadlineProjection.cs
-  - source: examples/reference/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/reference/README.md
-  - source: examples/reference/bdd-gwt-test-template.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/reference/bdd-gwt-test-template.md
-  - source: examples/reference/nuget-dependencies.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/reference/nuget-dependencies.md
-  - source: examples/reference/reactor-pattern-guide.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/reference/reactor-pattern-guide.md
-  - source: examples/use-case-injection/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/use-case-injection/README.md
-  - source: examples/usecase/AssignTagUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/AssignTagUseCase.cs
-  - source: examples/usecase/AssignTagUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/AssignTagUseCaseContract.cs
-  - source: examples/usecase/CreatePlanUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreatePlanUseCase.cs
-  - source: examples/usecase/CreatePlanUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreatePlanUseCaseContract.cs
-  - source: examples/usecase/CreateTaskUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreateTaskUseCase.cs
-  - source: examples/usecase/CreateTaskUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/CreateTaskUseCaseContract.cs
-  - source: examples/usecase/DeleteTaskUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/DeleteTaskUseCase.cs
-  - source: examples/usecase/DeleteTaskUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/DeleteTaskUseCaseContract.cs
-  - source: examples/usecase/GetPlanUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlanUseCase.cs
-  - source: examples/usecase/GetPlanUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlanUseCaseContract.cs
-  - source: examples/usecase/GetPlansUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlansUseCase.cs
-  - source: examples/usecase/GetPlansUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetPlansUseCaseContract.cs
-  - source: examples/usecase/GetTasksByDateUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetTasksByDateUseCase.cs
-  - source: examples/usecase/GetTasksByDateUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/GetTasksByDateUseCaseContract.cs
-  - source: examples/usecase/README.md
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/README.md
-  - source: examples/usecase/RenameTaskUseCase.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCase.cs
-  - source: examples/usecase/RenameTaskUseCaseContract.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs
-  - source: examples/usecase/UseCaseContracts.cs
-    destination: .ai/core/knowledge/dotnet-backend/examples/usecase/UseCaseContracts.cs
   - source: guides/COMMON-MISTAKES-GUIDE.md
     destination: .ai/core/knowledge/dotnet-backend/guides/COMMON-MISTAKES-GUIDE.md
   - source: guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
@@ -451,16 +193,6 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/shared/dto-conventions.md
   - source: shared/testing-strategy.md
     destination: .ai/core/knowledge/dotnet-backend/shared/testing-strategy.md
-  - source: source-includes/domain/EsAggregateRoot.cs
-    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/EsAggregateRoot.cs
-  - source: source-includes/domain/IAggregateRoot.cs
-    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/IAggregateRoot.cs
-  - source: source-includes/domain/IDomainEntity.cs
-    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/IDomainEntity.cs
-  - source: source-includes/domain/IDomainEvent.cs
-    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/IDomainEvent.cs
-  - source: source-includes/domain/README.md
-    destination: .ai/core/knowledge/dotnet-backend/source-includes/domain/README.md
   - source: standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md
     destination: .ai/core/knowledge/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md
   - source: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
@@ -501,12 +233,20 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/transactional-messaging-standards.md
   - source: standards/coding-standards/usecase-standards.md
     destination: .ai/core/knowledge/dotnet-backend/standards/coding-standards/usecase-standards.md
+  - source: standards/contract-cases.md
+    destination: .ai/core/knowledge/dotnet-backend/standards/contract-cases.md
   - source: standards/project-structure.md
     destination: .ai/core/knowledge/dotnet-backend/standards/project-structure.md
   - source: templates/application-properties-templates.md
     destination: .ai/core/knowledge/dotnet-backend/templates/application-properties-templates.md
   - source: templates/profile-isolated-configurations.md
     destination: .ai/core/knowledge/dotnet-backend/templates/profile-isolated-configurations.md
+  - source: tooling/generation/DELIVERY.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/DELIVERY.md
+  - source: tooling/generation/README.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/README.md
+  - source: tooling/generation/snippet-tool/README.md
+    destination: .ai/core/knowledge/dotnet-backend/tooling/generation/snippet-tool/README.md
   - source: tooling/on-demand-mechanical-validation/README.md
     destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/README.md
   - source: tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
@@ -533,7 +273,7 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
 - kind: knowledge
   id: engineering-common
-  version: 0.4.1
+  version: 0.4.2
   source: src/knowledge/engineering-common
   metadata: content-package.yaml
   members:
@@ -541,12 +281,18 @@ components:
     destination: .ai/core/knowledge/engineering-common/README.md
   - source: bdd/README.md
     destination: .ai/core/knowledge/engineering-common/bdd/README.md
+  - source: bdd/architecture-boundaries.md
+    destination: .ai/core/knowledge/engineering-common/bdd/architecture-boundaries.md
   - source: bdd/automation.md
     destination: .ai/core/knowledge/engineering-common/bdd/automation.md
   - source: bdd/discovery.md
     destination: .ai/core/knowledge/engineering-common/bdd/discovery.md
+  - source: bdd/examples/library-renewal.feature
+    destination: .ai/core/knowledge/engineering-common/bdd/examples/library-renewal.feature
   - source: bdd/examples/library-renewal.md
     destination: .ai/core/knowledge/engineering-common/bdd/examples/library-renewal.md
+  - source: bdd/examples/transactional-message.feature
+    destination: .ai/core/knowledge/engineering-common/bdd/examples/transactional-message.feature
   - source: bdd/formulation.md
     destination: .ai/core/knowledge/engineering-common/bdd/formulation.md
   - source: bdd/gherkin.md
@@ -700,7 +446,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.9
+  version: 0.2.11
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -730,7 +476,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/domain-model-designer/skill-package.yaml
   kind: skill
-  version: 0.1.4
+  version: 0.1.6
 - id: lesson-author
   source: src/skills/lesson-author
   metadata: skill-package.yaml
@@ -766,7 +512,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.11
+  version: 0.2.13
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -838,7 +584,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/requirement-author/skill-package.yaml
   kind: skill
-  version: 0.2.4
+  version: 0.2.5
 - id: slice-implementer
   source: src/skills/slice-implementer
   metadata: skill-package.yaml
@@ -862,7 +608,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.11
+  version: 0.2.13
 - id: software-architect
   source: src/skills/software-architect
   metadata: skill-package.yaml
@@ -878,7 +624,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-architect/skill-package.yaml
   kind: skill
-  version: 0.1.4
+  version: 0.1.6
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -918,7 +664,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/spec-author/skill-package.yaml
   kind: skill
-  version: 0.3.1
+  version: 0.3.2
 - id: spec-compliance-validator
   source: src/skills/spec-compliance-validator
   metadata: skill-package.yaml
@@ -952,10 +698,10 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.7
+  version: 0.4.9
 - kind: skill
   id: user-story-author
-  version: 0.2.2
+  version: 0.2.3
   source: src/skills/user-story-author
   metadata: skill-package.yaml
   members:

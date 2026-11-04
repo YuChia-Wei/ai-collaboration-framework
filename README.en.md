@@ -2,6 +2,8 @@
 
 This repository is the source for a reusable AI collaboration framework. It maintains the product packages and installs a selected version for Codex and Claude work in this repository.
 
+For the separate installation of native .NET templates and snippet tools, see [optional .NET generation tools](docs/installation.md#net-generation) (Traditional Chinese).
+
 ## Start here
 
 | Purpose | Path |

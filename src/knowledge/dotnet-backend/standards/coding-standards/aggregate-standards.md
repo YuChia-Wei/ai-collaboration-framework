@@ -220,10 +220,10 @@ returns no usable Aggregate; discard it and route repair to the target data owne
 
 State rehydration can use a dedicated constructor accepting validated complete
 persisted state. ES reconstruction uses the selected replay entrypoint after
-initialization. `Replay` below is the package-free source-include API;
+initialization. `Replay` below is the package-free ES snippet API;
 ArchPrecept CT-005 uses `LoadFromHistory`. Neither justifies a universal Clear.
 See [mapper lifecycle](mapper-standards.md#pending-domain-events-after-reconstruction)
-and the [fixed API cases](../../examples/mapper/contract-cases.md).
+and the [contract cases](../contract-cases.md).
 
 ### 2. Constructor Design
 
@@ -553,18 +553,6 @@ protected override void When(IDomainEvent @event)
 - [ ] Includes the required Aggregate ID.
 - [ ] Includes `OccurredOn` (`DateTime`).
 - [ ] Includes `EventId` (`Guid`).
-
----
-
-## 📂 Code Examples
-
-For more complete examples, see:
-
-| Example | Path |
-|------|------|
-| Aggregate examples | [../../examples/aggregate/](../../examples/aggregate/README.md) |
-| Domain Events | [../../examples/aggregate/PlanEvents.cs](../../examples/aggregate/PlanEvents.cs) |
-| Value Objects | [../../examples/aggregate/PlanId.cs](../../examples/aggregate/PlanId.cs) |
 
 ---
 

@@ -1,102 +1,53 @@
 # .NET Backend Knowledge
 
-This optional content package supplies reusable engineering references. Installation
-makes content available; it does not adopt rules, select technology, activate a
-skill/worker, run tools, or copy examples/source includes into product code.
+Optional references for DDD, Clean Architecture, CQRS and ASP.NET Core backends.
+Installation supplies knowledge; target-owned decisions select rules, technology
+and execution. UI frameworks and full-stack generation are outside this profile.
 
-Load task-relevant resource IDs through the explicit installed selection and the
-target-owned authority. Missing authority or specialist coverage remains unresolved;
-no source-checkout fallback is allowed. The content metadata describes availability,
-not runtime execution. Resource/member references are relative to the containing
-member; catalog owner paths are relative to the catalog at the package root.
-Embedded normative Markdown uses its declared semantic owner's relative base.
+Load only task-relevant resource IDs from the installed selection. Required
+inputs must be available; do not fall back to a framework source checkout.
+`target-authority:<name>` denotes an explicit target-owned input, not a path.
+Member links are relative to their containing document; rule-owner paths are
+relative to the catalog. Embedded rule text uses its semantic owner's link base.
 
-`target-authority:<name>` is a descriptive input parameter, not a path or executable
-command. The caller must supply the matching target-owned method, policy or tool
-through its existing binding. A source-provenance marker is inert history and must
-never be loaded as an installed dependency. Target project paths in illustrative
-layouts/configuration examples refer only to the target and are not bundled inputs.
+Requires `engineering-common@0.4.2`. Preserve per-domain persistence choices,
+conditional Event Sourcing, BDDfy opt-out and target-selected mocking. New pins
+do not replace accepted target policy or imply runtime validation.
 
-## Policy interpretation
+| Task | Entry |
+| --- | --- |
+| Generate projects, files or fragments | [Generation guide](tooling/generation/README.md) |
+| Design dependencies and boundaries | [Architecture playbook](design/architecture-playbook.md) |
+| Select applicable rules | [Rule catalog](engineering-rule-catalog.yaml) |
+| Implement and review behavior | [Coding standards](standards/coding-standards.md) |
+| Choose project layout | [Project structure](standards/project-structure.md) |
+| Design tests | [Testing strategy](shared/testing-strategy.md) |
+| Resolve policy meaning | [Policy rationale](standards/POLICY-RATIONALE.md) |
+| Select mechanical validation | [Validation recipes](tooling/on-demand-mechanical-validation/README.md) |
 
-[Official sources, policy reasons and representative cases](standards/POLICY-RATIONALE.md)
-distinguish methodology, selected .NET policies, unresolved decisions and bounded
-ArchPrecept observations. New knowledge/pins do not overwrite a target's accepted
-policy, allocate Rule IDs or establish runtime adoption.
+`content-package.yaml` lists available members and resource IDs. Legacy role
+projections are references, not active skill routes. Generated code and optional
+validation recipes require target-selected compilation and behavior checks.
 
-## Scope
+## Migrating from 0.1.9 examples
 
-Included:
+The 0.2 line removes the old `examples/` and `source-includes/` trees from the
+installed knowledge package. Runnable starter code now has one template source;
+small insertion fragments use SnippetTool. Tutorial placeholders and optional
+integration examples are not advertised as complete generated capabilities.
+Update project-owned links to the old paths explicitly; installation cannot
+rewrite links in your own documents or upgrade previously copied code.
 
-- DDD, Clean Architecture, CQRS, and Hexagonal Architecture backend rules
-- ASP.NET Core backend host configuration
-- command, query, reactor, aggregate, repository, projection, and controller patterns
-- Dapper, EF Core, PostgreSQL, WolverineFx, RabbitMQ, Kafka, Outbox, and Event Sourcing guidance
-- xUnit Given-When-Then testing rules, with BDDfy and NSubstitute as overridable profile defaults and optional `.feature` support
+| Previous content | Current entry or disposition |
+| --- | --- |
+| `examples/usecase`, `examples/use-case-injection` | `aicf-usecase` plus Use Case guidance; dependency registration remains target-owned |
+| `examples/aspnet-core`, `examples/controller`, `examples/dto` | `aicf-miniapi` or `aicf-webapi` reference feature; adapt HTTP contracts to the target |
+| `examples/generation-templates`, `examples/reference`, `examples/profile-configs` | Generation guide above; five native templates replace the incomplete profile sketches |
+| `source-includes/domain`, `examples/aggregate` | `domain-contracts` and optional `es-aggregate` snippets; select ES only when required |
+| `examples/contract`, `examples/mapper` | Existing DbC/mapper standards; the mapper contract-case summary is now `standards/contract-cases.md` |
+| `examples/bdd-gherkin-example`, `examples/bdd-given-when-then-example` | Generic Gherkin examples in `engineering-common/bdd`; no generated business bindings |
+| `examples/bdd-step-methods` | BDD/GWT knowledge remains guidance; target-specific bindings must be implemented and tested locally |
+| `examples/outbox`, `examples/projection`, `examples/inquiry-archive`, `examples/nuget` | Persistence/messaging and package-selection guidance remains; no equivalent complete relay, projector, archive or NuGet integration is promised |
 
-Excluded:
-
-- Razor
-- Blazor
-- MAUI
-- ASP.NET MVC view rendering
-- frontend UI component generation
-- full-stack or mono-system template rules
-
-## Adoption and coverage
-
-Requires `engineering-common@0.4.1`, matching the exact required dependency in
-`content-package.yaml`. Preserve per-domain persistence and transaction
-choices, conditional Event Sourcing, explicit BDDfy opt-out and target-selected
-mocking. No file extension or example automatically selects a technology.
-
-The catalog retains 11 registered rule identities and 11 unregistered guidance
-documents. Unregistered guidance does not claim normative rule coverage. Legacy
-role projections are technical references only. Examples, source includes and
-mechanical-validation recipes require separately selected target verification.
-Historical evidence and obsolete forwarding files are excluded.
-
-## Contents
-
-The metadata lists every member and resource. The following links are topic entrypoints;
-select additional resources by their declared IDs for the current task.
-
-- Content metadata: `content-package.yaml`
-- [design/architecture-playbook.md](design/architecture-playbook.md)
-- [design/design-routing.yaml](design/design-routing.yaml)
-- [engineering-rule-catalog.yaml](engineering-rule-catalog.yaml)
-- [examples/aggregate/README.md](examples/aggregate/README.md)
-- [examples/bdd-given-when-then-example/README.md](examples/bdd-given-when-then-example/README.md)
-- [examples/usecase/README.md](examples/usecase/README.md)
-- [guides/TEMPLATE-USAGE-GUIDE.md](guides/TEMPLATE-USAGE-GUIDE.md)
-- [references/BUILDING-BLOCKS-CLASS-INDEX.MD](references/BUILDING-BLOCKS-CLASS-INDEX.MD)
-- [references/CODE-TEMPLATES.MD](references/CODE-TEMPLATES.MD)
-- [review/review-routing.yaml](review/review-routing.yaml)
-- [shared/testing-strategy.md](shared/testing-strategy.md)
-- [source-includes/domain/README.md](source-includes/domain/README.md)
-- [standards/coding-standards.md](standards/coding-standards.md)
-- [standards/project-structure.md](standards/project-structure.md)
-- [tooling/on-demand-mechanical-validation/README.md](tooling/on-demand-mechanical-validation/README.md)
-
-## Additional task-selected references
-
-These references are optional guidance and templates. Read only the selected
-subject; their presence does not require an extra artifact, skill or technology.
-
-- [design/architecture-overview.md](design/architecture-overview.md)
-- [guides/COMMON-MISTAKES-GUIDE.md](guides/COMMON-MISTAKES-GUIDE.md)
-- [guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md](guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md)
-- [guides/CORS-SETUP.md](guides/CORS-SETUP.md)
-- [guides/DATA-CLASS-STANDARDS.md](guides/DATA-CLASS-STANDARDS.md)
-- [guides/DATABASE-MIGRATION-GUIDE.md](guides/DATABASE-MIGRATION-GUIDE.md)
-- [guides/DEVELOPMENT-TOOLS-GUIDE.md](guides/DEVELOPMENT-TOOLS-GUIDE.md)
-- [guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md](guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md)
-- [guides/FAQ.md](guides/FAQ.md)
-- [guides/LEARNING-PATH.md](guides/LEARNING-PATH.md)
-- [guides/NEW-PROJECT-TEST-SETUP-GUIDE.md](guides/NEW-PROJECT-TEST-SETUP-GUIDE.md)
-- [guides/PERSISTENCE-CONFIGURATION-GUIDE.md](guides/PERSISTENCE-CONFIGURATION-GUIDE.md)
-- [guides/PREVENT-SERVICE-REGISTRATION-MISSING.md](guides/PREVENT-SERVICE-REGISTRATION-MISSING.md)
-- [guides/PROFILE-BASED-TESTING-GUIDE.md](guides/PROFILE-BASED-TESTING-GUIDE.md)
-- [guides/TEST-DATA-PREPARATION-GUIDE.md](guides/TEST-DATA-PREPARATION-GUIDE.md)
-- [guides/TEST-SPEC-GUIDE.MD](guides/TEST-SPEC-GUIDE.MD)
-- [requirements/TECH-STACK-REQUIREMENTS.MD](requirements/TECH-STACK-REQUIREMENTS.MD)
+Templates and snippets are delivered separately from knowledge. Copy and adapt
+them under target ownership; upstream updates preserve that ownership boundary.

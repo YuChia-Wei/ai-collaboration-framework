@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Domain/AicfWebApi.Domain.csproj" />
+  <Project Path="Application/AicfWebApi.Application.csproj" />
+  <Project Path="Infrastructure/AicfWebApi.Infrastructure.csproj" />
+  <Project Path="WebApi/AicfWebApi.WebApi.csproj" />
+</Solution>

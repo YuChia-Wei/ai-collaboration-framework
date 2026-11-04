@@ -19,9 +19,9 @@ Generate aggregate-level tests (not use case tests).
 - Verify event serialization/deserialization
 - Consume `../../../../../../engineering-common/references/GWT-TEST-HANDOFF-CONTRACT.md` and return concrete
   scenario/data-row-to-test/step/assertion mappings with honest execution status.
-- Apply the canonical .NET step-method responsibilities, including visible
-  scenario data and isolated result state. Keep the runnable step-method
-  example's use-case fixture separate from this role's aggregate test level.
+- Follow the [.NET step-method responsibilities](../../../../../standards/coding-standards/test-standards.md#step-methods-and-scenario-readability).
+  Keep scenario data visible and result state isolated. Use Case fixtures belong
+  in Use Case tests.
 
 ## Output Location
 `src/tests/Domain/<Aggregate>/`

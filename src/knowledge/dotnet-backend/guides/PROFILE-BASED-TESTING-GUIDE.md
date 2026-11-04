@@ -58,23 +58,11 @@ Do not instantiate a concrete repository in a behavior test intended to run acro
 
 BDDfy is the default test narration library for this AI context. A target team may explicitly opt out of the package and related `.feature` tooling; tests must still use Given-When-Then structure and naming rather than Arrange-Act-Assert. `.feature` files are supported when requested or supplied, but are not mandatory.
 
-```csharp
-public sealed class CreateProductFeature : IClassFixture<TestProfileFixture>
-{
-    [Fact]
-    public void Create_product_successfully()
-    {
-        this.BDDfy();
-    }
-
-    void Given_valid_product_creation_input() { }
-    void When_I_execute_the_create_product_use_case() { }
-    void Then_the_product_is_created_successfully() { }
-    void And_a_domain_event_is_emitted() { }
-}
-```
-
-If BDDfy is not adopted, retain explicit `Given...`, `When...`, and `Then...` sections or helper names using the target test framework.
+Follow the [step-method contract](../standards/coding-standards/test-standards.md):
+Given establishes controlled state, When executes the real selected boundary,
+and Then asserts each specified outcome. Empty step bodies provide no coverage.
+For transactional adapters, use the [messaging evidence requirements](../standards/coding-standards/transactional-messaging-standards.md).
+An in-memory substitute does not prove durable transaction or broker behavior.
 
 ## Running Profiles
 
