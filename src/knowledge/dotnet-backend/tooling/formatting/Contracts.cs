@@ -1,22 +1,26 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace FormatTool;
 
 [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
-internal sealed record Request
+internal sealed class Request
 {
-    public int SchemaVersion { get; init; }
-    public string Workspace { get; init; } = "";
-    public string[] Files { get; init; } = [];
-    public string Mode { get; init; } = "";
-    public string Action { get; init; } = "";
-    public bool AllowRestore { get; init; }
+    public int SchemaVersion { get; set; }
+    public string Workspace { get; set; } = "";
+    public string[] Files { get; set; } = [];
+    public string Mode { get; set; } = "";
+    public string Action { get; set; } = "";
+    public bool AllowRestore { get; set; }
+    public string[] Diagnostics { get; set; } = [];
+    public string? Severity { get; set; }
+    public string[] AllowedProjectAnalyzers { get; set; } = [];
 }
 
 internal sealed class Result
 {
     public int SchemaVersion { get; } = 1;
-    public string ToolVersion { get; } = typeof(Result).Assembly.GetName().Version!.ToString();
+    public string ToolVersion { get; } = typeof(Result).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
     public string Status { get; set; } = "failed";
     public string? ErrorCode { get; set; }
     public string? Message { get; set; }
@@ -26,6 +30,11 @@ internal sealed class Result
     public string? PathBase { get; set; }
     public string? Mode { get; set; }
     public string? Action { get; set; }
+    public string[] Diagnostics { get; set; } = [];
+    public string? Severity { get; set; }
+    public RuleCapability[] RuleCapabilities { get; } = Rules.Capabilities;
+    public string[] ProjectAnalyzers { get; set; } = [];
+    public string[] ReferencedProjects { get; set; } = [];
     public string[] SelectedFiles { get; set; } = [];
     public string[] LoadedProjects { get; set; } = [];
     public string[] ConfigurationFiles { get; set; } = [];
@@ -45,6 +54,7 @@ internal sealed class Result
 }
 
 internal sealed record Finding(string File, string DiagnosticId, int Line, int Column, string Description);
+internal sealed record RuleCapability(string DiagnosticId, string Mode, string Availability, string SdkVersion);
 internal sealed record CommandResult(string[] Arguments, string WorkingDirectory, int ExitCode, string StandardOutput, string StandardError);
 internal sealed class ToolFailure(string code, string message) : Exception(message)
 {

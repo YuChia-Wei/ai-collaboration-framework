@@ -6,19 +6,23 @@ namespace FormatTool;
 
 internal static class Program
 {
-    private const string SupportedSdk = "10.0.403";
-
     private static async Task<int> Main(string[] args)
     {
         Console.OutputEncoding = new UTF8Encoding(false);
         if (args is ["--help"])
         {
-            Console.WriteLine("FormatTool --request <request.json> | --version | --help");
+            Console.WriteLine("FormatTool --request <request.json> | --capabilities | --version | --help");
             return 0;
         }
         if (args is ["--version"])
         {
-            Console.WriteLine(typeof(Program).Assembly.GetName().Version);
+            Console.WriteLine(new Result().ToolVersion);
+            return 0;
+        }
+        if (args is ["--capabilities"])
+        {
+            Console.WriteLine(JsonSerializer.Serialize(new Result { Status = "capabilities", SdkVersion = Rules.SdkVersion,
+                Message = "Declared Windows SDK support; no workspace or installed SDK was probed." }, WireJson.Default.Result));
             return 0;
         }
         var result = new Result();
@@ -36,29 +40,43 @@ internal static class Program
             result.PathBase = Path.GetDirectoryName(workspace)!;
             result.Mode = request.Mode;
             result.Action = request.Action;
+            result.Diagnostics = request.Diagnostics.Distinct(StringComparer.Ordinal).ToArray();
+            result.Severity = request.Severity;
             if (!File.Exists(workspace)) throw new ToolFailure("load-failed", "Workspace does not exist.");
             var selected = request.Files.Select(path => Workspace.FullPath(path, result.PathBase)).Distinct(Workspace.Paths).ToArray();
-            if (selected.Any(path => Path.GetExtension(path) != ".cs" || !File.Exists(path)))
+            if (selected.Any(path => !Path.GetExtension(path).Equals(".cs", StringComparison.OrdinalIgnoreCase) || !File.Exists(path)))
                 throw new ToolFailure("invalid-selection", "Every selection must be an existing .cs file; folders and globs are not accepted.");
             result.SelectedFiles = selected;
             Snapshot(selected, snapshots);
             var sdk = new Sdk(result, result.PathBase);
             result.SdkVersion = (await sdk.Require("sdk-unavailable", "--version")).StandardOutput.Trim();
-            if (result.SdkVersion != SupportedSdk)
-                throw new ToolFailure("unsupported-sdk", $"This initial support contract requires SDK {SupportedSdk}; actual SDK is {result.SdkVersion}.");
+            if (result.SdkVersion != Rules.SdkVersion)
+                throw new ToolFailure("unsupported-sdk", $"This initial support contract requires SDK {Rules.SdkVersion}; actual SDK is {result.SdkVersion}.");
             result.FormatterVersion = (await sdk.Require("formatter-unavailable", "format", "--version")).StandardOutput.Trim();
             result.LoadedProjects = Workspace.Projects(workspace);
             if (request.AllowRestore) await sdk.Require("restore-failed", "restore", workspace);
-            var compile = await Workspace.CompileFiles(sdk, result.LoadedProjects);
-            if (selected.Any(path => !compile.ContainsKey(path)))
+            var loaded = await Workspace.Load(sdk, result.LoadedProjects, request.Mode != "whitespace");
+            if (selected.Any(path => !loaded.CompileFiles.ContainsKey(path)))
                 throw new ToolFailure("unmatched-selection", "Every selected file must be an evaluated Compile item in the selected workspace.");
-            result.SelectedFiles = selected.Select(path => compile[path]).ToArray();
+            result.SelectedFiles = selected.Select(path => loaded.CompileFiles[path]).ToArray();
             result.ConfigurationFiles = Workspace.Configurations(result.SelectedFiles);
-            Snapshot(compile.Keys.Where(File.Exists), snapshots);
+            result.ReferencedProjects = loaded.ReferencedProjects;
+            result.ProjectAnalyzers = loaded.ProjectAnalyzers;
+            Snapshot(loaded.ObservedFiles.Where(File.Exists), snapshots);
+            if (request.Mode != "whitespace")
+            {
+                var allowed = request.AllowedProjectAnalyzers.Select(path => Workspace.FullPath(path, result.PathBase)).ToHashSet(Workspace.Paths);
+                if (loaded.ProjectAnalyzers.Any(path => !allowed.Contains(path)))
+                    throw new ToolFailure("analyzer-consent-required", "External analyzer/source-generator paths require exact allowedProjectAnalyzers opt-in; see projectAnalyzers. No compiler or formatter was run.");
+                await CheckSemantics(sdk, workspace);
+            }
             var findings = await Format(sdk, result, request.Action == "check");
             result.Findings = findings;
             if (request.Action == "apply")
+            {
+                if (request.Mode != "whitespace") await CheckSemantics(sdk, workspace);
                 result.RemainingFindings = await Format(sdk, result, check: true);
+            }
             Observe(result, snapshots);
             if (result.UnexpectedChangedFiles.Length > 0 || (request.Action == "check" && result.ChangedFiles.Length > 0))
                 throw new ToolFailure("unexpected-source-change", "Source changed outside the requested write scope; inspect changedFiles. No rollback was attempted.");
@@ -86,8 +104,9 @@ internal static class Program
     {
         if (request.SchemaVersion != 1 || string.IsNullOrWhiteSpace(request.Workspace) || request.Files == null ||
             request.Files.Length == 0 || request.Files.Any(string.IsNullOrWhiteSpace) ||
-            request.Mode != "whitespace" || request.Action is not ("check" or "apply"))
-            throw new ToolFailure("invalid-request", "Require schemaVersion 1, workspace, nonempty files, mode whitespace, and action check or apply.");
+            request.Mode is not ("whitespace" or "style" or "analyzers") || request.Action is not ("check" or "apply"))
+            throw new ToolFailure("invalid-request", "Require schemaVersion 1, workspace, nonempty files, mode whitespace/style/analyzers, and action check/apply.");
+        Rules.Validate(request);
         if (!OperatingSystem.IsWindows())
             throw new ToolFailure("unsupported-platform", "Initial supported platform is Windows; Linux and macOS acceptance is not established.");
     }
@@ -100,6 +119,11 @@ internal static class Program
             var arguments = new List<string> { "format", result.Mode!, result.Workspace!, "--no-restore", "--include" };
             arguments.AddRange(result.SelectedFiles.Select(path => Path.GetRelativePath(result.PathBase!, path)));
             arguments.AddRange(["--report", report, "--verbosity", "diagnostic"]);
+            if (result.Mode != "whitespace")
+            {
+                arguments.AddRange(["--severity", result.Severity!, "--diagnostics"]);
+                arguments.AddRange(result.Diagnostics);
+            }
             if (check) arguments.Add("--verify-no-changes");
             var command = await sdk.Run(arguments.ToArray());
             if (command.ExitCode != 0 && !(check && command.ExitCode == 2))
@@ -125,6 +149,10 @@ internal static class Program
             if (File.Exists(report)) File.Delete(report);
         }
     }
+
+    private static Task<CommandResult> CheckSemantics(Sdk sdk, string workspace) =>
+        sdk.Require("semantic-prerequisite-failed", "build", workspace, "--no-restore", "-nologo",
+            "-property:RunAnalyzers=false", "-property:UseSharedCompilation=false");
 
     private static void Snapshot(IEnumerable<string> files, Dictionary<string, string> snapshots)
     {

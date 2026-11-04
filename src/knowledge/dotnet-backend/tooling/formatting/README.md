@@ -9,7 +9,7 @@ and macOS support are outside this initial contract.
 
 ## Build a local deliverable
 
-From this directory, publish to a fresh directory outside the source tree:
+From this source directory, publish to a fresh directory outside the source tree:
 
 ```powershell
 dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained true -o C:/artifacts/format-tool
@@ -48,6 +48,66 @@ Use `action: "apply"` to write. `whitespace` invokes only the SDK whitespace
 formatter. Generated files remain excluded by the SDK; there is no
 `include-generated` option. `selectedFiles` describes valid source membership,
 not a claim that SDK generated-code exclusions were bypassed.
+
+## Bounded cleanup
+
+Choose `mode: "style"` or `mode: "analyzers"`, and supply both a nonempty
+`diagnostics` array and `severity` (`info`, `warn`, or `error`). Severity is a
+minimum threshold; it does not enable a suppressed rule. Whitespace rejects
+these options. Cleanup never silently selects all analyzer fixes.
+
+```json
+{
+  "schemaVersion": 1,
+  "workspace": "app/App.csproj",
+  "files": ["Nested/Chosen.cs"],
+  "mode": "style",
+  "action": "check",
+  "diagnostics": ["IDE0008"],
+  "severity": "warn"
+}
+```
+
+`--capabilities` and every result expose this deliberately small SDK 10.0.403
+rule list. Capabilities are declared support, not a probe of an installed SDK.
+
+| Mode | Diagnostic | Contract |
+| --- | --- | --- |
+| `style` | `IDE0008` | Use explicit type instead of `var`, according to effective C# style settings. |
+| `analyzers` | `CA1805` | Remove unnecessary default-value field initialization. |
+| `analyzers` | `CA1040` | Known `no-fixer` response; no cleanup executes. |
+| either | other IDs | `unsupported-diagnostic`; no cleanup executes. |
+
+For the style example, set `csharp_style_var_for_built_in_types = false:warning`
+and `dotnet_diagnostic.IDE0008.severity = warning` in the applicable EditorConfig
+section. For analyzer cleanup select `CA1805` and enable it with
+`dotnet_diagnostic.CA1805.severity = warning`. These are different operations;
+neither selects the other. Fixes may carry SDK syntax-formatting adjustments.
+The list does not promise arbitrary member ordering, all Roslyn fixes, complete
+ReSharper profiles or third-party code fixes. See Microsoft's
+[var preference rules](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008)
+and [CA1805](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1805).
+
+Cleanup first checks design-time loading and the referenced C# project closure.
+It requires a successful `dotnet build --no-restore` with ordinary analyzer
+execution disabled, so missing types/references or compiler errors cannot
+masquerade as a clean style result. Source generators still run during that
+compilation. Apply also checks compilation after its changes before the final
+format check. Build outputs go to the target's ordinary intermediate/output
+locations; target settings such as warnings-as-errors remain effective. These
+checks establish compilation prerequisites, not business correctness.
+
+SDK/targeting-pack analyzers and generators are part of the selected SDK.
+Other resolved analyzer or source-generator DLLs, including NuGet packages and
+referenced projects' analyzers, produce `analyzer-consent-required` **before
+the compiler or formatter executes**. The result lists `projectAnalyzers`.
+To permit them, supply their exact paths in `allowedProjectAnalyzers`; relative
+paths use `pathBase`. This permits their code to execute, including source
+generators, while fixes remain limited to the diagnostic support list above.
+No analyzer is downloaded or installed by this option. Design-time and ordinary
+Compile item queries run with `SkipCompilerExecution=true` before this decision.
+MSBuild evaluation/custom targets remain trusted execution as described below;
+the allowlist is not a sandbox for a malicious project that runs arbitrary code.
 
 ## Results and failure recovery
 
