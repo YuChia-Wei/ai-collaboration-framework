@@ -91,9 +91,17 @@ function Test-WorkItemApi {
     }
 }
 
-$roots = 'miniapi', 'web-api', 'use-case', 'class', 'interface' | ForEach-Object { Join-Path $delivered $_ }
-if ($TemplatePackage) { Invoke-Template install $TemplatePackage }
-else { Invoke-Template install @roots }
+if ($TemplatePackage) {
+    Invoke-Template install $TemplatePackage
+    $packageSmoke = Join-Path $ScratchRoot package-smoke
+    Invoke-Template aicf-class --name PackageNote --namespace Sample.Package --output $packageSmoke
+    if (!(Test-Path -LiteralPath (Join-Path $packageSmoke 'PackageNote.cs'))) {
+        throw 'The installed package did not generate the expected class.'
+    }
+    Invoke-Template uninstall AICF.Dotnet.Templates
+}
+# Exercise the documented adoption path: one editable parent directory.
+Invoke-Template install $delivered
 Invoke-Template list aicf
 Invoke-Template aicf-usecase --help
 
@@ -177,6 +185,7 @@ $generated = Join-Path $domain 'DeliveryNote.cs'
 if (!(Select-String -LiteralPath $generated -Pattern 'Warehouse custom marker' -SimpleMatch)) {
     throw 'The generated file did not come from the selected custom template.'
 }
+Invoke-Dotnet build $project
 
 $original = Join-Path $domain 'PackingNote.cs'
 Add-Content -LiteralPath $original -Value '// Target-owned edit'
@@ -186,6 +195,5 @@ if ($LASTEXITCODE -eq 0 -or (Get-FileHash -LiteralPath $original).Hash -ne $befo
     throw 'Collision did not refuse the overwrite and preserve the target bytes.'
 }
 
-if ($TemplatePackage) { Invoke-Template uninstall AICF.Dotnet.Templates $custom }
-else { Invoke-Template uninstall @roots $custom }
+Invoke-Template uninstall $delivered $custom
 Write-Output 'Native template acceptance passed.'

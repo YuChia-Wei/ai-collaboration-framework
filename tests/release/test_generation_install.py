@@ -41,6 +41,14 @@ class GenerationInstallation(unittest.TestCase):
         return subprocess.run([sys.executable, '-I', '-B', str(self.bundle / 'install-generation.py'), *args],
                               capture_output=True, text=True, encoding='utf-8')
 
+    def directory_link(self, link, target):
+        if os.name == 'nt':
+            # Directory junctions exercise reparse-point rejection without admin rights.
+            subprocess.run(['cmd.exe', '/d', '/c', 'mklink', '/J', str(link), str(target)],
+                           check=True, capture_output=True, text=True)
+        else:
+            link.symlink_to(target, target_is_directory=True)
+
     def assert_blocked(self, result, code):
         self.assertEqual(result.returncode, 1)
         self.assertEqual(result.stdout, '')
@@ -100,10 +108,9 @@ class GenerationInstallation(unittest.TestCase):
                 self.assertEqual((self.target / 'generation.json').read_bytes(), installed_manifest)
                 self.assertFalse((self.target.parent / '.dotnet-generation-pending').exists())
 
-    @unittest.skipIf(os.name == 'nt', 'POSIX symlink scenario; Windows reparse checks use the same refusal')
     def test_cli_linked_project_requires_explicit_physical_path(self):
         link = self.root / 'linked-project'
-        link.symlink_to(self.project, target_is_directory=True)
+        self.directory_link(link, self.project)
         doc = self.assert_blocked(self.cli('--project', str(link)), 'linked-path')
         self.assertIn('physical path', doc['reason'])
         self.assertIn('realpath', doc['reason'])
@@ -123,8 +130,7 @@ class GenerationInstallation(unittest.TestCase):
         self.assertEqual(sorted(p.name for p in self.target.parent.iterdir()),
                          ['.dotnet-generation-install.lock', 'dotnet-generation'])
 
-    @unittest.skipIf(os.name == 'nt', 'Requires case-sensitive POSIX filesystem')
-    def test_case_alias_and_fifo_are_preserved(self):
+    def test_case_alias_and_special_entry_are_preserved(self):
         API['install'](self.bundle, self.project)
         alias = self.target / 'TOOL'
         alias.write_bytes(b'custom')
@@ -132,11 +138,24 @@ class GenerationInstallation(unittest.TestCase):
             API['install'](self.bundle, self.project)
         self.assertEqual(alias.read_bytes(), b'custom')
         alias.unlink()
-        fifo = self.target / 'team-pipe'
-        os.mkfifo(fifo)
-        with self.assertRaises(ValueError):
-            API['install'](self.bundle, self.project)
-        self.assertTrue(fifo.exists())
+        # On a case-insensitive filesystem the alias was the original file.
+        (self.target / 'tool').write_bytes(b'first')
+        if os.name == 'nt':
+            team = self.root / 'team-content'
+            team.mkdir()
+            (team / 'note.txt').write_text('team-owned')
+            link = self.target / 'team-link'
+            self.directory_link(link, team)
+            with self.assertRaisesRegex(ValueError, 'Linked installation path'):
+                API['install'](self.bundle, self.project)
+            self.assertTrue(link.exists())
+            self.assertEqual((team / 'note.txt').read_text(), 'team-owned')
+        else:
+            fifo = self.target / 'team-pipe'
+            os.mkfifo(fifo)
+            with self.assertRaisesRegex(ValueError, 'Unsupported bundle entry'):
+                API['install'](self.bundle, self.project)
+            self.assertTrue(fifo.exists())
 
     def test_process_death_releases_lock_and_restores_previous_installation(self):
         API['install'](self.bundle, self.project)
@@ -172,6 +191,37 @@ api['install'](Path(sys.argv[2]), Path(sys.argv[3]))
         with self.assertRaises(ValueError):
             API['recover'](self.project)
         self.assertEqual((stage / 'previous/tool').read_bytes(), b'custom')
+
+    def test_same_bundle_recovery_distinguishes_preparation_from_cleanup(self):
+        API['install'](self.bundle, self.project)
+        installed_manifest = (self.target / 'generation.json').read_bytes()
+        script = '''import os, runpy, shutil, sys
+from pathlib import Path
+api = runpy.run_path(sys.argv[1])
+if sys.argv[4] == 'preparation':
+    def crash(source, target):
+        target.mkdir()
+        shutil.copyfile(source / 'tool', target / 'tool')
+        os._exit(23)
+    shutil.copytree = crash
+else:
+    def crash(stage):
+        shutil.rmtree(stage / 'previous')
+        os._exit(23)
+    api['install'].__globals__['cleanup'] = crash
+api['install'](Path(sys.argv[2]), Path(sys.argv[3]))
+'''
+        for phase, outcome in [('preparation', 'kept-previous-installation'),
+                               ('cleanup', 'completed-installation')]:
+            with self.subTest(phase=phase):
+                result = subprocess.run([sys.executable, '-I', '-B', '-c', script,
+                                         str(Path(API['__file__'])), str(self.bundle), str(self.project), phase])
+                self.assertEqual(result.returncode, 23)
+                recovered = API['recover'](self.project)
+                self.assertEqual((self.target / 'tool').read_bytes(), b'first')
+                self.assertEqual((self.target / 'generation.json').read_bytes(), installed_manifest)
+                self.assertFalse((self.target.parent / '.dotnet-generation-pending').exists())
+                self.assertEqual(recovered['outcome'], outcome)
 
     def test_recovery_finishes_interrupted_cleanup(self):
         API['install'](self.bundle, self.project)

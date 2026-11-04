@@ -176,7 +176,10 @@ def recover(project):
         previous = stage / 'previous'
         if target.exists():
             current = manifest_hash(target)
-            if current == journal['after']:
+            # A remaining payload has not been promoted, even for identical bytes.
+            if current == journal['before'] and not previous.exists() and (stage / 'payload').exists():
+                outcome = 'kept-previous-installation'
+            elif current == journal['after']:
                 outcome = 'completed-installation'
             elif current == journal['before'] and not previous.exists():
                 outcome = 'kept-previous-installation'
