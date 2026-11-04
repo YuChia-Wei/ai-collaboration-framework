@@ -1,4 +1,4 @@
-# .NET generation tools
+# .NET generation and formatting tools
 
 Install this complete directory into an existing project:
 
@@ -7,6 +7,14 @@ python install-generation.py --project /path/to/project
 ```
 
 The installer verifies the manifest and writes `.ai/tools/dotnet-generation`.
+Current bundles also include `formatting/win-x64/FormatTool.exe` and its
+usage guide at `formatting/win-x64/README.md`. Formatting supports Windows x64
+with installed SDK 10.0.403; the snippet platform list does not extend that
+support. Both tools use self-contained CoreCLR single-file publishing, without
+loose runtime DLLs or debug symbols. Snippet catalogs and templates remain
+external data. Check `generation.json` for the selected bundle's formatting
+component; older bundles do not include it. This same installer updates and
+recovers all manifest-listed tools; no separate manual formatting copy is needed.
 It does not register templates, edit project code or select a technology stack.
 Updates replace only an unchanged previous installation; modified or unknown
 files cause a refusal. Keep custom snippets and templates outside this directory.

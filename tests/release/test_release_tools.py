@@ -49,7 +49,8 @@ def readme_source(template=README_TEMPLATE):
 
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
             engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
-            missing_generation_member=None, extra_generation_member=None, linux_mode=0o755):
+            missing_generation_member=None, extra_generation_member=None, linux_mode=0o755,
+            include_formatting=True):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -87,6 +88,8 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     payload["README.md"] = (readme if readme_override is None else readme_override, 0o644)
     if schema == common.SCHEMA:
         generated = {
+            "formatting/win-x64/FormatTool.exe": b"formatter",
+            "formatting/win-x64/README.md": b"format usage",
             "install-generation.py": b"installer", "README.md": b"usage", "snippets/README.md": b"usage",
             "snippets/win-x64/SnippetTool.exe": b"windows",
             "snippets/linux-x64/SnippetTool": b"linux",
@@ -103,8 +106,13 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
         if extra_generation_member:
             generated[extra_generation_member] = b'extra file'
         generation = {"schema": "aicf-generation/1", "source_commit": SOURCE["commit"],
+                      "formatting": {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
                       "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
                       "mode": "self-contained-coreclr-single-file", "files": []}
+        if not include_formatting:
+            del generation['formatting']
+            del generated['formatting/win-x64/FormatTool.exe']
+            del generated['formatting/win-x64/README.md']
         for name, data in sorted(generated.items()):
             mode = linux_mode if name.endswith("/SnippetTool") else 0o644
             generation["files"].append(common.entry(name, data, mode))
@@ -210,9 +218,22 @@ class ReleaseContracts(unittest.TestCase):
                     common.verify_bundle(self.directory)
 
     def test_loose_runtime_file_rejected_even_with_consistent_inventory(self):
-        fixture(self.directory, extra_generation_member='snippets/linux-x64/libcoreclr.so')
-        with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
-            common.verify_bundle(self.directory)
+        for name in ('snippets/linux-x64/libcoreclr.so', 'formatting/win-x64/System.Runtime.dll'):
+            with self.subTest(name=name):
+                fixture(self.directory, extra_generation_member=name)
+                with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+                    common.verify_bundle(self.directory)
+
+    def test_missing_formatter_rejected_even_with_consistent_inventory(self):
+        for name in ('FormatTool.exe', 'README.md'):
+            with self.subTest(name=name):
+                fixture(self.directory, missing_generation_member='formatting/win-x64/' + name)
+                with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+                    common.verify_bundle(self.directory)
+
+    def test_prior_generation_bundle_without_formatting_remains_valid(self):
+        expected = fixture(self.directory, include_formatting=False)
+        self.assertEqual(common.verify_bundle(self.directory), expected)
 
     def test_non_executable_linux_apphost_rejected(self):
         fixture(self.directory, linux_mode=0o644)

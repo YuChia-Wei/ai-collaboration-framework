@@ -305,6 +305,12 @@ def verify_bundle(directory, expected_source=None):
                 body_file = safe_name(snippet["bodyFile"])
                 require("/" not in body_file and body_file.endswith(".snippet"), "invalid snippet body filename")
                 required.add(prefix + "snippets/" + body_file)
+        # Older generation bundles have no formatting component.
+        if "formatting" in generation:
+            require(generation["formatting"] == {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
+                    "formatting support contract")
+            required.update({"generation/formatting/win-x64/FormatTool.exe",
+                             "generation/formatting/win-x64/README.md"})
         require(generation_names == required, "single-file generation layout")
         require(next(r["mode"] for r in rows if r["path"] == "generation/snippets/linux-x64/SnippetTool") == 0o755,
                 "Linux snippet executable mode")

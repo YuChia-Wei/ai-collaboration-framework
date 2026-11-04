@@ -10,7 +10,14 @@ Solution selection is available for whitespace. Cleanup supports a direct
 `.csproj` with **no ProjectReference items**; solution configuration mappings
 and referenced-project execution contexts are not part of this initial subset.
 
-## Build a local deliverable
+## Install or build
+
+Releases containing `generation/formatting` install this tool through
+`python generation/install-generation.py --project <existing-project>` from the
+extracted release. Run `.ai/tools/dotnet-generation/formatting/win-x64/FormatTool.exe`.
+The existing `generation.json` inventory owns its version, files and recovery;
+Framework's knowledge lock does not track this separately installed tool bundle.
+Older bundles without `formatting` do not supply this capability.
 
 From this source directory, publish to a fresh directory outside the source tree:
 
@@ -20,9 +27,11 @@ dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained true -o 
 
 Copy the **entire publish directory** to a machine with the supported SDK. Run
 `FormatTool.exe --version` or `FormatTool.exe --request C:/work/format.json`.
-The publish directory, including this guide, is independently runnable without
-the framework checkout. It is not an installed framework component or a formal
-release. No installer, global tool registration or automatic SDK download occurs.
+The project defaults to self-contained single-file publishing with the command
+above: one executable and this guide, without loose runtime DLLs or PDBs.
+The release builder uses the same single-file settings for snippets and formatting
+and rejects unexpected runtime files. No global tool registration or automatic
+SDK download occurs. A local publish alone is not a formal release.
 
 ## Request and paths
 

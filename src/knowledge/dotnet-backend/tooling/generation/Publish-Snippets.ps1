@@ -29,7 +29,9 @@ New-Item -ItemType Directory -Path $destination | Out-Null
 
 & dotnet publish $project -c Release -r $RuntimeIdentifier --self-contained true `
     --artifacts-path $artifacts -o $publish "-p:Version=$Version" `
-    "-p:PublishAot=$($NativeAot.IsPresent.ToString().ToLowerInvariant())" -p:PublishSingleFile=false
+    "-p:PublishAot=$($NativeAot.IsPresent.ToString().ToLowerInvariant())" `
+    "-p:PublishSingleFile=$((!$NativeAot.IsPresent).ToString().ToLowerInvariant())" `
+    -p:IncludeNativeLibrariesForSelfExtract=true -p:DebugType=None -p:DebugSymbols=false
 if ($LASTEXITCODE -ne 0) { throw 'Self-contained publish failed; keep the output for diagnosis.' }
 
 $executable = if ($IsWindows) { 'SnippetTool.exe' } else { 'SnippetTool' }
