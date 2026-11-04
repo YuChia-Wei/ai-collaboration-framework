@@ -6,6 +6,9 @@ being edited. This initial delivery supports **Windows with SDK 10.0.403** and
 single-target SDK-style C# projects. A `.sln` or `.slnx` must contain only C#
 projects. Multi-targeting, solution filters, legacy projects, Linux acceptance
 and macOS support are outside this initial contract.
+Solution selection is available for whitespace. Cleanup supports a direct
+`.csproj` with **no ProjectReference items**; solution configuration mappings
+and referenced-project execution contexts are not part of this initial subset.
 
 ## Build a local deliverable
 
@@ -40,8 +43,12 @@ returned as `pathBase`. The caller's working directory does not select files or
 SDK policy. The tool runs the SDK from `pathBase`, respecting its `global.json`.
 Supply exact files, never folders or globs. Empty, missing, non-C# and unmatched
 selections fail. Every file must be an evaluated `Compile` item in that workspace;
-an existing but excluded source file does not count. Linked Compile items can be
-selected explicitly. Project references do not implicitly expand a `.csproj`
+an existing but excluded source file does not count. Files must be inside the
+workspace directory: SDK include matching can silently ignore parent-relative
+or cross-drive files, so those selections return `unsupported-selection` before
+formatting. Linked Compile items inside that boundary can be selected explicitly;
+for whitespace, select an enclosing solution to cover links outside a project's
+own directory. Project references do not implicitly expand a `.csproj`
 selection to their source files; select the containing solution when needed.
 
 Use `action: "apply"` to write. `whitespace` invokes only the SDK whitespace
@@ -88,18 +95,27 @@ ReSharper profiles or third-party code fixes. See Microsoft's
 [var preference rules](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008)
 and [CA1805](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1805).
 
-Cleanup first checks design-time loading and the referenced C# project closure.
-It requires a successful `dotnet build --no-restore` with ordinary analyzer
-execution disabled, so missing types/references or compiler errors cannot
+Cleanup checks design-time loading and rejects solution or ProjectReference
+contexts with `unsupported-cleanup-workspace`. Their configuration/property
+mappings cannot be inferred safely from standalone project queries. This remains
+an explicit unsupported result even if all current files happen to be clean.
+No compiler or formatter is run for that rejection. Whitespace retains its
+project/solution support.
+
+For a supported project, cleanup requires a successful `dotnet msbuild
+-target:Compile` with ordinary analyzer execution and project-reference builds
+disabled, so missing types/references or compiler errors cannot
 masquerade as a clean style result. Source generators still run during that
 compilation. Apply also checks compilation after its changes before the final
-format check. Build outputs go to the target's ordinary intermediate/output
+format check. The compiler target and properties match the ordinary preflight,
+except that preflight skips the compiler. No Build-level targets or implicit
+restore are added. Compiler outputs go to the target's ordinary intermediate
 locations; target settings such as warnings-as-errors remain effective. These
 checks establish compilation prerequisites, not business correctness.
 
 SDK/targeting-pack analyzers and generators are part of the selected SDK.
-Other resolved analyzer or source-generator DLLs, including NuGet packages and
-referenced projects' analyzers, produce `analyzer-consent-required` **before
+Other resolved analyzer or source-generator DLLs, including NuGet packages,
+produce `analyzer-consent-required` **before
 the compiler or formatter executes**. The result lists `projectAnalyzers`.
 To permit them, supply their exact paths in `allowedProjectAnalyzers`; relative
 paths use `pathBase`. This permits their code to execute, including source

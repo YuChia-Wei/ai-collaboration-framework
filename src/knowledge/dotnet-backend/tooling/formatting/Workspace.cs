@@ -32,14 +32,11 @@ internal static partial class Workspace
     {
         var files = new Dictionary<string, string>(Paths);
         var observedFiles = new HashSet<string>(Paths);
-        var visited = new HashSet<string>(Paths);
-        var pending = new Queue<string>(projects);
         var externalAnalyzers = new HashSet<string>(Paths);
-        while (pending.TryDequeue(out var project))
+        foreach (var project in projects)
         {
-            if (!visited.Add(project)) continue;
             if (!Path.GetExtension(project).Equals(".csproj", StringComparison.OrdinalIgnoreCase) || !File.Exists(project))
-                throw new ToolFailure("unsupported-project", "Referenced projects must also be existing C# projects.");
+                throw new ToolFailure("unsupported-project", "Select existing C# projects.");
             var command = await sdk.Require("load-failed", "msbuild", project, "-nologo",
                 "-target:Compile", "-property:DesignTimeBuild=true", "-property:SkipCompilerExecution=true",
                 "-property:ProvideCommandLineArgs=true", "-property:BuildProjectReferences=false",
@@ -56,23 +53,29 @@ internal static partial class Workspace
             foreach (var item in metadata.RootElement.GetProperty("Items").GetProperty("Compile").EnumerateArray())
             {
                 var path = FullPath(item.GetProperty("FullPath").GetString()!, Path.GetDirectoryName(project)!);
-                if (projects.Contains(project, Paths)) files.TryAdd(path, path);
+                files.TryAdd(path, path);
                 observedFiles.Add(path);
             }
             if (!cleanup) continue;
+            RejectProjectReferences(metadata.RootElement);
             CollectAnalyzers(metadata.RootElement, externalAnalyzers);
             // Actual compilation and design-time loading can select different Analyzer items.
             // Query both without running the compiler before permitting either execution.
             var buildMetadata = await sdk.Require("load-failed", "msbuild", project, "-nologo",
                 "-target:Compile", "-property:SkipCompilerExecution=true", "-property:BuildProjectReferences=false",
-                "-property:RunAnalyzers=false", "-getItem:Analyzer,ProjectReference", "-getProperty:MSBuildToolsPath");
+                "-property:RunAnalyzers=false", "-property:UseSharedCompilation=false",
+                "-getItem:Analyzer,ProjectReference", "-getProperty:MSBuildToolsPath");
             using var buildDocument = JsonDocument.Parse(buildMetadata.StandardOutput);
+            RejectProjectReferences(buildDocument.RootElement);
             CollectAnalyzers(buildDocument.RootElement, externalAnalyzers);
-            foreach (var data in new[] { metadata.RootElement, buildDocument.RootElement })
-                foreach (var reference in data.GetProperty("Items").GetProperty("ProjectReference").EnumerateArray())
-                    pending.Enqueue(FullPath(reference.GetProperty("FullPath").GetString()!, Path.GetDirectoryName(project)!));
         }
-        return new(files, observedFiles.ToArray(), visited.Except(projects, Paths).ToArray(), externalAnalyzers.Order(Paths).ToArray());
+        return new(files, observedFiles.ToArray(), externalAnalyzers.Order(Paths).ToArray());
+    }
+
+    private static void RejectProjectReferences(JsonElement metadata)
+    {
+        if (metadata.GetProperty("Items").GetProperty("ProjectReference").GetArrayLength() > 0)
+            throw new ToolFailure("unsupported-cleanup-workspace", "Cleanup does not yet support ProjectReference graphs or their configuration/property mappings. No compiler or formatter was run.");
     }
 
     private static void CollectAnalyzers(JsonElement metadata, HashSet<string> external)
@@ -107,4 +110,4 @@ internal static partial class Workspace
     private static partial Regex SolutionProject();
 }
 
-internal sealed record WorkspaceData(Dictionary<string, string> CompileFiles, string[] ObservedFiles, string[] ReferencedProjects, string[] ProjectAnalyzers);
+internal sealed record WorkspaceData(Dictionary<string, string> CompileFiles, string[] ObservedFiles, string[] ProjectAnalyzers);

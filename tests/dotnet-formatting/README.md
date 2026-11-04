@@ -21,5 +21,6 @@ Coverage: nested EditorConfig, preserved unselected user edits, no check writes,
 actual apply/recheck, `.sln`/`.slnx`, generated conventions and EditorConfig,
 invalid/unmatched files, load and partial-side-effect failures, explicit cleanup
 diagnostics/severity, unsupported/no-fixer results, semantic prerequisites,
-mode separation, and external generator consent. These are focused tool checks,
+mode separation, external generator consent, rejection of solution/reference
+configuration mappings, and literal `@`-prefixed/linked file paths. These are focused tool checks,
 not the #541 generation matrix, native Linux/macOS acceptance, or business tests.

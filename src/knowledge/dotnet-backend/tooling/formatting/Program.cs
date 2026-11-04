@@ -43,9 +43,15 @@ internal static class Program
             result.Diagnostics = request.Diagnostics.Distinct(StringComparer.Ordinal).ToArray();
             result.Severity = request.Severity;
             if (!File.Exists(workspace)) throw new ToolFailure("load-failed", "Workspace does not exist.");
+            if (request.Mode != "whitespace" && !Path.GetExtension(workspace).Equals(".csproj", StringComparison.OrdinalIgnoreCase))
+                throw new ToolFailure("unsupported-cleanup-workspace", "Cleanup requires a direct .csproj without ProjectReference items. Solution selection is supported for whitespace only.");
             var selected = request.Files.Select(path => Workspace.FullPath(path, result.PathBase)).Distinct(Workspace.Paths).ToArray();
             if (selected.Any(path => !Path.GetExtension(path).Equals(".cs", StringComparison.OrdinalIgnoreCase) || !File.Exists(path)))
                 throw new ToolFailure("invalid-selection", "Every selection must be an existing .cs file; folders and globs are not accepted.");
+            if (selected.Any(path =>
+                Path.IsPathRooted(Path.GetRelativePath(result.PathBase, path)) ||
+                Path.GetRelativePath(result.PathBase, path).StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal)))
+                throw new ToolFailure("unsupported-selection", "SDK include matching requires files inside the workspace directory. For linked files, choose an enclosing solution for whitespace; external/cross-drive selections are unsupported.");
             result.SelectedFiles = selected;
             Snapshot(selected, snapshots);
             var sdk = new Sdk(result, result.PathBase);
@@ -60,7 +66,6 @@ internal static class Program
                 throw new ToolFailure("unmatched-selection", "Every selected file must be an evaluated Compile item in the selected workspace.");
             result.SelectedFiles = selected.Select(path => loaded.CompileFiles[path]).ToArray();
             result.ConfigurationFiles = Workspace.Configurations(result.SelectedFiles);
-            result.ReferencedProjects = loaded.ReferencedProjects;
             result.ProjectAnalyzers = loaded.ProjectAnalyzers;
             Snapshot(loaded.ObservedFiles.Where(File.Exists), snapshots);
             if (request.Mode != "whitespace")
@@ -117,7 +122,15 @@ internal static class Program
         try
         {
             var arguments = new List<string> { "format", result.Mode!, result.Workspace!, "--no-restore", "--include" };
-            arguments.AddRange(result.SelectedFiles.Select(path => Path.GetRelativePath(result.PathBase!, path)));
+            arguments.AddRange(result.SelectedFiles.Select(path =>
+            {
+                var relative = Path.GetRelativePath(result.PathBase!, path);
+                // System.CommandLine expands @response files before interpreting --include.
+                // An explicit relative prefix also keeps leading '-' filenames literal.
+                // Selection validation keeps paths inside the workspace: SDK glob matching
+                // can silently ignore parent-relative and cross-drive files.
+                return "." + Path.DirectorySeparatorChar + relative;
+            }));
             arguments.AddRange(["--report", report, "--verbosity", "diagnostic"]);
             if (result.Mode != "whitespace")
             {
@@ -151,8 +164,8 @@ internal static class Program
     }
 
     private static Task<CommandResult> CheckSemantics(Sdk sdk, string workspace) =>
-        sdk.Require("semantic-prerequisite-failed", "build", workspace, "--no-restore", "-nologo",
-            "-property:RunAnalyzers=false", "-property:UseSharedCompilation=false");
+        sdk.Require("semantic-prerequisite-failed", "msbuild", workspace, "-nologo", "-target:Compile",
+            "-property:BuildProjectReferences=false", "-property:RunAnalyzers=false", "-property:UseSharedCompilation=false");
 
     private static void Snapshot(IEnumerable<string> files, Dictionary<string, string> snapshots)
     {

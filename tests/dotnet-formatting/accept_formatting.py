@@ -146,6 +146,41 @@ class FormattingAcceptance(unittest.TestCase):
                 self.assertEqual((code, result['errorCode']), (1, expected), result)
                 self.assertEqual(result['commands'], [])
 
+    def test_response_file_names_and_linked_paths_stay_literal(self):
+        selected = self.project / '@Excluded.cs'
+        payload = self.project / 'Excluded.cs'  # Excluded from Compile, but would be parsed as a response file.
+        original_payload = payload.read_text()
+        original_project = (self.project / 'App.csproj').read_text()
+        unselected = digest(self.project / 'Unselected.cs')
+        linked = self.root / '@Linked.cs'
+        try:
+            selected.write_text('class AtName{\nvoid Run(){\nint value=1;\n}\n}\n', encoding='utf-8')
+            payload.write_text('Unselected.cs\n--include-generated\n', encoding='utf-8')
+            code, result = self.invoke(files=['@Excluded.cs'], action='apply')
+            self.assertEqual((code, result['status']), (0, 'applied'), result)
+            self.assertEqual(result['changedFiles'], [str(selected)])
+            self.assertEqual(digest(self.project / 'Unselected.cs'), unselected)
+            linked.write_text('class LinkedName{\nvoid Run(){\nint value=1;\n}\n}\n', encoding='utf-8')
+            (self.project / 'App.csproj').write_text(original_project.replace('</Project>',
+                '<ItemGroup><Compile Include="../@Linked.cs" Link="Linked.cs" /></ItemGroup></Project>'), encoding='utf-8')
+            linked_before = digest(linked)
+            code, result = self.invoke(files=['../@Linked.cs'], action='apply')
+            self.assertEqual((code, result['errorCode']), (1, 'unsupported-selection'), result)
+            self.assertEqual(digest(linked), linked_before)
+            (self.root / 'Linked.slnx').write_text('<Solution><Project Path="App/App.csproj" /></Solution>', encoding='utf-8')
+            (self.root / '.editorconfig').write_text('root = true\n[*.cs]\nindent_size = 4\n', encoding='utf-8')
+            code, result = self.invoke(workspace='Linked.slnx', files=['@Linked.cs'], action='apply')
+            self.assertEqual((code, result['status']), (0, 'applied'), result)
+            self.assertEqual(result['changedFiles'], [str(linked)])
+            self.assertEqual(digest(self.project / 'Unselected.cs'), unselected)
+        finally:
+            payload.write_text(original_payload, encoding='utf-8')
+            (self.project / 'App.csproj').write_text(original_project, encoding='utf-8')
+            selected.unlink(missing_ok=True)
+            linked.unlink(missing_ok=True)
+            (self.root / 'Linked.slnx').unlink(missing_ok=True)
+            (self.root / '.editorconfig').unlink(missing_ok=True)
+
     def test_sln_folder_and_editorconfig_generated_exclusion(self):
         solution = self.root / 'Sample.sln'
         solution.write_text('''Microsoft Visual Studio Solution File, Format Version 12.00
@@ -258,8 +293,49 @@ public sealed class Probe : ISourceGenerator {
             code, result = self.invoke(**selection, environment=environment, allowedProjectAnalyzers=[str(analyzer)])
             self.assertEqual((code, result['status']), (2, 'changes-required'), result)
             self.assertEqual(marker.read_text(), 'executed')
+            marker.unlink()
+            project_file.write_text(original.replace('</Project>',
+                f'<ItemGroup Condition="\'$(Configuration)\' == \'Release\'"><Analyzer Include="{analyzer.as_posix()}" />'
+                '</ItemGroup></Project>'), encoding='utf-8')
+            mapped = self.root / 'Mapped.sln'
+            mapped.write_text('''Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\\App.csproj", "{A168DF84-CAED-473D-ADAA-96901A33BB02}"
+EndProject
+Global
+  GlobalSection(SolutionConfigurationPlatforms) = preSolution
+    Debug|Any CPU = Debug|Any CPU
+  EndGlobalSection
+  GlobalSection(ProjectConfigurationPlatforms) = postSolution
+    {A168DF84-CAED-473D-ADAA-96901A33BB02}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+    {A168DF84-CAED-473D-ADAA-96901A33BB02}.Debug|Any CPU.Build.0 = Release|Any CPU
+  EndGlobalSection
+EndGlobal
+''', encoding='utf-8')
+            code, result = self.invoke(**selection, environment=environment, workspace='Mapped.sln', files=['App/Nested/Chosen.cs'])
+            self.assertEqual((code, result['errorCode']), (1, 'unsupported-cleanup-workspace'), result)
+            self.assertFalse(marker.exists(), 'Mapped solution generator ran without consent')
+
+            dependency = self.root / 'Dependency'
+            dependency.mkdir()
+            (dependency / 'Dependency.csproj').write_text(
+                '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>'
+                f'<ItemGroup Condition="\'$(Configuration)\' == \'Release\'"><Analyzer Include="{analyzer.as_posix()}" />'
+                '</ItemGroup></Project>', encoding='utf-8')
+            (dependency / 'Dependency.cs').write_text('public class Dependency {}', encoding='utf-8')
+            project_file.write_text(original.replace('</Project>',
+                '<ItemGroup><ProjectReference Include="../Dependency/Dependency.csproj" '
+                'SetConfiguration="Configuration=Release" /></ItemGroup></Project>'), encoding='utf-8')
+            restore = subprocess.run(['dotnet', 'restore', str(project_file), '--source', str(self.root)],
+                                     capture_output=True, text=True, timeout=120)
+            self.assertEqual(restore.returncode, 0, restore.stdout + restore.stderr)
+            code, result = self.invoke(**selection, environment=environment)
+            self.assertEqual((code, result['errorCode']), (1, 'unsupported-cleanup-workspace'), result)
+            self.assertFalse(marker.exists(), 'Mapped dependency generator ran without consent')
         finally:
             project_file.write_text(original, encoding='utf-8')
+            restore = subprocess.run(['dotnet', 'restore', str(project_file), '--source', str(self.root)],
+                                     capture_output=True, text=True, timeout=120)
+            self.assertEqual(restore.returncode, 0, restore.stdout + restore.stderr)
 
 
 if __name__ == '__main__':

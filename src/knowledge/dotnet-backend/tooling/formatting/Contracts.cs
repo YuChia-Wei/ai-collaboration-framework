@@ -34,7 +34,6 @@ internal sealed class Result
     public string? Severity { get; set; }
     public RuleCapability[] RuleCapabilities { get; } = Rules.Capabilities;
     public string[] ProjectAnalyzers { get; set; } = [];
-    public string[] ReferencedProjects { get; set; } = [];
     public string[] SelectedFiles { get; set; } = [];
     public string[] LoadedProjects { get; set; } = [];
     public string[] ConfigurationFiles { get; set; } = [];
