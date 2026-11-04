@@ -10,7 +10,7 @@ $Scratch = [IO.Path]::GetFullPath($Scratch)
 if (Test-Path -LiteralPath $Scratch) {
     throw 'Choose a fresh acceptance scratch directory.'
 }
-$null = New-Item -Path $Scratch -ItemType Directory
+New-Item -Path $Scratch -ItemType Directory | Out-Null
 
 function Write-Utf8([string] $File, [string] $Text) {
     [IO.File]::WriteAllText((Join-Path $Scratch $File), $Text, [Text.UTF8Encoding]::new($false))

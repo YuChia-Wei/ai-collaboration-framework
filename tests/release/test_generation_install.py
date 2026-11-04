@@ -17,7 +17,7 @@ class GenerationInstallation(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.bundle = self.root / 'bundle'
         self.bundle.mkdir()
         self.project = self.root / 'project'
@@ -107,6 +107,16 @@ class GenerationInstallation(unittest.TestCase):
                 self.assertEqual((self.target / 'tool').read_bytes(), b'first')
                 self.assertEqual((self.target / 'generation.json').read_bytes(), installed_manifest)
                 self.assertFalse((self.target.parent / '.dotnet-generation-pending').exists())
+
+    def test_cli_missing_source_member_preserves_previous_installation(self):
+        API['install'](self.bundle, self.project)
+        installed_manifest = (self.target / 'generation.json').read_bytes()
+        (self.bundle / 'tool').unlink()
+        doc = self.assert_blocked(self.cli('--project', str(self.project)), 'filesystem-error')
+        self.assertIn('Missing bundle member: tool', doc['reason'])
+        self.assertEqual((self.target / 'tool').read_bytes(), b'first')
+        self.assertEqual((self.target / 'generation.json').read_bytes(), installed_manifest)
+        self.assertFalse((self.target.parent / '.dotnet-generation-pending').exists())
 
     def test_cli_linked_project_requires_explicit_physical_path(self):
         link = self.root / 'linked-project'
@@ -260,12 +270,14 @@ api['install'](Path(sys.argv[2]), Path(sys.argv[3]))
 
     def test_unknown_file_and_directory_are_preserved(self):
         API['install'](self.bundle, self.project)
-        for name, directory in [('team.txt', False), ('team', True)]:
+        for name, directory in [('.DS_Store', False), ('desktop.ini', False), ('team', True)]:
             path = self.target / name
             path.mkdir() if directory else path.write_text('custom')
-            with self.assertRaises(ValueError):
-                API['install'](self.bundle, self.project)
+            doc = self.assert_blocked(self.cli('--project', str(self.project)), 'invalid-bundle')
+            self.assertIn(name, doc['reason'])
             self.assertTrue(path.exists())
+            if not directory:
+                self.assertEqual(path.read_text(), 'custom')
             path.rmdir() if directory else path.unlink()
 
     def test_corrupt_source_and_traversal_do_not_install(self):

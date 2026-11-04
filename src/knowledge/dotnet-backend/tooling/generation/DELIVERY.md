@@ -10,6 +10,12 @@ The installer verifies the manifest and writes `.ai/tools/dotnet-generation`.
 It does not register templates, edit project code or select a technology stack.
 Updates replace only an unchanged previous installation; modified or unknown
 files cause a refusal. Keep custom snippets and templates outside this directory.
+This also applies to incidental files such as `.DS_Store`, `desktop.ini` and
+`Thumbs.db`. Refusal reasons identify unknown paths (up to five file names per
+list) or a missing manifest-listed member. Inspect the named paths and preserve
+anything you own before reconciling them; the installer does not delete them
+automatically. A missing member retains the `filesystem-error` code, while
+unknown files or directories use `invalid-bundle`.
 
 Use an existing project's physical path. The installer rejects symlinks and
 Windows reparse points in the source, destination or their ancestors. Inspect

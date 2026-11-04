@@ -61,7 +61,10 @@ def verify(root):
         folded.add(name.casefold())
         names.add(name)
         expected_dirs.update(p.as_posix() for p in PurePosixPath(name).parents if str(p) != '.')
-        raw = regular(root / name)
+        try:
+            raw = regular(root / name)
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(exc.errno, 'Missing bundle member: ' + name, exc.filename) from exc
         if len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256'] or row['mode'] not in (0o644, 0o755):
             raise InstallationError('bundle-changed', 'Changed bundle member: ' + name)
     paths = names | expected_dirs | {'generation.json'}
@@ -76,11 +79,14 @@ def verify(root):
             actual.add(name)
         elif stat.S_ISDIR(mode):
             if name not in expected_dirs:
-                raise InstallationError('invalid-bundle', 'Unknown bundle directory')
+                raise InstallationError('invalid-bundle', 'Unknown bundle directory: ' + name)
         else:
             raise InstallationError('invalid-bundle', 'Unsupported bundle entry: ' + name)
-    if actual != names | {'generation.json'}:
-        raise InstallationError('invalid-bundle', 'Unknown or missing bundle files')
+    expected = names | {'generation.json'}
+    if actual != expected:
+        raise InstallationError('invalid-bundle', 'Unknown or missing bundle files; '
+                                f'unknown (first 5): {sorted(actual - expected)[:5]!r}; '
+                                f'missing (first 5): {sorted(expected - actual)[:5]!r}')
     return doc
 
 

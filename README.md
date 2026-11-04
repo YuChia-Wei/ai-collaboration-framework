@@ -2,6 +2,8 @@
 
 這是可重用 AI collaboration framework 的來源庫。本庫維護產品套件，也安裝選定版本供 Codex 與 Claude 使用。
 
+原生 .NET 範本與 snippet 工具的獨立安裝方式，見[.NET generation 工具（選配）](docs/installation.md#net-generation)。
+
 ## 從這裡開始
 
 | 目的 | 路徑 |

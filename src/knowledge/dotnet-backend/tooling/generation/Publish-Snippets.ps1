@@ -25,7 +25,7 @@ $project = Join-Path $PSScriptRoot 'snippet-tool/SnippetTool.csproj'
 $publish = Join-Path $destination 'publish'
 $artifacts = Join-Path $destination 'build'
 $archive = Join-Path $destination ($name + $(if ($IsWindows) { '.zip' } else { '.tar.gz' }))
-$null = New-Item -ItemType Directory -Path $destination
+New-Item -ItemType Directory -Path $destination | Out-Null
 
 & dotnet publish $project -c Release -r $RuntimeIdentifier --self-contained true `
     --artifacts-path $artifacts -o $publish "-p:Version=$Version" `
