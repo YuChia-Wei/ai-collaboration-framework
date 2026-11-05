@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import stat
 import subprocess
 
 RUNTIMES = {'win-x64': ('Windows', 'AMD64', ('snippets', 'formatting')),
@@ -59,9 +60,27 @@ def collect(root, output, version, commit):
         raise ValueError(missing)
     seen = set()
     for directory in sorted(root.iterdir()):
-        if not directory.is_dir() or directory.is_symlink():
+        info = directory.lstat()
+        if (not stat.S_ISDIR(info.st_mode) or stat.S_ISLNK(info.st_mode)
+                or getattr(info, 'st_file_attributes', 0) & 0x400):
             raise ValueError('Expected one native artifact directory per runtime')
-        manifest = json.loads((directory / 'native-tools.json').read_text(encoding='utf-8'))
+        # Inspect entries before traversing or reading them, including the manifest.
+        members, pending = set(), [directory]
+        while pending:
+            for path in pending.pop().iterdir():
+                info = path.lstat()
+                if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+                    raise ValueError('Native artifact contains a linked path')
+                if stat.S_ISDIR(info.st_mode):
+                    pending.append(path)
+                elif stat.S_ISREG(info.st_mode):
+                    members.add(path)
+                else:
+                    raise ValueError('Native artifact member hash/type mismatch')
+        manifest_path = directory / 'native-tools.json'
+        if manifest_path not in members:
+            raise ValueError('Native artifact manifest must be a regular file')
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
         rid = manifest['rid']
         if (manifest['schema'] != 'aicf-native-tools/1' or manifest['source_commit'] != commit
                 or manifest['version'] != version or rid not in RUNTIMES or rid in seen):
@@ -77,8 +96,7 @@ def collect(root, output, version, commit):
                 raise ValueError('Invalid native artifact member')
             expected.add(name)
             path = directory / name
-            if not path.is_file() or any((root / p).is_symlink()
-                                        for p in (path.relative_to(root), *path.relative_to(root).parents)):
+            if path not in members:
                 raise ValueError('Native artifact member hash/type mismatch')
             raw = path.read_bytes()
             if len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
@@ -86,8 +104,8 @@ def collect(root, output, version, commit):
             target = output / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(raw)
-        actual = {p.relative_to(directory).as_posix() for p in directory.rglob('*') if p.is_file()}
-        if actual != expected or any(p.is_symlink() for p in directory.rglob('*')):
+        actual = {p.relative_to(directory).as_posix() for p in members}
+        if actual != expected:
             raise ValueError('Native artifact inventory mismatch')
     if seen != set(RUNTIMES):
         raise ValueError(missing)

@@ -727,11 +727,33 @@ class NativeAdmission(unittest.TestCase):
                 self.skipTest(f'Directory symlink creation unavailable: {error}')
             native_tools.collect(alias / 'inputs', root / 'valid-alias', '1.2.3', SOURCE['commit'])
             self.assertEqual(len(list((root / 'valid-alias').rglob('binary'))), 3)
+            manifest = part / 'native-tools.json'
+            external_manifest = root / 'external-manifest.json'
+            manifest.rename(external_manifest)
+            manifest.symlink_to(external_manifest)
+            with self.assertRaisesRegex(ValueError, 'linked path'):
+                native_tools.collect(inputs, root / 'linked-manifest', '1.2.3', SOURCE['commit'])
+            manifest.unlink()
+            external_manifest.rename(manifest)
             external = root / 'external-binary'
             path.rename(external)
             path.symlink_to(external)
-            with self.assertRaisesRegex(ValueError, 'hash/type'):
+            with self.assertRaisesRegex(ValueError, 'linked path'):
                 native_tools.collect(inputs, root / 'linked-member', '1.2.3', SOURCE['commit'])
+
+    def test_manifest_must_be_regular_before_read(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            inputs = root / 'inputs'
+            manifest = inputs / 'win-x64/native-tools.json'
+            manifest.mkdir(parents=True)
+            with self.assertRaisesRegex(ValueError, 'manifest must be a regular file'):
+                native_tools.collect(inputs, root / 'directory-manifest', '1.2.3', SOURCE['commit'])
+            if hasattr(os, 'mkfifo'):
+                manifest.rmdir()
+                os.mkfifo(manifest)
+                with self.assertRaisesRegex(ValueError, 'hash/type'):
+                    native_tools.collect(inputs, root / 'fifo-manifest', '1.2.3', SOURCE['commit'])
 
     def test_platform_parts_require_complete_matching_source_version_and_bytes(self):
         with tempfile.TemporaryDirectory() as directory:

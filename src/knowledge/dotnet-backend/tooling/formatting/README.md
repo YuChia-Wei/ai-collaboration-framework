@@ -66,8 +66,10 @@ or notarized. Before using a downloaded tool from non-interactive automation:
    or damaged content; that is not the unidentified-developer exception.
 3. Run the version command again and confirm its output before enabling AI calls.
 
-The installer preserves quarantine and does not grant this approval or disable
-Gatekeeper. An OS-blocked launch happens before the tool can return JSON. Native
+The installer issues no quarantine-removal command and does not grant this
+approval or disable Gatekeeper. Attribute preservation depends on the download,
+extraction and copy path; that delivery path remains unverified. An OS-blocked
+launch happens before the tool can return JSON. Native
 CI builds and SDK behavioral acceptance do not verify a downloaded artifact's
 first-use approval. Developer ID signing/notarization remains separate work.
 
