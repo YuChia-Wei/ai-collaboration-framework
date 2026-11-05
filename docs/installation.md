@@ -113,12 +113,40 @@ if ($LASTEXITCODE -ne 0) { throw '生成工具安裝未完成；請依 JSON 診�
 ```
 
 此步驟使用 Python 3.11+，將完整工具包安裝到 `.ai/tools/dotnet-generation/`，
-不會自動註冊範本或產生應用。Snippet 執行檔包含 .NET runtime，支援 Windows x64
-與 Linux x64；範本的註冊、生成及建置另需 .NET 10 SDK。macOS 正式交付由 #582
+目前成品也包含 `formatting/win-x64/FormatTool.exe`、
+`formatting/osx-arm64/FormatTool` 與各自使用說明，由相同
+`generation.json`、安裝及復原流程管理；舊成品須先確認是否包含 `formatting`。
+FormatTool 支援 Windows x64／SDK 10.0.403 與 macOS Apple silicon／SDK 10.0.400
+兩個指定組合，不能沿用 snippet 的 Linux 支援宣稱，也不推定其他 SDK 版本相容。
+macOS 執行檔採 ad-hoc 簽章；尚非 Developer ID 簽章或 notarization，下載後的
+Gatekeeper 首次執行步驟見下方。正式工具包的兩種工具皆採 Native AOT，
+由對應平台建置原生執行檔，包含必要 runtime 支援，沒有散落的 DLL 或 PDB；
+不需要另外手動複製 FormatTool。`generation.json` 會標示 `native-aot`。
+開發仍須安裝 .NET 10 SDK，FormatTool 必須能從 PATH 找到指定版本的 `dotnet`。
+維護者可明確選擇 framework-dependent CoreCLR 比較版；該版本使用 host runtime，
+自訂位置需設定 .NET host lookup，啟動失敗也先於工具 JSON 契約。
+不會自動註冊範本或產生應用。Snippet 執行檔支援 Windows x64
+與 Linux x64；兩種工具及範本的註冊、生成與建置皆以 host 已安裝 .NET 10 SDK 為前提。SnippetTool 的 macOS 正式交付由 #582
 另行處理。目錄式／nupkg 註冊、自訂與恢復指令見成品的 `generation/README.md`
 或[來源交付指南](../src/knowledge/dotnet-backend/tooling/generation/DELIVERY.md)。
 
-工具含兩平台執行檔，可能超過 140 MB；建議由專案自行加入以下 `.gitignore`
+| 工具 | Windows x64 | Linux x64 | macOS arm64 |
+| --- | --- | --- | --- |
+| SnippetTool | 支援 | 支援 | 尚未正式交付（#582） |
+| FormatTool | SDK 10.0.403 | 不支援 | SDK 10.0.400；遭 Gatekeeper 阻擋時需使用者核准 |
+
+macOS 首次執行：確認下載來源與套件完整性後，在專案目錄手動執行
+`.ai/tools/dotnet-generation/formatting/osx-arm64/FormatTool --version`。
+若 Gatekeeper 以「無法驗證開發者」或「無法檢查惡意軟體」阻擋，依
+[Apple 的核准步驟](https://support.apple.com/en-us/102445)，至「系統設定 →
+隱私權與安全性」選擇「強制打開」，再確認開啟；完成後重跑上述命令確認版本，
+再交由 AI 非互動呼叫。受管理的 Mac 若不提供核准選項，應由管理員處理。
+若系統回報檔案已損毀或含惡意內容，停止使用並重新核對來源，不能套用上述例外。
+安裝器沒有主動移除 quarantine 的命令，也不會關閉 Gatekeeper；屬性是否保留受
+下載、解壓與複製路徑影響，這條交付路徑尚未完成驗收。遭系統阻擋發生在工具
+啟動前，可能沒有 JSON 輸出；CI 建置與 SDK 驗收不證明下載後的核准流程已通過。
+
+工具包包含多平台執行檔與可重新取得的產物；建議由專案自行加入以下 `.gitignore`
 規則，並以版本控制保存自訂來源、所選 release 與 checksum 的重建說明：
 
 ```gitignore

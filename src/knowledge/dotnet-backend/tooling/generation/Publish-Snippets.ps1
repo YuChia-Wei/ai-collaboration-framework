@@ -15,7 +15,7 @@ $platform = if ($IsWindows) { 'win-' } elseif ($IsLinux) { 'linux-' } else { 'os
 if (!$RuntimeIdentifier.StartsWith($platform, [StringComparison]::Ordinal)) {
     throw 'Package on the target OS to preserve executable modes and use its native AOT toolchain.'
 }
-$mode = if ($NativeAot) { 'aot' } else { 'coreclr' }
+$mode = if ($NativeAot) { 'aot' } else { 'framework-dependent-coreclr-single-file' }
 $name = "SnippetTool-$Version-$RuntimeIdentifier-$mode"
 $destination = Join-Path $OutputRoot $name
 if (Test-Path -LiteralPath $destination) {
@@ -27,10 +27,13 @@ $artifacts = Join-Path $destination 'build'
 $archive = Join-Path $destination ($name + $(if ($IsWindows) { '.zip' } else { '.tar.gz' }))
 New-Item -ItemType Directory -Path $destination | Out-Null
 
-& dotnet publish $project -c Release -r $RuntimeIdentifier --self-contained true `
+& dotnet publish $project -c Release -r $RuntimeIdentifier `
+    --self-contained "$($NativeAot.IsPresent.ToString().ToLowerInvariant())" `
     --artifacts-path $artifacts -o $publish "-p:Version=$Version" `
-    "-p:PublishAot=$($NativeAot.IsPresent.ToString().ToLowerInvariant())" -p:PublishSingleFile=false
-if ($LASTEXITCODE -ne 0) { throw 'Self-contained publish failed; keep the output for diagnosis.' }
+    "-p:PublishAot=$($NativeAot.IsPresent.ToString().ToLowerInvariant())" `
+    "-p:PublishSingleFile=$((!$NativeAot.IsPresent).ToString().ToLowerInvariant())" `
+    -p:DebugType=None -p:DebugSymbols=false
+if ($LASTEXITCODE -ne 0) { throw "Snippet publish failed ($mode); keep the output for diagnosis." }
 
 $executable = if ($IsWindows) { 'SnippetTool.exe' } else { 'SnippetTool' }
 foreach ($member in @($executable, 'README.md', 'snippets/catalog.json',

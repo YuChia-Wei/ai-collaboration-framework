@@ -122,6 +122,13 @@ def identity(repository, source_commit=None, tag=None):
     return {"tag": None, "tag_object": None, "commit": commit}
 
 
+def release_version(source):
+    value = source['tag'][1:] if source['tag'] else '0.0.0-rc.' + str(int(source['commit'][:12], 16) + 1)
+    require(re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.[1-9][0-9]*)?', value),
+            'selected Catalog 1 supports stable or rc.N versions only')
+    return value
+
+
 def plain(path):
     info = path.lstat()
     require(stat.S_ISREG(info.st_mode) and not path.is_symlink() and info.st_nlink == 1
@@ -218,7 +225,8 @@ def verify_bundle(directory, expected_source=None):
     version(manifest["version"])
     for key in ("tooling_commit", "workflow_commit"):
         oid(manifest["provenance"][key])
-    require(manifest["provenance"]["workflow"] in (WORKFLOW, ".github/workflows/package-candidate.yml"), "workflow identity")
+    require(manifest["provenance"]["workflow"] in (WORKFLOW, ".github/workflows/package-candidate.yml",
+                                                 ".github/workflows/native-tools.yml"), "workflow identity")
     archive = manifest["archive"]
     name = safe_name(archive["name"])
     require("/" not in name and name.endswith(".zip"), "archive filename")
@@ -282,7 +290,8 @@ def verify_bundle(directory, expected_source=None):
                 and generation["source_commit"] == source["commit"]
                 and generation["version"] == manifest["version"], "generation source/version")
         require(generation["runtimes"] == ["win-x64", "linux-x64"]
-                and generation["mode"] == "self-contained-coreclr-single-file", "generation runtime contract")
+                and generation["mode"] in ("self-contained-coreclr-single-file",
+                                           "framework-dependent-coreclr-single-file", "native-aot"), "generation runtime contract")
         generation_names = {"generation/generation.json"}
         for row in generation["files"]:
             generation_name = "generation/" + safe_name(row["path"])
@@ -305,6 +314,21 @@ def verify_bundle(directory, expected_source=None):
                 body_file = safe_name(snippet["bodyFile"])
                 require("/" not in body_file and body_file.endswith(".snippet"), "invalid snippet body filename")
                 required.add(prefix + "snippets/" + body_file)
+        # Older generation bundles have no formatting component.
+        if "formatting" in generation:
+            require(generation["formatting"] in (
+                        {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
+                        {"runtimes": ["win-x64", "osx-arm64"],
+                         "sdk_versions": {"win-x64": "10.0.403", "osx-arm64": "10.0.400"}}),
+                    "formatting support contract")
+            for rid in generation["formatting"]["runtimes"]:
+                prefix = "generation/formatting/" + rid + "/"
+                executable = "FormatTool.exe" if rid == "win-x64" else "FormatTool"
+                required.update({prefix + executable, prefix + "README.md"})
+                if rid != "win-x64":
+                    require(prefix + executable in generation_names, "single-file generation layout")
+                    require(next(r["mode"] for r in rows if r["path"] == prefix + executable) == 0o755,
+                            "formatting executable mode")
         require(generation_names == required, "single-file generation layout")
         require(next(r["mode"] for r in rows if r["path"] == "generation/snippets/linux-x64/SnippetTool") == 0o755,
                 "Linux snippet executable mode")

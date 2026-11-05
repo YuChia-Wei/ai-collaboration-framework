@@ -19,6 +19,7 @@ import yaml
 SCRIPTS = Path(__file__).absolute().parents[2] / ".github/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import release_common as common
+import native_tools
 
 
 def load(name, filename):
@@ -49,7 +50,9 @@ def readme_source(template=README_TEMPLATE):
 
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
             engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
-            missing_generation_member=None, extra_generation_member=None, linux_mode=0o755):
+            missing_generation_member=None, extra_generation_member=None, linux_mode=0o755,
+            include_formatting=True, legacy_formatting=False, macos_mode=0o755,
+            generation_mode="framework-dependent-coreclr-single-file"):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -87,6 +90,10 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     payload["README.md"] = (readme if readme_override is None else readme_override, 0o644)
     if schema == common.SCHEMA:
         generated = {
+            "formatting/win-x64/FormatTool.exe": b"formatter",
+            "formatting/win-x64/README.md": b"format usage",
+            "formatting/osx-arm64/FormatTool": b"mac formatter",
+            "formatting/osx-arm64/README.md": b"format usage",
             "install-generation.py": b"installer", "README.md": b"usage", "snippets/README.md": b"usage",
             "snippets/win-x64/SnippetTool.exe": b"windows",
             "snippets/linux-x64/SnippetTool": b"linux",
@@ -103,10 +110,22 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
         if extra_generation_member:
             generated[extra_generation_member] = b'extra file'
         generation = {"schema": "aicf-generation/1", "source_commit": SOURCE["commit"],
+                      "formatting": {"runtimes": ["win-x64", "osx-arm64"],
+                                     "sdk_versions": {"win-x64": "10.0.403", "osx-arm64": "10.0.400"}},
                       "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
-                      "mode": "self-contained-coreclr-single-file", "files": []}
+                      "mode": generation_mode, "files": []}
+        if not include_formatting:
+            del generation['formatting']
+            del generated['formatting/win-x64/FormatTool.exe']
+            del generated['formatting/win-x64/README.md']
+        if legacy_formatting:
+            generation['formatting'] = {"runtimes": ["win-x64"], "sdk_version": "10.0.403"}
+        if legacy_formatting or not include_formatting:
+            del generated['formatting/osx-arm64/FormatTool']
+            del generated['formatting/osx-arm64/README.md']
         for name, data in sorted(generated.items()):
-            mode = linux_mode if name.endswith("/SnippetTool") else 0o644
+            mode = (linux_mode if name.endswith("/SnippetTool") else
+                    macos_mode if name == 'formatting/osx-arm64/FormatTool' else 0o644)
             generation["files"].append(common.entry(name, data, mode))
             payload["generation/" + name] = (data, mode)
         payload["generation/generation.json"] = (common.encoded(generation), 0o644)
@@ -202,6 +221,12 @@ class ReleaseContracts(unittest.TestCase):
     def test_actual_zip_raw_inventory(self):
         self.assertEqual(common.verify_bundle(self.directory, SOURCE), self.manifest)
 
+    def test_native_and_host_runtime_bundles_remain_valid(self):
+        for mode in ('native-aot', 'framework-dependent-coreclr-single-file'):
+            with self.subTest(mode=mode):
+                expected = fixture(self.directory, generation_mode=mode)
+                self.assertEqual(common.verify_bundle(self.directory), expected)
+
     def test_incomplete_snippet_layout_rejected_even_with_consistent_inventory(self):
         for name in ('SnippetTool', 'README.md', 'snippets/catalog.json', 'snippets/example.snippet'):
             with self.subTest(name=name):
@@ -210,8 +235,33 @@ class ReleaseContracts(unittest.TestCase):
                     common.verify_bundle(self.directory)
 
     def test_loose_runtime_file_rejected_even_with_consistent_inventory(self):
-        fixture(self.directory, extra_generation_member='snippets/linux-x64/libcoreclr.so')
-        with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+        for name in ('snippets/linux-x64/libcoreclr.so', 'formatting/win-x64/System.Runtime.dll'):
+            with self.subTest(name=name):
+                fixture(self.directory, extra_generation_member=name)
+                with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+                    common.verify_bundle(self.directory)
+
+    def test_missing_formatter_rejected_even_with_consistent_inventory(self):
+        for name in ('win-x64/FormatTool.exe', 'win-x64/README.md',
+                     'osx-arm64/FormatTool', 'osx-arm64/README.md'):
+            with self.subTest(name=name):
+                fixture(self.directory, missing_generation_member='formatting/' + name)
+                with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
+                    common.verify_bundle(self.directory)
+
+    def test_prior_generation_bundle_without_formatting_remains_valid(self):
+        expected = fixture(self.directory, include_formatting=False,
+                           generation_mode="self-contained-coreclr-single-file")
+        self.assertEqual(common.verify_bundle(self.directory), expected)
+
+    def test_prior_windows_only_formatting_remains_valid(self):
+        expected = fixture(self.directory, legacy_formatting=True,
+                           generation_mode="self-contained-coreclr-single-file")
+        self.assertEqual(common.verify_bundle(self.directory), expected)
+
+    def test_non_executable_macos_formatter_rejected(self):
+        fixture(self.directory, macos_mode=0o644)
+        with self.assertRaisesRegex(ValueError, 'formatting executable mode'):
             common.verify_bundle(self.directory)
 
     def test_non_executable_linux_apphost_rejected(self):
@@ -654,6 +704,90 @@ class ReleaseContracts(unittest.TestCase):
         with patch.object(api, "request", side_effect=[rows, [{"id": 999}]]) as request:
             self.assertEqual(len(api.pages("/releases")), 101)
             self.assertIn("page=2", request.call_args_list[1].args[1])
+
+
+class NativeAdmission(unittest.TestCase):
+    def test_root_alias_is_allowed_but_member_links_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            inputs = root / 'inputs'
+            for rid in native_tools.RUNTIMES:
+                part = inputs / rid
+                path = part / native_tools.RUNTIMES[rid][2][0] / rid / 'binary'
+                path.parent.mkdir(parents=True)
+                path.write_bytes(b'native fixture')
+                (part / 'native-tools.json').write_text(json.dumps(dict(schema='aicf-native-tools/1',
+                    source_commit=SOURCE['commit'], version='1.2.3', rid=rid,
+                    files=[dict(path=path.relative_to(part).as_posix(), size=path.stat().st_size,
+                                sha256=hashlib.sha256(path.read_bytes()).hexdigest())])))
+            alias = root / 'alias'
+            try:
+                alias.symlink_to(root, target_is_directory=True)
+            except OSError as error:
+                self.skipTest(f'Directory symlink creation unavailable: {error}')
+            native_tools.collect(alias / 'inputs', root / 'valid-alias', '1.2.3', SOURCE['commit'])
+            self.assertEqual(len(list((root / 'valid-alias').rglob('binary'))), 3)
+            manifest = part / 'native-tools.json'
+            external_manifest = root / 'external-manifest.json'
+            manifest.rename(external_manifest)
+            manifest.symlink_to(external_manifest)
+            with self.assertRaisesRegex(ValueError, 'linked path'):
+                native_tools.collect(inputs, root / 'linked-manifest', '1.2.3', SOURCE['commit'])
+            manifest.unlink()
+            external_manifest.rename(manifest)
+            external = root / 'external-binary'
+            path.rename(external)
+            path.symlink_to(external)
+            with self.assertRaisesRegex(ValueError, 'linked path'):
+                native_tools.collect(inputs, root / 'linked-member', '1.2.3', SOURCE['commit'])
+
+    def test_manifest_must_be_regular_before_read(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            inputs = root / 'inputs'
+            manifest = inputs / 'win-x64/native-tools.json'
+            manifest.mkdir(parents=True)
+            with self.assertRaisesRegex(ValueError, 'manifest must be a regular file'):
+                native_tools.collect(inputs, root / 'directory-manifest', '1.2.3', SOURCE['commit'])
+            if hasattr(os, 'mkfifo'):
+                manifest.rmdir()
+                os.mkfifo(manifest)
+                with self.assertRaisesRegex(ValueError, 'hash/type'):
+                    native_tools.collect(inputs, root / 'fifo-manifest', '1.2.3', SOURCE['commit'])
+
+    def test_platform_parts_require_complete_matching_source_version_and_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            inputs = root / 'inputs'
+            for rid in native_tools.RUNTIMES:
+                part = inputs / rid
+                part.mkdir(parents=True)
+                rows = []
+                for tool in native_tools.RUNTIMES[rid][2]:
+                    path = part / tool / rid / 'binary'
+                    path.parent.mkdir(parents=True)
+                    path.write_bytes(b'native executable fixture')
+                    rows.append(dict(path=path.relative_to(part).as_posix(), size=path.stat().st_size,
+                                     sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+                (part / 'native-tools.json').write_text(json.dumps(dict(schema='aicf-native-tools/1',
+                    source_commit=SOURCE['commit'], version='1.2.3', rid=rid, files=rows)))
+            output = root / 'valid'
+            native_tools.collect(inputs, output, '1.2.3', SOURCE['commit'])
+            self.assertEqual(len(list(output.rglob('binary'))), 4)
+            with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
+                native_tools.collect(inputs, root / 'wrong-source', '1.2.3', 'f' * 40)
+            with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
+                native_tools.collect(inputs, root / 'wrong-version', '2.0.0', SOURCE['commit'])
+            binary = inputs / 'win-x64/snippets/win-x64/binary'
+            binary.write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError, 'hash/type'):
+                native_tools.collect(inputs, root / 'corrupt', '1.2.3', SOURCE['commit'])
+            empty = root / 'empty'
+            empty.mkdir()
+            with self.assertRaisesRegex(ValueError, 'Missing native runtime'):
+                native_tools.collect(empty, root / 'missing', '1.2.3', SOURCE['commit'])
+            with self.assertRaisesRegex(ValueError, 'this run attempt; rerun all native jobs'):
+                native_tools.collect(root / 'absent', root / 'missing-root', '1.2.3', SOURCE['commit'])
 
 
 class BuildDiagnostics(unittest.TestCase):
