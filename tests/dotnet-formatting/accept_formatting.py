@@ -178,6 +178,57 @@ class FormattingAcceptance(unittest.TestCase):
                 self.assertEqual((code, result['errorCode']), (1, expected), result)
                 self.assertEqual(result['commands'], [])
 
+    @unittest.skipIf(os.name == 'nt', 'Windows does not permit these literal filename characters')
+    def test_literal_glob_and_separator_names_are_rejected_before_sdk(self):
+        sibling = self.project / 'WildcardOther.cs'
+        sibling.write_text('class Other{int n=  1;}\n', encoding='utf-8')
+        before = digest(sibling)
+        try:
+            for name in ('Wildcard*.cs', 'Wildcard?.cs', 'Wildcard\\Other.cs'):
+                with self.subTest(name=name):
+                    literal = self.project / name
+                    literal.write_text('class Wildcard{int n=  1;}\n', encoding='utf-8')
+                    original = digest(literal)
+                    try:
+                        code, result = self.invoke(files=[name], action='apply')
+                        self.assertEqual((code, result['errorCode']), (1, 'unsupported-selection'), result)
+                        self.assertEqual(result['commands'], [])
+                        self.assertEqual(digest(literal), original)
+                        self.assertEqual(digest(sibling), before)
+                    finally:
+                        literal.unlink()
+        finally:
+            sibling.unlink()
+
+    @unittest.skipIf(os.name == 'nt', 'Case-sensitive POSIX Compile identities only')
+    def test_case_alias_is_rejected_before_formatter(self):
+        upper = self.project / 'CaseAlias.cs'
+        lower = self.project / 'casealias.cs'
+        project_file = self.project / 'App.csproj'
+        original_project = project_file.read_text()
+        upper.write_text('class Upper{int n=  1;}\n', encoding='utf-8')
+        try:
+            if lower.exists():
+                if ARGS.require_case_sensitive:
+                    self.fail('The selected case-sensitive acceptance environment is not case-sensitive')
+                self.skipTest('Requires a case-sensitive filesystem')
+            lower.write_text('class Lower{int n=  2;}\n', encoding='utf-8')
+            # Explicit items avoid the SDK's default-item duplicate check so this
+            # reaches the wrapper's pre-formatter boundary on case-sensitive APFS.
+            project_file.write_text(original_project.replace('</PropertyGroup>',
+                '<EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>')
+                .replace('</Project>', '<ItemGroup><Compile Include="CaseAlias.cs;casealias.cs" /></ItemGroup></Project>'),
+                encoding='utf-8')
+            before = {upper: digest(upper), lower: digest(lower)}
+            code, result = self.invoke(files=[upper.name], action='apply')
+            self.assertEqual((code, result['errorCode']), (1, 'unsupported-selection'), result)
+            self.assertFalse(any(row['arguments'][0] == 'format' and '--include' in row['arguments'] for row in result['commands']))
+            self.assertEqual(before, {path: digest(path) for path in before})
+        finally:
+            project_file.write_text(original_project, encoding='utf-8')
+            upper.unlink(missing_ok=True)
+            lower.unlink(missing_ok=True)
+
     def test_response_file_names_and_linked_paths_stay_literal(self):
         selected = self.project / '@Excluded.cs'
         payload = self.project / 'Excluded.cs'  # Excluded from Compile, but would be parsed as a response file.
@@ -401,6 +452,7 @@ if __name__ == '__main__':
     parser.add_argument('--tool', required=True, type=pathlib.Path)
     parser.add_argument('--work', required=True, type=pathlib.Path)
     parser.add_argument('--sdk-version', default='10.0.400' if sys.platform == 'darwin' else '10.0.403')
+    parser.add_argument('--require-case-sensitive', action='store_true')
     ARGS, rest = parser.parse_known_args()
     ARGS.tool = ARGS.tool.resolve()
     ARGS.work.mkdir(parents=True, exist_ok=True)

@@ -67,3 +67,14 @@ jobs:
         run: |
           python -I -B tests/dotnet-formatting/accept_formatting.py --tool "$env:RUNNER_TEMP/format-publish/$env:FORMAT_EXE" --work "$env:RUNNER_TEMP/format-acceptance" --sdk-version $env:FORMAT_SDK
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify exact selection on case-sensitive APFS
+        if: matrix.rid == 'osx-arm64'
+        shell: bash
+        run: |
+          image="$RUNNER_TEMP/format-case-sensitive.sparseimage"
+          mount="$RUNNER_TEMP/format-case-sensitive"
+          hdiutil create -size 256m -fs APFSX -type SPARSE -volname FormatAcceptance "$image"
+          mkdir -p "$mount"
+          hdiutil attach "$image" -mountpoint "$mount" -nobrowse
+          trap 'hdiutil detach "$mount"' EXIT
+          python -I -B tests/dotnet-formatting/accept_formatting.py --tool "$RUNNER_TEMP/format-publish/FormatTool" --work "$mount/acceptance" --sdk-version 10.0.400 --require-case-sensitive FormattingAcceptance.test_case_alias_is_rejected_before_formatter

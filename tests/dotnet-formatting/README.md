@@ -22,6 +22,10 @@ all setup and tool SDK calls resolve from that fixture. `--sdk-version` defaults
 to the supported version for the host OS. The `Formatting acceptance` workflow
 publishes and runs this same suite on Windows and macOS using the selected SDK;
 the existing Python `Source change gate` remains separate.
+The Mac job also runs the case-alias refusal on a small disposable case-sensitive
+APFS disk image, so a case-insensitive runner cannot silently skip that check.
+Literal glob/separator filename cases run on macOS; Windows skips them because
+those filenames are not valid there.
 
 `--tool` also accepts a built DLL, but that is build-output evidence, not
 self-contained publish acceptance. Use the actual detached publish directory

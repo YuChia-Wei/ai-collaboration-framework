@@ -69,6 +69,12 @@ internal static class Program
                 Path.IsPathRooted(Path.GetRelativePath(result.PathBase, path)) ||
                 Path.GetRelativePath(result.PathBase, path).StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal)))
                 throw new ToolFailure("unsupported-selection", "SDK include matching requires files inside the workspace directory. For linked files, choose an enclosing solution for whitespace; external/cross-drive selections are unsupported.");
+            if (selected.Any(path =>
+            {
+                var relative = Path.GetRelativePath(result.PathBase, path);
+                return relative.Contains('*') || relative.Contains('?') || (!OperatingSystem.IsWindows() && relative.Contains('\\'));
+            }))
+                throw new ToolFailure("unsupported-selection", "SDK includes use glob and separator syntax; literal *, ? or POSIX backslash names cannot be selected safely.");
             result.SelectedFiles = selected;
             Snapshot(selected, snapshots);
             var sdk = new Sdk(result, result.PathBase);
@@ -82,6 +88,9 @@ internal static class Program
             if (selected.Any(path => !loaded.CompileFiles.ContainsKey(path)))
                 throw new ToolFailure("unmatched-selection", "Every selected file must be an evaluated Compile item in the selected workspace.");
             result.SelectedFiles = selected.Select(path => loaded.CompileFiles[path]).ToArray();
+            if (result.SelectedFiles.Any(path => loaded.CompileFiles.Keys.Any(other =>
+                !Workspace.Paths.Equals(path, other) && string.Equals(path, other, StringComparison.OrdinalIgnoreCase))))
+                throw new ToolFailure("unsupported-selection", "SDK include matching ignores case; a selected path aliases another Compile item. No formatter was run.");
             result.ConfigurationFiles = Workspace.Configurations(result.SelectedFiles);
             result.ProjectAnalyzers = loaded.ProjectAnalyzers;
             Snapshot(loaded.ObservedFiles.Where(File.Exists), snapshots);
