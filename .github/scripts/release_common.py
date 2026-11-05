@@ -21,6 +21,9 @@ README_FIELDS = frozenset({"label", "source_commit", "catalog_identity", "releas
 GENERATED_README_FIELDS = README_FIELDS | {"package_classification", "adapter_rows"}
 README_LIMIT = 1024 * 1024
 LIMIT = 256 * 1024 * 1024
+# The additional macOS self-contained formatter exceeds the old expanded cap.
+# Keep the compressed-input cap unchanged and retain a separate bounded expansion.
+EXPANDED_LIMIT = 512 * 1024 * 1024
 ENGINE_DECLARATIONS = ("src/tools/maintain_framework.py", "src/distribution/installation_state.py")
 
 
@@ -229,7 +232,7 @@ def verify_bundle(directory, expected_source=None):
     rows = manifest["entries"]
     names = [r["path"] for r in rows]
     require(names == sorted(set(names)) and len(names) <= 4096 and len({x.casefold() for x in names}) == len(names), "entry order/uniqueness")
-    require(sum(r["size"] for r in rows) <= LIMIT, "archive expanded budget")
+    require(sum(r["size"] for r in rows) <= EXPANDED_LIMIT, "archive expanded budget")
     payload = {}
     with zipfile.ZipFile(path) as zip_file:
         require(zip_file.namelist() == names, "archive entry closure/order")
@@ -240,7 +243,7 @@ def verify_bundle(directory, expected_source=None):
             data = zip_file.read(info)
             require(sha(data) == row["sha256"], "archive raw content mismatch")
             payload[row["path"]] = data
-    require(sum(r["size"] for r in rows) <= LIMIT, "archive expanded budget")
+    require(sum(r["size"] for r in rows) <= EXPANDED_LIMIT, "archive expanded budget")
     pin_raw = payload["engine-pin.json"]
     pin = document(pin_raw)
     require(sha(pin_raw) == manifest["engine_pin_sha256"] and pin["source_commit"] == source["commit"], "engine pin/source mismatch")

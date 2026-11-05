@@ -254,6 +254,16 @@ class ReleaseContracts(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'formatting executable mode'):
             common.verify_bundle(self.directory)
 
+    def test_expanded_archive_budget_is_enforced(self):
+        expected = fixture(self.directory)
+        manifest = json.loads((self.directory / 'release-manifest.json').read_text())
+        expanded = sum(row['size'] for row in manifest['entries'])
+        with patch.object(common, 'EXPANDED_LIMIT', expanded):
+            self.assertEqual(common.verify_bundle(self.directory), expected)
+        with patch.object(common, 'EXPANDED_LIMIT', expanded - 1):
+            with self.assertRaisesRegex(ValueError, 'archive expanded budget'):
+                common.verify_bundle(self.directory)
+
     def test_non_executable_linux_apphost_rejected(self):
         fixture(self.directory, linux_mode=0o644)
         with self.assertRaisesRegex(ValueError, 'executable mode'):
