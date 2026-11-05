@@ -2,9 +2,9 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import platform
-import shutil
 import subprocess
 
 RUNTIMES = {'win-x64': ('Windows', 'AMD64', ('snippets', 'formatting')),
@@ -30,13 +30,16 @@ def build(repository, output, work, version, commit, rid):
         raise ValueError('Choose fresh native output/work directories')
     output.mkdir(parents=True)
     work.mkdir(parents=True)
+    environment = {k: v for k, v in os.environ.items()
+                   if not any(x in k.upper() for x in ('TOKEN', 'SECRET', 'PASSWORD', 'CREDENTIAL'))}
     for tool in selected:
         project = repository / 'src/knowledge/dotnet-backend/tooling' / PROJECTS[tool]
         subprocess.run(['dotnet', 'publish', str(project), '-c', 'Release', '-r', rid,
                         '--self-contained', 'true', '-p:PublishAot=true', '-p:PublishSingleFile=false',
                         '-p:DebugType=None', '-p:DebugSymbols=false', '-p:StripSymbols=true',
+                        '-p:CopyOutputSymbolsToPublishDirectory=false',
                         '-p:Version=' + version, '--artifacts-path', str(work / tool),
-                        '-o', str(output / tool / rid)], check=True)
+                        '-o', str(output / tool / rid)], check=True, env=environment)
     if subprocess.check_output(['git', '-C', str(repository), 'status', '--porcelain', '--untracked-files=all']):
         raise ValueError('Source drift during native build')
     rows = [dict(path=p.relative_to(output).as_posix(), size=p.stat().st_size, sha256=digest(p))
@@ -67,12 +70,14 @@ def collect(root, output, version, commit):
                 raise ValueError('Invalid native artifact member')
             expected.add(name)
             path = directory / name
-            if (not path.is_file() or any(p.is_symlink() for p in (path, *path.parents))
-                    or path.stat().st_size != row['size'] or digest(path) != row['sha256']):
+            if not path.is_file() or any(p.is_symlink() for p in (path, *path.parents)):
+                raise ValueError('Native artifact member hash/type mismatch')
+            raw = path.read_bytes()
+            if len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
                 raise ValueError('Native artifact member hash/type mismatch')
             target = output / name
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(path, target)
+            target.write_bytes(raw)
         actual = {p.relative_to(directory).as_posix() for p in directory.rglob('*') if p.is_file()}
         if actual != expected or any(p.is_symlink() for p in directory.rglob('*')):
             raise ValueError('Native artifact inventory mismatch')

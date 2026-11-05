@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ inputs.tooling-commit || github.event.pull_request.head.sha }}
+          ref: ${{ inputs.tooling-commit || github.workflow_sha }}
           fetch-depth: 0
           persist-credentials: false
       - name: Resolve exact selected source and its build capability
@@ -118,7 +118,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ needs.source.outputs.commit }}
+          ref: ${{ github.workflow_sha }}
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
@@ -135,12 +135,13 @@ jobs:
       - name: Build and verify both complete bundles from identical source
         env:
           SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
+          TOOLING_COMMIT: ${{ github.workflow_sha }}
         run: |
           for mode in native coreclr; do
             args=(--native-tools "$RUNNER_TEMP/native-tools")
             if [[ "$mode" == coreclr ]]; then args=(--coreclr-tools); fi
             python -I -B .github/scripts/build-release.py --repository "$GITHUB_WORKSPACE" \
-              --source-commit "$SOURCE_COMMIT" --tooling-commit "$SOURCE_COMMIT" --workflow-commit "$SOURCE_COMMIT" \
+              --source-commit "$SOURCE_COMMIT" --tooling-commit "$TOOLING_COMMIT" --workflow-commit "$TOOLING_COMMIT" \
               --workflow .github/workflows/native-tools.yml --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
               --work-root "$RUNNER_TEMP/build-$mode" --output "$RUNNER_TEMP/bundle-$mode" "${args[@]}"
           done

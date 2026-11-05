@@ -30,7 +30,7 @@ Older bundles without `formatting` do not supply this capability.
 From this source directory, publish to a fresh directory outside the source tree:
 
 ```powershell
-dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained true -p:PublishAot=true -p:PublishSingleFile=false -o C:/artifacts/format-tool
+dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained true -p:PublishAot=true -p:PublishSingleFile=false -p:CopyOutputSymbolsToPublishDirectory=false -o C:/artifacts/format-tool
 ```
 
 Copy the **entire publish directory** to a machine with the supported SDK. Run

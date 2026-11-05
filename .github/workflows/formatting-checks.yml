@@ -58,7 +58,7 @@ jobs:
           New-Item -ItemType Directory -Path $buildArea | Out-Null
           @{sdk=@{version=$env:FORMAT_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $buildArea 'global.json')
           Set-Location $buildArea
-          dotnet publish "$env:GITHUB_WORKSPACE/src/knowledge/dotnet-backend/tooling/formatting/FormatTool.csproj" -c Release -r $env:FORMAT_RID --self-contained true -p:PublishAot=true -p:PublishSingleFile=false --artifacts-path "$buildArea/artifacts" -o "$env:RUNNER_TEMP/format-publish"
+          dotnet publish "$env:GITHUB_WORKSPACE/src/knowledge/dotnet-backend/tooling/formatting/FormatTool.csproj" -c Release -r $env:FORMAT_RID --self-contained true -p:PublishAot=true -p:PublishSingleFile=false -p:CopyOutputSymbolsToPublishDirectory=false --artifacts-path "$buildArea/artifacts" -o "$env:RUNNER_TEMP/format-publish"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Exercise actual published executable
         env:
