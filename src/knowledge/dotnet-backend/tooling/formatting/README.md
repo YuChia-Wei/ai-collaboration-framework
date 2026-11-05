@@ -30,13 +30,17 @@ Older bundles without `formatting` do not supply this capability.
 From this source directory, publish to a fresh directory outside the source tree:
 
 ```powershell
-dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained true -o C:/artifacts/format-tool
+dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained false -o C:/artifacts/format-tool
 ```
 
 Copy the **entire publish directory** to a machine with the supported SDK. Run
 `FormatTool.exe --version` or `FormatTool.exe --request C:/work/format.json`.
-The project defaults to self-contained single-file publishing with the command
-above: one executable and this guide, without loose runtime DLLs or PDBs.
+The project defaults to framework-dependent single-file publishing with the command
+above: one executable and this guide, without an embedded runtime or loose DLLs/PDBs.
+Install the matching .NET 10 SDK on the host before running it; its runtime must
+be discoverable by the .NET apphost, and `dotnet` must be on PATH for SDK commands.
+For a custom installation, configure the .NET host lookup (for example,
+`DOTNET_ROOT_X64` on Windows x64 or `DOTNET_ROOT_ARM64` on macOS arm64) as well as PATH.
 The release builder uses the same single-file settings for snippets and formatting
 and rejects unexpected runtime files. No global tool registration or automatic
 SDK download occurs. A local publish alone is not a formal release.
@@ -185,7 +189,10 @@ the allowlist is not a sandbox for a malicious project that runs arbitrary code.
 
 ## Results and failure recovery
 
-One JSON object is written to stdout, including on failure:
+Once the .NET host starts the application, one JSON object is written to stdout,
+including on application failure. If the required runtime cannot be found, the
+.NET host fails before this contract starts; its stderr/exit code is a native
+host diagnostic, not a FormatTool JSON result:
 
 | Exit | `status` | Meaning |
 | --- | --- | --- |

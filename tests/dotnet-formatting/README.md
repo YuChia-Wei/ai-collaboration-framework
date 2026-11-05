@@ -28,7 +28,7 @@ Literal glob/separator filename cases run on macOS; Windows skips them because
 those filenames are not valid there.
 
 `--tool` also accepts a built DLL, but that is build-output evidence, not
-self-contained publish acceptance. Use the actual detached publish directory
+framework-dependent single-file publish acceptance. Use the actual detached publish directory
 for the latter. The tests create and remove their own temporary projects below
 `--work`; they do not format this repository. One synthetic source generator
 writes a marker only inside that temporary test area, proving the explicit

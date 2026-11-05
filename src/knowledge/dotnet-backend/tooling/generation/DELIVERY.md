@@ -13,15 +13,21 @@ Formatting supports those exact OS/architecture/SDK combinations; the snippet
 platform list does not extend that support. The macOS formatter is ad-hoc
 signed, not Developer ID signed or notarized. SDK compatibility evidence does
 not establish downloaded-artifact Gatekeeper acceptance.
-Both tools use self-contained CoreCLR single-file publishing, without
-loose runtime DLLs or debug symbols. Snippet catalogs and templates remain
+Both tools require a host-installed .NET 10 SDK and use framework-dependent
+CoreCLR single-file publishing, without an embedded runtime, loose runtime DLLs
+or debug symbols. The host must discover the matching .NET runtime; configure
+apphost lookup for nonstandard SDK installations as described in each tool README.
+The installer does not install or download an SDK. The former standalone
+self-contained/AOT delivery and no-SDK execution requirement are retired. Snippet catalogs and templates remain
 external data. Check `generation.json` for the selected bundle's formatting
 component; older bundles do not include it. This same installer updates and
 recovers all manifest-listed tools; no separate manual formatting copy is needed.
 The installer does not register templates, edit project code or select a
 technology stack.
 
-The command output contracts differ and callers should select by tool:
+The command output contracts below apply after application startup. Missing
+runtime failures come from the native .NET host before either tool can emit
+JSON. The contracts differ and callers should select by tool:
 
 | Tool | Success / changes required | Failure |
 | --- | --- | --- |

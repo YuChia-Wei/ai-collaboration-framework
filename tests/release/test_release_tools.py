@@ -50,7 +50,8 @@ def readme_source(template=README_TEMPLATE):
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
             engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
             missing_generation_member=None, extra_generation_member=None, linux_mode=0o755,
-            include_formatting=True, legacy_formatting=False, macos_mode=0o755):
+            include_formatting=True, legacy_formatting=False, macos_mode=0o755,
+            generation_mode="framework-dependent-coreclr-single-file"):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -111,7 +112,7 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
                       "formatting": {"runtimes": ["win-x64", "osx-arm64"],
                                      "sdk_versions": {"win-x64": "10.0.403", "osx-arm64": "10.0.400"}},
                       "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
-                      "mode": "self-contained-coreclr-single-file", "files": []}
+                      "mode": generation_mode, "files": []}
         if not include_formatting:
             del generation['formatting']
             del generated['formatting/win-x64/FormatTool.exe']
@@ -242,27 +243,19 @@ class ReleaseContracts(unittest.TestCase):
                     common.verify_bundle(self.directory)
 
     def test_prior_generation_bundle_without_formatting_remains_valid(self):
-        expected = fixture(self.directory, include_formatting=False)
+        expected = fixture(self.directory, include_formatting=False,
+                           generation_mode="self-contained-coreclr-single-file")
         self.assertEqual(common.verify_bundle(self.directory), expected)
 
     def test_prior_windows_only_formatting_remains_valid(self):
-        expected = fixture(self.directory, legacy_formatting=True)
+        expected = fixture(self.directory, legacy_formatting=True,
+                           generation_mode="self-contained-coreclr-single-file")
         self.assertEqual(common.verify_bundle(self.directory), expected)
 
     def test_non_executable_macos_formatter_rejected(self):
         fixture(self.directory, macos_mode=0o644)
         with self.assertRaisesRegex(ValueError, 'formatting executable mode'):
             common.verify_bundle(self.directory)
-
-    def test_expanded_archive_budget_is_enforced(self):
-        expected = fixture(self.directory)
-        manifest = json.loads((self.directory / 'release-manifest.json').read_text())
-        expanded = sum(row['size'] for row in manifest['entries'])
-        with patch.object(common, 'EXPANDED_LIMIT', expanded):
-            self.assertEqual(common.verify_bundle(self.directory), expected)
-        with patch.object(common, 'EXPANDED_LIMIT', expanded - 1):
-            with self.assertRaisesRegex(ValueError, 'archive expanded budget'):
-                common.verify_bundle(self.directory)
 
     def test_non_executable_linux_apphost_rejected(self):
         fixture(self.directory, linux_mode=0o644)

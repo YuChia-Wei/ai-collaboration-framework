@@ -25,10 +25,10 @@ def build(repository, output, work, version, commit):
                         for rid in ('win-x64', 'osx-arm64'))
     for project, tool, rid in publications:
         subprocess.run(['dotnet', 'publish', str(project),
-                        '-c', 'Release', '-r', rid, '--self-contained', 'true',
+                        '-c', 'Release', '-r', rid, '--self-contained', 'false',
                         '--artifacts-path', str(work / tool / rid), '-o', str(output / tool / rid),
                         '-p:Version=' + version, '-p:PublishAot=false', '-p:PublishSingleFile=true',
-                        '-p:IncludeNativeLibrariesForSelfExtract=true', '-p:DebugType=None',
+                        '-p:DebugType=None',
                         '-p:DebugSymbols=false'], check=True)
     shutil.copyfile(repository / 'src/tools/install-generation.py', output / 'install-generation.py')
     shutil.copyfile(generation / 'DELIVERY.md', output / 'README.md')
@@ -43,7 +43,7 @@ def build(repository, output, work, version, commit):
     manifest = dict(schema='aicf-generation/1', source_commit=commit, version=version,
                     formatting=dict(runtimes=['win-x64', 'osx-arm64'],
                                     sdk_versions={'win-x64': '10.0.403', 'osx-arm64': '10.0.400'}),
-                    runtimes=['win-x64', 'linux-x64'], mode='self-contained-coreclr-single-file', files=rows)
+                    runtimes=['win-x64', 'linux-x64'], mode='framework-dependent-coreclr-single-file', files=rows)
     (output / 'generation.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
 
 
