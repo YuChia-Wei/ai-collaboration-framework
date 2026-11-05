@@ -6,6 +6,11 @@ namespace FormatTool;
 
 internal static class Program
 {
+    private static readonly WireJson RequestJson = new(new JsonSerializerOptions(WireJson.Default.Options)
+    {
+        AllowDuplicateProperties = false
+    });
+
     private static async Task<int> Main(string[] args)
     {
         Console.OutputEncoding = new UTF8Encoding(false);
@@ -21,20 +26,32 @@ internal static class Program
         }
         if (args is ["--capabilities"])
         {
-            Console.WriteLine(JsonSerializer.Serialize(new Result { Status = "capabilities", SdkVersion = Rules.SdkVersion,
-                Message = "Declared Windows SDK support; no workspace or installed SDK was probed." }, WireJson.Default.Result));
+            var capabilities = new Result { Status = "capabilities",
+                Message = "Declared OS/architecture/SDK combinations and their shared rule list; no installed environment was probed." };
+            capabilities.IncludeGuidance();
+            Console.WriteLine(JsonSerializer.Serialize(capabilities, WireJson.Default.Result));
             return 0;
         }
         var result = new Result();
         var snapshots = new Dictionary<string, string>(Workspace.Paths);
+        var verbose = false;
         try
         {
             if (args is not ["--request", var requestPath])
                 throw new ToolFailure("invalid-arguments", "Use --request <request.json>.");
             requestPath = Path.GetFullPath(requestPath);
-            var request = JsonSerializer.Deserialize(File.ReadAllText(requestPath), WireJson.Default.Request)
-                ?? throw new ToolFailure("invalid-request", "Request must be a JSON object.");
+            // Only request parsing is invalid-request; malformed SDK JSON retains its tool-output error.
+            var requestText = File.ReadAllText(requestPath);
+            Request request;
+            try
+            {
+                request = JsonSerializer.Deserialize(requestText, RequestJson.Request)
+                    ?? throw new ToolFailure("invalid-request", "Request must be a JSON object.");
+            }
+            catch (JsonException error) { throw new ToolFailure("invalid-request", error.Message); }
+            verbose = request.Verbose;
             Validate(request);
+            var environment = Rules.Environment();
             var workspace = Workspace.FullPath(request.Workspace, Path.GetDirectoryName(requestPath)!);
             result.Workspace = workspace;
             result.PathBase = Path.GetDirectoryName(workspace)!;
@@ -55,10 +72,10 @@ internal static class Program
             result.SelectedFiles = selected;
             Snapshot(selected, snapshots);
             var sdk = new Sdk(result, result.PathBase);
-            result.SdkVersion = (await sdk.Require("sdk-unavailable", "--version")).StandardOutput.Trim();
-            if (result.SdkVersion != Rules.SdkVersion)
-                throw new ToolFailure("unsupported-sdk", $"This initial support contract requires SDK {Rules.SdkVersion}; actual SDK is {result.SdkVersion}.");
-            result.FormatterVersion = (await sdk.Require("formatter-unavailable", "format", "--version")).StandardOutput.Trim();
+            result.SdkVersion = (await sdk.Require("sdk-unavailable", "--version")).StandardOutput!.Trim();
+            if (result.SdkVersion != environment.SdkVersion)
+                throw new ToolFailure("unsupported-sdk", $"{environment.RuntimeIdentifier} requires SDK {environment.SdkVersion}; actual SDK is {result.SdkVersion}. See --capabilities.");
+            result.FormatterVersion = (await sdk.Require("formatter-unavailable", "format", "--version")).StandardOutput!.Trim();
             result.LoadedProjects = Workspace.Projects(workspace);
             if (request.AllowRestore) await sdk.Require("restore-failed", "restore", workspace);
             var loaded = await Workspace.Load(sdk, result.LoadedProjects, request.Mode != "whitespace");
@@ -89,6 +106,9 @@ internal static class Program
                 throw new ToolFailure("incomplete-apply", "Selected diagnostics remain after apply; inspect actual changes and remainingFindings.");
             result.Status = request.Action == "check" ? (findings.Length > 0 ? "changes-required" : "clean")
                 : (result.ChangedFiles.Length > 0 ? "applied" : "clean");
+            result.UnreportedSelections = result.SelectedFiles.Except(findings.Select(finding => finding.File), Workspace.Paths).ToArray();
+            if (result.UnreportedSelections.Length > 0)
+                result.Message = "unreportedSelections have no SDK-reported changes: they may be clean or excluded (including generated code). The SDK report does not distinguish these cases; clean does not prove every selected file was processed.";
         }
         catch (ToolFailure error)
         {
@@ -101,6 +121,10 @@ internal static class Program
             result.Message = error.Message;
         }
         Observe(result, snapshots);
+        if (verbose) result.IncludeGuidance();
+        if (!verbose && result.Status != "failed")
+            for (var index = 0; index < result.Commands.Count; index++)
+                result.Commands[index] = result.Commands[index] with { StandardOutput = null, StandardError = null };
         Console.WriteLine(JsonSerializer.Serialize(result, WireJson.Default.Result));
         return result.Status == "failed" ? 1 : result.Status == "changes-required" ? 2 : 0;
     }
@@ -112,8 +136,6 @@ internal static class Program
             request.Mode is not ("whitespace" or "style" or "analyzers") || request.Action is not ("check" or "apply"))
             throw new ToolFailure("invalid-request", "Require schemaVersion 1, workspace, nonempty files, mode whitespace/style/analyzers, and action check/apply.");
         Rules.Validate(request);
-        if (!OperatingSystem.IsWindows())
-            throw new ToolFailure("unsupported-platform", "Initial supported platform is Windows; Linux and macOS acceptance is not established.");
     }
 
     private static async Task<Finding[]> Format(Sdk sdk, Result result, bool check)

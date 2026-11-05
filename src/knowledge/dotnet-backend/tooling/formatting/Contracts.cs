@@ -12,6 +12,7 @@ internal sealed class Request
     public string Mode { get; set; } = "";
     public string Action { get; set; } = "";
     public bool AllowRestore { get; set; }
+    public bool Verbose { get; set; }
     public string[] Diagnostics { get; set; } = [];
     public string? Severity { get; set; }
     public string[] AllowedProjectAnalyzers { get; set; } = [];
@@ -32,7 +33,10 @@ internal sealed class Result
     public string? Action { get; set; }
     public string[] Diagnostics { get; set; } = [];
     public string? Severity { get; set; }
-    public RuleCapability[] RuleCapabilities { get; } = Rules.Capabilities;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public RuleCapability[]? RuleCapabilities { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public SupportedEnvironment[]? SupportedEnvironments { get; set; }
     public string[] ProjectAnalyzers { get; set; } = [];
     public string[] SelectedFiles { get; set; } = [];
     public string[] LoadedProjects { get; set; } = [];
@@ -41,20 +45,32 @@ internal sealed class Result
     public string[] UnexpectedChangedFiles { get; set; } = [];
     public Finding[] Findings { get; set; } = [];
     public Finding[] RemainingFindings { get; set; } = [];
+    public string[] UnreportedSelections { get; set; } = [];
     public List<CommandResult> Commands { get; } = [];
-    public string[] Notes { get; } =
-    [
-        "Files are Compile members; SDK generated-code exclusions still apply. Generated code is never explicitly included.",
-        "ConfigurationFiles lists ancestor .editorconfig candidates, not an independently evaluated rule set. Commands retain the SDK configuration/load log.",
-        "Missing settings use this SDK's defaults. Unknown and vendor-specific settings are not claimed as applied.",
-        "Check requests no formatter source writes. Trusted MSBuild/restore may write intermediates or run custom targets. Observed Compile-file changes are reported; this is not a sandbox or rollback transaction.",
-        "A clean result concerns selected formatting only, not compilation or business correctness."
-    ];
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string[]? Notes { get; set; }
+
+    public void IncludeGuidance()
+    {
+        RuleCapabilities = Rules.Capabilities;
+        SupportedEnvironments = Rules.Environments;
+        Notes =
+        [
+            "Files are Compile members; SDK generated-code exclusions still apply. Generated code is never explicitly included.",
+            "ConfigurationFiles lists ancestor .editorconfig candidates, not an independently evaluated rule set. Use verbose for the SDK configuration/load log.",
+            "Missing settings use this SDK's defaults. Unknown and vendor-specific settings are not claimed as applied.",
+            "Check requests no formatter source writes. Trusted MSBuild/restore may write intermediates or run custom targets. Observed Compile-file changes are reported; this is not a sandbox or rollback transaction.",
+            "A clean result concerns selected formatting only, not compilation or business correctness."
+        ];
+    }
 }
 
 internal sealed record Finding(string File, string DiagnosticId, int Line, int Column, string Description);
-internal sealed record RuleCapability(string DiagnosticId, string Mode, string Availability, string SdkVersion);
-internal sealed record CommandResult(string[] Arguments, string WorkingDirectory, int ExitCode, string StandardOutput, string StandardError);
+internal sealed record RuleCapability(string DiagnosticId, string Mode, string Availability);
+internal sealed record SupportedEnvironment(string RuntimeIdentifier, string SdkVersion);
+internal sealed record CommandResult(string[] Arguments, string WorkingDirectory, int ExitCode,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StandardOutput,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StandardError);
 internal sealed class ToolFailure(string code, string message) : Exception(message)
 {
     public string Code { get; } = code;

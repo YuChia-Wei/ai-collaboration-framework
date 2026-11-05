@@ -5,6 +5,7 @@ import json
 import os
 import pathlib
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -17,7 +18,9 @@ class FormattingAcceptance(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.area = tempfile.TemporaryDirectory(prefix="format-accept-", dir=ARGS.work)
-        cls.root = pathlib.Path(cls.area.name)
+        cls.root = pathlib.Path(cls.area.name).resolve()
+        (cls.root / 'global.json').write_text(json.dumps({
+            'sdk': {'version': ARGS.sdk_version, 'rollForward': 'disable'}}), encoding='utf-8')
         cls.project = cls.root / "App"
         cls.project.mkdir()
         (cls.project / "Nested").mkdir()
@@ -37,7 +40,7 @@ class FormattingAcceptance(unittest.TestCase):
         cls.chosen = cls.project / "Nested" / "Chosen.cs"
         cls.chosen.write_text('class Chosen{\nvoid Run(){\nint value=1;\n}\n}\n', encoding="utf-8")
         restore = subprocess.run(['dotnet', 'restore', str(cls.project / 'App.csproj'), '--source', str(cls.root)],
-                                 capture_output=True, text=True, timeout=120)
+                                 cwd=cls.root, capture_output=True, text=True, timeout=120)
         if restore.returncode:
             raise RuntimeError(restore.stdout + restore.stderr)
 
@@ -45,12 +48,12 @@ class FormattingAcceptance(unittest.TestCase):
     def tearDownClass(cls):
         cls.area.cleanup()
 
-    def invoke(self, *, environment=None, **overrides):
+    def invoke(self, *, environment=None, raw_request=None, **overrides):
         request = dict(schemaVersion=1, workspace="App/App.csproj", files=["Nested/Chosen.cs"],
                        mode="whitespace", action="check", allowRestore=False)
         request.update(overrides)
         path = self.root / "request.json"
-        path.write_text(json.dumps(request), encoding="utf-8")
+        path.write_text(json.dumps(request) if raw_request is None else raw_request, encoding="utf-8")
         command = [str(ARGS.tool)]
         if ARGS.tool.suffix == '.dll':
             command.insert(0, 'dotnet')
@@ -70,6 +73,18 @@ class FormattingAcceptance(unittest.TestCase):
         self.assertEqual(result['changedFiles'], [])
         self.assertEqual(before, {path: digest(path) for path in before})
         self.assertTrue(result['findings'])
+        self.assertEqual(result['sdkVersion'], ARGS.sdk_version)
+        self.assertNotIn('notes', result)
+        self.assertNotIn('ruleCapabilities', result)
+        self.assertTrue(result['commands'])
+        self.assertTrue(all('standardOutput' not in row and 'standardError' not in row for row in result['commands']))
+        code, verbose = self.invoke(verbose=True)
+        self.assertEqual(code, 2, verbose)
+        self.assertEqual(verbose['findings'], result['findings'])
+        self.assertTrue(any(row['standardOutput'] for row in verbose['commands']))
+        self.assertTrue(verbose['ruleCapabilities'])
+        self.assertTrue(verbose['notes'])
+        self.assertEqual(before, {path: digest(path) for path in before})
         code, result = self.invoke(action="apply")
         self.assertEqual(code, 0, result)
         self.assertEqual(result['status'], 'applied')
@@ -81,6 +96,20 @@ class FormattingAcceptance(unittest.TestCase):
                 self.assertEqual(digest(path), original)
         code, result = self.invoke()
         self.assertEqual((code, result['status']), (0, 'clean'))
+        self.assertEqual(result['unreportedSelections'], [str(self.chosen)])
+
+    def test_request_json_errors_are_invalid_requests(self):
+        valid = dict(schemaVersion=1, workspace='App/App.csproj', files=['Nested/Chosen.cs'],
+                     mode='whitespace', action='check')
+        requests = [json.dumps(dict(valid, surprise=True)), json.dumps(dict(valid, files=12)),
+                    json.dumps(valid)[:-1] + ',"action":"apply"}', '{', 'null']
+        for raw in requests:
+            with self.subTest(raw=raw):
+                before = digest(self.chosen)
+                code, result = self.invoke(raw_request=raw)
+                self.assertEqual((code, result['errorCode']), (1, 'invalid-request'), result)
+                self.assertEqual(result['commands'], [])
+                self.assertEqual(digest(self.chosen), before)
 
     def test_invalid_empty_and_unmatched_selection(self):
         for files, expected in [([], 'invalid-request'), (['Missing.cs'], 'invalid-selection'),
@@ -112,6 +141,7 @@ class FormattingAcceptance(unittest.TestCase):
             self.assertEqual((code, result['status'], result['errorCode']), (1, 'failed', 'load-failed'))
             self.assertEqual(digest(self.chosen), before)
             self.assertEqual(result['changedFiles'], [])
+            self.assertTrue(any(row['exitCode'] != 0 and row['standardOutput'] for row in result['commands']))
             project_file.write_text(original.replace('</Project>',
                 '<Target Name="WriteThenFail" BeforeTargets="Compile" Condition="\'$(DesignTimeBuild)\' == \'true\'">'
                 '<WriteLinesToFile File="Nested/Chosen.cs" Lines="class Chosen {}" Overwrite="true" />'
@@ -131,6 +161,8 @@ class FormattingAcceptance(unittest.TestCase):
         code, result = self.invoke(workspace='Sample.slnx', files=['App/Generated.g.cs'], action='apply')
         self.assertEqual((code, result['status']), (0, 'clean'), result)
         self.assertEqual(digest(generated), before)
+        self.assertEqual(result['unreportedSelections'], [str(generated)])
+        self.assertIn('excluded', result['message'])
 
     def test_cleanup_selection_and_capability_failures(self):
         for values, expected in [
@@ -204,6 +236,8 @@ EndGlobal
             code, result = self.invoke(files=['Marked.cs'], action='apply')
             self.assertEqual((code, result['status']), (0, 'clean'), result)
             self.assertEqual(digest(marked), before)
+            self.assertEqual(result['unreportedSelections'], [str(marked)])
+            self.assertIn('excluded', result['message'])
         finally:
             config.write_text(original, encoding='utf-8')
             marked.unlink()
@@ -274,7 +308,7 @@ public sealed class Probe : ISourceGenerator {
 }
 ''', encoding='utf-8')
         build = subprocess.run(['dotnet', 'build', str(plugin / 'Generator.csproj'), '--source', str(self.root),
-                                '-p:UseSharedCompilation=false'], capture_output=True, text=True, timeout=120)
+                                '-p:UseSharedCompilation=false'], cwd=self.root, capture_output=True, text=True, timeout=120)
         self.assertEqual(build.returncode, 0, build.stdout + build.stderr)
         analyzer = plugin / 'bin' / 'Debug' / 'net10.0' / 'Generator.dll'
         marker = self.root / 'generator-executed.txt'
@@ -350,7 +384,7 @@ EndGlobal
                 '<ItemGroup><ProjectReference Include="../Dependency/Dependency.csproj" '
                 'SetConfiguration="Configuration=Release" /></ItemGroup></Project>'), encoding='utf-8')
             restore = subprocess.run(['dotnet', 'restore', str(project_file), '--source', str(self.root)],
-                                     capture_output=True, text=True, timeout=120)
+                                     cwd=self.root, capture_output=True, text=True, timeout=120)
             self.assertEqual(restore.returncode, 0, restore.stdout + restore.stderr)
             code, result = self.invoke(**selection, environment=environment)
             self.assertEqual((code, result['errorCode']), (1, 'unsupported-cleanup-workspace'), result)
@@ -358,7 +392,7 @@ EndGlobal
         finally:
             project_file.write_text(original, encoding='utf-8')
             restore = subprocess.run(['dotnet', 'restore', str(project_file), '--source', str(self.root)],
-                                     capture_output=True, text=True, timeout=120)
+                                     cwd=self.root, capture_output=True, text=True, timeout=120)
             self.assertEqual(restore.returncode, 0, restore.stdout + restore.stderr)
 
 
@@ -366,6 +400,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--tool', required=True, type=pathlib.Path)
     parser.add_argument('--work', required=True, type=pathlib.Path)
+    parser.add_argument('--sdk-version', default='10.0.400' if sys.platform == 'darwin' else '10.0.403')
     ARGS, rest = parser.parse_known_args()
     ARGS.tool = ARGS.tool.resolve()
     ARGS.work.mkdir(parents=True, exist_ok=True)

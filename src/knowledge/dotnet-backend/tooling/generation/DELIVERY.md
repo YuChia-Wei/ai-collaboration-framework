@@ -7,15 +7,34 @@ python install-generation.py --project /path/to/project
 ```
 
 The installer verifies the manifest and writes `.ai/tools/dotnet-generation`.
-Current bundles also include `formatting/win-x64/FormatTool.exe` and its
-usage guide at `formatting/win-x64/README.md`. Formatting supports Windows x64
-with installed SDK 10.0.403; the snippet platform list does not extend that
-support. Both tools use self-contained CoreCLR single-file publishing, without
+Current bundles include `formatting/win-x64/FormatTool.exe` (SDK 10.0.403) and
+`formatting/osx-arm64/FormatTool` (SDK 10.0.400), each with its own README.
+Formatting supports those exact OS/architecture/SDK combinations; the snippet
+platform list does not extend that support. The macOS formatter is ad-hoc
+signed, not Developer ID signed or notarized. SDK compatibility evidence does
+not establish downloaded-artifact Gatekeeper acceptance.
+Both tools use self-contained CoreCLR single-file publishing, without
 loose runtime DLLs or debug symbols. Snippet catalogs and templates remain
 external data. Check `generation.json` for the selected bundle's formatting
 component; older bundles do not include it. This same installer updates and
 recovers all manifest-listed tools; no separate manual formatting copy is needed.
-It does not register templates, edit project code or select a technology stack.
+The installer does not register templates, edit project code or select a
+technology stack.
+
+The command output contracts differ and callers should select by tool:
+
+| Tool | Success / changes required | Failure |
+| --- | --- | --- |
+| `FormatTool --request` | stdout JSON, exit 0 (clean/applied) or 2 (changes required) | stdout JSON, exit 1 |
+| `SnippetTool --request` | stdout JSON, exit 0 | stderr JSON, exit 1 |
+| `install-generation.py` | stdout JSON, exit 0 | stderr JSON, exit 1 |
+
+FormatTool outputs one indented JSON object; parse the entire stream, not each
+line. Success summaries omit raw SDK output unless `verbose: true`; failures
+retain command logs. `--capabilities` supplies formatting rules and supported
+runtime/SDK pairs without probing the environment. Read each tool's README for
+its full contract.
+
 Updates replace only an unchanged previous installation; modified or unknown
 files cause a refusal. Keep custom snippets and templates outside this directory.
 This also applies to incidental files such as `.DS_Store`, `desktop.ini` and

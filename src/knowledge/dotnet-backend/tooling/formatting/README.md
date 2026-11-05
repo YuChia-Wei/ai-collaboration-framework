@@ -2,10 +2,12 @@
 
 `FormatTool` is a standalone .NET 10 console program that invokes the installed
 SDK's `dotnet format`. It needs no IDE and adds no dependency to the application
-being edited. This initial delivery supports **Windows with SDK 10.0.403** and
-single-target SDK-style C# projects. A `.sln` or `.slnx` must contain only C#
-projects. Multi-targeting, solution filters, legacy projects, Linux acceptance
-and macOS support are outside this initial contract.
+being edited. Supported combinations are **Windows x64 with SDK 10.0.403** and
+**macOS Apple silicon (arm64) with SDK 10.0.400**, using single-target SDK-style
+C# projects. Other SDK versions, including other servicing versions, are not
+implicitly accepted. A `.sln` or `.slnx` must contain only C# projects.
+Multi-targeting, solution filters, legacy projects, Linux and Intel macOS
+formatting are outside this contract.
 Solution selection is available for whitespace. Cleanup supports a direct
 `.csproj` with **no ProjectReference items**; solution configuration mappings
 and referenced-project execution contexts are not part of this initial subset.
@@ -14,7 +16,13 @@ and referenced-project execution contexts are not part of this initial subset.
 
 Releases containing `generation/formatting` install this tool through
 `python generation/install-generation.py --project <existing-project>` from the
-extracted release. Run `.ai/tools/dotnet-generation/formatting/win-x64/FormatTool.exe`.
+extracted release. Choose the executable for your environment:
+
+| Environment | Installed executable | Required SDK |
+| --- | --- | --- |
+| Windows x64 | `.ai/tools/dotnet-generation/formatting/win-x64/FormatTool.exe` | `10.0.403` |
+| macOS arm64 | `.ai/tools/dotnet-generation/formatting/osx-arm64/FormatTool` | `10.0.400` |
+
 The existing `generation.json` inventory owns its version, files and recovery;
 Framework's knowledge lock does not track this separately installed tool bundle.
 Older bundles without `formatting` do not supply this capability.
@@ -32,6 +40,19 @@ above: one executable and this guide, without loose runtime DLLs or PDBs.
 The release builder uses the same single-file settings for snippets and formatting
 and rejects unexpected runtime files. No global tool registration or automatic
 SDK download occurs. A local publish alone is not a formal release.
+For macOS, use `-r osx-arm64` and a destination you own, then run `./FormatTool`.
+The macOS executable uses .NET's ad-hoc signature; it is not Developer ID signed
+or notarized. Download quarantine/Gatekeeper acceptance is separate from SDK
+behavioral compatibility. Preserve those platform protections when evaluating a
+downloaded artifact.
+
+The macOS compatibility basis is a native Apple silicon / SDK 10.0.400 run of
+the 12 original acceptance cases against a copy with only the former OS/SDK
+gates removed. That evidence is accepted for this exact combination. The
+`Formatting acceptance` workflow now exercises the unmodified published source
+on Windows and macOS with the respective exact SDKs. Each run's outcome remains
+its own evidence; compatibility does not certify every macOS release or every
+workspace. A general compatibility registry is not required by this delivery.
 
 ## Request and paths
 
@@ -64,6 +85,18 @@ Use `action: "apply"` to write. `whitespace` invokes only the SDK whitespace
 formatter. Generated files remain excluded by the SDK; there is no
 `include-generated` option. `selectedFiles` describes valid source membership,
 not a claim that SDK generated-code exclusions were bypassed.
+`unreportedSelections` lists selected files with no entry in the SDK's change
+report. They may already be clean or excluded by the SDK, including generated
+files. The SDK does not report which of these reasons applies. The result
+message makes this uncertainty explicit; no filename heuristic overrides
+EditorConfig or claims an exclusion that the SDK did not report.
+
+Optional `verbose: true` includes the full SDK command output, capability list
+and explanatory notes. By default, successful `clean`, `applied` and
+`changes-required` results include command arguments, working directories and
+exit codes without command stdout/stderr. Failures retain full command output
+for diagnosis even without verbose. Unknown properties, duplicate properties,
+malformed JSON and wrong JSON types return `invalid-request` before SDK execution.
 
 ## Bounded cleanup
 
@@ -84,8 +117,10 @@ these options. Cleanup never silently selects all analyzer fixes.
 }
 ```
 
-`--capabilities` and every result expose this deliberately small SDK 10.0.403
-rule list. Capabilities are declared support, not a probe of an installed SDK.
+`--capabilities` and verbose results expose this deliberately small rule list
+and `supportedEnvironments`, which names the exact runtime/SDK pairs above.
+The rules apply to both pairs. Capabilities are declared support, not a probe
+of an installed SDK; regular results carry the actual `sdkVersion` separately.
 
 | Mode | Diagnostic | Contract |
 | --- | --- | --- |
@@ -131,7 +166,7 @@ paths use `pathBase`. This permits their code to execute, including source
 generators, while fixes remain limited to the diagnostic support list above.
 No analyzer is downloaded or installed by this option. Design-time and ordinary
 Compile item queries run with `SkipCompilerExecution=true` before this decision.
-The design-time query uses the pinned formatter's BuildHost global properties,
+The design-time query uses the supported formatters' BuildHost global properties,
 including `AlwaysCompileMarkupFilesInSeparateDomain=False`, and runs
 `Compile;CoreCompile` plus `DesignTimeMarkupCompilation` when the project defines
 it. This includes analyzer items conditional on formatter-specific properties or
@@ -146,14 +181,16 @@ One JSON object is written to stdout, including on failure:
 
 | Exit | `status` | Meaning |
 | --- | --- | --- |
-| 0 | `clean` | No selected formatting changes were reported. |
+| 0 | `clean` | No selected formatting changes were reported; selections can be clean or SDK-excluded. |
 | 0 | `applied` | Observed file changes, followed by a clean check. |
 | 2 | `changes-required` | Check found selected formatting diagnostics; no formatter write requested. |
 | 1 | `failed` | Invalid input, unsupported capability, load/tool failure or incomplete apply. |
 
 `sdkVersion`, `formatterVersion`, `loadedProjects`, `selectedFiles`,
-`configurationFiles` and `commands` expose the actual version, scope and SDK
-output. `findings` holds reported diagnostic locations. A formatter report is
+`configurationFiles` and `commands` expose the actual version, scope and command
+summary (full SDK output with `verbose: true` or on failure). `findings` holds
+reported diagnostic locations. `unreportedSelections` concerns the first
+formatter pass, not the mandatory check after apply. A formatter report is
 **not** evidence of writes: `changedFiles` is calculated from file bytes,
 including on failure. `unexpectedChangedFiles` names observed changes outside
 the selection. `remainingFindings` holds the check after apply. A failure never
@@ -171,9 +208,9 @@ side effect or file on disk.
 
 The SDK owns EditorConfig hierarchy, section matching and C# settings. This tool
 does not translate options or impose its own style. `configurationFiles` lists
-ancestor configuration candidates; the captured diagnostic SDK log also lists
+ancestor configuration candidates; the verbose diagnostic SDK log also lists
 configuration consumed during project loading, including generated/global
-configuration. Missing options use **SDK 10.0.403 defaults**, including C#'s
+configuration. Missing options use **the selected SDK's defaults**, including C#'s
 four-space indentation unless overridden. Ancestor files above `root = true`
 may appear in the candidate list but do not override the SDK's hierarchy.
 Unknown and vendor-specific properties are not claimed as applied. See the

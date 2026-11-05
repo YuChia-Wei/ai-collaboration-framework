@@ -50,7 +50,7 @@ def readme_source(template=README_TEMPLATE):
 def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_source=None,
             engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
             missing_generation_member=None, extra_generation_member=None, linux_mode=0o755,
-            include_formatting=True):
+            include_formatting=True, legacy_formatting=False, macos_mode=0o755):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
@@ -90,6 +90,8 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
         generated = {
             "formatting/win-x64/FormatTool.exe": b"formatter",
             "formatting/win-x64/README.md": b"format usage",
+            "formatting/osx-arm64/FormatTool": b"mac formatter",
+            "formatting/osx-arm64/README.md": b"format usage",
             "install-generation.py": b"installer", "README.md": b"usage", "snippets/README.md": b"usage",
             "snippets/win-x64/SnippetTool.exe": b"windows",
             "snippets/linux-x64/SnippetTool": b"linux",
@@ -106,15 +108,22 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
         if extra_generation_member:
             generated[extra_generation_member] = b'extra file'
         generation = {"schema": "aicf-generation/1", "source_commit": SOURCE["commit"],
-                      "formatting": {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
+                      "formatting": {"runtimes": ["win-x64", "osx-arm64"],
+                                     "sdk_versions": {"win-x64": "10.0.403", "osx-arm64": "10.0.400"}},
                       "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
                       "mode": "self-contained-coreclr-single-file", "files": []}
         if not include_formatting:
             del generation['formatting']
             del generated['formatting/win-x64/FormatTool.exe']
             del generated['formatting/win-x64/README.md']
+        if legacy_formatting:
+            generation['formatting'] = {"runtimes": ["win-x64"], "sdk_version": "10.0.403"}
+        if legacy_formatting or not include_formatting:
+            del generated['formatting/osx-arm64/FormatTool']
+            del generated['formatting/osx-arm64/README.md']
         for name, data in sorted(generated.items()):
-            mode = linux_mode if name.endswith("/SnippetTool") else 0o644
+            mode = (linux_mode if name.endswith("/SnippetTool") else
+                    macos_mode if name == 'formatting/osx-arm64/FormatTool' else 0o644)
             generation["files"].append(common.entry(name, data, mode))
             payload["generation/" + name] = (data, mode)
         payload["generation/generation.json"] = (common.encoded(generation), 0o644)
@@ -225,15 +234,25 @@ class ReleaseContracts(unittest.TestCase):
                     common.verify_bundle(self.directory)
 
     def test_missing_formatter_rejected_even_with_consistent_inventory(self):
-        for name in ('FormatTool.exe', 'README.md'):
+        for name in ('win-x64/FormatTool.exe', 'win-x64/README.md',
+                     'osx-arm64/FormatTool', 'osx-arm64/README.md'):
             with self.subTest(name=name):
-                fixture(self.directory, missing_generation_member='formatting/win-x64/' + name)
+                fixture(self.directory, missing_generation_member='formatting/' + name)
                 with self.assertRaisesRegex(ValueError, 'single-file generation layout'):
                     common.verify_bundle(self.directory)
 
     def test_prior_generation_bundle_without_formatting_remains_valid(self):
         expected = fixture(self.directory, include_formatting=False)
         self.assertEqual(common.verify_bundle(self.directory), expected)
+
+    def test_prior_windows_only_formatting_remains_valid(self):
+        expected = fixture(self.directory, legacy_formatting=True)
+        self.assertEqual(common.verify_bundle(self.directory), expected)
+
+    def test_non_executable_macos_formatter_rejected(self):
+        fixture(self.directory, macos_mode=0o644)
+        with self.assertRaisesRegex(ValueError, 'formatting executable mode'):
+            common.verify_bundle(self.directory)
 
     def test_non_executable_linux_apphost_rejected(self):
         fixture(self.directory, linux_mode=0o644)

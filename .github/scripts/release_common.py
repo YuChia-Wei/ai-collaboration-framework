@@ -307,10 +307,19 @@ def verify_bundle(directory, expected_source=None):
                 required.add(prefix + "snippets/" + body_file)
         # Older generation bundles have no formatting component.
         if "formatting" in generation:
-            require(generation["formatting"] == {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
+            require(generation["formatting"] in (
+                        {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
+                        {"runtimes": ["win-x64", "osx-arm64"],
+                         "sdk_versions": {"win-x64": "10.0.403", "osx-arm64": "10.0.400"}}),
                     "formatting support contract")
-            required.update({"generation/formatting/win-x64/FormatTool.exe",
-                             "generation/formatting/win-x64/README.md"})
+            for rid in generation["formatting"]["runtimes"]:
+                prefix = "generation/formatting/" + rid + "/"
+                executable = "FormatTool.exe" if rid == "win-x64" else "FormatTool"
+                required.update({prefix + executable, prefix + "README.md"})
+                if rid != "win-x64":
+                    require(prefix + executable in generation_names, "single-file generation layout")
+                    require(next(r["mode"] for r in rows if r["path"] == prefix + executable) == 0o755,
+                            "formatting executable mode")
         require(generation_names == required, "single-file generation layout")
         require(next(r["mode"] for r in rows if r["path"] == "generation/snippets/linux-x64/SnippetTool") == 0o755,
                 "Linux snippet executable mode")

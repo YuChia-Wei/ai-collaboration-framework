@@ -113,17 +113,20 @@ if ($LASTEXITCODE -ne 0) { throw '生成工具安裝未完成；請依 JSON 診�
 ```
 
 此步驟使用 Python 3.11+，將完整工具包安裝到 `.ai/tools/dotnet-generation/`，
-目前成品也包含 `formatting/win-x64/FormatTool.exe` 與使用說明，由相同
+目前成品也包含 `formatting/win-x64/FormatTool.exe`、
+`formatting/osx-arm64/FormatTool` 與各自使用說明，由相同
 `generation.json`、安裝及復原流程管理；舊成品須先確認是否包含 `formatting`。
-FormatTool 僅支援 Windows x64 與已安裝的 SDK 10.0.403，不能沿用 snippet 的
-Linux 支援宣稱。兩種工具皆採 self-contained single-file，沒有散落的 runtime DLL
+FormatTool 支援 Windows x64／SDK 10.0.403 與 macOS Apple silicon／SDK 10.0.400
+兩個指定組合，不能沿用 snippet 的 Linux 支援宣稱，也不推定其他 SDK 版本相容。
+macOS 執行檔採 ad-hoc 簽章；尚非 Developer ID 簽章或 notarization，下載後的
+Gatekeeper 驗收與 SDK 行為相容分開處理。兩種工具皆採 self-contained single-file，沒有散落的 runtime DLL
 或 PDB；不需要另外手動複製 FormatTool。
 不會自動註冊範本或產生應用。Snippet 執行檔包含 .NET runtime，支援 Windows x64
-與 Linux x64；範本的註冊、生成及建置另需 .NET 10 SDK。macOS 正式交付由 #582
+與 Linux x64；範本的註冊、生成及建置另需 .NET 10 SDK。生成工具的 macOS 正式交付由 #582
 另行處理。目錄式／nupkg 註冊、自訂與恢復指令見成品的 `generation/README.md`
 或[來源交付指南](../src/knowledge/dotnet-backend/tooling/generation/DELIVERY.md)。
 
-工具含兩平台執行檔，可能超過 140 MB；建議由專案自行加入以下 `.gitignore`
+工具包包含多平台 self-contained 執行檔，佔用數百 MB；建議由專案自行加入以下 `.gitignore`
 規則，並以版本控制保存自訂來源、所選 release 與 checksum 的重建說明：
 
 ```gitignore

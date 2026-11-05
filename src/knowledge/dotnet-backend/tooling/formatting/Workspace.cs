@@ -38,7 +38,7 @@ internal static partial class Workspace
             if (!Path.GetExtension(project).Equals(".csproj", StringComparison.OrdinalIgnoreCase) || !File.Exists(project))
                 throw new ToolFailure("unsupported-project", "Select existing C# projects.");
             var command = await LoadDesignTime(sdk, project);
-            using var metadata = JsonDocument.Parse(command.StandardOutput);
+            using var metadata = JsonDocument.Parse(command.StandardOutput!);
             var properties = metadata.RootElement.GetProperty("Properties");
             if (properties.GetProperty("UsingMicrosoftNETSdk").GetString() != "true" ||
                 !string.IsNullOrEmpty(properties.GetProperty("TargetFrameworks").GetString()) ||
@@ -62,7 +62,7 @@ internal static partial class Workspace
                 "-target:Compile", "-property:SkipCompilerExecution=true", "-property:BuildProjectReferences=false",
                 "-property:RunAnalyzers=false", "-property:UseSharedCompilation=false",
                 "-getItem:Analyzer,ProjectReference", "-getProperty:MSBuildToolsPath");
-            using var buildDocument = JsonDocument.Parse(buildMetadata.StandardOutput);
+            using var buildDocument = JsonDocument.Parse(buildMetadata.StandardOutput!);
             RejectProjectReferences(buildDocument.RootElement);
             CollectAnalyzers(buildDocument.RootElement, externalAnalyzers);
         }
@@ -71,7 +71,7 @@ internal static partial class Workspace
 
     private static async Task<CommandResult> LoadDesignTime(Sdk sdk, string project)
     {
-        // Match SDK 10.0.403 dotnet-format's MSBuildWorkspaceLoader and netcore
+        // Match the supported SDK formatters' MSBuildWorkspaceLoader and netcore
         // ProjectBuildManager, including optional post-Compile targets. Conditional
         // Analyzer/ProjectReference items must be inspected in that same context.
         string[] arguments = ["msbuild", project, "-nologo",
@@ -81,7 +81,7 @@ internal static partial class Workspace
             "-property:ProvideCommandLineArgs=True", "-property:SkipCompilerExecution=True",
             "-property:ContinueOnError=ErrorAndContinue", "-property:ShouldUnsetParentConfigurationAndPlatform=False"];
         var available = await sdk.Require("load-failed", [.. arguments, "-targets"]);
-        var hasMarkup = available.StandardOutput.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+        var hasMarkup = available.StandardOutput!.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
             .Any(target => target.Trim().Equals("DesignTimeMarkupCompilation", StringComparison.OrdinalIgnoreCase));
         var targets = hasMarkup ? "Compile;CoreCompile;DesignTimeMarkupCompilation" : "Compile;CoreCompile";
         return await sdk.Require("load-failed", [.. arguments, "-target:" + targets,

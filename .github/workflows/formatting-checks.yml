@@ -1,0 +1,69 @@
+name: Formatting acceptance
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/knowledge/dotnet-backend/tooling/formatting/**'
+      - 'tests/dotnet-formatting/**'
+      - '.github/workflows/formatting-checks.yml'
+      - '.github/scripts/build-generation.py'
+permissions: {}
+concurrency:
+  group: formatting-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  formatting:
+    name: FormatTool (${{ matrix.rid }}, SDK ${{ matrix.sdk }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            sdk: '10.0.403'
+            executable: FormatTool.exe
+          - os: macos-26
+            rid: osx-arm64
+            sdk: '10.0.400'
+            executable: FormatTool
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout exact event head
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Selected SDK
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: ${{ matrix.sdk }}
+      - name: Publish single-file FormatTool with exact SDK
+        env:
+          FORMAT_SDK: ${{ matrix.sdk }}
+          FORMAT_RID: ${{ matrix.rid }}
+        run: |
+          $buildArea = Join-Path $env:RUNNER_TEMP 'format-build'
+          New-Item -ItemType Directory -Path $buildArea | Out-Null
+          @{sdk=@{version=$env:FORMAT_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $buildArea 'global.json')
+          Set-Location $buildArea
+          dotnet publish "$env:GITHUB_WORKSPACE/src/knowledge/dotnet-backend/tooling/formatting/FormatTool.csproj" -c Release -r $env:FORMAT_RID --self-contained true --artifacts-path "$buildArea/artifacts" -o "$env:RUNNER_TEMP/format-publish"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Exercise actual published executable
+        env:
+          FORMAT_SDK: ${{ matrix.sdk }}
+          FORMAT_EXE: ${{ matrix.executable }}
+        run: |
+          python -I -B tests/dotnet-formatting/accept_formatting.py --tool "$env:RUNNER_TEMP/format-publish/$env:FORMAT_EXE" --work "$env:RUNNER_TEMP/format-acceptance" --sdk-version $env:FORMAT_SDK
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

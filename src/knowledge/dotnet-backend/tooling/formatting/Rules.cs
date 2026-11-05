@@ -1,14 +1,25 @@
+using System.Runtime.InteropServices;
+
 namespace FormatTool;
 
 internal static class Rules
 {
-    internal const string SdkVersion = "10.0.403";
+    internal static readonly SupportedEnvironment[] Environments =
+    [
+        new("win-x64", "10.0.403"),
+        new("osx-arm64", "10.0.400")
+    ];
     internal static readonly RuleCapability[] Capabilities =
     [
-        new("IDE0008", "style", "supported", SdkVersion),
-        new("CA1805", "analyzers", "supported", SdkVersion),
-        new("CA1040", "analyzers", "no-fixer", SdkVersion)
+        new("IDE0008", "style", "supported"),
+        new("CA1805", "analyzers", "supported"),
+        new("CA1040", "analyzers", "no-fixer")
     ];
+
+    public static SupportedEnvironment Environment() =>
+        OperatingSystem.IsWindows() && RuntimeInformation.ProcessArchitecture == Architecture.X64 ? Environments[0] :
+        OperatingSystem.IsMacOS() && RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? Environments[1] :
+        throw new ToolFailure("unsupported-platform", "Supported environments are Windows x64 / SDK 10.0.403 and macOS arm64 / SDK 10.0.400.");
 
     public static void Validate(Request request)
     {
@@ -28,9 +39,9 @@ internal static class Rules
         {
             var capability = Capabilities.SingleOrDefault(rule => rule.DiagnosticId == id && rule.Mode == request.Mode);
             if (capability == null)
-                throw new ToolFailure("unsupported-diagnostic", $"{id} is not supported in {request.Mode} by this tool's SDK {SdkVersion} rule list.");
+                throw new ToolFailure("unsupported-diagnostic", $"{id} is not supported in {request.Mode} by this tool's declared rule list; see --capabilities.");
             if (capability.Availability == "no-fixer")
-                throw new ToolFailure("no-fixer", $"{id} has no associated SDK {SdkVersion} code fix; no cleanup was executed.");
+                throw new ToolFailure("no-fixer", $"{id} has no associated code fix in the supported SDKs; no cleanup was executed.");
         }
     }
 }
