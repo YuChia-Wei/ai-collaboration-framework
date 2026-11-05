@@ -73,7 +73,7 @@ jobs:
         run: |
           image="$RUNNER_TEMP/format-case-sensitive.sparseimage"
           mount="$RUNNER_TEMP/format-case-sensitive"
-          hdiutil create -size 256m -fs APFSX -type SPARSE -volname FormatAcceptance "$image"
+          hdiutil create -size 256m -fs "Case-sensitive APFS" -type SPARSE -volname FormatAcceptance "$image"
           mkdir -p "$mount"
           hdiutil attach "$image" -mountpoint "$mount" -nobrowse
           trap 'hdiutil detach "$mount"' EXIT
