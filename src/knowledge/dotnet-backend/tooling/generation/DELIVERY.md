@@ -17,8 +17,11 @@ Both tools require a host-installed .NET 10 SDK and use framework-dependent
 CoreCLR single-file publishing, without an embedded runtime, loose runtime DLLs
 or debug symbols. The host must discover the matching .NET runtime; configure
 apphost lookup for nonstandard SDK installations as described in each tool README.
-The installer does not install or download an SDK. The former standalone
-self-contained/AOT delivery and no-SDK execution requirement are retired. Snippet catalogs and templates remain
+The installer does not install or download an SDK. SnippetTool also retains an
+optional standalone Native AOT publication through `Publish-Snippets.ps1 -NativeAot`;
+that executable includes the runtime support it needs and is not the default
+generation bundle. No SDK-free environment acceptance is required for this
+development-tool delivery. Snippet catalogs and templates remain
 external data. Check `generation.json` for the selected bundle's formatting
 component; older bundles do not include it. This same installer updates and
 recovers all manifest-listed tools; no separate manual formatting copy is needed.

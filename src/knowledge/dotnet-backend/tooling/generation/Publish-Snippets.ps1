@@ -5,16 +5,17 @@ param(
     [string] $Version,
     [Parameter(Mandatory)] [string] $OutputRoot,
     [ValidatePattern('^[a-z0-9]+(?:-[a-z0-9]+)+$')]
-    [string] $RuntimeIdentifier = 'win-x64'
+    [string] $RuntimeIdentifier = 'win-x64',
+    [switch] $NativeAot
 )
 
 $ErrorActionPreference = 'Stop'
 $OutputRoot = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputRoot)
 $platform = if ($IsWindows) { 'win-' } elseif ($IsLinux) { 'linux-' } else { 'osx-' }
 if (!$RuntimeIdentifier.StartsWith($platform, [StringComparison]::Ordinal)) {
-    throw 'Package on the target OS to preserve executable modes.'
+    throw 'Package on the target OS to preserve executable modes and use its native AOT toolchain.'
 }
-$mode = 'framework-dependent-coreclr-single-file'
+$mode = if ($NativeAot) { 'aot' } else { 'framework-dependent-coreclr-single-file' }
 $name = "SnippetTool-$Version-$RuntimeIdentifier-$mode"
 $destination = Join-Path $OutputRoot $name
 if (Test-Path -LiteralPath $destination) {
@@ -26,10 +27,13 @@ $artifacts = Join-Path $destination 'build'
 $archive = Join-Path $destination ($name + $(if ($IsWindows) { '.zip' } else { '.tar.gz' }))
 New-Item -ItemType Directory -Path $destination | Out-Null
 
-& dotnet publish $project -c Release -r $RuntimeIdentifier --self-contained false `
+& dotnet publish $project -c Release -r $RuntimeIdentifier `
+    --self-contained "$($NativeAot.IsPresent.ToString().ToLowerInvariant())" `
     --artifacts-path $artifacts -o $publish "-p:Version=$Version" `
-    -p:PublishAot=false -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false
-if ($LASTEXITCODE -ne 0) { throw 'Framework-dependent publish failed; keep the output for diagnosis.' }
+    "-p:PublishAot=$($NativeAot.IsPresent.ToString().ToLowerInvariant())" `
+    "-p:PublishSingleFile=$((!$NativeAot.IsPresent).ToString().ToLowerInvariant())" `
+    -p:DebugType=None -p:DebugSymbols=false
+if ($LASTEXITCODE -ne 0) { throw "Snippet publish failed ($mode); keep the output for diagnosis." }
 
 $executable = if ($IsWindows) { 'SnippetTool.exe' } else { 'SnippetTool' }
 foreach ($member in @($executable, 'README.md', 'snippets/catalog.json',
