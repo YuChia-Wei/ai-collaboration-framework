@@ -119,11 +119,12 @@ if ($LASTEXITCODE -ne 0) { throw '生成工具安裝未完成；請依 JSON 診�
 FormatTool 支援 Windows x64／SDK 10.0.403 與 macOS Apple silicon／SDK 10.0.400
 兩個指定組合，不能沿用 snippet 的 Linux 支援宣稱，也不推定其他 SDK 版本相容。
 macOS 執行檔採 ad-hoc 簽章；尚非 Developer ID 簽章或 notarization，下載後的
-Gatekeeper 驗收與 SDK 行為相容分開處理。兩種工具皆採 framework-dependent single-file，使用 host 已安裝的 .NET 10 SDK
-所附 runtime，不內建 runtime，也沒有散落的 DLL 或 PDB；不需要另外手動複製 FormatTool。
-SDK 須可由 .NET host 找到，FormatTool 的 SDK 命令另需 PATH 中的 `dotnet`；
-自訂安裝位置請依工具 README 設定 `DOTNET_ROOT_X64`／`DOTNET_ROOT_ARM64`。
-若 runtime 無法載入，會在工具啟動前回傳 .NET host 的錯誤，不適用工具的 JSON 輸出契約。
+Gatekeeper 驗收與 SDK 行為相容分開處理。正式工具包的兩種工具皆採 Native AOT，
+由對應平台建置原生執行檔，包含必要 runtime 支援，沒有散落的 DLL 或 PDB；
+不需要另外手動複製 FormatTool。`generation.json` 會標示 `native-aot`。
+開發仍須安裝 .NET 10 SDK，FormatTool 必須能從 PATH 找到指定版本的 `dotnet`。
+維護者可明確選擇 framework-dependent CoreCLR 比較版；該版本使用 host runtime，
+自訂位置需設定 .NET host lookup，啟動失敗也先於工具 JSON 契約。
 不會自動註冊範本或產生應用。Snippet 執行檔支援 Windows x64
 與 Linux x64；兩種工具及範本的註冊、生成與建置皆以 host 已安裝 .NET 10 SDK 為前提。生成工具的 macOS 正式交付由 #582
 另行處理。目錄式／nupkg 註冊、自訂與恢復指令見成品的 `generation/README.md`

@@ -1,0 +1,174 @@
+name: Build native tools
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/knowledge/dotnet-backend/tooling/**'
+      - '.github/scripts/**'
+      - '.github/workflows/native-tools.yml'
+      - '.github/workflows/package-candidate.yml'
+      - '.github/workflows/publish-release.yml'
+  workflow_call:
+    inputs:
+      tooling-commit:
+        required: true
+        type: string
+      source-commit:
+        default: ''
+        type: string
+      tag:
+        default: ''
+        type: string
+    outputs:
+      enabled:
+        value: ${{ jobs.source.outputs.enabled }}
+      source-commit:
+        value: ${{ jobs.source.outputs.commit }}
+permissions: {}
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      enabled: ${{ steps.source.outputs.enabled }}
+      commit: ${{ steps.source.outputs.commit }}
+      version: ${{ steps.source.outputs.version }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ inputs.tooling-commit || github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Resolve exact selected source and its build capability
+        id: source
+        env:
+          SOURCE_COMMIT: ${{ inputs.source-commit || github.event.pull_request.head.sha }}
+          RELEASE_TAG: ${{ inputs.tag }}
+        run: |
+          python -I -B - <<'PY'
+          import os, sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path('.github/scripts').resolve()))
+          from release_common import identity, release_version, git
+          source = identity(Path.cwd(), os.environ['SOURCE_COMMIT'] or None, os.environ['RELEASE_TAG'] or None)
+          enabled = bool(git(Path.cwd(), 'ls-tree', source['commit'], '--', '.github/scripts/native_tools.py').strip())
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f"commit={source['commit']}\nversion={release_version(source)}\nenabled={str(enabled).lower()}\n")
+          PY
+  native:
+    needs: source
+    if: needs.source.outputs.enabled == 'true'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            sdk: '10.0.403'
+          - os: ubuntu-22.04
+            rid: linux-x64
+            sdk: '10.0.403'
+          - os: macos-26
+            rid: osx-arm64
+            sdk: '10.0.400'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.source.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: ${{ matrix.sdk }}
+      - name: Publish AOT for this native runner
+        shell: pwsh
+        env:
+          SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
+          PRODUCT_VERSION: ${{ needs.source.outputs.version }}
+          NATIVE_RID: ${{ matrix.rid }}
+          NATIVE_SDK: ${{ matrix.sdk }}
+        run: |
+          $buildRoot = Join-Path $env:RUNNER_TEMP 'native-sdk'
+          New-Item -ItemType Directory -Path $buildRoot | Out-Null
+          @{sdk=@{version=$env:NATIVE_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $buildRoot 'global.json')
+          Set-Location $buildRoot
+          python -I -B "$env:GITHUB_WORKSPACE/.github/scripts/native_tools.py" --repository $env:GITHUB_WORKSPACE --commit $env:SOURCE_COMMIT --version $env:PRODUCT_VERSION --rid $env:NATIVE_RID --work "$env:RUNNER_TEMP/native-build" --output "$env:RUNNER_TEMP/native-output"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.rid }}
+          path: ${{ runner.temp }}/native-output/*
+          if-no-files-found: error
+          retention-days: 14
+  comparison:
+    if: github.event_name == 'pull_request'
+    needs: [source, native]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.source.outputs.commit }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - run: python -I -m pip install --disable-pip-version-check PyYAML==6.0.3
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.403'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: native-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: ${{ runner.temp }}/native-tools
+      - name: Build and verify both complete bundles from identical source
+        env:
+          SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
+        run: |
+          for mode in native coreclr; do
+            args=(--native-tools "$RUNNER_TEMP/native-tools")
+            if [[ "$mode" == coreclr ]]; then args=(--coreclr-tools); fi
+            python -I -B .github/scripts/build-release.py --repository "$GITHUB_WORKSPACE" \
+              --source-commit "$SOURCE_COMMIT" --tooling-commit "$SOURCE_COMMIT" --workflow-commit "$SOURCE_COMMIT" \
+              --workflow .github/workflows/native-tools.yml --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+              --work-root "$RUNNER_TEMP/build-$mode" --output "$RUNNER_TEMP/bundle-$mode" "${args[@]}"
+          done
+          python -I -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          rows = {}
+          for mode in ('native', 'coreclr'):
+              m = json.loads((root / ('bundle-' + mode) / 'release-manifest.json').read_text())
+              rows[mode] = dict(source_commit=m['source']['commit'], zip_bytes=m['archive']['size'],
+                               expanded_bytes=sum(r['size'] for r in m['entries']),
+                               executables={r['path']: r['size'] for r in m['entries'] if r['path'].endswith(('SnippetTool', 'SnippetTool.exe', 'FormatTool', 'FormatTool.exe'))})
+          assert rows['native']['source_commit'] == rows['coreclr']['source_commit']
+          (root / 'native-size-comparison.json').write_text(json.dumps(rows, indent=2) + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('## Complete bundle size comparison\n\n| Mode | ZIP bytes | Expanded bytes |\n| --- | ---: | ---: |\n')
+              for mode, row in rows.items():
+                  summary.write(f"| {mode} | {row['zip_bytes']} | {row['expanded_bytes']} |\n")
+          print(json.dumps(rows, indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-bundle-comparison-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/native-size-comparison.json
+            ${{ runner.temp }}/bundle-native/*
+            ${{ runner.temp }}/bundle-coreclr/*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14

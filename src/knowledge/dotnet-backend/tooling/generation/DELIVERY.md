@@ -13,24 +13,24 @@ Formatting supports those exact OS/architecture/SDK combinations; the snippet
 platform list does not extend that support. The macOS formatter is ad-hoc
 signed, not Developer ID signed or notarized. SDK compatibility evidence does
 not establish downloaded-artifact Gatekeeper acceptance.
-Both tools require a host-installed .NET 10 SDK and use framework-dependent
-CoreCLR single-file publishing, without an embedded runtime, loose runtime DLLs
-or debug symbols. The host must discover the matching .NET runtime; configure
-apphost lookup for nonstandard SDK installations as described in each tool README.
-The installer does not install or download an SDK. SnippetTool also retains an
-optional standalone Native AOT publication through `Publish-Snippets.ps1 -NativeAot`;
-that executable includes the runtime support it needs and is not the default
-generation bundle. No SDK-free environment acceptance is required for this
-development-tool delivery. Snippet catalogs and templates remain
+The release bundle publishes both tools with Native AOT on their respective
+OS/architecture runners. Each native executable contains only the runtime support
+it needs; the bundle has no loose runtime DLLs or debug symbols. The host-installed
+.NET 10 SDK remains a development prerequisite, and FormatTool invokes that SDK
+through `dotnet` on PATH. The installer does not install or download an SDK.
+`generation.json` identifies this delivery as `native-aot`. An explicit
+framework-dependent CoreCLR comparison build remains available to maintainers;
+older CoreCLR bundle manifests remain supported. SnippetTool's standalone
+`Publish-Snippets.ps1` retains its host-SDK default and selects AOT with `-NativeAot`.
+No SDK-free environment acceptance is required. Snippet catalogs and templates remain
 external data. Check `generation.json` for the selected bundle's formatting
 component; older bundles do not include it. This same installer updates and
 recovers all manifest-listed tools; no separate manual formatting copy is needed.
 The installer does not register templates, edit project code or select a
 technology stack.
 
-The command output contracts below apply after application startup. Missing
-runtime failures come from the native .NET host before either tool can emit
-JSON. The contracts differ and callers should select by tool:
+The command output contracts below apply after application startup. For the framework-dependent comparison variant, missing
+runtime failures come from the native .NET host before either tool can emit JSON. The contracts differ and callers should select by tool:
 
 | Tool | Success / changes required | Failure |
 | --- | --- | --- |

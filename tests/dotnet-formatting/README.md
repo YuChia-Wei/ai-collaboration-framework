@@ -20,7 +20,7 @@ python3 -I -B tests/dotnet-formatting/accept_formatting.py --tool /path/to/forma
 The fixture writes an exact-version `global.json` with roll-forward disabled;
 all setup and tool SDK calls resolve from that fixture. `--sdk-version` defaults
 to the supported version for the host OS. The `Formatting acceptance` workflow
-publishes and runs this same suite on Windows and macOS using the selected SDK;
+publishes Native AOT and runs this same suite on Windows and macOS using the selected SDK;
 the existing Python `Source change gate` remains separate.
 The Mac job also runs the case-alias refusal on a small disposable case-sensitive
 APFS disk image, so a case-insensitive runner cannot silently skip that check.

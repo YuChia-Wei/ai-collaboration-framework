@@ -19,6 +19,7 @@ import yaml
 SCRIPTS = Path(__file__).absolute().parents[2] / ".github/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import release_common as common
+import native_tools
 
 
 def load(name, filename):
@@ -219,6 +220,12 @@ class ReleaseContracts(unittest.TestCase):
 
     def test_actual_zip_raw_inventory(self):
         self.assertEqual(common.verify_bundle(self.directory, SOURCE), self.manifest)
+
+    def test_native_and_host_runtime_bundles_remain_valid(self):
+        for mode in ('native-aot', 'framework-dependent-coreclr-single-file'):
+            with self.subTest(mode=mode):
+                expected = fixture(self.directory, generation_mode=mode)
+                self.assertEqual(common.verify_bundle(self.directory), expected)
 
     def test_incomplete_snippet_layout_rejected_even_with_consistent_inventory(self):
         for name in ('SnippetTool', 'README.md', 'snippets/catalog.json', 'snippets/example.snippet'):
@@ -697,6 +704,40 @@ class ReleaseContracts(unittest.TestCase):
         with patch.object(api, "request", side_effect=[rows, [{"id": 999}]]) as request:
             self.assertEqual(len(api.pages("/releases")), 101)
             self.assertIn("page=2", request.call_args_list[1].args[1])
+
+
+class NativeAdmission(unittest.TestCase):
+    def test_platform_parts_require_complete_matching_source_version_and_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            inputs = root / 'inputs'
+            for rid in native_tools.RUNTIMES:
+                part = inputs / rid
+                part.mkdir(parents=True)
+                rows = []
+                for tool in native_tools.RUNTIMES[rid][2]:
+                    path = part / tool / rid / 'binary'
+                    path.parent.mkdir(parents=True)
+                    path.write_bytes(b'native executable fixture')
+                    rows.append(dict(path=path.relative_to(part).as_posix(), size=path.stat().st_size,
+                                     sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+                (part / 'native-tools.json').write_text(json.dumps(dict(schema='aicf-native-tools/1',
+                    source_commit=SOURCE['commit'], version='1.2.3', rid=rid, files=rows)))
+            output = root / 'valid'
+            native_tools.collect(inputs, output, '1.2.3', SOURCE['commit'])
+            self.assertEqual(len(list(output.rglob('binary'))), 4)
+            with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
+                native_tools.collect(inputs, root / 'wrong-source', '1.2.3', 'f' * 40)
+            with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
+                native_tools.collect(inputs, root / 'wrong-version', '2.0.0', SOURCE['commit'])
+            binary = inputs / 'win-x64/snippets/win-x64/binary'
+            binary.write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError, 'hash/type'):
+                native_tools.collect(inputs, root / 'corrupt', '1.2.3', SOURCE['commit'])
+            empty = root / 'empty'
+            empty.mkdir()
+            with self.assertRaisesRegex(ValueError, 'Missing native runtime'):
+                native_tools.collect(empty, root / 'missing', '1.2.3', SOURCE['commit'])
 
 
 class BuildDiagnostics(unittest.TestCase):

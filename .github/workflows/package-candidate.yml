@@ -12,7 +12,16 @@ concurrency:
   group: release-snapshot-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  native-tools:
+    if: github.repository == 'YuChia-Wei/ai-collaboration-framework' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/native-tools.yml
+    permissions:
+      contents: read
+    with:
+      tooling-commit: ${{ github.workflow_sha }}
+      source-commit: ${{ github.sha }}
   build:
+    needs: native-tools
     if: github.repository == 'YuChia-Wei/ai-collaboration-framework' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -34,18 +43,28 @@ jobs:
           python-version: '3.12'
       - name: Builder dependency
         run: python -I -m pip install --disable-pip-version-check PyYAML==6.0.3
-      - name: .NET SDK for templates and framework-dependent tools
+      - name: .NET SDK for templates and legacy tools
         uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: '10.0.x'
+      - name: Download native outputs from this run and attempt
+        if: needs.native-tools.outputs.enabled == 'true'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: native-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: ${{ runner.temp }}/native-tools
       - name: Build and verify exact source snapshot
         id: build
         shell: bash
+        env:
+          NATIVE_ENABLED: ${{ needs.native-tools.outputs.enabled }}
         run: |
+          native_args=()
+          if [[ "$NATIVE_ENABLED" == "true" ]]; then native_args=(--native-tools "$RUNNER_TEMP/native-tools"); fi
           set +e
           python -I -B .github/scripts/build-release.py \
             --repository "$GITHUB_WORKSPACE" --source-commit "$SOURCE_COMMIT" \
-            --tooling-commit "$TOOLING_COMMIT" --workflow-commit "$TOOLING_COMMIT" \
+            --tooling-commit "$TOOLING_COMMIT" --workflow-commit "$TOOLING_COMMIT" "${native_args[@]}" \
             --workflow .github/workflows/package-candidate.yml \
             --repository-name "$GITHUB_REPOSITORY" --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
             --work-root "$RUNNER_TEMP/rb" --output "$RUNNER_TEMP/release-assets" --github-output "$GITHUB_OUTPUT" \

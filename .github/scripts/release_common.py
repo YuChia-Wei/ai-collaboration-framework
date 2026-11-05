@@ -122,6 +122,13 @@ def identity(repository, source_commit=None, tag=None):
     return {"tag": None, "tag_object": None, "commit": commit}
 
 
+def release_version(source):
+    value = source['tag'][1:] if source['tag'] else '0.0.0-rc.' + str(int(source['commit'][:12], 16) + 1)
+    require(re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.[1-9][0-9]*)?', value),
+            'selected Catalog 1 supports stable or rc.N versions only')
+    return value
+
+
 def plain(path):
     info = path.lstat()
     require(stat.S_ISREG(info.st_mode) and not path.is_symlink() and info.st_nlink == 1
@@ -218,7 +225,8 @@ def verify_bundle(directory, expected_source=None):
     version(manifest["version"])
     for key in ("tooling_commit", "workflow_commit"):
         oid(manifest["provenance"][key])
-    require(manifest["provenance"]["workflow"] in (WORKFLOW, ".github/workflows/package-candidate.yml"), "workflow identity")
+    require(manifest["provenance"]["workflow"] in (WORKFLOW, ".github/workflows/package-candidate.yml",
+                                                 ".github/workflows/native-tools.yml"), "workflow identity")
     archive = manifest["archive"]
     name = safe_name(archive["name"])
     require("/" not in name and name.endswith(".zip"), "archive filename")
@@ -283,7 +291,7 @@ def verify_bundle(directory, expected_source=None):
                 and generation["version"] == manifest["version"], "generation source/version")
         require(generation["runtimes"] == ["win-x64", "linux-x64"]
                 and generation["mode"] in ("self-contained-coreclr-single-file",
-                                           "framework-dependent-coreclr-single-file"), "generation runtime contract")
+                                           "framework-dependent-coreclr-single-file", "native-aot"), "generation runtime contract")
         generation_names = {"generation/generation.json"}
         for row in generation["files"]:
             generation_name = "generation/" + safe_name(row["path"])

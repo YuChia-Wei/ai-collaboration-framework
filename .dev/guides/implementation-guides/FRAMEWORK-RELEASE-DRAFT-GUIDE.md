@@ -172,11 +172,28 @@ acceptance, P7 completion, Issue closure or a public release.
 
 ## Local commands
 
+Current source bundles use Native AOT. `native-tools.yml` builds Windows x64
+SnippetTool/FormatTool, Linux x64 SnippetTool and macOS arm64 FormatTool on native
+runners, with no support-matrix expansion. Assembly checks every artifact's source,
+version, runtime, inventory and hashes. A native build retry needs a complete set
+from the same workflow run attempt; rerun all build jobs when needed. The existing
+draft writer still accepts only `publish-release.yml` provenance and never
+publishes PR comparison artifacts.
+
+For a current-source local release build, supply `--native-tools <download-root>`
+with the three artifact subdirectories from one run. `--coreclr-tools` explicitly
+builds the former framework-dependent variant for comparison. The PR native-tools
+job builds and verifies both complete archives from identical source and retains
+compressed/expanded size evidence. These are build results, not public releases.
+Older selected sources without the native builder retain their own build mode.
+The snapshot example below selects the explicit CoreCLR comparison; omit that
+flag only when supplying native artifacts or selecting an older source.
+
 Use Python 3.10+ and PyYAML 6.x, a clean tooling checkout and fresh short external
 roots. Keep earlier attempts. `$tooling` and `$source` are full immutable SHAs:
 
 ```powershell
-python -I -B .github/scripts/build-release.py --repository (Get-Location).Path --source-commit $source --tooling-commit $tooling --workflow-commit $tooling --workflow .github/workflows/package-candidate.yml --run-id local-snapshot --run-attempt 1 --work-root F:/r418s --output F:/r418so
+python -I -B .github/scripts/build-release.py --repository (Get-Location).Path --source-commit $source --tooling-commit $tooling --workflow-commit $tooling --workflow .github/workflows/package-candidate.yml --run-id local-snapshot --run-attempt 1 --coreclr-tools --work-root F:/r418s --output F:/r418so
 python -I -B .github/scripts/build-release.py --repository (Get-Location).Path --tag v0.19.0-rc.3 --tooling-commit $tooling --workflow-commit $tooling --workflow .github/workflows/publish-release.yml --run-id local-tag --run-attempt 1 --work-root F:/r418t --output F:/r418to
 python -I -B tests/run.py --suite release
 ```

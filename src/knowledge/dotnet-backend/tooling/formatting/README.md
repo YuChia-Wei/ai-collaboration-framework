@@ -30,20 +30,23 @@ Older bundles without `formatting` do not supply this capability.
 From this source directory, publish to a fresh directory outside the source tree:
 
 ```powershell
-dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained false -o C:/artifacts/format-tool
+dotnet publish FormatTool.csproj -c Release -r win-x64 --self-contained true -p:PublishAot=true -p:PublishSingleFile=false -o C:/artifacts/format-tool
 ```
 
 Copy the **entire publish directory** to a machine with the supported SDK. Run
 `FormatTool.exe --version` or `FormatTool.exe --request C:/work/format.json`.
-The project defaults to framework-dependent single-file publishing with the command
-above: one executable and this guide, without an embedded runtime or loose DLLs/PDBs.
-Install the matching .NET 10 SDK on the host before running it; its runtime must
-be discoverable by the .NET apphost, and `dotnet` must be on PATH for SDK commands.
-For a custom installation, configure the .NET host lookup (for example,
-`DOTNET_ROOT_X64` on Windows x64 or `DOTNET_ROOT_ARM64` on macOS arm64) as well as PATH.
-The release builder uses the same single-file settings for snippets and formatting
-and rejects unexpected runtime files. No global tool registration or automatic
-SDK download occurs. A local publish alone is not a formal release.
+The release builder and command above use Native AOT: one native executable and
+this guide, with required runtime support embedded and no loose DLLs/PDBs. Build
+on the target OS/architecture with its native compiler toolchain. Install the
+matching .NET 10 SDK on the host and put `dotnet` on PATH for the SDK commands.
+AOT optimizes the wrapper; external MSBuild and `dotnet format` processes retain
+their own startup and execution costs. The project also supports an explicit
+framework-dependent comparison publish with `--self-contained false
+-p:PublishAot=false -p:PublishSingleFile=true`. That variant needs discoverable
+host runtime lookup (for example, `DOTNET_ROOT_X64` or `DOTNET_ROOT_ARM64` for a
+custom SDK location). The release verifier rejects unexpected runtime files.
+No global tool registration or automatic SDK download occurs. A local publish
+alone is not a formal release.
 For macOS, use `-r osx-arm64` and a destination you own, then run `./FormatTool`.
 The macOS executable uses .NET's ad-hoc signature; it is not Developer ID signed
 or notarized. Download quarantine/Gatekeeper acceptance is separate from SDK

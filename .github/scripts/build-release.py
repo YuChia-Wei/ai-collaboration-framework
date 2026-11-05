@@ -15,7 +15,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).absolute().parent))
 from release_common import (SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, engine_files, entry, git, identity, oid,
-                            package_adapters, plain, render_readme, require, safe_name, sha, verify_bundle)
+                            package_adapters, plain, release_version, render_readme, require, safe_name, sha, verify_bundle)
 
 
 def engine_pin(repository, source):
@@ -69,9 +69,7 @@ def build(args):
     source = identity(repository, args.source_commit, args.tag)
     readme_source = load_readme_source(repository, source["commit"])
     # Catalog 1 currently accepts stable or rc.N only. Keep snapshot identity in its name/manifest.
-    release_version = source["tag"][1:] if source["tag"] else "0.0.0-rc." + str(int(source["commit"][:12], 16) + 1)
-    require(re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-rc\.[1-9][0-9]*)?", release_version),
-            "selected Catalog 1 supports stable or rc.N versions only")
+    version = release_version(source)
     require(tooling == oid(args.workflow_commit), "workflow/tooling commit mismatch")
     work, output = args.work_root.absolute(), args.output.absolute()
     for target in (work, output):
@@ -92,7 +90,7 @@ def build(args):
     for name in ("c", "e", "t"):
         (work / name).mkdir()
     command = [sys.executable, "-I", "-B", str(checkout / "tools/build-catalog.py"),
-               "--repository", str(checkout), "--commit", source["commit"], "--release-version", release_version,
+               "--repository", str(checkout), "--commit", source["commit"], "--release-version", version,
                "--engine-pin", str(pin_file), "--output-root", str(work / "c"),
                "--scratch-root", str(work / "t"), "--engine-output-root", str(work / "e")]
     # No release token or provider credential is passed to product code.
@@ -111,15 +109,25 @@ def build(args):
     label = source["tag"] or "snapshot"
     adapters = package_adapters(document(payload["catalog/metadata/catalog.json"][0]),
                                 {n: raw for n, (raw, _) in payload.items()})
-    readme = render_readme(readme_source["template_utf8"], source, receipt["identity"], release_version, adapters)
+    readme = render_readme(readme_source["template_utf8"], source, receipt["identity"], version, adapters)
     payload["README.md"] = (readme, 0o644)
     # Build tools from the same immutable source as the catalog. Their binaries
     # have an explicit manifest rather than masquerading as Git source blobs.
     generation_root = work / "generation"
+    generation_args = []
+    if (checkout / '.github/scripts/native_tools.py').is_file():
+        if args.coreclr_tools:
+            require(args.native_tools is None, 'CoreCLR comparison cannot consume native artifacts')
+            generation_args = ['--coreclr']
+        else:
+            require(args.native_tools is not None, 'Native tool artifacts required for this source')
+            generation_args = ['--native-tools', str(args.native_tools.absolute())]
+    else:
+        require(args.native_tools is None, 'Legacy source cannot consume native artifacts')
     subprocess.run([sys.executable, "-I", "-B", str(checkout / ".github/scripts/build-generation.py"),
                     "--repository", str(checkout), "--commit", source["commit"],
-                    "--version", release_version, "--output", str(generation_root),
-                    "--work", str(work / "generation-build")], check=True, env=environment, timeout=900,
+                    "--version", version, "--output", str(generation_root),
+                    "--work", str(work / "generation-build"), *generation_args], check=True, env=environment, timeout=900,
                    stdout=sys.stderr)
     generation = document((generation_root / "generation.json").read_bytes())
     generated_modes = {row["path"]: row["mode"] for row in generation["files"]}
@@ -136,7 +144,7 @@ def build(args):
             info.compress_type = zipfile.ZIP_DEFLATED
             zipped.writestr(info, raw)
     raw = archive.read_bytes()
-    manifest = {"schema": SCHEMA, "source": source, "version": release_version,
+    manifest = {"schema": SCHEMA, "source": source, "version": version,
                 "catalog_identity": receipt["identity"], "engine_pin_sha256": sha(pin_raw),
                 "archive": {"name": archive.name, "size": len(raw), "sha256": sha(raw)},
                 "entries": [entry(n, b, m) for n, (b, m) in sorted(payload.items())],
@@ -170,13 +178,15 @@ def main():
     parser.add_argument("--tag")
     parser.add_argument("--tooling-commit", required=True)
     parser.add_argument("--workflow-commit", required=True)
-    parser.add_argument("--workflow", choices=(".github/workflows/package-candidate.yml", ".github/workflows/publish-release.yml"), required=True)
+    parser.add_argument("--workflow", choices=(".github/workflows/package-candidate.yml", ".github/workflows/publish-release.yml", ".github/workflows/native-tools.yml"), required=True)
     parser.add_argument("--repository-name", default="YuChia-Wei/ai-collaboration-framework")
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--run-attempt", required=True)
     parser.add_argument("--work-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--github-output", type=Path)
+    parser.add_argument("--native-tools", type=Path)
+    parser.add_argument("--coreclr-tools", action='store_true', help='Explicit framework-dependent comparison build')
     args = parser.parse_args()
     try:
         manifest = build(args)
