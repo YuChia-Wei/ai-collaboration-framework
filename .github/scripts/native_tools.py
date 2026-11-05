@@ -50,6 +50,13 @@ def build(repository, output, work, version, commit, rid):
 
 def collect(root, output, version, commit):
     """Require all native runners' exact source/version and hash every input."""
+    # The caller's root may use an OS alias such as macOS /tmp -> /private/tmp.
+    # Links inside the artifact boundary remain forbidden.
+    root = root.resolve()
+    missing = ('Missing native runtime artifacts for this run attempt; '
+               'rerun all native jobs and the bundle build together')
+    if not root.is_dir():
+        raise ValueError(missing)
     seen = set()
     for directory in sorted(root.iterdir()):
         if not directory.is_dir() or directory.is_symlink():
@@ -70,7 +77,8 @@ def collect(root, output, version, commit):
                 raise ValueError('Invalid native artifact member')
             expected.add(name)
             path = directory / name
-            if not path.is_file() or any(p.is_symlink() for p in (path, *path.parents)):
+            if not path.is_file() or any((root / p).is_symlink()
+                                        for p in (path.relative_to(root), *path.relative_to(root).parents)):
                 raise ValueError('Native artifact member hash/type mismatch')
             raw = path.read_bytes()
             if len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
@@ -82,7 +90,7 @@ def collect(root, output, version, commit):
         if actual != expected or any(p.is_symlink() for p in directory.rglob('*')):
             raise ValueError('Native artifact inventory mismatch')
     if seen != set(RUNTIMES):
-        raise ValueError('Missing native runtime artifact')
+        raise ValueError(missing)
 
 
 if __name__ == '__main__':

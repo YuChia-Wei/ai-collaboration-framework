@@ -707,6 +707,32 @@ class ReleaseContracts(unittest.TestCase):
 
 
 class NativeAdmission(unittest.TestCase):
+    def test_root_alias_is_allowed_but_member_links_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            inputs = root / 'inputs'
+            for rid in native_tools.RUNTIMES:
+                part = inputs / rid
+                path = part / native_tools.RUNTIMES[rid][2][0] / rid / 'binary'
+                path.parent.mkdir(parents=True)
+                path.write_bytes(b'native fixture')
+                (part / 'native-tools.json').write_text(json.dumps(dict(schema='aicf-native-tools/1',
+                    source_commit=SOURCE['commit'], version='1.2.3', rid=rid,
+                    files=[dict(path=path.relative_to(part).as_posix(), size=path.stat().st_size,
+                                sha256=hashlib.sha256(path.read_bytes()).hexdigest())])))
+            alias = root / 'alias'
+            try:
+                alias.symlink_to(root, target_is_directory=True)
+            except OSError as error:
+                self.skipTest(f'Directory symlink creation unavailable: {error}')
+            native_tools.collect(alias / 'inputs', root / 'valid-alias', '1.2.3', SOURCE['commit'])
+            self.assertEqual(len(list((root / 'valid-alias').rglob('binary'))), 3)
+            external = root / 'external-binary'
+            path.rename(external)
+            path.symlink_to(external)
+            with self.assertRaisesRegex(ValueError, 'hash/type'):
+                native_tools.collect(inputs, root / 'linked-member', '1.2.3', SOURCE['commit'])
+
     def test_platform_parts_require_complete_matching_source_version_and_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -738,6 +764,8 @@ class NativeAdmission(unittest.TestCase):
             empty.mkdir()
             with self.assertRaisesRegex(ValueError, 'Missing native runtime'):
                 native_tools.collect(empty, root / 'missing', '1.2.3', SOURCE['commit'])
+            with self.assertRaisesRegex(ValueError, 'this run attempt; rerun all native jobs'):
+                native_tools.collect(root / 'absent', root / 'missing-root', '1.2.3', SOURCE['commit'])
 
 
 class BuildDiagnostics(unittest.TestCase):

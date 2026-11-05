@@ -37,7 +37,12 @@ Copy the **entire publish directory** to a machine with the supported SDK. Run
 `FormatTool.exe --version` or `FormatTool.exe --request C:/work/format.json`.
 The release builder and command above use Native AOT: one native executable and
 this guide, with required runtime support embedded and no loose DLLs/PDBs. Build
-on the target OS/architecture with its native compiler toolchain. Install the
+on the target OS/architecture with its native compiler toolchain. Release builds
+use SDK **10.0.403** on each platform (runtime/ILCompiler 10.0.14, including the
+[Brotli security update](https://github.com/dotnet/runtime/security/advisories/GHSA-p3jp-9v83-76w9)).
+The build SDK is independent of the external formatter SDK in the table above;
+the macOS acceptance job builds with 10.0.403 and invokes SDK 10.0.400.
+Install the
 matching .NET 10 SDK on the host and put `dotnet` on PATH for the SDK commands.
 AOT optimizes the wrapper; external MSBuild and `dotnet format` processes retain
 their own startup and execution costs. The project also supports an explicit
@@ -49,9 +54,22 @@ No global tool registration or automatic SDK download occurs. A local publish
 alone is not a formal release.
 For macOS, use `-r osx-arm64` and a destination you own, then run `./FormatTool`.
 The macOS executable uses .NET's ad-hoc signature; it is not Developer ID signed
-or notarized. Download quarantine/Gatekeeper acceptance is separate from SDK
-behavioral compatibility. Preserve those platform protections when evaluating a
-downloaded artifact.
+or notarized. Before using a downloaded tool from non-interactive automation:
+
+1. Verify the download source and bundle integrity, then manually run
+   `.ai/tools/dotnet-generation/formatting/osx-arm64/FormatTool --version` from
+   the project directory.
+2. If Gatekeeper reports an unidentified developer or cannot check for malicious
+   software, follow [Apple's per-app approval steps](https://support.apple.com/en-us/102445):
+   open System Settings > Privacy & Security > Open Anyway, then confirm Open.
+   A managed Mac may require its administrator. Stop if macOS reports malware
+   or damaged content; that is not the unidentified-developer exception.
+3. Run the version command again and confirm its output before enabling AI calls.
+
+The installer preserves quarantine and does not grant this approval or disable
+Gatekeeper. An OS-blocked launch happens before the tool can return JSON. Native
+CI builds and SDK behavioral acceptance do not verify a downloaded artifact's
+first-use approval. Developer ID signing/notarization remains separate work.
 
 The macOS compatibility basis is a native Apple silicon / SDK 10.0.400 run of
 the 12 original acceptance cases against a copy with only the former OS/SDK

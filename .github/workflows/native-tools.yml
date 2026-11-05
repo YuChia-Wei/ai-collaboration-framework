@@ -9,6 +9,7 @@ on:
       - '.github/workflows/native-tools.yml'
       - '.github/workflows/package-candidate.yml'
       - '.github/workflows/publish-release.yml'
+      - 'tests/release/test_release_tools.py'
   workflow_call:
     inputs:
       tooling-commit:
@@ -76,7 +77,7 @@ jobs:
             sdk: '10.0.403'
           - os: macos-26
             rid: osx-arm64
-            sdk: '10.0.400'
+            sdk: '10.0.403'
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -125,6 +126,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -I -m pip install --disable-pip-version-check PyYAML==6.0.3
+      - name: Verify native artifact admission, including symbolic links
+        run: python -I -B tests/release/test_release_tools.py NativeAdmission -v
       - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: '10.0.403'
