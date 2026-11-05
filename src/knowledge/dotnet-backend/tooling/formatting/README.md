@@ -82,10 +82,12 @@ own directory. Project references do not implicitly expand a `.csproj`
 selection to their source files; select the containing solution when needed.
 SDK includes are glob patterns with case-insensitive matching. Literal `*`, `?`
 and POSIX backslash characters anywhere in the selected relative path are
-rejected before SDK execution. A selected path that differs from another
+rejected before SDK execution. On macOS, a selected path that differs from another
 evaluated Compile item only by case is rejected before formatter execution,
-including on case-sensitive APFS. This prevents apply from broadening the write
-scope before post-operation checks can detect it.
+including on case-sensitive APFS. Windows uses case-insensitive Compile identity;
+this alias check does not cover Windows directories explicitly configured as
+case-sensitive. The macOS guard prevents apply from broadening the write scope
+before post-operation checks can detect it.
 
 Use `action: "apply"` to write. `whitespace` invokes only the SDK whitespace
 formatter. Generated files remain excluded by the SDK; there is no
