@@ -19,9 +19,12 @@ new conflicts, unsupported workspace forms and plan/input drift.
 This suite is separately selected for refactoring changes. It does not rerun
 formatting acceptance or imply all-platform/runtime acceptance.
 
-The small I/O harness compiles the production `FileApply` and contract sources
+The small I/O harness compiles the production `FileApply`, `InputLocks` and contract sources
 directly. It supplies streams that fail after writing a prefix and while reading
-the observed result. This validates the production state-reporting algorithm;
+the observed result, and checks that a failed close preserves prior observations
+and does not skip later handles. It also uses real files to verify that an
+unchanged input denies an ordinary concurrent writer until apply ends.
+This validates the production state-reporting and handle-lifetime behavior;
 it does not claim a real disk-full, power-loss or process-crash experiment.
 
 ```powershell

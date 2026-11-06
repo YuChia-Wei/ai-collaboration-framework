@@ -8,5 +8,7 @@
   <ItemGroup>
     <Compile Include="../../../src/knowledge/dotnet-backend/tooling/refactoring/Contracts.cs" Link="Contracts.cs" />
     <Compile Include="../../../src/knowledge/dotnet-backend/tooling/refactoring/FileApply.cs" Link="FileApply.cs" />
+    <Compile Include="../../../src/knowledge/dotnet-backend/tooling/refactoring/InputLocks.cs" Link="InputLocks.cs" />
+    <Compile Include="../../../src/knowledge/dotnet-backend/tooling/refactoring/Paths.cs" Link="Paths.cs" />
   </ItemGroup>
 </Project>

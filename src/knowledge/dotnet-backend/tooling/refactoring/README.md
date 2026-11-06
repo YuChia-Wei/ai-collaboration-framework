@@ -31,6 +31,10 @@ Missing metadata, workspace failures, ambiguous selections, collisions and
 uneditable related symbols are refusals. A successfully loaded `Solution` alone
 is not acceptance. Results report the SDK/Roslyn versions, evaluated projects,
 TFMs, configuration, compiler settings, source references and coverage limits.
+Normal-evaluation source items and compilation reference edges are compared
+with the actual design-time workspace. Unexplained authored additions, omissions
+or reference-option differences are refused. Build-only project references
+(`ReferenceOutputAssembly=false`) are not compilation edges.
 
 ## Select and preview
 
@@ -75,7 +79,9 @@ unified patch. To read the patch in PowerShell:
 
 The patch is a complete-file review projection; the exact before/after bytes
 are authoritative for encoding, BOM and newline preservation. Unchanged files
-are not rewritten. Keep the plan until the operation has been reviewed and any
+are not rewritten. A changed file whose decoded text cannot round-trip to its
+exact original bytes, or whose new text cannot use that encoding, is refused.
+Keep the plan until the operation has been reviewed and any
 recovery need has ended; it contains copies of your source code.
 
 ## Rename policy
@@ -111,11 +117,16 @@ project/configuration inputs, referenced metadata, discovered source files or
 the plan itself require a fresh preview. It opens every destination for exclusive
 read/write access and checks its bytes before beginning writes. Read-only/locked
 files and other predictable errors therefore refuse the operation before any
-source write.
+source write. Unchanged captured inputs retain read handles denying ordinary
+write/delete access until the write phase ends. Directory membership is not
+locked: files created after workspace enumeration are outside that guarantee.
 
 Each file result reports `applied`, `original`, `partial` or `unknown`, with its
 observed hash when available. An I/O failure after writing begins reports
-`partial_failure`; there is no cross-file atomicity claim. Keep the result and
+`partial_failure`; there is no cross-file atomicity claim. Every handle is closed
+before the single response is emitted. A failed close marks the affected file
+`unknown`, retains its `beforeCloseState` and `beforeCloseHash`, and includes
+`closeFailures`. Keep the result and
 plan, stop edits, compare every file with the stored before/after bytes, and
 restore only the affected files from their `before` bytes after checking for
 subsequent user changes. Inspect `partial`/`unknown` files manually. Always create

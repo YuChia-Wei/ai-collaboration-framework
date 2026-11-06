@@ -334,6 +334,66 @@ class RefactoringAcceptance(unittest.TestCase):
         plan = json.loads(self.plan_path.read_text())
         self.assertEqual(len(plan["projects"]), 2)
 
+    def test_design_time_outside_source_refused(self):
+        shared = self.root / "Shared.cs"
+        shared.write_text("public class Shared { public Demo.Service Value = new(); }")
+        self.project.write_text(self.project.read_text().replace("</Project>", '<ItemGroup Condition="\'$(DesignTimeBuild)\' == \'true\'"><Compile Include="../Shared.cs" /></ItemGroup></Project>'))
+        original = self.snapshot()
+        code, result = self.preview(symbol="T:Demo.Service", newName="Renamed")
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "linked_file")
+        self.assertFalse(self.plan_path.exists())
+        self.assertEqual(self.snapshot(), original)
+
+    def test_design_time_extra_authored_source_refused(self):
+        extra = self.a / "Extra.cs"
+        extra.write_text("public class Extra { public Demo.Service Value = new(); }")
+        self.project.write_text(self.project.read_text().replace("</Project>", '<ItemGroup><Compile Remove="Extra.cs" /><Compile Include="Extra.cs" Condition="\'$(DesignTimeBuild)\' == \'true\'" /></ItemGroup></Project>'))
+        code, result = self.preview(symbol="T:Demo.Service", newName="Renamed")
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unexpected_source")
+        self.assertFalse(self.plan_path.exists())
+
+    def test_design_time_missing_reference_edge_refused(self):
+        project = self.b / "B.csproj"
+        project.write_text(project.read_text().replace('<ProjectReference Include=', '<ProjectReference Condition="\'$(DesignTimeBuild)\' != \'true\'" Include='))
+        code, result = self.preview()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "incomplete_references")
+        self.assertFalse(self.plan_path.exists())
+
+    def test_build_only_reference_is_not_a_compilation_edge(self):
+        self.consumer.write_text("public class Use {}")
+        project = self.b / "B.csproj"
+        project.write_text(project.read_text().replace('<ProjectReference Include=', '<ProjectReference ReferenceOutputAssembly="false" Include='))
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        plan = json.loads(self.plan_path.read_text())
+        self.assertEqual(next(p for p in plan["projects"] if pathlib.Path(p["path"]) == project)["references"], [])
+
+    def test_malformed_source_encoding_refused_without_writes(self):
+        self.source.write_bytes(b'\xef\xbb\xbf' + self.source.read_bytes() + b'// malformed \xff\n')
+        original = self.snapshot()
+        code, result = self.preview()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "lossy_encoding")
+        self.assertFalse(self.plan_path.exists())
+        self.assertEqual(self.snapshot(), original)
+
+    def test_alias_and_generic_nameof_preserve_syntax(self):
+        self.source.write_text('namespace Demo;\npublic class Plain { public string Name => nameof(global::Demo.Plain); }\npublic class Generic<T> { public string Name => nameof(Generic<T>); public string Open => nameof(Generic<>); }\n')
+        self.consumer.write_text("public class Use {}")
+        for symbol, name in [("T:Demo.Plain", "Renamed"), ("T:Demo.Generic`1", "RenamedGeneric")]:
+            code, result = self.preview(symbol=symbol, newName=name)
+            self.assertEqual(code, 0, result)
+            code, result = self.invoke("apply", plan=self.plan_path)
+            self.assertEqual(code, 0, result)
+        source = self.source.read_text()
+        self.assertIn("nameof(global::Demo.Renamed)", source)
+        self.assertIn("nameof(RenamedGeneric<T>)", source)
+        self.assertIn("nameof(RenamedGeneric<>)", source)
+        self.run_dotnet("build", self.solution, "--no-restore", "--nologo")
+
     def test_preview_artifact_cannot_enter_source_or_configuration(self):
         original = self.snapshot()
         for path in [self.a / "Injected.cs", self.a / "plan.json", self.root / "global.json"]:

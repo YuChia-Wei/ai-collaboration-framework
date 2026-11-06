@@ -32,18 +32,18 @@ internal static class RenamePlanner
         definitions.AddRange(targets);
         foreach (var definition in definitions.Distinct(SymbolEqualityComparer.Default))
         {
-            RequireEditable(definition);
-            CheckExternalContract(definition);
+            RequireEditable(definition, loaded);
+            CheckExternalContract(definition, loaded);
             if (definition.ContainingType is not null && definition is not IParameterSymbol and not ILocalSymbol)
                 for (var type = definition.ContainingType; type is not null; type = type.BaseType)
                     Data.Require(!type.GetMembers(request.NewName).Any(), "name_collision", $"Name already exists in {type}: {request.NewName}");
         }
         foreach (var reference in references.SelectMany(r => r.Locations))
-            Data.Require(reference.Document.FilePath is not null && before.GetDocument(reference.Document.Id) is not null && !Generated(reference.Document.FilePath),
+            Data.Require(reference.Document.FilePath is not null && before.GetDocument(reference.Document.Id) is not null && !loaded.IsUneditable(reference.Document.FilePath),
                 "uneditable_reference", "A related reference is generated or has no editable source file.");
         var baseline = await Errors(before);
         Data.Require(!baseline.Any(d => d.Id is "CS0006" or "CS0012" or "CS0518" or "CS1705"), "missing_metadata", "Compilation requires missing or incompatible metadata.", baseline);
-        var (annotated, nameOfTargets) = await TrackNameof(before, definitions, request.RenameOverloads);
+        var (annotated, nameOfTargets) = await TrackNameof(before, definitions, request.RenameOverloads, loaded);
         var selected = await Select(annotated, request);
         var after = await Renamer.RenameSymbolAsync(annotated, selected,
             new SymbolRenameOptions(RenameOverloads: request.RenameOverloads, RenameInStrings: false, RenameInComments: false, RenameFile: false), request.NewName);
@@ -60,7 +60,7 @@ internal static class RenamePlanner
             {
                 var original = before.GetDocument(id)!;
                 var updated = after.GetDocument(id)!;
-                Data.Require(original.FilePath == updated.FilePath && original.FilePath is not null && !Generated(original.FilePath), "uneditable_source", "Rename requires editable source and never moves files.");
+                Data.Require(original.FilePath == updated.FilePath && original.FilePath is not null && !loaded.IsUneditable(original.FilePath), "uneditable_source", "Rename requires editable source and never moves files.");
                 var root = await updated.GetSyntaxRootAsync();
                 Data.Require(!root!.GetAnnotatedNodesAndTokens(ConflictAnnotation.Kind).Any(), "rename_conflict", $"Roslyn reported a rename conflict: {original.FilePath}");
                 var oldText = await original.GetTextAsync();
@@ -70,8 +70,13 @@ internal static class RenamePlanner
                 var oldBytes = File.ReadAllBytes(original.FilePath!);
                 var encoding = oldText.Encoding ?? new UTF8Encoding(false, true);
                 var preamble = encoding.GetPreamble();
+                var hasPreamble = preamble.Length > 0 && oldBytes.AsSpan().StartsWith(preamble);
+                var originalPayload = encoding.GetBytes(oldText.ToString());
+                var originalRoundTrip = hasPreamble ? preamble.Concat(originalPayload).ToArray() : originalPayload;
+                Data.Require(oldBytes.SequenceEqual(originalRoundTrip), "lossy_encoding", $"Original source cannot round-trip without changing unrelated bytes: {original.FilePath}");
                 var payload = encoding.GetBytes(newText.ToString());
-                var newBytes = oldBytes.AsSpan().StartsWith(preamble) ? preamble.Concat(payload).ToArray() : payload;
+                Data.Require(encoding.GetString(payload) == newText.ToString(), "lossy_encoding", $"New source cannot be represented by its original encoding: {original.FilePath}");
+                var newBytes = hasPreamble ? preamble.Concat(payload).ToArray() : payload;
                 if (oldBytes.SequenceEqual(newBytes)) continue;
                 edits.Add(new(original.FilePath!, "modify", Convert.ToBase64String(oldBytes), Convert.ToBase64String(newBytes)));
                 // A complete replacement hunk is intentionally simple and lossless in
@@ -103,6 +108,7 @@ internal static class RenamePlanner
                 "Only the selected configuration and its active conditional code are analyzed; other configurations require separate review.",
                 "Only loaded C# source references are covered. External binaries/repos, reflection strings, serialization/database contracts, Razor/XAML and other languages are not updated.",
                 "Public API rename may break external consumers. Compilation diagnostics are not proof of behavioral equivalence.",
+                "Apply locks captured existing inputs against ordinary writes/deletion. Directory membership is not locked; files created after workspace enumeration are outside that guarantee.",
                 "Comments, ordinary string literals, filenames, folders, project and assembly names remain unchanged; resolvable cref and nameof are semantic references.",
                 request.RenameOverloads ? "All ordinary overloads and Roslyn-related source interface/override members are renamed." : "Only the selected overload and Roslyn-related source interface/override members are renamed."
             }).Distinct().ToArray()
@@ -123,9 +129,9 @@ internal static class RenamePlanner
         return position - delta;
     }
 
-    private static async Task<(Solution Solution, Dictionary<DocumentId, List<SyntaxAnnotation>> Targets)> TrackNameof(Solution solution, List<ISymbol> definitions, bool overloads)
+    private static async Task<(Solution Solution, Dictionary<DocumentId, List<SyntaxAnnotation>> Targets)> TrackNameof(Solution solution, List<ISymbol> definitions, bool overloads, LoadedWorkspace loaded)
     {
-        var identities = definitions.Select(s => (s.ContainingAssembly?.Identity.ToString(), s.GetDocumentationCommentId())).ToHashSet();
+        var identities = definitions.Select(s => (s.ContainingAssembly?.Identity.ToString(), s.OriginalDefinition.GetDocumentationCommentId())).ToHashSet();
         var updated = solution;
         var targets = new Dictionary<DocumentId, List<SyntaxAnnotation>>();
         foreach (var document in solution.Projects.SelectMany(p => p.Documents))
@@ -142,27 +148,31 @@ internal static class RenamePlanner
                 var group = model.GetMemberGroup(expression);
                 var bound = model.GetSymbolInfo(expression).Symbol;
                 var members = group.Length > 0 ? group.ToArray() : bound is null ? [] : new[] { bound };
-                bool Included(ISymbol member) => member.GetDocumentationCommentId() is { } id
+                bool Included(ISymbol member) => member.OriginalDefinition.GetDocumentationCommentId() is { } id
                     ? identities.Contains((member.ContainingAssembly?.Identity.ToString(), id))
                     : definitions.Any(d => SymbolEqualityComparer.Default.Equals(d, member));
                 if (!members.Any(Included)) continue;
                 Data.Require((overloads || members.Length == 1) && members.All(Included), "ambiguous_nameof", $"nameof refers to an overload group in {document.FilePath}; review renameOverloads=true to rename that group.");
-                var token = expression switch
-                {
-                    IdentifierNameSyntax name => name.Identifier,
-                    MemberAccessExpressionSyntax access => access.Name.Identifier,
-                    _ => default
-                };
+                var token = NameToken(expression);
                 Data.Require(token.RawKind != 0, "unsupported_nameof", $"Unsupported nameof expression: {expression}");
                 tokens[token] = new SyntaxAnnotation("RefactorTool.Nameof", Guid.NewGuid().ToString("N"));
             }
             if (tokens.Count == 0) continue;
-            Data.Require(document.FilePath is not null && !Generated(document.FilePath), "uneditable_reference", "A related nameof reference is generated.");
+            Data.Require(document.FilePath is not null && !loaded.IsUneditable(document.FilePath), "uneditable_reference", "A related nameof reference is generated.");
             updated = updated.WithDocumentSyntaxRoot(document.Id, root.ReplaceTokens(tokens.Keys, (original, rewritten) => rewritten.WithAdditionalAnnotations(tokens[original])));
             targets[document.Id] = tokens.Values.ToList();
         }
         return (updated, targets);
     }
+
+    private static SyntaxToken NameToken(SyntaxNode expression) => expression switch
+    {
+        SimpleNameSyntax name => name.Identifier,
+        MemberAccessExpressionSyntax access => access.Name.Identifier,
+        AliasQualifiedNameSyntax alias => alias.Name.Identifier,
+        QualifiedNameSyntax qualified => qualified.Right.Identifier,
+        _ => default
+    };
 
     private static async Task<Solution> CompleteNameof(Solution solution, Dictionary<DocumentId, List<SyntaxAnnotation>> targets, string newName)
     {
@@ -216,7 +226,7 @@ internal static class RenamePlanner
         if (nameOf is not null)
         {
             var expression = nameOf.ArgumentList.Arguments[0].Expression;
-            var nameToken = expression switch { IdentifierNameSyntax name => name.Identifier, MemberAccessExpressionSyntax access => access.Name.Identifier, _ => default };
+            var nameToken = NameToken(expression);
             if (token == nameToken)
                 Data.Require(model.GetMemberGroup(expression).Length <= 1, "ambiguous_symbol", "Position identifies an overload group; choose a declaration or exact signature ID.");
         }
@@ -236,20 +246,20 @@ internal static class RenamePlanner
     internal static bool Generated(string path) => path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Any(s => s is "obj" or "bin") ||
         path.EndsWith(".g.cs", StringComparison.OrdinalIgnoreCase) || path.EndsWith(".generated.cs", StringComparison.OrdinalIgnoreCase) ||
         File.ReadLines(path).Take(5).Any(l => l.Contains("<auto-generated", StringComparison.OrdinalIgnoreCase));
-    private static void RequireEditable(ISymbol symbol)
+    private static void RequireEditable(ISymbol symbol, LoadedWorkspace loaded)
     {
-        Data.Require(symbol.Locations.Length > 0 && symbol.Locations.All(l => l.IsInSource && l.SourceTree is not null && !Generated(l.SourceTree.FilePath)),
+        Data.Require(symbol.Locations.Length > 0 && symbol.Locations.All(l => l.IsInSource && l.SourceTree is not null && !loaded.IsUneditable(l.SourceTree.FilePath)),
             "uneditable_symbol", $"Related symbol is not wholly editable source: {symbol}");
         foreach (var location in symbol.Locations)
             Data.Require((File.GetAttributes(location.SourceTree!.FilePath) & FileAttributes.ReadOnly) == 0, "read_only_source", $"Read-only declaration: {location.SourceTree.FilePath}");
     }
-    private static void CheckExternalContract(ISymbol symbol)
+    private static void CheckExternalContract(ISymbol symbol, LoadedWorkspace loaded)
     {
         ISymbol? overridden = symbol switch { IMethodSymbol m => m.OverriddenMethod, IPropertySymbol p => p.OverriddenProperty, _ => null };
-        if (overridden is not null) RequireEditable(overridden);
+        if (overridden is not null) RequireEditable(overridden, loaded);
         if (symbol.ContainingType is null) return;
         foreach (var contract in symbol.ContainingType.AllInterfaces.SelectMany(i => i.GetMembers()))
-            if (SymbolEqualityComparer.Default.Equals(symbol.ContainingType.FindImplementationForInterfaceMember(contract), symbol)) RequireEditable(contract);
+            if (SymbolEqualityComparer.Default.Equals(symbol.ContainingType.FindImplementationForInterfaceMember(contract), symbol)) RequireEditable(contract, loaded);
     }
     private static async Task<List<DiagnosticInfo>> Errors(Solution solution)
     {

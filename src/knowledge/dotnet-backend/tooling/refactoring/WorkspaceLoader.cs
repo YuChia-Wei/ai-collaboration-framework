@@ -13,8 +13,10 @@ internal sealed class LoadedWorkspace(MSBuildWorkspace workspace, string sdk) : 
     public MSBuildWorkspace Workspace { get; } = workspace;
     public string Sdk { get; } = sdk;
     public List<ProjectInfo> Projects { get; } = [];
-    public SortedDictionary<string, string> Inputs { get; } = new(StringComparer.Ordinal);
+    public SortedDictionary<string, string> Inputs { get; } = new(Paths.Comparer);
     public List<string> Limits { get; } = [];
+    public HashSet<string> UneditableSources { get; } = new(Paths.Comparer);
+    public bool IsUneditable(string path) => UneditableSources.Contains(path) || RenamePlanner.Generated(path);
     public void Capture(string path)
     {
         path = Path.GetFullPath(path);
@@ -59,6 +61,8 @@ internal static class WorkspaceLoader
             var expected = new HashSet<string>(Paths.Comparer);
             var evaluatedFrameworks = new Dictionary<string, string>(Paths.Comparer);
             var evaluatedSources = new Dictionary<string, HashSet<string>>(Paths.Comparer);
+            var intermediateDirectories = new Dictionary<string, string>(Paths.Comparer);
+            var referenceEdges = new Dictionary<string, Dictionary<string, (string[] Aliases, bool Embed)>>(Paths.Comparer);
             var pending = new Queue<string>(SolutionProjects(path));
             while (pending.TryDequeue(out var projectPath))
             {
@@ -67,7 +71,7 @@ internal static class WorkspaceLoader
                 Data.Require(Path.GetExtension(projectPath) == ".csproj", "unsupported_project", $"Only C# projects are supported: {projectPath}");
                 loaded.Capture(projectPath);
                 var args = new List<string> { "msbuild", projectPath, "-nologo", $"-property:Configuration={request.Configuration}",
-                    "-getProperty:UsingMicrosoftNETSdk,TargetFramework,TargetFrameworks,MSBuildAllProjects,ProjectAssetsFile",
+                    "-getProperty:UsingMicrosoftNETSdk,TargetFramework,TargetFrameworks,MSBuildAllProjects,ProjectAssetsFile,IntermediateOutputPath",
                     "-getItem:ProjectReference,Compile,AdditionalFiles,EditorConfigFiles" };
                 // Inspect the unselected framework list before supplying an override.
                 using var evaluation = JsonDocument.Parse(await Run(Path.GetDirectoryName(projectPath)!, args.ToArray()));
@@ -78,6 +82,7 @@ internal static class WorkspaceLoader
                 Data.Require(frameworks.Length <= 1, "multiple_frameworks", $"Multiple target frameworks are not covered: {projectPath}", frameworks);
                 var framework = frameworks.SingleOrDefault() ?? Property("TargetFramework");
                 evaluatedFrameworks[projectPath] = framework;
+                intermediateDirectories[projectPath] = Path.GetFullPath(Property("IntermediateOutputPath"), Path.GetDirectoryName(projectPath)!);
                 Data.Require(framework.Length > 0 && (request.Framework is null || request.Framework == framework), "framework_mismatch", $"Requested framework does not match {projectPath}: {framework}");
                 foreach (var import in Property("MSBuildAllProjects").Split(';', StringSplitOptions.RemoveEmptyEntries))
                     loaded.Capture(import);
@@ -87,8 +92,17 @@ internal static class WorkspaceLoader
                 var items = evaluation.RootElement.GetProperty("Items");
                 var sourceFiles = new HashSet<string>(Paths.Comparer);
                 evaluatedSources[projectPath] = sourceFiles;
+                var edges = new Dictionary<string, (string[] Aliases, bool Embed)>(Paths.Comparer);
+                referenceEdges[projectPath] = edges;
                 foreach (var reference in items.GetProperty("ProjectReference").EnumerateArray())
-                    pending.Enqueue(reference.GetProperty("FullPath").GetString()!);
+                {
+                    string Metadata(string key) => reference.TryGetProperty(key, out var value) ? value.GetString() ?? "" : "";
+                    if (Metadata("ReferenceOutputAssembly").Equals("false", StringComparison.OrdinalIgnoreCase)) continue;
+                    var referencedPath = reference.GetProperty("FullPath").GetString()!;
+                    edges[referencedPath] = (Aliases(Metadata("Aliases").Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)),
+                        Metadata("EmbedInteropTypes").Equals("true", StringComparison.OrdinalIgnoreCase));
+                    pending.Enqueue(referencedPath);
+                }
                 foreach (var item in items.GetProperty("Compile").EnumerateArray())
                 {
                     var file = item.GetProperty("FullPath").GetString()!;
@@ -111,9 +125,22 @@ internal static class WorkspaceLoader
             foreach (var project in solution.Projects.OrderBy(p => p.FilePath, StringComparer.Ordinal))
             {
                 Data.Require(project.Language == LanguageNames.CSharp, "unsupported_project", "Non-C# project encountered.");
+                var actualEdges = project.ProjectReferences.ToDictionary(r => solution.GetProject(r.ProjectId)!.FilePath!, Paths.Comparer);
+                var expectedEdges = referenceEdges[project.FilePath!];
+                Data.Require(new HashSet<string>(expectedEdges.Keys, Paths.Comparer).SetEquals(actualEdges.Keys),
+                    "incomplete_references", $"Normal-build and workspace compilation references differ: {project.FilePath}",
+                    new { expected = expectedEdges.Keys, actual = actualEdges.Keys });
+                foreach (var (referencePath, edge) in expectedEdges)
+                    Data.Require(edge.Aliases.SequenceEqual(Aliases(actualEdges[referencePath].Aliases)) && edge.Embed == actualEdges[referencePath].EmbedInteropTypes,
+                        "reference_options_mismatch", $"Project reference aliases/interop options differ: {project.FilePath} -> {referencePath}");
                 foreach (var document in project.Documents)
                 {
                     Data.Require(document.FilePath is not null && seen.Add(document.FilePath), "linked_file", "A source file belongs to more than one project or has no physical path.");
+                    Data.Require(Paths.IsWithin(document.FilePath!, Path.GetDirectoryName(project.FilePath!)!), "linked_file", $"Loaded source is outside its project: {document.FilePath}");
+                    var intermediate = Paths.IsWithin(document.FilePath!, intermediateDirectories[project.FilePath!]);
+                    Data.Require(evaluatedSources[project.FilePath!].Contains(document.FilePath!) || intermediate,
+                        "unexpected_source", $"Workspace added an unevaluated authored Compile item: {document.FilePath}");
+                    if (intermediate || RenamePlanner.Generated(document.FilePath!)) loaded.UneditableSources.Add(document.FilePath!);
                     loaded.Capture(document.FilePath!);
                     var text = await document.GetTextAsync();
                     using var stream = File.OpenRead(document.FilePath!);
@@ -143,6 +170,12 @@ internal static class WorkspaceLoader
             return loaded;
         }
         catch { loaded.Dispose(); throw; }
+    }
+
+    private static string[] Aliases(IEnumerable<string> aliases)
+    {
+        var values = aliases.Where(a => a.Length > 0).Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray();
+        return values.Length == 0 ? ["global"] : values;
     }
 
     private static void CaptureAncestorConfiguration(LoadedWorkspace loaded, string directory)
@@ -180,25 +213,5 @@ internal static class WorkspaceLoader
         catch (OperationCanceledException) { process.Kill(entireProcessTree: true); throw new RefactorFailure("sdk_timeout", "SDK command exceeded two minutes."); }
         Data.Require(process.ExitCode == 0, "sdk_failed", "SDK command failed.", new { arguments, exitCode = process.ExitCode, output = await output, error = await error });
         return await output;
-    }
-}
-
-internal static class Paths
-{
-    public static StringComparer Comparer => OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
-    public static bool IsWithin(string path, string directory) => Path.GetRelativePath(directory, path) is var relative &&
-        !Path.IsPathRooted(relative) && relative != ".." && !relative.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal);
-    public static void RegularFile(string path)
-    {
-        Data.Require(File.Exists(path), "missing_file", $"Required file is missing: {path}");
-        for (FileSystemInfo? entry = new FileInfo(path); entry is not null; entry = entry is FileInfo file ? file.Directory : ((DirectoryInfo)entry).Parent)
-            Data.Require((entry.Attributes & FileAttributes.ReparsePoint) == 0, "linked_path", $"Symbolic/reparse paths are unsupported: {entry.FullName}");
-        Data.Require((File.GetAttributes(path) & FileAttributes.Directory) == 0, "not_regular_file", $"Expected a regular file: {path}");
-    }
-    public static void RegularDirectory(string path)
-    {
-        Data.Require(Directory.Exists(path), "missing_directory", $"Plan directory must already exist: {path}");
-        for (var directory = new DirectoryInfo(path); directory is not null; directory = directory.Parent)
-            Data.Require((directory.Attributes & FileAttributes.ReparsePoint) == 0, "linked_path", $"Symbolic/reparse paths are unsupported: {directory.FullName}");
     }
 }

@@ -84,35 +84,20 @@ internal static class Program
         // cannot introduce arbitrary filesystem edits, omit inputs or skip checks.
         var actual = await RenamePlanner.Preview(plan.Request);
         Data.Require(Data.Serialize(actual) == Data.Serialize(plan), "plan_drift", "Workspace or plan changed; create and review a new preview.");
-        var handles = new List<(FileEdit Edit, Stream Stream)>();
-        var writesBegun = false;
+        var locks = InputLocks.Open(plan);
+        ApplyResult? result = null;
         try
         {
-            foreach (var edit in plan.Edits)
-            {
-                Paths.RegularFile(edit.Path);
-                Data.Require(edit.Kind == "modify" && (File.GetAttributes(edit.Path) & FileAttributes.ReadOnly) == 0, "unwritable_source", $"Cannot modify: {edit.Path}");
-                var stream = new FileStream(edit.Path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-                handles.Add((edit, stream));
-                using var content = new MemoryStream();
-                stream.CopyTo(content);
-                Data.Require(content.ToArray().SequenceEqual(Convert.FromBase64String(edit.Before)), "input_drift", $"File changed before apply: {edit.Path}");
-            }
-            var edited = new HashSet<string>(plan.Edits.Select(e => e.Path), Paths.Comparer);
-            foreach (var input in plan.Inputs.Where(i => !edited.Contains(i.Path)))
-            {
-                Paths.RegularFile(input.Path);
-                Data.Require(Data.Hash(File.ReadAllBytes(input.Path)) == input.Hash, "input_drift", $"Input changed before writes: {input.Path}");
-            }
-            writesBegun = true;
-            var result = FileApply.Write(handles);
-            Console.WriteLine(Data.Serialize(result));
-            return result.Status == "applied" ? 0 : 3;
+            result = FileApply.Write(locks.Writes);
         }
-        catch (Exception error) when (!writesBegun && error is not RefactorFailure)
+        finally
         {
-            throw new RefactorFailure("apply_preflight_failed", "No source writes began: " + error.Message);
+            var closeFailures = FileApply.Close(locks.All);
+            if (result is not null) result = FileApply.AfterClose(result, closeFailures);
         }
-        finally { foreach (var (_, stream) in handles) stream.Dispose(); }
+        // Closing/flushing is part of the operation, not cleanup after its
+        // response. Emit exactly one result only after every close was attempted.
+        Console.WriteLine(Data.Serialize(result));
+        return result!.Status == "applied" ? 0 : 3;
     }
 }
