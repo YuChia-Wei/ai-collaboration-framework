@@ -42,7 +42,9 @@ try
     var unchanged = Path.Combine(directory, "unchanged.cs");
     var changed = Path.Combine(directory, "changed.cs");
     File.WriteAllBytes(unchanged, "caller"u8.ToArray()); File.WriteAllBytes(changed, "before"u8.ToArray());
-    var plan = new Plan { Inputs = [new(unchanged, Data.Hash("caller"u8.ToArray())), new(changed, Data.Hash("before"u8.ToArray()))], Edits = [Edit(changed)] };
+    string canonical;
+    using (var stream = File.OpenRead(unchanged)) canonical = Paths.CanonicalFile(stream);
+    var plan = new Plan { Inputs = [new(unchanged, Data.Hash("caller"u8.ToArray()), canonical), new(changed, Data.Hash("before"u8.ToArray()))], Edits = [Edit(changed)] };
     var locks = InputLocks.Open(plan);
     try
     {

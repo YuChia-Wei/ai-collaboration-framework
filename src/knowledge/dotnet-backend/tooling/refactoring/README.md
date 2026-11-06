@@ -19,8 +19,8 @@ namespace moves, Extract Class and generic refactoring providers are outside it.
 | Target framework | Exactly one evaluated TFM per project; multi-TFM projects are refused even when `framework` is specified. An optional framework must match every loaded project. |
 | Configuration | One explicit configuration (`Debug` by default), preserving MSBuild compilation options, nullable context, language version and preprocessor symbols. |
 | Conditional code | Only active code in that configuration is analyzed. Files containing inactive code are listed. Other configurations are not claimed covered; review them separately before applying a shared-source rename. |
-| Linked source | Explicit links in normal evaluation, physical source outside a project's directory, files shared by projects, and symbolic/reparse paths are refused. In-root virtual `Link` metadata introduced only during design-time loading does not change the physical-file boundary. |
-| Generated source | Source-generator output is refused. SDK-generated intermediate inputs within the project directory may participate in compilation but cannot be renamed; intermediate sources outside that directory are refused. `.g.cs`, `.generated.cs`, and an early `auto-generated` marker make declarations/references uneditable. |
+| Linked source | Explicit links in normal evaluation and files shared by projects are refused. Editable source must be inside its project directory with no symbolic/reparse path components. Read-only inputs are tracked by their supplied paths, resolved file paths and content hashes. |
+| Generated source | Source-generator output and physical generated files participate in compilation. Physical source outside the project directory is admitted only under its evaluated `IntermediateOutputPath`. Source-generator output, files under evaluated `IntermediateOutputPath` or `OutDir`, project-relative `obj` and `bin`, `.g.cs` and `.generated.cs` suffixes, and early `auto-generated` markers identify uneditable source. A rename requiring an edit in those files is refused. |
 | Other languages | Non-C# projects and incomplete loads are refused. Razor, XAML, reflection strings, binary consumers, serialization and database contracts are not tracked. |
 | Restore | Restore the target explicitly first. RefactorTool does not request restore or install packages into the target. MSBuild design-time loading may create/update SDK intermediates under `obj`; preview does not edit authored source. |
 | Execution boundary | Use trusted projects. Evaluating MSBuild imports/targets and loading analyzer assemblies executes target-provided build tooling. |
@@ -77,7 +77,7 @@ unified patch. To read the patch in PowerShell:
 (Get-Content rename-plan.json -Raw | ConvertFrom-Json).patch
 ```
 
-The patch is a complete-file review projection; the exact before/after bytes
+The patch shows changed lines with nearby context. The exact before/after bytes
 are authoritative for encoding, BOM and newline preservation. Unchanged files
 are not rewritten. A changed file whose decoded text cannot round-trip to its
 exact original bytes, or whose new text cannot use that encoding, is refused.
@@ -97,8 +97,9 @@ refused instead of breaking the contract.
 Resolvable `nameof` and XML `cref` references participate in semantic rename.
 Unrelated same-name symbols are preserved. Ordinary strings/comments, filenames,
 folders, project names and assembly names are unchanged. New names must be
-unescaped C# identifiers; keywords and existing member-name collisions are
-conservatively refused. Public API renames can break external consumers.
+unescaped C# identifiers. Contextual keywords may be used where the rename
+resolves without conflicts. Reserved keywords and member-name collisions are
+refused. Public API renames can break external consumers.
 
 Compilation errors are compared before and after the proposed operation with
 source-position mapping. Existing errors remain visible and cannot compensate
@@ -112,14 +113,16 @@ nor a returned Roslyn solution proves behavioral equivalence.
 RefactorTool.exe apply --plan rename-plan.json
 ```
 
-Apply checks recorded inputs and recomputes the semantic plan. Changes to source,
+Apply checks recorded inputs and recomputes the full semantic plan, so budget
+for another preview's worth of SDK and Roslyn work. Changes to source,
 project/configuration inputs, referenced metadata, discovered source files or
 the plan itself require a fresh preview. It opens every destination for exclusive
 read/write access and checks its bytes before beginning writes. Read-only/locked
 files and other predictable errors therefore refuse the operation before any
-source write. Unchanged captured inputs retain read handles denying ordinary
-write/delete access until the write phase ends. Directory membership is not
-locked: files created after workspace enumeration are outside that guarantee.
+source write. On Windows, file-sharing modes on the retained handles deny
+ordinary writes and deletion of captured files until the write phase ends.
+That guarantee applies to the opened files. Directory membership and path
+aliases can still change, and new files may appear after workspace enumeration.
 
 Each file result reports `applied`, `original`, `partial` or `unknown`, with its
 observed hash when available. An I/O failure after writing begins reports
@@ -136,7 +139,8 @@ preserved plan is the recovery source in those cases.
 
 Exit codes: `0` successful inspect/preview/apply; `2` refused or failed before
 normal completion; `3` observed partial apply. Stdout is one JSON result except
-for `--help` and `--version`.
+for `--help` and `--version`. Missing or malformed request and plan JSON files,
+including unknown or duplicate fields, return `refused` with code `invalid_input`.
 
 ## Build, distribute and install
 
@@ -157,6 +161,9 @@ files, and emits the archive SHA-256. Both destination paths must be new; failed
 staging remains available for diagnosis. This artifact is installed separately
 from the existing generation/formatting bundle and does not change that bundle's
 installer or Native AOT policy.
+
+Successful pull request acceptance runs upload the Windows x64 ZIP and its
+SHA-256 checksum for 14 days.
 
 Install a prepared standalone archive by extracting its entire directory to a
 user-selected location and invoking `RefactorTool.exe` there, or adding that

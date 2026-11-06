@@ -130,10 +130,11 @@ Gatekeeper 首次執行步驟見下方。正式工具包的兩種工具皆採 Na
 另行處理。目錄式／nupkg 註冊、自訂與恢復指令見成品的 `generation/README.md`
 或[來源交付指南](../src/knowledge/dotnet-backend/tooling/generation/DELIVERY.md)。
 
-| 工具 | Windows x64 | Linux x64 | macOS arm64 |
-| --- | --- | --- | --- |
-| SnippetTool | 支援 | 支援 | 尚未正式交付（#582） |
-| FormatTool | SDK 10.0.403 | 不支援 | SDK 10.0.400；遭 Gatekeeper 阻擋時需使用者核准 |
+| 工具 | Windows x64 | Linux x64 | macOS arm64 | SDK 比對規則 |
+| --- | --- | --- | --- | --- |
+| SnippetTool | 支援 | 支援 | 尚未正式交付（#582） | 建置產生的專案需要 .NET 10 SDK |
+| FormatTool | 支援 | 不支援 | 支援，遭 Gatekeeper 阻擋時需使用者核准 | 必須精確符合 .NET SDK 10.0.403（Windows）或 10.0.400（macOS） |
+| RefactorTool | 支援 | 不支援 | 不支援 | 接受 .NET 10 SDK，驗收使用 10.0.403 |
 
 C# 語意重構的首版 `RefactorTool` 使用獨立的 Windows x64 managed .NET 成品，
 以公開 Roslyn API 提供 workspace 檢查、Rename preview 與原內容綁定的 apply。

@@ -27,7 +27,7 @@ internal static class Program
             if (args[0] == "inspect")
             {
                 Data.Require(options.Count == 1 && options.ContainsKey("--request"), "invalid_arguments", "inspect requires --request.");
-                using var loaded = await WorkspaceLoader.Load(Data.Read<Request>(options["--request"]));
+                using var loaded = await WorkspaceLoader.Load(RequireRequest(Data.Read<Request>(options["--request"]), preview: false));
                 Console.WriteLine(Data.Serialize(new { status = "loaded", sdk = loaded.Sdk, roslyn = typeof(Microsoft.CodeAnalysis.Compilation).Assembly.GetName().Version!.ToString(), projects = loaded.Projects, limits = loaded.Limits }));
                 return 0;
             }
@@ -40,7 +40,7 @@ internal static class Program
                     "unsafe_plan_path", "Use a JSON plan filename that is not global.json, outside all loaded project directories.");
                 Paths.RegularDirectory(Path.GetDirectoryName(destination)!);
                 Data.Require(!File.Exists(destination), "plan_exists", "Choose a new plan path; existing files are never overwritten.");
-                var plan = await RenamePlanner.Preview(Data.Read<Request>(options["--request"]));
+                var plan = await RenamePlanner.Preview(RequireRequest(Data.Read<Request>(options["--request"]), preview: true));
                 Data.Require(!plan.Inputs.Any(i => Paths.Comparer.Equals(i.Path, destination)) &&
                     !plan.Projects.Any(p => Paths.IsWithin(destination, Path.GetDirectoryName(p.Path)!)),
                     "unsafe_plan_path", "Store the plan outside all loaded project directories and existing inputs.");
@@ -51,11 +51,15 @@ internal static class Program
                 }
                 Console.WriteLine(Data.Serialize(new { status = "previewed", plan = destination, symbol = plan.Symbol, relatedSymbols = plan.RelatedSymbols,
                     files = plan.Edits.Select(e => new { e.Path, e.Kind }), baselineErrors = plan.BaselineErrors, newErrors = plan.NewErrors,
-                    patch = "Complete unified patch is in the plan's patch field; before/after base64 preserve exact bytes.", limits = plan.Limits }));
+                    patch = "Unified patch is in the plan's patch field; before/after base64 preserve exact bytes.", limits = plan.Limits }));
                 return 0;
             }
             Data.Require(args[0] == "apply" && options.Count == 1 && options.ContainsKey("--plan"), "invalid_arguments", "apply requires --plan.");
-            var selectedPlan = Data.Read<Plan>(options["--plan"]);
+            var selectedPlan = Data.Read<Plan>(options["--plan"], strictPath: true);
+            WorkspaceLoader.RequireSupportedHost();
+            RequireRequest(selectedPlan.Request, preview: true);
+            Data.Require(selectedPlan.Inputs.All(input => input is not null) && selectedPlan.Edits.All(edit => edit is not null),
+                "invalid_input", "Plan inputs and edits must be objects.");
             applyStarted = true;
             return await Apply(selectedPlan);
         }
@@ -72,13 +76,24 @@ internal static class Program
         }
     }
 
+    private static Request RequireRequest(Request request, bool preview)
+    {
+        Data.Require(!string.IsNullOrWhiteSpace(request.Workspace), "invalid_input", "workspace is required.");
+        if (preview)
+        {
+            Data.Require(!string.IsNullOrWhiteSpace(request.NewName), "invalid_input", "newName is required.");
+            Data.Require(request.File is not null || request.Symbol is not null, "invalid_input", "A file or symbol selector is required.");
+        }
+        return request;
+    }
+
     internal static async Task<int> Apply(Plan plan)
     {
         Data.Require(plan.Contract == "refactor-plan/1", "unsupported_plan", "Unsupported plan version.");
         foreach (var input in plan.Inputs)
         {
-            Paths.RegularFile(input.Path);
-            Data.Require(Data.Hash(File.ReadAllBytes(input.Path)) == input.Hash, "input_drift", $"Preview input changed: {input.Path}");
+            using var stream = InputLocks.OpenInput(input);
+            Data.Require(Data.Hash(stream) == input.Hash, "input_drift", $"Preview input changed: {input.Path}");
         }
         // Recompute with the public semantic operation: a changed or forged plan
         // cannot introduce arbitrary filesystem edits, omit inputs or skip checks.

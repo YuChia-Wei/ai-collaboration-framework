@@ -14,8 +14,8 @@ internal static class RenamePlanner
     public static async Task<Plan> Preview(Request request)
     {
         Data.Require(SyntaxFacts.IsValidIdentifier(request.NewName) && !request.NewName.StartsWith('@') &&
-            SyntaxFacts.GetKeywordKind(request.NewName) == SyntaxKind.None && SyntaxFacts.GetContextualKeywordKind(request.NewName) == SyntaxKind.None,
-            "invalid_name", "New name must be an unescaped C# identifier (reserved/contextual keywords are unsupported).");
+            SyntaxFacts.GetKeywordKind(request.NewName) == SyntaxKind.None,
+            "invalid_name", "New name must be an unescaped C# identifier other than a reserved keyword.");
         request = request with { Workspace = Path.GetFullPath(request.Workspace), File = request.File is null ? null : Path.GetFullPath(request.File), Project = request.Project is null ? null : Path.GetFullPath(request.Project) };
         using var loaded = await WorkspaceLoader.Load(request);
         var before = loaded.Workspace.CurrentSolution;
@@ -39,8 +39,7 @@ internal static class RenamePlanner
                     Data.Require(!type.GetMembers(request.NewName).Any(), "name_collision", $"Name already exists in {type}: {request.NewName}");
         }
         foreach (var reference in references.SelectMany(r => r.Locations))
-            Data.Require(reference.Document.FilePath is not null && before.GetDocument(reference.Document.Id) is not null && !loaded.IsUneditable(reference.Document.FilePath),
-                "uneditable_reference", "A related reference is generated or has no editable source file.");
+            RequireEditableDocument(reference.Document, loaded, "uneditable_reference");
         var baseline = await Errors(before);
         Data.Require(!baseline.Any(d => d.Id is "CS0006" or "CS0012" or "CS0518" or "CS1705"), "missing_metadata", "Compilation requires missing or incompatible metadata.", baseline);
         var (annotated, nameOfTargets) = await TrackNameof(before, definitions, request.RenameOverloads, loaded);
@@ -60,7 +59,8 @@ internal static class RenamePlanner
             {
                 var original = before.GetDocument(id)!;
                 var updated = after.GetDocument(id)!;
-                Data.Require(original.FilePath == updated.FilePath && original.FilePath is not null && !loaded.IsUneditable(original.FilePath), "uneditable_source", "Rename requires editable source and never moves files.");
+                Data.Require(original.FilePath == updated.FilePath, "unsupported_change", "Rename never moves files.");
+                RequireEditableDocument(original, loaded, "uneditable_source");
                 var root = await updated.GetSyntaxRootAsync();
                 Data.Require(!root!.GetAnnotatedNodesAndTokens(ConflictAnnotation.Kind).Any(), "rename_conflict", $"Roslyn reported a rename conflict: {original.FilePath}");
                 var oldText = await original.GetTextAsync();
@@ -79,9 +79,7 @@ internal static class RenamePlanner
                 var newBytes = hasPreamble ? preamble.Concat(payload).ToArray() : payload;
                 if (oldBytes.SequenceEqual(newBytes)) continue;
                 edits.Add(new(original.FilePath!, "modify", Convert.ToBase64String(oldBytes), Convert.ToBase64String(newBytes)));
-                // A complete replacement hunk is intentionally simple and lossless in
-                // the plan; the patch is the human-readable review projection.
-                patch.Append(Patch(Path.GetRelativePath(Path.GetDirectoryName(request.Workspace)!, original.FilePath!), oldText.ToString(), newText.ToString()));
+                patch.Append(Patch(Path.GetRelativePath(Path.GetDirectoryName(request.Workspace)!, original.FilePath!), oldText, newText, textChanges));
             }
         }
         var currentErrors = await Errors(after);
@@ -102,13 +100,13 @@ internal static class RenamePlanner
         {
             Request = request, Sdk = loaded.Sdk, Roslyn = typeof(Compilation).Assembly.GetName().Version!.ToString(),
             Symbol = Display(symbol), RelatedSymbols = definitions.Select(Display).Distinct().Order(StringComparer.Ordinal).ToArray(),
-            Projects = loaded.Projects.ToArray(), Inputs = loaded.Inputs.Select(p => new InputFile(p.Key, p.Value)).ToArray(),
+            Projects = loaded.Projects.ToArray(), Inputs = loaded.Inputs.Values.ToArray(),
             Edits = edits.OrderBy(e => e.Path, StringComparer.Ordinal).ToArray(), BaselineErrors = baseline.ToArray(), NewErrors = [],
             Patch = patch.ToString(), Limits = loaded.Limits.Concat(new[] {
                 "Only the selected configuration and its active conditional code are analyzed; other configurations require separate review.",
                 "Only loaded C# source references are covered. External binaries/repos, reflection strings, serialization/database contracts, Razor/XAML and other languages are not updated.",
                 "Public API rename may break external consumers. Compilation diagnostics are not proof of behavioral equivalence.",
-                "Apply locks captured existing inputs against ordinary writes/deletion. Directory membership is not locked; files created after workspace enumeration are outside that guarantee.",
+                "Windows file sharing protects captured existing inputs from ordinary writes/deletion during apply. Directory membership is not locked; new directory entries and path aliases are outside that guarantee.",
                 "Comments, ordinary string literals, filenames, folders, project and assembly names remain unchanged; resolvable cref and nameof are semantic references.",
                 request.RenameOverloads ? "All ordinary overloads and Roslyn-related source interface/override members are renamed." : "Only the selected overload and Roslyn-related source interface/override members are renamed."
             }).Distinct().ToArray()
@@ -134,7 +132,7 @@ internal static class RenamePlanner
         var identities = definitions.Select(s => (s.ContainingAssembly?.Identity.ToString(), s.OriginalDefinition.GetDocumentationCommentId())).ToHashSet();
         var updated = solution;
         var targets = new Dictionary<DocumentId, List<SyntaxAnnotation>>();
-        foreach (var document in solution.Projects.SelectMany(p => p.Documents))
+        foreach (var document in solution.Projects.SelectMany(p => p.Documents).Concat(loaded.GeneratedDocuments))
         {
             var root = await document.GetSyntaxRootAsync();
             var model = await document.GetSemanticModelAsync();
@@ -158,7 +156,7 @@ internal static class RenamePlanner
                 tokens[token] = new SyntaxAnnotation("RefactorTool.Nameof", Guid.NewGuid().ToString("N"));
             }
             if (tokens.Count == 0) continue;
-            Data.Require(document.FilePath is not null && !loaded.IsUneditable(document.FilePath), "uneditable_reference", "A related nameof reference is generated.");
+            RequireEditableDocument(document, loaded, "uneditable_reference");
             updated = updated.WithDocumentSyntaxRoot(document.Id, root.ReplaceTokens(tokens.Keys, (original, rewritten) => rewritten.WithAdditionalAnnotations(tokens[original])));
             targets[document.Id] = tokens.Values.ToList();
         }
@@ -187,8 +185,9 @@ internal static class RenamePlanner
                 Data.Require(matches.Length == 1, "lost_nameof_target", "Roslyn did not preserve the identified nameof token; no plan is produced.");
                 tokens.Add(matches[0]);
             }
+            var spelling = SyntaxFacts.GetContextualKeywordKind(newName) == SyntaxKind.None ? newName : "@" + newName;
             solution = solution.WithDocumentSyntaxRoot(documentId, root.ReplaceTokens(tokens, (original, rewritten) =>
-                SyntaxFactory.Identifier(rewritten.LeadingTrivia, newName, rewritten.TrailingTrivia)));
+                SyntaxFactory.Identifier(rewritten.LeadingTrivia, SyntaxKind.IdentifierToken, spelling, newName, rewritten.TrailingTrivia)));
         }
         return solution;
     }
@@ -243,18 +242,36 @@ internal static class RenamePlanner
         _ => false
     };
     private static string Display(ISymbol symbol) => symbol.GetDocumentationCommentId() ?? symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-    internal static bool Generated(string path) => path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Any(s => s is "obj" or "bin") ||
-        path.EndsWith(".g.cs", StringComparison.OrdinalIgnoreCase) || path.EndsWith(".generated.cs", StringComparison.OrdinalIgnoreCase) ||
-        File.ReadLines(path).Take(5).Any(l => l.Contains("<auto-generated", StringComparison.OrdinalIgnoreCase));
     private static void RequireEditable(ISymbol symbol, LoadedWorkspace loaded)
     {
-        Data.Require(symbol.Locations.Length > 0 && symbol.Locations.All(l => l.IsInSource && l.SourceTree is not null && !loaded.IsUneditable(l.SourceTree.FilePath)),
-            "uneditable_symbol", $"Related symbol is not wholly editable source: {symbol}");
+        Data.Require(symbol.Locations.Length > 0, "uneditable_symbol", $"Related symbol has no source declaration: {symbol}");
         foreach (var location in symbol.Locations)
-            Data.Require((File.GetAttributes(location.SourceTree!.FilePath) & FileAttributes.ReadOnly) == 0, "read_only_source", $"Read-only declaration: {location.SourceTree.FilePath}");
+        {
+            Data.Require(location.IsInSource && location.SourceTree is not null,
+                "uneditable_symbol", $"Related declaration is outside loaded source: {symbol}");
+            var path = location.SourceTree!.FilePath;
+            RequireEditablePath(path, loaded, "uneditable_symbol");
+            Data.Require((File.GetAttributes(path) & FileAttributes.ReadOnly) == 0, "read_only_source", $"Read-only declaration: {path}");
+        }
+    }
+
+    private static void RequireEditableDocument(Document document, LoadedWorkspace loaded, string code)
+    {
+        if (document is SourceGeneratedDocument)
+            throw new RefactorFailure(code, $"Required edit is in source-generator output: {document.FilePath}");
+        RequireEditablePath(document.FilePath, loaded, code);
+    }
+
+    private static void RequireEditablePath(string? path, LoadedWorkspace loaded, string code)
+    {
+        if (path is not null && loaded.UneditableSources.TryGetValue(path, out var reason))
+            throw new RefactorFailure(code, $"Required edit is uneditable ({reason}): {path}");
+        Data.Require(path is not null && loaded.EditableSources.Contains(path),
+            code, $"Required edit has no editable source file: {path}");
     }
     private static void CheckExternalContract(ISymbol symbol, LoadedWorkspace loaded)
     {
+        if (symbol is IMethodSymbol { PartialImplementationPart: { } implementation }) RequireEditable(implementation, loaded);
         ISymbol? overridden = symbol switch { IMethodSymbol m => m.OverriddenMethod, IPropertySymbol p => p.OverriddenProperty, _ => null };
         if (overridden is not null) RequireEditable(overridden, loaded);
         if (symbol.ContainingType is null) return;
@@ -273,15 +290,73 @@ internal static class RenamePlanner
         }
         return result.OrderBy(d => d.Project).ThenBy(d => d.File).ThenBy(d => d.Start).ThenBy(d => d.Id).ToList();
     }
-    private static string Patch(string path, string before, string after)
+    private static string Patch(string path, SourceText before, SourceText after, IReadOnlyList<TextChange> changes)
     {
-        static string[] Lines(string text) => text.Length == 0 ? [] : text.EndsWith('\n') ? text[..^1].Split('\n') : text.Split('\n');
-        var oldLines = Lines(before); var newLines = Lines(after);
-        var result = new StringBuilder($"--- a/{path.Replace('\\', '/')}\n+++ b/{path.Replace('\\', '/')}\n@@ -{(oldLines.Length == 0 ? 0 : 1)},{oldLines.Length} +{(newLines.Length == 0 ? 0 : 1)},{newLines.Length} @@\n");
-        foreach (var line in oldLines) result.Append('-').Append(line).Append('\n');
-        if (before.Length > 0 && !before.EndsWith('\n')) result.Append("\\ No newline at end of file\n");
-        foreach (var line in newLines) result.Append('+').Append(line).Append('\n');
-        if (after.Length > 0 && !after.EndsWith('\n')) result.Append("\\ No newline at end of file\n");
+        const int context = 3;
+        static int LineCount(SourceText text) => text.Lines.Count - (text.Lines[^1].Span.IsEmpty ? 1 : 0);
+        var oldCount = LineCount(before);
+        var newCount = LineCount(after);
+        // Convert the character edits into line ranges on both sides. Including
+        // a line touched at its start also handles insertion/deletion of a
+        // newline without creating mismatched unchanged ranges.
+        var blocks = new List<(int OldStart, int OldEnd, int NewStart, int NewEnd)>();
+        var offset = 0;
+        foreach (var change in changes.OrderBy(c => c.Span.Start))
+        {
+            var newStart = change.Span.Start + offset;
+            var newLength = change.NewText?.Length ?? 0;
+            var block = (OldStart: before.Lines.IndexOf(change.Span.Start),
+                OldEnd: Math.Min(oldCount, before.Lines.IndexOf(change.Span.End) + 1),
+                NewStart: after.Lines.IndexOf(newStart),
+                NewEnd: Math.Min(newCount, after.Lines.IndexOf(newStart + newLength) + 1));
+            offset += newLength - change.Span.Length;
+            if (blocks.Count > 0 && (blocks[^1].OldEnd >= block.OldStart || blocks[^1].NewEnd >= block.NewStart))
+            {
+                var last = blocks[^1];
+                blocks[^1] = (last.OldStart, block.OldEnd, last.NewStart, block.NewEnd);
+            }
+            else blocks.Add(block);
+        }
+
+        var result = new StringBuilder($"--- a/{path.Replace('\\', '/')}\n+++ b/{path.Replace('\\', '/')}\n");
+        for (var first = 0; first < blocks.Count;)
+        {
+            var last = first;
+            while (last + 1 < blocks.Count && blocks[last + 1].OldStart - blocks[last].OldEnd <= context * 2)
+                last++;
+            var start = blocks[first];
+            var end = blocks[last];
+            var leading = Math.Min(context, Math.Min(start.OldStart, start.NewStart));
+            var trailing = Math.Min(context, Math.Min(oldCount - end.OldEnd, newCount - end.NewEnd));
+            var oldStart = start.OldStart - leading;
+            var newStart = start.NewStart - leading;
+            var oldEnd = end.OldEnd + trailing;
+            var newEnd = end.NewEnd + trailing;
+            static string Range(int start, int end) => end == start ? $"{start},0" : $"{start + 1},{end - start}";
+            result.Append($"@@ -{Range(oldStart, oldEnd)} +{Range(newStart, newEnd)} @@\n");
+            for (var i = first; i <= last; i++)
+            {
+                var block = blocks[i];
+                AppendLines(before, oldStart, block.OldStart, ' ');
+                AppendLines(before, block.OldStart, block.OldEnd, '-');
+                AppendLines(after, block.NewStart, block.NewEnd, '+');
+                oldStart = block.OldEnd;
+            }
+            AppendLines(before, oldStart, oldEnd, ' ');
+            first = last + 1;
+        }
         return result.ToString();
+
+        void AppendLines(SourceText text, int start, int end, char prefix)
+        {
+            for (var i = start; i < end; i++)
+            {
+                var line = text.Lines[i];
+                var content = text.ToString(line.SpanIncludingLineBreak);
+                result.Append(prefix).Append(content);
+                if (!content.EndsWith('\n')) result.Append('\n');
+                if (line.SpanIncludingLineBreak == line.Span) result.Append("\\ No newline at end of file\n");
+            }
+        }
     }
 }

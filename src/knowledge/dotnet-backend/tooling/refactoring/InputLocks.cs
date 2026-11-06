@@ -13,15 +13,13 @@ internal sealed class InputLocks
             var edits = plan.Edits.ToDictionary(e => e.Path, Paths.Comparer);
             foreach (var input in plan.Inputs)
             {
-                Paths.RegularFile(input.Path);
                 var writing = edits.TryGetValue(input.Path, out var edit);
                 if (writing)
-                    Data.Require(edit!.Kind == "modify" && (File.GetAttributes(input.Path) & FileAttributes.ReadOnly) == 0,
+                    Data.Require(input.CanonicalPath is null && edit!.Kind == "modify" && (File.GetAttributes(input.Path) & FileAttributes.ReadOnly) == 0,
                         "unwritable_source", $"Cannot modify: {input.Path}");
                 // Unchanged inputs stay locked against ordinary write/delete
                 // access as well; a transient hash check would leave a race.
-                var stream = new FileStream(input.Path, FileMode.Open, writing ? FileAccess.ReadWrite : FileAccess.Read,
-                    writing ? FileShare.None : FileShare.Read, bufferSize: 1);
+                var stream = OpenInput(input, writing);
                 locks.All.Add((input.Path, stream));
                 using var content = new MemoryStream();
                 stream.CopyTo(content);
@@ -42,5 +40,22 @@ internal sealed class InputLocks
             if (error is RefactorFailure && closeFailures.Length == 0) throw;
             throw new RefactorFailure("apply_preflight_failed", "No source writes began: " + error.Message, closeFailures);
         }
+    }
+
+    internal static FileStream OpenInput(InputFile input, bool writing = false)
+    {
+        if (input.CanonicalPath is null) Paths.RegularFile(input.Path);
+        var stream = new FileStream(input.Path, FileMode.Open, writing ? FileAccess.ReadWrite : FileAccess.Read,
+            writing ? FileShare.None : FileShare.Read, bufferSize: 1);
+        try
+        {
+            if (input.CanonicalPath is not null)
+                Data.Require(Paths.Comparer.Equals(input.CanonicalPath, Paths.CanonicalFile(stream)),
+                    "input_drift", $"Input resolves to a different file path: {input.Path}");
+            else
+                Paths.RegularFile(input.Path);
+            return stream;
+        }
+        catch { stream.Dispose(); throw; }
     }
 }

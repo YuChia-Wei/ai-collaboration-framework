@@ -143,6 +143,45 @@ class RefactoringAcceptance(unittest.TestCase):
             self.assertFalse(self.plan_path.exists())
         self.assertEqual(self.snapshot(), original)
 
+    def test_invalid_requests_are_refused(self):
+        request = self.root / "invalid.json"
+        original = self.snapshot()
+        for content in [None, "{", "null", "{}", '{"workspace":null}', '{"workspace":"a","unknown":true}',
+                        '{"workspace":"a","workspace":"b"}', json.dumps({"workspace": str(self.solution)})]:
+            with self.subTest(content=content):
+                if content is not None:
+                    request.write_text(content, encoding="utf-8")
+                plan = self.root / "invalid-plan.json"
+                code, result = self.invoke("preview", request=request, plan=plan)
+                self.assertEqual(code, 2, result)
+                self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "invalid_input", False))
+                self.assertFalse(plan.exists())
+        self.assertEqual(self.snapshot(), original)
+
+    def test_contextual_keyword_is_a_valid_local_name(self):
+        line = self.source.read_text().splitlines()[5]
+        code, result = self.preview(project=None, symbol=None, file=str(self.source), line=6,
+                                    column=line.index("local") + 1, newName="record")
+        self.assertEqual(code, 0, result)
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+        self.assertRegex(self.source.read_text(), r"int @?record = value; return @?record \+ Field;")
+        self.run_dotnet("build", self.solution, "--no-restore", "--nologo")
+
+    def test_invalid_plan_input_is_refused(self):
+        plan = self.root / "invalid-plan.json"
+        code, result = self.invoke("apply", plan=plan)
+        self.assertEqual(code, 2, result)
+        self.assertEqual((result["status"], result["code"]), ("refused", "invalid_input"))
+        payload = dict(contract="refactor-plan/1", edits=[],
+                       request=dict(workspace=str(self.solution), symbol="T:Demo.Service", newName="Renamed"))
+        for inputs in [[None], [{"path": str(self.source)}]]:
+            with self.subTest(inputs=inputs):
+                plan.write_text(json.dumps(payload | {"inputs": inputs}))
+                code, result = self.invoke("apply", plan=plan)
+                self.assertEqual(code, 2, result)
+                self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "invalid_input", False))
+
     def test_collision_rejected(self):
         code, result = self.preview(newName="Property")
         self.assertEqual(code, 2, result)
@@ -206,6 +245,8 @@ class RefactoringAcceptance(unittest.TestCase):
         code, result = self.preview()
         self.assertEqual(code, 2, result)
         self.assertIn(result["code"], ["uneditable_symbol", "uneditable_reference", "uneditable_source"])
+        self.assertIn(".g.cs suffix", result["message"])
+        self.assertIn(generated.name, result["message"])
 
     def test_external_override(self):
         self.source.write_text(self.source.read_text().replace("public int Field = 1;", 'public override string ToString() => "Service"; public int Field = 1;'))
@@ -243,11 +284,108 @@ class RefactoringAcceptance(unittest.TestCase):
         self.assertEqual(code, 0, result)
         self.assertTrue(result["baselineErrors"])
 
-    def test_source_generator_output(self):
+    def test_unrelated_source_generator_output_is_allowed(self):
         (self.a / "Json.cs").write_text("using System.Text.Json.Serialization; [JsonSerializable(typeof(string))] internal partial class Context : JsonSerializerContext {}")
         code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+        self.assertIn("service.Fetch(2)", self.consumer.read_text())
+        self.run_dotnet("build", self.solution, "--no-restore", "--nologo")
+
+    def test_source_generator_reference_and_declaration_are_refused(self):
+        (self.a / "Json.cs").write_text("using System.Text.Json.Serialization; [JsonSerializable(typeof(Demo.Service))] internal partial class Context : JsonSerializerContext {}")
+        original = self.snapshot()
+        code, result = self.preview(symbol="P:Demo.Service.Property", newName="Value")
         self.assertEqual(code, 2, result)
-        self.assertEqual(result["code"], "source_generators")
+        self.assertEqual(result["code"], "uneditable_reference")
+        self.assertIn("source-generator output", result["message"])
+        self.assertFalse(self.plan_path.exists())
+        code, result = self.preview(symbol="P:Context.Service", newName="ServiceInfo")
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "uneditable_symbol")
+        self.assertIn("source-generator output", result["message"])
+        self.assertFalse(self.plan_path.exists())
+        self.assertEqual(self.snapshot(), original)
+
+    def test_external_sdk_intermediate_output_is_allowed(self):
+        (self.root / "Directory.Build.props").write_text(
+            '<Project><PropertyGroup><UseArtifactsOutput>true</UseArtifactsOutput>'
+            '<ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath></PropertyGroup></Project>'
+        )
+        self.restore()
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        plan = json.loads(self.plan_path.read_text())
+        inputs = [pathlib.Path(i["path"]) for i in plan["inputs"]]
+        self.assertTrue(any(path.is_relative_to(self.root / "artifacts") and path.name.endswith("AssemblyAttributes.cs") for path in inputs))
+        self.assertTrue(all(pathlib.Path(edit["path"]) in (self.source, self.consumer) for edit in plan["edits"]))
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+
+    def test_ancestor_bin_is_not_a_generated_directory(self):
+        ancestor = self.root / "bin"
+        ancestor.mkdir()
+        relocated = self.a.rename(ancestor / "A")
+        self.project = relocated / self.project.name
+        self.run_dotnet("restore", self.project, "--source", self.root, "-p:NuGetAudit=false")
+        code, result = self.preview(workspace=str(self.project), symbol="F:Demo.Service.Field", newName="Data")
+        self.assertEqual(code, 0, result)
+        self.assertIn("Service.cs", str(result["files"]))
+
+    def junction(self, path, target):
+        env = os.environ | {"REFACTOR_TEST_LINK": str(path), "REFACTOR_TEST_TARGET": str(target)}
+        run = subprocess.run(["pwsh", "-NoProfile", "-Command",
+                              "$ErrorActionPreference='Stop'; New-Item -ItemType Junction -Path $env:REFACTOR_TEST_LINK -Target $env:REFACTOR_TEST_TARGET | Out-Null"],
+                             env=env, capture_output=True, text=True, encoding="utf-8", timeout=30)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+
+    def test_readonly_junction_inputs_are_canonical_and_retarget_is_drift(self):
+        original_dir = self.root / "original-import"
+        replacement_dir = self.root / "replacement-import"
+        alias = self.root / "import-alias"
+        for directory in (original_dir, replacement_dir):
+            directory.mkdir()
+            (directory / "Config.props").write_text("<Project />")
+        self.junction(alias, original_dir)
+        self.project.write_text(self.project.read_text().replace("</Project>",
+            '<ItemGroup><AdditionalFiles Include="../import-alias/Config.props" /></ItemGroup></Project>'))
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        plan = json.loads(self.plan_path.read_text())
+        captured = next(i for i in plan["inputs"] if pathlib.Path(i["path"]) == alias / "Config.props")
+        self.assertEqual(pathlib.Path(captured["canonicalPath"]).name, "Config.props")
+        self.assertEqual(pathlib.Path(captured["canonicalPath"]).parent.name, original_dir.name)
+        alias.rmdir()
+        self.junction(alias, replacement_dir)
+        original = self.snapshot()
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "input_drift")
+        self.assertFalse(result["sourceWrites"])
+        self.assertEqual(self.snapshot(), original)
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+
+    def test_editable_source_and_plan_junctions_are_refused(self):
+        target = self.root / "linked-source"
+        target.mkdir()
+        alias = self.root / "plan-alias"
+        self.junction(alias, target)
+        code, result = self.preview(plan_path=alias / "plan.json")
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "linked_path")
+        self.assertFalse(self.plan_path.exists())
+        (target / "Extra.cs").write_text("public class Extra {}")
+        self.junction(self.a / "alias", target)
+        self.project.write_text(self.project.read_text().replace("</Project>",
+            '<ItemGroup><Compile Remove="alias/**/*.cs" /><Compile Include="alias/Extra.cs" /></ItemGroup></Project>'))
+        code, result = self.preview()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "linked_path")
+        self.assertFalse(self.plan_path.exists())
 
     def test_non_csharp_solution_member(self):
         vb = self.root / "VisualBasic.vbproj"
@@ -302,6 +440,21 @@ class RefactoringAcceptance(unittest.TestCase):
         after = base64.b64decode(edit["after"])
         self.assertTrue(after.startswith(b'\xef\xbb\xbf'))
         self.assertFalse(after.endswith(b'\n'))
+
+    def test_patch_keeps_separate_compact_hunks(self):
+        padding = "".join(f"// unchanged {i}\n" for i in range(100))
+        self.source.write_text("namespace Demo;\nclass Service { int field;\n" + padding +
+                               "int Use() => field;\n}\n", newline="\n")
+        self.consumer.write_text("public class Use {}")
+        code, result = self.preview(symbol="F:Demo.Service.field", newName="data")
+        self.assertEqual(code, 0, result)
+        plan = json.loads(self.plan_path.read_text())
+        patch = plan["patch"]
+        self.assertEqual(patch.count("\n@@ -"), 2)
+        self.assertIn("-class Service { int field;\n+class Service { int data;\n", patch)
+        self.assertIn("-int Use() => field;\n+int Use() => data;\n", patch)
+        self.assertNotIn("// unchanged 50", patch)
+        self.assertEqual(base64.b64decode(plan["edits"][0]["before"]), self.source.read_bytes())
 
     def test_ambiguous_position_never_selects_first_overload(self):
         self.consumer.write_text(self.consumer.read_text().replace("nameof(IService.Get)", "nameof(Service.Get)"))
