@@ -293,9 +293,8 @@ internal static class RenamePlanner
     private static string Patch(string path, SourceText before, SourceText after, IReadOnlyList<TextChange> changes)
     {
         const int context = 3;
-        static int LineCount(SourceText text) => text.Lines.Count - (text.Lines[^1].Span.IsEmpty ? 1 : 0);
-        var oldCount = LineCount(before);
-        var newCount = LineCount(after);
+        var oldLines = new PatchLines(before.ToString());
+        var newLines = new PatchLines(after.ToString());
         // Convert the character edits into line ranges on both sides. Including
         // a line touched at its start also handles insertion/deletion of a
         // newline without creating mismatched unchanged ranges.
@@ -305,10 +304,10 @@ internal static class RenamePlanner
         {
             var newStart = change.Span.Start + offset;
             var newLength = change.NewText?.Length ?? 0;
-            var block = (OldStart: before.Lines.IndexOf(change.Span.Start),
-                OldEnd: Math.Min(oldCount, before.Lines.IndexOf(change.Span.End) + 1),
-                NewStart: after.Lines.IndexOf(newStart),
-                NewEnd: Math.Min(newCount, after.Lines.IndexOf(newStart + newLength) + 1));
+            var block = (OldStart: oldLines.IndexOf(change.Span.Start),
+                OldEnd: Math.Min(oldLines.Count, oldLines.IndexOf(change.Span.End) + 1),
+                NewStart: newLines.IndexOf(newStart),
+                NewEnd: Math.Min(newLines.Count, newLines.IndexOf(newStart + newLength) + 1));
             offset += newLength - change.Span.Length;
             if (blocks.Count > 0 && (blocks[^1].OldEnd >= block.OldStart || blocks[^1].NewEnd >= block.NewStart))
             {
@@ -327,7 +326,7 @@ internal static class RenamePlanner
             var start = blocks[first];
             var end = blocks[last];
             var leading = Math.Min(context, Math.Min(start.OldStart, start.NewStart));
-            var trailing = Math.Min(context, Math.Min(oldCount - end.OldEnd, newCount - end.NewEnd));
+            var trailing = Math.Min(context, Math.Min(oldLines.Count - end.OldEnd, newLines.Count - end.NewEnd));
             var oldStart = start.OldStart - leading;
             var newStart = start.NewStart - leading;
             var oldEnd = end.OldEnd + trailing;
@@ -337,26 +336,49 @@ internal static class RenamePlanner
             for (var i = first; i <= last; i++)
             {
                 var block = blocks[i];
-                AppendLines(before, oldStart, block.OldStart, ' ');
-                AppendLines(before, block.OldStart, block.OldEnd, '-');
-                AppendLines(after, block.NewStart, block.NewEnd, '+');
+                AppendLines(oldLines, oldStart, block.OldStart, ' ');
+                AppendLines(oldLines, block.OldStart, block.OldEnd, '-');
+                AppendLines(newLines, block.NewStart, block.NewEnd, '+');
                 oldStart = block.OldEnd;
             }
-            AppendLines(before, oldStart, oldEnd, ' ');
+            AppendLines(oldLines, oldStart, oldEnd, ' ');
             first = last + 1;
         }
         return result.ToString();
 
-        void AppendLines(SourceText text, int start, int end, char prefix)
+        void AppendLines(PatchLines lines, int start, int end, char prefix)
         {
             for (var i = start; i < end; i++)
             {
-                var line = text.Lines[i];
-                var content = text.ToString(line.SpanIncludingLineBreak);
+                var content = lines[i];
                 result.Append(prefix).Append(content);
-                if (!content.EndsWith('\n')) result.Append('\n');
-                if (line.SpanIncludingLineBreak == line.Span) result.Append("\\ No newline at end of file\n");
+                if (content[^1] != '\n') result.Append("\n\\ No newline at end of file\n");
             }
+        }
+    }
+
+    private sealed class PatchLines(string text)
+    {
+        private readonly int[] starts = LineStarts(text);
+        public int Count => starts.Length - (starts[^1] == text.Length ? 1 : 0);
+
+        public int IndexOf(int position)
+        {
+            var index = Array.BinarySearch(starts, position);
+            return index >= 0 ? index : ~index - 1;
+        }
+
+        public ReadOnlySpan<char> this[int index] =>
+            text.AsSpan(starts[index], (index + 1 < starts.Length ? starts[index + 1] : text.Length) - starts[index]);
+
+        private static int[] LineStarts(string text)
+        {
+            // Unified diff splits on LF. CR and other C# line terminators
+            // belong to the payload, including a CR at the end of the file.
+            var offsets = new List<int> { 0 };
+            for (var index = text.IndexOf('\n'); index >= 0; index = text.IndexOf('\n', index + 1))
+                offsets.Add(index + 1);
+            return offsets.ToArray();
         }
     }
 }

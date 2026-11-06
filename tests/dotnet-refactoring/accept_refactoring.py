@@ -168,6 +168,17 @@ class RefactoringAcceptance(unittest.TestCase):
         self.assertRegex(self.source.read_text(), r"int @?record = value; return @?record \+ Field;")
         self.run_dotnet("build", self.solution, "--no-restore", "--nologo")
 
+    def test_request_directory_is_refused(self):
+        original = self.snapshot()
+        plan = self.root / "request-directory-plan.json"
+        for command, options in [("inspect", {}), ("preview", {"plan": plan})]:
+            with self.subTest(command=command):
+                code, result = self.invoke(command, request=self.a, **options)
+                self.assertEqual(code, 2, result)
+                self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "invalid_input", False))
+        self.assertFalse(plan.exists())
+        self.assertEqual(self.snapshot(), original)
+
     def test_invalid_plan_input_is_refused(self):
         plan = self.root / "invalid-plan.json"
         code, result = self.invoke("apply", plan=plan)
@@ -455,6 +466,22 @@ class RefactoringAcceptance(unittest.TestCase):
         self.assertIn("-int Use() => field;\n+int Use() => data;\n", patch)
         self.assertNotIn("// unchanged 50", patch)
         self.assertEqual(base64.b64decode(plan["edits"][0]["before"]), self.source.read_bytes())
+
+    def test_patch_preserves_cr_only_payload(self):
+        before = b"namespace Demo;\rclass Service {\r int value;\r int Use() => value;\r}\r"
+        after = b"namespace Demo;\rclass Service {\r int data;\r int Use() => data;\r}\r"
+        self.source.write_bytes(before)
+        self.consumer.write_text("public class Use {}")
+        code, result = self.preview(symbol="F:Demo.Service.value", newName="data")
+        self.assertEqual(code, 0, result)
+        plan = json.loads(self.plan_path.read_text())
+        self.assertEqual(self.source.read_bytes(), before)
+        self.assertEqual(len(plan["edits"]), 1)
+        self.assertEqual(base64.b64decode(plan["edits"][0]["before"]), before)
+        self.assertEqual(base64.b64decode(plan["edits"][0]["after"]), after)
+        marker = b"\n\\ No newline at end of file\n"
+        expected = b"--- a/A/Service.cs\n+++ b/A/Service.cs\n@@ -1,1 +1,1 @@\n-" + before + marker + b"+" + after + marker
+        self.assertEqual(plan["patch"].encode("utf-8"), expected)
 
     def test_ambiguous_position_never_selects_first_overload(self):
         self.consumer.write_text(self.consumer.read_text().replace("nameof(IService.Get)", "nameof(Service.Get)"))

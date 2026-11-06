@@ -70,12 +70,9 @@ internal static class Data
     {
         try
         {
-            if (strictPath)
-            {
-                path = Path.GetFullPath(path);
-                Require((File.GetAttributes(path) & FileAttributes.Directory) == 0, "invalid_input", $"Expected a JSON file: {path}");
-                Paths.RegularFile(path);
-            }
+            path = Path.GetFullPath(path);
+            Require((File.GetAttributes(path) & FileAttributes.Directory) == 0, "invalid_input", $"Expected a JSON file: {path}");
+            if (strictPath) Paths.RegularFile(path);
             var text = File.ReadAllText(path, new System.Text.UTF8Encoding(false, true));
             return JsonSerializer.Deserialize<T>(text, Json)
                 ?? throw new RefactorFailure("invalid_input", "JSON must not be null.");
