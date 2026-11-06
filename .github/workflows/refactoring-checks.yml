@@ -1,0 +1,70 @@
+name: Refactoring acceptance
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/knowledge/dotnet-backend/tooling/refactoring/**'
+      - 'tests/dotnet-refactoring/**'
+      - '.github/workflows/refactoring-checks.yml'
+permissions: {}
+concurrency:
+  group: refactoring-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  refactoring:
+    name: RefactorTool (win-x64, SDK 10.0.403)
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout exact event head
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: SDK
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.403'
+      - name: Publish complete managed artifact with notices
+        run: |
+          New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/refactor-build" | Out-Null
+          @{sdk=@{version='10.0.403';rollForward='disable'}} | ConvertTo-Json | Set-Content "$env:RUNNER_TEMP/refactor-build/global.json"
+          Set-Location "$env:RUNNER_TEMP/refactor-build"
+          & "$env:GITHUB_WORKSPACE/src/knowledge/dotnet-backend/tooling/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish" -Archive "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Expand-Archive -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip" -DestinationPath "$env:RUNNER_TEMP/refactor-installed"
+      - name: Exercise extracted artifact outside checkout
+        run: |
+          python -I -B tests/dotnet-refactoring/accept_refactoring.py --tool "$env:RUNNER_TEMP/refactor-installed/RefactorTool.exe" --work "$env:RUNNER_TEMP/refactor-acceptance" --sdk-version 10.0.403 -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Observe controlled partial I/O failure
+        run: |
+          Set-Location "$env:RUNNER_TEMP/refactor-build"
+          dotnet run --project "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring/io-failure/IoFailure.csproj" -c Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Record archive checksum
+        run: |
+          $archive = Get-Item -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
+          $checksum = (Get-FileHash -Algorithm SHA256 -LiteralPath $archive.FullName).Hash.ToLowerInvariant()
+          "$checksum  $($archive.Name)" | Set-Content -Encoding ascii -LiteralPath "$($archive.FullName).sha256"
+          Write-Host "$($archive.Name): $($archive.Length) bytes"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: RefactorTool-win-x64-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/RefactorTool-win-x64.zip
+            ${{ runner.temp }}/RefactorTool-win-x64.zip.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
