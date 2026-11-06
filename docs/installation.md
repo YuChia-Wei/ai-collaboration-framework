@@ -135,6 +135,15 @@ Gatekeeper 首次執行步驟見下方。正式工具包的兩種工具皆採 Na
 | SnippetTool | 支援 | 支援 | 尚未正式交付（#582） |
 | FormatTool | SDK 10.0.403 | 不支援 | SDK 10.0.400；遭 Gatekeeper 阻擋時需使用者核准 |
 
+C# 語意重構的首版 `RefactorTool` 使用獨立的 Windows x64 managed .NET 成品，
+以公開 Roslyn API 提供 workspace 檢查、Rename preview 與原內容綁定的 apply。
+它與既有 generation／formatting 安裝包分開交付，保留完整依賴目錄及
+`BuildHost-netcore`；執行仍需 .NET 10 SDK。取得準備完成的 standalone archive 後，
+解壓到自行選擇的位置並直接執行，不修改目標專案依賴。
+支援矩陣、安裝／更新、參數及失敗恢復見
+[RefactorTool 使用說明](../src/knowledge/dotnet-backend/tooling/refactoring/README.md)。
+此來源實作與本機成品驗證不表示已發布可下載的 Framework 版本。
+
 macOS 首次執行：確認下載來源與套件完整性後，在專案目錄手動執行
 `.ai/tools/dotnet-generation/formatting/osx-arm64/FormatTool --version`。
 若 Gatekeeper 以「無法驗證開發者」或「無法檢查惡意軟體」阻擋，依
