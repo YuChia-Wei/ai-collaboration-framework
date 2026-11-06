@@ -88,11 +88,16 @@ recovery need has ended; it contains copies of your source code.
 
 `renameOverloads: false` selects one method signature. Source interface
 implementations, interface declarations and overrides related by Roslyn are
-renamed together. `renameOverloads: true` also renames the ordinary overloads.
-The summary lists discovered related declarations. An ambiguous `nameof`
-overload group is refused for a single-overload rename; explicitly review the
-whole-group option to change it. Relations to metadata-only declarations are
-refused instead of breaking the contract.
+renamed together. `renameOverloads: true` also selects ordinary overloads declared
+by the selected method's containing type, together with their Roslyn-related
+members. It does not recursively add other overloads declared on implementation,
+derived or base types. The summary lists discovered related declarations.
+An ambiguous `nameof` overload group is refused for a single-overload rename;
+explicitly review the whole-group option to change it. Even with that option,
+a group containing methods outside the selected rename scope is refused. Select
+the appropriate declaring method to cover its overload group; the tool never
+silently expands the rename to unrelated overloads. Relations to metadata-only
+declarations are refused instead of breaking the contract.
 
 Resolvable `nameof` and XML `cref` references participate in semantic rename.
 Unrelated same-name symbols are preserved. Ordinary strings/comments, filenames,

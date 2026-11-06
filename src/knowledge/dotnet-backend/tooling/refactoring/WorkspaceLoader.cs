@@ -186,6 +186,12 @@ internal static class WorkspaceLoader
             loaded.VerifyInputs();
             return loaded;
         }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException)
+        {
+            loaded.Dispose();
+            throw new RefactorFailure(error is FileNotFoundException or DirectoryNotFoundException ? "missing_file" : "workspace_io_failed",
+                "Workspace input could not be read: " + error.Message);
+        }
         catch { loaded.Dispose(); throw; }
     }
 

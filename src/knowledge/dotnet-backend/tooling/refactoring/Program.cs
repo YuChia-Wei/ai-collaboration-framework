@@ -60,8 +60,9 @@ internal static class Program
             RequireRequest(selectedPlan.Request, preview: true);
             Data.Require(selectedPlan.Inputs.All(input => input is not null) && selectedPlan.Edits.All(edit => edit is not null),
                 "invalid_input", "Plan inputs and edits must be objects.");
+            var locks = await PrepareApply(selectedPlan);
             applyStarted = true;
-            return await Apply(selectedPlan);
+            return Apply(locks);
         }
         catch (RefactorFailure error)
         {
@@ -87,19 +88,30 @@ internal static class Program
         return request;
     }
 
-    internal static async Task<int> Apply(Plan plan)
+    private static async Task<InputLocks> PrepareApply(Plan plan)
     {
-        Data.Require(plan.Contract == "refactor-plan/1", "unsupported_plan", "Unsupported plan version.");
-        foreach (var input in plan.Inputs)
+        try
         {
-            using var stream = InputLocks.OpenInput(input);
-            Data.Require(Data.Hash(stream) == input.Hash, "input_drift", $"Preview input changed: {input.Path}");
+            Data.Require(plan.Contract == "refactor-plan/1", "unsupported_plan", "Unsupported plan version.");
+            foreach (var input in plan.Inputs)
+            {
+                using var stream = InputLocks.OpenInput(input);
+                Data.Require(Data.Hash(stream) == input.Hash, "input_drift", $"Preview input changed: {input.Path}");
+            }
+            // Recompute with the public semantic operation: a changed or forged plan
+            // cannot introduce arbitrary filesystem edits, omit inputs or skip checks.
+            var actual = await RenamePlanner.Preview(plan.Request);
+            Data.Require(Data.Serialize(actual) == Data.Serialize(plan), "plan_drift", "Workspace or plan changed; create and review a new preview.");
+            return InputLocks.Open(plan);
         }
-        // Recompute with the public semantic operation: a changed or forged plan
-        // cannot introduce arbitrary filesystem edits, omit inputs or skip checks.
-        var actual = await RenamePlanner.Preview(plan.Request);
-        Data.Require(Data.Serialize(actual) == Data.Serialize(plan), "plan_drift", "Workspace or plan changed; create and review a new preview.");
-        var locks = InputLocks.Open(plan);
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException)
+        {
+            throw new RefactorFailure("apply_preflight_failed", "No source writes began: " + error.Message);
+        }
+    }
+
+    private static int Apply(InputLocks locks)
+    {
         ApplyResult? result = null;
         try
         {

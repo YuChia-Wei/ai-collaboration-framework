@@ -109,6 +109,19 @@ class RefactoringAcceptance(unittest.TestCase):
         self.assertIn("int Fetch(string value)", self.source.read_text())
         self.assertIn("nameof(Service.Fetch)", self.consumer.read_text())
 
+    def test_related_type_overloads_remain_outside_selected_scope(self):
+        self.consumer.write_text(self.consumer.read_text().replace("nameof(IService.Get)", "nameof(Service.Get)"))
+        original = self.snapshot()
+        for symbol in ["M:Demo.IService.Get(System.Int32)", "M:Demo.Derived.Get(System.Int32)"]:
+            with self.subTest(symbol=symbol):
+                code, result = self.preview(symbol=symbol, renameOverloads=True)
+                self.assertEqual(code, 2, result)
+                self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "ambiguous_nameof", False))
+                self.assertIn("outside the selected rename scope", result["message"])
+                self.assertNotIn("review renameOverloads=true", result["message"])
+                self.assertFalse(self.plan_path.exists())
+                self.assertEqual(self.snapshot(), original)
+
     def test_type_and_interface(self):
         for symbol, name in [("T:Demo.Service", "RenamedService"), ("T:Demo.IService", "IRenamedService")]:
             with self.subTest(symbol=symbol):
@@ -246,9 +259,33 @@ class RefactoringAcceptance(unittest.TestCase):
 
     def test_missing_reference(self):
         self.project.write_text(self.project.read_text().replace("</Project>", '<ItemGroup><ProjectReference Include="Missing.csproj" /></ItemGroup></Project>'))
+        original = self.snapshot()
         code, result = self.preview()
         self.assertEqual(code, 2, result)
+        self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "missing_file", False))
+        self.assertIn("Missing.csproj", result["message"])
         self.assertFalse(self.plan_path.exists())
+        self.assertEqual(self.snapshot(), original)
+
+    def test_missing_solution_project_is_refused(self):
+        self.solution.write_text('<Solution><Project Path="Missing.csproj" /></Solution>')
+        original = self.snapshot()
+        code, result = self.preview()
+        self.assertEqual(code, 2, result)
+        self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "missing_file", False))
+        self.assertIn("Missing.csproj", result["message"])
+        self.assertFalse(self.plan_path.exists())
+        self.assertEqual(self.snapshot(), original)
+
+    def test_missing_compile_input_is_refused(self):
+        self.project.write_text(self.project.read_text().replace("</Project>", '<ItemGroup><Compile Include="Missing.cs" /></ItemGroup></Project>'))
+        original = self.snapshot()
+        code, result = self.preview()
+        self.assertEqual(code, 2, result)
+        self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "missing_file", False))
+        self.assertIn("Missing.cs", result["message"])
+        self.assertFalse(self.plan_path.exists())
+        self.assertEqual(self.snapshot(), original)
 
     def test_generated_relation(self):
         generated = self.a / "Generated.g.cs"
@@ -397,6 +434,52 @@ class RefactoringAcceptance(unittest.TestCase):
         self.assertEqual(code, 2, result)
         self.assertEqual(result["code"], "linked_path")
         self.assertFalse(self.plan_path.exists())
+
+    def test_missing_canonical_input_is_refused_before_apply(self):
+        target = self.root / "original-input"
+        target.mkdir()
+        config = target / "Config.props"
+        config.write_text("<Project />")
+        alias = self.root / "input-alias"
+        self.junction(alias, target)
+        self.project.write_text(self.project.read_text().replace("</Project>",
+            '<ItemGroup><AdditionalFiles Include="../input-alias/Config.props" /></ItemGroup></Project>'))
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        plan = json.loads(self.plan_path.read_text())
+        self.assertTrue(next(i for i in plan["inputs"] if pathlib.Path(i["path"]) == alias / config.name)["canonicalPath"])
+        config.unlink()
+        original = self.snapshot()
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 2, result)
+        self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "apply_preflight_failed", False))
+        self.assertIsNone(result.get("recovery"))
+        self.assertEqual(self.snapshot(), original)
+
+    def test_exclusively_locked_input_is_refused_before_apply(self):
+        import ctypes
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD, ctypes.c_void_p,
+                                      wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+        kernel.CreateFileW.restype = wintypes.HANDLE
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        original = self.snapshot()
+        for path in [self.source, self.project]:
+            with self.subTest(path=path):
+                handle = kernel.CreateFileW(str(path), 0x80000000, 0, None, 3, 0x80, None)
+                self.assertNotEqual(handle, ctypes.c_void_p(-1).value, ctypes.get_last_error())
+                try:
+                    code, result = self.invoke("apply", plan=self.plan_path)
+                    self.assertEqual(code, 2, result)
+                    self.assertEqual((result["status"], result["code"], result["sourceWrites"]), ("refused", "apply_preflight_failed", False))
+                    self.assertIsNone(result.get("recovery"))
+                finally:
+                    self.assertTrue(kernel.CloseHandle(handle))
+                self.assertEqual(self.snapshot(), original)
 
     def test_non_csharp_solution_member(self):
         vb = self.root / "VisualBasic.vbproj"

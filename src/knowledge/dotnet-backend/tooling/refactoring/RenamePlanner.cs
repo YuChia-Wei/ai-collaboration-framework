@@ -108,7 +108,7 @@ internal static class RenamePlanner
                 "Public API rename may break external consumers. Compilation diagnostics are not proof of behavioral equivalence.",
                 "Windows file sharing protects captured existing inputs from ordinary writes/deletion during apply. Directory membership is not locked; new directory entries and path aliases are outside that guarantee.",
                 "Comments, ordinary string literals, filenames, folders, project and assembly names remain unchanged; resolvable cref and nameof are semantic references.",
-                request.RenameOverloads ? "All ordinary overloads and Roslyn-related source interface/override members are renamed." : "Only the selected overload and Roslyn-related source interface/override members are renamed."
+                request.RenameOverloads ? "Ordinary overloads declared by the selected method's containing type and their Roslyn-related source interface/override members are renamed; other overloads on related or base types are not automatically included." : "Only the selected overload and Roslyn-related source interface/override members are renamed."
             }).Distinct().ToArray()
         };
     }
@@ -150,7 +150,9 @@ internal static class RenamePlanner
                     ? identities.Contains((member.ContainingAssembly?.Identity.ToString(), id))
                     : definitions.Any(d => SymbolEqualityComparer.Default.Equals(d, member));
                 if (!members.Any(Included)) continue;
-                Data.Require((overloads || members.Length == 1) && members.All(Included), "ambiguous_nameof", $"nameof refers to an overload group in {document.FilePath}; review renameOverloads=true to rename that group.");
+                Data.Require((overloads || members.Length == 1) && members.All(Included), "ambiguous_nameof", overloads
+                    ? $"nameof includes methods outside the selected rename scope in {document.FilePath}; overload expansion is limited to the selected method's containing type and its Roslyn-related members."
+                    : $"nameof refers to an overload group in {document.FilePath}; review renameOverloads=true to rename that group.");
                 var token = NameToken(expression);
                 Data.Require(token.RawKind != 0, "unsupported_nameof", $"Unsupported nameof expression: {expression}");
                 tokens[token] = new SyntaxAnnotation("RefactorTool.Nameof", Guid.NewGuid().ToString("N"));
