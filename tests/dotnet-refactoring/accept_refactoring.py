@@ -245,6 +245,29 @@ public class Service<T> where T : class {
                 self.assertEqual(self.snapshot(), original)
                 self.assertFalse(self.plan_path.exists())
 
+    def test_extract_interface_refuses_future_import_patterns_and_sdk_hooks(self):
+        (self.a / "Contracts").mkdir()
+        original = self.snapshot()
+        project_text = self.project.read_text()
+        for rule, destination in [
+            ('<Import Project="Contracts/*" />', "Contracts/ISelected.cs"),
+            ('<PropertyGroup><ImportSpec>Contracts/*</ImportSpec></PropertyGroup><Import Project="$(ImportSpec)" />', "Contracts/ISelected.cs"),
+            ('<PropertyGroup><CustomBeforeMicrosoftCommonTargets>$(MSBuildProjectDirectory)/Contracts/ISelected.cs</CustomBeforeMicrosoftCommonTargets></PropertyGroup>', "Contracts/ISelected.cs"),
+            ('<PropertyGroup><DirectoryBuildTargetsPath>$(MSBuildProjectDirectory)/Contracts/ISelected.cs</DirectoryBuildTargetsPath></PropertyGroup>', "Contracts/ISelected.cs"),
+            ('<PropertyGroup><_DirectoryBuildTargetsFile>ISelected.cs</_DirectoryBuildTargetsFile></PropertyGroup>', "ISelected.cs")]:
+            with self.subTest(rule=rule):
+                self.project.write_text(project_text.replace("</Project>", rule + "</Project>"))
+                code, result = self.extract(outputFile=str(self.a / destination))
+                self.assertEqual(code, 2, result)
+                self.assertEqual(result["code"], "unsupported_compile_inclusion", result)
+                self.assertEqual(self.snapshot(), original)
+                self.assertFalse(self.plan_path.exists())
+        (self.a / "Bound.props").write_text('<Project><PropertyGroup><Nullable>enable</Nullable></PropertyGroup></Project>')
+        self.project.write_text(project_text.replace("</Project>", '<Import Project="Bound.props" /></Project>'))
+        code, result = self.extract()
+        self.assertEqual(code, 0, result)
+        self.assertEqual(self.snapshot(), original)
+
     def test_extract_interface_primary_constructor_and_setter_parameter_attribute(self):
         self.consumer.write_text('public class Use {}')
         self.source.write_text('namespace Demo; public class Service { public string Value { get => ""; [param: System.Diagnostics.CodeAnalysis.AllowNull] set {} } }')

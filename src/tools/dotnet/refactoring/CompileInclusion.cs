@@ -68,7 +68,30 @@ internal static class CompileInclusion
             var generatedProps = Path.Combine(extensions, Path.GetFileName(info.Path) + ".nuget.g.props");
             var generatedTargets = Path.Combine(extensions, Path.GetFileName(info.Path) + ".nuget.g.targets");
             var roots = project.Imports.Select(i => i.ImportedProject).Prepend(project.Xml)
-                .DistinctBy(r => r.FullPath, Paths.Comparer);
+                .DistinctBy(r => r.FullPath, Paths.Comparer).ToArray();
+            var sdkRoots = roots.Where(r => SdkResource(r.FullPath)).ToArray();
+            var sdkImports = sdkRoots.SelectMany(r => r.AllChildren).OfType<Microsoft.Build.Construction.ProjectImportElement>().ToArray();
+            // SDK extension hooks can import a file only after it appears. Find
+            // hook properties, including indirect filename/search properties,
+            // from the selected SDK's actual XML rather than a hard-coded list.
+            var importProperties = sdkImports.Where(i => !ImportSuffix(i.Project))
+                .SelectMany(i => PropertyNames(i.Project)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var propertiesInRoots = roots.SelectMany(r => r.AllChildren).OfType<Microsoft.Build.Construction.ProjectPropertyElement>().ToArray();
+            var expanded = true;
+            while (expanded)
+            {
+                expanded = false;
+                foreach (var property in propertiesInRoots.Where(p => importProperties.Contains(p.Name) && !ImportSuffix(p.Value)))
+                    foreach (var name in PropertyNames(property.Value)) expanded |= importProperties.Add(name);
+            }
+            foreach (var import in sdkImports)
+            {
+                var specification = project.ExpandString(import.Project.Replace("$(MSBuildThisFileDirectory)",
+                    Path.GetDirectoryName(import.ContainingProject.FullPath)! + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase));
+                foreach (var pattern in specification.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    Data.Require(!Microsoft.Build.Globbing.MSBuildGlob.Parse(project.DirectoryPath, pattern).IsMatch(output),
+                        "unsupported_compile_inclusion", "An SDK import hook or pattern can include the proposed C# output as an MSBuild project.");
+            }
             // File-dependent custom evaluation or build-time Compile mutations
             // cannot be proven by an absent-path glob query. Reject them rather
             // than promise that an in-memory Roslyn document will be built.
@@ -87,6 +110,13 @@ internal static class CompileInclusion
                 Data.Require(nugetImport || (Stable(element.Condition) &&
                     (element is not Microsoft.Build.Construction.ProjectPropertyElement property || Stable(property.Value))),
                     "unsupported_compile_inclusion", $"Custom file/item-dependent evaluation cannot prove absent-file compile inclusion: {origin}");
+                if (element is Microsoft.Build.Construction.ProjectImportElement customImport)
+                    Data.Require(nugetImport || (customImport.Project.Split(';').All(ImportSuffix) &&
+                        customImport.Project.IndexOfAny(['*', '?']) < 0 && !customImport.Project.Contains("$(", StringComparison.Ordinal) && Stable(customImport.Project)),
+                        "unsupported_compile_inclusion", $"Custom imports require literal non-wildcard .props/.targets paths: {origin}");
+                if (element is Microsoft.Build.Construction.ProjectPropertyElement customProperty)
+                    Data.Require(!importProperties.Contains(customProperty.Name), "unsupported_compile_inclusion",
+                        $"Custom override of an SDK import hook is outside the supported subset: {customProperty.Name} in {origin}");
                 Data.Require(nugetImport || element is not Microsoft.Build.Construction.ProjectTargetElement,
                     "unsupported_compile_inclusion", $"Custom build targets are outside Extract Interface's compile-inclusion subset: {origin}");
                 if (element is Microsoft.Build.Construction.ProjectItemElement item && item.ItemType.Equals("Compile", StringComparison.OrdinalIgnoreCase))
@@ -103,6 +133,10 @@ internal static class CompileInclusion
                 "unsupported_compile_inclusion", $"New file must match exactly one evaluated Compile glob in its project and none in other loaded projects: {output}");
         }
     }
+
+    private static bool ImportSuffix(string value) => value.EndsWith(".props", StringComparison.OrdinalIgnoreCase) || value.EndsWith(".targets", StringComparison.OrdinalIgnoreCase);
+    private static IEnumerable<string> PropertyNames(string value) => Regex.Matches(value, @"\$\(([A-Za-z_][A-Za-z0-9_.-]*)\)")
+        .Select(m => m.Groups[1].Value);
 
     private static bool Stable(string? value) => string.IsNullOrEmpty(value) || (!value.Contains("Exists", StringComparison.OrdinalIgnoreCase) &&
         !value.Contains("@(", StringComparison.Ordinal) && !value.Contains("%(", StringComparison.Ordinal) &&
