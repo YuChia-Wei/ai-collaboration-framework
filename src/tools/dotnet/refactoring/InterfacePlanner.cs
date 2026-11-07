@@ -162,10 +162,16 @@ internal static class InterfacePlanner
                 }
             }
             var compilation = (await project.GetCompilationAsync())!;
-            var unavailable = compilation.GetDiagnostics().Where(d => d.Id is "CS8032" or "CS9057" or "CS8784" or "CS8785")
+            var generated = await project.GetSourceGeneratedDocumentsAsync();
+            Data.Require(!generated.Any(), "unsupported_generated_source", "Extract Interface does not support generated consumer documents.");
+            var generators = project.AnalyzerReferences.SelectMany(a => a.GetGenerators(LanguageNames.CSharp));
+            var run = CSharpGeneratorDriver.Create(generators, project.AnalyzerOptions.AdditionalFiles,
+                (CSharpParseOptions?)project.ParseOptions, project.AnalyzerOptions.AnalyzerConfigOptionsProvider)
+                .RunGenerators(compilation).GetRunResult();
+            var unavailable = run.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error || d.Id is "CS8784" or "CS8785")
                 .Select(d => new { d.Id, Message = d.GetMessage(System.Globalization.CultureInfo.InvariantCulture) }).ToArray();
-            Data.Require(unavailable.Length == 0 && !(await project.GetSourceGeneratedDocumentsAsync()).Any(), "unsupported_generated_source",
-                "Extract Interface requires no source-generator output and no generator load/execution failures in either snapshot; Rename retains its separate policy.", unavailable);
+            Data.Require(unavailable.Length == 0 && run.GeneratedTrees.IsEmpty && run.Results.All(r => r.Exception is null), "unsupported_generated_source",
+                "Extract Interface requires no source-generator output and no observed generator execution failures in either snapshot; Rename retains its separate policy.", unavailable);
         }
     }
 

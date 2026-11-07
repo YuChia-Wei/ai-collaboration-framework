@@ -619,6 +619,22 @@ public class Service<T> where T : class {
         self.assertEqual(self.snapshot(), original)
         self.assertFalse(self.plan_path.exists())
 
+        generator_source = (generator / "Generator.cs").read_text()
+        for condition in ('context.Compilation.GetTypeByMetadataName("Contracts.ISelected") != null', 'true'):
+            with self.subTest(generator_failure=condition):
+                (generator / "Generator.cs").write_text(generator_source.replace(
+                    'context.Compilation.GetTypeByMetadataName("Contracts.ISelected") != null', condition).replace(
+                    'context.AddSource("Activated.cs", "namespace Generated { internal class Activated {} }");',
+                    'throw new System.InvalidOperationException("conditional generator failure");'))
+                self.run_dotnet("build", generator_project, "--no-restore", "--nologo")
+                failure_original = self.snapshot()
+                code, result = self.extract()
+                self.assertEqual(code, 2, result)
+                self.assertEqual(result["code"], "unsupported_generated_source")
+                self.assertEqual(self.snapshot(), failure_original)
+                self.assertFalse(self.plan_path.exists())
+        (generator / "Generator.cs").write_text(generator_source)
+
         # The installed SDK may carry a newer Roslyn than this tool. An analyzer
         # built against it must not be misclassified as an idle generator.
         generator_project.write_text(generator_project.read_text().replace(
