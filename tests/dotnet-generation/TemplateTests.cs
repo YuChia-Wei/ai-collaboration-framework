@@ -153,6 +153,7 @@ public sealed class TemplateTests
             }
             if (origin is null)
                 Assert.Fail("Backend did not report a listening address.");
+            Assert.Matches(@"\Ahttp://127\.0\.0\.1:[1-9][0-9]*\z", origin);
             output = server.StandardOutput.ReadToEndAsync();
             using var client = new HttpClient { BaseAddress = new Uri(origin), Timeout = TimeSpan.FromSeconds(10) };
 

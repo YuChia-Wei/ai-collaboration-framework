@@ -204,4 +204,32 @@ public sealed class WorkspaceIntegrationTests
         using var fixture = new SdkFixture();
         fixture.RefusedPreview(await fixture.Preview(fixture.Rename with { Configuration = "Debug,DefineConstants=OTHER" }), "invalid_configuration");
     }
+
+    [Fact]
+    public async Task MalformedSourceEncodingIsRefusedWithoutWrites()
+    {
+        using var fixture = new SdkFixture();
+        byte[] bytes = [0xef, 0xbb, 0xbf, .. File.ReadAllBytes(fixture.Source), .. "// malformed "u8, 0xff, 0x0a];
+        fixture.Write("A/Service.cs", bytes);
+        await fixture.Restore();
+        var original = fixture.Snapshot();
+        fixture.RefusedPreview(await fixture.Preview(), "lossy_encoding");
+        fixture.AssertSnapshot(original);
+    }
+
+    [Fact]
+    public async Task PreviewJsonReportsBaselineErrorsSeparatelyFromNewErrors()
+    {
+        using var fixture = new SdkFixture(twoProjects: true);
+        var broken = fixture.Write("B/Broken.cs", "class Broken { MissingType field; }");
+        await fixture.Restore();
+        var original = fixture.Snapshot();
+        var result = await fixture.Preview();
+        result.Previewed();
+        var baseline = Assert.Single(result.Json.GetProperty("baselineErrors").EnumerateArray());
+        Assert.Equal("CS0246", baseline.GetProperty("id").GetString());
+        Assert.Equal(broken, baseline.GetProperty("file").GetString(), ignoreCase: true);
+        Assert.Empty(result.Json.GetProperty("newErrors").EnumerateArray());
+        fixture.AssertSnapshot(original);
+    }
 }

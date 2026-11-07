@@ -39,6 +39,7 @@ public sealed class PublishedContractTests
         counter.MarkChangesAsCommitted(3); // Simulated durable whole-batch success.
         Assert.Equal(3, counter.Version);
         Assert.Empty(counter.DomainEvents);
+        Assert.Throws<InvalidOperationException>(() => counter.Load([]));
     }
 
     [Fact]

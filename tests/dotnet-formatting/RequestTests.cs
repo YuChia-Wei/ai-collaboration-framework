@@ -20,10 +20,11 @@ public sealed class RequestTests
     public async Task InvalidJsonFailsWithoutSdkOrSourceChanges(string raw)
     {
         using var fixture = new FormatFixture();
+        var before = File.ReadAllBytes(fixture.Chosen);
         var run = await fixture.Invoke(raw: raw);
         Failure(run, "invalid-request");
         Assert.Empty(Items(run.Result, "commands"));
-        Assert.Equal(Original, File.ReadAllText(fixture.Chosen));
+        Assert.Equal(before, File.ReadAllBytes(fixture.Chosen));
     }
 
     [Theory]
@@ -79,14 +80,16 @@ public sealed class RequestTests
     {
         using var fixture = new FormatFixture();
         var sibling = fixture.Write("App/WildcardOther.cs", Original);
+        var siblingBefore = File.ReadAllBytes(sibling);
         foreach (var name in new[] { "Wildcard*.cs", "Wildcard?.cs", @"Wildcard\Other.cs" })
         {
             var literal = fixture.Write("App/" + name, Original);
+            var literalBefore = File.ReadAllBytes(literal);
             var run = await fixture.Invoke(files: [name], action: "apply");
             Failure(run, "unsupported-selection");
             Assert.Empty(Items(run.Result, "commands"));
-            Assert.Equal(Original, File.ReadAllText(literal));
-            Assert.Equal(Original, File.ReadAllText(sibling));
+            Assert.Equal(literalBefore, File.ReadAllBytes(literal));
+            Assert.Equal(siblingBefore, File.ReadAllBytes(sibling));
         }
     }
 }

@@ -38,9 +38,10 @@ same publication step in the refactoring workflow.
   locking and write boundary. Cases with distinct drift or imports have
   independent fixture paths. PowerShell creates real junction fixtures
   because a symbolic link would exercise a different Windows path type.
-  xUnit evaluates the resulting behavior. Physical generator cases start
-  the build's RefactorTool executable in a separate process so Roslyn
-  releases the loaded analyzer DLL when the process exits.
+  xUnit evaluates the resulting behavior. SDK-backed preview and apply
+  use the build's RefactorTool executable in separate processes, giving
+  each command a 180-second deadline and releasing loaded analyzer DLLs
+  at exit. The deadline for each fixture SDK command is 120 seconds.
 - **Artifact** tests launch the extracted executable for cross-project
   Rename and Extract Interface, workspace-relative SDK selection, and SDK
   roots with the same version. Separate processes isolate SDK locator state
@@ -83,7 +84,7 @@ preview plan where applicable.
 | 28–30 Missing reference, project, and compile input | `WorkspaceIntegrationTests.MissingProjectIsIdentifiedWhetherInSolutionOrReference` and `MissingCompileInputIsIdentifiedBeforePlan` |
 | 31 Related generated suffix source | `WorkspaceIntegrationTests.AuthoredGeneratedSuffixCannotBeEditedThroughRelatedRename` |
 | 32 External override | `RenameTests.RefusesOverrideOfFrameworkMember` |
-| 33, 36 Existing and offset-mapped diagnostics | `RenameTests.BaselineDiagnosticsRemainVisibleIncludingMappedOffsets` |
+| 33, 36 Existing and offset-mapped diagnostics | `WorkspaceIntegrationTests.PreviewJsonReportsBaselineErrorsSeparatelyFromNewErrors` and `RenameTests.BaselineDiagnosticsRemainVisibleIncludingMappedOffsets` |
 | 34, 48 Explicit conditional configuration and imported framework | `WorkspaceIntegrationTests.ConditionalConfigurationAndImportedFrameworkAreReported` |
 | 35 Existing diagnostic versus new collision | `RenameTests.BaselineErrorDoesNotHideNewLocalCollision` |
 | 37 Unrelated SDK-generated output | `GeneratorIntegrationTests.SdkGeneratorOutputBlocksExtractionButUnrelatedOutputAllowsRename` |
@@ -103,7 +104,7 @@ preview plan where applicable.
 | 56 Caller directory with incompatible SDK | `PublishedArtifactTests.CallerSdkConfigurationDoesNotOverrideWorkspaceSdk` |
 | 58–59 Design-time linked or unexpected sources | `WorkspaceIntegrationTests.DesignTimeOnlySourceCannotSilentlyChangeTheEditableGraph` |
 | 60–61 Design-time missing edge and build-only reference | `WorkspaceIntegrationTests.DesignTimeAndBuildOnlyReferencesHaveDifferentMeaning` |
-| 62 Malformed source encoding | `RenameTests.MalformedSourceEncodingIsRefusedWithoutWrites` |
+| 62 Malformed source encoding | `WorkspaceIntegrationTests.MalformedSourceEncodingIsRefusedWithoutWrites` |
 | 63 Alias and generic nameof syntax | `RenameTests.AliasAndGenericNameofPreserveSyntax` |
 | 64 Unsafe source, project-local and SDK configuration plan paths | `CommandInputTests.SourceAndSdkConfigurationNamesAreRefusedBeforePreview` and `ApplyIntegrationTests.PreviewPlanCannotEnterLoadedProjectDirectory` |
 | I/O runner | `FileApplyTests` covers partial and unknown states, all close attempts and prior observations, unchanged-input sharing, exclusive create race, empty and unattempted outputs, and recovery for a partial new file. |

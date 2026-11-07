@@ -85,14 +85,13 @@ internal sealed class SdkFixture : IDisposable
 
     private async Task<CommandResult> Invoke(string[] args, string? artifact, string? workingDirectory)
     {
-        if (artifact is not null)
-        {
-            var run = await RunProcess(artifact, workingDirectory ?? Root, args, TimeSpan.FromSeconds(180));
-            Assert.Equal("", run.Error);
-            return CommandResult.Parse(run.ExitCode, run.Output);
-        }
-        using var output = new StringWriter();
-        return CommandResult.Parse(await Program.Run(args, output), output.ToString());
+        // SDK-backed commands can block inside Roslyn or MSBuild. A child
+        // process gives each command its own deadline and a stoppable writer.
+        var tool = artifact ?? Path.Combine(AppContext.BaseDirectory, "RefactorTool.exe");
+        Assert.True(File.Exists(tool), $"Missing RefactorTool executable: {tool}");
+        var run = await RunProcess(tool, workingDirectory ?? Root, args, TimeSpan.FromSeconds(180));
+        Assert.Equal("", run.Error);
+        return CommandResult.Parse(run.ExitCode, run.Output);
     }
 
     internal async Task Junction(string relative, string target)

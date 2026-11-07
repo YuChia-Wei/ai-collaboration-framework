@@ -28,7 +28,7 @@ public sealed class CompileInclusionTests
         var output = fixture.PathFor("A/" + destination);
         Directory.CreateDirectory(Path.GetDirectoryName(output)!);
         var original = fixture.Snapshot();
-        var failure = await Assert.ThrowsAsync<RefactorFailure>(() => Require(fixture, output, fixture.Project));
+        var failure = await Assert.ThrowsAsync<RefactorFailure>(() => Require(fixture, output));
         Assert.Equal("unsupported_compile_inclusion", failure.Code);
         Assert.False(File.Exists(output));
         fixture.AssertSnapshot(original);
@@ -41,9 +41,10 @@ public sealed class CompileInclusionTests
         fixture.AppendProject("""<ItemGroup><compile Include="../A/Contracts/**/*.cs" /></ItemGroup>""", "B/B.csproj");
         var output = fixture.PathFor("A/Contracts/ISelected.cs");
         Directory.CreateDirectory(Path.GetDirectoryName(output)!);
+        await fixture.Restore();
         var original = fixture.Snapshot();
-        var failure = await Assert.ThrowsAsync<RefactorFailure>(() => Require(fixture, output, fixture.Project, fixture.PathFor("B/B.csproj")));
-        Assert.Equal("unsupported_compile_inclusion", failure.Code);
+        var result = await fixture.Preview(fixture.Extract with { OutputFile = output });
+        fixture.RefusedPreview(result, "unsupported_compile_inclusion");
         Assert.False(File.Exists(output));
         fixture.AssertSnapshot(original);
     }
@@ -68,12 +69,12 @@ public sealed class CompileInclusionTests
         excluded.AssertSnapshot(excludedOriginal);
     }
 
-    private static async Task Require(SdkFixture fixture, string output, params string[] projects)
+    private static async Task Require(SdkFixture fixture, string output)
     {
         var request = fixture.Extract with { OutputFile = output };
         await CompileInclusion.Register(request);
         using var loaded = new LoadedWorkspace(new AdhocWorkspace(), SdkFixture.Version);
-        loaded.Projects.AddRange(projects.Select(path => new ProjectInfo(path, "net10.0", "Debug", "Enable", "14.0", [], [])));
+        loaded.Projects.Add(new ProjectInfo(fixture.Project, "net10.0", "Debug", "Enable", "14.0", [], []));
         await CompileInclusion.Require(loaded, fixture.Project, output, request);
     }
 }

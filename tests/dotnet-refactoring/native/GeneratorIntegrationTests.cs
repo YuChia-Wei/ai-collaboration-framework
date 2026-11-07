@@ -11,7 +11,7 @@ public sealed class GeneratorIntegrationTests
     [Fact]
     public async Task SdkGeneratorOutputBlocksExtractionButUnrelatedOutputAllowsRename()
     {
-        using var fixture = new SdkFixture();
+        using var fixture = new SdkFixture(twoProjects: true);
         fixture.Write("A/Json.cs", """
             using System.Text.Json.Serialization;
             [JsonSerializable(typeof(string))]
@@ -24,7 +24,8 @@ public sealed class GeneratorIntegrationTests
         (await fixture.Preview()).Previewed();
         (await fixture.Apply()).Applied();
         Assert.Contains("override int Fetch(int value) => base.Fetch(value)", File.ReadAllText(fixture.Source));
-        await fixture.Dotnet("build", fixture.Project, "--no-restore", "--nologo");
+        Assert.Contains("service.Fetch(2)", File.ReadAllText(fixture.Consumer));
+        await fixture.Dotnet("build", fixture.Workspace, "--no-restore", "--nologo");
     }
 
     [Theory]
@@ -91,11 +92,7 @@ public sealed class GeneratorIntegrationTests
         fixture.AppendProject($"""<ItemGroup><Analyzer Include="{SecurityElement.Escape(assembly)}" /></ItemGroup>""");
         await fixture.Restore();
         var original = fixture.Snapshot();
-        // Roslyn can retain a handle to a physical analyzer until process exit.
-        // The project-reference apphost gives each analyzer an isolated lifetime.
-        var tool = Path.Combine(AppContext.BaseDirectory, "RefactorTool.exe");
-        Assert.True(File.Exists(tool), $"Missing project-reference executable: {tool}");
-        var result = await fixture.Preview(fixture.Extract, artifact: tool);
+        var result = await fixture.Preview(fixture.Extract);
         fixture.RefusedPreview(result, "unsupported_generated_source");
         if (scenario == "newer-api") Assert.Contains("newer Roslyn API", result.Text("message"));
         fixture.AssertSnapshot(original);

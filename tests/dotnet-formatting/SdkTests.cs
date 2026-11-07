@@ -96,9 +96,10 @@ public sealed class SdkTests
               <Error Text="Deliberate design-time load failure" />
             </Target>
             """);
+        var before = File.ReadAllBytes(fixture.Chosen);
         var refused = await fixture.Invoke(action: "apply");
         Failure(refused, "load-failed");
-        Assert.Equal(Original, File.ReadAllText(fixture.Chosen));
+        Assert.Equal(before, File.ReadAllBytes(fixture.Chosen));
         Assert.Empty(Items(refused.Result, "changedFiles"));
         Assert.Contains(Items(refused.Result, "commands"),
             row => row.GetProperty("exitCode").GetInt32() != 0 && !string.IsNullOrEmpty(Text(row, "standardOutput")));
@@ -123,8 +124,9 @@ public sealed class SdkTests
         var path = fixture.Write("App/Generated.g.cs", generated);
         fixture.Write("Sample.slnx", Solution);
         await fixture.Restore();
+        var generatedBefore = File.ReadAllBytes(path);
         var slnx = await fixture.Invoke(workspace: "Sample.slnx", files: ["App/Generated.g.cs"], action: "apply");
-        AssertUnreported(slnx, path, generated);
+        AssertUnreported(slnx, path, generatedBefore);
 
         fixture.Write("Sample.sln", ClassicSolution);
         var classic = await fixture.Invoke(workspace: "Sample.sln", files: ["App/Nested/Chosen.cs"]);
@@ -133,14 +135,15 @@ public sealed class SdkTests
         const string marked = "class Marked{int value=  1;}\n";
         path = fixture.Write("App/Marked.cs", marked);
         File.AppendAllText(Path.Combine(fixture.Root, "App", ".editorconfig"), "\n[Marked.cs]\ngenerated_code = true\n");
+        var markedBefore = File.ReadAllBytes(path);
         var configured = await fixture.Invoke(files: ["Marked.cs"], action: "apply");
-        AssertUnreported(configured, path, marked);
+        AssertUnreported(configured, path, markedBefore);
     }
 
-    private static void AssertUnreported((int Exit, System.Text.Json.JsonElement Result) run, string path, string contents)
+    private static void AssertUnreported((int Exit, System.Text.Json.JsonElement Result) run, string path, byte[] before)
     {
         Outcome(run, 0, "clean");
-        Assert.Equal(contents, File.ReadAllText(path));
+        Assert.Equal(before, File.ReadAllBytes(path));
         Assert.Equal(path, Assert.Single(Items(run.Result, "unreportedSelections")).GetString());
         Assert.Contains("excluded", Text(run.Result, "message"));
     }
@@ -157,6 +160,8 @@ public sealed class SdkTests
         var lower = fixture.Write("App/casealias.cs", lowerText);
         fixture.WriteProject("""<ItemGroup><Compile Include="CaseAlias.cs;casealias.cs" /></ItemGroup>""", explicitCompile: true);
         await fixture.Restore();
+        var upperBefore = File.ReadAllBytes(upper);
+        var lowerBefore = File.ReadAllBytes(lower);
         var run = await fixture.Invoke(files: ["CaseAlias.cs"], action: "apply", artifact: true);
         Failure(run, "unsupported-selection");
         Assert.DoesNotContain(Items(run.Result, "commands"), row =>
@@ -164,8 +169,8 @@ public sealed class SdkTests
             var arguments = Items(row, "arguments").Select(item => item.GetString()).ToArray();
             return arguments[0] == "format" && arguments.Contains("--include");
         });
-        Assert.Equal(upperText, File.ReadAllText(upper));
-        Assert.Equal(lowerText, File.ReadAllText(lower));
+        Assert.Equal(upperBefore, File.ReadAllBytes(upper));
+        Assert.Equal(lowerBefore, File.ReadAllBytes(lower));
     }
 
     [FormatSdkFact]
@@ -175,23 +180,25 @@ public sealed class SdkTests
         var selected = fixture.Write("App/@Excluded.cs", Original);
         fixture.Write("App/Excluded.cs", "Unselected.cs\n--include-generated\n");
         await fixture.Restore();
+        var unselectedBefore = File.ReadAllBytes(fixture.Unselected);
         var literal = await fixture.Invoke(files: ["@Excluded.cs"], action: "apply");
         Outcome(literal, 0, "applied");
         Assert.Equal(selected, Assert.Single(Items(literal.Result, "changedFiles")).GetString());
-        Assert.Equal(UserEdit, File.ReadAllText(fixture.Unselected));
+        Assert.Equal(unselectedBefore, File.ReadAllBytes(fixture.Unselected));
 
         var linked = fixture.Write("@Linked.cs", Original);
         fixture.WriteProject("""<ItemGroup><Compile Include="../@Linked.cs" Link="Linked.cs" /></ItemGroup>""");
+        var linkedBefore = File.ReadAllBytes(linked);
         var outside = await fixture.Invoke(files: ["../@Linked.cs"], action: "apply");
         Failure(outside, "unsupported-selection");
-        Assert.Equal(Original, File.ReadAllText(linked));
+        Assert.Equal(linkedBefore, File.ReadAllBytes(linked));
 
         fixture.Write("Linked.slnx", Solution);
         fixture.Write(".editorconfig", "root = true\n[*.cs]\nindent_size = 4\n");
         var enclosing = await fixture.Invoke(workspace: "Linked.slnx", files: ["@Linked.cs"], action: "apply");
         Outcome(enclosing, 0, "applied");
         Assert.Equal(linked, Assert.Single(Items(enclosing.Result, "changedFiles")).GetString());
-        Assert.Equal(UserEdit, File.ReadAllText(fixture.Unselected));
+        Assert.Equal(unselectedBefore, File.ReadAllBytes(fixture.Unselected));
     }
 
     [FormatSdkFact]
@@ -201,19 +208,21 @@ public sealed class SdkTests
         const string original = "class Chosen { public int Read() { var number = 1; return number; } }\n";
         File.WriteAllText(fixture.Chosen, original);
         await fixture.Restore();
+        var before = File.ReadAllBytes(fixture.Chosen);
+        var unselectedBefore = File.ReadAllBytes(fixture.Unselected);
         var errorOnly = await fixture.Invoke(mode: "style", diagnostics: ["IDE0008"], severity: "error");
         Outcome(errorOnly, 0, "clean");
-        Assert.Equal(original, File.ReadAllText(fixture.Chosen));
+        Assert.Equal(before, File.ReadAllBytes(fixture.Chosen));
         var warnings = await fixture.Invoke(mode: "style", diagnostics: ["IDE0008"], severity: "warn");
         Outcome(warnings, 2, "changes-required");
-        Assert.Equal(original, File.ReadAllText(fixture.Chosen));
+        Assert.Equal(before, File.ReadAllBytes(fixture.Chosen));
         Assert.Equal(new[] { "IDE0008" }, Items(warnings.Result, "findings").Select(row => Text(row, "diagnosticId")).Distinct());
 
         var applied = await fixture.Invoke(mode: "style", diagnostics: ["IDE0008"], severity: "warn", action: "apply");
         Outcome(applied, 0, "applied");
         Assert.Contains("int number = 1", File.ReadAllText(fixture.Chosen));
         Assert.Empty(Items(applied.Result, "remainingFindings"));
-        Assert.Equal(UserEdit, File.ReadAllText(fixture.Unselected));
+        Assert.Equal(unselectedBefore, File.ReadAllBytes(fixture.Unselected));
         Outcome(await fixture.Invoke(mode: "style", diagnostics: ["IDE0008"], severity: "warn"), 0, "clean");
     }
 
@@ -224,9 +233,11 @@ public sealed class SdkTests
         const string original = "class Chosen { private int count = 0; public int Read() { var n = 1; return count + n; } }\n";
         File.WriteAllText(fixture.Chosen, original);
         await fixture.Restore();
+        var before = File.ReadAllBytes(fixture.Chosen);
+        var unselectedBefore = File.ReadAllBytes(fixture.Unselected);
         var check = await fixture.Invoke(mode: "analyzers", diagnostics: ["CA1805"], severity: "warn");
         Outcome(check, 2, "changes-required");
-        Assert.Equal(original, File.ReadAllText(fixture.Chosen));
+        Assert.Equal(before, File.ReadAllBytes(fixture.Chosen));
         Assert.Equal(new[] { "CA1805" }, Items(check.Result, "findings").Select(row => Text(row, "diagnosticId")).Distinct());
 
         var applied = await fixture.Invoke(mode: "analyzers", diagnostics: ["CA1805"], severity: "warn", action: "apply");
@@ -235,7 +246,7 @@ public sealed class SdkTests
         Assert.Contains("int count;", changed);
         Assert.Contains("var n = 1;", changed);
         Assert.Empty(Items(applied.Result, "remainingFindings"));
-        Assert.Equal(UserEdit, File.ReadAllText(fixture.Unselected));
+        Assert.Equal(unselectedBefore, File.ReadAllBytes(fixture.Unselected));
     }
 
     [FormatSdkFact]
@@ -245,8 +256,9 @@ public sealed class SdkTests
         const string original = "class Chosen { MissingType value; }\n";
         File.WriteAllText(fixture.Chosen, original);
         await fixture.Restore();
+        var before = File.ReadAllBytes(fixture.Chosen);
         var run = await fixture.Invoke(mode: "style", diagnostics: ["IDE0008"], severity: "warn");
         Failure(run, "semantic-prerequisite-failed");
-        Assert.Equal(original, File.ReadAllText(fixture.Chosen));
+        Assert.Equal(before, File.ReadAllBytes(fixture.Chosen));
     }
 }

@@ -183,16 +183,6 @@ public sealed class RenameTests
         Assert.Equal($"--- a/A/Service.cs\n+++ b/A/Service.cs\n@@ -1,1 +1,1 @@\n-{before}{marker}+{after}{marker}", plan.Patch);
     }
 
-    [Fact]
-    public async Task MalformedSourceEncodingIsRefusedWithoutWrites()
-    {
-        using var workspace = new SemanticWorkspace();
-        byte[] bytes = [0xef, 0xbb, 0xbf, .. Encoding.UTF8.GetBytes(SemanticWorkspace.Service + "\n// malformed "), 0xff, 0x0a];
-        workspace.Add("A/Service.cs", bytes);
-        await Refused(workspace, workspace.Rename, "lossy_encoding");
-        Assert.Equal(bytes, File.ReadAllBytes(workspace.Source));
-    }
-
     private static string GroupConsumer => SemanticWorkspace.Consumer.Replace("nameof(IService.Get)", "nameof(Service.Get)");
 
     private static Request At(Request request, string path, string source, int line, string token, string name) => request with
