@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.MSBuild;
 
 namespace RefactorTool;
 
-internal sealed class LoadedWorkspace(MSBuildWorkspace workspace, string sdk) : IDisposable
+internal sealed class LoadedWorkspace(Workspace workspace, string sdk) : IDisposable
 {
-    public MSBuildWorkspace Workspace { get; } = workspace;
+    public Workspace Workspace { get; } = workspace;
     public string Sdk { get; } = sdk;
     public List<ProjectInfo> Projects { get; } = [];
     public SortedDictionary<string, InputFile> Inputs { get; } = new(Paths.Comparer);

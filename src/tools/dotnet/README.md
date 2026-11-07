@@ -18,11 +18,11 @@ applications.
 | `formatting/FormatTool.csproj` | Run bounded SDK formatting and cleanup operations. |
 | `refactoring/RefactorTool.csproj` | Load a C# workspace, preview semantic changes and apply a reviewed plan. |
 
-The solution also includes the repository's controlled I/O failure harness under
-`tests/dotnet-refactoring/io-failure`. It is a development entrypoint, not an
-installed product or a build of every template instance. The Web API template
-keeps its own solution. The contract fixture requiring separately supplied
-published DLLs remains outside this solution.
+The solution includes the source repository's xUnit test projects for
+formatting, generation and refactoring. Run the projects with `dotnet test`
+and use their test READMEs to select SDK and artifact cases. The Web API
+template keeps its own solution. The CT-005 tests requiring separately supplied
+published DLLs have an explicit test project outside this solution.
 
 The three generation guides remain canonical knowledge-package members under
 `src/knowledge/dotnet-backend/tooling/generation`. The snippet project explicitly

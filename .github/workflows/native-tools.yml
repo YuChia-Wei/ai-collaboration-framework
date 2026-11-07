@@ -12,6 +12,7 @@ on:
       - '.github/workflows/native-tools.yml'
       - '.github/workflows/package-candidate.yml'
       - '.github/workflows/publish-release.yml'
+      - 'tests/dotnet-generation/**'
       - 'tests/release/test_release_tools.py'
   workflow_call:
     inputs:
@@ -106,6 +107,32 @@ jobs:
           Set-Location $buildRoot
           python -I -B "$env:GITHUB_WORKSPACE/.github/scripts/native_tools.py" --repository $env:GITHUB_WORKSPACE --commit $env:SOURCE_COMMIT --version $env:PRODUCT_VERSION --rid $env:NATIVE_RID --work "$env:RUNNER_TEMP/native-build" --output "$env:RUNNER_TEMP/native-output"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Run Windows generation tests with published SnippetTool and a template package
+        if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && matrix.rid == 'win-x64'
+        shell: pwsh
+        env:
+          PRODUCT_VERSION: ${{ needs.source.outputs.version }}
+          AICF_GENERATION_SDK_TESTS: '1'
+        run: |
+          Set-Location "$env:RUNNER_TEMP/native-sdk"
+          $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/native-sdk/generation-fixtures"
+          $env:AICF_SNIPPET_ARTIFACT = "$env:RUNNER_TEMP/native-output/snippets/win-x64/SnippetTool.exe"
+          $packageOutput = "$env:RUNNER_TEMP/generation-test-package"
+          dotnet pack "$env:GITHUB_WORKSPACE/src/tools/dotnet/generation/Generation.Templates.csproj" -c Release -p:PackageVersion=$env:PRODUCT_VERSION --artifacts-path "$env:RUNNER_TEMP/generation-test-pack-build" -o $packageOutput
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $packages = @(Get-ChildItem -LiteralPath $packageOutput -Filter '*.nupkg' -File)
+          if ($packages.Count -ne 1) { throw 'Expected one template package for generation tests.' }
+          $env:AICF_TEMPLATE_PACKAGE = $packages[0].FullName
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-generation/Generation.Tests.csproj" -c Release --filter 'Boundary!=LinuxArtifact' --artifacts-path "$env:RUNNER_TEMP/generation-test-build"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify the published Linux executable rejects a FIFO
+        if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && matrix.rid == 'linux-x64'
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP/native-sdk"
+          AICF_TEST_WORK="$RUNNER_TEMP/native-sdk/generation-fixtures" \
+          AICF_SNIPPET_ARTIFACT="$RUNNER_TEMP/native-output/snippets/linux-x64/SnippetTool" \
+            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-generation/Generation.Tests.csproj" -c Release --filter 'Boundary=LinuxArtifact' --artifacts-path "$RUNNER_TEMP/generation-test-build"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: native-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.rid }}

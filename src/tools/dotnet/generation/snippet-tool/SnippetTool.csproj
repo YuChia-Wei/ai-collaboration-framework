@@ -14,6 +14,7 @@
     <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Generation.Tests" />
     <None Update="snippets/**/*" CopyToOutputDirectory="PreserveNewest"
           CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <None Include="../../../../knowledge/dotnet-backend/tooling/generation/snippet-tool/README.md"

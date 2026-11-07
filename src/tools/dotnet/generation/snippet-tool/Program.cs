@@ -13,20 +13,25 @@ internal static class Program
     private static int Main(string[] args)
     {
         Console.OutputEncoding = Utf8;
+        return Run(args, Console.Out, Console.Error);
+    }
+
+    internal static int Run(string[] args, TextWriter output, TextWriter errorOutput)
+    {
         try
         {
             switch (args)
             {
                 case ["--help"]:
-                    Console.WriteLine("SnippetTool --request <request.json> | --version | --help");
+                    output.WriteLine("SnippetTool --request <request.json> | --version | --help");
                     return 0;
                 case ["--version"]:
-                    Console.WriteLine(typeof(Program).Assembly
+                    output.WriteLine(typeof(Program).Assembly
                         .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion);
                     return 0;
                 case ["--request", var path] when !string.IsNullOrWhiteSpace(path):
                     var result = Execute(Path.GetFullPath(path));
-                    Write(Console.Out, result, WireJson.Default.Success);
+                    Write(output, result, WireJson.Default.Success);
                     return 0;
                 default:
                     throw new SnippetError("invalid-arguments", "Use --request <request.json>, --version, or --help.");
@@ -34,12 +39,12 @@ internal static class Program
         }
         catch (SnippetError error)
         {
-            Write(Console.Error, new Failure(SchemaVersion, new Error(error.Code, error.Message)), WireJson.Default.Failure);
+            Write(errorOutput, new Failure(SchemaVersion, new Error(error.Code, error.Message)), WireJson.Default.Failure);
             return 1;
         }
         catch (ArgumentException)
         {
-            Write(Console.Error, new Failure(SchemaVersion, new Error("invalid-path", "The selected path is invalid.")), WireJson.Default.Failure);
+            Write(errorOutput, new Failure(SchemaVersion, new Error("invalid-path", "The selected path is invalid.")), WireJson.Default.Failure);
             return 1;
         }
     }

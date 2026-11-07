@@ -69,6 +69,37 @@ obligation is explicitly selected.
 
 ## Decide before running a test
 
+### Test technology and boundary
+
+This repository's .NET components use standard .NET test frameworks (such as
+xUnit, NUnit or MSTest), with discoverable cases and native test-runner results.
+Do not use Python to invoke .NET component tests or replace a test framework
+with a custom console assertion runner. Shell/PowerShell test logic is an
+exception only when a concrete requirement cannot be exercised by the native
+.NET testing solution; record that limitation and the bounded exception.
+CI shell steps that invoke `dotnet test`, build or publish are ordinary command
+orchestration, not an alternative test implementation.
+
+Choose the smallest test boundary that proves the behavior. Unit and component
+cases cover local rules with independent expected values. An integration or
+end-to-end case must identify the necessary real interaction and why a smaller
+boundary is insufficient. A CLI product does not require every semantic case
+to launch the CLI, restore projects or load a full workspace. Retain actual
+SDK/MSBuild, OS and published-artifact checks where those interactions are the
+claim, using only the necessary fixture. Do not improve apparent runtime by
+dropping meaningful assertions, sharing mutable fixtures across incompatible
+cases, increasing timeouts, or merely translating an expensive foreign-language
+runner into C#.
+
+Purpose-built test tools remain valid for their intended boundary: for example,
+k6 for load tests and Playwright for browser behavior. Their language is not a
+cross-language component-test wrapper and does not make them an exception to
+justify. Select such tests for an actual affected behavior, not because the tool
+is available. These are this source project's rules; reusable skills and managed
+installation updates are separate product/adoption work.
+
+### Necessity and execution
+
 At task planning, identify validation purpose, expected evidence, trigger and
 execution point. Distinguish mandatory gates and accepted acceptance requirements
 from checks conditional on anticipated impact. Schedule shared checks at the

@@ -13,11 +13,21 @@ internal static class RenamePlanner
 {
     public static async Task<Plan> Preview(Request request)
     {
+        request = Normalize(request);
+        using var loaded = await WorkspaceLoader.Load(request);
+        return await PlanRename(request, loaded);
+    }
+
+    internal static Request Normalize(Request request)
+    {
         Data.Require(SyntaxFacts.IsValidIdentifier(request.NewName) && !request.NewName.StartsWith('@') &&
             SyntaxFacts.GetKeywordKind(request.NewName) == SyntaxKind.None,
             "invalid_name", "New name must be an unescaped C# identifier other than a reserved keyword.");
-        request = request with { Workspace = Path.GetFullPath(request.Workspace), File = request.File is null ? null : Path.GetFullPath(request.File), Project = request.Project is null ? null : Path.GetFullPath(request.Project) };
-        using var loaded = await WorkspaceLoader.Load(request);
+        return request with { Workspace = Path.GetFullPath(request.Workspace), File = request.File is null ? null : Path.GetFullPath(request.File), Project = request.Project is null ? null : Path.GetFullPath(request.Project) };
+    }
+
+    internal static async Task<Plan> PlanRename(Request request, LoadedWorkspace loaded)
+    {
         var before = loaded.Workspace.CurrentSolution;
         var symbol = await Select(before, request);
         Data.Require(IsSupported(symbol), "unsupported_symbol", "Select a source class/interface, ordinary method, property, field, parameter or local.");

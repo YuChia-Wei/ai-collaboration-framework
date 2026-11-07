@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Tests/">
-    <Project Path="../../../tests/dotnet-refactoring/io-failure/IoFailure.csproj" />
+    <Project Path="../../../tests/dotnet-formatting/FormatTool.Tests.csproj" />
+    <Project Path="../../../tests/dotnet-generation/Generation.Tests.csproj" />
+    <Project Path="../../../tests/dotnet-refactoring/native/RefactorTool.Tests.csproj" />
   </Folder>
   <Folder Name="/Tools/">
     <Project Path="formatting/FormatTool.csproj" />

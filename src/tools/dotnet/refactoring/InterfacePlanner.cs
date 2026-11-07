@@ -13,16 +13,30 @@ internal static class InterfacePlanner
 {
     public static async Task<Plan> Preview(Request request)
     {
+        request = Normalize(request);
+        using var loaded = await WorkspaceLoader.Load(request);
+        var target = await SelectTarget(request, loaded);
+        await CompileInclusion.Require(loaded, target.Document.Project.FilePath!, request.OutputFile!, request);
+        return await BuildPlan(request, loaded, target);
+    }
+
+    internal static Request Normalize(Request request)
+    {
         Data.Require(Identifier(request.NewName) && request.Namespace is not null &&
             (request.Namespace.Length == 0 || request.Namespace.Split('.').All(Identifier)),
             "invalid_name", "Interface name and namespace components must be unescaped C# identifiers other than reserved keywords.");
         Data.Require(request.Members.Distinct(StringComparer.Ordinal).Count() == request.Members.Length,
             "invalid_members", "Member declaration IDs must be unique.");
-        request = request with { Workspace = Path.GetFullPath(request.Workspace),
+        return request with { Workspace = Path.GetFullPath(request.Workspace),
             File = request.File is null ? null : Path.GetFullPath(request.File),
             Project = request.Project is null ? null : Path.GetFullPath(request.Project),
             OutputFile = Path.GetFullPath(request.OutputFile!), Members = request.Members.Order(StringComparer.Ordinal).ToArray() };
-        using var loaded = await WorkspaceLoader.Load(request);
+    }
+
+    internal sealed record ExtractionTarget(INamedTypeSymbol Type, ClassDeclarationSyntax Syntax, Microsoft.CodeAnalysis.Document Document);
+
+    internal static async Task<ExtractionTarget> SelectTarget(Request request, LoadedWorkspace loaded)
+    {
         var before = loaded.Workspace.CurrentSolution;
         await RequireGeneratorScope(before);
         var selected = await RenamePlanner.Select(before, request);
@@ -47,7 +61,15 @@ internal static class InterfacePlanner
             !relativeOutput.Split(Path.DirectorySeparatorChar).Any(p => p.Equals("obj", StringComparison.OrdinalIgnoreCase) || p.Equals("bin", StringComparison.OrdinalIgnoreCase)) &&
             !loaded.Inputs.ContainsKey(output), "invalid_output", "Use a new authored .cs file inside the selected project, outside obj/bin/generated paths.");
         Paths.AbsentFile(output);
-        await CompileInclusion.Require(loaded, project.FilePath!, output, request);
+        return new(type, syntax, document);
+    }
+
+    internal static async Task<Plan> BuildPlan(Request request, LoadedWorkspace loaded, ExtractionTarget target)
+    {
+        var (type, syntax, document) = target;
+        var project = document.Project;
+        var before = project.Solution;
+        var output = request.OutputFile!;
         var baseline = await RenamePlanner.Errors(before);
         Data.Require(baseline.Count == 0, "compilation_errors", "Extract Interface requires an error-free loaded workspace.", baseline);
         var compilation = (await project.GetCompilationAsync())!;

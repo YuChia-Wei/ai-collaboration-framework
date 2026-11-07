@@ -4,19 +4,21 @@ namespace RefactorTool;
 
 internal static class Program
 {
-    public static async Task<int> Main(string[] args)
+    public static Task<int> Main(string[] args) => Run(args, Console.Out);
+
+    internal static async Task<int> Run(string[] args, TextWriter output)
     {
         var applyStarted = false;
         try
         {
             if (args is ["--version"])
             {
-                Console.WriteLine("RefactorTool 0.1.0-dev.1 (Roslyn 5.0.0; managed .NET 10)");
+                output.WriteLine("RefactorTool 0.1.0-dev.1 (Roslyn 5.0.0; managed .NET 10)");
                 return 0;
             }
             if (args.Length == 0 || args is ["--help"])
             {
-                Console.WriteLine("RefactorTool preview --request request.json --plan NEW-plan.json\nRefactorTool apply --plan plan.json\nRefactorTool inspect --request request.json\nAll paths in requests are explicit; file positions are 1-based UTF-16. Restore trusted target projects before use. See README.md.");
+                output.WriteLine("RefactorTool preview --request request.json --plan NEW-plan.json\nRefactorTool apply --plan plan.json\nRefactorTool inspect --request request.json\nAll paths in requests are explicit; file positions are 1-based UTF-16. Restore trusted target projects before use. See README.md.");
                 return 0;
             }
             var options = new Dictionary<string, string>(StringComparer.Ordinal);
@@ -30,7 +32,7 @@ internal static class Program
                 var request = RequireRequest(Data.Read<Request>(options["--request"]), preview: false);
                 await CompileInclusion.Register(request);
                 using var loaded = await WorkspaceLoader.Load(request);
-                Console.WriteLine(Data.Serialize(new { status = "loaded", sdk = loaded.Sdk, roslyn = typeof(Microsoft.CodeAnalysis.Compilation).Assembly.GetName().Version!.ToString(), projects = loaded.Projects, limits = loaded.Limits }));
+                output.WriteLine(Data.Serialize(new { status = "loaded", sdk = loaded.Sdk, roslyn = typeof(Microsoft.CodeAnalysis.Compilation).Assembly.GetName().Version!.ToString(), projects = loaded.Projects, limits = loaded.Limits }));
                 return 0;
             }
             if (args[0] == "preview")
@@ -51,7 +53,7 @@ internal static class Program
                     var bytes = Encoding.UTF8.GetBytes(Data.Serialize(plan));
                     stream.Write(bytes); stream.Flush(true);
                 }
-                Console.WriteLine(Data.Serialize(new { status = "previewed", plan = destination, symbol = plan.Symbol, relatedSymbols = plan.RelatedSymbols,
+                output.WriteLine(Data.Serialize(new { status = "previewed", plan = destination, symbol = plan.Symbol, relatedSymbols = plan.RelatedSymbols,
                     files = plan.Edits.Select(e => new { e.Path, e.Kind }), baselineErrors = plan.BaselineErrors, newErrors = plan.NewErrors,
                     patch = "Unified patch is in the plan's patch field; before/after base64 preserve exact bytes.", limits = plan.Limits }));
                 return 0;
@@ -64,16 +66,16 @@ internal static class Program
                 "invalid_input", "Plan inputs and edits must be objects.");
             var locks = await PrepareApply(selectedPlan);
             applyStarted = true;
-            return Apply(locks);
+            return Apply(locks, output);
         }
         catch (RefactorFailure error)
         {
-            Console.WriteLine(Data.Serialize(new { status = "refused", code = error.Code, message = error.Message, detail = error.Detail, sourceWrites = false }));
+            output.WriteLine(Data.Serialize(new { status = "refused", code = error.Code, message = error.Message, detail = error.Detail, sourceWrites = false }));
             return 2;
         }
         catch (Exception error)
         {
-            Console.WriteLine(Data.Serialize(new { status = "failed", code = error.GetType().Name, message = error.Message,
+            output.WriteLine(Data.Serialize(new { status = "failed", code = error.GetType().Name, message = error.Message,
                 sourceWrites = applyStarted ? "unknown" : "none", recovery = applyStarted ? FileApply.Recovery : null }));
             return 2;
         }
@@ -127,7 +129,7 @@ internal static class Program
         }
     }
 
-    private static int Apply(InputLocks locks)
+    private static int Apply(InputLocks locks, TextWriter output)
     {
         ApplyResult? result = null;
         try
@@ -141,7 +143,7 @@ internal static class Program
         }
         // Closing/flushing is part of the operation, not cleanup after its
         // response. Emit exactly one result only after every close was attempted.
-        Console.WriteLine(Data.Serialize(result));
+        output.WriteLine(Data.Serialize(result));
         return result!.Status == "applied" ? 0 : 3;
     }
 }

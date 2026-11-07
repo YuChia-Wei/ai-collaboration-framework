@@ -14,14 +14,19 @@ internal static class Program
     private static async Task<int> Main(string[] args)
     {
         Console.OutputEncoding = new UTF8Encoding(false);
+        return await Run(args, Console.Out);
+    }
+
+    internal static async Task<int> Run(string[] args, TextWriter output)
+    {
         if (args is ["--help"])
         {
-            Console.WriteLine("FormatTool --request <request.json> | --capabilities | --version | --help");
+            output.WriteLine("FormatTool --request <request.json> | --capabilities | --version | --help");
             return 0;
         }
         if (args is ["--version"])
         {
-            Console.WriteLine(new Result().ToolVersion);
+            output.WriteLine(new Result().ToolVersion);
             return 0;
         }
         if (args is ["--capabilities"])
@@ -29,7 +34,7 @@ internal static class Program
             var capabilities = new Result { Status = "capabilities",
                 Message = "Declared OS/architecture/SDK combinations and their shared rule list; no installed environment was probed." };
             capabilities.IncludeGuidance();
-            Console.WriteLine(JsonSerializer.Serialize(capabilities, WireJson.Default.Result));
+            output.WriteLine(JsonSerializer.Serialize(capabilities, WireJson.Default.Result));
             return 0;
         }
         var result = new Result();
@@ -134,7 +139,7 @@ internal static class Program
         if (!verbose && result.Status != "failed")
             for (var index = 0; index < result.Commands.Count; index++)
                 result.Commands[index] = result.Commands[index] with { StandardOutput = null, StandardError = null };
-        Console.WriteLine(JsonSerializer.Serialize(result, WireJson.Default.Result));
+        output.WriteLine(JsonSerializer.Serialize(result, WireJson.Default.Result));
         return result.Status == "failed" ? 1 : result.Status == "changes-required" ? 2 : 0;
     }
 

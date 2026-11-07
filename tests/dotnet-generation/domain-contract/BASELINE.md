@@ -47,9 +47,7 @@ Verify the two nupkg hashes, then extract Domain into `domain/` and ES into
 are included here. The product release record is prior registry evidence; local
 artifact verification is a distinct observation, not a fresh feed-restore claim.
 
-The bundled support files `contract-cases/Program.cs`,
-`contract-cases/ContractCases.csproj` and `contract-cases/NuGet.Config` accompany
-this example resource. The runnable cases exercise:
+The repository's xUnit cases exercise:
 
 - successful `LoadFromHistory`: state and committed version restored, pending empty;
 - prohibited `ClearDomainEvents`, mismatched commit version and retained pending;
@@ -62,14 +60,15 @@ this example resource. The runnable cases exercise:
   returns no usable partial Plan; its event contract reuses inherited timestamp
   metadata without hiding it.
 
-Run with .NET 8 or a compatible installed SDK and explicit verified DLL directory:
+Run the package-free cases with the [generation tests](../README.md). Run the
+CT-005 tests with the .NET 8 runtime and an explicit verified DLL directory.
 
 ```powershell
-dotnet run --project tests/dotnet-generation/domain-contract/ContractCases.csproj -p:PublishedContractsDir=<verified-extracted-directory>
+dotnet test tests/dotnet-generation/domain-contract/published/PublishedDomainContract.Tests.csproj -p:PublishedContractsDir=<verified-extracted-directory>
 ```
 
-The project clears package sources and references the supplied net8.0 DLLs;
-it downloads nothing. The external packages use MIT; obtain them from the owner
+The project restores xUnit and the test SDK through ordinary NuGet
+configuration and references the supplied net8.0 DLLs. The external packages use MIT; obtain them from the owner
 and preserve their license. No Analyzer is loaded. The append receipt is a test
 double: these cases do not prove real event-store atomicity, transport recovery,
 projector transactions or arbitrary side-effect/dataflow analysis.

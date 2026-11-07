@@ -28,10 +28,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 1
           persist-credentials: false
-      - name: Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
-        with:
-          python-version: '3.13'
       - name: SDK
         uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
@@ -44,14 +40,12 @@ jobs:
           & "$env:GITHUB_WORKSPACE/src/tools/dotnet/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish" -Archive "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Expand-Archive -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip" -DestinationPath "$env:RUNNER_TEMP/refactor-installed"
-      - name: Exercise extracted artifact outside checkout
-        run: |
-          python -I -B tests/dotnet-refactoring/accept_refactoring.py --tool "$env:RUNNER_TEMP/refactor-installed/RefactorTool.exe" --work "$env:RUNNER_TEMP/refactor-acceptance" --sdk-version 10.0.403 -v
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Observe controlled partial I/O failure
+      - name: Run native component, SDK and extracted artifact tests
+        env:
+          AICF_REFACTOR_TEST_ARTIFACT: ${{ runner.temp }}/refactor-installed/RefactorTool.exe
         run: |
           Set-Location "$env:RUNNER_TEMP/refactor-build"
-          dotnet run --project "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring/io-failure/IoFailure.csproj" -c Release
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring/native/RefactorTool.Tests.csproj" -c Release --logger "console;verbosity=normal"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Record archive checksum
         run: |
