@@ -1,5 +1,11 @@
 # .NET snippet tool
 
+Source builds use the Framework checkout's
+`src/tools/dotnet/generation/snippet-tool` directory, which contains
+`SnippetTool.csproj`. Run the build/publish commands below from that directory.
+This manual is also included in the standalone artifact; running that artifact
+requires neither the source checkout nor a knowledge-package installation.
+
 SnippetTool renders small C# fragments for a human or agent to insert into a selected context. The release bundle contains a Native AOT executable for each supported platform, this README, and the shipped `snippets/` catalog and body files beside each executable. Install the .NET 10 SDK for development and generated-code compilation. The native executable includes its required runtime support and can run from any working directory. The explicit framework-dependent comparison variant uses the host runtime; configure apphost lookup (for example, `DOTNET_ROOT_X64`) for custom .NET installations. Missing-runtime diagnostics for that variant occur before the application JSON contract starts. The snippet output is ordinary C# and the consuming project only needs the types and APIs listed by the selected snippet.
 
 ## Run

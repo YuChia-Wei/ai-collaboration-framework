@@ -5,7 +5,9 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - 'src/knowledge/dotnet-backend/tooling/**'
-      - 'src/tools/dotnet/**'
+      - 'src/tools/dotnet/generation/**'
+      - 'src/tools/dotnet/formatting/**'
+      - 'src/tools/dotnet/refactoring/**'
       - '.github/scripts/**'
       - '.github/workflows/native-tools.yml'
       - '.github/workflows/package-candidate.yml'
