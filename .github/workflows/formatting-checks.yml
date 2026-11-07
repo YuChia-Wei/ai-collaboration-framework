@@ -60,13 +60,17 @@ jobs:
       - name: Run FormatTool tests and exercise the published executable
         env:
           FORMAT_EXE: ${{ matrix.executable }}
+          FORMAT_SDK: ${{ matrix.sdk }}
           AICF_FORMAT_SDK_TESTS: '1'
         run: |
           $env:AICF_FORMAT_ARTIFACT = "$env:RUNNER_TEMP/format-publish/$env:FORMAT_EXE"
           $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/format-acceptance"
           $testFilter = 'Boundary!=CaseSensitiveArtifact'
           if ($IsWindows) { $testFilter += '&Platform!=MacOS' }
-          Set-Location "$env:RUNNER_TEMP/format-build"
+          # dotnet test supplies MSBuildSDKsPath to the test host and its child SDK commands.
+          New-Item -ItemType Directory -Path $env:AICF_TEST_WORK | Out-Null
+          @{sdk=@{version=$env:FORMAT_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $env:AICF_TEST_WORK 'global.json')
+          Set-Location $env:AICF_TEST_WORK
           dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.Tests.csproj" -c Release --filter $testFilter --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Verify exact selection on case-sensitive APFS
@@ -79,6 +83,6 @@ jobs:
           mkdir -p "$mount"
           hdiutil attach "$image" -mountpoint "$mount" -nobrowse
           trap 'hdiutil detach "$mount"' EXIT
-          cd "$RUNNER_TEMP/format-build"
+          cd "$RUNNER_TEMP/format-acceptance"
           AICF_FORMAT_ARTIFACT="$RUNNER_TEMP/format-publish/FormatTool" AICF_FORMAT_CASE_ROOT="$mount/acceptance" \
             dotnet test "$GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.Tests.csproj" -c Release --no-build --filter 'Boundary=CaseSensitiveArtifact' --artifacts-path "$RUNNER_TEMP/format-test-artifacts"
