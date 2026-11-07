@@ -581,12 +581,53 @@ public class Service<T> where T : class {
 
     def test_unrelated_source_generator_output_is_allowed(self):
         (self.a / "Json.cs").write_text("using System.Text.Json.Serialization; [JsonSerializable(typeof(string))] internal partial class Context : JsonSerializerContext {}")
+        original = self.snapshot()
+        code, result = self.extract()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_generated_source")
+        self.assertEqual(self.snapshot(), original)
+        self.assertFalse(self.plan_path.exists())
+
         code, result = self.preview()
         self.assertEqual(code, 0, result)
         code, result = self.invoke("apply", plan=self.plan_path)
         self.assertEqual(code, 0, result)
         self.assertIn("service.Fetch(2)", self.consumer.read_text())
         self.run_dotnet("build", self.solution, "--no-restore", "--nologo")
+
+    def test_extract_interface_refuses_newly_activated_generator(self):
+        generator = self.root / "Generator"
+        generator.mkdir()
+        generator_project = generator / "ConditionalGenerator.csproj"
+        generator_project.write_text(f'<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup><ItemGroup><Reference Include="Microsoft.CodeAnalysis" HintPath="{(ARGS.tool.parent / "Microsoft.CodeAnalysis.dll").as_posix()}" Private="false" /></ItemGroup></Project>')
+        (generator / "Generator.cs").write_text('''using Microsoft.CodeAnalysis;
+[Generator] public class ConditionalGenerator : ISourceGenerator {
+ public void Initialize(GeneratorInitializationContext context) {}
+ public void Execute(GeneratorExecutionContext context) {
+  if(context.Compilation.GetTypeByMetadataName("Contracts.ISelected") != null)
+   context.AddSource("Activated.cs", "namespace Generated { internal class Activated {} }");
+ }
+}
+''')
+        self.run_dotnet("build", generator_project, "--source", self.root, "-p:NuGetAudit=false", "--nologo")
+        assembly = generator / "bin/Debug/net10.0/ConditionalGenerator.dll"
+        self.project.write_text(self.project.read_text().replace("</Project>", f'<ItemGroup><Analyzer Include="{assembly.as_posix()}" /></ItemGroup></Project>'))
+        original = self.snapshot()
+        code, result = self.extract()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_generated_source")
+        self.assertEqual(self.snapshot(), original)
+        self.assertFalse(self.plan_path.exists())
+
+        # The installed SDK may carry a newer Roslyn than this tool. An analyzer
+        # built against it must not be misclassified as an idle generator.
+        generator_project.write_text(generator_project.read_text().replace(
+            (ARGS.tool.parent / "Microsoft.CodeAnalysis.dll").as_posix(), "$(MSBuildToolsPath)/Roslyn/bincore/Microsoft.CodeAnalysis.dll"))
+        self.run_dotnet("build", generator_project, "--no-restore", "--nologo")
+        code, result = self.extract()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_generated_source")
+        self.assertFalse(self.plan_path.exists())
 
     def test_source_generator_reference_and_declaration_are_refused(self):
         (self.a / "Json.cs").write_text("using System.Text.Json.Serialization; [JsonSerializable(typeof(Demo.Service))] internal partial class Context : JsonSerializerContext {}")

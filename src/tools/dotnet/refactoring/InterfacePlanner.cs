@@ -1,4 +1,6 @@
 using System.Text;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -22,6 +24,7 @@ internal static class InterfacePlanner
             OutputFile = Path.GetFullPath(request.OutputFile!), Members = request.Members.Order(StringComparer.Ordinal).ToArray() };
         using var loaded = await WorkspaceLoader.Load(request);
         var before = loaded.Workspace.CurrentSolution;
+        await RequireGeneratorScope(before);
         var selected = await RenamePlanner.Select(before, request);
         Data.Require(selected is INamedTypeSymbol { TypeKind: TypeKind.Class, IsStatic: false, ContainingType: null } &&
             selected.DeclaringSyntaxReferences.Length == 1 && selected.DeclaredAccessibility is Accessibility.Public or Accessibility.Internal,
@@ -90,6 +93,7 @@ internal static class InterfacePlanner
         var changedText = oldText.WithChanges(insertion);
         var addedId = DocumentId.CreateNewId(project.Id);
         var after = before.WithDocumentText(document.Id, changedText).AddDocument(addedId, Path.GetFileName(output), interfaceText, filePath: output);
+        await RequireGeneratorScope(after);
         var errors = await RenamePlanner.Errors(after);
         Data.Require(errors.Count == 0, "new_compilation_errors", "Extract Interface introduces compilation errors or a visibility/name conflict.", errors);
         await RequireUnchangedBindings(before, after, document.Id, insertion,
@@ -126,6 +130,7 @@ internal static class InterfacePlanner
             Limits = loaded.Limits.Concat(new[] {
                 "Extract Interface covers one configuration and stable evaluated Compile globs; no project file, consumer types, DI registrations or method bodies are rewritten.",
                 "Only single-declaration top-level classes with no class inheritance and explicit public instance methods/properties are supported; see README for refused signature shapes.",
+                "Workspaces with source-generator output before or after extraction are refused; generated-consumer rebinding is outside this subset.",
                 "New files are UTF-8 without BOM. Apply creates outputs exclusively before changing existing source; failures can leave empty/partial new files and require the reported manual recovery.",
                 "Existing input handles protect against ordinary writes/deletion. Directory membership/path aliases and noncooperating writers are not locked; no cross-file atomicity is promised."
             }).Distinct().ToArray() };
@@ -133,6 +138,36 @@ internal static class InterfacePlanner
 
     private static bool Identifier(string name) => SyntaxFacts.IsValidIdentifier(name) && !name.StartsWith('@') && SyntaxFacts.GetKeywordKind(name) == SyntaxKind.None;
     private static string Escape(string name) => SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None || SyntaxFacts.GetContextualKeywordKind(name) != SyntaxKind.None ? "@" + name : name;
+
+    private static async Task RequireGeneratorScope(Solution solution)
+    {
+        foreach (var project in solution.Projects)
+        {
+            // A newer compiler can silently skip generators targeting a newer
+            // Roslyn ABI. Zero observed output is not proof of an idle generator.
+            var supported = typeof(Compilation).Assembly.GetName().Version!;
+            foreach (var analyzer in project.AnalyzerReferences)
+            {
+                Data.Require(analyzer.FullPath is not null, "unsupported_generated_source", "Extraction requires physical analyzer references for compatibility checks.");
+                using var stream = File.OpenRead(analyzer.FullPath!);
+                using var pe = new PEReader(stream);
+                Data.Require(pe.HasMetadata, "unsupported_generated_source", "Analyzer metadata is unavailable.");
+                var metadata = pe.GetMetadataReader();
+                foreach (var handle in metadata.AssemblyReferences)
+                {
+                    var reference = metadata.GetAssemblyReference(handle);
+                    var name = metadata.GetString(reference.Name);
+                    Data.Require(name is not ("Microsoft.CodeAnalysis" or "Microsoft.CodeAnalysis.CSharp") || reference.Version <= supported,
+                        "unsupported_generated_source", $"Analyzer requires a newer Roslyn API ({reference.Version}) than this tool ({supported}): {analyzer.FullPath}");
+                }
+            }
+            var compilation = (await project.GetCompilationAsync())!;
+            var unavailable = compilation.GetDiagnostics().Where(d => d.Id is "CS8032" or "CS9057" or "CS8784" or "CS8785")
+                .Select(d => new { d.Id, Message = d.GetMessage(System.Globalization.CultureInfo.InvariantCulture) }).ToArray();
+            Data.Require(unavailable.Length == 0 && !(await project.GetSourceGeneratedDocumentsAsync()).Any(), "unsupported_generated_source",
+                "Extract Interface requires no source-generator output and no generator load/execution failures in either snapshot; Rename retains its separate policy.", unavailable);
+        }
+    }
 
     private static string Type(ITypeSymbol type) => type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat
         .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier));
