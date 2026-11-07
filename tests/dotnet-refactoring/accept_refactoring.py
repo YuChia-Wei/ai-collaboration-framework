@@ -197,7 +197,7 @@ public class Service<T> where T : class {
 
     def test_extract_interface_refuses_file_dependent_inclusion_and_invalid_new_paths(self):
         original = self.snapshot()
-        for name in ["payload.cs:stream.cs", "CON.cs", "obj/ISelected.cs"]:
+        for name in ["payload.cs:stream.cs", "CON.cs", "COM¹.cs", "obj/ISelected.cs"]:
             code, result = self.extract(outputFile=str(self.a / name))
             self.assertEqual(code, 2, result)
             self.assertEqual(result["code"], "invalid_output")
@@ -206,6 +206,91 @@ public class Service<T> where T : class {
         self.assertEqual(code, 2, result)
         self.assertEqual(result["code"], "unsupported_compile_inclusion")
         self.assertEqual(self.snapshot(), original)
+
+    def test_extract_interface_refuses_inactive_import_item_expression_and_lowercase_glob(self):
+        original = self.snapshot()
+        project_text = self.project.read_text()
+        (self.a / "ExcludeInterface.targets").write_text('<Project><ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup></Project>')
+        (self.a / "Fake.nuget.g.targets").write_text('<Project><Target Name="RemoveInterface" BeforeTargets="CoreCompile"><ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup></Target></Project>')
+        for rule in ['<Import Project="ExcludeInterface.targets" Condition="Exists(\'ISelected.cs\')" />',
+                     '<ItemGroup><IgnoredFiles Include="ISelected*.cs"/><Compile Remove="@(IgnoredFiles)" /></ItemGroup>',
+                     '<ItemGroup><Compile Remove="ISelected.cs" Condition="\'@(Compile)\' != \'\'" /></ItemGroup>',
+                     '<Target Name="RemoveInterface" BeforeTargets="CoreCompile"><ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup></Target>',
+                     '<Import Project="Fake.nuget.g.targets" />']:
+            with self.subTest(rule=rule):
+                self.project.write_text(project_text.replace("</Project>", rule + "</Project>"))
+                code, result = self.extract()
+                self.assertEqual(code, 2, result)
+                self.assertEqual(result["code"], "unsupported_compile_inclusion")
+                self.assertEqual(self.snapshot(), original)
+        self.project.write_text(project_text)
+        (self.a / "Contracts").mkdir()
+        b_project = self.b / "B.csproj"
+        b_project.write_text(b_project.read_text().replace("</Project>", '<ItemGroup><compile Include="../A/Contracts/**/*.cs" /></ItemGroup></Project>'))
+        code, result = self.extract(outputFile=str(self.a / "Contracts/ISelected.cs"))
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_compile_inclusion")
+        self.assertEqual(self.snapshot(), original)
+
+    def test_extract_interface_refuses_existing_type_and_namespace_rebinding(self):
+        (self.a / "External.cs").write_text('namespace External { public interface ISelected {} public class Contracts { public class Token {} } }')
+        for name, source in [("ISelected", 'namespace Contracts; using External; public class Use { public System.Type Type => typeof(ISelected); }'),
+                             ("Token", 'using External; public class Use { public System.Type Type => typeof(Contracts.Token); }')]:
+            with self.subTest(name=name):
+                self.consumer.write_text(source)
+                original = self.snapshot()
+                code, result = self.extract(newName=name)
+                self.assertEqual(code, 2, result)
+                self.assertEqual(result["code"], "name_collision")
+                self.assertEqual(self.snapshot(), original)
+                self.assertFalse(self.plan_path.exists())
+
+    def test_extract_interface_primary_constructor_and_setter_parameter_attribute(self):
+        self.consumer.write_text('public class Use {}')
+        self.source.write_text('namespace Demo; public class Service { public string Value { get => ""; [param: System.Diagnostics.CodeAnalysis.AllowNull] set {} } }')
+        code, result = self.extract(members=["P:Demo.Service.Value"])
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_member", result)
+        source = 'namespace Demo; public class Service(int n) { public int Get(int value) => n + value; }'
+        self.source.write_text(source)
+        code, result = self.extract(members=["M:Demo.Service.Get(System.Int32)"])
+        self.assertEqual(code, 0, result)
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+        self.assertEqual(self.source.read_text().replace(" : global::Contracts.ISelected", ""), source)
+        b_project = self.b / "B.csproj"
+        b_project.write_text(b_project.read_text().replace("<TargetFramework>", "<OutputType>Exe</OutputType><TargetFramework>"))
+        (self.b / "Program.cs").write_text('Contracts.ISelected s = new Demo.Service(3); System.Console.Write(s.Get(4));')
+        self.assertEqual(self.run_dotnet("run", "--project", b_project, "--no-restore", "-v:q").strip().splitlines()[-1], "7")
+
+    def test_sdk_paths_duplicate_version_uses_selected_sdk_directory(self):
+        # SDK paths intentionally allow the same version in a local root and
+        # the host root. Use a junction so the test needs no SDK download/copy.
+        env = dict(os.environ, DOTNET_CLI_UI_LANGUAGE="en-US")
+        info = subprocess.run(["dotnet", "--info"], cwd=self.root, env=env, capture_output=True, text=True, encoding="utf-8", check=True).stdout
+        sdk_path = next(line.split(":", 1)[1].strip() for line in info.splitlines() if line.strip().startswith("Base Path:"))
+        local_root = self.root / "local-sdk"
+        (local_root / "sdk").mkdir(parents=True)
+        link = local_root / "sdk" / ARGS.sdk_version
+        self.junction(link, pathlib.Path(sdk_path))
+        # Remove only the junction itself before TemporaryDirectory cleanup.
+        self.addCleanup(lambda: link.rmdir() if link.exists() else None)
+        # A usable dotnet root also needs its runtime and targeting/workload
+        # packs. Linking only sdk/ produces a deliberately broken installation.
+        host_root = pathlib.Path(sdk_path).parent.parent
+        for name in ["shared", "packs", "sdk-manifests"]:
+            dependency = local_root / name
+            self.junction(dependency, host_root / name)
+            self.addCleanup(lambda entry=dependency: entry.rmdir() if entry.exists() else None)
+        (self.root / "global.json").write_text(json.dumps({"sdk": {"version": ARGS.sdk_version, "rollForward": "disable", "paths": [str(local_root), "$host$"]}}))
+        inventory = self.run_dotnet("--list-sdks")
+        self.assertGreaterEqual(sum(line.startswith(ARGS.sdk_version + " ") for line in inventory.splitlines()), 2)
+        code, result = self.preview()
+        self.assertEqual(code, 0, result)
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+        code, result = self.extract(members=["M:Demo.Service.Fetch(System.Int32)", "P:Demo.Service.Property"])
+        self.assertEqual(code, 0, result)
 
     def test_cross_project_related_members_cref_nameof_preview_apply(self):
         original = self.snapshot()

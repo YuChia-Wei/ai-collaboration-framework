@@ -40,7 +40,7 @@ internal static class InterfacePlanner
         Data.Require(Paths.IsWithin(output, folder) && Path.GetExtension(output).Equals(".cs", StringComparison.OrdinalIgnoreCase) &&
             !output.EndsWith(".g.cs", StringComparison.OrdinalIgnoreCase) && !output.EndsWith(".generated.cs", StringComparison.OrdinalIgnoreCase) &&
             relativeOutput.Split(Path.DirectorySeparatorChar).All(p => p.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && p.TrimEnd(' ', '.') == p &&
-                !System.Text.RegularExpressions.Regex.IsMatch(p.Split('.')[0], "^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) &&
+                !System.Text.RegularExpressions.Regex.IsMatch(p.Split('.')[0], @"^(CON|PRN|AUX|NUL|CONIN\$|CONOUT\$|COM[1-9¹²³]|LPT[1-9¹²³])$", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) &&
             !relativeOutput.Split(Path.DirectorySeparatorChar).Any(p => p.Equals("obj", StringComparison.OrdinalIgnoreCase) || p.Equals("bin", StringComparison.OrdinalIgnoreCase)) &&
             !loaded.Inputs.ContainsKey(output), "invalid_output", "Use a new authored .cs file inside the selected project, outside obj/bin/generated paths.");
         Paths.AbsentFile(output);
@@ -85,13 +85,15 @@ internal static class InterfacePlanner
             (type.TypeParameters.Length == 0 ? "" : "<" + string.Join(", ", type.TypeParameters.Select(p => Escape(p.Name))) + ">");
         // Insert only the base-list text; method bodies, trivia and all consumers
         // remain byte-for-byte untouched outside this insertion.
-        var position = syntax.BaseList?.Types.Last().Span.End ?? syntax.TypeParameterList?.Span.End ?? syntax.Identifier.Span.End;
+        var position = syntax.BaseList?.Types.Last().Span.End ?? syntax.ParameterList?.Span.End ?? syntax.TypeParameterList?.Span.End ?? syntax.Identifier.Span.End;
         var insertion = new TextChange(new TextSpan(position, 0), (syntax.BaseList is null ? " : " : ", ") + qualified);
         var changedText = oldText.WithChanges(insertion);
         var addedId = DocumentId.CreateNewId(project.Id);
         var after = before.WithDocumentText(document.Id, changedText).AddDocument(addedId, Path.GetFileName(output), interfaceText, filePath: output);
         var errors = await RenamePlanner.Errors(after);
         Data.Require(errors.Count == 0, "new_compilation_errors", "Extract Interface introduces compilation errors or a visibility/name conflict.", errors);
+        await RequireUnchangedBindings(before, after, document.Id, insertion,
+            request.Namespace!.Split('.', StringSplitOptions.RemoveEmptyEntries).Append(request.NewName).ToHashSet(StringComparer.Ordinal));
         var newCompilation = (await after.GetProject(project.Id)!.GetCompilationAsync())!;
         var newRoot = (await after.GetDocument(addedId)!.GetSyntaxRootAsync())!;
         var newModel = newCompilation.GetSemanticModel(newRoot.SyntaxTree);
@@ -144,6 +146,37 @@ internal static class InterfacePlanner
         _ => "unsupported"
     };
 
+    private static async Task RequireUnchangedBindings(Solution before, Solution after, DocumentId changed,
+        TextChange insertion, HashSet<string> introducedNames)
+    {
+        foreach (var document in before.Projects.SelectMany(p => p.Documents))
+        {
+            var root = (await document.GetSyntaxRootAsync())!;
+            var names = root.DescendantNodes(descendIntoTrivia: true).OfType<SimpleNameSyntax>()
+                .Where(n => introducedNames.Contains(n.Identifier.ValueText)).ToArray();
+            if (names.Length == 0) continue;
+            var updated = after.GetDocument(document.Id)!;
+            var updatedRoot = (await updated.GetSyntaxRootAsync())!;
+            var oldModel = (await document.GetSemanticModelAsync())!;
+            var newModel = (await updated.GetSemanticModelAsync())!;
+            foreach (var name in names)
+            {
+                var offset = document.Id == changed && name.SpanStart >= insertion.Span.Start ? insertion.NewText!.Length : 0;
+                var counterpart = updatedRoot.FindNode(new TextSpan(name.SpanStart + offset, name.Span.Length), findInsideTrivia: true, getInnermostNodeForTie: true);
+                Data.Require(counterpart is SimpleNameSyntax && Binding(oldModel.GetSymbolInfo(name)) == Binding(newModel.GetSymbolInfo(counterpart)),
+                    "name_collision", $"New interface/namespace changes an existing name binding: {document.FilePath}:{name.SpanStart} ({name})");
+            }
+        }
+    }
+
+    private static string Binding(SymbolInfo info)
+    {
+        static string Identity(ISymbol symbol) => symbol is IAliasSymbol alias ? Identity(alias.Target) :
+            $"{symbol.Kind}|{symbol.ContainingAssembly?.Identity}|{symbol.GetDocumentationCommentId()}|{symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}";
+        return info.Symbol is { } symbol ? Identity(symbol) : info.CandidateReason + ":" +
+            string.Join(";", info.CandidateSymbols.Select(Identity).Order(StringComparer.Ordinal));
+    }
+
     private static void RequireMember(ISymbol member)
     {
         var supported = member.DeclaredAccessibility == Accessibility.Public && !member.IsStatic && member.DeclaringSyntaxReferences.Length == 1 && member.GetAttributes().Length == 0;
@@ -155,7 +188,8 @@ internal static class InterfacePlanner
                     !p.DeclaringSyntaxReferences.Any(r => r.GetSyntax() is ParameterSyntax s && s.Modifiers.Any(SyntaxKind.ScopedKeyword)) &&
                     p.GetAttributes().Length == 0) && SafeType(m.ReturnType) && m.Parameters.All(p => SafeType(p.Type)),
             IPropertySymbol p => !p.IsIndexer && !p.IsOverride && !p.ReturnsByRef && !p.ReturnsByRefReadonly && p.ExplicitInterfaceImplementations.Length == 0 &&
-                p.SetMethod?.IsInitOnly != true && new[] { p.GetMethod, p.SetMethod }.Where(a => a is not null).All(a => a!.GetAttributes().Length == 0 && a.GetReturnTypeAttributes().Length == 0) && SafeType(p.Type),
+                p.SetMethod?.IsInitOnly != true && new[] { p.GetMethod, p.SetMethod }.Where(a => a is not null).All(a => a!.GetAttributes().Length == 0 && a.GetReturnTypeAttributes().Length == 0 &&
+                    a.Parameters.All(parameter => parameter.GetAttributes().Length == 0)) && SafeType(p.Type),
             _ => false
         };
         Data.Require(supported, "unsupported_member", $"Unsupported member shape: {member.GetDocumentationCommentId()}. Select public instance methods/properties without attributes, optional/scoped parameters, ref returns, indexers, init, explicit implementations, overrides or unsafe types.");

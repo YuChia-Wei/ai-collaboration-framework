@@ -253,6 +253,7 @@ internal static class WorkspaceLoader
     internal static async Task<string> Run(string directory, params string[] arguments)
     {
         var start = new ProcessStartInfo("dotnet") { WorkingDirectory = directory, RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false, CreateNoWindow = true };
+        if (arguments is ["--info"]) start.Environment["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
         foreach (var argument in arguments) start.ArgumentList.Add(argument);
         using var process = Process.Start(start) ?? throw new RefactorFailure("sdk_unavailable", "Unable to start dotnet.");
         var output = process.StandardOutput.ReadToEndAsync();

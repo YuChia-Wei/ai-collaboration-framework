@@ -116,21 +116,26 @@ annotations/warnings directives matching the selected source context.
 The subset uses public Roslyn `SyntaxGenerator`, syntax/semantic models and
 compilation APIs, with no dependency on IDE-internal ExtractInterfaceService.
 The generated interface must compile, and every generated member must resolve
-to the explicitly selected original implementation. The loaded workspace must
-be free of compilation errors before extraction.
+to the explicitly selected original implementation with matching signature and
+constraints. Existing references to introduced interface/namespace names must
+retain their semantic binding, so adding a type cannot silently shadow an
+imported type in consumer code. The loaded workspace must be free of compilation
+errors before extraction.
 
 | Shape | Extract Interface support |
 | --- | --- |
-| Class | Public/internal, top-level, single declaration, no class inheritance; existing interfaces and generic type parameters/constraints are supported. |
+| Class | Public/internal, top-level, single declaration, no class inheritance; existing interfaces, primary constructors and generic type parameters/constraints are supported. |
 | Methods | Explicitly selected ordinary public instance methods; return/parameter type references, nullable annotations, method generic constraints and ordinary `ref`/`out` parameters are preserved. |
 | Properties | Non-indexed public instance properties; only public accessors are emitted. A private setter does not become an interface setter. |
 | Refused shapes | Partial/file-local/static classes, records, inherited class implementations, fields, events, indexers, static members, overrides, explicit implementations, init accessors, ref returns, optional/explicitly scoped parameters, unsafe pointer/function-pointer types and attributes on selected signatures or type parameters. |
 | Nullable context | Selected declarations must share the class declaration's nullable context. |
 | New file | Existing parent directory inside the selected project, outside generated/obj/bin paths; existing files, directories and reparse paths are refused. |
-| Compile inclusion | The new path must match exactly one evaluated MSBuild `Compile` glob in its project and none in other loaded projects. Excludes/removes are respected. Explicit-list projects need their own supported glob configuration first; the tool does not edit `.csproj`. Custom file-dependent Compile conditions and build-time Compile mutations are refused. This covers the selected configuration with stable evaluation, not arbitrary custom build behavior or other configurations. |
+| Compile inclusion | The new path must match exactly one evaluated MSBuild `Compile` glob in its project and none in other loaded projects, using case-insensitive MSBuild item types. Excludes/removes are respected. Explicit-list projects need their own supported glob configuration first; the tool does not edit `.csproj`. Custom build targets, file/item-dependent conditions or property functions, and custom conditional or expression-based Compile rules are refused. Only unconditional literal custom Compile patterns are admitted; raw XML inspection includes inactive imports. This covers the selected configuration with stable evaluation, not arbitrary custom build behavior or other configurations. |
 
-The process loads MSBuild from the SDK selected for the workspace to query
-compile inclusion. Those tool dependencies are never added to the target
+The process loads MSBuild from the SDK directory selected by `dotnet --info`
+for the workspace; a version inventory is not treated as SDK selection. Extraction
+requires that same selected directory in every loaded project. It queries
+compile inclusion there. Those tool dependencies are never added to the target
 application. See the public [MSBuild glob API](https://learn.microsoft.com/en-us/dotnet/api/microsoft.build.evaluation.project.getallglobs).
 
 ## Rename policy
