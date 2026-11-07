@@ -27,7 +27,9 @@ internal static class Program
             if (args[0] == "inspect")
             {
                 Data.Require(options.Count == 1 && options.ContainsKey("--request"), "invalid_arguments", "inspect requires --request.");
-                using var loaded = await WorkspaceLoader.Load(RequireRequest(Data.Read<Request>(options["--request"]), preview: false));
+                var request = RequireRequest(Data.Read<Request>(options["--request"]), preview: false);
+                await CompileInclusion.Register(request);
+                using var loaded = await WorkspaceLoader.Load(request);
                 Console.WriteLine(Data.Serialize(new { status = "loaded", sdk = loaded.Sdk, roslyn = typeof(Microsoft.CodeAnalysis.Compilation).Assembly.GetName().Version!.ToString(), projects = loaded.Projects, limits = loaded.Limits }));
                 return 0;
             }
@@ -40,7 +42,7 @@ internal static class Program
                     "unsafe_plan_path", "Use a JSON plan filename that is not global.json, outside all loaded project directories.");
                 Paths.RegularDirectory(Path.GetDirectoryName(destination)!);
                 Data.Require(!File.Exists(destination), "plan_exists", "Choose a new plan path; existing files are never overwritten.");
-                var plan = await RenamePlanner.Preview(RequireRequest(Data.Read<Request>(options["--request"]), preview: true));
+                var plan = await Preview(RequireRequest(Data.Read<Request>(options["--request"]), preview: true));
                 Data.Require(!plan.Inputs.Any(i => Paths.Comparer.Equals(i.Path, destination)) &&
                     !plan.Projects.Any(p => Paths.IsWithin(destination, Path.GetDirectoryName(p.Path)!)),
                     "unsafe_plan_path", "Store the plan outside all loaded project directories and existing inputs.");
@@ -82,10 +84,25 @@ internal static class Program
         Data.Require(!string.IsNullOrWhiteSpace(request.Workspace), "invalid_input", "workspace is required.");
         if (preview)
         {
+            Data.Require(request.Operation is "rename" or "extract-interface", "unsupported_operation", "Use rename or extract-interface.");
             Data.Require(!string.IsNullOrWhiteSpace(request.NewName), "invalid_input", "newName is required.");
             Data.Require(request.File is not null || request.Symbol is not null, "invalid_input", "A file or symbol selector is required.");
+            if (request.Operation == "extract-interface")
+                Data.Require(request.Namespace is not null && !string.IsNullOrWhiteSpace(request.OutputFile) && request.Members.Length > 0 &&
+                    request.Members.All(m => !string.IsNullOrWhiteSpace(m)) && !request.RenameOverloads,
+                    "invalid_input", "Extract Interface requires namespace (empty for global), outputFile and exact member declaration IDs; renameOverloads is not applicable.");
+            else
+                Data.Require(request.Namespace is null && request.OutputFile is null && request.Members.Length == 0,
+                    "invalid_input", "Interface options require operation extract-interface.");
         }
         return request;
+    }
+
+    private static async Task<Plan> Preview(Request request)
+    {
+        await CompileInclusion.Register(request);
+        if (request.Operation != "extract-interface") return await RenamePlanner.Preview(request);
+        return await InterfacePlanner.Preview(request);
     }
 
     private static async Task<InputLocks> PrepareApply(Plan plan)
@@ -100,7 +117,7 @@ internal static class Program
             }
             // Recompute with the public semantic operation: a changed or forged plan
             // cannot introduce arbitrary filesystem edits, omit inputs or skip checks.
-            var actual = await RenamePlanner.Preview(plan.Request);
+            var actual = await Preview(plan.Request);
             Data.Require(Data.Serialize(actual) == Data.Serialize(plan), "plan_drift", "Workspace or plan changed; create and review a new preview.");
             return InputLocks.Open(plan);
         }
@@ -115,7 +132,7 @@ internal static class Program
         ApplyResult? result = null;
         try
         {
-            result = FileApply.Write(locks.Writes);
+            result = FileApply.Write(locks.Writes, locks.Creates, locks.All);
         }
         finally
         {

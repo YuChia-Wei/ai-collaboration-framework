@@ -68,6 +68,145 @@ class RefactoringAcceptance(unittest.TestCase):
     def snapshot(self):
         return {str(p): p.read_bytes() for p in self.root.rglob("*.cs") if "obj" not in p.parts and "bin" not in p.parts}
 
+    def extract(self, **options):
+        request = dict(operation="extract-interface", symbol="T:Demo.Service", newName="ISelected",
+                       namespace="Contracts", outputFile=str(self.a / "ISelected.cs"),
+                       members=["M:Demo.Service.Get(System.Int32)", "P:Demo.Service.Property"])
+        request.update(options)
+        return self.preview(**request)
+
+    def test_extract_interface_selected_members_preserve_behavior_and_consumers(self):
+        original = self.snapshot()
+        project_bytes = self.project.read_bytes()
+        code, result = self.extract()
+        self.assertEqual(code, 0, result)
+        self.assertEqual(self.snapshot(), original)
+        plan = json.loads(self.plan_path.read_text())
+        self.assertEqual(sorted(e["kind"] for e in plan["edits"]), ["create", "modify"])
+        self.assertIn("--- /dev/null", plan["patch"])
+        create = next(e for e in plan["edits"] if e["kind"] == "create")
+        self.assertEqual(create["before"], "")
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+        self.assertTrue(all(f["state"] == "applied" for f in result["files"]))
+        self.assertEqual(self.project.read_bytes(), project_bytes)
+        self.assertEqual(self.consumer.read_bytes(), original[str(self.consumer)])
+        self.assertEqual(self.source.read_bytes().replace(b", global::Contracts.ISelected", b""), original[str(self.source)])
+        interface = (self.a / "ISelected.cs").read_text()
+        self.assertIn("interface ISelected", interface)
+        self.assertIn("Property", interface)
+        self.assertNotIn("Get(global::System.String", interface)
+        self.assertNotIn("Field", interface)
+        self.run_dotnet("build", self.solution, "--no-restore", "--nologo")
+        # A real consumer uses the extracted contract; independently expected
+        # results exercise dispatch, state and preserved concrete overloads.
+        b_project = self.b / "B.csproj"
+        b_project.write_text(b_project.read_text().replace("<TargetFramework>", "<OutputType>Exe</OutputType><TargetFramework>"))
+        (self.b / "Program.cs").write_text('using Demo; using Contracts; ISelected s = new Service(); s.Property=7; System.Console.Write($"{s.Get(2)}|{s.Property}|{new Service().Get(\"abcd\")}");')
+        self.assertEqual(self.run_dotnet("run", "--project", b_project, "--no-restore", "-v:q").strip().splitlines()[-1], "3|7|4")
+
+    def test_extract_interface_nullable_generics_ref_out_and_private_setter(self):
+        self.source.write_text('''#nullable enable
+namespace Demo;
+public class Service<T> where T : class {
+ public T? Value { get; private set; }
+ public T? Read<U>(ref T? value, out int length) where U : unmanaged { length=value?.ToString()?.Length ?? 0; Value=value; return value; }
+}
+''')
+        self.consumer.write_text('public class Use {}')
+        original = self.snapshot()
+        code, result = self.extract(symbol="T:Demo.Service`1", members=["P:Demo.Service`1.Value", "M:Demo.Service`1.Read``1(`0@,System.Int32@)"])
+        self.assertEqual(code, 0, result)
+        self.assertEqual(self.snapshot(), original)
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 0, result)
+        interface = (self.a / "ISelected.cs").read_text()
+        for fragment in ["ISelected<T>", "where T : class", "where U : unmanaged", "T?", "ref", "out"]:
+            self.assertIn(fragment, interface)
+        self.assertNotIn("set;", interface)
+        b_project = self.b / "B.csproj"
+        b_project.write_text(b_project.read_text().replace("<TargetFramework>", "<OutputType>Exe</OutputType><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><NoWarn>CS1591</NoWarn><TargetFramework>"))
+        (self.b / "Program.cs").write_text('using Demo; using Contracts; ISelected<string> s = new Service<string>(); string? value=null; var first=s.Read<int>(ref value,out var a); value="abc"; var second=s.Read<int>(ref value,out var b); System.Console.Write($"{first is null}|{a}|{second}|{b}|{s.Value}");')
+        self.assertEqual(self.run_dotnet("run", "--project", b_project, "--no-restore", "-v:q").strip().splitlines()[-1], "True|0|abc|3|abc")
+
+    def test_extract_interface_refuses_invalid_members_output_and_compile_exclusion(self):
+        original = self.snapshot()
+        for options in [dict(members=["F:Demo.Service.Field"]), dict(members=["M:Demo.Other.Get(System.Int32)"]),
+                        dict(members=["M:Demo.Service.Get"]), dict(members=[]), dict(renameOverloads=True),
+                        dict(outputFile=str(self.source)), dict(newName="class"), dict(namespace="bad-name"),
+                        dict(outputFile=str(self.root / "Outside.cs")), dict(members=["P:Demo.Service.Property"] * 2)]:
+            with self.subTest(options=options):
+                code, result = self.extract(**options)
+                self.assertEqual(code, 2, result)
+                self.assertEqual(result["sourceWrites"], False)
+                self.assertFalse(self.plan_path.exists())
+                self.assertEqual(self.snapshot(), original)
+        self.project.write_text(self.project.read_text().replace("</Project>", '<ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup></Project>'))
+        code, result = self.extract()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_compile_inclusion")
+        self.assertEqual(self.snapshot(), original)
+
+    def test_extract_interface_apply_refuses_output_race_source_drift_and_plan_tampering(self):
+        original = self.snapshot()
+        code, result = self.extract()
+        self.assertEqual(code, 0, result)
+        path = self.a / "ISelected.cs"
+        path.write_bytes(b"// belongs to another writer")
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["sourceWrites"], False)
+        self.assertEqual(path.read_bytes(), b"// belongs to another writer")
+        path.unlink()
+        plan = json.loads(self.plan_path.read_text())
+        next(e for e in plan["edits"] if e["kind"] == "create")["after"] = base64.b64encode(b"forged").decode()
+        self.plan_path.write_text(json.dumps(plan))
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "plan_drift")
+        self.assertEqual(self.snapshot(), original)
+        code, result = self.extract()
+        self.assertEqual(code, 0, result)
+        self.source.write_bytes(self.source.read_bytes() + b"// drift")
+        code, result = self.invoke("apply", plan=self.plan_path)
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "input_drift")
+        self.assertFalse(path.exists())
+
+    def test_extract_interface_refuses_unsupported_shapes_and_visibility_collision(self):
+        self.consumer.write_text("public class Use {}")
+        for declaration, member in [
+            ("public static int Get(int x) => x;", "M:Demo.Service.Get(System.Int32)"),
+            ("public int Get(int x = 1) => x;", "M:Demo.Service.Get(System.Int32)"),
+            ("[System.Obsolete] public int Get(int x) => x;", "M:Demo.Service.Get(System.Int32)"),
+            ("public int this[int x] => x;", "P:Demo.Service.Item(System.Int32)"),
+            ("public int Value { get; init; }", "P:Demo.Service.Value")]:
+            with self.subTest(declaration=declaration):
+                self.source.write_text("namespace Demo; public class Service { " + declaration + " }")
+                original = self.snapshot()
+                code, result = self.extract(members=[member])
+                self.assertEqual(code, 2, result)
+                self.assertEqual(result["code"], "unsupported_member")
+                self.assertEqual(self.snapshot(), original)
+                self.assertFalse(self.plan_path.exists())
+        self.source.write_text("namespace Demo; public class Service { public int Get(int x) => x; }")
+        code, result = self.extract(newName="Service", namespace="Demo", members=["M:Demo.Service.Get(System.Int32)"])
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "new_compilation_errors")
+        self.assertFalse((self.a / "ISelected.cs").exists())
+
+    def test_extract_interface_refuses_file_dependent_inclusion_and_invalid_new_paths(self):
+        original = self.snapshot()
+        for name in ["payload.cs:stream.cs", "CON.cs", "obj/ISelected.cs"]:
+            code, result = self.extract(outputFile=str(self.a / name))
+            self.assertEqual(code, 2, result)
+            self.assertEqual(result["code"], "invalid_output")
+        self.project.write_text(self.project.read_text().replace("</Project>", '<PropertyGroup Condition="Exists(\'ISelected.cs\')"><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup></Project>'))
+        code, result = self.extract()
+        self.assertEqual(code, 2, result)
+        self.assertEqual(result["code"], "unsupported_compile_inclusion")
+        self.assertEqual(self.snapshot(), original)
+
     def test_cross_project_related_members_cref_nameof_preview_apply(self):
         original = self.snapshot()
         code, result = self.preview()

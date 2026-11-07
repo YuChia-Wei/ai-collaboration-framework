@@ -4,6 +4,7 @@ internal sealed class InputLocks
 {
     public List<(string Path, Stream Stream)> All { get; } = [];
     public List<(FileEdit Edit, Stream Stream)> Writes { get; } = [];
+    public List<FileEdit> Creates { get; } = [];
 
     public static InputLocks Open(Plan plan)
     {
@@ -31,7 +32,14 @@ internal sealed class InputLocks
                     locks.Writes.Add((edit, stream));
                 }
             }
-            Data.Require(locks.Writes.Count == edits.Count, "invalid_plan", "Every edit must have a captured input.");
+            foreach (var edit in plan.Edits.Where(e => e.Kind == "create"))
+            {
+                Data.Require(edit.Before == "" && !plan.Inputs.Any(i => Paths.Comparer.Equals(i.Path, edit.Path)),
+                    "invalid_plan", "A create edit must have an absent original.");
+                Paths.AbsentFile(edit.Path);
+                locks.Creates.Add(edit);
+            }
+            Data.Require(locks.Writes.Count + locks.Creates.Count == edits.Count, "invalid_plan", "Every modification must have a captured input; only create may have none.");
             return locks;
         }
         catch (Exception error)

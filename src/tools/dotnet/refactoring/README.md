@@ -1,4 +1,4 @@
-# RefactorTool: workspace and C# Rename
+# RefactorTool: workspace, C# Rename and Extract Interface
 
 RefactorTool is an independent command-line application using public Roslyn
 `MSBuildWorkspace`, `SymbolFinder` and `Renamer` APIs. It loads a specific project
@@ -6,8 +6,9 @@ or solution, produces a reviewable plan, and applies that plan only after
 revalidating the workspace and original contents. It requires no IDE. Its NuGet
 dependencies belong to the tool, never to the target application.
 
-This is the bounded first implementation for #573 and #574. Extract Interface,
-namespace moves, Extract Class and generic refactoring providers are outside it.
+This implements the bounded workspace/Rename slice (#573/#574) and the selected
+Extract Interface subset (#575). Namespace moves, Extract Class and generic
+refactoring providers are outside it.
 
 ## Support and coverage
 
@@ -25,7 +26,7 @@ namespace moves, Extract Class and generic refactoring providers are outside it.
 | Restore | Restore the target explicitly first. RefactorTool does not request restore or install packages into the target. MSBuild design-time loading may create/update SDK intermediates under `obj`; preview does not edit authored source. |
 | Execution boundary | Use trusted projects. Evaluating MSBuild imports/targets and loading analyzer assemblies executes target-provided build tooling. |
 | Supported symbols | Editable source classes/interfaces, ordinary methods, properties, fields, parameters and local variables. Constructor/accessor/event/operator/type-parameter renames are not included. |
-| File operations | Rename produces `modify` entries only. Added/deleted/moved documents or project-graph changes are refused, never omitted from a successful plan. |
+| File operations | Rename produces `modify` entries only. Extract Interface produces one `modify` and one `create`; no deleted/moved documents or project-graph changes. |
 
 Missing metadata, workspace failures, ambiguous selections, collisions and
 uneditable related symbols are refusals. A successfully loaded `Solution` alone
@@ -84,6 +85,54 @@ exact original bytes, or whose new text cannot use that encoding, is refused.
 Keep the plan until the operation has been reviewed and any
 recovery need has ended; it contains copies of your source code.
 
+## Extract Interface
+
+Select the source class using the same file/position or project/declaration-ID
+selector. Supply exact declaration IDs for every selected member, an interface
+name, namespace (empty string for the global namespace), and a new `.cs` path:
+
+```json
+{
+  "operation": "extract-interface",
+  "workspace": "C:/work/Example/Example.slnx",
+  "project": "C:/work/Example/Library/Library.csproj",
+  "symbol": "T:Example.Service",
+  "members": ["M:Example.Service.Get(System.Int32)", "P:Example.Service.Name"],
+  "newName": "IService",
+  "namespace": "Example.Contracts",
+  "outputFile": "C:/work/Example/Library/IService.cs"
+}
+```
+
+Use the same `preview` and `apply` commands. Omitting `operation` continues to
+select `rename`. Interface options are rejected on Rename requests, and
+`renameOverloads` is not applicable to extraction. The tool does not guess a
+member list. It creates a public/internal interface matching the class's
+accessibility and adds the fully qualified interface to that class's base list.
+It preserves every byte outside that insertion, including method bodies and
+consumer/DI code. New interface files use UTF-8 without BOM and explicit nullable
+annotations/warnings directives matching the selected source context.
+
+The subset uses public Roslyn `SyntaxGenerator`, syntax/semantic models and
+compilation APIs, with no dependency on IDE-internal ExtractInterfaceService.
+The generated interface must compile, and every generated member must resolve
+to the explicitly selected original implementation. The loaded workspace must
+be free of compilation errors before extraction.
+
+| Shape | Extract Interface support |
+| --- | --- |
+| Class | Public/internal, top-level, single declaration, no class inheritance; existing interfaces and generic type parameters/constraints are supported. |
+| Methods | Explicitly selected ordinary public instance methods; return/parameter type references, nullable annotations, method generic constraints and ordinary `ref`/`out` parameters are preserved. |
+| Properties | Non-indexed public instance properties; only public accessors are emitted. A private setter does not become an interface setter. |
+| Refused shapes | Partial/file-local/static classes, records, inherited class implementations, fields, events, indexers, static members, overrides, explicit implementations, init accessors, ref returns, optional/explicitly scoped parameters, unsafe pointer/function-pointer types and attributes on selected signatures or type parameters. |
+| Nullable context | Selected declarations must share the class declaration's nullable context. |
+| New file | Existing parent directory inside the selected project, outside generated/obj/bin paths; existing files, directories and reparse paths are refused. |
+| Compile inclusion | The new path must match exactly one evaluated MSBuild `Compile` glob in its project and none in other loaded projects. Excludes/removes are respected. Explicit-list projects need their own supported glob configuration first; the tool does not edit `.csproj`. Custom file-dependent Compile conditions and build-time Compile mutations are refused. This covers the selected configuration with stable evaluation, not arbitrary custom build behavior or other configurations. |
+
+The process loads MSBuild from the SDK selected for the workspace to query
+compile inclusion. Those tool dependencies are never added to the target
+application. See the public [MSBuild glob API](https://learn.microsoft.com/en-us/dotnet/api/microsoft.build.evaluation.project.getallglobs).
+
 ## Rename policy
 
 `renameOverloads: false` selects one method signature. Source interface
@@ -129,7 +178,7 @@ ordinary writes and deletion of captured files until the write phase ends.
 That guarantee applies to the opened files. Directory membership and path
 aliases can still change, and new files may appear after workspace enumeration.
 
-Each file result reports `applied`, `original`, `partial` or `unknown`, with its
+Existing-file results report `applied`, `original`, `partial` or `unknown`, with their
 observed hash when available. An I/O failure after writing begins reports
 `partial_failure`; there is no cross-file atomicity claim. Every handle is closed
 before the single response is emitted. A failed close marks the affected file
@@ -138,7 +187,19 @@ before the single response is emitted. A failed close marks the affected file
 plan, stop edits, compare every file with the stored before/after bytes, and
 restore only the affected files from their `before` bytes after checking for
 subsequent user changes. Inspect `partial`/`unknown` files manually. Always create
-a new preview before retrying. Process termination, hardware failure and writers
+a new preview before retrying.
+
+For extraction, all new outputs are opened with exclusive `CreateNew` before
+any existing file is modified. A competing creator is never overwritten.
+Opening a new file is itself a write: failure can leave a `created_empty` file,
+while an output not attempted is `not_created`. A failed create reports `unknown`
+because the path may belong to another writer. Successful and partial new-file
+writes report `applied` and `partial`. The plan's `create` entry has an empty
+`before` field to represent absence, not an empty original file. Recovery must
+inspect identity and subsequent edits before removing a created file; never
+restore a create entry as an empty file or delete a conflicting writer's file.
+
+Process termination, hardware failure and writers
 that bypass OS sharing rules remain outside the observed-result guarantee; the
 preserved plan is the recovery source in those cases.
 

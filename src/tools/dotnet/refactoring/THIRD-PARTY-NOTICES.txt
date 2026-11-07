@@ -11,7 +11,9 @@ Microsoft components, copyright (c) Microsoft Corporation and contributors:
   Microsoft.CodeAnalysis.CSharp.Workspaces 5.0.0
   Microsoft.CodeAnalysis.Workspaces.Common 5.0.0
   Microsoft.CodeAnalysis.Workspaces.MSBuild 5.0.0
-  Microsoft.Build.Framework 17.11.31
+  Microsoft.Build.Locator 1.7.8
+  Microsoft.Build and Microsoft.Build.Framework are loaded from the required
+    target-selected .NET SDK (not copied into the tool's main runtime directory).
   Microsoft.Extensions.DependencyInjection and Abstractions 9.0.0
   Microsoft.Extensions.Logging and Abstractions 9.0.0
   Microsoft.Extensions.Options 9.0.0

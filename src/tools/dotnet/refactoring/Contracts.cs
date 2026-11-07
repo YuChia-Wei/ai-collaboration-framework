@@ -17,6 +17,10 @@ internal sealed record Request
     public string? Project { get; init; }
     public string NewName { get; init; } = "";
     public bool RenameOverloads { get; init; }
+    public string Operation { get; init; } = "rename";
+    public string? Namespace { get; init; }
+    public string? OutputFile { get; init; }
+    public string[] Members { get; init; } = [];
 }
 
 internal sealed record InputFile(string Path, string Hash,

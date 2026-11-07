@@ -13,16 +13,34 @@ internal sealed record ApplyResult(string Status, FileState[] Files, string? Err
 
 internal static class FileApply
 {
-    public const string Recovery = "Stop editing. Preserve this result and plan. Inspect every file against plan before/after bytes; restore only affected files from the plan's before base64 after checking for subsequent user edits. Unknown/partial states require manual inspection. Create a new preview before retrying.";
+    public const string Recovery = "Stop editing. Preserve this result and plan. Inspect every file against plan before/after bytes; restore modified files from before base64 only after checking for subsequent user edits. A create entry had no original file: remove a created file only after verifying its identity, contents and absence of subsequent user edits; never replace it with an empty before payload. Unknown/partial/not-created states require manual inspection; an output conflict may belong to another writer. Create a new preview before retrying.";
 
     // Handles are opened and all predictable validation is completed by the
     // caller. This phase reports observations even when a write or read fails.
-    public static ApplyResult Write(IReadOnlyList<(FileEdit Edit, Stream Stream)> handles)
+    public static ApplyResult Write(IReadOnlyList<(FileEdit Edit, Stream Stream)> handles,
+        IReadOnlyList<FileEdit>? creates = null, List<(string Path, Stream Stream)>? all = null,
+        Func<FileEdit, Stream>? create = null)
     {
+        creates ??= [];
+        var opened = handles.ToList();
+        var attempted = new HashSet<string>(Paths.Comparer);
         string? failure = null;
         try
         {
-            foreach (var (edit, stream) in handles)
+            // CreateNew is the absence check at the write boundary. Acquire all
+            // output handles before modifying any existing source. Empty new
+            // files are still writes and are reported if acquisition fails.
+            foreach (var edit in creates)
+            {
+                Paths.RegularDirectory(Path.GetDirectoryName(edit.Path)!);
+                attempted.Add(edit.Path);
+                var stream = create is null
+                    ? new FileStream(edit.Path, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None, bufferSize: 1)
+                    : create(edit);
+                opened.Add((edit, stream));
+                all?.Add((edit.Path, stream));
+            }
+            foreach (var (edit, stream) in opened)
             {
                 var bytes = Convert.FromBase64String(edit.After);
                 stream.Position = 0; stream.Write(bytes, 0, bytes.Length); stream.SetLength(bytes.Length);
@@ -32,7 +50,7 @@ internal static class FileApply
         catch (Exception error) { failure = error.Message; }
         var states = new List<FileState>();
         var complete = failure is null;
-        foreach (var (edit, stream) in handles)
+        foreach (var (edit, stream) in opened)
         {
             var state = "unknown";
             string? hash = null;
@@ -41,12 +59,18 @@ internal static class FileApply
                 stream.Position = 0;
                 using var content = new MemoryStream(); stream.CopyTo(content);
                 hash = Data.Hash(content.ToArray());
-                state = hash == Data.Hash(Convert.FromBase64String(edit.After)) ? "applied" :
-                    hash == Data.Hash(Convert.FromBase64String(edit.Before)) ? "original" : "partial";
+                state = hash == Data.Hash(Convert.FromBase64String(edit.After)) ? "applied" : edit.Kind == "create"
+                    ? (content.Length == 0 ? "created_empty" : "partial")
+                    : hash == Data.Hash(Convert.FromBase64String(edit.Before)) ? "original" : "partial";
             }
             catch (Exception error) { failure ??= error.Message; }
             complete &= state == "applied";
             states.Add(new(edit.Path, state, hash));
+        }
+        foreach (var edit in creates.Where(e => !opened.Any(h => Paths.Comparer.Equals(h.Edit.Path, e.Path))))
+        {
+            complete = false;
+            states.Add(new(edit.Path, attempted.Contains(edit.Path) ? "unknown" : "not_created", null));
         }
         return new(complete ? "applied" : "partial_failure", states.ToArray(), failure, complete ? null : Recovery,
             "Per-file observed results only; no cross-file atomicity or protection against noncooperating writers/process termination.");

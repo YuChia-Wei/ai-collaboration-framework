@@ -29,6 +29,16 @@ internal static class Paths
             Data.Require((directory.Attributes & FileAttributes.ReparsePoint) == 0, "linked_path", $"Symbolic/reparse paths are unsupported: {directory.FullName}");
     }
 
+    public static void AbsentFile(string path)
+    {
+        RegularDirectory(Path.GetDirectoryName(path)!);
+        // GetAttributes also detects a directory or dangling reparse entry.
+        try { _ = File.GetAttributes(path); }
+        catch (FileNotFoundException) { return; }
+        catch (DirectoryNotFoundException) { throw new RefactorFailure("missing_directory", $"Output parent disappeared: {path}"); }
+        throw new RefactorFailure("output_exists", $"New file path already exists: {path}");
+    }
+
     public static string CanonicalFile(FileStream stream)
     {
         // Resolve the object reached by this open, including junctions and

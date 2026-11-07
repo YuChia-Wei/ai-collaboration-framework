@@ -194,7 +194,7 @@ internal static class RenamePlanner
         return solution;
     }
 
-    private static async Task<ISymbol> Select(Solution solution, Request request)
+    internal static async Task<ISymbol> Select(Solution solution, Request request)
     {
         Data.Require((request.Symbol is not null) != (request.File is not null), "invalid_selector", "Select either file/line/column or project/documentation symbol ID.");
         if (request.Symbol is not null)
@@ -244,7 +244,7 @@ internal static class RenamePlanner
         _ => false
     };
     private static string Display(ISymbol symbol) => symbol.GetDocumentationCommentId() ?? symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-    private static void RequireEditable(ISymbol symbol, LoadedWorkspace loaded)
+    internal static void RequireEditable(ISymbol symbol, LoadedWorkspace loaded)
     {
         Data.Require(symbol.Locations.Length > 0, "uneditable_symbol", $"Related symbol has no source declaration: {symbol}");
         foreach (var location in symbol.Locations)
@@ -280,7 +280,7 @@ internal static class RenamePlanner
         foreach (var contract in symbol.ContainingType.AllInterfaces.SelectMany(i => i.GetMembers()))
             if (SymbolEqualityComparer.Default.Equals(symbol.ContainingType.FindImplementationForInterfaceMember(contract), symbol)) RequireEditable(contract, loaded);
     }
-    private static async Task<List<DiagnosticInfo>> Errors(Solution solution)
+    internal static async Task<List<DiagnosticInfo>> Errors(Solution solution)
     {
         var result = new List<DiagnosticInfo>();
         foreach (var project in solution.Projects)
@@ -292,7 +292,7 @@ internal static class RenamePlanner
         }
         return result.OrderBy(d => d.Project).ThenBy(d => d.File).ThenBy(d => d.Start).ThenBy(d => d.Id).ToList();
     }
-    private static string Patch(string path, SourceText before, SourceText after, IReadOnlyList<TextChange> changes)
+    internal static string Patch(string path, SourceText before, SourceText after, IReadOnlyList<TextChange> changes)
     {
         const int context = 3;
         var oldLines = new PatchLines(before.ToString());

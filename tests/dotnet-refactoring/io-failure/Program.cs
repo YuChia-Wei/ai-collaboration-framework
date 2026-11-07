@@ -57,9 +57,55 @@ try
     finally { Check(FileApply.Close(locks.All).Length == 0, "Input handles must all close."); }
     File.WriteAllText(unchanged, "released");
     Check(File.ReadAllText(changed) == "AFTER!", "Destination write must complete.");
+
+    // A competing creator after preflight owns that path. CreateNew must fail
+    // without overwriting it or modifying the class that would use the output.
+    File.WriteAllBytes(changed, "before"u8.ToArray());
+    var createdPath = Path.Combine(directory, "created.cs");
+    var createEdit = new FileEdit(createdPath, "create", "", Convert.ToBase64String("interface I {}"u8));
+    plan = new Plan { Inputs = [new(changed, Data.Hash("before"u8.ToArray()))], Edits = [Edit(changed), createEdit] };
+    locks = InputLocks.Open(plan);
+    File.WriteAllText(createdPath, "other writer");
+    try
+    {
+        result = FileApply.Write(locks.Writes, locks.Creates, locks.All);
+        Check(result.Status == "partial_failure", "Output race must fail.");
+        Check(result.Files.Single(f => f.Path == changed).State == "original", "Output acquisition must precede all modifications.");
+        Check(result.Files.Single(f => f.Path == createdPath).State == "unknown", "Failed create must not claim ownership of an existing file.");
+    }
+    finally { FileApply.Close(locks.All); }
+    Check(File.ReadAllText(createdPath) == "other writer" && File.ReadAllText(changed) == "before", "Racing output and original source must be preserved.");
+
+    using var originalForCreate = Original();
+    var emptyCreated = new MemoryStream();
+    var secondCreate = createEdit with { Path = Path.Combine(directory, "second.cs") };
+    var thirdCreate = createEdit with { Path = Path.Combine(directory, "third.cs") };
+    var createHandles = new List<(string Path, Stream Stream)>();
+    result = FileApply.Write([(Edit(changed), originalForCreate)], [createEdit, secondCreate, thirdCreate], createHandles,
+        e => e.Path == createdPath ? emptyCreated : throw new IOException("injected create failure"));
+    Check(result.Files.Select(f => f.State).SequenceEqual(["original", "created_empty", "unknown", "not_created"]),
+        "Failed output acquisition must report empty created files and distinguish unattempted outputs.");
+    Check(FileApply.Close(createHandles).Length == 0, "Created handles must close after acquisition failure.");
+
+    using var originalForPartial = Original();
+    var partialCreated = new FailingCreatedStream();
+    createHandles = [];
+    result = FileApply.Write([(Edit(changed), originalForPartial)], [createEdit], createHandles, _ => partialCreated);
+    Check(result.Files.Select(f => f.State).SequenceEqual(["applied", "partial"]), "A new-file partial write must never report an absent/original file.");
+    Check(result.Recovery!.Contains("had no original file") && result.Recovery.Contains("never replace it with an empty"), "Recovery must distinguish create from modify.");
+    Check(FileApply.Close(createHandles).Length == 0, "Partial created handle must close.");
 }
 finally { Directory.Delete(directory, recursive: true); }
-Console.WriteLine("Passed: partial write, original/unknown state, recovery, close failure/all handles closed, unchanged-input lock and release.");
+Console.WriteLine("Passed: partial write, original/unknown state, recovery, close failure/all handles closed, unchanged-input lock and release; create race, empty/partial output and unattempted create states.");
+
+sealed class FailingCreatedStream : MemoryStream
+{
+    public override void Write(byte[] buffer, int offset, int count)
+    {
+        base.Write(buffer, offset, 2);
+        throw new IOException("injected new-file write failure");
+    }
+}
 
 sealed class ClosingStream(bool failClose) : MemoryStream
 {
