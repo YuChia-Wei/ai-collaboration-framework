@@ -5,6 +5,7 @@ entries are generated projections; source changes do not update them automatical
 
 - [Lesson](skills/lesson-author/SKILL.md): candidate-only knowledge capture and filesystem operations.
 - [Distribution](distribution/manifest.yaml): exact selected product members.
+- [.NET tools](tools/dotnet/README.md): standalone generation, formatting and refactoring implementations, with their development solution.
 - [Development orchestration](skills/software-development-orchestrator/SKILL.md): portable stage selection, specialist handoffs and resumable closeout; project-owned workflow storage.
 - [Workflow records](workflow_records/README.md): optional record capability; package selection and store initialization are separate.
 - [Experimental standards promotion](skills/standards-promotion/SKILL.md): `0.1.1-alpha.1`, retained for independently copied experiments and excluded from distribution until owner-selected validation and release readiness.

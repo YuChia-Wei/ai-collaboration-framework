@@ -1,46 +1,28 @@
-# FormatTool acceptance
+# FormatTool tests
 
-These selected real-SDK cases exercise the public JSON/process contract of a
-built or published FormatTool. They use Python's standard library and synthetic
-single-target projects with an offline restore source. They require Windows x64
-and SDK 10.0.403, or macOS arm64 and SDK 10.0.400, including working MSBuild
-subprocess support. A sandbox
-pipe denial is an environment failure, not formatter acceptance.
+Run the component cases with the .NET 10 SDK.
 
-```powershell
-python -I -B tests/dotnet-formatting/accept_formatting.py --tool C:/artifacts/format-tool/FormatTool.exe --work C:/scratch/format-acceptance
+```text
+dotnet test tests/dotnet-formatting/FormatTool.Tests.csproj
 ```
 
-On macOS use the native `FormatTool` executable and physical directories you own:
+Set `AICF_FORMAT_SDK_TESTS=1` for SDK integration on Windows x64 with
+SDK 10.0.403 or macOS arm64 with SDK 10.0.400. Each project fixture pins the
+supported SDK without roll-forward and restores from a local source. The
+tests exercise Compile selection, nested EditorConfig, real fixes and
+unchanged source, load failures, solution and linked paths, semantic
+failures, and the generator consent boundary.
 
-```sh
-python3 -I -B tests/dotnet-formatting/accept_formatting.py --tool /path/to/format-tool/FormatTool --work /path/to/scratch/format-acceptance --sdk-version 10.0.400
-```
+Set `AICF_FORMAT_ARTIFACT` to the absolute path of a separately published
+FormatTool executable to include the public process and JSON contract. The
+Formatting acceptance workflow builds Native AOT and supplies the executable
+for each supported platform. It separately sets `AICF_FORMAT_CASE_ROOT` to a
+mounted case-sensitive APFS directory and selects
+`--filter Boundary=CaseSensitiveArtifact`. That case verifies the volume is
+case-sensitive and checks both real Compile identities before the formatter.
+The POSIX literal filename cases require macOS.
 
-The fixture writes an exact-version `global.json` with roll-forward disabled;
-all setup and tool SDK calls resolve from that fixture. `--sdk-version` defaults
-to the supported version for the host OS. The `Formatting acceptance` workflow
-publishes Native AOT and runs this same suite on Windows and macOS using the selected SDK;
-the existing Python `Source change gate` remains separate.
-The Mac job also runs the case-alias refusal on a small disposable case-sensitive
-APFS disk image, so a case-insensitive runner cannot silently skip that check.
-Literal glob/separator filename cases run on macOS; Windows skips them because
-those filenames are not valid there.
-
-`--tool` also accepts a built DLL, but that is build-output evidence, not
-framework-dependent single-file publish acceptance. Use the actual detached publish directory
-for the latter. The tests create and remove their own temporary projects below
-`--work`; they do not format this repository. One synthetic source generator
-writes a marker only inside that temporary test area, proving the explicit
-analyzer-execution opt-in rather than merely checking command text.
-
-Coverage: nested EditorConfig, preserved unselected user edits, no check writes,
-actual apply/recheck, `.sln`/`.slnx`, generated conventions and EditorConfig,
-invalid/unmatched files, load and partial-side-effect failures, explicit cleanup
-diagnostics/severity, unsupported/no-fixer results, semantic prerequisites,
-mode separation, external generator consent, rejection of solution/reference
-configuration mappings, and literal `@`-prefixed/linked file paths. These are focused tool checks,
-plus compact/verbose output, strict request parsing, and honest unreported
-selection messages. These are focused tool checks, not the #541 generation
-matrix, Linux or Intel macOS acceptance, download/Gatekeeper acceptance, or
-business tests.
+Set `AICF_TEST_WORK` to a directory for disposable fixtures when needed. The
+tests otherwise use the OS temporary directory and clean up their own
+per-case subdirectories. A process or permission failure leaves that
+integration case failed.
