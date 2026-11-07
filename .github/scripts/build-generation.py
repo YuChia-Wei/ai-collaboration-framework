@@ -19,7 +19,8 @@ def build(repository, output, work, version, commit, native_tools=None, coreclr=
     actual = subprocess.check_output(['git', '-C', str(repository), 'rev-parse', 'HEAD'], text=True).strip()
     if actual != commit:
         raise ValueError('Generation source commit mismatch')
-    generation = repository / 'src/knowledge/dotnet-backend/tooling/generation'
+    generation = repository / 'src/tools/dotnet/generation'
+    guides = repository / 'src/knowledge/dotnet-backend/tooling/generation'
     work.mkdir(parents=True)
     output.mkdir(parents=True)
     subprocess.run(['dotnet', 'pack', str(generation / 'Generation.Templates.csproj'),
@@ -39,8 +40,8 @@ def build(repository, output, work, version, commit, native_tools=None, coreclr=
     if native_tools is not None:
         collect(native_tools, output, version, commit)
     shutil.copyfile(repository / 'src/tools/install-generation.py', output / 'install-generation.py')
-    shutil.copyfile(generation / 'DELIVERY.md', output / 'README.md')
-    shutil.copyfile(generation / 'snippet-tool/README.md', output / 'snippets/README.md')
+    shutil.copyfile(guides / 'DELIVERY.md', output / 'README.md')
+    shutil.copyfile(guides / 'snippet-tool/README.md', output / 'snippets/README.md')
     rows = []
     for path in sorted(output.rglob('*')):
         if path.is_file():

@@ -4,7 +4,7 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - 'src/knowledge/dotnet-backend/tooling/refactoring/**'
+      - 'src/tools/dotnet/refactoring/**'
       - 'tests/dotnet-refactoring/**'
       - '.github/workflows/refactoring-checks.yml'
 permissions: {}
@@ -41,7 +41,7 @@ jobs:
           New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/refactor-build" | Out-Null
           @{sdk=@{version='10.0.403';rollForward='disable'}} | ConvertTo-Json | Set-Content "$env:RUNNER_TEMP/refactor-build/global.json"
           Set-Location "$env:RUNNER_TEMP/refactor-build"
-          & "$env:GITHUB_WORKSPACE/src/knowledge/dotnet-backend/tooling/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish" -Archive "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
+          & "$env:GITHUB_WORKSPACE/src/tools/dotnet/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish" -Archive "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Expand-Archive -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip" -DestinationPath "$env:RUNNER_TEMP/refactor-installed"
       - name: Exercise extracted artifact outside checkout

@@ -34,7 +34,7 @@ def build(repository, output, work, version, commit, rid):
     environment = {k: v for k, v in os.environ.items()
                    if not any(x in k.upper() for x in ('TOKEN', 'SECRET', 'PASSWORD', 'CREDENTIAL'))}
     for tool in selected:
-        project = repository / 'src/knowledge/dotnet-backend/tooling' / PROJECTS[tool]
+        project = repository / 'src/tools/dotnet' / PROJECTS[tool]
         subprocess.run(['dotnet', 'publish', str(project), '-c', 'Release', '-r', rid,
                         '--self-contained', 'true', '-p:PublishAot=true', '-p:PublishSingleFile=false',
                         '-p:DebugType=None', '-p:DebugSymbols=false', '-p:StripSymbols=true',

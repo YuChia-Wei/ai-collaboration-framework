@@ -142,7 +142,7 @@ C# 語意重構的首版 `RefactorTool` 使用獨立的 Windows x64 managed .NET
 `BuildHost-netcore`；執行仍需 .NET 10 SDK。取得準備完成的 standalone archive 後，
 解壓到自行選擇的位置並直接執行，不修改目標專案依賴。
 支援矩陣、安裝／更新、參數及失敗恢復見
-[RefactorTool 使用說明](../src/knowledge/dotnet-backend/tooling/refactoring/README.md)。
+[RefactorTool 使用說明](../src/tools/dotnet/refactoring/README.md)。
 此來源實作與本機成品驗證不表示已發布可下載的 Framework 版本。
 
 macOS 首次執行：確認下載來源與套件完整性後，在專案目錄手動執行

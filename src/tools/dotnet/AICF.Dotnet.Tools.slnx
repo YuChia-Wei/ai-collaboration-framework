@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="../../../tests/dotnet-refactoring/io-failure/IoFailure.csproj" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="formatting/FormatTool.csproj" />
+    <Project Path="generation/Generation.Templates.csproj" />
+    <Project Path="generation/snippet-tool/SnippetTool.csproj" />
+    <Project Path="refactoring/RefactorTool.csproj" />
+  </Folder>
+</Solution>

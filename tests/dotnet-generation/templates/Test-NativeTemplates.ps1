@@ -2,7 +2,7 @@
 param(
     [Parameter(Mandatory)]
     [string] $ScratchRoot,
-    [string] $TemplateRoot = (Join-Path $PSScriptRoot '../../../src/knowledge/dotnet-backend/tooling/generation/dotnet-new'),
+    [string] $TemplateRoot = (Join-Path $PSScriptRoot '../../../src/tools/dotnet/generation/dotnet-new'),
     [string] $TemplatePackage
 )
 
