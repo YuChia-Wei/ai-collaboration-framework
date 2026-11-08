@@ -8,10 +8,10 @@ output directory. The API cases build and start a generated app and follow the
 created work item's HTTP Location. The tests discover the .NET 10 SDK and
 ASP.NET Core 10.0 runtime automatically.
 
-These short asynchronous SDK cases use direct xUnit Arrange/Act/Assert instead
-of the former BDDfy journey wrapper. Their fixtures, action and independent
-observations remain explicit. The generated domain contract examples retain
-their own Given/When/Then expression.
+The source cases use xUnit with BDDfy and named Given/When/Then steps. Each
+case sets up its fixture, performs the real SDK or HTTP action, and checks its
+observable result. The generated domain contract examples use their own
+Given/When/Then steps.
 
 ```text
 dotnet test tests/dotnet-generation/templates/Generation.Templates.IntegrationTests.csproj -c Release
