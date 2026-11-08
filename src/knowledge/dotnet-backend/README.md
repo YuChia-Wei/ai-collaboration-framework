@@ -42,12 +42,13 @@ rewrite links in your own documents or upgrade previously copied code.
 | --- | --- |
 | `examples/usecase`, `examples/use-case-injection` | `aicf-usecase` plus Use Case guidance; dependency registration remains target-owned |
 | `examples/aspnet-core`, `examples/controller`, `examples/dto` | `aicf-miniapi` or `aicf-webapi` reference feature; adapt HTTP contracts to the target |
-| `examples/generation-templates`, `examples/reference`, `examples/profile-configs` | Generation guide above; five native templates replace the incomplete profile sketches |
+| `examples/generation-templates`, `examples/reference`, `examples/profile-configs` | Generation guide above lists the native API starters, C# items and contract examples |
 | `source-includes/domain`, `examples/aggregate` | `domain-contracts` and optional `es-aggregate` snippets; select ES only when required |
 | `examples/contract`, `examples/mapper` | Existing DbC/mapper standards; the mapper contract-case summary is now `standards/contract-cases.md` |
 | `examples/bdd-gherkin-example`, `examples/bdd-given-when-then-example` | Generic Gherkin examples in `engineering-common/bdd`; no generated business bindings |
 | `examples/bdd-step-methods` | BDD/GWT knowledge remains guidance; target-specific bindings must be implemented and tested locally |
 | `examples/outbox`, `examples/projection`, `examples/inquiry-archive`, `examples/nuget` | Persistence/messaging and package-selection guidance remains; no equivalent complete relay, projector, archive or NuGet integration is promised |
 
-Templates and snippets are delivered separately from knowledge. Copy and adapt
-them under target ownership; upstream updates preserve that ownership boundary.
+The separate generation bundle provides the native starters, snippets and
+[domain contract test templates](templates/domain-contracts/README.md).
+Copy and adapt generated code under target ownership.

@@ -239,6 +239,8 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/standards/project-structure.md
   - source: templates/application-properties-templates.md
     destination: .ai/core/knowledge/dotnet-backend/templates/application-properties-templates.md
+  - source: templates/domain-contracts/README.md
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/README.md
   - source: templates/profile-isolated-configurations.md
     destination: .ai/core/knowledge/dotnet-backend/templates/profile-isolated-configurations.md
   - source: tooling/generation/DELIVERY.md

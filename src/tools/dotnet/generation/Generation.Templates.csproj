@@ -4,7 +4,7 @@
     <PackageId>AICF.Dotnet.Templates</PackageId>
     <PackageType>Template</PackageType>
     <Title>AICF .NET templates</Title>
-    <Description>Project, class, interface and Use Case templates for .NET 10.</Description>
+    <Description>API starters, C# items and domain contract test examples for dotnet new.</Description>
     <Authors>AICF contributors</Authors>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeContentInPack>true</IncludeContentInPack>

@@ -172,16 +172,25 @@ acceptance, P7 completion, Issue closure or a public release.
 
 ## Local commands
 
-Current source bundles use Native AOT. `native-tools.yml` builds Windows x64
-SnippetTool/FormatTool, Linux x64 SnippetTool and macOS arm64 FormatTool on native
-runners, with no support-matrix expansion. Assembly checks every artifact's source,
+Current source bundles build Native AOT SnippetTool for Windows x64 and Linux x64
+on their native runners. The formatting script is copied from source during
+bundle assembly. An older selected source with FormatTool retains its original
+macOS arm64 build. Assembly checks every native artifact's source,
 version, runtime, inventory and hashes. A native build retry needs a complete set
 from the same workflow run attempt; rerun all build jobs when needed. The existing
 draft writer still accepts only `publish-release.yml` provenance and never
 publishes PR comparison artifacts.
 
+Current workflows run the native SnippetTool artifact smoke before uploading
+each Windows/Linux output. After bundle assembly, native xUnit acceptance tests
+install the actual template package extracted from the delivery ZIP. The shell
+steps invoke the selected source's test projects; Python builders do not invoke
+.NET tests. Historical sources without those projects retain their existing
+builder checks, with the missing native test coverage stated explicitly. Read
+the test step results separately from the builder manifest's `tests: not-run`.
+
 For a current-source local release build, supply `--native-tools <download-root>`
-with the three artifact subdirectories from one run. `--coreclr-tools` explicitly
+with the two artifact subdirectories from one run. `--coreclr-tools` explicitly
 builds the former framework-dependent variant for comparison. The PR native-tools
 job builds and verifies both complete archives from identical source and retains
 compressed/expanded size evidence. These are build results, not public releases.

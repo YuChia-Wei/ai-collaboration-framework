@@ -2,6 +2,8 @@
 
 Use these cases with the [mapper](coding-standards/mapper-standards.md) and
 [projector](coding-standards/projection-standards.md#event-driven-read-model-projector) contracts.
+The [domain contract test templates](../templates/domain-contracts/README.md)
+generate runnable examples for aggregate reconstruction.
 
 ## Behavior cases
 

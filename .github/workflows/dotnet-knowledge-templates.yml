@@ -1,0 +1,52 @@
+name: .NET knowledge templates
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/knowledge/dotnet-backend/templates/domain-contracts/**'
+      - 'src/tools/dotnet/generation/dotnet-new/package-free/**'
+      - 'src/tools/dotnet/generation/dotnet-new/published-ct005/**'
+      - 'tests/dotnet-test-support/Assert-ExecutedTests.ps1'
+      - '.github/workflows/dotnet-knowledge-templates.yml'
+permissions: {}
+concurrency:
+  group: dotnet-knowledge-templates-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  domain-contracts:
+    name: Verify domain contract template output
+    runs-on: windows-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact event head
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: .NET SDK
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.403'
+      - name: Generate and test the package-free contract project
+        shell: pwsh
+        run: |
+          $work = Join-Path $env:RUNNER_TEMP 'dotnet-knowledge-templates'
+          New-Item -ItemType Directory -Path $work | Out-Null
+          @{ sdk = @{ version = '10.0.403'; rollForward = 'disable' } } |
+            ConvertTo-Json | Set-Content (Join-Path $work 'global.json')
+          Set-Location $work
+          $hive = Join-Path $work 'hive'
+          $output = Join-Path $work 'package-free'
+          $templates = "$env:GITHUB_WORKSPACE/src/tools/dotnet/generation/dotnet-new"
+          dotnet new install $templates --debug:custom-hive $hive
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet new aicf-domain-contract-tests --name Sample.DomainContracts --output $output --debug:custom-hive $hive
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $results = Join-Path $work 'results'
+          dotnet test "$output/Sample.DomainContracts.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=domain.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/domain.trx" -Expected 6

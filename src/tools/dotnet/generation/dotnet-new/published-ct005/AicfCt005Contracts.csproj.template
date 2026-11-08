@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="TestStack.BDDfy" Version="10.0.13" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" PrivateAssets="all" />
+    <Using Include="Xunit" />
+    <Using Include="TestStack.BDDfy" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ArchPrecept.Contracts.Domain">
+      <HintPath>$(PublishedContractsDir)/domain/lib/net8.0/ArchPrecept.Contracts.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="ArchPrecept.Contracts.Domain.EventSourcing">
+      <HintPath>$(PublishedContractsDir)/eventsourcing/lib/net8.0/ArchPrecept.Contracts.Domain.EventSourcing.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Target Name="RequirePublishedContracts" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(PublishedContractsDir)' == ''"
+           Text="Supply verified 0.0.3-preview DLLs via PublishedContractsDir." />
+    <Error Condition="!Exists('$(PublishedContractsDir)/domain/lib/net8.0/ArchPrecept.Contracts.Domain.dll')"
+           Text="The verified ArchPrecept.Contracts.Domain 0.0.3-preview DLL is missing." />
+    <Error Condition="!Exists('$(PublishedContractsDir)/eventsourcing/lib/net8.0/ArchPrecept.Contracts.Domain.EventSourcing.dll')"
+           Text="The verified ArchPrecept.Contracts.Domain.EventSourcing 0.0.3-preview DLL is missing." />
+  </Target>
+</Project>

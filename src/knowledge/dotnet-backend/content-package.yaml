@@ -112,6 +112,7 @@ members:
 - {path: standards/contract-cases.md, kind: knowledge}
 - {path: standards/project-structure.md, kind: normative-rule}
 - {path: templates/application-properties-templates.md, kind: template}
+- {path: templates/domain-contracts/README.md, kind: knowledge}
 - {path: templates/profile-isolated-configurations.md, kind: template}
 - {path: tooling/generation/DELIVERY.md, kind: knowledge}
 - {path: tooling/generation/README.md, kind: knowledge}
@@ -1028,6 +1029,13 @@ resources:
   operations: [apply, assess-runtime, audit, compare, design, draft, implement, normalize, plan-validation, propose,
     review, review-draft, review-semantics]
   technology_profile: dotnet-backend
+- id: member:templates/domain-contracts/README.md
+  path: templates/domain-contracts/README.md
+  kind: knowledge
+  rule_ids: []
+  capabilities: [implementation, local-change]
+  operations: [implement]
+  technology_profile: dotnet-backend
 - id: member:templates/profile-isolated-configurations.md
   path: templates/profile-isolated-configurations.md
   kind: template
@@ -1199,6 +1207,11 @@ references:
 - from: README.md
   resource_id: member:standards/project-structure.md
   target: {package: dotnet-backend, path: standards/project-structure.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: README.md
+  resource_id: member:templates/domain-contracts/README.md
+  target: {package: dotnet-backend, path: templates/domain-contracts/README.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: README.md
@@ -2527,6 +2540,11 @@ references:
   target: {package: dotnet-backend, path: standards/coding-standards/projection-standards.md, anchor: event-driven-read-model-projector}
   requirement: required
   on_missing: unavailable
+- from: standards/contract-cases.md
+  resource_id: member:templates/domain-contracts/README.md
+  target: {package: dotnet-backend, path: templates/domain-contracts/README.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
 - from: standards/project-structure.md
   resource_id: member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
   target: {package: dotnet-backend, path: standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md, anchor: null}
@@ -2535,6 +2553,16 @@ references:
 - from: standards/project-structure.md
   resource_id: member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
   target: {package: dotnet-backend, path: standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: templates/domain-contracts/README.md
+  resource_id: member:standards/contract-cases.md
+  target: {package: dotnet-backend, path: standards/contract-cases.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: templates/domain-contracts/README.md
+  resource_id: member:tooling/generation/DELIVERY.md
+  target: {package: dotnet-backend, path: tooling/generation/DELIVERY.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: tooling/generation/README.md

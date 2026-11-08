@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "AI Collaboration Framework",
+  "identity": "AiCollaboration.DotNet.Ct005ContractTests.1",
+  "name": "AI Collaboration Published CT-005 Contract Tests",
+  "shortName": "aicf-ct005-contract-tests",
+  "sourceName": "AicfCt005Contracts",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sources": [
+    {
+      "rename": {
+        "AicfCt005Contracts.csproj.template": "AicfCt005Contracts.csproj"
+      }
+    }
+  ]
+}

@@ -28,8 +28,6 @@ def build(repository, output, work, version, commit, native_tools=None, coreclr=
                     '--artifacts-path', str(work / 'templates'), '-p:PackageVersion=' + version], check=True)
     publications = [(generation / 'snippet-tool/SnippetTool.csproj', 'snippets', rid)
                     for rid in ('win-x64', 'linux-x64')]
-    publications.extend((generation.parent / 'formatting/FormatTool.csproj', 'formatting', rid)
-                        for rid in ('win-x64', 'osx-arm64'))
     for project, tool, rid in publications if coreclr else []:
         subprocess.run(['dotnet', 'publish', str(project),
                         '-c', 'Release', '-r', rid, '--self-contained', 'false',
@@ -42,16 +40,18 @@ def build(repository, output, work, version, commit, native_tools=None, coreclr=
     shutil.copyfile(repository / 'src/tools/install-generation.py', output / 'install-generation.py')
     shutil.copyfile(guides / 'DELIVERY.md', output / 'README.md')
     shutil.copyfile(guides / 'snippet-tool/README.md', output / 'snippets/README.md')
+    (output / 'formatting').mkdir()
+    for name in ('Format-Dotnet.ps1', 'README.md'):
+        shutil.copyfile(generation.parent / 'formatting' / name, output / 'formatting' / name)
     rows = []
     for path in sorted(output.rglob('*')):
         if path.is_file():
             name = path.relative_to(output).as_posix()
-            mode = 0o755 if name in ('snippets/linux-x64/SnippetTool', 'formatting/osx-arm64/FormatTool') else 0o644
+            mode = 0o755 if name == 'snippets/linux-x64/SnippetTool' else 0o644
             rows.append(dict(path=name, size=path.stat().st_size,
                              sha256=hashlib.sha256(path.read_bytes()).hexdigest(), mode=mode))
     manifest = dict(schema='aicf-generation/1', source_commit=commit, version=version,
-                    formatting=dict(runtimes=['win-x64', 'osx-arm64'],
-                                    sdk_versions={'win-x64': '10.0.403', 'osx-arm64': '10.0.400'}),
+                    formatting={'kind': 'dotnet-format-script'},
                     runtimes=['win-x64', 'linux-x64'],
                     mode='framework-dependent-coreclr-single-file' if coreclr else 'native-aot', files=rows)
     (output / 'generation.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')

@@ -7,42 +7,34 @@ python install-generation.py --project /path/to/project
 ```
 
 The installer verifies the manifest and writes `.ai/tools/dotnet-generation`.
-Current bundles include `formatting/win-x64/FormatTool.exe` (SDK 10.0.403) and
-`formatting/osx-arm64/FormatTool` (SDK 10.0.400), each with its own README.
-Formatting supports those exact OS/architecture/SDK combinations; the snippet
-platform list does not extend that support. The macOS formatter is ad-hoc
-signed, not Developer ID signed or notarized. SDK compatibility evidence does
-not establish downloaded-artifact Gatekeeper acceptance.
-The release bundle publishes both tools with Native AOT on their respective
-OS/architecture runners. Each native executable contains only the runtime support
-it needs; the bundle has no loose runtime DLLs or debug symbols. The host-installed
-.NET 10 SDK remains a development prerequisite, and FormatTool invokes that SDK
-through `dotnet` on PATH. The installer does not install or download an SDK.
-`generation.json` identifies this delivery as `native-aot`. An explicit
-framework-dependent CoreCLR comparison build remains available to maintainers;
-older CoreCLR bundle manifests remain supported. SnippetTool's standalone
-`Publish-Snippets.ps1` retains its host-SDK default and selects AOT with `-NativeAot`.
-No SDK-free environment acceptance is required. Snippet catalogs and templates remain
-external data. Check `generation.json` for the selected bundle's formatting
-component; older bundles do not include it. This same installer updates and
-recovers all manifest-listed tools; no separate manual formatting copy is needed.
-The installer does not register templates, edit project code or select a
-technology stack.
+Current bundles include `formatting/Format-Dotnet.ps1` and its manual. The script
+uses PowerShell 7.3+ and invokes the workspace-selected SDK through `dotnet` on
+PATH. See `formatting/README.md` for selected-file checks, explicit apply and
+direct SDK usage from other shells. An unchanged installation of a prior bundle
+can be replaced with the same installer. Update formatter callers to use SDK
+arguments and output in place of the former FormatTool JSON API.
 
-The command output contracts below apply after application startup. For the framework-dependent comparison variant, missing
-runtime failures come from the native .NET host before either tool can emit JSON. The contracts differ and callers should select by tool:
+The release bundle publishes SnippetTool with Native AOT on its Windows x64 and
+Linux x64 runners. Each executable contains its runtime support. The
+`native-aot` mode in `generation.json` identifies the snippet delivery.
+Maintainers can select a framework-dependent CoreCLR comparison build, and
+older CoreCLR manifests remain supported. SnippetTool's standalone
+`Publish-Snippets.ps1` retains its host-SDK default and selects AOT with
+`-NativeAot`. Snippet catalogs and templates remain external data.
+The installer manages bundle files. SDK installation, template registration and
+source changes remain explicit development steps.
+
+For the framework-dependent comparison variant, the .NET host reports missing
+runtime failures before SnippetTool starts.
 
 | Tool | Success / changes required | Failure |
 | --- | --- | --- |
-| `FormatTool --request` | stdout JSON, exit 0 (clean/applied) or 2 (changes required) | stdout JSON, exit 1 |
+| `Format-Dotnet.ps1` | Native SDK output and exit code | Native SDK output and exit code, or PowerShell errors for invalid script inputs |
 | `SnippetTool --request` | stdout JSON, exit 0 | stderr JSON, exit 1 |
 | `install-generation.py` | stdout JSON, exit 0 | stderr JSON, exit 1 |
 
-FormatTool outputs one indented JSON object; parse the entire stream, not each
-line. Success summaries omit raw SDK output unless `verbose: true`; failures
-retain command logs. `--capabilities` supplies formatting rules and supported
-runtime/SDK pairs without probing the environment. Read each tool's README for
-its full contract.
+The formatter's default check can exit nonzero for required changes or an SDK
+failure. Read the console diagnostics and any requested SDK report.
 
 Updates replace only an unchanged previous installation; modified or unknown
 files cause a refusal. Keep custom snippets and templates outside this directory.
@@ -96,9 +88,10 @@ dotnet new list aicf
 dotnet new aicf-webapi --name Orders --output Orders
 ```
 
-The package includes `aicf-miniapi`, `aicf-webapi`, `aicf-usecase`, `aicf-class`
-and `aicf-interface`. Use `--help` and `--dry-run` before generating into an
-existing project. `dotnet new uninstall AICF.Dotnet.Templates` unregisters it.
+The package includes `aicf-miniapi`, `aicf-webapi`, `aicf-usecase`, `aicf-class`,
+`aicf-interface`, `aicf-domain-contract-tests` and `aicf-ct005-contract-tests`.
+Use `--help` and `--dry-run` before generating into an existing project.
+`dotnet new uninstall AICF.Dotnet.Templates` unregisters it.
 For customization, change identity, name and shortName in each selected
 `.template.config/template.json` before registering your directory. For example,
 change `AiCollaboration.DotNet.AicfClass.1` to `MyTeam.DotNet.Class.1`,
@@ -110,19 +103,31 @@ version control; compare upstream updates before adopting them.
 The C# sources and `.template.config` inside the package are required by
 `dotnet new`; they are not loose installed project files.
 
-The two project templates target `net10.0` and have no `--framework` option.
-The three item templates emit C# files without a project or TFM; select the
+The two API starters and `aicf-domain-contract-tests` target `net10.0`. The
+three item templates emit C# files without a project or TFM. Select the
 destination namespace explicitly (`--namespace`, default `Example`) and compile
-in the target project. The supported baseline is .NET 10; .NET 8 adoption needs
-separate adaptation and validation. `--name` changes project/type names, not the
-fixed `WorkItem` reference domain. Replace that sample feature as a whole.
+in the target project. In the API starters, `--name` changes project names and
+namespaces. Replace the fixed `WorkItem` sample feature as a whole.
+
+The package-free contract example includes its own illustrative domain code.
+The optional `aicf-ct005-contract-tests` example needs the .NET 8 runtime
+and the verified ArchPrecept.Contracts.Domain and
+ArchPrecept.Contracts.Domain.EventSourcing `0.0.3-preview` assemblies. Use the
+[ArchPrecept release record](https://github.com/YuChia-Wei/ArchPrecept/blob/main/docs/releases/0.0.3-preview.md)
+to verify the packages, extract them under `domain/` and `eventsourcing/`
+respectively, then pass their parent directory as `PublishedContractsDir`:
+
+```text
+dotnet new aicf-ct005-contract-tests --name Example.Ct005 --output Example.Ct005
+dotnet test Example.Ct005/Example.Ct005.csproj -p:PublishedContractsDir=<verified-extracted-directory>
+```
 
 Run `snippets/win-x64/SnippetTool.exe` on Windows x64 or
 `snippets/linux-x64/SnippetTool` on Linux x64 with `--request request.json`.
 Each executable includes its .NET runtime. Keep the shipped `snippets/` directory
 beside the executable. Linux needs the platform's native runtime dependencies
 (Ubuntu 24.04 is the tested baseline).
-macOS is not in this delivery's runtime matrix; separate trial binaries do not
+macOS is not in the SnippetTool runtime matrix; separate trial binaries do not
 establish supported installation or download trust. macOS delivery remains
 future work tracked by Feature #582.
 Use `{"schemaVersion":1,"operation":"list"}`, then inspect one ID before rendering it.
@@ -137,7 +142,7 @@ preview, explicitly select the verified formal release and follow its normal
 Framework update and separate generation-tool installation steps.
 
 Treat `.ai/tools/dotnet-generation` as a reproducible local tool installation.
-It includes both supported runtimes and can exceed 140 MB. We recommend ignoring
+It includes both supported snippet runtimes. We recommend ignoring
 the following paths in Git, while committing your custom sources and a setup
 note identifying the trusted release and checksum to restore:
 

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RefactorTestSdkPath>$([System.IO.Path]::GetDirectoryName($([MSBuild]::NormalizePath('$(NETCoreSdkBundledVersionsProps)'))))</RefactorTestSdkPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Locator must load this assembly from the selected SDK, as in the standalone tool. -->
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.11.31" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="TestStack.BDDfy" Version="10.0.13" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="RefactorTestSdkPath" Value="$(RefactorTestSdkPath)" />
+    <Reference Include="Microsoft.Build" HintPath="$(RefactorTestSdkPath)/Microsoft.Build.dll" Private="false" />
+    <Using Include="Xunit" />
+    <Using Include="TestStack.BDDfy" />
+    <ProjectReference Include="../../../src/tools/dotnet/refactoring/RefactorTool.csproj" />
+    <Compile Include="../../dotnet-test-support/DotnetTestHost.cs" Link="DotnetTestHost.cs" />
+  </ItemGroup>
+
+</Project>

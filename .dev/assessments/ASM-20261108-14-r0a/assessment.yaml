@@ -1,0 +1,46 @@
+schema_version: '1.1'
+assessment_id: ASM-20261108-14-r0a
+commit_search_id: ASM-20261108-14-r0a
+assessment_type: dotnet-test-strategy
+title: .NET test strategy, tool boundaries and formatting hooks
+owner_skill: test-designer
+status: final
+report: report.md
+artifact_branch: codex/2026-11-08-dotnet-test-boundaries
+base_branch: main
+created_at: '2026-11-08T14:11:55+08:00'
+updated_at: '2026-11-08T14:11:55+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.1
+report_template_source: .ai/core/skills/test-designer/references/design.md
+report_template_version: 0.4.3
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: codex/2026-11-08-dotnet-test-boundaries
+  commit: 41e4ebb8e716355ac86c4b39a8846e7b6711c1aa
+scope:
+  included:
+  - Fixed-source .NET tests, template organization, prior timing evidence and official
+    hook feasibility
+  excluded:
+  - Post-change execution acceptance
+  - Downstream domain policy
+  - Hook activation
+  - Publication and installation
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs: []
+  backlog_refs: []
+  adr_refs: []
+  workflow_record_refs:
+  - provider_id: local
+    store_id: framework-workflows
+    workflow_id: 2026-11-08-issue-594-test-strategy
+resume:
+  last_completed_action: Retained corrected fixed-source analysis and bounded hook
+    feasibility; T01-T07 map to the selected implementation workflow.
+  next_action: Follow current native workflow for implementation and measured acceptance;
+    maintain current test descriptions beside the tests.
+  blockers: []

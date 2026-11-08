@@ -1,28 +1,20 @@
-# FormatTool tests
+# .NET formatting tests
 
-Run the component cases with the .NET 10 SDK.
+`integration/Formatting.ScriptIntegrationTests.csproj` exercises the PowerShell entry point
+against the installed SDK. It checks a workspace-relative path with spaces and
+shell metacharacters, refuses parent-relative selection through a nested solution,
+and applies formatting to the chosen file by absolute path within the project.
+The cases also cover preservation of unselected source, workspace-relative SDK
+selection and native failure propagation. They refuse glob-like literal names,
+case-distinct workspace prefixes and extra include values passed as SDK options.
 
 ```text
-dotnet test tests/dotnet-formatting/FormatTool.Tests.csproj
+dotnet test tests/dotnet-formatting/integration/Formatting.ScriptIntegrationTests.csproj -c Release
 ```
 
-Set `AICF_FORMAT_SDK_TESTS=1` for SDK integration on Windows x64 with
-SDK 10.0.403 or macOS arm64 with SDK 10.0.400. Each project fixture pins the
-supported SDK without roll-forward and restores from a local source. The
-tests exercise Compile selection, nested EditorConfig, real fixes and
-unchanged source, load failures, solution and linked paths, semantic
-failures, and the generator consent boundary.
-
-Set `AICF_FORMAT_ARTIFACT` to the absolute path of a separately published
-FormatTool executable to include the public process and JSON contract. The
-Formatting acceptance workflow builds Native AOT and supplies the executable
-for each supported platform. It separately sets `AICF_FORMAT_CASE_ROOT` to a
-mounted case-sensitive APFS directory and selects
-`--filter Boundary=CaseSensitiveArtifact`. That case verifies the volume is
-case-sensitive and checks both real Compile identities before the formatter.
-The POSIX literal filename cases require macOS.
-
-Set `AICF_TEST_WORK` to a directory for disposable fixtures when needed. The
-tests otherwise use the OS temporary directory and clean up their own
-per-case subdirectories. A process or permission failure leaves that
-integration case failed.
+The source solution includes these cases. They use .NET 10 and PowerShell 7.3+
+and create disposable projects under `AICF_TEST_WORK` or the system temporary
+directory. The formatting acceptance workflow runs them on Windows and macOS.
+PowerShell version discovery runs once; an absent or older host is skipped, while
+an unexpected probe failure remains a test failure.
+The script and its manual ship as generation-bundle content.

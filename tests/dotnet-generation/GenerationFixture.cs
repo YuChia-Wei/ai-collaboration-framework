@@ -1,13 +1,10 @@
 using System.Diagnostics;
 
-namespace Generation.Tests;
+namespace Generation.TestSupport;
 
 internal sealed class GenerationFixture : IDisposable
 {
-    public static string? TemplatePackage => Environment.GetEnvironmentVariable("AICF_TEMPLATE_PACKAGE");
-    public static string? SnippetArtifact => Environment.GetEnvironmentVariable("AICF_SNIPPET_ARTIFACT");
-    public static bool RunSdkTests => Environment.GetEnvironmentVariable("AICF_GENERATION_SDK_TESTS") == "1";
-
+    internal string DotnetExecutable { get; set; } = "dotnet";
     public string Root { get; } = Directory.CreateDirectory(Path.Combine(
         Path.GetFullPath(Environment.GetEnvironmentVariable("AICF_TEST_WORK") ?? Path.GetTempPath()),
         $"generation-{Guid.NewGuid():N}")).FullName;
@@ -22,7 +19,7 @@ internal sealed class GenerationFixture : IDisposable
 
     public async Task<string> Dotnet(params string[] arguments)
     {
-        var result = await Execute("dotnet", TimeSpan.FromMinutes(2), arguments);
+        var result = await Execute(DotnetExecutable, TimeSpan.FromMinutes(2), arguments);
         Assert.True(result.Exit == 0, $"dotnet {string.Join(' ', arguments)} exited {result.Exit}\n{result.Output}\n{result.Error}");
         return result.Output;
     }
@@ -41,6 +38,7 @@ internal sealed class GenerationFixture : IDisposable
             RedirectStandardOutput = true,
             RedirectStandardError = true
         };
+        start.Environment.Remove("MSBuildSDKsPath");
         foreach (var argument in arguments)
             start.ArgumentList.Add(argument);
         return Process.Start(start)!;
@@ -77,24 +75,4 @@ internal sealed class GenerationFixture : IDisposable
     }
 
     public void Dispose() => Directory.Delete(Root, recursive: true);
-}
-
-internal sealed class GenerationSdkFactAttribute : FactAttribute
-{
-    public GenerationSdkFactAttribute()
-    {
-        if (!GenerationFixture.RunSdkTests && GenerationFixture.TemplatePackage is null)
-            Skip = "Set AICF_GENERATION_SDK_TESTS=1 for real SDK/template integration.";
-    }
-}
-
-internal sealed class SnippetArtifactFactAttribute : FactAttribute
-{
-    public SnippetArtifactFactAttribute(bool linuxOnly = false)
-    {
-        if (linuxOnly && !OperatingSystem.IsLinux())
-            Skip = "The FIFO regression requires Linux.";
-        else if (GenerationFixture.SnippetArtifact is null)
-            Skip = "Set AICF_SNIPPET_ARTIFACT to the staged SnippetTool executable.";
-    }
 }

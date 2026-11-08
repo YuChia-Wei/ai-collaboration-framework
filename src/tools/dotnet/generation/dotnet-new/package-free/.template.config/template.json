@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "AI Collaboration Framework",
+  "identity": "AiCollaboration.DotNet.DomainContractTests.1",
+  "name": "AI Collaboration Package-free Domain Contract Tests",
+  "shortName": "aicf-domain-contract-tests",
+  "sourceName": "AicfPackageFreeContracts",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}
