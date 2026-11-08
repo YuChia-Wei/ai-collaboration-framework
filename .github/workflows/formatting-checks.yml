@@ -7,6 +7,8 @@ on:
       - 'src/tools/dotnet/formatting/**'
       - 'tests/dotnet-formatting/**'
       - '.github/workflows/formatting-checks.yml'
+      - 'tests/dotnet-test-support/**'
+      - 'src/tools/dotnet/AICF.Dotnet.Tools.slnx'
       - '.github/scripts/build-generation.py'
 permissions: {}
 concurrency:
@@ -66,13 +68,19 @@ jobs:
           $env:AICF_FORMAT_ARTIFACT = "$env:RUNNER_TEMP/format-publish/$env:FORMAT_EXE"
           $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/format-acceptance"
           $testFilter = 'Boundary!=CaseSensitiveArtifact'
-          if ($IsWindows) { $testFilter += '&Platform!=MacOS' }
+          $expected = 28
+          if ($IsWindows) {
+            $testFilter += '&Platform!=MacOS'
+            $expected = 25
+          }
+          $results = "$env:RUNNER_TEMP/format-test-results"
           # dotnet test supplies MSBuildSDKsPath to the test host and its child SDK commands.
           New-Item -ItemType Directory -Path $env:AICF_TEST_WORK | Out-Null
           @{sdk=@{version=$env:FORMAT_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $env:AICF_TEST_WORK 'global.json')
           Set-Location $env:AICF_TEST_WORK
-          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.Tests.csproj" -c Release --filter $testFilter --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts"
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" -c Release --filter $testFilter --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/format.trx" -Expected $expected
       - name: Verify exact selection on case-sensitive APFS
         if: matrix.rid == 'osx-arm64'
         shell: bash
@@ -84,5 +92,7 @@ jobs:
           hdiutil attach "$image" -mountpoint "$mount" -nobrowse
           trap 'hdiutil detach "$mount"' EXIT
           cd "$RUNNER_TEMP/format-acceptance"
+          results="$RUNNER_TEMP/format-test-results"
           AICF_FORMAT_ARTIFACT="$RUNNER_TEMP/format-publish/FormatTool" AICF_FORMAT_CASE_ROOT="$mount/acceptance" \
-            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.Tests.csproj" -c Release --no-build --filter 'Boundary=CaseSensitiveArtifact' --artifacts-path "$RUNNER_TEMP/format-test-artifacts"
+            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" -c Release --no-build --filter 'Boundary=CaseSensitiveArtifact' --artifacts-path "$RUNNER_TEMP/format-test-artifacts" --results-directory "$results" --logger 'trx;LogFileName=case-sensitive.trx'
+          pwsh -NoProfile -File "$GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/case-sensitive.trx" -Expected 1

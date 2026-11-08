@@ -7,6 +7,8 @@ on:
       - 'src/tools/dotnet/refactoring/**'
       - 'tests/dotnet-refactoring/**'
       - '.github/workflows/refactoring-checks.yml'
+      - 'tests/dotnet-test-support/**'
+      - 'src/tools/dotnet/AICF.Dotnet.Tools.slnx'
 permissions: {}
 concurrency:
   group: refactoring-pr-${{ github.event.pull_request.number }}
@@ -40,13 +42,22 @@ jobs:
           & "$env:GITHUB_WORKSPACE/src/tools/dotnet/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish" -Archive "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Expand-Archive -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip" -DestinationPath "$env:RUNNER_TEMP/refactor-installed"
-      - name: Run native component, SDK and extracted artifact tests
+      - name: Run unit, integration and extracted artifact tests
         env:
+          AICF_REFACTOR_SDK_TESTS: '1'
           AICF_REFACTOR_TEST_ARTIFACT: ${{ runner.temp }}/refactor-installed/RefactorTool.exe
         run: |
           Set-Location "$env:RUNNER_TEMP/refactor-build"
-          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring/native/RefactorTool.Tests.csproj" -c Release --logger "console;verbosity=normal"
+          $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/refactor-fixtures"
+          $results = "$env:RUNNER_TEMP/refactor-test-results"
+          $refactoring = "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring"
+          $check = "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1"
+          dotnet test "$refactoring/unit/RefactorTool.UnitTests.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=unit.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $check -Report "$results/unit.trx" -Expected 3
+          dotnet test "$refactoring/integration/RefactorTool.IntegrationTests.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=integration.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $check -Report "$results/integration.trx" -Expected 126
       - name: Record archive checksum
         run: |
           $archive = Get-Item -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"

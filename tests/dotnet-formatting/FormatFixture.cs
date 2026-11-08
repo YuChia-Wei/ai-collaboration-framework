@@ -1,9 +1,10 @@
+using Aicf.Dotnet.TestSupport;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using FormatTool;
 
-namespace FormatTool.Tests;
+namespace FormatTool.IntegrationTests;
 
 internal sealed class FormatFixture : IDisposable
 {
@@ -27,9 +28,10 @@ internal sealed class FormatFixture : IDisposable
         """;
     internal static string? SdkVersion =>
         OperatingSystem.IsWindows() && RuntimeInformation.ProcessArchitecture == Architecture.X64 ? "10.0.403" :
-        OperatingSystem.IsMacOS() && RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "10.0.400" : null;
+        MacArm64 ? "10.0.400" : null;
     internal static bool RunSdkTests => Environment.GetEnvironmentVariable("AICF_FORMAT_SDK_TESTS") == "1";
     internal static string? Artifact => Environment.GetEnvironmentVariable("AICF_FORMAT_ARTIFACT");
+    internal static bool MacArm64 => OperatingSystem.IsMacOS() && RuntimeInformation.ProcessArchitecture == Architecture.Arm64;
     internal static string? CaseSensitiveRoot => Environment.GetEnvironmentVariable("AICF_FORMAT_CASE_ROOT");
 
     public string Root { get; }
@@ -67,6 +69,7 @@ internal sealed class FormatFixture : IDisposable
 
     public Task Restore()
     {
+        Assert.NotNull(SdkVersion);
         Write("global.json", JsonSerializer.Serialize(new { sdk = new { version = SdkVersion, rollForward = "disable" } }));
         return Dotnet("restore", Project, "--source", Root);
     }
@@ -89,11 +92,8 @@ internal sealed class FormatFixture : IDisposable
         }));
         if (artifact)
         {
-            Assert.False(string.IsNullOrWhiteSpace(Artifact), "Supply an absolute path to the published executable.");
-            Assert.True(Path.IsPathFullyQualified(Artifact) && File.Exists(Artifact) &&
-                !Path.GetExtension(Artifact).Equals(".dll", StringComparison.OrdinalIgnoreCase),
-                $"Published executable missing: {Artifact}");
-            var (exit, output, error) = await Execute(Artifact, ["--request", request], TimeSpan.FromSeconds(180));
+            var executable = PublishedExecutable.Require(Artifact, "FormatTool", "AICF_FORMAT_ARTIFACT");
+            var (exit, output, error) = await Execute(executable, ["--request", request], TimeSpan.FromSeconds(180));
             Assert.Empty(error);
             using var artifactJson = JsonDocument.Parse(output);
             return (exit, artifactJson.RootElement.Clone());
@@ -155,21 +155,28 @@ internal sealed class FormatFixture : IDisposable
 
 internal sealed class FormatHostFactAttribute : FactAttribute
 {
-    public FormatHostFactAttribute(bool posixOnly = false)
-    {
-        if (FormatFixture.SdkVersion is null)
-            Skip = "FormatTool path handling requires Windows x64 or macOS arm64.";
-        else if (posixOnly && OperatingSystem.IsWindows())
-            Skip = "Windows does not permit these literal filename characters.";
-    }
+    public FormatHostFactAttribute() => Skip = HostSkip();
+
+    internal static string? HostSkip(bool posixOnly = false) => FormatFixture.SdkVersion is null ?
+        "FormatTool path handling requires Windows x64 or macOS arm64." :
+        posixOnly && OperatingSystem.IsWindows() ? "Windows does not permit these literal filename characters." : null;
+}
+
+internal sealed class FormatHostTheoryAttribute : TheoryAttribute
+{
+    public FormatHostTheoryAttribute(bool posixOnly = false) => Skip = FormatHostFactAttribute.HostSkip(posixOnly);
 }
 
 internal sealed class FormatSdkFactAttribute : FactAttribute
 {
     public FormatSdkFactAttribute(bool artifact = false, bool caseSensitive = false)
     {
-        if (caseSensitive && FormatFixture.CaseSensitiveRoot is null)
+        if (caseSensitive && !FormatFixture.MacArm64)
+            Skip = "The case-sensitive APFS scenario requires macOS arm64.";
+        else if (caseSensitive && FormatFixture.CaseSensitiveRoot is null)
             Skip = "Set AICF_FORMAT_CASE_ROOT to a case-sensitive APFS directory.";
+        else if (FormatFixture.SdkVersion is null)
+            Skip = "Formatter SDK integration requires Windows x64 or macOS arm64.";
         else if (artifact && FormatFixture.Artifact is null && !caseSensitive)
             Skip = "Set AICF_FORMAT_ARTIFACT to the published FormatTool executable.";
         else if (!artifact && !caseSensitive && !FormatFixture.RunSdkTests)

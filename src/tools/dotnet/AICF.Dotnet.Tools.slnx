@@ -1,8 +1,11 @@
 <Solution>
   <Folder Name="/Tests/">
-    <Project Path="../../../tests/dotnet-formatting/FormatTool.Tests.csproj" />
-    <Project Path="../../../tests/dotnet-generation/Generation.Tests.csproj" />
-    <Project Path="../../../tests/dotnet-refactoring/native/RefactorTool.Tests.csproj" />
+    <Project Path="../../../tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" />
+    <Project Path="../../../tests/dotnet-generation/domain-contract/DomainContract.UnitTests.csproj" />
+    <Project Path="../../../tests/dotnet-generation/snippet-tool/SnippetTool.IntegrationTests.csproj" />
+    <Project Path="../../../tests/dotnet-generation/templates/Generation.Templates.IntegrationTests.csproj" />
+    <Project Path="../../../tests/dotnet-refactoring/unit/RefactorTool.UnitTests.csproj" />
+    <Project Path="../../../tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.csproj" />
   </Folder>
   <Folder Name="/Tools/">
     <Project Path="formatting/FormatTool.csproj" />

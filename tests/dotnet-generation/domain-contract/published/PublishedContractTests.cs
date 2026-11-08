@@ -1,55 +1,135 @@
 using Published = ArchPrecept.Contracts.Domain;
 using PublishedEs = ArchPrecept.Contracts.Domain.EventSourcing;
 
-namespace Generation.Tests;
+namespace PublishedDomainContract.IntegrationTests;
 
 public sealed class PublishedContractTests
 {
     [Fact]
     public void LoadingHistoryRestoresStateWithoutPendingEventsAndCannotRepeat()
     {
-        var counter = LoadedCounter();
-        Assert.Equal(5, counter.Total);
-        Assert.Equal(2, counter.Version);
-        Assert.Empty(counter.DomainEvents);
-        Assert.Throws<NotSupportedException>(counter.ClearDomainEvents);
-        Assert.Throws<InvalidOperationException>(() => counter.Load([]));
+        Published.IDomainEvent[] history = null!;
+        var counter = new Counter();
+        Exception? clearing = null, reloading = null;
+
+        this.Given(GivenTwoCommittedFacts, "two committed facts")
+            .When(WhenLoadingHistory, "loading history")
+            .Then(ThenRestoreCommittedStateWithoutPendingEvents, "restore committed state without pending events")
+            .When(WhenClearingEventsOrReloading, "attempting to clear events or reload history")
+            .Then(ThenRejectBothLifecycleOperations, "reject both lifecycle operations")
+            .BDDfy();
+
+        void GivenTwoCommittedFacts() => history = [new Fact(2), new Fact(3)];
+        void WhenLoadingHistory() => counter.Load(history);
+
+        void ThenRestoreCommittedStateWithoutPendingEvents()
+        {
+            Assert.Equal(5, counter.Total);
+            Assert.Equal(2, counter.Version);
+            Assert.Empty(counter.DomainEvents);
+        }
+
+        void WhenClearingEventsOrReloading()
+        {
+            clearing = Record.Exception(counter.ClearDomainEvents);
+            reloading = Record.Exception(() => counter.Load([]));
+        }
+
+        void ThenRejectBothLifecycleOperations()
+        {
+            Assert.IsType<NotSupportedException>(clearing);
+            Assert.IsType<InvalidOperationException>(reloading);
+        }
     }
 
     [Fact]
     public void PendingBatchSurvivesRejectedOrUnconfirmedAppendAndClearsOnConfirmation()
     {
-        var counter = LoadedCounter();
-        counter.Change(4);
-        Assert.Equal(9, counter.Total);
-        Assert.Equal(2, counter.Version);
-        var fact = Assert.IsType<Fact>(Assert.Single(counter.DomainEvents));
-        Assert.Equal(4, fact.Delta);
+        Counter counter = null!;
+        Fact fact = null!;
+        Exception? badVersion = null, reloading = null;
 
-        Assert.Throws<InvalidOperationException>(() => counter.MarkChangesAsCommitted(99));
-        Assert.Equal(2, counter.Version);
-        Assert.Same(fact, Assert.Single(counter.DomainEvents));
+        this.Given(GivenACounterAtRevisionTwo, "a counter at revision two")
+            .When(WhenChangingTheCounter, "changing the counter")
+            .Then(ThenKeepTheNewFactPending, "keep the new fact pending")
+            .When(WhenConfirmingTheWrongVersion, "confirming the wrong version")
+            .Then(ThenRejectTheVersionAndKeepTheExactBatchPending, "reject the version and keep the exact batch pending")
+            .When(WhenConfirmingTheCapturedBatch, "confirming the captured batch")
+            .Then(ThenAdvanceTheVersionAndClearPendingEvents, "advance the version and clear pending events")
+            .When(WhenLoadingHistoryAgain, "loading history again")
+            .Then(ThenRejectRepeatedLoading, "reject repeated loading")
+            .BDDfy();
 
-        // The caller captures this exact batch and waits to reconcile unknown append outcomes.
-        var pending = counter.DomainEvents.ToArray();
-        var expectedRevision = counter.Version;
-        Assert.Equal(2, expectedRevision);
-        Assert.Same(fact, Assert.Single(pending));
-        Assert.Same(fact, Assert.Single(counter.DomainEvents));
-        counter.MarkChangesAsCommitted(3); // Simulated durable whole-batch success.
-        Assert.Equal(3, counter.Version);
-        Assert.Empty(counter.DomainEvents);
-        Assert.Throws<InvalidOperationException>(() => counter.Load([]));
+        void GivenACounterAtRevisionTwo() => counter = LoadedCounter();
+        void WhenChangingTheCounter() => counter.Change(4);
+
+        void ThenKeepTheNewFactPending()
+        {
+            Assert.Equal(9, counter.Total);
+            Assert.Equal(2, counter.Version);
+            fact = Assert.IsType<Fact>(Assert.Single(counter.DomainEvents));
+            Assert.Equal(4, fact.Delta);
+        }
+
+        void WhenConfirmingTheWrongVersion() =>
+            badVersion = Record.Exception(() => counter.MarkChangesAsCommitted(99));
+
+        void ThenRejectTheVersionAndKeepTheExactBatchPending()
+        {
+            Assert.IsType<InvalidOperationException>(badVersion);
+            Assert.Equal(2, counter.Version);
+            Assert.Same(fact, Assert.Single(counter.DomainEvents));
+            // The caller captures this exact batch and waits to reconcile unknown append outcomes.
+            var pending = counter.DomainEvents.ToArray();
+            var expectedRevision = counter.Version;
+            Assert.Equal(2, expectedRevision);
+            Assert.Same(fact, Assert.Single(pending));
+            Assert.Same(fact, Assert.Single(counter.DomainEvents));
+        }
+
+        void WhenConfirmingTheCapturedBatch() => counter.MarkChangesAsCommitted(3);
+
+        void ThenAdvanceTheVersionAndClearPendingEvents()
+        {
+            Assert.Equal(3, counter.Version);
+            Assert.Empty(counter.DomainEvents);
+        }
+
+        void WhenLoadingHistoryAgain() => reloading = Record.Exception(() => counter.Load([]));
+        void ThenRejectRepeatedLoading() => Assert.IsType<InvalidOperationException>(reloading);
     }
 
     [Fact]
     public void FailedReplayRejectsFurtherOperationsOnTheSameInstance()
     {
         var counter = new Counter();
-        Assert.Throws<NotSupportedException>(() => counter.Load([new Fact(2), new UnknownFact()]));
-        Assert.Throws<InvalidOperationException>(() => counter.Change(1));
-        Assert.Throws<InvalidOperationException>(() => counter.MarkChangesAsCommitted(counter.Version));
-        Assert.Throws<InvalidOperationException>(() => counter.Load([]));
+        Published.IDomainEvent[] history = null!;
+        Exception? replay = null, change = null, commit = null, reload = null;
+
+        this.Given(GivenHistoryContainingAnUnknownFact, "history containing an unknown fact")
+            .When(WhenLoadingHistory, "loading history")
+            .Then(ThenRefuseTheUnsupportedFact, "refuse the unsupported fact")
+            .When(WhenReusingTheFailedCounter, "reusing the failed counter")
+            .Then(ThenRejectAllFurtherLifecycleOperations, "reject all further lifecycle operations")
+            .BDDfy();
+
+        void GivenHistoryContainingAnUnknownFact() => history = [new Fact(2), new UnknownFact()];
+        void WhenLoadingHistory() => replay = Record.Exception(() => counter.Load(history));
+        void ThenRefuseTheUnsupportedFact() => Assert.IsType<NotSupportedException>(replay);
+
+        void WhenReusingTheFailedCounter()
+        {
+            change = Record.Exception(() => counter.Change(1));
+            commit = Record.Exception(() => counter.MarkChangesAsCommitted(counter.Version));
+            reload = Record.Exception(() => counter.Load([]));
+        }
+
+        void ThenRejectAllFurtherLifecycleOperations()
+        {
+            Assert.IsType<InvalidOperationException>(change);
+            Assert.IsType<InvalidOperationException>(commit);
+            Assert.IsType<InvalidOperationException>(reload);
+        }
     }
 
     private static Counter LoadedCounter()

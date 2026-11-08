@@ -1,9 +1,9 @@
 # FormatTool tests
 
-Run the component cases with the .NET 10 SDK.
+Run the in-process request and real filesystem cases with the .NET 10 SDK.
 
 ```text
-dotnet test tests/dotnet-formatting/FormatTool.Tests.csproj
+dotnet test tests/dotnet-formatting/FormatTool.IntegrationTests.csproj
 ```
 
 Set `AICF_FORMAT_SDK_TESTS=1` for SDK integration on Windows x64 with
@@ -20,7 +20,10 @@ for each supported platform. It separately sets `AICF_FORMAT_CASE_ROOT` to a
 mounted case-sensitive APFS directory and selects
 `--filter Boundary=CaseSensitiveArtifact`. That case verifies the volume is
 case-sensitive and checks both real Compile identities before the formatter.
-The POSIX literal filename cases require macOS.
+The POSIX literal filename cases require macOS. Missing-file and directory
+selections have independent theory rows, as do the three POSIX filenames.
+All former `FormatTool.Tests` classes now belong to this integration project.
+The CI profiles require the intended case counts in the native test reports.
 
 Set `AICF_TEST_WORK` to a directory for disposable fixtures when needed. The
 tests otherwise use the OS temporary directory and clean up their own

@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
 
-namespace RefactorTool.Tests;
+namespace RefactorTool.IntegrationTests;
 
 [CollectionDefinition(Name)]
 public sealed class SdkCollection

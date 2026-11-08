@@ -1,53 +1,50 @@
 # RefactorTool tests
 
-Run the native xUnit suite on Windows x64 with .NET SDK 10.0.403. Each
-SDK-backed case creates its own fixture under the operating system's temporary
-directory. Target restores use only the local SDK reference packs and an empty
-local package source.
+Run the two test projects directly or through
+[`AICF.Dotnet.Tools.slnx`](../../src/tools/dotnet/AICF.Dotnet.Tools.slnx).
 
 ```powershell
-dotnet test tests/dotnet-refactoring/native/RefactorTool.Tests.csproj -c Release --filter 'Boundary!=Artifact'
+dotnet test tests/dotnet-refactoring/unit/RefactorTool.UnitTests.csproj -c Release
+dotnet test tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.csproj -c Release
 ```
 
-For the full suite, publish with
+Set `AICF_REFACTOR_SDK_TESTS=1` on Windows x64 with SDK 10.0.403 to
+exercise real MSBuild and SDK-backed preview and apply. The junction cases
+also require `pwsh`. The SDK fixture uses local SDK reference packs and an
+empty package source. Set `AICF_TEST_WORK` for a disposable fixture root.
+
+To exercise an extracted publication artifact, publish with
 [`Publish-RefactorTool.ps1`](../../src/tools/dotnet/refactoring/Publish-RefactorTool.ps1)
-and extract the resulting ZIP outside the checkout. Run with the absolute
-path to the extracted executable.
+and extract the ZIP outside the checkout. Set `AICF_REFACTOR_TEST_ARTIFACT` to
+the absolute path to the extracted `RefactorTool.exe`.
 
 ```powershell
+$env:AICF_REFACTOR_SDK_TESTS = '1'
 $env:AICF_REFACTOR_TEST_ARTIFACT = 'F:/scratch/refactor-extracted/RefactorTool.exe'
-dotnet test tests/dotnet-refactoring/native/RefactorTool.Tests.csproj -c Release
+dotnet test tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.csproj -c Release
 ```
 
-`Boundary=Artifact` selects just the archive cases. These fail if the
-executable path is missing. Archive, notices, and checksum are produced by the
-same publication step in the refactoring workflow.
+Use `Boundary=Sdk` or `Boundary=Artifact` for a selected integration subset.
+An unset artifact selection skips those cases during discovery. An explicit
+artifact selection requires the real win-x64 executable. CI sets both profiles
+and checks the required case counts in the native test reports.
 
 ## Test boundaries
 
-- **Component** tests call the product assembly directly. Roslyn cases use
-  an in-memory project graph and real source bytes. Signature cases compile
-  and invoke a consumer of the planned edits. JSON tests exercise command
-  validation through a per-case writer. Controlled stream failures test
-  observation and recovery state. Windows sharing and exclusive create use
-  real files.
-- **SDK** tests use the real SDK and MSBuild for evaluated and design-time
-  behavior, project inclusion, and source generators. Raw import-rule rows
-  call the real compile-inclusion guard with the relevant projects only.
-  Apply tests keep the complete production preview, recomputation, input
-  locking and write boundary. Cases with distinct drift or imports have
-  independent fixture paths. PowerShell creates real junction fixtures
-  because a symbolic link would exercise a different Windows path type.
-  xUnit evaluates the resulting behavior. SDK-backed preview and apply
-  use the build's RefactorTool executable in separate processes, giving
-  each command a 180-second deadline and releasing loaded analyzer DLLs
-  at exit. The deadline for each fixture SDK command is 120 seconds.
-- **Artifact** tests launch the extracted executable for cross-project
-  Rename and Extract Interface, workspace-relative SDK selection, and SDK
-  roots with the same version. Separate processes isolate SDK locator state
-  where the selected root or working directory is under test. Artifact
-  inspection checks notices, the MSBuild build host and test dependency
-  exclusion.
+- **Unit.** Three `FileApplyTests` cases use injected streams to check the
+  written prefix, unreadable state and closing failures.
+- **Integration.** The remaining former `RefactorTool.Tests` cases run in
+  their own assembly. The Roslyn planners use an in-memory project graph but
+  capture real source bytes. Request validation and file races use real files.
+  Windows path canonicalization and file sharing are gated at discovery.
+  The classic solution and project entry are independent theory rows.
+- **SDK.** The SDK-backed integration cases use the build's RefactorTool in
+  bounded child processes and check actual project inclusion, workspace inputs,
+  generators and apply. `pwsh` creates real junction fixtures, and xUnit
+  verifies the resulting behavior.
+- **Artifact.** The published integration cases launch the extracted tool to
+  exercise cross-project operations and SDK selection. The archive inventory
+  checks notices, the build host and test dependency exclusion.
 
 ## Previous acceptance scenario mapping
 

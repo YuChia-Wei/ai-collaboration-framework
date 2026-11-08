@@ -64,7 +64,7 @@ Run the package-free cases with the [generation tests](../README.md). Run the
 CT-005 tests with the .NET 8 runtime and an explicit verified DLL directory.
 
 ```powershell
-dotnet test tests/dotnet-generation/domain-contract/published/PublishedDomainContract.Tests.csproj -p:PublishedContractsDir=<verified-extracted-directory>
+dotnet test tests/dotnet-generation/domain-contract/published/PublishedDomainContract.IntegrationTests.csproj -p:PublishedContractsDir=<verified-extracted-directory>
 ```
 
 The project restores xUnit and the test SDK through ordinary NuGet

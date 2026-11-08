@@ -1,7 +1,7 @@
 using Custom = BuildingBlocks.Domain;
 using Sample = Example.Plans.Domain;
 
-namespace Generation.Tests;
+namespace DomainContract.UnitTests;
 
 public sealed class PackageFreeContractTests
 {
@@ -10,25 +10,72 @@ public sealed class PackageFreeContractTests
     [Fact]
     public void ReplayRestoresCommittedStateAndOnlyNewFactsRemainPendingUntilConfirmation()
     {
-        var counter = new CustomCounter([new Fact(2), new Fact(3)]);
-        Assert.Equal((5, 2), (counter.Total, counter.Version));
-        Assert.Empty(counter.DomainEvents);
-        counter.Change(4);
-        Assert.Equal(2, counter.Version);
-        Assert.Single(counter.DomainEvents);
-        counter.MarkChangesAsCommitted(3); // Simulated confirmation of the captured batch.
-        Assert.Equal(3, counter.Version);
-        Assert.Empty(counter.DomainEvents);
+        CustomCounter counter = null!;
+        Custom.IDomainEvent[] history = null!;
+
+        this.Given(GivenTwoCommittedCounterFacts, "two committed counter facts")
+            .When(WhenReplayingCounterHistory, "replaying counter history")
+            .Then(ThenRestoreTheCommittedStateWithoutPendingEvents, "restore the committed state without pending events")
+            .When(WhenChangingTheReplayedCounter, "changing the replayed counter")
+            .Then(ThenLeaveTheNewFactPending, "leave the new fact pending")
+            .When(WhenConfirmingThePendingFact, "confirming the pending fact")
+            .Then(ThenAdvanceTheCommittedVersionAndClearPendingEvents, "advance the committed version and clear pending events")
+            .BDDfy();
+
+        void GivenTwoCommittedCounterFacts() => history = [new Fact(2), new Fact(3)];
+
+        void WhenReplayingCounterHistory() => counter = new CustomCounter(history);
+
+        void ThenRestoreTheCommittedStateWithoutPendingEvents()
+        {
+            Assert.Equal((5, 2), (counter.Total, counter.Version));
+            Assert.Empty(counter.DomainEvents);
+        }
+
+        void WhenChangingTheReplayedCounter() => counter.Change(4);
+
+        void ThenLeaveTheNewFactPending()
+        {
+            Assert.Equal(2, counter.Version);
+            Assert.Single(counter.DomainEvents);
+        }
+
+        void WhenConfirmingThePendingFact() => counter.MarkChangesAsCommitted(3);
+
+        void ThenAdvanceTheCommittedVersionAndClearPendingEvents()
+        {
+            Assert.Equal(3, counter.Version);
+            Assert.Empty(counter.DomainEvents);
+        }
     }
 
     [Fact]
     public void CompletePlanHistoryRestoresRequiredNestedState()
     {
-        var history = new PlanHistory();
-        var plan = new Sample.Plan([history.Created, history.ProjectCreated, history.TaskCreated]);
-        Assert.True(plan.GetProject(history.ProjectId)?.HasTask(history.TaskId) == true);
-        Assert.Equal(3, plan.Version);
-        Assert.Empty(plan.DomainEvents);
+        PlanHistory history = null!;
+        Example.Plans.Domain.Plan plan = null!;
+
+        this.Given(GivenThePlanProjectAndTaskFacts, "the plan project and task facts")
+            .When(WhenReplayingThePlanHistory, "replaying the plan history")
+            .Then(ThenRestoreTheNestedTaskWithoutPendingEvents, "restore the nested task without pending events")
+            .BDDfy();
+
+        void GivenThePlanProjectAndTaskFacts()
+        {
+            history = new PlanHistory();
+        }
+
+        void WhenReplayingThePlanHistory()
+        {
+            plan = new Sample.Plan([history.Created, history.ProjectCreated, history.TaskCreated]);
+        }
+
+        void ThenRestoreTheNestedTaskWithoutPendingEvents()
+        {
+            Assert.True(plan.GetProject(history.ProjectId)?.HasTask(history.TaskId) == true);
+            Assert.Equal(3, plan.Version);
+            Assert.Empty(plan.DomainEvents);
+        }
     }
 
     [Fact]

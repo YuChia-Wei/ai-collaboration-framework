@@ -3,11 +3,30 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace RefactorTool.Tests;
+namespace RefactorTool.IntegrationTests;
 
 internal sealed class TestDirectory : IDisposable
 {
-    internal string Root { get; } = Directory.CreateTempSubdirectory("refactor-").FullName;
+    internal string Root { get; } = CreateScratch();
+
+    private static string CreateScratch()
+    {
+        var configured = Environment.GetEnvironmentVariable("AICF_TEST_WORK");
+        var directory = Directory.CreateDirectory(Path.GetFullPath(configured ?? Path.GetTempPath()));
+        // macOS's default temp directory is reached through /var. Resolve
+        // existing ancestors so portable cases exercise ordinary source paths.
+        return PhysicalDirectory(directory).CreateSubdirectory($"refactor-{Guid.NewGuid():N}").FullName;
+    }
+
+    private static DirectoryInfo PhysicalDirectory(DirectoryInfo directory)
+    {
+        if (directory.Parent is null)
+            return directory;
+
+        var parent = PhysicalDirectory(directory.Parent);
+        var entry = new DirectoryInfo(Path.Combine(parent.FullName, directory.Name));
+        return (DirectoryInfo?)entry.ResolveLinkTarget(returnFinalTarget: true) ?? entry;
+    }
 
     internal string PathFor(string relative) => Path.GetFullPath(relative, Root);
 

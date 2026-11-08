@@ -1,11 +1,9 @@
 using System.Diagnostics;
 
-namespace Generation.Tests;
+namespace Generation.TestSupport;
 
 internal sealed class GenerationFixture : IDisposable
 {
-    public static string? TemplatePackage => Environment.GetEnvironmentVariable("AICF_TEMPLATE_PACKAGE");
-    public static string? SnippetArtifact => Environment.GetEnvironmentVariable("AICF_SNIPPET_ARTIFACT");
     public static bool RunSdkTests => Environment.GetEnvironmentVariable("AICF_GENERATION_SDK_TESTS") == "1";
 
     public string Root { get; } = Directory.CreateDirectory(Path.Combine(
@@ -77,24 +75,4 @@ internal sealed class GenerationFixture : IDisposable
     }
 
     public void Dispose() => Directory.Delete(Root, recursive: true);
-}
-
-internal sealed class GenerationSdkFactAttribute : FactAttribute
-{
-    public GenerationSdkFactAttribute()
-    {
-        if (!GenerationFixture.RunSdkTests && GenerationFixture.TemplatePackage is null)
-            Skip = "Set AICF_GENERATION_SDK_TESTS=1 for real SDK/template integration.";
-    }
-}
-
-internal sealed class SnippetArtifactFactAttribute : FactAttribute
-{
-    public SnippetArtifactFactAttribute(bool linuxOnly = false)
-    {
-        if (linuxOnly && !OperatingSystem.IsLinux())
-            Skip = "The FIFO regression requires Linux.";
-        else if (GenerationFixture.SnippetArtifact is null)
-            Skip = "Set AICF_SNIPPET_ARTIFACT to the staged SnippetTool executable.";
-    }
 }
