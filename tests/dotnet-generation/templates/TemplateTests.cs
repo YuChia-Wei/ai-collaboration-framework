@@ -24,11 +24,11 @@ public sealed class TemplateTests
         string[] NewCommand(params string[] command) => ["new", .. command, "--debug:custom-hive", hive];
         Task<string> Template(params string[] command) => fixture.Dotnet(NewCommand(command));
         const string itemNamespace = "Sample.Warehouse.Labels";
+        string? suppliedPackage = null, packageClass = null;
         string delivered = null!;
         string list = null!, help = null!;
         string mini = null!;
         string[] miniArgs = null!;
-        string miniProject = null!;
         string web = null!;
         string solution = null!;
         string application = null!;
@@ -38,26 +38,30 @@ public sealed class TemplateTests
         byte[] before = null!;
         (int Exit, string Output, string Error) collision = default;
         string installed = null!;
+        WorkItemApiResult miniApi = null!, webApi = null!;
 
         this.Given(GivenAnIsolatedTemplateHiveAndSelectedDelivery, "an isolated template hive and selected delivery")
+            .When(WhenInstallingAndInstantiatingTheSuppliedPackage, "installing and instantiating the supplied package")
+            .Then(ThenGenerateTheExpectedClassFromTheSuppliedPackage, "generate the expected class from the supplied package")
+            .Given(GivenTheSelectedTemplateContent, "the selected template content")
             .When(WhenInstallingAndDiscoveringTheDeliveredTemplates, "installing and discovering the delivered templates")
             .Then(ThenExposeTheExpectedTemplateNamesAndOptions, "expose the expected template names and options")
             .Given(GivenAMinimalApiOutputLocation, "a minimal api output location")
             .When(WhenDryRunningMinimalApiGeneration, "dry running minimal api generation")
             .Then(ThenLeaveTheOutputAbsent, "leave the output absent")
-            .When(WhenGeneratingAndBuildingTheMinimalApi, "generating and building the minimal api")
-            .Then(ThenServeTheMinimalApiContract, "serve the minimal api contract")
-            .Given(GivenAWebApiOutputLocation, "a web api output location")
-            .When(WhenGeneratingTheLayeredWebApi, "generating the layered web api")
-            .Then(ThenPreserveTheLayeredProjectGraph, "preserve the layered project graph")
-            .When(WhenBuildingTheLayeredApi, "building the layered api")
-            .Then(ThenServeTheLayeredApiContract, "serve the layered api contract")
+            .When(WhenGeneratingTheMinimalApi, "generating the minimal api")
             .Given(GivenItemTemplateDestinationsAndANamespace, "item template destinations and a namespace")
             .When(WhenGeneratingTheThreeNativeItemKinds, "generating the three native item kinds")
             .Given(GivenAConsumerOfThoseItemsAndACustomizedTemplate, "a consumer of those items and a customized template")
             .When(WhenInstallingAndInstantiatingTheCustomizedTemplate, "installing and instantiating the customized template")
             .Then(ThenPreserveTheCustomMarkerAndNamespace, "preserve the custom marker and namespace")
-            .When(WhenBuildingTheConsumerOfTheGeneratedItems, "building the consumer of the generated items")
+            .When(WhenBuildingAndRequestingTheMinimalApi, "building and requesting the minimal api")
+            .Then(ThenServeTheMinimalApiContract, "serve the minimal api contract")
+            .Given(GivenAWebApiOutputLocation, "a web api output location")
+            .When(WhenGeneratingTheLayeredWebApi, "generating the layered web api")
+            .Then(ThenPreserveTheLayeredProjectGraph, "preserve the layered project graph")
+            .When(WhenBuildingAndRequestingTheLayeredApi, "building and requesting the layered api")
+            .Then(ThenServeTheLayeredApiContract, "serve the layered api contract")
             .Given(GivenAUserEditInTheGeneratedClass, "a user edit in the generated class")
             .When(WhenRegeneratingAtTheEditedDestination, "regenerating at the edited destination")
             .Then(ThenRefuseTheCollisionAndPreserveTheUserEdit, "refuse the collision and preserve the user edit")
@@ -65,23 +69,41 @@ public sealed class TemplateTests
             .Then(ThenRemoveBothShortNames, "remove both short names")
             .BDDfy();
 
-        async Task GivenAnIsolatedTemplateHiveAndSelectedDelivery()
+        void GivenAnIsolatedTemplateHiveAndSelectedDelivery()
         {
-            delivered = Path.Combine(fixture.Root, "delivered");
             if (TemplateSdkFactAttribute.Package is { } supplied)
+                suppliedPackage = GenerationFixture.ExistingArtifact(supplied, "AICF_TEMPLATE_PACKAGE");
+        }
+
+        async Task WhenInstallingAndInstantiatingTheSuppliedPackage()
+        {
+            if (suppliedPackage is null)
+                return;
+
+            await Template("install", suppliedPackage);
+            var smoke = Path.Combine(fixture.Root, "package-smoke");
+            await Template("aicf-class", "--name", "PackageNote", "--namespace", "Sample.Package", "--output", smoke);
+            packageClass = File.ReadAllText(Path.Combine(smoke, "PackageNote.cs"));
+            await Template("uninstall", "AICF.DotNet.Templates");
+        }
+
+        void ThenGenerateTheExpectedClassFromTheSuppliedPackage()
+        {
+            if (suppliedPackage is not null)
+                Assert.Contains("namespace Sample.Package", Assert.IsType<string>(packageClass));
+        }
+
+        void GivenTheSelectedTemplateContent()
+        {
+            if (suppliedPackage is not null)
             {
-                var package = GenerationFixture.ExistingArtifact(supplied, "AICF_TEMPLATE_PACKAGE");
-                await Template("install", package);
-                var smoke = Path.Combine(fixture.Root, "package-smoke");
-                await Template("aicf-class", "--name", "PackageNote", "--namespace", "Sample.Package", "--output", smoke);
-                Assert.Contains("namespace Sample.Package", File.ReadAllText(Path.Combine(smoke, "PackageNote.cs")));
-                await Template("uninstall", "AICF.Dotnet.Templates");
                 var extraction = Path.Combine(fixture.Root, "package");
-                ZipFile.ExtractToDirectory(package, extraction);
+                ZipFile.ExtractToDirectory(suppliedPackage, extraction);
                 delivered = Path.Combine(extraction, "content");
             }
             else
             {
+                delivered = Path.Combine(fixture.Root, "delivered");
                 CopyTree(Path.Combine(AppContext.BaseDirectory, "native-templates"), delivered);
             }
         }
@@ -110,14 +132,15 @@ public sealed class TemplateTests
 
         void ThenLeaveTheOutputAbsent() => Assert.False(Directory.Exists(mini));
 
-        async Task WhenGeneratingAndBuildingTheMinimalApi()
+        async Task WhenGeneratingTheMinimalApi() => await Template(miniArgs);
+
+        async Task WhenBuildingAndRequestingTheMinimalApi()
         {
-            await Template(miniArgs);
-            miniProject = Path.Combine(mini, "Sample.Warehouse.csproj");
-            await fixture.Build(miniProject);
+            await fixture.Build(Path.Combine(mini, "Sample.Warehouse.csproj"));
+            miniApi = await RequestWorkItemApi(fixture, mini, "Sample.Warehouse", "/work-items");
         }
 
-        async Task ThenServeTheMinimalApiContract() => await AssertWorkItemApi(fixture, mini, "Sample.Warehouse", "/work-items");
+        void ThenServeTheMinimalApiContract() => AssertWorkItemApi(miniApi, "/work-items");
 
         void GivenAWebApiOutputLocation()
         {
@@ -132,9 +155,13 @@ public sealed class TemplateTests
             AssertSolutionStructure(web, solution);
         }
 
-        async Task WhenBuildingTheLayeredApi() => await fixture.Build(solution);
+        async Task WhenBuildingAndRequestingTheLayeredApi()
+        {
+            await fixture.Build(solution);
+            webApi = await RequestWorkItemApi(fixture, Path.Combine(web, "WebApi"), "Sample.WarehouseApi.WebApi", "/api/work-items");
+        }
 
-        async Task ThenServeTheLayeredApiContract() => await AssertWorkItemApi(fixture, Path.Combine(web, "WebApi"), "Sample.WarehouseApi.WebApi", "/api/work-items");
+        void ThenServeTheLayeredApiContract() => AssertWorkItemApi(webApi, "/api/work-items");
 
         void GivenItemTemplateDestinationsAndANamespace()
         {
@@ -189,8 +216,6 @@ public sealed class TemplateTests
             Assert.Contains("namespace Sample.Warehouse.Labels", generated);
         }
 
-        async Task WhenBuildingTheConsumerOfTheGeneratedItems() => await fixture.Build(miniProject);
-
         void GivenAUserEditInTheGeneratedClass()
         {
             packingNote = Path.Combine(domain, "PackingNote.cs");
@@ -244,7 +269,7 @@ public sealed class TemplateTests
             Assert.Single(Directory.GetFiles(root, "Program.cs", SearchOption.AllDirectories)));
     }
 
-    private static async Task AssertWorkItemApi(GenerationFixture fixture, string root, string name, string route)
+    private static async Task<WorkItemApiResult> RequestWorkItemApi(GenerationFixture fixture, string root, string name, string route)
     {
         var dll = Path.Combine(root, "bin", "Debug", "net10.0", name + ".dll");
         using var server = fixture.Start("dotnet", [dll, "--urls", "http://127.0.0.1:0"], root);
@@ -263,31 +288,23 @@ public sealed class TemplateTests
                 origin = line[(position + listening.Length)..].Trim();
                 break;
             }
-            if (origin is null)
-                Assert.Fail("Backend did not report a listening address.");
-            Assert.Matches(@"\Ahttp://127\.0\.0\.1:[1-9][0-9]*\z", origin);
+            if (!Uri.TryCreate(origin, UriKind.Absolute, out var address) ||
+                address.Scheme != Uri.UriSchemeHttp || address.Host != "127.0.0.1")
+                throw new InvalidOperationException("Backend did not report an IPv4 loopback HTTP address.");
             output = server.StandardOutput.ReadToEndAsync();
-            using var client = new HttpClient { BaseAddress = new Uri(origin), Timeout = TimeSpan.FromSeconds(10) };
+            using var client = new HttpClient { BaseAddress = address, Timeout = TimeSpan.FromSeconds(10) };
 
             using var created = await client.PostAsJsonAsync(route, new { title = "  Count cartons  " });
-            Assert.Equal(HttpStatusCode.Created, created.StatusCode);
-            var body = await created.Content.ReadFromJsonAsync<JsonElement>();
-            Assert.Equal("Count cartons", body.GetProperty("title").GetString());
-            var id = body.GetProperty("id").GetGuid();
-            Assert.NotEqual(Guid.Empty, id);
+            var body = created.IsSuccessStatusCode ? await created.Content.ReadFromJsonAsync<JsonElement>() : default;
             var location = created.Headers.Location;
-            Assert.NotNull(location);
-            Assert.EndsWith($"{route}/{id:D}", location.ToString(), StringComparison.Ordinal);
-
-            var saved = await client.GetFromJsonAsync<JsonElement>(location);
-            Assert.Equal(id, saved.GetProperty("id").GetGuid());
-            Assert.Equal("Count cartons", saved.GetProperty("title").GetString());
+            using var saved = location is null ? null : await client.GetAsync(location);
+            var savedBody = saved is { IsSuccessStatusCode: true }
+                ? await saved.Content.ReadFromJsonAsync<JsonElement>() : default;
             using var invalid = await client.PostAsJsonAsync(route, new { title = "   " });
-            Assert.Equal(HttpStatusCode.BadRequest, invalid.StatusCode);
             using var missing = await client.GetAsync($"{route}/{Guid.Empty:D}");
-            Assert.Equal(HttpStatusCode.NotFound, missing.StatusCode);
             using var home = await client.GetAsync("/");
-            Assert.Equal(HttpStatusCode.NotFound, home.StatusCode);
+            return new(address.OriginalString, created.StatusCode, body, location, saved?.StatusCode, savedBody,
+                invalid.StatusCode, missing.StatusCode, home.StatusCode);
         }
         finally
         {
@@ -299,6 +316,27 @@ public sealed class TemplateTests
                 await output;
         }
     }
+
+    private static void AssertWorkItemApi(WorkItemApiResult result, string route)
+    {
+        Assert.Matches(@"\Ahttp://127\.0\.0\.1:[1-9][0-9]*\z", result.Origin);
+        Assert.Equal(HttpStatusCode.Created, result.CreatedStatus);
+        Assert.Equal("Count cartons", result.CreatedBody.GetProperty("title").GetString());
+        var id = result.CreatedBody.GetProperty("id").GetGuid();
+        Assert.NotEqual(Guid.Empty, id);
+        Assert.NotNull(result.Location);
+        Assert.EndsWith($"{route}/{id:D}", result.Location.ToString(), StringComparison.Ordinal);
+        Assert.Equal(HttpStatusCode.OK, result.SavedStatus);
+        Assert.Equal(id, result.SavedBody.GetProperty("id").GetGuid());
+        Assert.Equal("Count cartons", result.SavedBody.GetProperty("title").GetString());
+        Assert.Equal(HttpStatusCode.BadRequest, result.InvalidStatus);
+        Assert.Equal(HttpStatusCode.NotFound, result.MissingStatus);
+        Assert.Equal(HttpStatusCode.NotFound, result.HomeStatus);
+    }
+
+    private sealed record WorkItemApiResult(string Origin, HttpStatusCode CreatedStatus, JsonElement CreatedBody,
+        Uri? Location, HttpStatusCode? SavedStatus, JsonElement SavedBody,
+        HttpStatusCode InvalidStatus, HttpStatusCode MissingStatus, HttpStatusCode HomeStatus);
 
     private static void CopyTree(string source, string target)
     {

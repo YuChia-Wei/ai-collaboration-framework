@@ -18,8 +18,6 @@ public sealed class GeneratorConsentTests
         XElement formatterOnly = null!;
         List<((int Exit, JsonElement Result) Refused, bool RanWithoutConsent, (int Exit, JsonElement Result) Allowed, string? Marker)> consentRuns = null!;
         (int Exit, JsonElement Result) markup = default;
-        XElement releaseOnly = null!;
-        (int Exit, JsonElement Result) solution = default;
         (int Exit, JsonElement Result) reference = default;
 
         this.Given(GivenAnAnalyzerWithAnObservableExecutionMarker, "an analyzer with an observable execution marker")
@@ -28,9 +26,6 @@ public sealed class GeneratorConsentTests
             .Given(GivenAnAnalyzerIntroducedByTheMarkupTarget, "an analyzer introduced by the markup target")
             .When(WhenCheckingTheMarkupTargetWithoutConsent, "checking the markup target without consent")
             .Then(ThenRefuseBeforeExecutingTheMarkupGenerator, "refuse before executing the markup generator")
-            .Given(GivenASolutionMappingDebugToRelease, "a solution mapping debug to release")
-            .When(WhenCheckingTheMappedSolution, "checking the mapped solution")
-            .Then(ThenRefuseTheMappedSolutionWithoutExecutingTheGenerator, "refuse the mapped solution without executing the generator")
             .Given(GivenADependencyWithItsOwnReleaseConfiguration, "a dependency with its own release configuration")
             .When(WhenCheckingTheMappedDependency, "checking the mapped dependency")
             .Then(ThenRefuseTheMappedDependencyWithoutExecutingTheGenerator, "refuse the mapped dependency without executing the generator")
@@ -110,41 +105,10 @@ public sealed class GeneratorConsentTests
 
         void ThenRefuseBeforeExecutingTheMarkupGenerator() => AssertConsentRefused(markup, analyzer, File.Exists(marker));
 
-        void GivenASolutionMappingDebugToRelease()
-        {
-            releaseOnly = new XElement("ItemGroup",
-                new XAttribute("Condition", "'$(Configuration)' == 'Release'"), analyzerItem);
-            fixture.WriteProject(releaseOnly.ToString());
-            fixture.Write("Mapped.sln", """
-                Microsoft Visual Studio Solution File, Format Version 12.00
-                Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{A168DF84-CAED-473D-ADAA-96901A33BB02}"
-                EndProject
-                Global
-                  GlobalSection(SolutionConfigurationPlatforms) = preSolution
-                    Debug|Any CPU = Debug|Any CPU
-                  EndGlobalSection
-                  GlobalSection(ProjectConfigurationPlatforms) = postSolution
-                    {A168DF84-CAED-473D-ADAA-96901A33BB02}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-                    {A168DF84-CAED-473D-ADAA-96901A33BB02}.Debug|Any CPU.Build.0 = Release|Any CPU
-                  EndGlobalSection
-                EndGlobal
-                """);
-        }
-
-        async Task WhenCheckingTheMappedSolution()
-        {
-            solution = await fixture.Invoke(workspace: "Mapped.sln", files: ["App/Nested/Chosen.cs"],
-                mode: "style", diagnostics: ["IDE0008"], severity: "warn");
-        }
-
-        void ThenRefuseTheMappedSolutionWithoutExecutingTheGenerator()
-        {
-            Failure(solution, "unsupported-cleanup-workspace");
-            Assert.False(File.Exists(marker), "Mapped solution generator ran without consent.");
-        }
-
         async Task GivenADependencyWithItsOwnReleaseConfiguration()
         {
+            var releaseOnly = new XElement("ItemGroup",
+                new XAttribute("Condition", "'$(Configuration)' == 'Release'"), analyzerItem);
             fixture.Write("Dependency/Dependency.csproj", $"""
                 <Project Sdk="Microsoft.NET.Sdk">
                   <PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>

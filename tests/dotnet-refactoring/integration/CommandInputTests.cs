@@ -33,7 +33,7 @@ public sealed class CommandInputTests
             plan = directory.PathFor("plan.json");
         }
 
-        async Task WhenPreviewingTheInvalidRequest() => result = await Invoke("preview", "--request", request, "--plan", plan);
+        async Task WhenPreviewingTheInvalidRequest() => result = await CommandResult.Run("preview", "--request", request, "--plan", plan);
 
         void ThenRefuseWithoutWritingPlanOrSource()
         {
@@ -64,7 +64,7 @@ public sealed class CommandInputTests
             args = [command, "--request", directory.Root, .. command == "preview" ? new[] { "--plan", plan } : []];
         }
 
-        async Task WhenRunningTheCommand() => result = await Invoke(args);
+        async Task WhenRunningTheCommand() => result = await CommandResult.Run(args);
 
         void ThenRefuseWithoutWritingAPlan()
         {
@@ -95,7 +95,7 @@ public sealed class CommandInputTests
                 directory.Write("plan.json", $$"""{"contract":"refactor-plan/1","edits":[],"request":{"workspace":"a","symbol":"T:C","newName":"Renamed"},"inputs":{{inputs}}}""");
         }
 
-        async Task WhenApplyingThePlan() => result = await Invoke("apply", "--plan", path);
+        async Task WhenApplyingThePlan() => result = await CommandResult.Run("apply", "--plan", path);
 
         void ThenRefuseTheInvalidPlan() => result.Refused("invalid_input");
     }
@@ -123,7 +123,7 @@ public sealed class CommandInputTests
             plan = directory.PathFor(destination);
         }
 
-        async Task WhenPreviewingToThatDestination() => result = await Invoke("preview", "--request", directory.PathFor("unused.json"), "--plan", plan);
+        async Task WhenPreviewingToThatDestination() => result = await CommandResult.Run("preview", "--request", directory.PathFor("unused.json"), "--plan", plan);
 
         void ThenRefuseAndPreserveSourceAndSdkConfig()
         {
@@ -132,12 +132,5 @@ public sealed class CommandInputTests
             Assert.Equal("unchanged", File.ReadAllText(sdk));
             if (destination != "global.json") Assert.False(File.Exists(plan));
         }
-    }
-
-    private static async Task<CommandResult> Invoke(params string[] args)
-    {
-        using var output = new StringWriter();
-        var exit = await Program.Run(args, output);
-        return CommandResult.Parse(exit, output.ToString());
     }
 }

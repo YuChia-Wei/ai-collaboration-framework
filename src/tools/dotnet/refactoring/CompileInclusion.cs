@@ -92,45 +92,51 @@ internal static class CompileInclusion
                     Data.Require(!Microsoft.Build.Globbing.MSBuildGlob.Parse(project.DirectoryPath, pattern).IsMatch(output),
                         "unsupported_compile_inclusion", "An SDK import hook or pattern can include the proposed C# output as an MSBuild project.");
             }
-            // File-dependent custom evaluation or build-time Compile mutations
-            // cannot be proven by an absent-path glob query. Reject them rather
-            // than promise that an in-memory Roslyn document will be built.
-            // Inspect raw roots as well as resolved imports. The logical
-            // project omits inactive Import nodes, which can activate later.
-            foreach (var element in roots.Where(r => !SdkResource(r.FullPath)).SelectMany(r => r.AllChildren))
-            {
-                // SDK-generated NuGet import guards check whether package props
-                // exist; custom file-dependent conditions can instead change
-                // evaluation when the proposed source file appears.
-                var origin = element.ContainingProject.FullPath;
-                var nugetImport = element is Microsoft.Build.Construction.ProjectImportElement packageImport &&
-                    (Paths.Comparer.Equals(origin, generatedProps) || Paths.Comparer.Equals(origin, generatedTargets)) &&
-                    (packageImport.Project.EndsWith(".props", StringComparison.OrdinalIgnoreCase) || packageImport.Project.EndsWith(".targets", StringComparison.OrdinalIgnoreCase)) &&
-                    Stable(packageImport.Project) && string.Equals(packageImport.Condition, $"Exists('{packageImport.Project}')", StringComparison.OrdinalIgnoreCase);
-                Data.Require(nugetImport || (Stable(element.Condition) &&
-                    (element is not Microsoft.Build.Construction.ProjectPropertyElement property || Stable(property.Value))),
-                    "unsupported_compile_inclusion", $"Custom file/item-dependent evaluation cannot prove absent-file compile inclusion: {origin}");
-                if (element is Microsoft.Build.Construction.ProjectImportElement customImport)
-                    Data.Require(nugetImport || (customImport.Project.Split(';').All(ImportSuffix) &&
-                        customImport.Project.IndexOfAny(['*', '?']) < 0 && !customImport.Project.Contains("$(", StringComparison.Ordinal) && Stable(customImport.Project)),
-                        "unsupported_compile_inclusion", $"Custom imports require literal non-wildcard .props/.targets paths: {origin}");
-                if (element is Microsoft.Build.Construction.ProjectPropertyElement customProperty)
-                    Data.Require(!importProperties.Contains(customProperty.Name), "unsupported_compile_inclusion",
-                        $"Custom override of an SDK import hook is outside the supported subset: {customProperty.Name} in {origin}");
-                Data.Require(nugetImport || element is not Microsoft.Build.Construction.ProjectTargetElement,
-                    "unsupported_compile_inclusion", $"Custom build targets are outside Extract Interface's compile-inclusion subset: {origin}");
-                if (element is Microsoft.Build.Construction.ProjectItemElement item && item.ItemType.Equals("Compile", StringComparison.OrdinalIgnoreCase))
-                {
-                    Data.Require(string.IsNullOrEmpty(item.Condition) && item.AllParents.All(p => string.IsNullOrEmpty(p.Condition)) &&
-                        new[] { item.Include, item.Exclude, item.Remove, item.Update }.Select(s => s ?? "").All(s => !s.Contains("$(", StringComparison.Ordinal) &&
-                            !s.Contains("@(", StringComparison.Ordinal) && !s.Contains("%(", StringComparison.Ordinal)),
-                        "unsupported_compile_inclusion", $"Custom Compile rules must be unconditional literal patterns without item/property/metadata expressions: {origin}");
-                }
-            }
+            ValidateCustomProjectXml(roots.Where(r => !SdkResource(r.FullPath)), generatedProps, generatedTargets, importProperties);
             var relative = Path.GetRelativePath(project.DirectoryPath, output);
             var matching = project.GetAllGlobs().Count(g => g.ItemElement.ItemType.Equals("Compile", StringComparison.OrdinalIgnoreCase) && g.MsBuildGlob.IsMatch(relative));
             Data.Require(Paths.Comparer.Equals(info.Path, selected) ? matching == 1 : matching == 0,
                 "unsupported_compile_inclusion", $"New file must match exactly one evaluated Compile glob in its project and none in other loaded projects: {output}");
+        }
+    }
+
+    internal static void ValidateCustomProjectXml(IEnumerable<Microsoft.Build.Construction.ProjectRootElement> roots,
+        string generatedProps, string generatedTargets, IReadOnlySet<string> importProperties)
+    {
+        // File-dependent custom evaluation or build-time Compile mutations
+        // cannot be proven by an absent-path glob query. Reject them rather
+        // than promise that an in-memory Roslyn document will be built.
+        // Inspect raw roots as well as resolved imports. The logical
+        // project omits inactive Import nodes, which can activate later.
+        foreach (var element in roots.SelectMany(r => r.AllChildren))
+        {
+            // SDK-generated NuGet import guards check whether package props
+            // exist; custom file-dependent conditions can instead change
+            // evaluation when the proposed source file appears.
+            var origin = element.ContainingProject.FullPath;
+            var nugetImport = element is Microsoft.Build.Construction.ProjectImportElement packageImport &&
+                (Paths.Comparer.Equals(origin, generatedProps) || Paths.Comparer.Equals(origin, generatedTargets)) &&
+                (packageImport.Project.EndsWith(".props", StringComparison.OrdinalIgnoreCase) || packageImport.Project.EndsWith(".targets", StringComparison.OrdinalIgnoreCase)) &&
+                Stable(packageImport.Project) && string.Equals(packageImport.Condition, $"Exists('{packageImport.Project}')", StringComparison.OrdinalIgnoreCase);
+            Data.Require(nugetImport || (Stable(element.Condition) &&
+                (element is not Microsoft.Build.Construction.ProjectPropertyElement property || Stable(property.Value))),
+                "unsupported_compile_inclusion", $"Custom file/item-dependent evaluation cannot prove absent-file compile inclusion: {origin}");
+            if (element is Microsoft.Build.Construction.ProjectImportElement customImport)
+                Data.Require(nugetImport || (customImport.Project.Split(';').All(ImportSuffix) &&
+                    customImport.Project.IndexOfAny(['*', '?']) < 0 && !customImport.Project.Contains("$(", StringComparison.Ordinal) && Stable(customImport.Project)),
+                    "unsupported_compile_inclusion", $"Custom imports require literal non-wildcard .props/.targets paths: {origin}");
+            if (element is Microsoft.Build.Construction.ProjectPropertyElement customProperty)
+                Data.Require(!importProperties.Contains(customProperty.Name), "unsupported_compile_inclusion",
+                    $"Custom override of an SDK import hook is outside the supported subset: {customProperty.Name} in {origin}");
+            Data.Require(nugetImport || element is not Microsoft.Build.Construction.ProjectTargetElement,
+                "unsupported_compile_inclusion", $"Custom build targets are outside Extract Interface's compile-inclusion subset: {origin}");
+            if (element is Microsoft.Build.Construction.ProjectItemElement item && item.ItemType.Equals("Compile", StringComparison.OrdinalIgnoreCase))
+            {
+                Data.Require(string.IsNullOrEmpty(item.Condition) && item.AllParents.All(p => string.IsNullOrEmpty(p.Condition)) &&
+                    new[] { item.Include, item.Exclude, item.Remove, item.Update }.Select(s => s ?? "").All(s => !s.Contains("$(", StringComparison.Ordinal) &&
+                        !s.Contains("@(", StringComparison.Ordinal) && !s.Contains("%(", StringComparison.Ordinal)),
+                    "unsupported_compile_inclusion", $"Custom Compile rules must be unconditional literal patterns without item/property/metadata expressions: {origin}");
+            }
         }
     }
 

@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -15,7 +13,6 @@ internal sealed class SdkFixture : IDisposable
 {
     internal const string Version = "10.0.403";
     private readonly TestDirectory directory = new();
-    private readonly List<string> junctions = [];
     private readonly string restoreEntry;
     private int sequence;
 
@@ -59,7 +56,7 @@ internal sealed class SdkFixture : IDisposable
 
     internal async Task<string> Dotnet(params string[] args)
     {
-        var result = await RunProcess("dotnet", Root, args, TimeSpan.FromSeconds(120));
+        var result = await TestDirectory.RunProcess("dotnet", Root, args, TimeSpan.FromSeconds(120));
         Assert.True(result.ExitCode == 0, $"dotnet {string.Join(' ', args)}: {result.Output}{result.Error}");
         return result.Output;
     }
@@ -89,30 +86,14 @@ internal sealed class SdkFixture : IDisposable
         // process gives each command its own deadline and a stoppable writer.
         var tool = artifact ?? Path.Combine(AppContext.BaseDirectory, "RefactorTool.exe");
         Assert.True(File.Exists(tool), $"Missing RefactorTool executable: {tool}");
-        var run = await RunProcess(tool, workingDirectory ?? Root, args, TimeSpan.FromSeconds(180));
+        var run = await TestDirectory.RunProcess(tool, workingDirectory ?? Root, args, TimeSpan.FromSeconds(180));
         Assert.Equal("", run.Error);
         return CommandResult.Parse(run.ExitCode, run.Output);
     }
 
-    internal async Task Junction(string relative, string target)
-    {
-        var path = PathFor(relative);
-        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-        // This command creates the real OS fixture. Assertions remain in xUnit.
-        var result = await RunProcess("pwsh", Root,
-            ["-NoProfile", "-Command", "$ErrorActionPreference='Stop'; New-Item -ItemType Junction -Path $env:REFACTOR_TEST_LINK -Target $env:REFACTOR_TEST_TARGET | Out-Null"],
-            TimeSpan.FromSeconds(30), new Dictionary<string, string> { ["REFACTOR_TEST_LINK"] = path, ["REFACTOR_TEST_TARGET"] = target });
-        Assert.True(result.ExitCode == 0, result.Output + result.Error);
-        junctions.Add(path);
-    }
+    internal Task Junction(string relative, string target) => directory.Junction(relative, target);
 
-    internal void RemoveJunction(string relative)
-    {
-        var path = PathFor(relative);
-        Assert.True(File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint));
-        Directory.Delete(path);
-        Assert.True(junctions.Remove(path));
-    }
+    internal void RemoveJunction(string relative) => directory.RemoveJunction(relative);
 
     internal Dictionary<string, byte[]> Snapshot() => Directory.EnumerateFiles(Root, "*.cs", SearchOption.AllDirectories)
         .Where(path => !Path.GetRelativePath(Root, path).Split(Path.DirectorySeparatorChar).SkipLast(1).Any(p => p is "obj" or "bin" or "artifacts"))
@@ -135,52 +116,18 @@ internal sealed class SdkFixture : IDisposable
         return path;
     }
 
-    public void Dispose()
-    {
-        foreach (var path in junctions.AsEnumerable().Reverse())
-        {
-            if (File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint)) Directory.Delete(path);
-        }
-        directory.Dispose();
-    }
-
-    private static async Task<(int ExitCode, string Output, string Error)> RunProcess(string executable, string cwd,
-        string[] args, TimeSpan limit, Dictionary<string, string>? environment = null)
-    {
-        var start = new ProcessStartInfo(executable)
-        {
-            WorkingDirectory = cwd, UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true,
-            StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8
-        };
-        foreach (var arg in args) start.ArgumentList.Add(arg);
-        start.Environment["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
-        // A reusable build node can retain this process's redirected pipes.
-        // Keep test fixture commands isolated and finish their output with the command.
-        start.Environment["MSBUILDDISABLENODEREUSE"] = "1";
-        start.Environment["DOTNET_CLI_USE_MSBUILD_SERVER"] = "0";
-        if (environment is not null)
-            foreach (var (key, value) in environment) start.Environment[key] = value;
-        using var process = Process.Start(start)!;
-        using var timeout = new CancellationTokenSource(limit);
-        var output = process.StandardOutput.ReadToEndAsync(timeout.Token);
-        var error = process.StandardError.ReadToEndAsync(timeout.Token);
-        try
-        {
-            await process.WaitForExitAsync(timeout.Token);
-            return (process.ExitCode, await output, await error);
-        }
-        catch (OperationCanceledException)
-        {
-            var exited = process.HasExited;
-            if (!exited) process.Kill(entireProcessTree: true);
-            await process.WaitForExitAsync();
-            throw new TimeoutException($"{executable} {string.Join(' ', args)} exceeded {limit} while {(exited ? "draining output" : "waiting for exit")}.");
-        }
-    }
+    public void Dispose() => directory.Dispose();
 }
 
 internal sealed record CommandResult(int ExitCode, JsonElement Json)
 {
+    internal static async Task<CommandResult> Run(params string[] args)
+    {
+        using var output = new StringWriter();
+        var exit = await Program.Run(args, output);
+        return Parse(exit, output.ToString());
+    }
+
     internal static CommandResult Parse(int exitCode, string output)
     {
         using var json = JsonDocument.Parse(output);

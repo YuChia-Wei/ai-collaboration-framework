@@ -15,7 +15,7 @@ public sealed class PublishedArtifactTests
         using var fixture = new SdkFixture(twoProjects: true);
         string artifact = null!;
         Dictionary<string, byte[]> original = null!;
-        CommandResult applyingThePublishedRenameResult = null!;
+        CommandResult preview = null!, applyingThePublishedRenameResult = null!;
 
         this.Given(GivenAnExtractedToolAndRestoredCrossProjectReferences, "an extracted tool and restored cross project references")
             .When(WhenPreviewingThePublishedRename, "previewing the published rename")
@@ -32,13 +32,14 @@ public sealed class PublishedArtifactTests
 
             await fixture.Restore();
             original = fixture.Snapshot();
-            (await fixture.Preview(artifact: artifact)).Previewed();
         }
 
-        void WhenPreviewingThePublishedRename() => fixture.AssertSnapshot(original);
+        async Task WhenPreviewingThePublishedRename() => preview = await fixture.Preview(artifact: artifact);
 
         void ThenDescribeRelatedSymbolsWithoutWriting()
         {
+            preview.Previewed();
+            fixture.AssertSnapshot(original);
             var plan = fixture.Plan();
             Assert.Equal(2, plan.Projects.Length);
             Assert.Equal("Enable", Assert.Single(plan.Projects, project => project.Path == fixture.Project).Nullable);

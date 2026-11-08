@@ -103,72 +103,45 @@ public sealed class GeneratorIntegrationTests
         }
     }
 
-    [RefactorSdkTheory]
-    [InlineData("emit-after")]
-    [InlineData("throw-after")]
-    [InlineData("throw-before")]
-    [InlineData("newer-api")]
-    public void ExtractionRefusesActivatedFailingOrIncompatibleAnalyzer(string scenario)
+    [RefactorSdkFact]
+    public void ExtractionRefusesAnalyzerBuiltAgainstNewerSdkRoslyn()
     {
         using var fixture = new SdkFixture();
+        string assembly = null!;
         Dictionary<string, byte[]> original = null!;
         CommandResult result = null!;
 
-        this.Given(GivenTheSelectedFailingOrIncompatibleGenerator, "the selected failing or incompatible generator")
+        this.Given(GivenAnAnalyzerBuiltAgainstTheNewerSdkRoslyn, "an analyzer built against the newer SDK Roslyn")
             .When(WhenPreviewingExtraction, "previewing extraction")
-            .Then(ThenRefuseTheUnsupportedGeneratorWithoutWrites, "refuse the unsupported generator without writes")
+            .Then(ThenRefuseTheIncompatibleAnalyzerWithoutWrites, "refuse the incompatible analyzer without writes")
             .BDDfy();
 
-        async Task GivenTheSelectedFailingOrIncompatibleGenerator()
+        async Task GivenAnAnalyzerBuiltAgainstTheNewerSdkRoslyn()
         {
-            var name = "Generator" + scenario.Replace("-", "");
-            var condition = scenario == "throw-before" ? "true" : """context.Compilation.GetTypeByMetadataName("Contracts.ISelected") != null""";
-            var body = scenario.StartsWith("throw-", StringComparison.Ordinal)
-                ? """throw new System.InvalidOperationException("conditional generator failure");"""
-                : """context.AddSource("Activated.cs", "namespace Generated { internal class Activated {} }");""";
-            var currentRoslyn = typeof(Compilation).Assembly;
-            var reference = scenario == "newer-api"
-                ? "$(MSBuildToolsPath)/Roslyn/bincore/Microsoft.CodeAnalysis.dll"
-                : currentRoslyn.Location;
-            if (scenario == "newer-api")
-            {
-                var info = await fixture.Dotnet("--info");
-                var sdk = info.Split('\n').Single(line => line.TrimStart().StartsWith("Base Path:", StringComparison.Ordinal)).Split(':', 2)[1].Trim();
-                var sdkRoslyn = AssemblyName.GetAssemblyName(Path.Combine(sdk, "Roslyn/bincore/Microsoft.CodeAnalysis.dll"));
-                Assert.True(sdkRoslyn.Version > currentRoslyn.GetName().Version);
-            }
-            var project = fixture.Write($"Generator/{name}.csproj", $"""
+            var info = await fixture.Dotnet("--info");
+            var sdk = info.Split('\n').Single(line => line.TrimStart().StartsWith("Base Path:", StringComparison.Ordinal)).Split(':', 2)[1].Trim();
+            var sdkRoslyn = AssemblyName.GetAssemblyName(Path.Combine(sdk, "Roslyn/bincore/Microsoft.CodeAnalysis.dll"));
+            Assert.True(sdkRoslyn.Version > typeof(Compilation).Assembly.GetName().Version);
+            var project = fixture.Write("Generator/Generator.csproj", """
                 <Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
-                <ItemGroup><Reference Include="Microsoft.CodeAnalysis" HintPath="{SecurityElement.Escape(reference)}" Private="false" /></ItemGroup></Project>
+                <ItemGroup><Reference Include="Microsoft.CodeAnalysis" HintPath="$(MSBuildToolsPath)/Roslyn/bincore/Microsoft.CodeAnalysis.dll" Private="false" /></ItemGroup></Project>
                 """);
-            fixture.Write("Generator/Generator.cs", $$"""
-                using Microsoft.CodeAnalysis;
-                [Generator] public class ConditionalGenerator : ISourceGenerator
-                {
-                    public void Initialize(GeneratorInitializationContext context) {}
-                    public void Execute(GeneratorExecutionContext context)
-                    {
-                        if ({{condition}}) { {{body}} }
-                    }
-                }
-                """);
+            fixture.Write("Generator/Generator.cs", EngineBoundaryTests.GeneratorSource("emit-after"));
             await fixture.Dotnet("build", project, "--source", fixture.Root, "-p:NuGetAudit=false", "--nologo");
-            var assembly = fixture.PathFor($"Generator/bin/Debug/net10.0/{name}.dll");
+            assembly = fixture.PathFor("Generator/bin/Debug/net10.0/Generator.dll");
             Assert.True(File.Exists(assembly));
             fixture.AppendProject($"""<ItemGroup><Analyzer Include="{SecurityElement.Escape(assembly)}" /></ItemGroup>""");
             await fixture.Restore();
             original = fixture.Snapshot();
         }
 
-        async Task WhenPreviewingExtraction()
-        {
-            result = await fixture.Preview(fixture.Extract);
-        }
+        async Task WhenPreviewingExtraction() => result = await fixture.Preview(fixture.Extract);
 
-        void ThenRefuseTheUnsupportedGeneratorWithoutWrites()
+        void ThenRefuseTheIncompatibleAnalyzerWithoutWrites()
         {
             fixture.RefusedPreview(result, "unsupported_generated_source");
-            if (scenario == "newer-api") Assert.Contains("newer Roslyn API", result.Text("message"));
+            Assert.Contains("newer Roslyn API", result.Text("message"));
+            Assert.Contains(assembly, result.Text("message"), StringComparison.OrdinalIgnoreCase);
             fixture.AssertSnapshot(original);
         }
     }

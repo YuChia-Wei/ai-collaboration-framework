@@ -15,6 +15,7 @@
     <Using Include="TestStack.BDDfy" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="unit/**/*.cs" />
     <Compile Include="../dotnet-test-support/PublishedExecutable.cs" Link="PublishedExecutable.cs" />
     <ProjectReference Include="../../src/tools/dotnet/formatting/FormatTool.csproj" />
   </ItemGroup>

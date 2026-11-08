@@ -31,20 +31,20 @@ and checks the required case counts in the native test reports.
 
 ## Test boundaries
 
-- **Unit.** Three `FileApplyTests` cases use injected streams to check the
-  written prefix, unreadable state and closing failures.
-- **Integration.** The remaining former `RefactorTool.Tests` cases run in
-  their own assembly. The Roslyn planners use an in-memory project graph but
-  capture real source bytes. Request validation and file races use real files.
-  Windows path canonicalization and file sharing are gated at discovery.
-  The classic solution and project entry are independent theory rows.
-- **SDK.** The SDK-backed integration cases use the build's RefactorTool in
-  bounded child processes and check actual project inclusion, workspace inputs,
-  generators and apply. `pwsh` creates real junction fixtures, and xUnit
-  verifies the resulting behavior.
-- **Artifact.** The published integration cases launch the extracted tool to
-  exercise cross-project operations and SDK selection. The archive inventory
-  checks notices, the build host and test dependency exclusion.
+| Behavior | Smallest selected boundary | Additional evidence in selected profiles |
+| --- | --- | --- |
+| Write and close failure observations | Three unit cases use injected streams | The file integration cases exercise real directory checks, exclusive create and Windows sharing |
+| Apply preflight and plan destination | Windows integration calls the real command entry with authored plan inputs, independent hashes and real handles or junctions | SDK cases prove that preview captures unedited inputs, retargeted AdditionalFiles can be captured by a new preview, and recomputation rejects stale or forged plans |
+| Rename and Extract Interface semantics | Real Roslyn workspace and planner with authored source bytes. A compiled analyzer PE drives the real generator checks for compatible generators. | SDK cases prove actual Analyzer and generated document discovery, generated references and declarations, and rejection of a newer SDK Roslyn ABI |
+| Workspace and Compile rules | Direct workspace validation rejects configuration injection before SDK selection. The real MSBuild XML parser and custom policy handle raw rule text. | SDK cases evaluate actual Compile globs and imported roots, preserve stable imports, and resolve SDK extension hooks and origin |
+| Extracted executable | Windows artifact integration exercises archive inventory and product CLI execution | Cross-project preview and apply, caller and workspace SDK selection, and SDK roots with the same version |
+
+`Boundary=Preflight` selects Windows apply and destination validation without
+an SDK restore or RefactorTool child process. Its junction fixtures require
+`pwsh`. `Boundary=InProcess` selects the focused planner and MSBuild XML
+cases. The XML cases use the MSBuild installation that built the test
+assembly. They parse actual project elements from strings. The retained
+SDK cases run the tool's apphost so its own SDK selection remains isolated.
 
 ## Previous acceptance scenario mapping
 
@@ -60,12 +60,12 @@ preview plan where applicable.
 | 01 Selected extraction and consumers | `PublishedArtifactTests.PublishedExtractionAppliesSelectedContractAndConsumerDispatches` |
 | 02 Nullable generics, ref/out and private setter | `ExtractInterfaceTests.NullableGenericContractPreservesRefOutAndPrivateSetterBehavior` |
 | 03 Invalid members, output, compile exclusion | `ExtractInterfaceTests.ExactDeclaredMethodOrPropertyIsRequired`, `DuplicateMemberIdsAreRefused`, `InvalidInterfaceOrNamespaceIdentifierIsRefused`, `InvalidOutputPathIsRefused`, extraction rows in `CommandInputTests.InvalidRequestDoesNotWritePlan`, and `CompileInclusionTests.StableImportAllowsPreviewButExplicitCompileExclusionRefuses` |
-| 04 Extract output race, changed input, forged plan | `ApplyIntegrationTests.ExtractApplyRefusesChangedOutputInputOrPlan` |
+| 04 Extract output race, changed input, forged plan | `ApplyIntegrationTests.ExtractApplyRefusesOutputRaceOrForgedPlan` and `PreflightTests.ExtractionApplyRefusesSourceDriftBeforeRecomputing` |
 | 05 Unsupported members and visibility collision | `ExtractInterfaceTests.UnsupportedMemberShapesAreRefused` and `DuplicateTypeWouldIntroduceCompilationErrors` |
-| 06 File-dependent inclusion and invalid Windows paths | `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `ExtractInterfaceTests.InvalidOutputPathIsRefused` |
-| 07 Inactive import, item expressions, target rules, lower-case Compile glob | `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `OtherProjectLowercaseCompileGlobCanAlsoIncludeTheOutput` |
+| 06 File-dependent inclusion and invalid Windows paths | `CompilePolicyTests.RejectsFileDependentCustomProjectXml`, `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `ExtractInterfaceTests.InvalidOutputPathIsRefused` |
+| 07 Inactive import, item expressions, target rules, lower-case Compile glob | `CompilePolicyTests.RejectsFileDependentCustomProjectXml` and `CompileInclusionTests.OtherProjectLowercaseCompileGlobCanAlsoIncludeTheOutput` |
 | 08 Type and namespace rebinding | `ExtractInterfaceTests.ExistingTypeAndNamespaceBindingsCannotChange` |
-| 09 Future imports, SDK hooks, stable positive | `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `StableImportAllowsPreviewButExplicitCompileExclusionRefuses` |
+| 09 Future imports, SDK hooks, stable positive | `CompilePolicyTests.RejectsFileDependentCustomProjectXml`, `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `StableImportAllowsPreviewButExplicitCompileExclusionRefuses` |
 | 10 Primary constructor and setter parameter attribute | `ExtractInterfaceTests.PrimaryConstructorAndMethodBodyArePreserved` and `UnsupportedMemberShapesAreRefused` |
 | 11 Duplicate SDK version under two roots | `PublishedArtifactTests.SdkPathsCanSelectLocalSdkWhenSameVersionExistsInHost` |
 | 12 Cross-project rename with related members, cref, nameof, build | `PublishedArtifactTests.PublishedRenamePreservesCrossProjectSemanticsAndUnrelatedBytes` |
@@ -85,23 +85,23 @@ preview plan where applicable.
 | 34, 48 Explicit conditional configuration and imported framework | `WorkspaceIntegrationTests.ConditionalConfigurationAndImportedFrameworkAreReported` |
 | 35 Existing diagnostic versus new collision | `RenameTests.BaselineErrorDoesNotHideNewLocalCollision` |
 | 37 Unrelated SDK-generated output | `GeneratorIntegrationTests.SdkGeneratorOutputBlocksExtractionButUnrelatedOutputAllowsRename` |
-| 38 Activated, failing, and ABI-incompatible generators | `GeneratorIntegrationTests.ExtractionRefusesActivatedFailingOrIncompatibleAnalyzer` |
+| 38 Activated, failing, and ABI-incompatible generators | `EngineBoundaryTests.ExtractionRefusesCompatibleGeneratorOutputOrFailure` and `GeneratorIntegrationTests.ExtractionRefusesAnalyzerBuiltAgainstNewerSdkRoslyn` |
 | 39 Generated reference and declaration | `GeneratorIntegrationTests.GeneratorReferenceAndDeclarationCannotBeEdited` |
 | 40–41 External intermediates and bin ancestor | `WorkspaceIntegrationTests.ExternalSdkIntermediatesAreCapturedWithoutBeingEdited` and `BinAncestorOutsideProjectDoesNotMarkAuthoredSourceGenerated` |
-| 42, 44 Canonical input retarget and removal | `ApplyIntegrationTests.CanonicalReadOnlyInputDetectsRetargetOrRemoval` |
-| 43 Editable and plan junctions | `ApplyIntegrationTests.PlanAndEditableSourceJunctionsAreRefused` |
-| 45 Exclusive edited or unedited input handle | `ApplyIntegrationTests.ExclusiveSourceOrProjectHandleRefusesBeforeWrites` |
+| 42, 44 Canonical input retarget and removal | `ApplyIntegrationTests.CanonicalReadOnlyInputDetectsRetargetAndAcceptsFreshPreview` and `PreflightTests.MissingCanonicalAdditionalFileRefusesBeforeWrites` |
+| 43 Editable and plan junctions | `PreflightTests.PlanDestinationJunctionIsRefusedBeforeLoadingTheRequest` and `ApplyIntegrationTests.EditableCompileSourceJunctionIsRefused` |
+| 45 Exclusive edited or unedited input handle | `PreflightTests.ExclusiveSourceOrProjectHandleRefusesBeforeWrites` |
 | 46 Non-C# solution member | `WorkspaceIntegrationTests.VisualBasicSolutionMemberIsRejected` |
 | 47 Read-only reference | `ApplyIntegrationTests.ReadOnlyConsumerRefusesBeforeAnySourceChange` |
 | 49, 57 Classic solution folder and project entry graph | `WorkspaceIntegrationTests.ClassicSolutionFolderAndProjectEntryKeepCompilationGraph` |
 | 50–52 BOM, missing final newline, compact hunks, CR-only patch | `RenameTests.PreservesBomAndNoFinalNewline`, `CompactPatchOmitsDistantUnchangedContext`, and `CrOnlySourceAndPatchAreByteExact` |
 | 53 Ambiguous overload position | `RenameTests.PositionOutsideIdentifierAndOverloadGroupAreRefused` |
 | 54 Inherited name collision | `RenameTests.InvalidNamesSelectionsAndCollisionsProduceNoEdits` |
-| 55 Configuration injection | `WorkspaceIntegrationTests.ConfigurationCannotInjectAnMsbuildProperty` |
+| 55 Configuration injection | `EngineBoundaryTests.ConfigurationCannotInjectAnMsbuildProperty` |
 | 56 Caller directory with incompatible SDK | `PublishedArtifactTests.CallerSdkConfigurationDoesNotOverrideWorkspaceSdk` |
 | 58–59 Design-time linked or unexpected sources | `WorkspaceIntegrationTests.DesignTimeOnlySourceCannotSilentlyChangeTheEditableGraph` |
 | 60–61 Design-time missing edge and build-only reference | `WorkspaceIntegrationTests.DesignTimeAndBuildOnlyReferencesHaveDifferentMeaning` |
-| 62 Malformed source encoding | `WorkspaceIntegrationTests.MalformedSourceEncodingIsRefusedWithoutWrites` |
+| 62 Malformed source encoding | `EngineBoundaryTests.MalformedSourceEncodingIsRefusedWithoutWrites` |
 | 63 Alias and generic nameof syntax | `RenameTests.AliasAndGenericNameofPreserveSyntax` |
 | 64 Unsafe source, project-local and SDK configuration plan paths | `CommandInputTests.SourceAndSdkConfigurationNamesAreRefusedBeforePreview` and `ApplyIntegrationTests.PreviewPlanCannotEnterLoadedProjectDirectory` |
 | I/O runner | `FileApplyTests` covers partial and unknown states, all close attempts and prior observations, unchanged-input sharing, exclusive create race, empty and unattempted outputs, and recovery for a partial new file. |

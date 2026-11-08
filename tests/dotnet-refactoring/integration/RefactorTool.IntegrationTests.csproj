@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <RefactorTestSdkPath>$([System.IO.Path]::GetDirectoryName($([MSBuild]::NormalizePath('$(NETCoreSdkBundledVersionsProps)'))))</RefactorTestSdkPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AssemblyMetadata Include="RefactorTestSdkPath" Value="$(RefactorTestSdkPath)" />
+    <Reference Include="Microsoft.Build" HintPath="$(RefactorTestSdkPath)/Microsoft.Build.dll" Private="false" />
     <Using Include="Xunit" />
     <Using Include="TestStack.BDDfy" />
     <Compile Include="../../dotnet-test-support/PublishedExecutable.cs" Link="PublishedExecutable.cs" />

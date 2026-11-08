@@ -1,12 +1,17 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 namespace RefactorTool.IntegrationTests;
 
 internal sealed class TestDirectory : IDisposable
 {
+    private readonly List<string> junctions = [];
     internal string Root { get; } = CreateScratch();
 
     private static string CreateScratch()
@@ -40,7 +45,68 @@ internal sealed class TestDirectory : IDisposable
         return path;
     }
 
-    public void Dispose() => Directory.Delete(Root, recursive: true);
+    internal async Task Junction(string relative, string target)
+    {
+        var path = PathFor(relative);
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        // This command creates the real OS fixture. Assertions remain in xUnit.
+        var result = await RunProcess("pwsh", Root,
+            ["-NoProfile", "-Command", "$ErrorActionPreference='Stop'; New-Item -ItemType Junction -Path $env:REFACTOR_TEST_LINK -Target $env:REFACTOR_TEST_TARGET | Out-Null"],
+            TimeSpan.FromSeconds(30), new Dictionary<string, string> { ["REFACTOR_TEST_LINK"] = path, ["REFACTOR_TEST_TARGET"] = target });
+        Assert.True(result.ExitCode == 0, result.Output + result.Error);
+        junctions.Add(path);
+    }
+
+    internal void RemoveJunction(string relative)
+    {
+        var path = PathFor(relative);
+        Assert.True(File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint));
+        Directory.Delete(path);
+        Assert.True(junctions.Remove(path));
+    }
+
+    internal static async Task<(int ExitCode, string Output, string Error)> RunProcess(string executable, string cwd,
+        string[] args, TimeSpan limit, Dictionary<string, string>? environment = null)
+    {
+        var start = new ProcessStartInfo(executable)
+        {
+            WorkingDirectory = cwd, UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true,
+            StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8
+        };
+        foreach (var arg in args) start.ArgumentList.Add(arg);
+        start.Environment["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
+        // A reusable build node can retain this process's redirected pipes.
+        // Keep test fixture commands isolated and finish their output with the command.
+        start.Environment["MSBUILDDISABLENODEREUSE"] = "1";
+        start.Environment["DOTNET_CLI_USE_MSBUILD_SERVER"] = "0";
+        if (environment is not null)
+            foreach (var (key, value) in environment) start.Environment[key] = value;
+        using var process = Process.Start(start)!;
+        using var timeout = new CancellationTokenSource(limit);
+        var output = process.StandardOutput.ReadToEndAsync(timeout.Token);
+        var error = process.StandardError.ReadToEndAsync(timeout.Token);
+        try
+        {
+            await process.WaitForExitAsync(timeout.Token);
+            return (process.ExitCode, await output, await error);
+        }
+        catch (OperationCanceledException)
+        {
+            var exited = process.HasExited;
+            if (!exited) process.Kill(entireProcessTree: true);
+            await process.WaitForExitAsync();
+            throw new TimeoutException($"{executable} {string.Join(' ', args)} exceeded {limit} while {(exited ? "draining output" : "waiting for exit")}.");
+        }
+    }
+
+    public void Dispose()
+    {
+        foreach (var path in junctions.AsEnumerable().Reverse())
+        {
+            if (File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint)) Directory.Delete(path);
+        }
+        Directory.Delete(Root, recursive: true);
+    }
 }
 
 internal sealed class SemanticWorkspace : IDisposable
@@ -72,6 +138,7 @@ internal sealed class SemanticWorkspace : IDisposable
     private readonly TestDirectory directory = new();
     private readonly ProjectId first;
     private readonly ProjectId? second;
+    private FixtureAnalyzerLoader? analyzerLoader;
 
     internal SemanticWorkspace(string? consumer = null)
     {
@@ -123,6 +190,38 @@ internal sealed class SemanticWorkspace : IDisposable
         var text = SourceText.From(stream, Encoding.UTF8);
         var id = DocumentId.CreateNewId(relative.StartsWith("B/", StringComparison.Ordinal) ? second! : first);
         Assert.True(Loaded.Workspace.TryApplyChanges(Loaded.Workspace.CurrentSolution.AddDocument(id, Path.GetFileName(path), text, filePath: path)));
+    }
+
+    internal void AddGenerator(string source)
+    {
+        var references = References.Append(MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location));
+        var compilation = CSharpCompilation.Create("TestGenerator" + Guid.NewGuid().ToString("N"),
+            [CSharpSyntaxTree.ParseText(source)], references,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        using var image = Emit(compilation);
+        var path = directory.Write("Generator.dll", image.ToArray());
+        analyzerLoader = new FixtureAnalyzerLoader();
+        var analyzer = new AnalyzerFileReference(path, analyzerLoader);
+        Assert.Single(analyzer.GetGenerators(LanguageNames.CSharp));
+        Assert.True(Loaded.Workspace.TryApplyChanges(Loaded.Workspace.CurrentSolution.AddAnalyzerReference(first, analyzer)));
+        Loaded.Capture(path);
+    }
+
+    private sealed class FixtureAnalyzerLoader : IAnalyzerAssemblyLoader
+    {
+        private readonly AssemblyLoadContext context = new(null, isCollectible: true);
+
+        // This fixture generator only depends on the already loaded runtime and
+        // Roslyn assemblies. Stream loading leaves the fixture PE deletable.
+        public void AddDependencyLocation(string fullPath) { }
+
+        public Assembly LoadFromPath(string fullPath)
+        {
+            using var stream = File.OpenRead(fullPath);
+            return context.LoadFromStream(stream);
+        }
+
+        internal void Unload() => context.Unload();
     }
 
     internal async Task<Plan> PlanRename(Request request) =>
@@ -182,6 +281,7 @@ internal sealed class SemanticWorkspace : IDisposable
     public void Dispose()
     {
         Loaded.Dispose();
+        analyzerLoader?.Unload();
         directory.Dispose();
     }
 }

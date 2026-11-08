@@ -57,7 +57,7 @@ jobs:
           & $check -Report "$results/unit.trx" -Expected 3
           dotnet test "$refactoring/integration/RefactorTool.IntegrationTests.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=integration.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & $check -Report "$results/integration.trx" -Expected 126
+          & $check -Report "$results/integration.trx" -Expected 127
       - name: Record archive checksum
         run: |
           $archive = Get-Item -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"

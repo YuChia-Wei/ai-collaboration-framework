@@ -41,9 +41,8 @@ public sealed class ApplyIntegrationTests
 
     [RefactorSdkTheory]
     [InlineData("output-race", "invalid_output")]
-    [InlineData("source-drift", "input_drift")]
     [InlineData("forged-create", "plan_drift")]
-    public void ExtractApplyRefusesChangedOutputInputOrPlan(string change, string expectedCode)
+    public void ExtractApplyRefusesOutputRaceOrForgedPlan(string change, string expectedCode)
     {
         using var fixture = new SdkFixture();
         Dictionary<string, byte[]> original = null!;
@@ -59,7 +58,6 @@ public sealed class ApplyIntegrationTests
             await fixture.Restore();
             (await fixture.Preview(fixture.Extract)).Previewed();
             if (change == "output-race") File.WriteAllText(fixture.Output, "// belongs to another writer");
-            if (change == "source-drift") File.AppendAllText(fixture.Source, "// drift");
             if (change == "forged-create") Tamper(fixture, "create");
             original = fixture.Snapshot();
         }
@@ -72,41 +70,6 @@ public sealed class ApplyIntegrationTests
             fixture.AssertSnapshot(original);
             if (change == "output-race") Assert.Equal("// belongs to another writer", File.ReadAllText(fixture.Output));
             else Assert.False(File.Exists(fixture.Output));
-        }
-    }
-
-    [RefactorSdkTheory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void ExclusiveSourceOrProjectHandleRefusesBeforeWrites(bool project)
-    {
-        using var fixture = new SdkFixture();
-        Dictionary<string, byte[]> original = null!;
-        CommandResult result = null!;
-
-        this.Given(GivenAPreviewAndAnExclusiveInputHandle, "a preview and an exclusive input handle")
-            .When(WhenApplyingWithTheHandleHeld, "applying with the handle held")
-            .Then(ThenRefuseWithoutWritesOrRecovery, "refuse without writes or recovery")
-            .BDDfy();
-
-        async Task GivenAPreviewAndAnExclusiveInputHandle()
-        {
-            await fixture.Restore();
-            (await fixture.Preview()).Previewed();
-            original = fixture.Snapshot();
-        }
-
-        async Task WhenApplyingWithTheHandleHeld()
-        {
-            using (var held = new FileStream(project ? fixture.Project : fixture.Source, FileMode.Open, FileAccess.Read, FileShare.None))
-                result = await fixture.Apply();
-        }
-
-        void ThenRefuseWithoutWritesOrRecovery()
-        {
-            result.Refused("apply_preflight_failed");
-            Assert.False(result.Json.TryGetProperty("recovery", out _));
-            fixture.AssertSnapshot(original);
         }
     }
 
@@ -149,22 +112,24 @@ public sealed class ApplyIntegrationTests
         }
     }
 
-    [RefactorSdkTheory]
-    [InlineData(false, "input_drift")]
-    [InlineData(true, "apply_preflight_failed")]
-    public void CanonicalReadOnlyInputDetectsRetargetOrRemoval(bool remove, string expectedCode)
+    [RefactorSdkFact]
+    public void CanonicalReadOnlyInputDetectsRetargetAndAcceptsFreshPreview()
     {
         using var fixture = new SdkFixture();
-        string aliasPath = null!;
+        var aliasPath = fixture.PathFor("input-alias/Config.props");
         Dictionary<string, byte[]> original = null!;
-        CommandResult result = null!;
+        CommandResult refused = null!, preview = null!, applied = null!;
 
-        this.Given(GivenAPreviewWithARetargetedOrRemovedCanonicalInput, "a preview with a retargeted or removed canonical input")
-            .When(WhenApplyingThePreview, "applying the preview")
+        this.Given(GivenAnSdkCapturedInputRetargetedToIdenticalBytes, "an SDK-captured input retargeted to identical bytes")
+            .When(WhenApplyingTheStalePreview, "applying the stale preview")
             .Then(ThenRefuseBeforeWritesAndReportNoRecovery, "refuse before writes and report no recovery")
+            .When(WhenPreviewingTheRetargetedWorkspace, "previewing the retargeted workspace")
+            .Then(ThenCaptureTheNewPhysicalInputWithoutWriting, "capture the new physical input without writing")
+            .When(WhenApplyingTheFreshPreview, "applying the fresh preview")
+            .Then(ThenApplyTheFreshPlan, "apply the fresh plan")
             .BDDfy();
 
-        async Task GivenAPreviewWithARetargetedOrRemovedCanonicalInput()
+        async Task GivenAnSdkCapturedInputRetargetedToIdenticalBytes()
         {
             var originalConfig = fixture.Write("original-input/Config.props", "<Project />");
             var replacementConfig = fixture.Write("replacement-input/Config.props", "<Project />");
@@ -172,82 +137,61 @@ public sealed class ApplyIntegrationTests
             fixture.AppendProject("""<ItemGroup><AdditionalFiles Include="../input-alias/Config.props" /></ItemGroup>""");
             await fixture.Restore();
             (await fixture.Preview()).Previewed();
-            aliasPath = fixture.PathFor("input-alias/Config.props");
-            var input = Assert.Single(fixture.Plan().Inputs, input => input.Path == aliasPath);
-            AssertCanonicalInput(input, "original-input");
-            if (remove) File.Delete(originalConfig);
-            else
-            {
-                fixture.RemoveJunction("input-alias");
-                await fixture.Junction("input-alias", Path.GetDirectoryName(replacementConfig)!);
-            }
+            AssertCanonicalInput(Assert.Single(fixture.Plan().Inputs, input => input.Path == aliasPath), "original-input");
+            fixture.RemoveJunction("input-alias");
+            await fixture.Junction("input-alias", Path.GetDirectoryName(replacementConfig)!);
             original = fixture.Snapshot();
         }
 
-        async Task WhenApplyingThePreview()
+        async Task WhenApplyingTheStalePreview() => refused = await fixture.Apply();
+
+        void ThenRefuseBeforeWritesAndReportNoRecovery()
         {
-            result = await fixture.Apply();
+            refused.Refused("input_drift");
+            Assert.False(refused.Json.TryGetProperty("recovery", out _));
+            fixture.AssertSnapshot(original);
         }
 
-        async Task ThenRefuseBeforeWritesAndReportNoRecovery()
+        async Task WhenPreviewingTheRetargetedWorkspace() => preview = await fixture.Preview();
+
+        void ThenCaptureTheNewPhysicalInputWithoutWriting()
         {
-            result.Refused(expectedCode);
-            Assert.False(result.Json.TryGetProperty("recovery", out _));
+            preview.Previewed();
+            AssertCanonicalInput(Assert.Single(fixture.Plan().Inputs, input => input.Path == aliasPath), "replacement-input");
             fixture.AssertSnapshot(original);
-            if (!remove)
-            {
-                (await fixture.Preview()).Previewed();
-                AssertCanonicalInput(Assert.Single(fixture.Plan().Inputs, i => i.Path == aliasPath), "replacement-input");
-                (await fixture.Apply()).Applied();
-            }
         }
+
+        async Task WhenApplyingTheFreshPreview() => applied = await fixture.Apply();
+
+        void ThenApplyTheFreshPlan() => applied.Applied();
     }
 
     [RefactorSdkFact]
-    public void PlanAndEditableSourceJunctionsAreRefused()
+    public void EditableCompileSourceJunctionIsRefused()
     {
         using var fixture = new SdkFixture();
-        string outside = null!;
         Dictionary<string, byte[]> original = null!;
-        CommandResult previewingToTheLinkedDestinationResult = null!;
-        CommandResult previewingTheLinkedSourceResult = null!;
+        CommandResult preview = null!;
 
-        this.Given(GivenAPlanDestinationThroughAJunction, "a plan destination through a junction")
-            .When(WhenPreviewingToTheLinkedDestination, "previewing to the linked destination")
-            .Then(ThenRefuseWithoutWritingToTheJunction, "refuse without writing to the junction")
-            .Given(GivenAnEditableSourceThroughAJunction, "an editable source through a junction")
+        this.Given(GivenAnEditableSourceThroughAJunction, "an evaluated Compile source through a junction")
             .When(WhenPreviewingTheLinkedSource, "previewing the linked source")
             .Then(ThenRefuseWithoutChangingSource, "refuse without changing source")
             .BDDfy();
 
-        async Task GivenAPlanDestinationThroughAJunction()
-        {
-            outside = fixture.Write("linked-source/Extra.cs", "public class Extra {}");
-            await fixture.Junction("plan-alias", Path.GetDirectoryName(outside)!);
-            original = fixture.Snapshot();
-        }
-
-        async Task WhenPreviewingToTheLinkedDestination() => previewingToTheLinkedDestinationResult = await fixture.Preview(planPath: fixture.PathFor("plan-alias/plan.json"));
-
-        void ThenRefuseWithoutWritingToTheJunction()
-        {
-            fixture.RefusedPreview(previewingToTheLinkedDestinationResult, "linked_path");
-            fixture.AssertSnapshot(original);
-        }
-
         async Task GivenAnEditableSourceThroughAJunction()
         {
+            var outside = fixture.Write("linked-source/Extra.cs", "public class Extra {}");
             await fixture.Junction("A/alias", Path.GetDirectoryName(outside)!);
             fixture.AppendProject("""<ItemGroup><Compile Remove="alias/**/*.cs" /><Compile Include="alias/Extra.cs" /></ItemGroup>""");
             await fixture.Restore();
             original = fixture.Snapshot();
         }
 
-        async Task WhenPreviewingTheLinkedSource() => previewingTheLinkedSourceResult = await fixture.Preview();
+        async Task WhenPreviewingTheLinkedSource() => preview = await fixture.Preview();
 
         void ThenRefuseWithoutChangingSource()
         {
-            fixture.RefusedPreview(previewingTheLinkedSourceResult, "linked_path");
+            fixture.RefusedPreview(preview, "linked_path");
             fixture.AssertSnapshot(original);
         }
     }

@@ -1,35 +1,38 @@
-using System.Reflection;
+using System.Runtime.Loader;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using Generation.TestSupport;
 using static SnippetTool.IntegrationTests.SnippetTests;
 
 namespace SnippetTool.IntegrationTests;
 
-[Collection("Generation SDK")]
 public sealed class GeneratedFragmentTests
 {
-    [SnippetSdkFact]
-    [Trait("Boundary", "Sdk")]
-    public void RenderedFragmentsCompileAndRetainTheirBehaviorInAConsumer()
+    [Fact]
+    public void Should_retain_the_rendered_fragment_contracts_when_compiled_in_a_consumer()
     {
         using var fixture = new GenerationFixture();
-        string project = null!;
+        using var image = new MemoryStream();
+        var value = new object();
+        string source = null!;
+        EmitResult emitted = null!;
+        string? literal = null;
+        (object Value, int Count) holder = default;
+        bool? idsEqual = null;
+        (int Count, int Version, int Pending) replayed = default, pending = default, rejected = default, committed = default;
+        Exception? nullLabel = null, emptyLabel = null, whitespaceLabel = null, nullValue = null;
+        Exception? canceled = null, nullConstructorValue = null, wrongCommitVersion = null;
 
         this.Given(GivenAConsumerWithRenderedFragments, "a consumer with rendered fragments")
-            .When(WhenBuildingTheConsumerWithTheSdk, "building the consumer with the sdk")
-            .Then(ThenLoadAndExerciseTheCompiledContracts, "load and exercise the compiled contracts")
+            .When(WhenCompilingTheConsumerWithRoslyn, "compiling the consumer with roslyn")
+            .Then(ThenEmitTheConsumerWithoutWarnings, "emit the consumer without warnings")
+            .When(WhenExercisingTheCompiledConsumerContracts, "exercising the compiled consumer contracts")
+            .Then(ThenPreserveTheExpectedConsumerBehavior, "preserve the expected consumer behavior")
             .BDDfy();
 
         void GivenAConsumerWithRenderedFragments()
         {
-            project = fixture.Write("Consumer.csproj", """
-                <Project Sdk="Microsoft.NET.Sdk">
-                  <PropertyGroup>
-                    <TargetFramework>net10.0</TargetFramework>
-                    <Nullable>enable</Nullable>
-                    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-                  </PropertyGroup>
-                </Project>
-                """);
             var declaration = Render(fixture, "interface-method", new { methodName = "ReadAsync", returnType = "Task<string>" });
             var guard = Render(fixture, "string-guard", new { parameterName = "label" });
             var custom = Text(RenderCustom(fixture), "text");
@@ -40,7 +43,7 @@ public sealed class GeneratedFragmentTests
             var property = Render(fixture, "readonly-property", new { propertyName = "Count", propertyType = "int" });
             var contracts = Render(fixture, "domain-contracts");
             var aggregate = Render(fixture, "es-aggregate");
-            fixture.Write("Consumer.cs", $$"""
+            source = $$"""
                 using System;
                 using System.Collections.Generic;
                 using System.Threading;
@@ -95,52 +98,88 @@ public sealed class GeneratedFragmentTests
                     public static void Commit(int version) => _counter!.MarkChangesAsCommitted(version);
                     public static (int, int, int) State() => (_counter!.Count, _counter.Version, _counter.DomainEvents.Count);
                 }
-                """);
+                """;
         }
 
-        async Task WhenBuildingTheConsumerWithTheSdk() => await fixture.Build(project, "Release");
-
-        void ThenLoadAndExerciseTheCompiledContracts()
+        void WhenCompilingTheConsumerWithRoslyn()
         {
-            var compiled = Assembly.Load(File.ReadAllBytes(Path.Combine(fixture.Root, "bin", "Release", "net10.0", "Consumer.dll")));
-            var consumer = compiled.GetType("Consumer", throwOnError: true)!;
-            T Bind<T>(string method) where T : Delegate => consumer.GetMethod(method)!.CreateDelegate<T>();
+            var references = Directory.EnumerateFiles(Path.Combine(AppContext.BaseDirectory, "refs"), "*.dll")
+                .Select(path => MetadataReference.CreateFromFile(path));
+            var syntax = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(LanguageVersion.CSharp14));
+            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
+                optimizationLevel: OptimizationLevel.Release, nullableContextOptions: NullableContextOptions.Enable,
+                generalDiagnosticOption: ReportDiagnostic.Error);
+            emitted = CSharpCompilation.Create("SnippetConsumer", [syntax], references, options).Emit(image);
+        }
 
-            var runGuard = Bind<Action<string?>>("Guard");
-            runGuard("ok");
-            Assert.Throws<ArgumentNullException>("label", () => runGuard(null));
-            Assert.Throws<ArgumentException>("label", () => runGuard(""));
-            Assert.Throws<ArgumentException>("label", () => runGuard(" \t"));
-            Assert.Equal("${顯示}", Bind<Func<string>>("Probe")());
+        void ThenEmitTheConsumerWithoutWarnings() =>
+            Assert.True(emitted.Success, string.Join(Environment.NewLine, emitted.Diagnostics));
 
-            var value = new object();
-            var runNullGuard = Bind<Action<object?>>("NullGuard");
-            runNullGuard(value);
-            Assert.Throws<ArgumentNullException>("value", () => runNullGuard(null));
+        void WhenExercisingTheCompiledConsumerContracts()
+        {
+            image.Position = 0;
+            var context = new AssemblyLoadContext("SnippetConsumer", isCollectible: true);
+            try
+            {
+                var consumer = context.LoadFromStream(image).GetType("Consumer", throwOnError: true)!;
+                T Bind<T>(string method) where T : Delegate => consumer.GetMethod(method)!.CreateDelegate<T>();
 
-            var cancel = Bind<Action<CancellationToken>>("Cancel");
-            cancel(CancellationToken.None);
-            Assert.Throws<OperationCanceledException>(() => cancel(new CancellationToken(true)));
+                var guard = Bind<Action<string?>>("Guard");
+                guard("ok");
+                nullLabel = Record.Exception(() => guard(null));
+                emptyLabel = Record.Exception(() => guard(""));
+                whitespaceLabel = Record.Exception(() => guard(" \t"));
+                literal = Bind<Func<string>>("Probe")();
 
-            var hold = Bind<Func<object, (object Value, int Count)>>("Hold");
-            var holder = hold(value);
+                var nullGuard = Bind<Action<object?>>("NullGuard");
+                nullGuard(value);
+                nullValue = Record.Exception(() => nullGuard(null));
+
+                var cancel = Bind<Action<CancellationToken>>("Cancel");
+                cancel(CancellationToken.None);
+                canceled = Record.Exception(() => cancel(new CancellationToken(true)));
+
+                var hold = Bind<Func<object, (object Value, int Count)>>("Hold");
+                holder = hold(value);
+                nullConstructorValue = Record.Exception(() => { _ = hold(null!); });
+
+                var id = Guid.NewGuid();
+                idsEqual = Bind<Func<Guid, Guid, bool>>("IdEquals")(id, id);
+
+                var state = Bind<Func<(int, int, int)>>("State");
+                Bind<Action>("Replay")();
+                replayed = state();
+                Bind<Action>("Add")();
+                pending = state();
+                var commit = Bind<Action<int>>("Commit");
+                wrongCommitVersion = Record.Exception(() => commit(3));
+                rejected = state();
+                commit(2);
+                committed = state();
+            }
+            finally
+            {
+                context.Unload();
+            }
+        }
+
+        void ThenPreserveTheExpectedConsumerBehavior()
+        {
+            Assert.Equal("label", Assert.IsType<ArgumentNullException>(nullLabel).ParamName);
+            Assert.Equal("label", Assert.IsType<ArgumentException>(emptyLabel).ParamName);
+            Assert.Equal("label", Assert.IsType<ArgumentException>(whitespaceLabel).ParamName);
+            Assert.Equal("${顯示}", literal);
+            Assert.Equal("value", Assert.IsType<ArgumentNullException>(nullValue).ParamName);
+            Assert.IsType<OperationCanceledException>(canceled);
             Assert.Same(value, holder.Value);
             Assert.Equal(3, holder.Count);
-            Assert.Throws<ArgumentNullException>("value", () => hold(null!));
-
-            var id = Guid.NewGuid();
-            Assert.True(Bind<Func<Guid, Guid, bool>>("IdEquals")(id, id));
-
-            var state = Bind<Func<(int, int, int)>>("State");
-            Bind<Action>("Replay")();
-            Assert.Equal((1, 1, 0), state());
-            Bind<Action>("Add")();
-            Assert.Equal((2, 1, 1), state());
-            var commit = Bind<Action<int>>("Commit");
-            Assert.Throws<InvalidOperationException>(() => commit(3));
-            Assert.Equal((2, 1, 1), state());
-            commit(2);
-            Assert.Equal((2, 2, 0), state());
+            Assert.Equal("value", Assert.IsType<ArgumentNullException>(nullConstructorValue).ParamName);
+            Assert.True(idsEqual);
+            Assert.Equal((1, 1, 0), replayed);
+            Assert.Equal((2, 1, 1), pending);
+            Assert.IsType<InvalidOperationException>(wrongCommitVersion);
+            Assert.Equal((2, 1, 1), rejected);
+            Assert.Equal((2, 2, 0), committed);
         }
     }
 }

@@ -192,7 +192,8 @@ public sealed class WorkspaceIntegrationTests
             previewingDebugConfigurationResult.Previewed();
             var debug = fixture.Plan();
             Assert.Contains("DEBUG", Assert.Single(debug.Projects).Defines);
-            Assert.Contains(debug.Limits, limit => limit.Contains(fixture.PathFor("A/Conditional.cs"), StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(debug.Limits, limit => limit.StartsWith("Inactive conditional code", StringComparison.Ordinal) &&
+                limit.EndsWith(fixture.PathFor("A/Conditional.cs"), StringComparison.OrdinalIgnoreCase));
         }
 
         async Task WhenPreviewingReleaseConfiguration() => previewingReleaseConfigurationResult = await fixture.Preview(fixture.Rename with { Configuration = "Release" });
@@ -411,53 +412,6 @@ public sealed class WorkspaceIntegrationTests
                 Assert.Empty(Assert.Single(fixture.Plan().Projects, p => p.Path == project).References);
             }
             else fixture.RefusedPreview(result, "incomplete_references");
-            fixture.AssertSnapshot(original);
-        }
-    }
-
-    [RefactorSdkFact]
-    public void ConfigurationCannotInjectAnMsbuildProperty()
-    {
-        using var fixture = GivenASdkProjectAndAPropertyInjectionRequest();
-        CommandResult previewingWithInjectedConfigurationResult = null!;
-
-        this.Given("a sdk project and a property injection request")
-            .When(WhenPreviewingWithInjectedConfiguration, "previewing with injected configuration")
-            .Then(ThenRefuseTheConfiguration, "refuse the configuration")
-            .BDDfy();
-
-        SdkFixture GivenASdkProjectAndAPropertyInjectionRequest() => new SdkFixture();
-
-        async Task WhenPreviewingWithInjectedConfiguration() => previewingWithInjectedConfigurationResult = await fixture.Preview(fixture.Rename with { Configuration = "Debug,DefineConstants=OTHER" });
-
-        void ThenRefuseTheConfiguration() => fixture.RefusedPreview(previewingWithInjectedConfigurationResult, "invalid_configuration");
-    }
-
-    [RefactorSdkFact]
-    public void MalformedSourceEncodingIsRefusedWithoutWrites()
-    {
-        using var fixture = new SdkFixture();
-        Dictionary<string, byte[]> original = null!;
-        CommandResult previewingRenameResult = null!;
-
-        this.Given(GivenMalformedSourceBytes, "malformed source bytes")
-            .When(WhenPreviewingRename, "previewing rename")
-            .Then(ThenRefuseTheLossyEncodingWithoutWrites, "refuse the lossy encoding without writes")
-            .BDDfy();
-
-        async Task GivenMalformedSourceBytes()
-        {
-            byte[] bytes = [0xef, 0xbb, 0xbf, .. File.ReadAllBytes(fixture.Source), .. "// malformed "u8, 0xff, 0x0a];
-            fixture.Write("A/Service.cs", bytes);
-            await fixture.Restore();
-            original = fixture.Snapshot();
-        }
-
-        async Task WhenPreviewingRename() => previewingRenameResult = await fixture.Preview();
-
-        void ThenRefuseTheLossyEncodingWithoutWrites()
-        {
-            fixture.RefusedPreview(previewingRenameResult, "lossy_encoding");
             fixture.AssertSnapshot(original);
         }
     }

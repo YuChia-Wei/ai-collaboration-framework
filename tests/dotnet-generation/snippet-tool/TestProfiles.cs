@@ -1,15 +1,4 @@
-using Generation.TestSupport;
-
 namespace SnippetTool.IntegrationTests;
-
-internal sealed class SnippetSdkFactAttribute : FactAttribute
-{
-    public SnippetSdkFactAttribute()
-    {
-        if (!GenerationFixture.RunSdkTests)
-            Skip = "Set AICF_GENERATION_SDK_TESTS=1 to compile rendered fragments with the SDK.";
-    }
-}
 
 internal sealed class SnippetArtifactFactAttribute : FactAttribute
 {

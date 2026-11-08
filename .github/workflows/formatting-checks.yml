@@ -68,16 +68,19 @@ jobs:
           $env:AICF_FORMAT_ARTIFACT = "$env:RUNNER_TEMP/format-publish/$env:FORMAT_EXE"
           $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/format-acceptance"
           $testFilter = 'Boundary!=CaseSensitiveArtifact'
-          $expected = 28
+          $expected = 25
           if ($IsWindows) {
             $testFilter += '&Platform!=MacOS'
-            $expected = 25
+            $expected = 22
           }
           $results = "$env:RUNNER_TEMP/format-test-results"
           # dotnet test supplies MSBuildSDKsPath to the test host and its child SDK commands.
           New-Item -ItemType Directory -Path $env:AICF_TEST_WORK | Out-Null
           @{sdk=@{version=$env:FORMAT_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $env:AICF_TEST_WORK 'global.json')
           Set-Location $env:AICF_TEST_WORK
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/unit/FormatTool.UnitTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format-unit.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/format-unit.trx" -Expected 6
           dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" -c Release --filter $testFilter --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/format.trx" -Expected $expected

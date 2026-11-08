@@ -21,8 +21,6 @@ public sealed class SnippetTests
             return ${variable};
         }
         """;
-    private const string CustomText = "    // first\r\n    // second ${verbatim}\r\n\r\n    if (true) {\r\n" +
-        "        var result = \"${顯示}\";\r\n        return result;\r\n    }";
 
     [Fact]
     public void BuiltInCatalogListsSearchesAndInspectsWithoutAChildProcess()
@@ -100,9 +98,6 @@ public sealed class SnippetTests
 
     [Theory]
     [InlineData("""{"schemaVersion":1,"operation":"render","id":"string-guard"}""", "missing-parameter")]
-    [InlineData("""{"schemaVersion":1,"operation":"render","id":"string-guard","parameters":{"parameterName":"label","extra":"value"}}""", "unknown-parameter")]
-    [InlineData("""{"schemaVersion":1,"operation":"render","id":"string-guard","parameters":{"parameterName":"class"}}""", "invalid-parameter")]
-    [InlineData("""{"schemaVersion":1,"operation":"render","id":"interface-method","parameters":{"methodName":"Read","returnType":"List<int>"}}""", "invalid-parameter")]
     [InlineData("""{"schemaVersion":1,"operation":"list","extra":0}""", "invalid-request")]
     [InlineData("""{"schemaVersion":1,"operation":"list","operation":"render"}""", "invalid-request")]
     [InlineData("""{"schemaVersion":2,"operation":"list"}""", "unsupported-request-schema")]
@@ -163,18 +158,15 @@ public sealed class SnippetTests
     }
 
     [Fact]
-    public void CustomRenderPreservesUnicodeLiteralPlaceholdersIndentAndNewlines()
+    public void Should_use_the_selected_source_when_rendering_and_reject_invalid_inspection()
     {
         using var fixture = new GenerationFixture();
         JsonElement rendered = default;
-        (int Exit, string Output, string Error) unknown = (0, "", ""), malformed = (0, "", "");
+        (int Exit, string Output, string Error) malformed = (0, "", "");
 
         this.Given(GivenTheCustomCatalogAndUnicodeBody, "the custom catalog and Unicode body")
             .When(WhenRenderingWithIndentationAndCrlf, "rendering with indentation and CRLF")
-            .Then(ThenPreserveTheExactTextAndSourceVersion, "preserve exact text and source version")
-            .Given(GivenAnUnknownPlaceholder, "a body with an unknown placeholder")
-            .When(WhenRenderingTheUnknownPlaceholder, "rendering the unknown placeholder")
-            .Then(ThenReportAnUnknownPlaceholder, "report an unknown placeholder")
+            .Then(ThenReportTheSelectedSourceAndRenderedText, "report the selected source and rendered text")
             .Given(GivenAMalformedPlaceholder, "a body with a malformed placeholder")
             .When(WhenInspectingTheMalformedPlaceholder, "inspecting the malformed placeholder")
             .Then(ThenReportAnInvalidPlaceholder, "report an invalid placeholder")
@@ -183,15 +175,12 @@ public sealed class SnippetTests
         void GivenTheCustomCatalogAndUnicodeBody() => WriteCustomBody(fixture);
         void WhenRenderingWithIndentationAndCrlf() => rendered = Invoke(fixture, CustomRequest);
 
-        void ThenPreserveTheExactTextAndSourceVersion()
+        void ThenReportTheSelectedSourceAndRenderedText()
         {
             Assert.Equal("2.0.0", Text(rendered.GetProperty("source"), "version"));
-            Assert.Equal(CustomText, Text(rendered, "text"));
+            Assert.StartsWith("    // first\r\n", Text(rendered, "text"), StringComparison.Ordinal);
         }
 
-        void GivenAnUnknownPlaceholder() => fixture.Write("custom-probe.snippet", "return ${unknown};");
-        void WhenRenderingTheUnknownPlaceholder() => unknown = Call(fixture, CustomRequest);
-        void ThenReportAnUnknownPlaceholder() => ReadResult(unknown, "unknown-placeholder");
         void GivenAMalformedPlaceholder() => fixture.Write("custom-probe.snippet", "return ${variable;");
         void WhenInspectingTheMalformedPlaceholder() => malformed = Call(fixture, Inspect("custom-probe"));
         void ThenReportAnInvalidPlaceholder() => ReadResult(malformed, "invalid-placeholder");

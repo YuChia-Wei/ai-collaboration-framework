@@ -47,7 +47,9 @@ internal sealed class RefactorArtifactFactAttribute : FactAttribute
 {
     public RefactorArtifactFactAttribute()
     {
-        if (RefactorTestProfile.Artifact is null)
+        if (!RefactorTestProfile.WindowsX64)
+            Skip = RefactorTestProfile.WindowsSkip;
+        else if (RefactorTestProfile.Artifact is null)
             Skip = "Set AICF_REFACTOR_TEST_ARTIFACT to the extracted win-x64 RefactorTool.exe.";
     }
 }

@@ -39,13 +39,17 @@ internal sealed class FormatFixture : IDisposable
     public string Unselected { get; }
     public string Project => Path.Combine(Root, "App", "App.csproj");
 
-    public FormatFixture(string? scratchRoot = null)
+    public FormatFixture(string? scratchRoot = null, bool requestOnly = false)
     {
         Root = Directory.CreateDirectory(Path.Combine(
             Path.GetFullPath(scratchRoot ?? Environment.GetEnvironmentVariable("AICF_TEST_WORK") ?? Path.GetTempPath()),
             $"format-{Guid.NewGuid():N}")).FullName;
-        Chosen = Write("App/Nested/Chosen.cs", Original);
-        Unselected = Write("App/Unselected.cs", UserEdit);
+        Chosen = Path.Combine(Root, "App", "Nested", "Chosen.cs");
+        Unselected = Path.Combine(Root, "App", "Unselected.cs");
+        if (requestOnly) return;
+
+        Write("App/Nested/Chosen.cs", Original);
+        Write("App/Unselected.cs", UserEdit);
         Write("App/.editorconfig", EditorConfig + "\n");
         Write("App/Nested/.editorconfig", "[*.cs]\nindent_size = 2\n");
         Write("App/Excluded.cs", "class Excluded{}\n");
@@ -67,10 +71,15 @@ internal sealed class FormatFixture : IDisposable
             ProjectBody.Replace("</PropertyGroup>", property + "</PropertyGroup>") + extra + "</Project>");
     }
 
-    public Task Restore()
+    public void PinSdk()
     {
         Assert.NotNull(SdkVersion);
         Write("global.json", JsonSerializer.Serialize(new { sdk = new { version = SdkVersion, rollForward = "disable" } }));
+    }
+
+    public Task Restore()
+    {
+        PinSdk();
         return Dotnet("restore", Project, "--source", Root);
     }
 

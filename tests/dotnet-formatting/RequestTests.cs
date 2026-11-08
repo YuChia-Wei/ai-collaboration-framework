@@ -20,7 +20,7 @@ public sealed class RequestTests
     [MemberData(nameof(InvalidRequests))]
     public void InvalidJsonFailsWithoutSdkOrSourceChanges(string raw)
     {
-        using var fixture = new FormatFixture();
+        using var fixture = new FormatFixture(requestOnly: true);
         byte[] before = null!;
         (int Exit, JsonElement Result) run = default;
 
@@ -31,6 +31,7 @@ public sealed class RequestTests
 
         void GivenOriginalSourceBytes()
         {
+            fixture.Write("App/Nested/Chosen.cs", Original);
             before = File.ReadAllBytes(fixture.Chosen);
         }
 
@@ -47,33 +48,23 @@ public sealed class RequestTests
         }
     }
 
-    [Theory]
-    [InlineData("style", null, null, "invalid-request")]
-    [InlineData("style", "IDE0008", null, "invalid-request")]
-    [InlineData("style", "IDE9999", "warn", "unsupported-diagnostic")]
-    [InlineData("analyzers", "IDE0008", "warn", "unsupported-diagnostic")]
-    [InlineData("analyzers", "CA1040", "warn", "no-fixer")]
-    [InlineData("whitespace", "IDE0008", "warn", "invalid-request")]
-    public void UnsupportedCleanupRequestFailsBeforeSdk(string mode, string? diagnostic, string? severity, string expected)
+    [Fact]
+    public void Should_report_no_fixer_without_sdk_commands_when_submitting_ca1040()
     {
-        using var fixture = GivenAFormattingProject();
+        using var fixture = new FormatFixture(requestOnly: true);
         (int Exit, JsonElement Result) run = default;
 
-        this.Given("a formatting project")
-            .When(WhenSubmittingUnsupportedCleanup, "submitting unsupported cleanup")
-            .Then(ThenRefuseBeforeSdk, "refuse before sdk")
+        this.Given("an analyzer cleanup request for CA1040")
+            .When(WhenSubmittingTheCleanupRequest, "submitting the cleanup request")
+            .Then(ThenReportTheFailureEnvelopeWithoutSdkCommands, "report the failure envelope without sdk commands")
             .BDDfy();
 
-        FormatFixture GivenAFormattingProject() => new FormatFixture();
+        async Task WhenSubmittingTheCleanupRequest() =>
+            run = await fixture.Invoke(mode: "analyzers", diagnostics: ["CA1040"], severity: "warn");
 
-        async Task WhenSubmittingUnsupportedCleanup()
+        void ThenReportTheFailureEnvelopeWithoutSdkCommands()
         {
-            run = await fixture.Invoke(mode: mode, diagnostics: diagnostic is null ? [] : [diagnostic], severity: severity);
-        }
-
-        void ThenRefuseBeforeSdk()
-        {
-            Failure(run, expected);
+            Failure(run, "no-fixer");
             Assert.Empty(Items(run.Result, "commands"));
         }
     }
@@ -81,15 +72,13 @@ public sealed class RequestTests
     [Fact]
     public void EmptySelectionFailsBeforeSdk()
     {
-        using var fixture = GivenAFormattingProject();
+        using var fixture = new FormatFixture(requestOnly: true);
         (int Exit, JsonElement Result) run = default;
 
-        this.Given("a formatting project")
+        this.Given("a request with no selected files")
             .When(WhenSubmittingAnEmptySelection, "submitting an empty selection")
             .Then(ThenRefuseWithoutCommandsOrWrites, "refuse without commands or writes")
             .BDDfy();
-
-        FormatFixture GivenAFormattingProject() => new FormatFixture();
 
         async Task WhenSubmittingAnEmptySelection()
         {
@@ -109,10 +98,10 @@ public sealed class RequestTests
     [InlineData("Nested")]
     public void MissingFileAndDirectorySelectionsFailBeforeSdk(string file)
     {
-        using var fixture = GivenTheProjectWithNoMatchingSourceFile();
+        using var fixture = new FormatFixture(requestOnly: true);
         (int Exit, JsonElement Result) result = default;
 
-        this.Given("a project and a selection that is not a source file")
+        this.Given(GivenAProjectAndDirectory, "a project and directory")
             .When(WhenCheckingTheSelection, "checking the selection")
             .Then(ThenRefuseBeforeSdkOrSourceWrites, "refuse before SDK calls or source writes")
             .BDDfy();
@@ -126,21 +115,23 @@ public sealed class RequestTests
             Assert.Empty(Items(result.Result, "changedFiles"));
         }
 
-        FormatFixture GivenTheProjectWithNoMatchingSourceFile() => new FormatFixture();
+        void GivenAProjectAndDirectory()
+        {
+            fixture.WriteProject();
+            Directory.CreateDirectory(Path.GetDirectoryName(fixture.Chosen)!);
+        }
     }
 
     [FormatHostFact]
     public void MissingWorkspaceFailsBeforeSdk()
     {
-        using var fixture = GivenAFormattingProject();
+        using var fixture = new FormatFixture(requestOnly: true);
         (int Exit, JsonElement Result) run = default;
 
-        this.Given("a formatting project")
+        this.Given("an absent workspace path")
             .When(WhenCheckingAMissingWorkspace, "checking a missing workspace")
             .Then(ThenRefuseBeforeSdk, "refuse before sdk")
             .BDDfy();
-
-        FormatFixture GivenAFormattingProject() => new FormatFixture();
 
         async Task WhenCheckingAMissingWorkspace()
         {
@@ -154,6 +145,79 @@ public sealed class RequestTests
         }
     }
 
+    [FormatHostFact]
+    public void Should_refuse_cleanup_when_the_solution_maps_debug_to_release()
+    {
+        using var fixture = new FormatFixture(requestOnly: true);
+        (int Exit, JsonElement Result) run = default;
+
+        this.Given(GivenASolutionMappingDebugToRelease, "a solution mapping debug to release")
+            .When(WhenCheckingTheMappedSolution, "checking the mapped solution")
+            .Then(ThenRefuseBeforeSdkCommands, "refuse before sdk commands")
+            .BDDfy();
+
+        void GivenASolutionMappingDebugToRelease()
+        {
+            fixture.WriteProject();
+            fixture.Write("App/Nested/Chosen.cs", Original);
+            fixture.Write("Mapped.sln", """
+                Microsoft Visual Studio Solution File, Format Version 12.00
+                Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{A168DF84-CAED-473D-ADAA-96901A33BB02}"
+                EndProject
+                Global
+                  GlobalSection(SolutionConfigurationPlatforms) = preSolution
+                    Debug|Any CPU = Debug|Any CPU
+                  EndGlobalSection
+                  GlobalSection(ProjectConfigurationPlatforms) = postSolution
+                    {A168DF84-CAED-473D-ADAA-96901A33BB02}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+                    {A168DF84-CAED-473D-ADAA-96901A33BB02}.Debug|Any CPU.Build.0 = Release|Any CPU
+                  EndGlobalSection
+                EndGlobal
+                """);
+        }
+
+        async Task WhenCheckingTheMappedSolution() =>
+            run = await fixture.Invoke(workspace: "Mapped.sln", files: ["App/Nested/Chosen.cs"],
+                mode: "style", diagnostics: ["IDE0008"], severity: "warn");
+
+        void ThenRefuseBeforeSdkCommands()
+        {
+            Failure(run, "unsupported-cleanup-workspace");
+            Assert.Empty(Items(run.Result, "commands"));
+        }
+    }
+
+    [FormatHostFact]
+    public void Should_preserve_the_linked_source_when_it_is_outside_the_workspace()
+    {
+        using var fixture = new FormatFixture(requestOnly: true);
+        string linked = null!;
+        byte[] before = null!;
+        (int Exit, JsonElement Result) run = default;
+
+        this.Given(GivenALinkedSourceOutsideTheProject, "a linked source outside the project")
+            .When(WhenApplyingThroughTheProject, "applying through the project")
+            .Then(ThenRefuseBeforeSdkCommandsAndPreserveTheLinkedSource, "refuse before sdk commands and preserve the linked source")
+            .BDDfy();
+
+        void GivenALinkedSourceOutsideTheProject()
+        {
+            linked = fixture.Write("@Linked.cs", Original);
+            fixture.WriteProject("""<ItemGroup><Compile Include="../@Linked.cs" Link="Linked.cs" /></ItemGroup>""");
+            before = File.ReadAllBytes(linked);
+        }
+
+        async Task WhenApplyingThroughTheProject() =>
+            run = await fixture.Invoke(files: ["../@Linked.cs"], action: "apply");
+
+        void ThenRefuseBeforeSdkCommandsAndPreserveTheLinkedSource()
+        {
+            Failure(run, "unsupported-selection");
+            Assert.Empty(Items(run.Result, "commands"));
+            Assert.Equal(before, File.ReadAllBytes(linked));
+        }
+    }
+
     [FormatHostTheory(posixOnly: true)]
     [Trait("Platform", "MacOS")]
     [InlineData("Wildcard*.cs")]
@@ -161,7 +225,7 @@ public sealed class RequestTests
     [InlineData(@"Wildcard\Other.cs")]
     public void PosixLiteralGlobAndSeparatorNamesFailBeforeSdk(string name)
     {
-        using var fixture = new FormatFixture();
+        using var fixture = new FormatFixture(requestOnly: true);
         string sibling = null!, literal = null!;
         byte[] siblingBefore = null!, literalBefore = null!;
         (int Exit, JsonElement Result) result = default;
@@ -173,6 +237,7 @@ public sealed class RequestTests
 
         void GivenAFileWithALiteralGlobOrSeparator()
         {
+            fixture.WriteProject();
             sibling = fixture.Write("App/WildcardOther.cs", Original);
             siblingBefore = File.ReadAllBytes(sibling);
             literal = fixture.Write("App/" + name, Original);
