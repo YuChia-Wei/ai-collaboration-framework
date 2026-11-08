@@ -5,6 +5,7 @@ namespace PublishedDomainContract.IntegrationTests;
 
 public sealed class PublishedContractTests
 {
+    /// <summary>Restores committed state with no pending events and rejects a second history load.</summary>
     [Fact]
     public void LoadingHistoryRestoresStateWithoutPendingEventsAndCannotRepeat()
     {
@@ -42,6 +43,7 @@ public sealed class PublishedContractTests
         }
     }
 
+    /// <summary>Keeps pending facts through unconfirmed append and clears the batch only after confirmation.</summary>
     [Fact]
     public void PendingBatchSurvivesRejectedOrUnconfirmedAppendAndClearsOnConfirmation()
     {
@@ -99,6 +101,7 @@ public sealed class PublishedContractTests
         void ThenRejectRepeatedLoading() => Assert.IsType<InvalidOperationException>(reloading);
     }
 
+    /// <summary>Rejects subsequent operations on an instance whose history replay failed.</summary>
     [Fact]
     public void FailedReplayRejectsFurtherOperationsOnTheSameInstance()
     {

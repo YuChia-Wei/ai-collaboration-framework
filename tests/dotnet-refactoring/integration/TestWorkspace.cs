@@ -71,10 +71,18 @@ internal sealed class TestDirectory : IDisposable
     {
         var start = new ProcessStartInfo(executable)
         {
-            WorkingDirectory = cwd, UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true,
-            StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8
+            WorkingDirectory = cwd,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            StandardOutputEncoding = Encoding.UTF8,
+            StandardErrorEncoding = Encoding.UTF8
         };
         foreach (var arg in args) start.ArgumentList.Add(arg);
+        // Locator configures the test host. Let each child resolve its own SDK.
+        start.Environment.Remove("MSBUILD_EXE_PATH");
+        start.Environment.Remove("MSBuildExtensionsPath");
         start.Environment.Remove("MSBuildSDKsPath");
         start.Environment["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
         // A reusable build node can retain this process's redirected pipes.
@@ -159,13 +167,19 @@ internal sealed class SemanticWorkspace : IDisposable
     internal string ConsumerPath => directory.PathFor("B/Use.cs");
     internal Request Rename => new()
     {
-        Workspace = directory.PathFor("Demo.slnx"), Project = directory.PathFor("A/A.csproj"),
-        Symbol = GetInt, NewName = "Fetch"
+        Workspace = directory.PathFor("Demo.slnx"),
+        Project = directory.PathFor("A/A.csproj"),
+        Symbol = GetInt,
+        NewName = "Fetch"
     };
     internal Request Extract => Rename with
     {
-        Operation = "extract-interface", Symbol = "T:Demo.Service", NewName = "ISelected",
-        Namespace = "Contracts", OutputFile = Output, Members = [GetInt, Property]
+        Operation = "extract-interface",
+        Symbol = "T:Demo.Service",
+        NewName = "ISelected",
+        Namespace = "Contracts",
+        OutputFile = Output,
+        Members = [GetInt, Property]
     };
 
     private ProjectId AddProject(string name)
@@ -196,17 +210,22 @@ internal sealed class SemanticWorkspace : IDisposable
 
     internal void AddGenerator(string source)
     {
-        var references = References.Append(MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location));
-        var compilation = CSharpCompilation.Create("TestGenerator" + Guid.NewGuid().ToString("N"),
-            [CSharpSyntaxTree.ParseText(source)], references,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-        using var image = Emit(compilation);
-        var path = directory.Write("Generator.dll", image.ToArray());
+        var path = directory.Write("Generator.dll", EmitGenerator(source, typeof(Compilation).Assembly.Location));
         analyzerLoader = new FixtureAnalyzerLoader();
         var analyzer = new AnalyzerFileReference(path, analyzerLoader);
         Assert.Single(analyzer.GetGenerators(LanguageNames.CSharp));
         Assert.True(Loaded.Workspace.TryApplyChanges(Loaded.Workspace.CurrentSolution.AddAnalyzerReference(first, analyzer)));
         Loaded.Capture(path);
+    }
+
+    internal static byte[] EmitGenerator(string source, string codeAnalysisPath)
+    {
+        var references = References.Append(MetadataReference.CreateFromFile(codeAnalysisPath));
+        var compilation = CSharpCompilation.Create("TestGenerator" + Guid.NewGuid().ToString("N"),
+            [CSharpSyntaxTree.ParseText(source)], references,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        using var image = Emit(compilation);
+        return image.ToArray();
     }
 
     private sealed class FixtureAnalyzerLoader : IAnalyzerAssemblyLoader

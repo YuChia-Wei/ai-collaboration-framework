@@ -314,14 +314,18 @@ def verify_bundle(directory, expected_source=None):
                 body_file = safe_name(snippet["bodyFile"])
                 require("/" not in body_file and body_file.endswith(".snippet"), "invalid snippet body filename")
                 required.add(prefix + "snippets/" + body_file)
-        # Older generation bundles have no formatting component.
-        if "formatting" in generation:
-            require(generation["formatting"] in (
+        formatting = generation.get("formatting")
+        if formatting == {"kind": "dotnet-format-script"}:
+            required.update({"generation/formatting/Format-Dotnet.ps1",
+                             "generation/formatting/README.md"})
+        elif "formatting" in generation:
+            # Previously built bundles retain their own formatter layouts.
+            require(formatting in (
                         {"runtimes": ["win-x64"], "sdk_version": "10.0.403"},
                         {"runtimes": ["win-x64", "osx-arm64"],
                          "sdk_versions": {"win-x64": "10.0.403", "osx-arm64": "10.0.400"}}),
                     "formatting support contract")
-            for rid in generation["formatting"]["runtimes"]:
+            for rid in formatting["runtimes"]:
                 prefix = "generation/formatting/" + rid + "/"
                 executable = "FormatTool.exe" if rid == "win-x64" else "FormatTool"
                 required.update({prefix + executable, prefix + "README.md"})

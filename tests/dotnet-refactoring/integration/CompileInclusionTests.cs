@@ -4,8 +4,9 @@ namespace RefactorTool.IntegrationTests;
 [Collection(SdkCollection.Name)]
 public sealed class CompileInclusionTests
 {
+    /// <summary>Rejects compile exclusions and unstable imports that invalidate the proposed output.</summary>
     [RefactorSdkTheory]
-    [InlineData("""<ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup>""", "ISelected.cs")]
+    [InlineData("""<ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup><Import Project="Bound.props" />""", "ISelected.cs")]
     [InlineData("""<Import Project="Fake.nuget.g.targets" />""", "ISelected.cs")]
     [InlineData("""<PropertyGroup><CustomBeforeMicrosoftCommonTargets>$(MSBuildProjectDirectory)/Contracts/ISelected.cs</CustomBeforeMicrosoftCommonTargets></PropertyGroup>""", "Contracts/ISelected.cs")]
     [InlineData("""<PropertyGroup><DirectoryBuildTargetsPath>$(MSBuildProjectDirectory)/Contracts/ISelected.cs</DirectoryBuildTargetsPath></PropertyGroup>""", "Contracts/ISelected.cs")]
@@ -15,7 +16,9 @@ public sealed class CompileInclusionTests
         using var fixture = new SdkFixture();
         string output = null!;
         Dictionary<string, byte[]> original = null!;
-        CommandResult result = null!;
+        CommandResult? result = null;
+        Exception? failure = null;
+        bool direct = false;
 
         this.Given(GivenAPotentiallyUnstableCompileRule, "a potentially unstable compile rule")
             .When(WhenCheckingWhetherTheNewFileWouldCompile, "checking whether the new file would compile")
@@ -25,26 +28,44 @@ public sealed class CompileInclusionTests
         async Task GivenAPotentiallyUnstableCompileRule()
         {
             fixture.Write("A/Fake.nuget.g.targets", """<Project><Target Name="RemoveInterface" BeforeTargets="CoreCompile"><ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup></Target></Project>""");
+            fixture.Write("A/Bound.props", "<Project><PropertyGroup><Nullable>enable</Nullable></PropertyGroup></Project>");
             fixture.AppendProject(xml);
             output = fixture.PathFor("A/" + destination);
             Directory.CreateDirectory(Path.GetDirectoryName(output)!);
-            await fixture.Restore();
+            direct = CompilePolicyTests.MsBuildParser.CanEvaluate(fixture.SdkPath);
+            if (!direct)
+                await fixture.Restore();
             original = fixture.Snapshot();
         }
 
         async Task WhenCheckingWhetherTheNewFileWouldCompile()
         {
-            result = await fixture.Preview(fixture.Extract with { OutputFile = output });
+            var request = fixture.Extract with { OutputFile = output };
+            if (!direct)
+            {
+                result = await fixture.Preview(request);
+                return;
+            }
+
+            await CompileInclusion.Register(request);
+            using var loaded = new LoadedWorkspace(new Microsoft.CodeAnalysis.AdhocWorkspace(), SdkFixture.Version);
+            loaded.Projects.Add(new ProjectInfo(fixture.Project, "net10.0", request.Configuration, "Enable", "14.0", [], []));
+            failure = await Record.ExceptionAsync(
+                () => CompileInclusion.Require(loaded, fixture.Project, output, request));
         }
 
         void ThenRefuseWithoutCreatingTheFile()
         {
-            fixture.RefusedPreview(result, "unsupported_compile_inclusion");
+            if (direct)
+                Assert.Equal("unsupported_compile_inclusion", Assert.IsType<RefactorFailure>(failure).Code);
+            else
+                fixture.RefusedPreview(result!, "unsupported_compile_inclusion");
             Assert.False(File.Exists(output));
             fixture.AssertSnapshot(original);
         }
     }
 
+    /// <summary>Rejects an output that a second project's lowercase compile glob could include.</summary>
     [RefactorSdkFact]
     public void OtherProjectLowercaseCompileGlobCanAlsoIncludeTheOutput()
     {
@@ -80,53 +101,35 @@ public sealed class CompileInclusionTests
         }
     }
 
+    /// <summary>Captures a stable import and allows a nonmatching literal Compile exclusion without changing source.</summary>
     [RefactorSdkFact]
-    public void StableImportAllowsPreviewButExplicitCompileExclusionRefuses()
+    public void StableImportAllowsPreviewAndIsCaptured()
     {
-        using var stable = new SdkFixture();
-        using var excluded = new SdkFixture();
+        using var fixture = new SdkFixture();
         Dictionary<string, byte[]> original = null!;
-        CommandResult previewingExtractionWithTheStableImportResult = null!;
-        Dictionary<string, byte[]> excludedOriginal = null!;
-        CommandResult previewingExtractionWithTheExclusionResult = null!;
+        CommandResult result = null!;
 
-        this.Given(GivenAProjectWithAStableImport, "a project with a stable import")
-            .When(WhenPreviewingExtractionWithTheStableImport, "previewing extraction with the stable import")
-            .Then(ThenPreviewWithoutChangingAuthoredSource, "preview without changing authored source")
-            .Given(GivenAProjectThatExplicitlyExcludesTheOutput, "a project that explicitly excludes the output")
-            .When(WhenPreviewingExtractionWithTheExclusion, "previewing extraction with the exclusion")
-            .Then(ThenRefuseWithoutChangingAuthoredSource, "refuse without changing authored source")
+        this.Given(GivenAStableImport, "a stable import and a nonmatching literal Compile exclusion")
+            .When(WhenPreviewingExtraction, "previewing extraction")
+            .Then(ThenPreviewAndCaptureTheImportWithoutWritingSource, "preview and capture the import without writing source")
             .BDDfy();
 
-        async Task GivenAProjectWithAStableImport()
+        async Task GivenAStableImport()
         {
-            stable.Write("A/Bound.props", "<Project><PropertyGroup><Nullable>enable</Nullable></PropertyGroup></Project>");
-            stable.AppendProject("""<Import Project="Bound.props" />""");
-            await stable.Restore();
-            original = stable.Snapshot();
+            fixture.Write("A/Bound.props", "<Project><PropertyGroup><Nullable>enable</Nullable></PropertyGroup></Project>");
+            fixture.AppendProject("""<Import Project="Bound.props" /><ItemGroup><Compile Remove="Excluded.cs" /></ItemGroup>""");
+            await fixture.Restore();
+            original = fixture.Snapshot();
         }
 
-        async Task WhenPreviewingExtractionWithTheStableImport() => previewingExtractionWithTheStableImportResult = await stable.Preview(stable.Extract);
+        async Task WhenPreviewingExtraction() => result = await fixture.Preview(fixture.Extract);
 
-        void ThenPreviewWithoutChangingAuthoredSource()
+        void ThenPreviewAndCaptureTheImportWithoutWritingSource()
         {
-            previewingExtractionWithTheStableImportResult.Previewed();
-            stable.AssertSnapshot(original);
-        }
-
-        async Task GivenAProjectThatExplicitlyExcludesTheOutput()
-        {
-            excluded.AppendProject("""<ItemGroup><Compile Remove="ISelected.cs" /></ItemGroup>""");
-            await excluded.Restore();
-            excludedOriginal = excluded.Snapshot();
-        }
-
-        async Task WhenPreviewingExtractionWithTheExclusion() => previewingExtractionWithTheExclusionResult = await excluded.Preview(excluded.Extract);
-
-        void ThenRefuseWithoutChangingAuthoredSource()
-        {
-            excluded.RefusedPreview(previewingExtractionWithTheExclusionResult, "unsupported_compile_inclusion");
-            excluded.AssertSnapshot(excludedOriginal);
+            result.Previewed();
+            Assert.Contains(fixture.Plan().Inputs, input =>
+                string.Equals(input.Path, fixture.PathFor("A/Bound.props"), StringComparison.OrdinalIgnoreCase));
+            fixture.AssertSnapshot(original);
         }
     }
 }

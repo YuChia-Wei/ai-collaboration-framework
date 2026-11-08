@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 using System.Security;
 using Microsoft.CodeAnalysis;
 
@@ -8,6 +10,7 @@ namespace RefactorTool.IntegrationTests;
 [Collection(SdkCollection.Name)]
 public sealed class GeneratorIntegrationTests
 {
+    /// <summary>Rejects extraction with SDK generator output while allowing an unrelated cross-project rename to build.</summary>
     [RefactorSdkFact]
     public void SdkGeneratorOutputBlocksExtractionButUnrelatedOutputAllowsRename()
     {
@@ -49,15 +52,36 @@ public sealed class GeneratorIntegrationTests
 
         async Task WhenPreviewingAnUnrelatedRename() => previewingAnUnrelatedRenameResult = await fixture.Preview();
 
-        void ThenPreviewingAnUnrelatedRenameSucceeds() => previewingAnUnrelatedRenameResult.Previewed();
+        void ThenPreviewingAnUnrelatedRenameSucceeds()
+        {
+            previewingAnUnrelatedRenameResult.Previewed();
+            fixture.AssertSnapshot(original);
+            var plan = fixture.Plan();
+            Assert.Equal(2, plan.Projects.Length);
+            Assert.Equal("Enable", Assert.Single(plan.Projects, project => project.Path == fixture.Project).Nullable);
+            Assert.NotEmpty(plan.Patch);
+            Assert.Contains("M:Demo.IService.Get(System.Int32)", plan.RelatedSymbols);
+            Assert.Contains("M:Demo.Derived.Get(System.Int32)", plan.RelatedSymbols);
+        }
 
         async Task WhenApplyingTheUnrelatedRename() => applyingTheUnrelatedRenameResult = await fixture.Apply();
 
         void ThenChangeTheAuthoredReferences()
         {
             applyingTheUnrelatedRenameResult.Applied();
-            Assert.Contains("override int Fetch(int value) => base.Fetch(value)", File.ReadAllText(fixture.Source));
-            Assert.Contains("service.Fetch(2)", File.ReadAllText(fixture.Consumer));
+            var source = File.ReadAllText(fixture.Source);
+            var consumer = File.ReadAllText(fixture.Consumer);
+            Assert.Contains("interface IService { int Fetch(int value); }", source);
+            Assert.Contains("override int Fetch(int value) => base.Fetch(value)", source);
+            Assert.Contains("public int Get(string value)", source);
+            Assert.Contains("class Other { public int Get(int value)", source);
+            Assert.Contains("service.Fetch(2)", consumer);
+            Assert.Contains("new Other().Get(4)", consumer);
+            Assert.Contains("cref=\"Service.Fetch(int)\"", consumer);
+            Assert.Contains("nameof(IService.Fetch)", consumer);
+            Assert.Contains("\"Get Service\"", consumer);
+            Assert.Contains("// Get Service", consumer);
+            Assert.Equal(source.Count(c => c == '\n'), source.Split("\r\n").Length - 1);
         }
 
         async Task WhenBuildingTheEditedWorkspace() => await fixture.Dotnet("build", fixture.Workspace, "--no-restore", "--nologo");
@@ -65,6 +89,7 @@ public sealed class GeneratorIntegrationTests
         void ThenTheEditedWorkspaceBuilds() => Assert.True(File.Exists(fixture.PathFor("B/bin/Debug/net10.0/B.dll")));
     }
 
+    /// <summary>Rejects a rename that would edit a source-generated reference or declaration.</summary>
     [RefactorSdkTheory]
     [InlineData("P:Demo.Service.Property", "Value", "uneditable_reference")]
     [InlineData("P:Context.Service", "ServiceInfo", "uneditable_symbol")]
@@ -103,6 +128,7 @@ public sealed class GeneratorIntegrationTests
         }
     }
 
+    /// <summary>Refuses extraction when an evaluated analyzer requires a newer Roslyn API.</summary>
     [RefactorSdkFact]
     public void ExtractionRefusesAnalyzerBuiltAgainstNewerSdkRoslyn()
     {
@@ -118,18 +144,19 @@ public sealed class GeneratorIntegrationTests
 
         async Task GivenAnAnalyzerBuiltAgainstTheNewerSdkRoslyn()
         {
-            var info = await fixture.Dotnet("--info");
-            var sdk = info.Split('\n').Single(line => line.TrimStart().StartsWith("Base Path:", StringComparison.Ordinal)).Split(':', 2)[1].Trim();
-            var sdkRoslyn = AssemblyName.GetAssemblyName(Path.Combine(sdk, "Roslyn/bincore/Microsoft.CodeAnalysis.dll"));
+            var sdkRoslynPath = Path.Combine(fixture.SdkPath, "Roslyn/bincore/Microsoft.CodeAnalysis.dll");
+            var sdkRoslyn = AssemblyName.GetAssemblyName(sdkRoslynPath);
             Assert.True(sdkRoslyn.Version > typeof(Compilation).Assembly.GetName().Version);
-            var project = fixture.Write("Generator/Generator.csproj", """
-                <Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
-                <ItemGroup><Reference Include="Microsoft.CodeAnalysis" HintPath="$(MSBuildToolsPath)/Roslyn/bincore/Microsoft.CodeAnalysis.dll" Private="false" /></ItemGroup></Project>
-                """);
-            fixture.Write("Generator/Generator.cs", EngineBoundaryTests.GeneratorSource("emit-after"));
-            await fixture.Dotnet("build", project, "--source", fixture.Root, "-p:NuGetAudit=false", "--nologo");
-            assembly = fixture.PathFor("Generator/bin/Debug/net10.0/Generator.dll");
-            Assert.True(File.Exists(assembly));
+            assembly = fixture.Write("Generator/Generator.dll",
+                SemanticWorkspace.EmitGenerator(EngineBoundaryTests.GeneratorSource("emit-after"), sdkRoslynPath));
+            using (var stream = File.OpenRead(assembly))
+            using (var pe = new PEReader(stream))
+            {
+                var metadata = pe.GetMetadataReader();
+                var reference = Assert.Single(metadata.AssemblyReferences.Select(metadata.GetAssemblyReference),
+                    reference => metadata.GetString(reference.Name) == "Microsoft.CodeAnalysis");
+                Assert.Equal(sdkRoslyn.Version, reference.Version);
+            }
             fixture.AppendProject($"""<ItemGroup><Analyzer Include="{SecurityElement.Escape(assembly)}" /></ItemGroup>""");
             await fixture.Restore();
             original = fixture.Snapshot();

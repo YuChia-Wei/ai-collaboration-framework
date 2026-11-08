@@ -20,6 +20,7 @@
     <Compile Remove="unit/**/*.cs" />
     <ProjectReference Include="../../../src/tools/dotnet/generation/snippet-tool/SnippetTool.csproj" />
     <Compile Include="../GenerationFixture.cs" Link="GenerationFixture.cs" />
+    <Compile Include="../../dotnet-test-support/DotnetTestHost.cs" Link="DotnetTestHost.cs" />
     <Compile Remove="artifact/**/*.cs" />
   </ItemGroup>
 </Project>

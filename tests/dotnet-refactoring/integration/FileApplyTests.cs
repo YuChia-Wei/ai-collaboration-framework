@@ -4,6 +4,7 @@ namespace RefactorTool.IntegrationTests;
 
 public sealed class FileApplyTests
 {
+    /// <summary>Blocks an ordinary writer while the unchanged input is held and allows it after close.</summary>
     [WindowsFact]
     public void UnchangedInputDeniesOrdinaryWriterUntilHandlesClose()
     {
@@ -60,6 +61,7 @@ public sealed class FileApplyTests
         void ThenAllowTheWriterAfterRelease() => Assert.Equal("released", File.ReadAllText(unchanged));
     }
 
+    /// <summary>Leaves a competing creator's output and existing source intact after an exclusive create fails.</summary>
     [Fact]
     public void CompetingCreatorOwnsOutputAndExistingSourceStaysOriginal()
     {
@@ -101,6 +103,7 @@ public sealed class FileApplyTests
         }
     }
 
+    /// <summary>Distinguishes an empty created file, a failed create, and outputs that were never attempted.</summary>
     [Fact]
     public void CreateAcquisitionFailureDistinguishesEmptyAndUnattemptedOutputs()
     {
@@ -139,6 +142,7 @@ public sealed class FileApplyTests
         }
     }
 
+    /// <summary>Reports partial bytes and recovery for a failed write to a newly created output.</summary>
     [Fact]
     public void PartialNewFileRequiresRecoveryForCreatedFile()
     {

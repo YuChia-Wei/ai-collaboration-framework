@@ -24,8 +24,9 @@ selection is explicit; the ZIP is not an initialized project.
 ## Install .NET generation tools
 
 Run `python generation/install-generation.py --project <project-root>`.
-It installs the packaged templates and Windows x64/Linux x64 self-contained
-snippet tools into `.ai/tools/dotnet-generation`. See `generation/README.md`.
+It installs the packaged templates, Windows x64/Linux x64 self-contained snippet
+tools and the SDK formatting script into `.ai/tools/dotnet-generation`. See
+`generation/README.md`.
 No template registration or application generation happens during installation.
 
 `content-hashes.json` and the external release manifest identify the exact bytes.

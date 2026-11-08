@@ -2,6 +2,7 @@ namespace RefactorTool.IntegrationTests;
 
 public sealed class CommandInputTests
 {
+    /// <summary>Refuses invalid request JSON or unsupported request fields without creating a plan.</summary>
     [Theory]
     [InlineData(null)]
     [InlineData("{")]
@@ -43,6 +44,7 @@ public sealed class CommandInputTests
         }
     }
 
+    /// <summary>Rejects a directory supplied as a request file for inspect or preview.</summary>
     [Theory]
     [InlineData("inspect")]
     [InlineData("preview")]
@@ -73,6 +75,7 @@ public sealed class CommandInputTests
         }
     }
 
+    /// <summary>Rejects a missing or malformed apply plan before writing source.</summary>
     [WindowsTheory]
     [InlineData(null)]
     [InlineData("[null]")]
@@ -100,6 +103,7 @@ public sealed class CommandInputTests
         void ThenRefuseTheInvalidPlan() => result.Refused("invalid_input");
     }
 
+    /// <summary>Protects source and SDK configuration destinations from preview plan writes.</summary>
     [Theory]
     [InlineData("A/Injected.cs")]
     [InlineData("global.json")]

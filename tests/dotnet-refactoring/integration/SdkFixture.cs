@@ -20,6 +20,7 @@ internal sealed class SdkFixture : IDisposable
     internal SdkFixture(bool twoProjects = false)
     {
         var selected = DotnetTestHost.RequireSdk(Version);
+        SdkPath = Path.Combine(selected.Root, "sdk", Version);
         directory = new();
         directory.Write("global.json", Data.Serialize(new
         {
@@ -38,6 +39,7 @@ internal sealed class SdkFixture : IDisposable
     }
 
     internal string Root => directory.Root;
+    internal string SdkPath { get; }
     internal string Workspace { get; }
     internal string Project => PathFor("A/A.csproj");
     internal string Source => PathFor("A/Service.cs");
@@ -47,8 +49,12 @@ internal sealed class SdkFixture : IDisposable
     internal Request Rename => new() { Workspace = Workspace, Project = Project, Symbol = SemanticWorkspace.GetInt, NewName = "Fetch" };
     internal Request Extract => Rename with
     {
-        Operation = "extract-interface", Symbol = "T:Demo.Service", NewName = "ISelected", Namespace = "Contracts",
-        OutputFile = Output, Members = [SemanticWorkspace.GetInt, SemanticWorkspace.Property]
+        Operation = "extract-interface",
+        Symbol = "T:Demo.Service",
+        NewName = "ISelected",
+        Namespace = "Contracts",
+        OutputFile = Output,
+        Members = [SemanticWorkspace.GetInt, SemanticWorkspace.Property]
     };
 
     internal string PathFor(string relative) => directory.PathFor(relative);
@@ -73,6 +79,12 @@ internal sealed class SdkFixture : IDisposable
         var requestPath = Write($"request{sequence}.json", Data.Serialize(request ?? Rename));
         PlanPath = planPath ?? PathFor($"plan{sequence}.json");
         return await Invoke(["preview", "--request", requestPath, "--plan", PlanPath], artifact, workingDirectory);
+    }
+
+    internal async Task<CommandResult> Inspect(Request? request = null, string? workingDirectory = null)
+    {
+        var requestPath = Write($"request{++sequence}.json", Data.Serialize(request ?? Rename));
+        return await Invoke(["inspect", "--request", requestPath], artifact: null, workingDirectory: workingDirectory);
     }
 
     internal async Task<CommandResult> Apply(string? artifact = null) =>
@@ -149,6 +161,12 @@ internal sealed record CommandResult(int ExitCode, JsonElement Json)
     }
 
     internal string Text(string field) => Json.GetProperty(field).GetString()!;
+
+    internal void Loaded()
+    {
+        Assert.True(ExitCode == 0, Json.GetRawText());
+        Assert.Equal("loaded", Text("status"));
+    }
 
     internal void Previewed()
     {

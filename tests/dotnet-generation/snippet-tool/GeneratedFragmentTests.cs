@@ -10,6 +10,9 @@ namespace SnippetTool.IntegrationTests;
 
 public sealed class GeneratedFragmentTests
 {
+    /// <summary>
+    /// Compiles rendered fragments in a real C# consumer and exercises their guard, assignment, identity, and replay contracts.
+    /// </summary>
     [Fact]
     public void Should_retain_the_rendered_fragment_contracts_when_compiled_in_a_consumer()
     {

@@ -17,7 +17,6 @@
   <ItemGroup>
     <Compile Include="../SnippetTestSupport.cs" Link="SnippetTestSupport.cs" />
     <Compile Include="../../GenerationFixture.cs" Link="GenerationFixture.cs" />
-    <Compile Include="../../../dotnet-test-support/DotnetTestHost.cs" Link="DotnetTestHost.cs" />
     <Compile Include="../../../dotnet-test-support/PublishedExecutable.cs" Link="PublishedExecutable.cs" />
   </ItemGroup>
 </Project>

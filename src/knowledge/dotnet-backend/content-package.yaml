@@ -113,24 +113,6 @@ members:
 - {path: standards/project-structure.md, kind: normative-rule}
 - {path: templates/application-properties-templates.md, kind: template}
 - {path: templates/domain-contracts/README.md, kind: knowledge}
-- {path: templates/domain-contracts/package-free/.template.config/template.json, kind: template}
-- {path: templates/domain-contracts/package-free/AicfPackageFreeContracts.csproj.template, kind: template}
-- {path: templates/domain-contracts/package-free/PackageFreeContractTests.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/EsAggregateRoot.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/IAggregateRoot.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/IDomainEntity.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/IDomainEvent.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/Plan.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/PlanEvents.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/PlanId.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/Project.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/ProjectId.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/ProjectName.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/TagId.cs, kind: template}
-- {path: templates/domain-contracts/package-free/fixtures/TaskId.cs, kind: template}
-- {path: templates/domain-contracts/published-ct005/.template.config/template.json, kind: template}
-- {path: templates/domain-contracts/published-ct005/AicfCt005Contracts.csproj.template, kind: template}
-- {path: templates/domain-contracts/published-ct005/PublishedContractTests.cs, kind: template}
 - {path: templates/profile-isolated-configurations.md, kind: template}
 - {path: tooling/generation/DELIVERY.md, kind: knowledge}
 - {path: tooling/generation/README.md, kind: knowledge}
@@ -2576,6 +2558,11 @@ references:
 - from: templates/domain-contracts/README.md
   resource_id: member:standards/contract-cases.md
   target: {package: dotnet-backend, path: standards/contract-cases.md, anchor: null}
+  requirement: required
+  on_missing: unavailable
+- from: templates/domain-contracts/README.md
+  resource_id: member:tooling/generation/DELIVERY.md
+  target: {package: dotnet-backend, path: tooling/generation/DELIVERY.md, anchor: null}
   requirement: required
   on_missing: unavailable
 - from: tooling/generation/README.md

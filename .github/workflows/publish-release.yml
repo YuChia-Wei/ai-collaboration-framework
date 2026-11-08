@@ -1,4 +1,4 @@
-# Draft delivery only. No test execution, generated AI notes or public publication.
+# Draft delivery with native artifact acceptance; no generated AI notes or public publication.
 name: Prepare framework draft
 on:
   push:
@@ -80,6 +80,10 @@ jobs:
           cat "$RUNNER_TEMP/build-release.stdout"
           cat "$RUNNER_TEMP/build-release.stderr" >&2
           exit "$build_status"
+      - name: Test the actual delivery template package
+        shell: pwsh
+        run: |
+          & .github/scripts/Test-TemplatePackage.ps1 -SourceRoot "$env:RUNNER_TEMP/rb/s" -PackageDirectory "$env:RUNNER_TEMP/rb/x/generation/templates" -WorkDirectory "$env:RUNNER_TEMP/template-acceptance"
       - name: Admit exact package bytes for writer and retries
         id: upload
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

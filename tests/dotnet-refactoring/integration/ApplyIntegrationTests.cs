@@ -4,6 +4,7 @@ namespace RefactorTool.IntegrationTests;
 [Collection(SdkCollection.Name)]
 public sealed class ApplyIntegrationTests
 {
+    /// <summary>Rejects a rename plan when a captured input, source membership, or proposed edit changes.</summary>
     [RefactorSdkTheory]
     [InlineData("unmodified", "input_drift")]
     [InlineData("glob-member", "plan_drift")]
@@ -39,6 +40,7 @@ public sealed class ApplyIntegrationTests
         }
     }
 
+    /// <summary>Rejects extraction if the output appears or the create edit is forged after preview.</summary>
     [RefactorSdkTheory]
     [InlineData("output-race", "invalid_output")]
     [InlineData("forged-create", "plan_drift")]
@@ -73,45 +75,7 @@ public sealed class ApplyIntegrationTests
         }
     }
 
-    [RefactorSdkFact]
-    public void ReadOnlyConsumerRefusesBeforeAnySourceChange()
-    {
-        using var fixture = new SdkFixture(twoProjects: true);
-        Dictionary<string, byte[]> original = null!;
-        FileAttributes attributes = default;
-        CommandResult result = null!;
-
-        this.Given(GivenAPreviewAndAReadOnlyConsumer, "a preview and a read only consumer")
-            .When(WhenApplyingWithTheConsumerReadOnly, "applying with the consumer read only")
-            .Then(ThenRefuseBeforeAnySourceWrite, "refuse before any source write")
-            .BDDfy();
-
-        async Task GivenAPreviewAndAReadOnlyConsumer()
-        {
-            await fixture.Restore();
-            (await fixture.Preview()).Previewed();
-            original = fixture.Snapshot();
-            attributes = File.GetAttributes(fixture.Consumer);
-        }
-
-        async Task WhenApplyingWithTheConsumerReadOnly()
-        {
-            try
-            {
-                File.SetAttributes(fixture.Consumer, attributes | FileAttributes.ReadOnly);
-                result = await fixture.Apply();
-            }
-            finally { File.SetAttributes(fixture.Consumer, attributes); }
-        }
-
-        void ThenRefuseBeforeAnySourceWrite()
-        {
-            Assert.Equal(2, result.ExitCode);
-            Assert.False(result.Json.GetProperty("sourceWrites").GetBoolean());
-            fixture.AssertSnapshot(original);
-        }
-    }
-
+    /// <summary>Rejects a retargeted input until a fresh plan captures its new physical path.</summary>
     [RefactorSdkFact(requiresJunction: true)]
     public void CanonicalReadOnlyInputDetectsRetargetAndAcceptsFreshPreview()
     {
@@ -166,6 +130,7 @@ public sealed class ApplyIntegrationTests
         void ThenApplyTheFreshPlan() => applied.Applied();
     }
 
+    /// <summary>Rejects an evaluated editable Compile item that reaches its source through a junction.</summary>
     [RefactorSdkFact(requiresJunction: true)]
     public void EditableCompileSourceJunctionIsRefused()
     {
@@ -196,6 +161,7 @@ public sealed class ApplyIntegrationTests
         }
     }
 
+    /// <summary>Refuses a plan destination inside any loaded project directory.</summary>
     [RefactorSdkFact]
     public void PreviewPlanCannotEnterLoadedProjectDirectory()
     {

@@ -8,11 +8,9 @@ import platform
 import stat
 import subprocess
 
-RUNTIMES = {'win-x64': ('Windows', 'AMD64', ('snippets', 'formatting')),
-            'linux-x64': ('Linux', 'x86_64', ('snippets',)),
-            'osx-arm64': ('Darwin', 'arm64', ('formatting',))}
-PROJECTS = {'snippets': 'generation/snippet-tool/SnippetTool.csproj',
-            'formatting': 'formatting/FormatTool.csproj'}
+RUNTIMES = {'win-x64': ('Windows', 'AMD64', ('snippets',)),
+            'linux-x64': ('Linux', 'x86_64', ('snippets',))}
+PROJECTS = {'snippets': 'generation/snippet-tool/SnippetTool.csproj'}
 
 
 def digest(path):

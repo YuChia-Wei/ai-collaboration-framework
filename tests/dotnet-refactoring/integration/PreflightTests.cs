@@ -6,6 +6,7 @@ namespace RefactorTool.IntegrationTests;
 [Trait("Boundary", "Preflight")]
 public sealed class PreflightTests
 {
+    /// <summary>Rejects changed extraction input before recomputing or creating output.</summary>
     [WindowsFact]
     public void ExtractionApplyRefusesSourceDriftBeforeRecomputing()
     {
@@ -22,8 +23,12 @@ public sealed class PreflightTests
         {
             fixture.WritePlan(fixture.Rename with
             {
-                Operation = "extract-interface", Symbol = "T:Demo.Service", NewName = "ISelected",
-                Namespace = "Contracts", OutputFile = fixture.Output, Members = ["M:Demo.Service.Get"]
+                Operation = "extract-interface",
+                Symbol = "T:Demo.Service",
+                NewName = "ISelected",
+                Namespace = "Contracts",
+                OutputFile = fixture.Output,
+                Members = ["M:Demo.Service.Get"]
             });
             File.WriteAllText(fixture.Source, drifted);
         }
@@ -37,6 +42,7 @@ public sealed class PreflightTests
         }
     }
 
+    /// <summary>Rejects apply while a captured source or project input is held exclusively.</summary>
     [WindowsTheory]
     [InlineData(false)]
     [InlineData(true)]
@@ -61,6 +67,7 @@ public sealed class PreflightTests
         void ThenRefuseBeforeWritesOrRecovery() => fixture.AssertApplyRefused(result, "apply_preflight_failed");
     }
 
+    /// <summary>Rejects a missing canonical additional input without recreating or editing files.</summary>
     [WindowsJunctionFact]
     public void MissingCanonicalAdditionalFileRefusesBeforeWrites()
     {
@@ -95,6 +102,7 @@ public sealed class PreflightTests
         }
     }
 
+    /// <summary>Rejects a plan path through a junction before reading the request.</summary>
     [WindowsJunctionFact]
     public void PlanDestinationJunctionIsRefusedBeforeLoadingTheRequest()
     {
@@ -125,6 +133,64 @@ public sealed class PreflightTests
             Assert.False(File.Exists(physicalPlan));
             fixture.AssertAuthoredFilesUnchanged();
         }
+    }
+
+    /// <summary>Rejects preflight for a read-only consumer before either planned file changes.</summary>
+    [WindowsFact]
+    public void ReadOnlyConsumerRefusesBeforeAnySourceChange()
+    {
+        using var directory = new TestDirectory();
+        const string originalSource = "class Service {}";
+        const string originalConsumer = "class Consumer { Service value = new(); }";
+        string source = null!, consumer = null!;
+        Plan plan = null!;
+        Exception? failure = null;
+        FileAttributes? originalAttributes = null;
+
+        try
+        {
+            this.Given(GivenTwoPlannedChangesAndAReadOnlyConsumer, "two planned changes and a read-only consumer")
+                .When(WhenOpeningThePlanInputs, "opening the plan inputs for apply")
+                .Then(ThenRefuseBeforeChangingEitherFile, "refuse before changing either file")
+                .BDDfy();
+        }
+        finally
+        {
+            if (originalAttributes is { } attributes)
+                File.SetAttributes(consumer, attributes);
+        }
+
+        void GivenTwoPlannedChangesAndAReadOnlyConsumer()
+        {
+            source = directory.Write("A/Service.cs", originalSource);
+            consumer = directory.Write("B/Consumer.cs", originalConsumer);
+            var attributes = File.GetAttributes(consumer);
+            originalAttributes = attributes;
+            File.SetAttributes(consumer, attributes | FileAttributes.ReadOnly);
+            plan = new Plan
+            {
+                Inputs = [new(source, Hash(Encoding.UTF8.GetBytes(originalSource))),
+                    new(consumer, Hash(Encoding.UTF8.GetBytes(originalConsumer)))],
+                Edits = [Modify(source, originalSource), Modify(consumer, originalConsumer)]
+            };
+        }
+
+        void WhenOpeningThePlanInputs() => failure = Record.Exception(() =>
+        {
+            var locks = InputLocks.Open(plan);
+            FileApply.Close(locks.All);
+        });
+
+        void ThenRefuseBeforeChangingEitherFile()
+        {
+            Assert.Equal("unwritable_source", Assert.IsType<RefactorFailure>(failure).Code);
+            Assert.Equal(Encoding.UTF8.GetBytes(originalSource), File.ReadAllBytes(source));
+            Assert.Equal(Encoding.UTF8.GetBytes(originalConsumer), File.ReadAllBytes(consumer));
+        }
+
+        static FileEdit Modify(string path, string text) =>
+            new(path, "modify", Convert.ToBase64String(Encoding.UTF8.GetBytes(text)),
+                Convert.ToBase64String(Encoding.UTF8.GetBytes(text.Replace("Service", "RenamedService"))));
     }
 
     private static string Hash(ReadOnlySpan<byte> bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));

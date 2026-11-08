@@ -5,6 +5,7 @@ namespace RefactorTool.IntegrationTests;
 
 public sealed class ExtractInterfaceTests
 {
+    /// <summary>Preserves generic constraints, nullability, ref and out parameters, and consumer dispatch.</summary>
     [Fact]
     public void NullableGenericContractPreservesRefOutAndPrivateSetterBehavior()
     {
@@ -33,7 +34,8 @@ public sealed class ExtractInterfaceTests
         {
             plan = await workspace.PlanExtraction(workspace.Extract with
             {
-                Symbol = "T:Demo.Service`1", Members = ["P:Demo.Service`1.Value", "M:Demo.Service`1.Read``1(`0@,System.Int32@)"]
+                Symbol = "T:Demo.Service`1",
+                Members = ["P:Demo.Service`1.Value", "M:Demo.Service`1.Read``1(`0@,System.Int32@)"]
             });
         }
 
@@ -78,6 +80,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Requires the exact declaration ID of a supported member on the selected class.</summary>
     [Theory]
     [InlineData("F:Demo.Service.Field", "unsupported_member")]
     [InlineData("M:Demo.Other.Get(System.Int32)", "invalid_members")]
@@ -111,6 +114,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Rejects repeated IDs in the explicit interface member selection.</summary>
     [Fact]
     public void DuplicateMemberIdsAreRefused()
     {
@@ -141,6 +145,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Rejects invalid identifiers for the interface name or namespace.</summary>
     [Theory]
     [InlineData("class", "Contracts")]
     [InlineData("ISelected", "bad-name")]
@@ -173,14 +178,20 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Rejects existing, outside, reserved, or generated interface output paths.</summary>
     [Theory]
     [InlineData("Service.cs")]
     [InlineData("../Outside.cs")]
-    [InlineData("payload.cs:stream.cs")]
     [InlineData("CON.cs")]
     [InlineData("COM¹.cs")]
     [InlineData("obj/ISelected.cs")]
-    public void InvalidOutputPathIsRefused(string relative)
+    public void InvalidOutputPathIsRefused(string relative) => AssertInvalidOutputPath(relative);
+
+    /// <summary>Rejects a Windows alternate data stream as an interface output.</summary>
+    [WindowsFact]
+    public void AlternateDataStreamOutputIsRefused() => AssertInvalidOutputPath("payload.cs:stream.cs");
+
+    private void AssertInvalidOutputPath(string relative)
     {
         using var workspace = new SemanticWorkspace();
         string path = null!;
@@ -212,6 +223,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Rejects selected members whose signatures or accessors are outside the extraction subset.</summary>
     [Theory]
     [InlineData("public static int Get(int x) => x;", SemanticWorkspace.GetInt)]
     [InlineData("public int Get(int x = 1) => x;", SemanticWorkspace.GetInt)]
@@ -248,6 +260,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Rejects extraction that would introduce a duplicate type in the compilation.</summary>
     [Fact]
     public void DuplicateTypeWouldIntroduceCompilationErrors()
     {
@@ -278,6 +291,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Rejects extraction if an existing type or namespace reference would bind differently.</summary>
     [Theory]
     [InlineData("ISelected", "namespace Contracts; using External; public class Use { public System.Type Type => typeof(ISelected); }")]
     [InlineData("Token", "using External; public class Use { public System.Type Type => typeof(Contracts.Token); }")]
@@ -312,6 +326,7 @@ public sealed class ExtractInterfaceTests
         }
     }
 
+    /// <summary>Preserves the primary constructor and method body while adding the interface.</summary>
     [Fact]
     public void PrimaryConstructorAndMethodBodyArePreserved()
     {

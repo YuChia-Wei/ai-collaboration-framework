@@ -11,6 +11,8 @@ installed content in `.ai/core`. Load only the applicable policy.
 
 - [Source development policy](SOURCE-DEVELOPMENT-POLICY.md): adopted eight rules,
   affected checks and conditional independent review.
+- [.NET formatting](DOTNET-FORMATTING.md): native SDK formatting, explicit file
+  scope, formatting before validation, and optional completion-hook boundaries.
 - [Context boundary](AI-CONTEXT-BOUNDARY.md), [language](AI-CONTEXT-LANGUAGE-POLICY.md)
   and [source ownership](AI-CONTEXT-OWNERSHIP.md).
 - [Source work authority](SOURCE-WORK-MANAGEMENT-AUTHORITY.md) and its

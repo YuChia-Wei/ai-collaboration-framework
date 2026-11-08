@@ -5,6 +5,7 @@ namespace RefactorTool.IntegrationTests;
 
 public sealed class RenameTests
 {
+    /// <summary>Requires overload-group consent and updates the nameof reference when consent is given.</summary>
     [Fact]
     public void OverloadGroupRequiresOptInAndUpdatesNameof()
     {
@@ -49,6 +50,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Keeps unrelated overloads declared on related types outside the selected group.</summary>
     [Theory]
     [InlineData("M:Demo.IService.Get(System.Int32)")]
     [InlineData("M:Demo.Derived.Get(System.Int32)")]
@@ -85,6 +87,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Updates the selected type declaration and its references in a consumer.</summary>
     [Theory]
     [InlineData("T:Demo.Service", "RenamedService", "new RenamedService()", "class RenamedService : IService")]
     [InlineData("T:Demo.IService", "IRenamedService", "IRenamedService service", "class Service : IRenamedService")]
@@ -112,6 +115,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Updates the selected property or field and its bound references.</summary>
     [Theory]
     [InlineData("P:Demo.Service.Property", "Value", "int Value { get; set; }")]
     [InlineData("F:Demo.Service.Field", "Data", "return local + Data;")]
@@ -135,6 +139,7 @@ public sealed class RenameTests
         void ThenUpdateItsDeclaration() => AssertSourceTokens(expected, SemanticWorkspace.After(plan, workspace.Source));
     }
 
+    /// <summary>Renames the selected parameter or local and its references, including contextual identifiers.</summary>
     [Theory]
     [InlineData("value", "argument", "int Get(int argument) { int local = argument; return local + Field; }")]
     [InlineData("local", "answer", "int local = value; return local + Field;", "int answer = value; return answer \\+ Field;")]
@@ -174,6 +179,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Rejects ambiguous selectors, invalid names, and name collisions without editing source.</summary>
     [Theory]
     [InlineData("M:Demo.Service.Get", "Fetch", "ambiguous_symbol")]
     [InlineData(SemanticWorkspace.GetInt, "class", "invalid_name")]
@@ -208,6 +214,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Rejects a selection outside an identifier or at an ambiguous overload group.</summary>
     [Fact]
     public void PositionOutsideIdentifierAndOverloadGroupAreRefused()
     {
@@ -262,6 +269,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Refuses to rename an override of a framework member outside the editable workspace.</summary>
     [Fact]
     public void RefusesOverrideOfFrameworkMember()
     {
@@ -291,6 +299,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Keeps existing diagnostics visible after a rename moves their source positions.</summary>
     [Fact]
     public void BaselineDiagnosticsRemainVisibleIncludingMappedOffsets()
     {
@@ -317,6 +326,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Rejects a new local-name collision even when the input already has errors.</summary>
     [Fact]
     public void BaselineErrorDoesNotHideNewLocalCollision()
     {
@@ -338,6 +348,7 @@ public sealed class RenameTests
         void ThenReportTheNewCollision() => Assert.Contains(failure.Code, new[] { "rename_conflict", "new_compilation_errors" });
     }
 
+    /// <summary>Updates alias-qualified and generic nameof references without changing their form.</summary>
     [Theory]
     [InlineData("T:Demo.Plain", "Renamed", "nameof(global::Demo.Renamed)", null)]
     [InlineData("T:Demo.Generic`1", "RenamedGeneric", "nameof(RenamedGeneric<T>)", "nameof(RenamedGeneric<>)")]
@@ -371,6 +382,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Keeps the source BOM and missing final newline in the proposed edit.</summary>
     [Fact]
     public void PreservesBomAndNoFinalNewline()
     {
@@ -398,6 +410,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Separates distant edits into hunks without retaining unrelated middle lines.</summary>
     [Fact]
     public void CompactPatchOmitsDistantUnchangedContext()
     {
@@ -432,6 +445,7 @@ public sealed class RenameTests
         }
     }
 
+    /// <summary>Preserves CR-only source bytes and emits the expected patch markers.</summary>
     [Fact]
     public void CrOnlySourceAndPatchAreByteExact()
     {
@@ -480,7 +494,11 @@ public sealed class RenameTests
 
     private static Request At(Request request, string path, string source, int line, string token, string name) => request with
     {
-        Symbol = null, Project = null, File = path, Line = line, NewName = name,
+        Symbol = null,
+        Project = null,
+        File = path,
+        Line = line,
+        NewName = name,
         Column = source.Split('\n')[line - 1].IndexOf(token, StringComparison.Ordinal) + 1
     };
 

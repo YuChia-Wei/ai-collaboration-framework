@@ -14,6 +14,8 @@ executables, installation diagnostics and tool version/control guidance.
 | `aicf-usecase` | Interface, implementation, input and output | C# application item |
 | `aicf-class` | One class | C# item |
 | `aicf-interface` | One interface | C# item |
+| `aicf-domain-contract-tests` | xUnit reconstruction example with its own illustrative domain code | .NET 10 |
+| `aicf-ct005-contract-tests` | xUnit example against the published ArchPrecept CT-005 API | .NET 8 with verified external DLLs |
 
 API starters store work items in memory. POST `{"title":"Pack the order"}` to
 the route, then GET the response's `Location`. Replace this sample behavior with
@@ -30,9 +32,10 @@ Content-Type yields 400 in the Minimal API and 415 in the controller starter.
 They do not define a shared production error contract; select one when replacing
 the reference feature.
 
-Project templates target `net10.0` with no `--framework` option. Item templates
-emit C# only; they do not select a project TFM. .NET 10 is the supported baseline;
-this delivery does not establish .NET 8 compatibility.
+The API starters and package-free domain contract example target `net10.0`.
+Item templates emit C# without selecting a project TFM. The optional CT-005
+example targets `net8.0` and requires both published ArchPrecept contract DLLs
+at version `0.0.3-preview` through `PublishedContractsDir`.
 
 Register either an extracted template directory or the packaged `.nupkg` as
 shown in the delivery guide, then use `dotnet new <short-name> --help`.

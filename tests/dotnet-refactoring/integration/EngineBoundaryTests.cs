@@ -6,6 +6,7 @@ namespace RefactorTool.IntegrationTests;
 [Trait("Boundary", "InProcess")]
 public sealed class EngineBoundaryTests
 {
+    /// <summary>Rejects a configuration containing an injected MSBuild property.</summary>
     [WindowsFact]
     public void ConfigurationCannotInjectAnMsbuildProperty()
     {
@@ -32,6 +33,7 @@ public sealed class EngineBoundaryTests
         }
     }
 
+    /// <summary>Rejects lossy source decoding while preserving the original bytes.</summary>
     [Fact]
     public void MalformedSourceEncodingIsRefusedWithoutWrites()
     {
@@ -55,6 +57,7 @@ public sealed class EngineBoundaryTests
         }
     }
 
+    /// <summary>Rejects extraction when a compatible generator emits source or fails before or after the change.</summary>
     [Theory]
     [InlineData("emit-after")]
     [InlineData("throw-after")]

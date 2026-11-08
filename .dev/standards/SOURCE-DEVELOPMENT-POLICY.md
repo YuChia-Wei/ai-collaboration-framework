@@ -69,6 +69,10 @@ obligation is explicitly selected.
 
 ## Decide before running a test
 
+For C# edits, follow the [.NET formatting standard](DOTNET-FORMATTING.md).
+Format the selected files before final validation and judge any subsequent
+formatting changes by their actual effect under the rules below.
+
 ### Test technology and boundary
 
 This repository's .NET components use standard .NET test frameworks (such as

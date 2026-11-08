@@ -16,6 +16,9 @@ public sealed class SnippetTests
         }
         """;
 
+    /// <summary>
+    /// Lists the shipped IDs, searches without matching case, and inspects the interface-method metadata and body.
+    /// </summary>
     [Fact]
     public void BuiltInCatalogListsSearchesAndInspectsWithoutAChildProcess()
     {
@@ -54,6 +57,9 @@ public sealed class SnippetTests
         GenerationFixture GivenAnIsolatedRequestDirectory() => new GenerationFixture();
     }
 
+    /// <summary>
+    /// Renders the interface method with an explicit return type and the catalog's default parameter.
+    /// </summary>
     [Fact]
     public void BuiltInFragmentsUseTypedParametersAndDefaults()
     {
@@ -73,6 +79,9 @@ public sealed class SnippetTests
         void ThenRenderTheTypedReturnAndDefaultParameter() => Assert.Equal("    Task<string> ReadAsync(string value);\n", method);
     }
 
+    /// <summary>
+    /// Renders the string guard with the requested parameter name and indentation.
+    /// </summary>
     [Fact]
     public void BuiltInStringGuardUsesTheNamedParameter()
     {
@@ -90,6 +99,9 @@ public sealed class SnippetTests
         void ThenRenderTheNamedGuardParameter() => Assert.Equal("    ArgumentException.ThrowIfNullOrWhiteSpace(label);\n", guard);
     }
 
+    /// <summary>
+    /// Maps distinct request failures to exit 1 and a stable JSON error on stderr.
+    /// </summary>
     [Theory]
     [InlineData("""{"schemaVersion":1,"operation":"render","id":"string-guard"}""", "missing-parameter")]
     [InlineData("""{"schemaVersion":1,"operation":"list","extra":0}""", "invalid-request")]
@@ -113,6 +125,9 @@ public sealed class SnippetTests
         GenerationFixture GivenAnIsolatedRequestDirectory() => new GenerationFixture();
     }
 
+    /// <summary>
+    /// Lists and searches the selected catalog without reading bodies and distinguishes missing and empty bodies on inspection.
+    /// </summary>
     [Fact]
     public void CustomMetadataIsLazyAndMissingOrEmptyBodiesHaveDistinctErrors()
     {
@@ -151,6 +166,9 @@ public sealed class SnippetTests
         void ThenReportAnInvalidBody() => ReadResult(empty, "invalid-body");
     }
 
+    /// <summary>
+    /// Reports the selected catalog and requested line endings on render and rejects a malformed placeholder on inspect.
+    /// </summary>
     [Fact]
     public void Should_use_the_selected_source_when_rendering_and_reject_invalid_inspection()
     {
@@ -180,6 +198,9 @@ public sealed class SnippetTests
         void ThenReportAnInvalidPlaceholder() => ReadResult(malformed, "invalid-placeholder");
     }
 
+    /// <summary>
+    /// Rejects unsupported schema, duplicate IDs, and invalid parameter kinds before listing the catalog.
+    /// </summary>
     [Theory]
     [InlineData(2, false, "text", "unsupported-catalog-schema")]
     [InlineData(1, true, "text", "duplicate-snippet-id")]
@@ -219,8 +240,13 @@ public sealed class SnippetTests
 
     private static object CustomRequest => new
     {
-        schemaVersion = 1, operation = "render", source = "custom.json", id = "custom-probe", indent = 4,
-        newline = "crlf", parameters = new { variable = "result", comment = "first\r\n// second ${verbatim}" }
+        schemaVersion = 1,
+        operation = "render",
+        source = "custom.json",
+        id = "custom-probe",
+        indent = 4,
+        newline = "crlf",
+        parameters = new { variable = "result", comment = "first\r\n// second ${verbatim}" }
     };
 
     private static JsonElement Invoke(GenerationFixture fixture, object request) => ReadResult(Call(fixture, request), null);

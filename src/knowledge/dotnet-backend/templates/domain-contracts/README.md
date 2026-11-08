@@ -13,18 +13,20 @@ illustrative domain code and uses xUnit and BDDfy. Discard a partially restored
 instance after replay fails. The optional CT-005 example verifies the published
 API's stronger replay guards.
 
-From a shell with the .NET 10 SDK, select this template directory in the
-source or installed knowledge package. Generate into a new disposable directory
-with an isolated native template hive.
+Use the .NET 10 SDK and the unified template package in the installed
+generation bundle. Follow the [generation delivery guide](../../tooling/generation/DELIVERY.md)
+to locate the package. From a framework source checkout you can also select
+`src/tools/dotnet/generation/dotnet-new` as the template source.
+Generate into a disposable directory with an isolated native template hive.
 
 ```powershell
-$templateRoot = (Resolve-Path '<knowledge-root>/templates/domain-contracts').Path
+$templateSource = (Resolve-Path '<path-to-AICF.Dotnet.Templates.nupkg>').Path
 $work = New-Item -ItemType Directory -Path (
     Join-Path ([IO.Path]::GetTempPath()) "aicf-domain-contracts-$([Guid]::NewGuid().ToString('N'))")
 $hive = Join-Path $work.FullName 'hive'
 $output = Join-Path $work.FullName 'package-free'
 
-dotnet new install $templateRoot --debug:custom-hive $hive
+dotnet new install $templateSource --debug:custom-hive $hive
 dotnet new aicf-domain-contract-tests --name Sample.DomainContracts --output $output --debug:custom-hive $hive
 dotnet test (Join-Path $output 'Sample.DomainContracts.csproj') -c Release
 ```

@@ -9,12 +9,5 @@
   "tags": {
     "language": "C#",
     "type": "project"
-  },
-  "sources": [
-    {
-      "rename": {
-        "AicfPackageFreeContracts.csproj.template": "AicfPackageFreeContracts.csproj"
-      }
-    }
-  ]
+  }
 }

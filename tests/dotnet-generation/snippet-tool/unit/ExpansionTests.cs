@@ -4,6 +4,9 @@ namespace SnippetTool.UnitTests;
 
 public sealed class ExpansionTests
 {
+    /// <summary>
+    /// Rejects missing, unknown, and invalid parameter values with their respective error codes.
+    /// </summary>
     [Theory]
     [InlineData("parameterName", "identifier", null, null, "missing-parameter")]
     [InlineData("parameterName", "identifier", "extra", "value", "unknown-parameter")]
@@ -36,6 +39,9 @@ public sealed class ExpansionTests
             Assert.Equal(expectedCode, Assert.IsType<SnippetError>(failure).Code);
     }
 
+    /// <summary>
+    /// Distinguishes undeclared placeholders from malformed placeholder syntax.
+    /// </summary>
     [Theory]
     [InlineData("return ${unknown};", "unknown-placeholder")]
     [InlineData("return ${variable;", "invalid-placeholder")]
@@ -54,6 +60,9 @@ public sealed class ExpansionTests
         void ThenReportTheExpectedPlaceholderError() => Assert.Equal(expectedCode, Assert.IsType<SnippetError>(failure).Code);
     }
 
+    /// <summary>
+    /// Rejects an unsupported parameter kind during definition validation.
+    /// </summary>
     [Fact]
     public void Should_reject_an_unknown_kind_when_validating_a_parameter_definition()
     {
@@ -65,6 +74,9 @@ public sealed class ExpansionTests
         Assert.Equal("invalid-catalog", failure.Code);
     }
 
+    /// <summary>
+    /// Preserves Unicode, literal placeholder text, blank lines, indentation, and the requested CRLF endings.
+    /// </summary>
     [Fact]
     public void Should_preserve_unicode_and_literal_placeholders_when_expanding_with_indent_and_crlf()
     {

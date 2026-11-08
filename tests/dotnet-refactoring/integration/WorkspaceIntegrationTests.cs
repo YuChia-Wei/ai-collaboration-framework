@@ -4,6 +4,7 @@ namespace RefactorTool.IntegrationTests;
 [Collection(SdkCollection.Name)]
 public sealed class WorkspaceIntegrationTests
 {
+    /// <summary>Refuses a multi-target project even if the request selects one framework.</summary>
     [RefactorSdkFact]
     public void ExplicitFrameworkDoesNotAdmitMultiTargetProject()
     {
@@ -23,6 +24,7 @@ public sealed class WorkspaceIntegrationTests
         void ThenRefuseTheMultiTargetWorkspace() => fixture.RefusedPreview(previewingTheSelectedFrameworkResult, "multiple_frameworks");
     }
 
+    /// <summary>Rejects an evaluated Compile item with explicit link metadata.</summary>
     [RefactorSdkFact]
     public void ExplicitLinkedCompileItemIsRejected()
     {
@@ -52,6 +54,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Identifies a missing project reached from a solution or project reference.</summary>
     [RefactorSdkTheory]
     [InlineData(false)]
     [InlineData(true)]
@@ -96,6 +99,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Identifies a missing evaluated Compile input before producing a plan.</summary>
     [RefactorSdkFact]
     public void MissingCompileInputIsIdentifiedBeforePlan()
     {
@@ -128,6 +132,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Prevents a related rename from editing a file with a generated suffix.</summary>
     [RefactorSdkFact]
     public void AuthoredGeneratedSuffixCannotBeEditedThroughRelatedRename()
     {
@@ -161,17 +166,18 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Reports the imported framework, active defines, and inactive-code limits for the chosen configuration.</summary>
     [RefactorSdkFact]
     public void ConditionalConfigurationAndImportedFrameworkAreReported()
     {
         using var fixture = new SdkFixture();
-        CommandResult previewingDebugConfigurationResult = null!;
-        CommandResult previewingReleaseConfigurationResult = null!;
+        CommandResult debug = null!;
+        CommandResult release = null!;
 
         this.Given(GivenAnImportedFrameworkAndConditionalDefines, "an imported framework and conditional defines")
-            .When(WhenPreviewingDebugConfiguration, "previewing debug configuration")
+            .When(WhenInspectingDebugConfiguration, "inspecting debug configuration")
             .Then(ThenReportDebugDefinesAndInactiveCode, "report debug defines and inactive code")
-            .When(WhenPreviewingReleaseConfiguration, "previewing release configuration")
+            .When(WhenInspectingReleaseConfiguration, "inspecting release configuration")
             .Then(ThenReportTheReleaseFrameworkAndDefines, "report the release framework and defines")
             .BDDfy();
 
@@ -185,30 +191,33 @@ public sealed class WorkspaceIntegrationTests
             await fixture.Restore();
         }
 
-        async Task WhenPreviewingDebugConfiguration() => previewingDebugConfigurationResult = await fixture.Preview();
+        async Task WhenInspectingDebugConfiguration() => debug = await fixture.Inspect();
 
         void ThenReportDebugDefinesAndInactiveCode()
         {
-            previewingDebugConfigurationResult.Previewed();
-            var debug = fixture.Plan();
-            Assert.Contains("DEBUG", Assert.Single(debug.Projects).Defines);
-            Assert.Contains(debug.Limits, limit => limit.StartsWith("Inactive conditional code", StringComparison.Ordinal) &&
-                limit.EndsWith(fixture.PathFor("A/Conditional.cs"), StringComparison.OrdinalIgnoreCase));
+            debug.Loaded();
+            var project = Assert.Single(debug.Json.GetProperty("projects").EnumerateArray());
+            Assert.Contains(project.GetProperty("defines").EnumerateArray(), define => define.GetString() == "DEBUG");
+            Assert.Contains(debug.Json.GetProperty("limits").EnumerateArray(), limit =>
+                limit.GetString() is { } text && text.StartsWith("Inactive conditional code", StringComparison.Ordinal) &&
+                text.EndsWith(fixture.PathFor("A/Conditional.cs"), StringComparison.OrdinalIgnoreCase));
         }
 
-        async Task WhenPreviewingReleaseConfiguration() => previewingReleaseConfigurationResult = await fixture.Preview(fixture.Rename with { Configuration = "Release" });
+        async Task WhenInspectingReleaseConfiguration() => release = await fixture.Inspect(fixture.Rename with { Configuration = "Release" });
 
         void ThenReportTheReleaseFrameworkAndDefines()
         {
-            previewingReleaseConfigurationResult.Previewed();
-            var release = Assert.Single(fixture.Plan().Projects);
-            Assert.Equal("net10.0", release.Framework);
-            Assert.Equal("Release", release.Configuration);
-            Assert.Contains("CUSTOM", release.Defines);
-            Assert.DoesNotContain("DEBUG", release.Defines);
+            release.Loaded();
+            var project = Assert.Single(release.Json.GetProperty("projects").EnumerateArray());
+            Assert.Equal("net10.0", project.GetProperty("framework").GetString());
+            Assert.Equal("Release", project.GetProperty("configuration").GetString());
+            var defines = project.GetProperty("defines").EnumerateArray();
+            Assert.Contains(defines, define => define.GetString() == "CUSTOM");
+            Assert.DoesNotContain(defines, define => define.GetString() == "DEBUG");
         }
     }
 
+    /// <summary>Captures SDK intermediates as inputs while restricting edits to authored source.</summary>
     [RefactorSdkFact]
     public void ExternalSdkIntermediatesAreCapturedWithoutBeingEdited()
     {
@@ -248,6 +257,7 @@ public sealed class WorkspaceIntegrationTests
         void ThenApplyTheAuthoredEdit() => applyingRenameResult.Applied();
     }
 
+    /// <summary>Keeps source editable when bin is an ancestor outside the project.</summary>
     [RefactorSdkFact]
     public void BinAncestorOutsideProjectDoesNotMarkAuthoredSourceGenerated()
     {
@@ -277,6 +287,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Rejects a solution with a Visual Basic project.</summary>
     [RefactorSdkFact]
     public void VisualBasicSolutionMemberIsRejected()
     {
@@ -300,6 +311,7 @@ public sealed class WorkspaceIntegrationTests
         void ThenRefuseTheUnsupportedWorkspace() => fixture.RefusedPreview(previewingTheMixedSolutionResult, "unsupported_project");
     }
 
+    /// <summary>Preserves the compilation reference graph from a classic solution or project entry.</summary>
     [RefactorSdkTheory]
     [InlineData(false)]
     [InlineData(true)]
@@ -342,6 +354,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Rejects linked or unexpected source introduced only by design-time evaluation.</summary>
     [RefactorSdkTheory]
     [InlineData("../Shared.cs", "linked_file")]
     [InlineData("Extra.cs", "unexpected_source")]
@@ -375,6 +388,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Rejects missing compilation edges and excludes build-only references from the graph.</summary>
     [RefactorSdkTheory]
     [InlineData("""Condition="'$(DesignTimeBuild)' != 'true'" """, false)]
     [InlineData("""ReferenceOutputAssembly="false" """, true)]
@@ -416,6 +430,7 @@ public sealed class WorkspaceIntegrationTests
         }
     }
 
+    /// <summary>Reports existing and newly introduced errors separately in preview JSON.</summary>
     [RefactorSdkFact]
     public void PreviewJsonReportsBaselineErrorsSeparatelyFromNewErrors()
     {

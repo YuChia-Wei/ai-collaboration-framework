@@ -1,15 +1,26 @@
 <Solution>
   <Folder Name="/Tests/">
-    <Project Path="../../../tests/dotnet-formatting/unit/FormatTool.UnitTests.csproj" />
-    <Project Path="../../../tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" />
+    <Project Path="../../../tests/dotnet-formatting/integration/Formatting.ScriptIntegrationTests.csproj" />
     <Project Path="../../../tests/dotnet-generation/snippet-tool/SnippetTool.IntegrationTests.csproj" />
     <Project Path="../../../tests/dotnet-generation/snippet-tool/unit/SnippetTool.UnitTests.csproj" />
     <Project Path="../../../tests/dotnet-generation/templates/Generation.Templates.IntegrationTests.csproj" />
     <Project Path="../../../tests/dotnet-refactoring/unit/RefactorTool.UnitTests.csproj" />
     <Project Path="../../../tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.csproj" />
   </Folder>
+  <Folder Name="/Templates/">
+    <Project Path="generation/dotnet-new/miniapi/AicfMiniApi.csproj" />
+    <Project Path="generation/dotnet-new/package-free/AicfPackageFreeContracts.csproj" />
+    <Project Path="generation/dotnet-new/web-api/Application/AicfWebApi.Application.csproj" />
+    <Project Path="generation/dotnet-new/web-api/Domain/AicfWebApi.Domain.csproj" />
+    <Project Path="generation/dotnet-new/web-api/Infrastructure/AicfWebApi.Infrastructure.csproj" />
+    <Project Path="generation/dotnet-new/web-api/WebApi/AicfWebApi.WebApi.csproj" />
+    <File Path="generation/dotnet-new/published-ct005/.template.config/template.json" />
+    <File Path="generation/dotnet-new/published-ct005/AicfCt005Contracts.csproj.template" />
+    <File Path="generation/dotnet-new/published-ct005/PublishedContractTests.cs" />
+  </Folder>
   <Folder Name="/Tools/">
-    <Project Path="formatting/FormatTool.csproj" />
+    <File Path="formatting/Format-Dotnet.ps1" />
+    <File Path="formatting/README.md" />
     <Project Path="generation/Generation.Templates.csproj" />
     <Project Path="generation/snippet-tool/SnippetTool.csproj" />
     <Project Path="refactoring/RefactorTool.csproj" />

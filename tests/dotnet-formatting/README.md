@@ -1,39 +1,20 @@
-# FormatTool tests
+# .NET formatting tests
 
-Run the typed cleanup rule cases and in-process request cases with the .NET 10
-SDK. Unit tests call the product rules directly. Integration cases exercise the
-request file and JSON result and use actual file identities for path checks.
-
-```text
-dotnet test tests/dotnet-formatting/unit/FormatTool.UnitTests.csproj
-dotnet test tests/dotnet-formatting/FormatTool.IntegrationTests.csproj
-```
-
-SDK integration runs automatically on Windows x64 when SDK 10.0.403 is
-discoverable, or on macOS arm64 when SDK 10.0.400 is discoverable. Each fixture pins the
-supported SDK without roll-forward and restores from a local source. The
-tests exercise the wrapper's actual MSBuild command and evaluated Compile
-results, formatter include matching, nested EditorConfig, diagnostic reports,
-source bytes, and generator consent in compiler and design-time contexts.
-
-Publish Native AOT with the [FormatTool manual](../../src/tools/dotnet/formatting/README.md),
-then set `AICF_FORMAT_ARTIFACT` to the absolute path of the executable and run
-the artifact project.
+`integration/Formatting.ScriptIntegrationTests.csproj` exercises the PowerShell entry point
+against the installed SDK. It checks a workspace-relative path with spaces and
+shell metacharacters, refuses parent-relative selection through a nested solution,
+and applies formatting to the chosen file by absolute path within the project.
+The cases also cover preservation of unselected source, workspace-relative SDK
+selection and native failure propagation. They refuse glob-like literal names,
+case-distinct workspace prefixes and extra include values passed as SDK options.
 
 ```text
-dotnet test tests/dotnet-formatting/artifact/FormatTool.ArtifactIntegrationTests.csproj -c Release
+dotnet test tests/dotnet-formatting/integration/Formatting.ScriptIntegrationTests.csproj -c Release
 ```
 
-The case-alias test on macOS arm64 probes the scratch volume for case-sensitive
-names. Set `AICF_FORMAT_CASE_ROOT` to an existing absolute directory on a
-case-sensitive volume to select that location. The Formatting acceptance
-workflow supplies a mounted case-sensitive APFS directory. The case checks
-both real Compile identities before the formatter.
-The POSIX literal filename cases require macOS. Missing-file and directory
-selections have independent theory rows, as do the three POSIX filenames.
-The CI profiles require the intended case counts in the native test reports.
-
-Set `AICF_TEST_WORK` to a directory for disposable fixtures when needed. The
-tests otherwise use the OS temporary directory and clean up their own
-per-case subdirectories. A process or permission failure leaves that
-integration case failed.
+The source solution includes these cases. They use .NET 10 and PowerShell 7.3+
+and create disposable projects under `AICF_TEST_WORK` or the system temporary
+directory. The formatting acceptance workflow runs them on Windows and macOS.
+PowerShell version discovery runs once; an absent or older host is skipped, while
+an unexpected probe failure remains a test failure.
+The script and its manual ship as generation-bundle content.

@@ -5,6 +5,7 @@ namespace RefactorTool.UnitTests;
 
 public sealed class FileApplyTests
 {
+    /// <summary>Reports applied, partially written, and untouched files after a write failure.</summary>
     [Fact]
     public void ReportsWrittenPrefixAndUntouchedFilesAfterFailure()
     {
@@ -35,6 +36,7 @@ public sealed class FileApplyTests
         }
     }
 
+    /// <summary>Reports unknown state and no hash when a failed write cannot be read back.</summary>
     [Fact]
     public void UnreadableStateIsUnknown()
     {
@@ -59,6 +61,7 @@ public sealed class FileApplyTests
         }
     }
 
+    /// <summary>Attempts every close and preserves pre-close observations for recovery.</summary>
     [Fact]
     public void CloseFailurePreservesObservationsAndAttemptsEveryClose()
     {

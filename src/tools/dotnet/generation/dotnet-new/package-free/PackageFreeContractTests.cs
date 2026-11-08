@@ -7,6 +7,7 @@ public sealed class PackageFreeContractTests
 {
     private static readonly IReadOnlyDictionary<string, string> EmptyMetadata = new Dictionary<string, string>();
 
+    /// <summary>Replays committed facts and keeps new facts pending until confirmation.</summary>
     [Fact]
     public void ReplayRestoresCommittedStateAndOnlyNewFactsRemainPendingUntilConfirmation()
     {
@@ -49,6 +50,7 @@ public sealed class PackageFreeContractTests
         }
     }
 
+    /// <summary>Rebuilds a plan and its nested project and task from a complete history.</summary>
     [Fact]
     public void CompletePlanHistoryRestoresRequiredNestedState()
     {
@@ -78,10 +80,12 @@ public sealed class PackageFreeContractTests
         }
     }
 
+    /// <summary>Rejects reconstruction when the plan history is empty.</summary>
     [Fact]
     public void EmptyPlanHistoryCannotReturnAnAggregate() =>
         Assert.Throws<InvalidOperationException>(() => new Sample.Plan([]));
 
+    /// <summary>Rejects task creation history that lacks the owning project.</summary>
     [Fact]
     public void TaskCreationWithoutItsProjectCannotReturnAnAggregate()
     {
@@ -89,6 +93,7 @@ public sealed class PackageFreeContractTests
         Assert.Throws<InvalidOperationException>(() => new Sample.Plan([history.Created, history.TaskCreated]));
     }
 
+    /// <summary>Rejects a task update when history lacks that task's creation.</summary>
     [Fact]
     public void TaskUpdateWithoutItsTaskCannotReturnAnAggregate()
     {
@@ -96,6 +101,7 @@ public sealed class PackageFreeContractTests
         Assert.Throws<InvalidOperationException>(() => new Sample.Plan([history.Created, history.ProjectCreated, history.TaskChecked]));
     }
 
+    /// <summary>Rejects history containing an unsupported plan fact.</summary>
     [Fact]
     public void UnsupportedPlanFactCannotBeSilentlyIgnored()
     {

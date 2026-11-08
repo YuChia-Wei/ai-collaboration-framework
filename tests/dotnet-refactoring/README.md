@@ -12,6 +12,9 @@ SDK-backed preview and apply run automatically on Windows x64 when SDK
 10.0.403 is discoverable. The junction cases
 also require `pwsh`. The SDK fixture uses local SDK reference packs and an
 empty package source. Set `AICF_TEST_WORK` for a disposable fixture root.
+Use a short root on Windows: the duplicate-SDK junction scenario has failed
+inside SDK imports with a 274-character path and passed from the system TEMP
+directory. The default fixture location uses system TEMP.
 
 To exercise an extracted publication artifact, publish with
 [`Publish-RefactorTool.ps1`](../../src/tools/dotnet/refactoring/Publish-RefactorTool.ps1)
@@ -31,19 +34,24 @@ CI checks the required case counts in both native test reports.
 
 | Behavior | Smallest selected boundary | Additional evidence in selected profiles |
 | --- | --- | --- |
-| Write and close failure observations | Three unit cases use injected streams | The file integration cases exercise real directory checks, exclusive create and Windows sharing |
+| Write and close failure observations | Three unit cases use injected streams | File integration exercises real directory checks, exclusive create, Windows sharing and controlled create failures |
 | Apply preflight and plan destination | Windows integration calls the real command entry with authored plan inputs, independent hashes and real handles or junctions | SDK cases prove that preview captures unedited inputs, retargeted AdditionalFiles can be captured by a new preview, and recomputation rejects stale or forged plans |
 | Rename and Extract Interface semantics | Real Roslyn workspace and planner with authored source bytes. A compiled analyzer PE drives the real generator checks for compatible generators. | SDK cases prove actual Analyzer and generated document discovery, generated references and declarations, and rejection of a newer SDK Roslyn ABI |
 | Workspace and Compile rules | Direct workspace validation rejects configuration injection before SDK selection. The real MSBuild XML parser and custom policy handle raw rule text. | SDK cases evaluate actual Compile globs and imported roots, preserve stable imports, and resolve SDK extension hooks and origin |
-| Extracted executable | Windows artifact integration exercises archive inventory and product CLI execution | Cross-project preview and apply, caller and workspace SDK selection, and SDK roots with the same version |
+| Extracted executable | Windows artifact integration exercises archive inventory and product CLI execution | One real preview from the extracted ZIP validates apphost startup and BuildHost loading |
 
 `Boundary=Preflight` selects Windows apply and destination validation without
 an SDK restore or RefactorTool child process. Only the junction scenarios
 require `pwsh.exe` on PATH. Missing prerequisites produce skips, which the
 required CI test counts reject. `Boundary=InProcess` selects the focused planner and MSBuild XML
-cases. The XML cases use the MSBuild installation that built the test
-assembly. They parse actual project elements from strings. The retained
-SDK cases run the tool's apphost so its own SDK selection remains isolated.
+cases. The XML cases use the MSBuild installation that built the test assembly
+to parse project elements from strings. The Compile inclusion policy cases
+also evaluate real SDK projects directly when that installation matches the
+fixture SDK. They run the apphost preview otherwise. Other SDK cases run the
+source apphost so its SDK selection stays isolated.
+
+See [unit](unit/README.md), [integration](integration/README.md), and
+[artifact acceptance](artifact/README.md) for each project's scope.
 
 ## Previous acceptance scenario mapping
 
@@ -56,18 +64,18 @@ preview plan where applicable.
 
 | Previous scenario | Native test or theory |
 | --- | --- |
-| 01 Selected extraction and consumers | `PublishedArtifactTests.PublishedExtractionAppliesSelectedContractAndConsumerDispatches` |
+| 01 Selected extraction and consumers | `RefactorCommandIntegrationTests.ExtractionAppliesSelectedContractAndConsumerDispatches` |
 | 02 Nullable generics, ref/out and private setter | `ExtractInterfaceTests.NullableGenericContractPreservesRefOutAndPrivateSetterBehavior` |
-| 03 Invalid members, output, compile exclusion | `ExtractInterfaceTests.ExactDeclaredMethodOrPropertyIsRequired`, `DuplicateMemberIdsAreRefused`, `InvalidInterfaceOrNamespaceIdentifierIsRefused`, `InvalidOutputPathIsRefused`, extraction rows in `CommandInputTests.InvalidRequestDoesNotWritePlan`, and `CompileInclusionTests.StableImportAllowsPreviewButExplicitCompileExclusionRefuses` |
+| 03 Invalid members, output, compile exclusion | `ExtractInterfaceTests.ExactDeclaredMethodOrPropertyIsRequired`, `DuplicateMemberIdsAreRefused`, `InvalidInterfaceOrNamespaceIdentifierIsRefused`, `InvalidOutputPathIsRefused`, extraction rows in `CommandInputTests.InvalidRequestDoesNotWritePlan`, and the literal exclusion with a stable import in `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` |
 | 04 Extract output race, changed input, forged plan | `ApplyIntegrationTests.ExtractApplyRefusesOutputRaceOrForgedPlan` and `PreflightTests.ExtractionApplyRefusesSourceDriftBeforeRecomputing` |
 | 05 Unsupported members and visibility collision | `ExtractInterfaceTests.UnsupportedMemberShapesAreRefused` and `DuplicateTypeWouldIntroduceCompilationErrors` |
-| 06 File-dependent inclusion and invalid Windows paths | `CompilePolicyTests.RejectsFileDependentCustomProjectXml`, `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `ExtractInterfaceTests.InvalidOutputPathIsRefused` |
+| 06 File-dependent inclusion and invalid Windows paths | `CompilePolicyTests.RejectsFileDependentCustomProjectXml`, `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and the output path cases in `ExtractInterfaceTests` |
 | 07 Inactive import, item expressions, target rules, lower-case Compile glob | `CompilePolicyTests.RejectsFileDependentCustomProjectXml` and `CompileInclusionTests.OtherProjectLowercaseCompileGlobCanAlsoIncludeTheOutput` |
 | 08 Type and namespace rebinding | `ExtractInterfaceTests.ExistingTypeAndNamespaceBindingsCannotChange` |
-| 09 Future imports, SDK hooks, stable positive | `CompilePolicyTests.RejectsFileDependentCustomProjectXml`, `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `StableImportAllowsPreviewButExplicitCompileExclusionRefuses` |
+| 09 Future imports, SDK hooks, stable positive | `CompilePolicyTests.RejectsFileDependentCustomProjectXml`, `CompileInclusionTests.RejectsRulesThatCanExcludeOrImportTheNewFile` and `StableImportAllowsPreviewAndIsCaptured` |
 | 10 Primary constructor and setter parameter attribute | `ExtractInterfaceTests.PrimaryConstructorAndMethodBodyArePreserved` and `UnsupportedMemberShapesAreRefused` |
-| 11 Duplicate SDK version under two roots | `PublishedArtifactTests.SdkPathsCanSelectLocalSdkWhenSameVersionExistsInHost` |
-| 12 Cross-project rename with related members, cref, nameof, build | `PublishedArtifactTests.PublishedRenamePreservesCrossProjectSemanticsAndUnrelatedBytes` |
+| 11 Duplicate SDK version under two roots | `RefactorCommandIntegrationTests.SdkPathsCanSelectLocalSdkWhenSameVersionExistsInHost` |
+| 12 Cross-project rename with related members, cref, nameof, build | `GeneratorIntegrationTests.SdkGeneratorOutputBlocksExtractionButUnrelatedOutputAllowsRename` |
 | 13–14 Selected overload group and related-type exclusions | `RenameTests.OverloadGroupRequiresOptInAndUpdatesNameof` and `OptInDoesNotPullInOverloadsFromRelatedTypes` |
 | 15–16 Type, interface, property, field, parameter and local | `RenameTests.TypeRenameUpdatesDeclarationAndConsumer`, `RenamesSelectedPropertyOrField`, and `PositionRenamesParameterOrLocal` |
 | 17 Invalid name, documentation ID and position | `RenameTests.InvalidNamesSelectionsAndCollisionsProduceNoEdits` and `PositionOutsideIdentifierAndOverloadGroupAreRefused` |
@@ -97,7 +105,7 @@ preview plan where applicable.
 | 53 Ambiguous overload position | `RenameTests.PositionOutsideIdentifierAndOverloadGroupAreRefused` |
 | 54 Inherited name collision | `RenameTests.InvalidNamesSelectionsAndCollisionsProduceNoEdits` |
 | 55 Configuration injection | `EngineBoundaryTests.ConfigurationCannotInjectAnMsbuildProperty` |
-| 56 Caller directory with incompatible SDK | `PublishedArtifactTests.CallerSdkConfigurationDoesNotOverrideWorkspaceSdk` |
+| 56 Caller directory with incompatible SDK | `RefactorCommandIntegrationTests.CallerSdkConfigurationDoesNotOverrideWorkspaceSdk` |
 | 58–59 Design-time linked or unexpected sources | `WorkspaceIntegrationTests.DesignTimeOnlySourceCannotSilentlyChangeTheEditableGraph` |
 | 60–61 Design-time missing edge and build-only reference | `WorkspaceIntegrationTests.DesignTimeAndBuildOnlyReferencesHaveDifferentMeaning` |
 | 62 Malformed source encoding | `EngineBoundaryTests.MalformedSourceEncodingIsRefusedWithoutWrites` |

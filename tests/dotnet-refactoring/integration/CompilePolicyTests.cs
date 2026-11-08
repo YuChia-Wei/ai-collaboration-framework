@@ -10,6 +10,7 @@ namespace RefactorTool.IntegrationTests;
 [Trait("Boundary", "InProcess")]
 public sealed class CompilePolicyTests
 {
+    /// <summary>Rejects raw MSBuild rules whose evaluation or build can change when the source appears.</summary>
     [Theory]
     [InlineData("""<PropertyGroup Condition="Exists('ISelected.cs')"><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>""")]
     [InlineData("""<Import Project="ExcludeInterface.targets" Condition="Exists('ISelected.cs')" />""")]
@@ -40,16 +41,41 @@ public sealed class CompilePolicyTests
             Assert.Equal("unsupported_compile_inclusion", Assert.IsType<RefactorFailure>(error).Code);
     }
 
-    private static class MsBuildParser
+    internal static class MsBuildParser
     {
-        static MsBuildParser()
+        private static readonly string BuildSdkPath = typeof(CompilePolicyTests).Assembly
+            .GetCustomAttributes<AssemblyMetadataAttribute>()
+            .Single(attribute => attribute.Key == "RefactorTestSdkPath").Value!;
+
+        private static readonly Lazy<bool> Registration = new(() =>
         {
-            var path = typeof(CompilePolicyTests).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
-                .Single(attribute => attribute.Key == "RefactorTestSdkPath").Value!;
-            MSBuildLocator.RegisterMSBuildPath(path);
+            MSBuildLocator.RegisterMSBuildPath(BuildSdkPath);
+            return true;
+        });
+
+        internal static void EnsureRegistered() => _ = Registration.Value;
+
+        internal static bool CanEvaluate(string selectedSdkPath)
+        {
+            if (!SamePath(BuildSdkPath, selectedSdkPath))
+                return false;
+
+            var sdksPath = Environment.GetEnvironmentVariable("MSBuildSDKsPath");
+            if (!string.IsNullOrEmpty(sdksPath) && !SamePath(sdksPath, Path.Combine(selectedSdkPath, "Sdks")))
+                return false;
+
+            EnsureRegistered();
+            return UsesMsBuild(selectedSdkPath);
         }
 
-        internal static void EnsureRegistered() { }
+        private static bool SamePath(string left, string right) =>
+            Path.IsPathFullyQualified(left) && Path.IsPathFullyQualified(right) &&
+            Paths.Comparer.Equals(Path.TrimEndingDirectorySeparator(Path.GetFullPath(left)),
+                Path.TrimEndingDirectorySeparator(Path.GetFullPath(right)));
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool UsesMsBuild(string sdkPath) =>
+            SamePath(typeof(ProjectRootElement).Assembly.Location, Path.Combine(sdkPath, "Microsoft.Build.dll"));
 
         // Delay binding the real SDK assembly until its resolver is registered.
         [MethodImpl(MethodImplOptions.NoInlining)]
