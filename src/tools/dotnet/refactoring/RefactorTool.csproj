@@ -13,6 +13,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="RefactorTool.UnitTests" />
     <InternalsVisibleTo Include="RefactorTool.IntegrationTests" />
+    <InternalsVisibleTo Include="RefactorTool.ArtifactIntegrationTests" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="5.0.0" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />

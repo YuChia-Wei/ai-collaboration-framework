@@ -1,3 +1,4 @@
+using Aicf.Dotnet.TestSupport;
 using System.Text.Json;
 using System.Xml.Linq;
 
@@ -12,13 +13,18 @@ public sealed class SdkCollection
 internal sealed class SdkFixture : IDisposable
 {
     internal const string Version = "10.0.403";
-    private readonly TestDirectory directory = new();
+    private readonly TestDirectory directory;
     private readonly string restoreEntry;
     private int sequence;
 
     internal SdkFixture(bool twoProjects = false)
     {
-        directory.Write("global.json", Data.Serialize(new { sdk = new { version = Version, rollForward = "disable" } }));
+        var selected = DotnetTestHost.RequireSdk(Version);
+        directory = new();
+        directory.Write("global.json", Data.Serialize(new
+        {
+            sdk = new { version = Version, rollForward = "disable", paths = new[] { selected.Root } }
+        }));
         directory.Write("A/A.csproj", """<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><Nullable>enable</Nullable><GenerateDocumentationFile>true</GenerateDocumentationFile></PropertyGroup></Project>""");
         directory.Write("A/Service.cs", SemanticWorkspace.Service.ReplaceLineEndings("\r\n") + "\r\n");
         if (twoProjects)
@@ -56,7 +62,7 @@ internal sealed class SdkFixture : IDisposable
 
     internal async Task<string> Dotnet(params string[] args)
     {
-        var result = await TestDirectory.RunProcess("dotnet", Root, args, TimeSpan.FromSeconds(120));
+        var result = await TestDirectory.RunProcess(DotnetTestHost.RequireExecutable(), Root, args, TimeSpan.FromSeconds(120));
         Assert.True(result.ExitCode == 0, $"dotnet {string.Join(' ', args)}: {result.Output}{result.Error}");
         return result.Output;
     }

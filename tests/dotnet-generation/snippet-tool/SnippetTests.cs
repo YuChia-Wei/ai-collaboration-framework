@@ -1,4 +1,4 @@
-using Aicf.Dotnet.TestSupport;
+using static SnippetTool.IntegrationTests.SnippetTestSupport;
 using System.Text.Json;
 using SnippetTool;
 using Generation.TestSupport;
@@ -7,12 +7,6 @@ namespace SnippetTool.IntegrationTests;
 
 public sealed class SnippetTests
 {
-    private static readonly string[] BuiltInIds =
-    [
-        "cancellation-guard", "constructor-assignment", "domain-contracts", "es-aggregate", "guid-id",
-        "interface-method", "null-guard", "readonly-property", "string-guard"
-    ];
-
     internal const string CustomBody = """
         // ${comment}
 
@@ -208,90 +202,6 @@ public sealed class SnippetTests
         void ThenRefuseWithTheExpectedFailure() => ReadResult(run, expected);
     }
 
-    [SnippetArtifactFact]
-    [Trait("Boundary", "PublishedArtifact")]
-    public void PublishedExecutableFindsItsBundledCatalogFromAnotherDirectory()
-    {
-        using var fixture = new GenerationFixture();
-        string executable = null!;
-        string request = null!;
-        (int Exit, string Output, string Error) result = (0, "", "");
-        (int Exit, string Output, string Error) failure = (0, "", "");
-        (int Exit, string Output, string Error) version = (0, "", "");
-
-        this.Given(GivenThePublishedSnippetToolAndARequestOutsideItsDirectory, "the published snippet tool and a request outside its directory")
-            .When(WhenListingSnippetsFromTheOtherDirectory, "listing snippets from the other directory")
-            .Then(ThenFindTheBundledCatalog, "find the bundled catalog")
-            .Given(GivenAnUnsupportedRequestSchema, "an unsupported request schema")
-            .When(WhenInvokingThePublishedToolWithThatSchema, "invoking the published tool with that schema")
-            .Then(ThenReturnTheStableSchemaError, "return the stable schema error")
-            .When(WhenRequestingTheExecutableVersion, "requesting the executable version")
-            .Then(ThenPrintTheVersionWithoutErrors, "print the version without errors")
-            .BDDfy();
-
-        void GivenThePublishedSnippetToolAndARequestOutsideItsDirectory()
-        {
-            executable = PublishedExecutable.Require(SnippetArtifactFactAttribute.Artifact, "SnippetTool", "AICF_SNIPPET_ARTIFACT");
-            request = fixture.Write("request.json", """{"schemaVersion":1,"operation":"list"}""");
-        }
-
-        async Task WhenListingSnippetsFromTheOtherDirectory()
-        {
-            result = await fixture.Execute(executable, TimeSpan.FromSeconds(15), "--request", Path.GetFileName(request));
-        }
-
-        void ThenFindTheBundledCatalog() => Assert.Equal(BuiltInIds, Ids(ReadResult(result, null)));
-
-        void GivenAnUnsupportedRequestSchema() => File.WriteAllText(request, """{"schemaVersion":2,"operation":"list"}""");
-
-        async Task WhenInvokingThePublishedToolWithThatSchema()
-        {
-            failure = await fixture.Execute(executable, TimeSpan.FromSeconds(15), "--request", Path.GetFileName(request));
-        }
-
-        void ThenReturnTheStableSchemaError() => ReadResult(failure, "unsupported-request-schema");
-
-        async Task WhenRequestingTheExecutableVersion()
-        {
-            version = await fixture.Execute(executable, TimeSpan.FromSeconds(15), "--version");
-        }
-
-        void ThenPrintTheVersionWithoutErrors()
-        {
-            Assert.Equal(0, version.Exit);
-            Assert.Empty(version.Error);
-            Assert.False(string.IsNullOrWhiteSpace(version.Output));
-        }
-    }
-
-    [SnippetArtifactFact(linuxOnly: true)]
-    [Trait("Boundary", "LinuxArtifact")]
-    public void PublishedExecutableRejectsFifoWithoutOpeningIt()
-    {
-        using var fixture = new GenerationFixture();
-        string executable = null!, request = null!;
-        (int Exit, string Output, string Error) run = (0, "", "");
-
-        this.Given(GivenAStagedExecutableAndAFifoBody, "a staged executable and a FIFO body")
-            .When(WhenInspectingTheFifoBody, "inspecting the FIFO body")
-            .Then(ThenRejectTheNonRegularFile, "reject the non-regular file without blocking")
-            .BDDfy();
-
-        async Task GivenAStagedExecutableAndAFifoBody()
-        {
-            executable = PublishedExecutable.Require(SnippetArtifactFactAttribute.Artifact, "SnippetTool", "AICF_SNIPPET_ARTIFACT");
-            WriteCatalog(fixture);
-            var fifo = await fixture.Execute("mkfifo", TimeSpan.FromSeconds(15), "--", Path.Combine(fixture.Root, "custom-probe.snippet"));
-            Assert.True(fifo.Exit == 0, fifo.Error);
-            request = fixture.Write("request.json", JsonSerializer.Serialize(Inspect("custom-probe")));
-        }
-
-        async Task WhenInspectingTheFifoBody() =>
-            run = await fixture.Execute(executable, TimeSpan.FromSeconds(15), "--request", request);
-
-        void ThenRejectTheNonRegularFile() => ReadResult(run, "invalid-body");
-    }
-
     internal static JsonElement RenderCustom(GenerationFixture fixture)
     {
         WriteCustomBody(fixture);
@@ -307,18 +217,11 @@ public sealed class SnippetTests
     internal static string Render(GenerationFixture fixture, string id, object? parameters = null, int indent = 0) =>
         Text(Invoke(fixture, new { schemaVersion = 1, operation = "render", id, parameters, indent }), "text");
 
-    internal static string Text(JsonElement json, string key) => json.GetProperty(key).GetString()!;
-
     private static object CustomRequest => new
     {
         schemaVersion = 1, operation = "render", source = "custom.json", id = "custom-probe", indent = 4,
         newline = "crlf", parameters = new { variable = "result", comment = "first\r\n// second ${verbatim}" }
     };
-
-    private static object Inspect(string id) => new { schemaVersion = 1, operation = "inspect", source = "custom.json", id };
-
-    private static string[] Ids(JsonElement result) => result.GetProperty("snippets").EnumerateArray()
-        .Select(row => Text(row, "id")).ToArray();
 
     private static JsonElement Invoke(GenerationFixture fixture, object request) => ReadResult(Call(fixture, request), null);
 
@@ -329,38 +232,5 @@ public sealed class SnippetTests
         using var error = new StringWriter();
         var exit = Program.Run(["--request", path], output, error);
         return (exit, output.ToString(), error.ToString());
-    }
-
-    private static JsonElement ReadResult((int Exit, string Output, string Error) result, string? failure)
-    {
-        Assert.True(result.Exit == (failure is null ? 0 : 1),
-            $"Unexpected exit {result.Exit}\n{result.Output}\n{result.Error}");
-        Assert.Empty(failure is null ? result.Error : result.Output);
-        using var response = JsonDocument.Parse(failure is null ? result.Output : result.Error);
-        var json = response.RootElement;
-        Assert.Equal(1, json.GetProperty("schemaVersion").GetInt32());
-        if (failure is not null)
-            Assert.Equal(failure, Text(json.GetProperty("error"), "code"));
-        return json.Clone();
-    }
-
-    private static void WriteCatalog(GenerationFixture fixture, int schemaVersion = 1, bool duplicate = false, string kind = "text")
-    {
-        object Row(string id, string title, string bodyFile, object parameters) => new
-        {
-            id, title, description = "Custom method body", context = "method-body", bodyFile,
-            tags = Array.Empty<string>(), requiredUsings = Array.Empty<string>(), preconditions = Array.Empty<string>(), parameters
-        };
-        var custom = Row("custom-probe", "Probe", "custom-probe.snippet", new
-        {
-            variable = new { kind = "identifier" },
-            comment = new { kind }
-        });
-        var lazy = Row("unreadable", "Unreadable", "missing.snippet", new { });
-        fixture.Write("custom.json", JsonSerializer.Serialize(new
-        {
-            schemaVersion, source = new { id = "custom", version = "2.0.0" },
-            snippets = new[] { custom, duplicate ? custom : lazy }
-        }));
     }
 }

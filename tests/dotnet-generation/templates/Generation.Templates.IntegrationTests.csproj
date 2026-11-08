@@ -19,5 +19,7 @@
     <None Include="../../../src/tools/dotnet/generation/dotnet-new/**/*"
           Exclude="../../../src/tools/dotnet/generation/dotnet-new/**/bin/**;../../../src/tools/dotnet/generation/dotnet-new/**/obj/**"
           Link="native-templates/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Include="../../dotnet-test-support/DotnetTestHost.cs" Link="DotnetTestHost.cs" />
+    <Compile Remove="artifact/**/*.cs" />
   </ItemGroup>
 </Project>

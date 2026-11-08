@@ -23,8 +23,8 @@
     <Reference Include="Microsoft.Build" HintPath="$(RefactorTestSdkPath)/Microsoft.Build.dll" Private="false" />
     <Using Include="Xunit" />
     <Using Include="TestStack.BDDfy" />
-    <Compile Include="../../dotnet-test-support/PublishedExecutable.cs" Link="PublishedExecutable.cs" />
     <ProjectReference Include="../../../src/tools/dotnet/refactoring/RefactorTool.csproj" />
+    <Compile Include="../../dotnet-test-support/DotnetTestHost.cs" Link="DotnetTestHost.cs" />
   </ItemGroup>
 
 </Project>

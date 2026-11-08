@@ -12,6 +12,7 @@ on:
       - '.github/workflows/native-tools.yml'
       - 'tests/dotnet-test-support/**'
       - 'src/tools/dotnet/AICF.Dotnet.Tools.slnx'
+      - 'src/tools/dotnet/AICF.Dotnet.Artifacts.slnx'
       - '.github/workflows/package-candidate.yml'
       - '.github/workflows/publish-release.yml'
       - 'tests/dotnet-generation/**'
@@ -114,7 +115,6 @@ jobs:
         shell: pwsh
         env:
           PRODUCT_VERSION: ${{ needs.source.outputs.version }}
-          AICF_GENERATION_SDK_TESTS: '1'
         run: |
           Set-Location "$env:RUNNER_TEMP/native-sdk"
           $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/native-sdk/generation-fixtures"
@@ -131,12 +131,18 @@ jobs:
           dotnet test "$generation/snippet-tool/unit/SnippetTool.UnitTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=snippet-unit.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $check -Report "$results/snippet-unit.trx" -Expected 8
-          dotnet test "$generation/snippet-tool/SnippetTool.IntegrationTests.csproj" -c Release --filter 'Boundary!=LinuxArtifact' --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=snippet.trx'
+          dotnet test "$generation/snippet-tool/SnippetTool.IntegrationTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=snippet.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & $check -Report "$results/snippet.trx" -Expected 15
+          & $check -Report "$results/snippet.trx" -Expected 14
+          dotnet test "$generation/snippet-tool/artifact/SnippetTool.ArtifactIntegrationTests.csproj" -c Release --filter 'Boundary=PublishedArtifact' --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=snippet-published.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $check -Report "$results/snippet-published.trx" -Expected 1
           dotnet test "$generation/templates/Generation.Templates.IntegrationTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=templates.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $check -Report "$results/templates.trx" -Expected 1
+          dotnet test "$generation/templates/artifact/Generation.Templates.ArtifactIntegrationTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=templates-packed.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $check -Report "$results/templates-packed.trx" -Expected 1
       - name: Verify the published Linux executable rejects a FIFO
         if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && matrix.rid == 'linux-x64'
         shell: bash
@@ -145,7 +151,7 @@ jobs:
           results="$RUNNER_TEMP/generation-test-results"
           AICF_TEST_WORK="$RUNNER_TEMP/native-sdk/generation-fixtures" \
           AICF_SNIPPET_ARTIFACT="$RUNNER_TEMP/native-output/snippets/linux-x64/SnippetTool" \
-            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-generation/snippet-tool/SnippetTool.IntegrationTests.csproj" -c Release --filter 'Boundary=LinuxArtifact' --artifacts-path "$RUNNER_TEMP/generation-test-build" --results-directory "$results" --logger 'trx;LogFileName=fifo.trx'
+            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-generation/snippet-tool/artifact/SnippetTool.ArtifactIntegrationTests.csproj" -c Release --filter 'Boundary=LinuxArtifact' --artifacts-path "$RUNNER_TEMP/generation-test-build" --results-directory "$results" --logger 'trx;LogFileName=fifo.trx'
           pwsh -NoProfile -File "$GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/fifo.trx" -Expected 1
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:

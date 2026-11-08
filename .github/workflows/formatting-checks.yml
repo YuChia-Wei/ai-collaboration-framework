@@ -9,6 +9,7 @@ on:
       - '.github/workflows/formatting-checks.yml'
       - 'tests/dotnet-test-support/**'
       - 'src/tools/dotnet/AICF.Dotnet.Tools.slnx'
+      - 'src/tools/dotnet/AICF.Dotnet.Artifacts.slnx'
       - '.github/scripts/build-generation.py'
 permissions: {}
 concurrency:
@@ -63,15 +64,12 @@ jobs:
         env:
           FORMAT_EXE: ${{ matrix.executable }}
           FORMAT_SDK: ${{ matrix.sdk }}
-          AICF_FORMAT_SDK_TESTS: '1'
         run: |
           $env:AICF_FORMAT_ARTIFACT = "$env:RUNNER_TEMP/format-publish/$env:FORMAT_EXE"
           $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/format-acceptance"
-          $testFilter = 'Boundary!=CaseSensitiveArtifact'
-          $expected = 25
+          $expected = 24
           if ($IsWindows) {
-            $testFilter += '&Platform!=MacOS'
-            $expected = 22
+            $expected = 21
           }
           $results = "$env:RUNNER_TEMP/format-test-results"
           # dotnet test supplies MSBuildSDKsPath to the test host and its child SDK commands.
@@ -81,9 +79,14 @@ jobs:
           dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/unit/FormatTool.UnitTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format-unit.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/format-unit.trx" -Expected 6
-          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" -c Release --filter $testFilter --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format.trx'
+          $filter = @()
+          if ($IsWindows) { $filter = @('--filter', 'Platform!=MacOS') }
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" -c Release @filter --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/format.trx" -Expected $expected
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-formatting/artifact/FormatTool.ArtifactIntegrationTests.csproj" -c Release --filter 'Boundary=PublishedArtifact' --artifacts-path "$env:RUNNER_TEMP/format-test-artifacts" --results-directory $results --logger 'trx;LogFileName=format-published.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/format-published.trx" -Expected 1
       - name: Verify exact selection on case-sensitive APFS
         if: matrix.rid == 'osx-arm64'
         shell: bash
@@ -94,8 +97,9 @@ jobs:
           mkdir -p "$mount"
           hdiutil attach "$image" -mountpoint "$mount" -nobrowse
           trap 'hdiutil detach "$mount"' EXIT
+          mkdir "$mount/acceptance"
           cd "$RUNNER_TEMP/format-acceptance"
           results="$RUNNER_TEMP/format-test-results"
           AICF_FORMAT_ARTIFACT="$RUNNER_TEMP/format-publish/FormatTool" AICF_FORMAT_CASE_ROOT="$mount/acceptance" \
-            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-formatting/FormatTool.IntegrationTests.csproj" -c Release --no-build --filter 'Boundary=CaseSensitiveArtifact' --artifacts-path "$RUNNER_TEMP/format-test-artifacts" --results-directory "$results" --logger 'trx;LogFileName=case-sensitive.trx'
+            dotnet test "$GITHUB_WORKSPACE/tests/dotnet-formatting/artifact/FormatTool.ArtifactIntegrationTests.csproj" -c Release --no-build --filter 'Boundary=CaseSensitiveArtifact' --artifacts-path "$RUNNER_TEMP/format-test-artifacts" --results-directory "$results" --logger 'trx;LogFileName=case-sensitive.trx'
           pwsh -NoProfile -File "$GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/case-sensitive.trx" -Expected 1

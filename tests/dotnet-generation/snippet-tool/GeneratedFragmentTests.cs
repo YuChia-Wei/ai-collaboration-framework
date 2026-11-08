@@ -1,3 +1,4 @@
+using static SnippetTool.IntegrationTests.SnippetTestSupport;
 using System.Runtime.Loader;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;

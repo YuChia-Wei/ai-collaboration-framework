@@ -187,7 +187,7 @@ public sealed class PublishedArtifactTests
         }
     }
 
-    [RefactorArtifactFact]
+    [RefactorArtifactFact(requiresJunction: true)]
     public void SdkPathsCanSelectLocalSdkWhenSameVersionExistsInHost()
     {
         using var fixture = new SdkFixture();
@@ -294,11 +294,23 @@ public sealed class PublishedArtifactTests
         name.Contains("Microsoft.NET.Test.Sdk", StringComparison.OrdinalIgnoreCase) ||
         name.StartsWith("testhost", StringComparison.OrdinalIgnoreCase) ||
         name.StartsWith("RefactorTool.IntegrationTests", StringComparison.OrdinalIgnoreCase) ||
+        name.StartsWith("RefactorTool.ArtifactIntegrationTests", StringComparison.OrdinalIgnoreCase) ||
         name.StartsWith("RefactorTool.UnitTests", StringComparison.OrdinalIgnoreCase);
 
     private static string Artifact()
     {
         Assert.True(RefactorTestProfile.WindowsX64, "The selected archive requires Windows x64.");
-        return PublishedExecutable.Require(RefactorTestProfile.Artifact, "RefactorTool", "AICF_REFACTOR_TEST_ARTIFACT");
+        return PublishedExecutable.Require(Environment.GetEnvironmentVariable("AICF_REFACTOR_TEST_ARTIFACT"), "RefactorTool", "AICF_REFACTOR_TEST_ARTIFACT");
+    }
+}
+
+internal sealed class RefactorArtifactFactAttribute : FactAttribute
+{
+    public RefactorArtifactFactAttribute(bool requiresJunction = false)
+    {
+        if (!RefactorTestProfile.WindowsX64)
+            Skip = RefactorTestProfile.WindowsSkip;
+        else if (requiresJunction)
+            Skip = RefactorTestProfile.JunctionSkip;
     }
 }

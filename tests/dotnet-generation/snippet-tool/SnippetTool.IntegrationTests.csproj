@@ -18,8 +18,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="unit/**/*.cs" />
-    <Compile Include="../../dotnet-test-support/PublishedExecutable.cs" Link="PublishedExecutable.cs" />
     <ProjectReference Include="../../../src/tools/dotnet/generation/snippet-tool/SnippetTool.csproj" />
     <Compile Include="../GenerationFixture.cs" Link="GenerationFixture.cs" />
+    <Compile Remove="artifact/**/*.cs" />
   </ItemGroup>
 </Project>

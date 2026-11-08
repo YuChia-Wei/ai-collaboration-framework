@@ -14,6 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="FormatTool.IntegrationTests" />
+    <InternalsVisibleTo Include="FormatTool.ArtifactIntegrationTests" />
     <InternalsVisibleTo Include="FormatTool.UnitTests" />
     <None Update="README.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>

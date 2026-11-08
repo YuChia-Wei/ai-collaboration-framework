@@ -4,10 +4,10 @@ Run the native generation and SnippetTool tests with the .NET 10 SDK. Run each
 project directly or use
 [`AICF.Dotnet.Tools.slnx`](../../src/tools/dotnet/AICF.Dotnet.Tools.slnx).
 
-| Former `Generation.Tests` cases | Project |
+| Source test cases | Project |
 | --- | --- |
 | SnippetTool placeholder, parameter and text expansion rules | `snippet-tool/unit/SnippetTool.UnitTests.csproj` |
-| `SnippetTests`, including the executable cases, and `GeneratedFragmentTests` | `snippet-tool/SnippetTool.IntegrationTests.csproj` |
+| `SnippetTests` and `GeneratedFragmentTests` | `snippet-tool/SnippetTool.IntegrationTests.csproj` |
 | `TemplateTests` and the copied `dotnet new` fixtures | `templates/Generation.Templates.IntegrationTests.csproj` |
 
 SnippetTool unit tests pass text and parameter definitions directly to the
@@ -26,20 +26,24 @@ dotnet test tests/dotnet-generation/snippet-tool/SnippetTool.IntegrationTests.cs
 dotnet test tests/dotnet-generation/templates/Generation.Templates.IntegrationTests.csproj
 ```
 
-Set `AICF_GENERATION_SDK_TESTS=1` to exercise the real template engine,
-generated builds and HTTP behavior. The template
-case uses an isolated `dotnet new` hive. Select an absolute
-`AICF_TEMPLATE_PACKAGE` path to exercise package installation and extracted
-template content. This package selection enables the template case by itself.
-An explicitly supplied package must exist.
+The source-template case runs automatically when a .NET 10 SDK and an
+ASP.NET Core 10.0 runtime are discoverable. It uses an isolated `dotnet new`
+hive to exercise generation, builds and HTTP behavior.
 
-Set `AICF_SNIPPET_ARTIFACT` to the absolute path of a separately published
-SnippetTool executable for the artifact-relative catalog and process contract.
-The FIFO case requires Linux and `mkfifo`. Set `AICF_TEST_WORK` to select a
-disposable fixture root. Each case creates and removes its own subdirectory.
+Use the [artifact preparation commands](../../src/tools/dotnet/README.md#published-artifact-acceptance)
+to supply `AICF_TEMPLATE_PACKAGE` as the absolute path of a packed template
+`.nupkg` and `AICF_SNIPPET_ARTIFACT` as the absolute path of the published
+SnippetTool executable.
 
-The PR native-tools workflow runs the three generation projects on Windows,
-with the published executable and template package. Its Linux job runs the
+```text
+dotnet test tests/dotnet-generation/snippet-tool/artifact/SnippetTool.ArtifactIntegrationTests.csproj -c Release
+dotnet test tests/dotnet-generation/templates/artifact/Generation.Templates.ArtifactIntegrationTests.csproj -c Release
+```
+
+The FIFO case requires Linux x64 and `mkfifo` on PATH. Set `AICF_TEST_WORK` to
+select a disposable fixture root. Each case creates and removes its own
+subdirectory. The PR native-tools workflow runs the source generation projects
+and both artifact projects on Windows. Its Linux job runs the
 FIFO case. CI requires the selected test counts in the native test reports.
 The [domain contract test templates](../../src/knowledge/dotnet-backend/templates/domain-contracts/README.md)
 generate illustrative projects separately. The knowledge template workflow

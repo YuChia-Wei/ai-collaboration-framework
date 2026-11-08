@@ -47,12 +47,11 @@ internal sealed class TestDirectory : IDisposable
 
     internal async Task Junction(string relative, string target)
     {
-        var pwsh = RefactorTestProfile.PwshPath();
-        Assert.True(pwsh is not null, RefactorTestProfile.JunctionPrerequisite);
+        var pwsh = RefactorTestProfile.RequirePwsh();
         var path = PathFor(relative);
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         // This command creates the real OS fixture. Assertions remain in xUnit.
-        var result = await RunProcess(pwsh!, Root,
+        var result = await RunProcess(pwsh, Root,
             ["-NoProfile", "-Command", "$ErrorActionPreference='Stop'; New-Item -ItemType Junction -Path $env:REFACTOR_TEST_LINK -Target $env:REFACTOR_TEST_TARGET | Out-Null"],
             TimeSpan.FromSeconds(30), new Dictionary<string, string> { ["REFACTOR_TEST_LINK"] = path, ["REFACTOR_TEST_TARGET"] = target });
         Assert.True(result.ExitCode == 0, result.Output + result.Error);
@@ -76,6 +75,7 @@ internal sealed class TestDirectory : IDisposable
             StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8
         };
         foreach (var arg in args) start.ArgumentList.Add(arg);
+        start.Environment.Remove("MSBuildSDKsPath");
         start.Environment["DOTNET_CLI_UI_LANGUAGE"] = "en-US";
         // A reusable build node can retain this process's redirected pipes.
         // Keep test fixture commands isolated and finish their output with the command.

@@ -29,10 +29,8 @@ internal sealed class FormatFixture : IDisposable
     internal static string? SdkVersion =>
         OperatingSystem.IsWindows() && RuntimeInformation.ProcessArchitecture == Architecture.X64 ? "10.0.403" :
         MacArm64 ? "10.0.400" : null;
-    internal static bool RunSdkTests => Environment.GetEnvironmentVariable("AICF_FORMAT_SDK_TESTS") == "1";
-    internal static string? Artifact => Environment.GetEnvironmentVariable("AICF_FORMAT_ARTIFACT");
     internal static bool MacArm64 => OperatingSystem.IsMacOS() && RuntimeInformation.ProcessArchitecture == Architecture.Arm64;
-    internal static string? CaseSensitiveRoot => Environment.GetEnvironmentVariable("AICF_FORMAT_CASE_ROOT");
+    private bool sdkPinned;
 
     public string Root { get; }
     public string Chosen { get; }
@@ -73,8 +71,12 @@ internal sealed class FormatFixture : IDisposable
 
     public void PinSdk()
     {
-        Assert.NotNull(SdkVersion);
-        Write("global.json", JsonSerializer.Serialize(new { sdk = new { version = SdkVersion, rollForward = "disable" } }));
+        var selected = DotnetTestHost.RequireSdk(SdkVersion ?? throw new InvalidOperationException("Unsupported formatter SDK host."));
+        Write("global.json", JsonSerializer.Serialize(new
+        {
+            sdk = new { version = selected.Version, rollForward = "disable", paths = new[] { selected.Root } }
+        }));
+        sdkPinned = true;
     }
 
     public Task Restore()
@@ -85,27 +87,29 @@ internal sealed class FormatFixture : IDisposable
 
     public async Task Dotnet(params string[] arguments)
     {
-        var (exit, output, error) = await Execute("dotnet", arguments, TimeSpan.FromSeconds(120));
+        var (exit, output, error) = await Execute(DotnetTestHost.RequireExecutable(), arguments, TimeSpan.FromSeconds(120));
         Assert.True(exit == 0, $"dotnet {string.Join(' ', arguments)} exited {exit}\n{output}\n{error}");
     }
 
     public async Task<(int Exit, JsonElement Result)> Invoke(
         string? raw = null, string workspace = "App/App.csproj", string[]? files = null,
         string mode = "whitespace", string action = "check", string[]? diagnostics = null,
-        string? severity = null, bool verbose = false, string[]? allowed = null, bool artifact = false)
+        string? severity = null, bool verbose = false, string[]? allowed = null, string? artifact = null)
     {
         var request = Write("request.json", raw ?? JsonSerializer.Serialize(new
         {
             schemaVersion = 1, workspace, files = files ?? ["Nested/Chosen.cs"], mode, action,
             diagnostics = diagnostics ?? [], severity, verbose, allowedProjectAnalyzers = allowed ?? []
         }));
-        if (artifact)
+        if (artifact is not null || sdkPinned)
         {
-            var executable = PublishedExecutable.Require(Artifact, "FormatTool", "AICF_FORMAT_ARTIFACT");
-            var (exit, output, error) = await Execute(executable, ["--request", request], TimeSpan.FromSeconds(180));
+            var arguments = artifact is null
+                ? new[] { Path.Combine(AppContext.BaseDirectory, "FormatTool.dll"), "--request", request }
+                : ["--request", request];
+            var (exit, output, error) = await Execute(artifact ?? DotnetTestHost.RequireExecutable(), arguments, TimeSpan.FromSeconds(180));
             Assert.Empty(error);
-            using var artifactJson = JsonDocument.Parse(output);
-            return (exit, artifactJson.RootElement.Clone());
+            using var processJson = JsonDocument.Parse(output);
+            return (exit, processJson.RootElement.Clone());
         }
         using var writer = new StringWriter();
         var code = await Program.Run(["--request", request], writer);
@@ -124,6 +128,7 @@ internal sealed class FormatFixture : IDisposable
             RedirectStandardOutput = true,
             RedirectStandardError = true
         };
+        start.Environment.Remove("MSBuildSDKsPath");
         foreach (var argument in arguments)
             start.ArgumentList.Add(argument);
         using var process = Process.Start(start)!;
@@ -178,17 +183,7 @@ internal sealed class FormatHostTheoryAttribute : TheoryAttribute
 
 internal sealed class FormatSdkFactAttribute : FactAttribute
 {
-    public FormatSdkFactAttribute(bool artifact = false, bool caseSensitive = false)
-    {
-        if (caseSensitive && !FormatFixture.MacArm64)
-            Skip = "The case-sensitive APFS scenario requires macOS arm64.";
-        else if (caseSensitive && FormatFixture.CaseSensitiveRoot is null)
-            Skip = "Set AICF_FORMAT_CASE_ROOT to a case-sensitive APFS directory.";
-        else if (FormatFixture.SdkVersion is null)
-            Skip = "Formatter SDK integration requires Windows x64 or macOS arm64.";
-        else if (artifact && FormatFixture.Artifact is null && !caseSensitive)
-            Skip = "Set AICF_FORMAT_ARTIFACT to the published FormatTool executable.";
-        else if (!artifact && !caseSensitive && !FormatFixture.RunSdkTests)
-            Skip = "Set AICF_FORMAT_SDK_TESTS=1 to exercise the supported SDK.";
-    }
+    public FormatSdkFactAttribute() => Skip = FormatFixture.SdkVersion is { } version
+        ? DotnetTestHost.SdkSkip(version)
+        : "Formatter SDK integration requires Windows x64 or macOS arm64.";
 }

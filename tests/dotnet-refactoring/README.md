@@ -8,8 +8,8 @@ dotnet test tests/dotnet-refactoring/unit/RefactorTool.UnitTests.csproj -c Relea
 dotnet test tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.csproj -c Release
 ```
 
-Set `AICF_REFACTOR_SDK_TESTS=1` on Windows x64 with SDK 10.0.403 to
-exercise real MSBuild and SDK-backed preview and apply. The junction cases
+SDK-backed preview and apply run automatically on Windows x64 when SDK
+10.0.403 is discoverable. The junction cases
 also require `pwsh`. The SDK fixture uses local SDK reference packs and an
 empty package source. Set `AICF_TEST_WORK` for a disposable fixture root.
 
@@ -19,15 +19,13 @@ and extract the ZIP outside the checkout. Set `AICF_REFACTOR_TEST_ARTIFACT` to
 the absolute path to the extracted `RefactorTool.exe`.
 
 ```powershell
-$env:AICF_REFACTOR_SDK_TESTS = '1'
 $env:AICF_REFACTOR_TEST_ARTIFACT = 'F:/scratch/refactor-extracted/RefactorTool.exe'
-dotnet test tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.csproj -c Release
+dotnet test tests/dotnet-refactoring/artifact/RefactorTool.ArtifactIntegrationTests.csproj -c Release
 ```
 
-Use `Boundary=Sdk` or `Boundary=Artifact` for a selected integration subset.
-An unset artifact selection skips those cases during discovery. An explicit
-artifact selection requires the real win-x64 executable. CI sets both profiles
-and checks the required case counts in the native test reports.
+Use `Boundary=Sdk` for the SDK-backed subset of the normal integration project.
+The independent artifact project requires the staged win-x64 executable.
+CI checks the required case counts in both native test reports.
 
 ## Test boundaries
 
@@ -40,10 +38,9 @@ and checks the required case counts in the native test reports.
 | Extracted executable | Windows artifact integration exercises archive inventory and product CLI execution | Cross-project preview and apply, caller and workspace SDK selection, and SDK roots with the same version |
 
 `Boundary=Preflight` selects Windows apply and destination validation without
-an SDK restore or RefactorTool child process. The two junction preflight cases
-skip in a default run when `pwsh.exe` is absent from PATH. They fail on the
-missing prerequisite when `AICF_REFACTOR_SDK_TESTS=1` selects the required SDK
-profile. `Boundary=InProcess` selects the focused planner and MSBuild XML
+an SDK restore or RefactorTool child process. Only the junction scenarios
+require `pwsh.exe` on PATH. Missing prerequisites produce skips, which the
+required CI test counts reject. `Boundary=InProcess` selects the focused planner and MSBuild XML
 cases. The XML cases use the MSBuild installation that built the test
 assembly. They parse actual project elements from strings. The retained
 SDK cases run the tool's apphost so its own SDK selection remains isolated.

@@ -112,7 +112,7 @@ public sealed class ApplyIntegrationTests
         }
     }
 
-    [RefactorSdkFact]
+    [RefactorSdkFact(requiresJunction: true)]
     public void CanonicalReadOnlyInputDetectsRetargetAndAcceptsFreshPreview()
     {
         using var fixture = new SdkFixture();
@@ -166,7 +166,7 @@ public sealed class ApplyIntegrationTests
         void ThenApplyTheFreshPlan() => applied.Applied();
     }
 
-    [RefactorSdkFact]
+    [RefactorSdkFact(requiresJunction: true)]
     public void EditableCompileSourceJunctionIsRefused()
     {
         using var fixture = new SdkFixture();
