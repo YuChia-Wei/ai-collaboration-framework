@@ -38,6 +38,7 @@ internal sealed class GenerationFixture : IDisposable
             RedirectStandardOutput = true,
             RedirectStandardError = true
         };
+        start.Environment.Remove("MSBuildSDKsPath");
         foreach (var argument in arguments)
             start.ArgumentList.Add(argument);
         return Process.Start(start)!;
