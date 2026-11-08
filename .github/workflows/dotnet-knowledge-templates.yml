@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   domain-contracts:
-    name: Generate and test the package-free domain contract example
+    name: Verify domain contract template output
     runs-on: windows-latest
     timeout-minutes: 10
     permissions:
@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: '10.0.403'
-      - name: Generate and exercise the example
+      - name: Generate both examples and test the package-free project
         shell: pwsh
         run: |
           $work = Join-Path $env:RUNNER_TEMP 'dotnet-knowledge-templates'
@@ -44,6 +44,17 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet new aicf-domain-contract-tests --name Sample.DomainContracts --output $output --debug:custom-hive $hive
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $ct005Output = Join-Path $work 'published-ct005'
+          dotnet new aicf-ct005-contract-tests --name Sample.Ct005Contracts --output $ct005Output --debug:custom-hive $hive
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          foreach ($project in @("$output/Sample.DomainContracts.csproj", "$ct005Output/Sample.Ct005Contracts.csproj")) {
+            if (!(Test-Path -LiteralPath $project -PathType Leaf)) {
+              throw "Expected generated project is missing: $project"
+            }
+          }
+          if (Get-ChildItem -LiteralPath $output, $ct005Output -Recurse -File -Filter '*.csproj.template') {
+            throw 'Generated output contains an unrenamed .csproj.template input.'
+          }
           $results = Join-Path $work 'results'
           dotnet test "$output/Sample.DomainContracts.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=domain.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
