@@ -52,15 +52,19 @@ public sealed class RequestTests
     public void Should_report_no_fixer_without_sdk_commands_when_submitting_ca1040()
     {
         using var fixture = new FormatFixture(requestOnly: true);
+        string request = null!;
         (int Exit, JsonElement Result) run = default;
 
-        this.Given("an analyzer cleanup request for CA1040")
+        this.Given(GivenACa1040AnalyzerCleanupRequest, "an analyzer cleanup request for CA1040")
             .When(WhenSubmittingTheCleanupRequest, "submitting the cleanup request")
             .Then(ThenReportTheFailureEnvelopeWithoutSdkCommands, "report the failure envelope without sdk commands")
             .BDDfy();
 
-        async Task WhenSubmittingTheCleanupRequest() =>
-            run = await fixture.Invoke(mode: "analyzers", diagnostics: ["CA1040"], severity: "warn");
+        void GivenACa1040AnalyzerCleanupRequest() => request = """
+            {"schemaVersion":1,"workspace":"App/App.csproj","files":["Nested/Chosen.cs"],"mode":"analyzers","action":"check","diagnostics":["CA1040"],"severity":"warn"}
+            """;
+
+        async Task WhenSubmittingTheCleanupRequest() => run = await fixture.Invoke(raw: request);
 
         void ThenReportTheFailureEnvelopeWithoutSdkCommands()
         {
@@ -73,17 +77,17 @@ public sealed class RequestTests
     public void EmptySelectionFailsBeforeSdk()
     {
         using var fixture = new FormatFixture(requestOnly: true);
+        string[] selectedFiles = null!;
         (int Exit, JsonElement Result) run = default;
 
-        this.Given("a request with no selected files")
+        this.Given(GivenNoSelectedFiles, "no selected files")
             .When(WhenSubmittingAnEmptySelection, "submitting an empty selection")
             .Then(ThenRefuseWithoutCommandsOrWrites, "refuse without commands or writes")
             .BDDfy();
 
-        async Task WhenSubmittingAnEmptySelection()
-        {
-            run = await fixture.Invoke(files: []);
-        }
+        void GivenNoSelectedFiles() => selectedFiles = [];
+
+        async Task WhenSubmittingAnEmptySelection() => run = await fixture.Invoke(files: selectedFiles);
 
         void ThenRefuseWithoutCommandsOrWrites()
         {
@@ -126,17 +130,17 @@ public sealed class RequestTests
     public void MissingWorkspaceFailsBeforeSdk()
     {
         using var fixture = new FormatFixture(requestOnly: true);
+        string workspace = null!;
         (int Exit, JsonElement Result) run = default;
 
-        this.Given("an absent workspace path")
+        this.Given(GivenAnAbsentWorkspacePath, "an absent workspace path")
             .When(WhenCheckingAMissingWorkspace, "checking a missing workspace")
             .Then(ThenRefuseBeforeSdk, "refuse before sdk")
             .BDDfy();
 
-        async Task WhenCheckingAMissingWorkspace()
-        {
-            run = await fixture.Invoke(workspace: "App/Missing.csproj");
-        }
+        void GivenAnAbsentWorkspacePath() => workspace = "App/Missing.csproj";
+
+        async Task WhenCheckingAMissingWorkspace() => run = await fixture.Invoke(workspace: workspace);
 
         void ThenRefuseBeforeSdk()
         {

@@ -292,12 +292,19 @@ public sealed class TemplateTests
                 address.Scheme != Uri.UriSchemeHttp || address.Host != "127.0.0.1")
                 throw new InvalidOperationException("Backend did not report an IPv4 loopback HTTP address.");
             output = server.StandardOutput.ReadToEndAsync();
-            using var client = new HttpClient { BaseAddress = address, Timeout = TimeSpan.FromSeconds(10) };
+            using var client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseProxy = false })
+            {
+                BaseAddress = address,
+                Timeout = TimeSpan.FromSeconds(10)
+            };
 
             using var created = await client.PostAsJsonAsync(route, new { title = "  Count cartons  " });
             var body = created.IsSuccessStatusCode ? await created.Content.ReadFromJsonAsync<JsonElement>() : default;
             var location = created.Headers.Location;
-            using var saved = location is null ? null : await client.GetAsync(location);
+            Guid? createdId = created.StatusCode == HttpStatusCode.Created &&
+                body.ValueKind == JsonValueKind.Object && body.TryGetProperty("id", out var id) &&
+                id.ValueKind == JsonValueKind.String && id.TryGetGuid(out var parsedId) ? parsedId : null;
+            using var saved = createdId is { } itemId ? await client.GetAsync($"{route}/{itemId:D}") : null;
             var savedBody = saved is { IsSuccessStatusCode: true }
                 ? await saved.Content.ReadFromJsonAsync<JsonElement>() : default;
             using var invalid = await client.PostAsJsonAsync(route, new { title = "   " });
@@ -325,7 +332,8 @@ public sealed class TemplateTests
         var id = result.CreatedBody.GetProperty("id").GetGuid();
         Assert.NotEqual(Guid.Empty, id);
         Assert.NotNull(result.Location);
-        Assert.EndsWith($"{route}/{id:D}", result.Location.ToString(), StringComparison.Ordinal);
+        var origin = new Uri(result.Origin);
+        Assert.Equal(new Uri(origin, $"{route}/{id:D}").AbsoluteUri, new Uri(origin, result.Location).AbsoluteUri);
         Assert.Equal(HttpStatusCode.OK, result.SavedStatus);
         Assert.Equal(id, result.SavedBody.GetProperty("id").GetGuid());
         Assert.Equal("Count cartons", result.SavedBody.GetProperty("title").GetString());

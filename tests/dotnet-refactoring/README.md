@@ -40,8 +40,10 @@ and checks the required case counts in the native test reports.
 | Extracted executable | Windows artifact integration exercises archive inventory and product CLI execution | Cross-project preview and apply, caller and workspace SDK selection, and SDK roots with the same version |
 
 `Boundary=Preflight` selects Windows apply and destination validation without
-an SDK restore or RefactorTool child process. Its junction fixtures require
-`pwsh`. `Boundary=InProcess` selects the focused planner and MSBuild XML
+an SDK restore or RefactorTool child process. The two junction preflight cases
+skip in a default run when `pwsh.exe` is absent from PATH. They fail on the
+missing prerequisite when `AICF_REFACTOR_SDK_TESTS=1` selects the required SDK
+profile. `Boundary=InProcess` selects the focused planner and MSBuild XML
 cases. The XML cases use the MSBuild installation that built the test
 assembly. They parse actual project elements from strings. The retained
 SDK cases run the tool's apphost so its own SDK selection remains isolated.

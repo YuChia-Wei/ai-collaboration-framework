@@ -61,7 +61,7 @@ public sealed class PreflightTests
         void ThenRefuseBeforeWritesOrRecovery() => fixture.AssertApplyRefused(result, "apply_preflight_failed");
     }
 
-    [WindowsFact]
+    [WindowsJunctionFact]
     public void MissingCanonicalAdditionalFileRefusesBeforeWrites()
     {
         using var fixture = new PreflightFixture(additionalFile: true);
@@ -95,7 +95,7 @@ public sealed class PreflightTests
         }
     }
 
-    [WindowsFact]
+    [WindowsJunctionFact]
     public void PlanDestinationJunctionIsRefusedBeforeLoadingTheRequest()
     {
         using var fixture = new PreflightFixture();
