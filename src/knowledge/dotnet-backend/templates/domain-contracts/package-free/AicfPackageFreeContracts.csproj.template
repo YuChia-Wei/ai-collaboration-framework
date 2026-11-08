@@ -14,7 +14,4 @@
     <Using Include="Xunit" />
     <Using Include="TestStack.BDDfy" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="published/**/*.cs" />
-  </ItemGroup>
 </Project>

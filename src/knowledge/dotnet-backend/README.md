@@ -49,5 +49,6 @@ rewrite links in your own documents or upgrade previously copied code.
 | `examples/bdd-step-methods` | BDD/GWT knowledge remains guidance; target-specific bindings must be implemented and tested locally |
 | `examples/outbox`, `examples/projection`, `examples/inquiry-archive`, `examples/nuget` | Persistence/messaging and package-selection guidance remains; no equivalent complete relay, projector, archive or NuGet integration is promised |
 
-Templates and snippets are delivered separately from knowledge. Copy and adapt
-them under target ownership; upstream updates preserve that ownership boundary.
+The native starter and snippet bundle is delivered separately from knowledge.
+The knowledge package includes [domain contract test templates](templates/domain-contracts/README.md)
+as illustrative examples. Copy and adapt generated code under target ownership.

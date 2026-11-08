@@ -1,12 +1,11 @@
 # .NET generation tests
 
-Run the package-free contract and SnippetTool tests with the .NET 10 SDK. Run
-each project directly or use
+Run the native generation and SnippetTool tests with the .NET 10 SDK. Run each
+project directly or use
 [`AICF.Dotnet.Tools.slnx`](../../src/tools/dotnet/AICF.Dotnet.Tools.slnx).
 
 | Former `Generation.Tests` cases | Project |
 | --- | --- |
-| `PackageFreeContractTests` and reconstruction fixtures | `domain-contract/DomainContract.UnitTests.csproj` |
 | SnippetTool placeholder, parameter and text expansion rules | `snippet-tool/unit/SnippetTool.UnitTests.csproj` |
 | `SnippetTests`, including the executable cases, and `GeneratedFragmentTests` | `snippet-tool/SnippetTool.IntegrationTests.csproj` |
 | `TemplateTests` and the copied `dotnet new` fixtures | `templates/Generation.Templates.IntegrationTests.csproj` |
@@ -22,7 +21,6 @@ and both HTTP applications. The two integration projects link the disposable
 fixture helper as source and have independent test assemblies.
 
 ```text
-dotnet test tests/dotnet-generation/domain-contract/DomainContract.UnitTests.csproj
 dotnet test tests/dotnet-generation/snippet-tool/unit/SnippetTool.UnitTests.csproj
 dotnet test tests/dotnet-generation/snippet-tool/SnippetTool.IntegrationTests.csproj
 dotnet test tests/dotnet-generation/templates/Generation.Templates.IntegrationTests.csproj
@@ -40,8 +38,9 @@ SnippetTool executable for the artifact-relative catalog and process contract.
 The FIFO case requires Linux and `mkfifo`. Set `AICF_TEST_WORK` to select a
 disposable fixture root. Each case creates and removes its own subdirectory.
 
-The PR native-tools workflow runs the four generation projects on Windows,
+The PR native-tools workflow runs the three generation projects on Windows,
 with the published executable and template package. Its Linux job runs the
 FIFO case. CI requires the selected test counts in the native test reports.
-The [published CT-005 cases](domain-contract/README.md) run in their own
-opt-in integration project with the verified DLLs supplied explicitly.
+The [domain contract test templates](../../src/knowledge/dotnet-backend/templates/domain-contracts/README.md)
+generate illustrative projects separately. The knowledge template workflow
+generates and tests the package-free example.

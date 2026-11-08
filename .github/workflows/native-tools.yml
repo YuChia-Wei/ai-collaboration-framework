@@ -137,9 +137,6 @@ jobs:
           dotnet test "$generation/templates/Generation.Templates.IntegrationTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=templates.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $check -Report "$results/templates.trx" -Expected 1
-          dotnet test "$generation/domain-contract/DomainContract.UnitTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/generation-test-build" --results-directory $results --logger 'trx;LogFileName=domain.trx'
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & $check -Report "$results/domain.trx" -Expected 6
       - name: Verify the published Linux executable rejects a FIFO
         if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && matrix.rid == 'linux-x64'
         shell: bash

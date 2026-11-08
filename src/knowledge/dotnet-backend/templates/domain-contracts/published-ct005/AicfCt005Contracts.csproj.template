@@ -25,7 +25,7 @@
   </ItemGroup>
   <Target Name="RequirePublishedContracts" BeforeTargets="PrepareForBuild">
     <Error Condition="'$(PublishedContractsDir)' == ''"
-           Text="Supply verified 0.0.3-preview DLLs via PublishedContractsDir; see ../BASELINE.md." />
+           Text="Supply verified 0.0.3-preview DLLs via PublishedContractsDir." />
     <Error Condition="!Exists('$(PublishedContractsDir)/domain/lib/net8.0/ArchPrecept.Contracts.Domain.dll')"
            Text="The verified ArchPrecept.Contracts.Domain 0.0.3-preview DLL is missing." />
     <Error Condition="!Exists('$(PublishedContractsDir)/eventsourcing/lib/net8.0/ArchPrecept.Contracts.Domain.EventSourcing.dll')"

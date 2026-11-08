@@ -21,8 +21,9 @@ applications.
 The solution includes the source repository's xUnit test projects for
 formatting, generation and refactoring. Run the projects with `dotnet test`
 and use their test READMEs to select SDK and artifact cases. The Web API
-template keeps its own solution. The CT-005 tests requiring separately supplied
-published DLLs have an explicit test project outside this solution.
+template keeps its own solution. The
+[domain contract test templates](../../knowledge/dotnet-backend/templates/domain-contracts/README.md)
+generate illustrative projects in a separate directory.
 
 The three generation guides remain canonical knowledge-package members under
 `src/knowledge/dotnet-backend/tooling/generation`. The snippet project explicitly

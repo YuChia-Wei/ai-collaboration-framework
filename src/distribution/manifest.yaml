@@ -239,6 +239,44 @@ components:
     destination: .ai/core/knowledge/dotnet-backend/standards/project-structure.md
   - source: templates/application-properties-templates.md
     destination: .ai/core/knowledge/dotnet-backend/templates/application-properties-templates.md
+  - source: templates/domain-contracts/README.md
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/README.md
+  - source: templates/domain-contracts/package-free/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/.template.config/template.json
+  - source: templates/domain-contracts/package-free/AicfPackageFreeContracts.csproj.template
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/AicfPackageFreeContracts.csproj.template
+  - source: templates/domain-contracts/package-free/PackageFreeContractTests.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/PackageFreeContractTests.cs
+  - source: templates/domain-contracts/package-free/fixtures/EsAggregateRoot.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/EsAggregateRoot.cs
+  - source: templates/domain-contracts/package-free/fixtures/IAggregateRoot.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/IAggregateRoot.cs
+  - source: templates/domain-contracts/package-free/fixtures/IDomainEntity.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/IDomainEntity.cs
+  - source: templates/domain-contracts/package-free/fixtures/IDomainEvent.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/IDomainEvent.cs
+  - source: templates/domain-contracts/package-free/fixtures/Plan.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/Plan.cs
+  - source: templates/domain-contracts/package-free/fixtures/PlanEvents.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/PlanEvents.cs
+  - source: templates/domain-contracts/package-free/fixtures/PlanId.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/PlanId.cs
+  - source: templates/domain-contracts/package-free/fixtures/Project.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/Project.cs
+  - source: templates/domain-contracts/package-free/fixtures/ProjectId.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/ProjectId.cs
+  - source: templates/domain-contracts/package-free/fixtures/ProjectName.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/ProjectName.cs
+  - source: templates/domain-contracts/package-free/fixtures/TagId.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/TagId.cs
+  - source: templates/domain-contracts/package-free/fixtures/TaskId.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/package-free/fixtures/TaskId.cs
+  - source: templates/domain-contracts/published-ct005/.template.config/template.json
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/published-ct005/.template.config/template.json
+  - source: templates/domain-contracts/published-ct005/AicfCt005Contracts.csproj.template
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/published-ct005/AicfCt005Contracts.csproj.template
+  - source: templates/domain-contracts/published-ct005/PublishedContractTests.cs
+    destination: .ai/core/knowledge/dotnet-backend/templates/domain-contracts/published-ct005/PublishedContractTests.cs
   - source: templates/profile-isolated-configurations.md
     destination: .ai/core/knowledge/dotnet-backend/templates/profile-isolated-configurations.md
   - source: tooling/generation/DELIVERY.md
