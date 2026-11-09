@@ -20,6 +20,7 @@ SCRIPTS = Path(__file__).absolute().parents[2] / ".github/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import release_common as common
 import native_tools
+from release_tool_assets import refactor_notices, tool_asset_sources
 
 
 def load(name, filename):
@@ -55,6 +56,7 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
             generation_mode="framework-dependent-coreclr-single-file"):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
+    with_generation = schema in (common.SCHEMA, common.STANDALONE_SCHEMA)
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
     pin = {"id": "framework-managed-installation", "version": "2.0.0", "source_commit": SOURCE["commit"],
            "files": [{"path": n, "sha256": common.sha(members[n])} for n in engine_names]}
@@ -63,11 +65,11 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     payload["engine/engine.json"] = (common.encoded({"engine": pin, "engine_package_version": 1}), 0o644)
     payload["engine-pin.json"] = (pin_raw, 0o644)
     catalog = {"source": {"commit": SOURCE["commit"]}, "release_version": "0.19.0-rc.3"}
-    if schema in (common.ADAPTER_SCHEMA, common.SCHEMA):
+    if schema == common.ADAPTER_SCHEMA or with_generation:
         catalog["adapters"] = copy.deepcopy(ADAPTERS if adapters is None else adapters)
     payload["catalog/metadata/catalog.json"] = (common.encoded(catalog), 0o644)
     catalog_files = []
-    if schema in (common.ADAPTER_SCHEMA, common.SCHEMA):
+    if schema == common.ADAPTER_SCHEMA or with_generation:
         for adapter in catalog["adapters"]:
             for member in adapter.get("members", []):
                 if missing_adapter_member:
@@ -84,15 +86,15 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
     identity_raw = (json.dumps(inputs, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
     ident = f"catalog:1:0.19.0-rc.3:{SOURCE['commit']}:{common.sha(identity_raw)}"
     payload["catalog/metadata/build.json"] = (common.encoded({"identity": ident, "identity_inputs": inputs, "artifact_kind": "catalog"}), 0o644)
-    template = GENERATED_TEMPLATE if schema in (common.ADAPTER_SCHEMA, common.SCHEMA) else README_TEMPLATE
+    template = GENERATED_TEMPLATE if schema == common.ADAPTER_SCHEMA or with_generation else README_TEMPLATE
     readme = (common.render_readme(template, SOURCE, ident, "0.19.0-rc.3", catalog.get("adapters"))
               if schema != common.LEGACY_SCHEMA else b"Generic legacy package\n")
     payload["README.md"] = (readme if readme_override is None else readme_override, 0o644)
-    if schema == common.SCHEMA:
+    if with_generation:
         generated = {
             "install-generation.py": b"installer", "README.md": b"usage", "snippets/README.md": b"usage",
-            "snippets/win-x64/SnippetTool.exe": b"windows",
-            "snippets/linux-x64/SnippetTool": b"linux",
+            "snippets/win-x64/SnippetTool.exe": b"MZ windows",
+            "snippets/linux-x64/SnippetTool": b"\x7fELF linux",
             "templates/AICF.Dotnet.Templates.0.19.0-rc.3.nupkg": b"template-package",
         }
         for rid in ('win-x64', 'linux-x64'):
@@ -144,6 +146,20 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
             "tooling_commit": "c" * 40, "workflow_commit": "c" * 40, "run_id": "123", "run_attempt": "1"}}
     if schema != common.LEGACY_SCHEMA:
         manifest["provenance"]["readme_source"] = readme_source(template)
+    if schema == common.STANDALONE_SCHEMA:
+        manifest["standalone_tools"] = []
+        for name, source_path in tool_asset_sources(manifest["version"]).items():
+            if source_path is None:
+                asset = refactor_notices({"README.md": b"help", "THIRD-PARTY-NOTICES.txt": b"notices",
+                                          "licenses/package/LICENSE.txt": b"license"})
+            elif source_path == "RefactorTool.exe":
+                asset = b"MZ refactor"
+            else:
+                asset = payload[source_path][0]
+            digest = common.sha(asset)
+            (directory / name).write_bytes(asset)
+            (directory / (name + ".sha256")).write_bytes(f"{digest}  {name}\n".encode())
+            manifest["standalone_tools"].append({"name": name, "size": len(asset), "sha256": digest})
     (directory / "release-manifest.json").write_bytes(common.encoded(manifest))
     (directory / "framework.zip.sha256").write_text(f"{common.sha(raw)}  framework.zip\n", encoding="utf-8", newline="\n")
     return manifest
@@ -224,6 +240,30 @@ class ReleaseContracts(unittest.TestCase):
             with self.subTest(mode=mode):
                 expected = fixture(self.directory, generation_mode=mode)
                 self.assertEqual(common.verify_bundle(self.directory), expected)
+
+    def test_standalone_assets_are_verified_and_delivered_with_the_draft(self):
+        self.manifest = fixture(self.directory, schema=common.STANDALONE_SCHEMA, generation_mode="native-aot")
+        self.raw = (self.directory / "release-manifest.json").read_bytes()
+        self.assertEqual(common.verify_bundle(self.directory, SOURCE), self.manifest)
+        api = self.api(existing=False)
+        receipt = self.deliver(api)
+        self.assertEqual(receipt["outcome"], "draft-ready")
+        uploaded = {asset["name"] for asset in receipt["assets"]}
+        for row in self.manifest["standalone_tools"]:
+            self.assertIn(row["name"], uploaded)
+            self.assertIn(row["name"] + ".sha256", uploaded)
+
+    def test_standalone_snippet_must_match_the_verified_bundled_executable(self):
+        manifest = fixture(self.directory, schema=common.STANDALONE_SCHEMA, generation_mode="native-aot")
+        row = manifest["standalone_tools"][0]
+        name = row["name"]
+        raw = b"MZ another executable"
+        row.update(size=len(raw), sha256=common.sha(raw))
+        (self.directory / name).write_bytes(raw)
+        (self.directory / (name + ".sha256")).write_bytes(f"{row['sha256']}  {name}\n".encode())
+        (self.directory / "release-manifest.json").write_bytes(common.encoded(manifest))
+        with self.assertRaisesRegex(ValueError, "differs from bundled bytes"):
+            common.verify_bundle(self.directory)
 
     def test_incomplete_snippet_layout_rejected_even_with_consistent_inventory(self):
         for name in ('SnippetTool', 'README.md', 'snippets/catalog.json', 'snippets/example.snippet'):

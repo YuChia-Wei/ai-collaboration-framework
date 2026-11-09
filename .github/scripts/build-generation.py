@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).absolute().parent))
 from native_tools import collect
 
 
-def build(repository, output, work, version, commit, native_tools=None, coreclr=False):
+def build(repository, output, work, version, commit, native_tools=None, coreclr=False, refactor_output=None):
     if (native_tools is None) == (not coreclr):
         raise ValueError('Select native artifacts or explicit CoreCLR comparison')
     if output.exists() or work.exists():
@@ -36,7 +36,7 @@ def build(repository, output, work, version, commit, native_tools=None, coreclr=
                         '-p:DebugType=None',
                         '-p:DebugSymbols=false'], check=True)
     if native_tools is not None:
-        collect(native_tools, output, version, commit)
+        collect(native_tools, output, version, commit, refactor_output)
     shutil.copyfile(repository / 'src/tools/install-generation.py', output / 'install-generation.py')
     shutil.copyfile(guides / 'DELIVERY.md', output / 'README.md')
     shutil.copyfile(guides / 'snippet-tool/README.md', output / 'snippets/README.md')
@@ -65,6 +65,7 @@ if __name__ == '__main__':
     parser.add_argument('--commit', required=True)
     parser.add_argument('--native-tools', type=Path)
     parser.add_argument('--coreclr', action='store_true', help='Explicit framework-dependent comparison build')
+    parser.add_argument('--refactor-output', type=Path)
     args = parser.parse_args()
     build(args.repository.resolve(), args.output.resolve(), args.work.resolve(), args.version, args.commit,
-          args.native_tools, args.coreclr)
+          args.native_tools, args.coreclr, args.refactor_output)

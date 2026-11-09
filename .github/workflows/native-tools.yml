@@ -15,6 +15,7 @@ on:
       - '.github/workflows/package-candidate.yml'
       - '.github/workflows/publish-release.yml'
       - 'tests/dotnet-generation/**'
+      - 'tests/dotnet-refactoring/artifact/**'
       - 'tests/release/test_release_tools.py'
   workflow_call:
     inputs:
@@ -95,7 +96,7 @@ jobs:
       - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: '10.0.403'
-      - name: Publish AOT for this native runner
+      - name: Build the tools selected for this runner
         shell: pwsh
         env:
           SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
@@ -129,6 +130,19 @@ jobs:
           dotnet test $project -c Release --filter 'Boundary=PublishedArtifact' --artifacts-path "$env:RUNNER_TEMP/native-artifact-build" --results-directory $results --logger 'trx;LogFileName=snippet-published.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/snippet-published.trx" -Expected 1
+      - name: Test the RefactorTool executable admitted for standalone delivery
+        if: matrix.rid == 'win-x64'
+        shell: pwsh
+        run: |
+          if (!(Test-Path -LiteralPath "$env:GITHUB_WORKSPACE/.github/scripts/release_tool_assets.py")) { exit 0 }
+          Set-Location "$env:RUNNER_TEMP/native-sdk"
+          $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/native-refactor-fixtures"
+          $env:AICF_REFACTOR_TEST_ARTIFACT = "$env:RUNNER_TEMP/native-output/refactoring/win-x64/RefactorTool.exe"
+          $env:DOTNET_BUNDLE_EXTRACT_BASE_DIR = Join-Path $env:RUNNER_TEMP 'native-refactor-cache'
+          $results = "$env:RUNNER_TEMP/native-artifact-results"
+          dotnet test "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring/artifact/RefactorTool.ArtifactIntegrationTests.csproj" -c Release --artifacts-path "$env:RUNNER_TEMP/native-refactor-test-build" --results-directory $results --logger 'trx;LogFileName=refactor-published.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/refactor-published.trx" -Expected 3
       - name: Run Windows source generation tests and package smoke
         if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && matrix.rid == 'win-x64'
         shell: pwsh

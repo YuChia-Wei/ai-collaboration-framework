@@ -14,8 +14,9 @@ import sys
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).absolute().parent))
-from release_common import (SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, engine_files, entry, git, identity, oid,
+from release_common import (SCHEMA, STANDALONE_SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, engine_files, entry, git, identity, oid,
                             package_adapters, plain, release_version, render_readme, require, safe_name, sha, verify_bundle)
+from release_tool_assets import refactor_notices, tool_asset_sources
 
 
 def engine_pin(repository, source):
@@ -52,7 +53,8 @@ def collect(root, prefix):
         if path.is_dir():
             continue
         plain(path)
-        name = safe_name(prefix + "/" + path.relative_to(root).as_posix())
+        relative = path.relative_to(root).as_posix()
+        name = safe_name(prefix + "/" + relative if prefix else relative)
         payload[name] = (path.read_bytes(), 0o755 if path.stat().st_mode & stat.S_IXUSR else 0o644)
     return payload
 
@@ -64,7 +66,7 @@ def build(args):
     require(not git(repository, "status", "--porcelain", "--untracked-files=all").strip(), "clean tooling checkout required")
     script_root = Path(__file__).absolute().parent
     require(script_root == repository / ".github/scripts", "run tooling from selected checkout")
-    for name in ("build-release.py", "release_common.py"):
+    for name in ("build-release.py", "release_common.py", "release_tool_assets.py"):
         require((script_root / name).read_bytes() == git(repository, "show", tooling + ":.github/scripts/" + name), "tooling byte mismatch")
     source = identity(repository, args.source_commit, args.tag)
     readme_source = load_readme_source(repository, source["commit"])
@@ -114,6 +116,8 @@ def build(args):
     # Build tools from the same immutable source as the catalog. Their binaries
     # have an explicit manifest rather than masquerading as Git source blobs.
     generation_root = work / "generation"
+    refactor_root = work / "refactor-delivery"
+    standalone = not args.coreclr_tools and (checkout / ".github/scripts/release_tool_assets.py").is_file()
     generation_args = []
     if (checkout / '.github/scripts/native_tools.py').is_file():
         if args.coreclr_tools:
@@ -124,6 +128,8 @@ def build(args):
             generation_args = ['--native-tools', str(args.native_tools.absolute())]
     else:
         require(args.native_tools is None, 'Legacy source cannot consume native artifacts')
+    if standalone:
+        generation_args.extend(['--refactor-output', str(refactor_root)])
     subprocess.run([sys.executable, "-I", "-B", str(checkout / ".github/scripts/build-generation.py"),
                     "--repository", str(checkout), "--commit", source["commit"],
                     "--version", version, "--output", str(generation_root),
@@ -144,7 +150,7 @@ def build(args):
             info.compress_type = zipfile.ZIP_DEFLATED
             zipped.writestr(info, raw)
     raw = archive.read_bytes()
-    manifest = {"schema": SCHEMA, "source": source, "version": version,
+    manifest = {"schema": STANDALONE_SCHEMA if standalone else SCHEMA, "source": source, "version": version,
                 "catalog_identity": receipt["identity"], "engine_pin_sha256": sha(pin_raw),
                 "archive": {"name": archive.name, "size": len(raw), "sha256": sha(raw)},
                 "entries": [entry(n, b, m) for n, (b, m) in sorted(payload.items())],
@@ -155,6 +161,23 @@ def build(args):
                     "python": platform.python_version(), "platform": platform.platform()},
                 "validation": {"archive_raw_hashes": "verified", "readme_source": "verified", "generated_release_context": "verified",
                     "skill_adapter_inventory": "verified", "tests": "not-run", "runtime": "not-run", "publication": "not-performed"}}
+    if standalone:
+        refactor = {name: value[0] for name, value in collect(refactor_root, "").items()}
+        executable = refactor.pop("RefactorTool.exe")
+        notices = refactor_notices(refactor)
+        standalone_rows = []
+        for asset_name, source_path in tool_asset_sources(version).items():
+            if source_path is None:
+                asset = notices
+            elif source_path == "RefactorTool.exe":
+                asset = executable
+            else:
+                asset = payload[source_path][0]
+            asset_hash = sha(asset)
+            (output / asset_name).write_bytes(asset)
+            (output / (asset_name + ".sha256")).write_bytes(f"{asset_hash}  {asset_name}\n".encode())
+            standalone_rows.append({"name": asset_name, "size": len(asset), "sha256": asset_hash})
+        manifest["standalone_tools"] = standalone_rows
     (output / "release-manifest.json").write_bytes(encoded(manifest))
     (output / (archive.name + ".sha256")).write_text(f"{sha(raw)}  {archive.name}\n", encoding="utf-8", newline="\n")
     verify_bundle(output, source)

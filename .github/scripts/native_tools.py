@@ -39,6 +39,11 @@ def build(repository, output, work, version, commit, rid):
                         '-p:CopyOutputSymbolsToPublishDirectory=false',
                         '-p:Version=' + version, '--artifacts-path', str(work / tool),
                         '-o', str(output / tool / rid)], check=True, env=environment)
+    if rid == 'win-x64':
+        publisher = repository / 'src/tools/dotnet/refactoring/Publish-RefactorTool.ps1'
+        environment['DOTNET_BUNDLE_EXTRACT_BASE_DIR'] = str(work / 'refactor-extract')
+        subprocess.run(['pwsh', '-NoProfile', '-File', str(publisher), '-Version', version,
+                        '-Destination', str(output / 'refactoring' / rid)], check=True, env=environment)
     if subprocess.check_output(['git', '-C', str(repository), 'status', '--porcelain', '--untracked-files=all']):
         raise ValueError('Source drift during native build')
     rows = [dict(path=p.relative_to(output).as_posix(), size=p.stat().st_size, sha256=digest(p))
@@ -47,7 +52,7 @@ def build(repository, output, work, version, commit, rid):
     (output / 'native-tools.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
 
 
-def collect(root, output, version, commit):
+def collect(root, output, version, commit, refactor_output=None):
     """Require all native runners' exact source/version and hash every input."""
     # The caller's root may use an OS alias such as macOS /tmp -> /private/tmp.
     # Links inside the artifact boundary remain forbidden.
@@ -85,10 +90,13 @@ def collect(root, output, version, commit):
             raise ValueError('Native artifact source/version/runtime mismatch')
         seen.add(rid)
         expected = {'native-tools.json'}
+        tools = RUNTIMES[rid][2]
+        if rid == 'win-x64' and refactor_output is not None:
+            tools += ('refactoring',)
         for row in manifest['files']:
             name = row['path']
             parts = name.split('/')
-            if (len(parts) < 3 or parts[0] not in RUNTIMES[rid][2] or parts[1] != rid
+            if (len(parts) < 3 or parts[0] not in tools or parts[1] != rid
                     or any(p in ('', '.', '..') for p in parts) or '\\' in name or ':' in name
                     or name in expected):
                 raise ValueError('Invalid native artifact member')
@@ -99,7 +107,8 @@ def collect(root, output, version, commit):
             raw = path.read_bytes()
             if len(raw) != row['size'] or hashlib.sha256(raw).hexdigest() != row['sha256']:
                 raise ValueError('Native artifact member hash/type mismatch')
-            target = output / name
+            target = (refactor_output.joinpath(*parts[2:]) if parts[0] == 'refactoring'
+                      else output / name)
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(raw)
         actual = {p.relative_to(directory).as_posix() for p in members}

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import ast
 import hashlib
+from io import BytesIO
 import json
 import os
 from pathlib import Path, PurePosixPath
@@ -11,8 +12,11 @@ import subprocess
 from string import Template
 import zipfile
 
+from release_tool_assets import tool_asset_sources, verify_notices_names
+
 WORKFLOW = ".github/workflows/publish-release.yml"
 SCHEMA = "framework-release-assets/4"
+STANDALONE_SCHEMA = "framework-release-assets/5"
 ADAPTER_SCHEMA = "framework-release-assets/3"
 SOURCE_README_SCHEMA = "framework-release-assets/2"
 LEGACY_SCHEMA = "framework-release-assets/1"
@@ -204,11 +208,46 @@ def verify_readme_source(record, source, catalog_identity, release_version, rend
     require(rendered == expected, "README rendered bytes differ from selected source template")
 
 
+def verify_standalone_tools(directory, manifest, payload):
+    sources = tool_asset_sources(manifest["version"])
+    rows = manifest["standalone_tools"]
+    require([row["name"] for row in rows] == list(sources), "standalone tool inventory")
+    for row in rows:
+        name = row["name"]
+        path = directory / name
+        info = plain(path)
+        require(0 < info.st_size <= LIMIT and info.st_size == row["size"], "standalone tool size")
+        raw = path.read_bytes()
+        require(sha(raw) == row["sha256"], "standalone tool hash")
+        checksum = directory / (name + ".sha256")
+        plain(checksum)
+        require(checksum.read_bytes() == f"{row['sha256']}  {name}\n".encode(), "standalone tool checksum")
+        source = sources[name]
+        if source is None:
+            with zipfile.ZipFile(BytesIO(raw)) as notices:
+                names = notices.namelist()
+                require(names == sorted(set(names)) and len(names) <= 4096 and len({n.casefold() for n in names}) == len(names),
+                        "standalone notices inventory")
+                verify_notices_names(set(names))
+                require(sum(info.file_size for info in notices.infolist()) <= LIMIT, "standalone notices budget")
+                for info in notices.infolist():
+                    safe_name(info.filename)
+                    require((info.external_attr >> 16) == (stat.S_IFREG | 0o644), "standalone notice file mode")
+        else:
+            magic = b"MZ" if name.endswith(".exe") else b"\x7fELF"
+            require(raw.startswith(magic), "standalone executable format")
+            if source in payload:
+                require(raw == payload[source], "standalone SnippetTool differs from bundled bytes")
+            else:
+                require(source == "RefactorTool.exe", "standalone executable source missing")
+
+
 def verify_bundle(directory, expected_source=None):
     manifest_file = directory / "release-manifest.json"
     plain(manifest_file)
     manifest = document(manifest_file.read_bytes())
-    require(manifest["schema"] in (LEGACY_SCHEMA, SOURCE_README_SCHEMA, ADAPTER_SCHEMA, SCHEMA), "manifest schema")
+    require(manifest["schema"] in (LEGACY_SCHEMA, SOURCE_README_SCHEMA, ADAPTER_SCHEMA, SCHEMA, STANDALONE_SCHEMA), "manifest schema")
+    require(("standalone_tools" in manifest) == (manifest["schema"] == STANDALONE_SCHEMA), "standalone tool schema")
     current = manifest["schema"] != LEGACY_SCHEMA
     # A successful /1 read proves only the retained legacy envelope. It carries
     # no README source evidence and never establishes the /2 source-only rule.
@@ -280,11 +319,11 @@ def verify_bundle(directory, expected_source=None):
     build = document(payload["catalog/metadata/build.json"])
     require(build["identity"] == ident and build["identity_inputs"] == inputs and build["artifact_kind"] == "catalog", "catalog build receipt")
     if current:
-        adapters = package_adapters(catalog, payload) if manifest["schema"] in (ADAPTER_SCHEMA, SCHEMA) else None
+        adapters = package_adapters(catalog, payload) if manifest["schema"] in (ADAPTER_SCHEMA, SCHEMA, STANDALONE_SCHEMA) else None
         verify_readme_source(manifest["provenance"].get("readme_source"), source,
                              manifest["catalog_identity"], manifest["version"], payload["README.md"], adapters)
     generation_names = set()
-    if manifest["schema"] == SCHEMA:
+    if manifest["schema"] in (SCHEMA, STANDALONE_SCHEMA):
         generation = document(payload["generation/generation.json"])
         require(generation["schema"] == "aicf-generation/1"
                 and generation["source_commit"] == source["commit"]
@@ -336,6 +375,9 @@ def verify_bundle(directory, expected_source=None):
         require(generation_names == required, "single-file generation layout")
         require(next(r["mode"] for r in rows if r["path"] == "generation/snippets/linux-x64/SnippetTool") == 0o755,
                 "Linux snippet executable mode")
+        if manifest["schema"] == STANDALONE_SCHEMA:
+            require(generation["mode"] == "native-aot", "standalone SnippetTool requires native AOT")
+            verify_standalone_tools(directory, manifest, payload)
     require(set(names) == expected | {"engine/" + n for n in pin_names} | generation_names |
             {"engine/engine.json", "engine-pin.json", "README.md", "content-hashes.json"}, "release payload closure")
     hashes = document(payload["content-hashes.json"])
