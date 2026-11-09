@@ -115,7 +115,6 @@ dotnet-trace collect --process-id <pid>
 ## 🔗 Related Resources
 
 - Target-owned Git flow and commit policy (caller-supplied authority).
-- Target-owned Git flow and commit policy (caller-supplied authority).
 - [Database migration guide](../integration/persistence/database-migrations.md)
 - [Microsoft .NET documentation](https://learn.microsoft.com/dotnet)
 - [Microsoft EF Core documentation](https://learn.microsoft.com/ef/core)

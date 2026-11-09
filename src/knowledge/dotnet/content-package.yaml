@@ -3413,6 +3413,14 @@ references:
     anchor: null
   requirement: required
   on_missing: unavailable
+- from: tooling/docker-restore-cache.md
+  resource_id: member:tooling/generation/README.md
+  target:
+    package: dotnet
+    path: tooling/generation/README.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
 - from: tooling/generation/README.md
   resource_id: member:application-types/web-api/setup.md
   target:

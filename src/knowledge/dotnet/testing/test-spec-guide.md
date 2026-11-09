@@ -12,7 +12,7 @@ This optional guide describes a target-selected formal-test specification. Use t
 target's requested artifact, adopted GWT rules, template and configurable document
 root. Example `.dev/specs` paths are conventions, not required storage bindings.
 
-When the target adopts this GWT profile, preserve Given-When-Then in test designs and C# tests rather than silently substituting 3A. BDDfy is the default tool. If the target team decides not to introduce BDDfy, plain xUnit tests must still preserve an explicit Given, When, and Then structure. `.feature` files are optional; see [GHERKIN-FEATURE-STORAGE-GUIDE.MD](gherkin-feature-storage.md) for enablement conditions and official storage conventions.
+When the target adopts this GWT profile, preserve Given-When-Then in test designs and C# tests rather than silently substituting 3A. BDDfy is the default tool. If the target team decides not to introduce BDDfy, plain xUnit tests must still preserve an explicit Given, When, and Then structure. `.feature` files are optional; see [Gherkin feature storage](gherkin-feature-storage.md) for enablement conditions and official storage conventions.
 
 ## 1. When to Create a Test Spec
 
@@ -139,8 +139,8 @@ When a use case involves cross-bounded-context or MQ behavior, also record:
 ## 8. Relationship to Skills and Workflows
 
 - The target-selected test-spec root is the documentation owner for test intent; `.dev/specs/tests/` is an example.
-- `bdd-gwt-test-designer` can convert requirements or specs into scenarios in this area.
-- `bdd-gwt-test-designer` should also return a recommended storage category such as `use-cases/`, `integration/`, or `cross-domain/`.
+- `test-designer` can convert requirements or specs into scenarios in this area.
+- `test-designer` should also return a recommended storage category such as `use-cases/`, `integration/`, or `cross-domain/`, subject to the target's selected layout.
 - Subsequent test generation or implementation creates a `.feature` file only when an enablement condition applies, and places it under `tests/Features/` rather than `.dev/specs/tests/`.
 - `.dev/specs/tests/` should preserve assertion notes, coverage gaps, traceability information, and non-Gherkin supplementary details.
 
