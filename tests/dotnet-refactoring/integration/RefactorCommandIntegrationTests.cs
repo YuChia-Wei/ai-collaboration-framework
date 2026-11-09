@@ -8,6 +8,58 @@ namespace RefactorTool.IntegrationTests;
 [Collection(SdkCollection.Name)]
 public sealed class RefactorCommandIntegrationTests
 {
+    /// <summary>Refuses Rename when a call through the derived type would bind to another method.</summary>
+    [RefactorSdkFact]
+    public void RenameRefusesDerivedMethodShadowingWithoutAPlanOrSourceWrites()
+    {
+        using var fixture = new SdkFixture(twoProjects: true);
+        Dictionary<string, byte[]> original = null!;
+        CommandResult preview = null!;
+
+        this.Given(GivenAConsumerCallingTheBaseMethodThroughBothTypes, "a consumer calling the base method through both types")
+            .When(WhenPreviewingRenameToTheDerivedMethodName, "previewing Rename to the derived method name")
+            .Then(ThenRefuseTheChangedBindingWithoutAPlanOrSourceWrites, "refuse the changed binding without a plan or source writes")
+            .BDDfy();
+
+        async Task GivenAConsumerCallingTheBaseMethodThroughBothTypes()
+        {
+            fixture.Write("A/Service.cs", """
+                namespace Demo;
+                public class Base { public int Get() => 1; }
+                public sealed class Derived : Base { public int Fetch() => 2; }
+                """);
+            fixture.Write("B/Use.cs", """
+                using Demo;
+                public static class Use
+                {
+                    public static string Run()
+                    {
+                        Derived derived = new();
+                        Base viaBase = derived;
+                        return $"{derived.Get()},{viaBase.Get()},{derived.Fetch()}";
+                    }
+                }
+                """);
+            var consumer = fixture.AddExecutableConsumer("System.Console.WriteLine(Use.Run());");
+            await fixture.Restore();
+            var output = await fixture.Dotnet("run", "--project", consumer, "--no-restore", "-v:q");
+            Assert.Equal("1,1,2", output.Trim().Split('\n')[^1]);
+            original = fixture.Snapshot();
+        }
+
+        async Task WhenPreviewingRenameToTheDerivedMethodName() =>
+            preview = await fixture.Preview(fixture.Rename with { Symbol = "M:Demo.Base.Get" });
+
+        void ThenRefuseTheChangedBindingWithoutAPlanOrSourceWrites()
+        {
+            fixture.RefusedPreview(preview, "rename_binding_changed");
+            var binding = preview.Json.GetProperty("detail");
+            Assert.Equal("M:Demo.Base.Get", binding.GetProperty("before").GetString());
+            Assert.Equal("M:Demo.Derived.Fetch", binding.GetProperty("after").GetString());
+            fixture.AssertSnapshot(original);
+        }
+    }
+
     /// <summary>Applies exactly the selected interface and verifies that a consumer dispatches through it.</summary>
     [RefactorSdkFact]
     public void ExtractionAppliesSelectedContractAndConsumerDispatches()

@@ -164,8 +164,11 @@ refused. Public API renames can break external consumers.
 Compilation errors are compared before and after the proposed operation with
 source-position mapping. Existing errors remain visible and cannot compensate
 for new errors elsewhere. New errors or Roslyn conflict annotations prevent a
-plan. This check is separate from scenario tests: neither a clean compilation
-nor a returned Roslyn solution proves behavioral equivalence.
+plan. For method renames, preview also rechecks direct calls to the renamed
+methods. A call that binds to a different method, such as a hiding method on
+a derived receiver, is refused with `rename_binding_changed` even if the
+proposed code compiles. A refusal writes neither a plan nor authored source.
+These checks do not establish general behavioral equivalence.
 
 ## Apply and recovery
 
