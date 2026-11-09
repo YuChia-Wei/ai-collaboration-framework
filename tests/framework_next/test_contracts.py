@@ -153,7 +153,7 @@ class ArchitectureSplitSelectionTests(unittest.TestCase):
         choices = (("domain-model-designer",), ("software-architect",),
                    ("domain-model-designer", "software-architect"))
         for skills in choices:
-            for knowledge in ((), ("engineering-common",), ("dotnet-backend", "engineering-common")):
+            for knowledge in ((), ("engineering-common",), ("dotnet", "engineering-common")):
                 with self.subTest(skills=skills, knowledge=knowledge):
                     result = catalog.resolve_selection(self.parent_catalog,
                                                        self.desired(skills, knowledge=knowledge))
@@ -182,6 +182,26 @@ class ArchitectureSplitSelectionTests(unittest.TestCase):
             preset = yaml_object((ROOT / row["path"]).read_bytes(), row["path"])
             self.assertNotIn("local-backlog", preset["skills"])
             self.assertNotIn("issue-control", preset["skills"])
+
+    def test_dotnet_rename_requires_explicit_selection_and_keeps_common_guidance_available(self):
+        # A target can request common C# review without adopting the retained
+        # DDD/backend rule profile. Old package/resource IDs are not aliases.
+        selected = ("dotnet", "engineering-common")
+        binding = self.binding("review", "review", ("member:core/csharp-conventions.md",))
+        binding["package"] = "dotnet"
+        desired = self.desired(("code-reviewer",), knowledge=selected, bindings=(binding,))
+        result = catalog.resolve_selection(self.parent_catalog, desired)
+        self.assertEqual(result["binding_observations"][0]["status"], "available")
+        profile = next(row for row in self.parent_catalog.packages[("knowledge", "dotnet")].metadata["resources"]
+                       if row["id"] == "engineering-rule-catalog")
+        self.assertEqual(profile["technology_profile"], "dotnet-backend")
+        with self.assertRaisesRegex(DistributionError, "selection-unavailable"):
+            catalog.resolve_selection(self.parent_catalog, self.desired(
+                ("code-reviewer",), knowledge=("dotnet-backend", "engineering-common")))
+        binding["resources"] = ["member:standards/coding-standards.md"]
+        with self.assertRaisesRegex(DistributionError, "binding-unresolved"):
+            catalog.resolve_selection(self.parent_catalog, self.desired(
+                ("code-reviewer",), knowledge=selected, bindings=(binding,)))
 
     def test_new_operation_bindings_match_source_consumption(self):
         discovery = ("member:bdd/discovery.md", "member:ddd/domain-discovery.md",

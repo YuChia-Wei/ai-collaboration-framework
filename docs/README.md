@@ -42,7 +42,7 @@ GitHub Issue 流程及執行紀錄，不會因為使用此 framework 就變成�
 | 只要一項能力 | 明確列出該 skill；必要相依項由 selection contract 檢查 |
 | 一般需求、設計、實作、審查 | 選需要的 skills；可不安裝工程或 .NET 知識 |
 | 要共通工程方法、命名／測試／審查等參考 | 另外選 `engineering-common` |
-| 要配套 .NET 後端架構、實作、範例與規範 | 選 `dotnet-backend`，並滿足它對 `engineering-common` 的必要相依 |
+| 要配套 .NET 後端架構、實作、範例與規範 | 選 `dotnet`，並滿足它對 `engineering-common` 的必要相依 |
 | 新團隊或既有專案需要協作起點 | 另選 `ai-context-init` 或 `project-initialization` preset，再執行初始化操作；不需要知識包 |
 | 需要可重用委派角色 | 明確選 sub-agents；角色不會自動執行或改選較昂貴模型 |
 | 只使用 Codex 或 Claude | 只選對應 adapter；兩者也可同時選 |

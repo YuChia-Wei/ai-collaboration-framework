@@ -16,7 +16,7 @@
 
 若某項能力需要特定設定，framework 可在 `src` 提供最小參考片段與用途說明，
 由使用端審閱後自行採用。例如 .NET 知識包的
-[Analyzer severity 片段](../src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet)
+[Analyzer severity 片段](../src/knowledge/dotnet/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet)
 只提供診斷嚴重度參考，不代表已採用或啟用，也不取代團隊的完整 `.editorconfig`。
 使用端採用後的設定由使用端維護，安裝知識包本身不會寫入其根目錄設定。
 

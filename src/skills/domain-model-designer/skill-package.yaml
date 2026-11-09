@@ -1,6 +1,6 @@
 metadata_version: 4
 id: domain-model-designer
-version: 0.1.6
+version: 0.1.7
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -94,15 +94,15 @@ knowledge_consumption:
   requirement: optional
   on_missing: unavailable
 - id: dotnet-domain-model
-  package: dotnet-backend
-  version: 0.2.1
+  package: dotnet
+  version: 0.3.0
   operations:
   - design
   - review
   resources:
   - engineering-rule-catalog
-  - member:standards/DESIGN-BY-CONTRACT.md
-  - member:standards/POLICY-RATIONALE.md
-  - member:standards/coding-standards/aggregate-standards.md
+  - member:architecture/ddd-cqrs/aggregate-standards.md
+  - member:core/design-by-contract.md
+  - member:references/policy-rationale.md
   requirement: optional
   on_missing: unavailable

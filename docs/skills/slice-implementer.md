@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.13`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.14`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.4.2`（3 項）與 `dotnet-backend@0.2.1`（11 項）binding；未裝時 generic/common slice 仍能執行，但不能自稱 .NET 專門設計/交易/測試涵蓋。
+可選 `engineering-common@0.4.2`（3 項）與 `dotnet@0.3.0`（依當前 allowlist 選讀）binding；未裝時 generic/common slice 仍能執行，但不能自稱 .NET 專門設計/交易/測試涵蓋。
 
 將既有驗證計畫視為初步安排，實作期間依實際差異校正條件式檢查，執行前確認必要性。
 修改完成後確認驗收證據齊備；必要 gate 與已接受驗收不得自行取消。
@@ -56,21 +56,20 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-implementation
 
-`dotnet-backend@0.2.1`；操作：`implement`。
+`dotnet@0.3.0`；操作：`implement`。
 
 - `engineering-rule-catalog`
-- `member:standards/POLICY-RATIONALE.md`
+- `member:application-types/web-api/controller-standards.md`
+- `member:architecture/ddd-cqrs/aggregate-standards.md`
+- `member:architecture/ddd-cqrs/usecase-standards.md`
+- `member:core/design-by-contract.md`
+- `member:integration/messaging/transactional-messaging-standards.md`
+- `member:integration/persistence/repository-standards.md`
+- `member:references/policy-rationale.md`
+- `member:testing/test-standards.md`
 - `member:tooling/generation/README.md`
-- `member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`
-- `member:standards/DESIGN-BY-CONTRACT.md`
-- `member:standards/coding-standards/aggregate-standards.md`
-- `member:standards/coding-standards/repository-standards.md`
-- `member:standards/coding-standards/test-standards.md`
-- `member:standards/coding-standards/transactional-messaging-standards.md`
-- `member:standards/coding-standards/usecase-standards.md`
-- `member:standards/coding-standards/controller-standards.md`
 
-Controller 文件屬於 guidance；允許讀取不代表採用正式規則。
+依目標已採用的技術與本次操作選讀；允許讀取不代表採用規則，連結不擴大 allowlist。
 
 ## 權威參考
 

@@ -129,7 +129,7 @@ SnippetTool 的 macOS 正式交付由 #582 另行處理。目錄式／nupkg 註�
 Release 另提供各 RID 的 SnippetTool 單一執行檔與 SHA-256，使用獨立下載時
 請從同版 Framework ZIP 的對應 `generation/snippets/<RID>/snippets/` 取得片段資料。
 Linux 直接下載後需設定執行權限，例如 `chmod +x SnippetTool-<version>-linux-x64`。
-[來源交付指南](../src/knowledge/dotnet-backend/tooling/generation/DELIVERY.md)
+[來源交付指南](../src/knowledge/dotnet/tooling/generation/DELIVERY.md)
 
 | 工具 | Windows x64 | Linux x64 | macOS arm64 | SDK 比對規則 |
 | --- | --- | --- | --- | --- |
@@ -264,9 +264,13 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
 | `engineering-common` | `0.4.2` | 無 |
-| `dotnet-backend` | `0.2.1` | 必須同時選 `engineering-common@0.4.2` |
+| `dotnet` | `0.3.0` | 必須同時選 `engineering-common@0.4.2` |
 
-引擎不會自動補上遺漏的相依性。選 `dotnet-backend` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
+舊 `dotnet-backend` selection 不會自動 alias 到 `dotnet`。升級前請依
+[知識套件遷移說明](knowledge-packages.md#從-dotnet-backend-遷移到-dotnet)
+核對 package／resource IDs 與自有引用，保留既有規則 profile，讓引擎重新產生 lock。
+
+引擎不會自動補上遺漏的相依性。選 `dotnet` 而未選 `engineering-common` 會在組裝前以 `dependency-closure` 拒絕。另一方面，所有 skill 都可以只選自己而不選知識；缺少 optional 知識會以 `unavailable` 表示其知識增強能力不可用，不會使子集組裝失敗。
 
 `derive_subset` API 與 `derive-subset.py` 的成功 JSON 結果都包含 `unavailable`
 陣列，沿用 resolver 的逐項診斷；沒有缺口時為 `[]`。例如 skill 的項目包含
@@ -285,7 +289,7 @@ consumer `package`、`consumption`、缺少的 resource IDs `missing` 與 `statu
 ```
 
 ```json
-"knowledge": ["dotnet-backend", "engineering-common"]
+"knowledge": ["dotnet", "engineering-common"]
 ```
 
 以上是欄位片段，必須放回完整 selection object 才能作為 CLI 輸入。
@@ -294,7 +298,7 @@ consumer `package`、`consumption`、缺少的 resource IDs `missing` 與 `statu
 
 下列 skill 的 package metadata 宣告 optional `knowledge_consumption`。若未安裝對應包，該表列出的作業無法使用該包的規則、標準或範例，應在 skill 操作結果中保留為 unavailable，而不要假設有完整技術指引。
 
-| Skill | `engineering-common` 缺少時 | `dotnet-backend` 缺少時 |
+| Skill | `engineering-common` 缺少時 | `dotnet` 缺少時 |
 | --- | --- | --- |
 | `requirement-author` | `explore`／`draft`／`normalize` 選定方法的 coverage 不可用 | 沒有直接宣告 .NET binding |
 | `test-designer` | `design`、`review` 的 common test design 資源不可用 | `design`、`review` 的 .NET test standards 不可用 |
