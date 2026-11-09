@@ -1,0 +1,499 @@
+{
+  "observed_at": "2026-11-09T23:16:51+08:00",
+  "method": "Public asset digest + ZIP checksum + manifest archive hash + all content-hashes rows + engine/pin verification. Read ZIP without executing packaged code. AST comparison of eight selected functions only.",
+  "source_head": "c641602a50ee17016ea1729897625aefe708af2a",
+  "release_observations": [
+    {
+      "tag": "v0.21.0",
+      "source": {
+        "commit": "5fe8d307ce8c337463088f2abb4f2a945262a56d",
+        "tag": "v0.21.0",
+        "tag_object": "2aef3ecff598be21252d9af4850acbcaf511f51e"
+      },
+      "release_schema": "framework-release-assets/2",
+      "archive_sha256": "a20e4c106c2974f525654ac7895149f0b87d35a34a61e50cd9ac313975c6465e",
+      "manifest_sha256": "3fc9067dfd7685ad96b273c54bb4be429969f3e6e6075b21a13a28e8b941513a",
+      "catalog_version": 1,
+      "catalog_identity": "catalog:1:0.21.0:5fe8d307ce8c337463088f2abb4f2a945262a56d:7ed99fd380ba12bc0e694c43fba19e2d6c2333aa86336bfcc0f9c89907e29d45",
+      "engine_version": "2.0.0",
+      "engine_member_count": 29,
+      "engine_pin_sha256": "9eedbb3b353832b796da01cecce880d5a320b84866b0d220565bf049f4b33d60",
+      "engine_pin_matches": true,
+      "archive_member_count": 497,
+      "content_hash_entries": 496,
+      "content_hash_mismatches": [],
+      "unlisted_zip_entries": [
+        "content-hashes.json"
+      ],
+      "package_id": "dotnet-backend",
+      "package_version": "0.1.6",
+      "package_dependencies": {
+        "required": [
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.4.0"
+          }
+        ],
+        "optional": []
+      },
+      "package_member_count": 246,
+      "resource_count": 245,
+      "common_current_members": 116,
+      "added_since_release": [
+        "standards/POLICY-RATIONALE.md",
+        "standards/contract-cases.md",
+        "templates/domain-contracts/README.md",
+        "tooling/generation/DELIVERY.md",
+        "tooling/generation/README.md",
+        "tooling/generation/snippet-tool/README.md"
+      ],
+      "ast_function_equal_to_current": {
+        "content.py": {
+          "load_content_package": true,
+          "desired_shape": true,
+          "resource_bindings": true
+        },
+        "catalog.py": {
+          "resolve_selection": true,
+          "lock_bytes": true,
+          "lock_document": true
+        },
+        "installation_state.py": {
+          "_lock_bytes": true
+        },
+        "installation_plan.py": {
+          "member_delta": true
+        }
+      },
+      "source_skill_bindings": [
+        {
+          "skill": "code-reviewer",
+          "skill_version": "0.2.6",
+          "bindings": [
+            {
+              "id": "dotnet-review",
+              "package": "dotnet-backend",
+              "version": "0.1.6",
+              "operations": [
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:review/review-routing.yaml",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/coding-standards/aggregate-standards.md",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/test-standards.md",
+                "member:standards/coding-standards/usecase-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "domain-model-designer",
+          "skill_version": "0.1.1",
+          "bindings": [
+            {
+              "id": "dotnet-domain-model",
+              "package": "dotnet-backend",
+              "version": "0.1.6",
+              "operations": [
+                "design",
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/coding-standards/aggregate-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "local-change-implementer",
+          "skill_version": "0.2.7",
+          "bindings": [
+            {
+              "id": "dotnet-local-change",
+              "package": "dotnet-backend",
+              "version": "0.1.6",
+              "operations": [
+                "implement"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/coding-standards/aggregate-standards.md",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/test-standards.md",
+                "member:standards/coding-standards/usecase-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "slice-implementer",
+          "skill_version": "0.2.7",
+          "bindings": [
+            {
+              "id": "dotnet-implementation",
+              "package": "dotnet-backend",
+              "version": "0.1.6",
+              "operations": [
+                "implement"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/coding-standards/aggregate-standards.md",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/test-standards.md",
+                "member:standards/coding-standards/transactional-messaging-standards.md",
+                "member:standards/coding-standards/usecase-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "software-architect",
+          "skill_version": "0.1.1",
+          "bindings": [
+            {
+              "id": "dotnet-software-architecture",
+              "package": "dotnet-backend",
+              "version": "0.1.6",
+              "operations": [
+                "design",
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/coding-standards/transactional-messaging-standards.md",
+                "member:standards/coding-standards/usecase-standards.md",
+                "member:standards/project-structure.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "test-designer",
+          "skill_version": "0.4.3",
+          "bindings": [
+            {
+              "id": "dotnet-test-design",
+              "package": "dotnet-backend",
+              "version": "0.1.6",
+              "operations": [
+                "design",
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/coding-standards/test-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        }
+      ],
+      "public_release": {
+        "tag": "v0.21.0",
+        "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.21.0",
+        "published_at": "2026-10-27T05:22:49Z",
+        "assets": [
+          {
+            "name": "ai-collaboration-framework-v0.21.0-5fe8d307ce8c337463088f2abb4f2a945262a56d.zip",
+            "sha256": "a20e4c106c2974f525654ac7895149f0b87d35a34a61e50cd9ac313975c6465e",
+            "size": 1088004,
+            "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.21.0/ai-collaboration-framework-v0.21.0-5fe8d307ce8c337463088f2abb4f2a945262a56d.zip"
+          },
+          {
+            "name": "ai-collaboration-framework-v0.21.0-5fe8d307ce8c337463088f2abb4f2a945262a56d.zip.sha256",
+            "sha256": "78ffdf9ccf06ae29df0b17584fcae43466bde326f078284679c341cc91a9dcc8",
+            "size": 146,
+            "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.21.0/ai-collaboration-framework-v0.21.0-5fe8d307ce8c337463088f2abb4f2a945262a56d.zip.sha256"
+          },
+          {
+            "name": "release-manifest.json",
+            "sha256": "3fc9067dfd7685ad96b273c54bb4be429969f3e6e6075b21a13a28e8b941513a",
+            "size": 97038,
+            "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.21.0/release-manifest.json"
+          }
+        ]
+      },
+      "removed_since_release_count": 130
+    },
+    {
+      "tag": "v0.22.0",
+      "source": {
+        "commit": "5aa7346e3d99cf4c7ad72ba91f1d81af5251f515",
+        "tag": "v0.22.0",
+        "tag_object": "63388158c090c2730e4ea003d30d70b1c4bac25f"
+      },
+      "release_schema": "framework-release-assets/3",
+      "archive_sha256": "b78e4a5c1cd15a429012f86f787a9434a72f2acf81d20fac3a37cae60bdd73f3",
+      "manifest_sha256": "5137a76e637f75e1b0041e33f10c80464f6bffb7a5b70d842fe7660eae804285",
+      "catalog_version": 1,
+      "catalog_identity": "catalog:1:0.22.0:5aa7346e3d99cf4c7ad72ba91f1d81af5251f515:27a87937dd17441e3337beb04d91bb9e6146c7586021adfedb1e0fac8056bca2",
+      "engine_version": "2.0.0",
+      "engine_member_count": 29,
+      "engine_pin_sha256": "a0d73e22f4c258ae25e0493c75b1316a8e985b67a3c530a901a166329c0b0b8d",
+      "engine_pin_matches": true,
+      "archive_member_count": 527,
+      "content_hash_entries": 526,
+      "content_hash_mismatches": [],
+      "unlisted_zip_entries": [
+        "content-hashes.json"
+      ],
+      "package_id": "dotnet-backend",
+      "package_version": "0.1.9",
+      "package_dependencies": {
+        "required": [
+          {
+            "kind": "knowledge",
+            "id": "engineering-common",
+            "version": "0.4.1"
+          }
+        ],
+        "optional": []
+      },
+      "package_member_count": 251,
+      "resource_count": 247,
+      "common_current_members": 117,
+      "added_since_release": [
+        "standards/contract-cases.md",
+        "templates/domain-contracts/README.md",
+        "tooling/generation/DELIVERY.md",
+        "tooling/generation/README.md",
+        "tooling/generation/snippet-tool/README.md"
+      ],
+      "ast_function_equal_to_current": {
+        "content.py": {
+          "load_content_package": true,
+          "desired_shape": true,
+          "resource_bindings": true
+        },
+        "catalog.py": {
+          "resolve_selection": true,
+          "lock_bytes": true,
+          "lock_document": true
+        },
+        "installation_state.py": {
+          "_lock_bytes": true
+        },
+        "installation_plan.py": {
+          "member_delta": true
+        }
+      },
+      "source_skill_bindings": [
+        {
+          "skill": "code-reviewer",
+          "skill_version": "0.2.9",
+          "bindings": [
+            {
+              "id": "dotnet-review",
+              "package": "dotnet-backend",
+              "version": "0.1.9",
+              "operations": [
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:review/review-routing.yaml",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/POLICY-RATIONALE.md",
+                "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+                "member:standards/coding-standards/aggregate-standards.md",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/test-standards.md",
+                "member:standards/coding-standards/usecase-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "domain-model-designer",
+          "skill_version": "0.1.4",
+          "bindings": [
+            {
+              "id": "dotnet-domain-model",
+              "package": "dotnet-backend",
+              "version": "0.1.9",
+              "operations": [
+                "design",
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/POLICY-RATIONALE.md",
+                "member:standards/coding-standards/aggregate-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "local-change-implementer",
+          "skill_version": "0.2.10",
+          "bindings": [
+            {
+              "id": "dotnet-local-change",
+              "package": "dotnet-backend",
+              "version": "0.1.9",
+              "operations": [
+                "implement"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/POLICY-RATIONALE.md",
+                "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+                "member:standards/coding-standards/aggregate-standards.md",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/test-standards.md",
+                "member:standards/coding-standards/usecase-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "slice-implementer",
+          "skill_version": "0.2.10",
+          "bindings": [
+            {
+              "id": "dotnet-implementation",
+              "package": "dotnet-backend",
+              "version": "0.1.9",
+              "operations": [
+                "implement"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/POLICY-RATIONALE.md",
+                "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+                "member:standards/coding-standards/aggregate-standards.md",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/test-standards.md",
+                "member:standards/coding-standards/transactional-messaging-standards.md",
+                "member:standards/coding-standards/usecase-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "software-architect",
+          "skill_version": "0.1.4",
+          "bindings": [
+            {
+              "id": "dotnet-software-architecture",
+              "package": "dotnet-backend",
+              "version": "0.1.9",
+              "operations": [
+                "design",
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+                "member:standards/DESIGN-BY-CONTRACT.md",
+                "member:standards/POLICY-RATIONALE.md",
+                "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+                "member:standards/coding-standards/controller-standards.md",
+                "member:standards/coding-standards/repository-standards.md",
+                "member:standards/coding-standards/transactional-messaging-standards.md",
+                "member:standards/coding-standards/usecase-standards.md",
+                "member:standards/project-structure.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        },
+        {
+          "skill": "test-designer",
+          "skill_version": "0.4.6",
+          "bindings": [
+            {
+              "id": "dotnet-test-design",
+              "package": "dotnet-backend",
+              "version": "0.1.9",
+              "operations": [
+                "design",
+                "review"
+              ],
+              "resources": [
+                "engineering-rule-catalog",
+                "member:standards/POLICY-RATIONALE.md",
+                "member:standards/coding-standards/test-standards.md"
+              ],
+              "requirement": "optional",
+              "on_missing": "unavailable"
+            }
+          ]
+        }
+      ],
+      "public_release": {
+        "tag": "v0.22.0",
+        "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.22.0",
+        "published_at": "2026-11-02T12:26:08Z",
+        "assets": [
+          {
+            "name": "ai-collaboration-framework-v0.22.0-5aa7346e3d99cf4c7ad72ba91f1d81af5251f515.zip",
+            "sha256": "b78e4a5c1cd15a429012f86f787a9434a72f2acf81d20fac3a37cae60bdd73f3",
+            "size": 1220636,
+            "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.22.0/ai-collaboration-framework-v0.22.0-5aa7346e3d99cf4c7ad72ba91f1d81af5251f515.zip"
+          },
+          {
+            "name": "ai-collaboration-framework-v0.22.0-5aa7346e3d99cf4c7ad72ba91f1d81af5251f515.zip.sha256",
+            "sha256": "4593e92883caa809792162e0dcfa0efee063f59dc961d20631db61775956d9ed",
+            "size": 146,
+            "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.22.0/ai-collaboration-framework-v0.22.0-5aa7346e3d99cf4c7ad72ba91f1d81af5251f515.zip.sha256"
+          },
+          {
+            "name": "release-manifest.json",
+            "sha256": "5137a76e637f75e1b0041e33f10c80464f6bffb7a5b70d842fe7660eae804285",
+            "size": 103980,
+            "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.22.0/release-manifest.json"
+          }
+        ]
+      },
+      "removed_since_release_count": 134
+    }
+  ],
+  "not_performed": [
+    "Installation or upgrade",
+    "Renamed catalog build",
+    "Native runtime/discovery acceptance",
+    "Complete engine/schema equivalence",
+    "F-drive mutation",
+    "Tag or release"
+  ],
+  "initial_environment_failure": "Sandbox urllib download failed with DNS getaddrinfo error; authorized public download succeeded through escalated execution."
+}

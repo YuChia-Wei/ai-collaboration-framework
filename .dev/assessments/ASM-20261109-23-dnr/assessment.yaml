@@ -1,0 +1,41 @@
+schema_version: '1.0'
+assessment_id: ASM-20261109-23-dnr
+commit_search_id: ASM-20261109-23-dnr
+assessment_type: ai-context-audit
+title: .NET knowledge consolidation, rename and published-version migration assessment
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/assessment/asm-20261109-23-dnr
+base_branch: main
+created_at: '2026-11-09T23:17:28+08:00'
+updated_at: '2026-11-09T23:21:32+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.1
+report_template_source: .ai/core/skills/ai-context-auditor/references/audit.md
+report_template_version: 0.1.0
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: main
+  commit: c641602a50ee17016ea1729897625aefe708af2a
+scope:
+  included:
+  - Fixed-source 122-file dotnet-backend knowledge package and its direct identity, skill, distribution, tooling and documentation references
+  - Public v0.21.0 and v0.22.0 release asset inspection and bounded migration planning
+  - File-by-file consolidation proposal and future independent upgrade verification conditions
+  excluded:
+  - Source remediation and installed-projection updates
+  - Actual installation, upgrade, runtime acceptance and F-drive preview mutation
+  - Issue, PR, tag, release or publication mutation
+  - Full MQ consumer or Console knowledge expansion
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs: []
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Completed fixed-source and public-asset inspection, exhaustive dispositions, compatibility proposal and bounded artifact validation; retained whole-repository historical validation failures.
+  next_action: Await owner confirmation of the concrete proposal before any source implementation or upgrade execution.
+  blockers: []

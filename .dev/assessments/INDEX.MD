@@ -14,6 +14,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20261109-23-dnr`](ASM-20261109-23-dnr/assessment.yaml) | .NET knowledge consolidation, rename and published-version migration assessment | `ai-context-audit` | `ai-context-auditor` | `final` | `c641602a50ee17016ea1729897625aefe708af2a` | `2026-11-09T23:21:32+08:00` | [report](ASM-20261109-23-dnr/report.md) |
 | [`ASM-20261108-14-r0a`](ASM-20261108-14-r0a/assessment.yaml) | .NET test strategy, tool boundaries and formatting hooks | `dotnet-test-strategy` | `test-designer` | `final` | `41e4ebb8e716355ac86c4b39a8846e7b6711c1aa` | `2026-11-08T14:11:55+08:00` | [report](ASM-20261108-14-r0a/report.md) |
 | [`ASM-20261029-08-0ee`](ASM-20261029-08-0ee/assessment.yaml) | Current skills and knowledge gaps for Issues 516 and 518 | `ai-context-audit` | `ai-context-auditor` | `final` | `0ee07d8314c55a95c99428fa8d4fd12c4673c04c` | `2026-10-29T08:31:29+08:00` | [report](ASM-20261029-08-0ee/report.md) |
 | [`ASM-20260923-00-6oq`](ASM-20260923-00-6oq/assessment.yaml) | Framework 可攜技能、專案所有權與維護模式重設評估 | `framework-future-strategy` | `direct-analysis (user exception)` | `final` | `c2e7071335d02d9b8d40ab4dcaf437e690791741` | `2026-09-23T00:54:31+08:00` | [report](ASM-20260923-00-6oq/report.md) |
