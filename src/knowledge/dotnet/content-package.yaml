@@ -973,7 +973,7 @@ resources:
   - review
   - review-draft
   - review-semantics
-  technology_profile: dotnet-backend
+  technology_profile: null
 - id: member:references/troubleshooting.md
   path: references/troubleshooting.md
   kind: knowledge
@@ -1814,6 +1814,22 @@ references:
   requirement: required
   on_missing: unavailable
 - from: README.md
+  resource_id: member:references/engineering-identity-bindings.md
+  target:
+    package: dotnet
+    path: references/engineering-identity-bindings.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: README.md
+  resource_id: member:references/legacy-dotnet-compliance/spec-compliance-rules.md
+  target:
+    package: dotnet
+    path: references/legacy-dotnet-compliance/spec-compliance-rules.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: README.md
   resource_id: member:references/legacy-dotnet-compliance/test-validation-steps.md
   target:
     package: dotnet
@@ -1826,6 +1842,14 @@ references:
   target:
     package: dotnet
     path: references/legacy-dotnet-compliance/validation-command-templates.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: README.md
+  resource_id: member:references/policy-rationale.md
+  target:
+    package: dotnet
+    path: references/policy-rationale.md
     anchor: null
   requirement: required
   on_missing: unavailable
@@ -1930,6 +1954,14 @@ references:
   target:
     package: dotnet
     path: core/host-configuration.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: application-types/web-api/setup.md
+  resource_id: member:integration/messaging/transactional-messaging-standards.md
+  target:
+    package: dotnet
+    path: integration/messaging/transactional-messaging-standards.md
     anchor: null
   requirement: required
   on_missing: unavailable
@@ -2070,6 +2102,22 @@ references:
   requirement: required
   on_missing: unavailable
 - from: architecture/ddd-cqrs/overview.md
+  resource_id: member:architecture/ddd-cqrs/building-blocks-reconstruction.md
+  target:
+    package: dotnet
+    path: architecture/ddd-cqrs/building-blocks-reconstruction.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: architecture/ddd-cqrs/overview.md
+  resource_id: member:architecture/ddd-cqrs/project-structure.md
+  target:
+    package: dotnet
+    path: architecture/ddd-cqrs/project-structure.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: architecture/ddd-cqrs/overview.md
   resource_id: member:architecture/ddd-cqrs/usecase-standards.md
   target:
     package: dotnet
@@ -2078,10 +2126,26 @@ references:
   requirement: required
   on_missing: unavailable
 - from: architecture/ddd-cqrs/overview.md
+  resource_id: member:architecture/ddd-cqrs/usecase-standards.md
+  target:
+    package: dotnet
+    path: architecture/ddd-cqrs/usecase-standards.md
+    anchor: 7-strong-consistency-must-be-explicit
+  requirement: required
+  on_missing: unavailable
+- from: architecture/ddd-cqrs/overview.md
   resource_id: member:core/host-configuration.md
   target:
     package: dotnet
     path: core/host-configuration.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: architecture/ddd-cqrs/overview.md
+  resource_id: member:core/technology-selection.md
+  target:
+    package: dotnet
+    path: core/technology-selection.md
     anchor: null
   requirement: required
   on_missing: unavailable
@@ -2107,6 +2171,14 @@ references:
     package: dotnet
     path: integration/persistence/projection-standards.md
     anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: architecture/ddd-cqrs/overview.md
+  resource_id: member:references/policy-rationale.md
+  target:
+    package: dotnet
+    path: references/policy-rationale.md
+    anchor: cross-bc-interaction-retained-restriction-and-scope-gap
   requirement: required
   on_missing: unavailable
 - from: architecture/ddd-cqrs/project-structure.md
@@ -2182,6 +2254,14 @@ references:
   requirement: required
   on_missing: unavailable
 - from: architecture/ddd-cqrs/usecase-standards.md
+  resource_id: member:architecture/ddd-cqrs/overview.md
+  target:
+    package: dotnet
+    path: architecture/ddd-cqrs/overview.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: architecture/ddd-cqrs/usecase-standards.md
   resource_id: member:architecture/ddd-cqrs/project-structure.md
   target:
     package: dotnet
@@ -2226,6 +2306,14 @@ references:
   target:
     package: dotnet
     path: testing/test-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: core/host-configuration.md
+  resource_id: member:integration/persistence/configuration.md
+  target:
+    package: dotnet
+    path: integration/persistence/configuration.md
     anchor: null
   requirement: required
   on_missing: unavailable
@@ -3338,6 +3426,14 @@ references:
   target:
     package: dotnet
     path: architecture/ddd-cqrs/usecase-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: tooling/generation/README.md
+  resource_id: member:testing/domain-contract-examples.md
+  target:
+    package: dotnet
+    path: testing/domain-contract-examples.md
     anchor: null
   requirement: required
   on_missing: unavailable

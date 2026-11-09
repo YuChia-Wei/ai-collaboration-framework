@@ -187,7 +187,8 @@ class ArchitectureSplitSelectionTests(unittest.TestCase):
         # A target can request common C# review without adopting the retained
         # DDD/backend rule profile. Old package/resource IDs are not aliases.
         selected = ("dotnet", "engineering-common")
-        binding = self.binding("review", "review", ("member:core/csharp-conventions.md",))
+        binding = self.binding("review", "review", (
+            "member:core/csharp-conventions.md", "member:references/review-routing.yaml"))
         binding["package"] = "dotnet"
         desired = self.desired(("code-reviewer",), knowledge=selected, bindings=(binding,))
         result = catalog.resolve_selection(self.parent_catalog, desired)
@@ -195,6 +196,10 @@ class ArchitectureSplitSelectionTests(unittest.TestCase):
         profile = next(row for row in self.parent_catalog.packages[("knowledge", "dotnet")].metadata["resources"]
                        if row["id"] == "engineering-rule-catalog")
         self.assertEqual(profile["technology_profile"], "dotnet-backend")
+        binding["resources"] = ["engineering-rule-catalog"]
+        with self.assertRaisesRegex(DistributionError, "binding-unresolved: technology profile"):
+            catalog.resolve_selection(self.parent_catalog, self.desired(
+                ("code-reviewer",), knowledge=selected, bindings=(binding,)))
         with self.assertRaisesRegex(DistributionError, "selection-unavailable"):
             catalog.resolve_selection(self.parent_catalog, self.desired(
                 ("code-reviewer",), knowledge=("dotnet-backend", "engineering-common")))
