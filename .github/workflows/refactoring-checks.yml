@@ -34,19 +34,20 @@ jobs:
         uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: '10.0.403'
-      - name: Publish complete managed artifact with notices
+      - name: Publish framework-dependent single executable with notices
         run: |
           New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/refactor-build" | Out-Null
           @{sdk=@{version='10.0.403';rollForward='disable'}} | ConvertTo-Json | Set-Content "$env:RUNNER_TEMP/refactor-build/global.json"
           Set-Location "$env:RUNNER_TEMP/refactor-build"
-          & "$env:GITHUB_WORKSPACE/src/tools/dotnet/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish" -Archive "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
+          $env:DOTNET_BUNDLE_EXTRACT_BASE_DIR = Join-Path $env:RUNNER_TEMP 'refactor-publisher-cache'
+          & "$env:GITHUB_WORKSPACE/src/tools/dotnet/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          Expand-Archive -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip" -DestinationPath "$env:RUNNER_TEMP/refactor-installed"
-      - name: Run unit, integration and extracted artifact tests
+      - name: Run unit, integration and single-file artifact tests
         env:
-          AICF_REFACTOR_TEST_ARTIFACT: ${{ runner.temp }}/refactor-installed/RefactorTool.exe
+          AICF_REFACTOR_TEST_ARTIFACT: ${{ runner.temp }}/refactor-publish/RefactorTool.exe
         run: |
           Set-Location "$env:RUNNER_TEMP/refactor-build"
+          $env:DOTNET_BUNDLE_EXTRACT_BASE_DIR = Join-Path $env:RUNNER_TEMP 'refactor-acceptance-cache'
           $env:AICF_TEST_WORK = "$env:RUNNER_TEMP/refactor-fixtures"
           $results = "$env:RUNNER_TEMP/refactor-test-results"
           $refactoring = "$env:GITHUB_WORKSPACE/tests/dotnet-refactoring"
@@ -59,19 +60,17 @@ jobs:
           & $check -Report "$results/integration.trx" -Expected 125
           dotnet test "$refactoring/artifact/RefactorTool.ArtifactIntegrationTests.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=artifact.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & $check -Report "$results/artifact.trx" -Expected 2
-      - name: Record archive checksum
+          & $check -Report "$results/artifact.trx" -Expected 3
+      - name: Record executable checksum
         run: |
-          $archive = Get-Item -LiteralPath "$env:RUNNER_TEMP/RefactorTool-win-x64.zip"
-          $checksum = (Get-FileHash -Algorithm SHA256 -LiteralPath $archive.FullName).Hash.ToLowerInvariant()
-          "$checksum  $($archive.Name)" | Set-Content -Encoding ascii -LiteralPath "$($archive.FullName).sha256"
-          Write-Host "$($archive.Name): $($archive.Length) bytes"
+          $binary = Get-Item -LiteralPath "$env:RUNNER_TEMP/refactor-publish/RefactorTool.exe"
+          $checksum = (Get-FileHash -Algorithm SHA256 -LiteralPath $binary.FullName).Hash.ToLowerInvariant()
+          "$checksum  $($binary.Name)" | Set-Content -Encoding ascii -LiteralPath "$($binary.FullName).sha256"
+          Write-Host "$($binary.Name): $($binary.Length) bytes"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: RefactorTool-win-x64-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            ${{ runner.temp }}/RefactorTool-win-x64.zip
-            ${{ runner.temp }}/RefactorTool-win-x64.zip.sha256
+          path: ${{ runner.temp }}/refactor-publish/*
           if-no-files-found: error
           compression-level: 0
           retention-days: 14

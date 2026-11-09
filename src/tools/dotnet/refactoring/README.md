@@ -216,35 +216,29 @@ including unknown or duplicate fields, return `refused` with code `invalid_input
 
 ## Build, distribute and install
 
-This tool uses managed .NET and out-of-process Roslyn MSBuild build hosts.
-Native AOT, trimming and single-file publishing are disabled; do not copy only
-the executable. A published directory must retain its dependency assemblies,
-`BuildHost-netcore`, notices and runtime files. The .NET SDK is still required
-on the target machine for workspace evaluation.
+Download the versioned Windows x64 `RefactorTool-<version>-win-x64.exe`, its
+SHA-256 file and the companion notices ZIP from the Framework release. Check
+the executable with `Get-FileHash -Algorithm SHA256` before running it. The
+single executable uses the installed .NET 10 runtime and workspace-selected
+.NET 10 SDK. It extracts Roslyn dependencies and BuildHost to the .NET bundle
+cache at launch. The SDK remains required for workspace evaluation.
 
 Maintainers build the standalone artifact from this source directory:
 
 ```powershell
-./Publish-RefactorTool.ps1 -Destination C:/staging/refactor-win-x64 -Archive C:/staging/RefactorTool-win-x64.zip
+./Publish-RefactorTool.ps1 -Destination C:/staging/refactor-win-x64 -Version 0.1.0-dev.1
 ```
 
-The script keeps dependency metadata and notices, checks required build-host
-files, and emits the archive SHA-256. Both destination paths must be new; failed
-staging remains available for diagnosis. This artifact is installed separately
-from the existing generation/formatting bundle and does not change that bundle's
-installer or Native AOT policy.
+The destination must be new. The script verifies the single-file layout and
+stages the dependency licenses and notices. An optional `-Archive` path creates
+a local ZIP and prints its SHA-256.
 
-Successful pull request acceptance runs upload the Windows x64 ZIP and its
-SHA-256 checksum for 14 days.
+Successful pull request acceptance runs retain the Windows x64 executable,
+checksum and notices for 14 days.
 
-Install a prepared standalone archive by extracting its entire directory to a
-user-selected location and invoking `RefactorTool.exe` there, or adding that
-directory to PATH yourself. No target `.csproj` change, IDE extension, source
-checkout, global tool installation or machine-wide registration is required to
-run the prepared artifact. Updating means extracting a new complete directory;
-keep the previous one to roll back. Do not overlay a newer executable onto older
-dependencies. This source implementation does not allocate a Framework release
-version or publish a downloadable release.
+Run the downloaded executable from a user-selected location. To update, put
+the new versioned executable beside the previous one, verify its checksum, and
+switch your command or PATH entry to it. Keep the previous version for rollback.
 
-See `THIRD-PARTY-NOTICES.txt` and `licenses/` in the archive. Public API
+See `THIRD-PARTY-NOTICES.txt` and `licenses/` in the notices ZIP. Public API
 reference: [Roslyn Renamer](https://learn.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.rename.renamer.renamesymbolasync?view=roslyn-dotnet-5.0.0).

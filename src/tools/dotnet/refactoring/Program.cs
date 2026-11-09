@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 
 namespace RefactorTool;
@@ -13,7 +14,8 @@ internal static class Program
         {
             if (args is ["--version"])
             {
-                output.WriteLine("RefactorTool 0.1.0-dev.1 (Roslyn 5.0.0; managed .NET 10)");
+                var version = typeof(Program).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
+                output.WriteLine($"RefactorTool {version} (Roslyn 5.0.0; managed .NET 10)");
                 return 0;
             }
             if (args.Length == 0 || args is ["--help"])

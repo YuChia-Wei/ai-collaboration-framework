@@ -126,6 +126,9 @@ if ($LASTEXITCODE -ne 0) { throw '生成工具安裝未完成；請依 JSON 診�
 範本註冊、生成與建置仍需明確執行，開發主機須先安裝 .NET 10 SDK。
 SnippetTool 的 macOS 正式交付由 #582 另行處理。目錄式／nupkg 註冊、自訂
 與復原指令見成品的 `generation/README.md` 或來源交付指南。
+Release 另提供各 RID 的 SnippetTool 單一執行檔與 SHA-256，使用獨立下載時
+請從同版 Framework ZIP 的對應 `generation/snippets/<RID>/snippets/` 取得片段資料。
+Linux 直接下載後需設定執行權限，例如 `chmod +x SnippetTool-<version>-linux-x64`。
 [來源交付指南](../src/knowledge/dotnet-backend/tooling/generation/DELIVERY.md)
 
 | 工具 | Windows x64 | Linux x64 | macOS arm64 | SDK 比對規則 |
@@ -134,14 +137,12 @@ SnippetTool 的 macOS 正式交付由 #582 另行處理。目錄式／nupkg 註�
 | Format-Dotnet.ps1 | 需要 PowerShell 7.3+ | 需要 PowerShell 7.3+ | 需要 PowerShell 7.3+ | 依工作區選擇的 SDK 執行 `dotnet format` |
 | RefactorTool | 支援 | 不支援 | 不支援 | 接受 .NET 10 SDK，驗收使用 10.0.403 |
 
-C# 語意重構的首版 `RefactorTool` 使用獨立的 Windows x64 managed .NET 成品，
-以公開 Roslyn API 提供 workspace 檢查、Rename preview 與原內容綁定的 apply。
-它與既有 generation／formatting 安裝包分開交付，保留完整依賴目錄及
-`BuildHost-netcore`；執行仍需 .NET 10 SDK。取得準備完成的 standalone archive 後，
-解壓到自行選擇的位置並直接執行，不修改目標專案依賴。
+C# 語意重構工具 `RefactorTool` 採 Windows x64 framework-dependent 單檔交付。
+下載 `RefactorTool-<version>-win-x64.exe`、對應的 `.sha256` 與授權 ZIP，
+執行前以 `Get-FileHash -Algorithm SHA256` 核對。工具使用已安裝的 .NET 10 Runtime，
+評估專案仍需 .NET 10 SDK。啟動時 Roslyn／BuildHost 依賴會解至 .NET bundle 快取。
 支援矩陣、安裝／更新、參數及失敗恢復見
 [RefactorTool 使用說明](../src/tools/dotnet/refactoring/README.md)。
-此來源實作與本機成品驗證不表示已發布可下載的 Framework 版本。
 
 工具包包含多平台執行檔與可重新取得的產物；建議由專案自行加入以下 `.gitignore`
 規則，並以版本控制保存自訂來源、所選 release 與 checksum 的重建說明：

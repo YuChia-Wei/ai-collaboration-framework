@@ -9,7 +9,7 @@ public sealed class PublishedArtifactTests
 {
     /// <summary>Loads a real project and writes an extraction plan without changing source.</summary>
     [RefactorArtifactFact]
-    public void ExtractedExecutablePreviewsInterfaceForRestoredProject()
+    public void SingleFilePreviewsAndAppliesInterfaceForRestoredProject()
     {
         using var fixture = new SdkFixture();
         string executable = null!;
@@ -19,11 +19,12 @@ public sealed class PublishedArtifactTests
         this.Given(GivenTheExtractedToolAndRestoredProject, "the extracted tool and a restored project")
             .When(WhenPreviewingExtractionWithTheExtractedExecutable, "previewing extraction with the extracted executable")
             .Then(ThenProduceAnExtractionPlanWithoutChangingSource, "produce an extraction plan without changing source")
+            .And(ThenApplyTheExtraction, "apply the selected interface extraction")
             .BDDfy();
 
         async Task GivenTheExtractedToolAndRestoredProject()
         {
-            executable = Artifact();
+            executable = fixture.Write("published/RefactorTool.exe", File.ReadAllBytes(Artifact()));
             await fixture.Restore();
             original = fixture.Snapshot();
         }
@@ -41,38 +42,86 @@ public sealed class PublishedArtifactTests
             Assert.False(File.Exists(fixture.Output));
             fixture.AssertSnapshot(original);
         }
+
+        async Task ThenApplyTheExtraction()
+        {
+            (await fixture.Apply(executable)).Applied();
+            Assert.Contains("interface ISelected", File.ReadAllText(fixture.Output));
+        }
     }
 
-    /// <summary>Ships BuildHost, notices, and licenses without test dependencies in the extracted package.</summary>
+    /// <summary>Preserves cross-project Rename through the standalone executable.</summary>
     [RefactorArtifactFact]
-    public void ExtractedPackageIncludesRuntimeNoticesAndNoTestDependencies()
+    public void SingleFileRenamesDeclarationAndConsumerAcrossProjects()
     {
-        string root = null!;
-        string[] libraries = null!;
-        string[] files = null!;
+        using var fixture = new SdkFixture(twoProjects: true);
+        string executable = null!;
 
-        this.Given(GivenTheExtractedArchiveRoot, "the extracted archive root")
-            .When(WhenReadingTheArchiveInventory, "reading the archive inventory")
-            .Then(ThenIncludeTheRuntimeAndNoticesWithoutTestDependencies, "include the runtime and notices without test dependencies")
+        this.Given(GivenTheStandaloneToolAndSolution, "a standalone executable and a restored solution")
+            .When(WhenPreviewingAndApplyingRename, "previewing and applying Rename")
+            .Then(ThenRenameTheDeclarationAndItsConsumer, "rename the declaration and its cross-project reference")
             .BDDfy();
 
-        void GivenTheExtractedArchiveRoot() => root = Path.GetDirectoryName(Artifact())!;
-
-        void WhenReadingTheArchiveInventory()
+        async Task GivenTheStandaloneToolAndSolution()
         {
-            using var dependencies = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "RefactorTool.deps.json")));
-            libraries = dependencies.RootElement.GetProperty("libraries").EnumerateObject().Select(library => library.Name).ToArray();
-            files = Directory.GetFiles(root, "*", SearchOption.AllDirectories);
+            executable = fixture.Write("published/RefactorTool.exe", File.ReadAllBytes(Artifact()));
+            await fixture.Restore();
         }
 
-        void ThenIncludeTheRuntimeAndNoticesWithoutTestDependencies()
+        async Task WhenPreviewingAndApplyingRename()
         {
-            Assert.True(File.Exists(Path.Combine(root, "README.md")));
-            Assert.True(File.Exists(Path.Combine(root, "THIRD-PARTY-NOTICES.txt")));
-            Assert.True(File.Exists(Path.Combine(root, "BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll")));
+            (await fixture.Preview(artifact: executable)).Previewed();
+            (await fixture.Apply(executable)).Applied();
+        }
+
+        void ThenRenameTheDeclarationAndItsConsumer()
+        {
+            Assert.Contains("Fetch(int", File.ReadAllText(fixture.Source));
+            Assert.Contains(".Fetch(", File.ReadAllText(fixture.Consumer));
+        }
+    }
+
+    /// <summary>Publishes one executable and notices, and extracts no CoreCLR or test components.</summary>
+    [RefactorArtifactFact]
+    public void SingleFileIncludesBuildHostWithoutCoreClrOrTestDependencies()
+    {
+        using var directory = new TestDirectory();
+        var executable = Artifact();
+        var root = Path.GetDirectoryName(executable)!;
+        var extraction = directory.PathFor("extract");
+        string[] extractedFiles = null!;
+
+        this.Given(GivenThePublishedInventory, "one executable with its notices")
+            .When(WhenStartingWithAFreshExtractionCache, "starting with a fresh extraction cache")
+            .Then(ThenExtractBuildHostWithoutCoreClr, "extract BuildHost without CoreCLR or test components")
+            .BDDfy();
+
+        void GivenThePublishedInventory()
+        {
+            Assert.Equal(new[] { "README.md", "RefactorTool.exe", "THIRD-PARTY-NOTICES.txt", "licenses" },
+                Directory.GetFileSystemEntries(root).Select(Path.GetFileName).Order(StringComparer.Ordinal));
             Assert.NotEmpty(Directory.EnumerateDirectories(Path.Combine(root, "licenses")));
+        }
+
+        async Task WhenStartingWithAFreshExtractionCache()
+        {
+            var result = await TestDirectory.RunProcess(executable, directory.Root, ["--version"], TimeSpan.FromSeconds(30),
+                new() { ["DOTNET_BUNDLE_EXTRACT_BASE_DIR"] = extraction });
+            Assert.Equal(0, result.ExitCode);
+            Assert.Empty(result.Error);
+            extractedFiles = Directory.GetFiles(extraction, "*", SearchOption.AllDirectories);
+        }
+
+        void ThenExtractBuildHostWithoutCoreClr()
+        {
+            var dependenciesFile = Assert.Single(extractedFiles, path => Path.GetFileName(path) == "RefactorTool.deps.json");
+            using var dependencies = JsonDocument.Parse(File.ReadAllText(dependenciesFile));
+            var libraries = dependencies.RootElement.GetProperty("libraries").EnumerateObject().Select(library => library.Name);
+            Assert.Contains(extractedFiles, path => Path.GetFileName(path) == "Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll");
+            Assert.DoesNotContain(extractedFiles, path => Path.GetFileName(path).ToLowerInvariant() is
+                "coreclr.dll" or "hostfxr.dll" or "hostpolicy.dll" or "system.private.corelib.dll");
             Assert.DoesNotContain(libraries, IsTestDependency);
-            Assert.DoesNotContain(files, path => IsTestDependency(Path.GetFileName(path)));
+            Assert.DoesNotContain(extractedFiles, path => IsTestDependency(Path.GetFileName(path)));
         }
     }
 
@@ -88,7 +137,7 @@ public sealed class PublishedArtifactTests
 
     private static string Artifact()
     {
-        Assert.True(RefactorTestProfile.WindowsX64, "The selected archive requires Windows x64.");
+        Assert.True(RefactorTestProfile.WindowsX64, "The selected executable requires Windows x64.");
         return PublishedExecutable.Require(Environment.GetEnvironmentVariable("AICF_REFACTOR_TEST_ARTIFACT"), "RefactorTool", "AICF_REFACTOR_TEST_ARTIFACT");
     }
 }

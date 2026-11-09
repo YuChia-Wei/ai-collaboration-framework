@@ -136,8 +136,20 @@ def deliver(api, directory, manifest, receipt, checkpoint=lambda: None):
     remote_source(api, source)
     matches = [r for r in api.pages("/releases") if r["tag_name"] == source["tag"]]
     require(len(matches) <= 1, "ambiguous duplicate releases for tag")
-    files = {name: (directory / name).read_bytes() for name in
-             ("release-manifest.json", manifest["archive"]["name"], manifest["archive"]["name"] + ".sha256")}
+    archive = manifest["archive"]["name"]
+    assets = ["release-manifest.json", archive, archive + ".sha256"]
+    for row in manifest.get("standalone_tools", []):
+        name = row["name"]
+        assets.extend((name, name + ".sha256"))
+    files = {name: (directory / name).read_bytes() for name in assets}
+    require(files["release-manifest.json"] == manifest_raw and document(manifest_raw) == manifest,
+            "admitted manifest changed before draft delivery")
+    for row in [manifest["archive"], *manifest.get("standalone_tools", [])]:
+        name = row["name"]
+        asset = files[name]
+        require(len(asset) == row["size"] and sha(asset) == row["sha256"], "admitted asset changed before draft delivery")
+        require(files[name + ".sha256"] == f"{row['sha256']}  {name}\n".encode(),
+                "admitted checksum changed before draft delivery")
     release = matches[0] if matches else None
     if release:
         body = owned(release, manifest, manifest_raw)

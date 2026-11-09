@@ -1,9 +1,8 @@
 RefactorTool third-party notices
 
-RefactorTool uses the following MIT-licensed components. This notice must remain
-with the complete published directory. Runtime publishing additionally carries
-the .NET runtime's LICENSE.TXT and THIRD-PARTY-NOTICES.TXT under licenses/,
-which must be retained together with dependency metadata and supplemental notices.
+RefactorTool uses the following MIT-licensed components. Keep this notice and
+the dependency metadata and supplemental notices in the companion notices ZIP.
+The executable uses the installed .NET runtime.
 
 Microsoft components, copyright (c) Microsoft Corporation and contributors:
   Microsoft.CodeAnalysis.Common 5.0.0
