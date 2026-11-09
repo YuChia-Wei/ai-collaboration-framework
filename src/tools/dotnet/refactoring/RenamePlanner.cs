@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 
@@ -53,6 +54,9 @@ internal static class RenamePlanner
         var baseline = await Errors(before);
         Data.Require(!baseline.Any(d => d.Id is "CS0006" or "CS0012" or "CS0518" or "CS1705"), "missing_metadata", "Compilation requires missing or incompatible metadata.", baseline);
         var (annotated, nameOfTargets) = await TrackNameof(before, definitions, request.RenameOverloads, loaded);
+        var invocationTargets = new Dictionary<DocumentId, InvocationBinding[]>();
+        if (symbol is IMethodSymbol)
+            (annotated, invocationTargets) = await TrackInvocations(annotated, references.SelectMany(r => r.Locations));
         var selected = await Select(annotated, request);
         var after = await Renamer.RenameSymbolAsync(annotated, selected,
             new SymbolRenameOptions(RenameOverloads: request.RenameOverloads, RenameInStrings: false, RenameInComments: false, RenameFile: false), request.NewName);
@@ -104,6 +108,7 @@ internal static class RenamePlanner
             if (match >= 0) remaining.RemoveAt(match); else added.Add(diagnostic);
         }
         Data.Require(added.Count == 0, "new_compilation_errors", "Rename introduces compilation errors; original errors are reported separately.", new { baseline, added });
+        await RequirePreservedInvocations(after, invocationTargets, request.NewName);
         Data.Require(edits.Count > 0, "no_changes", "No editable changes were produced.");
         loaded.VerifyInputs();
         return new Plan
@@ -175,10 +180,74 @@ internal static class RenamePlanner
         return (updated, targets);
     }
 
+    private sealed record InvocationBinding(SyntaxAnnotation Annotation, IMethodSymbol Method, int Line);
+
+    private static async Task<(Solution Solution, Dictionary<DocumentId, InvocationBinding[]> Targets)> TrackInvocations(
+        Solution solution, IEnumerable<ReferenceLocation> references)
+    {
+        var targets = new Dictionary<DocumentId, InvocationBinding[]>();
+        foreach (var locations in references.Where(r => !r.IsImplicit).GroupBy(r => r.Document.Id))
+        {
+            var document = solution.GetDocument(locations.Key)!;
+            var root = (await document.GetSyntaxRootAsync())!;
+            var model = (await document.GetSemanticModelAsync())!;
+            var bindings = new Dictionary<InvocationExpressionSyntax, InvocationBinding>();
+            foreach (var reference in locations)
+            {
+                var token = root.FindToken(reference.Location.SourceSpan.Start);
+                var call = token.Parent?.FirstAncestorOrSelf<InvocationExpressionSyntax>();
+                if (call is null || token.Span != reference.Location.SourceSpan || NameToken(call.Expression) != token ||
+                    model.GetOperation(call) is not IInvocationOperation invocation)
+                    continue;
+
+                var line = token.GetLocation().GetLineSpan().StartLinePosition.Line + 1;
+                bindings.TryAdd(call, new(new SyntaxAnnotation(), invocation.TargetMethod, line));
+            }
+
+            if (bindings.Count == 0) continue;
+            var annotated = root.ReplaceNodes(bindings.Keys, (original, rewritten) =>
+                rewritten.WithAdditionalAnnotations(bindings[original].Annotation));
+            solution = solution.WithDocumentSyntaxRoot(document.Id, annotated);
+            targets[document.Id] = bindings.Values.ToArray();
+        }
+
+        return (solution, targets);
+    }
+
+    private static async Task RequirePreservedInvocations(Solution solution, Dictionary<DocumentId, InvocationBinding[]> targets, string newName)
+    {
+        foreach (var (id, bindings) in targets)
+        {
+            var document = solution.GetDocument(id)!;
+            var root = (await document.GetSyntaxRootAsync())!;
+            var model = (await document.GetSemanticModelAsync())!;
+            foreach (var binding in bindings)
+            {
+                var calls = root.GetAnnotatedNodes(binding.Annotation).Take(2).ToArray();
+                Data.Require(calls.Length == 1 && calls[0] is InvocationExpressionSyntax,
+                    "rename_conflict", $"Rename could not track the invocation at {document.FilePath}:{binding.Line}.");
+                var actual = (model.GetOperation(calls[0]) as IInvocationOperation)?.TargetMethod;
+                Data.Require(actual is not null && actual.Name == newName && MethodIdentity(actual).Equals(MethodIdentity(binding.Method)),
+                    "rename_binding_changed", $"Rename would change the method called at {document.FilePath}:{binding.Line}.",
+                    new { before = Display(binding.Method), after = actual is null ? null : Display(actual) });
+            }
+        }
+    }
+
+    private static (AssemblyIdentity Assembly, string Signature) MethodIdentity(IMethodSymbol method)
+    {
+        var definition = (method.ReducedFrom ?? method).OriginalDefinition;
+        // The name changes intentionally. The assembly, declaring type and signature must still agree.
+        var signature = string.Concat(definition.ToDisplayParts(SymbolDisplayFormat.CSharpErrorMessageFormat)
+            .Where(part => part.Kind != SymbolDisplayPartKind.MethodName));
+        return (definition.ContainingAssembly.Identity, signature);
+    }
+
     private static SyntaxToken NameToken(SyntaxNode expression) => expression switch
     {
         SimpleNameSyntax name => name.Identifier,
         MemberAccessExpressionSyntax access => access.Name.Identifier,
+        MemberBindingExpressionSyntax binding => binding.Name.Identifier,
         AliasQualifiedNameSyntax alias => alias.Name.Identifier,
         QualifiedNameSyntax qualified => qualified.Right.Identifier,
         _ => default
