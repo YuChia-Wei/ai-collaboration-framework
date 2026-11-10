@@ -18,7 +18,7 @@
     <InternalsVisibleTo Include="SnippetTool.UnitTests" />
     <None Update="snippets/**/*" CopyToOutputDirectory="PreserveNewest"
           CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
-    <None Include="../../../../knowledge/dotnet-backend/tooling/generation/snippet-tool/README.md"
+    <None Include="../../../../knowledge/dotnet/tooling/generation/snippet-tool/README.md"
           Link="README.md" CopyToOutputDirectory="PreserveNewest"
           CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>

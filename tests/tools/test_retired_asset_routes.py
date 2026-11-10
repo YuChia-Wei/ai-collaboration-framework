@@ -70,12 +70,12 @@ class SourceCheckerTests(unittest.TestCase):
             checker = fixture / "src/tools/dotnet/check-coding-standards.sh"
             checker.parent.mkdir(parents=True)
             shutil.copyfile(ROOT / "src/tools/dotnet/check-coding-standards.sh", checker)
-            standards = fixture / "src/knowledge/dotnet-backend/standards"
-            shutil.copytree(ROOT / "src/knowledge/dotnet-backend/standards", standards)
-            catalog = standards / "coding-standards.md"
+            knowledge = fixture / "src/knowledge/dotnet"
+            shutil.copytree(ROOT / "src/knowledge/dotnet", knowledge)
+            catalog = knowledge / "README.md"
             content = catalog.read_text(encoding="utf-8")
-            content = content.replace("](coding-standards/aggregate-standards.md)",
-                                      "](coding-standards/aggregate-standards.md.bak)")
+            content = content.replace("](core/csharp-conventions.md)",
+                                      "](core/csharp-conventions.md.bak)")
             catalog.write_text(content, encoding="utf-8")
             result = self.run_checker(checker, directory)
         self.assertEqual(result.returncode, 1)

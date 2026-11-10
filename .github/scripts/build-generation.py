@@ -20,7 +20,7 @@ def build(repository, output, work, version, commit, native_tools=None, coreclr=
     if actual != commit:
         raise ValueError('Generation source commit mismatch')
     generation = repository / 'src/tools/dotnet/generation'
-    guides = repository / 'src/knowledge/dotnet-backend/tooling/generation'
+    guides = repository / 'src/knowledge/dotnet/tooling/generation'
     work.mkdir(parents=True)
     output.mkdir(parents=True)
     subprocess.run(['dotnet', 'pack', str(generation / 'Generation.Templates.csproj'),

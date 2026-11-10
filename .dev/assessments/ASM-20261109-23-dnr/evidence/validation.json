@@ -1,0 +1,34 @@
+{
+  "whole_repository": {
+    "command": "python -I -B tools/maintenance/validate-assessment-artifacts.py",
+    "exit_code": 1,
+    "error_count": 154,
+    "current_assessment_errors": [],
+    "historical_failure_categories": [
+      "Missing historical report templates under retired .ai/assets",
+      "Missing historical backlog references",
+      "Other existing assessments require explicit workflow-store-config"
+    ]
+  },
+  "selected_assessment": {
+    "command": "python -I -B tools/maintenance/validate-assessment-artifacts.py --root <fresh-scoped-root>",
+    "scope_root": "C:\\Users\\h4227\\AppData\\Local\\Packages\\sandbox.{5e847ceb-2419-4795-8816-1568da49f291}\\AC\\Temp\\aicf-assessment-final-gzfftesm",
+    "method": "Byte copies of this assessment and actual referenced templates; original index entry selected verbatim; existing public validator unchanged.",
+    "exit_code": 0,
+    "output": "Assessment artifact validation passed for 1 assessment(s).",
+    "status_checked": "final"
+  },
+  "inventory_checks": {
+    "current_file_rows": 122,
+    "current_resources": 121,
+    "selected_skill_bindings": 6,
+    "proposed_files": 55,
+    "published_member_rows": 256,
+    "assessment_relative_links_checked": 12,
+    "broken_links": 0
+  },
+  "product_tests": "not-run: assessment-only diff; no product behavior changed",
+  "source_unchanged": true,
+  "source_head": "c641602a50ee17016ea1729897625aefe708af2a",
+  "git_diff_check_exit_code": 0
+}

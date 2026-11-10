@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.4.9`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.4.10`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選兩個 binding：`engineering-common@0.4.2`（`design`,`review`，依當前 allowlist 選讀）與 `dotnet-backend@0.2.1`（同操作，3 項資源）。缺失只會使這些專門準則不可用，通用情境設計仍可完成。
+可選兩個 binding：`engineering-common@0.4.2`（`design`,`review`，依當前 allowlist 選讀）與 `dotnet@0.3.0`（依當前 allowlist 選讀）。缺失只會使這些專門準則不可用，通用情境設計仍可完成。
 
 需要釐清規則、例子與未決問題時，選讀 BDD 方法；明確要求 Gherkin 輸出或
 審查時，才選讀 Gherkin 表述指引。只探索需求可先交付問題與暫定例子，
@@ -58,11 +58,14 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-test-design
 
-`dotnet-backend@0.2.1`；操作：`design`、`review`。
+`dotnet@0.3.0`；操作：`design`、`review`。
 
 - `engineering-rule-catalog`
-- `member:standards/POLICY-RATIONALE.md`
-- `member:standards/coding-standards/test-standards.md`
+- `member:references/policy-rationale.md`
+- `member:testing/test-scenario-review.md`
+- `member:testing/test-standards.md`
+
+依目標已採用的技術與本次操作選讀；允許讀取不代表採用規則，連結不擴大 allowlist。
 
 ## 權威參考
 

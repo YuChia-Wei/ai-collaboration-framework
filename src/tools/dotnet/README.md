@@ -29,7 +29,7 @@ dotnet test src/tools/dotnet/AICF.Dotnet.Tools.slnx -c Release
 
 The API starter projects and the package-free domain contract example can
 build directly in the solution. Generated Web API projects have their own
-solution. The [optional CT-005 example](../../knowledge/dotnet-backend/templates/domain-contracts/README.md)
+solution. The [optional CT-005 example](../../knowledge/dotnet/testing/domain-contract-examples.md)
 is visible as template content and requires verified contract assemblies and
 the .NET 8 runtime.
 
@@ -69,13 +69,13 @@ corresponding [generation](../../../tests/dotnet-generation/README.md) or
 [refactoring](../../../tests/dotnet-refactoring/README.md) test guide.
 
 The three generation guides remain canonical knowledge-package members under
-`src/knowledge/dotnet-backend/tooling/generation`. The snippet project explicitly
+`src/knowledge/dotnet/tooling/generation`. The snippet project explicitly
 includes its manual from that source as `README.md` in its build/publish output;
 the bundle builder likewise includes the delivery guide. Installed tools read
 their own artifact files and never require the source checkout or an installed
 knowledge package.
 
-Use the [generation delivery guide](../../knowledge/dotnet-backend/tooling/generation/DELIVERY.md),
+Use the [generation delivery guide](../../knowledge/dotnet/tooling/generation/DELIVERY.md),
 [formatting script manual](formatting/README.md) and
 [RefactorTool manual](refactoring/README.md) for their separate packaging,
 installation and supported-host contracts. The relative guide link is resolved

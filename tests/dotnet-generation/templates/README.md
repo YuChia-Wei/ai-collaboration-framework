@@ -20,7 +20,7 @@ dotnet test tests/dotnet-generation/templates/Generation.Templates.IntegrationTe
 The daily tools solution also runs the six package-free example tests directly
 from their source project. The knowledge template workflow generates that
 example and runs the same cases from the generated project. The
-[optional CT-005 example](../../../src/knowledge/dotnet-backend/templates/domain-contracts/README.md)
+[optional CT-005 example](../../../src/knowledge/dotnet/testing/domain-contract-examples.md)
 requires verified external DLLs and a .NET 8 runtime.
 
 The artifact project tests registration and named generation from the actual

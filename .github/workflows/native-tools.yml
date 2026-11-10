@@ -4,7 +4,7 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - 'src/knowledge/dotnet-backend/tooling/**'
+      - 'src/knowledge/dotnet/tooling/**'
       - 'src/tools/dotnet/generation/**'
       - 'src/tools/dotnet/formatting/**'
       - 'src/tools/dotnet/refactoring/**'

@@ -1,0 +1,1113 @@
+{
+  "observed_at": "2026-11-09T23:16:51+08:00",
+  "source_head": "c641602a50ee17016ea1729897625aefe708af2a",
+  "package": {
+    "id": "dotnet-backend",
+    "version": "0.2.1",
+    "member_count": 122,
+    "resource_count": 121,
+    "dependencies": {
+      "required": [
+        {
+          "kind": "knowledge",
+          "id": "engineering-common",
+          "version": "0.4.2"
+        }
+      ],
+      "optional": []
+    }
+  },
+  "resources": [
+    {
+      "id": "engineering-rule-catalog",
+      "path": "engineering-rule-catalog.yaml",
+      "kind": "rule-catalog",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "AGGREGATE-ES-001",
+        "ARCH-UOW-001",
+        "CONTRACT-SEMANTICS-001",
+        "DELETE-PURGE-001",
+        "DELETE-SOFT-001",
+        "MAP-EVENTS-001",
+        "MESSAGING-TX-001",
+        "PROJECT-GRAMMAR-001",
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ]
+    },
+    {
+      "id": "member:README.md",
+      "path": "README.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:design/architecture-overview.md",
+      "path": "design/architecture-overview.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:design/architecture-playbook.md",
+      "path": "design/architecture-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:design/design-routing.yaml",
+      "path": "design/design-routing.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:design/source-map.md",
+      "path": "design/source-map.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/COMMON-MISTAKES-GUIDE.md",
+      "path": "guides/COMMON-MISTAKES-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md",
+      "path": "guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/CORS-SETUP.md",
+      "path": "guides/CORS-SETUP.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/DATA-CLASS-STANDARDS.md",
+      "path": "guides/DATA-CLASS-STANDARDS.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/DATABASE-MIGRATION-GUIDE.md",
+      "path": "guides/DATABASE-MIGRATION-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/DEVELOPMENT-TOOLS-GUIDE.md",
+      "path": "guides/DEVELOPMENT-TOOLS-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "path": "guides/DOCKER-RESTORE-CACHE-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/DOTNET-DI-TEST-GUIDE.md",
+      "path": "guides/DOTNET-DI-TEST-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md",
+      "path": "guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/FAQ.md",
+      "path": "guides/FAQ.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "path": "guides/FRAMEWORK-API-INTEGRATION-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "path": "guides/GHERKIN-FEATURE-STORAGE-GUIDE.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/LEARNING-PATH.md",
+      "path": "guides/LEARNING-PATH.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/NEW-PROJECT-TEST-SETUP-GUIDE.md",
+      "path": "guides/NEW-PROJECT-TEST-SETUP-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/PERSISTENCE-CONFIGURATION-GUIDE.md",
+      "path": "guides/PERSISTENCE-CONFIGURATION-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/PREVENT-SERVICE-REGISTRATION-MISSING.md",
+      "path": "guides/PREVENT-SERVICE-REGISTRATION-MISSING.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/PROFILE-BASED-TESTING-GUIDE.md",
+      "path": "guides/PROFILE-BASED-TESTING-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "path": "guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/TEMPLATE-USAGE-GUIDE.md",
+      "path": "guides/TEMPLATE-USAGE-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/TEST-DATA-PREPARATION-GUIDE.md",
+      "path": "guides/TEST-DATA-PREPARATION-GUIDE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:guides/TEST-SPEC-GUIDE.MD",
+      "path": "guides/TEST-SPEC-GUIDE.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+      "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/references/review-prompt.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+      "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/references/review-prompt.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+      "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/references/review-prompt.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+      "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/references/review-prompt.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/aggregate-sub-agent/references/implementation-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/aggregate-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-generation-guidance.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/references/test-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/aggregate-test-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/command-sub-agent/references/implementation-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/command-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "path": "legacy-guidance/slice-implementer/roles/controller-sub-agent/references/implementation-guidance.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-generation-guidance.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/references/test-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/controller-test-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/outbox-sub-agent/references/implementation-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/outbox-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/profile-config-sub-agent/references/implementation-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/profile-config-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/query-sub-agent/references/implementation-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/query-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/reactor-sub-agent/references/implementation-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/reactor-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-generation-guidance.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/references/test-playbook.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "path": "legacy-guidance/slice-implementer/roles/usecase-test-sub-agent/sub-agent.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+      "path": "legacy-guidance/spec-compliance-validator/references/spec-compliance-rules.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+      "path": "legacy-guidance/spec-compliance-validator/references/test-validation-steps.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+      "path": "legacy-guidance/spec-compliance-validator/references/validation-command-templates.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "path": "references/BUILDING-BLOCKS-CLASS-INDEX.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/CODE-TEMPLATES.MD",
+      "path": "references/CODE-TEMPLATES.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/COMMON-PITFALLS.MD",
+      "path": "references/COMMON-PITFALLS.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/ENGINEERING-IDENTITY-BINDINGS.MD",
+      "path": "references/ENGINEERING-IDENTITY-BINDINGS.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/FAILURE-CASES.MD",
+      "path": "references/FAILURE-CASES.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/rationale/generic-repository-only-rationale.MD",
+      "path": "references/rationale/generic-repository-only-rationale.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/rationale/profile-based-testing-rationale.MD",
+      "path": "references/rationale/profile-based-testing-rationale.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/rationale/query-side-layering-rationale.MD",
+      "path": "references/rationale/query-side-layering-rationale.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:references/rationale/rest-api-resource-path-rationale.MD",
+      "path": "references/rationale/rest-api-resource-path-rationale.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:requirements/TECH-STACK-REQUIREMENTS.MD",
+      "path": "requirements/TECH-STACK-REQUIREMENTS.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:review/review-routing.yaml",
+      "path": "review/review-routing.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:review/test-scenario-review.md",
+      "path": "review/test-scenario-review.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:shared/architecture-config.md",
+      "path": "shared/architecture-config.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:shared/common-rules.md",
+      "path": "shared/common-rules.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:shared/domain-rules.md",
+      "path": "shared/domain-rules.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:shared/dto-conventions.md",
+      "path": "shared/dto-conventions.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:shared/testing-strategy.md",
+      "path": "shared/testing-strategy.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "path": "standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "path": "standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "AGGREGATE-ES-001"
+      ]
+    },
+    {
+      "id": "member:standards/DESIGN-BY-CONTRACT.md",
+      "path": "standards/DESIGN-BY-CONTRACT.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "CONTRACT-SEMANTICS-001"
+      ]
+    },
+    {
+      "id": "member:standards/POLICY-RATIONALE.md",
+      "path": "standards/POLICY-RATIONALE.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "path": "standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/anti-patterns.md",
+      "path": "standards/anti-patterns.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/best-practices.md",
+      "path": "standards/best-practices.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-guide.md",
+      "path": "standards/coding-guide.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards.md",
+      "path": "standards/coding-standards.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards/aggregate-standards.md",
+      "path": "standards/coding-standards/aggregate-standards.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "DELETE-SOFT-001"
+      ]
+    },
+    {
+      "id": "member:standards/coding-standards/archive-standards.md",
+      "path": "standards/coding-standards/archive-standards.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "DELETE-PURGE-001"
+      ]
+    },
+    {
+      "id": "member:standards/coding-standards/controller-standards.md",
+      "path": "standards/coding-standards/controller-standards.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards/mapper-standards.md",
+      "path": "standards/coding-standards/mapper-standards.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "MAP-EVENTS-001"
+      ]
+    },
+    {
+      "id": "member:standards/coding-standards/profile-configuration-standards.md",
+      "path": "standards/coding-standards/profile-configuration-standards.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards/projection-standards.md",
+      "path": "standards/coding-standards/projection-standards.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards/reactor-standards.md",
+      "path": "standards/coding-standards/reactor-standards.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards/repository-standards.md",
+      "path": "standards/coding-standards/repository-standards.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/coding-standards/test-standards.md",
+      "path": "standards/coding-standards/test-standards.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "TEST-BDDFY-001",
+        "TEST-GWT-001",
+        "TEST-MOCK-001"
+      ]
+    },
+    {
+      "id": "member:standards/coding-standards/transactional-messaging-standards.md",
+      "path": "standards/coding-standards/transactional-messaging-standards.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "MESSAGING-TX-001"
+      ]
+    },
+    {
+      "id": "member:standards/coding-standards/usecase-standards.md",
+      "path": "standards/coding-standards/usecase-standards.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "ARCH-UOW-001"
+      ]
+    },
+    {
+      "id": "member:standards/contract-cases.md",
+      "path": "standards/contract-cases.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:standards/project-structure.md",
+      "path": "standards/project-structure.md",
+      "kind": "normative-rule",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": [
+        "PROJECT-GRAMMAR-001"
+      ]
+    },
+    {
+      "id": "member:templates/application-properties-templates.md",
+      "path": "templates/application-properties-templates.md",
+      "kind": "template",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:templates/domain-contracts/README.md",
+      "path": "templates/domain-contracts/README.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:templates/profile-isolated-configurations.md",
+      "path": "templates/profile-isolated-configurations.md",
+      "kind": "template",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/generation/DELIVERY.md",
+      "path": "tooling/generation/DELIVERY.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/generation/README.md",
+      "path": "tooling/generation/README.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/generation/snippet-tool/README.md",
+      "path": "tooling/generation/snippet-tool/README.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/README.md",
+      "path": "tooling/on-demand-mechanical-validation/README.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+      "path": "tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+      "path": "tooling/on-demand-mechanical-validation/provider-contract.schema.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/provider-contract.yaml",
+      "path": "tooling/on-demand-mechanical-validation/provider-contract.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/recipe-manifest.yaml",
+      "path": "tooling/on-demand-mechanical-validation/recipe-manifest.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "path": "tooling/on-demand-mechanical-validation/recipes/analyzer-project.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+      "path": "tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+      "path": "tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+      "path": "tooling/on-demand-mechanical-validation/templates/code-fix-decision.md",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+      "path": "tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+      "path": "tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    },
+    {
+      "id": "member:tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+      "path": "tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+      "kind": "knowledge",
+      "technology_profile": "dotnet-backend",
+      "rule_ids": []
+    }
+  ],
+  "skill_bindings": [
+    {
+      "path": "src/skills/code-reviewer/skill-package.yaml",
+      "skill": "code-reviewer",
+      "skill_version": "0.2.11",
+      "bindings": [
+        {
+          "id": "dotnet-review",
+          "package": "dotnet-backend",
+          "version": "0.2.1",
+          "operations": [
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:review/review-routing.yaml",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/POLICY-RATIONALE.md",
+            "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/controller-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/usecase-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "path": "src/skills/domain-model-designer/skill-package.yaml",
+      "skill": "domain-model-designer",
+      "skill_version": "0.1.6",
+      "bindings": [
+        {
+          "id": "dotnet-domain-model",
+          "package": "dotnet-backend",
+          "version": "0.2.1",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/POLICY-RATIONALE.md",
+            "member:standards/coding-standards/aggregate-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "path": "src/skills/local-change-implementer/skill-package.yaml",
+      "skill": "local-change-implementer",
+      "skill_version": "0.2.13",
+      "bindings": [
+        {
+          "id": "dotnet-local-change",
+          "package": "dotnet-backend",
+          "version": "0.2.1",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/POLICY-RATIONALE.md",
+            "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/controller-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/usecase-standards.md",
+            "member:tooling/generation/README.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "path": "src/skills/slice-implementer/skill-package.yaml",
+      "skill": "slice-implementer",
+      "skill_version": "0.2.13",
+      "bindings": [
+        {
+          "id": "dotnet-implementation",
+          "package": "dotnet-backend",
+          "version": "0.2.1",
+          "operations": [
+            "implement"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/POLICY-RATIONALE.md",
+            "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+            "member:standards/coding-standards/aggregate-standards.md",
+            "member:standards/coding-standards/controller-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/test-standards.md",
+            "member:standards/coding-standards/transactional-messaging-standards.md",
+            "member:standards/coding-standards/usecase-standards.md",
+            "member:tooling/generation/README.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "path": "src/skills/software-architect/skill-package.yaml",
+      "skill": "software-architect",
+      "skill_version": "0.1.6",
+      "bindings": [
+        {
+          "id": "dotnet-software-architecture",
+          "package": "dotnet-backend",
+          "version": "0.2.1",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md",
+            "member:standards/DESIGN-BY-CONTRACT.md",
+            "member:standards/POLICY-RATIONALE.md",
+            "member:standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD",
+            "member:standards/coding-standards/controller-standards.md",
+            "member:standards/coding-standards/repository-standards.md",
+            "member:standards/coding-standards/transactional-messaging-standards.md",
+            "member:standards/coding-standards/usecase-standards.md",
+            "member:standards/project-structure.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    },
+    {
+      "path": "src/skills/test-designer/skill-package.yaml",
+      "skill": "test-designer",
+      "skill_version": "0.4.9",
+      "bindings": [
+        {
+          "id": "dotnet-test-design",
+          "package": "dotnet-backend",
+          "version": "0.2.1",
+          "operations": [
+            "design",
+            "review"
+          ],
+          "resources": [
+            "engineering-rule-catalog",
+            "member:standards/POLICY-RATIONALE.md",
+            "member:standards/coding-standards/test-standards.md"
+          ],
+          "requirement": "optional",
+          "on_missing": "unavailable"
+        }
+      ]
+    }
+  ],
+  "source_installation_selection": {
+    "adapters": [
+      "claude",
+      "codex"
+    ],
+    "bindings": [],
+    "catalog": {
+      "identity": "catalog:1:0.0.0-rc.139062226434433:7e79f29bb981d4a4fe4ddfcc2108a15a8872a0c3:e389609aed945a70aa735a446bb698a615e7073ba94b7fbfb25011ce81bc762e",
+      "catalog_sha256": "49592bd80b39583fc65eba004837d55303dca270c6c29e29ee1a2ed8a86aa15d",
+      "files_sha256": "aef811b7d25234ea4c563bbcf941570ac78f698f8f8517961d4fbaea12266d77"
+    },
+    "knowledge": [],
+    "selection_version": 2,
+    "skill_naming": "original",
+    "skills": [
+      "adr-author",
+      "ai-context-auditor",
+      "ai-context-governance",
+      "code-reviewer",
+      "diagnostic-analyst",
+      "domain-model-designer",
+      "lesson-author",
+      "local-change-implementer",
+      "pr-author",
+      "problem-frame-author",
+      "requirement-author",
+      "slice-implementer",
+      "software-architect",
+      "software-development-orchestrator",
+      "spec-author",
+      "spec-compliance-validator",
+      "test-designer"
+    ]
+  },
+  "proposed_file_count": 55,
+  "disposition_action_counts": {
+    "保留／重建宣告": 1,
+    "搬移": 30,
+    "合併": 49,
+    "保留／更新定位": 1,
+    "刪除": 19,
+    "保留／搬移": 3,
+    "保留／重寫導覽": 1,
+    "拆分合併": 3,
+    "保留": 15
+  }
+}

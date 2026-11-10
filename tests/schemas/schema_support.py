@@ -42,7 +42,7 @@ SETTINGS_AND_FILE_SCHEMAS = (
     "src/skills/workflow-records/schemas/file-workflow-v1.schema.json",
     "src/skills/workflow-records/schemas/file-task-v1.schema.json",
 )
-PROVIDER_ROOT = "src/knowledge/dotnet-backend/tooling/on-demand-mechanical-validation"
+PROVIDER_ROOT = "src/knowledge/dotnet/tooling/on-demand-mechanical-validation"
 PROVIDER_SCHEMA = PROVIDER_ROOT + "/provider-contract.schema.yaml"
 JSON_PATHS = tuple(
     [f"src/distribution/schemas/{name}.schema.json" for name in DISTRIBUTION]

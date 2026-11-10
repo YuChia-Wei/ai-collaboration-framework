@@ -4,7 +4,7 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - 'src/knowledge/dotnet-backend/templates/domain-contracts/**'
+      - 'src/knowledge/dotnet/testing/domain-contract-examples.md'
       - 'src/tools/dotnet/generation/dotnet-new/package-free/**'
       - 'src/tools/dotnet/generation/dotnet-new/published-ct005/**'
       - 'tests/dotnet-test-support/Assert-ExecutedTests.ps1'
