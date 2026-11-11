@@ -264,7 +264,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
 | `engineering-common` | `0.4.2` | 無 |
-| `dotnet` | `0.3.1` | 必須同時選 `engineering-common@0.4.2` |
+| `dotnet` | `0.3.2` | 必須同時選 `engineering-common@0.4.2` |
 
 舊 `dotnet-backend` selection 不會自動 alias 到 `dotnet`。升級前請依
 [知識套件遷移說明](knowledge-packages.md#從-dotnet-backend-遷移到-dotnet)
