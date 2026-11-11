@@ -81,7 +81,7 @@ nor a new template or fixed test count.
 
 ### Validate and deliver a reviewable change
 
-1. Capture initial `git status --short`, unstaged and staged differences, and
+1. Capture initial `git status --short --untracked-files=all`, unstaged and staged differences, and
    existing untracked files. Preserve changes outside the task, including edits
    within a file this task also changes. Do not reset, clean or stage them merely
    to obtain a clean starting point.
@@ -99,7 +99,7 @@ nor a new template or fixed test count.
    SDK's help and [format command reference](https://learn.microsoft.com/dotnet/core/tools/dotnet-format).
    Inspect any resulting code changes before final affected checks.
 4. Inspect final `git diff` and `git diff --cached` from the repository root,
-   plus `git status --short`. Ordinary diffs omit untracked content: read every
+   plus `git status --short --untracked-files=all`. Ordinary diffs omit untracked content: read every
    newly created task file and review its complete contents, including intended
    generated output. Compare with the initial state to distinguish the task's
    changes. Staging or committing follows separate target authorization.
