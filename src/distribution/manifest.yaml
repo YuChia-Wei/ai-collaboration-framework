@@ -25,7 +25,7 @@ profiles:
 components:
 - kind: knowledge
   id: dotnet
-  version: 0.3.0
+  version: 0.3.1
   source: src/knowledge/dotnet
   metadata: content-package.yaml
   members:
@@ -115,6 +115,8 @@ components:
     destination: .ai/core/knowledge/dotnet/tooling/generation/README.md
   - source: tooling/generation/snippet-tool/README.md
     destination: .ai/core/knowledge/dotnet/tooling/generation/snippet-tool/README.md
+  - source: tooling/implementation-guidance.md
+    destination: .ai/core/knowledge/dotnet/tooling/implementation-guidance.md
   - source: tooling/on-demand-mechanical-validation/README.md
     destination: .ai/core/knowledge/dotnet/tooling/on-demand-mechanical-validation/README.md
   - source: tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
@@ -314,7 +316,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/code-reviewer/skill-package.yaml
   kind: skill
-  version: 0.2.12
+  version: 0.2.13
 - id: diagnostic-analyst
   source: src/skills/diagnostic-analyst
   metadata: skill-package.yaml
@@ -344,7 +346,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/domain-model-designer/skill-package.yaml
   kind: skill
-  version: 0.1.7
+  version: 0.1.8
 - id: lesson-author
   source: src/skills/lesson-author
   metadata: skill-package.yaml
@@ -380,7 +382,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/local-change-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.14
+  version: 0.2.15
 - id: pr-author
   source: src/skills/pr-author
   metadata: skill-package.yaml
@@ -476,7 +478,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/slice-implementer/skill-package.yaml
   kind: skill
-  version: 0.2.14
+  version: 0.2.15
 - id: software-architect
   source: src/skills/software-architect
   metadata: skill-package.yaml
@@ -492,7 +494,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/software-architect/skill-package.yaml
   kind: skill
-  version: 0.1.7
+  version: 0.1.8
 - id: software-development-orchestrator
   source: src/skills/software-development-orchestrator
   metadata: skill-package.yaml
@@ -566,7 +568,7 @@ components:
   - source: skill-package.yaml
     destination: .ai/core/skills/test-designer/skill-package.yaml
   kind: skill
-  version: 0.4.10
+  version: 0.4.11
 - kind: skill
   id: user-story-author
   version: 0.2.3

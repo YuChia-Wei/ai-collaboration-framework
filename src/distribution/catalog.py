@@ -13,7 +13,7 @@ from .contracts import validate
 from .content import (load_content_package, component_shape, descriptor, closure, desired_shape,
                       dependency_key, ordered, portable, resource_bindings, selected_references, selection_skill_naming, component_root, selected_keys, load_sub_agent_package, check_sub_agent, sub_agent_entries,
                       resolved_sub_agent_models, sub_agent_model_binding, render_sub_agent_model,
-                      sub_agent_model_policy, model_availability)
+                      sub_agent_model_policy, model_availability, skill_guidance_text)
 from .git_source import Blob, GitSource
 from .package import load_package, check_references
 from .codex import project_entry_v2 as codex_entry
@@ -310,6 +310,44 @@ def template_bytes(adapter,expected,provided=None):
     return raw
 
 
+def selected_skill_guidance(package, components, indexed, contents):
+    """Copy only explicitly consumed guidance into the shared skill references."""
+    selected={c['id']:c for c in components if c['kind']=='knowledge'}
+    fragments={}
+    for use in package.metadata.get('knowledge_consumption',[]):
+        component=selected.get(use['package'])
+        if component is None:
+            continue
+        pid=component['id']
+        require(component['version']==use['version'], 'skill-guidance package version mismatch')
+        member=component['metadata']; source=indexed[('knowledge',pid,member)]['source']
+        raw=contents[f'.ai/core/knowledge/{pid}/{member}']; source_bytes(source,raw)
+        knowledge=load_content_package(Blob(source['path'],source['git_blob'],source['mode'],raw))
+        require((knowledge.id,knowledge.version)==(pid,component['version']),
+                'skill-guidance metadata identity mismatch')
+        resources={r['id']:r for r in knowledge.metadata['resources']}
+        for resource_id in use['resources']:
+            resource=resources.get(resource_id)
+            if resource is None or resource['kind']!='skill-guidance':
+                continue
+            operations=set(use['operations']) & set(resource['operations'])
+            if not operations:
+                continue
+            member=resource['path']; source=indexed[('knowledge',pid,member)]['source']
+            raw=contents[f'.ai/core/knowledge/{pid}/{member}']; source_bytes(source,raw)
+            skill_guidance_text(raw)
+            fragments[(pid,member)]=(source,raw)
+    return [(skill_reference_row(package.id,pid,member,source),raw)
+            for (pid,member),(source,raw) in sorted(fragments.items())]
+
+
+def skill_reference_row(skill,pid,member,source):
+    dest=f'.ai/core/skills/{skill}/references/knowledge/{pid}/{member}'
+    return {'path':'runtime/'+dest,'destination':dest,'owner':f'skill/{skill}/knowledge/{pid}',
+            'kind':'runtime',**{k:source[k] for k in ('mode','size','sha256')},'source':source,
+            'binding':{'skill':skill,'knowledge':pid,'member':member}}
+
+
 def project_members(doc,files,selection,contents,templates=None):
     naming=selection_skill_naming(selection['desired'])
     # Artifact generation determines reproducible wrapper bytes. The executing
@@ -342,6 +380,8 @@ def project_members(doc,files,selection,contents,templates=None):
         if kind!='skill': continue
         blobs={m:Blob(indexed[(kind,pid,m)]['source']['path'],indexed[(kind,pid,m)]['source']['git_blob'],indexed[(kind,pid,m)]['source']['mode'],contents[d]) for m,d in destinations.items()}
         package=load_package(blobs['skill-package.yaml']); front=check_references(package,blobs)
+        for row,raw in selected_skill_guidance(package,selection['components'],indexed,contents):
+            rows.append(row); output[row['destination']]=raw
         for adapter in selection['adapters']:
             aid=adapter['id']; src=indexed[('adapter',aid,adapter['template'])]['source']
             raw_template=template_bytes(aid,src['sha256'],None if templates is None else templates[aid])
@@ -651,6 +691,21 @@ def subset_inventory(doc,files,selection,inventory):
                                 'mode':'100644','source':None,
                                 'binding':{'adapter':aid,'skill':pid,'entry_name':runtime_skill_name(pid,naming),'core_entrypoint':f'.ai/core/skills/{pid}/SKILL.md',
                                            'template_sha256':indexed[('adapter',aid,adapter['template'])]['sha256']}}
+    selected={dependency_key(c):c for c in selection['components']}
+    for row in inventory['files']:
+        binding=row['binding']
+        if binding is None or 'knowledge' not in binding: continue
+        skill,pid,member=binding['skill'],binding['knowledge'],binding['member']
+        require(('skill',skill) in selected and ('knowledge',pid) in selected,
+                'skill reference requires selected skill and knowledge')
+        require(member.endswith('.md') and member in selected[('knowledge',pid)]['members'],
+                'skill reference requires a selected Markdown member')
+        source=indexed[('knowledge',pid,member)]
+        reference=skill_reference_row(skill,pid,member,source)
+        require(reference['destination'] not in expected,'skill reference destination collision')
+        expected[reference['destination']]=reference
+    # Destination/source admission above precedes file reads; full reconstruction
+    # additionally enforces the declared resource kind, consumer and operation.
     require({r['destination'] for r in inventory['files']}==set(expected),'subset inventory closure')
     for row in inventory['files']:
         require(all(row[k]==v for k,v in expected[row['destination']].items()),'subset inventory ownership/source binding')

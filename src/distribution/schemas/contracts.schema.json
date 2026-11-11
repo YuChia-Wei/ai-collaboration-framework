@@ -397,6 +397,7 @@
             "metadata",
             "index",
             "knowledge",
+            "skill-guidance",
             "example",
             "normative-rule",
             "rule-catalog",
@@ -433,6 +434,7 @@
         "kind": {
           "enum": [
             "knowledge",
+            "skill-guidance",
             "example",
             "normative-rule",
             "rule-catalog",
@@ -1157,6 +1159,9 @@
             },
             {
               "$ref": "#/$defs/SubAgentRuntimeBinding"
+            },
+            {
+              "$ref": "#/$defs/SkillReferenceBinding"
             }
           ]
         }
@@ -2345,6 +2350,33 @@
         },
         "on_unavailable": {
           "const": "stop"
+        }
+      }
+    },
+    "SkillReferenceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill",
+        "knowledge",
+        "member"
+      ],
+      "properties": {
+        "skill": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "knowledge": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "maxLength": 80
+        },
+        "member": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240,
+          "pattern": "^[^\\\\:]+$"
         }
       }
     }

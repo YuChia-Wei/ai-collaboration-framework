@@ -22,6 +22,7 @@ and embedded rule text uses its semantic owner's link base.
 | Work with a persistence adapter or read model | [Configuration](integration/persistence/configuration.md), then the applicable port or mapping contract |
 | Configure messaging or verify local atomicity | [Persistence and messaging](integration/messaging/persistence-and-messaging.md), [Transactional messaging](integration/messaging/transactional-messaging-standards.md) |
 | Design or implement a test | [Test standards](testing/test-standards.md), [Profile testing](testing/profile-based-testing.md) where selected |
+| Develop from a specification or interface without an IDE | [Development tools and workflow](tooling/development-tools.md) |
 | Generate editable source | [Generation guide](tooling/generation/README.md) |
 | Diagnose an observed failure | [Troubleshooting](references/troubleshooting.md) |
 

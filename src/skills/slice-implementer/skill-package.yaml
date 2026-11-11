@@ -1,6 +1,6 @@
 metadata_version: 4
 id: slice-implementer
-version: 0.2.14
+version: 0.2.15
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -59,7 +59,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-implementation
   package: dotnet
-  version: 0.3.0
+  version: 0.3.1
   operations:
   - implement
   resources:
@@ -72,6 +72,8 @@ knowledge_consumption:
   - member:integration/persistence/repository-standards.md
   - member:references/policy-rationale.md
   - member:testing/test-standards.md
+  - member:tooling/development-tools.md
   - member:tooling/generation/README.md
+  - member:tooling/implementation-guidance.md
   requirement: optional
   on_missing: unavailable

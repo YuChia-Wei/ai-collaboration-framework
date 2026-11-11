@@ -50,6 +50,10 @@ def load_content_package(blob):
         require(r['path'] in kinds and (kinds[r['path']]==r['kind'] or kinds[r['path']] in {'index','metadata'}),'resource member/kind binding')
         for key in ('rule_ids','capabilities','operations'): ordered(r[key])
         require(not r['rule_ids'] or r['kind'] in {'normative-rule','rule-catalog'},'ordinary resource cannot allocate rules')
+        if r['kind']=='skill-guidance':
+            require(kinds[r['path']]=='skill-guidance' and r['path'].endswith('.md')
+                    and r['technology_profile'] is None,
+                    'skill-guidance requires a matching Markdown member without a technology profile')
     deps=data['dependencies']
     dependencies(deps['required'],deps['optional'],('knowledge',data['id']))
     require(all(r['kind']=='knowledge' for r in deps['required']+deps['optional']),'knowledge dependencies must be knowledge')
@@ -333,6 +337,23 @@ def markdown_prose(text):
     return re.sub(r'<!--[\s\S]*?-->', '', ''.join(rows))
 
 
+def skill_guidance_text(raw):
+    """Bounded portable reference prose copied without link rebasing."""
+    require(type(raw) is bytes and 0 < len(raw) <= 8192, 'skill-guidance byte budget')
+    require(not raw.startswith(b'\xef\xbb\xbf'), 'skill-guidance must omit the UTF-8 byte order mark')
+    text=raw.decode('utf-8', errors='strict').strip()
+    require(bool(text) and '\x00' not in text and not text.startswith('---'),
+            'skill-guidance requires nonempty prose, not front matter')
+    # A deliberately small prose format avoids Markdown parsing/rebasing. Reject
+    # link/HTML delimiters outright, including nested or multiline link labels.
+    require(not any(char in text for char in '[]<>'),
+            'skill-guidance must use resource IDs, without square or angle brackets')
+    require(not any(value in text for value in ('src/', '.dev/', '.ai/assets/'))
+            and re.search(r'(?<![A-Za-z0-9_])[A-Za-z]:[\\/]|file://|\\\\',text) is None,
+            'skill-guidance contains a source-checkout or host path')
+    return text
+
+
 def selected_references(packages, contents):
     unavailable=[]
     rule_owners={}
@@ -352,6 +373,8 @@ def selected_references(packages, contents):
             continue
         members={m['path']:m for m in package.metadata['members']}
         for resource in package.metadata['resources']:
+            if resource['kind']=='skill-guidance':
+                skill_guidance_text(contents[(kind,pid,resource['path'])])
             for rule in resource['rule_ids']:
                 require(rule not in rule_owners or rule_owners[rule]==pid,'duplicate normative rule owner')
                 rule_owners[rule]=pid

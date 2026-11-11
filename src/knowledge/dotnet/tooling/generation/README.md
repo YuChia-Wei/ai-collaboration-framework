@@ -1,6 +1,10 @@
 # .NET generation
 
-Install the release's `generation` bundle with `install-generation.py --project
+For development from a specification or accepted interface, start with the
+[development workflow](../development-tools.md). The generation bundle is
+optional; use it when a supplied template or fragment fits the selected operation.
+
+To use the release's `generation` bundle, install it with `install-generation.py --project
 <project-root>`. It places tools in `.ai/tools/dotnet-generation`. See the
 [delivery guide](DELIVERY.md) for directory/package registration, platform
 executables, installation diagnostics and tool version/control guidance.
@@ -16,6 +20,13 @@ executables, installation diagnostics and tool version/control guidance.
 | `aicf-interface` | One interface | C# item |
 | `aicf-domain-contract-tests` | xUnit reconstruction example with its own illustrative domain code | .NET 10 |
 | `aicf-ct005-contract-tests` | xUnit example against the published ArchPrecept CT-005 API | .NET 8 with verified external DLLs |
+
+`aicf-usecase` emits a fixed interface/implementation/input/output structure.
+It does not read an arbitrary existing interface or derive business behavior
+from a specification. Use only the structure accepted by the target; when an
+interface already exists, implement its actual contract through a suitable IDE
+operation or AI editing, then validate it. Do not create a second interface or
+force this template onto a different architecture.
 
 API starters store work items in memory. POST `{"title":"Pack the order"}` to
 the route, then GET the response's `Location`. Replace this sample behavior with
