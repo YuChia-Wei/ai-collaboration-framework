@@ -25,7 +25,7 @@ skill 自動失效，但會減少下列 skills 的套件專業覆蓋。** 如果
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
 | `engineering-common@0.4.2` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet@0.3.1` | 共通 C#／.NET、Web API、選用 DDD/CQRS、persistence、messaging、testing 與工具指引，共 56 個檔案 | 必要相依為 `engineering-common@0.4.2`；依目標已採用的技術選讀，沒有完整 Worker／Console／MQ consumer 實作 |
+| `dotnet@0.3.2` | 共通 C#／.NET、Web API、選用 DDD/CQRS、persistence、messaging、testing 與工具指引，共 56 個檔案 | 必要相依為 `engineering-common@0.4.2`；依目標已採用的技術選讀，沒有完整 Worker／Console／MQ consumer 實作 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -41,7 +41,7 @@ query reader／read-model projector 的責任與恢復條件。若舊目標專�
 套件的合約案例摘要引用 ArchPrecept `0.0.3-preview` 的固定 CT-005 合約，並說明
 無套件 ES snippet 的失敗處理責任。實際外部整合由 #179 獨立選版。
 
-`dotnet@0.3.1` 補上[低依賴開發指引](../src/knowledge/dotnet/tooling/development-tools.md)。
+`dotnet` 提供[低依賴開發指引](../src/knowledge/dotnet/tooling/development-tools.md)。
 以目標 SDK、Git 與既有 AI CLI 開始，依介面或規格實作，再按實際變更驗證與審閱。
 IDE 與 generation bundle 依操作需要選用。兩個實作 skills 的通用入口保持技術中立。
 選用此套件後，兩個 skills 的共用 `references/knowledge/dotnet/tooling/` 各配置一份
@@ -106,7 +106,7 @@ members 的移除與新 members 的增加。遇到未轉換 ID、managed drift�
 allowlist 不能單獨授權採用規則，套件存在也不代表資源適用於所有操作。
 
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.4.2` 與 `dotnet@0.3.1`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
+`engineering-common@0.4.2` 與 `dotnet@0.3.2`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet` | 仍可做的工作 |
@@ -184,6 +184,15 @@ allowlist 包含該資源並有相符 operation 時，subset 才把 Markdown 原
 及本次任務選讀適用參考，並核對複製檔與知識來源的 SHA-256。不把整個目錄
 預載入上下文；選用不代表已讀取、規則採用或工具安裝。
 
+副本的用途是讓依選用內容配置的短導引位於 skill 的參考目錄，讓共用操作方法
+有固定的相鄰導航位置；知識包中的原檔仍是內容來源。這不是繞過 reader 的
+捷徑，也不表示 runtime 會自行掃描或讀取該目錄。直接讀知識包可省去副本，
+但不提供目前選定的 skill 參考目錄配置方式。
+
+此設計會增加每個消費 skill 的短檔儲存副本，以及共用操作方法中的固定
+導航文字；詳細知識仍按需讀取。檔案存在、位元組一致與實際任務中的讀取
+行為是不同證據，目前不以副本機制宣稱 token 節省或已完成 runtime 使用驗證。
+
 套件作者需將指引檔同時列入 content members、resources 及 distribution
 manifest。`skill-guidance` 使用同類型的 `.md` 成員、空 `rule_ids` 及
 `technology_profile: null`；它提供操作導引，不宣告規則採用。
@@ -191,9 +200,27 @@ manifest。`skill-guidance` 使用同類型的 `.md` 成員、空 `rule_ids` 及
 格式排除 BOM、front matter、方括號、角括號、來源 checkout 與主機絕對路徑，
 避免搬移後的 Markdown 相對連結指向錯誤位置。
 
+目前路徑檢查是對整份文字做大小寫敏感的子字串比對：`src/`、`.dev/`、
+`.ai/assets/` 出現在一般文字、inline code 或範例中都會被拒絕；即使描述的是
+目標專案也相同。另拒絕磁碟機絕對路徑、`file://` 與雙反斜線。這是受限格式，
+不是能辨識任意路徑語意的解析器。請使用宣告的 resource ID，或寫成
+「目標專案的來源目錄」；不要改用其他拼法來繞過不可攜路徑限制。
+
 實作 skills 透過 installed-resource protocol 驗證指引及它指向的參考。空
 `rule_ids` 的非規範參考可依 skill 的 allowlist、operation 和任務按需讀取，
 無須另存 binding。採用規範仍須符合目標專案的 binding 與 authority。
+
+`content-package.yaml` 的 `references` 描述資源關聯與依賴，不授予讀取或
+規範採用資格。建置會檢查 guidance 自身的種類、空 `rule_ids`、格式與引用
+閉包；目前沒有全面禁止其引用規範性資源，也不解析任意文字是否暗示規範
+採用。操作方法仍須逐項判斷：只有空 `rule_ids` 且種類不是 `normative-rule`
+或 `rule-catalog` 的資源，才可能在符合 allowlist、operation、任務及既有
+binding 限制後走免新增 binding 的導覽路徑。提及規範資源不等於採用它；
+所需 binding／authority 缺失時，不得把該規範回報為已覆蓋。
+
+因此，不把所有 `references` 都限制成非規範性資源。若未來需要建置端驗證
+「哪些引用可免 binding 讀取」，應先明確區分該用途與一般資源關聯，再設計
+對應宣告和檢查；單純檢查引用目標種類不能證明模型實際遵守讀取條件。
 
 原始 skill 與知識 payload 保持來源位元組；受管理的參考副本保留來源身分，
 經 subset 重算驗證其目的地、消費資格及內容。修改 selection 後，重新 derive，
