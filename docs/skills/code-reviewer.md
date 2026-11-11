@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.14`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.15`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.4.2`（1 項）與 `dotnet@0.3.2`（依當前 allowlist 選讀）審查 binding；未裝時不可宣稱有那些專門覆蓋。
+可選 `engineering-common@0.4.2`（1 項）與 `dotnet@0.3.3`（依當前 allowlist 選讀）審查 binding；未裝時不可宣稱有那些專門覆蓋。
 
 ## 開始使用
 
@@ -46,7 +46,7 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-review
 
-`dotnet@0.3.2`；操作：`review`。
+`dotnet@0.3.3`；操作：`review`。
 
 - `engineering-rule-catalog`
 - `member:application-types/web-api/controller-standards.md`

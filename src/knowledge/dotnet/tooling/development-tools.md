@@ -1,4 +1,4 @@
-# Development Tools and Common Commands Guide (.NET)
+# Low-Dependency Development Workflow (.NET)
 
 ## Applicability
 

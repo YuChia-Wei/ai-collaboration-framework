@@ -25,7 +25,7 @@ skill 自動失效，但會減少下列 skills 的套件專業覆蓋。** 如果
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
 | `engineering-common@0.4.2` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet@0.3.2` | 共通 C#／.NET、Web API、選用 DDD/CQRS、persistence、messaging、testing 與工具指引，共 56 個檔案 | 必要相依為 `engineering-common@0.4.2`；依目標已採用的技術選讀，沒有完整 Worker／Console／MQ consumer 實作 |
+| `dotnet@0.3.3` | 共通 C#／.NET、Web API、選用 DDD/CQRS、persistence、messaging、testing 與工具指引，共 56 個檔案 | 必要相依為 `engineering-common@0.4.2`；依目標已採用的技術選讀，沒有完整 Worker／Console／MQ consumer 實作 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -106,7 +106,7 @@ members 的移除與新 members 的增加。遇到未轉換 ID、managed drift�
 allowlist 不能單獨授權採用規則，套件存在也不代表資源適用於所有操作。
 
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.4.2` 與 `dotnet@0.3.2`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
+`engineering-common@0.4.2` 與 `dotnet@0.3.3`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet` | 仍可做的工作 |
