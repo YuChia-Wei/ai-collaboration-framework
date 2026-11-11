@@ -2,7 +2,7 @@
 
 [回 Skill 目錄](README.md) · [安裝](../installation.md) · [知識選配](../knowledge-packages.md)
 
-套件版本：`0.2.14`。操作名稱以實際安裝的 metadata 為準。
+套件版本：`0.2.15`。操作名稱以實際安裝的 metadata 為準。
 
 ## 用途與操作
 
@@ -22,7 +22,7 @@
 
 ## 知識
 
-可選 `engineering-common@0.4.2`（1 項）與 `dotnet@0.3.0`（依當前 allowlist 選讀）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
+可選 `engineering-common@0.4.2`（1 項）與 `dotnet@0.3.1`（依當前 allowlist 選讀）實作 binding；未裝時通用局部修復可做，不能宣稱特定 .NET 標準已覆蓋。
 
 將既有驗證計畫視為初步安排，實作期間依實際差異校正條件式檢查，執行前確認必要性。
 修改完成後確認驗收證據齊備；必要 gate 與已接受驗收不得自行取消。
@@ -54,7 +54,7 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 
 ### dotnet-local-change
 
-`dotnet@0.3.0`；操作：`implement`。
+`dotnet@0.3.1`；操作：`implement`。
 
 - `engineering-rule-catalog`
 - `member:application-types/web-api/controller-standards.md`
@@ -63,9 +63,13 @@ reference 執行；若本次任務需要編輯或測試，使用專案已有且�
 - `member:integration/persistence/repository-standards.md`
 - `member:references/policy-rationale.md`
 - `member:testing/test-standards.md`
+- `member:tooling/development-tools.md`
 - `member:tooling/generation/README.md`
+- `member:tooling/implementation-guidance.md`
 
 依目標已採用的技術與本次操作選讀；允許讀取不代表採用規則，連結不擴大 allowlist。
+
+通用 skill 入口與操作方法保持技術中立。只有選用 `dotnet` 知識套件時，共用 skill 的 `references/knowledge/dotnet/tooling/` 才放入該套件的 `implementation-guidance.md` 參考檔，引導按需讀取開發及 generation 指引；取消選用並透過既有更新流程套用後，相應參考檔會移除，`SKILL.md` 與 Codex／Claude 入口主文保持相同。選用不等於採用規約或安裝工具，實際讀取仍遵守 installed-resource protocol。
 
 ## 權威參考
 

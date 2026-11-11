@@ -25,7 +25,7 @@ skill 自動失效，但會減少下列 skills 的套件專業覆蓋。** 如果
 | 套件 | 內容與適用範圍 | 相依與限制 |
 | --- | --- | --- |
 | `engineering-common@0.4.2` | 共通工程規則 catalog、按主題選讀的 BDD／DDD、協作探索、一般與 GWT 測試交接、領域語言、context map、event catalog、runbook 等參考與模板 | 不預選技術、不自動採用規則；可以單獨選取 |
-| `dotnet@0.3.0` | 共通 C#／.NET、Web API、選用 DDD/CQRS、persistence、messaging、testing 與工具指引，共 55 個檔案 | 必要相依為 `engineering-common@0.4.2`；依目標已採用的技術選讀，沒有完整 Worker／Console／MQ consumer 實作 |
+| `dotnet@0.3.1` | 共通 C#／.NET、Web API、選用 DDD/CQRS、persistence、messaging、testing 與工具指引，共 56 個檔案 | 必要相依為 `engineering-common@0.4.2`；依目標已採用的技術選讀，沒有完整 Worker／Console／MQ consumer 實作 |
 
 `.NET` 套件包含 EF Core、Dapper、PostgreSQL、Wolverine、RabbitMQ、Kafka、
 Outbox、Event Sourcing 等參考，不會因此替專案選定所有技術。
@@ -41,9 +41,17 @@ query reader／read-model projector 的責任與恢復條件。若舊目標專�
 套件的合約案例摘要引用 ArchPrecept `0.0.3-preview` 的固定 CT-005 合約，並說明
 無套件 ES snippet 的失敗處理責任。實際外部整合由 #179 獨立選版。
 
+`dotnet@0.3.1` 補上[低依賴開發指引](../src/knowledge/dotnet/tooling/development-tools.md)。
+以目標 SDK、Git 與既有 AI CLI 開始，依介面或規格實作，再按實際變更驗證與審閱。
+IDE 與 generation bundle 依操作需要選用。兩個實作 skills 的通用入口保持技術中立。
+選用此套件後，兩個 skills 的共用 `references/knowledge/dotnet/tooling/` 各配置一份
+`implementation-guidance.md`。Codex／Claude 可依 `implement` 操作按需讀取該短指引，
+再透過 installed-resource protocol 讀取它指向的 `tooling/development-tools.md` 等資源。
+來源驗證不等於實際任務試行或目標安裝完成。
+
 ## 從 dotnet-backend 遷移到 dotnet
 
-`dotnet@0.3.0` 是新的 package 身分，沒有 `dotnet-backend` 自動 alias。
+自 `0.3.0` 起，package 身分為 `dotnet`。遷移時需明確選取 `dotnet`。
 `knowledge` 選擇、binding 的 `package` 及 `member:<path>` resource IDs 必須明確遷移。
 `engineering-rule-catalog` resource ID、11 個 rule IDs、catalog 的
 `engineering-rule-catalog-dotnet-backend` 身分與既有 `dotnet-backend` 規則 profile
@@ -93,12 +101,12 @@ members 的移除與新 members 的增加。遇到未轉換 ID、managed drift�
 ## 哪些 skills 會失去完整的配套效果
 
 `capability` 是較粗的消費分類，例如兩個新 skills 都使用 `architecture`。
-實際可讀覆蓋還須同時符合 operation、resource selectors、skill allowlist、
-選定 binding 與已安裝版本／成員；目標專案的 adopted authority 決定規則是否適用。
+配套規範覆蓋須同時符合 operation、resource selectors、skill allowlist、
+選定 binding 與已安裝版本／成員。目標專案的 adopted authority 決定規則是否適用。
 allowlist 不能單獨授權採用規則，套件存在也不代表資源適用於所有操作。
 
 以下是 metadata 明確宣告的 optional consumption；版本分別是
-`engineering-common@0.4.2` 與 `dotnet@0.3.0`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
+`engineering-common@0.4.2` 與 `dotnet@0.3.1`。宣告與 resource allowlist 以當前各 skill metadata 核對，不另維護易漂移的引用總數。
 這不是實際已採用的 target binding 數，也不是執行過的檢查數。
 
 | Skill／操作 | 缺少 `engineering-common` | 缺少 `dotnet` | 仍可做的工作 |
@@ -151,6 +159,48 @@ Binding 欄位與設定方式見[安裝說明](installation.md)。
 只載入符合目前路徑與技術條件的資源；列出缺少或無法驗證的專業覆蓋。
 沿用專案選定的 persistence、transaction 與測試工具。
 ```
+
+## 依選擇配置 skill 參考
+
+知識套件可把精簡專用指引宣告成 `skill-guidance` 資源。只有該套件出現在
+selection 的 `knowledge`、精確版本符合，且 skill 的 `knowledge_consumption`
+allowlist 包含該資源並有相符 operation 時，subset 才把 Markdown 原文複製到
+共用 skill 的 `references/knowledge/<套件>/<成員>`。一般 `knowledge` 資源
+仍按需讀取，不會整包複製到 skill。生成器不依 `.NET` 或其他套件名稱判斷；
+未選套件不產生參考檔，未宣告消費的 skill 也不會收到它。
+
+例如選用 `dotnet` 的兩個實作 skills，會各自得到：
+
+```text
+.ai/core/skills/<skill>/
+  SKILL.md
+  references/
+    implement.md
+    knowledge/dotnet/tooling/implementation-guidance.md
+```
+
+`SKILL.md` 與 Codex／Claude runtime 入口不因知識選擇而改寫。既有操作方法
+提供通用讀取入口，先驗證 installed-resource index，再依可讀資源、operation
+及本次任務選讀適用參考，並核對複製檔與知識來源的 SHA-256。不把整個目錄
+預載入上下文；選用不代表已讀取、規則採用或工具安裝。
+
+套件作者需將指引檔同時列入 content members、resources 及 distribution
+manifest。`skill-guidance` 使用同類型的 `.md` 成員、空 `rule_ids` 及
+`technology_profile: null`；它提供操作導引，不宣告規則採用。
+每份限 8 KiB UTF-8，內容為自足文字，可使用 inline code 與 resource IDs。
+格式排除 BOM、front matter、方括號、角括號、來源 checkout 與主機絕對路徑，
+避免搬移後的 Markdown 相對連結指向錯誤位置。
+
+實作 skills 透過 installed-resource protocol 驗證指引及它指向的參考。空
+`rule_ids` 的非規範參考可依 skill 的 allowlist、operation 和任務按需讀取，
+無須另存 binding。採用規範仍須符合目標專案的 binding 與 authority。
+
+原始 skill 與知識 payload 保持來源位元組；受管理的參考副本保留來源身分，
+經 subset 重算驗證其目的地、消費資格及內容。修改 selection 後，重新 derive，
+檢查 plan，再經既有 apply／inspect 更新；取消選用會移除未漂移的參考副本，
+主文保持相同。使用者修改過的 managed 檔案仍受既有 drift 檢查保護。
+不手改 managed 檔案或安裝 lock。新資源種類與參考 binding 需要支援它的引擎；
+舊引擎會拒絕未知宣告。沒有這種資源的既有 catalog 保持原有輸出。
 
 ## 選配建議
 

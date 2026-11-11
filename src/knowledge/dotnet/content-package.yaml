@@ -1,6 +1,6 @@
 content_package_version: 1
 id: dotnet
-version: 0.3.0
+version: 0.3.1
 entrypoint: README.md
 members:
 - path: README.md
@@ -89,6 +89,8 @@ members:
   kind: knowledge
 - path: tooling/generation/snippet-tool/README.md
   kind: knowledge
+- path: tooling/implementation-guidance.md
+  kind: skill-guidance
 - path: tooling/on-demand-mechanical-validation/README.md
   kind: knowledge
 - path: tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
@@ -1237,7 +1239,7 @@ resources:
   - review
   - review-draft
   - review-semantics
-  technology_profile: dotnet-backend
+  technology_profile: null
 - id: member:tooling/docker-restore-cache.md
   path: tooling/docker-restore-cache.md
   kind: knowledge
@@ -1353,6 +1355,16 @@ resources:
   - review
   - review-draft
   - review-semantics
+  technology_profile: null
+- id: member:tooling/implementation-guidance.md
+  path: tooling/implementation-guidance.md
+  kind: skill-guidance
+  rule_ids: []
+  capabilities:
+  - implementation
+  - local-change
+  operations:
+  - implement
   technology_profile: null
 - id: member:tooling/on-demand-mechanical-validation/README.md
   path: tooling/on-demand-mechanical-validation/README.md
@@ -1890,6 +1902,14 @@ references:
   target:
     package: dotnet
     path: testing/test-standards.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: README.md
+  resource_id: member:tooling/development-tools.md
+  target:
+    package: dotnet
+    path: tooling/development-tools.md
     anchor: null
   requirement: required
   on_missing: unavailable
@@ -3413,6 +3433,14 @@ references:
     anchor: null
   requirement: required
   on_missing: unavailable
+- from: tooling/development-tools.md
+  resource_id: member:tooling/generation/README.md
+  target:
+    package: dotnet
+    path: tooling/generation/README.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
 - from: tooling/docker-restore-cache.md
   resource_id: member:tooling/generation/README.md
   target:
@@ -3446,6 +3474,14 @@ references:
   requirement: required
   on_missing: unavailable
 - from: tooling/generation/README.md
+  resource_id: member:tooling/development-tools.md
+  target:
+    package: dotnet
+    path: tooling/development-tools.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: tooling/generation/README.md
   resource_id: member:tooling/generation/DELIVERY.md
   target:
     package: dotnet
@@ -3458,6 +3494,22 @@ references:
   target:
     package: dotnet
     path: tooling/generation/snippet-tool/README.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: tooling/implementation-guidance.md
+  resource_id: member:tooling/development-tools.md
+  target:
+    package: dotnet
+    path: tooling/development-tools.md
+    anchor: null
+  requirement: required
+  on_missing: unavailable
+- from: tooling/implementation-guidance.md
+  resource_id: member:tooling/generation/README.md
+  target:
+    package: dotnet
+    path: tooling/generation/README.md
     anchor: null
   requirement: required
   on_missing: unavailable

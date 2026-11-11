@@ -22,6 +22,7 @@ SUITES = {
         "framework_next.test_distribution_contracts", "framework_next.test_maintenance_contracts",
         "framework_next.test_path_budget",
         "framework_next.test_skill_naming", "framework_next.test_distribution_versions",
+        "framework_next.test_skill_guidance",
         "framework_next.test_subagent_policy",
         "framework_next.test_subagent_registry", "framework_next.test_skill_registry", "framework_next.test_project_layout",
         "framework_next.test_workflow_revision",

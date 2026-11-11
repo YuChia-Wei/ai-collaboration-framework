@@ -32,12 +32,17 @@ the exact saved selection rows. Returned authorities have
 `status: raw-hash-matched`; semantic applicability remains target-owned.
 
 Treat metadata-4 `knowledge_consumption` resources as an allowed set, not an
-instruction to load all of them. Intersect it with the verified selected
-packages/resources, saved bindings, matching capability/operation/execution-mode,
-path-prefix, technology-profile and file-type selectors, and this task. Read
-only needed installed `.ai/core/knowledge/<id>/<member>` bytes with bounded
-direct reads matching the returned raw SHA-256. Re-observe the exact lock,
-markers and authority hashes around those reads; discard the result on drift.
+instruction to load all of them. Match verified selected packages/resources,
+capability, operation and this task. Selected `skill-guidance` and the
+non-normative resources it names supply optional navigation without requiring a
+saved binding. Those named resources must have empty `rule_ids` and must not be
+`normative-rule` or `rule-catalog`; the consumption allowlist still applies.
+Respect any saved binding's execution-mode, path-prefix, technology-profile,
+file-type and authority constraints on the selected resource. Other requested
+coverage requires the matching saved bindings and their selectors. Read only
+needed installed `.ai/core/knowledge/<id>/<member>` bytes with bounded direct
+reads matching the returned raw SHA-256. Re-observe the exact lock, markers and
+authority hashes around those reads; discard the result on drift.
 
 Knowledge explains and examples illustrate. Normative rules require adopted
 binding and the existing target-owned resolver/gate; an index or source catalog
@@ -59,16 +64,23 @@ required specialist gaps cannot be reported as covered. Continue unaffected
 common work with that limit disclosed. Persist only when the actual task
 authorizes a destination; no new record family or implicit config write.
 
-## Selected code generation
+## Selected knowledge references
 
-When the target explicitly selects .NET code generation and verified installed
-knowledge makes `member:tooling/generation/README.md` available, read it on demand.
-Use native templates for project/files and the snippet console for in-file
-fragments. Inspect source identity, parameters, context, required usings and API
-preconditions before rendering. Insert returned text through the authorized
-target editor, then validate the affected context. Rendering is not semantic
-integration. Preserve target-owned custom sources and existing code; unavailable
-selected tools must be reported rather than silently substituted.
+After the installed-resource reader succeeds, intersect returned `skill-guidance`
+resources with this skill's consumption allowlist, matching operations and the
+current task. For each needed resource, read the managed copy at
+`references/knowledge/<package>/<resource.path>` under this installed skill's
+package root, using the returned Resource's package-relative `path`, not the
+index row's installed `member` path. Its bytes must match the returned SHA-256;
+observe the same
+lock, marker and authority checks around the read. Copies supply navigation to
+knowledge, not additional rules or authority. Resolve their resource IDs through
+the same installed-resource protocol; do not load every selected reference.
+
+No selected applicable guidance means no reference files to read, not a missing
+prerequisite for common work. Report missing or changed copies only for requested
+coverage. Do not infer tool installation, adopt rules or fall back to a source
+checkout. The operation method and skill entry remain technology-neutral.
 
 ## Confirm the semantic radius
 
