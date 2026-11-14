@@ -40,3 +40,19 @@ Windows and the FIFO case on Linux. Actual Windows and Linux native executables
 are smoke-tested before upload; candidate and release builds test the template
 package extracted from the delivery ZIP. CI requires the selected test counts
 in native test reports.
+
+The same PR workflow runs an Apple Silicon trial on `macos-26`. Download
+`macos-arm64-trial-*` from a successful run. The artifact includes the source
+commit, a SnippetTool `.tar.gz` with its SHA-256 file, and a template `.nupkg`.
+The job verifies and extracts the archive before checking its arm64 binary,
+execute permissions, ad-hoc signature, CLI behavior and generated C# compilation.
+It also exercises registration and generation from the actual template package.
+
+On an Apple Silicon Mac, verify the archive with
+`shasum -a 256 -c <archive>.sha256` and extract it with
+`tar -xzf <archive>` into a fresh directory.
+Keep `snippets/` next to `SnippetTool`. Use the .NET 10 SDK to register the
+trial `.nupkg` and build generated code. The CI job exercises locally extracted
+files on macOS 26. Intel, older macOS versions, browser-download Gatekeeper
+behavior, Developer ID signing and notarization are outside this trial. Track
+formal macOS delivery in [#582](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/582).
