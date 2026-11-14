@@ -187,6 +187,78 @@ jobs:
           path: ${{ runner.temp }}/native-output/*
           if-no-files-found: error
           retention-days: 14
+  macos-trial:
+    if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && needs.source.outputs.enabled == 'true'
+    needs: source
+    runs-on: macos-26
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
+      PRODUCT_VERSION: ${{ needs.source.outputs.version }}
+      NATIVE_SDK: '10.0.403'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.source.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: ${{ env.NATIVE_SDK }}
+      - name: Build and package the Apple Silicon trial
+        shell: pwsh
+        run: |
+          if ((uname -m) -ne 'arm64') { throw 'The trial requires a native Apple Silicon runner.' }
+          $work = New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/macos-trial"
+          Set-Location $work.FullName
+          @{sdk=@{version=$env:NATIVE_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content global.json
+          & "$env:GITHUB_WORKSPACE/src/tools/dotnet/generation/Publish-Snippets.ps1" `
+            -Version $env:PRODUCT_VERSION -RuntimeIdentifier osx-arm64 -NativeAot -OutputRoot $work.FullName
+          $name = "SnippetTool-$env:PRODUCT_VERSION-osx-arm64-aot"
+          $archive = "$work/$name/$name.tar.gz"
+          $delivery = New-Item -ItemType Directory -Path "$work/delivery"
+          Copy-Item -LiteralPath @($archive, "$archive.sha256") -Destination $delivery.FullName
+          Set-Content -LiteralPath "$delivery/source-commit.txt" -Value $env:SOURCE_COMMIT -Encoding ascii
+          dotnet pack "$env:GITHUB_WORKSPACE/src/tools/dotnet/generation/Generation.Templates.csproj" `
+            -c Release "-p:PackageVersion=$env:PRODUCT_VERSION" --artifacts-path "$work/template-build" -o $delivery.FullName
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check the archive, executable permissions and ad-hoc signature
+        shell: bash
+        run: |
+          work="$RUNNER_TEMP/macos-trial"
+          cd "$work/delivery"
+          archive="SnippetTool-$PRODUCT_VERSION-osx-arm64-aot.tar.gz"
+          shasum -a 256 -c "$archive.sha256"
+          mkdir "$work/extracted"
+          tar -xzf "$archive" -C "$work/extracted"
+          binary="$work/extracted/SnippetTool"
+          test "$(stat -f '%Lp' "$binary")" = 755
+          test "$(lipo -archs "$binary")" = arm64
+          codesign --verify --strict --verbose=2 "$binary"
+          codesign -dv "$binary" 2>&1 | grep -Fx 'Signature=adhoc'
+      - name: Exercise the extracted CLI and packaged templates
+        shell: pwsh
+        run: |
+          $work = "$env:RUNNER_TEMP/macos-trial"
+          Set-Location $work
+          $env:AICF_TEST_WORK = "$work/fixtures"
+          $env:AICF_SNIPPET_ARTIFACT = "$work/extracted/SnippetTool"
+          $project = "$env:GITHUB_WORKSPACE/tests/dotnet-generation/snippet-tool/artifact/SnippetTool.ArtifactIntegrationTests.csproj"
+          dotnet test $project -c Release --filter 'Boundary=PublishedArtifact|Boundary=MacOSTrialArtifact' --artifacts-path "$work/test-build" `
+            --results-directory "$work/results" --logger 'trx;LogFileName=snippet-trial.trx'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$env:GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" `
+            -Report "$work/results/snippet-trial.trx" -Expected 2
+          & "$env:GITHUB_WORKSPACE/.github/scripts/Test-TemplatePackage.ps1" `
+            -SourceRoot $env:GITHUB_WORKSPACE -PackageDirectory "$work/delivery" -WorkDirectory "$work/template-test"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: macos-arm64-trial-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/macos-trial/delivery/*
+          if-no-files-found: error
+          retention-days: 14
   comparison:
     if: github.event_name == 'pull_request'
     needs: [source, native]
