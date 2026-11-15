@@ -53,6 +53,18 @@ online Issue before execution; if the provider is unavailable, stop before
 material work rather than inventing a repository-local substitute or
 overloading an `in_progress` workflow.
 
+### Validation-only work
+
+Do not open an Issue or User Story solely to schedule, run, or record validation
+of already-defined behavior. Record release-candidate acceptance, upgrade trials,
+and other pre-release checks in the release preparation workflow. Record other
+validation-only work in the owning execution workflow or its verification tasks.
+Retain the selected subject, scenarios, results, and outstanding evidence there.
+
+When validation discovers a concrete product defect or a missing user outcome,
+track that product change under the normal Issue rules and link the evidence.
+The verification tasks and release acceptance evidence remain in the workflow.
+
 ## Work-Item Binding Contract
 
 A valid work-item binding serves two purposes together:
