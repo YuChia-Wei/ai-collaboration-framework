@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   refactoring:
-    name: RefactorTool (win-x64, SDK 10.0.403)
+    name: RefactorTool (win-x64, stable .NET 10 SDK)
     runs-on: windows-latest
     timeout-minutes: 20
     permissions:
@@ -33,12 +33,15 @@ jobs:
       - name: SDK
         uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
-          dotnet-version: '10.0.403'
+          dotnet-version: '10.x'
+          dotnet-quality: ga
       - name: Publish framework-dependent single executable with notices
         run: |
           New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/refactor-build" | Out-Null
-          @{sdk=@{version='10.0.403';rollForward='disable'}} | ConvertTo-Json | Set-Content "$env:RUNNER_TEMP/refactor-build/global.json"
+          @{sdk=@{version='10.0.100';rollForward='latestMinor';allowPrerelease=$false}} | ConvertTo-Json | Set-Content "$env:RUNNER_TEMP/refactor-build/global.json"
           Set-Location "$env:RUNNER_TEMP/refactor-build"
+          dotnet --version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $env:DOTNET_BUNDLE_EXTRACT_BASE_DIR = Join-Path $env:RUNNER_TEMP 'refactor-publisher-cache'
           & "$env:GITHUB_WORKSPACE/src/tools/dotnet/refactoring/Publish-RefactorTool.ps1" -Destination "$env:RUNNER_TEMP/refactor-publish"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -57,7 +60,7 @@ jobs:
           & $check -Report "$results/unit.trx" -Expected 3
           dotnet test "$refactoring/integration/RefactorTool.IntegrationTests.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=integration.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          & $check -Report "$results/integration.trx" -Expected 126
+          & $check -Report "$results/integration.trx" -Expected 128
           dotnet test "$refactoring/artifact/RefactorTool.ArtifactIntegrationTests.csproj" -c Release --results-directory $results --logger 'trx;LogFileName=artifact.trx'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $check -Report "$results/artifact.trx" -Expected 3

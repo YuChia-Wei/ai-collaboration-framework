@@ -20,17 +20,17 @@ internal static class DotnetTestHost
     private static readonly Lazy<Inventory> Sdks = new(() => ReadInventory("--list-sdks"));
     private static readonly Lazy<Inventory> Runtimes = new(() => ReadInventory("--list-runtimes"));
 
-    internal static string? SdkSkip(string version) =>
-        Sdks.Value.Fault is null && FindSdk(version) is null
-            ? $"The selected dotnet host cannot discover SDK {version}." : null;
+    internal static string? StableDotNet10SdkSkip =>
+        Sdks.Value.Fault is null && StableDotNet10Sdk() is null
+            ? "The selected dotnet host cannot discover a stable .NET 10 SDK." : null;
 
     internal static bool SdkProbeFaulted => Sdks.Value.Fault is not null;
 
-    internal static Sdk RequireSdk(string version)
+    internal static Sdk RequireStableDotNet10Sdk()
     {
         RequireInventory(Sdks.Value);
-        var sdk = FindSdk(version);
-        Assert.True(sdk is not null, $"The selected dotnet host cannot discover SDK {version}.");
+        var sdk = StableDotNet10Sdk();
+        Assert.True(sdk is not null, "The selected dotnet host cannot discover a stable .NET 10 SDK.");
         return sdk!;
     }
 
@@ -42,7 +42,7 @@ internal static class DotnetTestHost
         get
         {
             if (Sdks.Value.Fault is not null) return null;
-            if (TemplateSdk() is null) return "Native templates require a discoverable .NET 10 SDK.";
+            if (StableDotNet10Sdk() is null) return "Native templates require a discoverable .NET 10 SDK.";
             if (Runtimes.Value.Fault is not null) return null;
             return HasAspNetRuntime() ? null : "Generated APIs require a discoverable Microsoft.AspNetCore.App 10.0 runtime.";
         }
@@ -51,16 +51,14 @@ internal static class DotnetTestHost
     internal static Sdk RequireTemplateSdk()
     {
         RequireInventory(Sdks.Value);
-        var sdk = TemplateSdk();
+        var sdk = StableDotNet10Sdk();
         Assert.True(sdk is not null, "Native templates require a discoverable .NET 10 SDK.");
         RequireInventory(Runtimes.Value);
         Assert.True(HasAspNetRuntime(), "Generated APIs require a discoverable Microsoft.AspNetCore.App 10.0 runtime.");
         return sdk!;
     }
 
-    private static Sdk? FindSdk(string version) => InstalledSdks().FirstOrDefault(sdk => sdk.Version == version);
-
-    private static Sdk? TemplateSdk() => InstalledSdks()
+    private static Sdk? StableDotNet10Sdk() => InstalledSdks()
         .Where(sdk => Version.TryParse(sdk.Version, out var version) && version.Major == 10)
         .OrderByDescending(sdk => Version.Parse(sdk.Version))
         .FirstOrDefault();

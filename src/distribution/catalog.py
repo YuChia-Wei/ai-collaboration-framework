@@ -195,9 +195,13 @@ def resolve_selection(catalog,desired):
     require(desired['catalog']==catalog.pin,'identity-mismatch: desired parent')
     keys=selected_keys(desired)
     components=[c for c in catalog.document['components'] if dependency_key(c) in keys]
-    require({dependency_key(c) for c in components}==keys,'selection-unavailable')
     adapters=[r for r in catalog.document['adapters'] if r['id'] in desired['adapters']]
-    require([r['id'] for r in adapters]==desired['adapters'],'selection-unavailable: adapter')
+    missing=keys-{dependency_key(c) for c in components}
+    missing.update(('adapter', aid) for aid in set(desired['adapters'])-{r['id'] for r in adapters})
+    fields={'skill':'skills','knowledge':'knowledge','sub-agent':'sub_agents','adapter':'adapters'}
+    selections=', '.join(f'{fields[kind]}={pid}' for kind, pid in sorted(missing))
+    require(not missing,f'selection-unavailable: {selections}')
+    require([r['id'] for r in adapters]==desired['adapters'],'selection-unavailable: adapter order')
     closure(components)
     preset_trace(catalog.document,desired,catalog.pin)
     packages={k:p for k,p in catalog.packages.items() if k in keys}

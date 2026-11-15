@@ -8,7 +8,7 @@ internal static class RefactorTestProfile
     internal static bool WindowsX64 =>
         OperatingSystem.IsWindows() && RuntimeInformation.OSArchitecture == Architecture.X64;
 
-    internal static string? SdkSkip => !WindowsX64 ? WindowsSkip : DotnetTestHost.SdkSkip(SdkFixture.Version);
+    internal static string? SdkSkip => !WindowsX64 ? WindowsSkip : DotnetTestHost.StableDotNet10SdkSkip;
 
     private static readonly Lazy<DotnetTestHost.Command> Pwsh = new(() => DotnetTestHost.DiscoverCommand("pwsh.exe"));
 

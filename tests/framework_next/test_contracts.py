@@ -200,9 +200,10 @@ class ArchitectureSplitSelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(DistributionError, "binding-unresolved: technology profile"):
             catalog.resolve_selection(self.parent_catalog, self.desired(
                 ("code-reviewer",), knowledge=selected, bindings=(binding,)))
-        with self.assertRaisesRegex(DistributionError, "selection-unavailable"):
+        with self.assertRaisesRegex(DistributionError, "selection-unavailable: knowledge=dotnet-backend") as unavailable:
             catalog.resolve_selection(self.parent_catalog, self.desired(
                 ("code-reviewer",), knowledge=("dotnet-backend", "engineering-common")))
+        self.assertEqual(unavailable.exception.code, "selection-unavailable")
         binding["resources"] = ["member:standards/coding-standards.md"]
         with self.assertRaisesRegex(DistributionError, "binding-unresolved"):
             catalog.resolve_selection(self.parent_catalog, self.desired(

@@ -168,7 +168,7 @@ public sealed class RefactorCommandIntegrationTests
         void ThenSelectTheWorkspaceSdk()
         {
             result.Loaded();
-            Assert.Equal(SdkFixture.Version, result.Text("sdk"));
+            Assert.Equal(fixture.Version, result.Text("sdk"));
         }
     }
 
@@ -192,16 +192,16 @@ public sealed class RefactorCommandIntegrationTests
             var sdkPath = fixture.SdkPath;
             var host = Directory.GetParent(sdkPath)!.Parent!.FullName;
             var local = fixture.PathFor("local-sdk");
-            localSdk = $"local-sdk/sdk/{SdkFixture.Version}";
+            localSdk = $"local-sdk/sdk/{fixture.Version}";
             await fixture.Junction(localSdk, sdkPath);
             foreach (var dependency in new[] { "shared", "packs", "sdk-manifests" })
                 await fixture.Junction($"local-sdk/{dependency}", Path.Combine(host, dependency));
             fixture.Write("global.json", Data.Serialize(new
             {
-                sdk = new { version = SdkFixture.Version, rollForward = "disable", paths = new[] { local, "$host$" } }
+                sdk = new { version = fixture.Version, rollForward = "disable", paths = new[] { local, "$host$" } }
             }));
             var inventory = await fixture.Dotnet("--list-sdks");
-            Assert.True(inventory.Split('\n').Count(line => line.StartsWith(SdkFixture.Version + " ", StringComparison.Ordinal)) >= 2, inventory);
+            Assert.True(inventory.Split('\n').Count(line => line.StartsWith(fixture.Version + " ", StringComparison.Ordinal)) >= 2, inventory);
             Assert.Equal(fixture.PathFor(localSdk), BasePath(await fixture.Dotnet("--info")), ignoreCase: true);
             await fixture.Restore();
         }

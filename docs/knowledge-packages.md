@@ -76,6 +76,8 @@ resource；合併或拆分不是自動擴大 allowlist 的理由。
 | `standards/coding-standards/controller-standards.md` | `application-types/web-api/controller-standards.md` |
 | `standards/coding-standards/` 中 repository、mapper、projection、archive standards | 同檔名移到 `integration/persistence/` |
 | `standards/coding-standards/transactional-messaging-standards.md` | `integration/messaging/transactional-messaging-standards.md` |
+| `source-includes/domain/` | 已退役。領域模型與聚合的概念可參照 `architecture/ddd-cqrs/aggregate-standards.md`。由目標專案維護已複製的程式碼及其引用。 |
+| 舊 BDD step-method 範例 | 已退役。可使用 `engineering-common` 的 `bdd/gherkin.md` 指引檢查情境。原 step-method 沒有等價的可執行替代範例。 |
 | `standards/coding-standards/test-standards.md`、`review/test-scenario-review.md` | 同檔名移到 `testing/` |
 | `review/review-routing.yaml`、`design/design-routing.yaml` | 同檔名移到 `references/` |
 | `legacy-guidance/spec-compliance-validator/references/` 三份文件 | 同檔名移到 `references/legacy-dotnet-compliance/`，仍需明確 legacy 選用 |
@@ -92,6 +94,11 @@ members 的移除與新 members 的增加。遇到未轉換 ID、managed drift�
 未完成維護狀態時保留拒絕結果，依原恢復程序處理；不刪檔繞過檢查、不手改 lock。
 目標自有 AGENTS、文件、skill/sub-agent、腳本及已複製的程式碼需另行核對，installer
 不會自動決定或改寫這些引用。核准的 apply 完成後，再 inspect 並讀回實際選用資源。
+依起始版本及實際 selection 核對既有 skill 與知識選擇。遷移時只更新受影響的
+knowledge 選擇與 binding 的 `package` 欄位，保留 `technology_profile: dotnet-backend`。
+若人工修改 authority 文件，對定稿檔案的原始位元組重算 SHA-256，並更新所有引用
+同一份文件的 `authorities[].sha256`。用更新後的 selection 重新 derive／plan，再核對
+實際套用的引用及 digest。
 
 公開 v0.21.0（knowledge 0.1.6）及 v0.22.0（0.1.9）都採 Catalog 1／Engine 2，
 但這不是更名後升級通過的證明。兩條直接升級試驗維持獨立工作，不加入常態測試矩陣；

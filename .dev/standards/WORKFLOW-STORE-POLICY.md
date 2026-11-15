@@ -27,6 +27,15 @@ unavailable configuration, runtime, store or required binding stops the dependen
 operation; do not fall back to Git, initialize a replacement, create configuration
 or switch authority implicitly. Never put credentials in this configuration.
 
+On Windows, Codex can expose a per-process sandbox directory as
+`LOCALAPPDATA` while the installed app's persistent files are under
+`%USERPROFILE%\AppData\Local\Packages\<Codex package family>\LocalCache\Local`.
+If the logical path is unavailable, verify the existing configuration and
+database location against the original store identity, active state, and
+repository binding. With owner approval, pass the existing configuration path
+explicitly and correct only its `stores.local.database` path to the verified
+existing file. Read an existing workflow through the native CLI before resuming.
+
 The optional `workflow-records` package is not installed in this source project's
 managed skill selection. Use the actual source CLIs explicitly from the selected
 checkout; a source invocation does not prove installation or automatic discovery.

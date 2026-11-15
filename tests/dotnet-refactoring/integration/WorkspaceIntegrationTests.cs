@@ -4,6 +4,38 @@ namespace RefactorTool.IntegrationTests;
 [Collection(SdkCollection.Name)]
 public sealed class WorkspaceIntegrationTests
 {
+    [RefactorSdkTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task RenameRetainsDirectAndTransitiveProjectReferences(bool alsoReferenceLeafDirectly)
+    {
+        using var fixture = new SdkFixture();
+        fixture.Write("B/B.csproj", """
+            <Project Sdk="Microsoft.NET.Sdk">
+              <PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
+              <ItemGroup><ProjectReference Include="../C/C.csproj" /></ItemGroup>
+            </Project>
+            """);
+        fixture.Write("C/C.csproj", """
+            <Project Sdk="Microsoft.NET.Sdk">
+              <PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
+            </Project>
+            """);
+        fixture.Write("B/Middle.cs", "namespace Demo; public class Middle {}");
+        fixture.Write("C/Leaf.cs", "namespace Demo; public class Leaf {}");
+        fixture.AppendProject("""<ItemGroup><ProjectReference Include="../B/B.csproj" /></ItemGroup>""");
+        if (alsoReferenceLeafDirectly)
+            fixture.AppendProject("""<ItemGroup><ProjectReference Include="../C/C.csproj" /></ItemGroup>""");
+        await fixture.Restore();
+        var original = fixture.Snapshot();
+
+        var result = await fixture.Preview();
+
+        result.Previewed();
+        Assert.Equal(fixture.Source, Assert.Single(fixture.Plan().Edits).Path);
+        fixture.AssertSnapshot(original);
+    }
+
     /// <summary>Refuses a multi-target project even if the request selects one framework.</summary>
     [RefactorSdkFact]
     public void ExplicitFrameworkDoesNotAdmitMultiTargetProject()

@@ -124,6 +124,29 @@ internal static class WorkspaceLoader
                 }
                 CaptureAncestorConfiguration(loaded, directory);
             }
+            foreach (var (projectPath, edges) in referenceEdges)
+            {
+                if (edges.Count == 0) continue;
+                // The SDK adds compiler-visible transitive project references from the restored assets.
+                // Keep direct edges and their options from evaluation and admit only SDK-reported additions.
+                using var effective = JsonDocument.Parse(await Run(Path.GetDirectoryName(projectPath)!,
+                    "msbuild", projectPath, "-nologo", $"-property:Configuration={request.Configuration}",
+                    "-target:IncludeTransitiveProjectReferences", "-getItem:ProjectReference"));
+                foreach (var reference in effective.RootElement.GetProperty("Items").GetProperty("ProjectReference").EnumerateArray())
+                {
+                    var referencePath = reference.GetProperty("FullPath").GetString()!;
+                    if (edges.ContainsKey(referencePath)) continue;
+                    if (reference.TryGetProperty("ReferenceOutputAssembly", out var output) &&
+                        string.Equals(output.GetString(), "false", StringComparison.OrdinalIgnoreCase)) continue;
+                    Data.Require(IsReachableReference(projectPath, referencePath, referenceEdges), "incomplete_references",
+                        $"SDK reference is outside the evaluated project graph: {projectPath} -> {referencePath}");
+                    var aliases = reference.TryGetProperty("Aliases", out var aliasValue) ? aliasValue.GetString() ?? "" : "";
+                    var embed = reference.TryGetProperty("EmbedInteropTypes", out var embedValue) &&
+                        string.Equals(embedValue.GetString(), "true", StringComparison.OrdinalIgnoreCase);
+                    edges.Add(referencePath, (Aliases(aliases.Split([',', ';'],
+                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)), embed));
+                }
+            }
             if (Path.GetExtension(path) == ".csproj") await workspace.OpenProjectAsync(path);
             else await workspace.OpenSolutionAsync(path);
             var failures = workspace.Diagnostics.Where(d => d.Kind == WorkspaceDiagnosticKind.Failure).Select(d => d.Message).ToArray();
@@ -200,6 +223,20 @@ internal static class WorkspaceLoader
             "unsupported_host", "This release supports Windows x64. Other hosts require separate acceptance.");
 
     private static bool InDirectory(string path, string? directory) => directory is not null && Paths.IsWithin(path, directory);
+
+    private static bool IsReachableReference(string projectPath, string referencePath,
+        Dictionary<string, Dictionary<string, (string[] Aliases, bool Embed)>> edges)
+    {
+        var visited = new HashSet<string>(Paths.Comparer) { projectPath };
+        var pending = new Queue<string>(edges[projectPath].Keys);
+        while (pending.TryDequeue(out var candidate))
+        {
+            if (!visited.Add(candidate)) continue;
+            if (Paths.Comparer.Equals(candidate, referencePath)) return true;
+            foreach (var dependency in edges[candidate].Keys) pending.Enqueue(dependency);
+        }
+        return false;
+    }
 
     private static void CaptureSource(LoadedWorkspace loaded, string path, string directory, (string? Intermediate, string? Output) build)
     {

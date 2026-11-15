@@ -48,7 +48,7 @@ public sealed class CompileInclusionTests
             }
 
             await CompileInclusion.Register(request);
-            using var loaded = new LoadedWorkspace(new Microsoft.CodeAnalysis.AdhocWorkspace(), SdkFixture.Version);
+            using var loaded = new LoadedWorkspace(new Microsoft.CodeAnalysis.AdhocWorkspace(), fixture.Version);
             loaded.Projects.Add(new ProjectInfo(fixture.Project, "net10.0", request.Configuration, "Enable", "14.0", [], []));
             failure = await Record.ExceptionAsync(
                 () => CompileInclusion.Require(loaded, fixture.Project, output, request));
