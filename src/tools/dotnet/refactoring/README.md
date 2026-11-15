@@ -24,6 +24,18 @@ refactoring providers are outside it.
 | Generated source | Source-generator output and physical generated files participate in compilation. Physical source outside the project directory is admitted only under its evaluated `IntermediateOutputPath`. Source-generator output, files under evaluated `IntermediateOutputPath` or `OutDir`, project-relative `obj` and `bin`, `.g.cs` and `.generated.cs` suffixes, and early `auto-generated` markers identify uneditable source. A rename requiring an edit in those files is refused. |
 | Other languages | Non-C# projects and incomplete loads are refused. Razor, XAML, reflection strings, binary consumers, serialization and database contracts are not tracked. |
 | Restore | Restore the target explicitly first. RefactorTool does not request restore or install packages into the target. MSBuild design-time loading may create/update SDK intermediates under `obj`; preview does not edit authored source. |
+| Execution boundary | Use trusted projects. Evaluating MSBuild imports/targets and loading analyzer assemblies executes target-provided build tooling. |
+| Supported symbols | Editable source classes/interfaces, ordinary methods, properties, fields, parameters and local variables. Constructor/accessor/event/operator/type-parameter renames are not included. |
+| File operations | Rename produces `modify` entries only. Extract Interface produces one `modify` and one `create`; no deleted/moved documents or project-graph changes. |
+
+Missing metadata, workspace failures, ambiguous selections, collisions and
+uneditable related symbols are refusals. A successfully loaded `Solution` alone
+is not acceptance. Results report the SDK/Roslyn versions, evaluated projects,
+TFMs, configuration, compiler settings, source references and coverage limits.
+Normal-evaluation source items and compilation reference edges are compared
+with the actual design-time workspace. Unexplained authored additions, omissions
+or reference-option differences are refused. Build-only project references
+(`ReferenceOutputAssembly=false`) are not compilation edges.
 
 ### SDK selection
 
@@ -41,18 +53,6 @@ Verify `dotnet --version` in the copy, restore there and rerun preview. If
 preview then reports `incomplete_references`, investigate the workspace
 reference diagnostic. The reported transitive-reference case is tracked in
 [#616](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/616).
-| Execution boundary | Use trusted projects. Evaluating MSBuild imports/targets and loading analyzer assemblies executes target-provided build tooling. |
-| Supported symbols | Editable source classes/interfaces, ordinary methods, properties, fields, parameters and local variables. Constructor/accessor/event/operator/type-parameter renames are not included. |
-| File operations | Rename produces `modify` entries only. Extract Interface produces one `modify` and one `create`; no deleted/moved documents or project-graph changes. |
-
-Missing metadata, workspace failures, ambiguous selections, collisions and
-uneditable related symbols are refusals. A successfully loaded `Solution` alone
-is not acceptance. Results report the SDK/Roslyn versions, evaluated projects,
-TFMs, configuration, compiler settings, source references and coverage limits.
-Normal-evaluation source items and compilation reference edges are compared
-with the actual design-time workspace. Unexplained authored additions, omissions
-or reference-option differences are refused. Build-only project references
-(`ReferenceOutputAssembly=false`) are not compilation edges.
 
 ## Select and preview
 
