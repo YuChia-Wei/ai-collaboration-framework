@@ -14,7 +14,7 @@ refactoring providers are outside it.
 
 | Input or behavior | First-release contract |
 | --- | --- |
-| Host | Windows x64 and .NET 10 SDK; the acceptance fixture selects SDK 10.0.403. Other hosts have not been accepted for this tool. |
+| Host | Windows x64 and .NET 10 SDK. The acceptance fixture selects an installed stable .NET 10 SDK. |
 | Workspace | Explicit SDK-style C# `.csproj`, `.sln`, or `.slnx`; all active project references are loaded as source, including cross-project consumers in the selected solution. |
 | Project selection | A project entry loads that project and its dependencies, not unknown reverse consumers. Select the complete solution to include consumers. |
 | Target framework | Exactly one evaluated TFM per project; multi-TFM projects are refused even when `framework` is specified. An optional framework must match every loaded project. |
@@ -24,6 +24,23 @@ refactoring providers are outside it.
 | Generated source | Source-generator output and physical generated files participate in compilation. Physical source outside the project directory is admitted only under its evaluated `IntermediateOutputPath`. Source-generator output, files under evaluated `IntermediateOutputPath` or `OutDir`, project-relative `obj` and `bin`, `.g.cs` and `.generated.cs` suffixes, and early `auto-generated` markers identify uneditable source. A rename requiring an edit in those files is refused. |
 | Other languages | Non-C# projects and incomplete loads are refused. Razor, XAML, reflection strings, binary consumers, serialization and database contracts are not tracked. |
 | Restore | Restore the target explicitly first. RefactorTool does not request restore or install packages into the target. MSBuild design-time loading may create/update SDK intermediates under `obj`; preview does not edit authored source. |
+
+### SDK selection
+
+Run `dotnet --version` from the directory containing the workspace `.csproj`,
+`.sln`, or `.slnx` to see the SDK selected for RefactorTool. Use
+`dotnet --list-sdks` to see installed versions. The host searches for
+`global.json` from the working directory upward. A policy such as
+`rollForward: latestMajor` can select SDK 11 even when SDK 10 is installed
+and the project's normal build and tests succeed.
+
+For `unsupported_sdk`, run the operation in an isolated project copy with a
+local `global.json` specifying an installed, supported 10.x SDK and
+`rollForward: disable`. Preserve the original project's configuration.
+Verify `dotnet --version` in the copy, restore there and rerun preview. If
+preview then reports `incomplete_references`, investigate the workspace
+reference diagnostic. The reported transitive-reference case is tracked in
+[#616](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/616).
 | Execution boundary | Use trusted projects. Evaluating MSBuild imports/targets and loading analyzer assemblies executes target-provided build tooling. |
 | Supported symbols | Editable source classes/interfaces, ordinary methods, properties, fields, parameters and local variables. Constructor/accessor/event/operator/type-parameter renames are not included. |
 | File operations | Rename produces `modify` entries only. Extract Interface produces one `modify` and one `create`; no deleted/moved documents or project-graph changes. |

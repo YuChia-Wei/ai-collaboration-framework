@@ -12,19 +12,19 @@ public sealed class SdkCollection
 
 internal sealed class SdkFixture : IDisposable
 {
-    internal const string Version = "10.0.403";
     private readonly TestDirectory directory;
     private readonly string restoreEntry;
     private int sequence;
 
     internal SdkFixture(bool twoProjects = false)
     {
-        var selected = DotnetTestHost.RequireSdk(Version);
+        var selected = DotnetTestHost.RequireStableDotNet10Sdk();
+        Version = selected.Version;
         SdkPath = Path.Combine(selected.Root, "sdk", Version);
         directory = new();
         directory.Write("global.json", Data.Serialize(new
         {
-            sdk = new { version = Version, rollForward = "disable", paths = new[] { selected.Root } }
+            sdk = new { version = "10.0.100", rollForward = "latestMinor", allowPrerelease = false, paths = new[] { selected.Root } }
         }));
         directory.Write("A/A.csproj", """<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework><Nullable>enable</Nullable><GenerateDocumentationFile>true</GenerateDocumentationFile></PropertyGroup></Project>""");
         directory.Write("A/Service.cs", SemanticWorkspace.Service.ReplaceLineEndings("\r\n") + "\r\n");
@@ -39,6 +39,7 @@ internal sealed class SdkFixture : IDisposable
     }
 
     internal string Root => directory.Root;
+    internal string Version { get; }
     internal string SdkPath { get; }
     internal string Workspace { get; }
     internal string Project => PathFor("A/A.csproj");

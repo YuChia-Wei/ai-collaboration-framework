@@ -9,7 +9,7 @@ dotnet test tests/dotnet-refactoring/integration/RefactorTool.IntegrationTests.c
 ```
 
 SDK-backed preview and apply run automatically on Windows x64 when SDK
-10.0.403 is discoverable. The junction cases
+10 is discoverable as a stable release. The junction cases
 also require `pwsh`. The SDK fixture uses local SDK reference packs and an
 empty package source. Set `AICF_TEST_WORK` for a disposable fixture root.
 Use a short root on Windows: the duplicate-SDK junction scenario has failed
