@@ -88,6 +88,31 @@ class DerivationDiagnosticsTests(unittest.TestCase):
         return {'selection_version': 2, 'catalog': parent.pin, 'skills': ['reviewer'],
                 'knowledge': list(knowledge_ids), 'adapters': [], 'bindings': [], 'skill_naming': 'original'}
 
+    def test_cli_reports_unavailable_selection_ids(self):
+        from contextlib import nullcontext, redirect_stdout
+        from io import StringIO
+        import runpy
+
+        cli = Path(__file__).absolute().parents[2] / 'src/tools/derive-subset.py'
+        main = runpy.run_path(str(cli))['main']
+        parent = self.parent_catalog()
+        desired = self.desired(parent, ['dotnet-backend'])
+        desired['skills'] = ['retired-skill']
+        argv = [str(cli), '--catalog-root', 'unused', '--catalog-identity', parent.pin['identity'],
+                '--preset', 'fixture', '--preset-version', '0.0.0', '--engine-pin', 'unused',
+                '--output-root', 'unused', '--scratch-root', 'unused']
+        output = StringIO()
+        with patch.object(sys, 'argv', argv), patch.dict(main.__globals__, {'verified_host': lambda *_: nullcontext()}), \
+                patch.object(catalog, 'read_catalog', return_value=parent), \
+                patch.object(catalog, 'expand_preset', return_value=desired), redirect_stdout(output):
+            exit_code = main()
+
+        self.assertEqual(exit_code, 1)
+        self.assertEqual(json_object(output.getvalue().encode(), 'CLI output'), {
+            'outcome': 'blocked', 'code': 'selection-unavailable',
+            'reason': 'selection-unavailable: knowledge=dotnet-backend, skills=retired-skill',
+        })
+
     def test_public_result_reports_optional_gap_without_changing_artifact_identity(self):
         parent = self.parent_catalog()
         desired = self.desired(parent)

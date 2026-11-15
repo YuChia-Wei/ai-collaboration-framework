@@ -211,7 +211,7 @@ def main():
             if observations is not None:
                 result['model_observations']=observations
     except (ValueError,OSError,UnicodeError,TypeError,KeyError,ImportError,RecursionError,OverflowError) as exc:
-        reason=str(exc) if getattr(exc,'code',None)=='model-unavailable' else 'Pinned catalog, explicit selection, model observation or bounded output was rejected; preserve any partial output.'
+        reason=str(exc) if getattr(exc,'code',None) in {'model-unavailable','selection-unavailable'} else 'Pinned catalog, explicit selection, model observation or bounded output was rejected; preserve any partial output.'
         diagnostic=getattr(exc,'diagnostic',{})
         if diagnostic.get('code') in {'path-budget','path-limit'}:
             relative=(' Relative path: '+diagnostic['path']+'.') if diagnostic.get('path') else ''
