@@ -53,7 +53,9 @@ self-referential archive hash. The tool verifies raw ZIP entries, extracts them
 and checks raw hashes again. No MQ/project selection, `.dev` history, target
 installation, scratch files or credentials are packaged.
 
-New builds emit `framework-release-assets/3`. The reusable ZIP `README.md`
+Current three-RID Native AOT builds emit `framework-release-assets/6`.
+Earlier two-RID standalone bundles use `/5`; the CoreCLR comparison uses `/4`.
+The reusable ZIP `README.md`
 comes from the regular UTF-8 Git blob
 `src/distribution/templates/release-readme.md` at the selected **source commit**,
 not the workflow/tooling commit. The renderer uses `string.Template` with exactly
@@ -75,14 +77,14 @@ establishes subsequent publication. The template does not claim that a tagged
 build has already been published.
 
 Before the build artifact is admitted, and again before the Draft writer calls
-GitHub, version 3 requires both `claude` and `codex` catalog declarations, their
+GitHub, manifests from version 3 onward require both `claude` and `codex` catalog declarations, their
 declared templates and all nonempty member bytes. The README must match those
 verified inputs. A missing adapter, missing member, old four-field template or
 tag/version mismatch fails closed. This checks packaged availability; explicit
 target selection and native client discovery remain separate. Most presets select
 only Codex; use a JSON selection with both adapters for both runtime entry trees.
 
-Version 2 and 3 require each catalog member's source path to be a safe
+Manifests from version 2 onward require each catalog member's source path to be a safe
 `src/` path. The template is not an extra ZIP member, catalog build input or
 engine member; the engine retains its source-declared closure. Generated manifests,
 pins and hashes remain source-project release orchestration.
@@ -94,8 +96,7 @@ Version 2 verifies its original four-field source template without claiming the
 new classification/adapter checks. Old source tags require compatible historical
 build tooling; the current builder never substitutes a newer source template.
 Published ZIPs, manifests, tags and notes are never rewritten by this change.
-Draft ownership still binds the exact existing manifest bytes, so a new version-3
-rebuild cannot replace assets admitted with an earlier manifest.
+Draft ownership binds the exact existing manifest bytes throughout a retry.
 
 Actual build receipts contain time/environment data; rebuilding one source
 commit can yield different ZIP bytes. A matching source or catalog label alone
