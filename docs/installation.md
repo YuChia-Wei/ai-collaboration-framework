@@ -263,8 +263,8 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
-| `engineering-common` | `0.4.2` | 無 |
-| `dotnet` | `0.3.3` | 必須同時選 `engineering-common@0.4.2` |
+| `engineering-common` | `0.4.3` | 無 |
+| `dotnet` | `0.3.4` | 必須同時選 `engineering-common@0.4.3` |
 
 舊 `dotnet-backend` selection 不會自動 alias 到 `dotnet`。升級前請依
 [知識套件遷移說明](knowledge-packages.md#從-dotnet-backend-遷移到-dotnet)
@@ -557,8 +557,8 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 
 ### 升級後整合公開需求規則
 
-公開需求／workflow 邊界由 requirement-author 0.2.5、user-story-author 0.2.3、
-ai-context-init 0.2.5 與 software-development-orchestrator 0.5.0 的來源指引提供。
+公開需求／workflow 邊界由 requirement-author 0.2.6、user-story-author 0.2.4、
+ai-context-init 0.2.6 與 software-development-orchestrator 0.5.0 的來源指引提供。
 版本號描述來源能力，不表示已有對應公開 Release；實際使用須核對所選成品的
 catalog、engine、pin 與已安裝版本。未選配的 skill 不會因升級自動加入。
 

@@ -108,7 +108,7 @@ parent 的 integration 決策。Fixed-head auditor 由 parent 明確提供固定
 比較基準、範圍、判準、實際權限與停止條件；不依賴來源庫的 classifier、
 packet tier、lease 或 preflight 腳本。若 target 另有必要檢查，仍須確認
 工具可用且執行方式已授權；無法執行時回報 blocked。套件不提供 source repository 的 `.dev/`
-治理檔案。六個角色套件為 `0.2.1`，不改角色的檔案與工具責任邊界。
+治理檔案。六個角色套件為 `0.2.2`，不改角色的檔案與工具責任邊界。
 檔案發布、安裝驗證、runtime discovery 與角色實際執行是
 不同證據。
 
