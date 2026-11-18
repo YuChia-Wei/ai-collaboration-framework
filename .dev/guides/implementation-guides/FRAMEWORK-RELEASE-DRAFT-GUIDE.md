@@ -172,28 +172,37 @@ acceptance, P7 completion, Issue closure or a public release.
 
 ## Local commands
 
-Current source bundles build Native AOT SnippetTool for Windows x64 and Linux x64
-on their native runners. The formatting script is copied from source during
-bundle assembly. An older selected source with FormatTool retains its original
-macOS arm64 build. Assembly checks every native artifact's source,
-version, runtime, inventory and hashes. A native build retry needs a complete set
+The three-RID release route builds Native AOT SnippetTool for Windows x64,
+Linux x64 and macOS arm64 on their native runners. The selected source and
+build route determine required RIDs. Older sources with two-RID SnippetTool
+delivery retain those two RIDs. A historical source with FormatTool retains
+its original macOS arm64 formatter build. The formatting script is copied
+from source on the current route, and standalone RefactorTool stays Windows
+x64. Assembly checks each native artifact's source, version, runtime,
+inventory and hashes. A native build retry needs a complete set
 from the same workflow run attempt; rerun all build jobs when needed. The existing
 draft writer still accepts only `publish-release.yml` provenance and never
 publishes PR comparison artifacts.
 
-Current workflows run the native SnippetTool artifact smoke before uploading
-each Windows/Linux output. After bundle assembly, native xUnit acceptance tests
-install the actual template package extracted from the delivery ZIP. The shell
+Read the native SnippetTool checks in the selected build workflow and the
+template acceptance from the assembled delivery ZIP. For the three-RID route,
+verify that the macOS arm64 checks ran on macOS 26 and that the
+`framework-release-assets/6` manifest and bundle inventory bind
+`generation/snippets/osx-arm64/SnippetTool`, its adjacent snippet data, and the
+standalone `SnippetTool-<version>-osx-arm64` with its checksum. This CI evidence has a single macOS/architecture scope. Read back
+actual Release assets separately from CI artifacts. #582 records the earlier
+Actions trial, and #637 covers release delivery. The shell
 steps invoke the selected source's test projects; Python builders do not invoke
 .NET tests. Historical sources without those projects retain their existing
 builder checks, with the missing native test coverage stated explicitly. Read
 the test step results separately from the builder manifest's `tests: not-run`.
 
 For a current-source local release build, supply `--native-tools <download-root>`
-with the two artifact subdirectories from one run. `--coreclr-tools` explicitly
-builds the former framework-dependent variant for comparison. The PR native-tools
-job builds and verifies both complete archives from identical source and retains
-compressed/expanded size evidence. These are build results, not public releases.
+with all artifact subdirectories required by the selected source from one run
+attempt. The three-RID Native AOT route needs all three native artifacts.
+`--coreclr-tools` explicitly builds the framework-dependent comparison variant.
+The PR native-tools job builds and verifies both complete archives from identical
+source and retains compressed/expanded size evidence. These are build results, not public releases.
 Older selected sources without the native builder retain their own build mode.
 The snapshot example below selects the explicit CoreCLR comparison; omit that
 flag only when supplying native artifacts or selecting an older source.
