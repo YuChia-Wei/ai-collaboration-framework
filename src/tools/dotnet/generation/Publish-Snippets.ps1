@@ -32,7 +32,7 @@ New-Item -ItemType Directory -Path $destination | Out-Null
     --artifacts-path $artifacts -o $publish "-p:Version=$Version" `
     "-p:PublishAot=$($NativeAot.IsPresent.ToString().ToLowerInvariant())" `
     "-p:PublishSingleFile=$((!$NativeAot.IsPresent).ToString().ToLowerInvariant())" `
-    -p:DebugType=None -p:DebugSymbols=false
+    -p:DebugType=None -p:DebugSymbols=false -p:CopyOutputSymbolsToPublishDirectory=false
 if ($LASTEXITCODE -ne 0) { throw "Snippet publish failed ($mode); keep the output for diagnosis." }
 
 $executable = if ($IsWindows) { 'SnippetTool.exe' } else { 'SnippetTool' }

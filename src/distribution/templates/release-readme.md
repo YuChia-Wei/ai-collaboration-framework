@@ -24,9 +24,12 @@ selection is explicit; the ZIP is not an initialized project.
 ## Install .NET generation tools
 
 Run `python generation/install-generation.py --project <project-root>`.
-It installs the packaged templates, Windows x64/Linux x64 self-contained snippet
-tools and the SDK formatting script into `.ai/tools/dotnet-generation`. See
-`generation/README.md`.
+It installs the packaged templates, SnippetTool executables and SDK formatting
+script into `.ai/tools/dotnet-generation`. Check `generation/generation.json`
+for this bundle's exact RIDs, delivery mode and hashes. Three-RID Native AOT
+bundles include Windows x64, Linux x64 and Apple silicon. Earlier two-RID
+bundles include Windows x64 and Linux x64. See `generation/README.md` for
+startup instructions and the matching external snippet data.
 No template registration or application generation happens during installation.
 
 `content-hashes.json` and the external release manifest identify the exact bytes.

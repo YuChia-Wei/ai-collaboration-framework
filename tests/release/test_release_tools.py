@@ -40,6 +40,7 @@ ADAPTERS = [{"id": name, "version": "0.1.0", "members": ["entry.md.template"], "
 ROOT = SCRIPTS.parents[1]
 CURRENT_ENGINE = common.engine_files(lambda name: (ROOT / name).read_bytes())
 ENGINE_BYTES = {name: (ROOT / name).read_bytes() for name in CURRENT_ENGINE}
+ARM64_MACHO = b'\xcf\xfa\xed\xfe\x0c\x00\x00\x01'
 
 
 def readme_source(template=README_TEMPLATE):
@@ -53,10 +54,12 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
             engine_members=None, engine_bytes=None, adapters=None, missing_adapter_member=False,
             missing_generation_member=None, extra_generation_member=None, linux_mode=0o755,
             formatting='script', macos_mode=0o755,
-            generation_mode="framework-dependent-coreclr-single-file"):
+            generation_mode="framework-dependent-coreclr-single-file", macos_binary=ARM64_MACHO + b'fixture'):
     engine_names = list(CURRENT_ENGINE if engine_members is None else engine_members)
     engine_bytes = ENGINE_BYTES if engine_bytes is None else engine_bytes
-    with_generation = schema in (common.SCHEMA, common.STANDALONE_SCHEMA)
+    macos = schema == common.MACOS_SCHEMA
+    standalone = schema in (common.STANDALONE_SCHEMA, common.MACOS_SCHEMA)
+    with_generation = schema == common.SCHEMA or standalone
     members = {n: engine_bytes.get(n, b"engine") for n in engine_names}
     pin = {"id": "framework-managed-installation", "version": "2.0.0", "source_commit": SOURCE["commit"],
            "files": [{"path": n, "sha256": common.sha(members[n])} for n in engine_names]}
@@ -97,14 +100,18 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
             "snippets/linux-x64/SnippetTool": b"\x7fELF linux",
             "templates/AICF.Dotnet.Templates.0.19.0-rc.3.nupkg": b"template-package",
         }
-        for rid in ('win-x64', 'linux-x64'):
+        snip_rids = ['win-x64', 'linux-x64']
+        if macos:
+            snip_rids.append('osx-arm64')
+            generated['snippets/osx-arm64/SnippetTool'] = macos_binary
+        for rid in snip_rids:
             prefix = 'snippets/' + rid + '/'
             generated[prefix + 'README.md'] = b'usage'
             generated[prefix + 'snippets/example.snippet'] = b'Example'
             generated[prefix + 'snippets/catalog.json'] = common.encoded({
                 'snippets': [{'bodyFile': 'example.snippet'}]})
         generation = {"schema": "aicf-generation/1", "source_commit": SOURCE["commit"],
-                      "version": "0.19.0-rc.3", "runtimes": ["win-x64", "linux-x64"],
+                      "version": "0.19.0-rc.3", "runtimes": snip_rids,
                       "mode": generation_mode, "files": []}
         if formatting == 'script':
             generation['formatting'] = {"kind": "dotnet-format-script"}
@@ -124,8 +131,8 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
         if extra_generation_member:
             generated[extra_generation_member] = b'extra file'
         for name, data in sorted(generated.items()):
-            mode = (linux_mode if name.endswith("/SnippetTool") else
-                    macos_mode if name == 'formatting/osx-arm64/FormatTool' else 0o644)
+            mode = (linux_mode if name == 'snippets/linux-x64/SnippetTool' else
+                    macos_mode if name in ('snippets/osx-arm64/SnippetTool', 'formatting/osx-arm64/FormatTool') else 0o644)
             generation["files"].append(common.entry(name, data, mode))
             payload["generation/" + name] = (data, mode)
         payload["generation/generation.json"] = (common.encoded(generation), 0o644)
@@ -146,9 +153,9 @@ def fixture(directory, *, schema=common.SCHEMA, readme_override=None, catalog_so
             "tooling_commit": "c" * 40, "workflow_commit": "c" * 40, "run_id": "123", "run_attempt": "1"}}
     if schema != common.LEGACY_SCHEMA:
         manifest["provenance"]["readme_source"] = readme_source(template)
-    if schema == common.STANDALONE_SCHEMA:
+    if standalone:
         manifest["standalone_tools"] = []
-        for name, source_path in tool_asset_sources(manifest["version"]).items():
+        for name, source_path in tool_asset_sources(manifest["version"], macos=macos).items():
             if source_path is None:
                 asset = refactor_notices({"README.md": b"help", "THIRD-PARTY-NOTICES.txt": b"notices",
                                           "licenses/package/LICENSE.txt": b"license"})
@@ -264,6 +271,34 @@ class ReleaseContracts(unittest.TestCase):
         (self.directory / "release-manifest.json").write_bytes(common.encoded(manifest))
         with self.assertRaisesRegex(ValueError, "differs from bundled bytes"):
             common.verify_bundle(self.directory)
+
+    def test_macos_bundle_and_standalone_with_checksum_reach_the_draft(self):
+        self.manifest = fixture(self.directory, schema=common.MACOS_SCHEMA, generation_mode='native-aot')
+        self.raw = (self.directory / 'release-manifest.json').read_bytes()
+        self.assertEqual(common.verify_bundle(self.directory, SOURCE), self.manifest)
+        receipt = self.deliver(self.api(existing=False))
+        name = 'SnippetTool-0.19.0-rc.3-osx-arm64'
+        self.assertEqual(receipt['outcome'], 'draft-ready')
+        self.assertTrue({name, name + '.sha256'} <= {asset['name'] for asset in receipt['assets']})
+        # Even a self-consistent replacement asset still has to match the ZIP.
+        row = next(row for row in self.manifest['standalone_tools'] if row['name'] == name)
+        raw = ARM64_MACHO + b'different executable'
+        row.update(size=len(raw), sha256=common.sha(raw))
+        (self.directory / name).write_bytes(raw)
+        (self.directory / (name + '.sha256')).write_bytes(f"{row['sha256']}  {name}\n".encode())
+        (self.directory / 'release-manifest.json').write_bytes(common.encoded(self.manifest))
+        with self.assertRaisesRegex(ValueError, 'differs from bundled bytes'):
+            common.verify_bundle(self.directory)
+
+    def test_macos_bundle_requires_executable_mode_and_complete_catalog(self):
+        for changes, error in (({'macos_mode': 0o644}, 'osx-arm64 snippet executable mode'),
+                               ({'missing_generation_member': 'snippets/osx-arm64/snippets/example.snippet'},
+                                'single-file generation layout'),
+                               ({'macos_binary': b'\xcf\xfa\xed\xfe\x07\x00\x00\x01'}, 'standalone executable format')):
+            with self.subTest(changes=changes):
+                fixture(self.directory, schema=common.MACOS_SCHEMA, generation_mode='native-aot', **changes)
+                with self.assertRaisesRegex(ValueError, error):
+                    common.verify_bundle(self.directory)
 
     def test_incomplete_snippet_layout_rejected_even_with_consistent_inventory(self):
         for name in ('SnippetTool', 'README.md', 'snippets/catalog.json', 'snippets/example.snippet'):
@@ -746,11 +781,27 @@ class ReleaseContracts(unittest.TestCase):
 
 
 class NativeAdmission(unittest.TestCase):
+    def test_source_runtime_capability_is_closed_and_selected_from_commit(self):
+        commit = SOURCE['commit']
+        path = common.GENERATION_RUNTIMES_PATH
+        listing = f"100644 blob {'a' * 40}\t{path}\n".encode()
+        raw = (ROOT / path).read_bytes()
+        with patch.object(common, 'git', side_effect=[listing, raw]) as git_read:
+            self.assertEqual(common.source_snippet_rids(ROOT, commit), ('win-x64', 'linux-x64', 'osx-arm64'))
+        self.assertEqual(git_read.call_args_list, [
+            unittest.mock.call(ROOT, 'ls-tree', commit, '--', path),
+            unittest.mock.call(ROOT, 'show', commit + ':' + path)])
+        with patch.object(common, 'git', return_value=b''):
+            self.assertEqual(common.source_snippet_rids(ROOT, commit), ('win-x64', 'linux-x64'))
+        with patch.object(common, 'git', side_effect=[listing, raw.replace(b'osx-arm64', b'osx-x64')]), \
+                self.assertRaisesRegex(ValueError, 'unknown native generation runtime contract'):
+            common.source_snippet_rids(ROOT, commit)
+
     def test_root_alias_is_allowed_but_member_links_are_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             inputs = root / 'inputs'
-            for rid in native_tools.RUNTIMES:
+            for rid in common.LEGACY_SNIPPET_RIDS:
                 part = inputs / rid
                 path = part / native_tools.RUNTIMES[rid][2][0] / rid / 'binary'
                 path.parent.mkdir(parents=True)
@@ -798,7 +849,7 @@ class NativeAdmission(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             inputs = root / 'inputs'
-            for rid in native_tools.RUNTIMES:
+            for rid in common.MACOS_SNIPPET_RIDS:
                 part = inputs / rid
                 part.mkdir(parents=True)
                 rows = []
@@ -811,16 +862,25 @@ class NativeAdmission(unittest.TestCase):
                 (part / 'native-tools.json').write_text(json.dumps(dict(schema='aicf-native-tools/1',
                     source_commit=SOURCE['commit'], version='1.2.3', rid=rid, files=rows)))
             output = root / 'valid'
-            native_tools.collect(inputs, output, '1.2.3', SOURCE['commit'])
-            self.assertEqual(len(list(output.rglob('binary'))), 2)
+            with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
+                native_tools.collect(inputs, root / 'unexpected-mac', '1.2.3', SOURCE['commit'])
+            macos = inputs / 'osx-arm64'
+            macos.rename(root / 'osx-arm64')
+            with self.assertRaisesRegex(ValueError, 'Missing native runtime'):
+                native_tools.collect(inputs, root / 'missing-mac', '1.2.3', SOURCE['commit'],
+                                     runtimes=common.MACOS_SNIPPET_RIDS)
+            (root / 'osx-arm64').rename(macos)
+            native_tools.collect(inputs, output, '1.2.3', SOURCE['commit'], runtimes=common.MACOS_SNIPPET_RIDS)
+            self.assertEqual(len(list(output.rglob('binary'))), 3)
             with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
                 native_tools.collect(inputs, root / 'wrong-source', '1.2.3', 'f' * 40)
             with self.assertRaisesRegex(ValueError, 'source/version/runtime'):
                 native_tools.collect(inputs, root / 'wrong-version', '2.0.0', SOURCE['commit'])
-            binary = inputs / 'win-x64/snippets/win-x64/binary'
+            binary = inputs / 'osx-arm64/snippets/osx-arm64/binary'
             binary.write_bytes(b'changed')
             with self.assertRaisesRegex(ValueError, 'hash/type'):
-                native_tools.collect(inputs, root / 'corrupt', '1.2.3', SOURCE['commit'])
+                native_tools.collect(inputs, root / 'corrupt', '1.2.3', SOURCE['commit'],
+                                     runtimes=common.MACOS_SNIPPET_RIDS)
             empty = root / 'empty'
             empty.mkdir()
             with self.assertRaisesRegex(ValueError, 'Missing native runtime'):

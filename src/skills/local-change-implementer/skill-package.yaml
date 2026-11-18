@@ -1,6 +1,6 @@
 metadata_version: 4
 id: local-change-implementer
-version: 0.2.18
+version: 0.2.19
 delivery_status: implemented
 entrypoint: SKILL.md
 dependencies:
@@ -50,7 +50,7 @@ knowledge_consumption:
   on_missing: unavailable
 - id: dotnet-local-change
   package: dotnet
-  version: 0.3.4
+  version: 0.3.5
   operations:
   - implement
   resources:

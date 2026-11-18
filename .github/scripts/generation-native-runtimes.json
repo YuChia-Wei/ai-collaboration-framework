@@ -1,0 +1,4 @@
+{
+  "schema": "aicf-generation-native-runtimes/1",
+  "runtimes": ["win-x64", "linux-x64", "osx-arm64"]
+}

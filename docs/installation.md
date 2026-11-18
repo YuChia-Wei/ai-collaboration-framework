@@ -120,20 +120,32 @@ if ($LASTEXITCODE -ne 0) { throw '生成工具安裝未完成；請依 JSON 診�
 及 `.editorconfig`。在其他 shell 可直接執行 `dotnet format`。
 [格式化腳本使用說明](../src/tools/dotnet/formatting/README.md)
 
-正式工具包採 Native AOT 建置 Windows x64 與 Linux x64 的 SnippetTool。
-`generation.json` 的 `native-aot` 指的是 SnippetTool 的交付模式。維護者可
+先確認所選 Release 的資產清單與 manifest，並核對 Framework ZIP 內
+`generation/generation.json` 列出的 RID、交付模式與檔案雜湊。三平台 Native AOT
+交付包含 Windows x64（`win-x64`）、Linux x64（`linux-x64`）與 Apple silicon
+（`osx-arm64`）。v0.23.0 等兩平台成品僅提供前兩個 RID，請使用各版本實際提供的成品。
+`native-aot` 的 SnippetTool 內含啟動所需的 .NET runtime 支援。維護者也可
 明確選擇使用 host runtime 的 framework-dependent CoreCLR 比較版。
 範本註冊、生成與建置仍需明確執行，開發主機須先安裝 .NET 10 SDK。
-SnippetTool 的 macOS 正式交付由 #582 另行處理。目錄式／nupkg 註冊、自訂
-與復原指令見成品的 `generation/README.md` 或來源交付指南。
-Release 另提供各 RID 的 SnippetTool 單一執行檔與 SHA-256，使用獨立下載時
-請從同版 Framework ZIP 的對應 `generation/snippets/<RID>/snippets/` 取得片段資料。
-Linux 直接下載後需設定執行權限，例如 `chmod +x SnippetTool-<version>-linux-x64`。
+目錄式／nupkg 註冊、自訂與復原指令見成品的 `generation/README.md` 或來源交付指南。
+
+若 Release 提供對應 RID 的獨立執行檔，先依同列的 `.sha256` 核對。Apple silicon
+執行檔名為 `SnippetTool-<version>-osx-arm64`，ZIP 內對應的檔案是
+`generation/snippets/osx-arm64/SnippetTool`。獨立下載時，請從同版 Framework ZIP 的
+`generation/snippets/<RID>/snippets/` 取得片段資料，將整個 `snippets/` 目錄放在
+執行檔旁。Linux 與 macOS 若缺少執行權限，可在核對後為檔案加上 `chmod +x`。
+在 macOS 可先用 `--version` 確認啟動，再用 `--request` 查詢片段清單。
+
+[#582](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/582) 的
+macOS arm64 成品來自限期 Actions 試用；[#637](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/637)
+追蹤三平台交付。macOS 原生驗證使用 macOS 26 arm64 runner。請以所選成品的
+驗證結果和 Release 資產判定可用性；Intel Mac、最低 macOS 版本以及瀏覽器下載後
+的 Gatekeeper 驗收仍無對應結論。
 [來源交付指南](../src/knowledge/dotnet/tooling/generation/DELIVERY.md)
 
 | 工具 | Windows x64 | Linux x64 | macOS arm64 | SDK 比對規則 |
 | --- | --- | --- | --- | --- |
-| SnippetTool | 支援 | 支援 | 尚未正式交付（#582） | 建置產生的專案需要 .NET 10 SDK |
+| SnippetTool | 支援 | 支援 | 三平台成品有 `osx-arm64` 時可用 | 建置產生的專案需要 .NET 10 SDK |
 | Format-Dotnet.ps1 | 需要 PowerShell 7.3+ | 需要 PowerShell 7.3+ | 需要 PowerShell 7.3+ | 依工作區選擇的 SDK 執行 `dotnet format` |
 | RefactorTool | 支援 | 不支援 | 不支援 | 接受 .NET 10 SDK，驗收使用 10.0.403 |
 
@@ -264,7 +276,7 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
 | `engineering-common` | `0.4.3` | 無 |
-| `dotnet` | `0.3.4` | 必須同時選 `engineering-common@0.4.3` |
+| `dotnet` | `0.3.5` | 必須同時選 `engineering-common@0.4.3` |
 
 舊 `dotnet-backend` selection 不會自動 alias 到 `dotnet`。升級前請依
 [知識套件遷移說明](knowledge-packages.md#從-dotnet-backend-遷移到-dotnet)

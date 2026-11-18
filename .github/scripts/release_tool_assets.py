@@ -4,13 +4,16 @@ import stat
 import zipfile
 
 
-def tool_asset_sources(version):
-    return {
+def tool_asset_sources(version, macos=False):
+    assets = {
         f'SnippetTool-{version}-win-x64.exe': 'generation/snippets/win-x64/SnippetTool.exe',
         f'SnippetTool-{version}-linux-x64': 'generation/snippets/linux-x64/SnippetTool',
         f'RefactorTool-{version}-win-x64.exe': 'RefactorTool.exe',
         f'RefactorTool-{version}-win-x64-notices.zip': None,
     }
+    if macos:
+        assets[f'SnippetTool-{version}-osx-arm64'] = 'generation/snippets/osx-arm64/SnippetTool'
+    return assets
 
 
 def verify_notices_names(names):
