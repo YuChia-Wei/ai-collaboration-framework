@@ -72,7 +72,8 @@ and defect-review evidence, limitations and related requirements. PRs are part o
 the public Issue channel, not a workflow exception.
 
 MUST NOT publish execution authorization or its approval/revision history, agent handoff,
-resume instructions or execution checkpoints in these public channels. Record
+agent assignments, integration or resume instructions, or execution checkpoints
+in these public channels. Record
 and retrieve authorization and handoff through the target's workflow mechanism.
 An Issue system is not a substitute workflow store. If that mechanism is unavailable,
 report the missing record or blocked handoff; do not silently fall back to an Issue,
@@ -86,10 +87,8 @@ without copying execution logs. Product approval/permission behavior is valid
 requirement content; permission for an agent to push or merge is execution authority.
 Classify by purpose and meaning, not forbidden words or headings.
 
-Preserve technical verification results, supported findings and coverage limits;
-keep agent assignments, approval history and continuation or integration
-instructions in the workflow. A template does not authorize copying those
-execution records into public prose.
+Include material coverage limits with public verification results. Apply the
+same public-content boundary when filling a template.
 
 Before creating or updating content, check this boundary and correct violations
 within the authorized scope. In a read-only review, report the selected violation
