@@ -237,21 +237,21 @@ metadata，應以 selection 與實際 runtime entry 名稱核對，不能只看 
 `["claude", "codex"]`；這裡是 JSON 欄位內容，不是 YAML selection 範例。
 只裝一個 skill 並不需要先裝 orchestrator 或其他 skills。
 
-十一個 preset 的來源內容如下；`collaboration`、`complete`、`engineering`、`source-repository` 為 `0.2.0`，其餘為 `0.1.0`，knowledge 皆為空。這是來源選擇，不回填既有 Release：
+以下十一個 preset 的預設 knowledge 選擇皆為空。點選名稱可查看來源宣告中的 `version` 與完整選擇；安裝既有 Release 時，以該版 catalog 為準。
 
 | Preset | 能力範圍 | Adapter |
 | --- | --- | --- |
-| `lesson-minimal` | 只有 lesson-author（1） | Codex |
-| `knowledge` | adr-author、lesson-author（2）；名稱不代表知識套件 | Codex |
-| `work-management` | pr-author、orchestrator（2） | Codex |
-| `context-maintenance` | auditor、governance（2） | Codex |
-| `project-initialization` | ai-context-init（1） | Claude、Codex |
-| `engineering` | 需求、領域模型、軟體架構、規格、測試設計、診斷、實作與驗證（11） | Codex |
-| `source-repository` | 工程與記錄／編排 skills（15） | Codex |
-| `collaboration` | 工程與記錄／編排 skills，無 context 三項（15） | Codex |
-| `complete` | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（17） | Codex |
-| `sub-agents` | 六個角色，不含 skills | Codex |
-| `sub-agents-claude` | 六個角色，不含 skills | Claude |
+| [`lesson-minimal`](../src/profiles/lesson-minimal.yaml) | 只有 lesson-author（1） | Codex |
+| [`knowledge`](../src/profiles/knowledge.yaml) | adr-author、lesson-author（2）；名稱不代表知識套件 | Codex |
+| [`work-management`](../src/profiles/work-management.yaml) | pr-author、orchestrator（2） | Codex |
+| [`context-maintenance`](../src/profiles/context-maintenance.yaml) | auditor、governance（2） | Codex |
+| [`project-initialization`](../src/profiles/project-initialization.yaml) | ai-context-init（1） | Claude、Codex |
+| [`engineering`](../src/profiles/engineering.yaml) | 需求、領域模型、軟體架構、規格、測試設計、診斷、實作與驗證（11） | Codex |
+| [`source-repository`](../src/profiles/source-repository.yaml) | 工程與記錄／編排 skills（15） | Codex |
+| [`collaboration`](../src/profiles/collaboration.yaml) | 工程與記錄／編排 skills，無 context 三項（15） | Codex |
+| [`complete`](../src/profiles/complete.yaml) | collaboration 加 auditor、governance；不含 init、user-story-author、workflow-records（17） | Codex |
+| [`sub-agents`](../src/profiles/sub-agents.yaml) | 六個角色，不含 skills | Codex |
+| [`sub-agents-claude`](../src/profiles/sub-agents-claude.yaml) | 六個角色，不含 skills | Claude |
 
 Preset 的精確 ID 陣列以下載 catalog 為準；若要基於 preset 增減 skill、
 knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測內容。
