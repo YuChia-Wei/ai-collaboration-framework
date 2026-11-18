@@ -19,8 +19,9 @@ POLICY_PATH = '.ai/project/sub-agent-policy.json'
 LIMIT = 256 * 1024
 TIERS = ('routine', 'reasoning', 'premium')
 TASKS = {'inventory': 'routine', 'translation': 'routine', 'synthesis': 'routine',
-         'implementation': 'reasoning', 'semantic-review': 'reasoning',
-         'independent-review': 'reasoning'}
+         'general-reasoning': 'reasoning', 'implementation': 'reasoning',
+         'semantic-review': 'reasoning', 'independent-review': 'reasoning',
+         'visual-recognition': {'codex': 'visual', 'claude': 'reasoning'}}
 
 
 class PolicyError(ValueError):
@@ -54,10 +55,11 @@ def decode(raw):
 
 def defaults():
     """Explicit initialization proposal; never an implicit fallback for a missing file."""
-    return {'schema_version': 1, 'on_unavailable': 'stop', 'tasks': dict(TASKS),
+    return {'schema_version': 2, 'on_unavailable': 'stop', 'tasks': deepcopy(TASKS),
             'adapters': {
                 'codex': {'routine': {'model': 'gpt-6-luna', 'effort': 'medium'},
-                          'reasoning': {'model': 'gpt-6.1-sol', 'effort': 'medium'},
+                          'reasoning': {'model': 'gpt-6.2-sol', 'effort': 'medium'},
+                          'visual': {'model': 'gpt-6.1-terra', 'effort': 'medium'},
                           'premium': {'model': 'gpt-6-astra', 'effort': 'low'}},
                 'claude': {'routine': {'model': 'haiku', 'effort': None},
                            'reasoning': {'model': 'sonnet', 'effort': 'medium'},
@@ -68,15 +70,16 @@ def defaults():
 def validate(value):
     require(type(value) is dict and set(value) == {
         'schema_version', 'on_unavailable', 'tasks', 'adapters', 'extensions'}, 'policy fields')
-    require(type(value['schema_version']) is int and value['schema_version'] == 1, 'policy version')
+    version = value['schema_version']
+    require(type(version) is int and version in (1, 2), 'policy version')
     require(value['on_unavailable'] == 'stop', 'parent fallback is unsupported')
     require(type(value['extensions']) is dict, 'extensions must be an object')
-    require(type(value['tasks']) is dict and value['tasks'], 'task mapping required')
-    for task, tier in value['tasks'].items():
-        require(re.fullmatch(r'[a-z][a-z0-9-]{0,63}', task) and tier in TIERS, 'task mapping')
-    require(type(value['adapters']) is dict and set(value['adapters']) == {'codex', 'claude'}, 'adapter closure')
-    for adapter, tiers in value['adapters'].items():
-        require(type(tiers) is dict and set(tiers) == set(TIERS), 'tier closure')
+    adapters = value['adapters']
+    require(type(adapters) is dict and set(adapters) == {'codex', 'claude'}, 'adapter closure')
+    required_tiers = set(TIERS)
+    for adapter, tiers in adapters.items():
+        allowed_tiers = required_tiers | {'visual'} if version == 2 and adapter == 'codex' else required_tiers
+        require(type(tiers) is dict and required_tiers <= set(tiers) <= allowed_tiers, 'tier closure')
         models = []
         for tier, choice in tiers.items():
             require(type(choice) is dict and set(choice) == {'model', 'effort'}, 'choice fields')
@@ -90,7 +93,17 @@ def validate(value):
             # Custom future IDs require owner classification; known premium families cannot be demoted.
             require(tier == 'premium' or not re.search(r'astra|opus', model, re.I), 'premium model in ordinary tier')
             models.append(model)
-        require(len(set(models)) == 3, 'tiers must use distinct models')
+        require(len(set(models)) == len(tiers), 'tiers must use distinct models')
+    require(type(value['tasks']) is dict and value['tasks'], 'task mapping required')
+    for task, binding in value['tasks'].items():
+        require(type(task) is str and re.fullmatch(r'[a-z][a-z0-9-]{0,63}', task), 'task name')
+        if type(binding) is str:
+            require(binding in required_tiers, 'task mapping')
+        else:
+            require(version == 2 and type(binding) is dict and set(binding) == set(adapters),
+                    'task adapter mapping')
+            for adapter, tier in binding.items():
+                require(type(tier) is str and tier in adapters[adapter], 'task adapter tier')
     # A proposal must be readable after apply, including extension values.
     require(decode(encode(value)) == value, 'policy JSON round trip')
     return value
@@ -252,11 +265,14 @@ def version_at_least(value, minimum):
 def resolve(policy, adapter, task, *, tier=None, authority_ref=None, observations=None, profile=None):
     validate(policy)
     require(adapter in policy['adapters'] and task in policy['tasks'], 'unknown adapter or task')
-    selected_tier = tier or policy['tasks'][task]
-    require(selected_tier in TIERS, 'unknown tier')
+    binding = policy['tasks'][task]
+    task_tier = binding[adapter] if type(binding) is dict else binding
+    selected_tier = task_tier if tier is None else tier
+    choices = policy['adapters'][adapter]
+    require(type(selected_tier) is str and selected_tier in choices, 'unknown tier')
     if selected_tier == 'premium':
         require(type(authority_ref) is str and authority_ref.strip(), 'separate premium authorization required')
-    choice = deepcopy(policy['adapters'][adapter][selected_tier])
+    choice = deepcopy(choices[selected_tier])
     # Profile is an explicit parsed configuration observation, not an arbitrary file lookup.
     if profile is not None:
         require(type(profile) is dict and set(profile) <= {'model', 'effort'}, 'profile observation fields')
@@ -308,7 +324,9 @@ def execute(request):
               'resolve': {'project_root', 'adapter', 'task', 'tier', 'authority_ref', 'observations', 'profile'}}
     require(operation in extras and set(request) <= common | extras[operation], 'operation or request fields')
     if operation == 'defaults':
-        return {'outcome': 'proposed', 'changed': False, 'policy': defaults(), 'native_settings_proposal': native_defaults(defaults())}
+        proposal = defaults()
+        return {'outcome': 'proposed', 'changed': False, 'policy': proposal,
+                'native_settings_proposal': native_defaults(proposal)}
     if operation == 'inspect':
         return inspect(request['project_root'])
     if operation == 'plan':

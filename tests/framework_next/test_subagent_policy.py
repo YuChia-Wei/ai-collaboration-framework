@@ -17,7 +17,7 @@ from distribution import catalog, installation_state as state
 
 class PolicyTests(unittest.TestCase):
     def test_task_choice_is_independent_of_parent_and_premium_needs_authority(self):
-        for adapter, routine, reasoning in [('codex', 'gpt-6-luna', 'gpt-6.1-sol'),
+        for adapter, routine, reasoning in [('codex', 'gpt-6-luna', 'gpt-6.2-sol'),
                                              ('claude', 'haiku', 'sonnet')]:
             self.assertEqual(policy.resolve(policy.defaults(), adapter, 'inventory')['model'], routine)
             self.assertEqual(policy.resolve(policy.defaults(), adapter, 'implementation')['model'], reasoning)
@@ -28,6 +28,56 @@ class PolicyTests(unittest.TestCase):
             self.assertFalse(selected['invocation_observed'])
         with self.assertRaisesRegex(ValueError, 'unknown'):
             policy.resolve(policy.defaults(), 'codex', 'unspecified')
+
+    def test_visual_task_has_adapter_choices_and_protects_premium_tiers(self):
+        proposed = policy.defaults()
+        visual = policy.resolve(proposed, 'codex', 'visual-recognition')
+        self.assertEqual(visual['dispatch'], {'model': 'gpt-6.1-terra',
+                                             'model_reasoning_effort': 'medium', 'fork_turns': 'none'})
+        self.assertEqual(visual['availability'], 'unknown')
+        self.assertEqual(policy.resolve(proposed, 'claude', 'visual-recognition')['dispatch'],
+                         {'model': 'sonnet', 'effort': 'medium'})
+        self.assertEqual(policy.resolve(proposed, 'codex', 'general-reasoning')['dispatch']['model'],
+                         'gpt-6.2-sol')
+        proposed['tasks']['visual-recognition']['claude'] = 'routine'
+        self.assertEqual(policy.resolve(proposed, 'claude', 'visual-recognition')['dispatch'],
+                         {'model': 'haiku'})
+        proposed['tasks']['visual-recognition']['codex'] = 'premium'
+        with self.assertRaisesRegex(ValueError, 'authorization'):
+            policy.resolve(proposed, 'codex', 'visual-recognition')
+        proposed['adapters']['codex']['visual']['model'] = 'gpt-6.2-astra'
+        with self.assertRaisesRegex(ValueError, 'premium model in ordinary tier'):
+            policy.validate(proposed)
+        for invalid in ({'codex': 'visual'}, {'claude': 'visual', 'codex': 'visual'}):
+            proposed = policy.defaults()
+            proposed['tasks']['visual-recognition'] = invalid
+            with self.subTest(mapping=invalid), self.assertRaisesRegex(ValueError, 'task adapter'):
+                policy.validate(proposed)
+
+    def test_version_one_policy_keeps_adopted_choices_when_new_defaults_are_proposed(self):
+        legacy = {
+            'schema_version': 1, 'on_unavailable': 'stop',
+            'tasks': {'implementation': 'reasoning', 'translation': 'routine'},
+            'adapters': {
+                'codex': {'routine': {'model': 'gpt-team-luna', 'effort': 'low'},
+                          'reasoning': {'model': 'gpt-6.1-sol', 'effort': 'high'},
+                          'premium': {'model': 'gpt-6-astra', 'effort': 'low'}},
+                'claude': {'routine': {'model': 'haiku', 'effort': None},
+                           'reasoning': {'model': 'sonnet', 'effort': 'medium'},
+                           'premium': {'model': 'opus', 'effort': 'medium'}}},
+            'extensions': {'owner': 'team'}}
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name).resolve()
+            before = policy.plan(str(root), legacy)
+            policy.apply(str(root), before['plan'], before['plan_sha256'])
+            path = root / policy.POLICY_PATH
+            raw = path.read_bytes()
+            candidate = policy.execute({'operation': 'defaults'})['policy']
+            policy.plan(str(root), candidate)
+            result = policy.execute({'operation': 'resolve', 'project_root': str(root),
+                                     'adapter': 'codex', 'task': 'implementation'})
+            self.assertEqual((result['model'], result['effort']), ('gpt-6.1-sol', 'high'))
+            self.assertEqual(path.read_bytes(), raw)
 
     def test_provider_overrides_availability_and_effort(self):
         for profile in [{'model': 'gpt-6-astra'}, {'effort': 'ultra'}]:
@@ -175,16 +225,25 @@ class CompatibilityTests(unittest.TestCase):
                                       cwd=root, timeout=45)
             result = invoke(request)
             self.assertEqual(result.returncode, 0, (result.stdout, result.stderr))
-            self.assertEqual(json.loads(result.stdout)['policy']['adapters']['claude']['routine']['model'], 'haiku')
+            proposed = json.loads(result.stdout)
+            self.assertEqual(proposed['policy']['schema_version'], 2)
+            self.assertEqual(proposed['native_settings_proposal']['codex']['agents']['default_subagent_model'],
+                             'gpt-6-luna')
+            self.assertEqual(proposed['native_settings_proposal']['claude']['env']['CLAUDE_CODE_SUBAGENT_MODEL'],
+                             'haiku')
             project = root / 'consumer'
             project.mkdir()
-            request.update(operation='plan', project_root=str(project), proposed=policy.defaults())
+            request.update(operation='plan', project_root=str(project), proposed=proposed['policy'])
             prepared = json.loads(invoke(request).stdout)
             request.pop('proposed')
             request.update(operation='apply', plan=prepared['plan'], plan_sha256=prepared['plan_sha256'])
             result = invoke(request)
             self.assertEqual(result.returncode, 0, (result.stdout, result.stderr))
-            self.assertEqual(policy.inspect(str(project))['policy'], policy.defaults())
+            self.assertEqual(policy.inspect(str(project))['policy'], proposed['policy'])
+            resolved = invoke({'engine_root': str(engine), 'engine': pin, 'operation': 'resolve',
+                               'project_root': str(project), 'adapter': 'codex', 'task': 'visual-recognition'})
+            self.assertEqual(resolved.returncode, 0, (resolved.stdout, resolved.stderr))
+            self.assertEqual(json.loads(resolved.stdout)['dispatch']['model'], 'gpt-6.1-terra')
             from distribution import subagent_registry as registry
             raw = 'name = "team-worker"\n'
             custom = registry.empty()

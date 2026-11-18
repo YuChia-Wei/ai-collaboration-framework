@@ -10,8 +10,8 @@ Resolve project model preferences from `.ai/project/`; a legacy-only project may
 
 
 Before delegation read `.ai/project/sub-agent-policy.json` and select a task
-(default hint: synthesis). Use Haiku for routine work, Sonnet when the task
-needs substantive reasoning, and Opus only with separate explicit authority.
+(default hint: synthesis). Use the policy's adapter and task choices.
+Premium selection requires separate explicit authority.
 Pass the selected model at invocation. Model overrides require Claude Code
 2.1.251+; explicit effort overrides require 2.1.292+ and model support. Do not
 force an effort onto Haiku without supported capability evidence. Check forced
