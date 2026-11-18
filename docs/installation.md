@@ -639,7 +639,8 @@ Legacy v0.18／早期 RC 的移轉、跨電腦復原、全專案清除都不是�
 不要刪除 `.ai/framework.operation` 或 `.ai/config-transition.operation` 來繞過狀態。
 先 inspect。工具仍執行時應等待其完成；工具介面的 yield 不是安裝逾時或失敗。
 
-確實需要 recover 時，由復原 owner 選 `finish` 或 `restore`，使用相同 API
+確實需要 recover 時，依[復原手冊](recovery.md)選擇方向。本次升級若已將
+`.ai/custom/` 更名為 `.ai/project/`，只能選 `finish`。請使用相同 API
 共同欄位，加上 `operation_root`、原 operation 的 `operation_sha256`、
 `direction`、目前 `expected_lock_sha256`、`expected_marker_sha256` 和真實
 maintenance 宣告。雜湊必須來自保留輸出或實際 raw bytes，不能猜測。

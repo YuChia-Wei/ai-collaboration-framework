@@ -18,8 +18,11 @@
 3. 從原回應的 `details.operation_root` 或已保留的操作紀錄定位目錄，核對
    `operation.json`、`objects/` 與 journal。錯誤回應不保證已建好完整 operation；
    缺少紀錄時交由復原 owner 判定，不以新建 JSON 補齊。
-4. 選 `finish` 完成這次操作的 after state，或選 `restore` 回到這次操作的
-   before state。已完成操作的重播只能確認相符狀態，不會替後續新變動任意降版。
+4. 一般安裝操作可用 `finish` 完成原操作，或用 `restore` 回到操作前的狀態。
+   若升級包含[舊專案目錄搬移](installation.md)，請先核對目錄是否已從
+   `.ai/custom/` 更名為 `.ai/project/`。更名前可選兩個方向；更名後只能用原
+   operation 的 `finish` 完成路徑與 lock 更新。此時要求 `restore` 會收到
+   `project-layout-finish-required`。已完成操作的重播只能確認相符狀態。
 
 | 請求欄位 | 值的來源 |
 | --- | --- |
@@ -28,7 +31,7 @@
 | `engine_root`／`engine` | 原來已驗證的 engine 目錄與完整 `engine-pin.json` 物件 |
 | `operation_root` | 原操作目錄的原始絕對路徑 |
 | `operation_sha256` | **該目錄 `operation.json` 的原始 bytes SHA-256**，不是 plan hash |
-| `direction` | 復原 owner 選定的 `finish` 或 `restore` |
+| `direction` | 依上列目錄狀態選定方向；目錄已更名時填 `finish` |
 | `expected_lock_sha256` | 當前 `.ai/framework.lock` 的 raw hash；不存在才填 `null` |
 | `expected_marker_sha256` | 當前 `.ai/framework.operation` 的 raw hash；不存在才填 `null` |
 | `maintenance` | 原 scope，加上本次重新確認的停止活動宣告 |
@@ -43,10 +46,10 @@
 實際值；相同 engine 版本號不足以取代完整 pin 與 engine bytes 驗證。
 
 ```powershell
-$PackageRoot = 'C:\aicf\v019\package'   # 原操作使用且已驗證的 package
+$PackageRoot = 'C:\aicf\selected\package'   # 原操作使用且已驗證的 package
 $OperationRoot = 'C:\aicf\recovery\selected-operation' # 原回應中的精確目錄
 $RequestPath = 'C:\aicf\recover-request.json' # 新的外部輸出檔案
-$Direction = 'restore' # owner 已選定的 finish 或 restore
+$Direction = 'finish' # 續作範例。還原前先確認本次操作尚未更名舊目錄。
 $DeclaredBy = 'project-owner' # 改成實際宣告者
 $DeclarationReference = 'selected recovery decision' # 改成可定位的本次決策
 $EngineRoot = Join-Path $PackageRoot 'engine'
