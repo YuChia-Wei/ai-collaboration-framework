@@ -10,7 +10,7 @@ from pathlib import Path
 import stat
 
 from .data import json_bytes
-from . import installation_state as state
+from . import installation_state as state, project_layout
 from .installation_io import Backend
 
 __all__ = ["plan", "member_delta", "is_noop"]
@@ -251,6 +251,13 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
     if old:
         state._check(old.document["mode_policy"] == request["mode_policy"], "mode-policy-transition",
                      "Changing an installed mode policy needs a separately supported transition.", outcome="unsupported")
+    standalone = project_layout.standalone_completion(roots["project"], reader, lockless=old is None)
+    base = project_layout.resolve(str(roots["project"]))
+    if old is None and base == project_layout.LEGACY:
+        raise state.InstallationError("legacy-layout-install",
+                                      "The project has a legacy layout and no managed installation lock.",
+                                      project_layout.LEGACY, "blocked",
+                                      "Complete a reviewed manage-sub-agents layout-plan/layout-apply before first installation.")
     names = set(candidate.members) | (set(old.members) if old else set())
     state._paths(sorted(names))
     delta = member_delta(old, candidate)
@@ -271,11 +278,13 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
     # Reserved controls may have absent ancestors; locating checks aliases,
     # linked ancestors and parent occupation without creating anything.
     guard = reader.locate(roots["project"], state.GUARD_PATH)
+    state._check(standalone is None or guard is not None, "layout-receipt-conflict",
+                 "The completed lockless migration is missing its writer coordination file.", state.GUARD_PATH, "conflict")
     if guard is not None:
         info = guard.lstat()
         state._check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size == 0,
                      "guard-conflict", "Reserved coordination path is not a direct regular file.", state.GUARD_PATH, "conflict")
-        state._check(old is not None or own_guard, "unowned-control", "Clean install cannot adopt a preexisting coordination file.", state.GUARD_PATH, "conflict")
+        state._check(old is not None or own_guard or standalone is not None, "unowned-control", "Clean install cannot adopt a preexisting coordination file.", state.GUARD_PATH, "conflict")
     protected = _protected(reader, roots["project"], request["protected_inputs"], names)
     edits, edit_objects = project_edits(reader, roots, request["project_edits"], names,
                                         [row["path"] for row in protected])
@@ -291,10 +300,15 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
                                      request["mode_policy"], project_inputs)
     state._check(len(json_bytes(prospective_lock)) <= state.LIMITS["document_bytes"],
                  "lock-limit", "Resulting lock would exceed its reader byte limit.")
-    state._lock_bytes(json_bytes(prospective_lock))
+    prospective = state._lock_bytes(json_bytes(prospective_lock))
+    layout = None
+    if old is not None and base == project_layout.LEGACY:
+        state._check(not any(row["path"].startswith(project_layout.CANONICAL + "/") for row in protected),
+                     "project-layout-input", "Supply project inputs at their observed legacy paths before migration.")
+        layout = project_layout.upgrade_plan(roots["project"], request["engine"], prospective, edits, protected)
     backend = Backend(roots, durability)
     budget = _path_budget(roots, candidate, old, delta, protected, request["engine"], edits)
-    noop = is_noop(observation, candidate, request["mode_policy"], project_inputs, edits)
+    noop = layout is None and is_noop(observation, candidate, request["mode_policy"], project_inputs, edits)
     capabilities = {item["id"] for item in candidate.selection["components"]}
     if old:
         capabilities.update(item["id"] for item in old.document["selection"]["components"])
@@ -308,6 +322,10 @@ def _prepare(request: dict, reader: state._Reader, *, own_guard: bool = False) -
                 "preserved_unknown": observation.unknown, "path_budget": budget,
                 "prerequisites": _prerequisites(noop, os.name == "nt", any(row["action"] == "mode-only" for row in delta),
                                                 reduced_macos=backend.macos)}
+    if layout is not None:
+        document["project_layout"] = layout
+    if standalone is not None:
+        document["completed_project_layout_sha256"] = standalone
     # Snapshot caller-owned containers; later caller mutations cannot silently
     # change the returned plan without changing its advertised hash.
     raw = json_bytes(document)

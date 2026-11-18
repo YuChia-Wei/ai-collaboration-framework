@@ -2,7 +2,7 @@
 
 The source entry establishes the fixed engine bootstrap. Apply and recover hold
 native participating-writer exclusion and demand a fresh caller declaration.
-No fetch, dependency installation, migration, activation or cleanup service.
+No fetch, dependency installation, activation or general project-data migration.
 """
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ import secrets
 import stat
 
 from .data import json_bytes
-from . import installation_state as state
+from . import installation_state as state, project_layout
 from . import installation_plan as planning
 from .installation_io import Backend, Changes, IO, budget, sibling, platform_diagnostics
 from .maintenance_coordination import WriterLock, declaration
@@ -33,6 +33,7 @@ class Operation:
     before: state.InstalledLock | None
     after: state.InstalledLock
     objects: dict[str, bytes]
+    layout: dict | None = None
 
     @property
     def names(self) -> set[str]:
@@ -145,7 +146,7 @@ def _bundle(request: dict, prepared: tuple, operation_id: str, reader: state._Re
                 "protected_inputs": result["plan"]["protected_inputs"], "project_data_action": "none"}
     raw = json_bytes(document)
     state._document(raw, "operation.json")
-    return Operation(document, raw, before, after, objects)
+    return Operation(document, raw, before, after, objects, result["plan"].get("project_layout"))
 
 
 def _object(reader: state._Reader, root: Path, digest: str, objects: dict) -> bytes:
@@ -216,7 +217,8 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
     retained_plan = state._document(plan_raw, "plan.json")
     state._shape(retained_plan, {"api_version", "operation", "project_root", "candidate_identity", "engine", "expected_lock_sha256", "mode_policy",
                                  "roots", "durability", "project_data_action", "protected_inputs", "project_edits", "project_inputs", "noop",
-                                 "maintenance_scope", "delta", "preserved_unknown", "path_budget", "prerequisites"})
+                                 "maintenance_scope", "delta", "preserved_unknown", "path_budget", "prerequisites"},
+                 {"project_layout", "completed_project_layout_sha256"})
     state._check(type(retained_plan["api_version"]) is int and retained_plan["api_version"] == 2
                  and retained_plan["operation"] == "plan" and retained_plan["engine"] == engine
                  and retained_plan["project_root"] == doc["project_root"]
@@ -229,7 +231,15 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
                  "operation-plan-binding", "Retained plan and operation disagree.")
     _edit_record(doc["project_edits"], reader, root, objects,
                  set(after.members) | (set(before.members) if before else set()), doc["protected_inputs"])
-    operation = Operation(doc, raw, before, after, objects)
+
+    if "completed_project_layout_sha256" in retained_plan:
+        state._check(before is None, "operation-layout-binding", "Standalone completion is only needed for first installation.")
+        state._digest(retained_plan["completed_project_layout_sha256"])
+    layout = retained_plan.get("project_layout")
+    if layout is not None:
+        state._check(before is not None, "operation-layout-binding", "Retained layout requires an existing installation.")
+        project_layout.validate_upgrade(project, layout, after, engine, doc["protected_inputs"])
+    operation = Operation(doc, raw, before, after, objects, layout)
     state._check(retained_plan["maintenance_scope"] == operation.scope, "operation-plan-binding", "Retained maintenance scope differs.")
     declaration(doc["maintenance"], operation.scope)
     _protected_shape(doc["protected_inputs"], operation.names)
@@ -289,6 +299,10 @@ def _layout(io: IO, roots: dict[str, Path], operation: Operation, rows: list[dic
         paths.append(("staging", roots["staging"], run + "/" + state.LOCK_PATH))
         for name in siblings.values():
             state._check(io.locate(roots["project"], name) is None, "sibling-collision", "Derived sibling path already exists.", name, "conflict")
+    if operation.layout is not None:
+        paths.extend(("project", roots["project"], name) for name in (
+            project_layout.LEGACY, project_layout.CANONICAL, ".ai/local/.layout-00000000",
+            *(row["path"] for row in operation.layout["writes"])))
     paths.extend(("engine", roots["engine"], row["path"]) for row in operation.document["engine"]["files"])
     budget(paths, stage="apply" if rows is not None else "recover")
     for _, root, name in paths:
@@ -350,11 +364,12 @@ def _current(io: IO, project: Path, operation: Operation, *, reconstruct: bool =
     return current
 
 
-def _verify_target(io: IO, project: Path, operation: Operation, target: state.InstalledLock | None) -> None:
+def _verify_target(io: IO, project: Path, operation: Operation, target: state.InstalledLock | None, *, relocated=False) -> None:
     members = operation.descriptors(target)
     for name in sorted(operation.names):
         row = members.get(name)
-        io.expect(project, name, operation.objects[row["sha256"]] if row else None, row["mode"] if row else None)
+        destination = project_layout.relocated(name) if relocated else name
+        io.expect(project, destination, operation.objects[row["sha256"]] if row else None, row["mode"] if row else None)
 
 
 def _matches(operation: Operation, current: dict, target: state.InstalledLock | None, lock_raw: bytes | None, windows: bool) -> bool:
@@ -406,6 +421,9 @@ def _finish(io: IO, guard: WriterLock, project: Path, operation: Operation, targ
     if target is operation.after:
         for row in target.document["project_inputs"]:
             state._check(_hash(io.raw(project, row["path"])) == row["sha256"], "project-input-drift", "Paired project input differs after transition.", row["path"], "conflict")
+    if target is operation.after and operation.layout is not None:
+        _finish_layout(io, guard, project, operation)
+        return
     io.changes.lock_sha256 = _hash(desired_lock)
     _verify_target(io, project, operation, target)
     guard.verify()
@@ -419,6 +437,54 @@ def _finish(io: IO, guard: WriterLock, project: Path, operation: Operation, targ
     io.expect(project, state.MARKERS[0], None)
     io.changes.protected = _protected(io, project, operation.document["protected_inputs"], operation.names, reconstruct=reconstruct)
     guard.verify()
+
+
+
+def _layout_started(project: Path, operation: Operation) -> bool:
+    return operation.layout is not None and project_layout.resolve(str(project)) == project_layout.CANONICAL
+
+
+def _finish_layout(io: IO, guard: WriterLock, project: Path, operation: Operation) -> None:
+    # Once renamed, only finish is admissible. The managed files must already be
+    # exactly at the accepted after-state. The paired marker may have been removed.
+    io.expect(project, state.MARKERS[0], operation.raw)
+    paired = io.raw(project, state.MARKERS[1], state.LIMITS["document_bytes"])
+    state._check(paired in (None, operation.raw), "unrelated-marker", "Project marker differs from the retained operation.")
+    relocated = _layout_started(project, operation)
+    _verify_target(io, project, operation, operation.after, relocated=relocated)
+    _layout_protected(io, project, operation, relocated=relocated)
+    project_layout.apply_upgrade(project, operation.layout, operation.after, guard)
+    io.reader.listings.clear()
+    _verify_layout_target(io, project, operation)
+    io.prune_empty_managed_directories(project, set(operation.after.members))
+    guard.verify()
+    if paired is not None:
+        io.remove(project, state.MARKERS[1], operation.raw)
+    io.remove(project, state.MARKERS[0], operation.raw)
+    io.expect(project, state.MARKERS[0], None)
+    guard.verify()
+
+
+def _layout_protected(io: IO, project: Path, operation: Operation, *, relocated: bool) -> None:
+    protected = operation.document["protected_inputs"]
+    names = operation.names
+    if relocated:
+        protected = sorted(({**row, "path": project_layout.relocated(row["path"])} for row in protected),
+                           key=lambda row: row["path"])
+        names = {project_layout.relocated(name) for name in names}
+    io.changes.protected = _protected(io, project, protected, names)
+
+
+def _verify_layout_target(io: IO, project: Path, operation: Operation) -> None:
+    lock = operation.layout["lock"]
+    final = state._lock_bytes(lock["content"].encode("utf-8"))
+    io.expect(project, state.LOCK_PATH, final.raw)
+    _verify_target(io, project, operation, operation.after, relocated=True)
+    _layout_protected(io, project, operation, relocated=True)
+    for row in final.document["project_inputs"]:
+        state._check(_hash(io.raw(project, row["path"])) == row["sha256"], "project-input-drift",
+                     "Paired project input differs after relocation.", row["path"], "conflict")
+    io.changes.lock_sha256 = final.sha256
 
 
 def apply(request: dict | bytes) -> dict:
@@ -489,7 +555,9 @@ def _recovery_controls(io: IO, project: Path, operation: Operation, request: dic
                  "recovery-control-binding", "Current lock/marker differs from explicitly expected raw hash/absence.", outcome="conflict")
     state._check(paired_marker is None or marker == operation.raw, "recovery-incomplete", "A project marker without its managed marker is not a known phase.")
     state._check(marker in (None, operation.raw), "unrelated-marker", "Marker is not this exact immutable operation; malformed/newer state is preserved.", state.MARKERS[0], "conflict")
+    final = operation.layout["lock"]["after_sha256"] if operation.layout is not None else None
     state._check(lock == operation.after.raw or lock == (operation.before.raw if operation.before else None)
+                 or (final is not None and _hash(lock) == final)
                  or (request.get("reconstruct_missing_managed", False) and lock is None),
                  "unrelated-lock", "Lock is not an exact before/after binding; unknown/torn/newer state is preserved.", state.LOCK_PATH, "conflict")
     return lock, marker
@@ -516,6 +584,26 @@ def _sibling_residue(io: IO, project: Path, operation: Operation, siblings: dict
     return residue
 
 
+
+def _recover_layout(io: IO, project: Path, operation_root: Path, request: dict) -> dict:
+    state._check(request["direction"] == "finish", "project-layout-finish-required",
+                 "The project directory was relocated. Finish this exact upgrade before any new maintenance.")
+    with WriterLock(io, project, allow_create=False) as guard:
+        state._engine(io.reader, state._root(request["engine_root"]), request["engine"])
+        operation = _read_operation(io.reader, operation_root, request["operation_sha256"], request["engine"], project)
+        declaration(request["maintenance"], operation.scope)
+        _, marker = _recovery_controls(io, project, operation, request)
+        state._check(_layout_started(project, operation), "project-layout-drift",
+                     "The project layout changed while acquiring its writer.", outcome="conflict")
+        if marker is None:
+            project_layout.verify_upgrade_state(project, operation.layout, complete=True)
+            _verify_layout_target(io, project, operation)
+            return _result("recover", "already-matching", io.changes, "managed-bytes-consistent")
+        io.changes.marker_admitted = True
+        _finish_layout(io, guard, project, operation)
+        return _result("recover", "recovered", io.changes, "managed-bytes-consistent")
+
+
 def recover(request: dict | bytes) -> dict:
     """Exact-record finish/restore; retained completed operations confer no rollback."""
     changes = Changes()
@@ -540,6 +628,8 @@ def recover(request: dict | bytes) -> dict:
         changes.operation_root = str(operation_root)
         siblings = _layout(io, roots, operation)
         lock, marker = _recovery_controls(io, project, operation, request)
+        if _layout_started(project, operation):
+            return _recover_layout(io, project, operation_root, request)
         current = _current(io, project, operation, reconstruct=reconstruct)
         _sibling_residue(io, project, operation, siblings)
         changes.protected = _protected(io, project, operation.document["protected_inputs"], operation.names, reconstruct=reconstruct)
@@ -555,6 +645,8 @@ def recover(request: dict | bytes) -> dict:
             target = operation.after if request["direction"] == "finish" else operation.before
             declaration(request["maintenance"], operation.scope)
             lock, marker = _recovery_controls(io, project, operation, request)
+            state._check(not _layout_started(project, operation), "project-layout-drift",
+                         "The project layout changed while acquiring its writer.", outcome="conflict")
             current = _current(io, project, operation, reconstruct=reconstruct)
             residue = _sibling_residue(io, project, operation, siblings)
             changes.protected = _protected(io, project, operation.document["protected_inputs"], operation.names, reconstruct=reconstruct)

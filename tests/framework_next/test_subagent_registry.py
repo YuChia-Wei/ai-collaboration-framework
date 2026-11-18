@@ -65,7 +65,7 @@ class RegistryTests(unittest.TestCase):
         registry, files = fixture()
         apply(self.root, registry, files)
         result = r.resolve(str(self.root), 'review', 'codex', 'independent-review')
-        self.assertEqual(result['model'], 'gpt-6.1-sol')
+        self.assertEqual(result['model'], 'gpt-6.2-sol')
         self.assertEqual(result['runtime_id'], 'local-reviewer')
         self.assertFalse(result['invocation_observed'])
         self.assertEqual(result['runtime_activation'], 'unknown')

@@ -19,8 +19,8 @@
 或必裝 skill。只安裝角色不代表外部 engine 已存在。使用與該 engine 完全一致的
 pin；更新 framework 不更新 policy、不把它加入 lock，也不擅自採納新版預設。
 舊 engine closure 僅可作歷史 catalog/lock 的讀取資料；實際執行仍須驗證現行完整 pin。
-Policy 與 registry 是兩個獨立 version 1 格式；調整模型不必改角色內容，調整角色
-也不必重新分類所有模型。Registry 不加入 framework lock，不改 installer 的所有權。
+Policy 與 registry 各自版本化。初始 policy 提案採 version 2，既有 version 1 仍可讀寫。
+Registry 維持 version 1，不加入 framework lock。模型政策與角色內容可各自更新。
 
 ## 初始政策與任務選擇
 
@@ -28,12 +28,14 @@ Policy 與 registry 是兩個獨立 version 1 格式；調整模型不必改角�
 
 | 任務 | Codex | Claude Code |
 | --- | --- | --- |
-| inventory、translation、synthesis | Luna / medium | Haiku / 不指定不支援的 effort |
-| implementation、semantic-review、independent-review | Sol / medium | Sonnet / medium |
+| 步驟清楚且範圍有限的清點、翻譯、彙整（`inventory`、`translation`、`synthesis`） | `gpt-6-luna` / medium | Haiku / 省略 effort |
+| 日常推理、實作和審查（`general-reasoning`、`implementation`、`semantic-review`、`independent-review`） | `gpt-6.2-sol` / medium | Sonnet / medium |
+| 圖像、畫面或版面辨識（`visual-recognition`） | `gpt-6.1-terra` / medium | Sonnet / medium |
 | 明確選取 premium 且另行授權 | Astra / low | Opus / medium |
 
-優先用確定性工具完成可機械化工作。分類根據實際任務，role 的 default_task
-只是提示。任務／tier mapping、模型 ID、effort 在專案 policy 中可獨立調整。
+優先用確定性工具完成可機械化工作。依實際任務分類。當清點、翻譯或彙整需要綜合判斷，
+可選一般推理任務。角色的 `default_task` 提供起始建議。任務對應、模型 ID 與 effort
+皆可由專案修改。
 提高 effort 或採用新模型仍受已接受範圍約束；不能藉改 policy 隱藏新的成本決定。
 已知 Astra/Opus 不得配置在普通 tier；未來未知模型的能力／成本分類由 owner 決定。
 premium 的 `authority_ref` 只是傳入的授權依據，工具不驗證人的同意、不執行模型。
@@ -41,7 +43,8 @@ premium 的 `authority_ref` 只是傳入的授權依據，工具不驗證人的�
 ## Provider 差異
 
 Codex 解析順序為 custom profile > explicit spawn > `[agents]` default > parent。
-因此 task 型 Codex profiles 不寫死 model/effort。每次傳入選型值，並明確合併：
+因此 task 型 Codex profiles 由每次委派傳入明確的 model 和 effort。
+下列 Luna 設定是可另行合併的低成本 native 預設，日常委派仍須明確選型。
 
 ```toml
 [agents]
@@ -85,7 +88,7 @@ python -I -B <engine-root>/src/tools/manage-sub-agents.py < request.json
 
 | operation | 其他輸入 | 結果 |
 | --- | --- | --- |
-| defaults | 無 | version 1 初始政策與 native settings 建議；無寫入 |
+| defaults | 無 | version 2 初始政策與 native settings 建議；無寫入 |
 | inspect | project_root | policy、raw SHA、ownership，或 missing |
 | plan | project_root、proposed | 綁定前後 bytes 的 plan、plan_sha256；唯讀 |
 | apply | project_root、plan、plan_sha256 | 只原子更新固定 policy 路徑；拒絕 stale plan |
@@ -100,10 +103,18 @@ python -I -B <engine-root>/src/tools/manage-sub-agents.py < request.json
 | layout-plan | project_root | 從舊目錄遷移的完整前後內容、參照修改與 lock transition；唯讀 |
 | layout-apply | project_root、plan、plan_sha256 | 套用已接受的遷移；可續作，拒絕漂移與重播覆寫 |
 
-Policy schema version 1 有 `on_unavailable: stop`、`tasks`、`adapters` 與
-`extensions`。正式 reader/writer 為 engine 中的 `distribution.subagent_policy`。
-未知版本／欄位拒絕，合法 extensions 保留。更新時先 inspect，修改 proposed，
-再 plan/apply；不要用 defaults 取代現有客製。單檔 atomic replacement 搭配
+Policy schema versions 1 和 2 都包含 `on_unavailable: stop`、`tasks`、
+`adapters` 與 `extensions`。兩個版本都支援共用的 `routine`、`reasoning`
+與 `premium` tiers。Version 2 可為 Codex 加上 `visual` tier，也可為同一任務
+指定兩個 adapter 的 tier，例如
+`"visual-recognition": {"codex": "visual", "claude": "reasoning"}`。
+正式 reader/writer 為 engine 中的 `distribution.subagent_policy`，會拒絕未知版本與欄位，
+保留合法 extensions。
+
+若要採用新版選型，先 inspect，保留專案已採納的任務與模型設定，再把選定的變更納入
+proposed 並執行 plan/apply。要採用視覺任務的 adapter 對應時，將該提案改為 version 2。
+`defaults`、`inspect`、`plan` 和 framework 升級皆保留現有 policy。
+單檔 atomic replacement 搭配
 exclusive writer guard，配合 raw SHA 檢查；外部編輯器不遵守 guard 的競爭仍須避免。
 遇到遺留 `.json.writer`，確認原 writer 已停止後再由 owner 處理，不自動刪除。
 
@@ -122,13 +133,14 @@ profile 與 task 的衝突。caller 須提供實際有效設定，工具不讀�
 共用目錄遷移同時處理已登記的 sub-agents 與 skills；技能的多檔投影與
 客製協調規則見[專案 skill 管理](skill-management.md)。
 
-新專案使用 `.ai/project/`。若只有 `.ai/custom/`，新工具繼續從該目錄讀寫，
-回報實際路徑；不會將舊 registry 誤認為空白，也不會暗中建立第二份政策。
+新專案使用 `.ai/project/`。既有安裝仍在舊目錄時，依
+[安裝升級程序](installation.md) 檢視並套用同一次升級中的目錄遷移。
+管理工具可讀取舊目錄以供遷移及核對，現行角色的政策入口使用 `.ai/project/`。
 兩個目錄同時存在時，即使內容相同也停止，須先由專案釐清唯一來源。
-舊版 v3 role policy 路徑及既有 23、25、26、27 檔 engine closure 保留讀取相容性；
+舊版 v3 role policy 路徑及既有 23、25、26、27 檔 engine closure 保留讀取相容性，
 執行仍須提供目前完整且驗證過的 engine pin。
 
-明確更名時，先停止會修改專案設定、角色與安裝的其他工具：
+只執行目錄遷移時，先停止會修改專案設定、角色與安裝的其他工具：
 
 1. 用 `layout-inspect` 核對舊目錄、lock 與完整清單。
 2. 用 `layout-plan` 取得完整前後雜湊及修改清單，保留回傳的 plan 與 plan_sha256。

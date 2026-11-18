@@ -612,7 +612,7 @@ def migration_writes(project):
                                'after_sha256': p.digest(replacement), 'content': replacement.decode('utf-8')}
                               for target in targets)
     check_resources(updated, content, packages(project))
-    if before is not None:
+    if updated != registry:
         validate(updated)
         raw = p.encode(updated)
         writes.append({'path': CANONICAL + '/skill-registry.json', 'before_sha256': before,

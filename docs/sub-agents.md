@@ -108,7 +108,7 @@ parent 的 integration 決策。Fixed-head auditor 由 parent 明確提供固定
 比較基準、範圍、判準、實際權限與停止條件；不依賴來源庫的 classifier、
 packet tier、lease 或 preflight 腳本。若 target 另有必要檢查，仍須確認
 工具可用且執行方式已授權；無法執行時回報 blocked。套件不提供 source repository 的 `.dev/`
-治理檔案。六個角色套件為 `0.2.1`，不改角色的檔案與工具責任邊界。
+治理檔案。六個角色套件為 `0.2.2`，不改角色的檔案與工具責任邊界。
 檔案發布、安裝驗證、runtime discovery 與角色實際執行是
 不同證據。
 
@@ -116,7 +116,8 @@ packet tier、lease 或 preflight 腳本。若 target 另有必要檢查，仍�
 
 使用[獨立管理指南](sub-agent-management.md)設定 project-owned policy。模型偏好、
 角色內容與 runtime entries 各有 owner；framework 升級不重建這份 policy。
-Codex 預設 Luna，實質推理用 Sol，Astra 另行授權；Claude 對應 Haiku、Sonnet、Opus。
+初始建議以 Sol 處理日常推理、Luna 處理範圍明確的工作、Terra 處理視覺辨識。
+Claude 依任務使用 Haiku 或 Sonnet。Astra 與 Opus 需要另外授權。
 任務分類、effort、可用性與實際呼叫身分須確認，不以 role 名稱、主對話模型或
 「沒有升級」推導已節省成本。確定性工作優先直接使用工具。
 
@@ -132,4 +133,5 @@ plan、apply、resolve、compare。角色套件本身不代表已安裝外部 en
 Claude API credentials 與訂閱授權仍為不同邊界，不因本管理政策取得存取權。
 v2/v3 查詢只回傳 observations，不寫入 install-time model_resolution，亦不
 自動替代 task policy。正常安裝不依賴模型帳號；委派前須另核對可用性。
-舊 policy v1/v2 保持可讀，新角色採 v3。模型查詢不是成本同意或實際呼叫證據。
+舊角色的 `model_policy` v1/v2 保持可讀，現行角色採 v3。角色 metadata 與專案政策
+各自版本化。成本同意與實際呼叫須有各自的證據。

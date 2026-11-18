@@ -263,8 +263,8 @@ knowledge 或 adapter，改用完整 JSON selection，勿以 preset 名稱猜測
 
 | 知識包 | 版本 | 相依性 |
 | --- | --- | --- |
-| `engineering-common` | `0.4.2` | 無 |
-| `dotnet` | `0.3.3` | 必須同時選 `engineering-common@0.4.2` |
+| `engineering-common` | `0.4.3` | 無 |
+| `dotnet` | `0.3.4` | 必須同時選 `engineering-common@0.4.3` |
 
 舊 `dotnet-backend` selection 不會自動 alias 到 `dotnet`。升級前請依
 [知識套件遷移說明](knowledge-packages.md#從-dotnet-backend-遷移到-dotnet)
@@ -553,12 +553,30 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 不要改寫 hash、混用模板或刪除 lock 來繞過檢查。已發布的 v0.20.0 archive
 維持原樣，升級至 v0.20.0 的上述限制不會因文件更新而消失。
 
+既有安裝若只有 `.ai/custom/`，新 engine 的 `plan` 會在 `project_layout` 列出
+應搬移的目錄、已登錄 skill／sub-agent 原稿及其原封相符的 native 投影改寫、
+以及 lock 路徑與雜湊轉換。請以搬移前的實際路徑提交保護輸入和 saved selection
+編輯。核對後的 `apply` 透過同一安裝操作更新受管檔案、將資料移至 `.ai/project/`，
+並讀回更新後的 lock。兩個目錄同時存在時須先由專案 owner 釐清。未登錄文件與
+未知檔案隨目錄搬移，保留原始位元組。若某項改寫會變更保護輸入的位元組，
+計畫會拒絕該衝突。選擇中的知識 authority 仍指向舊目錄時，由 owner 另行協調
+該 binding。
+
+若專案只有舊目錄且沒有安裝 lock，先審閱並完成
+[獨立目錄遷移](sub-agent-management.md#升級與客製協調)，再計畫首次安裝。
+獨立遷移已有接受的計畫但尚未完成時，須以原計畫續作，才能開始安裝或升級。
+完成後保留遷移收據及實際狀態供首次安裝核對。
+
+若搬移前中斷，可用原 engine 與 maintenance record `recover finish` 或
+`recover restore`。目錄已更名後，須用同一個 record 及目前 lock／marker 的
+原始 SHA-256 執行 `recover finish`，完成路徑改寫和鎖定資料更新。
+
 取消選擇或卸載某個 skill/knowledge 同樣沒有單獨 `uninstall` 命令：建立不含該 component 的新 selection，再用 plan 審閱 `remove` delta。若要撤除 runtime skill entry，任何未知的 discovery 子樹、未受舊 inventory 擁有的檔案或漂移都會造成 conflict，不應以手動遞迴刪除繞過它。`reinstall-framework.py` 是另一條 Git-backed breaking reinstall 路徑，要求完整 quiescence、乾淨 Git baseline、明確 cleanup/preservation pins 與可恢復的 content；它不是一般 upgrade 或 deselect 的替代方案。
 
 ### 升級後整合公開需求規則
 
-公開需求／workflow 邊界由 requirement-author 0.2.5、user-story-author 0.2.3、
-ai-context-init 0.2.5 與 software-development-orchestrator 0.5.0 的來源指引提供。
+公開需求／workflow 邊界由 requirement-author 0.2.6、user-story-author 0.2.4、
+ai-context-init 0.2.6 與 software-development-orchestrator 0.5.0 的來源指引提供。
 版本號描述來源能力，不表示已有對應公開 Release；實際使用須核對所選成品的
 catalog、engine、pin 與已安裝版本。未選配的 skill 不會因升級自動加入。
 

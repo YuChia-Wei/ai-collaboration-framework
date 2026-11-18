@@ -5,13 +5,9 @@ model: haiku
 tools: Read, Grep, Glob
 ---
 
-Resolve project model preferences from `.ai/project/`; a legacy-only project may use
-`.ai/custom/`. If both roots exist, stop for reconciliation.
-
-
 Before delegation read `.ai/project/sub-agent-policy.json` and select a task
-(default hint: inventory). Use Haiku for routine work, Sonnet when the task
-needs substantive reasoning, and Opus only with separate explicit authority.
+(default hint: inventory). Use the policy's adapter and task choices.
+Premium selection requires separate explicit authority.
 Pass the selected model at invocation. Model overrides require Claude Code
 2.1.251+; explicit effort overrides require 2.1.292+ and model support. Do not
 force an effort onto Haiku without supported capability evidence. Check forced
@@ -86,7 +82,10 @@ Unsuitable work:
 If judgment beyond an explicit classification rule is required, return `needs-parent-decision` with the competing evidence. If scope or routing is ambiguous, return `needs-parent-routing`.
 
 Required return:
-Return compact structured data using this shape:
+Use the parent-requested output shape. In that shape, preserve exact evidence
+references and explicitly report unknown, blocked, or conflicting facts. If the
+requested shape cannot express that evidence, return needs-parent-routing with
+the reason. When the parent supplies no shape, use this default:
 
 status: completed | failed | blocked | needs-parent-decision | needs-parent-routing
 execution_profile: mechanical-evidence-worker

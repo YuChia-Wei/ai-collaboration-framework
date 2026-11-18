@@ -24,9 +24,10 @@ triggers:
 - perform a bounded path or mode inventory
 inputs:
 - A bounded evidence request with exact repository paths, artifacts, or deterministic commands.
-- The parent-owned output shape and stop conditions.
+- The parent's stop conditions and any requested output shape.
 outputs:
-- A compact, structured evidence projection with exact source references.
+- A compact, structured evidence projection with exact source references, using the parent's requested
+  shape or the runtime default when the parent leaves the fields open.
 - Explicit unknown, blocked, or conflicting facts that deterministic evidence did not establish.
 constraints:
 - Treat deterministic CLI and validator output as authority for checksums, manifests, paths, modes, Git

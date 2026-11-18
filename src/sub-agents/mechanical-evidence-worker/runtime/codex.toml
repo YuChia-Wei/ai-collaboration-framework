@@ -3,13 +3,10 @@ description = "Codex-only read-only projection for the canonical mechanical-evid
 sandbox_mode = "read-only"
 
 developer_instructions = """
-Resolve project model preferences from `.ai/project/`; a legacy-only project may use
-`.ai/custom/`. If both roots exist, stop for reconciliation.
-
 Before delegation the parent selects a task (default hint: inventory) and reads
 `.ai/project/sub-agent-policy.json`. Pass explicit model and reasoning effort
-from that policy; never use the parent model as fallback. Routine defaults to
-Luna, substantive reasoning to Sol; Astra requires separate explicit authority.
+from that policy; never use the parent model as fallback. Use the policy's
+adapter and task choices. Premium selection requires separate explicit authority.
 Prefer deterministic tools for mechanical work. Missing policy, unavailable
 selection or conflicting runtime overrides stops this invocation. The parent
 checks actual invocation identity; configuration is not a billing guarantee.
@@ -82,7 +79,10 @@ Unsuitable work:
 If judgment beyond an explicit classification rule is required, return `needs-parent-decision` with the competing evidence. If scope or routing is ambiguous, return `needs-parent-routing`.
 
 Required return:
-Return compact structured data using this shape:
+Use the parent-requested output shape. In that shape, preserve exact evidence
+references and explicitly report unknown, blocked, or conflicting facts. If the
+requested shape cannot express that evidence, return needs-parent-routing with
+the reason. When the parent supplies no shape, use this default:
 
 status: completed | failed | blocked | needs-parent-decision | needs-parent-routing
 execution_profile: mechanical-evidence-worker
