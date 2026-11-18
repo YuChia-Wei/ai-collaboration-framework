@@ -13,6 +13,8 @@ import tempfile
 
 CANONICAL = '.ai/project'
 LEGACY = '.ai/custom'
+STANDALONE_PLAN = '.ai/local/project-layout-plan.json'
+STANDALONE_COMPLETE = '.ai/local/project-layout-complete.json'
 
 
 def resolve(project):
@@ -157,7 +159,7 @@ def _plan(project, engine, installed, *, edits=()):
                 before[relative] = {'path': relative, 'kind': 'file',
                                     'sha256': edit['after']['sha256'], 'size': edit['after']['size']}
     before = sorted(before.values(), key=lambda row: row['path'])
-    registry, _ = r.read_registry(project)
+    registry, registry_sha256 = r.read_registry(project)
     _, managed = r.lock(project)
     managed = set(managed) | (set(installed.members) if installed else set())
     p.require(not any(name.startswith((LEGACY + '/', CANONICAL + '/')) for name in managed),
@@ -189,11 +191,10 @@ def _plan(project, engine, installed, *, edits=()):
                 if replacement != raw:
                     writes.append({'path': native, 'before_sha256': wanted,
                                    'after_sha256': p.digest(replacement), 'content': replacement.decode('utf-8')})
-    old_registry = p.raw_read(r.at(project, LEGACY + '/sub-agent-registry.json'))
-    if old_registry is not None:
+    if updated != registry:
         r.validate(updated)
         raw = p.encode(updated)
-        writes.append({'path': CANONICAL + '/sub-agent-registry.json', 'before_sha256': p.digest(old_registry),
+        writes.append({'path': CANONICAL + '/sub-agent-registry.json', 'before_sha256': registry_sha256,
                        'after_sha256': p.digest(raw), 'content': raw.decode('utf-8')})
     from .skill_registry import migration_writes
     writes.extend(migration_writes(project))
@@ -237,19 +238,34 @@ def _replace(project, row, temporary_parent=None):
     p.require(p.digest(read(project, row['path'])) == row['after_sha256'], 'migration readback mismatch')
 
 
-def upgrade_plan(project, engine, installed, edits):
+def _check_protected_rewrites(document, protected):
+    from . import installation_state as s
+    changed = {row['path'] for row in document['writes'] if row['before_sha256'] != row['after_sha256']}
+    for row in protected:
+        name = row['path']
+        s._check(relocated(name) not in changed, 'layout-protected-conflict',
+                 'Project layout migration would rewrite a protected input.', name, 'conflict')
+
+
+def upgrade_plan(project, engine, installed, edits, protected):
     """Preview relocation against the exact intended intermediate installation."""
-    return _plan(project, engine, installed, edits=edits)
+    document = _plan(project, engine, installed, edits=edits)
+    _check_protected_rewrites(document, protected)
+    return document
 
 
-def validate_upgrade(project, document, installed, engine):
-    """Bind the retained move and every write to the closed upgrade plan."""
+def _validate_document(project, document, engine):
     from . import subagent_policy as p, installation_state as s
     s._shape(document, {'plan_version', 'project_root', 'source', 'destination', 'before', 'after', 'writes', 'lock', 'engine'})
     p.require(type(document['plan_version']) is int and document['plan_version'] == 1
               and document['project_root'] == str(project) and document['source'] == LEGACY
               and document['destination'] == CANONICAL and document['engine'] == engine,
-              'retained upgrade layout identity')
+              'retained project layout identity')
+    s._engine_shape(engine)
+
+
+def _validate_tree(document, managed):
+    from . import subagent_policy as p, installation_state as s
     original = {}
     for row in s._array(document['before'], s.LIMITS['entries']):
         kind = row.get('kind') if type(row) is dict else None
@@ -263,13 +279,13 @@ def validate_upgrade(project, document, installed, engine):
         original[name] = dict(row)
     after = deepcopy(original)
     names = set()
+    prefixes = (CANONICAL + '/sub-agents/', CANONICAL + '/skills/', '.codex/agents/',
+                '.claude/agents/', '.agents/skills/', '.claude/skills/')
+    registries = {CANONICAL + '/sub-agent-registry.json', CANONICAL + '/skill-registry.json'}
     for row in s._array(document['writes'], s.LIMITS['entries']):
         s._shape(row, {'path', 'before_sha256', 'after_sha256', 'content'})
         name = s._relative(row['path'])
-        prefixes = (CANONICAL + '/sub-agents/', CANONICAL + '/skills/', '.codex/agents/',
-                    '.claude/agents/', '.agents/skills/', '.claude/skills/')
-        registries = {CANONICAL + '/sub-agent-registry.json', CANONICAL + '/skill-registry.json'}
-        p.require(name not in names and name not in installed.members
+        p.require(name not in names and name not in managed
                   and (name in registries or name.startswith(prefixes)), 'retained layout write boundary')
         names.add(name)
         s._digest(row['before_sha256'])
@@ -279,11 +295,65 @@ def validate_upgrade(project, document, installed, engine):
             relative = name[len(CANONICAL) + 1:]
             p.require(original.get(relative, {}).get('sha256') == row['before_sha256'], 'retained layout preimage')
             after[relative].update(sha256=row['after_sha256'], size=len(raw))
-    s._paths(sorted(set(installed.members) | names))
+    s._paths(sorted(set(managed) | names))
     p.require(document['before'] == [original[n] for n in sorted(original)]
               and document['after'] == [after[n] for n in sorted(after)], 'retained layout inventory order or delta')
+
+
+def validate_upgrade(project, document, installed, engine, protected):
+    """Bind the retained move and every write to the closed upgrade plan."""
+    from . import subagent_policy as p
+    _validate_document(project, document, engine)
+    _validate_tree(document, installed.members)
     p.require(document['lock'] == _lock_transition(installed, document['before'], document['writes'], engine),
               'retained layout lock transition')
+    _check_protected_rewrites(document, protected)
+
+
+def standalone_completion(project, reader, *, lockless):
+    """Reject pending standalone writers and recognize a verified lockless guard."""
+    from . import subagent_policy as p, installation_state as s
+
+    def control(name):
+        target = reader.locate(project, name)
+        return None if target is None else reader.read(target, name, s.LIMITS['document_bytes'])
+
+    try:
+        accepted = control(STANDALONE_PLAN)
+        completed = control(STANDALONE_COMPLETE)
+        if accepted is None and completed is None:
+            return None
+        p.require(accepted is not None, 'missing standalone layout plan')
+        document = s._document(accepted, STANDALONE_PLAN)
+        _validate_document(project, document, document.get('engine'))
+        _validate_tree(document, ())
+        lock = document['lock']
+        if lock is not None:
+            s._shape(lock, {'path', 'before_sha256', 'after_sha256', 'content'})
+            s._digest(lock['before_sha256'])
+            p.require(lock['path'] == s.LOCK_PATH
+                      and s._lock_bytes(lock['content'].encode('utf-8')).sha256 == lock['after_sha256'],
+                      'invalid standalone layout lock transition')
+        expected = p.digest(accepted)
+        canonical = resolve(str(project)) == CANONICAL and (project / CANONICAL).is_dir()
+        if completed is not None:
+            p.require(completed == p.encode({'plan_sha256': expected}) and canonical,
+                      'stale standalone layout completion')
+            if lockless:
+                p.require(lock is None, 'standalone layout did not complete without an installation lock')
+                verify_upgrade_state(project, document, complete=True)
+    except (ValueError, OSError, TypeError, KeyError, AttributeError) as exc:
+        raise s.InstallationError('layout-receipt-conflict',
+                                  'Standalone project layout receipts or their bound state are invalid or stale.',
+                                  STANDALONE_PLAN, 'conflict',
+                                  'Preserve the receipts and have the project owner reconcile the standalone migration.') from exc
+
+    if completed is None:
+        raise s.InstallationError('layout-migration-pending',
+                                  'An accepted standalone project layout migration is incomplete.',
+                                  STANDALONE_PLAN, 'blocked',
+                                  'Resume the exact retained plan through manage-sub-agents layout-apply before installation.')
+    return expected if lockless else None
 
 
 def verify_upgrade_state(project, document, *, complete):
@@ -346,12 +416,12 @@ def apply(project, document, plan_sha256, engine):
     base = resolve(project)
     if base == LEGACY:
         p.require(plan(project, engine)['plan'] == document, 'stale layout plan')
-    receipt = Path(project) / '.ai/local/project-layout-plan.json'
+    receipt = Path(project) / STANDALONE_PLAN
     accepted = p.encode(document)
-    read(project, '.ai/local/project-layout-plan.json')
+    read(project, STANDALONE_PLAN)
     if base == CANONICAL:
-        p.require(read(project, '.ai/local/project-layout-plan.json') == accepted, 'accepted migration plan missing or changed')
-    completion_path = '.ai/local/project-layout-complete.json'
+        p.require(read(project, STANDALONE_PLAN) == accepted, 'accepted migration plan missing or changed')
+    completion_path = STANDALONE_COMPLETE
     completed_bytes = p.encode({'plan_sha256': plan_sha256})
     completed = read(project, completion_path)
     p.require(completed in (None, completed_bytes), 'different migration completion exists')
@@ -372,7 +442,7 @@ def apply(project, document, plan_sha256, engine):
             p.require(resolve(project) == base, 'layout changed before exclusion')
             p.require(read(project, completion_path) == completed, 'migration completion changed before exclusion')
             if base == CANONICAL:
-                p.require(read(project, '.ai/local/project-layout-plan.json') == accepted,
+                p.require(read(project, STANDALONE_PLAN) == accepted,
                           'accepted migration plan changed before exclusion')
             p.require(all(not (Path(project) / marker).exists() for marker in s.MARKERS), 'installation operation active')
             actual_lock = s.read_lock(project)
@@ -404,7 +474,7 @@ def apply(project, document, plan_sha256, engine):
             if base == LEGACY:
                 p.require(plan(project, engine)['plan'] == document, 'stale layout plan after exclusion')
                 if receipt.exists():
-                    p.require(read(project, '.ai/local/project-layout-plan.json') == accepted, 'different accepted migration plan exists')
+                    p.require(read(project, STANDALONE_PLAN) == accepted, 'different accepted migration plan exists')
                 else:
                     # Keep the accepted proposal outside the renamed tree. Resume
                     # never accepts arbitrary new content after the rename.
@@ -412,7 +482,7 @@ def apply(project, document, plan_sha256, engine):
                         stream.write(accepted)
                         stream.flush()
                         os.fsync(stream.fileno())
-                    written.append('.ai/local/project-layout-plan.json')
+                    written.append(STANDALONE_PLAN)
                 held.verify()
                 p.require(resolve(project) == LEGACY, 'destination appeared')
                 os.rename(Path(project) / LEGACY, Path(project) / CANONICAL)

@@ -142,6 +142,41 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(result['outcome'], 'applied')
         self.assertEqual(layout.inventory(self.project, layout.CANONICAL), planned['plan']['after'])
 
+    def test_incomplete_standalone_migration_blocks_installation_until_exact_resume(self):
+        self.seed()
+        pinned_engine = engine()
+        planned = layout.plan(self.project, pinned_engine)
+        document, digest = planned['plan'], planned['plan_sha256']
+
+        def admitted():
+            return layout.standalone_completion(self.root, state._Reader(), lockless=True)
+
+        def attempt():
+            return layout.apply(self.project, document, digest, pinned_engine)
+
+        self.assertIsNone(admitted())
+        with patch.object(layout.os, 'rename', side_effect=OSError('before rename')):
+            self.assertEqual(attempt()['outcome'], 'interrupted')
+        self.assertTrue((self.root / layout.LEGACY).is_dir())
+        with self.assertRaises(state.InstallationError) as interrupted:
+            admitted()
+        self.assertEqual(interrupted.exception.diagnostic['code'], 'layout-migration-pending')
+
+        with patch.object(layout, '_replace', side_effect=OSError('after rename')):
+            self.assertEqual(attempt()['outcome'], 'interrupted')
+        self.assertTrue((self.root / layout.CANONICAL).is_dir())
+        with self.assertRaises(state.InstallationError) as interrupted:
+            admitted()
+        self.assertEqual(interrupted.exception.diagnostic['code'], 'layout-migration-pending')
+
+        self.assertEqual(attempt()['outcome'], 'applied')
+        self.assertEqual(admitted(), digest)
+        self.assertEqual((self.root / state.GUARD_PATH).read_bytes(), b'')
+        (self.root / layout.CANONICAL / 'changed.txt').write_bytes(b'owner edit')
+        with self.assertRaises(state.InstallationError) as stale:
+            admitted()
+        self.assertEqual(stale.exception.diagnostic['code'], 'layout-receipt-conflict')
+
     def test_completed_lockless_replay_rejects_restored_preimage(self):
         self.seed()
         before = (self.root / '.codex/agents/local-reviewer.toml').read_bytes()
@@ -292,11 +327,20 @@ class LayoutTests(unittest.TestCase):
 
         edit = {'intent': {'path': selection_name}, 'before': descriptor(old_selection),
                 'after': descriptor(new_selection)}
-        migration = layout.upgrade_plan(self.root, new_engine, after, [edit])
+        original_native = native.read_bytes()
+        protected = [{'path': '.codex/agents/local-reviewer.toml', 'sha256': p.digest(original_native)}]
+        with self.assertRaisesRegex(state.InstallationError, 'rewrite a protected input'):
+            layout.upgrade_plan(self.root, new_engine, after, [edit], protected)
+        self.assertFalse(canonical.exists())
+        self.assertEqual(native.read_bytes(), original_native)
+        migration = layout.upgrade_plan(self.root, new_engine, after, [edit], [])
         self.assertTrue(legacy.is_dir())
         self.assertEqual((self.root / selection_name).read_bytes(), old_selection)
-        layout.validate_upgrade(self.root, migration, after, new_engine)
-        document = {'protected_inputs': [], 'project_edits': [edit], 'operation_id': '2' * 32}
+        layout.validate_upgrade(self.root, migration, after, new_engine, [])
+        readme = self.root / 'README.md'
+        readme.write_bytes(b'approved project navigation')
+        protected = [{'path': 'README.md', 'sha256': p.digest(readme.read_bytes())}]
+        document = {'protected_inputs': protected, 'project_edits': [edit], 'operation_id': '2' * 32}
         objects = {p.digest(raw): raw for raw in (old_selection, new_selection)}
         operation = installation.Operation(document, b'fixture operation', before_side, after_side, objects, migration)
         for name in state.MARKERS:
@@ -312,6 +356,15 @@ class LayoutTests(unittest.TestCase):
         self.assertTrue(all((self.root / name).exists() for name in state.MARKERS))
         self.assertEqual(state.read_lock(self.project).sha256, after.sha256)
         self.assertIn(b'.ai/custom/', native.read_bytes())
+        readme.write_bytes(b'owner edited during interruption')
+        with layout.writer(self.project) as guard:
+            with self.assertRaisesRegex(state.InstallationError, 'Selected protected input differs'):
+                installation._finish_layout(guard.io, guard, self.root, operation)
+        self.assertEqual(native.read_bytes(), original_native)
+        self.assertEqual(state.read_lock(self.project).raw, after.raw)
+        self.assertEqual(readme.read_bytes(), b'owner edited during interruption')
+        self.assertTrue(all((self.root / name).read_bytes() == operation.raw for name in state.MARKERS))
+        readme.write_bytes(b'approved project navigation')
         with layout.writer(self.project) as guard:
             installation._finish_layout(guard.io, guard, self.root, operation)
         self.assertEqual((canonical / 'opaque.bin').read_bytes(), b'opaque .ai/custom/')

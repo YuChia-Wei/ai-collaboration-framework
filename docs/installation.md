@@ -558,8 +558,14 @@ v0.20.1 修正舊 adapter template 的相容性驗證，保留原始 digest 比�
 以及 lock 路徑與雜湊轉換。請以搬移前的實際路徑提交保護輸入和 saved selection
 編輯。核對後的 `apply` 透過同一安裝操作更新受管檔案、將資料移至 `.ai/project/`，
 並讀回更新後的 lock。兩個目錄同時存在時須先由專案 owner 釐清。未登錄文件與
-未知檔案隨目錄搬移，保留原始位元組。選擇中的知識 authority 仍指向舊目錄時，
-此遷移會停止，由 owner 另行協調該 binding。
+未知檔案隨目錄搬移，保留原始位元組。若某項改寫會變更保護輸入的位元組，
+計畫會拒絕該衝突。選擇中的知識 authority 仍指向舊目錄時，由 owner 另行協調
+該 binding。
+
+若專案只有舊目錄且沒有安裝 lock，先審閱並完成
+[獨立目錄遷移](sub-agent-management.md#升級與客製協調)，再計畫首次安裝。
+獨立遷移已有接受的計畫但尚未完成時，須以原計畫續作，才能開始安裝或升級。
+完成後保留遷移收據及實際狀態供首次安裝核對。
 
 若搬移前中斷，可用原 engine 與 maintenance record `recover finish` 或
 `recover restore`。目錄已更名後，須用同一個 record 及目前 lock／marker 的

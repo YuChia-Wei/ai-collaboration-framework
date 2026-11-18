@@ -218,7 +218,7 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
     state._shape(retained_plan, {"api_version", "operation", "project_root", "candidate_identity", "engine", "expected_lock_sha256", "mode_policy",
                                  "roots", "durability", "project_data_action", "protected_inputs", "project_edits", "project_inputs", "noop",
                                  "maintenance_scope", "delta", "preserved_unknown", "path_budget", "prerequisites"},
-                 {"project_layout"})
+                 {"project_layout", "completed_project_layout_sha256"})
     state._check(type(retained_plan["api_version"]) is int and retained_plan["api_version"] == 2
                  and retained_plan["operation"] == "plan" and retained_plan["engine"] == engine
                  and retained_plan["project_root"] == doc["project_root"]
@@ -232,10 +232,13 @@ def _read_operation(reader: state._Reader, root: Path, expected_hash: str, engin
     _edit_record(doc["project_edits"], reader, root, objects,
                  set(after.members) | (set(before.members) if before else set()), doc["protected_inputs"])
 
+    if "completed_project_layout_sha256" in retained_plan:
+        state._check(before is None, "operation-layout-binding", "Standalone completion is only needed for first installation.")
+        state._digest(retained_plan["completed_project_layout_sha256"])
     layout = retained_plan.get("project_layout")
     if layout is not None:
         state._check(before is not None, "operation-layout-binding", "Retained layout requires an existing installation.")
-        project_layout.validate_upgrade(project, layout, after, engine)
+        project_layout.validate_upgrade(project, layout, after, engine, doc["protected_inputs"])
     operation = Operation(doc, raw, before, after, objects, layout)
     state._check(retained_plan["maintenance_scope"] == operation.scope, "operation-plan-binding", "Retained maintenance scope differs.")
     declaration(doc["maintenance"], operation.scope)
@@ -447,7 +450,9 @@ def _finish_layout(io: IO, guard: WriterLock, project: Path, operation: Operatio
     io.expect(project, state.MARKERS[0], operation.raw)
     paired = io.raw(project, state.MARKERS[1], state.LIMITS["document_bytes"])
     state._check(paired in (None, operation.raw), "unrelated-marker", "Project marker differs from the retained operation.")
-    _verify_target(io, project, operation, operation.after, relocated=_layout_started(project, operation))
+    relocated = _layout_started(project, operation)
+    _verify_target(io, project, operation, operation.after, relocated=relocated)
+    _layout_protected(io, project, operation, relocated=relocated)
     project_layout.apply_upgrade(project, operation.layout, operation.after, guard)
     io.reader.listings.clear()
     _verify_layout_target(io, project, operation)
@@ -460,18 +465,22 @@ def _finish_layout(io: IO, guard: WriterLock, project: Path, operation: Operatio
     guard.verify()
 
 
+def _layout_protected(io: IO, project: Path, operation: Operation, *, relocated: bool) -> None:
+    protected = operation.document["protected_inputs"]
+    names = operation.names
+    if relocated:
+        protected = sorted(({**row, "path": project_layout.relocated(row["path"])} for row in protected),
+                           key=lambda row: row["path"])
+        names = {project_layout.relocated(name) for name in names}
+    io.changes.protected = _protected(io, project, protected, names)
+
+
 def _verify_layout_target(io: IO, project: Path, operation: Operation) -> None:
     lock = operation.layout["lock"]
     final = state._lock_bytes(lock["content"].encode("utf-8"))
     io.expect(project, state.LOCK_PATH, final.raw)
     _verify_target(io, project, operation, operation.after, relocated=True)
-    replacements = {row["path"]: row["after_sha256"] for row in operation.layout["writes"]}
-    protected = []
-    for row in operation.document["protected_inputs"]:
-        path = project_layout.relocated(row["path"])
-        protected.append({"path": path, "sha256": replacements.get(path, row["sha256"])})
-    names = {project_layout.relocated(name) for name in operation.names}
-    io.changes.protected = _protected(io, project, sorted(protected, key=lambda row: row["path"]), names)
+    _layout_protected(io, project, operation, relocated=True)
     for row in final.document["project_inputs"]:
         state._check(_hash(io.raw(project, row["path"])) == row["sha256"], "project-input-drift",
                      "Paired project input differs after relocation.", row["path"], "conflict")
